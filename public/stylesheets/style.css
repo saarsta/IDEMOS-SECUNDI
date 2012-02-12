@@ -1,0 +1,26 @@
+body {
+  padding: 50px;
+  font: 14px Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.form {
+    width: 500px;
+    padding: 10px;
+}
+
+.form label {
+    display: block;
+}
+
+.form input {
+    width: 200px;
+    padding: 1px 2px;
+}
+
+.button {
+    padding: 5px 10px;
+}

@@ -1,0 +1,115 @@
+ejs and stylus:
+
+Microsoft Windows [Version 6.1.7601]
+Copyright (c) 2009 Microsoft Corporation.  All rights reserved.
+
+C:\Users\saar>express /?
+
+C:\Users\saar\AppData\Roaming\npm\node_modules\express\bin\express:340
+    if (err && 'ENOENT' != err.code) throw err;
+                                           ^
+Error: UNKNOWN, unknown error 'C:\?'
+
+C:\Users\saar>express -h
+
+  Usage: express [options] [path]
+
+  Options:
+    -s, --sessions           add session support
+    -t, --template <engine>  add template <engine> support (jade|ejs). default=j
+ade
+    -c, --css <engine>       add stylesheet <engine> support (stylus). default=p
+lain css
+    -v, --version            output framework version
+    -h, --help               output help information
+
+
+C:\Users\saar>cd\wwww
+The system cannot find the path specified.
+
+C:\Users\saar>cd..
+
+C:\Users>cd\
+
+C:\>cd www
+
+C:\www>express -t ejs -c stylus
+destination is not empty, continue? n
+aborting
+
+------------------------------------------
+mongoose:
+C:\www\testExpress>npm install mongoose
+------------------------------------------
+mailer:
+C:\www\testExpress>npm install nodemailer
+
+----------------------------------------------------------
+i have downloaded fiddler(web debugging proxy)
+------------------------------------------------------------------
+    C:\www>express project -t ejs -c stylus
+
+   create : project
+   create : project/package.json
+   create : project/app.js
+   create : project/public
+   create : project/public/javascripts
+   create : project/public/images
+   create : project/views
+   create : project/views/layout.ejs
+   create : project/views/index.ejs
+   create : project/public/stylesheets
+   create : project/public/stylesheets/style.styl
+   create : project/routes
+   create : project/routes/index.js
+
+   dont forget to install dependencies:
+   $ cd project && npm install
+
+
+C:\www>cd project
+
+C:\www\project>npm install
+npm http GET https://registry.npmjs.org/stylus
+npm http GET https://registry.npmjs.org/ejs
+npm http GET https://registry.npmjs.org/express/2.5.5
+npm http 304 https://registry.npmjs.org/ejs
+npm http 304 https://registry.npmjs.org/express/2.5.5
+npm http 200 https://registry.npmjs.org/stylus
+npm http GET https://registry.npmjs.org/stylus/-/stylus-0.23.0.tgz
+npm http 200 https://registry.npmjs.org/stylus/-/stylus-0.23.0.tgz
+npm http GET https://registry.npmjs.org/mime
+npm http GET https://registry.npmjs.org/qs
+npm http GET https://registry.npmjs.org/mkdirp/0.0.7
+npm http GET https://registry.npmjs.org/connect
+npm http GET https://registry.npmjs.org/growl/1.1.0
+npm http GET https://registry.npmjs.org/cssom/0.2.1
+npm http 304 https://registry.npmjs.org/qs
+npm http 304 https://registry.npmjs.org/mime
+npm http 304 https://registry.npmjs.org/mkdirp/0.0.7
+npm http 304 https://registry.npmjs.org/connect
+npm http 200 https://registry.npmjs.org/growl/1.1.0
+npm http GET https://registry.npmjs.org/growl/-/growl-1.1.0.tgz
+npm http 200 https://registry.npmjs.org/cssom/0.2.1
+npm http GET https://registry.npmjs.org/cssom/-/cssom-0.2.1.tgz
+npm http GET https://registry.npmjs.org/formidable
+npm http 200 https://registry.npmjs.org/growl/-/growl-1.1.0.tgz
+npm http 200 https://registry.npmjs.org/cssom/-/cssom-0.2.1.tgz
+npm http 304 https://registry.npmjs.org/formidable
+ejs@0.6.1 ./node_modules/ejs
+express@2.5.5 ./node_modules/express
+├── mime@1.2.4
+├── mkdirp@0.0.7
+├── qs@0.4.1
+└── connect@1.8.5
+stylus@0.23.0 ./node_modules/stylus
+├── growl@1.1.0
+├── mkdirp@0.0.7
+└── cssom@0.2.1
+
+C:\www\project>
+-------------------------------------------------------------------------------------------------------------
+
+C:\www\uru>npm install connect-mongo
+
+-------------------------------------------------------------------------------------------------------------
