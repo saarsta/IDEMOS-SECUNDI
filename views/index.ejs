@@ -47,7 +47,7 @@
     </div>
 
     <div class="form _register">
-        <form id="form_id">
+        <form id="form_id" method='post' action='/register/'>
             <label for="register_username">username:</label>
             <input type="text" name="username" id="register_username">
 
@@ -67,7 +67,7 @@
         <button class = "btn_register">Register</button>
     </div>
 
-    <div class="form _connect_gmail">
+    <div class="form _connect_gmail"  method='post' action='/login/'>
         <form>
             <label for="gmail:username">username (email address):</label>
             <input type="text" name="username" id="gmail:username" />
