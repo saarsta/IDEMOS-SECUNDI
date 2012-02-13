@@ -8,7 +8,8 @@ var express = require('express'),
     Model = require("./models.js");
     mongoose = require('mongoose'),
     MongoStore  = require('connect-mongo'),
-    https = require("https");
+    https = require("https")
+    auth = require("connect-auth");
 
 var app = module.exports = express.createServer();
 
@@ -25,19 +26,40 @@ var confdb = {
     secret: '076ed61d63ea10a12rea879l1ve433s9'
 };
 
+var validatePasswordFunction = function(username, password, successCallback, failureCallback){
+//    if (username === 'foo' && password === "bar"){
+//        successCallback();
+//    } else {
+//        failureCallback();
+//    }
+};
+
+
 app.configure(function(){
-  app.set('views', __dirname + '/views');
-  app.set('view engine', 'ejs');
-  app.use(express.bodyParser());
-  app.use(express.methodOverride());
-  app.use(express.cookieParser());
-  app.use(express.session({secret: confdb.secret,
+    app.set('views', __dirname + '/views');
+    app.set('view engine', 'ejs');
+    app.use(express.bodyParser());
+    app.use(express.methodOverride());
+    app.use(express.cookieParser());
+    app.use(express.session({secret: confdb.secret,
         maxAge: new Date(Date.now() + 3600000),
         store: new MongoStore(confdb.db) }));
+    app.use(auth([
+        auth.Basic({validatePassword: validatePasswordFunction}),
+        auth.Facebook({
+            appId : fbId,
+            appSecret: fbSecret,
+            callback: fbCallbackAddress,
+            scope: 'email',
+            failedUri: '/noauth'
+        })
+    ]));
 
-  app.use(express.methodOverride());
-  app.use(app.router);
-  app.use(express.static(__dirname + '/public'));
+    app.use(auth_middleware);
+
+    app.use(express.methodOverride());
+    app.use(app.router);
+    app.use(express.static(__dirname + '/public'));
 
 });
 
@@ -78,7 +100,6 @@ app.post('/account/afterSuccessFbConnect',function(req, res){
     //  console.log(req.body.access_token);
     var access_token = req.body.access_token;
     var  path =  "https://graph.facebook.com/me?access_token=" + req.body.access_token; //ACCESS_TOKEN
-
 
     https.get({host:"graph.facebook.com", path: "/me?access_token=" + req.body.access_token }, function (http_res) {
         // initialize the container for our data
@@ -182,7 +203,7 @@ app.get('/sendmail',function(req, res){
         ssl: true,
         use_authentication: true,
         user: 'saarsta@gmail.com',
-        pass: '5406537'
+        pass: '*******'
     }
 
 // send an e-mail
@@ -206,8 +227,50 @@ app.get('/sendmail',function(req, res){
 
 });
 
+var auth_middleware = function(req,res,next)
+{
+  // if this request needs to be authenticated
 
+    if(req.path in NEED_LOGIN_PAGES)
+    {
+        if(req.isAuthenticated())
+        {
+            next();
+        }
+        else
+        {
+            res.redirect(LOGIN_PAGE + '?next=' + req.path);
+        }
+    }
+    else
+        next();
+};
 
+app.post('/register/',function(req,res)
+{
+    // validate
+       validate_new_user(req);
+    // create new user
+    user = create_new_user(req)//
+    req.query['username'] = user.username;
+    req.query['password'] = user.password;
+    req.authenticate('basic',f);
+});
+
+app.post('/login/',function(req,res)
+{
+   req.authenticate('basic',function(err,is_authenticated)
+   {
+       if(is_authenticated)
+       {
+           res.redirect(req.query.next || DEFAULT_LOGIN_REDIRECT);
+       }
+       else
+       {
+           // show login failed page
+       }
+   });
+});
 
 
 app.listen(app.settings.port);

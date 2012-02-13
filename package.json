@@ -3,7 +3,11 @@
   , "version": "0.0.1"
   , "private": true
   , "dependencies": {
-      "express": "2.5.5"
-    , "ejs": ">= 0.0.1"
+        "express": "2.5.5",
+        "ejs": ">= 0.0.1",
+        "connect-auth": "",
+        "mongoose":"",
+        "mongoose-resource": "",
+        "connect-mongo":""
   }
 }
