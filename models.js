@@ -23,7 +23,6 @@ var Schemas = {
         identity_provider: {type: String, "enum": ['facebook', 'mail']},
         facebook_id: String,
         access_token: String,
-        seesion_id: String,
         first_name: String,
         last_name: String,
         email: String,
@@ -31,6 +30,8 @@ var Schemas = {
         age: {type: Number, min: 0},
         discussions: [{type: Schema.objectId, ref: 'Discussion'}],//this is only relevant when cycle is on, so if there is
         //a cycle schema i might change it
+        user_name: String,
+        password: String,
         md5: String
     })/*,
 

@@ -2,6 +2,10 @@
 /**
  * Module dependencies.
  */
+var fbId = '175023072601087',
+    fbSecret = 'test',
+    fbCallbackAddress = 'http://dev.empeeric.com/account/afterSuccessFbConnect2'
+
 
 var express = require('express'),
     routes = require('./routes'),
@@ -12,6 +16,7 @@ var express = require('express'),
     auth = require("connect-auth");
 
 var app = module.exports = express.createServer();
+
 
 // Configuration
 var confdb = {
@@ -27,11 +32,22 @@ var confdb = {
 };
 
 var validatePasswordFunction = function(username, password, successCallback, failureCallback){
-//    if (username === 'foo' && password === "bar"){
-//        successCallback();
-//    } else {
-//        failureCallback();
-//    }
+
+
+    var user_model = mongoose.model('User'),
+        flag = false;
+
+    user_model.findOne({user_name: username}, function (err, result){
+        if(err == null){
+           if(result.password === password){
+               successCallback();
+           } else{
+               failureCallback();
+           }
+        }else{
+            throw "Error reading db.User";
+        }
+    });
 };
 
 
@@ -55,7 +71,7 @@ app.configure(function(){
         })
     ]));
 
-    app.use(auth_middleware);
+//    app.use(auth_middleware);
 
     app.use(express.methodOverride());
     app.use(app.router);
@@ -95,15 +111,23 @@ app.get('/insertDataBase',function(req, res){
     });
 });
 
+app.get('/account/afterSuccessFbConnect2', function(req,res){
+
+});
+
+
 app.post('/account/afterSuccessFbConnect',function(req, res){
 
     //  console.log(req.body.access_token);
     var access_token = req.body.access_token;
-    var  path =  "https://graph.facebook.com/me?access_token=" + req.body.access_token; //ACCESS_TOKEN
+//    var  path =  "https://graph.facebook.com/me?access_token=" + req.body.access_token; //ACCESS_TOKEN
+ 
+
 
     https.get({host:"graph.facebook.com", path: "/me?access_token=" + req.body.access_token }, function (http_res) {
         // initialize the container for our data
         var data = "";
+        var session = req.session;
 
         // this event fires many times, each time collecting another piece of the response
         http_res.on("data", function (chunk) {
@@ -119,17 +143,21 @@ app.post('/account/afterSuccessFbConnect',function(req, res){
 
             var user_facebook_id = data.id;
 
-            isUserExistInDataBase(user_facebook_id, function(is_user_on_db){
-                if(!is_user_on_db){
+            isUserInDataBase(user_facebook_id, function(is_user_in_db){
+                if(!is_user_in_db){
                     createNewUser(data, req.sessionID);
                 }else{
-                    updateUesrAccessTokenAndSessionId(data, req.sessionID);
+                    updateUesrAccessToken(data);
                 }
+                //bind session with user facebook id
+                session.userFbId = user_facebook_id;
+                session.save;
+                console.log("session.facebookid =  " + session.userFbId);
             });
         });
     });
 
-    function isUserExistInDataBase(user_facebook_id, callback){
+    function isUserInDataBase(user_facebook_id, callback){
 
         var user_model = mongoose.model('User'),
             flag = false;
@@ -138,11 +166,32 @@ app.post('/account/afterSuccessFbConnect',function(req, res){
             if(err == null){
                 if(result.length == 1){ // its not a new user
                     //var user_id = result[0]._id;
-                    //console.log("isUserExistInDataBase returns true")
+                    //console.log("isUserInDataBase returns true")
                     flag = true;
                 }else{
                     if(result.length == 0){ // its a new user
-                        //console.log("isUserExistInDataBase returns false");
+                        //console.log("isUserInDataBase returns false");
+                    }else{ // handle error here
+                        throw "Error: Too many users with same user_facebook_id";
+                    }
+                }
+            }else{
+                throw "Error reading db.User in isNewUser";
+            }
+
+            callback(flag);
+        });var user_model = mongoose.model('User'),
+            flag = false;
+
+        user_model.find({facebook_id: user_facebook_id}, function (err, result){
+            if(err == null){
+                if(result.length == 1){ // its not a new user
+                    //var user_id = result[0]._id;
+                    //console.log("isUserInDataBase returns true")
+                    flag = true;
+                }else{
+                    if(result.length == 0){ // its a new user
+                        //console.log("isUserInDataBase returns false");
                     }else{ // handle error here
                         throw "Error: Too many users with same user_facebook_id";
                     }
@@ -155,7 +204,7 @@ app.post('/account/afterSuccessFbConnect',function(req, res){
         });
     }
 
-    function createNewUser(data, session_id){
+    function createNewUser(data){
 
         var user = new Model.User();
         user.identity_provider = "facebook";
@@ -165,7 +214,6 @@ app.post('/account/afterSuccessFbConnect',function(req, res){
         user.gender = data.gender;
         user.facebook_id = data.id;
         user.access_token = access_token;
-        user.session_id = session_id;
         user.save(function(err){
             if(err != null)
             {
@@ -179,17 +227,17 @@ app.post('/account/afterSuccessFbConnect',function(req, res){
         });
     }
 
-    function updateUesrAccessTokenAndSessionId(data, session_id){
+    function updateUesrAccessToken(data){
         var user_model = mongoose.model('User');
 
         user_model.findOne({facebook_id: data.id}, function(err, user){
             if (err) { return next(err); }
             user.access_token = access_token;
-            user.session_id = session_id;
+//            user.session_id = session_id;
             user.save(function(err) {
                 if (err) { return next(err); }
             });
-    });
+        });
     }
 });
 
@@ -272,6 +320,9 @@ app.post('/login/',function(req,res)
    });
 });
 
+var mongoose_resource = require('mongoose-resource');
+var rest_api = new mongoose_resource.Api('api',app);
+//rest_api.register_resource('users',new UserResource());
 
 app.listen(app.settings.port);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
