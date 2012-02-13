@@ -20,6 +20,7 @@ mongoose.connect('mongodb://localhost/uru', function(err){
 
 var Schemas = {
     User: new Schema({
+        username:String,
         identity_provider: {type: String, "enum": ['facebook', 'mail']},
         facebook_id: String,
         access_token: String,

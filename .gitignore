@@ -1,0 +1,17 @@
+bin
+build
+include
+.idea
+dump
+*.pyc
+*.pyo
+*.swp
+*.psd
+.DS_Store
+src
+MongoFiles
+pip-log.txt
+*.idea*
+
+node_modules/*
+node_modules/*

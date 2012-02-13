@@ -9,13 +9,12 @@ var fbId = '175023072601087',
 
 var express = require('express'),
     routes = require('./routes'),
-    Model = require("./models.js");
     mongoose = require('mongoose'),
     MongoStore  = require('connect-mongo'),
-    https = require("https")
     auth = require("connect-auth");
 
 var app = module.exports = express.createServer();
+var account = require('./routes/account');
 
 
 // Configuration
@@ -30,6 +29,7 @@ var confdb = {
     },
     secret: '076ed61d63ea10a12rea879l1ve433s9'
 };
+
 
 var validatePasswordFunction = function(username, password, successCallback, failureCallback){
 
@@ -61,8 +61,8 @@ app.configure(function(){
         maxAge: new Date(Date.now() + 3600000),
         store: new MongoStore(confdb.db) }));
     app.use(auth([
-        auth.Basic({validatePassword: validatePasswordFunction}),
-        auth.Facebook({
+        account.SimpleAuthentication()
+        ,auth.Facebook({
             appId : fbId,
             appSecret: fbSecret,
             callback: fbCallbackAddress,
@@ -71,7 +71,7 @@ app.configure(function(){
         })
     ]));
 
-//    app.use(auth_middleware);
+    app.use(account.auth_middleware);
 
     app.use(express.methodOverride());
     app.use(app.router);
@@ -93,6 +93,7 @@ app.configure('production', function(){
 
 // Routes
 
+
 app.get('/', routes.index);
 app.get('/test/:id?', routes.test);
 app.get('/insertDataBase',function(req, res){
@@ -110,6 +111,8 @@ app.get('/insertDataBase',function(req, res){
         res.end();
     });
 });
+app.post('/account/register',account.register);
+app.all(account.LOGIN_PATH,account.login);
 
 app.get('/account/afterSuccessFbConnect2', function(req,res){
 
@@ -240,6 +243,7 @@ app.post('/account/afterSuccessFbConnect',function(req, res){
         });
     }
 });
+app.post('/account/afterSuccessFbConnect', routes.fb_connect);
 
 app.get('/sendmail',function(req, res){
     var nodemailer = require('nodemailer');
@@ -273,51 +277,6 @@ app.get('/sendmail',function(req, res){
 
     res.end();
 
-});
-
-var auth_middleware = function(req,res,next)
-{
-  // if this request needs to be authenticated
-
-    if(req.path in NEED_LOGIN_PAGES)
-    {
-        if(req.isAuthenticated())
-        {
-            next();
-        }
-        else
-        {
-            res.redirect(LOGIN_PAGE + '?next=' + req.path);
-        }
-    }
-    else
-        next();
-};
-
-app.post('/register/',function(req,res)
-{
-    // validate
-       validate_new_user(req);
-    // create new user
-    user = create_new_user(req)//
-    req.query['username'] = user.username;
-    req.query['password'] = user.password;
-    req.authenticate('basic',f);
-});
-
-app.post('/login/',function(req,res)
-{
-   req.authenticate('basic',function(err,is_authenticated)
-   {
-       if(is_authenticated)
-       {
-           res.redirect(req.query.next || DEFAULT_LOGIN_REDIRECT);
-       }
-       else
-       {
-           // show login failed page
-       }
-   });
 });
 
 var mongoose_resource = require('mongoose-resource');
