@@ -10,7 +10,7 @@
                 function(){
 
                     $(".btn_facebook_connect").on("click", function(){
-                        document.location.href='http://dev.empeeric.com:8003/facebookconnect.html';
+                        document.location.href='http://dev.empeeric.com/facebookconnect.html';
                     })
                 }
 
@@ -67,13 +67,13 @@
 
     </div>
 
-    <div class="form _connect_gmail"  method='post' action='/account/login/'>
-        <form>
-            <label for="gmail:username">username (email address):</label>
-            <input type="text" name="username" id="gmail:username" />
+    <div class="form _connect_gmail">
+        <form method='post' action='/account/login/'>
+            <label for="gmail_username">username (email address):</label>
+            <input type="text" name="username" id="gmail_username" />
 
-            <label for="gmail:password">password:</label>
-            <input type="password" name="password" id="gmail:password" />
+            <label for="gmail_password">password:</label>
+            <input type="password" name="password" id="gmail_password" />
             <button type='submit'>Connect</button>
         </form>
 
@@ -114,20 +114,6 @@
                    if (stringValidation(x, "password") == false) {
                        return false;
                    }
-
-//                    if (x==null || x=="")
-//                    {
-//                        alert("First name must be filled out");
-//                        return false;
-//                    }
-
-                    //password  validation
-//                    x = $("#register_password").val();
-//                    if (x==null || x=="")
-//                    {
-//                        alert("password must be filled out");
-//                        return false;
-//                    }
 
                     var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
                     var address = $("#register_email").val();

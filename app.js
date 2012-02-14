@@ -17,6 +17,7 @@ var app = module.exports = express.createServer();
 var account = require('./routes/account');
 
 
+
 // Configuration
 var confdb = {
     db:{
@@ -30,27 +31,6 @@ var confdb = {
     secret: '076ed61d63ea10a12rea879l1ve433s9'
 };
 
-
-var validatePasswordFunction = function(username, password, successCallback, failureCallback){
-
-
-    var user_model = mongoose.model('User'),
-        flag = false;
-
-    user_model.findOne({user_name: username}, function (err, result){
-        if(err == null){
-           if(result.password === password){
-               successCallback();
-           } else{
-               failureCallback();
-           }
-        }else{
-            throw "Error reading db.User";
-        }
-    });
-};
-
-
 app.configure(function(){
     app.set('views', __dirname + '/views');
     app.set('view engine', 'ejs');
@@ -60,7 +40,7 @@ app.configure(function(){
     app.use(express.session({secret: confdb.secret,
         maxAge: new Date(Date.now() + 3600000),
         store: new MongoStore(confdb.db) }));
-    app.use(auth([
+    app.use(auth({strategies: [
         account.SimpleAuthentication()
         ,auth.Facebook({
             appId : fbId,
@@ -69,7 +49,9 @@ app.configure(function(){
             scope: 'email',
             failedUri: '/noauth'
         })
-    ]));
+    ],
+    trace: true,
+    logoutHandler: require("connect-auth/lib/events").redirectOnLogout("/acount/login")}));
 
     app.use(account.auth_middleware);
 
@@ -80,7 +62,7 @@ app.configure(function(){
 });
 
 app.configure('development', function(){
-  app.set("port", 8003);
+  app.set("port", 80);
   app.set('facebook_app_id', '175023072601087');
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
@@ -112,138 +94,36 @@ app.get('/insertDataBase',function(req, res){
     });
 });
 app.post('/account/register',account.register);
-app.all(account.LOGIN_PATH,account.login);
+
+//app.all('/account/login', function(req, res){
+//    console.log(req.method);
+//
+//    switch(req.method){
+//        case "GET":
+//            res.render('login',{title:'Login'});
+//            break;
+//        case "POST":
+//            res.send("POST");
+//        default:
+//            res.send('');
+//    }
+//});
+
+app.all(account.LOGIN_PATH, account.login);
+//app.post('account/test', account.login);
 
 app.get('/account/afterSuccessFbConnect2', function(req,res){
 
 });
 
 
-app.post('/account/afterSuccessFbConnect',function(req, res){
+app.get('/needlogin', function(req,res){
 
-    //  console.log(req.body.access_token);
-    var access_token = req.body.access_token;
-//    var  path =  "https://graph.facebook.com/me?access_token=" + req.body.access_token; //ACCESS_TOKEN
- 
-
-
-    https.get({host:"graph.facebook.com", path: "/me?access_token=" + req.body.access_token }, function (http_res) {
-        // initialize the container for our data
-        var data = "";
-        var session = req.session;
-
-        // this event fires many times, each time collecting another piece of the response
-        http_res.on("data", function (chunk) {
-            // append this chunk to our growing `data` var
-            data += chunk;
-        });
-
-        // this event fires *one* time, after all the `data` events/chunks have been gathered
-        http_res.on("end", function () {
-            // you can use res.send instead of console.log to output via express
-            data = JSON.parse(data);
-            console.log(data.id);
-
-            var user_facebook_id = data.id;
-
-            isUserInDataBase(user_facebook_id, function(is_user_in_db){
-                if(!is_user_in_db){
-                    createNewUser(data, req.sessionID);
-                }else{
-                    updateUesrAccessToken(data);
-                }
-                //bind session with user facebook id
-                session.userFbId = user_facebook_id;
-                session.save;
-                console.log("session.facebookid =  " + session.userFbId);
-            });
-        });
-    });
-
-    function isUserInDataBase(user_facebook_id, callback){
-
-        var user_model = mongoose.model('User'),
-            flag = false;
-
-        user_model.find({facebook_id: user_facebook_id}, function (err, result){
-            if(err == null){
-                if(result.length == 1){ // its not a new user
-                    //var user_id = result[0]._id;
-                    //console.log("isUserInDataBase returns true")
-                    flag = true;
-                }else{
-                    if(result.length == 0){ // its a new user
-                        //console.log("isUserInDataBase returns false");
-                    }else{ // handle error here
-                        throw "Error: Too many users with same user_facebook_id";
-                    }
-                }
-            }else{
-                throw "Error reading db.User in isNewUser";
-            }
-
-            callback(flag);
-        });var user_model = mongoose.model('User'),
-            flag = false;
-
-        user_model.find({facebook_id: user_facebook_id}, function (err, result){
-            if(err == null){
-                if(result.length == 1){ // its not a new user
-                    //var user_id = result[0]._id;
-                    //console.log("isUserInDataBase returns true")
-                    flag = true;
-                }else{
-                    if(result.length == 0){ // its a new user
-                        //console.log("isUserInDataBase returns false");
-                    }else{ // handle error here
-                        throw "Error: Too many users with same user_facebook_id";
-                    }
-                }
-            }else{
-                throw "Error reading db.User in isNewUser";
-            }
-
-            callback(flag);
-        });
-    }
-
-    function createNewUser(data){
-
-        var user = new Model.User();
-        user.identity_provider = "facebook";
-        user.first_name = data.first_name;
-        user.last_name = data.last_name;
-        user.email = data.email; //there is a problem with email
-        user.gender = data.gender;
-        user.facebook_id = data.id;
-        user.access_token = access_token;
-        user.save(function(err){
-            if(err != null)
-            {
-                res.write("error");
-                console.log(err);
-            }else{
-                console.log("done creating new user - " + user.first_name + "" + user.last_name);
-                res.write("done creating new user - " + user.first_name + "" + user.last_name);
-            }
-            res.end();
-        });
-    }
-
-    function updateUesrAccessToken(data){
-        var user_model = mongoose.model('User');
-
-        user_model.findOne({facebook_id: data.id}, function(err, user){
-            if (err) { return next(err); }
-            user.access_token = access_token;
-//            user.session_id = session_id;
-            user.save(function(err) {
-                if (err) { return next(err); }
-            });
-        });
-    }
 });
-app.post('/account/afterSuccessFbConnect', routes.fb_connect);
+app.get('/account/logout', account.logout);
+
+
+app.post('/account/afterSuccessFbConnect', account.fb_connect);
 
 app.get('/sendmail',function(req, res){
     var nodemailer = require('nodemailer');
@@ -283,5 +163,5 @@ var mongoose_resource = require('mongoose-resource');
 var rest_api = new mongoose_resource.Api('api',app);
 //rest_api.register_resource('users',new UserResource());
 
-app.listen(app.settings.port);
+app.listen(/*app.settings.port*/80);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

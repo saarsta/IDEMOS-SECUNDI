@@ -21,7 +21,7 @@ mongoose.connect('mongodb://localhost/uru', function(err){
 var Schemas = {
     User: new Schema({
         username:String,
-        identity_provider: {type: String, "enum": ['facebook', 'mail']},
+        identity_provider: {type: String, "enum": ['facebook', 'register']},
         facebook_id: String,
         access_token: String,
         first_name: String,

@@ -21,7 +21,9 @@
 
 
                 $("button").on("click", function(){
+
                     facebook_connect();
+
                 })
             }
         )
@@ -35,12 +37,13 @@
 //                    FB.api('/me', function(response) {
 //                        console.log('Good to see you, ' + response.name + '.');
 //                    });
+
                 afterSuccessFbConnect(access_token);
 
                 } else {
                     console.log('User cancelled login or did not fully authorize.');
                 }
-            }, {scope: 'user_about_me,email'});
+            }, {scope: 'email'});
 
            //send to sever
 
@@ -48,19 +51,21 @@
         }
 
         function afterSuccessFbConnect(access_token) {
+            alert('1');
             $.ajax({
-                url: 'http://dev.empeeric.com:8003' + '/account/afterSuccessFbConnect',
+                url: 'http://dev.empeeric.com/account/afterSuccessFbConnect',
                 type: "POST",
                 data: "access_token=" + access_token,
                 async: true,
                 success: function (data) {
+                    alert('seccuss');
                     // redirect to data.redirecturl
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
+                    alert('error');
                 }
             });
         }
-
 
     </script>
 </head>
