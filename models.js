@@ -79,7 +79,7 @@ var Schemas = {
         text: String,
         discussion: {type: Schema.objectId, ref: 'Discussion', index: true}
     })
-    //session
+
     //Cycle
     //Peula
      */

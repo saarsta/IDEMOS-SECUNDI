@@ -3,19 +3,21 @@
  * Module dependencies.
  */
 var fbId = '175023072601087',
-    fbSecret = 'test',
-    fbCallbackAddress = 'http://dev.empeeric.com/account/afterSuccessFbConnect2'
+    fbSecret = '5ef7a37e8a09eca5ee54f6ae56aa003f',
+    fbCallbackAddress = 'http://dev.empeeric.com/account/facebooklogin';
 
 
 var express = require('express'),
     routes = require('./routes'),
     mongoose = require('mongoose'),
     MongoStore  = require('connect-mongo'),
-    auth = require("connect-auth");
+    auth = require("connect-auth"),
+    UserResource = require('./model/UserResources.js');
 
 var app = module.exports = express.createServer();
 var account = require('./routes/account');
-
+var Models = require("./models.js");
+var DEFAULT_LOGIN_REDIRECT = '';
 
 
 // Configuration
@@ -112,6 +114,12 @@ app.post('/account/register',account.register);
 app.all(account.LOGIN_PATH, account.login);
 //app.post('account/test', account.login);
 
+
+
+app.get('/account/facebooklogin', account.fb_connect);
+
+
+
 app.get('/account/afterSuccessFbConnect2', function(req,res){
 
 });
@@ -123,7 +131,7 @@ app.get('/needlogin', function(req,res){
 app.get('/account/logout', account.logout);
 
 
-app.post('/account/afterSuccessFbConnect', account.fb_connect);
+//app.post('/account/afterSuccessFbConnect', account.fb_connect);
 
 app.get('/sendmail',function(req, res){
     var nodemailer = require('nodemailer');
@@ -152,7 +160,6 @@ app.get('/sendmail',function(req, res){
         function(error, success){
             console.log('Message ' + success ? 'sent' : 'failed');
         }
-
     );
 
     res.end();
@@ -161,7 +168,7 @@ app.get('/sendmail',function(req, res){
 
 var mongoose_resource = require('mongoose-resource');
 var rest_api = new mongoose_resource.Api('api',app);
-//rest_api.register_resource('users',new UserResource());
+rest_api.register_resource('users',new UserResource());
 
 app.listen(/*app.settings.port*/80);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

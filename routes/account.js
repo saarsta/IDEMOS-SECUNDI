@@ -11,7 +11,7 @@ var DEFAULT_LOGIN_REDIRECT = '';
 
 var LOGIN_PATH = '/account/login';
 
-var DONT_NEED_LOGIN_PAGES = [/stylesheets\/style.css/,/favicon.ico/,/account\/login/,/account\/register/,/facebookconnect.html/, /account\/afterSuccessFbConnect/ ];//regex
+var DONT_NEED_LOGIN_PAGES = [/stylesheets\/style.css/,/favicon.ico/,/account\/login/,/account\/register/,/facebookconnect.html/, /account\/afterSuccessFbConnect/,/account\/facebooklogin/ ];//regex
 
 
 exports.LOGIN_PATH = LOGIN_PATH;
@@ -98,117 +98,6 @@ exports.register = function(req,res)
 
 var https = require("https");
 
-exports.fb_connect =  function(req, res){
-
-        var access_token = req.body.access_token;
-
-        https.get({host:"graph.facebook.com", path: "/me?access_token=" + req.body.access_token }, function (http_res) {
-        // initialize the container for our data
-        var data = "";
-        var session = req.session;
-
-        // this event fires many times, each time collecting another piece of the response
-        http_res.on("data", function (chunk) {
-            // append this chunk to our growing `data` var
-            data += chunk;
-        });
-
-        // this event fires *one* time, after all the `data` events/chunks have been gathered
-        http_res.on("end", function () {
-            // you can use res.send instead of console.log to output via express
-            data = JSON.parse(data);
-
-            var user_facebook_id = data.id;
-            console.log(user_facebook_id);
-
-            isUserInDataBase(user_facebook_id, function(is_user_in_db){
-
-                if(!is_user_in_db){
-                    createNewUser(data, req.sessionID);
-                }else{
-                    updateUesrAccessToken(data);
-                }
-                //bind session with user facebook id
-                session.userFbId = user_facebook_id;
-                session.save;
-                console.log("session.facebookid =  " + session.userFbId);
-            });
-        });
-    });
-
-    function isUserInDataBase(user_facebook_id, callback){
-
-        var user_model = Models.User,
-            flag = false;
-
-        user_model.find({facebook_id: user_facebook_id}, function (err, result){
-            if(err == null){
-                if(result.length == 1){ // its not a new user
-                    //var user_id = result[0]._id;
-                    //console.log("isUserInDataBase returns true")
-                    flag = true;
-                }else{
-                    if(result.length == 0){ // its a new user
-                        //console.log("isUserInDataBase returns false");
-                    }else{ // handle error here
-                        throw "Error: Too many users with same user_facebook_id";
-                    }
-                }
-            }else{
-                throw "Error reading db.User in isNewUser";
-            }
-
-            callback(flag);
-        });
-    }
-
-    function createNewUser(data){
-
-        var user = new Models.User();
-        user.identity_provider = "facebook";
-        user.first_name = data.first_name;
-        user.last_name = data.last_name;
-        user.email = data.email; //there is a problem with email
-        user.gender = data.gender;
-        user.facebook_id = data.id;
-        user.access_token = access_token;
-        user.save(function(err){
-            if(err != null)
-            {
-                res.write("error");
-                console.log(err);
-            }else{
-                console.log("done creating new user - " + user.first_name + " " + user.last_name);
-                res.write("done creating new user - " + user.first_name + " " + user.last_name);
-            }
-            res.end();
-        });
-    }
-
-    function updateUesrAccessToken(data){
-        var user_model = Models.User;
-
-        user_model.findOne({facebook_id: data.id}, function(err, user){
-            if (err) { return next(err); }
-            user.access_token = access_token;
-//            user.session_id = session_id;
-            user.save(function(err) {
-                if (err) { return next(err); }
-            });
-            res.end();
-        });
-    }
-
-
-
-//    why doesnt it work??????????????????????????????????????????????????????????????
-//    var next = req.query.next || DEFAULT_LOGIN_REDIRECT;
-//    res.redirect(next);
-
-
-};
-
-
 /**   Simple Authentication ************/
 var Basic = require("connect-auth").Basic;
 
@@ -224,10 +113,14 @@ var SimpleAuthentication = exports.SimpleAuthentication = function (options) {
         user_model.findOne({username: username}, function (err, result){
             if(err == null){
 
-                if(result.password === password){
-                    successCallback();
-                } else{
-                    failureCallback();
+                if(result == null){     //user is not registered
+//                    failureCallback();  do something else
+                }else{
+                    if(result.password === password){
+                        successCallback();
+                    } else{
+                        failureCallback();
+                    }
                 }
             }else{
                 throw "Error reading db.User";
@@ -254,6 +147,96 @@ var SimpleAuthentication = exports.SimpleAuthentication = function (options) {
     };
     return that;
 };
+
+exports.fb_connect = function(req,res){
+    req.authenticate("facebook", function(error, authenticated) {
+        console.log(error);
+
+        if(authenticated) {
+
+            var user_detailes = req.getAuthDetails().user;
+            var access_token = req.session["access_token"];
+            var user_fb_id = req.getAuthDetails().user.id;
+
+            isUserInDataBase(user_fb_id, function(is_user_in_db){
+
+                if(!is_user_in_db){
+                    createNewUser(user_detailes, access_token);
+                }else{
+                    updateUesrAccessToken(user_detailes, access_token);
+                }
+                //bind session with user facebook id
+//                session.userFbId = user_facebook_id;
+//                session.save;
+//                console.log("session.facebookid =  " + session.userFbId);
+            });
+            res.redirect(req.query['next'] || DEFAULT_LOGIN_REDIRECT);
+        }
+    });
+};
+
+function isUserInDataBase(user_facebook_id, callback){
+
+    var user_model = Models.User,
+        flag = false;
+
+    user_model.find({facebook_id: user_facebook_id}, function (err, result){
+        if(err == null){
+            if(result.length == 1){ // its not a new user
+                //var user_id = result[0]._id;
+                //console.log("isUserInDataBase returns true")
+                flag = true;
+            }else{
+                if(result.length == 0){ // its a new user
+                    //console.log("isUserInDataBase returns false");
+                }else{ // handle error here
+                    throw "Error: Too many users with same user_facebook_id";
+                }
+            }
+        }else{
+            throw "Error reading db.User in isNewUser";
+        }
+
+        callback(flag);
+    });
+}
+
+function createNewUser(data, access_token){
+
+    var user = new Models.User();
+    user.identity_provider = "facebook";
+    user.first_name = data.first_name;
+    user.last_name = data.last_name;
+    user.email = data.email; //there is a problem with email
+    user.gender = data.gender;
+    user.facebook_id = data.id;
+    user.access_token = access_token;
+    user.save(function(err){
+        if(err != null)
+        {
+//            res.write("error");
+            console.log(err);
+        }else{
+            console.log("done creating new user - " + user.first_name + " " + user.last_name);
+//            res.write("done creating new user - " + user.first_name + " " + user.last_name);
+        }
+//        res.end();
+    });
+}
+
+function updateUesrAccessToken(data, access_token){
+    var user_model = Models.User;
+
+    user_model.findOne({facebook_id: data.id}, function(err, user){
+        if (err) { return next(err); }
+        user.access_token = access_token;
+//            user.session_id = session_id;
+        user.save(function(err) {
+            if (err) { return next(err); }
+        });
+//        res.end();
+    });
+}
 
 exports.logout = function(req, res){
     res.clearCookie('connect.sid',{path: '/'});
