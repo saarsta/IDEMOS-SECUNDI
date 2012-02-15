@@ -8,6 +8,7 @@
         "connect-auth": "",
         "mongoose":"",
         "mongoose-resource": "",
+        "express-resource": "",
         "connect-mongo":""
   }
 }

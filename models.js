@@ -10,13 +10,25 @@ var mongoose = require("mongoose"),
     Schema = mongoose.Schema,
     ObjectId = Schema.ObjectID;
 
-mongoose.connect('mongodb://localhost/uru', function(err){
+mongoose.connect('mongodb://localhost/uru');/*, function(err){
     if (err){
         console.log(err);
         throw err;
     }
 
-});
+);*/
+
+var MinLengthValidator = function(min)
+{
+    return [function(value) { return value && value.length >= min; },'Name must contain at least ' + min + ' letters'];
+};
+
+var RegexValidator = function(regex)
+{
+    return [function(value) { return value && regex.exec(value)},'Value is not at the correct pattern'];
+};
+
+var EmailValidator = RegexValidator(/[^@]+@[^@]+/);
 
 var Schemas = {
     User: new Schema({
@@ -24,17 +36,30 @@ var Schemas = {
         identity_provider: {type: String, "enum": ['facebook', 'register']},
         facebook_id: String,
         access_token: String,
-        first_name: String,
-        last_name: String,
-        email: String,
+        first_name: {type:String, required:true,validate:MinLengthValidator(2)},
+        last_name: {type:String, required:true,validate:MinLengthValidator(2)},
+        email: {type:String, required:true,validate:EmailValidator},
         gender: {type: String, "enum": ['male', 'female']},
         age: {type: Number, min: 0},
         discussions: [{type: Schema.objectId, ref: 'Discussion'}],//this is only relevant when cycle is on, so if there is
         //a cycle schema i might change it
-        user_name: String,
+//        user_name: String,
         password: String,
         md5: String
-    })/*,
+    }),
+        InformationItem: new Schema({
+            subject_id: [{type: Schema.objectId, ref: 'Subject'}],
+            title: {type: String, "enum": ['test', 'statistics', 'infographic', 'graph']},
+            text_field: String,
+            image_field: {url:String, caption: String, type: {type: String},size: {type: Number, min: 0},
+                width: {type: Number, min: 0}, height: {type: Number, min: 0}, data: String},
+            tags: [String],
+            users: [{type: Schema.objectId, ref: 'User'}],
+            is_visible:{type:Boolean,'default':true},
+            creation_date:{type:Date,'default':Date.now}
+
+})};
+/*,
 
     Subject: new Schema({
         name: String,
@@ -64,16 +89,7 @@ var Schemas = {
 //       posts: [{type: Schema.objectId, ref: 'Post'}]
     }),
 
-    InformationItem: new Schema({
-        subject_id: {type: Schema.objectId, ref: 'Subject'},
-        title: {type: String, "enum": ['test', 'statistics', 'infographic', 'graph']},
-        text_field: String,
-        image_field: {url:String, caption: String, type: {type: String},size: {type: Number, min: 0},
-            width: {type: Number, min: 0}, height: {type: Number, min: 0}, data: String},
-        tags: [String],
-        users: [{type: Schema.objectId, ref: 'User'}]
 
-    }),
 
     Post: new Schema({
         text: String,
@@ -83,10 +99,11 @@ var Schemas = {
     //Cycle
     //Peula
      */
-};
+//};
 
 
 
 var Models = module.exports = {
-    User: mongoose.model("User", Schemas.User)
+    User: mongoose.model("User", Schemas.User),
+    InformationItem:mongoose.model('InformationItem',Schemas.InformationItem)
 };

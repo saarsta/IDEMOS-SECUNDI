@@ -47,7 +47,7 @@ exports.login = function(req,res)
 {
     if(req.method == 'GET')
     {
-        res.render('login',{title:'Login'});
+        res.render('login',{title:'Login',failed:false});
     }
     else
     {
@@ -60,7 +60,7 @@ exports.login = function(req,res)
             }
             else
             {
-                res.render('login',{title:'Login','failed':true});
+                res.render('login',{title:'Login',failed:true});
             }
         });
     }
@@ -74,7 +74,10 @@ exports.register = function(req,res)
     user.save(function(err,user)
     {
        if(err)
-            res.send('something wrong: '+ err.message,500);
+       {
+//            res.send('something wrong: '+ err.message,500);
+           res.render('login',{title:'Login',failed:true,errors:err.errors});
+       }
         else
        {
            req.body['username'] = user.username;
@@ -114,7 +117,7 @@ var SimpleAuthentication = exports.SimpleAuthentication = function (options) {
             if(err == null){
 
                 if(result == null){     //user is not registered
-//                    failureCallback();  do something else
+                    failureCallback();
                 }else{
                     if(result.password === password){
                         successCallback();
@@ -134,15 +137,17 @@ var SimpleAuthentication = exports.SimpleAuthentication = function (options) {
         var self= this;
         var username = request.body.username;
         var password = request.body.password;
+        var email = request.body.email;
 
         validatePasswordFunction(username, password, function (custom) {
-            var result = custom || { "username": username };
+            var result = custom || { /*"username": username */ "email": email};
             self.success(result, callback);
         }, function(error){
             if (error)
                 callback(error);
             else
-                that._unAuthenticated(self, request, response, callback);
+                self.fail(callback);
+                //that._unAuthenticated(self, request, response, callback);
         });
     };
     return that;
@@ -204,6 +209,7 @@ function isUserInDataBase(user_facebook_id, callback){
 function createNewUser(data, access_token){
 
     var user = new Models.User();
+    user.username = data.username;
     user.identity_provider = "facebook";
     user.first_name = data.first_name;
     user.last_name = data.last_name;

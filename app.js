@@ -12,7 +12,9 @@ var express = require('express'),
     mongoose = require('mongoose'),
     MongoStore  = require('connect-mongo'),
     auth = require("connect-auth"),
-    UserResource = require('./model/UserResources.js');
+    UserResource = require('./model/UserResources.js'),
+    InformationItemResource = require('./model/InformationItemResource.js'),
+    ShoppingCartResource = require('./model/ShoppingCartResource');
 
 var app = module.exports = express.createServer();
 var account = require('./routes/account');
@@ -169,6 +171,8 @@ app.get('/sendmail',function(req, res){
 var mongoose_resource = require('mongoose-resource');
 var rest_api = new mongoose_resource.Api('api',app);
 rest_api.register_resource('users',new UserResource());
+rest_api.register_resource('information_items',new InformationItemResource());
+rest_api.register_resource('shopping_cart',new ShoppingCartResource());
 
 app.listen(/*app.settings.port*/80);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

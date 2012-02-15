@@ -50,6 +50,12 @@
 
     <div class="form _register">
         <form id="form_id" method='post' action='/account/register/'>
+            <% if(typeof(errors) != 'undefined') {
+                for(var e in errors)
+                {
+                    %> <%= e %> <%
+                }
+            } %>
             <label for="register_username">username:</label>
             <input type="text" name="username" id="register_username">
 
@@ -68,7 +74,7 @@
         </form>
 
     </div>
-
+    <% if(failed) { %> Login failed... <% } %>
     <div class="form _connect_gmail">
         <form method='post' action='/account/login/'>
             <label for="gmail_username">username (email address):</label>
