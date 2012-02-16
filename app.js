@@ -14,7 +14,8 @@ var express = require('express'),
     auth = require("connect-auth"),
     UserResource = require('./model/UserResources.js'),
     InformationItemResource = require('./model/InformationItemResource.js'),
-    ShoppingCartResource = require('./model/ShoppingCartResource');
+    ShoppingCartResource = require('./model/ShoppingCartResource'),
+    SubjectResource = require('./model/SubjectResource');
 
 var app = module.exports = express.createServer();
 var account = require('./routes/account');
@@ -83,7 +84,7 @@ app.configure('production', function(){
 app.get('/', routes.index);
 app.get('/test/:id?', routes.test);
 app.get('/insertDataBase',function(req, res){
-    var user = new Model.User();
+   /* var user = new Model.User();
     user.first_name = "saar";
     user.gender = "male";
     user.save(function(err){
@@ -95,8 +96,32 @@ app.get('/insertDataBase',function(req, res){
             res.write("done");
         }
         res.end();
-    });
+    });*/
+
+    var subject_names = ['Education', 'Economy', 'Sport', 'News', 'Culture', 'Health', 'Food'];
+    var tag_names = ['saar', 'guy', 'gay', 'vill', 'maricon', 'wow', 'yeah'];
+
+    for(var i = 0; i < 7; i++ ){
+        var subject = new Models.Subject();
+        subject.name = subject_names[i];
+
+        if ((i % 3) == 1){
+            subject.is_hot = true;
+        }
+        subject.tags = [tag_names[i], tag_names[(i + 2) % 6], tag_names[(i + 5) % 7]];
+        subject.save(function(err){
+            if(err != null)
+            {
+                res.write("error");
+                console.log(err);
+            }else{
+                res.write("done");
+            }
+            res.end();
+        });
+    }
 });
+
 app.post('/account/register',account.register);
 
 //app.all('/account/login', function(req, res){
@@ -173,6 +198,7 @@ var rest_api = new mongoose_resource.Api('api',app);
 rest_api.register_resource('users',new UserResource());
 rest_api.register_resource('information_items',new InformationItemResource());
 rest_api.register_resource('shopping_cart',new ShoppingCartResource());
+rest_api.register_resource('subjects', new SubjectResource());
 
 app.listen(/*app.settings.port*/80);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

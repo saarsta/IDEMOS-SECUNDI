@@ -29,6 +29,7 @@ var RegexValidator = function(regex)
 };
 
 var EmailValidator = RegexValidator(/[^@]+@[^@]+/);
+var TestEmailValidator = RegexValidator(/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/);
 
 var Schemas = {
     User: new Schema({
@@ -38,7 +39,7 @@ var Schemas = {
         access_token: String,
         first_name: {type:String, required:true,validate:MinLengthValidator(2)},
         last_name: {type:String, required:true,validate:MinLengthValidator(2)},
-        email: {type:String, required:true,validate:EmailValidator},
+        email: {type:String, required:true,validate:TestEmailValidator},
         gender: {type: String, "enum": ['male', 'female']},
         age: {type: Number, min: 0},
         discussions: [{type: Schema.objectId, ref: 'Discussion'}],//this is only relevant when cycle is on, so if there is
@@ -47,26 +48,30 @@ var Schemas = {
         password: String,
         md5: String
     }),
-        InformationItem: new Schema({
-            subject_id: [{type: Schema.objectId, ref: 'Subject'}],
-            title: {type: String, "enum": ['test', 'statistics', 'infographic', 'graph']},
-            text_field: String,
-            image_field: {url:String, caption: String, type: {type: String},size: {type: Number, min: 0},
-                width: {type: Number, min: 0}, height: {type: Number, min: 0}, data: String},
-            tags: [String],
-            users: [{type: Schema.objectId, ref: 'User'}],
-            is_visible:{type:Boolean,'default':true},
-            creation_date:{type:Date,'default':Date.now}
 
-})};
-/*,
+    InformationItem: new Schema({
+        subject_id: [{type: Schema.objectId, ref: 'Subject', index: true}],
+        title: {type: String, "enum": ['test', 'statistics', 'infographic', 'graph']},
+        text_field: String,
+        image_field: {url:String, caption: String, type: {type: String},size: {type: Number, min: 0},
+            width: {type: Number, min: 0}, height: {type: Number, min: 0}, data: String},
+        tags: [{type: String, index: true}],
+        users: [{type: Schema.objectId, ref: 'User'}],
+        is_visible:{type:Boolean,'default':true},
+        creation_date:{type:Date,'default':Date.now}
+    }),
 
     Subject: new Schema({
         name: String,
-        image:{url:String, caption: String, type: {type: String},size: {type: Number, min: 0},
+        image_field:{url:String, caption: String, type: {type: String},size: {type: Number, min: 0},
             width: {type: Number, min: 0}, height: {type: Number, min: 0}, data: String},
-        tags :[String]
-    }),
+        tags :[String],
+        is_hot:{type:Boolean,'default':false}
+    })
+};
+/*,
+
+
 
 //    Tags: new Schema({
 //        name: String,
@@ -105,5 +110,6 @@ var Schemas = {
 
 var Models = module.exports = {
     User: mongoose.model("User", Schemas.User),
-    InformationItem:mongoose.model('InformationItem',Schemas.InformationItem)
+    InformationItem:mongoose.model('InformationItem',Schemas.InformationItem),
+    Subject:mongoose.model('Subject', Schemas.Subject)
 };

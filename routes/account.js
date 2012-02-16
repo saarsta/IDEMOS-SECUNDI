@@ -11,7 +11,9 @@ var DEFAULT_LOGIN_REDIRECT = '';
 
 var LOGIN_PATH = '/account/login';
 
-var DONT_NEED_LOGIN_PAGES = [/stylesheets\/style.css/,/favicon.ico/,/account\/login/,/account\/register/,/facebookconnect.html/, /account\/afterSuccessFbConnect/,/account\/facebooklogin/ ];//regex
+var DONT_NEED_LOGIN_PAGES = [/stylesheets\/style.css/,/favicon.ico/,/account\/login/,/account\/register/,
+    /facebookconnect.html/, /account\/afterSuccessFbConnect/,/account\/facebooklogin/,
+    /api\/subjects/];//regex
 
 
 exports.LOGIN_PATH = LOGIN_PATH;
@@ -47,7 +49,7 @@ exports.login = function(req,res)
 {
     if(req.method == 'GET')
     {
-        res.render('login',{title:'Login',failed:false});
+        res.render('login',{title:'Login',failed:false, exist_username:false,next:req.query.next});
     }
     else
     {
@@ -60,7 +62,7 @@ exports.login = function(req,res)
             }
             else
             {
-                res.render('login',{title:'Login',failed:true});
+                res.render('login',{title:'Login',failed:true, exist_username:false,next:req.query.next});
             }
         });
     }
@@ -71,32 +73,49 @@ exports.register = function(req,res)
     var data = req.body;
     var user = new Models.User(data);
     user.identity_provider = "register";
-    user.save(function(err,user)
-    {
-       if(err)
-       {
-//            res.send('something wrong: '+ err.message,500);
-           res.render('login',{title:'Login',failed:true,errors:err.errors});
-       }
-        else
-       {
-           req.body['username'] = user.username;
-           req.body['password'] = data['password'];
-           req.authenticate('simple',function(err,is_authenticated)
-           {
-               if(err) res.send('something wrong: '+ err.message,500);
-               else
-               {
-                   if(!is_authenticated) res.send('something wrong',500);
-                   else
-                   {
-                       var next = req.query.next || DEFAULT_LOGIN_REDIRECT;
-                       res.redirect(next);
-                   }
-               }
-           });
-       }
+    user_model = Models.User;
+
+    user_model.find({username: user.username, identity_provider:'register'}, function (err, result){
+        if(err == null){
+
+            var test = result.length;
+            if(result.length < 1){     //user is not registered
+                user.save(function(err,user)
+                {
+                    if(err)
+                    {
+//                      res.send('something wrong: '+ err.message,500);
+
+                            res.render('login',{title:'Login',failed: true, exist_username:false, errors:err.errors,next:req.query.next});
+                    }
+                    else
+                    {
+                        console.log('new user has been created by registration');
+                        req.body['username'] = user.username;
+                        req.body['password'] = data['password'];
+                        req.authenticate('simple',function(err,is_authenticated)
+                        {
+                            if(err) res.send('something wrong: '+ err.message,500);
+                            else
+                            {
+                                if(!is_authenticated) res.send('something wrong',500);
+                                else
+                                {
+                                    var next = req.query.next || DEFAULT_LOGIN_REDIRECT;
+                                    res.redirect(next);
+                                }
+                            }
+                        });
+                    }
+                });
+            }else{
+                res.render('login',{title:'Login',failed: false, exist_username:true,next:req.query.next});
+            }
+        }else{
+            throw "Error reading db.User";
+        }
     });
+
 };
 
 var https = require("https");
@@ -113,7 +132,7 @@ var SimpleAuthentication = exports.SimpleAuthentication = function (options) {
 
         var user_model = Models.User;
 
-        user_model.findOne({username: username}, function (err, result){
+        user_model.findOne({username: username, identity_provider:'register'}, function (err, result){
             if(err == null){
 
                 if(result == null){     //user is not registered
@@ -139,6 +158,7 @@ var SimpleAuthentication = exports.SimpleAuthentication = function (options) {
         var password = request.body.password;
         var email = request.body.email;
 
+
         validatePasswordFunction(username, password, function (custom) {
             var result = custom || { /*"username": username */ "email": email};
             self.success(result, callback);
@@ -154,30 +174,40 @@ var SimpleAuthentication = exports.SimpleAuthentication = function (options) {
 };
 
 exports.fb_connect = function(req,res){
-    req.authenticate("facebook", function(error, authenticated) {
-        console.log(error);
+    function go()
+    {
+        req.authenticate("facebook", function(error, authenticated) {
+            var next = req.session['fb_next'];
+            console.log(error);
+            if(authenticated) {
 
-        if(authenticated) {
+                var user_detailes = req.getAuthDetails().user;
+                var access_token = req.session["access_token"];
+                var user_fb_id = req.getAuthDetails().user.id;
 
-            var user_detailes = req.getAuthDetails().user;
-            var access_token = req.session["access_token"];
-            var user_fb_id = req.getAuthDetails().user.id;
+                isUserInDataBase(user_fb_id, function(is_user_in_db){
 
-            isUserInDataBase(user_fb_id, function(is_user_in_db){
-
-                if(!is_user_in_db){
-                    createNewUser(user_detailes, access_token);
-                }else{
-                    updateUesrAccessToken(user_detailes, access_token);
-                }
-                //bind session with user facebook id
-//                session.userFbId = user_facebook_id;
-//                session.save;
-//                console.log("session.facebookid =  " + session.userFbId);
-            });
-            res.redirect(req.query['next'] || DEFAULT_LOGIN_REDIRECT);
-        }
-    });
+                    if(!is_user_in_db){
+                        createNewUser(user_detailes, access_token);
+                    }else{
+                        updateUesrAccessToken(user_detailes, access_token);
+                    }
+                    //bind session with user facebook id
+                    //                session.userFbId = user_facebook_id;
+                    //                session.save;
+                    //                console.log("session.facebookid =  " + session.userFbId);
+                });
+                res.redirect(next || DEFAULT_LOGIN_REDIRECT);
+            }
+        });
+    }
+    if(req.query.next)
+    {
+        req.session['fb_next'] = req.session['fb_next'];
+        req.session.save(go);
+    }
+    else
+        go();
 };
 
 function isUserInDataBase(user_facebook_id, callback){

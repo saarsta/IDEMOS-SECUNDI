@@ -11,7 +11,7 @@
 
                     $(".btn_facebook_connect").on("click", function(){
 //                        document.location.href='http://dev.empeeric.com/facebookconnect.html';
-                        document.location.href= 'http://dev.empeeric.com/account/facebooklogin';
+                        document.location.href= 'http://dev.empeeric.com/account/facebooklogin?next=<%= next %>';
 
                     })
                 }
@@ -56,6 +56,8 @@
                     %> <%= e %> <%
                 }
             } %>
+
+            <% if(exist_username) { %> Register failed... <% } %>
             <label for="register_username">username:</label>
             <input type="text" name="username" id="register_username">
 
