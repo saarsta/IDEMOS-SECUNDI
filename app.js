@@ -73,7 +73,7 @@ var confdb = {
     db: split_db_url(app.settings.DB_URL),
     secret: '076ed61d63ea10a12rea879l1ve433s9'
 };
-
+console.log(confdb);
 
 var fbId = app.settings.facebook_app_id,// '175023072601087',
     fbSecret = app.settings.facebook_app_id,// '5ef7a37e8a09eca5ee54f6ae56aa003f',
