@@ -31,7 +31,7 @@ var RegexValidator = function(regex)
 var EmailValidator = RegexValidator(/[^@]+@[^@]+/);
 var TestEmailValidator = RegexValidator(/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/);
 
-var Schemas = {
+var Schemas = exports.Schemas = {
     User: new Schema({
         username:String,
         identity_provider: {type: String, "enum": ['facebook', 'register']},
