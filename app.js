@@ -214,7 +214,7 @@ var mongoose_admin = require('mongoose-admin');
 mongoose_admin.prototype.registerModel = function(modelName, model, options) {
     this.models[model.collection.name] = {model: model,
         options: options,
-        fields: fields};
+        fields: model.schema.tree};
     console.log('\x1b[36mMongooseAdmin registered model: \x1b[0m %s', modelName);
 };
 
