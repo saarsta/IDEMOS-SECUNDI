@@ -217,4 +217,8 @@ var admin = mongoose_admin.createAdmin(app.settings.DB_URL, {app : app, root:'ad
 admin.ensureUserExists('admin', 'admin');
 //admin.registerModel("User",Models.User,{list:['username','first_name','last_name']});
 //admin.registerModel("InformationItem",Models.InformationItem,{list:['title','text_field','users']});
-admin.registerModel("Subject",Models.Subject,{list:['name','image_field']});
+var SubjectSchema = new mongoose.Schema({
+    name:String
+});
+var Subject = mongoose.model('Subject',SubjectSchema);
+admin.registerModel("Subject",Subject,{list:['name']});
