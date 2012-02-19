@@ -215,6 +215,6 @@ var mongoose_admin = require('mongoose-admin');
  */
 var admin = mongoose_admin.createAdmin(app.settings.DB_URL, {app : app, root:'admin' });
 admin.ensureUserExists('admin', 'admin');
-admin.registerModel("User",Models.User,{list:['username','first_name','last_name']});
+//admin.registerModel("User",Models.User,{list:['username','first_name','last_name']});
 //admin.registerModel("InformationItem",Models.InformationItem,{list:['title','text_field','users']});
-//admin.registerModel("Subject",Models.Subject,{list:['name','image_field']});
+admin.registerModel("Subject",Models.Subject,{list:['name','image_field']});
