@@ -9,6 +9,7 @@
         "mongoose":"",
         "mongoose-resource": "",
         "express-resource": "",
-        "connect-mongo":""
+        "connect-mongo":"",
+		"mongoose-admin":">= 0.0.1"
   }
 }

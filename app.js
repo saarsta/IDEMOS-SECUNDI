@@ -73,7 +73,6 @@ var confdb = {
     db: split_db_url(app.settings.DB_URL),
     secret: '076ed61d63ea10a12rea879l1ve433s9'
 };
-console.log(confdb);
 
 var fbId = app.settings.facebook_app_id,// '175023072601087',
     fbSecret = app.settings.facebook_secret,// '5ef7a37e8a09eca5ee54f6ae56aa003f',
@@ -207,3 +206,15 @@ rest_api.register_resource('subjects', new SubjectResource());
 
 app.listen(app.settings.port);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+
+
+
+var mongoose_admin = require('mongoose-admin');
+/**
+ * Create the admin site on port 8001
+ */
+var admin = mongoose_admin.createAdmin(app.settings.DB_URL, {app : app, root:'admin' });
+admin.ensureUserExists('admin', 'admin');
+admin.registerModels("User",Models.User,{list:['username','first_name','last_name']});
+admin.registerModels("InformationItem",Models.InformationItem,{list:['title','text_field','users']});
+admin.registerModels("Subject",Models.Subject,{list:['name','image_field']});
