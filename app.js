@@ -19,6 +19,8 @@ var express = require('express'),
 
 var app = module.exports = express.createServer();
 var account = require('./routes/account');
+var infoAndMeasures = require('./routes/infoAndMeasures');
+var selectedSubjectPage = require('./routes/selectedSubjectPage');
 var Models = require("./models.js");
 var DEFAULT_LOGIN_REDIRECT = '';
 
@@ -123,39 +125,13 @@ app.get('/insertDataBase',function(req, res){
 });
 
 app.post('/account/register',account.register);
-
-//app.all('/account/login', function(req, res){
-//    console.log(req.method);
-//
-//    switch(req.method){
-//        case "GET":
-//            res.render('login',{title:'Login'});
-//            break;
-//        case "POST":
-//            res.send("POST");
-//        default:
-//            res.send('');
-//    }
-//});
-
 app.all(account.LOGIN_PATH, account.login);
-//app.post('account/test', account.login);
-
-
-
 app.get('/account/facebooklogin', account.fb_connect);
-
-
-
-app.get('/account/afterSuccessFbConnect2', function(req,res){
-
-});
-
-
-app.get('/needlogin', function(req,res){
-
-});
+app.get('/account/afterSuccessFbConnect2', function(req,res){});
+app.get('/needlogin', function(req,res){});
 app.get('/account/logout', account.logout);
+app.get('/account/meida',infoAndMeasures.meidaInit);
+app.get('/selectedSubjectPage', selectedSubjectPage.subjectPAgeInit);
 
 
 //app.post('/account/afterSuccessFbConnect', account.fb_connect);

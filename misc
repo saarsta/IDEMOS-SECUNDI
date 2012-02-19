@@ -113,3 +113,80 @@ C:\www\project>
 C:\www\uru>npm install connect-mongo
 
 -------------------------------------------------------------------------------------------------------------
+
+data base stuff:
+
+C:\Users\saar>mongo
+MongoDB shell version: 2.0.1
+connecting to: test
+> show dbs
+local   (empty)
+uru     0.078125GB
+> use uru
+switched to db uru
+> show collection
+Sun Feb 19 12:05:19 uncaught exception: don't know how to show [collection]
+> show collections
+Session
+informationitems
+subjects
+system.indexes
+users
+> db.informationitems.help()
+DBCollection help
+        db.informationitems.find().help() - show DBCursor help
+        db.informationitems.count()
+        db.informationitems.dataSize()
+        db.informationitems.distinct( key ) - eg. db.informationitems.distinct(
+'x' )
+        db.informationitems.drop() drop the collection
+        db.informationitems.dropIndex(name)
+        db.informationitems.dropIndexes()
+        db.informationitems.ensureIndex(keypattern[,options]) - options is an ob
+ject with these possible fields: name, unique, dropDups
+        db.informationitems.reIndex()
+        db.informationitems.find([query],[fields]) - query is an optional query
+filter. fields is optional set of fields to return.
+                                                      e.g. db.informationitems.f
+ind( {x:77} , {name:1, x:1} )
+        db.informationitems.find(...).count()
+        db.informationitems.find(...).limit(n)
+        db.informationitems.find(...).skip(n)
+        db.informationitems.find(...).sort(...)
+        db.informationitems.findOne([query])
+        db.informationitems.findAndModify( { update : ... , remove : bool [, que
+ry: {}, sort: {}, 'new': false] } )
+        db.informationitems.getDB() get DB object associated with collection
+        db.informationitems.getIndexes()
+        db.informationitems.group( { key : ..., initial: ..., reduce : ...[, con
+d: ...] } )
+        db.informationitems.mapReduce( mapFunction , reduceFunction , <optional
+params> )
+        db.informationitems.remove(query)
+        db.informationitems.renameCollection( newName , <dropTarget> ) renames t
+he collection.
+        db.informationitems.runCommand( name , <options> ) runs a db command wit
+h the given name where the first param is the collection name
+        db.informationitems.save(obj)
+        db.informationitems.stats()
+        db.informationitems.storageSize() - includes free space allocated to thi
+s collection
+        db.informationitems.totalIndexSize() - size in bytes of all the indexes
+        db.informationitems.totalSize() - storage allocated for all data and ind
+exes
+        db.informationitems.update(query, object[, upsert_bool, multi_bool])
+        db.informationitems.validate( <full> ) - SLOW
+        db.informationitems.getShardVersion() - only for use with sharding
+> db.informationitems.getIndexes()
+[
+        {
+                "v" : 1,
+                "key" : {
+                        "_id" : 1
+                },
+                "ns" : "uru.informationitems",
+                "name" : "_id_"
+        }
+]
+>
+-----------------------------------------------------------------------------------------------------

@@ -50,7 +50,7 @@ var Schemas = {
     }),
 
     InformationItem: new Schema({
-        subject_id: [{type: Schema.objectId, ref: 'Subject', index: true}],
+        subject_id: [{type: Schema.objectId, ref: 'Subject', index: true, required:true}],
         title: {type: String, "enum": ['test', 'statistics', 'infographic', 'graph']},
         text_field: String,
         image_field: {url:String, caption: String, type: {type: String},size: {type: Number, min: 0},
