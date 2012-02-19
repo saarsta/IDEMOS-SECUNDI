@@ -10,7 +10,7 @@ var mongoose = require("mongoose"),
     Schema = mongoose.Schema,
     ObjectId = Schema.ObjectID;
 
-mongoose.connect('mongodb://localhost/uru');/*, function(err){
+/*, function(err){
     if (err){
         console.log(err);
         throw err;
