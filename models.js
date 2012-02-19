@@ -31,7 +31,7 @@ var RegexValidator = function(regex)
 var EmailValidator = RegexValidator(/[^@]+@[^@]+/);
 var TestEmailValidator = RegexValidator(/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/);
 
-var Schemas = exports.Schemas = {
+var Schemas  = {
     User: new Schema({
         username:String,
         identity_provider: {type: String, "enum": ['facebook', 'register']},
@@ -111,5 +111,6 @@ var Schemas = exports.Schemas = {
 var Models = module.exports = {
     User: mongoose.model("User", Schemas.User),
     InformationItem:mongoose.model('InformationItem',Schemas.InformationItem),
-    Subject:mongoose.model('Subject', Schemas.Subject)
+    Subject:mongoose.model('Subject', Schemas.Subject),
+    Schemas:Schemas
 };
