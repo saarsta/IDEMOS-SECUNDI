@@ -210,6 +210,14 @@ console.log("Express server listening on port %d in %s mode", app.address().port
 
 
 var mongoose_admin = require('mongoose-admin');
+
+mongoose_admin.prototype.registerModel = function(modelName, model, options) {
+    this.models[model.collection.name] = {model: model,
+        options: options,
+        fields: fields};
+    console.log('\x1b[36mMongooseAdmin registered model: \x1b[0m %s', modelName);
+};
+
 /**
  * Create the admin site on port 8001
  */
@@ -221,4 +229,4 @@ admin.ensureUserExists('admin', 'admin');
 //    name:String
 //});
 ////var Subject = mongoose.model('Subject',SubjectSchema);
-admin.registerModel("Subject",Models.Schemas.Subject,{list:['name','image_field']});
+admin.registerModel("Subject",Models.Subject,{list:['name','image_field']});
