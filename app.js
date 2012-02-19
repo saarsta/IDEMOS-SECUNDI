@@ -34,7 +34,7 @@ app.configure('development', function(){
 });
 
 app.configure('production', function(){
-    app.set("port", 80);
+    app.set("port", process.env.PORT);
     app.set('facebook_app_id', '375874372423704');
     app.set('facebook_secret', 'b079bf2df2f7055e3ac3db17d4d2becb');
     app.set('root_path', 'http://uru.herokuapp.com');
