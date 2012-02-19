@@ -76,7 +76,7 @@ var confdb = {
 console.log(confdb);
 
 var fbId = app.settings.facebook_app_id,// '175023072601087',
-    fbSecret = app.settings.facebook_app_id,// '5ef7a37e8a09eca5ee54f6ae56aa003f',
+    fbSecret = app.settings.facebook_secret,// '5ef7a37e8a09eca5ee54f6ae56aa003f',
     fbCallbackAddress = app.settings.root_path + '/account/facebooklogin';
 
 app.configure(function(){
