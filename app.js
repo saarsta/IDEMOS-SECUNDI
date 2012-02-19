@@ -131,7 +131,7 @@ app.get('/account/afterSuccessFbConnect2', function(req,res){});
 app.get('/needlogin', function(req,res){});
 app.get('/account/logout', account.logout);
 app.get('/account/meida',infoAndMeasures.meidaInit);
-app.get('/selectedSubjectPage', selectedSubjectPage.subjectPAgeInit);
+app.get('/selectedSubjectPage', selectedSubjectPage.subjectPageInit);
 
 
 //app.post('/account/afterSuccessFbConnect', account.fb_connect);

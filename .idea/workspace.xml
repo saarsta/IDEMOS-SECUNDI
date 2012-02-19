@@ -49,20 +49,22 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="app.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="app.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="36" column="6" selection-start="1219" selection-end="1219" vertical-scroll-proportion="0.9677419">
+            <state line="133" column="58" selection-start="4084" selection-end="4084" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="selectedSubjectPage.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="selectedSubjectPage.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/routes/selectedSubjectPage.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-              <folding />
+            <state line="9" column="78" selection-start="279" selection-end="279" vertical-scroll-proportion="0.09677419">
+              <folding>
+                <element signature="e#0#153#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -88,7 +90,7 @@
       <file leaf-file-name="infoAndMeasures.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/routes/infoAndMeasures.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="0" selection-start="264" selection-end="264" vertical-scroll-proportion="0.0">
+            <state line="12" column="0" selection-start="156" selection-end="263" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -127,7 +129,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/model/UserResources.js" />
         <option value="$PROJECT_DIR$/model/InformationItemResource.js" />
         <option value="$PROJECT_DIR$/model/ShoppingCartResource.js" />
         <option value="$PROJECT_DIR$/model/Subject.js" />
@@ -143,6 +144,7 @@
         <option value="$PROJECT_DIR$/views/selectedSubjectPage.ejs" />
         <option value="$PROJECT_DIR$/views/infoAndMeasures.ejs" />
         <option value="$PROJECT_DIR$/app.js" />
+        <option value="$PROJECT_DIR$/routes/selectedSubjectPage.js" />
       </list>
     </option>
   </component>
@@ -317,12 +319,12 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14918292" sideWeight="0.6837416" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14918292" sideWeight="0.6837416" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.44097996" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.14918292" sideWeight="0.68262804" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -474,11 +476,6 @@
         <state line="330" column="0" selection-start="7908" selection-end="7908" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/layout.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/misc">
       <provider selected="true" editor-type-id="text-editor">
         <state line="191" column="101" selection-start="6735" selection-end="6735" vertical-scroll-proportion="0.8064516">
@@ -507,13 +504,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/selectedSubjectPage.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/routes/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
@@ -528,12 +518,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/routes/infoAndMeasures.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="0" selection-start="264" selection-end="264" vertical-scroll-proportion="0.0" />
+        <state line="12" column="0" selection-start="156" selection-end="263" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/selectedSubjectPage.ejs">
+    <entry file="file://$PROJECT_DIR$/app.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="0" selection-start="166" selection-end="166" vertical-scroll-proportion="-8.821428">
+        <state line="133" column="58" selection-start="4084" selection-end="4084" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -545,10 +537,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app.js">
+    <entry file="file://$PROJECT_DIR$/views/selectedSubjectPage.ejs">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="36" column="6" selection-start="1219" selection-end="1219" vertical-scroll-proportion="0.9677419">
+        <state line="13" column="0" selection-start="166" selection-end="166" vertical-scroll-proportion="-8.821428">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/layout.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/selectedSubjectPage.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="78" selection-start="279" selection-end="279" vertical-scroll-proportion="0.09677419">
+          <folding>
+            <element signature="e#0#153#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
