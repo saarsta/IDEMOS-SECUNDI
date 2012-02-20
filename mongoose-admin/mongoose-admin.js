@@ -99,10 +99,10 @@ MongooseAdmin.prototype.close = function() {
     this.app.close();
 };
 
-MongooseAdmin.prototype.registerMongooseModel = function(modelName, model, options) {
+MongooseAdmin.prototype.registerMongooseModel = function(modelName, model,fields, options) {
     this.models[model.collection.name] = {model: model,
         options: options,
-        fields: model.schema.tree};
+        fields: fields};
     console.log('\x1b[36mMongooseAdmin registered model: \x1b[0m %s', modelName);
 };
 

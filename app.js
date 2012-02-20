@@ -219,9 +219,9 @@ var admin = mongoose_admin.createAdmin(app,{root:'admin'});
 
 admin.ensureUserExists('admin','admin');
 
-admin.registerMongooseModel("User",Models.User,{list:['username','first_name','last_name']});
-admin.registerMongooseModel("InformationItem",Models.InformationItem,{list:['title','text_field','users']});
-admin.registerMongooseModel("Subject",Models.Subject,{list:['name','image_field']});
+admin.registerMongooseModel("User",Models.User,Models.Schemas.User,{list:['username','first_name','last_name']});
+admin.registerMongooseModel("InformationItem",Models.InformationItem, Models.Schemas.InformationItem,{list:['title','text_field','users']});
+admin.registerMongooseModel("Subject",Models.Subject,Models.Schemas.Subject,{list:['name','image_field']});
 
 }
 
