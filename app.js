@@ -214,6 +214,8 @@ try
 
 var mongoose_admin = require('mongoose-admin');
 
+console.log(mongoose_admin.pushExpressConfig());
+
 mongoose_admin.prototype.registerModel = function(modelName, model, options) {
     this.models[model.collection.name] = {model: model,
         options: options,
