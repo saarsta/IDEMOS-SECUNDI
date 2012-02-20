@@ -238,5 +238,6 @@ admin.registerModel("Subject",Models.Subject,{list:['name','image_field']});
 
 catch(e)
 {
-    console.log('admin is not operational, wow');
+    console.log(e);
+    console.log('admin is not operational, wow. exception: ' + e.message);
 }
