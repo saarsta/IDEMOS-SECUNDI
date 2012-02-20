@@ -101,25 +101,33 @@ app.configure(function(){
     logoutHandler: require("connect-auth/lib/events").redirectOnLogout("/acount/login")}));
 
     app.use(account.auth_middleware);
-  /*  app.use(function(req, res, next){
+    app.use(function(req, res, next){
+        var models = Models;
 
-        if (req.session.auth.user.)
-        if(req.session.auth.user){
+        if(!req.session.user_id){
             var email = req.session.auth.user.email;
             models.User.findOne({email:email},function(err,object)
             {
-                if(err) callback(err);
+                if(err)
+                {
+                    console.log('couldn put user id' + err.message)
+                    next();
+                }
                 else
                 {
-                    var id = object.id;
-                    query.where('users', id);
-                    callback(null, query);
+                    req.session.user_id = object.id;
+                    req.session.save(function(err)
+                    {
+                        if(err)
+                            console.log('couldnt put user id' + err.message);
+                        next();
+                    });
                 }
             });
         }else{
-            callback("Error: User Is Not Autthenticated", null);
+            next();
         }
-    })*/
+    })
 
     app.use(express.methodOverride());
     app.use(app.router);

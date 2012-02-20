@@ -5,6 +5,33 @@
  * Time: 12:34 PM
  * To change this template use File | Settings | File Templates.
  */
+var sys = require('sys'),
+    mongoose = require('mongoose');
+var bcrypt;
+try
+{
+    bcrypt = require('bcrypt');
+}
+catch(e)
+{
+    bcrypt = {
+        gen_salt_sync : function(num)
+        {
+            return '';
+        },
+
+        encrypt_sync : function(password,salt)
+        {
+            return password;
+        },
+
+        compare_sync : function(password,hashedPassword)
+        {
+            return password == hashedPassword;
+        }
+    };
+}
+
 
 var DEFAULT_LOGIN_REDIRECT = '';
 
@@ -72,6 +99,7 @@ exports.register = function(req,res)
 {
     var data = req.body;
     var user = new Models.User(data);
+    user.password = bcrypt.encrypt_sync(data.password,bcrypt.gen_salt_sync(10));
     user.identity_provider = "register";
     user_model = Models.User;
 
@@ -138,7 +166,7 @@ var SimpleAuthentication = exports.SimpleAuthentication = function (options) {
                 if(result == null){     //user is not registered
                     failureCallback();
                 }else{
-                    if(result.password === password){
+                    if(bcrypt.compare_sync(result.password,password)){
                         successCallback(result.id);
                     } else{
                         failureCallback();
@@ -157,7 +185,7 @@ var SimpleAuthentication = exports.SimpleAuthentication = function (options) {
         var username = request.body.username;
         var password = request.body.password;
         var email = request.body.email;
-        var _id = request.body._id;
+//        var _id = request.body._id;
 
         validatePasswordFunction(username, password, function (custom) {
             var result = /*custom || {"username": username  "email": email };*/{'_id': custom};
@@ -197,7 +225,6 @@ exports.fb_connect = function(req,res){
                                 }else{
                                     console.log('user _id to session is ok')
                                 }
-
                             });
                         });
                     }else{
