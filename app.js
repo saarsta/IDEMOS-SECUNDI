@@ -209,6 +209,9 @@ console.log("Express server listening on port %d in %s mode", app.address().port
 
 
 
+try
+{
+
 var mongoose_admin = require('mongoose-admin');
 
 mongoose_admin.prototype.registerModel = function(modelName, model, options) {
@@ -230,3 +233,10 @@ admin.ensureUserExists('admin', 'admin');
 //});
 ////var Subject = mongoose.model('Subject',SubjectSchema);
 admin.registerModel("Subject",Models.Subject,{list:['name','image_field']});
+
+}
+
+catch(e)
+{
+    console.log('admin is not operational, wow');
+}
