@@ -37,7 +37,7 @@ Authoriztion.prototype.limit_object_list = function(req, query, callback){
 var ShoppingCartResource = module.exports = function()
 {
     ShoppingCartResource.super_.call(this,models.InformationItem);
-    this.allowed_methods = ['get','post'];
+    this.allowed_methods = ['get','post', 'put', 'delete'];
     this.authentication = new common.SessionAuthentication();
     this.authorization = new Authoriztion();
     this.default_query = function(query)
@@ -46,5 +46,16 @@ var ShoppingCartResource = module.exports = function()
     };
     //this.validation = new resources.Validation();
 };
+
+
 util.inherits(ShoppingCartResource,resources.MongooseResource);
 
+ShoppingCartResource.prototype.update_obj = function(req,object,callback){
+    object.users.push(req.session.auth.user._id);
+    object.save(callback);
+}
+
+ShoppingCartResource.prototype.delete_obj = function(req,object,callback){
+    object.users.pop(req.session.auth.user._id);
+    object.save(callback);
+}

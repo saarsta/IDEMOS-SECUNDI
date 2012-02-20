@@ -6,6 +6,10 @@
  * To change this template use File | Settings | File Templates.
  */
 
+
 exports.subjectPageInit = function(req, res){
-    res.render('infoAndMeasures',{title:'infoAndMeasures.ejs', subject_name: ''});
+
+   res.render('selectedSubjectPage.ejs',{title:'selectedSubjectPage.ejs', subject_id: req.query.subject_id,
+        subject_name: req.query.subject_name});
+
 }

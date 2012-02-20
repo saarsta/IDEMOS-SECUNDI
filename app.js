@@ -103,7 +103,7 @@ app.get('/insertDataBase',function(req, res){
     var subject_names = ['Education', 'Economy', 'Sport', 'News', 'Culture', 'Health', 'Food'];
     var tag_names = ['saar', 'guy', 'gay', 'vill', 'maricon', 'wow', 'yeah'];
 
-    for(var i = 0; i < 7; i++ ){
+   /* for(var i = 0; i < 7; i++ ){
         var subject = new Models.Subject();
         subject.name = subject_names[i];
 
@@ -112,6 +112,29 @@ app.get('/insertDataBase',function(req, res){
         }
         subject.tags = [tag_names[i], tag_names[(i + 2) % 6], tag_names[(i + 5) % 7]];
         subject.save(function(err){
+            if(err != null)
+            {
+                res.write("error");
+                console.log(err);
+            }else{
+                res.write("done");
+            }
+            res.end();
+        });
+    }*/
+
+
+    var information_item_text_field = ['hi', 'bye', 'hello', 'i am', 'gay-ville', 'maricon', 'taanoog'];
+    var information_item_text_field_title = ['test', 'statistics', 'infographic', 'graph'];
+    var subjects_ids = ['4f3cf3868aa4ae9007000003', '4f3cf3868aa4ae9007000004', '4f3cf3868aa4ae9007000005', '4f3cf3868aa4ae9007000006', '4f3cf3868aa4ae9007000007', '4f3cf3868aa4ae9007000008', '4f3cf3868aa4ae9007000009']
+    for(var i = 0; i < 7; i++ ){
+        var information_item = new Models.InformationItem();
+        information_item.text_field = information_item_text_field[i];
+
+        information_item.title = information_item_text_field_title[i%4];
+        information_item.tags = [tag_names[i], tag_names[(i + 2) % 6], tag_names[(i + 5) % 7]];
+        information_item.subject_id = subjects_ids[i];
+        information_item.save(function(err){
             if(err != null)
             {
                 res.write("error");
@@ -131,7 +154,7 @@ app.get('/account/afterSuccessFbConnect2', function(req,res){});
 app.get('/needlogin', function(req,res){});
 app.get('/account/logout', account.logout);
 app.get('/account/meida',infoAndMeasures.meidaInit);
-app.get('/selectedSubjectPage', selectedSubjectPage.subjectPageInit);
+app.get('/account/selectedSubjectPage', selectedSubjectPage.subjectPageInit);
 
 
 //app.post('/account/afterSuccessFbConnect', account.fb_connect);

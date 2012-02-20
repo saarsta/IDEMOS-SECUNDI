@@ -8,6 +8,6 @@
 
 
 exports.meidaInit = function(req, res){
-    res.render('infoAndMeasures',{title:'infoAndMeasures.ejs'});
+    res.render('infoAndMeasures.ejs',{title:'infoAndMeasures.ejs'});
 }
 

@@ -1,18 +1,122 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-        "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
-    <title></title>
+
+    <link rel="stylesheet" type="text/css" media="screen" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/themes/base/jquery-ui.css"/>
+    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/jquery-ui.min.js"></script>
+
 </head>
-
-
-
-
 
 <body>
 
+    <script type="text/javascript">
 
+
+
+
+
+
+        $(document).ready(function() {
+
+            $.ajax({
+
+                url: 'http://dev.empeeric.com/api/information_items/?subject_id=<%= subject_id%>',
+                type: "GET",
+                async: true,
+                success: function (data) {
+                    console.log(data);
+                    console.log(JSON.stringify(data));
+                    var length = data.objects.length;
+
+                    for(var i = 0; i < length; i++){
+                        var info_item = data.objects[i];
+
+                        var info_link = $(document.createElement('a'))
+                                .attr("id", 'subject_link_' + i);
+
+                        info_link.text(info_item.text_field);
+                        $('.'+ info_item.title + ' .result').append(info_link).append('<br />');
+                    }
+                },
+
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('error');
+                }
+            });
+        });
+
+        $('.btn_look').live("click", function(){
+            var tag_value = $("#look_for_tags").attr('value');
+            $('.result').html('');
+
+            $.ajax({
+
+                url: 'http://dev.empeeric.com/api/information_items/?subject_id=<%= subject_id%>&tags=' + tag_value,
+                type: "GET",
+                async: true,
+                success: function (data) {
+                    console.log(data);
+                    console.log(JSON.stringify(data));
+                    var length = data.objects.length;
+
+
+                    for(var i = 0; i < length; i++){
+                        var info_item = data.objects[i];
+
+                        var info_link = $(document.createElement('a'))
+                                .attr("id", 'subject_link_' + i);
+
+                        info_link.text(info_item.text_field);
+                        $('.'+ info_item.title + ' .result').append(info_link).append('<br />');
+                    }
+                },
+
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('error');
+                }
+            });
+        });
+
+
+    </script>
+
+    <h1> <%=subject_name%> </h1>
+    <div>
+        <label for="look_for_tags">look for tags:</label>
+        <input type="text" name="tags" id="look_for_tags">
+        <button type='submit' class = "btn_look">look</button>
+    </div>
+
+
+
+    <div class = 'test'>
+        <p>Test</p>
+        <div class ="result">
+
+        </div>
+    </div>
+
+    <div class ='statistics' >
+        <p>STATISTICS</p>
+        <div class ="result">
+        </div>
+    </div>
+
+    <div class ='infographic' >
+        <p>INFOGRAPHIC</p>
+        <div class ="result">
+        </div>
+    </div>
+
+    <div class ='graph' >
+        <p>GRAPH</p>
+        <div class ="result">
+        </div>
+    </div>
 
 
 </body>
+
 </html>
