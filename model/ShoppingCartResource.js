@@ -30,7 +30,7 @@ Authoriztion.prototype.limit_object_list = function(req, query, callback){
             }
         });
     }else{
-        callback("Error: User Is Not Autthenticated", null);
+        callback("Error: User Is Not Authenticated", null);
     }
 };
 
@@ -39,7 +39,7 @@ var ShoppingCartResource = module.exports = function()
     ShoppingCartResource.super_.call(this,models.InformationItem);
     this.allowed_methods = ['get','post', 'put', 'delete'];
     this.authentication = new common.SessionAuthentication();
-    this.authorization = new Authoriztion();
+   // this.authorization = new Authoriztion();
     this.default_query = function(query)
     {
         return query.where('is_visible',true).sort('creation_date','descending');

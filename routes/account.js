@@ -139,7 +139,7 @@ var SimpleAuthentication = exports.SimpleAuthentication = function (options) {
                     failureCallback();
                 }else{
                     if(result.password === password){
-                        successCallback();
+                        successCallback(result.id);
                     } else{
                         failureCallback();
                     }
@@ -157,10 +157,10 @@ var SimpleAuthentication = exports.SimpleAuthentication = function (options) {
         var username = request.body.username;
         var password = request.body.password;
         var email = request.body.email;
-
+        var _id = request.body._id;
 
         validatePasswordFunction(username, password, function (custom) {
-            var result = custom || { /*"username": username */ "email": email};
+            var result = /*custom || {"username": username  "email": email };*/{'_id': custom};
             self.success(result, callback);
         }, function(error){
             if (error)
@@ -188,14 +188,33 @@ exports.fb_connect = function(req,res){
                 isUserInDataBase(user_fb_id, function(is_user_in_db){
 
                     if(!is_user_in_db){
-                        createNewUser(user_detailes, access_token);
+                        createNewUser(user_detailes, access_token, function(_id){
+                            req.session.auth.user._id = _id;
+                            req.session.save(function(err,object){
+                                if(err != null)
+                                {
+                                    console.log(err);
+                                }else{
+                                    console.log('user _id to session is ok')
+                                }
+
+                            });
+                        });
                     }else{
-                        updateUesrAccessToken(user_detailes, access_token);
+
+                        updateUesrAccessToken(user_detailes, access_token,  function(_id){
+                            req.session.auth.user._id = _id;
+                            req.session.save(function(err,object){
+                                if(err != null)
+                                {
+                                    console.log(err);
+                                }else{
+                                  console.log('user _id to session is ok')
+                                }
+
+                            });
+                        });
                     }
-                    //bind session with user facebook id
-                    //                session.userFbId = user_facebook_id;
-                    //                session.save;
-                    //                console.log("session.facebookid =  " + session.userFbId);
                 });
                 res.redirect(next || DEFAULT_LOGIN_REDIRECT);
             }
@@ -236,7 +255,7 @@ function isUserInDataBase(user_facebook_id, callback){
     });
 }
 
-function createNewUser(data, access_token){
+function createNewUser(data, access_token, callback){
 
     var user = new Models.User();
     user.username = data.username;
@@ -247,12 +266,12 @@ function createNewUser(data, access_token){
     user.gender = data.gender;
     user.facebook_id = data.id;
     user.access_token = access_token;
-    user.save(function(err){
+    user.save(function(err,object){
         if(err != null)
         {
-//            res.write("error");
             console.log(err);
         }else{
+            callback(object.id);
             console.log("done creating new user - " + user.first_name + " " + user.last_name);
 //            res.write("done creating new user - " + user.first_name + " " + user.last_name);
         }
@@ -260,15 +279,18 @@ function createNewUser(data, access_token){
     });
 }
 
-function updateUesrAccessToken(data, access_token){
+function updateUesrAccessToken(data, access_token, callback){
     var user_model = Models.User;
 
     user_model.findOne({facebook_id: data.id}, function(err, user){
         if (err) { return next(err); }
         user.access_token = access_token;
 //            user.session_id = session_id;
-        user.save(function(err) {
-            if (err) { return next(err); }
+        user.save(function(err){
+            if (err) { return next(err);
+            }else{
+                callback(user.id);
+            }
         });
 //        res.end();
     });
