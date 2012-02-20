@@ -11,7 +11,7 @@ var DEFAULT_LOGIN_REDIRECT = '';
 
 var LOGIN_PATH = '/account/login';
 
-var DONT_NEED_LOGIN_PAGES = [/stylesheets\/style.css/,/favicon.ico/,/account\/login/,/account\/register/,
+var DONT_NEED_LOGIN_PAGES = [/^\/images/,/^\/css/, /stylesheets\/style.css/,/favicon.ico/,/account\/login/,/account\/register/,
     /facebookconnect.html/, /account\/afterSuccessFbConnect/,/account\/facebooklogin/,
     /api\/subjects/,/^\/admin/];//regex
 
@@ -24,7 +24,7 @@ var Models = require("../models.js");
 
 exports.auth_middleware = function(req,res,next)
 {
-    console.log("In auth_middleware, req.path is: " + req.path + "   method = " + req.method);
+//    console.log("In auth_middleware, req.path is: " + req.path + "   method = " + req.method);
     // if this request needs to be authenticated
     for(var i=0; i<DONT_NEED_LOGIN_PAGES.length; i++)
     {

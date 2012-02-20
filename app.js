@@ -212,31 +212,16 @@ console.log("Express server listening on port %d in %s mode", app.address().port
 try
 {
 
-var mongoose_admin = require('mongoose-admin');
 
+var mongoose_admin = require('./mongoose-admin/mongoose-admin');
 
-mongoose_admin.prototype.registerModel = function(modelName, model, options) {
-    this.models[model.collection.name] = {model: model,
-        options: options,
-        fields: model.schema.tree};
-    console.log('\x1b[36mMongooseAdmin registered model: \x1b[0m %s', modelName);
-};
+var admin = mongoose_admin.createAdmin(app,{root:'admin'});
 
-/**
- * Create the admin site on
- */
-var admin = mongoose_admin.createAdmin(app.settings.DB_URL, {app : app, root:'admin' });
+admin.ensureUserExists('admin','admin');
 
-app.set('views', __dirname + '/mongoose-admin/lib/http/views');
-///console.log(admin.pushExpressConfig());
-admin.ensureUserExists('admin', 'admin');
-//admin.registerModel("User",Models.User,{list:['username','first_name','last_name']});
-//admin.registerModel("InformationItem",Models.InformationItem,{list:['title','text_field','users']});
-//var SubjectSchema = new mongoose.Schema({
-//    name:String
-//});
-////var Subject = mongoose.model('Subject',SubjectSchema);
-admin.registerModel("Subject",Models.Subject,{list:['name','image_field']});
+admin.registerMongooseModel("User",Models.User,{list:['username','first_name','last_name']});
+admin.registerMongooseModel("InformationItem",Models.InformationItem,{list:['title','text_field','users']});
+admin.registerMongooseModel("Subject",Models.Subject,{list:['name','image_field']});
 
 }
 

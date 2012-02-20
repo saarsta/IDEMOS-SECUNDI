@@ -1,0 +1,37 @@
+div#content.container_16.clearfix
+  div#page-heading
+    h1 #{modelName}
+  div.grid_11
+    table
+      tr
+        th &nbsp;
+        - for (var i = 0; i < listFields.length; i++) {
+          th.table-header-repeat.line-left.minwidth-1
+            a(href='#') #{listFields[i]}
+        - }
+      - for (var j = 0; j < documents.length; j++) {
+        tr
+          td
+            input(type='checkbox', style='width:auto')
+          - for (var k = 0; k < listFields.length; k++) {
+            td
+              - if (k === 0) 
+                a(href='#{rootPath}/model/#{modelName}/document/#{documents[j]._id}') #{documents[j][listFields[k]]}
+              - else
+                #{documents[j][listFields[k]]}
+          - }
+      - }
+    p
+      | Viewing #{start + 1} - #{start + documents.length} of #{totalCount}
+      | &nbsp;&nbsp;-&nbsp;&nbsp;Page:&nbsp;
+      - for (var i = 0, page = 1; i < totalCount; i += count, page++)
+        - if (start == i)
+          #{page}
+        - else
+          a(href='#{rootPath}/model/#{modelName}?start=#{i}') #{page}
+    p
+      | <a href='#{rootPath}/model/#{modelName}/document/new'>Create new <em>"#{modelName}"</em> item...</a>
+  div.grid_5
+    h2 Recent Activity
+    p
+      | This is not implemented

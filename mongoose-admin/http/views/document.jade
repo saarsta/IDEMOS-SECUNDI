@@ -1,0 +1,79 @@
+script(type='text/javascript')
+  $(document).ready(function() {
+    $('#saveButton').click(function() {
+      var method = $('#document_id').val().length > 0 ? 'PUT' : 'POST';
+      $.ajax({
+        type:method,
+        url:'#{rootPath}/json/model/#{modelName}/document',
+        data:$('#document').serialize(),
+        success:function(result) {
+          window.location.href = '#{rootPath}/model/' + result.collection;
+        },
+        error:function(xhr, textStatus) {
+          alert('Unable to save');
+        }
+      });
+      return false;
+    });
+    $('#deleteButton').click(function() {
+      $.ajax({
+        type:'DELETE',
+        url:'#{rootPath}/json/model/#{modelName}/document?document_id=' + encodeURIComponent($('#document_id').val()),
+        success:function(result) {
+          window.location.href = '/model/' + result.collection;
+        },
+        error:function(xhr, textStatus) {
+          alert('Unable to delete');
+        }
+      });
+    });
+
+    $('.linked_model').change(function() {
+      var self = $(this);
+      if ($(this).val().length === 0) {
+        $('#' + self.attr('rel')).hide();
+      } else {
+        $.ajax({
+          type:'GET',
+          url:'#{rootPath}/json/model/' + $(this).val() + '/linkedDocumentsList',
+          success:function(result) {
+            console.log(self.attr('rel'));
+            var documentList = $('#' + self.attr('rel'));
+            documentList.show();
+            documentList.empty();
+            $.each(result, function(k, v) {
+              var itemDisplay = '';
+              for (field in v) {
+                if (field != '_id') {
+                  if (itemDisplay.length > 0) {
+                    itemDisplay += ' -- ';
+                  }
+                  itemDisplay += v[field];
+                }
+              }
+
+              var option = $('<option />').attr('value', v['_id']).html(itemDisplay);
+              documentList.append(option);
+            });
+            documentList.show();
+          },
+          error:function(xhr, textStatus) {
+            alert('Unable to get documents');
+          }
+        });
+      }
+    });
+  });
+
+div#content.container_16.clearfix
+  div.grid_16.clearboth!= renderedDocument
+  div.grid_16.clearboth
+    p.submit
+      input#saveButton(type='submit', value='Save')
+      | &nbsp;
+      input#cancelButton(type='button', value='Cancel')
+      - if (allowDelete)
+          span(style='margin-left:20px;')
+            input#deleteButton(type='button', value='Delete')
+div#foot
+  a(href='http://mongoose-admin.com') Mongoose-Admin
