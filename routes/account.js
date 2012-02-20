@@ -25,7 +25,6 @@ var Models = require("../models.js");
 exports.auth_middleware = function(req,res,next)
 {
     console.log("In auth_middleware, req.path is: " + req.path + "   method = " + req.method);
-    next();
     // if this request needs to be authenticated
     for(var i=0; i<DONT_NEED_LOGIN_PAGES.length; i++)
     {
@@ -50,7 +49,7 @@ exports.login = function(req,res)
 {
     if(req.method == 'GET')
     {
-        res.render('login',{title:'Login',failed:false, exist_username:false,next:req.query.next});
+        res.render('login.ejs',{title:'Login',failed:false, exist_username:false,next:req.query.next});
     }
     else
     {
@@ -63,7 +62,7 @@ exports.login = function(req,res)
             }
             else
             {
-                res.render('login',{title:'Login',failed:true, exist_username:false,next:req.query.next});
+                res.render('login.ejs',{title:'Login',failed:true, exist_username:false,next:req.query.next});
             }
         });
     }
@@ -87,7 +86,7 @@ exports.register = function(req,res)
                     {
 //                      res.send('something wrong: '+ err.message,500);
 
-                            res.render('login',{title:'Login',failed: true, exist_username:false, errors:err.errors,next:req.query.next});
+                            res.render('login.ejs',{title:'Login',failed: true, exist_username:false, errors:err.errors,next:req.query.next});
                     }
                     else
                     {
@@ -110,7 +109,7 @@ exports.register = function(req,res)
                     }
                 });
             }else{
-                res.render('login',{title:'Login',failed: false, exist_username:true,next:req.query.next});
+                res.render('login.ejs',{title:'Login',failed: false, exist_username:true,next:req.query.next});
             }
         }else{
             throw "Error reading db.User";

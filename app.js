@@ -80,7 +80,7 @@ var fbId = app.settings.facebook_app_id,// '175023072601087',
 
 app.configure(function(){
     app.set('views', __dirname + '/views');
-    app.set('view engine', 'ejs');
+    app.set('view engine', 'jade');
     app.use(express.bodyParser());
     app.use(express.methodOverride());
     app.use(express.cookieParser());
