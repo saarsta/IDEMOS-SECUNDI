@@ -25,6 +25,7 @@ var Models = require("../models.js");
 exports.auth_middleware = function(req,res,next)
 {
     console.log("In auth_middleware, req.path is: " + req.path + "   method = " + req.method);
+    next();
     // if this request needs to be authenticated
     for(var i=0; i<DONT_NEED_LOGIN_PAGES.length; i++)
     {
