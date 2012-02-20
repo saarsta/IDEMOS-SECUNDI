@@ -10,7 +10,7 @@ var mongoose = require("mongoose"),
     Schema = mongoose.Schema,
     ObjectId = Schema.ObjectID;
 
-mongoose.connect('mongodb://localhost/uru');/*, function(err){
+/*, function(err){
     if (err){
         console.log(err);
         throw err;
@@ -31,8 +31,8 @@ var RegexValidator = function(regex)
 var EmailValidator = RegexValidator(/[^@]+@[^@]+/);
 var TestEmailValidator = RegexValidator(/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/);
 
-var Schemas = {
-    User: new Schema({
+var Schemas  = exports.Schemas = {
+    User: {
         username:String,
         identity_provider: {type: String, "enum": ['facebook', 'register']},
         facebook_id: String,
@@ -47,9 +47,9 @@ var Schemas = {
 //        user_name: String,
         password: String,
         md5: String
-    }),
+    },
 
-    InformationItem: new Schema({
+    InformationItem: {
         subject_id: [{type: Schema.objectId, ref: 'Subject', index: true, required:true}],
         title: {type: String, "enum": ['test', 'statistics', 'infographic', 'graph']},
         text_field: String,
@@ -59,15 +59,15 @@ var Schemas = {
         users: [{type: Schema.objectId, ref: 'User'}],
         is_visible:{type:Boolean,'default':true},
         creation_date:{type:Date,'default':Date.now}
-    }),
+    },
 
-    Subject: new Schema({
+    Subject: {
         name: String,
         image_field:{url:String, caption: String, type: {type: String},size: {type: Number, min: 0},
             width: {type: Number, min: 0}, height: {type: Number, min: 0}, data: String},
         tags :[String],
         is_hot:{type:Boolean,'default':false}
-    })
+    }
 };
 /*,
 
@@ -109,7 +109,8 @@ var Schemas = {
 
 
 var Models = module.exports = {
-    User: mongoose.model("User", Schemas.User),
-    InformationItem:mongoose.model('InformationItem',Schemas.InformationItem),
-    Subject:mongoose.model('Subject', Schemas.Subject)
+    User: mongoose.model("User", new Schema(Schemas.User)),
+    InformationItem:mongoose.model('InformationItem',new Schema(Schemas.InformationItem)),
+    Subject:mongoose.model('Subject', new Schema(Schemas.Subject)),
+    Schemas:Schemas
 };

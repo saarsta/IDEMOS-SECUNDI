@@ -2,9 +2,6 @@
 /**
  * Module dependencies.
  */
-var fbId = '175023072601087',
-    fbSecret = '5ef7a37e8a09eca5ee54f6ae56aa003f',
-    fbCallbackAddress = 'http://dev.empeeric.com/account/facebooklogin';
 
 
 var express = require('express'),
@@ -25,22 +22,65 @@ var Models = require("./models.js");
 var DEFAULT_LOGIN_REDIRECT = '';
 
 
+
+
+app.configure('development', function(){
+    app.set("port", 80);
+    app.set('facebook_app_id', '175023072601087');
+    app.set('facebook_secret', '5ef7a37e8a09eca5ee54f6ae56aa003f');
+    app.set('root_path', 'http://dev.empeeric.com');
+    app.set('DB_URL','mongodb://localhost/uru');
+    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+});
+
+app.configure('production', function(){
+    app.set("port", process.env.PORT);
+    app.set('facebook_app_id', '375874372423704');
+    app.set('facebook_secret', 'b079bf2df2f7055e3ac3db17d4d2becb');
+    app.set('root_path', 'http://uru.herokuapp.com');
+    app.set('DB_URL',process.env.MONGOLAB_URI);
+    app.use(express.errorHandler());
+});
+
+mongoose.connect(app.settings.DB_URL);
+
+function split_db_url(db_url)
+{
+    var parts = db_url.split('/');
+    var conf = {
+        db:parts[3],
+        collection: 'session',
+        clear_interval: 0
+    };
+
+    if(parts[2] != 'localhost')
+    {
+        var middle_part_parts = parts[2].split(':');
+        conf['username'] = middle_part_parts[0];
+        conf['password'] = middle_part_parts[1].split('@')[0];
+        conf['host'] = middle_part_parts[1].split('@')[1];
+        conf['port'] = Number(middle_part_parts[2]);
+    }
+    else
+    {
+        conf['host'] = 'localhost';
+        conf['port'] = 27017;
+    }
+    return conf;
+}
 // Configuration
 var confdb = {
-    db:{
-        db: 'uru',
-        host: 'localhost',
-        port: 27017,  // optional, default: 27017
-        //   username: 'admin', // optional
-        //    password: 'secret', // optional
-        collection: 'Session' // optional, default: sessions
-    },
+    db: split_db_url(app.settings.DB_URL),
     secret: '076ed61d63ea10a12rea879l1ve433s9'
 };
 
+var fbId = app.settings.facebook_app_id,// '175023072601087',
+    fbSecret = app.settings.facebook_secret,// '5ef7a37e8a09eca5ee54f6ae56aa003f',
+    fbCallbackAddress = app.settings.root_path + '/account/facebooklogin';
+
 app.configure(function(){
     app.set('views', __dirname + '/views');
-    app.set('view engine', 'ejs');
+    app.set('view engine', 'jade');
     app.use(express.bodyParser());
     app.use(express.methodOverride());
     app.use(express.cookieParser());
@@ -85,18 +125,6 @@ app.configure(function(){
     app.use(app.router);
     app.use(express.static(__dirname + '/public'));
 
-});
-
-app.configure('development', function(){
-  app.set("port", 80);
-  app.set('facebook_app_id', '175023072601087');
-  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-});
-
-app.configure('production', function(){
-  app.set("port", 80);
-  app.set('facebook_app_id', 'production app id number');
-  app.use(express.errorHandler());
 });
 
 // Routes
@@ -218,5 +246,29 @@ rest_api.register_resource('information_items',new InformationItemResource());
 rest_api.register_resource('shopping_cart',new ShoppingCartResource());
 rest_api.register_resource('subjects', new SubjectResource());
 
-app.listen(/*app.settings.port*/80);
+app.listen(app.settings.port);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+
+
+
+try
+{
+
+
+var mongoose_admin = require('./mongoose-admin/mongoose-admin');
+
+var admin = mongoose_admin.createAdmin(app,{root:'admin'});
+
+admin.ensureUserExists('admin','admin');
+
+admin.registerMongooseModel("User",Models.User,Models.Schemas.User,{list:['username','first_name','last_name']});
+admin.registerMongooseModel("InformationItem",Models.InformationItem, Models.Schemas.InformationItem,{list:['title','text_field','users']});
+admin.registerMongooseModel("Subject",Models.Subject,Models.Schemas.Subject,{list:['name','image_field']});
+
+}
+
+catch(e)
+{
+    console.log(e);
+    console.log('admin is not operational, wow. exception: ' + e.message);
+}
