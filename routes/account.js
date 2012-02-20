@@ -13,7 +13,7 @@ var LOGIN_PATH = '/account/login';
 
 var DONT_NEED_LOGIN_PAGES = [/stylesheets\/style.css/,/favicon.ico/,/account\/login/,/account\/register/,
     /facebookconnect.html/, /account\/afterSuccessFbConnect/,/account\/facebooklogin/,
-    /api\/subjects/];//regex
+    /api\/subjects/,/^\/admin/];//regex
 
 
 exports.LOGIN_PATH = LOGIN_PATH;
