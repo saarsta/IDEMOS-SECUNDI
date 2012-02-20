@@ -214,7 +214,6 @@ try
 
 var mongoose_admin = require('mongoose-admin');
 
-console.log(mongoose_admin.pushExpressConfig());
 
 mongoose_admin.prototype.registerModel = function(modelName, model, options) {
     this.models[model.collection.name] = {model: model,
@@ -227,6 +226,7 @@ mongoose_admin.prototype.registerModel = function(modelName, model, options) {
  * Create the admin site on
  */
 var admin = mongoose_admin.createAdmin(app.settings.DB_URL, {app : app, root:'admin' });
+console.log(admin.pushExpressConfig());
 admin.ensureUserExists('admin', 'admin');
 //admin.registerModel("User",Models.User,{list:['username','first_name','last_name']});
 //admin.registerModel("InformationItem",Models.InformationItem,{list:['title','text_field','users']});
