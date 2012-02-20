@@ -10,7 +10,8 @@
         "mongoose-resource": "",
         "express-resource": "",
         "connect-mongo":"",
-        "mongoose-admin":">= 0.0.11"
+        "mongoose-admin":">= 0.0.11",
+        "jade":""
   }
   , "devDependencies":
     {
