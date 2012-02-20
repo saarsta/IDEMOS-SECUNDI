@@ -225,8 +225,8 @@ mongoose_admin.prototype.registerModel = function(modelName, model, options) {
 /**
  * Create the admin site on
  */
-var admin = mongoose_admin.createAdmin(app.settings.DB_URL, {app : app, root:'admin/' });
-    
+var admin = mongoose_admin.createAdmin(app.settings.DB_URL, {app : app, root:'/' });
+
 app.set('views', __dirname + '/mongoose-admin/lib/http/views');
 ///console.log(admin.pushExpressConfig());
 admin.ensureUserExists('admin', 'admin');
