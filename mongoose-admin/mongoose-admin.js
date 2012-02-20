@@ -102,8 +102,8 @@ MongooseAdmin.prototype.close = function() {
 MongooseAdmin.prototype.registerMongooseModel = function(modelName, model,fields, options) {
     for(var field in fields)
     {
-        if(fields[field].type)
-            fields[field] = fields[field].type;
+        if(!fields[field].type)
+            fields[field] = {type: fields[field]};
     }
     this.models[model.collection.name] = {model: model,
         options: options,

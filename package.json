@@ -12,6 +12,6 @@
         "connect-mongo":"",
 		"jade":"",
 		"jquery":"",
-		"bcrypt":""
+		"bcrypt":"" 
   }
 } 
