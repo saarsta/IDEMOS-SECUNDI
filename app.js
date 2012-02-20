@@ -219,7 +219,7 @@ mongoose_admin.prototype.registerModel = function(modelName, model, options) {
 };
 
 /**
- * Create the admin site on port 8001
+ * Create the admin site on
  */
 var admin = mongoose_admin.createAdmin(app.settings.DB_URL, {app : app, root:'admin' });
 admin.ensureUserExists('admin', 'admin');
