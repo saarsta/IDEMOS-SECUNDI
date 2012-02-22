@@ -69,7 +69,7 @@ subject_id = data;
     db_functions.dbGetUserShopingCart();
     $.ajax({
 
-        url: 'http://dev.empeeric.com/api/information_items/?subject_id='+subject_id,
+        url: '/api/information_items/?subject_id='+subject_id,
         type: "GET",
         async: true,
         success: function (data) {

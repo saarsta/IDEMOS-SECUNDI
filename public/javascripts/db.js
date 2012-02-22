@@ -9,7 +9,7 @@
 var db_functions = {
     dbGetAllSubjects: function(){
         $.ajax({
-            url: 'http://dev.empeeric.com/api/subjects',
+            url: '/api/subjects',
             type: "GET",
             async: true,
             success: function (data) {
@@ -91,7 +91,7 @@ var db_functions = {
     },
     dbGetUserShopingCart: function(){
         $.ajax({
-            url: 'http://dev.empeeric.com/api/shopping_cart',
+            url: '/api/shopping_cart',
             type: "GET",
             async: true,
             success: function (data) {
@@ -111,7 +111,7 @@ var db_functions = {
     },
     dbDeleteInfoItemFromShoppingCart: function(info_item_id){
         $.ajax({
-            url: 'http://dev.empeeric.com/api/shopping_cart/' + info_item_id,
+            url: '/api/shopping_cart/' + info_item_id,
             type: "DELETE",
             async: true,
             success: function () {
@@ -133,9 +133,9 @@ var db_functions = {
 
 
 
-        console.log('http://dev.empeeric.com/api/information_items/?text_field__regex='+ keywords_arr + '&subject_id=' + subject_id);
+        console.log('/api/information_items/?text_field__regex='+ keywords_arr + '&subject_id=' + subject_id);
         $.ajax({
-            url: 'http://dev.empeeric.com/api/information_items/?text_field__regex='+ keywords_arr + '&subject_id=' + subject_id,
+            url: '/api/information_items/?text_field__regex='+ keywords_arr + '&subject_id=' + subject_id,
             type: "GET",
             async: true,
             success: function (data) {
