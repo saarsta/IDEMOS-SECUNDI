@@ -10,9 +10,11 @@
         "jest": "",
         "express-resource": "",
         "connect-mongo":"",
+
 		"jade": "",
 		"jquery": "",
 		"bcrypt": ""
+
   }
   
 } 
