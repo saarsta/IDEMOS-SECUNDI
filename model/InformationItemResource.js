@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-var resources = require('mongoose-resource'),
+var resources = require('jest'),
     util = require('util'),
     models = require('../models'),
     common = require('./common');

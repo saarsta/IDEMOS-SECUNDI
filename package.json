@@ -7,7 +7,7 @@
         "ejs": ">= 0.0.1",
         "connect-auth": "",
         "mongoose":"",
-        "mongoose-resource": "",
+        "jest": "",
         "express-resource": "",
         "connect-mongo":"",
 		"jade": "",

@@ -1,5 +1,5 @@
 var Model= require("../models.js");
-var mongoose_resource = require('mongoose-resource');
+var mongoose_resource = require('jest');
 var util = require('util');
 var common = require('./common');
 

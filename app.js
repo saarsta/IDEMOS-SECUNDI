@@ -309,7 +309,7 @@ app.get('/sendmail',function(req, res){
 
 });
 
-var mongoose_resource = require('mongoose-resource');
+var mongoose_resource = require('jest');
 var rest_api = new mongoose_resource.Api('api',app);
 rest_api.register_resource('users',new UserResource());
 rest_api.register_resource('information_items',new InformationItemResource());

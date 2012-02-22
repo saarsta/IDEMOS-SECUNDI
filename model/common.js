@@ -9,7 +9,7 @@ var util = require('util');
 // Authentication
 
 var SessionAuthentication = exports.SessionAuthentication = function () { };
-util.inherits(SessionAuthentication,require('mongoose-resource').Authentication);
+util.inherits(SessionAuthentication,require('jest').Authentication);
 
 SessionAuthentication.prototype.is_authenticated = function(req,callback){
     var is_auth = req.isAuthenticated();
