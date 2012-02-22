@@ -41,7 +41,7 @@ var SubjectResource = module.exports = function()
     SubjectResource.super_.call(this,models.Subject);
     this.allowed_methods = ['get','post'];
 //    this.authentication = new common.SessionAuthentication();
-    this.filtering = {tags:null, is_hot:null};
+    this.filtering = {tags:null};
     this.cache = subject_cache;
     //this.validation = new resources.Validation();
 };

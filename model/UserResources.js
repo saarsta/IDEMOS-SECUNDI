@@ -10,8 +10,11 @@ util.inherits(Authoriztion,mongoose_resource.Authorization);
 
 Authoriztion.prototype.limit_object_list = function(req, query, callback){
     if(req.session.auth.user){
-        var email = req.session.auth.user.email;
-        query.where('email', email);
+//        var email = req.session.auth.user.email;
+        var user_id = req.session.user.user_id;
+
+//        query.where('email', email);
+        query.where('_id', user_id);
         callback(null, query);
     }else{
         callback("Error: User Is Not Autthenticated", null);
@@ -20,8 +23,12 @@ Authoriztion.prototype.limit_object_list = function(req, query, callback){
 
 Authoriztion.prototype.limit_object = function(req,object,callback){
     if(req.session.auth.user){
-        var email = req.session.auth.user.email;
-        object.where('email', email);
+//        var email = req.session.auth.user.email;
+        var user_id = req.session.user.user_id;
+
+//        object.where('email', email);
+        object.where('_id', user_id);
+
         callback(null, object);
     }else{
         callback("Error: User Is Not Autthenticated", null);

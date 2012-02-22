@@ -16,7 +16,7 @@ var InformationItemResource = module.exports = function()
     InformationItemResource.super_.call(this,models.InformationItem);
     this.allowed_methods = ['get','post'];
     this.authentication = new common.SessionAuthentication();
-    this.filtering = {tags:null,subject_id:null,title:null,text_field:null,users:null};
+    this.filtering = {tags:null, subject_id:null, title:null, text_field:null, users:null, is_hot:null};
     this.default_query = function(query)
     {
         return query.where('is_visible',true).sort('creation_date','descending');

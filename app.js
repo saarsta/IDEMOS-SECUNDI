@@ -100,7 +100,62 @@ app.configure(function(){
     trace: true,
     logoutHandler: require("connect-auth/lib/events").redirectOnLogout("/acount/login")}));
 
+
+    var DONT_NEED_LOGIN_PAGES = [/^\/images/,/^\/css/, /stylesheets\/style.css/,/favicon.ico/,/account\/login/,/account\/register/,
+        /facebookconnect.html/, /account\/afterSuccessFbConnect/,/account\/facebooklogin/,
+        /api\/subjects/,/^\/admin/];//TODO - change it to global
+
     app.use(account.auth_middleware);
+    app.use(function(req, res, next){
+        var models = Models;
+
+        for(var i=0; i<DONT_NEED_LOGIN_PAGES.length; i++)
+        {
+            var dont = DONT_NEED_LOGIN_PAGES[i];
+            if (dont.exec(req.path))
+            {
+                next();
+                return;
+            }
+        }
+
+
+        if(!req.session.user_id){
+            //means that user used registration, so we save user_id out of the AUTH
+            if (req.session.auth.user_id){
+                req.session.user_id = req.session.auth.user_id;
+                next();
+            }
+
+//            var email = req.session.auth.user.email;
+            var facebook_id = req.session.auth.user.id;
+            models.User.findOne({facebook_id :facebook_id},function(err,object)
+            {
+                if(err)
+                {
+                    console.log('couldn put user id' + err.message)
+                    next();
+                }
+                else
+                {
+                    //if object doesnt exust in db it means we got here before registration completed
+                    if (!object){
+                        next();
+                    }else{
+                        req.session.user_id = object.id;
+                        req.session.save(function(err)
+                        {
+                            if(err)
+                                console.log('couldnt put user id' + err.message);
+                            next();
+                        });
+                    }
+                }
+            });
+        }else{
+            next();
+        }
+    })
 
     app.use(express.methodOverride());
     app.use(app.router);
@@ -131,7 +186,7 @@ app.get('/insertDataBase',function(req, res){
     var subject_names = ['Education', 'Economy', 'Sport', 'News', 'Culture', 'Health', 'Food'];
     var tag_names = ['saar', 'guy', 'gay', 'vill', 'maricon', 'wow', 'yeah'];
 
-    for(var i = 0; i < 7; i++ ){
+   /* for(var i = 0; i < 7; i++ ){
         var subject = new Models.Subject();
         subject.name = subject_names[i];
 
@@ -149,7 +204,64 @@ app.get('/insertDataBase',function(req, res){
             }
             res.end();
         });
+    }*/
+
+
+    /*var information_item_text_field = ['hi', 'bye', 'hello', 'i am', 'gay-ville', 'maricon', 'taanoog'];
+    var information_item_text_field_title = ['test', 'statistics', 'infographic', 'graph'];
+    var subjects_ids = ['4f3cf3868aa4ae9007000003', '4f3cf3868aa4ae9007000004', '4f3cf3868aa4ae9007000005', '4f3cf3868aa4ae9007000006', '4f3cf3868aa4ae9007000007', '4f3cf3868aa4ae9007000008', '4f3cf3868aa4ae9007000009']
+    for(var i = 0; i < 7; i++ ){
+        var information_item = new Models.InformationItem();
+        information_item.text_field = information_item_text_field[i];
+
+        information_item.title = information_item_text_field_title[i%4];
+        information_item.tags = [tag_names[i], tag_names[(i + 2) % 6], tag_names[(i + 5) % 7]];
+        information_item.subject_id = subjects_ids[i];
+        information_item.save(function(err){
+            if(err != null)
+            {
+                res.write("error");
+                console.log(err);
+            }else{
+                res.write("done");
+            }
+            res.end();
+        });
     }
+*/
+    var information_item = new Models.InformationItem();
+    information_item.text_field = 'it is really great';
+
+    information_item.title = "infographic";
+    information_item.tags = ["hi", "bye", "hello"];
+    information_item.subject_id = "4f3cf3868aa4ae9007000009";
+    information_item.save(function(err){
+        if(err != null)
+        {
+            res.write("error");
+            console.log(err);
+        }else{
+            res.write("done");
+        }
+        res.end();
+    });
+
+    var information_item = new Models.InformationItem();
+    information_item.text_field = 'it is bla bla bla';
+
+    information_item.title = "graph";
+    information_item.tags = ["hi", "bye", "hello"];
+    information_item.subject_id ="4f3cf3868aa4ae9007000009";
+    information_item.save(function(err){
+        if(err != null)
+        {
+            res.write("error");
+            console.log(err);
+        }else{
+            res.write("done");
+        }
+        res.end();
+    });
 });
 
 app.post('/account/register',account.register);
@@ -159,7 +271,7 @@ app.get('/account/afterSuccessFbConnect2', function(req,res){});
 app.get('/needlogin', function(req,res){});
 app.get('/account/logout', account.logout);
 app.get('/account/meida',infoAndMeasures.meidaInit);
-app.get('/selectedSubjectPage', selectedSubjectPage.subjectPageInit);
+app.get('/account/selectedSubjectPage', selectedSubjectPage.subjectPageInit);
 
 
 //app.post('/account/afterSuccessFbConnect', account.fb_connect);

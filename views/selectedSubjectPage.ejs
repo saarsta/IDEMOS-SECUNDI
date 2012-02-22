@@ -1,18 +1,27 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-        "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-    <title></title>
-</head>
+<h1> <%=subject_name%> </h1>
+<div>
+    <label for="look_for_keywords">look for info item by key words:</label>
+    <input type="text" name="keys" id="look_for_keywords">
+    <button type='submit' class="btn_look">look</button>
+</div>
+
+<div class="info_items_of_subject panel">
+    <p> INFORMATION ITEMS </p>
+</div>
+
+<div class="shopping_cart panel">
+    <p> SHOPPONG CART </p>
+</div>
 
 
+<script src="http://www.google.com/jsapi"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/jquery-ui.min.js"></script>
 
-
-
-<body>
-
-
-
-
-</body>
-</html>
+<script src="/javascripts/db.js"></script>
+<script src="/javascripts/selectedSubjectPage.js"></script>
+<script type="text/javascript">
+    $(function() {
+        loadSelectedSubjectPage("<%= subject_id%>");
+    });
+</script>
