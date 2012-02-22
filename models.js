@@ -58,7 +58,8 @@ var Schemas  = exports.Schemas = {
         tags: [{type: String, index: true}],
         users: [{type: Schema.objectId, ref: 'User'}],
         is_visible:{type:Boolean,'default':true},
-        creation_date:{type:Date,'default':Date.now}
+        creation_date:{type:Date,'default':Date.now},
+        is_hot:{type:Boolean,'default':false}
     },
 
     Subject: {
@@ -66,7 +67,7 @@ var Schemas  = exports.Schemas = {
         image_field:{url:String, caption: String, type: {type: String},size: {type: Number, min: 0},
             width: {type: Number, min: 0}, height: {type: Number, min: 0}, data: String},
         tags :[String],
-        is_hot:{type:Boolean,'default':false}
+//        is_hot:{type:Boolean,'default':false}
     }
 };
 /*,

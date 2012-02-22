@@ -43,11 +43,33 @@ var ShoppingCartResource = module.exports = function()
 util.inherits(ShoppingCartResource,resources.MongooseResource);
 
 ShoppingCartResource.prototype.update_obj = function(req,object,callback){
-    object.users.push(req.session.user_id);
-    object.save(callback);
+    var id = req.session.user_id;
+    var is_exist = false;
+    for(var i=0; i<object.users.length; i++){
+        if (object.users[i] == id){
+            is_exist = true;
+            break;
+        }
+    }
+    if(is_exist){
+        callback("information item is already in shoping cart", null);
+    }else{
+        object.users.push(req.session.user_id);
+        object.save(callback);
+    }
+
 }
 
 ShoppingCartResource.prototype.delete_obj = function(req,object,callback){
-    object.users.pop(req.session.user_id);
+
+
+    for(var i=0; i<object.users.length; i++)
+    {
+        if(object.users[i] == req.session.user_id)
+        {
+            object.users.splice(i,1);
+            i--;
+        }
+    }
     object.save(callback);
 }

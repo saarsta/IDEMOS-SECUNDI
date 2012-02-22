@@ -7,6 +7,16 @@ a {
   color: #00B7FF;
 }
 
+.hide {
+    display: none;
+}
+
+.panel {
+    float: left;
+    padding: 10px;
+    min-width: 200px;
+}
+
 .form {
     width: 500px;
     padding: 10px;
@@ -24,3 +34,27 @@ a {
 .button {
     padding: 5px 10px;
 }
+
+div.subject {
+    background: yellow;
+}
+
+div.hot_information_item {
+     background:  #9acd32;
+}
+
+div.tags {
+    background:  #8a2be2;
+}
+
+div.info_items_of_subject {
+    background:  #8a2be2;
+}
+
+div.shopping_cart {
+    background:  #808080;
+}
+
+
+
+

@@ -2,193 +2,50 @@
     <html>
         <head>
             <link rel="stylesheet" type="text/css" media="screen" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/themes/base/jquery-ui.css"/>
-            <script type="text/javascript" src="http://www.google.com/jsapi"></script>
-            <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
-            <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/jquery-ui.min.js"></script>
+            <link rel="stylesheet" type="text/css" media="screen" href= '/public/stylesheets/style.css'/>
 
-
+            <script src="http://www.google.com/jsapi"></script>
+            <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+            <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/jquery-ui.min.js"></script>
+            <script src="/javascripts/db.js"></script>
+            <script src="/javascripts/infoAndMeasures.js"></script>
+            <script type="text/javascript">
+                $(function() {
+                    loadInfoAndMeasures();
+                });
+            </script>
         </head>
 
         <body>
-
-            <script type="text/javascript">
-
-            $(document).ready(function() {
-
-                $.ajax({
-                    url: 'http://dev.empeeric.com/api/subjects',
-                    type: "GET",
-                    async: true,
-                    success: function (data) {
-                        console.log(data);
-                        console.log(JSON.stringify(data));
-                        var size = data.objects.length;
-
-
-
-                        for (var i=0; i < size; i++){
-                            var subject = data.objects[i];
-
-                            var subject_link = $(document.createElement('a'))
-                                    .attr("id", 'subject_link_' + i);
-                            subject_link.attr('href', "/account/selectedSubjectPage?subject_id="+subject._id + '&subject_name=' + subject.name);
-                            subject_link.text(subject.name);
-                            $('.subject').append(subject_link).append('<br />');
-
-                            if (subject.is_hot){
-                                var hot_subject_link = $(document.createElement('a'))
-                                        .attr("id", 'hot_subject_link_' + i);
-                                hot_subject_link.attr('href', "/account/selectedSubjectPage?subject_id="+subject._id + '&subject_name=' + subject.name);
-                                hot_subject_link.text(subject.name);
-                                console.log(hot_subject_link);
-                                $('.hot_subject').append(hot_subject_link).append('<br />');
-                            }
-                        }
-                    },
-
-                    error: function (xhr, ajaxOptions, thrownError) {
-                        alert('error');
-                    }
-                });
-
-                $('.btn_look').live("click", function(){
-
-                    var tag_value = $("#look_for_tags").attr('value');
-
-                    $.ajax({
-                        url: 'http://dev.empeeric.com/api/information_items?tags=' + tag_value,
-                        type: "GET",
-                        async: true,
-                        success: function (data) {
-
-                            console.log(data);
-
-                            var length = data.objects.length;
-
-                            if (length > 0){
-                                var blank_row = $(document.createElement('p'))
-                                        .attr('id', 'tags_header');
-                                blank_row.text('I FOUND THOSE TAGS:');
-                                $('.tags').append(blank_row);
-                            }else{
-                                alert('no information items!');
-                            }
-
-                            for(var i = 0; i<length; i++){
-                                var object_information_item = data.objects[i];
-                                console.log(object_information_item);
-                                var tag_p = $(document.createElement('p'))
-                                        .attr("id", 'tag_p_' + i);
-                                tag_p.text(object_information_item.title);
-                                var tag_text =  $(document.createElement('a'))
-                                        .attr("id", 'tag_text_' + i);
-
-                                tag_text.text(object_information_item.text_field);
-
-                                var tag_button =  $(document.createElement('button'))
-                                        .attr({'id': 'tag_button_i', 'class': 'info_item_button', 'value': object_information_item._id});
-                                tag_button.text('add to your shopping cart');
-
-
-                                $('.tags').append(tag_p);
-                                $('.tags').append(tag_text).append('<br />');
-                                $('.tags').append(tag_button);
-                            }
-                        },
-
-                        error: function (xhr, ajaxOptions, thrownError) {
-                            alert('error');
-                        }
-                    });
-
-                    $('.info_item_button').live("click", function(){
-
-                        var info_item_id = $(this).attr('value');
-
-                        $.ajax({
-                            url: 'http://dev.empeeric.com/api/shopping_cart/' + info_item_id,
-                            type: "PUT",
-                            async: true,
-                            success: function (data) {
-                                   alert('succes');
-                                console.log('after PUT data is: ' + data);
-                                addInfoItemToUserShoppingCart();
-                            },
-
-                            error: function (xhr, ajaxOptions, thrownError) {
-                                alert('error');
-                            }
-                        });
-                    });
-
-                });
-
-                $.ajax({
-                    url: 'http://dev.empeeric.com/api/shopping_cart',
-                    type: "GET",
-                    async: true,
-                    success: function (data) {
-                        alert('shopping cart');
-                        console.log(data);
-                        var length = data.objects.length;
-
-                        if (length > 0){
-                            var blank_row = $(document.createElement('p'))
-                                    .attr('id', 'tags_header');
-                            blank_row.text('MY SHOPPING CART:');
-                            $('.shopping_cart').append(blank_row);
-                        }
-
-                        for(var i = 0; i<length; i++){
-                            var shopping_cart_information_item_obj = data.objects[i];
-
-                            var info_item_p = $(document.createElement('p'))
-                                    .attr("id", 'info_item_p_' + i);
-                            info_item_p.text(shopping_cart_information_item_obj.title);
-                            var info_item_text =  $(document.createElement('a'))
-                                    .attr("id", 'info_item_text_' + i);
-
-                            info_item_text.text(shopping_cart_information_item_obj.text_field);
-
-                            $('.shopping_cart').append(info_item_p);
-                            $('.shopping_cart').append(info_item_text).append('<br />');
-                        }
-                    },
-
-                    error: function (xhr, ajaxOptions, thrownError) {
-                        alert('error');
-                    }
-
-                });
-            });
-
-            function addInfoItemToUserShoppingCart(){
-
-            }
-
-            </script>
-
             <div>
-                <label for="look_for_tags">look for tags:</label>
+                <label for="look_for_tags">look for info items by tags:</label>
                 <input type="text" name="tags" id="look_for_tags">
-                <button type='submit' class = "btn_look">look</button>
+                <button type="submit" class="btn_look">look</button>
             </div>
 
-            <div class = 'subject'>
+            <div class="subject panel">
                 <p> SUBJECTS: </p>
             </div>
 
-            <div class ="hot_subject" >
-                <p> HOT SUBJECTS: </p>
+            <div class="tags hide panel">
+                <p> HOT INFORMATION ITEMS: </p>
             </div>
 
-            <div class ="tags" >
+            <div class="tags panel">
 
             </div>
 
-            <div class = 'shopping_cart'>
-                
+            <div class="shopping_cart panel">
+                <p> SHOPPONG CART </p>
+                <div class="item">
+
+                </div>
             </div>
-            
+
+            <script type="text/javascript">
+                $('.item button').click(function() {
+                    alert($(this).parent('.item').find('p.title').text());
+                })
+            </script>
         </body>
     </html>

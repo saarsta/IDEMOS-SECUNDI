@@ -40,7 +40,7 @@ var LOGIN_PATH = '/account/login';
 
 var DONT_NEED_LOGIN_PAGES = [/^\/images/,/^\/css/, /stylesheets\/style.css/,/favicon.ico/,/account\/login/,/account\/register/,
     /facebookconnect.html/, /account\/afterSuccessFbConnect/,/account\/facebooklogin/,
-    /api\/subjects/,/^\/admin/];//regex
+    /api\/subjects/,/^\/admin/,/^\/api\//];//regex
 
 
 exports.LOGIN_PATH = LOGIN_PATH;
@@ -99,7 +99,7 @@ exports.register = function(req,res)
 {
     var data = req.body;
     var user = new Models.User(data);
-    user.password = bcrypt.encrypt_sync(data.password,bcrypt.gen_salt_sync(10));
+    user.password = bcrypt.encrypt_sync(data.password, bcrypt.gen_salt_sync(10));
     user.identity_provider = "register";
     user_model = Models.User;
 
@@ -114,7 +114,7 @@ exports.register = function(req,res)
                     {
 //                      res.send('something wrong: '+ err.message,500);
 
-                            res.render('login.ejs',{title:'Login',failed: true, exist_username:false, errors:err.errors,next:req.query.next});
+                        res.render('login.ejs',{title:'Login',failed: true, exist_username:false, errors:err.errors,next:req.query.next});
                     }
                     else
                     {
@@ -188,7 +188,7 @@ var SimpleAuthentication = exports.SimpleAuthentication = function (options) {
 //        var _id = request.body._id;
 
         validatePasswordFunction(username, password, function (custom) {
-            var result = /*custom || {"username": username  "email": email };*/{'_id': custom};
+            var result = /*custom || {"username": username  "email": email };*/{'user_id': custom};
             self.success(result, callback);
         }, function(error){
             if (error)
@@ -327,6 +327,7 @@ exports.logout = function(req, res){
     res.clearCookie('connect.sid',{path: '/'});
    // req.session.destroy();
     req.logout();
+    req.
     res.end();
 }
 
