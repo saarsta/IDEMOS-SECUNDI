@@ -54,6 +54,8 @@ var items = {
     remove: false
 };
 
+
+
 function loadInfoAndMeasures() {
 
     db_functions.dbGetAllSubjects();
@@ -91,5 +93,11 @@ function loadInfoAndMeasures() {
         db_functions.dbGetInfoItemsByTagName(tag_value);
     });
 
-    db_functions.dbGetUserShopingCart();
+    db_functions.getUserShopingCart(function(data){
+
+        for (var i in data.objects) {
+            var item = items.add(data.objects[i], "shopping_cart");
+            items.changeButton(item);
+        }
+    });
 }

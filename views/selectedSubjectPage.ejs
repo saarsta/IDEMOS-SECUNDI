@@ -5,12 +5,17 @@
     <button type='submit' class="btn_look">look</button>
 </div>
 
+<div>
+    <button type="submit" class="btn_look_for_discussions">look for discussions</button>
+</div>
+
 <div class="info_items_of_subject panel">
     <p> INFORMATION ITEMS </p>
 </div>
 
 <div class="shopping_cart panel">
     <p> SHOPPONG CART </p>
+    <button class="reality_btn"> create new reality </button>
 </div>
 
 
@@ -22,6 +27,6 @@
 <script src="/javascripts/selectedSubjectPage.js"></script>
 <script type="text/javascript">
     $(function() {
-        loadSelectedSubjectPage("<%= subject_id%>");
+        loadSelectedSubjectPage("<%= subject_id%>", "<%=subject_name%>");
     });
 </script>

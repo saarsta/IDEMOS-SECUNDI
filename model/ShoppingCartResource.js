@@ -12,19 +12,19 @@ var resources = require('jest'),
     common = require('./common');
 
 
-//Authorization
-var Authoriztion = function() {};
-util.inherits(Authoriztion,resources.Authorization);
+    //Authorization
+    var Authoriztion = function() {};
+    util.inherits(Authoriztion,resources.Authorization);
 
-Authoriztion.prototype.limit_object_list = function(req, query, callback){
-    if(req.session.auth.user){
-                var id = req.session.user_id;
-                query.where('users', id);
-                callback(null, query);
-    }else{
-        callback("Error: User Is Not Authenticated", null);
-    }
-};
+    Authoriztion.prototype.limit_object_list = function(req, query, callback){
+        if(req.session.auth.user){
+                    var id = req.session.user_id;
+                    query.where('users', id);
+                    callback(null, query);
+        }else{
+            callback("Error: User Is Not Authenticated", null);
+        }
+    };
 
 var ShoppingCartResource = module.exports = function()
 {

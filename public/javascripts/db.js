@@ -89,18 +89,15 @@ var db_functions = {
             }
         });
     },
-    dbGetUserShopingCart: function(){
+
+    getUserShopingCart: function(callback){
         $.ajax({
             url: '/api/shopping_cart',
             type: "GET",
             async: true,
             success: function (data) {
                 console.log(data);
-
-                for (var i in data.objects) {
-                    var item = items.add(data.objects[i], "shopping_cart");
-                    items.changeButton(item);
-                }
+                callback(data);
             },
 
             error: function (xhr, ajaxOptions, thrownError) {
@@ -109,6 +106,7 @@ var db_functions = {
 
         });
     },
+
     dbDeleteInfoItemFromShoppingCart: function(info_item_id){
         $.ajax({
             url: '/api/shopping_cart/' + info_item_id,
@@ -151,4 +149,107 @@ var db_functions = {
 
         });
     },
+
+    getDiscussionsBySubject: function(subject_id, callback){
+        $.ajax({
+            url: '/api/discussions/?subject_id=' + subject_id + "&is_published=true",
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
+                alert('error');
+            }
+
+        });
+    },
+
+    createPreviewDiscussion: function(subject_id, vision, callback){
+        $.ajax({
+            url: '/api/discussions/',
+            type: "POST",
+            async: true,
+            data: {"subject_id": subject_id, "vision_text": vision},
+            success: function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
+                alert('error');
+            }
+        });
+    },
+
+    createDiscussion: function(subject_id, vision, callback){
+        $.ajax({
+            url: '/api/discussions/',
+            type: "POST",
+            async: true,
+            data: {"subject_id": subject_id, "vision_text": vision, "is_published": true},
+            success: function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
+                alert(' createDiscussion error');
+            }
+        });
+    },
+
+    diployDiscussion: function(created_discussion_id, callback){
+        $.ajax({
+            url: '/api/discussions/' + created_discussion_id,
+            type: "PUT",
+            async: true,
+            success: function () {
+                callback(null);
+                console.log("item information inserted to discussion shopping cart");
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError);
+                alert('error');
+            }
+        });
+    },
+
+    addInfoItemToDiscussionShoppingCart: function(info_item_id, created_discussion_id){
+        $.ajax({
+            url: '/api/discussions_shopping_cart/' + info_item_id,
+            type: "PUT",
+            async: true,
+            data: {"discussion_id": created_discussion_id},
+            success: function () {
+                console.log("item information inserted to discussion shopping cart");
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('error');
+            }
+        });
+    },
+
+    deleteInfoItemFromDiscussionShoppingCart: function(info_item_id, created_discussion_id){
+        $.ajax({
+            url: '/api/discussions_shopping_cart/' + info_item_id + '/?discussion_id=' + created_discussion_id,
+            type: "DELETE",
+            async: true,
+            success: function () {
+                console.log("item information inserted to discussion shopping cart");
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('error');
+            }
+        });
+    }
 }

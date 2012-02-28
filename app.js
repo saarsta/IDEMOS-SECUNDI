@@ -12,7 +12,10 @@ var express = require('express'),
     UserResource = require('./model/UserResources.js'),
     InformationItemResource = require('./model/InformationItemResource.js'),
     ShoppingCartResource = require('./model/ShoppingCartResource'),
+    DiscussionShoppingCartResource = require('./model/DiscussionShoppingCartResource'),
     SubjectResource = require('./model/SubjectResource');
+    DiscussionResource = require('./model/DiscussionResource.js');
+    PostResource = require('./model/PostResource.js')
 
 var app = module.exports = express.createServer();
 var account = require('./routes/account');
@@ -103,7 +106,7 @@ app.configure(function(){
 
     var DONT_NEED_LOGIN_PAGES = [/^\/images/,/^\/css/, /stylesheets\/style.css/,/favicon.ico/,/account\/login/,/account\/register/,
         /facebookconnect.html/, /account\/afterSuccessFbConnect/,/account\/facebooklogin/,
-        /api\/subjects/,/^\/admin/];//TODO - change it to global
+        /api\/subjects/,/^\/admin/, /^\/api\//];//TODO - change it to global
 
     app.use(account.auth_middleware);
     app.use(function(req, res, next){
@@ -272,6 +275,7 @@ app.get('/needlogin', function(req,res){});
 app.get('/account/logout', account.logout);
 app.get('/account/meida',infoAndMeasures.meidaInit);
 app.get('/account/selectedSubjectPage', selectedSubjectPage.subjectPageInit);
+app.get('/account/createDiscussion', selectedSubjectPage.discussionInit);
 
 
 //app.post('/account/afterSuccessFbConnect', account.fb_connect);
@@ -314,7 +318,10 @@ var rest_api = new mongoose_resource.Api('api',app);
 rest_api.register_resource('users',new UserResource());
 rest_api.register_resource('information_items',new InformationItemResource());
 rest_api.register_resource('shopping_cart',new ShoppingCartResource());
+rest_api.register_resource('discussions_shopping_cart',new DiscussionShoppingCartResource());
 rest_api.register_resource('subjects', new SubjectResource());
+rest_api.register_resource('discussions', new DiscussionResource());
+rest_api.register_resource('posts', new PostResource());
 
 app.listen(app.settings.port);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

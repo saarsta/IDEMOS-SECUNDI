@@ -1,0 +1,31 @@
+
+
+<h1> Discussion about <%=subject_name%> subject</h1>
+        
+<div class="create_discussion">
+    <textarea class="vision"> vision </textarea>
+    <br />
+    <textarea class="first_post"> first post </textarea>
+</div>
+
+<button class="preview_btn"> preview </button>
+<br />
+<button class="create_btn"> create </button>
+
+<br />
+
+<div class="shopping_cart panel">
+    <p> SHOPPONG CART </p>
+
+</div>
+
+<script src="http://www.google.com/jsapi"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/jquery-ui.min.js"></script>
+<script src="/javascripts/db.js"></script>
+<script src="/javascripts/discussion.js"></script>
+<script type="text/javascript">
+    $(function() {
+        loadDiscussionPage("<%=subject_id%>");
+    });
+</script>

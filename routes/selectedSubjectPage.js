@@ -13,3 +13,11 @@ exports.subjectPageInit = function(req, res){
         subject_name: req.query.subject_name});
 
 }
+
+exports.discussionInit = function(req, res){
+
+    res.render('createDiscussion.ejs',{title:'discussionInit.ejs', subject_id: req.query.subject_id,
+        subject_name: req.query.subject_name});
+
+}
+

@@ -1,8 +1,8 @@
 /**
  * Created by JetBrains WebStorm.
  * User: saar
- * Date: 22/02/12
- * Time: 15:00
+ * Date: 26/02/12
+ * Time: 15:57
  * To change this template use File | Settings | File Templates.
  */
 
@@ -33,14 +33,14 @@ var items = {
                     });
                     //////////////////////////////////////////////////////////////
                 }else{
-                           console.log('information item is already in shopping cart');
-                     }
-                });
+                    console.log('information item is already in shopping cart');
+                }
+            });
         });
 
         item.find('button.remove').click(function() {
             console.log("in remove");
-                   db_functions.dbDeleteInfoItemFromShoppingCart(data._id);
+            db_functions.dbDeleteInfoItemFromShoppingCart(data._id);
             $(this).parent('.item').remove();
         });
 
@@ -61,81 +61,73 @@ var items = {
 }
 
 
-var subject_id,
-    subject_name;
+var user_shopping_cart;
+var created_discussion_id = null;
 
-function loadSelectedSubjectPage(id, name) {
-    subject_id = id;
-    subject_name = name;
+function loadDiscussionPage(data){
 
+    var subject_id = data;
+    var vision,
+        first_post;
 
+    var user_Shopping_cart;
     db_functions.getUserShopingCart(function(data){
-
+        user_Shopping_cart = data;
         for (var i in data.objects) {
             var item = items.add(data.objects[i], "shopping_cart");
             items.changeButton(item);
         }
     });
 
-    $.ajax({
+    $(".preview_btn").live("click", function(){
+        console.log("preview_button");
+        console.log(user_Shopping_cart);
 
-        url: '/api/information_items/?subject_id='+subject_id,
-        type: "GET",
-        async: true,
-        success: function (data) {
-            console.log(data);
-            console.log(JSON.stringify(data));
+        vision = $(".vision").val();
+        first_post = $(".first_post").val();
 
-            for (var i in data.objects){
-                items.add(data.objects[i], "info_items_of_subject");
+        db_functions.createPreviewDiscussion(subject_id, vision, function(err, data){
+            if (err){
+
             }
-        },
+            else{
 
-        error: function (xhr, ajaxOptions, thrownError) {
-            alert('error');
-        }
-    });
+                created_discussion_id = data._id;
+                if ($.trim(first_post) != ""){
 
-
-
-    $('.btn_look').live("click", function(){
-        var key_words = $("#look_for_keywords").val();
-        console.log("button clicked, key words are: " + key_words);
-        $('.keys').html('');
-
-        db_functions.getInfoItemsOfSubjectByKeywords(key_words, subject_id, function didSucceed(flag, data){
-
-            if (flag){
-
-                $(".info_items_of_subject ").html("");
-
-                for (var i in data.objects) {
-                    var item = items.add(data.objects[i], "info_items_of_subject");
-                    items.changeButton(item);
+//                db_functions.addPostToDiscussion();
                 }
             }
         });
-
     });
 
-    $('.btn_look_for_discussions').live("click", function(){
-        console.log("button btn_look_for_discussions clicked");
+    $(".create_btn").live("click", function(){
 
-        db_functions.getDiscussionsBySubject(subject_id, function displayDiscussions(err, data){
+        if (!created_discussion_id){
 
-            if (err){
-                console.log(err);
-            }else{
+            db_functions.createDiscussion(subject_id, vision, function(err, data){
+                if (err){
+                }else{
+                    console.log("discussion was created");
+                    for (var i in user_Shopping_cart.objects){
+                        db_functions.addInfoItemToDiscussionShoppingCart(user_Shopping_cart.objects[i]._id, data._id);
+                    }
+                    alert("discussion created!");
+                }
+            });
+        }else{
+            db_functions.diployDiscussion(created_discussion_id, function(err){
+                if (err){
+                }
+                else{
+                    console.log("discussion was diployed");
+                    for (var i in user_Shopping_cart.objects){
+                        db_functions.addInfoItemToDiscussionShoppingCart(user_Shopping_cart.objects[i]._id, data._id);
+                    }
 
-//               console.log(data);
-            }
-        });
-
-    });
-
-    $('.reality_btn').live("click", function(){
-        window.location.replace("/account/createDiscussion?subject_id=" + subject_id + '&subject_name=' + subject_name);
+                    alert("discussion created!");
+                }
+            });
+        }
     });
 }
-
-
