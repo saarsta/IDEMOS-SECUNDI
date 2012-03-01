@@ -1,20 +1,18 @@
 
 
+
+
 <h1> Discussion about <%=subject_name%> subject</h1>
-        
-<div class="create_discussion">
-    <textarea class="title"> title </textarea>
+
+<div class="discussion_content">
+    <textarea rows="7" cols="20" class="title"> </textarea>
     <br />
-    <textarea class="vision"> vision </textarea>
-    <br />
-    <textarea class="first_post"> first post </textarea>
+    <textarea rows="7" cols="20" class="vision"> </textarea>
 </div>
 
-<button class="preview_btn"> preview </button>
-<br />
-<button class="create_btn"> create </button>
+<div class="posts color panel">
 
-<br />
+</div>
 
 <div class="shopping_cart panel">
     <p> SHOPPONG CART </p>
@@ -25,9 +23,9 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/jquery-ui.min.js"></script>
 <script src="/javascripts/db.js"></script>
-<script src="/javascripts/createDiscussion.js"></script>
+<script src="/javascripts/discussionPage.js"></script>
 <script type="text/javascript">
     $(function() {
-        loadCreateDiscussionPage("<%=subject_id%>");
+        laodDiscussionPage("<%=discussion_id%>");
     });
 </script>

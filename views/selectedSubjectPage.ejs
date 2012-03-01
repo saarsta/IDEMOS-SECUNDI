@@ -6,6 +6,18 @@
 </div>
 
 <div>
+    <FORM class="active_discussions"
+            ACTION="return discussions.onSubmit(this.gourl)"
+            METHOD=POST onSubmit="return discussions.onSubmit(this.gourl)">
+        <SELECT NAME="gourl">
+            <OPTION VALUE="">Choose a Discussion... </OPTION>
+        </SELECT>
+
+        <INPUT TYPE=SUBMIT VALUE="Go">
+    </FORM>
+</div>
+
+<div>
     <button type="submit" class="btn_look_for_discussions">look for discussions</button>
 </div>
 

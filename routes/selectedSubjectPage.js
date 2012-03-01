@@ -14,9 +14,16 @@ exports.subjectPageInit = function(req, res){
 
 }
 
-exports.discussionInit = function(req, res){
+exports.createDiscussionPageInit = function(req, res){
 
     res.render('createDiscussion.ejs',{title:'discussionInit.ejs', subject_id: req.query.subject_id,
+        subject_name: req.query.subject_name});
+
+}
+
+exports.discussionPageInit = function(req, res){
+
+    res.render('discussionPage.ejs',{title:'discussionPageInit.ejs', discussion_id: req.query.discussion_id, subject_id: req.query.subject_id,
         subject_name: req.query.subject_name});
 
 }

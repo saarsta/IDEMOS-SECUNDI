@@ -150,9 +150,9 @@ var db_functions = {
         });
     },
 
-    getDiscussionsBySubject: function(subject_id, callback){
+    getDiscussionById: function(discussion_id, callback){
         $.ajax({
-            url: '/api/discussions/?subject_id=' + subject_id + "&is_published=true",
+            url: '/api/discussions/'+ discussion_id /*+ "&is_published=true"  i check it in the server - if isnt published only creator can sea it*/,
             type: "GET",
             async: true,
             success: function (data) {
@@ -169,12 +169,30 @@ var db_functions = {
         });
     },
 
+    getDiscussionsBySubject: function(subject_id, callback){
+        $.ajax({
+            url: '/api/discussions/?subject_id=' + subject_id + "&is_published=true",
+            type: "GET",
+            async: true,
+            success: function (data) {
+//                console.log(data);
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
+                alert('error');
+            }
+
+        });
+    },
+
     createPreviewDiscussion: function(subject_id, vision, callback){
         $.ajax({
             url: '/api/discussions/',
             type: "POST",
             async: true,
-            data: {"subject_id": subject_id, "vision_text": vision},
+                data: {"subject_id": subject_id, "vision_text": vision},
             success: function (data) {
                 console.log(data);
                 callback(null, data);
@@ -187,12 +205,13 @@ var db_functions = {
         });
     },
 
-    createDiscussion: function(subject_id, vision, callback){
+    createDiscussion: function(subject_id, vision, title, callback){
+        console.log('data: {"subject_id": subject_id, "vision_text": vision, "title": title, "is_published": true},');
         $.ajax({
             url: '/api/discussions/',
             type: "POST",
             async: true,
-            data: {"subject_id": subject_id, "vision_text": vision, "is_published": true},
+            data: {"subject_id": subject_id, "vision_text": vision, "title": title, "is_published": true},
             success: function (data) {
                 console.log(data);
                 callback(null, data);
@@ -222,6 +241,25 @@ var db_functions = {
         });
     },
 
+    getDiscussionShoppingCart: function(discussion_id, callback){
+
+        $.ajax({
+            url: '/api/discussions_shopping_cart?discussion_id=' + discussion_id,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
+                alert('error');
+            }
+
+        });
+    } ,
+
     addInfoItemToDiscussionShoppingCart: function(info_item_id, created_discussion_id){
         $.ajax({
             url: '/api/discussions_shopping_cart/' + info_item_id,
@@ -249,6 +287,42 @@ var db_functions = {
 
             error: function (xhr, ajaxOptions, thrownError) {
                 alert('error');
+            }
+        });
+    },
+
+    getPostByDiscussion: function(discussion_id, callback){
+        $.ajax({
+            url: '/api/posts?discussion_id=' + discussion_id,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
+                alert('get Posts error');
+            }
+        });
+    },
+
+    addPostTodiscussion: function(discussion_id, post_content, callback){
+
+        $.ajax({
+            url: '/api/posts/',
+            type: "POST",
+            async: true,
+            data: {"discussion_id": discussion_id, "text": post_content},
+            success: function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
+                alert('create Post error');
             }
         });
     }

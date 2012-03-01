@@ -19,7 +19,7 @@ util.inherits(Authoriztion,resources.Authorization);
 
 Authoriztion.prototype.limit_object_list = function(req, query, callback){
 
-    var id = req.query.discussions;
+    var id = req.query.discussion_id;
     query.where('discussions', id);
     callback(null, query);
 };

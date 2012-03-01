@@ -64,10 +64,11 @@ var items = {
 var user_shopping_cart;
 var created_discussion_id = null;
 
-function loadDiscussionPage(data){
+function loadCreateDiscussionPage(data){
 
     var subject_id = data;
     var vision,
+        title,
         first_post;
 
     var user_Shopping_cart;
@@ -83,19 +84,18 @@ function loadDiscussionPage(data){
         console.log("preview_button");
         console.log(user_Shopping_cart);
 
+        title = $(".title").val();
         vision = $(".vision").val();
         first_post = $(".first_post").val();
 
-        db_functions.createPreviewDiscussion(subject_id, vision, function(err, data){
+        db_functions.createPreviewDiscussion(subject_id, vision,title, function(err, data){
             if (err){
 
             }
             else{
-
                 created_discussion_id = data._id;
                 if ($.trim(first_post) != ""){
-
-//                db_functions.addPostToDiscussion();
+                     db_functions.addPostTodiscussion(created_discussion_id, first_post, function(err, data ){});
                 }
             }
         });
@@ -103,16 +103,31 @@ function loadDiscussionPage(data){
 
     $(".create_btn").live("click", function(){
 
+        title = $(".title").val();
+        vision = $(".vision").val();
+        first_post = $(".first_post").val();
+
         if (!created_discussion_id){
 
-            db_functions.createDiscussion(subject_id, vision, function(err, data){
+            db_functions.createDiscussion(subject_id, vision, title, function(err, data){
                 if (err){
                 }else{
+                    created_discussion_id = data._id;
                     console.log("discussion was created");
                     for (var i in user_Shopping_cart.objects){
-                        db_functions.addInfoItemToDiscussionShoppingCart(user_Shopping_cart.objects[i]._id, data._id);
+                        db_functions.addInfoItemToDiscussionShoppingCart(user_Shopping_cart.objects[i]._id, created_discussion_id);
                     }
                     alert("discussion created!");
+
+                    if ($.trim(first_post) != ""){
+                        db_functions.addPostTodiscussion(created_discussion_id, first_post, function(err, data){
+                            if (err){
+
+                            }else{
+                                console.log(data);
+                            }
+                        });
+                    }
                 }
             });
         }else{
@@ -124,7 +139,6 @@ function loadDiscussionPage(data){
                     for (var i in user_Shopping_cart.objects){
                         db_functions.addInfoItemToDiscussionShoppingCart(user_Shopping_cart.objects[i]._id, data._id);
                     }
-
                     alert("discussion created!");
                 }
             });

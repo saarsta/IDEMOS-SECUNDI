@@ -44,9 +44,9 @@ var Schemas  = exports.Schemas = {
         age: {type: Number, min: 0},
         discussions: [{type: Schema.ObjectId, ref: 'Discussion'}],//this is only relevant when cycle is on, so if there is
         //a cycle schema i might change it
-//        user_name: String,
         password: String,
-        md5: String
+        md5: String,
+        tokens: {type: Number, 'default': 5}
     },
 
     InformationItem: {
@@ -73,17 +73,21 @@ var Schemas  = exports.Schemas = {
 
     Discussion: {
         subject_id: [{type: Schema.ObjectId, ref: 'Subject', index: true, required:true}],
+        subject_name: String,
         creator_id: {type: Schema.ObjectId, ref: 'User'},
         first_name: String,
         last_name: String,
-//        tag_id: String,
+//      tag_id: String,
+        title: String,
         vision_text: String,
         is_cycle:{type:Boolean,'default':false},
         tags: [String],
         users: [{type: Schema.ObjectId, ref: 'User'}],
         is_visible:{type:Boolean,'default':true},
         is_published:{type:Boolean,'default':false},
-        grade: Number
+        grade: Number,
+        evaluate_counter: {type: Number, 'default': 1},
+        grade_sum: {type: Number, 'default': 0}
     },
 
     Post: {
@@ -91,25 +95,34 @@ var Schemas  = exports.Schemas = {
         creator_id: {type: Schema.ObjectId, ref: 'User'},
         first_name: String,
         last_name: String,
+        username: String,
         text: String,
+        creation_date:{type:Date,'default':Date.now},
+        tokens: {type: Number, 'default': 0}
+    },
+
+    Vote: {
+        user_id: {type: Schema.ObjectId, ref: 'User', index: true, required: true},
+        post_id: {type: Schema.ObjectId, ref: 'Post', index: true, required: true},
+        tokens: Number,
+        method: {type: String, "enum": ['add', 'remove']},
         creation_date:{type:Date,'default':Date.now}
+    },
+
+    Grade: {
+        user_id: {type: Schema.ObjectId, ref: 'User', index: true, required: true},
+        discussion_id: {type: Schema.ObjectId, ref: 'Discussion', index: true, required: true},
+        evaluation_grade: {type: Number, min: 0, max: 10},
+        creation_date: {type:Date,'default':Date.now}
     }
 };
 /*,
 
 //  ChangeSuggestions: new Schema({})
-
-
-
-
-
-
-
     //Cycle
     //Peula
      */
 //};
-
 
 
 var Models = module.exports = {
@@ -118,5 +131,7 @@ var Models = module.exports = {
     Subject:mongoose.model('Subject', new Schema(Schemas.Subject)),
     Discussion: mongoose.model('Discussion', new Schema(Schemas.Discussion)),
     Post: mongoose.model('Post', new Schema(Schemas.Post)),
+    Vote: mongoose.model('Vote', new Schema(Schemas.Vote)),
+    Grade: mongoose.model('Grade', new Schema(Schemas.Grade)),
     Schemas:Schemas
 };

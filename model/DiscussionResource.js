@@ -49,10 +49,10 @@ var DiscussionResource = module.exports = function(){
     this.authentication = new common.SessionAuthentication();
     this.filtering = {subject_id: null, users: null, is_published:null};
     this.authorization = new Authoriztion();
-   /* this.default_query = function(query)
+    this.default_query = function(query)
     {
-        return query.where('is_published',true).sort('creation_date','descending');
-    };*/
+        return query.sort('creation_date','descending');
+    };
 
 }
 

@@ -60,6 +60,47 @@ var items = {
     }
 }
 
+var discussions = {
+        add: function(data){
+            var item =
+                $('<OPTION VALUE="/account/discussion?discussion_id=' + data._id
+                    +'&subject_name=' + data.subject_name + '">'
+                    + data.title + '</OPTION>')
+
+                .appendTo(".active_discussions select");
+        },
+
+        onSubmit: function(mySel)
+        {
+            var myWin, myVal;
+            myVal = mySel.options[mySel.selectedIndex].value;
+            if(myVal)
+            {
+                if(mySel.form.target)myWin = parent[mySel.form.target];
+                else myWin = window;
+                if (! myWin) return true;
+                myWin.location = myVal;
+            }
+            return false;
+        }
+}
+
+/*
+function dropdown(mySel)
+{
+    var myWin, myVal;
+    myVal = mySel.options[mySel.selectedIndex].value;
+    if(myVal)
+    {
+        if(mySel.form.target)myWin = parent[mySel.form.target];
+        else myWin = window;
+        if (! myWin) return true;
+        myWin.location = myVal;
+    }
+    return false;
+}
+*/
+
 
 var subject_id,
     subject_name;
@@ -75,6 +116,20 @@ function loadSelectedSubjectPage(id, name) {
             var item = items.add(data.objects[i], "shopping_cart");
             items.changeButton(item);
         }
+    });
+
+    db_functions.getDiscussionsBySubject(subject_id, function(err, data){
+        if (err){
+            alert("error get discussion by subject");
+        }else{
+            console.log(subject_id);
+            console.log(data);
+            for (var i in data.objects){
+                console.log(data.objects[i]);
+                discussions.add(data.objects[i]);
+            }
+        }
+
     });
 
     $.ajax({
@@ -117,6 +172,7 @@ function loadSelectedSubjectPage(id, name) {
         });
 
     });
+
 
     $('.btn_look_for_discussions').live("click", function(){
         console.log("button btn_look_for_discussions clicked");

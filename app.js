@@ -15,7 +15,9 @@ var express = require('express'),
     DiscussionShoppingCartResource = require('./model/DiscussionShoppingCartResource'),
     SubjectResource = require('./model/SubjectResource');
     DiscussionResource = require('./model/DiscussionResource.js');
-    PostResource = require('./model/PostResource.js')
+    PostResource = require('./model/PostResource.js');
+    VoteResource = require('./model/VoteResource');
+    GradeResource = require('./model/GradeResource');
 
 var app = module.exports = express.createServer();
 var account = require('./routes/account');
@@ -269,13 +271,19 @@ app.get('/insertDataBase',function(req, res){
 
 app.post('/account/register',account.register);
 app.all(account.LOGIN_PATH, account.login);
+app.get('/signup', function(req, res){
+    res.render('signup.ejs',{title:'Signup'});
+});
 app.get('/account/facebooklogin', account.fb_connect);
 app.get('/account/afterSuccessFbConnect2', function(req,res){});
 app.get('/needlogin', function(req,res){});
 app.get('/account/logout', account.logout);
 app.get('/account/meida',infoAndMeasures.meidaInit);
 app.get('/account/selectedSubjectPage', selectedSubjectPage.subjectPageInit);
-app.get('/account/createDiscussion', selectedSubjectPage.discussionInit);
+app.get('/account/createDiscussion', selectedSubjectPage.createDiscussionPageInit);
+app.get('/account/discussion', selectedSubjectPage.discussionPageInit);
+
+
 
 
 //app.post('/account/afterSuccessFbConnect', account.fb_connect);
@@ -322,6 +330,8 @@ rest_api.register_resource('discussions_shopping_cart',new DiscussionShoppingCar
 rest_api.register_resource('subjects', new SubjectResource());
 rest_api.register_resource('discussions', new DiscussionResource());
 rest_api.register_resource('posts', new PostResource());
+rest_api.register_resource('votes', new VoteResource());
+rest_api.register_resource('grades', new GradeResource());
 
 app.listen(app.settings.port);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
