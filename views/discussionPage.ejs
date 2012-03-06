@@ -1,13 +1,23 @@
 
-
-
-
 <h1> Discussion about <%=subject_name%> subject</h1>
 
 <div class="discussion_content">
-    <textarea rows="7" cols="20" class="title"> </textarea>
+    <div class="grade">
+        <textarea id="discussion_grade"> </textarea>
+        <br />
+        <input type="text" placeholder="grade the discussion..."> </input>
+        <button id="btn_grade">grade the discussion</button>
+    </div>
+
+    <textarea disabled="disabled" rows="7" cols="20" class="title"> </textarea>
     <br />
-    <textarea rows="7" cols="20" class="vision"> </textarea>
+    <textarea disabled="disabled" rows="7" cols="20" class="vision"> </textarea>
+    <br />
+    <input type="text" placeholder="Write a suggestion..."> </input>
+    <button>add</button>
+    <br />
+    <input type="text" placeholder="Write a comment..."> </input>
+    <button>add</button>
 </div>
 
 <div class="posts color panel">

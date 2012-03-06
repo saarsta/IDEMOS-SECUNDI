@@ -28,3 +28,13 @@ exports.discussionPageInit = function(req, res){
 
 }
 
+exports.discussionPreviewPageInit = function(req, res){
+
+    res.render('discussionPreviewPage.ejs',{title:'discussionPreviewPageInit.ejs', discussion_id: req.query.discussion_id, subject_id: req.query.subject_id,
+        subject_name: req.query.subject_name});
+
+}
+
+
+
+

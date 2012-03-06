@@ -37,12 +37,23 @@ Authoriztion.prototype.limit_object = function(req,object,callback){
 
 Authoriztion.prototype.edit_object = function(req,object,callback){
     if(req.session.auth.user){
+//        var email = req.session.auth.user.email;
+        var user_id = req.session.user.user_id;
+
+//        object.where('email', email);
+        object.where('_id', user_id);
+
+        callback(null, object);
+    }else{
+        callback("Error: User Is Not Autthenticated", null);
+    }
+   /* if(req.session.auth.user){
         var email = req.session.auth.user.email;
         object.where('email', email);
         callback(null, object);
     }else{
         callback("Error: User Is Not Autthenticated", null);
-    }
+    }*/
 };
 
 
