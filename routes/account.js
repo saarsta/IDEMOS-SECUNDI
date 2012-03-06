@@ -33,7 +33,7 @@ var DEFAULT_LOGIN_REDIRECT = '';
 
 var LOGIN_PATH = '/account/login';
 
-var DONT_NEED_LOGIN_PAGES = [/^\/images/, /^\/css/, /stylesheets\/style.css/, /favicon.ico/, /account\/login/, /account\/register/,
+var DONT_NEED_LOGIN_PAGES = [/^\/images/,/^\/static/, /^\/css/, /stylesheets\/style.css/, /favicon.ico/, /account\/login/, /account\/register/,
     /facebookconnect.html/, /account\/afterSuccessFbConnect/, /account\/facebooklogin/,
     /api\/subjects/, /^\/admin/, /^\/api\//];//regex
 

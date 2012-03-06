@@ -64,9 +64,10 @@ script(type='text/javascript')
       }
     });
   });
-
+!= renderedHead
 div#content.container_16.clearfix
-  div.grid_16.clearboth!= renderedDocument
+  div.grid_16.clearboth
+    form#document(enctype="multipart/form-data" )!= renderedDocument
   div.grid_16.clearboth
     p.submit
       input#saveButton(type='submit', value='Save')
@@ -76,4 +77,4 @@ div#content.container_16.clearfix
           span(style='margin-left:20px;')
             input#deleteButton(type='button', value='Delete')
 div#foot
-  a(href='http://mongoose-admin.com') Mongoose-Admin
+  span Mongoose-Admin

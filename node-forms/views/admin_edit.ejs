@@ -1,0 +1,15 @@
+<html>
+<head>
+    <title>Spilon Admin</title>
+</head>
+<body>
+<% if(status == 'done' ) { %>
+    Saved
+<% } %>
+<form method='POST' action='<%= action %>'>
+    <input type="hidden" name='admin_form_method' value='<%= method %>'/>
+    <%- form.render_str() %>
+    <button type='submit' name="">Save</button>
+</form>
+</body>
+</html>
