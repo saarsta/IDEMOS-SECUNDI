@@ -192,7 +192,8 @@ exports.fb_connect = function (req, res) {
 
                     if (!is_user_in_db) {
                         createNewUser(user_detailes, access_token, function (_id) {
-                            req.session.auth.user._id = _id;
+                            req.session.user_id = _id;
+//                            req.session.auth.user._id = _id; i can delete this
                             req.session.save(function (err, object) {
                                 if (err != null) {
                                     console.log(err);

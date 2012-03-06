@@ -11,12 +11,12 @@ var mongoose = require("mongoose"),
     ObjectId = Schema.ObjectID;
 
 /*, function(err){
-    if (err){
-        console.log(err);
-        throw err;
-    }
+ if (err){
+ console.log(err);
+ throw err;
+ }
 
-);*/
+ );*/
 
 var MinLengthValidator = function(min)
 {
@@ -30,6 +30,8 @@ var RegexValidator = function(regex)
 
 var EmailValidator = RegexValidator(/[^@]+@[^@]+/);
 var TestEmailValidator = RegexValidator(/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/);
+
+
 
 var Schemas  = exports.Schemas = {
     User: {
@@ -86,19 +88,22 @@ var Schemas  = exports.Schemas = {
         is_visible:{type:Boolean,'default':true},
         is_published:{type:Boolean,'default':false},
         grade: Number,
-        evaluate_counter: {type: Number, 'default': 1},
+        evaluate_counter: {type: Number, 'default': 0},
         grade_sum: {type: Number, 'default': 0}
     },
 
-    Post: {
+    PostOrSuggestion:{
         discussion_id: {type: Schema.ObjectId, ref: 'Discussion', index: true,  required:true},
         creator_id: {type: Schema.ObjectId, ref: 'User'},
         first_name: String,
         last_name: String,
         username: String,
-        text: String,
         creation_date:{type:Date,'default':Date.now},
-        tokens: {type: Number, 'default': 0}
+        tokens: {type: Number, 'default': 0},
+        is_change_suggestion: {type:Boolean,'default':false},
+        is_comment_on_vision: {type:Boolean,'default':false},
+        ref_to_post_id: {type: Schema.ObjectId, ref: 'Post', index: true},
+        post_price: {type: Number, 'default': 0}//how many tokens for creating post
     },
 
     Vote: {
@@ -116,13 +121,37 @@ var Schemas  = exports.Schemas = {
         creation_date: {type:Date,'default':Date.now}
     }
 };
+
+/*
+ function clone_extend(original,extension)
+ {
+ for(var key in original)
+ if(!extension[key]) extension[key] = original[key];
+ return extension;
+ }
+
+ Schemas.Post = clone_extend(Schemas.PostOrSuggestion,{
+ text: String,
+ is_change_suggestion: {type:Boolean,'default':false},
+ is_comment_on_vision: {type:Boolean,'default':false},
+ ref_to_post_id: {type: Schema.ObjectId, ref: 'Post', index: true}
+ });
+
+ //i need to put it outside the schema
+ Schemas.Suggestion = clone_extend(Schemas.PostOrSuggestion,{
+ is_change_suggestion: {type:Boolean,'default':true},
+ parts:[{start:Number,end:Number,text:String}]
+ });
+ */
+
 /*,
 
-//  ChangeSuggestions: new Schema({})
-    //Cycle
-    //Peula
-     */
+ //  ChangeSuggestions: new Schema({})
+ //Cycle
+ //Peula
+ */
 //};
+
 
 
 var Models = module.exports = {
@@ -130,8 +159,22 @@ var Models = module.exports = {
     InformationItem:mongoose.model('InformationItem',new Schema(Schemas.InformationItem)),
     Subject:mongoose.model('Subject', new Schema(Schemas.Subject)),
     Discussion: mongoose.model('Discussion', new Schema(Schemas.Discussion)),
-    Post: mongoose.model('Post', new Schema(Schemas.Post)),
+    Post: mongoose.model('PostOrSuggestion', new Schema(Schemas.Post)),
+    Suggestion: mongoose.model('PostOrSuggestion', new Schema(Schemas.Suggestion)),
     Vote: mongoose.model('Vote', new Schema(Schemas.Vote)),
     Grade: mongoose.model('Grade', new Schema(Schemas.Grade)),
     Schemas:Schemas
 };
+
+//var old_post_find = Models.Post.find;
+//Models.Post.find = function()
+//{
+//    var params = arguments.length ? arguments[0] : {};
+//    params['is_change_suggestion'] = false;
+//    if(arguments.length)
+//        arguments[0] = params;
+//    else
+//        arguments = [params];
+//    return old_post_find.apply(null,arguments);
+//};
+

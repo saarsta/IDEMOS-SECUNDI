@@ -187,12 +187,12 @@ var db_functions = {
         });
     },
 
-    createPreviewDiscussion: function(subject_id, vision, callback){
+    createPreviewDiscussion: function(subject_id, vision, title, callback){
         $.ajax({
             url: '/api/discussions/',
             type: "POST",
             async: true,
-                data: {"subject_id": subject_id, "vision_text": vision},
+                data: {"subject_id": subject_id, "title": title, "vision_text": vision},
             success: function (data) {
                 console.log(data);
                 callback(null, data);
@@ -205,13 +205,13 @@ var db_functions = {
         });
     },
 
-    createDiscussion: function(subject_id, vision, title, callback){
+    createDiscussion: function(subject_id, subject_name, vision, title, callback){
         console.log('data: {"subject_id": subject_id, "vision_text": vision, "title": title, "is_published": true},');
         $.ajax({
             url: '/api/discussions/',
             type: "POST",
             async: true,
-            data: {"subject_id": subject_id, "vision_text": vision, "title": title, "is_published": true},
+            data: {"subject_id": subject_id, "subject_name": subject_name, "vision_text": vision, "title": title, "is_published": true},
             success: function (data) {
                 console.log(data);
                 callback(null, data);
@@ -260,17 +260,19 @@ var db_functions = {
         });
     } ,
 
-    addInfoItemToDiscussionShoppingCart: function(info_item_id, created_discussion_id){
+    addInfoItemToDiscussionShoppingCart: function(info_item_id, created_discussion_id, callback){
         $.ajax({
             url: '/api/discussions_shopping_cart/' + info_item_id,
             type: "PUT",
             async: true,
             data: {"discussion_id": created_discussion_id},
             success: function () {
+                callback(null);
                 console.log("item information inserted to discussion shopping cart");
             },
 
             error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError);
                 alert('error');
             }
         });
@@ -308,7 +310,7 @@ var db_functions = {
         });
     },
 
-    addPostTodiscussion: function(discussion_id, post_content, callback){
+    addPostToDiscussion: function(discussion_id, post_content, callback){
 
         $.ajax({
             url: '/api/posts/',
@@ -321,9 +323,50 @@ var db_functions = {
             },
 
             error: function (xhr, ajaxOptions, thrownError) {
+                console.log(thrownError)
                 callback(thrownError, null);
                 alert('create Post error');
             }
         });
+    },
+
+    //this post/change_suggestion has ref to a post/suggestion/vision
+    addCommentPostToDiscussion: function(discussion_id, post_content, ref_to_post_id, is_comment_on_vision, callback){
+
+        $.ajax({
+            url: '/api/posts/',
+            type: "POST",
+            async: true,
+            data: {"discussion_id": discussion_id, "text": post_content, "ref_to_post_id": ref_to_post_id, "is_comment_on_vision": is_comment_on_vision},
+            success: function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
+                alert('create Post error');
+            }
+        });
+    },
+
+    addDiscussionGrade: function(discussion_id, grade, callback){
+        $.ajax({
+            url: '/api/Grades/',
+            type: "POST",
+            async: true,
+            data: {"discussion_id": discussion_id, "evaluation_grade": grade},
+            success: function (data) {
+                callback(null, data);
+
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
+
+            }
+        });
     }
+
+
 }

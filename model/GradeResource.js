@@ -17,20 +17,41 @@ var Authoriztion = function() {};
 util.inherits(Authoriztion,resources.Authorization);
 
 Authoriztion.prototype.edit_object = function(req,object,callback){
-    /* check if user already grade this discussion */
+    //check if user already grade this discussion
+    var flag = false;
+        models.Grade.find({"discussion_id": object.discussion_id}, function(err, objects){
+        if (err){
+            callback(err, null);
+        }else{
+            for (var i = 0; i < objects.length; i++){
+                if(req.session.user_id == objects[i].user_id){
+                    flag = true;
+                    break;
+                }
+            }
+            if (flag){
+                callback("user already grade this discussion", null);
+            }else{
+                callback(null, object);
+
+            }
+        }
+    })
 };
 
 var GradeResource = module.exports = function(){
 
     GradeResource.super_.call(this,models.Grade);
     this.allowed_methods = ['get','post'];
-//    this.authorization = new Authoriztion();
+    this.authorization = new Authoriztion();
     this.authentication = new common.SessionAuthentication();
     this.filtering = {discussion_id: null};
 }
 
 util.inherits(GradeResource, resources.MongooseResource);
 
+
+//returns the edited discussion object on the callback
 GradeResource.prototype.create_obj = function(req,fields,callback)
 {
     var user_id = req.session.user_id;
@@ -68,7 +89,7 @@ GradeResource.prototype.create_obj = function(req,fields,callback)
                                     callback(err, null)
                                 }
                                 else{
-                                    callback(self.elaborate_mongoose_errors(err),grade_object);
+                                    callback(self.elaborate_mongoose_errors(err),discussion_object);
                                 }
                             })
                         }

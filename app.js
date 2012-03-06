@@ -18,6 +18,7 @@ var express = require('express'),
     PostResource = require('./model/PostResource.js');
     VoteResource = require('./model/VoteResource');
     GradeResource = require('./model/GradeResource');
+    SuggestionResource = require('./model/SuggestionResource')
 
 var app = module.exports = express.createServer();
 var account = require('./routes/account');
@@ -174,66 +175,10 @@ app.configure(function(){
 app.get('/', routes.index);
 app.get('/test/:id?', routes.test);
 app.get('/insertDataBase',function(req, res){
-   /* var user = new Model.User();
-    user.first_name = "saar";
-    user.gender = "male";
-    user.save(function(err){
-        if(err != null)
-        {
-            res.write("error");
-            console.log(err);
-        }else{
-            res.write("done");
-        }
-        res.end();
-    });*/
 
     var subject_names = ['Education', 'Economy', 'Sport', 'News', 'Culture', 'Health', 'Food'];
     var tag_names = ['saar', 'guy', 'gay', 'vill', 'maricon', 'wow', 'yeah'];
 
-   /* for(var i = 0; i < 7; i++ ){
-        var subject = new Models.Subject();
-        subject.name = subject_names[i];
-
-        if ((i % 3) == 1){
-            subject.is_hot = true;
-        }
-        subject.tags = [tag_names[i], tag_names[(i + 2) % 6], tag_names[(i + 5) % 7]];
-        subject.save(function(err){
-            if(err != null)
-            {
-                res.write("error");
-                console.log(err);
-            }else{
-                res.write("done");
-            }
-            res.end();
-        });
-    }*/
-
-
-    /*var information_item_text_field = ['hi', 'bye', 'hello', 'i am', 'gay-ville', 'maricon', 'taanoog'];
-    var information_item_text_field_title = ['test', 'statistics', 'infographic', 'graph'];
-    var subjects_ids = ['4f3cf3868aa4ae9007000003', '4f3cf3868aa4ae9007000004', '4f3cf3868aa4ae9007000005', '4f3cf3868aa4ae9007000006', '4f3cf3868aa4ae9007000007', '4f3cf3868aa4ae9007000008', '4f3cf3868aa4ae9007000009']
-    for(var i = 0; i < 7; i++ ){
-        var information_item = new Models.InformationItem();
-        information_item.text_field = information_item_text_field[i];
-
-        information_item.title = information_item_text_field_title[i%4];
-        information_item.tags = [tag_names[i], tag_names[(i + 2) % 6], tag_names[(i + 5) % 7]];
-        information_item.subject_id = subjects_ids[i];
-        information_item.save(function(err){
-            if(err != null)
-            {
-                res.write("error");
-                console.log(err);
-            }else{
-                res.write("done");
-            }
-            res.end();
-        });
-    }
-*/
     var information_item = new Models.InformationItem();
     information_item.text_field = 'it is really great';
 
@@ -282,6 +227,7 @@ app.get('/account/meida',infoAndMeasures.meidaInit);
 app.get('/account/selectedSubjectPage', selectedSubjectPage.subjectPageInit);
 app.get('/account/createDiscussion', selectedSubjectPage.createDiscussionPageInit);
 app.get('/account/discussion', selectedSubjectPage.discussionPageInit);
+app.get('/account/discussionPreview', selectedSubjectPage.discussionPreviewPageInit);
 
 
 
@@ -332,7 +278,7 @@ rest_api.register_resource('discussions', new DiscussionResource());
 rest_api.register_resource('posts', new PostResource());
 rest_api.register_resource('votes', new VoteResource());
 rest_api.register_resource('grades', new GradeResource());
-
+rest_api.register_resource('suggestions', new SuggestionResource());
 app.listen(app.settings.port);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 

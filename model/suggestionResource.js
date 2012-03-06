@@ -1,6 +1,14 @@
 /**
  * Created by JetBrains WebStorm.
  * User: saar
+ * Date: 05/03/12
+ * Time: 18:12
+ * To change this template use File | Settings | File Templates.
+ */
+
+/**
+ * Created by JetBrains WebStorm.
+ * User: saar
  * Date: 23/02/12
  * Time: 12:03
  * To change this template use File | Settings | File Templates.
@@ -10,9 +18,7 @@ var resources = require('jest'),
     util = require('util'),
     models = require('../models'),
     common = require('./common'),
-
-    POST_PRICE = 1;
-
+    CHANGE_SUGGESTION_PRICE = 2;
 
 
 
@@ -32,13 +38,8 @@ Authoriztion.prototype.edit_object = function(req,object,callback){
             }
             else
             {
-//                if (req.body.is_change_suggestion){
-//                    price = change_suggestion_price;
-//                }else{
-//                    price = post_price;
-//                }
 
-                if (object.tokens >= POST_PRICE){
+                if (object.tokens >= CHANGE_SUGGESTION_PRICE){
                     callback(null, object);
                 }else{
                     callback("Error: Unauthorized - there is not enought tokens", null);
@@ -51,9 +52,9 @@ Authoriztion.prototype.edit_object = function(req,object,callback){
     }
 };
 
-var PostResource = module.exports = function(){
+var SuggestionResource = module.exports = function(){
 
-    PostResource.super_.call(this,models.Post);
+    SuggestionResource.super_.call(this,models.Suggestion);
     this.allowed_methods = ['get','post'];
     this.authorization = new Authoriztion();
     this.authentication = new common.SessionAuthentication();
@@ -65,13 +66,13 @@ var PostResource = module.exports = function(){
 //    this.validation = new resources.Validation();=
 }
 
-util.inherits(PostResource, resources.MongooseResource);
+util.inherits(SuggestionResource, resources.MongooseResource);
 
-PostResource.prototype.create_obj = function(req,fields,callback)
+SuggestionResource.prototype.create_obj = function(req,fields,callback)
 {
     var user_id = req.session.user_id;
     var self = this;
-    var post_object = new self.model();
+    var suggestion_object = new self.model();
 
     models.User.findOne({_id :user_id},function(err,user){
         if(err)
@@ -86,25 +87,23 @@ PostResource.prototype.create_obj = function(req,fields,callback)
 
             for( var field in fields)
             {
-                post_object.set(field,fields[field]);
+                suggestion_object.set(field,fields[field]);
             }
 
-            self.authorization.edit_object(req, post_object,function(err, user_object)
+            self.authorization.edit_object(req, suggestion_object,function(err, user_object)
             {
                 if(err) callback(err);
                 else
                 {
-                    post_object.save(function(err,object)
+                    suggestion_object.save(function(err,suggestion_object)
                     {
-                        //if post created successfuly, take tokens it from the user
+                        //if suggestion created successfuly, take tokens it from the user
                         if (!err){
 
-                            /*if (object.is_change_suggestion){
-                                price = change_suggestion_price;
-                            }*/
-                            user_object.tokens -= POST_PRICE;
+
+                            user_object.tokens -= CHANGE_SUGGESTION_PRICE;
                             user_object.save(function(err, object){
-                                callback(self.elaborate_mongoose_errors(err), post_object);
+                                callback(self.elaborate_mongoose_errors(err), suggestion_object);
                             });
                         }else{
                             callback(self.elaborate_mongoose_errors(err), null);

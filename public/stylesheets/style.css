@@ -17,6 +17,12 @@ a {
     min-width: 200px;
 }
 
+/*.grade {
+    float: none;
+    padding: 10px;
+    min-width: 200px;
+}*/
+
 .form {
     width: 500px;
     padding: 10px;

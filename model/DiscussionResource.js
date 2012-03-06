@@ -32,7 +32,7 @@ Authoriztion.prototype.limit_object_list = Authoriztion.prototype.limit_object =
     }
 };
 
-//seems like it works, but i might need to add the code above to edit_object
+//seems like it works, but i might need to add the code to edit_object
 /*
 Authoriztion.prototype.edit_object = function(req,object,callback){
 
@@ -114,10 +114,6 @@ DiscussionResource.prototype.create_obj = function(req,fields,callback)
             });
         }
     });
-
-    
-    
-
 },
 
 DiscussionResource.prototype.update_obj = function(req,object,callback){
