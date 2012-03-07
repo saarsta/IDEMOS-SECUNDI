@@ -8,7 +8,7 @@
 
 var mongoose = require("mongoose"),
     Schema = mongoose.Schema,
-    ObjectId = Schema.ObjectID;
+    ObjectId = Schema.ObjectId;
 
 /*, function(err){
  if (err){
@@ -44,7 +44,7 @@ var Schemas  = exports.Schemas = {
         email: {type:String, required:true,validate:TestEmailValidator},
         gender: {type: String, "enum": ['male', 'female']},
         age: {type: Number, min: 0},
-        discussions: [{type: Schema.ObjectId, ref: 'Discussion'}],//this is only relevant when cycle is on, so if there is
+        discussions: [{type: ObjectId, ref: 'Discussion'}],//this is only relevant when cycle is on, so if there is
         actions: [{type: Schema.ObjectId, ref: 'Action', index: true}],
         //a cycle schema i might change it
         password: String,
@@ -53,14 +53,14 @@ var Schemas  = exports.Schemas = {
     },
 
     InformationItem: {
-        subject_id: [{type: Schema.objectId, ref: 'Subject', index: true, required:true}],
+        subject_id:{type:[ObjectId],ref:'Subject',index:true,required:true},
         title: {type: String, "enum": ['test', 'statistics', 'infographic', 'graph']},
         text_field: String,
         image_field: {url:String, caption: String, type: {type: String},size: {type: Number, min: 0},
             width: {type: Number, min: 0}, height: {type: Number, min: 0}, data: String},
-        tags: [{type: String, index: true}],
-        users: [{type: Schema.objectId, ref: 'User'}],
-        discussions: [{type: Schema.objectId, ref: 'Discussion', index: true}],
+        tags: {type: [String], index: true},
+        users: {type: [ObjectId], ref: 'User'},
+        discussions: {type: [ObjectId], ref: 'Discussion', index: true},
         is_visible:{type:Boolean,'default':true},
         creation_date:{type:Date,'default':Date.now},
         is_hot:{type:Boolean,'default':false}
@@ -75,9 +75,9 @@ var Schemas  = exports.Schemas = {
     },
 
     Discussion: {
-        subject_id: [{type: Schema.ObjectId, ref: 'Subject', index: true, required:true}],
+        subject_id: [{type: ObjectId, ref: 'Subject', index: true, required:true}],
         subject_name: String,
-        creator_id: {type: Schema.ObjectId, ref: 'User'},
+        creator_id: {type: ObjectId, ref: 'User'},
         first_name: String,
         last_name: String,
 //      tag_id: String,
@@ -85,7 +85,7 @@ var Schemas  = exports.Schemas = {
         vision_text: String,
         is_cycle:{type:Boolean,'default':false},
         tags: [String],
-        users: [{type: Schema.ObjectId, ref: 'User'}],
+        users: [{type: ObjectId, ref: 'User'}],
         followers_count: {type: Number, 'default': 0},
         is_visible:{type:Boolean,'default':true},
         is_published:{type:Boolean,'default':false},
@@ -95,7 +95,6 @@ var Schemas  = exports.Schemas = {
         vision_changes: [{start:Number,end:Number,text:String}]
 
     },
-
     PostOrSuggestion:{
         discussion_id: {type: Schema.ObjectId, ref: 'Discussion', index: true,  required:true},
         creator_id: {type: Schema.ObjectId, ref: 'User'},
@@ -109,16 +108,16 @@ var Schemas  = exports.Schemas = {
     },
 
     Vote: {
-        user_id: {type: Schema.ObjectId, ref: 'User', index: true, required: true},
-        post_id: {type: Schema.ObjectId, ref: 'Post', index: true, required: true},
+        user_id: {type: ObjectId, ref: 'User', index: true, required: true},
+        post_id: {type: ObjectId, ref: 'Post', index: true, required: true},
         tokens: Number,
         method: {type: String, "enum": ['add', 'remove']},
         creation_date:{type:Date,'default':Date.now}
     },
 
     Grade: {
-        user_id: {type: Schema.ObjectId, ref: 'User', index: true, required: true},
-        discussion_id: {type: Schema.ObjectId, ref: 'Discussion', index: true, required: true},
+        user_id: {type: ObjectId, ref: 'User', index: true, required: true},
+        discussion_id: {type: ObjectId, ref: 'Discussion', index: true, required: true},
         evaluation_grade: {type: Number, min: 0, max: 10},
         creation_date: {type:Date,'default':Date.now}
     },

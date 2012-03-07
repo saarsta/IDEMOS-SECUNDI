@@ -11,7 +11,8 @@
 var sys = require('sys'),
     MongooseAdminUser = require('./mongoose_admin_user.js').MongooseAdminUser,
     MongooseAdminAudit = require('./mongoose_admin_audit.js').MongooseAdminAudit,
-    mongoose = require('mongoose');
+    mongoose = require('mongoose'),
+    forms = require('../node-forms/forms');
 
 exports = module.exports = MongooseAdmin;
 exports.version = '0.0.1';
@@ -236,39 +237,71 @@ MongooseAdmin.prototype.getDocument = function(collectionName, documentId, onRea
  *
  * @api public
  */
-MongooseAdmin.prototype.createDocument = function(user, collectionName, params, onReady) {
+MongooseAdmin.prototype.createDocument = function(req,user, collectionName, params, onReady) {
     var self = this;
     var model = this.models[collectionName].model;
-    var document = new model();
-
-    for (field in this.models[collectionName].fields) {
-        if (params[field]) {
-            document[field] = params[field];
-        } else {
-            if (params[field + '_linked_document']) {
-                document[field] = mongoose.Types.ObjectId.fromString(params[field + '_linked_document']);
-            }
+    var form = new forms.MongooseForm(req,{data:params},model);
+    form.is_valid(function(err,valid)
+    {
+        if(err)
+        {
+            onReady(err);
+            return;
         }
-    }
+        if(valid)
+        {
+            form.save(function(err,document)
+            {
+                if (err) {
+                    console.log('Error saving document: ' + err);
+                    onReady(err);
+                } else {
 
-    if (this.models[collectionName].options && this.models[collectionName].options.pre) {
-        document = this.models[collectionName].options.pre(document);
-    }
-
-    document.save(function(err) {
-        if (err) {
-            console.log('Error saving document: ' + err);
-            onReady('Error saving document: ' + err);
-        } else {
-
-            if (self.models[collectionName].options && self.models[collectionName].options.post) {
-                document = self.models[collectionName].options.post(document);
-            }
-            MongooseAdminAudit.logActivity(user, self.models[collectionName].modelName, collectionName, document._id, 'add', null, function(err, auditLog) {
-                onReady(null, document);
+                    if (self.models[collectionName].options && self.models[collectionName].options.post) {
+                        document = self.models[collectionName].options.post(document);
+                    }
+                    MongooseAdminAudit.logActivity(user, self.models[collectionName].modelName, collectionName, document._id, 'add', null, function(err, auditLog) {
+                        onReady(null, document);
+                    });
+                }
             });
         }
+        else
+        {
+            onReady(form.errors,null);
+        }
     });
+
+//    var document = new model();
+//
+//    for (field in this.models[collectionName].fields) {
+//        if (params[field]) {
+//            document[field] = params[field];
+//        } else {
+//            if (params[field + '_linked_document']) {
+//                document[field] = mongoose.Types.ObjectId.fromString(params[field + '_linked_document']);
+//            }
+//        }
+//    }
+//
+//    if (this.models[collectionName].options && this.models[collectionName].options.pre) {
+//        document = this.models[collectionName].options.pre(document);
+//    }
+//
+//    document.save(function(err) {
+//        if (err) {
+//            console.log('Error saving document: ' + err);
+//            onReady('Error saving document: ' + err);
+//        } else {
+//
+//            if (self.models[collectionName].options && self.models[collectionName].options.post) {
+//                document = self.models[collectionName].options.post(document);
+//            }
+//            MongooseAdminAudit.logActivity(user, self.models[collectionName].modelName, collectionName, document._id, 'add', null, function(err, auditLog) {
+//                onReady(null, document);
+//            });
+//        }
+//    });
 };
 
 /**
@@ -281,7 +314,7 @@ MongooseAdmin.prototype.createDocument = function(user, collectionName, params, 
  *
  * @api public
  */
-MongooseAdmin.prototype.updateDocument = function(user, collectionName, documentId, params, onReady) {
+MongooseAdmin.prototype.updateDocument = function(req,user, collectionName, documentId, params, onReady) {
     var self = this;
     var fields = this.models[collectionName].fields;
     var model = this.models[collectionName].model;
@@ -290,42 +323,74 @@ MongooseAdmin.prototype.updateDocument = function(user, collectionName, document
             console.log('Error retrieving document to update: ' + err);
             onReady('Unable to update', null);
         } else {
-            for (field in fields) {
-                if (params[field]) {
-                    console.log(params['field'])
-                    // hack to handle booleans
-                    if (params[field] == 'true'){
-                        params[field] = true
-                    } else if (params[field] == 'false'){
-                        params[field] = false
-                    }
-                    
-                    document[field] = params[field];
-                } else {
-                    if (params[field + '_linked_document']) {
-                        document[field] = mongoose.Types.ObjectId.fromString(params[field + '_linked_document']);
-                    }                    
+            var form = new forms.MongooseForm(req,{instance:document,data:params},model);
+            form.is_valid(function(err,valid)
+            {
+                if(err)
+                {
+                    onReady(err, null);
+                    return;
                 }
-            }
+                if(valid)
+                {
+                    form.save(function(err,document)
+                    {
+                        if (err) {
+                            console.log('Unable to update document: ' + err);
+                            onReady('Unable to update docuemnt', null);
+                        } else {
 
-            if (self.models[collectionName].options && self.models[collectionName].options.pre) {
-                document = self.models[collectionName].options.post(document);
-            }
+                            if (self.models[collectionName].options && self.models[collectionName].options.post) {
+                                document = self.models[collectionName].options.post(document);
+                            }
+                            MongooseAdminAudit.logActivity(user, self.models[collectionName].modelName, collectionName, document._id, 'edit', null, function(err, auditLog) {
+                                onReady(null, document);
+                            });
+                        }
 
-            document.save(function(err) {
-                if (err) {
-                    console.log('Unable to update document: ' + err);
-                    onReady('Unable to update docuemnt', null);
-                } else {
-
-                    if (self.models[collectionName].options && self.models[collectionName].options.post) {
-                        document = self.models[collectionName].options.post(document);
-                    }
-                    MongooseAdminAudit.logActivity(user, self.models[collectionName].modelName, collectionName, document._id, 'edit', null, function(err, auditLog) {
-                        onReady(null, document);
                     });
                 }
+                else
+                {
+                    onReady(form.errors,null);
+                }
             });
+//            for (field in fields) {
+//                if (params[field]) {
+//                    console.log(params['field'])
+//                    // hack to handle booleans
+//                    if (params[field] == 'true'){
+//                        params[field] = true
+//                    } else if (params[field] == 'false'){
+//                        params[field] = false
+//                    }
+//
+//                    document[field] = params[field];
+//                } else {
+//                    if (params[field + '_linked_document']) {
+//                        document[field] = mongoose.Types.ObjectId.fromString(params[field + '_linked_document']);
+//                    }
+//                }
+//            }
+//
+//            if (self.models[collectionName].options && self.models[collectionName].options.pre) {
+//                document = self.models[collectionName].options.post(document);
+//            }
+//
+//            document.save(function(err) {
+//                if (err) {
+//                    console.log('Unable to update document: ' + err);
+//                    onReady('Unable to update docuemnt', null);
+//                } else {
+//
+//                    if (self.models[collectionName].options && self.models[collectionName].options.post) {
+//                        document = self.models[collectionName].options.post(document);
+//                    }
+//                    MongooseAdminAudit.logActivity(user, self.models[collectionName].modelName, collectionName, document._id, 'edit', null, function(err, auditLog) {
+//                        onReady(null, document);
+//                    });
+//                }
+//            });
         }
     });
 };

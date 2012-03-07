@@ -57,10 +57,17 @@ exports.createDocument = function(req, res) {
         res.end();
         return;
     } else {
-        MongooseAdmin.singleton.createDocument(adminUser, req.params.collectionName, req.body, function(err, document) {
+        MongooseAdmin.singleton.createDocument(req,adminUser, req.params.collectionName, req.body, function(err, document) {
             if (err) {
-                res.writeHead(500);
-                res.end();
+                if(typeof(err)=='object')
+                {
+                    res.json(err,400);
+                }
+                else
+                {
+                    res.writeHead(500);
+                    res.end();
+                }
             } else {
                 res.writeHead(201, {"Content-Type": "application/json"});
                 res.write(JSON.stringify({"collection": req.params.collectionName}));
@@ -77,7 +84,7 @@ exports.updateDocument = function(req, res) {
         res.end();
         return;
     } else {
-        MongooseAdmin.singleton.updateDocument(adminUser, req.params.collectionName, req.body.document_id, req.body, function(err, document) {
+        MongooseAdmin.singleton.updateDocument(req,adminUser, req.params.collectionName, req.body._id, req.body, function(err, document) {
             if (err) {
                 res.writeHead(500);
                 res.end();

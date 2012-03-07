@@ -85,6 +85,7 @@ var fbId = app.settings.facebook_app_id,// '175023072601087',
     fbCallbackAddress = app.settings.root_path + '/account/facebooklogin';
 
 app.configure(function(){
+    app.use(express.static(__dirname + '/public'));
     app.set('views', __dirname + '/views');
     app.set('view engine', 'jade');
     app.use(express.bodyParser());
@@ -165,7 +166,6 @@ app.configure(function(){
 
     app.use(express.methodOverride());
     app.use(app.router);
-    app.use(express.static(__dirname + '/public'));
 
 });
 
@@ -286,7 +286,7 @@ console.log("Express server listening on port %d in %s mode", app.address().port
 
 try
 {
-
+require('./node-forms/forms').set_models(Models);
 
 var mongoose_admin = require('./mongoose-admin/mongoose-admin');
 
