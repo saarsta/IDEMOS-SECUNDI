@@ -330,6 +330,25 @@ var db_functions = {
         });
     },
 
+    addSuggestionToDiscussion: function(discussion_id, parts, callback){
+
+        $.ajax({
+            url: '/api/suggestions/',
+            type: "POST",
+            async: true,
+            data: {"discussion_id": discussion_id, "parts": parts},
+            success: function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log(thrownError)
+                callback(thrownError, null);
+                alert('create Post error');
+            }
+        });
+    },
     //this post/change_suggestion has ref to a post/suggestion/vision
     addCommentPostToDiscussion: function(discussion_id, post_content, ref_to_post_id, is_comment_on_vision, callback){
 
@@ -352,7 +371,7 @@ var db_functions = {
 
     addDiscussionGrade: function(discussion_id, grade, callback){
         $.ajax({
-            url: '/api/Grades/',
+            url: '/api/grades/',
             type: "POST",
             async: true,
             data: {"discussion_id": discussion_id, "evaluation_grade": grade},

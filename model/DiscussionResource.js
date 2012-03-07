@@ -44,6 +44,7 @@ Authoriztion.prototype.edit_object = function(req,object,callback){
 
 var DiscussionResource = module.exports = function(){
 
+
     DiscussionResource.super_.call(this,models.Discussion);
     this.allowed_methods = ['get','post','put','delete'];
     this.authentication = new common.SessionAuthentication();
@@ -93,22 +94,22 @@ DiscussionResource.prototype.create_obj = function(req,fields,callback)
             fields.first_name = user.first_name;
             fields.last_name = user.last_name;
             fields.users = user_id;
-
-
             for( var field in fields)
             {
                 object.set(field,fields[field]);
             }
+
+
             self.authorization.edit_object(req,object,function(err,object)
             {
                 if(err) callback(err);
                 else
                 {
+                    //if success with creating new discussion - add discussion to user schema
                     object.save(function(err,object)
                     {
-
+                            user.discussions.push(object._id);
                             callback(self.elaborate_mongoose_errors(err),object);
-
                     });
                 }
             });

@@ -51,7 +51,7 @@ var GradeResource = module.exports = function(){
 util.inherits(GradeResource, resources.MongooseResource);
 
 
-//returns the edited discussion object on the callback
+//returns the edited discussion object in the callback
 GradeResource.prototype.create_obj = function(req,fields,callback)
 {
     var user_id = req.session.user_id;
@@ -74,34 +74,47 @@ GradeResource.prototype.create_obj = function(req,fields,callback)
                     callback(err, null);
                 }
                 else{
-                    models.Discussion.findOne({"_id": grade_object.discussion_id}, function(err,discussion_object){
-                        if (err){
-                            callback(err, null);
-                        }
-                        else{
-//                      //calculating the current discussion grade
-                            discussion_object.grade_sum += parseInt(grade_object.evaluation_grade);
-                            discussion_object.evaluate_counter++;
-                            discussion_object.grade = discussion_object.grade_sum / discussion_object.evaluate_counter;
+                    var isNewFollower = false;
+                    models.User.findOne({_id: grade_object.user_id}, function(err,user_object){
+                            if(err){
 
-                            discussion_object.save(function(err){
-                                if (err){
-                                    callback(err, null)
+                            }else{
+                                if (common.isDiscussionIsInUser(grade_object.discussion_id, user_object.discussions)  == false){
+                                    isNewFollower = true;
+                                    user_object.discussions.push(grade_object.discussion_id);
                                 }
-                                else{
-                                    callback(self.elaborate_mongoose_errors(err),discussion_object);
-                                }
-                            })
-                        }
+
+                                models.Discussion.findOne({_id: grade_object.discussion_id}, function(err,discussion_object){
+                                    if (err){
+                                        callback(err, null);
+                                    }
+                                    else{
+//                                      // calculating the current discussion grade
+                                        // + insert user to discussion
+                                        // + increase followers if necessary
+
+                                        discussion_object.grade_sum += parseInt(grade_object.evaluation_grade);
+                                        discussion_object.evaluate_counter++;
+                                        discussion_object.grade = discussion_object.grade_sum / discussion_object.evaluate_counter;
+                                        if (isNewFollower){
+                                            discussion_object.followers_count++;
+                                        }
+                                        discussion_object.save(function(err){
+                                            if (err){
+                                                callback(err, null)
+                                            }
+                                            else{
+                                                callback(self.elaborate_mongoose_errors(err),discussion_object);
+                                            }
+                                        })
+                                    }
+                                });
+
+                            }
                     });
                 }
             });
         }
     });
-
-
-
-
-
 }
 

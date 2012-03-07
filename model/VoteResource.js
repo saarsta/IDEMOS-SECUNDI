@@ -89,6 +89,8 @@ VoteResource.prototype.create_obj = function(req,fields,callback)
                             callback(err, null);
                         }
                         else{
+                            var discussion_id = post_object.discussion_id;
+                            var isNewFollower = false;
                             user_object.tokens -= parseInt(req.body.tokens);
                             if (method == 'add'){
                                 post_object.tokens += parseInt(req.body.tokens);
@@ -102,14 +104,30 @@ VoteResource.prototype.create_obj = function(req,fields,callback)
                             fields.post_id = post_id;
                             fields.tokens = req.body.tokens;
 
-                            user_object.save();
                             post_object.save();
 
+                            //check if is user is a new follower, if so insert discussion to user and increade followers in discussion
+                            if (common.isDiscussionIsInUser(discussion_id, user_object.discussions) == false){
+                                user_object.discussions.push(discussion_id);
+                                isNewFollower = true;
+                            }
+                            user_object.save();
+
+                            if (isNewFollower){
+                                models.Discussion.findOne({_id :discussion_id},function(err, discussion_object){
+                                    if (err){
+
+                                    }else{
+                                        discussion_object.followers_count++;
+                                        discussion_object.save();
+                                    }
+                                });
+                            }
                             for( var field in fields)
                             {
                                 vote_object.set(field,fields[field]);
                             }
-                            self.authorization.edit_object(req,vote_object,function(err,object)
+                            self.authorization.edit_object(req, vote_object, function(err,object)
                             {
                                 if(err) callback(err);
                                 else
