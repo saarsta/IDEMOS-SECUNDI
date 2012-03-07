@@ -305,7 +305,8 @@ function render_list_item(res,fields,fieldsets,prefix,value)
     {
         //    console.log('rendering fieldset ' + fieldset);
         var title = fieldset['title'] || '';
-        res.write('<h2>' + title + '</h2>');
+        if(title != '')
+            res.write('<h2>' + title + '</h2>');
         var field_names = fieldset.fields;
         if(field_names)
             render_fields(field_names);

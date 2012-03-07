@@ -187,7 +187,8 @@ BaseForm.prototype.render = function(res)
     {
     //    console.log('rendering fieldset ' + fieldset);
         var title = fieldset['title'] || '';
-        res.write('<h2>' + title + '</h2>');
+        if(title != '')
+            res.write('<h2>' + title + '</h2>');
         var fields = fieldset.fields;
         if(fields)
             render_fields(fields);
