@@ -41,31 +41,33 @@ Authoriztion.prototype.edit_object = function(req,object,callback){
                 if (object.tokens >= POST_PRICE){
                     callback(null, object);
                 }else{
-                    callback("Error: Unauthorized - there is not enought tokens", null);
+                    callback({message:"Error: Unauthorized - there is not enought tokens",code:401}, null);
                 }
             }
         });
     }
     else{
-        callback("Error: User Is Not Autthenticated", null);
+        callback({message:"Error: User Is Not Autthenticated",code:401}, null);
     }
 };
 
-var PostResource = module.exports = function(){
+var PostResource = module.exports = common.GamificationMongooseResource.extend({
+    init: function(){
 
-    PostResource.super_.call(this,models.Post);
-    this.allowed_methods = ['get','post'];
-    this.authorization = new Authoriztion();
-    this.authentication = new common.SessionAuthentication();
-    this.filtering = {discussion_id: null};
-    this.default_query = function(query)
-    {
-        return query.sort('creation_date','descending');
-    };
+        this._super(models.Post,'post');
+        this.allowed_methods = ['get','post'];
+        this.authorization = new Authoriztion();
+        this.authentication = new common.SessionAuthentication();
+        this.filtering = {discussion_id: null};
+        this.default_query = function(query)
+        {
+            return query.sort('creation_date','descending');
+        };
 //    this.validation = new resources.Validation();=
-}
+    }
+});
 
-util.inherits(PostResource, resources.MongooseResource);
+//util.inherits(PostResource, resources.MongooseResource);
 
 PostResource.prototype.create_obj = function(req,fields,callback)
 {

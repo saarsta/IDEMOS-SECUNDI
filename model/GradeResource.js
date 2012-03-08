@@ -39,43 +39,39 @@ Authoriztion.prototype.edit_object = function(req,object,callback){
     })
 };
 
-var GradeResource = module.exports = function(){
-
-    GradeResource.super_.call(this,models.Grade);
-    this.allowed_methods = ['get','post'];
-    this.authorization = new Authoriztion();
-    this.authentication = new common.SessionAuthentication();
-    this.filtering = {discussion_id: null};
-}
-
-util.inherits(GradeResource, resources.MongooseResource);
-
-
-//returns the edited discussion object in the callback
-GradeResource.prototype.create_obj = function(req,fields,callback)
-{
-    var user_id = req.session.user_id;
-    var self = this;
-    var object = new self.model();
-
-    object.user_id = user_id;
-    for( var field in fields)
+var GradeResource = module.exports = common.GamificationMongooseResource.extend({
+    init:function(){
+        this._super(models.Grade,'grade');
+//        GradeResource.super_.call(this,models.Grade);
+        this.allowed_methods = ['get','post'];
+        this.authorization = new Authoriztion();
+        this.authentication = new common.SessionAuthentication();
+        this.filtering = {discussion_id: null};
+    },
+    create_obj:function(req,fields,callback)
     {
-        object.set(field,fields[field]);
-    }
-    self.authorization.edit_object(req,object,function(err,object)
-    {
-        if(err) callback(err);
-        else
+        var user_id = req.session.user_id;
+        var self = this;
+        var object = new self.model();
+
+        object.user_id = user_id;
+        for( var field in fields)
         {
-            object.save(function(err,grade_object)
+            object.set(field,fields[field]);
+        }
+        self.authorization.edit_object(req,object,function(err,object)
+        {
+            if(err) callback(err);
+            else
             {
-                if (err){
-                    callback(err, null);
-                }
-                else{
-                    var isNewFollower = false;
-                    models.User.findOne({_id: grade_object.user_id}, function(err,user_object){
+                object.save(function(err,grade_object)
+                {
+                    if (err){
+                        callback(err, null);
+                    }
+                    else{
+                        var isNewFollower = false;
+                        models.User.findOne({_id: grade_object.user_id}, function(err,user_object){
                             if(err){
 
                             }else{
@@ -111,10 +107,17 @@ GradeResource.prototype.create_obj = function(req,fields,callback)
                                 });
 
                             }
-                    });
-                }
-            });
-        }
-    });
-}
+                        });
+                    }
+                });
+            }
+        });
+    }
+});
+
+//util.inherits(GradeResource, resources.MongooseResource);
+
+
+//returns the edited discussion object in the callback
+//GradeResource.prototype.create_obj =
 

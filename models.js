@@ -48,7 +48,8 @@ var Schemas  = exports.Schemas = {
         actions: [{type: Schema.ObjectId, ref: 'Action', index: true}],
         password: String,
         md5: String,
-        tokens: {type: Number, 'default': 5}
+        tokens: {type: Number, 'default': 5},
+        gamification:{}
     },
 
     InformationItem: {
