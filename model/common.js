@@ -38,4 +38,10 @@ var isDiscussionIsInUser = exports.isDiscussionIsInUser = function(discussion_id
         }
     }
     return flag;
-}
+};
+
+
+var GamificationResource = function()
+{
+
+};

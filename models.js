@@ -44,9 +44,8 @@ var Schemas  = exports.Schemas = {
         email: {type:String, required:true,validate:TestEmailValidator},
         gender: {type: String, "enum": ['male', 'female']},
         age: {type: Number, min: 0},
-        discussions: [{type: ObjectId, ref: 'Discussion'}],//this is only relevant when cycle is on, so if there is
+        discussions: [{type: ObjectId, ref: 'Discussion'}],
         actions: [{type: Schema.ObjectId, ref: 'Action', index: true}],
-        //a cycle schema i might change it
         password: String,
         md5: String,
         tokens: {type: Number, 'default': 5}
@@ -83,6 +82,7 @@ var Schemas  = exports.Schemas = {
 //      tag_id: String,
         title: String,
         vision_text: String,
+        vision_text_history: [String],
         is_cycle:{type:Boolean,'default':false},
         tags: [String],
         users: [{type: ObjectId, ref: 'User'}],
@@ -91,8 +91,8 @@ var Schemas  = exports.Schemas = {
         is_published:{type:Boolean,'default':false},
         grade: Number,
         evaluate_counter: {type: Number, 'default': 0},
-        grade_sum: {type: Number, 'default': 0},
-        vision_changes: [{start:Number,end:Number,text:String}]
+        grade_sum: {type: Number, 'default': 0}
+//        vision_changes: [{log_by_time: [{start:Number,end:Number,text:String}]}]
 
     },
     PostOrSuggestion:{
@@ -122,15 +122,24 @@ var Schemas  = exports.Schemas = {
         creation_date: {type:Date,'default':Date.now}
     },
 
+    ActionResource: {
+        category: {type: String, "enum": [""]},
+        name: String
+    },
+
     Action: {
-        creator_id:  {type: Schema.ObjectId, ref: 'User', index: true, required: true},
+        creator_id: {type: Schema.ObjectId, ref: 'User', index: true, required: true},
         title: String,
-        text: String,
-        users: [{type: Schema.ObjectId, ref: 'User'}],
+        description: String,
+        category: String,
+        action_resources: [{resource:{type: ObjectId, ref: 'ActionResource'}, amount: Number}],
+        users: [{type: ObjectId, ref: 'User'}],
+        execution_date: {type:Date},
         creation_date:{type:Date,'default':Date.now},
-        num_of_desired_participants: {type: Number, 'default': 0},
+        required_participants: {type: Number, 'default': 0},
         is_aproved: {type:Boolean,'default':false}
     },
+
     Post :{
         text: String,
         //is_change_suggestion: {type:Boolean,'default':false},
@@ -139,13 +148,11 @@ var Schemas  = exports.Schemas = {
         ref_to_post_id: {type: Schema.ObjectId, ref: 'Post', index: true}
     },
 
-    Suggestion:{
+    Suggestion: {
         //is_change_suggestion: {type:Boolean,'default':true},
         parts:[{start:Number,end:Number,text:String}],
         is_aproved: {type:Boolean,'default':false}
     }
-
-
 };
 
 //Schemas.Post = clone_extend(Schemas.PostOrSuggestion,{
@@ -200,6 +207,8 @@ var Models = module.exports = {
     PostOrSuggestion : mongoose.model('PostOrSuggestion',new Schema(Schemas.PostOrSuggestion),'posts'),
     Vote: mongoose.model('Vote', new Schema(Schemas.Vote)),
     Grade: mongoose.model('Grade', new Schema(Schemas.Grade)),
+    Action: mongoose.model('Action', new Schema(Schema.Action)),
+    ActionResource: mongoose.model('ActionResource', new Schema(Schemas.ActionResource)),
     Schemas:Schemas
 };
 

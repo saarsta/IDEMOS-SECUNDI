@@ -1,11 +1,10 @@
 /**
  * Created by JetBrains WebStorm.
  * User: saar
- * Date: 06/03/12
- * Time: 17:23
+ * Date: 08/03/12
+ * Time: 14:26
  * To change this template use File | Settings | File Templates.
  */
-
 
 var resources = require('jest'),
     util = require('util'),
@@ -13,11 +12,15 @@ var resources = require('jest'),
     common = require('./common');
 
 
-var ActionResource = module.exports = function(){
+var ActionResourceResource = module.exports = function(){
 
-    ActionResource.super_.call(this, models.Action);
-    this.allowed_methods = ['get', 'post', 'put'];
+    ActionResourceResource.super_.call(this, models.ActionResource);
+    this.allowed_methods = ['get', 'post'];
     this.filtering = {category: null};
     this.authentication = common.SessionAuthentication();
+//    this.autorization = new authoriztion();
+
 }
+
+util.inherits(ActionResourceResource, resources.MongooseResource);
 

@@ -58,10 +58,9 @@ function laodDiscussionPage(data){
 
         }
         else{
-
-            $(".title").val(data.title);
-            $(".vision").val(data.vision_text);
-            $("#discussion_grade").val("grade is: " + discussion_object.grade + " count: " + discussion_object  .evaluate_counter);
+            $(".title").val(discussion_object.title);
+            $(".vision").val(discussion_object  .vision_text);
+            $("#discussion_grade").val("grade is: " + discussion_object.grade + " count: " + discussion_object.evaluate_counter);
             console.log($(".title").val());
             console.log($(".vision").val());
         }

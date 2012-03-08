@@ -142,21 +142,27 @@ SuggestionResource.prototype.update_obj = function(req,suggestion_object,callbac
         callback("this suggestion is already published", null);
     }else{
         suggestion_object.is_aproved = true;
-
+        var vision_changes_array = [];
         models.Discussion.findOne({_id: discussion_id}, function(err, discussion_object){
             var vision = discussion_object.vision_text;
             var new_string = "";
             var curr_position = 0;
             var parts = suggestion_object.parts;
-            var changed_text;
+//            var changed_text;
+
+            //changing the vision and save changes that have been so i can reverse it in change_vision
             for (var i = 0; i < parts.length; i++){
-                changed_text = vision.slice(parts[i].start, parts[i].end + 1);
+//                changed_text = vision.slice(parts[i].start, parseInt(parts[i].end) + 1);
                 new_string += vision.slice(curr_position, parts[i].start);
                 new_string += parts[i].text;
                 curr_position = parseInt(parts[i].end) + 1;
-                discussion_object.vision_changes.push({start: parts[i].start, end: parts[i].end, text : changed_text});
+//                vision_changes_array.push({start: parts[i].start, end: parts[i].end, text : changed_text});
+
+//                discussion_object.vision_changes.push({start: parts[i].start, end: parts[i].end, text : changed_text});
             }
             new_string += vision.slice(curr_position);
+//            discussion_object.vision_changes.push(vision_changes_array);
+            discussion_object.vision_text_history.push(discussion_object.vision_text);
             discussion_object.vision_text = new_string;
             discussion_object.save();
         });
