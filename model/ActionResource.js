@@ -14,7 +14,6 @@ var resources = require('jest'),
 
 
 var ActionResource = module.exports = function(){
-
     ActionResource.super_.call(this, models.Action);
     this.allowed_methods = ['get', 'post', 'put'];
     this.filtering = {category: null};

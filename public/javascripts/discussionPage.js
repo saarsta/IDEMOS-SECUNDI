@@ -78,9 +78,9 @@ function laodDiscussionPage(data){
 
     db_functions.getPostByDiscussion(discussion_id, function(err, data){
         if(err){
-
+            console.log(err);
         }else{
-
+            console.log("posts are" + " " + data);
             for (var i in data.objects){
                 post_items.add(data.objects[i]);
             }

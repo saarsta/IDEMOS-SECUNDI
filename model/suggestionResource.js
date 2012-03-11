@@ -21,7 +21,6 @@ var resources = require('jest'),
     CHANGE_SUGGESTION_PRICE = 2;
 
 
-
 //Authorization
 var Authoriztion = function() {};
 util.inherits(Authoriztion,resources.Authorization);
@@ -38,7 +37,6 @@ Authoriztion.prototype.edit_object = function(req,object,callback){
             }
             else
             {
-
                 if (object.tokens >= CHANGE_SUGGESTION_PRICE){
                     callback(null, object);
                 }else{
@@ -52,120 +50,220 @@ Authoriztion.prototype.edit_object = function(req,object,callback){
     }
 };
 
-var SuggestionResource = module.exports = function(){
-
-    SuggestionResource.super_.call(this,models.Suggestion);
-    this.allowed_methods = ['get','post', 'put'];
-    this.authorization = new Authoriztion();
-    this.authentication = new common.SessionAuthentication();
-    this.filtering = {discussion_id: null};
-    this.default_query = function(query)
+var SuggestionResource = module.exports =  common.GamificationMongooseResource.extend({
+    init: function(){
+        this._super(models.Suggestion, 'suggestion');
+        this.allowed_methods = ['get','post', 'put'];
+        this.authorization = new Authoriztion();
+        this.authentication = new common.SessionAuthentication();
+        this.filtering = {discussion_id: null};
+        this.default_query = function(query)
+        {
+            return query.sort('creation_date','descending');
+        };
+    //    this.validation = new resources.Validation();=
+    },
+    create_obj: function(req,fields,callback)
     {
-        return query.sort('creation_date','descending');
-    };
-//    this.validation = new resources.Validation();=
-}
+        var user_id = req.session.user_id;
+        var self = this;
+        var suggestion_object = new self.model();
+        var isNewFollower = false;
 
-util.inherits(SuggestionResource, resources.MongooseResource);
-
-SuggestionResource.prototype.create_obj = function(req,fields,callback)
-{
-    var user_id = req.session.user_id;
-    var self = this;
-    var suggestion_object = new self.model();
-    var isNewFollower = false;
-
-    models.User.findOne({_id :user_id},function(err,user){
-        if(err)
-        {
-            callback(err, null);
-        }
-        else
-        {
-            fields.creator_id = user_id;
-            fields.first_name = user.first_name;
-            fields.last_name = user.last_name;
-
-            for( var field in fields)
+        models.User.findOne({_id :user_id},function(err,user){
+            if(err)
             {
-                suggestion_object.set(field,fields[field]);
+                callback(err, null);
             }
-
-            self.authorization.edit_object(req, suggestion_object,function(err, user_object)
+            else
             {
-                if(err) callback(err);
-                else
+                fields.creator_id = user_id;
+                fields.first_name = user.first_name;
+                fields.last_name = user.last_name;
+
+                for( var field in fields)
                 {
-                    suggestion_object.save(function(err,suggestion_object)
-                    {
-                        //if suggestion created successfuly, take tokens from the user and add discussion to user
-                        // + increase discussion_followers
-                        // + user to discussion
-                        if (!err){
-                            user_object.tokens -= CHANGE_SUGGESTION_PRICE;
-                            if (common.isDiscussionIsInUser(suggestion_object.discussion_id, user_object.discussions) == false){
-                                user_object.discussions.push(suggestion_object.discussion_id);
-                                isNewFollower = true;
-                            }
-
-                            if (isNewFollower){
-                                models.Discussion.findOne({_id: suggestion_object.discussion_id}, function(err, discussion_object){
-                                    if (err){
-                                        callback(err, null);
-                                    }else{
-                                        discussion_object.users.push(user_id);
-                                        discussion_object.followers_count++;
-                                        discussion_object.save();
-                                    }
-                                });
-                            }
-
-                            user_object.save(function(err, object){
-                                callback(self.elaborate_mongoose_errors(err), suggestion_object);
-                            });
-                        }else{
-                            callback(self.elaborate_mongoose_errors(err), null);
-                        }
-                    });
+                    suggestion_object.set(field,fields[field]);
                 }
-            });
-        }
-    });
-}
 
-SuggestionResource.prototype.update_obj = function(req,suggestion_object,callback){
-    //if suggestion aproved we change the discussion vision
-    // + save the ealier version of vison as parts in vison_changes
-    var discussion_id = suggestion_object.discussion_id;
-    var vision_changes;
-    if(suggestion_object.is_aproved){
-        callback("this suggestion is already published", null);
-    }else{
-        suggestion_object.is_aproved = true;
-        var vision_changes_array = [];
-        models.Discussion.findOne({_id: discussion_id}, function(err, discussion_object){
-            var vision = discussion_object.vision_text;
-            var new_string = "";
-            var curr_position = 0;
-            var parts = suggestion_object.parts;
-//            var changed_text;
+                self.authorization.edit_object(req, suggestion_object,function(err, user_object)
+                {
+                    if(err) callback(err);
+                    else
+                    {
+                        suggestion_object.save(function(err,suggestion_object)
+                        {
+                            //if suggestion created successfuly, take tokens from the user and add discussion to user
+                            // + increase discussion_followers
+                            // + user to discussion
+                            if (!err){
+                                user_object.tokens -= CHANGE_SUGGESTION_PRICE;
+                                if (common.isDiscussionIsInUser(suggestion_object.discussion_id, user_object.discussions) == false){
+                                    user_object.discussions.push(suggestion_object.discussion_id);
+                                    isNewFollower = true;
+                                }
 
-            //changing the vision and save changes that have been so i can reverse it in change_vision
-            for (var i = 0; i < parts.length; i++){
-//                changed_text = vision.slice(parts[i].start, parseInt(parts[i].end) + 1);
-                new_string += vision.slice(curr_position, parts[i].start);
-                new_string += parts[i].text;
-                curr_position = parseInt(parts[i].end) + 1;
-//                vision_changes_array.push({start: parts[i].start, end: parts[i].end, text : changed_text});
+                                if (isNewFollower){
+                                    models.Discussion.findOne({_id: suggestion_object.discussion_id}, function(err, discussion_object){
+                                        if (err){
+                                            callback(err, null);
+                                        }else{
+                                            discussion_object.users.push(user_id);
+                                            discussion_object.followers_count++;
+                                            discussion_object.save();
+                                        }
+                                    });
+                                }
 
-//                discussion_object.vision_changes.push({start: parts[i].start, end: parts[i].end, text : changed_text});
+                                user_object.save(function(err, object){
+                                    callback(self.elaborate_mongoose_errors(err), suggestion_object);
+                                });
+                            }else{
+                                callback(self.elaborate_mongoose_errors(err), null);
+                            }
+                        });
+                    }
+                });
             }
-            new_string += vision.slice(curr_position);
-//            discussion_object.vision_changes.push(vision_changes_array);
-            discussion_object.vision_text_history.push(discussion_object.vision_text);
-            discussion_object.vision_text = new_string;
-            discussion_object.save();
         });
-        suggestion_object.save(callback);
+    },
+    update_obj: function(req,suggestion_object,callback){
+        //if suggestion aproved we change the discussion vision
+        // + save the ealier version of vison as parts in vison_changes
+        var discussion_id = suggestion_object.discussion_id;
+        var vision_changes;
+        if(suggestion_object.is_aproved){
+            callback("this suggestion is already published", null);
+        }else{
+            suggestion_object.is_aproved = true;
+            var vision_changes_array = [];
+            models.Discussion.findOne({_id: discussion_id}, function(err, discussion_object){
+                var vision = discussion_object.vision_text;
+                var new_string = "";
+                var curr_position = 0;
+                var parts = suggestion_object.parts;
+
+                //changing the vision and save changes that have been so i can reverse it in change_vision
+                for (var i = 0; i < parts.length; i++){
+    //                changed_text = vision.slice(parts[i].start, parseInt(parts[i].end) + 1);
+                    new_string += vision.slice(curr_position, parts[i].start);
+                    new_string += parts[i].text;
+                    curr_position = parseInt(parts[i].end) + 1;
+    //                vision_changes_array.push({start: parts[i].start, end: parts[i].end, text : changed_text});
+
+    //                discussion_object.vision_changes.push({start: parts[i].start, end: parts[i].end, text : changed_text});
+                }
+                new_string += vision.slice(curr_position);
+    //            discussion_object.vision_changes.push(vision_changes_array);
+                discussion_object.vision_text_history.push(discussion_object.vision_text);
+                discussion_object.vision_text = new_string;
+                discussion_object.save();
+            });
+            suggestion_object.save(callback);
+        }
     }
-}
+});
+
+//util.inherits(SuggestionResource, resources.MongooseResource);
+
+//SuggestionResource.prototype.create_obj = function(req,fields,callback)
+//{
+//    var user_id = req.session.user_id;
+//    var self = this;
+//    var suggestion_object = new self.model();
+//    var isNewFollower = false;
+//
+//    models.User.findOne({_id :user_id},function(err,user){
+//        if(err)
+//        {
+//            callback(err, null);
+//        }
+//        else
+//        {
+//            fields.creator_id = user_id;
+//            fields.first_name = user.first_name;
+//            fields.last_name = user.last_name;
+//
+//            for( var field in fields)
+//            {
+//                suggestion_object.set(field,fields[field]);
+//            }
+//
+//            self.authorization.edit_object(req, suggestion_object,function(err, user_object)
+//            {
+//                if(err) callback(err);
+//                else
+//                {
+//                    suggestion_object.save(function(err,suggestion_object)
+//                    {
+//                        //if suggestion created successfuly, take tokens from the user and add discussion to user
+//                        // + increase discussion_followers
+//                        // + user to discussion
+//                        if (!err){
+//                            user_object.tokens -= CHANGE_SUGGESTION_PRICE;
+//                            if (common.isDiscussionIsInUser(suggestion_object.discussion_id, user_object.discussions) == false){
+//                                user_object.discussions.push(suggestion_object.discussion_id);
+//                                isNewFollower = true;
+//                            }
+//
+//                            if (isNewFollower){
+//                                models.Discussion.findOne({_id: suggestion_object.discussion_id}, function(err, discussion_object){
+//                                    if (err){
+//                                        callback(err, null);
+//                                    }else{
+//                                        discussion_object.users.push(user_id);
+//                                        discussion_object.followers_count++;
+//                                        discussion_object.save();
+//                                    }
+//                                });
+//                            }
+//
+//                            user_object.save(function(err, object){
+//                                callback(self.elaborate_mongoose_errors(err), suggestion_object);
+//                            });
+//                        }else{
+//                            callback(self.elaborate_mongoose_errors(err), null);
+//                        }
+//                    });
+//                }
+//            });
+//        }
+//    });
+//}
+
+//SuggestionResource.prototype.update_obj = function(req,suggestion_object,callback){
+//    //if suggestion aproved we change the discussion vision
+//    // + save the ealier version of vison as parts in vison_changes
+//    var discussion_id = suggestion_object.discussion_id;
+//    var vision_changes;
+//    if(suggestion_object.is_aproved){
+//        callback("this suggestion is already published", null);
+//    }else{
+//        suggestion_object.is_aproved = true;
+//        var vision_changes_array = [];
+//        models.Discussion.findOne({_id: discussion_id}, function(err, discussion_object){
+//            var vision = discussion_object.vision_text;
+//            var new_string = "";
+//            var curr_position = 0;
+//            var parts = suggestion_object.parts;
+////            var changed_text;
+//
+//            //changing the vision and save changes that have been so i can reverse it in change_vision
+//            for (var i = 0; i < parts.length; i++){
+////                changed_text = vision.slice(parts[i].start, parseInt(parts[i].end) + 1);
+//                new_string += vision.slice(curr_position, parts[i].start);
+//                new_string += parts[i].text;
+//                curr_position = parseInt(parts[i].end) + 1;
+////                vision_changes_array.push({start: parts[i].start, end: parts[i].end, text : changed_text});
+//
+////                discussion_object.vision_changes.push({start: parts[i].start, end: parts[i].end, text : changed_text});
+//            }
+//            new_string += vision.slice(curr_position);
+////            discussion_object.vision_changes.push(vision_changes_array);
+//            discussion_object.vision_text_history.push(discussion_object.vision_text);
+//            discussion_object.vision_text = new_string;
+//            discussion_object.save();
+//        });
+//        suggestion_object.save(callback);
+//    }
+//}

@@ -299,7 +299,7 @@ var db_functions = {
             type: "GET",
             async: true,
             success: function (data) {
-                console.log(data);
+                console.log("posts are" + " " + data);
                 callback(null, data);
             },
 

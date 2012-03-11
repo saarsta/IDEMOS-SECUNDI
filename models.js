@@ -47,9 +47,11 @@ var Schemas  = exports.Schemas = {
         discussions: [{type: ObjectId, ref: 'Discussion'}],
         actions: [{type: Schema.ObjectId, ref: 'Action', index: true}],
         password: String,
-        md5: String,
-        tokens: {type: Number, 'default': 5},
-        gamification:{}
+        tokens: {type: Number, 'default': 100000},
+        gamification:{},
+        score: Number,
+        status: {type: String, "enum": ['a', 'b', 'c']}
+
     },
 
     InformationItem: {
