@@ -18,6 +18,16 @@ var BaseField = exports.BaseField = function(options) {
     this.label = options.label;
 };
 
+BaseField.prototype.to_schema = function()
+{
+    var schema = {};
+    if(this.required)
+        schema['required'] = true;
+    if(this['default'])
+        schema['default'] = this['default'];
+    return schema;
+};
+
 
 BaseField.prototype.render_label = function(res)
 {
@@ -73,7 +83,15 @@ var StringField = exports.StringField = _extends(BaseField,function(options)
     options = options || {};
     options.widget = options.widget || widgets.TextWidget;
     StringField.super_.call(this,options);
+    this.type = 'string';
 });
+
+StringField.prototype.to_schema = function()
+{
+    var schema = StringField.super_.prototype.to_schema.call(this);
+    schema['type'] = String;
+    return schema;
+};
 
 var ReadonlyField = exports.ReadonlyField = _extends(BaseField,function(options)
 {
@@ -92,6 +110,14 @@ var BooleanField = exports.BooleanField = _extends(BaseField, function(options) 
     options.widget = options.widget || widgets.CheckboxWidget;
     BooleanField.super_.call(this,options);
 });
+
+
+BooleanField.prototype.to_schema = function()
+{
+    var schema = BooleanField.super_.prototype.to_schema.call(this);
+    schema['type'] = Boolean;
+    return schema;
+};
 
 BooleanField.prototype.clean_value = function(req,callback)
 {
@@ -112,6 +138,14 @@ var EnumField = exports.EnumField = _extends(BaseField,function(options,choices)
 //    options.required = true;
     EnumField.super_.call(this,options);
 });
+
+EnumField.prototype.to_schema = function()
+{
+    var schema = EnumField.super_.prototype.to_schema.call(this);
+    schema['type'] = String;
+    schema['enum'] = this.choices;
+    return schema;
+};
 
 EnumField.prototype.clean_value = function(req,callback)
 {
@@ -147,12 +181,27 @@ var RefField = exports.RefField = _extends(EnumField,function(options,ref)
 //    this.required = options ? options.required : false;
 });
 
+RefField.prototype.to_schema = function()
+{
+    var schema = RefField.super_.prototype.to_schema.call(this);
+    schema['type'] = require('mongoose').Schema.ObjectId;
+    schema['ref'] = this.ref + '';
+    return schema;
+};
+
 var NumberField = exports.NumberField = _extends(StringField,function(options)
 {
     options = options || {};
     options.widget = options.widget || widgets.NumberWidget;
     NumberField.super_.call(this,options);
 });
+
+NumberField.prototype.to_schema = function()
+{
+    var schema = NumberField.super_.prototype.to_schema.call(this);
+    schema['type'] = Number;
+    return schema;
+};
 
 NumberField.prototype.clean_value = function(req,callback)
 {
@@ -181,6 +230,13 @@ var DateField = exports.DateField = _extends(BaseField,function(options)
     DateField.super_.call(this,options);
 });
 
+DateField.prototype.to_schema = function()
+{
+    var schema = DateField.super_.prototype.to_schema.call(this);
+    schema['type'] = Date;
+    return schema;
+};
+
 var ListField = exports.ListField = _extends(BaseField,function(options,fields,fieldsets)
 {
     options = options || {};
@@ -191,13 +247,20 @@ var ListField = exports.ListField = _extends(BaseField,function(options,fields,f
     this.fieldsets = fieldsets;
 });
 
+ListField.prototype.to_schema = function()
+{
+    var schema = ListField.super_.prototype.to_schema.call(this);
+    schema['type'] = Array;
+    return schema;
+};
+
 ListField.prototype.clean_value = function(req,callback)
 {
     var self = this;
     var prefix = self.name + '_li';
     var values = {};
     var clean_funcs = [];
-    function create_clean_func(num,name)
+    function create_clean_func(num,name,value)
     {
         return function(cbk)
         {
@@ -205,13 +268,15 @@ ListField.prototype.clean_value = function(req,callback)
             values[num] = data;
             var field = self.fields[name];
             field.name = name;
-            field.set(req.body[field_name],req);
+            field.set(value,req);
             field.clean_value(req,function(err)
             {
                 if(field.errors && field.errors.length)
                     this.errors = Array.concat(self.errors,field.errors);
                 else
                 {
+                    console.log(num + ' ' + field.value);
+                    console.log(field);
                     data[name] = field.value;
                     if(name == '__self__')
                         values[num] = field.value;
@@ -228,7 +293,7 @@ ListField.prototype.clean_value = function(req,callback)
             var next_ = suffix.indexOf('_');
             var num = suffix.substring(0,next_);
             var name = suffix.substring(next_+1);
-            clean_funcs.push(create_clean_func(num,name));
+            clean_funcs.push(create_clean_func(num,name,req.body[field_name]));
         }
     }
     async.parallel(clean_funcs,function(err)
@@ -236,6 +301,7 @@ ListField.prototype.clean_value = function(req,callback)
         self.value = [];
         for(var key in values)
             self.value.push(values[key]);
+        console.log(self.value);
         callback(null);
     });
     return self;
@@ -360,4 +426,48 @@ ListField.prototype.render = function(res)
     return self;
 
 //    self.widget.render(res,render_template,render_item);
+};
+
+
+var FileField = exports.FileField = _extends(BaseField,function(options)
+{
+    options = options || {};
+    options.widget = options.widget || widgets.FileWidget;
+    FileField.super_.call(this,options);
+});
+
+var formidable = require('formidable');
+
+FileField.prototype.to_schema = function()
+{
+//    var schema = FileField.super_.prototype.to_schema.call(this);
+//    schema.type = F;
+    return FileField.Schema;
+};
+
+FileField.prototype.clean_value = function(req,callback)
+{
+    var form = new formidable.IncomingForm();
+    form.onPart = function(part) {
+        if (!part.filename) {
+            // let formidable handle all non-file parts
+            form.handlePart(part);
+        }
+        else
+        {
+            part.addListener('data', function(data) {
+                console.log(data);
+            });
+        }
+    };
+    form.parse(req,function(err,fields,files)
+        {
+           callback(null);
+        });
+};
+
+FileField.Schema = {
+    url:String,
+    name:String,
+    size:Number
 };

@@ -8,7 +8,8 @@
 
 var mongoose = require("mongoose"),
     Schema = mongoose.Schema,
-    ObjectId = Schema.ObjectId;
+    ObjectId = Schema.ObjectId,
+    form_fields = require('./node-forms/fields');
 
 /*, function(err){
  if (err){
@@ -72,7 +73,8 @@ var Schemas  = exports.Schemas = {
         name: String,
         image_field:{url:String, caption: String, type: {type: String},size: {type: Number, min: 0},
             width: {type: Number, min: 0}, height: {type: Number, min: 0}, data: String},
-        tags :[String]
+        tags :[String],
+        file:form_fields.FileField.Schema
 //        is_hot:{type:Boolean,'default':false}
     },
 

@@ -99,6 +99,48 @@ exports.model = function(req, res) {
     }
 };
 
+exports.document_post = function(req,res) {
+    var adminUser = req.session._mongooseAdminUser ? MongooseAdmin.userFromSessionStore(req.session._mongooseAdminUser) : null;
+    if (!adminUser) {
+        res.writeHead(401, {"Content-Type": "application/json"});
+        res.end();
+        return;
+    } else {
+        if(req.body._id && req.body._id != '')
+            MongooseAdmin.singleton.updateDocument(req,adminUser, req.params.modelName, req.body._id, req.body, function(err, document) {
+                if (err) {
+                    res.writeHead(500);
+                    res.end();
+                } else {
+                    res.redirect(req.path.split('/document/')[0] + '?saved=true');
+//                    res.writeHead(200, {"Content-Type": "application/json"});
+//                    res.write(JSON.stringify({"collection": req.params.collectionName}));
+//                    res.end();
+                }
+            });
+        else
+            MongooseAdmin.singleton.createDocument(req,adminUser, req.params.modelName, req.body, function(err, document) {
+                if (err) {
+                    if(typeof(err)=='object')
+                    {
+                        res.json(err,400);
+                    }
+                    else
+                    {
+                        res.writeHead(500);
+                        res.end();
+                    }
+                } else {
+                    res.redirect(req.path.split('/document/')[0] + '?saved=true');
+    //                res.writeHead(201, {"Content-Type": "application/json"});
+    //                res.write(JSON.stringify({"collection": req.params.collectionName}));
+    //                res.end();
+                }
+            });
+    }
+
+};
+
 exports.document = function(req, res) {
     var adminUser = req.session._mongooseAdminUser ? MongooseAdmin.userFromSessionStore(req.session._mongooseAdminUser) : null;
     if (!adminUser) {

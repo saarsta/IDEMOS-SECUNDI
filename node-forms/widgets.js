@@ -169,9 +169,20 @@ ListWidget.prototype.render = function(res,render_template,render_item)
     }
     res.write('</ul></div>');
 };
-    
-    
-    
+
+var FileWidget = exports.FileWidget = _extends(InputWidget,function(options)
+{
+    FileWidget.super_.call(this,'file', options);
+});
+
+FileWidget.prototype.render = function(res)
+{
+    if(this.value && this.value != '')
+    {
+        res.write('<input type="checkbox" name="' + this.name +'_clear" value="Clear" /> <p>Curret: <a href="' + this.value.url + '">' + this.value.url + '</a></p>');
+    }
+    FileWidget.super_.prototype.render.call(this,res);
+};
     
     
     

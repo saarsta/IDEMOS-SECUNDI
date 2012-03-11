@@ -25,6 +25,7 @@ exports.registerPaths = function(app, root) {
     app.get(path_join(root, '/logout'), routes.logout);
     app.get(path_join(root, '/model/:modelName'), routes.model);
     app.get(path_join(root, '/model/:modelName/document/:documentId'), routes.document);
+    app.post(path_join(root, '/model/:modelName/document/:documentId'), routes.document_post);
 
     app.post(path_join(root, '/json/login'), routesJson.login);
     app.get(path_join(root, '/json/documents'), routesJson.documents);
