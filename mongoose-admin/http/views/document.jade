@@ -1,6 +1,6 @@
 script(type='text/javascript')
   $(document).ready(function() {
-    $('#saveButton').click(function() {
+      /*$('#saveButton').click(function() {
       var method = $('#document_id').val().length > 0 ? 'PUT' : 'POST';
       $.ajax({
         type:method,
@@ -14,7 +14,7 @@ script(type='text/javascript')
         }
       });
       return false;
-    });
+    });*/
     $('#deleteButton').click(function() {
       $.ajax({
         type:'DELETE',
@@ -67,14 +67,14 @@ script(type='text/javascript')
 != renderedHead
 div#content.container_16.clearfix
   div.grid_16.clearboth
-    form#document(enctype="multipart/form-data" )!= renderedDocument
-  div.grid_16.clearboth
-    p.submit
-      input#saveButton(type='submit', value='Save')
-      | &nbsp;
-      input#cancelButton(type='button', value='Cancel')
-      - if (allowDelete)
-          span(style='margin-left:20px;')
-            input#deleteButton(type='button', value='Delete')
+    form#document(enctype="multipart/form-data",method="post" )!= renderedDocument
+      div.grid_16.clearboth
+        p.submit
+          input#saveButton(type='submit', value='Save')
+          | &nbsp;
+          input#cancelButton(type='button', value='Cancel')
+          - if (allowDelete)
+              span(style='margin-left:20px;')
+                input#deleteButton(type='button', value='Delete')
 div#foot
   span Mongoose-Admin
