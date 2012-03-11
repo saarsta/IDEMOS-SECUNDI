@@ -73,6 +73,7 @@ var StringField = exports.StringField = _extends(BaseField,function(options)
     options = options || {};
     options.widget = options.widget || widgets.TextWidget;
     StringField.super_.call(this,options);
+    this.type = 'string';
 });
 
 var ReadonlyField = exports.ReadonlyField = _extends(BaseField,function(options)
@@ -197,7 +198,7 @@ ListField.prototype.clean_value = function(req,callback)
     var prefix = self.name + '_li';
     var values = {};
     var clean_funcs = [];
-    function create_clean_func(num,name)
+    function create_clean_func(num,name,value)
     {
         return function(cbk)
         {
@@ -205,13 +206,15 @@ ListField.prototype.clean_value = function(req,callback)
             values[num] = data;
             var field = self.fields[name];
             field.name = name;
-            field.set(req.body[field_name],req);
+            field.set(value,req);
             field.clean_value(req,function(err)
             {
                 if(field.errors && field.errors.length)
                     this.errors = Array.concat(self.errors,field.errors);
                 else
                 {
+                    console.log(num + ' ' + field.value);
+                    console.log(field);
                     data[name] = field.value;
                     if(name == '__self__')
                         values[num] = field.value;
@@ -228,7 +231,7 @@ ListField.prototype.clean_value = function(req,callback)
             var next_ = suffix.indexOf('_');
             var num = suffix.substring(0,next_);
             var name = suffix.substring(next_+1);
-            clean_funcs.push(create_clean_func(num,name));
+            clean_funcs.push(create_clean_func(num,name,req.body[field_name]));
         }
     }
     async.parallel(clean_funcs,function(err)
@@ -236,6 +239,7 @@ ListField.prototype.clean_value = function(req,callback)
         self.value = [];
         for(var key in values)
             self.value.push(values[key]);
+        console.log(self.value);
         callback(null);
     });
     return self;
@@ -360,4 +364,41 @@ ListField.prototype.render = function(res)
     return self;
 
 //    self.widget.render(res,render_template,render_item);
+};
+
+
+var FileField = exports.FileField = _extends(BaseField,function(options)
+{
+    options = options || {};
+    options.widget = options.widget || widgets.FileWidget;
+    FileField.super_.call(this,options);
+});
+
+var formidable = require('formidable');
+
+FileField.prototype.clean_value = function(req,callback)
+{
+    var form = new formidable.IncomingForm();
+    form.onPart = function(part) {
+        if (!part.filename) {
+            // let formidable handle all non-file parts
+            form.handlePart(part);
+        }
+        else
+        {
+            part.addListener('data', function(data) {
+                console.log(data);
+            });
+        }
+    };
+    form.parse(req,function(err,fields,files)
+        {
+           callback(null);
+        });
+};
+
+FileField.Schema = {
+    url:String,
+    name:String,
+    size:Number
 };
