@@ -41,31 +41,33 @@ Authoriztion.prototype.edit_object = function(req,object,callback){
                 if (object.tokens >= POST_PRICE){
                     callback(null, object);
                 }else{
-                    callback("Error: Unauthorized - there is not enought tokens", null);
+                    callback({message:"Error: Unauthorized - there is not enought tokens",code:401}, null);
                 }
             }
         });
     }
     else{
-        callback("Error: User Is Not Autthenticated", null);
+        callback({message:"Error: User Is Not Autthenticated",code:401}, null);
     }
 };
 
-var PostResource = module.exports = function(){
+var PostResource = module.exports = common.GamificationMongooseResource.extend({
+    init: function(){
 
-    PostResource.super_.call(this,models.Post);
-    this.allowed_methods = ['get','post'];
-    this.authorization = new Authoriztion();
-    this.authentication = new common.SessionAuthentication();
-    this.filtering = {discussion_id: null};
-    this.default_query = function(query)
-    {
-        return query.sort('creation_date','descending');
-    };
+        this._super(models.Post,'post');
+        this.allowed_methods = ['get','post'];
+        this.authorization = new Authoriztion();
+        this.authentication = new common.SessionAuthentication();
+        this.filtering = {discussion_id: null};
+        this.default_query = function(query)
+        {
+            return query.sort('creation_date','descending');
+        };
 //    this.validation = new resources.Validation();=
-}
+    }
+});
 
-util.inherits(PostResource, resources.MongooseResource);
+//util.inherits(PostResource, resources.MongooseResource);
 
 PostResource.prototype.create_obj = function(req,fields,callback)
 {
@@ -89,29 +91,50 @@ PostResource.prototype.create_obj = function(req,fields,callback)
                 post_object.set(field,fields[field]);
             }
 
-            self.authorization.edit_object(req, post_object,function(err, user_object)
+            self.authorization.edit_object(req, post_object, function(err, user_object)
             {
                 if(err) callback(err);
                 else
                 {
+                    var discussion_id = post_object.discussion_id;
                     post_object.save(function(err,object)
                     {
-                        //if post created successfuly, take tokens it from the user
+                        var discussion_id = object.discussion_id;
+                        //if post created successfuly, add user to discussion
+                        // + add discussion to user
+                        //  + take tokens from the user
                         if (!err){
 
-                            /*if (object.is_change_suggestion){
-                                price = change_suggestion_price;
-                            }*/
+                           models.Discussion.findOne({_id: object.discussion_id}, function(err, discussion_obj){
+                                if (err){
+                                    callback(self.elaborate_mongoose_errors(err), null);
+                                }else{
+
+                                    if (common.isUserIsInDiscussion(user_id, discussion_obj.users) == false){
+                                        discussion_obj.users.push(user_id);
+                                        discussion_obj.followers_count++;
+                                        discussion_obj.save();
+                                    }
+                                }
+                            });
+
+                            // add discussion_id to the list of discussions in user
                             user_object.tokens -= POST_PRICE;
+                            if (common.isDiscussionIsInUser(object.discussion_id, user_object.discussions) == false){
+                                user_object.discussions.push(object.discussion_id);
+                            }
                             user_object.save(function(err, object){
-                                callback(self.elaborate_mongoose_errors(err), post_object);
+                                 callback(self.elaborate_mongoose_errors(err), post_object);
                             });
                         }else{
                             callback(self.elaborate_mongoose_errors(err), null);
-                        }
+
+                         }
                     });
                 }
             });
         }
     });
 }
+
+

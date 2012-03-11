@@ -44,11 +44,12 @@ var Schemas  = exports.Schemas = {
         email: {type:String, required:true,validate:TestEmailValidator},
         gender: {type: String, "enum": ['male', 'female']},
         age: {type: Number, min: 0},
-        discussions: [{type: ObjectId, ref: 'Discussion'}],//this is only relevant when cycle is on, so if there is
-        //a cycle schema i might change it
+        discussions: [{type: ObjectId, ref: 'Discussion'}],
+        actions: [{type: Schema.ObjectId, ref: 'Action', index: true}],
         password: String,
         md5: String,
-        tokens: {type: Number, 'default': 5}
+        tokens: {type: Number, 'default': 5},
+        gamification:{}
     },
 
     InformationItem: {
@@ -82,14 +83,18 @@ var Schemas  = exports.Schemas = {
 //      tag_id: String,
         title: String,
         vision_text: String,
+        vision_text_history: [String],
         is_cycle:{type:Boolean,'default':false},
         tags: [String],
         users: [{type: ObjectId, ref: 'User'}],
+        followers_count: {type: Number, 'default': 0},
         is_visible:{type:Boolean,'default':true},
         is_published:{type:Boolean,'default':false},
         grade: Number,
         evaluate_counter: {type: Number, 'default': 0},
         grade_sum: {type: Number, 'default': 0}
+//        vision_changes: [{log_by_time: [{start:Number,end:Number,text:String}]}]
+
     },
     PostOrSuggestion:{
         discussion_id: {type: Schema.ObjectId, ref: 'Discussion', index: true,  required:true},
@@ -99,9 +104,7 @@ var Schemas  = exports.Schemas = {
         username: String,
         creation_date:{type:Date,'default':Date.now},
         tokens: {type: Number, 'default': 0},
-        is_change_suggestion: {type:Boolean,'default':false},
-        is_comment_on_vision: {type:Boolean,'default':false},
-        ref_to_post_id: {type: Schema.ObjectId, ref: 'Post', index: true},
+//        is_change_suggestion: {type:Boolean,'default':false},
         post_price: {type: Number, 'default': 0}//how many tokens for creating post
     },
 
@@ -118,30 +121,53 @@ var Schemas  = exports.Schemas = {
         discussion_id: {type: ObjectId, ref: 'Discussion', index: true, required: true},
         evaluation_grade: {type: Number, min: 0, max: 10},
         creation_date: {type:Date,'default':Date.now}
+    },
+
+    ActionResource: {
+        category: {type: String, "enum": [""]},
+        name: String
+    },
+
+    Action: {
+        creator_id: {type: Schema.ObjectId, ref: 'User', index: true, required: true},
+        title: String,
+        description: String,
+        category: String,
+        action_resources: [{resource:{type: ObjectId, ref: 'ActionResource'}, amount: Number}],
+        users: [{type: ObjectId, ref: 'User'}],
+        execution_date: {type:Date},
+        creation_date:{type:Date,'default':Date.now},
+        required_participants: {type: Number, 'default': 0},
+        is_aproved: {type:Boolean,'default':false}
+    },
+
+    Post :{
+        text: String,
+        //is_change_suggestion: {type:Boolean,'default':false},
+        is_comment_on_vision: {type:Boolean,'default':false},
+        is_comment_on_action: {type:Boolean,'default':false},
+        ref_to_post_id: {type: Schema.ObjectId, ref: 'Post', index: true}
+    },
+
+    Suggestion: {
+        //is_change_suggestion: {type:Boolean,'default':true},
+        parts:[{start:Number,end:Number,text:String}],
+        is_aproved: {type:Boolean,'default':false}
     }
 };
 
-/*
- function clone_extend(original,extension)
- {
- for(var key in original)
- if(!extension[key]) extension[key] = original[key];
- return extension;
- }
-
- Schemas.Post = clone_extend(Schemas.PostOrSuggestion,{
- text: String,
- is_change_suggestion: {type:Boolean,'default':false},
- is_comment_on_vision: {type:Boolean,'default':false},
- ref_to_post_id: {type: Schema.ObjectId, ref: 'Post', index: true}
- });
-
- //i need to put it outside the schema
- Schemas.Suggestion = clone_extend(Schemas.PostOrSuggestion,{
- is_change_suggestion: {type:Boolean,'default':true},
- parts:[{start:Number,end:Number,text:String}]
- });
- */
+//Schemas.Post = clone_extend(Schemas.PostOrSuggestion,{
+//text: String,
+//is_change_suggestion: {type:Boolean,'default':false},
+//is_comment_on_vision: {type:Boolean,'default':false},
+//ref_to_post_id: {type: Schema.ObjectId, ref: 'Post', index: true}
+//});
+//
+////maybe i need to put it outside the schema
+//Schemas.Suggestion = clone_extend(Schemas.PostOrSuggestion,{
+//is_change_suggestion: {type:Boolean,'default':true},
+//parts:[{start:Number,end:Number,text:String}]
+//});
 
 /*,
 
@@ -152,16 +178,38 @@ var Schemas  = exports.Schemas = {
 //};
 
 
+function extend_model(name,base_schema,schema,collection)
+{
+    for(var key in base_schema)
+        if(!schema[key]) schema[key] = base_schema[key];
+    schema._type = {type:String,'default':name};
+    var model = mongoose.model(name,new Schema(schema),collection);
+    var old_find = model.find;
+    model.find = function()
+    {
+        var params = arguments.length ? arguments[0] : {};
+        params['_type'] = name;
+        if(arguments.length)
+            arguments[0] = params;
+        else
+            arguments = [params];
+        return old_find.apply(this,arguments);
+    };
+    return model;
+}
 
 var Models = module.exports = {
     User: mongoose.model("User", new Schema(Schemas.User)),
     InformationItem:mongoose.model('InformationItem',new Schema(Schemas.InformationItem)),
     Subject:mongoose.model('Subject', new Schema(Schemas.Subject)),
     Discussion: mongoose.model('Discussion', new Schema(Schemas.Discussion)),
-    Post: mongoose.model('PostOrSuggestion', new Schema(Schemas.Post)),
-    Suggestion: mongoose.model('PostOrSuggestion', new Schema(Schemas.Suggestion)),
+    Post: extend_model('Post',Schemas.PostOrSuggestion,Schemas.Post,'posts'),
+    Suggestion: extend_model('Suggestion',Schemas.PostOrSuggestion,Schemas.Suggestion,'posts'),
+    PostOrSuggestion : mongoose.model('PostOrSuggestion',new Schema(Schemas.PostOrSuggestion),'posts'),
     Vote: mongoose.model('Vote', new Schema(Schemas.Vote)),
     Grade: mongoose.model('Grade', new Schema(Schemas.Grade)),
+    Action: mongoose.model('Action', new Schema(Schema.Action)),
+    ActionResource: mongoose.model('ActionResource', new Schema(Schemas.ActionResource)),
     Schemas:Schemas
 };
 
@@ -174,6 +222,18 @@ var Models = module.exports = {
 //        arguments[0] = params;
 //    else
 //        arguments = [params];
-//    return old_post_find.apply(null,arguments);
+//    return old_post_find.apply(this,arguments);
 //};
+//
+//var old_suggestion_find = Models.Suggestion.find;
+//Models.Suggestion.find = function()
+//{
+//    var params = arguments.length ? arguments[0] : {};
+//    params['is_change_suggestion'] = true;
+//    if(arguments.length)
+//        arguments[0] = params;
+//    else
+//        arguments = [params];
+//    return old_post_find.apply(this,arguments);
+//}
 

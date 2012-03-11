@@ -19,6 +19,7 @@ var express = require('express'),
     VoteResource = require('./model/VoteResource');
     GradeResource = require('./model/GradeResource');
     SuggestionResource = require('./model/SuggestionResource')
+    ActionResourceResource = require('./model/ActionResourceResource');
 
 var app = module.exports = express.createServer();
 var account = require('./routes/account');
@@ -279,6 +280,9 @@ rest_api.register_resource('posts', new PostResource());
 rest_api.register_resource('votes', new VoteResource());
 rest_api.register_resource('grades', new GradeResource());
 rest_api.register_resource('suggestions', new SuggestionResource());
+rest_api.register_resource('action_resource', new ActionResourceResource());
+
+
 app.listen(app.settings.port);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 
