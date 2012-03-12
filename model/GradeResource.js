@@ -30,7 +30,7 @@ Authoriztion.prototype.edit_object = function(req,object,callback){
                 }
             }
             if (flag){
-                callback("user already grade this discussion", null);
+                callback({message:"user already grade this discussion",code:401}, null);
             }else{
                 callback(null, object);
 
