@@ -50,7 +50,7 @@ var Schemas  = exports.Schemas = {
         password: String,
         tokens: {type: Number, 'default': 100000},
         gamification:{},
-        score: Number,
+        score: {type: Number, 'default': 0},
         status: {type: String, "enum": ['a', 'b', 'c']}
 
     },
@@ -128,15 +128,16 @@ var Schemas  = exports.Schemas = {
     },
 
     ActionResource: {
-        category: {type: String, "enum": [""]},
+        category: {type: String, "enum": ["field", "demonstration", "c"]},
         name: String
     },
 
     Action: {
         creator_id: {type: Schema.ObjectId, ref: 'User', index: true, required: true},
+//        circle_id or discussion_id
         title: String,
         description: String,
-        category: String,
+        category: {type: String, "enum": ["field", "demonstration", "c"]},
         action_resources: [{resource:{type: ObjectId, ref: 'ActionResource'}, amount: Number}],
         users: [{type: ObjectId, ref: 'User'}],
         execution_date: {type:Date},
@@ -145,7 +146,7 @@ var Schemas  = exports.Schemas = {
         is_aproved: {type:Boolean,'default':false}
     },
 
-    Post :{
+    Post: {
         text: String,
         //is_change_suggestion: {type:Boolean,'default':false},
         is_comment_on_vision: {type:Boolean,'default':false},

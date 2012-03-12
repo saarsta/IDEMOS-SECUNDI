@@ -436,7 +436,7 @@ var FileField = exports.FileField = _extends(BaseField,function(options)
     FileField.super_.call(this,options);
 });
 
-var formidable = require('formidable');
+//var formidable = require('formidable');
 
 FileField.prototype.to_schema = function()
 {

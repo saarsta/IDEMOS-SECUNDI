@@ -16,7 +16,7 @@ var resources = require('jest'),
 
 
 
-//Authorization
+/*//Authorization
 var Authoriztion = function() {};
 util.inherits(Authoriztion,resources.Authorization);
 
@@ -32,12 +32,6 @@ Authoriztion.prototype.edit_object = function(req,object,callback){
             }
             else
             {
-//                if (req.body.is_change_suggestion){
-//                    price = change_suggestion_price;
-//                }else{
-//                    price = post_price;
-//                }
-
                 if (object.tokens >= POST_PRICE){
                     callback(null, object);
                 }else{
@@ -49,14 +43,14 @@ Authoriztion.prototype.edit_object = function(req,object,callback){
     else{
         callback({message:"Error: User Is Not Autthenticated",code:401}, null);
     }
-};
+};*/
 
 var PostResource = module.exports = common.GamificationMongooseResource.extend({
     init: function(){
 
         this._super(models.Post,'post');
         this.allowed_methods = ['get','post'];
-        this.authorization = new Authoriztion();
+        this.authorization = new common.TokenAuthorization();
         this.authentication = new common.SessionAuthentication();
         this.filtering = {discussion_id: null};
         this.default_query = function(query)
@@ -88,13 +82,13 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                     post_object.set(field,fields[field]);
                 }
 
-                self.authorization.edit_object(req, post_object, function(err, user_object)
+                self.authorization.edit_object(req, post_object, function(err, post_object)
                 {
                     if(err) callback(err);
                     else
                     {
                         var discussion_id = post_object.discussion_id;
-                        post_object.save(function(err,object)
+                            post_object.save(function(err,object)
                         {
                             var discussion_id = object.discussion_id;
                             //if post created successfuly, add user to discussion
@@ -116,11 +110,11 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                                 });
 
                                 // add discussion_id to the list of discussions in user
-                                user_object.tokens -= POST_PRICE;
-                                if (common.isDiscussionIsInUser(object.discussion_id, user_object.discussions) == false){
-                                    user_object.discussions.push(object.discussion_id);
+                                user.tokens -= POST_PRICE;
+                                if (common.isDiscussionIsInUser(object.discussion_id, user.discussions) == false){
+                                    user.discussions.push(object.discussion_id);
                                 }
-                                user_object.save(function(err, object){
+                                user.save(function(err, object){
                                     callback(self.elaborate_mongoose_errors(err), post_object);
                                 });
                             }else{

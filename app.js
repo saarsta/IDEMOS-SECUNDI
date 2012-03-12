@@ -18,8 +18,9 @@ var express = require('express'),
     PostResource = require('./model/PostResource.js');
     VoteResource = require('./model/VoteResource');
     GradeResource = require('./model/GradeResource');
-    SuggestionResource = require('./model/SuggestionResource')
-    ActionResourceResource = require('./model/ActionResourceResource');
+    SuggestionResource = require('./model/SuggestionResource'),
+    ActionResourceResource = require('./model/ActionResourceResource'),
+    ActionResource = require('./model/ActionResource');
 
 var app = module.exports = express.createServer();
 var account = require('./routes/account');
@@ -27,9 +28,6 @@ var infoAndMeasures = require('./routes/infoAndMeasures');
 var selectedSubjectPage = require('./routes/selectedSubjectPage');
 var Models = require("./models.js");
 var DEFAULT_LOGIN_REDIRECT = '';
-
-
-
 
 app.configure('development', function(){
     app.set("port", 80);
@@ -280,7 +278,9 @@ rest_api.register_resource('posts', new PostResource());
 rest_api.register_resource('votes', new VoteResource());
 rest_api.register_resource('grades', new GradeResource());
 rest_api.register_resource('suggestions', new SuggestionResource());
-rest_api.register_resource('action_resource', new ActionResourceResource());
+rest_api.register_resource('action_resources', new ActionResourceResource());
+rest_api.register_resource('actions', new ActionResource());
+
 
 
 app.listen(app.settings.port);
