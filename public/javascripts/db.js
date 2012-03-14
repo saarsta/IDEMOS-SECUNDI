@@ -385,6 +385,38 @@ var db_functions = {
 
             }
         });
+    },
+
+    getCycleById: function(cycle_id, callback){
+        $.ajax({
+            url: '/api/cycles/'+ cycle_id,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
+
+            }
+        });
+    },
+
+    getActionByCycle: function(cycle_id, callback){
+        $.ajax({
+            url: '/api/actions?cycle_id='+ cycle_id,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
+            }
+        });
     }
 
 

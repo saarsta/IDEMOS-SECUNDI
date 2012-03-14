@@ -128,14 +128,14 @@ var SuggestionResource = module.exports =  common.GamificationMongooseResource.e
         });
     },
     update_obj: function(req,suggestion_object,callback){
-        //if suggestion aproved we change the discussion vision
+        //if suggestion approved we change the discussion vision
         // + save the ealier version of vison as parts in vison_changes
         var discussion_id = suggestion_object.discussion_id;
         var vision_changes;
-        if(suggestion_object.is_aproved){
+        if(suggestion_object.is_approved){
             callback("this suggestion is already published", null);
         }else{
-            suggestion_object.is_aproved = true;
+            suggestion_object.is_approved = true;
             var vision_changes_array = [];
             models.Discussion.findOne({_id: discussion_id}, function(err, discussion_object){
                 var vision = discussion_object.vision_text;
@@ -232,14 +232,14 @@ var SuggestionResource = module.exports =  common.GamificationMongooseResource.e
 //}
 
 //SuggestionResource.prototype.update_obj = function(req,suggestion_object,callback){
-//    //if suggestion aproved we change the discussion vision
+//    //if suggestion approved we change the discussion vision
 //    // + save the ealier version of vison as parts in vison_changes
 //    var discussion_id = suggestion_object.discussion_id;
 //    var vision_changes;
-//    if(suggestion_object.is_aproved){
+//    if(suggestion_object.is_approved){
 //        callback("this suggestion is already published", null);
 //    }else{
-//        suggestion_object.is_aproved = true;
+//        suggestion_object.is_approved = true;
 //        var vision_changes_array = [];
 //        models.Discussion.findOne({_id: discussion_id}, function(err, discussion_object){
 //            var vision = discussion_object.vision_text;

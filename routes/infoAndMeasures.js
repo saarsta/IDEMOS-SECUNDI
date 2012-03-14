@@ -7,7 +7,9 @@
  */
 
 
+/*
 exports.meidaInit = function(req, res){
     res.render('infoAndMeasures.ejs',{title:'infoAndMeasures.ejs'});
 }
+*/
 

@@ -56,6 +56,9 @@ var Schemas = exports.Schemas = {
         discussions:[
             {type:ObjectId, ref:'Discussion'}
         ],
+        cycles:[
+            {type:ObjectId, ref:'Cycle'}
+        ],
         actions:[
             {type:Schema.ObjectId, ref:'Action', index:true}
         ],
@@ -63,7 +66,7 @@ var Schemas = exports.Schemas = {
         tokens:{type:Number, 'default':100000},
         gamification:{},
         //score:{type:Number, 'default':0},
-        status:{type:String, "enum":['a', 'b', 'c']}
+        decoration_status:{type:String, "enum":['a', 'b', 'c']}
 
     },
 
@@ -113,12 +116,16 @@ var Schemas = exports.Schemas = {
         grade:Number,
         evaluate_counter:{type:Number, 'default':0},
         grade_sum:{type:Number, 'default':0}
-//        vision_changes: [{log_by_time: [{start:Number,end:Number,text:String}]}]
-
     },
 
-    Circle:{
+    Cycle:{
 
+        discussions:[
+            {type:ObjectId, ref:'Discussion'}
+        ],
+        title: String,
+        document: String,
+        followers_count: {type: Number}
     },
 
     PostOrSuggestion:{
@@ -129,7 +136,6 @@ var Schemas = exports.Schemas = {
         username:String,
         creation_date:{type:Date, 'default':Date.now},
         tokens:{type:Number, 'default':0},
-//        is_change_suggestion: {type:Boolean,'default':false},
         post_price:{type:Number, 'default':0}//how many tokens for creating post
     },
 
@@ -152,17 +158,20 @@ var Schemas = exports.Schemas = {
 
     ActionSuggestion: {
         creator_id: {type:Schema.ObjectId, ref:'User', index:true, required:true},
+        cycle_id: {type: ObjectId, ref: 'Cycle'},
         first_name: String,
         last_name: String,
         creation_date:{type:Date, 'default':Date.now},
         action_ref: {type: ObjectId, ref:'Action', required: true},
         change: {},
-        is_aproved: {type: Boolean, 'default': false}
+        is_approved: {type: Boolean, 'default': false}
     },
 
     Action:{
-        creator_id:{type:Schema.ObjectId, ref:'User', index:true, required:true},
-        circle_id:{type:Schema.ObjectId, ref:'Circle', index:true, required:true},
+        creator_id:{type:ObjectId, ref:'User', index:true, required:true},
+        first_name: String,
+        last_name: String,
+        cycle_id:{type:ObjectId, ref:'Cycle', index:true, required:true},
         title:String,
         description:String,
         category:{type:String, "enum":["field", "demonstration", "c"]},
@@ -176,10 +185,7 @@ var Schemas = exports.Schemas = {
         creation_date:{type:Date, 'default':Date.now},
         required_participants:{type:Number, 'default':0},
         tokens:{type:Number, 'default':0},
-        parts:[
-            {start:Number, end:Number, text:String}
-        ],
-        is_aproved:{type:Boolean, 'default':false}
+        is_approved:{type:Boolean, 'default':false}
     },
 
     Post:{
@@ -195,7 +201,7 @@ var Schemas = exports.Schemas = {
         parts:[
             {start:Number, end:Number, text:String}
         ],
-        is_aproved:{type:Boolean, 'default':false}
+        is_approved:{type:Boolean, 'default':false}
     }
 };
 
@@ -227,7 +233,8 @@ var Models = module.exports = {
     PostOrSuggestion:mongoose.model('PostOrSuggestion', new Schema(Schemas.PostOrSuggestion), 'posts'),
     Vote:mongoose.model('Vote', new Schema(Schemas.Vote)),
     Grade:mongoose.model('Grade', new Schema(Schemas.Grade)),
-    Action:mongoose.model('Action', new Schema(Schema.Action)),
+    Cycle:mongoose.model('Cycle', new Schema(Schemas.Cycle)),
+    Action:mongoose.model('Action', new Schema(Schemas.Action)),
     ActionResource:mongoose.model('ActionResource', new Schema(Schemas.ActionResource)),
     Schemas:Schemas
 };

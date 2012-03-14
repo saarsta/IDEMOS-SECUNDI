@@ -17,6 +17,11 @@ a {
     min-width: 200px;
 }
 
+.right_panel {
+    float: right;
+    padding: 10px;
+    min-width: 200px;
+}
 /*.grade {
     float: none;
     padding: 10px;
@@ -67,6 +72,10 @@ div.shopping_cart {
 
 .color {
     background: #00B7FF
+}
+
+.gray_background {
+    background: #7B8D9B
 }
 
 
