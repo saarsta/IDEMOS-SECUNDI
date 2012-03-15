@@ -5,7 +5,7 @@ var querystring = require('querystring'),
     forms = require('../../../node-forms/forms');
  //   Renderer = require('../renderer.js').Renderer;
 
-var adminTitle = 'Spilon Backoffice';
+var adminTitle = 'URU Backoffice';
 
 exports.index = function(req, res) {
     var adminUser = req.session._mongooseAdminUser ? MongooseAdmin.userFromSessionStore(req.session._mongooseAdminUser) : null;

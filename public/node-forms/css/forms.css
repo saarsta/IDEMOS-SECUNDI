@@ -3,21 +3,41 @@
     margin-bottom: 10px; padding-bottom: 10px;
     border-bottom: 1px solid #bbb;
 }
-li .nf_fieldset {
-    margin-left: 20px;
+    li .nf_fieldset, .nf_fieldset .nf_fieldset {
+        margin-left: 20px;
+    }
+    .nf_fieldset>h2 {
+        cursor: pointer;
+        border-width: 0;
+        margin-bottom: 3px;
+    }
+
+input, select {
+    max-width: 500px;
 }
-.nf_fieldset>h2 {
-    cursor: pointer;
-    border-width: 0;
+    input[type="checkbox"] {
+        width: 20px !important;
+    }
+label {
+    clear: left;
+    float: left;
+    /*display: block !important;*/
 }
-.nf_fieldset.collapsed
-{
-    height: 30px;
-    overflow: hidden;
+    label span {
+        float: left;
+        width: 190px;
+        height: 25px;
+        overflow: hidden;
+    }
+        label span.error {
+            float: right;
+            margin-left: 10px;
+        }
+p.error {
+    width: 100%;
+    margin: 0 auto 10px auto;
 }
-.nf_fieldset.expanded
-{
-}
+        
 li {
     display: block;
     margin-bottom: 5px; padding: 10px;
@@ -25,38 +45,43 @@ li {
     background-color: #E3E3E3;
     clear: both;
 }
-input, select {
-    max-width: 500px;
+    li label {
+        clear: none;
+        display: inline;
+    }
+    li label span {
+        clear: none;
+        width: 110px;
+    }
+    li input, li select {
+        float: left;
+        width: 280px !important;
+        margin-right: 15px;
+    }
+    li li input,li li select
+    {
+        width:270px !important;
+    }
+    li .nf_fieldset .nf_fieldset .nf_fieldset label {
+        width: 100px;
+    }
+    li .nf_fieldset .nf_fieldset .nf_fieldset input,
+    li .nf_fieldset .nf_fieldset .nf_fieldset select {
+        width: 230px !important;
+    }
+.nf_listfield_delete
+{
+    background: url('/images/cross.png');   width: 16px;   height: 16px;   border: none;
 }
-li input, li select {
-    float: left;
-    width: 280px !important;
-    margin-right: 15px;
+.nf_listfield_drag
+{
+    background: url('/images/arrow_up.png');   width: 16px;   height: 16px;   border: none; margin-right:5px;
 }
-li input[type="checkbox"] {
-    width: 20px !important;
+.nf_listfield_append
+{
+    background: url('/images/add.png');   width: 16px;   height: 16px;   border: none;
 }
-label {
-    float: left;
-    width: 250px;
-    margin-right: 10px;
-    clear: both;
-    overflow: hidden;
-}
-li label {
-    clear: none;
-    width: 110px;
-}
-li .nf_fieldset .nf_fieldset .nf_fieldset label {
-    width: 100px;
-}
-li .nf_fieldset .nf_fieldset .nf_fieldset input,
-li .nf_fieldset .nf_fieldset .nf_fieldset select {
-    width: 230px !important;
-}
-
-.nf_listfield_delete,.nf_listfield_drag,.nf_listfield_append { float: right; }
-.nf_listfield_drag { padding: 4px; }
+.nf_listfield_delete,.nf_listfield_drag,.nf_listfield_append { float: right; cursor:pointer }
 
 li.new_li {
     background-color:  #f6f7d0;
