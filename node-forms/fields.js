@@ -508,6 +508,7 @@ var FileField = exports.FileField = _extends(BaseField,function(options)
     FileField.super_.call(this,options);
 });
 
+
 var formidable = {};
 try
 {

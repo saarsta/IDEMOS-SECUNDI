@@ -18,18 +18,20 @@ var express = require('express'),
     PostResource = require('./model/PostResource.js');
     VoteResource = require('./model/VoteResource');
     GradeResource = require('./model/GradeResource');
-    SuggestionResource = require('./model/SuggestionResource')
-    ActionResourceResource = require('./model/ActionResourceResource');
+    SuggestionResource = require('./model/SuggestionResource'),
+    ActionResourceResource = require('./model/ActionResourceResource'),
+    ActionResource = require('./model/ActionResource'),
+    CycleResource = require('./model/CycleResource');
 
 var app = module.exports = express.createServer();
 var account = require('./routes/account');
 var infoAndMeasures = require('./routes/infoAndMeasures');
 var selectedSubjectPage = require('./routes/selectedSubjectPage');
+var pagesInit = require('./routes/pagesInit');
+//var cycle = require('./routes/cycle');
+
 var Models = require("./models.js");
 var DEFAULT_LOGIN_REDIRECT = '';
-
-
-
 
 app.configure('development', function(){
     app.set("port", 80);
@@ -172,7 +174,6 @@ app.configure(function(){
 
 // Routes
 
-
 app.get('/', routes.index);
 app.get('/test/:id?', routes.test);
 app.get('/insertDataBase',function(req, res){
@@ -199,7 +200,6 @@ app.get('/insertDataBase',function(req, res){
 
     var information_item = new Models.InformationItem();
     information_item.text_field = 'it is bla bla bla';
-
     information_item.title = "graph";
     information_item.tags = ["hi", "bye", "hello"];
     information_item.subject_id ="4f3cf3868aa4ae9007000009";
@@ -224,11 +224,12 @@ app.get('/account/facebooklogin', account.fb_connect);
 app.get('/account/afterSuccessFbConnect2', function(req,res){});
 app.get('/needlogin', function(req,res){});
 app.get('/account/logout', account.logout);
-app.get('/account/meida',infoAndMeasures.meidaInit);
-app.get('/account/selectedSubjectPage', selectedSubjectPage.subjectPageInit);
-app.get('/account/createDiscussion', selectedSubjectPage.createDiscussionPageInit);
-app.get('/account/discussion', selectedSubjectPage.discussionPageInit);
-app.get('/account/discussionPreview', selectedSubjectPage.discussionPreviewPageInit);
+app.get('/account/meida',pagesInit.meidaInit);
+app.get('/account/selectedSubjectPage', pagesInit.subjectPageInit);
+app.get('/account/createDiscussion', pagesInit.createDiscussionPageInit);
+app.get('/account/discussion', pagesInit.discussionPageInit);
+app.get('/account/discussionPreview', pagesInit.discussionPreviewPageInit);
+app.get('/account/cycle', pagesInit.cyclePageInit);
 
 
 
@@ -263,9 +264,7 @@ app.get('/sendmail',function(req, res){
             console.log('Message ' + success ? 'sent' : 'failed');
         }
     );
-
     res.end();
-
 });
 
 var mongoose_resource = require('jest');
@@ -280,13 +279,12 @@ rest_api.register_resource('posts', new PostResource());
 rest_api.register_resource('votes', new VoteResource());
 rest_api.register_resource('grades', new GradeResource());
 rest_api.register_resource('suggestions', new SuggestionResource());
-rest_api.register_resource('action_resource', new ActionResourceResource());
-
+rest_api.register_resource('action_resources', new ActionResourceResource());
+rest_api.register_resource('actions', new ActionResource());
+rest_api.register_resource('cycles', new CycleResource());
 
 app.listen(app.settings.port);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
-
-
 
 try
 {
@@ -301,6 +299,7 @@ admin.ensureUserExists('admin','admin');
 admin.registerMongooseModel("User",Models.User,Models.Schemas.User,{list:['username','first_name','last_name']});
 admin.registerMongooseModel("InformationItem",Models.InformationItem, Models.Schemas.InformationItem,{list:['title','text_field','users']});
 admin.registerMongooseModel("Subject",Models.Subject,Models.Schemas.Subject,{list:['name','image_field']});
+
 
 }
 

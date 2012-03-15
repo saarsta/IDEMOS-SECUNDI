@@ -1,15 +1,24 @@
 /**
  * Created by JetBrains WebStorm.
  * User: saar
- * Date: 19/02/12
- * Time: 13:59
+ * Date: 13/03/12
+ * Time: 15:36
  * To change this template use File | Settings | File Templates.
  */
 
 
-/*exports.subjectPageInit = function(req, res){
 
-   res.render('selectedSubjectPage.ejs',{title:'selectedSubjectPage.ejs', subject_id: req.query.subject_id,
+/*exports.index = function(req, res){
+    res.render('index.ejs', { title: 'Express' })
+};*/
+
+exports.meidaInit = function(req, res){
+    res.render('infoAndMeasures.ejs',{title:'infoAndMeasures.ejs'});
+}
+
+exports.subjectPageInit = function(req, res){
+
+    res.render('selectedSubjectPage.ejs',{title:'selectedSubjectPage.ejs', subject_id: req.query.subject_id,
         subject_name: req.query.subject_name});
 
 }
@@ -33,8 +42,8 @@ exports.discussionPreviewPageInit = function(req, res){
     res.render('discussionPreviewPage.ejs',{title:'discussionPreviewPageInit.ejs', discussion_id: req.query.discussion_id, subject_id: req.query.subject_id,
         subject_name: req.query.subject_name});
 
-}*/
+}
 
-
-
-
+exports.cyclePageInit = function(req, res){
+    res.render('cyclePage.ejs',{title:'cyclePage.ejs', cycle_id: req.query.cycle_id});
+}

@@ -290,7 +290,7 @@ function updateUesrAccessToken(data, access_token, callback) {
 //            user.session_id = session_id;
         user.save(function (err) {
             if (err) {
-                return next(err);
+                return callback(err);
             } else {
                 callback(user.id);
             }

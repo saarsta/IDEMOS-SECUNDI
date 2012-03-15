@@ -9,7 +9,10 @@ var util = require('util');
 // Authentication
 
 var jest = require('jest')
+
     ,models = require('../models');
+
+var ACTION_PRICE = 2;
 
 var SessionAuthentication = exports.SessionAuthentication = function () { };
 util.inherits(SessionAuthentication,jest.Authentication);
@@ -19,7 +22,57 @@ SessionAuthentication.prototype.is_authenticated = function(req,callback){
     callback(null, is_auth);
 };
 
+var TokenAuthorization = exports.TokenAuthorization = jest.Authorization.extend( {
 
+    edit_object : function(req,object,callback){
+
+        if(req.session.user_id){
+            var user_id = req.session.user_id;
+            models.User.findOne({_id :user_id},function(err,user)
+            {
+                if(err)
+                {
+                    callback(err, null);
+                }
+                else
+                {
+                    if (user.tokens >= DISCUSSION_PRICE){
+                        callback(null, object);
+                    }else{
+                        callback({message:"Error: Unauthorized - there is not enought tokens",code:401}, null);
+                    }
+                }
+            });
+        }
+        else{
+            callback({message:"Error: User Is Not Autthenticated",code:401}, null);
+        }
+    }
+});
+
+/*TokenAuthorization.prototype.edit_object = function(req,object,callback){
+    if(req.session.user_id){
+        var user_id = req.session.user_id;
+        models.User.findOne({_id :user_id},function(err,object)
+        {
+            if(err)
+            {
+                callback(err, null);
+            }
+            else
+            {
+                if (object.tokens >= ACTION_PRICE){
+                    callback(null, object);
+                }else{
+                    callback({message:"Error: Unauthorized - there is not enought tokens",code:401}, null);
+                }
+            }
+        });
+    }
+    else{
+        callback({message:"Error: User Is Not Autthenticated",code:401}, null);
+    }
+};*/
 
 var isUserIsInDiscussion = exports.isUserIsInDiscussion = function(user_id, users_list){
     var flag = false;
@@ -127,6 +180,7 @@ var GamificationMongooseResource = exports.GamificationMongooseResource = jest.M
         var base = this._super;
         if(status == 201 || status == 204 && self.gamification_type)
         {
+
             update_user_gamification(req, self.gamification_type || req.gamification_type, req.session.user_id,function(err,rewards)
             {
                 if(rewards)

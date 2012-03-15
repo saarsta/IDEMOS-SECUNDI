@@ -10,37 +10,53 @@ var resources = require('jest'),
     util = require('util'),
     models = require('../models'),
     common = require('./common');
-
+    DISCUSSION_PRICE = 3;
 //Authorization
-var Authoriztion = function() {};
-util.inherits(Authoriztion,resources.Authorization);
+var Authoriztion = resources.Authorization.extend( {
+    limit_object_list : function(req, query, callback){
+        if(req.session.auth.user){
+            var id = req.session.user_id;
 
-Authoriztion.prototype.limit_object_list = Authoriztion.prototype.limit_object = function(req, query, callback){
-
-    if(req.session.auth.user){
-        var id = req.session.user_id;
-
-        if (req.method == "PUT" || req.method  == "DELETE"){
-            query.where('is_published', false).where('creator_id', id);
-            callback(null, query);
+            if (req.method == "PUT" || req.method  == "DELETE"){
+                query.where('is_published', false).where('creator_id', id);
+                callback(null, query);
+            }else{
+                query.or([{ 'is_published': true }, {'creator_id': id }]);
+                callback(null, query);
+            }
         }else{
-            query.or([{ 'is_published': true }, {'creator_id': id }]);
-            callback(null, query);
+            callback("Error: User Is Not Authenticated", null);
         }
-    }else{
-        callback("Error: User Is Not Authenticated", null);
+    },
+    limit_object:function(req,query,callback)
+    {
+        return this.limit_object_list(req,query,callback);
+    },
+    edit_object : function(req,object,callback){
+
+        if(req.session.user_id){
+            var user_id = req.session.user_id;
+            models.User.findOne({_id :user_id},function(err,user)
+            {
+                if(err)
+                {
+                    callback(err, null);
+                }
+                else
+                {
+                    if (user.tokens >= DISCUSSION_PRICE){
+                        callback(null, object);
+                    }else{
+                        callback({message:"Error: Unauthorized - there is not enought tokens",code:401}, null);
+                    }
+                }
+            });
+        }
+        else{
+            callback({message:"Error: User Is Not Autthenticated",code:401}, null);
+        }
     }
-};
-
-//seems like it works, but i might need to add the code to edit_object
-/*
-Authoriztion.prototype.edit_object = function(req,object,callback){
-
-    var abc = 8;
-}
-
-*/
-
+});
 
 var DiscussionResource = module.exports =  common.GamificationMongooseResource.extend({
     init: function(){
@@ -99,13 +115,20 @@ var DiscussionResource = module.exports =  common.GamificationMongooseResource.e
                     else
                     {
                         //if success with creating new discussion - add discussion to user schema
-                        object.save(function(err,object)
+                        object.save(function(err,obj)
                         {
-                            user.discussions.push(object._id);
-                            if (object.is_published){
-                                req.gamification_type = "discussion";
+                            if (!err){
+                                user.discussions.push(obj._id);
+                                if (object.is_published){
+                                    req.gamification_type = "discussion";
+                                }
+                                user.save(function(err, user){
+                                    if (err){
+
+                                    }
+                                });
                             }
-                            callback(self.elaborate_mongoose_errors(err),object);
+                            callback(self.elaborate_mongoose_errors(err),obj);
                         });
                     }
                 });

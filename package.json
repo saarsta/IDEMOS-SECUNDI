@@ -10,7 +10,9 @@
         "jest": ">= 0.0.6",
         "express-resource": "",
         "connect-mongo":"",
-
-		"jade": ""
+        "async": "",
+		"jade": "",
+        "sji": "",
+        "underscore": ""
   }
 } 
