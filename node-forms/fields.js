@@ -6,11 +6,11 @@ var _extends = common._extends;
 var BaseField = exports.BaseField = function(options) {
     options = options || {};
     this['default'] = options['default'];
-    this.required = options.required || false;
+    this.required = options.required != null ? options.required : false;
     this.validators = options.validators || [];
     var widget_options = options.widget_options || {};
     widget_options.attrs = options.attrs || {};
-    widget_options.required = this.required;
+    widget_options.required = widget_options.required != null ? widget_options.required : this.required;
     this.widget = new options.widget(widget_options);
     this.value = null;
     this.errors = [];
@@ -29,9 +29,21 @@ BaseField.prototype.to_schema = function()
 };
 
 
+BaseField.prototype.get_label = function()
+{
+    var label = this.label || this.name;
+    var arr =  label.split('_');
+    for(var i=0; i<arr.length; i++)
+    {
+        console.log(arr[i][0].toUpperCase()[0]);
+        arr[i] = arr[i][0].toUpperCase() + arr[i].substring(1);
+    }
+    return arr.join(' ');
+}
+
 BaseField.prototype.render_label = function(res)
 {
-    res.write('<label for="id_' + this.name + '">' + (this.label || this.name) + '</label>');
+    res.write('<label for="id_' + this.name + '">' + this.get_label() + '</label>');
 };
 
 BaseField.prototype.render_label_str = function()
@@ -52,14 +64,42 @@ BaseField.prototype.render_str = function()
     return common.writer_to_string(this.render,1024);
 };
 
+BaseField.prototype.render_with_label = function(res)
+{
+    res.write('<label for="id_' + this.name + '"><span>' + this.get_label() + '</span>');
+    this.render_error(res);
+    this.render(res);
+    res.write('</label>');
+};
+
+BaseField.prototype.render_with_label_str = function()
+{
+    return common.writer_to_string(this.render_with_label,1024);
+};
+
+BaseField.prototype.render_error = function(res)
+{
+    if(this.errors || this.errors.length)
+    {
+        for(var i=0; i<this.errors.length; i++)
+        {
+            res.write('<span class="error">');
+            res.write(this.errors[i] + '');
+            res.write('</span>');
+        }
+    }
+};
+
 BaseField.prototype.set = function(value,req)
 {
-    this.value = value || this['default'];
+    this.value = (typeof(value) == 'undefined' || value == null) ? this['default'] : value;
     return this;
 };
 
 BaseField.prototype.clean_value = function(req,callback)
 {
+    if(this.value == '')
+        this.value = null;
     if((this.value == null || this.value == []) && this.required)
         this.errors.push('this field is required');
     for(var i=0; i<this.validators; i++)
@@ -78,6 +118,7 @@ BaseField.prototype.pre_render = function(callback) {
     this.widget.pre_render(callback);
 };
 
+
 var StringField = exports.StringField = _extends(BaseField,function(options)
 {
     options = options || {};
@@ -85,6 +126,11 @@ var StringField = exports.StringField = _extends(BaseField,function(options)
     StringField.super_.call(this,options);
     this.type = 'string';
 });
+
+StringField.prototype.set = function(value,req)
+{
+    return StringField.super_.prototype.set.call(this,value,req);
+};
 
 StringField.prototype.to_schema = function()
 {
@@ -135,7 +181,7 @@ var EnumField = exports.EnumField = _extends(BaseField,function(options,choices)
     options.widget = options.widget || widgets.ChoicesWidget;
     options.widget_options = options.widget_options || {};
     options.widget_options.choices = options.widget_options.choices || choices;
-//    options.required = true;
+    options.required = true;
     EnumField.super_.call(this,options);
 });
 
@@ -149,20 +195,22 @@ EnumField.prototype.to_schema = function()
 
 EnumField.prototype.clean_value = function(req,callback)
 {
-    var found = false;
-    for(var i=0; i<this.choices.length; i++)
-    {
-        if(this.choices[i] == this.value)
-            found = true;
-    }
-    if(this.value === null || this.value == '')
-    {
+//    var found = false;
+//    for(var i=0; i<this.choices.length; i++)
+//    {
+//        if(this.choices[i] == this.value)
+//            found = true;
+//    }
+//    if(this.value === null || this.value == '')
+//    {
+//        this.value = null;
+//        found = true;
+//    }
+//    if(!found)
+//        this.errors = ['possible values are: ' + this.choices];
+//        this.value = null || this['default'];
+    if(this.value == '')
         this.value = null;
-        found = true;
-    }
-    if(!found)
-        this.errors = ['possible values are: ' + this.choices];
-        this.value = null || this['default'];
     EnumField.super_.prototype.clean_value.call(this,req,callback);
     return this;
 };
@@ -174,11 +222,13 @@ var RefField = exports.RefField = _extends(EnumField,function(options,ref)
     if(!this.ref)
         throw new TypeError('Model was not provided');
     options = options || {};
+    var required = options ? (options.required != null ? options.required : false) : false;
     options.widget = options.widget || widgets.RefWidget;
     options.widget_options = options.widget_options || {};
     options.widget_options.ref = options.widget_options.ref || ref;
+    options.widget_options.required = options.required;
     RefField.super_.call(this,options,[]);
-//    this.required = options ? options.required : false;
+    this.required = required;
 });
 
 RefField.prototype.to_schema = function()
@@ -258,28 +308,30 @@ ListField.prototype.clean_value = function(req,callback)
 {
     var self = this;
     var prefix = self.name + '_li';
-    var values = {};
+    this.value = [];
     var clean_funcs = [];
-    function create_clean_func(num,name,value)
+    var inner_body = {};
+    function create_clean_func(field_name,post_data,output_data)//num,name,value)
     {
         return function(cbk)
         {
-            var data = values[num] || {};
-            values[num] = data;
-            var field = self.fields[name];
-            field.name = name;
-            field.set(value,req);
-            field.clean_value(req,function(err)
+            var field = self.fields[field_name];
+            field.name = field_name;
+            var old_body = req.body;
+            var request_copy = {};
+            for(var key in req)
+                request_copy[key] = req[key];
+            request_copy.body = post_data;
+            field.set(post_data[field_name],request_copy);
+            field.clean_value(request_copy,function(err)
             {
                 if(field.errors && field.errors.length)
                     this.errors = Array.concat(self.errors,field.errors);
                 else
                 {
-                    console.log(num + ' ' + field.value);
-                    console.log(field);
-                    data[name] = field.value;
-                    if(name == '__self__')
-                        values[num] = field.value;
+                    output_data[field_name] = field.value;
+//                    if(name == '__self__')
+//                        values[num] = field.value;
                 }
                 cbk(null);
             });
@@ -293,15 +345,28 @@ ListField.prototype.clean_value = function(req,callback)
             var next_ = suffix.indexOf('_');
             var num = suffix.substring(0,next_);
             var name = suffix.substring(next_+1);
-            clean_funcs.push(create_clean_func(num,name,req.body[field_name]));
+            var data = inner_body[num] || {};
+            inner_body[num] = data;
+            data[name] = req.body[field_name];
+            //clean_funcs.push(create_clean_func(num,name,req.body[field_name]));
+        }
+    }
+    for(var key in inner_body)
+    {
+        var output_data = {};
+        this.value.push(output_data);
+        for(var field_name in self.fields)
+        {
+            clean_funcs.push(create_clean_func(field_name,inner_body[key],output_data));
         }
     }
     async.parallel(clean_funcs,function(err)
     {
-        self.value = [];
-        for(var key in values)
-            self.value.push(values[key]);
-        console.log(self.value);
+        for(var i=0; i<self.value.length; i++)
+        {
+            if('__self__' in self.value[i])
+                self.value[i] = self.value[i].__self__;
+        }
         callback(null);
     });
     return self;
@@ -340,6 +405,7 @@ ListField.prototype.pre_render = function(callback)
 
 function render_list_item(res,fields,fieldsets,prefix,value)
 {
+    var options = {};
     value = value || {};
     function render_fields(field_names)
     {
@@ -351,12 +417,14 @@ function render_list_item(res,fields,fieldsets,prefix,value)
             if(field_name != '__self__')
             {
                 fields[field_name].value = value[field_name];
-                fields[field_name].render_label(res);
+//                fields[field_name].render_label(res);
+                fields[field_name].render_with_label(res);
             }
             else
+            {
                 fields[field_name].value = value;
-            fields[field_name].render(res);
-            res.write('<br />');
+                fields[field_name].render(res);
+            }
         }
     };
     function render_fieldsets(fieldsets)
@@ -364,7 +432,11 @@ function render_list_item(res,fields,fieldsets,prefix,value)
         //      console.log('rendering fieldsets ' + fieldsets);
         for(var i=0; i<fieldsets.length; i++)
         {
+            if(fieldsets[i]['title'] && fieldsets[i]['title'] != '' && !options.hide_fieldsets)
+                res.write('<div class="nf_fieldset">');
             render_fieldset(fieldsets[i]);
+            if(fieldsets[i]['title'] && fieldsets[i]['title'] != '' && !options.hide_fieldsets)
+                res.write("</div>");
         }
     }
     function render_fieldset(fieldset)
@@ -436,7 +508,16 @@ var FileField = exports.FileField = _extends(BaseField,function(options)
     FileField.super_.call(this,options);
 });
 
-var formidable = require('formidable');
+var formidable = {};
+try
+{
+    formidable = require('formidable');
+}
+catch(e)
+{
+    formidable.IncomingForm = function(){};
+    formidable.IncomingForm.prototype.parse = function() {};
+}
 
 FileField.prototype.to_schema = function()
 {

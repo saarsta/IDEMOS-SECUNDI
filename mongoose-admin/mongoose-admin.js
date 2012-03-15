@@ -112,6 +112,12 @@ MongooseAdmin.prototype.registerMongooseModel = function(modelName, model,fields
     console.log('\x1b[36mMongooseAdmin registered model: \x1b[0m %s', modelName);
 };
 
+MongooseAdmin.prototype.registerSingleRowModel = function(model,name)
+{
+    model.is_single = true;
+    this.models[model.collection.name] = {model:model,options:{},fields:{},is_single:true}
+};
+
 
 /**
 * Register a new mongoose model/schema with admin
@@ -142,6 +148,7 @@ MongooseAdmin.prototype.registerModel = function(modelName, fields, options) {
 MongooseAdmin.prototype.getRegisteredModels = function(onReady) {
     var models = [];
     for (collectionName in this.models) {
+        this.models[collectionName].model.is_single = this.models[collectionName].is_single;
         models.push(this.models[collectionName].model);
     };
     onReady(null, models);
@@ -167,6 +174,11 @@ MongooseAdmin.prototype.getModel = function(collectionName, onReady) {
  * @api public
  */
 MongooseAdmin.prototype.modelCounts = function(collectionName, onReady) {
+    if(this.models[collectionName].is_single)
+    {
+        onReady(null,1);
+        return;
+    }
     this.models[collectionName].model.count({}, function(err, count) {
         if (err) {
             console.log('Unable to get counts for model because: ' + err);
@@ -188,6 +200,9 @@ MongooseAdmin.prototype.modelCounts = function(collectionName, onReady) {
  */
 MongooseAdmin.prototype.listModelDocuments = function(collectionName, start, count, onReady) {
     var listFields = this.models[collectionName].options.list;
+    if(listFields)
+    {
+
     this.models[collectionName].model.find({}).skip(start).limit(count).execFind(function(err, documents) {
         if (err) {
             console.log('Unable to get documents for model because: ' + err);
@@ -206,6 +221,11 @@ MongooseAdmin.prototype.listModelDocuments = function(collectionName, start, cou
             onReady(null, filteredDocuments);
         }
     });
+    }
+    else
+    {
+        onReady(null,[]);
+    }
 };
 
 /** 
@@ -253,8 +273,8 @@ MongooseAdmin.prototype.createDocument = function(req,user, collectionName, para
             form.save(function(err,document)
             {
                 if (err) {
-                    console.log('Error saving document: ' + err);
-                    onReady(err);
+                    //console.log('Error saving document: ' + err);
+                    onReady(form);
                 } else {
 
                     if (self.models[collectionName].options && self.models[collectionName].options.post) {
@@ -268,7 +288,7 @@ MongooseAdmin.prototype.createDocument = function(req,user, collectionName, para
         }
         else
         {
-            onReady(form.errors,null);
+            onReady(form,null);
         }
     });
 
@@ -336,8 +356,8 @@ MongooseAdmin.prototype.updateDocument = function(req,user, collectionName, docu
                     form.save(function(err,document)
                     {
                         if (err) {
-                            console.log('Unable to update document: ' + err);
-                            onReady('Unable to update docuemnt', null);
+//                            console.log('Unable to update document: ' + err);
+                            onReady(form, null);
                         } else {
 
                             if (self.models[collectionName].options && self.models[collectionName].options.post) {
@@ -352,7 +372,7 @@ MongooseAdmin.prototype.updateDocument = function(req,user, collectionName, docu
                 }
                 else
                 {
-                    onReady(form.errors,null);
+                    onReady(form,null);
                 }
             });
 //            for (field in fields) {

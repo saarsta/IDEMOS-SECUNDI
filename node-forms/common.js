@@ -15,5 +15,5 @@ exports.writer_to_string = function(writer,limit)
     {
         pointer += buff.write(str,pointer);
     }});
-    return buff.toString('utf8',0,pointer+1);
+    return buff.toString('utf8',0,pointer);
 }

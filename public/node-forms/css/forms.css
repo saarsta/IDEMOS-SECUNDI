@@ -1,0 +1,77 @@
+.nf_fieldset {
+    clear: both;
+    margin-bottom: 10px; padding-bottom: 10px;
+    border-bottom: 1px solid #bbb;
+}
+li .nf_fieldset {
+    margin-left: 20px;
+}
+.nf_fieldset>h2 {
+    cursor: pointer;
+    border-width: 0;
+}
+.nf_fieldset.collapsed
+{
+    height: 30px;
+    overflow: hidden;
+}
+.nf_fieldset.expanded
+{
+}
+li {
+    display: block;
+    margin-bottom: 5px; padding: 10px;
+    list-style: none;
+    background-color: #E3E3E3;
+    clear: both;
+}
+input, select {
+    max-width: 500px;
+}
+li input, li select {
+    float: left;
+    width: 280px !important;
+    margin-right: 15px;
+}
+li input[type="checkbox"] {
+    width: 20px !important;
+}
+label {
+    float: left;
+    width: 250px;
+    margin-right: 10px;
+    clear: both;
+    overflow: hidden;
+}
+li label {
+    clear: none;
+    width: 110px;
+}
+li .nf_fieldset .nf_fieldset .nf_fieldset label {
+    width: 100px;
+}
+li .nf_fieldset .nf_fieldset .nf_fieldset input,
+li .nf_fieldset .nf_fieldset .nf_fieldset select {
+    width: 230px !important;
+}
+
+.nf_listfield_delete,.nf_listfield_drag,.nf_listfield_append { float: right; }
+.nf_listfield_drag { padding: 4px; }
+
+li.new_li {
+    background-color:  #f6f7d0;
+}
+
+/* clearfix */
+li:after, .nf_fieldset:after {
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
+}
+html[xmlns] li, html[xmlns] .nf_fieldset {
+    display: block;
+}
+* html li, * html .nf_fieldset { height: 1%; }

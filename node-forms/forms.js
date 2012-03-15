@@ -24,11 +24,12 @@ var BaseForm = exports.BaseForm = function(request,options) {
     this.errors = {};
     this.static = options.static || {};
     this.static['js'] = this.static['js'] || [];
-    this.static['js'].push('/static/forms.js');
-    this.static['js'].push('/js/jquery-ui-1.8.18.custom.min.js');
-    this.static['js'].push('/js/jquery-ui-timepicker-addon.js');
+    this.static['js'].push('/node-forms/js/forms.js');
+    this.static['js'].push('/node-forms/js/jquery-ui-1.8.18.custom.min.js');
+    this.static['js'].push('/node-forms/js/jquery-ui-timepicker-addon.js');
     this.static['css'] = this.static['css'] || [];
-    this.static['css'].push('/css/ui-lightness/jquery-ui-1.8.18.custom.css');
+    this.static['css'].push('/node-forms/css/ui-lightness/jquery-ui-1.8.18.custom.css');
+    this.static['css'].push('/node-forms/css/forms.css');
 };
 
 BaseForm.prototype.render_head = function(res)
@@ -160,19 +161,19 @@ BaseForm.prototype.render_ready = function(callback)
 };
 
 
-BaseForm.prototype.render = function(res)
+BaseForm.prototype.render = function(res,options)
 {
     var self = this;
+    options = options || {};
     function render_fields(fields)
     {
 //        console.log('rendering fields ' + fields);
         for(var i=0; i<fields.length; i++)
         {
             var field_name = fields[i];
-            self.fields[field_name].render_label(res);
-            self.render_error(res,field_name);
-            self.fields[field_name].render(res);
-            res.write('<br />');
+//            self.fields[field_name].render_label(res);
+//            self.render_error(res,field_name);
+            self.fields[field_name].render_with_label(res);
         }
     };
     function render_fieldsets(fieldsets)
@@ -180,21 +181,27 @@ BaseForm.prototype.render = function(res)
   //      console.log('rendering fieldsets ' + fieldsets);
         for(var i=0; i<fieldsets.length; i++)
         {
+            if(fieldsets[i]['title'] && fieldsets[i]['title'] != '' && !options.hide_fieldsets)
+                res.write('<div class="nf_fieldset">');
             render_fieldset(fieldsets[i]);
+            if(fieldsets[i]['title'] && fieldsets[i]['title'] != '' && !options.hide_fieldsets)
+                res.write("</div>");
         }
     }
     function render_fieldset(fieldset)
     {
     //    console.log('rendering fieldset ' + fieldset);
         var title = fieldset['title'] || '';
-        if(title != '')
+        if(title != '' && !options.hide_titles)
             res.write('<h2>' + title + '</h2>');
+        res.write('<div>');
         var fields = fieldset.fields;
         if(fields)
             render_fields(fields);
         var fieldsets = fieldset.fieldsets;
         if(fieldsets)
             render_fieldsets(fieldsets);
+        res.write('</div>');
     };
     if(self.fieldsets)
     {
@@ -211,13 +218,14 @@ BaseForm.prototype.render_str = function()
     return common.writer_to_string(function(res)
     {
         self.render(res);
-    },16000);
+    },36000);
 };
 
 BaseForm.prototype.render_error = function(res,field_name)
 {
-    if(this.errors[field_name])
-        res.write(this.errors[field_name] + '<br />');
+    this.fields[field_name].render_error(res);
+//    if(this.errors[field_name])
+//        res.write(this.errors[field_name] + '');
 };
 
 
@@ -322,14 +330,19 @@ function mongoose_field_to_form_field(mongoose_field,name,tree)
 //            return new fields.StringField(options);
         //inner_schema = {stam_lo_bemet:inner_schema};
             var single_field = {};
-            for(var attr in mongoose_field.options)
-                single_field[attr] = mongoose_field.options[attr];
+            for(var attr in inner_schema)
+                single_field[attr] = inner_schema[attr];
             single_field['type'] = mongoose_field.options.type[0];
             console.log(single_field);
             schema = new mongoose.Schema({__self__:single_field});
         }
         else
-            schema = new mongoose.Schema(mongoose_field.options.type[0]);
+        {
+            if(mongoose_field.options.type[0].paths && mongoose_field.options.type[0].tree)
+                schema = mongoose_field.options.type[0];
+            else
+                schema = new mongoose.Schema(mongoose_field.options.type[0]);
+        }
         var list_fields = {};
         var list_fieldsets = [];
         mongoose_fields_to_fieldsets(schema.paths,schema.tree,list_fields,list_fieldsets);
@@ -356,7 +369,7 @@ function mongoose_field_to_form_field(mongoose_field,name,tree)
 
 MongooseForm.prototype.get_value = function(field_name)
 {
-    return this.data[field_name] || this.instance.get(field_name);
+    return (typeof(this.data[field_name]) == 'undefined' ||  this.data[field_name] == null) ? this.instance.get(field_name) : this.data[field_name];
 };
 
 MongooseForm.prototype.actual_save = function(callback)

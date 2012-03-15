@@ -5,6 +5,8 @@ var querystring = require('querystring'),
     forms = require('../../../node-forms/forms');
  //   Renderer = require('../renderer.js').Renderer;
 
+var adminTitle = 'Spilon Backoffice';
+
 exports.index = function(req, res) {
     var adminUser = req.session._mongooseAdminUser ? MongooseAdmin.userFromSessionStore(req.session._mongooseAdminUser) : null;
     if (!adminUser) {
@@ -20,6 +22,8 @@ exports.index = function(req, res) {
                             locals: {
                                 'pageTitle': 'Admin Site',
                                 'models': models,
+                                'renderedHead': '',
+                                'adminTitle':adminTitle,
                                 'rootPath': MongooseAdmin.singleton.root
                             }
                            });
@@ -51,6 +55,7 @@ exports.model = function(req, res) {
     var start = query.start ? parseInt(query.start) : 0;
     var count = query.count ? parseInt(query.count) : 50;
 
+
     var adminUser = req.session._mongooseAdminUser ? MongooseAdmin.userFromSessionStore(req.session._mongooseAdminUser) : null;
     if (!adminUser) {
         res.redirect('/login');
@@ -63,6 +68,11 @@ exports.model = function(req, res) {
                     if (err) {
                         res.redirect('/error');
                     } else {
+                        if(model.is_single)
+                        {
+                            res.redirect(req.path.split('/model/')[0]);
+                            return;
+                        }
                         MongooseAdmin.singleton.modelCounts(req.params.modelName, function(err, totalCount) {
                             if (err) {
                                 res.redirect('/');
@@ -82,6 +92,8 @@ exports.model = function(req, res) {
                                                         'model': model,
                                                         'start': start,
                                                         'count': count,
+                                                        'renderedHead':'',
+                                                        'adminTitle':adminTitle,
                                                         'listFields': options.list,
                                                         'documents': documents,
                                                         'rootPath': MongooseAdmin.singleton.root
@@ -109,6 +121,11 @@ exports.document_post = function(req,res) {
         if(req.body._id && req.body._id != '')
             MongooseAdmin.singleton.updateDocument(req,adminUser, req.params.modelName, req.body._id, req.body, function(err, document) {
                 if (err) {
+                    if(err.render_str)
+                    {
+                        render_document_from_form(err,req,res,req.params.modelName);
+                        return;
+                    }
                     res.writeHead(500);
                     res.end();
                 } else {
@@ -121,6 +138,11 @@ exports.document_post = function(req,res) {
         else
             MongooseAdmin.singleton.createDocument(req,adminUser, req.params.modelName, req.body, function(err, document) {
                 if (err) {
+                    if(err.render_str)
+                    {
+                        render_document_from_form(err,req,res,req.params.modelName);
+                        return;
+                    }
                     if(typeof(err)=='object')
                     {
                         res.json(err,400);
@@ -141,6 +163,39 @@ exports.document_post = function(req,res) {
 
 };
 
+function render_document_from_form(form,req,res,modelName)
+{
+    form.render_ready(function(err)
+    {
+        if(err)
+            res.redirect('/error');
+        else
+        {
+            var html = form.render_str();
+            var head = form.render_head();
+            var config = MongooseAdmin.singleton.pushExpressConfig();
+            res.render('document.jade',
+                {layout: 'adminlayout.jade',
+                    locals: {
+                        'pageTitle': 'Admin - ' + modelName,
+        //                'models': models,
+        //                'modelName': req.params.modelName,
+        //                'model': model,
+        //                'fields': fields,
+                        'renderedDocument': html,
+                        'renderedHead':head,
+                        'adminTitle':adminTitle,
+                        'document': {},
+                        'errors':Object.keys(form.errors).length > 0,
+                        'allowDelete':false,
+                        'rootPath': MongooseAdmin.singleton.root
+                    }
+                });
+            MongooseAdmin.singleton.popExpressConfig(config);
+        }
+    });
+}
+
 exports.document = function(req, res) {
     var adminUser = req.session._mongooseAdminUser ? MongooseAdmin.userFromSessionStore(req.session._mongooseAdminUser) : null;
     if (!adminUser) {
@@ -154,90 +209,96 @@ exports.document = function(req, res) {
                     if (err) {
                         res.redirect('/error');
                     } else {
-                        if (req.params.documentId === 'new') {
-                            var form = new forms.MongooseForm(req,{},model);
-                            form.render_ready(function(err)
+                        if(model.is_single)
+                        {
+                            model.findOne({},function(err,document)
                             {
                                 if(err)
+                                {
                                     res.redirect('/error');
+                                }
                                 else
                                 {
-                                    var html = form.render_str();
-                                    var head = form.render_head();
-                                    var config = MongooseAdmin.singleton.pushExpressConfig();
-                                    res.render('document.jade',
-                                        {layout: 'adminlayout.jade',
-                                            locals: {
-                                                'pageTitle': 'Admin - ' + model.modelName,
-                                                'models': models,
-                                                'modelName': req.params.modelName,
-                                                'model': model,
-                                                'fields': fields,
-                                                'renderedDocument': html,
-                                                'renderedHead':head,
-                                                'document': {},
-                                                'allowDelete':false,
-                                                'rootPath': MongooseAdmin.singleton.root
-                                            }
-                                        });
-                                    MongooseAdmin.singleton.popExpressConfig(config);
-                                }
-                            });
-//                            Renderer.renderDocument(models, fields, options, null, function(html) {
- //                           });
-                        } else {
-                            MongooseAdmin.singleton.getDocument(req.params.modelName, req.params.documentId, function(err, document) {
-                                if (err) {
-                                    res.redirect('/error');
-                                } else {
                                     var form = new forms.MongooseForm(req,{instance:document},model);
-                                    form.render_ready(function(err)
-                                    {
-                                        if(err)
-                                            res.redirect('/error');
-                                        else
-                                        {
-                                            var html = form.render_str();
-                                            var head = form.render_head();
-                                            var config = MongooseAdmin.singleton.pushExpressConfig();
-                                            res.render('document.jade',
-                                                {layout: 'adminlayout.jade',
-                                                    locals: {
-                                                        'pageTitle': 'Admin - ' + model.modelName,
-                                                        'models': models,
-                                                        'modelName': req.params.modelName,
-                                                        'model': model,
-                                                        'fields': fields,
-                                                        'renderedDocument': html,
-                                                        'renderedHead':head,
-                                                        'document': document,
-                                                        'allowDelete':true,
-                                                        'rootPath': MongooseAdmin.singleton.root
-                                                    }
-                                                });
-                                            MongooseAdmin.singleton.popExpressConfig(config);
-                                        }
-                                    });
-//                                    Renderer.renderDocument(models, fields, options, document, function(html) {
-//                                        var config = MongooseAdmin.singleton.pushExpressConfig();
-//                                        res.render('document',
-//                                                   {layout: 'adminlayout.jade',
-//                                                    locals: {
-//                                                       'pageTitle': 'Admin - ' + model.modelName,
-//                                                       'models': models,
-//                                                       'modelName': req.params.modelName,
-//                                                       'model': model,
-//                                                       'fields': fields,
-//                                                       'renderedDocument': html,
-//                                                       'document': document,
-//                                                       'allowDelete': true,
-//                                                       'rootPath': MongooseAdmin.singleton.root
-//                                                   }
-//                                                 });
-//                                        MongooseAdmin.singleton.popExpressConfig(config);
-//                                    });
+                                    render_document_from_form(form,req,res,model.modelName);
                                 }
                             });
+                        }
+                        else
+                        {
+                            if (req.params.documentId === 'new') {
+                                var form = new forms.MongooseForm(req,{},model);
+                                render_document_from_form(form,req,res,model.modelName);
+    //                                    var html = form.render_str();
+    //                                    var head = form.render_head();
+    //
+    //                                    var config = MongooseAdmin.singleton.pushExpressConfig();
+    //                                    res.render('document.jade',
+    //                                        {layout: 'adminlayout.jade',
+    //                                            locals: {
+    //                                                'pageTitle': 'Admin - ' + model.modelName,
+    //                                                'models': models,
+    //                                                'modelName': req.params.modelName,
+    //                                                'model': model,
+    //                                                'fields': fields,
+    //                                                'renderedDocument': html,
+    //                                                'renderedHead':head,
+    //                                                'document': {},
+    //                                                'allowDelete':false,
+    //                                                'rootPath': MongooseAdmin.singleton.root
+    //                                            }
+    //                                        });
+    //                                    MongooseAdmin.singleton.popExpressConfig(config);
+    //                                }                            ;
+    //                            Renderer.renderDocument(models, fields, options, null, function(html) {
+     //                           });
+                            } else {
+                                MongooseAdmin.singleton.getDocument(req.params.modelName, req.params.documentId, function(err, document) {
+                                    if (err) {
+                                        res.redirect('/error');
+                                    } else {
+                                        var form = new forms.MongooseForm(req,{instance:document},model);
+                                        render_document_from_form(form,req,res,model.modelName);
+    //                                            var html = form.render_str();
+    //                                            var head = form.render_head();
+    //                                            var config = MongooseAdmin.singleton.pushExpressConfig();
+    //                                            res.render('document.jade',
+    //                                                {layout: 'adminlayout.jade',
+    //                                                    locals: {
+    //                                                        'pageTitle': 'Admin - ' + model.modelName,
+    //                                                        'models': models,
+    //                                                        'modelName': req.params.modelName,
+    //                                                        'model': model,
+    //                                                        'fields': fields,
+    //                                                        'renderedDocument': html,
+    //                                                        'renderedHead':head,
+    //                                                        'document': document,
+    //                                                        'allowDelete':false,
+    //                                                        'rootPath': MongooseAdmin.singleton.root
+    //                                                    }
+    //                                                });
+    //                                            MongooseAdmin.singleton.popExpressConfig(config);
+    //                                    Renderer.renderDocument(models, fields, options, document, function(html) {
+    //                                        var config = MongooseAdmin.singleton.pushExpressConfig();
+    //                                        res.render('document',
+    //                                                   {layout: 'adminlayout.jade',
+    //                                                    locals: {
+    //                                                       'pageTitle': 'Admin - ' + model.modelName,
+    //                                                       'models': models,
+    //                                                       'modelName': req.params.modelName,
+    //                                                       'model': model,
+    //                                                       'fields': fields,
+    //                                                       'renderedDocument': html,
+    //                                                       'document': document,
+    //                                                       'allowDelete': true,
+    //                                                       'rootPath': MongooseAdmin.singleton.root
+    //                                                   }
+    //                                                 });
+    //                                        MongooseAdmin.singleton.popExpressConfig(config);
+    //                                    });
+                                    }
+                                });
+                            }
                         }
                     }
                 });
