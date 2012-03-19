@@ -2,6 +2,15 @@ var widgets = require('./widgets'),
     async = require('async'),
     common = require('./common');
 var _extends = common._extends;
+var mongoose = null;
+try
+{
+    mongoose = require('mongoose');
+}
+catch(e)
+{
+    console.log('couldnt get mongoose');
+}
 
 var BaseField = exports.BaseField = function(options) {
     options = options || {};
@@ -149,6 +158,13 @@ var ReadonlyField = exports.ReadonlyField = _extends(BaseField,function(options)
 ReadonlyField.prototype.render_label = function(res)
 {
 
+};
+
+ReadonlyField.prototype.render_with_label = function(res)
+{
+//    res.write('<label><span>');
+    this.render(res);
+//    res.write('</span></label>');
 };
 
 var BooleanField = exports.BooleanField = _extends(BaseField, function(options) {
@@ -376,15 +392,12 @@ ListField.prototype.pre_render = function(callback)
 {
     var funcs = [];
     var self = this;
-    console.log('pre rending list');
 
     function pre_render_partial(field)
     {
         return function(cbk) {
-            console.log('pre render' + field);
             self.fields[field].pre_render(function(err,results)
             {
-                console.log('finished with ' + field);
                 cbk(err,results);
             });
         };
@@ -397,7 +410,6 @@ ListField.prototype.pre_render = function(callback)
     funcs.push(self.widget.pre_render);
     async.parallel(funcs,function(err,results)
     {
-        console.log('done');
        callback(err);
     });
     return self;
@@ -406,55 +418,48 @@ ListField.prototype.pre_render = function(callback)
 function render_list_item(res,fields,fieldsets,prefix,value)
 {
     var options = {};
-    value = value || {};
-    function render_fields(field_names)
+    function render_fields(fields)
     {
-//        console.log('rendering fields ' + fields);
-        for(var i=0; i<field_names.length; i++)
+        for(var i=0; i<fields.length; i++)
         {
-            var field_name = field_names[i];
-            fields[field_name].name = prefix + field_name;
-            if(field_name != '__self__')
-            {
-                fields[field_name].value = value[field_name];
-//                fields[field_name].render_label(res);
-                fields[field_name].render_with_label(res);
-            }
+            var field_name = fields[i];
+            if(typeof(field_name) == 'object')
+                render_fieldset(field_name);
             else
-            {
-                fields[field_name].value = value;
-                fields[field_name].render(res);
-            }
+                render_field(field_name);
         }
     };
-    function render_fieldsets(fieldsets)
+    function render_field(field_name)
     {
-        //      console.log('rendering fieldsets ' + fieldsets);
-        for(var i=0; i<fieldsets.length; i++)
+        fields[field_name].name = prefix + field_name;
+        if(field_name != '__self__')
         {
-            if(fieldsets[i]['title'] && fieldsets[i]['title'] != '' && !options.hide_fieldsets)
-                res.write('<div class="nf_fieldset">');
-            render_fieldset(fieldsets[i]);
-            if(fieldsets[i]['title'] && fieldsets[i]['title'] != '' && !options.hide_fieldsets)
-                res.write("</div>");
+            fields[field_name].value = value ? value[field_name] : null;
+            fields[field_name].render_with_label(res);
         }
-    }
+        else
+        {
+            fields[field_name].value = value;
+            fields[field_name].render(res);
+        }
+    };
+
     function render_fieldset(fieldset)
     {
-        //    console.log('rendering fieldset ' + fieldset);
+        if(fieldset['title'] && fieldset['title'] != '')
+            res.write('<div class="nf_fieldset">');
         var title = fieldset['title'] || '';
         if(title != '')
             res.write('<h2>' + title + '</h2>');
-        var field_names = fieldset.fields;
-        if(field_names)
-            render_fields(field_names);
-        var fieldsets = fieldset.fieldsets;
-        if(fieldsets)
-            render_fieldsets(fieldsets);
+        var fields = fieldset.fields;
+        if(fields)
+            render_fields(fields);
+        if(fieldset['title'] && fieldset['title'] != '')
+            res.write("</div>");
     };
     if(fieldsets)
     {
-        render_fieldsets(fieldsets);
+        render_fields(fieldsets[0].fields);
     }
     else
         render_fields(Object.keys(fields));
@@ -465,39 +470,18 @@ ListField.prototype.render = function(res)
     var self = this;
     function render_template(res)
     {
-        //console.log(self.fields);
         var prefix = self.name + '_tmpl_';
         render_list_item(res,self.fields,self.fieldsets,prefix);
-//        for(var field_name in self.fields)
-//        {
-//            console.log(field_name);
-//            var field = self.fields[field_name];
-//            field.name = prefix + field_name;
-//            field.render_label(res);
-////            res.write(field_name);
-//            field.render(res);
-//        }
     }
     function render_item(res,i)
     {
         var prefix = self.name + '_li' + i + '_';
         render_list_item(res,self.fields,self.fieldsets,prefix,self.value[i]);
-//        for(var field_name in self.fields)
-//        {
-//            var field = self.fields[field_name];
-//            var old_name = field.name;
-//            field.name = prefix + old_name;
-//            field.value = self.value[i];
-//            //field.render_label(res);
-//            field.render(res);
-//        }
     }
     self.widget.name = self.name;
     self.widget.value = self.value;
     self.widget.render(res,render_template,render_item);
     return self;
-
-//    self.widget.render(res,render_template,render_item);
 };
 
 
@@ -505,20 +489,10 @@ var FileField = exports.FileField = _extends(BaseField,function(options)
 {
     options = options || {};
     options.widget = options.widget || widgets.FileWidget;
+    this.directory = options.upload_to || __dirname + '\\..\\public\\cdn';
     FileField.super_.call(this,options);
 });
 
-
-var formidable = {};
-try
-{
-    formidable = require('formidable');
-}
-catch(e)
-{
-    formidable.IncomingForm = function(){};
-    formidable.IncomingForm.prototype.parse = function() {};
-}
 
 FileField.prototype.to_schema = function()
 {
@@ -526,30 +500,84 @@ FileField.prototype.to_schema = function()
 //    schema.type = F;
     return FileField.Schema;
 };
+var fs = require('fs');
+var util = require('util');
+
+FileField.prototype.create_filename = function(file)
+{
+    return '/' + (Date.now()%1000) + file.name;
+};
 
 FileField.prototype.clean_value = function(req,callback)
 {
-    var form = new formidable.IncomingForm();
-    form.onPart = function(part) {
-        if (!part.filename) {
-            // let formidable handle all non-file parts
-            form.handlePart(part);
+    var self = this;
+    self.value = self.value || {};
+    function on_finish()
+    {
+        FileField.super_.prototype.clean_value.call(self,req,callback);
+    }
+    function after_delete(err)
+    {
+        if(req.files[self.name] && req.files[self.name].name)
+        {
+            // copy file from temp location
+            var is = fs.createReadStream(req.files[self.name].path);
+            var filename = self.create_filename(req.files[self.name]);
+            var os = fs.createWriteStream(self.directory + filename);
+
+            util.pump(is, os, function(err) {
+                fs.unlink(req.files[self.name].path,function(err)
+                {
+                    self.value = {path:filename,size:req.files[self.name].size};
+                    on_finish();
+                });
+            });
         }
         else
         {
-            part.addListener('data', function(data) {
-                console.log(data);
-            });
+            self.value = null;
+            on_finish();
         }
     };
-    form.parse(req,function(err,fields,files)
-        {
-           callback(null);
-        });
+    // delete old file is needed/requested
+    if(self.value && self.value.path && (req.body[self.name + '_clear'] || req.files[self.name] && req.files[self.name].name))
+    {
+        fs.unlink(self.directory + self.value.path,after_delete);
+        self.value = null;
+    }
+    else
+    {
+        after_delete();
+    }
+
 };
 
 FileField.Schema = {
     url:String,
     name:String,
     size:Number
+};
+
+var GeoField = exports.GeoField = _extends(BaseField,function(options)
+{
+    options = options || {};
+    options.widget = options.widget || widgets.MapWidget;
+    GeoField.super_.call(this,options);
+});
+
+GeoField.prototype.clean_value = function(req,callback)
+{
+    var str = this.value;
+    var parts = str.split(',');
+    if(parts.length != 2 || parts[0] == '' || parts[1] == '')
+        this.value = null;
+    else
+    {
+        this.value = { lat: Number(parts[0]), lng:Number(parts[1])};
+        if(this.name + '_address' in req.body)
+        {
+            this.value.address = req.body[this.name + '_address'];
+        }
+    }
+    GeoField.super_.prototype.clean_value.call(this,req,callback);
 };

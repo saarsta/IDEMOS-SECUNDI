@@ -9,7 +9,9 @@
 var mongoose = require("mongoose"),
     Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId,
+    mongoose_types = require('./node-forms/mongoose-types'),
     form_fields = require('./node-forms/fields');
+mongoose_types.loadTypes(mongoose);
 
 /*, function(err){
  if (err){
@@ -43,7 +45,7 @@ var ActionResource = {
 
 
 var Schemas = exports.Schemas = {
-    User:{
+    User: new Schema({
         username:String,
         identity_provider:{type:String, "enum":['facebook', 'register']},
         facebook_id:String,
@@ -64,48 +66,45 @@ var Schemas = exports.Schemas = {
         ],
         password:String,
         tokens:{type:Number, 'default':100000},
-        gamification:{},
+        gamification:Schema.Types.Mixed,
         //score:{type:Number, 'default':0},
         decoration_status:{type:String, "enum":['a', 'b', 'c']}
 
-    },
+    }),
 
     InformationItem:{
         subject_id:{type:[ObjectId], ref:'Subject', index:true, required:true},
         title:{type:String, "enum":['test', 'statistics', 'infographic', 'graph']},
         text_field:String,
-        image_field:{url:String, caption:String, type:{type:String}, size:{type:Number, min:0},
-            width:{type:Number, min:0}, height:{type:Number, min:0}, data:String},
+        image_field: mongoose_types.File,
         tags:{type:[String], index:true},
-        users:{type:[ObjectId], ref:'User'},
-        discussions:{type:[ObjectId], ref:'Discussion', index:true},
+        users:{type:[ObjectId], ref:'User',editable:false},
+        discussions:{type:[ObjectId], ref:'Discussion', index:true,editable:false},
         is_visible:{type:Boolean, 'default':true},
-        creation_date:{type:Date, 'default':Date.now},
+        creation_date:{type:Date, 'default':Date.now,editable:false},
         is_hot:{type:Boolean, 'default':false}
     },
 
     Subject:{
-        name:String,
-        image_field:{url:String, caption:String, type:{type:String}, size:{type:Number, min:0},
-            width:{type:Number, min:0}, height:{type:Number, min:0}, data:String},
-        tags:[String],
-        file:form_fields.FileField.Schema
+        name:{ type:String,required:true},
+        image_field:mongoose_types.File,
+        tags:[String]
 //        is_hot:{type:Boolean,'default':false}
     },
 
     Discussion:{
+        title:{type:String, required:true},
         subject_id:[
             {type:ObjectId, ref:'Subject', index:true, required:true}
         ],
         subject_name:String,
         creator_id:{type:ObjectId, ref:'User'},
-        first_name:String,
-        last_name:String,
+        first_name:{type:String,editable:false},
+        last_name:{type:String,editable:false},
 //      tag_id: String,
-        title:String,
         vision_text:String,
-        vision_text_history:[String],
-        is_cycle:{type:Boolean, 'default':false},
+        vision_text_history:{type:[String],editable:false},
+        is_cycle:{type:Boolean, 'default':false,editable:false},
         tags:[String],
         users:[
             {type:ObjectId, ref:'User'}
@@ -119,11 +118,10 @@ var Schemas = exports.Schemas = {
     },
 
     Cycle:{
-
+        title: String,
         discussions:[
             {type:ObjectId, ref:'Discussion'}
         ],
-        title: String,
         document: String,
         followers_count: {type: Number}
     },
@@ -168,12 +166,12 @@ var Schemas = exports.Schemas = {
     },
 
     Action:{
+        title:String,
+        description:String,
         creator_id:{type:ObjectId, ref:'User', index:true, required:true},
         first_name: String,
         last_name: String,
         cycle_id:{type:ObjectId, ref:'Cycle', index:true, required:true},
-        title:String,
-        description:String,
         category:{type:String, "enum":["field", "demonstration", "c"]},
         action_resources:[
             {resource: ActionResource, amount:Number}
@@ -185,7 +183,8 @@ var Schemas = exports.Schemas = {
         creation_date:{type:Date, 'default':Date.now},
         required_participants:{type:Number, 'default':0},
         tokens:{type:Number, 'default':0},
-        is_approved:{type:Boolean, 'default':false}
+        is_approved:{type:Boolean, 'default':false},
+        location:mongoose_types.GeoPoint
     },
 
     Post:{
@@ -203,6 +202,11 @@ var Schemas = exports.Schemas = {
         ],
         is_approved:{type:Boolean, 'default':false}
     }
+};
+
+Schemas.User.methods.toString = function()
+{
+    return this.first_name + ' ' + this.last_name;
 };
 
 function extend_model(name, base_schema, schema, collection) {
@@ -224,7 +228,7 @@ function extend_model(name, base_schema, schema, collection) {
 }
 
 var Models = module.exports = {
-    User:mongoose.model("User", new Schema(Schemas.User)),
+    User:mongoose.model("User",Schemas.User),
     InformationItem:mongoose.model('InformationItem', new Schema(Schemas.InformationItem)),
     Subject:mongoose.model('Subject', new Schema(Schemas.Subject)),
     Discussion:mongoose.model('Discussion', new Schema(Schemas.Discussion)),
@@ -236,6 +240,6 @@ var Models = module.exports = {
     Cycle:mongoose.model('Cycle', new Schema(Schemas.Cycle)),
     Action:mongoose.model('Action', new Schema(Schemas.Action)),
     ActionResource:mongoose.model('ActionResource', new Schema(Schemas.ActionResource)),
-    Schemas:Schemas
+//    Schemas:Schemas
 };
 
