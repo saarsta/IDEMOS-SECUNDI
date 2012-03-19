@@ -98,7 +98,7 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                     function(cbk2)
                     {
 //                        models.Discussion.findOne({_id:object.discussion_id},cbk2);
-                        models.Discussion.update({_id:object.discussion_id}, {$addToset: {users: user_id}}, cbk2);
+                        models.Discussion.update({_id:object.discussion_id}, {$addToSet: {users: user_id}}, cbk2);
 
                     },
                     function(cbk2)
@@ -106,7 +106,7 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                         var user = g_user;
                             // add discussion_id to the list of discussions in user
                         user.tokens -= POST_PRICE;
-                        if (common.isDiscussionIsInUser(object.discussion_id, user.discussions) == false) {
+                        if (common.isCollectionIsInUser(object.discussion_id, user.discussions) == false) {
                             user.discussions.push(object.discussion_id);
                         }
                         user.save(function(err,result)

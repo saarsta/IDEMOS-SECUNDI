@@ -11,14 +11,6 @@ var mongoose = require("mongoose"),
     ObjectId = Schema.ObjectId,
     form_fields = require('./node-forms/fields');
 
-/*, function(err){
- if (err){
- console.log(err);
- throw err;
- }
-
- );*/
-
 var MinLengthValidator = function (min) {
     return [function (value) {
         return value && value.length >= min;
@@ -35,12 +27,9 @@ var EmailValidator = RegexValidator(/[^@]+@[^@]+/);
 var TestEmailValidator = RegexValidator(/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/);
 
 var ActionResource = {
-    ActionResource:{
-        category:{type:String, "enum":["field", "demonstration", "c"]},
+        category: {type: ObjectId, ref: 'Category'},
         name:String
-    }
-}
-
+};
 
 var Schemas = exports.Schemas = {
     User:{
@@ -135,7 +124,7 @@ var Schemas = exports.Schemas = {
         last_name:String,
         username:String,
         creation_date:{type:Date, 'default':Date.now},
-        tokens:{type:Number, 'default':0},
+        tokens:{type:Number, 'default':0, index: true},
         post_price:{type:Number, 'default':0}//how many tokens for creating post
     },
 
@@ -152,6 +141,10 @@ var Schemas = exports.Schemas = {
         discussion_id:{type:ObjectId, ref:'Discussion', index:true, required:true},
         evaluation_grade:{type:Number, min:0, max:10},
         creation_date:{type:Date, 'default':Date.now}
+    },
+
+    Category: {
+        name: {type:String}
     },
 
     ActionResource:ActionResource,
@@ -174,16 +167,22 @@ var Schemas = exports.Schemas = {
         cycle_id:{type:ObjectId, ref:'Cycle', index:true, required:true},
         title:String,
         description:String,
-        category:{type:String, "enum":["field", "demonstration", "c"]},
+        category: {type: ObjectId, ref: 'Category'},
         action_resources:[
             {resource: ActionResource, amount:Number}
         ],
+        //users that concected somehow to the action
         users:[
             {type:ObjectId, ref:'User'}
         ],
         execution_date:{type:Date},
         creation_date:{type:Date, 'default':Date.now},
         required_participants:{type:Number, 'default':0},
+        //users that are going to be in the action
+        going_users: [
+            {type:ObjectId, ref:'User'}
+        ],
+        num_of_going: {type: Number, 'default': 0},
         tokens:{type:Number, 'default':0},
         is_approved:{type:Boolean, 'default':false}
     },
@@ -234,6 +233,7 @@ var Models = module.exports = {
     Vote:mongoose.model('Vote', new Schema(Schemas.Vote)),
     Grade:mongoose.model('Grade', new Schema(Schemas.Grade)),
     Cycle:mongoose.model('Cycle', new Schema(Schemas.Cycle)),
+    Category:mongoose.model('Category', new Schema(Schemas.Category)),
     Action:mongoose.model('Action', new Schema(Schemas.Action)),
     ActionResource:mongoose.model('ActionResource', new Schema(Schemas.ActionResource)),
     Schemas:Schemas

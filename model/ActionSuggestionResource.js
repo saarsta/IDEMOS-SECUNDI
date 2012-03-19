@@ -28,7 +28,7 @@ ActionSuggestionResource = module.exports = common.GamificationMongooseResource.
 
         async.waterfall([
             function(cbk){
-                models.User.findById({id: user_id}, cbk);
+                models.User.findById(user_id, cbk);
             },
 
             function(user, cbk){

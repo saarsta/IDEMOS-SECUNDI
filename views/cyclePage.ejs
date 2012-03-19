@@ -1,24 +1,68 @@
 <h1> CYCLE </h1>
+<h1> discussion subject:  <%=subject_name%></h1>
 
 <div>
-    <textarea id="title"> </textarea>
+    <textarea disabled="disabled" id="title"> </textarea>
     <br />
-    <textarea rows="7" cols="20" id="documnet_"></textarea>
+    <textarea disabled="disabled" rows="7" cols="20" id="documnet_"></textarea>
     <br />
-    <div class="popular_comments"></div>
-    <textarea id="followers"> </textarea>
+    <textarea disabled="disabled" id="followers"> </textarea>
     <br />
-    <button> Suggest new action </button>
+    <button id="new_action_btn"> Suggest new action </button>
 </div>
 
 <div class="actions panel">
-    <p> ACTIONS: </p>
+    <p> APPROVED ACTIONS: </p>
+</div>
+
+    <div class="not_approved_actions panel">
+    <p> NOT YET APPROVED ACTIONS: </p>
+</div>
+
+<div class="popular_comments panel color">
+    <p> POPULAR COMMENTS </p>
 </div>
 
 <div class="shopping_cart right_panel">
     <p> SHOPPONG CART </p>
-
 </div>
+
+
+<div id="popup_contact">
+    <div>
+        <textarea rows="" cols="" id="action_title">title</textarea>
+        <br />
+        <textarea rows="5" cols="12" id="action_description">descreption</textarea>
+        <br />
+        <textarea rows="5" cols="12" id="action_resources">resources</textarea>
+        <br />
+        <div>
+            <p>choose resources:</p>
+            <select id="select_resource" name="get_resource">
+            </select>
+            <select id="filter_categories" name="get_filter_resource">
+
+            </select>
+            <br />
+            <input type="text" placeholder="resource amount..." name="tags" id="resource_amount">
+                <label for="resource_amount"></label>
+            </input>
+            <br />
+            <input type="text" placeholder="required participants..." name="tags" id="required_participants">
+                <label for="required_participants"></label>
+            </input>
+            <br />
+            <input type="date" placeholder="when it happens..." id="execution_date">
+                <label for="execution_date"></label>
+            </input>
+            <br />
+            <button id="add_resource_btn">add resource</button>
+        </div>
+        <button id="save_action_btn">save action</button>
+    </div>
+</div>
+
+<div id="backgroundPopup"></div>
 
 <script src="http://www.google.com/jsapi"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
@@ -27,6 +71,6 @@
 <script src="/javascripts/cycle.js"></script>
 <script type="text/javascript">
     $(function() {
-        loadCyclePage("<%=cycle_id%>");
+        loadCyclePage("<%=cycle_id%>", "<%=discussion_id%>");
     });
 </script>

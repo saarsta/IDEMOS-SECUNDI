@@ -19,6 +19,7 @@ var express = require('express'),
     VoteResource = require('./model/VoteResource');
     GradeResource = require('./model/GradeResource');
     SuggestionResource = require('./model/SuggestionResource'),
+    CategoryResource = require('./model/CategoryResource'),
     ActionResourceResource = require('./model/ActionResourceResource'),
     ActionResource = require('./model/ActionResource'),
     CycleResource = require('./model/CycleResource');
@@ -279,6 +280,7 @@ rest_api.register_resource('posts', new PostResource());
 rest_api.register_resource('votes', new VoteResource());
 rest_api.register_resource('grades', new GradeResource());
 rest_api.register_resource('suggestions', new SuggestionResource());
+rest_api.register_resource('categories', new CategoryResource());
 rest_api.register_resource('action_resources', new ActionResourceResource());
 rest_api.register_resource('actions', new ActionResource());
 rest_api.register_resource('cycles', new CycleResource());
