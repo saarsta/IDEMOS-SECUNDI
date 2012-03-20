@@ -74,7 +74,8 @@ var TokenAuthorization = exports.TokenAuthorization = jest.Authorization.extend(
     }
 };*/
 
-var isUserIsInDiscussion = exports.isUserIsInDiscussion = function(user_id, users_list){
+/*
+var isUserIsInCollection = exports.isUserIsInCollection = function(user_id, users_list){
     var flag = false;
     for (var i = 0; i < users_list.length; i++){
         if (user_id == users_list[i]){
@@ -84,11 +85,12 @@ var isUserIsInDiscussion = exports.isUserIsInDiscussion = function(user_id, user
     }
     return flag;
 }
+*/
 
-var isDiscussionIsInUser = exports.isDiscussionIsInUser = function(discussion_id, discussions_list){
+var isArgIsInList = exports.isArgIsInList = function(arg_id, collection_list){
     var flag = false;
-    for (var i = 0; i < discussions_list.length; i++){
-        if (discussion_id == discussions_list[i]){
+    for (var i = 0; i < collection_list.length; i++){
+        if (arg_id == collection_list[i]){
             flag = true;
             break;
         }
@@ -104,7 +106,7 @@ score.post = 20;
 score.suggestion = 20;
 score.discussion = 30;
 
-function update_user_gamification(req, game_type,user_id,callback)
+function update_user_gamification(req, game_type, user_id,callback)
 {
     var inc_user_gamification ={};
     var inc_user_gamification_score ={};
@@ -135,7 +137,6 @@ function update_user_gamification(req, game_type,user_id,callback)
 //        check_gamification_rewards(user,callback);
 //    });
 
-
 function check_gamification_rewards(user,callback)
 {
     //if rewards reurn it
@@ -155,7 +156,7 @@ var GamificationResource = exports.GamificationResource  = jest.Resource.extend(
         var self = this;
         if((status == 201 || status == 204) && (self.gamification_type || req.gamification_type))
         {
-            update_user_gamification(req, self.gamification_type || req.gamification_type,req.session.user_id,function(err,rewards)
+            update_user_gamification(req, self.gamification_type || req.gamification_type, req.session.user_id,function(err,rewards)
             {
                 if(rewards)
                     obj['rewards'] = rewards;
@@ -178,7 +179,7 @@ var GamificationMongooseResource = exports.GamificationMongooseResource = jest.M
     {
         var self = this;
         var base = this._super;
-        if(status == 201 || status == 204 && self.gamification_type)
+        if(status == 201 || status == 204 && self.gamification_type || req.gamification_type)
         {
 
             update_user_gamification(req, self.gamification_type || req.gamification_type, req.session.user_id,function(err,rewards)
