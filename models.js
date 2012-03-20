@@ -57,8 +57,8 @@ var Schemas = exports.Schemas = {
         tokens:{type:Number, 'default':100000},
         gamification:Schema.Types.Mixed,
         //score:{type:Number, 'default':0},
-        decoration_status:{type:String, "enum":['a', 'b', 'c']}
-
+        decoration_status:{type:String, "enum":['a', 'b', 'c']},
+        avatar : mongoose_types.File
     }),
 
     InformationItem:{
@@ -107,7 +107,7 @@ var Schemas = exports.Schemas = {
     },
 
     Cycle:{
-        title: String,
+        title: {type:String, required:true},
         discussions:[
             {type:ObjectId, ref:'Discussion'}
         ],
@@ -118,7 +118,7 @@ var Schemas = exports.Schemas = {
     PostOrSuggestion:{
         discussion_id:{type:Schema.ObjectId, ref:'Discussion', index:true, required:true},
         creator_id:{type:Schema.ObjectId, ref:'User'},
-        first_name:String,
+        first_name:{type:String,},
         last_name:String,
         username:String,
         creation_date:{type:Date, 'default':Date.now},
@@ -208,6 +208,14 @@ var Schemas = exports.Schemas = {
 Schemas.User.methods.toString = function()
 {
     return this.first_name + ' ' + this.last_name;
+};
+
+Schemas.User.methods.avatar_url = function()
+{
+    if(this.avatar && this.avatar.url)
+        return this.avatar.url;
+    else
+        return 'graph.facebook.com/' + this.facebook_id + '/picture/?type=large';
 };
 
 function extend_model(name, base_schema, schema, collection) {
