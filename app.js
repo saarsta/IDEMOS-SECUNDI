@@ -18,8 +18,12 @@ var express = require('express'),
     PostResource = require('./model/PostResource.js');
     VoteResource = require('./model/VoteResource');
     GradeResource = require('./model/GradeResource');
+<<<<<<< HEAD
     SuggestionResource = require('./model/SuggestionResource'),
     CategoryResource = require('./model/CategoryResource'),
+=======
+    SuggestionResource = require('./model/suggestionResource.js'),
+>>>>>>> 69bea1ecfb7f4084013499a0d95e3c0b65253016
     ActionResourceResource = require('./model/ActionResourceResource'),
     ActionResource = require('./model/ActionResource'),
     CycleResource = require('./model/CycleResource');

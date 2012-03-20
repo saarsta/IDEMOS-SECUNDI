@@ -1,0 +1,45 @@
+.nf_fieldset {
+}
+.nf_fieldset>h2
+{
+    cursor:pointer
+}
+.nf_fieldset.collapsed
+{
+    height: 50px;
+    overflow: hidden;
+}
+.nf_fieldset.expanded
+{
+}
+li {
+    background-color:
+        #DDD;
+    clear: both;
+    list-style: none;
+    padding: 10px;
+    margin-bottom: 5px;
+}
+li input[type="text"], li input[type="number"], li select {
+    width: 300px;
+}
+li input, li select {
+    float: left;
+    margin-right: 20px;
+}
+li label {
+    float: left;
+    width: 100px;
+    margin-right: 10px;
+    margin-top: -10px;
+}
+.nf_listfield_delete,.nf_listfield_drag,.nf_listfield_append {
+    float: right;
+}
+li
+{
+    list-style: none;
+}
+li.new_li {
+    background-color:  #f6f7d0;
+}

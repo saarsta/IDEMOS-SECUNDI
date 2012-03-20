@@ -78,9 +78,14 @@ var CheckboxWidget = exports.CheckboxWidget = _extends(InputWidget,function(opti
 
 CheckboxWidget.prototype.render = function(res)
 {
+    var old_value = this.value;
     if(this.value)
         this.attrs['checked'] = 'checked';
-    return CheckboxWidget.super_.prototype.render.call(this,res);
+    this.value = 'on';
+    var ret = CheckboxWidget.super_.prototype.render.call(this,res);
+    this.value = old_value;
+    return ret;
+
 }
 
 var ChoicesWidget = exports.ChoicesWidget = _extends(Widget,function(options)
@@ -143,7 +148,7 @@ RefWidget.prototype.pre_render = function(callback)
             if(objects.length)
                 console.log(objects[0].name);
             for(var i=0; i<objects.length; i++)
-                self.choices.push([objects[i].id,objects[i].name || objects[i].toString()]);
+                self.choices.push([objects[i].id,objects[i].name || objects[i].title || objects[i].toString()]);
             return RefWidget.super_.prototype.pre_render.call(self,callback);
         }
     });
@@ -161,6 +166,7 @@ ListWidget.prototype.render = function(res,render_template,render_item)
     res.write("<div class='nf_listfield' name='" + this.name + "'><div class='nf_hidden_template'>");
     render_template(res);
     res.write('</div><ul>');
+    this.value = this.value || [];
     for(var i=0; i<this.value.length; i++)
     {
         res.write('<li>');
