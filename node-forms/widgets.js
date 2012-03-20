@@ -4,6 +4,7 @@ var _extends = require('./common')._extends;
 
 var Widget = exports.Widget = function(options)
 {
+    this.options = options;
     this.required = options.required || false;
     this.attrs = options.attrs || {};
     this.validators = options.validators || [];
@@ -185,12 +186,32 @@ FileWidget.prototype.render = function(res)
 {
     if(this.value && this.value != '')
     {
-        res.write('<input type="checkbox" name="' + this.name +'_clear" value="Clear" /> <p>Curret: <a href="' + this.value.url + '">' + this.value.url + '</a></p>');
+        res.write('<input type="checkbox" name="' + this.name +'_clear" value="Clear" /> <a href="' + this.value.path + '">' + this.value.path + '</a>');
     }
     FileWidget.super_.prototype.render.call(this,res);
 };
     
-    
+var MapWidget = exports.MapWidget = _extends(InputWidget,function(options)
+{
+    MapWidget.super_.call(this,'hidden',options);
+    this.attrs.class.push('nf_mapview');
+});
+
+MapWidget.prototype.render = function(res)
+{
+    if(!this.options.hide_address)
+    {
+        var address = this.value ? this.value.address : '';
+        this.attrs['address_field'] = 'id_' + this.name + '_address';
+        res.write('<input type="text" name="' + this.name +'_address" id="id_' + this.name + '_address" value="' + address + '" />');
+    }
+    var old_value = this.value;
+    var lat = this.value ? this.value.lat : '';
+    var lng = this.value ? this.value.lng : '';
+    this.value = lat + ',' + lng;
+    MapWidget.super_.prototype.render.call(this,res);
+    this.value = old_value;
+};
     
     
     

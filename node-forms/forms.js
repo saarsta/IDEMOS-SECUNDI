@@ -27,9 +27,12 @@ var BaseForm = exports.BaseForm = function(request,options) {
     this.static['js'].push('/node-forms/js/forms.js');
     this.static['js'].push('/node-forms/js/jquery-ui-1.8.18.custom.min.js');
     this.static['js'].push('/node-forms/js/jquery-ui-timepicker-addon.js');
+    this.static['js'].push('https://maps-api-ssl.google.com/maps/api/js?v=3&sensor=false&language=en&libraries=places');
+    this.static['js'].push('/node-forms/js/maps.js');
     this.static['css'] = this.static['css'] || [];
     this.static['css'].push('/node-forms/css/ui-lightness/jquery-ui-1.8.18.custom.css');
     this.static['css'].push('/node-forms/css/forms.css');
+//    this.static['css'].push('/node-forms/css/maps.css');
 };
 
 BaseForm.prototype.render_head = function(res)
@@ -45,7 +48,7 @@ BaseForm.prototype.render_head = function(res)
         if(self.static['css'])
             for(var i=0; i<self.static['css'].length; i++)
                 res.write('<link type="text/css" href="' + self.static['css'][i] + '" rel="stylesheet">');
-    },500);
+    },1000);
 };
 
 BaseForm.prototype.get_fields = function()
@@ -70,7 +73,6 @@ BaseForm.prototype.init_fields = function(req)
     for(var field_name in this.fields)
     {
         var value = this.get_value(field_name);
-        console.log(field_name);
         this.fields[field_name].set(value,this.request).name = field_name;
     }
     this._fields_ready = true;
@@ -167,30 +169,19 @@ BaseForm.prototype.render = function(res,options)
     options = options || {};
     function render_fields(fields)
     {
-//        console.log('rendering fields ' + fields);
         for(var i=0; i<fields.length; i++)
         {
             var field_name = fields[i];
-//            self.fields[field_name].render_label(res);
-//            self.render_error(res,field_name);
-            self.fields[field_name].render_with_label(res);
+            if(typeof(field_name) == 'object')
+                render_fieldset(field_name);
+            else
+                self.fields[field_name].render_with_label(res);
         }
     };
-    function render_fieldsets(fieldsets)
-    {
-  //      console.log('rendering fieldsets ' + fieldsets);
-        for(var i=0; i<fieldsets.length; i++)
-        {
-            if(fieldsets[i]['title'] && fieldsets[i]['title'] != '' && !options.hide_fieldsets)
-                res.write('<div class="nf_fieldset">');
-            render_fieldset(fieldsets[i]);
-            if(fieldsets[i]['title'] && fieldsets[i]['title'] != '' && !options.hide_fieldsets)
-                res.write("</div>");
-        }
-    }
     function render_fieldset(fieldset)
     {
-    //    console.log('rendering fieldset ' + fieldset);
+        if(fieldset['title'] && fieldset['title'] != '' && !options.hide_fieldsets)
+            res.write('<div class="nf_fieldset">');
         var title = fieldset['title'] || '';
         if(title != '' && !options.hide_titles)
             res.write('<h2>' + title + '</h2>');
@@ -198,14 +189,13 @@ BaseForm.prototype.render = function(res,options)
         var fields = fieldset.fields;
         if(fields)
             render_fields(fields);
-        var fieldsets = fieldset.fieldsets;
-        if(fieldsets)
-            render_fieldsets(fieldsets);
         res.write('</div>');
+        if(fieldset['title'] && fieldset['title'] != '' && !options.hide_fieldsets)
+            res.write("</div>");
     };
     if(self.fieldsets)
     {
-        render_fieldsets(self.fieldsets);
+        render_fields(self.fieldsets[0].fields);
     }
     else
         render_fields(Object.keys(self.fields));
@@ -248,7 +238,7 @@ MongooseForm.prototype.get_fields = function()
 
 function mongoose_fields_to_fieldsets(field_paths,field_tree,ref_fields,ref_fieldsets)
 {
-    ref_fieldsets.push({title:'',fieldsets:[]});
+    ref_fieldsets.push({title:'',fields:[]});
     for(var field in field_paths)
     {
         if(field == 'id' || field == '_id')
@@ -261,18 +251,19 @@ function mongoose_fields_to_fieldsets(field_paths,field_tree,ref_fields,ref_fiel
         for(var i=0; i<parts.length-1; i++)
         {
             var fieldset = null;
-            for(j=0; j<parent_fieldset.fieldsets.length; j++)
+            for(var j=0; j<parent_fieldset.fields.length; j++)
             {
-                if(parent_fieldset.fieldsets[j].title == parts[i])
+                if(typeof(parent_fieldset.fields[j])=='object' && parent_fieldset.fields[j].title == parts[i])
                 {
-                    fieldset = parent_fieldset.fieldsets[j];
+                    fieldset = parent_fieldset.fields[j];
                 }
             }
             if(!fieldset)
             {
-                fieldset = {title:parts[i],fieldsets:[]};
+                fieldset = {title:parts[i],fields:[]};
+                parent_fieldset.fields.push(fieldset);
                 //parent_fieldset.fieldsets = parent_fieldset.fieldsets || [];
-                parent_fieldset.fieldsets.push(fieldset);
+                //parent_fieldset.fieldsets.push(fieldset);
             }
             parent_fieldset = fieldset;
         }
@@ -283,7 +274,7 @@ function mongoose_fields_to_fieldsets(field_paths,field_tree,ref_fields,ref_fiel
 
 function mongoose_field_to_form_field(mongoose_field,name,tree)
 {
-    if(mongoose_field.options.auto)
+    if(mongoose_field.options.auto || ('editable' in mongoose_field.options || mongoose_field.options.editable))
         return new fields.ReadonlyField({});
     var is_required = mongoose_field.options.required ? true : false;
     var def = mongoose_field.options['default'] || null;
@@ -315,7 +306,6 @@ function mongoose_field_to_form_field(mongoose_field,name,tree)
     var options = {required:is_required,'default':def,validators:validators,label:name};
     if(Array.isArray(mongoose_field.options.type))
     {
-        console.log('create schema ' + name);
         var path_parts = mongoose_field.path.split('.');
         var inner_schema = tree;
         for(var j=0; j<path_parts.length; j++)
@@ -333,7 +323,6 @@ function mongoose_field_to_form_field(mongoose_field,name,tree)
             for(var attr in inner_schema)
                 single_field[attr] = inner_schema[attr];
             single_field['type'] = mongoose_field.options.type[0];
-            console.log(single_field);
             schema = new mongoose.Schema({__self__:single_field});
         }
         else
@@ -347,6 +336,14 @@ function mongoose_field_to_form_field(mongoose_field,name,tree)
         var list_fieldsets = [];
         mongoose_fields_to_fieldsets(schema.paths,schema.tree,list_fields,list_fieldsets);
         return new fields.ListField(options,list_fields,list_fieldsets);
+    }
+    if(mongoose_field.options.type.name == 'File')
+    {
+        return new fields.FileField(options);
+    }
+    if(mongoose_field.options.type.name == 'GeoPoint')
+    {
+        return new fields.GeoField(options);
     }
     if(mongoose_field.options.ref)
     {
