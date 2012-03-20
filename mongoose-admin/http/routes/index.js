@@ -92,10 +92,12 @@ exports.model = function(req, res) {
                                                         'model': model,
                                                         'start': start,
                                                         'count': count,
-                                                        'renderedHead':'',
+                                                        'renderedHead':'<link type="text/css" href="/node-forms/css/forms.css" rel="stylesheet"/>' +
+                                                            '<script src="/node-forms/js/jquery-ui-1.8.18.custom.min.js"></script>',
                                                         'adminTitle':adminTitle,
                                                         'listFields': options.list,
                                                         'documents': documents,
+                                                        'sortable': typeof(MongooseAdmin.singleton.models[req.params.modelName].options.sortable) == 'string' ,
                                                         'rootPath': MongooseAdmin.singleton.root
                                                     }
                                                    });
@@ -123,7 +125,7 @@ exports.document_post = function(req,res) {
                 if (err) {
                     if(err.render_str)
                     {
-                        render_document_from_form(err,req,res,req.params.modelName);
+                        render_document_from_form(err,req,res,req.params.modelName,req.params.modelName,true);
                         return;
                     }
                     res.writeHead(500);
@@ -140,7 +142,7 @@ exports.document_post = function(req,res) {
                 if (err) {
                     if(err.render_str)
                     {
-                        render_document_from_form(err,req,res,req.params.modelName);
+                        render_document_from_form(err,req,res,req.params.modelName,req.params.modelName,false);
                         return;
                     }
                     if(typeof(err)=='object')
@@ -163,7 +165,7 @@ exports.document_post = function(req,res) {
 
 };
 
-function render_document_from_form(form,req,res,modelName)
+function render_document_from_form(form,req,res,modelName,collectionName,allowDelete)
 {
     form.render_ready(function(err)
     {
@@ -179,7 +181,8 @@ function render_document_from_form(form,req,res,modelName)
                     locals: {
                         'pageTitle': 'Admin - ' + modelName,
         //                'models': models,
-        //                'modelName': req.params.modelName,
+                        'modelName': modelName,
+                        'collectionName':collectionName,
         //                'model': model,
         //                'fields': fields,
                         'renderedDocument': html,
@@ -187,7 +190,7 @@ function render_document_from_form(form,req,res,modelName)
                         'adminTitle':adminTitle,
                         'document': {},
                         'errors':Object.keys(form.errors).length > 0,
-                        'allowDelete':false,
+                        'allowDelete':allowDelete,
                         'rootPath': MongooseAdmin.singleton.root
                     }
                 });
@@ -219,16 +222,18 @@ exports.document = function(req, res) {
                                 }
                                 else
                                 {
-                                    var form = new forms.MongooseForm(req,{instance:document},model);
-                                    render_document_from_form(form,req,res,model.modelName);
+                                    var form_type = MongooseAdmin.singleton.models[req.params.modelName].options.form || forms.MongooseForm;
+                                    var form = new form_type(req,{instance:document},model);
+                                    render_document_from_form(form,req,res,model.modelName,req.params.modelName,false);
                                 }
                             });
                         }
                         else
                         {
                             if (req.params.documentId === 'new') {
-                                var form = new forms.MongooseForm(req,{},model);
-                                render_document_from_form(form,req,res,model.modelName);
+                                var form_type = MongooseAdmin.singleton.models[req.params.modelName].options.form || forms.MongooseForm;
+                                var form = new form_type(req,{},model);
+                                render_document_from_form(form,req,res,model.modelName,req.params.modelName,false);
     //                                    var html = form.render_str();
     //                                    var head = form.render_head();
     //
@@ -257,8 +262,9 @@ exports.document = function(req, res) {
                                     if (err) {
                                         res.redirect('/error');
                                     } else {
-                                        var form = new forms.MongooseForm(req,{instance:document},model);
-                                        render_document_from_form(form,req,res,model.modelName);
+                                        var form_type = MongooseAdmin.singleton.models[req.params.modelName].options.form || forms.MongooseForm;
+                                        var form = new form_type(req,{instance:document},model);
+                                        render_document_from_form(form,req,res,model.modelName,req.params.modelName,true);
     //                                            var html = form.render_str();
     //                                            var head = form.render_head();
     //                                            var config = MongooseAdmin.singleton.pushExpressConfig();

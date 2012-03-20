@@ -29,7 +29,9 @@ var app = module.exports = express.createServer();
 var account = require('./routes/account');
 var infoAndMeasures = require('./routes/infoAndMeasures');
 var selectedSubjectPage = require('./routes/selectedSubjectPage');
-var pagesInit = require('./routes/pagesInit');
+var pagesInit = require('./routes/pagesInit'),
+    i18n = require('i18n-mongoose'),
+    locale = require('./locale');
 //var cycle = require('./routes/cycle');
 
 var Models = require("./models.js");
@@ -88,6 +90,8 @@ var confdb = {
 var fbId = app.settings.facebook_app_id,// '175023072601087',
     fbSecret = app.settings.facebook_secret,// '5ef7a37e8a09eca5ee54f6ae56aa003f',
     fbCallbackAddress = app.settings.root_path + '/account/facebooklogin';
+
+i18n.configure({});
 
 app.configure(function(){
     app.use(express.static(__dirname + '/public'));
@@ -170,8 +174,15 @@ app.configure(function(){
     })
 
     app.use(express.methodOverride());
+    app.use(i18n.init);
     app.use(app.router);
 
+});
+
+// register helpers for use in templates
+app.helpers({
+    __i: i18n.__,
+    __n: i18n.__n
 });
 
 // Routes
@@ -300,11 +311,12 @@ var admin = mongoose_admin.createAdmin(app,{root:'admin'});
 admin.ensureUserExists('admin','admin');
 
 admin.registerMongooseModel("User",Models.User,null,{list:['username','first_name','last_name']});
-admin.registerMongooseModel("InformationItem",Models.InformationItem, null,{list:['title']});
-admin.registerMongooseModel("Subject",Models.Subject,null,{list:['name']});
+admin.registerMongooseModel("InformationItem",Models.InformationItem, null,{list:['title'],order_by:['gui_order'],sortable:'gui_order'});
+admin.registerMongooseModel("Subject",Models.Subject,null,{list:['name'],order_by:['gui_order'],sortable:'gui_order'});
 admin.registerMongooseModel("Discussion",Models.Discussion,null,{list:['name']});
 admin.registerMongooseModel("Cycle",Models.Cycle,null,{list:['title']});
 admin.registerMongooseModel("Action",Models.Action,null,{list:['title']});
+admin.registerMongooseModel('Locale',locale.Model, locale.Model.schema.tree,{list:['locale'],form:locale.LocaleForm});
 
 
 

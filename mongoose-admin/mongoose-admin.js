@@ -203,7 +203,19 @@ MongooseAdmin.prototype.listModelDocuments = function(collectionName, start, cou
     if(listFields)
     {
 
-    this.models[collectionName].model.find({}).skip(start).limit(count).execFind(function(err, documents) {
+    var query = this.models[collectionName].model.find({});
+    var sorts = this.models[collectionName].options.order_by;
+    if(sorts)
+    {
+        for(var i=0; i<sorts.length; i++)
+        {
+            if(sorts[i].indexOf('-') == 0)
+                query.sort(sorts[i].substring(1),'descending');
+            else
+                query.sort(sorts[i],'ascending');
+        }
+    }
+    query.skip(start).limit(count).execFind(function(err, documents) {
         if (err) {
             console.log('Unable to get documents for model because: ' + err);
             onReady('Unable to get documents for model', null);
@@ -213,7 +225,7 @@ MongooseAdmin.prototype.listModelDocuments = function(collectionName, start, cou
                 var d = {};
                 d['_id'] = document['_id'];
                 listFields.forEach(function(listField) {
-                  d[listField] = document[listField];
+                  d[listField] = document.get(listField);
                 });
                 filteredDocuments.push(d);
             });
@@ -260,7 +272,8 @@ MongooseAdmin.prototype.getDocument = function(collectionName, documentId, onRea
 MongooseAdmin.prototype.createDocument = function(req,user, collectionName, params, onReady) {
     var self = this;
     var model = this.models[collectionName].model;
-    var form = new forms.MongooseForm(req,{data:params},model);
+    var form_type = this.models[collectionName].options.form || forms.MongooseForm;
+    var form = new form_type(req,{data:params},model);
     form.is_valid(function(err,valid)
     {
         if(err)
@@ -338,12 +351,14 @@ MongooseAdmin.prototype.updateDocument = function(req,user, collectionName, docu
     var self = this;
     var fields = this.models[collectionName].fields;
     var model = this.models[collectionName].model;
+    var form_type = this.models[collectionName].options.form || forms.MongooseForm;
     model.findById(documentId, function(err, document) {
         if (err) {
             console.log('Error retrieving document to update: ' + err);
             onReady('Unable to update', null);
         } else {
-            var form = new forms.MongooseForm(req,{instance:document,data:params},model);
+
+            var form = new form_type(req,{instance:document,data:params},model);
             form.is_valid(function(err,valid)
             {
                 if(err)
@@ -442,6 +457,24 @@ MongooseAdmin.prototype.deleteDocument = function(user, collectionName, document
             }
         }
     });
+};
+
+MongooseAdmin.prototype.orderDocuments =function(user,collectionName,data,onReady)
+{
+    console.log(data);
+    var sorting_attr = this.models[collectionName].options.sortable;
+    if(sorting_attr)
+    {
+        for(var id in data)
+        {
+            var set_dict = {};
+            set_dict[sorting_attr] = data[id];
+                this.models[collectionName].model.update({_id:id},{$set:set_dict},function(err,r)
+                {
+                });
+        }
+    }
+    onReady(null);
 };
 
 /**

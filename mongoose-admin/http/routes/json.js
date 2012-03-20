@@ -1,6 +1,7 @@
 var querystring = require('querystring'),
     Url = require('url'),
     sys = require('sys'),
+    forms = require('../../../node-forms/forms'),
     MongooseAdmin = require('../../mongoose-admin');
 
 exports.login = function(req, res) {
@@ -50,6 +51,21 @@ exports.documents = function(req, res) {
     }
 };
 
+exports.checkDependencies = function(req,res)
+{
+    var modelName = req.body.model;
+    var id = req.body.id;
+    forms.checkDependecies(modelName,id,function(err,results)
+    {
+        var json = [];
+        for(var i=0; i<results.length; i++)
+        {
+            json.push(results[i].name || results[i].title || results[i].toString());
+        }
+        res.json(json,200);
+    });
+};
+
 exports.createDocument = function(req, res) {
     var adminUser = req.session._mongooseAdminUser ? MongooseAdmin.userFromSessionStore(req.session._mongooseAdminUser) : null;
     if (!adminUser) {
@@ -85,6 +101,27 @@ exports.updateDocument = function(req, res) {
         return;
     } else {
         MongooseAdmin.singleton.updateDocument(req,adminUser, req.params.collectionName, req.body._id, req.body, function(err, document) {
+            if (err) {
+                res.writeHead(500);
+                res.end();
+            } else {
+                res.writeHead(200, {"Content-Type": "application/json"});
+                res.write(JSON.stringify({"collection": req.params.collectionName}));
+                res.end();
+            }
+        });
+    }
+};
+
+exports.orderDocuments = function(req,res)
+{
+    var adminUser = req.session._mongooseAdminUser ? MongooseAdmin.userFromSessionStore(req.session._mongooseAdminUser) : null;
+    if (!adminUser) {
+        res.writeHead(401, {"Content-Type": "application/json"});
+        res.end();
+        return;
+    } else {
+        MongooseAdmin.singleton.orderDocuments(adminUser, req.params.collectionName, req.body, function(err) {
             if (err) {
                 res.writeHead(500);
                 res.end();

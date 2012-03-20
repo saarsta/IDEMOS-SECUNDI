@@ -71,13 +71,15 @@ var Schemas = exports.Schemas = {
         discussions:{type:[ObjectId], ref:'Discussion', index:true,editable:false},
         is_visible:{type:Boolean, 'default':true},
         creation_date:{type:Date, 'default':Date.now,editable:false},
-        is_hot:{type:Boolean, 'default':false}
+        is_hot:{type:Boolean, 'default':false},
+        gui_order:{type:Number,'default':9999999,editable:false}
     },
 
     Subject:{
         name:{ type:String,required:true},
         image_field:mongoose_types.File,
-        tags:[String]
+        tags:[String],
+        gui_order:{type:Number,'default':9999999,editable:false}
 //        is_hot:{type:Boolean,'default':false}
     },
 
