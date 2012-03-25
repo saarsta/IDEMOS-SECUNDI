@@ -58,10 +58,14 @@ var Schemas = exports.Schemas = {
         gamification:Schema.Types.Mixed,
         //score:{type:Number, 'default':0},
         decoration_status:{type:String, "enum":['a', 'b', 'c']},
+
         invited_by: {type: ObjectId, ref: 'User'},
         has_been_invited : {type: Boolean, 'default': false},
         tokens_achivements_to_usre_who_invited_me: {},
         num_of_extra_tokens: Number// i might change it to gamification.bonus.
+
+        avatar : mongoose_types.File
+
     }),
 
     InformationItem:{
@@ -74,13 +78,15 @@ var Schemas = exports.Schemas = {
         discussions:{type:[ObjectId], ref:'Discussion', index:true,editable:false},
         is_visible:{type:Boolean, 'default':true},
         creation_date:{type:Date, 'default':Date.now,editable:false},
-        is_hot:{type:Boolean, 'default':false}
+        is_hot:{type:Boolean, 'default':false},
+        gui_order:{type:Number,'default':9999999,editable:false}
     },
 
     Subject:{
         name:{ type:String,required:true},
         image_field:mongoose_types.File,
-        tags:[String]
+        tags:[String],
+        gui_order:{type:Number,'default':9999999,editable:false}
 //        is_hot:{type:Boolean,'default':false}
     },
 
@@ -111,7 +117,7 @@ var Schemas = exports.Schemas = {
     },
 
     Cycle:{
-        title: String,
+        title: {type:String, required:true},
         discussions:[
             {type:ObjectId, ref:'Discussion'}
         ],
@@ -122,7 +128,7 @@ var Schemas = exports.Schemas = {
     PostOrSuggestion:{
         discussion_id:{type:Schema.ObjectId, ref:'Discussion', index:true, required:true},
         creator_id:{type:Schema.ObjectId, ref:'User'},
-        first_name:String,
+        first_name:{type:String},
         last_name:String,
         username:String,
         creation_date:{type:Date, 'default':Date.now},
@@ -212,6 +218,14 @@ var Schemas = exports.Schemas = {
 Schemas.User.methods.toString = function()
 {
     return this.first_name + ' ' + this.last_name;
+};
+
+Schemas.User.methods.avatar_url = function()
+{
+    if(this.avatar && this.avatar.url)
+        return this.avatar.url;
+    else
+        return 'graph.facebook.com/' + this.facebook_id + '/picture/?type=large';
 };
 
 function extend_model(name, base_schema, schema, collection) {

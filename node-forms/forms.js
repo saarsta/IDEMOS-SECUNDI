@@ -11,7 +11,52 @@ var Models = {};
 exports.set_models = function(models)
 {
     Models = models;
-}
+};
+
+exports.checkDependecies = function(model,id,callback)
+{
+    var models_to_query = {};
+    for(var modelName in Models)
+    {
+        var model_ref = Models[modelName];
+        if(!Models[modelName].schema)
+            continue;
+        for(var fieldName in model_ref.schema.paths)
+        {
+            if(model_ref.schema.paths[fieldName].options.ref && model_ref.schema.paths[fieldName].options.ref == model)
+            {
+                models_to_query[modelName] = models_to_query[modelName] || [];
+                var query_dict = {};
+                query_dict[fieldName] = id;
+                models_to_query[modelName].push(query_dict);
+            }
+        }
+    }
+    var funcs = [];
+    function query_func(modelName)
+    {
+        return function(cbk)
+        {
+            Models[modelName].find({$or:models_to_query[modelName]},cbk);
+        }
+    }
+    for(var modelName in models_to_query)
+    {
+        funcs.push(query_func(modelName));
+    }
+    async.parallel(funcs,function(err,results)
+    {
+       var all_results = [];
+        for(var i=0; i<results.length; i++)
+        {
+            if(results[i] && results[i].length)
+            {
+                all_results = all_results.concat(results[i]);
+            }
+        }
+        callback(err,all_results);
+    });
+};
 
 var BaseForm = exports.BaseForm = function(request,options) {
     this.fields = {};
@@ -27,12 +72,11 @@ var BaseForm = exports.BaseForm = function(request,options) {
     this.static['js'].push('/node-forms/js/forms.js');
     this.static['js'].push('/node-forms/js/jquery-ui-1.8.18.custom.min.js');
     this.static['js'].push('/node-forms/js/jquery-ui-timepicker-addon.js');
-    this.static['js'].push('https://maps-api-ssl.google.com/maps/api/js?v=3&sensor=false&language=en&libraries=places');
+    this.static['js'].push('https://maps-api-ssl.google.com/maps/api/js?v=3&sensor=false&language=he&libraries=places');
     this.static['js'].push('/node-forms/js/maps.js');
     this.static['css'] = this.static['css'] || [];
     this.static['css'].push('/node-forms/css/ui-lightness/jquery-ui-1.8.18.custom.css');
     this.static['css'].push('/node-forms/css/forms.css');
-//    this.static['css'].push('/node-forms/css/maps.css');
 };
 
 BaseForm.prototype.render_head = function(res)
@@ -314,8 +358,13 @@ function mongoose_field_to_form_field(mongoose_field,name,tree)
         }
         if(Array.isArray(inner_schema))
             inner_schema = inner_schema[0];
+        else
+        {
+            if(inner_schema && inner_schema.type && Array.isArray(inner_schema.type) && !inner_schema.ref)
+                inner_schema = inner_schema.type[0];
+        }
         var schema;
-        if(typeof(inner_schema) != 'object' || inner_schema.type)
+        if(inner_schema && (typeof(inner_schema) != 'object' || inner_schema.type))
         {
 //            return new fields.StringField(options);
         //inner_schema = {stam_lo_bemet:inner_schema};
@@ -352,7 +401,7 @@ function mongoose_field_to_form_field(mongoose_field,name,tree)
     if(mongoose_field.options.enum)
     {
         return new fields.EnumField(options,mongoose_field.options.enum);
-    }
+        }
     if(mongoose_field.options.type == Boolean)
         return new fields.BooleanField(options);
     if(mongoose_field.options.type == Number)
@@ -379,7 +428,8 @@ MongooseForm.prototype.actual_save = function(callback)
 
        if(err)
        {
-           self.errors = err.errors;
+           if(err.errors)
+               self.errors = err.errors;
            callback({message:'failed'});
        }
        else

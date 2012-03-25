@@ -44,7 +44,6 @@ BaseField.prototype.get_label = function()
     var arr =  label.split('_');
     for(var i=0; i<arr.length; i++)
     {
-        console.log(arr[i][0].toUpperCase()[0]);
         arr[i] = arr[i][0].toUpperCase() + arr[i].substring(1);
     }
     return arr.join(' ');

@@ -312,7 +312,55 @@ exports.logout = function (req, res) {
     // req.session.destroy();
     req.logout();
     res.end();
-}
+};
+
+var forms = require('../node-forms/forms');
+
+var UserForm = function(request,options)
+{
+    UserForm.super_.call(this,request,options,Models.User);
+};
+
+require('util').inherits(UserForm,forms.MongooseForm);
+
+UserForm.prototype.get_fields = function()
+{
+    UserForm.super_.prototype.get_fields.call(this);
+    this.fields = {
+        'avatar' : this.fields['avatar']
+    };
+};
+
+
+exports.edit_user = function(req,res)
+{
+    var user_id = req.session.user_id;
+    Models.User.findById(user_id,function(err,user)
+    {
+        var form = new UserForm(req,{instance:user});
+        if(req.method == 'GET')
+        {
+            // render page with form
+            //res.render()
+            var input = form.fields.avatar.render_str();
+            res.render('change_avatar.ejs',{input:input});
+        }
+        else
+        {
+            form.is_valid(function(err,is_valid)
+            {
+                if(is_valid)
+                {
+                    form.save(function(err,result)
+                    {
+                        // saved
+                        res.render();
+                    });
+                }
+            });
+        }
+    });
+};
 
 
 
