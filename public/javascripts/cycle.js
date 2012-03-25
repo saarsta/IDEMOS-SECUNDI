@@ -12,11 +12,10 @@ var action_item =
         $('<div class="action_item gray_background" >' +
             '<h2>' + data.title + '</h2>' +
             '<textarea disabled="disabled">' + data.description+'</textarea>' +
-            '<p>category:' + data.category + '</p>' +
             '<div class="resources_items"></div>' +
             '<button class="change_action">change this action</button>' +
             '<button class="join">I' + "'" + 'm in</button>' +
-            '<p>number of going:' + data.num_of_going + '</p>' +
+            '<p>number of going: <span class="num">' + data.num_of_going + '</span></p>' +
             '</div>')
 
             .appendTo('.' + parent );
@@ -27,6 +26,9 @@ var action_item =
                 if (err){
                     console.log(err);
                 }else{
+                    //this is like $('span.num', item).text();
+                    var num = parseInt(item.find('span.num').text());
+                    item.find('span.num').text(num + 1);
                     console.log('user added to action' + "'" + 's going');
                 }
             });
@@ -205,6 +207,13 @@ function loadCyclePage(cycle_id, discussion_id){
                console.log(err);
            }else{
                console.log("Action was added!");
+              /* db_functions.getActionById(result._id, function(err, data){
+                   if(err){
+                       console.log(err);
+                   }else{
+                       action_item.add(data, "not_approved_actions");
+                   }
+               });*/
                $( "#popup_contact" ).dialog("close");
            }
        })
@@ -216,8 +225,19 @@ function loadCyclePage(cycle_id, discussion_id){
             modal: true,
             buttons: {
                 Ok: function() {
+
                     $( this ).dialog("close");
                 }
+            }
+        });
+    });
+
+    $("#follow_btn").live("click", function(){
+        db_functions.addUserToCycleFollower(cycle_id, function(err, data){
+            if(err){
+                console.log(err);
+            }else{
+                $("#followers").val("Num of followers is: " + data.followers_count);
             }
         });
     });

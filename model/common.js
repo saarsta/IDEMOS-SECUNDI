@@ -132,7 +132,7 @@ score.post = 20;
 score.suggestion = 20;
 score.discussion = 30;
 
-function update_user_gamification(req, game_type, user,price,callback)
+function update_user_gamification(req, game_type, user, price, callback)
 {
     var inc_user_gamification ={};
     var inc_user_gamification_score ={};

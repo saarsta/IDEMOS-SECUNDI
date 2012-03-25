@@ -22,7 +22,6 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
         this.allowed_methods = ['get', 'post', 'put'];
         this.filtering = {category: null, cycle_id: null, is_approved:null, tokens:null};
         this.authentication = new common.SessionAuthentication();
-        //this.authorization = new common.TokenAuthorization();
     },
 
     create_obj: function(req,fields,callback){
@@ -30,13 +29,6 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
         var self = this;
         var action_object = new self.model();
 
-//        models.User.findById(user_id,function(err,user){
-//            if(err)
-//            {
-//                callback(err, null);
-//            }
-//            else
-//            {
         var user = req.user;
                 fields.creator_id = user_id;
                 fields.first_name = user.first_name;
@@ -58,21 +50,16 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                                 req.gamification_type = "action";
                                 //user.tokens -= ACTION_PRICE;
                                 // add discussion_id and action_id to the lists in user
-                                models.User.update({_id:user_id},{$addToSet: {cycles: cycle_id, actions: action._doc._id}},function(err, object)
+                                models.User.update({_id:user_id},{$addToSet: {/*cycles: cycle_id, */actions: action._doc._id}},function(err, object)
                                 {
                                     callback(self.elaborate_mongoose_errors(err),action);
                                 });
-//                                user.save(function(err, object){
- //                                   callback(self.elaborate_mongoose_errors(err), action);
-                             //   });
                             }else{
                                 callback(self.elaborate_mongoose_errors(err), null);
                             }
                         });
                     }
                 });
-      //      }
-//        });
     },
 
     //this happens when user clicks the Join button, the user get the action id, and action
@@ -80,15 +67,10 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
         var self = this;
         var user_id = req.session.user_id;
         var action_id = req._id;
-        var inc_num_of_going_to_action = {};
-        inc_num_of_going_to_action['num_of_going'] = 1;
+
 
         async.waterfall([
 
-//            function(cbk){
-//                models.User.findById(user_id, cbk);
-//            },
-//
             function(cbk){
                 models.Action.findById(action_id, cbk);
             },
@@ -99,18 +81,16 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                         async.parallel([
 
                             function(cbk2){
-                                models.Action.update({_id:action_id},{$addToSet: {going_users: action_id},$inc: inc_num_of_going_to_action}, cbk2);
+                                models.Action.update({_id:action_id},{$addToSet: {going_users: user_id, users: user_id},$inc:{num_of_going: 1}}, cbk2);
                             },
 
-//                            function(cbk2){
-//                                models.Action.update({_id: action_id}, {},cbk2);
-//                            },
-//
                             function(cbk2){
                                 models.User.update({_id:user_id},{$addToSet: {actions: action_id}}, cbk2);
                             }
 
                         ], cbk);
+                }else{
+                    cbk({message:"user has already joined this action",code:401}, null);
                 }
             }
         ], function(err, result){

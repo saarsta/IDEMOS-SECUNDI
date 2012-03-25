@@ -83,6 +83,11 @@ exports.register = function (req, res) {
     var user = new Models.User(data);
     user.password = bcrypt.encrypt_sync(data.password, bcrypt.gen_salt_sync(10));
     user.identity_provider = "register";
+   /* user.num_of_extra_tokens = 10000000;////delete!!
+    user.invited_by = "4f69e4c52c18dffc11000002";////
+    user.num_of_extra_tokens = 4;////
+    user.has_been_invited = true; ////*/
+
     user_model = Models.User;
 
     user_model.find({username:user.username, identity_provider:'register'}, function (err, result) {

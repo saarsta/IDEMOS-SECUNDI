@@ -315,3 +315,30 @@ catch(e)
     console.log(e);
     console.log('admin is not operational, wow. exception: ' + e.message);
 }
+
+var cron = require('./cron').cron;
+
+/*cron.findWhoInvitedNumberOfUsersThatGotExtraTokens(4, 2, function(err, result){
+    var a = 8;
+});
+
+cron.findWhoInvitedMoreThenNumberOfUsers(2,function(err, result){
+    var a = 9;
+});*/
+
+//cron.findWhoGotGtrNumberOfTokensForAPostOrSuggestion(80, function(err, result){
+//    var a = 10;
+//});
+
+/*cron.findWhoGotNumberOfTokensForAllPosts(200, function(err, result){
+    var a = 11;
+});*/
+
+/*cron.findWhoInsertedNumberOfApprovedSuggestions(4, function(err, result){
+    var a = 11;
+});*/
+
+cron.findWhoCreatedApprovedAction(function(err, result){
+   var a = 12;
+});
+//setInterval(cron, 1000*60*5);

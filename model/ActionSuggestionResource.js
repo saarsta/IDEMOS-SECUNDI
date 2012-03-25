@@ -11,12 +11,14 @@ var common = require('./common'),
     util  = require('util'),
     jest = require('jest'),
     models = require('../models'),
-    async = require('async');
+    async = require('async'),
+
+    ACTION_SUGGESTION_PRICE = 2;
 
 ActionSuggestionResource = module.exports = common.GamificationMongooseResource.extend({
 
     init: function(){
-        this._super(models.ActionSuggestion, 'action_suggestion');
+        this._super(models.ActionSuggestion, 'action_suggestion', ACTION_SUGGESTION_PRICE);
         this.allowed_methods = ['get', 'post'];
     },
 

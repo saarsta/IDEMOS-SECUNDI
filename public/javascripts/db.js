@@ -422,6 +422,38 @@ var db_functions = {
         });
     },
 
+    addUserToCycleFollower: function(cycle_id, callback){
+        $.ajax({
+            url: '/api/cycles/'+ cycle_id,
+            type: "PUT",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
+
+            }
+        });
+    },
+
+    /*getActionById: function(action_id, callback){
+        $.ajax({
+            url: '/api/actions/action_id',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
+            }
+        });
+    },*/
+
     getApprovedActionByCycle: function(cycle_id, callback){
         $.ajax({
             url: '/api/actions?cycle_id='+ cycle_id + '&is_approved=true',

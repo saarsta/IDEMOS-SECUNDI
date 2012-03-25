@@ -57,8 +57,11 @@ var Schemas = exports.Schemas = {
         tokens:{type:Number, 'default':100000},
         gamification:Schema.Types.Mixed,
         //score:{type:Number, 'default':0},
-        decoration_status:{type:String, "enum":['a', 'b', 'c']}
-
+        decoration_status:{type:String, "enum":['a', 'b', 'c']},
+        invited_by: {type: ObjectId, ref: 'User'},
+        has_been_invited : {type: Boolean, 'default': false},
+        tokens_achivements_to_usre_who_invited_me: {},
+        num_of_extra_tokens: Number// i might change it to gamification.bonus.
     }),
 
     InformationItem:{
@@ -103,7 +106,8 @@ var Schemas = exports.Schemas = {
         is_published:{type:Boolean, 'default':false},
         grade:Number,
         evaluate_counter:{type:Number, 'default':0},
-        grade_sum:{type:Number, 'default':0}
+        grade_sum:{type:Number, 'default':0},
+        gamification: {has_rewarded_creator_of_turning_to_cycle: {type: Boolean, 'default': false}}
     },
 
     Cycle:{
@@ -123,7 +127,9 @@ var Schemas = exports.Schemas = {
         username:String,
         creation_date:{type:Date, 'default':Date.now},
         tokens:{type:Number, 'default':0, index: true},
-        post_price:{type:Number, 'default':0}//how many tokens for creating post
+        post_price:{type:Number, 'default':0},//how many tokens for creating post
+        gamification: {high_number_of_tokens_bonus : {type: Boolean, 'default': false}}
+//        achivements_for_creator: {}
     },
 
     Vote:{
@@ -165,13 +171,10 @@ var Schemas = exports.Schemas = {
         first_name: String,
         last_name: String,
         cycle_id:{type:ObjectId, ref:'Cycle', index:true, required:true},
-
-        category: {type: ObjectId, ref: 'Category'},
-
         action_resources:[
             {resource: ActionResource, amount:Number}
         ],
-        //users that concected somehow to the action
+        //users that conected somehow to the action
         users:[
             {type:ObjectId, ref:'User'}
         ],
@@ -185,6 +188,7 @@ var Schemas = exports.Schemas = {
         num_of_going: {type: Number, 'default': 0},
         tokens:{type:Number, 'default':0},
         is_approved:{type:Boolean, 'default':false},
+        gamification: {approved_to_cycle :{type: Boolean, 'default': false}},
         location:mongoose_types.GeoPoint
     },
 

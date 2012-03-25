@@ -62,14 +62,11 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
         var user_id = req.session.user_id;
         var self = this;
         var post_object = new self.model();
-        var g_user = null;
+        var user = req.user;
 
         async.waterfall([
-            function(cbk) {
-                models.User.findOne({_id:user_id}, cbk);
-            },
 
-            function(user, cbk){
+            function(cbk){
                 fields.creator_id = user_id;
                 fields.first_name = user.first_name;
                 fields.last_name = user.last_name;
@@ -97,16 +94,14 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                 async.parallel([
                     function(cbk2)
                     {
-//                        models.Discussion.findOne({_id:object.discussion_id},cbk2);
                         models.Discussion.update({_id:object.discussion_id}, {$addToSet: {users: user_id}}, cbk2);
 
                     },
                     function(cbk2)
                     {
-                        var user = g_user;
                             // add discussion_id to the list of discussions in user
                         user.tokens -= POST_PRICE;
-                        if (common.isCollectionIsInUser(object.discussion_id, user.discussions) == false) {
+                        if (common.isArgIsInList(object.discussion_id, user.discussions) == false) {
                             user.discussions.push(object.discussion_id);
                         }
                         user.save(function(err,result)
@@ -117,19 +112,7 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                     ],
                     cbk);
 
-            }//,
-//            function (args,cbk) {
-//                var discussion_obj = args[0];
-
-
-                /*if (common.isUserIsInDiscussion(user_id, discussion_obj.users) == false) {
-                    discussion_obj.users.push(user_id);
-                    discussion_obj.followers_count++;
-                    discussion_obj.save();
-                }*/
-
-//                cbk(null);
-//            }
+            }
         ],function(err,result)
         {
             callback(self.elaborate_mongoose_errors(err), post_object);

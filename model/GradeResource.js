@@ -75,7 +75,7 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
                             if(err){
 
                             }else{
-                                if (common.isDiscussionIsInUser(grade_object.discussion_id, user_object.discussions)  == false){
+                                if (common.isArgIsInList(grade_object.discussion_id, user_object.discussions)  == false){
                                     isNewFollower = true;
                                     user_object.discussions.push(grade_object.discussion_id);
                                 }
