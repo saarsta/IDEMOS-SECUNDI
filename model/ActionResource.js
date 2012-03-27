@@ -18,7 +18,7 @@ var resources = require('jest'),
 var ActionResource = module.exports = common.GamificationMongooseResource.extend(
 {
     init: function(){
-        this._super(models.Action, null,ACTION_PRICE);
+        this._super(models.Action, null, ACTION_PRICE);
         this.allowed_methods = ['get', 'post', 'put'];
         this.filtering = {category: null, cycle_id: null, is_approved:null, tokens:null};
         this.authentication = new common.SessionAuthentication();

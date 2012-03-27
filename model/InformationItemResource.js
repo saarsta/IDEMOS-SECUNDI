@@ -1,4 +1,4 @@
-     /**
+/**
  * Created by JetBrains WebStorm.
  * User: saar
  * Date: 15/02/12
@@ -9,18 +9,144 @@
 var resources = require('jest'),
     util = require('util'),
     models = require('../models'),
-    common = require('./common');
+    async = require('async'),
+    common = require('./common'),
 
-var InformationItemResource = module.exports = function()
+    NUM_OF_TAG_SUGG_BEFORE_APPROVAL = 1,
+    SUGGEST_TAG_PRICE = 1;
+
+var InformationItemResource = module.exports = common.GamificationMongooseResource.extend(
 {
-    InformationItemResource.super_.call(this,models.InformationItem);
-    this.allowed_methods = ['get','post'];
-    this.authentication = new common.SessionAuthentication();
-    this.filtering = {tags:null, subject_id:null, title:null, text_field:null, users:null, is_hot:null, discussions: null};
-    this.default_query = function(query)
-    {
-        return query.where('is_visible',true).sort('creation_date','descending');
-    };
-    //this.validation = new resources.Validation();
-};
-util.inherits(InformationItemResource,resources.MongooseResource);
+    init:function () {
+        this._super(models.InformationItem, null, null);
+        this.allowed_methods = ['get', 'post', 'put'];
+        this.authentication = new common.SessionAuthentication();
+        this.filtering = {tags:null, subject_id:null, title:null, text_field:null, users:null, is_hot:null, discussions:null};
+        this.default_query = function (query) {
+            return query.where('is_visible', true).sort('creation_date', 'descending');
+        };
+    },
+
+    create_obj: function(req,fields,callback){
+        var user_id = req.session.user_id;
+        var self = this;
+        var info_item_object = new self.model();
+
+        fields.created_by = {creator_id:user_id, did_user_created_this_item: true};
+        fields.status = "waiting";
+
+        for(var field in fields){
+            info_item_object.set(field,fields[field]);
+        }
+
+        async.waterfall([
+            function(cbk){
+                self.authorization.edit_object(req, info_item_object, cbk);
+            },
+
+            function(info_obj, cbk){
+                info_obj.save(cbk);
+            }
+        ], callback);
+    },
+
+    //when user suggest tag for info_item
+    update_obj:function (req, object, callback) {
+        var self = this;
+        var user_id = req.session.user_id;
+        var info_item_id = req._id;
+        var tag_name = req.body.tag_name;
+        var is_tag_sugg_approved = {flag : false, index_of_tag_suggestion : null};
+        var event = "tag_suggestion_approved";
+
+        //TODO do i need to move it to Gamification resource???
+        var iterator = function(user, itr_cbk){
+            var inc_gamification = {};
+
+            inc_gamification['gamification.' + event] = 1;
+            models.User.update({_id:user_id}, {$inc: inc_gamification}, function (err, result) {
+                itr_cbk(err, result);
+            });
+        };
+
+        async.waterfall([
+            function (cbk) {
+                models.InformationItem.findById(info_item_id, cbk);
+            },
+
+            function (info_item_obj, cbk) {
+                var is_tag_already_exist = false;
+                for (var i = 0; i < info_item_obj.tags.length; i++) {
+                    if (info_item_obj.tags[i].toLowerCase() == tag_name.toLowerCase()) {
+                        is_tag_already_exist = true;
+                        break;
+                    }
+                }
+
+                if (is_tag_already_exist) {
+                    cbk({message:"tag is already exist", code:401}, null);
+                }
+                else {
+                    var is_tag_suggestoin_exist = false;
+                    var is_user_already_suggeted_this_tag = false;
+                    for (var i = 0; i < info_item_obj.tag_suggestions.length; i++) {
+                        if (info_item_obj.tag_suggestions[i].tag_name.toLowerCase() == tag_name.toLowerCase()) {
+                            is_tag_suggestoin_exist = true;
+
+                            //if user hasnt already suggested this tag name, insert his id to the arr
+                            for (var j = 0; j < info_item_obj.tag_suggestions[i].tag_offers.length; j++) {
+                                if (info_item_obj.tag_suggestions[i].tag_offers[j] == user_id) {
+                                    is_user_already_suggeted_this_tag = true;
+                                    break;
+                                }
+                            }
+
+                            if (is_user_already_suggeted_this_tag) {
+                                cbk({message:"user already suggested this tag", code:401}, null);
+                                break;
+                            } else {
+                                //this happens when tag is already exist, so we push user to offers list
+                                info_item_obj.tag_suggestions[i].tag_offers.push(user_id);
+                                req.gamification_type = "suggest_tag_for_info_item";
+                                req.token_price = SUGGEST_TAG_PRICE;
+
+                                //if tag is approved
+                                if(info_item_obj.tag_suggestions[i].tag_offers.length >= NUM_OF_TAG_SUGG_BEFORE_APPROVAL){
+                                    info_item_obj.tags.push(tag_name);
+                                    is_tag_sugg_approved.flag = true;
+                                    is_tag_sugg_approved.index_of_tag_suggestion = i;
+                                }
+
+                                //TODO this is not realy saved!!!!! ishai please help me
+                                info_item_obj.save(function(err, info_obj){
+
+                                    if(err){
+                                        cbk(err, null);
+                                    }
+                                    else{
+                                        if(is_tag_sugg_approved.flag){
+                                            var index = is_tag_sugg_approved.index_of_tag_suggestion;
+                                            async.forEach(info_obj.tag_suggestions[index].tag_offers, iterator, cbk);
+                                        }
+                                    }
+                                });
+                            }
+                            break;
+                        }
+                    }
+
+                    if (!is_tag_suggestoin_exist) {
+                        var new_tag_suggestion = {};
+                        new_tag_suggestion.tag_name = tag_name;
+                        new_tag_suggestion.tag_offers = [];
+                        new_tag_suggestion.tag_offers.push(user_id);
+
+                        req.gamification_type = "suggest_tag_for_info_item";
+                        req.token_price = SUGGEST_TAG_PRICE;
+                        models.InformationItem.update({_id:info_item_id}, {$addToSet:{"tag_suggestions":new_tag_suggestion}}, cbk)
+                    }
+                }
+            }
+        ], callback);
+    }
+});

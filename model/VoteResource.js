@@ -11,51 +11,6 @@ var resources = require('jest'),
     models = require('../models'),
     common = require('./common');
 
-//Authorization
-/*var Authoriztion = function() {};
-util.inherits(Authoriztion,resources.Authorization);
-
-Authoriztion.prototype.limit_object_list = Authoriztion.prototype.limit_object = function(req, query, callback){
-
-    if(req.session.auth.user){
-        var id = req.session.user_id;
-
-        if (req.method == "PUT" || req.method  == "DELETE"){
-            query.where('is_published', false).where('creator_id', id);
-            callback(null, query);
-        }else{
-            query.or([{ 'is_published': true }, {'creator_id': id }]);
-            callback(null, query);
-        }
-    }else{
-        callback("Error: User Is Not Authenticated", null);
-    }
-};*/
-
-/*Authoriztion.prototype.edit_object = function(req,object,callback){
-    if(req.session.user_id){
-        var user_id = req.session.user_id;
-        models.User.findOne({_id :user_id},function(err,object)
-        {
-            if(err)
-            {
-                callback(err, null);
-            }
-            else
-            {
-                if (object.tokens >= req.body.tokens){
-                    callback(null, object);
-                }else{
-                    callback("Error: Unauthorized - there is not enought tokens", null);
-                }
-            }
-        });
-    }
-    else{
-        callback("Error: User Is Not Autthenticated", null);
-    }
-};*/
-
 var VoteResource = module.exports = common.GamificationMongooseResource.extend({
     init:function(){
         this._super(models.Vote,'vote');

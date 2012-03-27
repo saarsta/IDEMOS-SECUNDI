@@ -11,8 +11,8 @@ var util = require('util'),
     common = require('./model/common'),
     async = require('async');
 
-g_all_users = null;
-var Cron = {
+    g_all_users = null;
+var Cron = exports.Cron = {
 
     findWhoInvitedNumberOfUsersThatGotExtraTokens:function (extra_tokens, number, callback) {
         var event = "invited " + number + " pepole that got " + extra_tokens + " tokens";
@@ -152,9 +152,7 @@ var Cron = {
                 }
             }
         ], callback);
-
     },
-
 
     findWhoGotNumberOfTokensForAllPosts:function (number, callback) {
         var event = "tokens_for_all_posts " + number;
@@ -205,6 +203,7 @@ var Cron = {
         ], callback)
     },
 
+    //TODO this can be replaced with the code in AdminNotify
     findWhoInsertedNumberOfApprovedSuggestions:function (number, callback) {
 
         var event = "num_of_approved_suggestoins " + number;
@@ -241,6 +240,7 @@ var Cron = {
         ], callback);
     },
 
+    //TODO this can be replaced with the code in AdminNotify
     findWhosDiscussionTurnedToCycle: function(callback){
         var event = "discussion_turned_to_cycle";
         var path =  "gamification.bonus." + event;
@@ -263,7 +263,7 @@ var Cron = {
         async.waterfall([
 
             function(cbk){
-                models.Discussion.find({is_cycle: true,dicussion_gamification_path: false}, cbk);
+                models.Discussion.find({is_cycle: true, dicussion_gamification_path: false}, cbk);
             },
 
             function(discussions, cbk){
@@ -273,6 +273,7 @@ var Cron = {
     },
 
     //יצירה של פעולה שמתקבלת כחלק ממעגל תנופה
+    //TODO this can be replaced with the code in AdminNotify
     findWhoCreatedApprovedAction : function(callback){
         var event = "action_approval";
         var gamification_action_path = "gamification.approved_to_cycle";
@@ -300,9 +301,176 @@ var Cron = {
                 async.forEach(actions, iterator, cbk);
             }
         ], callback);
+    },
+
+//    תיוג של X פריטי מידע (שאושרו)
+    
+    findWhoHasNumberOfTagSuggThatApproved: function(number, callback){
+//        var event = number + "_approved_tag_sugg";
+        var event_bonus = 2;
+        var set_gamification_bonus = {};
+
+//        set_gamification_bonus['gamification.bonus.' + event] = true;
+
+       //TODO move it somehow to addTokensToUserByEventAndSetGamificationBonus
+       //TODO how to put string + number instead of "gamification.bonus.approved_tag_sugg" (it doesnt work when i insert it to var)
+
+       models.User.update({"gamification.tag_suggestion_approved": {$gt: number - 1}, "gamification.bonus.approved_tag_sugg": {$ne: true}}, {$set: {"gamification.bonus.approved_tag_sugg" : true},
+       $inc: {num_of_extra_tokens: event_bonus}}, callback);
+    },
+
+//    יצירה של דיון שמדורג גבוה ע"י מינימום של X אנשים
+    findHighGradedDiscussions: function(callback){
+
+        var num_of_top_graded = 10;
+        var num_of_max_graders = 10;
+        var event = "high_graded_discussions_of_min_graders";
+        var event_bonus = 2;
+        var iterator = function(discussion, itr_cbk){
+            async.waterfall([
+                function(cbk){
+                    models.Discussion.update({_id: discussion._id}, {$set: {"gamification.has_rewarded_creator_for_high_grading" : true}}, cbk)
+                },
+
+                function(result, cbk){
+                    addTokensToUserByEventAndSetGamificationBonus(discussion.creator_id, event, event_bonus, cbk);
+                }
+            ], callback);
+        };
+
+        async.waterfall([
+            function(cbk){
+                models.Discussion.find({evaluate_counter: {$gt: num_of_max_graders}, "gamification.has_rewarded_creator_for_high_grading_of_min_graders" : false}).sort({grade_sum: -1}).limit(num_of_top_graded).run(cbk);
+            },
+
+            function(discussions, cbk){
+                async.forEach(discussions, iterator, cbk);
+            }
+        ], callback);
+    },
+
+//    Submission של פריט מידע שמדורג גבוה
+    findHighLikedInfoItem: function(callback){
+        var num_of_top_liked = 10;
+        var event = "high_liked_submited_info_item";
+        var event_bonus = 2;
+
+        var iterator = function(info_item, itr_cbk){
+            async.waterfall([
+                function(cbk){
+                    models.InformationItem.update({_id: info_item._id}, {$set: {"gamification.rewarded_creator_for_high_liked" : true, status: "approved"}}, cbk);
+                },
+
+                function(result, cbk){
+//                    addTokensToUserByEventAndIncGamificationBonus(info_item.created_by.creator_id, event, event_bonus, cbk);
+                    addTokensToUserByEventAndSetGamificationBonus(info_item.created_by.creator_id, event, event_bonus, cbk);
+                }
+            ], callback);
+        };
+
+        async.waterfall([
+            function(cbk){
+                models.InformationItem.find({"gamification.rewarded_creator_for_high_liked": false})
+                                               //TODO why the fuck this query doesnt work????????
+//                                            .find({"created_by.did_user_created_this_item": true})
+
+                                             .sort('like_counter', -1)
+                                             .limit(num_of_top_liked)
+                                               .run(cbk);
+            },
+
+            function(info_items, cbk){
+
+                async.forEach(info_items, iterator, cbk);
+            }
+        ], callback);
     }
 };
 
+var daily_cron =  exports.daily_cron = {
+
+    //    בזבוז של כל הטוקנים במשך X ימים
+    //this should happen before the tokens fill again
+    findWhoSpentAllTokensInNumberOfDaysInARow: function(num_of_days, callback){
+        var event = "spent_all_tokens_for_" + num_of_days + "_days";
+        var event_bonus = 2;
+        var iterator = function(user, itr_cbk){
+            user.number_of_days_of_spending_all_tokens += 1;
+            async.parallel([
+
+                function(cbk){
+                    models.User.update({_id: user._id}, {$inc: {number_of_days_of_spending_all_tokens: 1}}, cbk);
+                },
+
+                function(cbk){
+                    var bonus_path = {};
+                    user.gamification =  user.gamification || {};
+                    user.gamification.bonus = user.gamification.bonus || {};
+
+                    bonus_path = user.gamification.bonus[event] || {};
+
+                    if(user.number_of_days_of_spending_all_tokens >= num_of_days && bonus_path != true){
+                        addTokensToUserByEventAndSetGamificationBonus(user._id, event, event_bonus, cbk);
+                    }else{
+                        cbk(null, 0);
+                    }
+                }
+            ],itr_cbk);
+        }
+
+        async.waterfall([
+            function(cbk){
+               models.User.update(
+                   {tokens: {$ne: 0}}, {$set: {number_of_days_of_spending_all_tokens : 0}}, cbk);
+            },
+
+            function(result, cbk){
+                models.User.find({tokens: 0}, function(err, result){
+                    cbk(err, result);
+                });
+            },
+
+            function(users, cbk){
+                async.forEach(users, iterator, cbk);
+            }
+        ], callback);
+    },
+
+    fillUsersTokens : function(callback){
+
+        //TODO vas is thus ??!?!?!?!?!?!?!?!?!?!?!?!?!? why doesnt it work?????!?!?!?!?!?
+       /* models.User.update({}, {$set: {tokens: 9}}, function(err, result){
+            models.User.update({}, {$inc: {tokens: 'num_of_extra_tokens'}}, callback)
+        });*/
+
+
+       var iterator = function(user, itr_cbk){
+           var tokens_number = user.num_of_extra_tokens + 9;
+           models.User.update({_id: user._id}, {$set:{tokens: tokens_number}}, itr_cbk);
+       }
+
+       async.waterfall([
+        function(cbk){
+            models.User.find({}, cbk)
+        },
+
+        function(users, cbk){
+            async.forEach(users, iterator, cbk);
+        }
+       ], callback);
+    }
+}
+
+/*function addTokensToUserByEventAndIncGamificationBonus(user_id, event, event_bonus, callback) {
+
+    var inc_gamification_bonus = {};
+
+    inc_gamification_bonus['gamification.bonus.' + event] = 1;
+    inc_gamification_bonus['num_of_extra_tokens'] = event_bonus;
+    models.User.update({_id:user_id}, {$inc: inc_gamification_bonus}, function (err, result) {
+        callback(err, result);
+    });
+}*/
 
 function addTokensToUserByEventAndSetGamificationBonus(user_id, event, event_bonus, callback) {
 
@@ -326,4 +494,4 @@ function setTokenAchivementsToInviter(invited_users_arr, event, callback) {
     }
 }
 
-exports.cron = Cron;
+

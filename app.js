@@ -18,6 +18,7 @@ var express = require('express'),
     PostResource = require('./model/PostResource.js');
     VoteResource = require('./model/VoteResource');
     GradeResource = require('./model/GradeResource');
+    LikeResource = require('./model/LikeResource');
     CategoryResource = require('./model/CategoryResource'),
     SuggestionResource = require('./model/suggestionResource.js'),
 
@@ -291,11 +292,13 @@ rest_api.register_resource('discussions', new DiscussionResource());
 rest_api.register_resource('posts', new PostResource());
 rest_api.register_resource('votes', new VoteResource());
 rest_api.register_resource('grades', new GradeResource());
+rest_api.register_resource('likes', new LikeResource());
 rest_api.register_resource('suggestions', new SuggestionResource());
 rest_api.register_resource('categories', new CategoryResource());
 rest_api.register_resource('action_resources', new ActionResourceResource());
 rest_api.register_resource('actions', new ActionResource());
 rest_api.register_resource('cycles', new CycleResource());
+
 
 app.listen(app.settings.port);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
@@ -328,8 +331,7 @@ catch(e)
     console.log('admin is not operational, wow. exception: ' + e.message);
 }
 
-var cron = require('./cron').cron;
-
+var cron = require('./cron');
 /*cron.findWhoInvitedNumberOfUsersThatGotExtraTokens(4, 2, function(err, result){
     var a = 8;
 });
@@ -350,7 +352,25 @@ cron.findWhoInvitedMoreThenNumberOfUsers(2,function(err, result){
     var a = 11;
 });*/
 
-cron.findWhoCreatedApprovedAction(function(err, result){
+/*cron.findWhoCreatedApprovedAction(function(err, result){
    var a = 12;
-});
+});*/
+
+/*cron.daily_cron.findWhoSpentAllTokensInNumberOfDaysInARow(3, function(err, result){
+    var a = 13;
+});*/
+
+/*cron.Cron.findWhoHasNumberOfTagSuggThatApproved(1, function(err, result){
+    var a =14;
+})*/
+
+/*cron.Cron.findHighLikedInfoItem(function(err, result){
+
+
+    var a = 15;
+});*/
+
+/*cron.daily_cron.fillUsersTokens(function(err, result){
+    var a = 16;
+})*/
 //setInterval(cron, 1000*60*5);

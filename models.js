@@ -33,6 +33,11 @@ var ActionResource = {
         name:String
 };
 
+var tag_suggestions =  {
+    tag_name: String,
+    tag_offers: {type:[ObjectId], ref:'User',editable:false}
+};
+
 var Schemas = exports.Schemas = {
     User: new Schema({
         username:String,
@@ -54,7 +59,7 @@ var Schemas = exports.Schemas = {
             {type:Schema.ObjectId, ref:'Action', index:true}
         ],
         password:String,
-        tokens:{type:Number, 'default':100000},
+        tokens:{type:Number, 'default':9},
         gamification:Schema.Types.Mixed,
         //score:{type:Number, 'default':0},
         decoration_status:{type:String, "enum":['a', 'b', 'c']},
@@ -62,16 +67,17 @@ var Schemas = exports.Schemas = {
         invited_by: {type: ObjectId, ref: 'User'},
         has_been_invited : {type: Boolean, 'default': false},
         tokens_achivements_to_usre_who_invited_me: {},
-        num_of_extra_tokens: Number// i might change it to gamification.bonus.
-
+        num_of_extra_tokens: {type:Number, 'default': 0, max:6},// i might change it to gamification.bonus.
+        number_of_days_of_spending_all_tokens: {type: Number, 'default' : 0},
         avatar : mongoose_types.File
 
     }),
 
     InformationItem:{
         subject_id:{type:[ObjectId], ref:'Subject', index:true, required:true},
-        title:{type:String, "enum":['test', 'statistics', 'infographic', 'graph']},
+        title:{type:String, "enum":['test', 'statistics', 'infographic', 'graph'], required:true},
         text_field:String,
+
         image_field: mongoose_types.File,
         tags:{type:[String], index:true},
         users:{type:[ObjectId], ref:'User',editable:false},
@@ -79,6 +85,13 @@ var Schemas = exports.Schemas = {
         is_visible:{type:Boolean, 'default':true},
         creation_date:{type:Date, 'default':Date.now,editable:false},
         is_hot:{type:Boolean, 'default':false},
+        tag_suggestions: [tag_suggestions],
+        like_counter: {type: Number, 'default': 0},
+        //this two fields are for user suggestion of InformationItem, when admin create this it will remain false
+        created_by: {creator_id:{type: ObjectId, ref: 'User'}, did_user_created_this_item: {type: Boolean, 'default': false}},
+        status: {type: String, "enum": ['approved', 'denied', 'waiting']},
+        gamification: {rewarded_creator_for_high_liked: {type: String, 'default': false},
+                       rewarded_creator_for_approval: {type: String, 'default': false}},
         gui_order:{type:Number,'default':9999999,editable:false}
     },
 
@@ -99,7 +112,6 @@ var Schemas = exports.Schemas = {
         creator_id:{type:ObjectId, ref:'User'},
         first_name:{type:String,editable:false},
         last_name:{type:String,editable:false},
-//      tag_id: String,
         vision_text:String,
         vision_text_history:{type:[String],editable:false},
         is_cycle:{type:Boolean, 'default':false,editable:false},
@@ -113,7 +125,8 @@ var Schemas = exports.Schemas = {
         grade:Number,
         evaluate_counter:{type:Number, 'default':0},
         grade_sum:{type:Number, 'default':0},
-        gamification: {has_rewarded_creator_of_turning_to_cycle: {type: Boolean, 'default': false}}
+        gamification: {has_rewarded_creator_of_turning_to_cycle: {type: Boolean, 'default': false},
+                        has_rewarded_creator_for_high_grading_of_min_graders: {type: String, 'default': false}}
     },
 
     Cycle:{
@@ -152,6 +165,13 @@ var Schemas = exports.Schemas = {
         evaluation_grade:{type:Number, min:0, max:10},
         creation_date:{type:Date, 'default':Date.now}
     },
+
+    Like:{
+        user_id:{type:ObjectId, ref:'User', index:true, required:true},
+        info_item_id:{type:ObjectId, ref:'Post', index:true, required:true},
+        creation_date:{type:Date, 'default':Date.now}
+    },
+
 
     Category: {
         name: {type:String}
@@ -255,6 +275,7 @@ var Models = module.exports = {
     Suggestion:extend_model('Suggestion', Schemas.PostOrSuggestion, Schemas.Suggestion, 'posts'),
     PostOrSuggestion:mongoose.model('PostOrSuggestion', new Schema(Schemas.PostOrSuggestion), 'posts'),
     Vote:mongoose.model('Vote', new Schema(Schemas.Vote)),
+    Like:mongoose.model('Like', new Schema(Schemas.Like)),
     Grade:mongoose.model('Grade', new Schema(Schemas.Grade)),
     Cycle:mongoose.model('Cycle', new Schema(Schemas.Cycle)),
     Category:mongoose.model('Category', new Schema(Schemas.Category)),
