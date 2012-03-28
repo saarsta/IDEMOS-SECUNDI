@@ -60,9 +60,10 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                         });
                     }
                 });
-    },
+    }
 
-    //this happens when user clicks the Join button, the user get the action id, and action
+    //i have added Join Resource instead
+   /* //this happens when user clicks the Join button, the user get the action id, and action
     update_obj:function (req, object, callback) {
         var self = this;
         var user_id = req.session.user_id;
@@ -97,7 +98,7 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
             req.gamification_type = "join_action";
             callback(self.elaborate_mongoose_errors(err), object);
         });
-    }
+    }*/
 });
 
 

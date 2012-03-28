@@ -10,7 +10,8 @@ var util = require('util');
 
 var jest = require('jest'),
     cron = require('../cron').cron,
-    models = require('../models');
+    models = require('../models'),
+    async = require('async');
 
 var ACTION_PRICE = 2;
 
@@ -104,14 +105,25 @@ function update_user_gamification(req, game_type, user, price, callback)
                 callback(err);
             else
             {
+//                async.parallel([
+//                    function(cbk){
+//                        set_passive_user_updates(req, cbk);
+//                    },
+//
+//                    function(cbk){
+//                        check_gamification_rewards(user, cbk);
+//
+//                    }
+//                ], function(err, args){
+//                    console.log('user gamification saved');
+//                    callback(err, args[1]);
+//                })
 
-//                check_user_runout_of_tokens_time(user, )
-
-                check_gamification_rewards(user,callback);
+                check_gamification_rewards(user, callback);
                 console.log('user gamification saved');
+
             }
         });
-
 }
 
 /*
@@ -126,6 +138,15 @@ function check_user_runout_of_tokens_time(user, callback){
     }
 }
 */
+function set_passive_user_updates(req, callback){
+
+//    req.update_type = req.update_type || {};
+    if(req.update_type){
+
+    }else{
+        callback(null, 0);
+    }
+}
 
 function check_gamification_rewards(user,callback)
 {

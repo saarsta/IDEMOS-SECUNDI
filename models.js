@@ -49,6 +49,8 @@ var Schemas = exports.Schemas = {
         email:{type:String, required:true, validate:TestEmailValidator},
         gender:{type:String, "enum":['male', 'female']},
         age:{type:Number, min:0},
+        occupation: String,
+        biography: String,
         discussions:[
             {type:ObjectId, ref:'Discussion'}
         ],
@@ -61,6 +63,7 @@ var Schemas = exports.Schemas = {
         password:String,
         tokens:{type:Number, 'default':9},
         gamification:Schema.Types.Mixed,
+        updates: Schema.Types.Mixed,
         //score:{type:Number, 'default':0},
         decoration_status:{type:String, "enum":['a', 'b', 'c']},
 
@@ -96,7 +99,7 @@ var Schemas = exports.Schemas = {
     },
 
     Subject:{
-        name:{ type:String,required:true},
+        name:{type:String,required:true},
         image_field:mongoose_types.File,
         tags:[String],
         gui_order:{type:Number,'default':9999999,editable:false}
@@ -172,6 +175,12 @@ var Schemas = exports.Schemas = {
         creation_date:{type:Date, 'default':Date.now}
     },
 
+    Join:{
+        user_id:{type:ObjectId, ref:'User', index:true, required:true},
+        action_creator_id:{type:ObjectId, ref:'User', index:true, required:true},
+        action_id:{type:ObjectId, ref:'Action', index:true, required:true},
+        creation_date:{type:Date, 'default':Date.now}
+    },
 
     Category: {
         name: {type:String}
@@ -232,6 +241,15 @@ var Schemas = exports.Schemas = {
             {start:Number, end:Number, text:String}
         ],
         is_approved:{type:Boolean, 'default':false}
+    },
+
+    Notifications: {
+        user_id:{type:ObjectId, ref:'User', index:true, required:true},
+        title: {},
+        system_type: {},
+        link: {},
+        seen: {},
+        date: {}
     }
 };
 
@@ -277,6 +295,7 @@ var Models = module.exports = {
     Vote:mongoose.model('Vote', new Schema(Schemas.Vote)),
     Like:mongoose.model('Like', new Schema(Schemas.Like)),
     Grade:mongoose.model('Grade', new Schema(Schemas.Grade)),
+    Join:mongoose.model('Join', new Schema(Schemas.Join)),
     Cycle:mongoose.model('Cycle', new Schema(Schemas.Cycle)),
     Category:mongoose.model('Category', new Schema(Schemas.Category)),
     Action:mongoose.model('Action', new Schema(Schemas.Action)),

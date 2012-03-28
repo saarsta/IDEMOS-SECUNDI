@@ -304,7 +304,7 @@ var Cron = exports.Cron = {
     },
 
 //    תיוג של X פריטי מידע (שאושרו)
-    
+    //TODO this might be called right after the approvment of a tag?
     findWhoHasNumberOfTagSuggThatApproved: function(number, callback){
 //        var event = number + "_approved_tag_sugg";
         var event_bonus = 2;
