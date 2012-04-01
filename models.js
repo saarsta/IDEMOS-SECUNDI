@@ -200,7 +200,7 @@ var Schemas = exports.Schemas = {
     },
 
     Action:{
-        title:String,
+        title:{type:String, required:true},
         description:String,
         creator_id:{type:ObjectId, ref:'User', index:true, required:true},
         first_name: String,
