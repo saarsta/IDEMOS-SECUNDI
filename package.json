@@ -17,5 +17,6 @@
         "i18n-mongoose":"",
         "j-forms":">= 0.0.26",
         "admin-with-forms":""
-  }
+  },
+  "engines": { "node": ">= 0.4.1" }
 } 
