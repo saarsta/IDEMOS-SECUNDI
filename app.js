@@ -24,7 +24,10 @@ var express = require('express'),
     SuggestionResource = require('./model/suggestionResource.js'),
     ActionResourceResource = require('./model/ActionResourceResource'),
     ActionResource = require('./model/ActionResource'),
-    CycleResource = require('./model/CycleResource');
+    CycleResource = require('./model/CycleResource'),
+    ArticleResource = require('./model/ArticleResource').ArticleResource,
+    TagResource = require('./model/TagResource'),
+    ArticleCommentResource = require('./model/ArticleResource').ArticleCommentResource;
 
 var app = module.exports = express.createServer();
 var account = require('./routes/account');
@@ -104,6 +107,7 @@ app.configure(function(){
     app.use(express.session({secret: confdb.secret,
         maxAge: new Date(Date.now() + 3600000),
         store: new MongoStore(confdb.db) }));
+    app.use(account.referred_by_middleware)
     app.use(auth({strategies: [
         account.SimpleAuthentication()
         ,auth.Facebook({
@@ -172,7 +176,7 @@ app.configure(function(){
         }else{
             next();
         }
-    })
+    });
 
     app.use(express.methodOverride());
     app.use(i18n.init);
@@ -189,45 +193,6 @@ app.helpers({
 // Routes
 
 app.get('/', routes.index);
-app.get('/test/:id?', routes.test);
-app.get('/insertDataBase',function(req, res){
-
-    var subject_names = ['Education', 'Economy', 'Sport', 'News', 'Culture', 'Health', 'Food'];
-    var tag_names = ['saar', 'guy', 'gay', 'vill', 'maricon', 'wow', 'yeah'];
-
-    var information_item = new Models.InformationItem();
-    information_item.text_field = 'it is really great';
-
-    information_item.title = "infographic";
-    information_item.tags = ["hi", "bye", "hello"];
-    information_item.subject_id = "4f3cf3868aa4ae9007000009";
-    information_item.save(function(err){
-        if(err != null)
-        {
-            res.write("error");
-            console.log(err);
-        }else{
-            res.write("done");
-        }
-        res.end();
-    });
-
-    var information_item = new Models.InformationItem();
-    information_item.text_field = 'it is bla bla bla';
-    information_item.title = "graph";
-    information_item.tags = ["hi", "bye", "hello"];
-    information_item.subject_id ="4f3cf3868aa4ae9007000009";
-    information_item.save(function(err){
-        if(err != null)
-        {
-            res.write("error");
-            console.log(err);
-        }else{
-            res.write("done");
-        }
-        res.end();
-    });
-});
 
 app.post('/account/register',account.register);
 app.all(account.LOGIN_PATH, account.login);
@@ -299,8 +264,9 @@ rest_api.register_resource('categories', new CategoryResource());
 rest_api.register_resource('action_resources', new ActionResourceResource());
 rest_api.register_resource('actions', new ActionResource());
 rest_api.register_resource('cycles', new CycleResource());
-
-
+rest_api.register_resource('articles', new ArticleResource());
+rest_api.register_resource('tags', new TagResource());
+rest_api.register_resource('article_update', new ArticleCommentResource());
 app.listen(app.settings.port);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 
@@ -372,6 +338,10 @@ cron.findWhoInvitedMoreThenNumberOfUsers(2,function(err, result){
 });*/
 
 /*cron.daily_cron.fillUsersTokens(function(err, result){
+    var a = 16;
+})*/
+
+/*cron.daily_cron.updateTagAutoComplete(function(err, result){
     var a = 16;
 })*/
 //setInterval(cron, 1000*60*5);

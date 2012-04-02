@@ -38,6 +38,57 @@ var tag_suggestions =  {
     tag_offers: {type:[ObjectId], ref:'User',editable:false}
 };
 
+/*
+var Reply = {
+    author: {type:ObjectId, ref:'User', index:true, required:true},
+    text: String,
+    votes: [{user_id: {type:ObjectId, ref:'User', index:true, required:true}}],
+    replies: [Reply]
+}
+*/
+
+/*var CommentVote = {
+    comment_id:{type:ObjectId, ref:'Comment', index:true, required:true},
+    user_id:{type:ObjectId, ref:'User', index:true, required:true},
+    time: {type:Date, 'default':Date.now}
+}
+
+var CommentOrReply = {
+    article_id :{type:ObjectId, ref:'Article', index:true, required:true},
+    author :{type:ObjectId, ref:'User', index:true, required:true},
+    text: String,
+    votes: [CommentVote],
+    time: {type:Date, 'default':Date.now},
+    status: [{type:String, "enum":['comment', 'reply'], 'default': 'comment'}],
+    reply_ref: {type:ObjectId, ref:'CommentOrReply', index:true}
+}*/
+var CommentVote = new Schema({
+    user_id:{type:ObjectId, ref:'User', index:true, required:true},
+    time: {type:Date, 'default':Date.now}
+});
+
+var Reply = new Schema({
+    author: {type:ObjectId, ref:'User', index:true, required:true},
+    first_name: String,
+    last_name: String,
+    text: String,
+    time: {type:Date, 'default':Date.now},
+    votes: [CommentVote],
+    replies: [Reply]
+});
+
+var Comment = new Schema({
+//    article_id :{type:ObjectId, ref:'Article', index:true, required:true},
+    author :{type:ObjectId, ref:'User', index:true, required:true},
+    text: String,
+    votes: [CommentVote],
+    time: {type:Date, 'default':Date.now},
+//        status: [{type:String, "enum":['comment', 'reply'], 'default': 'comment'}],
+    replies: [Reply]
+});
+
+
+
 var Schemas = exports.Schemas = {
     User: new Schema({
         username:String,
@@ -66,21 +117,20 @@ var Schemas = exports.Schemas = {
         updates: Schema.Types.Mixed,
         //score:{type:Number, 'default':0},
         decoration_status:{type:String, "enum":['a', 'b', 'c']},
-
         invited_by: {type: ObjectId, ref: 'User'},
         has_been_invited : {type: Boolean, 'default': false},
-        tokens_achivements_to_usre_who_invited_me: {},
+        tokens_achivements_to_user_who_invited_me: {},
         num_of_extra_tokens: {type:Number, 'default': 0, max:6},// i might change it to gamification.bonus.
         number_of_days_of_spending_all_tokens: {type: Number, 'default' : 0},
+        blog_popularity_counter: {type: Number, 'default': 0},
         avatar : mongoose_types.File
-
     }),
 
     InformationItem:{
+        title: {type: String, required: true},
         subject_id:{type:[ObjectId], ref:'Subject', index:true, required:true},
-        title:{type:String, "enum":['test', 'statistics', 'infographic', 'graph'], required:true},
+        category:{type:String, "enum":['test', 'statistics', 'infographic', 'graph'], required:true},
         text_field:String,
-
         image_field: mongoose_types.File,
         tags:{type:[String], index:true},
         users:{type:[ObjectId], ref:'User',editable:false},
@@ -89,12 +139,12 @@ var Schemas = exports.Schemas = {
         creation_date:{type:Date, 'default':Date.now,editable:false},
         is_hot:{type:Boolean, 'default':false},
         tag_suggestions: [tag_suggestions],
-        like_counter: {type: Number, 'default': 0},
+        like_counter: {type: Number, 'default': 0, editable: false},
         //this two fields are for user suggestion of InformationItem, when admin create this it will remain false
-        created_by: {creator_id:{type: ObjectId, ref: 'User'}, did_user_created_this_item: {type: Boolean, 'default': false}},
+        created_by: {creator_id:{type: ObjectId, ref: 'User', editable: false}, did_user_created_this_item: {type: Boolean, 'default': false, editable: false}},
         status: {type: String, "enum": ['approved', 'denied', 'waiting']},
-        gamification: {rewarded_creator_for_high_liked: {type: String, 'default': false},
-                       rewarded_creator_for_approval: {type: String, 'default': false}},
+        gamification: {rewarded_creator_for_high_liked: {type: String, 'default': false, editable: false},
+                       rewarded_creator_for_approval: {type: String, 'default': false, editable: false}},
         gui_order:{type:Number,'default':9999999,editable:false}
     },
 
@@ -243,13 +293,38 @@ var Schemas = exports.Schemas = {
         is_approved:{type:Boolean, 'default':false}
     },
 
+    CommentVote: CommentVote,
+
+    Reply: Reply,
+
+    Comment : Comment,
+
+    Article: {
+        user_id:{type:ObjectId, ref:'User', index:true, required:true},
+        first_name: String,
+        last_name: String,
+        avatar : mongoose_types.File,
+        title : String,
+        text : String,
+        tags: [String],
+        time: {type: Date, 'default': Date.now},
+        popolarity_counter: {type: Number, 'default': 0},
+        comments : [Comment]
+    },
+
     Notifications: {
         user_id:{type:ObjectId, ref:'User', index:true, required:true},
-        title: {},
+        title: String,
+        description: String,
         system_type: {},
         link: {},
         seen: {},
         date: {}
+    },
+
+    Tag : {
+        tag:{type:String, unique:true},
+        popularity:{type:Number,'default':0,select:false}
     }
 };
 
@@ -286,20 +361,24 @@ function extend_model(name, base_schema, schema, collection) {
 
 var Models = module.exports = {
     User:mongoose.model("User",Schemas.User),
-    InformationItem:mongoose.model('InformationItem', new Schema(Schemas.InformationItem)),
-    Subject:mongoose.model('Subject', new Schema(Schemas.Subject)),
-    Discussion:mongoose.model('Discussion', new Schema(Schemas.Discussion)),
+    InformationItem:mongoose.model('InformationItem', new Schema(Schemas.InformationItem, {strict: true})),
+    Subject:mongoose.model('Subject', new Schema(Schemas.Subject, {strict: true})),
+    Discussion:mongoose.model('Discussion', new Schema(Schemas.Discussion, {strict: true})),
     Post:extend_model('Post', Schemas.PostOrSuggestion, Schemas.Post, 'posts'),
     Suggestion:extend_model('Suggestion', Schemas.PostOrSuggestion, Schemas.Suggestion, 'posts'),
-    PostOrSuggestion:mongoose.model('PostOrSuggestion', new Schema(Schemas.PostOrSuggestion), 'posts'),
-    Vote:mongoose.model('Vote', new Schema(Schemas.Vote)),
-    Like:mongoose.model('Like', new Schema(Schemas.Like)),
-    Grade:mongoose.model('Grade', new Schema(Schemas.Grade)),
-    Join:mongoose.model('Join', new Schema(Schemas.Join)),
-    Cycle:mongoose.model('Cycle', new Schema(Schemas.Cycle)),
-    Category:mongoose.model('Category', new Schema(Schemas.Category)),
-    Action:mongoose.model('Action', new Schema(Schemas.Action)),
+    PostOrSuggestion:mongoose.model('PostOrSuggestion', new Schema(Schemas.PostOrSuggestion, {strict: true}), 'posts'),
+    Vote:mongoose.model('Vote', new Schema(Schemas.Vote, {strict: true})),
+    Like:mongoose.model('Like', new Schema(Schemas.Like, {strict: true})),
+    Grade:mongoose.model('Grade', new Schema(Schemas.Grade, {strict: true})),
+    Join:mongoose.model('Join', new Schema(Schemas.Join, {strict: true})),
+//    CommentVote:mongoose.model('CommentVote', new Schema(Schemas.CommentVote, {strict: true})),
+//    Comment:mongoose.model('Comment', new Schema(Schemas.Comment, {strinct: true})),
+    Article:mongoose.model('Article', new Schema(Schemas.Article, {strict: true})),
+    Cycle:mongoose.model('Cycle', new Schema(Schemas.Cycle, {strict: true})),
+    Category:mongoose.model('Category', new Schema(Schemas.Category, {strict: true})),
+    Action:mongoose.model('Action', new Schema(Schemas.Action, {strict: true})),
     ActionResource:mongoose.model('ActionResource', new Schema(Schemas.ActionResource)),
+    Tag: mongoose.model('Tag', new Schema(Schemas.Tag))
 //    Schemas:Schemas
 };
 

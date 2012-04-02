@@ -23,18 +23,22 @@ SessionAuthentication.prototype.is_authenticated = function(req,callback){
     if(is_auth)
     {
         var user_id = req.session.user_id;
-        models.User.findById(user_id,function(err,user)
-        {
-            if(err)
+        if(!user_id){
+            callback({message: "no user id"}, null);
+        }else{
+            models.User.findById(user_id,function(err,user)
             {
-                callback(err);
-            }
-            else
-            {
-                req.user = user;
-                callback(null,true);
-            }
-        });
+                if(err)
+                {
+                    callback(err);
+                }
+                else
+                {
+                    req.user = user;
+                    callback(null,true);
+                }
+            });
+        }
     }
     else
         callback(null,false);
@@ -80,7 +84,11 @@ score.vote = 10;
 score.post = 20;
 score.suggestion = 20;
 score.discussion = 30;
-
+//
+//function approve_item (item,item_type,user,callback)
+//{
+//    update_user_gamification(null,'approved_' + item_type,user,0,callback);
+//}
 
 function update_user_gamification(req, game_type, user, price, callback)
 {
@@ -171,7 +179,6 @@ function gamification_deserilize(self,base,req,res,obj,status)
     }
 }
 
-
 var GamificationResource = exports.GamificationResource  = jest.Resource.extend({
     init:function(type,price)
     {
@@ -185,8 +192,6 @@ var GamificationResource = exports.GamificationResource  = jest.Resource.extend(
         gamification_deserilize(this,this._super,req,res,obj,status);
     }
 });
-
-
 
 var GamificationMongooseResource = exports.GamificationMongooseResource = jest.MongooseResource.extend({
     init:function(model,type,price)

@@ -4,7 +4,8 @@
  * Date: 27/03/12
  * Time: 17:53
  * To change this template use File | Settings | File Templates.
- */
+ *//*
+
 
 var resources = require('jest'),
     util = require('util'),
@@ -38,10 +39,12 @@ AdminAuthentication.prototype.is_authenticated = function(req,callback){
 };
 
 var AdminAuthorization = resources.Authorization.extend( {
-    /*init:function(token_price)
+    */
+/*init:function(token_price)
     {
         this.token_price = token_price;
-    },*/
+    },*//*
+
 
     edit_object : function(req,object,callback){
 
@@ -69,9 +72,9 @@ var AdminNotify = module.exports = common.GamificationMongooseResource.extend(
     //gamification_type and user_id can be passed through req.data or something
     //TODO to "letaem" with ishai
     create_obj: function(req, fields, callback){
-        req.gamification_type = req.data.approved_info_item;
+        req.gamification_type = req.body.approved_info_item;
 
-        models.User.findById(req.data.user_id, function(err, user){
+        models.User.findById(req.body.user_id, function(err, user){
             if(err){
                 callback(err, null)
             }else{
@@ -81,3 +84,4 @@ var AdminNotify = module.exports = common.GamificationMongooseResource.extend(
         });
     }
 });
+*/
