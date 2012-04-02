@@ -59,6 +59,15 @@ app.configure('production', function(){
     app.use(express.errorHandler());
 });
 
+require('j-forms').setAmazonCredentials({
+    key: 'AKIAJRFZHJQE2YWVS7EQ',
+    secret: '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',
+    bucket: 'sivans-bucket'
+});
+
+
+
+
 mongoose.connect(app.settings.DB_URL);
 
 function split_db_url(db_url)
