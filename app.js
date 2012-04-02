@@ -60,9 +60,9 @@ app.configure('production', function(){
 });
 
 require('j-forms').setAmazonCredentials({
-    key: 'AKIAJRFZHJQE2YWVS7EQ',
-    secret: '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',
-    bucket: 'sivans-bucket'
+    key: 'AKIAJM4EPWE637IGDTQA',
+    secret: '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',
+    bucket: 'uru'
 });
 
 
