@@ -335,7 +335,7 @@ var Cron = exports.Cron = {
                 function(result, cbk){
                     addTokensToUserByEventAndSetGamificationBonus(discussion.creator_id, event, event_bonus, cbk);
                 }
-            ], callback);
+            ], itr_cbk);
         };
 
         async.waterfall([
@@ -388,7 +388,6 @@ var Cron = exports.Cron = {
 };
 
 var daily_cron =  exports.daily_cron = {
-
     //    בזבוז של כל הטוקנים במשך X ימים
     //this should happen before the tokens fill again
     findWhoSpentAllTokensInNumberOfDaysInARow: function(num_of_days, callback){
@@ -458,6 +457,47 @@ var daily_cron =  exports.daily_cron = {
             async.forEach(users, iterator, cbk);
         }
        ], callback);
+    },
+
+    updateTagAutoComplete: function(callback){
+
+        var iterator = function(tag, itr_cbk){
+            models.Tag.update({"tag": tag}, {"tag": tag, $inc: {popularity: 1}}, {upsert: true}, itr_cbk);
+        }
+
+        async.parallel([
+            function(cbk){
+                models.InformationItem.find({}, ['tags'], cbk);
+            },
+
+            function(cbk){
+                models.Subject.find({}, ['tags'], cbk);
+            },
+
+            function(cbk){
+                models.Discussion.find({}, ['tags'], cbk);
+            },
+
+            function(cbk){
+                models.Article.find({}, ['tags'], cbk);
+            }
+        ], function(err, args){
+
+            var tags = [];
+            for (var i=0; i<args.length; i++){
+                for(var j=0; j<args[i].length; j++)
+                    tags.push.apply(tags, args[i][j].tags);
+            }
+
+            models.Tag.remove({}, function(err, result){
+                if(err){
+                    callback(err, null);
+                }else{
+                    async.forEach(tags, iterator, callback);
+                }
+            })
+
+        })
     }
 }
 

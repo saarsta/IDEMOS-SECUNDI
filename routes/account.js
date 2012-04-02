@@ -42,6 +42,19 @@ exports.LOGIN_PATH = LOGIN_PATH;
 
 var Models = require("../models.js");
 
+exports.referred_by_middleware = function(req,res,next)
+{
+    if('referred_by' in req.query)
+    {
+        req.session.referred_by = req.query['referred_by'];
+        req.session.save(function(err,result)
+        {
+            next();
+        });
+    }
+    else
+        next();
+};
 
 exports.auth_middleware = function (req, res, next) {
 //    console.log("In auth_middleware, req.path is: " + req.path + "   method = " + req.method);
@@ -83,6 +96,10 @@ exports.register = function (req, res) {
     var user = new Models.User(data);
     user.password = bcrypt.encrypt_sync(data.password, bcrypt.gen_salt_sync(10));
     user.identity_provider = "register";
+    if(req.session.referred_by)
+    {
+        user.invited_by = req.session.referred_by;
+    }
    /* user.num_of_extra_tokens = 10000000;////delete!!
     user.invited_by = "4f69e4c52c18dffc11000002";////
     user.num_of_extra_tokens = 4;////
@@ -186,6 +203,7 @@ exports.fb_connect = function (req, res) {
     function go() {
         req.authenticate("facebook", function (error, authenticated) {
             var next = req.session['fb_next'];
+            var referred_by = req.session['referred_by'];
             console.log(error);
             if (authenticated) {
 
@@ -196,6 +214,7 @@ exports.fb_connect = function (req, res) {
                 isUserInDataBase(user_fb_id, function (is_user_in_db) {
 
                     if (!is_user_in_db) {
+                        user_detailes.invited_by = referred_by;
                         createNewUser(user_detailes, access_token, function (_id) {
                             req.session.user_id = _id;
 //                            req.session.auth.user._id = _id; i can delete this
@@ -271,6 +290,8 @@ function createNewUser(data, access_token, callback) {
     user.email = data.email; //there is a problem with email
     user.gender = data.gender;
     user.facebook_id = data.id;
+    if(data.invited_by)
+        user.invited_by = data.invited_by;
     user.access_token = access_token;
     user.save(function (err, object) {
         if (err != null) {
