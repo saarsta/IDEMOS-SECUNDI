@@ -278,6 +278,8 @@ var mongoose_admin = require('admin-with-forms');
 
 var admin = mongoose_admin.createAdmin(app,{root:'admin'});
 
+admin.setAdminTitle('URU Backoffice');
+
 admin.ensureUserExists('admin','admin');
 
 admin.registerMongooseModel("User",Models.User,null,{list:['username','first_name','last_name']});
