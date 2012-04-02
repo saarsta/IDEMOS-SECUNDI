@@ -272,9 +272,9 @@ console.log("Express server listening on port %d in %s mode", app.address().port
 
 try
 {
-require('./node-forms/forms').set_models(Models);
+require('j-forms').forms.set_models(Models);
 
-var mongoose_admin = require('./mongoose-admin/mongoose-admin');
+var mongoose_admin = require('admin-with-forms');
 
 var admin = mongoose_admin.createAdmin(app,{root:'admin'});
 
