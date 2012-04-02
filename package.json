@@ -13,7 +13,7 @@
     "underscore":"",
     "i18n-mongoose":"",
     "j-forms":">= 0.0.38",
-    "admin-with-forms":"",
+    "admin-with-forms":">= 0.0.14",
     "knox":""
 },
     "engines":{
