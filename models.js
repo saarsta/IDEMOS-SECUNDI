@@ -9,8 +9,8 @@
 var mongoose = require("mongoose"),
     Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId,
-    mongoose_types = require('./node-forms/mongoose-types'),
-    form_fields = require('./node-forms/fields');
+    mongoose_types = require('j-forms').types,
+    form_fields = require('j-forms').fields;
 mongoose_types.loadTypes(mongoose);
 
 var MinLengthValidator = function (min) {

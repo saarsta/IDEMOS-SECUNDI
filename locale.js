@@ -6,9 +6,9 @@
  * To change this template use File | Settings | File Templates.
  */
 
-var fields = require('./node-forms/fields'),
+var fields = require('j-forms').fields,
     util = require('util'),
-    forms = require('./node-forms/forms'),
+    forms = require('j-forms').forms,
     i18n = require('i18n-mongoose'),
     mongoose = require('mongoose');
 
