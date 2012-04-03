@@ -27,7 +27,8 @@ var express = require('express'),
     CycleResource = require('./model/CycleResource'),
     ArticleResource = require('./model/ArticleResource').ArticleResource,
     TagResource = require('./model/TagResource'),
-    ArticleCommentResource = require('./model/ArticleResource').ArticleCommentResource;
+    ArticleCommentResource = require('./model/ArticleResource').ArticleCommentResource,
+    ResourceObligation = require('./model/ResourceObligation');
 
 var app = module.exports = express.createServer();
 var account = require('./routes/account');
@@ -98,7 +99,7 @@ var fbId = app.settings.facebook_app_id,// '175023072601087',
 i18n.configure({});
 
 app.configure(function(){
-    app.use(express.static(__dirname + '/public'));
+
     app.set('views', __dirname + '/views');
     app.set('view engine', 'jade');
     app.use(express.bodyParser());
@@ -140,7 +141,6 @@ app.configure(function(){
             }
         }
 
-
         if(!req.session.user_id){
             //means that user used registration, so we save user_id out of the AUTH
             if (req.session.auth.user_id){
@@ -181,7 +181,7 @@ app.configure(function(){
     app.use(express.methodOverride());
     app.use(i18n.init);
     app.use(app.router);
-
+    app.use(express.static(__dirname + '/public'));
 });
 
 // register helpers for use in templates
@@ -267,6 +267,7 @@ rest_api.register_resource('cycles', new CycleResource());
 rest_api.register_resource('articles', new ArticleResource());
 rest_api.register_resource('tags', new TagResource());
 rest_api.register_resource('article_update', new ArticleCommentResource());
+//rest_api.register_resource('resource_obligations', new ResourceObligation());
 app.listen(app.settings.port);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 
