@@ -15,7 +15,8 @@
         "sji": "",
         "underscore": "",
         "i18n-mongoose":"",
-        "j-forms":">= 0.0.26",
-        "admin-with-forms":""
-  }
+        "j-forms":">= 0.0.28",
+        "admin-with-forms":">= 0.0.13"
+  },
+  "engines": { "node": ">= 0.4.1" }
 } 

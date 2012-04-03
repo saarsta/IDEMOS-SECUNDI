@@ -335,7 +335,7 @@ exports.logout = function (req, res) {
     res.end();
 };
 
-var forms = require('../node-forms/forms');
+var forms = require('j-forms').forms;
 
 var UserForm = function(request,options)
 {

@@ -9,8 +9,8 @@
 var mongoose = require("mongoose"),
     Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId,
-    mongoose_types = require('./node-forms/mongoose-types'),
-    form_fields = require('./node-forms/fields');
+    mongoose_types = require('j-forms').types,
+    form_fields = require('j-forms').fields;
 mongoose_types.loadTypes(mongoose);
 
 var MinLengthValidator = function (min) {
@@ -130,7 +130,7 @@ var Schemas = exports.Schemas = {
         title: {type: String, required: true},
         subject_id:{type:[ObjectId], ref:'Subject', index:true, required:true},
         category:{type:String, "enum":['test', 'statistics', 'infographic', 'graph'], required:true},
-        text_field:String,
+        text_field:{type:mongoose_types.Text},
         image_field: mongoose_types.File,
         tags:{type:[String], index:true},
         users:{type:[ObjectId], ref:'User',editable:false},
