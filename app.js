@@ -306,49 +306,5 @@ catch(e)
 }
 
 var cron = require('./cron');
-/*cron.findWhoInvitedNumberOfUsersThatGotExtraTokens(4, 2, function(err, result){
-    var a = 8;
-});
 
-cron.findWhoInvitedMoreThenNumberOfUsers(2,function(err, result){
-    var a = 9;
-});*/
-
-//cron.findWhoGotGtrNumberOfTokensForAPostOrSuggestion(80, function(err, result){
-//    var a = 10;
-//});
-
-/*cron.findWhoGotNumberOfTokensForAllPosts(200, function(err, result){
-    var a = 11;
-});*/
-
-/*cron.findWhoInsertedNumberOfApprovedSuggestions(4, function(err, result){
-    var a = 11;
-});*/
-
-/*cron.findWhoCreatedApprovedAction(function(err, result){
-   var a = 12;
-});*/
-
-/*cron.daily_cron.findWhoSpentAllTokensInNumberOfDaysInARow(3, function(err, result){
-    var a = 13;
-});*/
-
-/*cron.Cron.findWhoHasNumberOfTagSuggThatApproved(1, function(err, result){
-    var a =14;
-})*/
-
-/*cron.Cron.findHighLikedInfoItem(function(err, result){
-
-
-    var a = 15;
-});*/
-
-/*cron.daily_cron.fillUsersTokens(function(err, result){
-    var a = 16;
-})*/
-
-/*cron.daily_cron.updateTagAutoComplete(function(err, result){
-    var a = 16;
-})*/
-//setInterval(cron, 1000*60*5);
+require('./compile_templates');

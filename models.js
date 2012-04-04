@@ -152,7 +152,7 @@ var Schemas = exports.Schemas = {
 
     Subject:{
         name:{type:String,required:true},
-        description: {type:String,required:true},
+        description: {type:mongoose_types.Text,required:true},
         image_field:mongoose_types.File,
         tags:[String],
         gui_order:{type:Number,'default':9999999,editable:false}
