@@ -1,0 +1,4 @@
+/**********************************************************************************************
+This CSS contains those elements which gives error while validating CSS	
+***********************************************************************************************/
+div.popup{box-shadow:10px 10px 10px #959595; -moz-box-shadow:10px 10px 10px #959595; -webkit-box-shadow:10px 10px 10px #959595; }

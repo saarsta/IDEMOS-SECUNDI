@@ -1,0 +1,70 @@
+/**********************************************************************************************
+PURPOSE
+This CSS file provide a clever way to add browser and OS specific css styles.
+
+USAGE
+.[os].[browser] .mylink { font-weight: bold; } -> without space between .[os] and .[browser]
+
+AVAILABLE OS CODES [os]:
+win - Microsoft Windows
+linux - Linux (x11 and linux)
+mac - Mac OS
+freebsd - FreeBSD
+ipod - iPod Touch
+iphone - iPhone
+webtv - WebTV
+mobile - J2ME Devices (ex: Opera mini)
+
+AVIALABLE BROWSER CODES [browser]:
+ie - Internet Explorer (All versions)
+ie8 - Internet Explorer 8.x
+ie7 - Internet Explorer 7.x
+ie6 - Internet Explorer 6.x
+ie5 - Internet Explorer 5.x
+gecko - Mozilla, Firefox (all versions), Camino
+ff2 - Firefox 2
+ff3 - Firefox 3
+ff3_5 - Firefox 3.5 new
+opera - Opera (All versions)
+opera8 - Opera 8.x
+opera9 - Opera 9.x
+opera10 - Opera 10.x
+konqueror - Konqueror
+webkit or safari - Safari, NetNewsWire, OmniWeb, Shiira, Google Chrome
+safari3 - Safari 3.x
+chrome - Google Chrome
+iron - SRWare Iron
+
+EXAMPLES:
+html.gecko div#header { margin: 1em; }
+.opera #header { margin: 1.2em; }
+.ie .mylink { font-weight: bold; }
+.mac.ie .mylink { font-weight: bold; }
+
+***********************************************************************************************/
+
+/*------------------------------------------
+// IE - All Versions - Windows
+//------------------------------------------*/
+
+/* Clearfix Method for containing floats in IE */
+.ie .clearfix { display: inline-block; }  /* ... especialy for IE7 */
+.ie .clearfix { display: block; }          /* ... for IE5,IE6,IE7 */
+* html.ie .clearfix { height: 1%; }       /* ... for IE5 + IE6/Win */
+
+/* Adjustment of .floatbox class for IE */
+.ie .floatbox { width:100%; }
+
+/*Use to make CSS 3 Rounded Corners , Text Shadows and Box Shadows for IE */
+.ie .css3 { behavior: url("resources/js/PIE.htc"); }
+
+/*------------------------------------------
+// IE - IE6.0 - Windows 
+//------------------------------------------*/
+
+/* Adds near-native PNG support with alpha opacity in IE6 */
+/* ie6 img { behavior: url("resources/js/iepngfix.htc");  } */
+
+/* Adds ability to user :hover selector on any tag in IE6 */
+.ie6 body { behavior: url("resources/js/csshover.htc");}
+.ie7 div.share-form input.submit-btn{width:120px;}
