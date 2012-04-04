@@ -2,7 +2,6 @@ bin
 build
 include
 .idea
-dump
 *.pyc
 *.pyo
 *.swp

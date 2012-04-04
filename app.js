@@ -60,6 +60,15 @@ app.configure('production', function(){
     app.use(express.errorHandler());
 });
 
+require('j-forms').setAmazonCredentials({
+    key: 'AKIAJM4EPWE637IGDTQA',
+    secret: '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',
+    bucket: 'uru'
+});
+
+
+
+
 mongoose.connect(app.settings.DB_URL);
 
 function split_db_url(db_url)

@@ -17,7 +17,9 @@
         "dust":"",
         "i18n-mongoose":"",
         "j-forms":">= 0.0.28",
-        "admin-with-forms":">= 0.0.13"
+        "admin-with-forms":">= 0.0.13",
+        "knox":""
   },
   "engines": { "node": ">= 0.4.1" }
 } 
+
