@@ -28,8 +28,8 @@ var Cron = exports.Cron = {
             function (users, cbk) {
                 for (var i = 0; i < users.length; i++) {
                     var inviter_string = users[i].invited_by.toString();
-                    users[i].tokens_achivements_to_usre_who_invited_me = users[i].tokens_achivements_to_usre_who_invited_me || {};
-                    if (!users[i].tokens_achivements_to_usre_who_invited_me[event]) {
+                    users[i].tokens_achivements_to_user_who_invited_me = users[i].tokens_achivements_to_user_who_invited_me || {};
+                    if (!users[i].tokens_achivements_to_user_who_invited_me[event]) {
                         if (!bucket[inviter_string]) {
                             bucket[inviter_string] = 1;
                             invited_users[inviter_string] = [];
@@ -79,8 +79,8 @@ var Cron = exports.Cron = {
                 g_all_users = users;
                 for (var i = 0; i < users.length; i++) {
                     var inviter_id_string = users[i].invited_by/*.toString()*/;
-                    users[i].tokens_achivements_to_usre_who_invited_me = users[i].tokens_achivements_to_usre_who_invited_me || {};
-                    if (!users[i].tokens_achivements_to_usre_who_invited_me[event]) {
+                    users[i].tokens_achivements_to_user_who_invited_me = users[i].tokens_achivements_to_user_who_invited_me || {};
+                    if (!users[i].tokens_achivements_to_user_who_invited_me[event]) {
                         if (!bucket[inviter_id_string]) {
                             bucket[inviter_id_string] = 1;
                             invited_users[inviter_id_string] = [];
@@ -209,7 +209,7 @@ var Cron = exports.Cron = {
         var event = "num_of_approved_suggestoins " + number;
         var path = "gamification.bonus." + event;
         var event_bonus = 3;
-        var found_usrers = [];
+        var found_users = [];
 
         var iterator = function(user, iteration_cbk){
             async.waterfall([
@@ -525,8 +525,8 @@ function addTokensToUserByEventAndSetGamificationBonus(user_id, event, event_bon
 function setTokenAchivementsToInviter(invited_users_arr, event, callback) {
 
     var inc_inviter_achivments = {};
-    inc_inviter_achivments['tokens_achivements_to_usre_who_invited_me.' + event] = 1;
-    var field = "tokens_achivements_to_usre_who_invited_me." + event;
+    inc_inviter_achivments['tokens_achivements_to_user_who_invited_me.' + event] = 1;
+    var field = "tokens_achivements_to_user_who_invited_me." + event;
     for (var i = 0; i < invited_users_arr.length; i++) {
         models.User.update({_id:invited_users_arr[i]}, {$inc:inc_inviter_achivments}, function (err, result) {
             callback(err, result);

@@ -42,7 +42,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
         this._super(models.Discussion, null, 0);
         this.allowed_methods = ['get', 'post', 'put', 'delete'];
         this.authentication = new common.SessionAuthentication();
-        this.filtering = {subject_id:null, users:null, is_published:null};
+        this.filtering = {subject_id:null, users:null, is_published:null, tags: null};
         this.authorization = new Authorization();
         this.default_query = function (query) {
             return query.sort('creation_date', 'descending');

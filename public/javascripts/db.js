@@ -6,6 +6,14 @@
  * To change this template use File | Settings | File Templates.
  */
 
+dust.renderArray = function(template,arr,callback)
+{
+    for(var i=0; i<arr.length; i++)
+    {
+        dust.render(template,arr[i],callback);
+    }
+};
+
 var db_functions = {
     dbGetAllSubjects: function(){
         $.ajax({
@@ -13,28 +21,30 @@ var db_functions = {
             type: "GET",
             async: true,
             success: function (data) {
-                console.log(data);
-                console.log(JSON.stringify(data));
                 var size = data.objects.length;
+                dust.renderArray('subject',data.objects,function(err,out)
+                {
+                   $('#subjects_list').append(out);
+                });
 
-                for (var i=0; i < size; i++){
-                    var subject = data.objects[i];
-
-                    var subject_link = $(document.createElement('a'))
-                        .attr("id", 'subject_link_' + i);
-                    subject_link.attr('href', "/account/selectedSubjectPage?subject_id="+subject._id + '&subject_name=' + subject.name);
-                    subject_link.text(subject.name);
-                    $('.subject').append(subject_link).append('<br />');
-
-                    if (subject.is_hot){
-                        var hot_subject_link = $(document.createElement('a'))
-                            .attr("id", 'hot_subject_link_' + i);
-                        hot_subject_link.attr('href', "/account/selectedSubjectPage?subject_id="+subject._id + '&subject_name=' + subject.name);
-                        hot_subject_link.text(subject.name);
-                        console.log(hot_subject_link);
-                        $('.hot_subject').append(hot_subject_link).append('<br />');
-                    }
-                }
+//                for (var i=0; i < size; i++){
+//                    var subject = data.objects[i];
+//
+//                    var subject_link = $(document.createElement('a'))
+//                        .attr("id", 'subject_link_' + i);
+//                    subject_link.attr('href', "/account/selectedSubjectPage?subject_id="+subject._id + '&subject_name=' + subject.name);
+//                    subject_link.text(subject.name);
+//                    $('#subjects_list').append(subject_link).append('<br />');
+//
+//                    if (subject.is_hot){
+//                        var hot_subject_link = $(document.createElement('a'))
+//                            .attr("id", 'hot_subject_link_' + i);
+//                        hot_subject_link.attr('href', "/account/selectedSubjectPage?subject_id="+subject._id + '&subject_name=' + subject.name);
+//                        hot_subject_link.text(subject.name);
+//                        console.log(hot_subject_link);
+//                        $('.hot_subject').append(hot_subject_link).append('<br />');
+//                    }
+//                }
             },
 
             error: function (xhr, ajaxOptions, thrownError) {
@@ -166,6 +176,21 @@ var db_functions = {
                 alert('error');
             }
 
+        });
+    },
+
+    getDiscussionsByTagName: function(tag_name){
+        $.ajax({
+            url: '/api/discussions?tags=' + tag_name,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('error');
+            }
         });
     },
 
@@ -453,6 +478,21 @@ var db_functions = {
             }
         });
     },*/
+
+    getCyclesByTagName: function(tag_name){
+        $.ajax({
+            url: '/api/cycles?tags=' + tag_name,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('error');
+            }
+        });
+    },
 
     getApprovedActionByCycle: function(cycle_id, callback){
         $.ajax({

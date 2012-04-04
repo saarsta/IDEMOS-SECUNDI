@@ -1,14 +1,4 @@
-
-/*
- * GET home page.
- */
-
 exports.index = function(req, res){
-        res.render('index.ejs', { title: 'Express' })
+//    console.log(req.session.user.username);
+        res.render('index.ejs', { layout: false, logged: req.isAuthenticated(), user: req.session.user})
 };
-
-//exports.test = function(req, res){
-//    res.render('test', { title: 'The test page', content: 'this is my content', html: '<p><b>this is</b> my html</p>', id : req.params.id })
-//};
-
-

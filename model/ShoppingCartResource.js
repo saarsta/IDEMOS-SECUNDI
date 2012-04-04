@@ -57,12 +57,9 @@ ShoppingCartResource.prototype.update_obj = function(req,object,callback){
         object.users.push(req.session.user_id);
         object.save(callback);
     }
-
 }
 
 ShoppingCartResource.prototype.delete_obj = function(req,object,callback){
-
-
     for(var i=0; i<object.users.length; i++)
     {
         if(object.users[i] == req.session.user_id)

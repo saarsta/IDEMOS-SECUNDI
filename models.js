@@ -131,7 +131,9 @@ var Schemas = exports.Schemas = {
         subject_id:{type:[ObjectId], ref:'Subject', index:true, required:true},
         category:{type:String, "enum":['test', 'statistics', 'infographic', 'graph'], required:true},
         text_field:{type:mongoose_types.Text},
+        text_field_preview:{type:mongoose_types.Text},
         image_field: mongoose_types.File,
+        image_field_preview: mongoose_types.File,
         tags:{type:[String], index:true},
         users:{type:[ObjectId], ref:'User',editable:false},
         discussions:{type:[ObjectId], ref:'Discussion', index:true,editable:false},
@@ -150,6 +152,7 @@ var Schemas = exports.Schemas = {
 
     Subject:{
         name:{type:String,required:true},
+        description: {type:String,required:true},
         image_field:mongoose_types.File,
         tags:[String],
         gui_order:{type:Number,'default':9999999,editable:false}
@@ -184,6 +187,7 @@ var Schemas = exports.Schemas = {
 
     Cycle:{
         title: {type:String, required:true},
+        tags:[String],
         discussions:[
             {type:ObjectId, ref:'Discussion'}
         ],
@@ -249,6 +253,16 @@ var Schemas = exports.Schemas = {
         is_approved: {type: Boolean, 'default': false}
     },
 
+    ResourceObligation: {
+        user_id: {type:Schema.ObjectId, ref:'User', index:true, required:true},
+        first_name: String,
+        last_name: String,
+        action_id: {type:ObjectId, ref:'Action', index:true, required:true},
+        action_resources:[
+            {resource: ActionResource, amount:Number}
+        ]
+    },
+
     Action:{
         title:{type:String, required:true},
         description:String,
@@ -257,8 +271,9 @@ var Schemas = exports.Schemas = {
         last_name: String,
         cycle_id:{type:ObjectId, ref:'Cycle', index:true, required:true},
         action_resources:[
-            {resource: ActionResource, amount:Number}
+            {resource: ActionResource, amount:Number, left_to_bring: Number}
         ],
+
         //users that conected somehow to the action
         users:[
             {type:ObjectId, ref:'User'}
@@ -377,8 +392,9 @@ var Models = module.exports = {
     Cycle:mongoose.model('Cycle', new Schema(Schemas.Cycle, {strict: true})),
     Category:mongoose.model('Category', new Schema(Schemas.Category, {strict: true})),
     Action:mongoose.model('Action', new Schema(Schemas.Action, {strict: true})),
-    ActionResource:mongoose.model('ActionResource', new Schema(Schemas.ActionResource)),
-    Tag: mongoose.model('Tag', new Schema(Schemas.Tag))
+    ActionResource:mongoose.model('ActionResource', new Schema(Schemas.ActionResource, {strict: true})),
+    Tag: mongoose.model('Tag', new Schema(Schemas.Tag, {strict: true})),
+    ResourceObligation: mongoose.model('ResourceObligation', new Schema(Schemas.ResourceObligation, {strict: true}))
 //    Schemas:Schemas
 };
 
