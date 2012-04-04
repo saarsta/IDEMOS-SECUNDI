@@ -13,15 +13,16 @@
 };*/
 
 exports.meidaInit = function(req, res){
-    res.render('infoAndMeasures.ejs',{title:'infoAndMeasures.ejs'});
-}
+    res.render('infoAndMeasures.ejs',{title:'מידע ומדדים',big_impressive_title:"כותרת גדולה ומרשימה",
+        extra_head:'<script src="/javascripts/infoAndMeasures.js"></script>'});
+};
 
 exports.subjectPageInit = function(req, res){
 
     res.render('selectedSubjectPage.ejs',{title:'selectedSubjectPage.ejs', subject_id: req.query.subject_id,
         subject_name: req.query.subject_name});
 
-}
+};
 
 exports.createDiscussionPageInit = function(req, res){
 
@@ -46,4 +47,13 @@ exports.discussionPreviewPageInit = function(req, res){
 
 exports.cyclePageInit = function(req, res){
     res.render('cyclePage.ejs',{title:'cyclePage.ejs', cycle_id: req.query.cycle_id, discussion_id: req.query.discussion_id, subject_name: req.query.subject_name});
+};
+
+exports.allDiscussions = function(req,res)
+{
+    res.render('target_ejs.ejs',{
+        title:'מידע ומדדים',
+        big_impressive_title:"כותרת גדולה ומרשימה",
+        extra_head:'<script src="/javascripts/infoAndMeasures.js"></script>'
+    });
 }

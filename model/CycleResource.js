@@ -19,6 +19,7 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
         this._super(models.Cycle, null, FOLLOW_CYCLE_PRICE);
         this.authentication = new common.SessionAuthentication();
         this.allowed_methods = ['get', 'put'];
+        this.filtering = {tags: null}
     },
 
     //happens when user want to become a cycle follower

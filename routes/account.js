@@ -70,7 +70,8 @@ exports.auth_middleware = function (req, res, next) {
         next();
     }
     else {
-        res.redirect(LOGIN_PATH + '?next=' + req.path);
+        //res.redirect(LOGIN_PATH + '?next=' + req.path);
+        next();
     }
 };
 

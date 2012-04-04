@@ -27,14 +27,14 @@ var express = require('express'),
     CycleResource = require('./model/CycleResource'),
     ArticleResource = require('./model/ArticleResource').ArticleResource,
     TagResource = require('./model/TagResource'),
-    ArticleCommentResource = require('./model/ArticleResource').ArticleCommentResource,
-    ResourceObligation = require('./model/ResourceObligation');
+    ArticleCommentResource = require('./model/ArticleResource').ArticleCommentResource;
 
 var app = module.exports = express.createServer();
 var account = require('./routes/account');
 var infoAndMeasures = require('./routes/infoAndMeasures');
 var selectedSubjectPage = require('./routes/selectedSubjectPage');
-var pagesInit = require('./routes/pagesInit'),
+var pagesInit = require('./routes/pagesInit');
+var mmSearch = require('./routes/mmSearch'),
     i18n = require('i18n-mongoose'),
     locale = require('./locale');
 //var cycle = require('./routes/cycle');
@@ -99,7 +99,6 @@ var fbId = app.settings.facebook_app_id,// '175023072601087',
 i18n.configure({});
 
 app.configure(function(){
-
     app.set('views', __dirname + '/views');
     app.set('view engine', 'jade');
     app.use(express.bodyParser());
@@ -141,39 +140,42 @@ app.configure(function(){
             }
         }
 
-        if(!req.session.user_id){
-            //means that user used registration, so we save user_id out of the AUTH
-            if (req.session.auth.user_id){
-                req.session.user_id = req.session.auth.user_id;
-                next();
-            }
+        if(req.isAuthenticated() && !req.session.user){
 
-//            var email = req.session.auth.user.email;
-            var facebook_id = req.session.auth.user.id;
-            models.User.findOne({facebook_id :facebook_id},function(err,object)
-            {
-                if(err)
+
+//            if(!req.session.user_id){
+//                //means that user used registration, so we save user_id out of the AUTH
+
+                req.session.user_id = req.session.auth.user_id || req.session.auth.user._id;
+
+//            }
+    //            var email = req.session.auth.user.email;
+                var facebook_id = req.session.auth.user.id;
+                models.User.findById(req.session.user_id ,function(err,object)
                 {
-                    console.log('couldn put user id' + err.message)
-                    next();
-                }
-                else
-                {
-                    //if object doesnt exust in db it means we got here before registration completed
-                    if (!object){
+                    if(err)
+                    {
+                        console.log('couldn put user id' + err.message)
                         next();
-                    }else{
-                        req.session.user_id = object.id;
-                        req.session.save(function(err)
-                        {
-                            if(err)
-                                console.log('couldnt put user id' + err.message);
-                            next();
-                        });
                     }
-                }
-            });
-        }else{
+                    else
+                    {
+                        req.session.user = object;
+                        //if object doesnt exust in db it means we got here before registration completed
+                        if (!object){
+                            next();
+                        }else{
+                            req.session.user_id = object.id;
+                            req.session.save(function(err)
+                            {
+                                if(err)
+                                    console.log('couldnt put user id' + err.message);
+                                next();
+                            });
+                        }
+                    }
+                });
+            }else{
             next();
         }
     });
@@ -203,12 +205,15 @@ app.get('/account/facebooklogin', account.fb_connect);
 app.get('/account/afterSuccessFbConnect2', function(req,res){});
 app.get('/needlogin', function(req,res){});
 app.get('/account/logout', account.logout);
-app.get('/account/meida',pagesInit.meidaInit);
-app.get('/account/selectedSubjectPage', pagesInit.subjectPageInit);
-app.get('/account/createDiscussion', pagesInit.createDiscussionPageInit);
-app.get('/account/discussion', pagesInit.discussionPageInit);
-app.get('/account/discussionPreview', pagesInit.discussionPreviewPageInit);
-app.get('/account/cycle', pagesInit.cyclePageInit);
+app.get('/meida',pagesInit.meidaInit);
+app.get('/selectedSubjectPage', pagesInit.subjectPageInit);
+app.get('/createDiscussion', pagesInit.createDiscussionPageInit);
+app.get('/discussion', pagesInit.discussionPageInit);
+app.get('/discussionPreview', pagesInit.discussionPreviewPageInit);
+app.get('/cycle', pagesInit.cyclePageInit);
+app.get('/mmSearch', mmSearch.mm_search)
+
+app.get('/allDiscussions',pagesInit.allDiscussions);
 
 
 
@@ -267,7 +272,8 @@ rest_api.register_resource('cycles', new CycleResource());
 rest_api.register_resource('articles', new ArticleResource());
 rest_api.register_resource('tags', new TagResource());
 rest_api.register_resource('article_update', new ArticleCommentResource());
-//rest_api.register_resource('resource_obligations', new ResourceObligation());
+//rest_api.register_resource('resource_obligations', new ResourceObligation())
+;
 app.listen(app.settings.port);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 
@@ -278,8 +284,6 @@ require('j-forms').forms.set_models(Models);
 var mongoose_admin = require('admin-with-forms');
 
 var admin = mongoose_admin.createAdmin(app,{root:'admin'});
-
-admin.setAdminTitle('URU Backoffice');
 
 admin.ensureUserExists('admin','admin');
 

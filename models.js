@@ -131,7 +131,9 @@ var Schemas = exports.Schemas = {
         subject_id:{type:[ObjectId], ref:'Subject', index:true, required:true},
         category:{type:String, "enum":['test', 'statistics', 'infographic', 'graph'], required:true},
         text_field:{type:mongoose_types.Text},
+        text_field_preview:{type:mongoose_types.Text},
         image_field: mongoose_types.File,
+        image_field_preview: mongoose_types.File,
         tags:{type:[String], index:true},
         users:{type:[ObjectId], ref:'User',editable:false},
         discussions:{type:[ObjectId], ref:'Discussion', index:true,editable:false},
@@ -150,6 +152,7 @@ var Schemas = exports.Schemas = {
 
     Subject:{
         name:{type:String,required:true},
+        description: {type:String,required:true},
         image_field:mongoose_types.File,
         tags:[String],
         gui_order:{type:Number,'default':9999999,editable:false}
@@ -184,6 +187,7 @@ var Schemas = exports.Schemas = {
 
     Cycle:{
         title: {type:String, required:true},
+        tags:[String],
         discussions:[
             {type:ObjectId, ref:'Discussion'}
         ],

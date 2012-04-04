@@ -1,52 +1,46 @@
-<!DOCTYPE html>
-    <html>
-        <head>
-            <link rel="stylesheet" type="text/css" media="screen" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/themes/base/jquery-ui.css"/>
-            <link rel="stylesheet" type="text/css" media="screen" href= '/public/stylesheets/style.css'/>
+<script type="text/javascript">
+    $(function() {
+        loadInfoAndMeasures();
+    });
+</script>
+<div id="search-form" class="form">
+    <form action="" method="post">
+        <p class="clearfix">
+            <input type="text" title="search" class="textbox" id="look_for_tags" />
+            <input type="submit" id="btn_look" title="submit" class="submit-btn" value="חפש"/>
+        </p>
+    </form>
+</div>
 
-            <script src="http://www.google.com/jsapi"></script>
-            <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
-            <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/jquery-ui.min.js"></script>
-            <script src="/javascripts/db.js"></script>
-            <script src="/javascripts/infoAndMeasures.js"></script>
-            <script type="text/javascript">
-                $(function() {
-                    loadInfoAndMeasures();
-                });
-            </script>
-        </head>
+<h4 class="flR">בחירה מתוך 7 תחומי על</h4>
 
-        <body>
-            <div>
-                <label for="look_for_tags">look for info items by tags:</label>
-                <input type="text" name="tags" id="look_for_tags">
-                <button type="submit" class="btn_look">look</button>
-            </div>
+<br class="clear" />
+<ul id="subjects_list" class="list2 clearfix">
+</ul>
 
-            <div class="subject panel">
-                <p> SUBJECTS: </p>
-            </div>
+<h2>הנושאים הבוערים</h2>
+<div class="topics">
+    <ul id="hot_items_list" class="list2 clearfix">
+        <li>
+            <img src="resources/images/assets/image6.jpg" alt="image6" />
+            <h4>כותרת</h4>
+            <p>כמה מילים אולי אפילו 2-3 משפטים הסבר ותיאור על הנושא המדובר</p>
+            <a href="#">נתונים אפשריים*</a>
+        </li>
+        <li>
+            <img src="resources/images/assets/image6.jpg" alt="image6" />
+            <h4>כותרת</h4>
+            <p>כמה מילים אולי אפילו 2-3 משפטים הסבר ותיאור על הנושא המדובר</p>
+            <a href="#">נתונים אפשריים*</a>
+        </li>
+        <li>
+            <img src="resources/images/assets/image6.jpg" alt="image6" />
+            <h4>כותרת</h4>
+            <p>כמה מילים אולי אפילו 2-3 משפטים הסבר ותיאור על הנושא המדובר</p>
+            <a href="#">נתונים אפשריים*</a>
+        </li>
+    </ul>
 
-            <div class="tags hide panel">
-                <p> HOT INFORMATION ITEMS: </p>
-            </div>
+    <a href="#" class="button1">עוד נושאים בוערים**</a>
 
-            <div class="tags panel">
-
-            </div>
-
-            <div class="shopping_cart panel">
-                <p> SHOPPONG CART </p>
-                <button class="reality_btn" href= "/account/register" > create new reality </button>
-                <div class="item">
-
-                </div>
-            </div>
-
-            <script type="text/javascript">
-                $('.item button').click(function() {
-                    alert($(this).parent('.item').find('p.title').text());
-                })
-            </script>
-        </body>
-    </html>
+</div>
