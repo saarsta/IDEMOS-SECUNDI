@@ -85,12 +85,13 @@ function loadInfoAndMeasures() {
         }
     });
 
-    $('.btn_look').live("click", function(){
+    $('#btn_look').live("click", function(){
 
         $('.tags').html('');
         var tag_value = $("#look_for_tags").attr('value');
 
         db_functions.dbGetInfoItemsByTagName(tag_value);
+        event.stopPropagation();
     });
 
     db_functions.getUserShopingCart(function(data){

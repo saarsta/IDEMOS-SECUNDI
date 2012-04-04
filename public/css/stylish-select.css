@@ -1,0 +1,26 @@
+
+.stylish-select ul.newList {left:-9999px; margin:0 !important; }
+
+ul.newList * {margin:0 !important; padding:0;}
+div.form ul.newList  li,div.form ul.newList li { margin-bottom:0; height:20px!important;}
+ul.newList a {color: #000; text-decoration:none; display:block; border:0; }
+.newListSelected span {width:284px; display:block;}
+
+ul.newList {margin:0; padding:0; list-style:none; position:absolute; border:0; overflow:auto; z-index:9999;}
+div.post div.form ul.newList li { float:none; margin-bottom:0px; font-size:110%; }
+ul.newList li a {padding:3px 9px; display: block; font-size:110%; color:#fff; line-height:12px; }
+ul.newList li a:focus {-moz-outline-style: none;}
+
+.selectedTxt { overflow:hidden;}
+
+.hiLite {background:#0B79C6!important; color:#fff!important;}
+.hiLite a {background:#0B79C6!important; color:#fff!important;}
+
+.newListHover {background:#ccc!important; color:#000!important; cursor:default;}
+.newListOptionTitle {font-weight:bold;}
+.newListOptionTitle ul {margin:3px 0 0;}
+.newListOptionTitle li{font-weight:normal;}
+
+.newListSelected {width:145px; color:#fff; height:34px; padding:0; background:url(../images/theme/selectbox.png) no-repeat 5px 13px #9d9d9c; border:2px solid #3c3c3b;}
+.selectedTxt {width:118px; height:24px; padding:10px 7px 0 0; font-size:19px; color:#fff; font-style:italic;}
+ul.newList { color:#fff; width:149px; background:#9d9d9c; top:36px!important; left:-2px!important; }

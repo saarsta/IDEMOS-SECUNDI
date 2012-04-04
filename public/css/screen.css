@@ -1,0 +1,418 @@
+/**********************************************************************************************
+	Main Sections in CSS:
+	
+	1.	BASIC ELEMENTS
+		Define styles for basic elements: body, h1-h6, ul, ol, a, p, etc.
+	
+	2.	LAYOUT
+		Define the basic template: header, footer, etc. Elements that help to define the basic layout of the site
+		
+	3.	PAGE COMMON STYLES
+		Define content styles that are common to all the pages in the project. For example Logo in header, tabs in navigation, buttons, rounded boxes etc
+	
+	4.	PAGE SPECIFIC STYLES
+		Define content styles that are specific to a particular page
+	
+***********************************************************************************************/
+
+
+/* import core styles */
+@import url(base.css);
+
+
+/*------------------------------------------
+// 1.BASIC ELEMENTS
+//	 Define styles for basic elements: body, h1-h6, ul, ol, a, p, etc.
+//------------------------------------------*/
+body { color:#000; font-family: Arial, Helvetica, sans-serif; direction:rtl; background:#dadada; }
+h1, h2, h3, h4, h5, h6, p, li { line-height:1.0em; }
+
+
+/*------------------------------------------
+// 2.LAYOUT
+//   Define the basic template: header, footer, etc. Elements that help to define the basic layout of the site
+//------------------------------------------*/
+	
+/*---- Container ----*/
+div#container {width:100%;}
+
+div.wrapper {width:845px; margin:0 auto; }
+
+/*---- Header ----*/
+div#header {background:#dadada; }
+div#header div.wrapper{position:relative;}
+
+/*---- Main Navigation ----*/
+div#main-navigation {float:right; width:570px;}
+
+/*---- Content ----*/
+div#content {background:#ededed; padding:42px 0px 80px 0px;}
+
+/*---- Main ----*/
+div#main {float:right; width:540px; padding-top:15px;}
+
+/*---- Sidebar ----*/
+div#sidebar {float:left; width:230px; padding:20px 12px; background:#fff; border:2px solid #575756; margin-bottom:60px;}
+
+/*---- Footer ----*/
+div#footer {padding:40px 0px; background:#dadada; }
+
+
+/*---- Layout ----*/
+body.layout div#content{ padding:90px 0px;}
+body.layout div#main{width:845px; float:none; padding-top:0px;}
+body.layout div#content h2{ margin-bottom:40px;}
+body.layout div#search-form{ margin-bottom:40px;}
+
+/*---- Layout1 ----*/
+body.layout1 div#content{ padding:90px 0px;}
+body.layout1 div#main{width:525px; padding-top:0px;}
+body.layout1 div#sidebar{width:270px;}
+body.layout1 div#content h2{ margin-bottom:40px;}
+body.layout1 div#search-form{ margin-bottom:40px;}
+
+
+/*------------------------------------------
+// 3. PAGE COMMON STYLES
+//	  Define content styles that are common to all the pages in the project. For example Logo in header, tabs in navigation, buttons, rounded boxes etc
+//------------------------------------------*/
+
+/*---- Header - Logo ----*/
+div#header div.logo{ float:right; margin:14px 0px 14px 20px;}
+div#header div.logo h1 a{position:relative; width:34px; height:0px; padding-top:18px; display:block; background:url(../images/theme/logo.png) no-repeat right top; overflow:hidden;}
+
+
+/*---- Main Navigation ----*/
+div#main-navigation ul li{ float:right; margin-left:35px;}
+div#main-navigation ul li a {text-decoration:none; font-size:190%; color:#9d9d9c; font-style:italic; line-height:46px;}
+
+/*---- Banner ----*/
+div#banner{ background:#ededed; padding:98px 0px 34px 0px;}
+div#banner div.frame{float:right; padding:11px 9px; margin-left:35px;}
+div#banner h2{ color:#3c3c3b; font-size:500%; font-weight:normal; margin-bottom:15px;}
+div#banner p{ font-size:180%; color:#878787; line-height:20px;}
+div#banner a.read-more{ color:#878787; font-size:180%; color:#878787; line-height:20px; float:left;}
+
+div#banner div.description{width:465px; float:left;}
+div#banner div.description a.button1{ margin:0px auto; clear:both; margin-top:10px; display:block;}
+
+
+/*---- Post ---*/
+div.post h1 { font-size:360%; margin-bottom:10px; font-weight:normal;}
+#content h2, div.post h2 { font-size:330%; margin-bottom:10px; font-weight:normal;}
+div.post h3 { font-size:230%; margin-bottom:10px; color:#3c3c3b; font-weight:normal;}
+div.post h4 { font-size:180%; margin-bottom:10px; color:#878787; font-weight:normal; font-style:italic; line-height:34px;}
+div.post h5 { font-size:200%; margin-bottom:10px;}
+div.post h5 { font-size:180%; margin-bottom:10px;}
+
+div.post p { color:#878787; line-height:20px; font-size:170%; margin-bottom:20px; display:block; }
+div.post p a { color:#878787; }
+
+div.post blockquote { margin-bottom:20px; }
+div.post blockquote p{ margin-bottom:5px; font-style:italic;}
+div.post blockquote p cite{ font-weight:bold; text-align:right; display:block;}
+
+div.post img { max-width:100%; }
+div.post img.alignleft{ float:left; margin:0 10px 10px 0; display: inline;}
+div.post img.alignright{ float:right; margin:0 0px 10px 10px; display: inline;}
+div.post img.aligncenter{ display:block; margin-left:auto; margin-right:auto; margin-bottom:10px;}
+
+div.post ul { margin:0 0 20px 14px; list-style:disc; }
+div.post ol { margin:0 0 20px 18px; list-style:decimal; }
+div.post li { line-height:1.2em; font-size:120%; }
+div.post li ul, div.post li ol { margin-bottom:0px; } 
+div.post li li, div.post li p { font-size:100%; margin-bottom:0px; }
+
+/*---- Post - Custom Lists ---*/
+div.post ul.list1 { margin:0; padding:0; }
+div.post ul.list1 li { margin:0; padding:0; }
+
+div.post ol.list2 { margin:0; padding:0; }
+div.post ol.list2 li { margin:0; padding:0; }
+
+/*---- Footer - Navigation ---*/
+div#footer div#footer-navigation {text-align:center;}
+div#footer div#footer-navigation ul li {font-size:210%; float:right; color:#3c3c3b; }
+div#footer div#footer-navigation ul li a{ color:#3c3c3b; text-decoration:none; }
+div#footer div#footer-navigation ul li a:hover{text-decoration:underline; }
+div#footer div#footer-navigation ul li.divider {margin:0 6px;}
+
+/*---- Frame ----*/
+div.frame{ border:2px solid #575756; padding:6px 9px;}
+div.frame img{ border:2px solid #c6c6c6; vertical-align:bottom;}
+
+/*---- Frame1 ----*/
+div.frame1{ border:2px solid #575756; padding:10px; background:#fff; text-align:center; margin-bottom:15px;}
+div.frame1 img{ border:2px solid #c6c6c6; vertical-align:bottom; margin-bottom:0px;}
+div.frame1.flR{ margin:0px 0px 15px 15px;}
+div.frame1.flL{ margin:0px 15px 15px 0px;}
+
+/*---- Search ----*/
+div#search{ background:#b2b2b2; padding:22px 0px 22px 0px;}
+div.search-area{ margin-bottom:20px;}
+div.search-area div#search-form, body.layout div.search-area div#search-form{ margin-bottom:20px;}
+div.search-area h3{ font-size:200%; font-style:italic; margin-bottom:15px;}
+div.search-area div.search-content{background:#3c3c3b; min-height:450px; padding:20px 0px;}
+div.search-area ul.search-list{width:785px; margin:0px 0px 50px; padding:0px 0px 20px; background:url(../images/theme/line-bg.gif) repeat-x left bottom;}
+div.search-area ul.search-list li{ float:right; width:120px; text-align:center; font-size:170%; color:#ededed; margin-right:30px; list-style:none;}
+div.search-area ul.search-list li a{ color:#ededed; font-size:100%;}
+div.search-area ul.search-list li a:hover, div.search-area ul.search-list li.active a{ color:#fff; font-size:115%; font-weight:bold; text-align:center; display:block; text-decoration:none;}
+div.search-area ul.search-list li a span.circle{width:36px; height:36px; display:block; margin:0px auto 20px; background:url(../images/theme/circle1.png) no-repeat left top;}
+div.search-area ul.search-list li a:hover span.circle, div.search-area ul.search-list li.active a span.circle{background:url(../images/theme/circle1.png) no-repeat left bottom;}
+
+/*---- Slider ----*/
+div.slider ul{width:785px; margin:0px 0px; padding:0px 0px; float:right;}
+div.slider ul li { list-style:none; float:right; margin-right:15px; width:179px;}
+div.slider ul li p{ text-align:justify; font-size:150%;}
+div.slider ul li div.image{ border:2px solid #c6c6c6; margin-bottom:10px;}
+div.slider ul li div.image img{ vertical-align:bottom;}
+div.slider ul li div.image p{ background:#b2b2b2; font-size:180%; color:#fff; font-style:italic; margin-bottom:0px; line-height:30px; text-align:right; padding:0px 10px;}
+div.slider div.controls{width:22px; margin:80px 20px 0px 0px; float:right}
+div.slider div.controls a.left-btn{width:22px; height:54px; background:url(../images/theme/controls-bg1.png) no-repeat left top; text-decoration:none; display:block;}
+
+/*---- form ----*/
+div.form input.textbox{border:2px solid #9d9d9c; background:#fff; padding:6px 9px; line-height:20px; height:20px; color:#878787; font-size:200%; font-style:italic; float:right;}
+div.form input.submit-btn{ background:#9d9d9c; height:35px; color:#fff; font-size:200%; vertical-align:middle; padding:0px 0px 5px 0px; width:60px; border:2px solid #3c3c3b; cursor:pointer; float:right; margin:0px 10px 0px 0px;}
+
+div#search-form input.textbox{width:720px;}
+div.post div.form input.submit-btn{ font-size:110%;}
+div.post div#search-form p input.textbox{ font-size:115%;}
+body.layout div#search-form input.textbox{width:752px;}
+
+div.form div.frame{ float:right; background:#fff; margin-left:20px;}
+div.form div.textarea-container{ border:2px solid #9d9d9c; background: url(../images/theme/textarea-arrow.png) no-repeat 5px 97% #fff; position:relative; padding:10px; min-height:167px; margin-bottom:30px; clear:both;}
+div.form div.textarea-container.two-third{ width:555px; float:left; clear:none;}
+div.form div.textarea-container a.button{ float:left; display:block; text-align:center;}
+div.form div.textarea-container textarea{ float:right; background:none; border:none; padding:0px 0px; color:#b2b2b2; font-size:180%; font-style:italic; line-height:24px; font-weight:bold;}
+div.form div.textarea-container textarea{ width:750px; min-height:167px; overflow:auto;}
+div.form div.textarea-container.two-third textarea{width:485px; min-height:167px;}
+div#discussions.form{ margin-bottom:50px;}
+div#discussions.form input.submit-btn{ float:none;padding:0px 0px; width:260px; margin:0px auto 0px; text-align:center; font-size:120%; display:block;}
+
+
+/*---- Share-form ----*/
+div.two-column-layout div.one-half.share-form{ position:relative; width:420px;}
+#content div.share-form h2{ margin-bottom:0px; padding-right:20px;}
+div.share-form span.textarea{ background: url(../images/theme/textarea-bg.png) no-repeat left top; width:368px; height:160px; padding:20px 30px 55px 30px; display:block;}
+div.share-form span.textarea textarea{ background:none; border:none; width:368px; height:160px; font-size:230%; color:#b2b2b2; line-height:25px; font-style:italic;}
+div.share-form input.submit-btn{ background:#9d9d9c; height:35px; color:#fff; font-size:200%; vertical-align:middle; padding:0px 10px 5px 10px; border:2px solid #3c3c3b; cursor:pointer; float:right; position:absolute; bottom:6px; left:125px;}
+
+
+/*---- Sociable ----*/
+div#header div.sociable{width:220px; float:left; position:absolute; left:0px; top:15px;}
+div#header div.sociable h3{ color:#000000; font-size:200%; margin-bottom:10px; font-weight:normal;}
+div#header div.sociable div.frame{ float:right; padding:3px; position:relative; margin-left:10px;}
+div#header div.sociable div.frame span.number{ width:25px; height:18px; background:url(../images/theme/number-bg1.png) no-repeat left top; text-align:center; padding:8px 0 0px 0px; display:block; position:absolute; right:22px; bottom:-14px; font-size:210%; font-weight:bold; color:#575756;}
+
+/*---- User Area ----*/
+div#header div.user-area{width:215px; float:left; position:absolute; left:0px; top:15px; padding:10px;}
+div#header div.user-area h3{ color:#000000; font-size:200%; margin-bottom:10px; font-weight:normal; padding-top:10px;}
+div#header div.user-area p{color:#000000; font-size:200%; margin-bottom:10px; font-weight:normal; line-height:15px;}
+div#header div.user-area p span.number{ background:url(../images/theme/circle.png) no-repeat right center; width:18px; height:18px; display:block; float:right; margin-left:10px; vertical-align:middle;}
+div#header div.user-area div.index{ padding-top:10px; clear:both;}
+div#header div.user-area div.index p{ margin-bottom:8px;}
+div#header div.user-area div.index span.index{ background:#b2b2b2; height:10px; display:block;}
+div#header div.user-area div.index span.index span{ display:block; background:#575756; height:10px;}
+div#header div.user-area a.button{ padding:0px 0px; width:165px; margin:10px auto -29px; display:block; text-align:center; position:relative;}
+
+div#header div.user-area div.frame{ float:right; padding:3px; position:relative; margin-left:10px;}
+div#header div.user-area div.frame span.number{ width:25px; height:18px; background:url(../images/theme/number-bg1.png) no-repeat left top; text-align:center; padding:8px 0 0px 0px; display:block; position:absolute; right:22px; bottom:-14px; font-size:210%; font-weight:bold; color:#575756;}
+
+/*---- Sidebar ----*/
+div#sidebar h2{ color:#000; font-size:300%; line-height:30px; margin-bottom:20px; font-style:italic; font-weight:normal;}
+div#sidebar p{  font-size:140%; color:#878787; line-height:20px;}
+
+/*---- widget ----*/
+div.widget{ margin-bottom:30px;}
+div.widget:last-child{ margin-bottom:0px;}
+div.widget h3{ font-size:160%; color:#575756; font-style:italic; margin-bottom:10px;}
+div.widget p{font-size:140%; color:#878787; line-height:20px; margin-bottom:0px;}
+div.widget div.image{border:2px solid #575756; padding:6px 9px;}
+
+/*---- widget1 ----*/
+div.widget1{ margin-bottom:30px; border-bottom:2px solid #3c3c3b; padding-bottom:30px;}
+div#sidebar div.widget1:last-child{ margin-bottom:10px;}
+div.widget1 h3{ float:right; color:#000; font-size:250%; line-height:25px; margin-bottom:20px; font-style:italic; font-weight:normal;}
+div.widget1 a.button{ float:left;}
+div#sidebar div.widget1 p{font-size:180%; color:#878787; line-height:20px; margin-bottom:10px; font-style:italic;}
+div.widget1 a.button.suggest{width:265px; padding:0px 0px; margin:0px auto 30px; display:block; float:none; text-align:center;}
+div.widget1 div.frame{ padding:10px; margin-bottom:10px;}
+div.widget1 a.read-more{ line-height:34px; display:inline-block;}
+div.widget1 div.slides a.read-more{ line-height:18px;}
+
+div.widget1.information ul{ margin:0px 0px; padding:0px 0px;}
+div.widget1.information ul li { margin-bottom:20px;}
+div.widget1.information ul li:last-child{ margin-bottom:0px;}
+div.widget1.information ul li div.image{padding:5px; position:relative; float:right; width:133px; border:2px solid #575756; margin-left:10px;}
+div.widget1.information ul li div.image span.number{ width:23px; height:19px; background:url(../images/theme/number-bg1.png) no-repeat left top; text-align:center; padding:6px 6px 0 0; display:block; position:absolute; right:-16px; top:-10px; font-size:180%; font-weight:bold; color:#575756;}
+div#sidebar div.widget1.information ul li p{ margin-bottom:0px; text-align:justify; font-size:140%;}
+
+/*---- Stories ----*/
+div.stories.box div.frame{ margin-bottom:10px; padding:8px; position:relative;}
+div.stories.box div.frame span.number{ width:33px; height:22px; background:url(../images/theme/number-bg.png) no-repeat left top; text-align:center; padding:10px 0 0px 0px; display:block; position:absolute; right:-10px; top:-10px; font-size:210%; font-weight:bold; color:#575756;}
+div.stories.box p{ font-size:140%; color:#878787; line-height:20px; margin-bottom:0px;}
+
+
+/*---- One Third ----*/
+div.one-third { float:right; width:263px; border-left:2px solid #575756; margin-left:22px; padding-top:5px;}
+div.one-third.last { margin-left:0px; border:0px;}
+div.one-third div.frame { background:#fff; border:2px solid #575756; padding:7px 5px; float:right;}
+div.one-third div.frame img { vertical-align:bottom; border:2px solid #c6c6c6;}
+div.one-third div.description { float:left; width:140px;}
+div.one-third div.description h3 { font-size:180%; color:#3c3c3b; margin-bottom:7px;}
+div.one-third div.description h3 a { color:#3c3c3b;}
+div.one-third div.description p { font-size:140%; color:#878787; line-height:17px; margin-bottom:6px;}
+
+
+/*---- Common Boxes & Containers ----*/
+
+/*---- Box ----*/
+div.box{ border:2px solid #878787; background:#fff; padding:20px 15px 20px 5px;}
+div.box p{ color:#000000; font-size:180%; line-height:20px; margin-bottom:5px;}
+
+/*---- Box1 ----*/
+div.box1{ border:2px solid #878787;padding:20px 15px;}
+div.box1 div.one-third{ border-left:none; width:270px;}
+div.box1 div.one-third div.frame{width:137px; float:right; position:relative;}
+div.box1 div.one-third div.frame span.number{}
+div.box1 div.one-third span.number{ width:30px; height:22px; background:url(../images/theme/number-bg.png) no-repeat left top; text-align:center; padding:11px 3px 0 0; display:block; position:absolute; right:-14px; top:-14px; font-size:210%; font-weight:bold; color:#575756;}
+div.box1 div.one-third div.description{ float:left; width:105px;}
+div.box1 div.one-third p{ font-size:140%; color:#878787; line-height:20px; margin-bottom:0px; text-align:justify;}
+div.box1 div.one-third.last{ width:180px;}
+div.box1 div.detail{ margin-top:40px;}
+div.box1 div.detail p{ text-align:justify;}
+
+/*---- Two Column Layout ----*/
+div.two-column-layout{ margin-bottom:70px;}
+div.two-column-layout div.one-half{ width:395px; margin-left:20px; float:right;}
+div.two-column-layout div.one-half:last-child{ margin-left:0px;}
+
+/*---- Two Column Layout1 ----*/
+div.two-column-layout1 div.column{width:172px; margin-left:12px; float:right;}
+div.two-column-layout1 div.column:last-child{ margin-left:0px;}
+
+/*---- Two Column Layout2 ----*/
+div.two-column-layout2{ clear:both; margin-bottom:30px;}
+div.two-column-layout2 div.frame{float:right; background:#fff; margin-left:20px;}
+div.two-column-layout2 div.description{ width:265px; float:right;}
+div.two-column-layout2 div.description p{ text-align:justify;}
+div.two-column-layout2 div.description p a.button{ color:#fff; float:left; font-size:110%; font-style:italic; display:block; margin:5px 5px 0px 0px;}
+
+/*---- Two Column Layout3 ----*/
+div.two-column-layout3{ margin-bottom:40px; clear:both;}
+div.two-column-layout3 div.frame{float:right; background:#fff; margin-left:10px; padding:5px;}
+div.two-column-layout3 div.description{float:left; width:230px;}
+div.two-column-layout3 p{ text-align:justify;}
+div.two-column-layout3 a.read-more{ font-size:164%; margin-bottom:20px;}
+div.two-column-layout3 a.button{ display:block; margin-top:10px;}
+
+
+/*---- Buttons ----*/
+a.button{ border:2px solid #3c3c3b; background:#9d9d9c; font-size:200%; font-style:italic; color:#fff; line-height:34px; text-decoration:none; padding:0px 12px;}
+a.button:hover{ text-decoration:none;}
+
+a.button1{ background:#878787; color:#fff; height:36px; width:175px; text-decoration:none; text-align:center; display:block; font-size:180%; color:#fff; font-style:italic; line-height:36px;}
+a.button1:hover{ text-decoration:none;}
+
+a.classified{ float:left; width:126px; margin-bottom:15px;}
+a.classified span.arrow{float:left; display:block; width:12px; line-height:34px; background:url(../images/theme/button-arrow.png) no-repeat left center;}
+
+a.read-more{ color:#878787; font-size:180%; color:#878787; line-height:20px;}
+
+/*---- Lists ----*/
+/*---- List1 ----*/
+div.post ul.list1{ margin:0px 0px 0px; padding:0px 0px; clear:both;}
+div.post ul.list1 li{ background:#fff; border:2px solid #9d9d9c; padding:6px 10px; font-size:180%; margin-bottom:20px;}
+ul.list1 li div.frame{ float:right; padding:3px; margin-left:15px;}
+ul.list1 li div.description{ float:right; width:580px;}
+ul.list1 li div.description h4{ color:#3c3c3b; font-size:100%; line-height:18px; margin-bottom:5px;}
+ul.list1 li div.description p{ color:#3c3c3b; font-size:100%; line-height:18px; margin-bottom:5px;}
+ul.list1 li div.action{ float:left; width:70px;}
+ul.list1 li div.action a{ font-size:105%; margin:0px 0px 6px 0px; padding:0px 0px; width:70px; display:block; text-align:center; height:29px; line-height:29px;}
+
+ul.list1 li ul{ clear:both; margin:20px 0px 0px;}
+div.post ul.list1 li ul li{ background:#ededed; border:1px solid #9d9d9c; padding:10px 20px; list-style:none; margin-bottom:10px; clear:both; font-size:100%;}
+div.post ul.list1 li ul li:last-child{ margin-bottom:0px;}
+ul.list1 li ul li p{ margin-bottom:0px; font-size:100%; color:#3c3c3b;}
+
+ul.list1 div.action-bottom { clear:both; padding-top:10px;}
+ul.list1 div.action-bottom p.meta-data{float:right; width:600px; padding:15px 40px; margin-bottom:0px; background:#ededed; border:2px solid #9d9d9c; color:#3c3c3b;}
+ul.list1 div.action-bottom p.meta-data a{ color:#3c3c3b; text-decoration:none;}
+ul.list1 div.action-bottom p.meta-data a:hover{ text-decoration:underline;}
+ul.list1 div.action-bottom a.button{ margin:10px 20px 10px 0px; float:right; font-size:100%; vertical-align:middle;}
+
+/*---- List2 ----*/
+div.post ul.list2, ul.list2{ margin:0px 0px 50px; padding:0px 0px;}
+ul.list2 li{ float:right; list-style:none; width:190px; padding:4px; border:2px solid #575756; background:#ffffff; margin:0px 0px 15px 12px; font-size:180%;}
+ul.list2 li:nth-child(4n){ margin-left:0px;}
+ul.list2 li:nth-child(5){ margin-right:120px;}
+ul.list2 li img{ border:2px solid #C6C6C6; margin-bottom:5px; vertical-align:bottom;}
+ul.list2 li p{ font-size:100%; color:#706f6f; font-style:italic; margin-bottom:0px; text-align:center;}
+ul.list2 li span.link{text-align:center; margin-bottom:5px; display:block; }
+ul.list2 li a{ font-size:100%; color:#3c3c3b; font-style:italic;}
+
+ul.list2.areas li img{ margin-bottom:0px;}
+
+/*---- topics ----*/
+div.topics ul.list2 { margin:0px 0px 20px 0px;}
+div.topics ul.list2 li{ padding:8px; width:254px; min-height:340px; margin:0px 0px 15px 8px;}
+div.topics ul.list2 li h4{ color:#3c3c3b; font-size:130%; color:#3c3c3b; margin-bottom:10px; line-height:25px;}
+div.topics ul.list2 li p{ text-align:right; margin-bottom:20px;}
+div.topics ul.list2 li:last-child{ margin-left:0px;}
+div.topics a.button1{width:275px; padding:0px 0px; margin:0px auto; display:block;}
+
+/*---- slideshow ----*/
+div.slideshow { margin-bottom:50px;}
+div.slideshow div.slides{ float:right; margin-left:20px;}
+div.slideshow div.slides div.slide{ background:#fff; margin-bottom:10px;}
+div.slideshow div.slides a.read-more{ width:70px; float:right; display:block;}
+div.slideshow div.slides a.button{ float:left; height:29px; line-height:29px; font-size:180%;}
+div.slideshow span.controls{width:70px; display:block; float:right; margin-right:25px;}
+div.slideshow span.controls a{ display:inline-block; margin-left:5px; background:url(../images/theme/controls-bg.png) no-repeat left bottom; width:14px; height:14px;}
+div.slideshow span.controls a:hover, div.slideshow span.controls a.active{background:url(../images/theme/controls-bg.png) no-repeat left top;}
+div.slideshow div.description{ float:right; width:238px;}
+div.slideshow div.description p{ text-align:justify;}
+
+/*---- Breadcrumb ----*/
+div.breadcrumb{ margin:0px 0px 45px;}
+div.breadcrumb p{ font-size:330%; color:#000; line-height:33px; margin-bottom:0px;}
+div.breadcrumb p span{ display:inline-block; margin:0px 10px;}
+div.breadcrumb p a{ text-decoration:none; color:#000;}
+
+/*---- Accordian ----*/
+div.accordian{ margin-bottom:30px;}
+#content div.accordian h3, div.accordian h3{ background:#fff; border:2px solid #9d9d9c; padding:3px 5px; line-height:28px; color:#878787; line-height:28px; font-style:italic; font-size:180%; margin-bottom:10px; font-weight:normal;}
+div.accordian h3 a.arrow{ display:block; float:left; width:40px; line-height:25px; background:url(../images/theme/h2-arrow.png)no-repeat 10px 10px #9d9d9c; border:2px solid #3c3c3b; text-decoration:none;}
+
+/*---- Actions ----*/
+div.action{ margin-bottom:40px;}
+div.action a.button{ float:left; margin-left:10px;}
+div.action a.add{ float:right; margin:0px 0px 0px 10px;}
+div.action a.read-more{ line-height:34px;}
+
+/*---- Share ----*/
+div.box.share{ padding:10px;}
+div.box.share p{color:#878787; line-height:20px; font-size:170%; margin-bottom:20px; display:block; text-align:justify;}
+div.box.share a.button{ margin:0px 0px -28px 10px; position:relative;}
+
+/*---- Activities ----*/
+div.post ul.list1.activities li{ margin-bottom:10px;}
+ul.list1.activities div.action{ margin-bottom:0px;}
+ul.list1.activities div.action a{ margin:0px 0px 40px 0px; float:none;}
+ul.list1.activities div.action a:last-child{ margin:0px 0px 0px 0px;}
+
+/*---- Title ----*/
+div.title{ margin-bottom:15px;}
+div.title h4{ float:right;}
+div.title h3{ float:right; margin-bottom:0px; line-height:34px;}
+div.title a.button{ margin-right:10px;}
+div.title div.classified{ float:left;}
+
+/*------------------------------------------
+// 4.1  INDEX PAGE SPECIFIC STYLES
+//------------------------------------------*/
+
+div.box.post{width:235px; float:right; margin:0 0 70px 15px; padding:7px 8px;}
+div.box.post p {color:#878787; line-height:20px; font-size:170%; margin-bottom:20px; display:block; }
+div.box.post a.button1{ margin:0px auto -25px; position:relative;}
+
