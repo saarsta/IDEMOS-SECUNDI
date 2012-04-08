@@ -69,6 +69,7 @@ var UserResource = module.exports =  function() {
         gender:null,
         age:null,
         discussions:null
+//        avatar_url:null
     };
     this.update_fields = {
         first_name:null,

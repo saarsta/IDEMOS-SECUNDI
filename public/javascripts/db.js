@@ -26,25 +26,6 @@ var db_functions = {
                 {
                    $('#subjects_list').append(out);
                 });
-
-//                for (var i=0; i < size; i++){
-//                    var subject = data.objects[i];
-//
-//                    var subject_link = $(document.createElement('a'))
-//                        .attr("id", 'subject_link_' + i);
-//                    subject_link.attr('href', "/account/selectedSubjectPage?subject_id="+subject._id + '&subject_name=' + subject.name);
-//                    subject_link.text(subject.name);
-//                    $('#subjects_list').append(subject_link).append('<br />');
-//
-//                    if (subject.is_hot){
-//                        var hot_subject_link = $(document.createElement('a'))
-//                            .attr("id", 'hot_subject_link_' + i);
-//                        hot_subject_link.attr('href', "/account/selectedSubjectPage?subject_id="+subject._id + '&subject_name=' + subject.name);
-//                        hot_subject_link.text(subject.name);
-//                        console.log(hot_subject_link);
-//                        $('.hot_subject').append(hot_subject_link).append('<br />');
-//                    }
-//                }
             },
 
             error: function (xhr, ajaxOptions, thrownError) {
@@ -61,20 +42,26 @@ var db_functions = {
             success: function (data) {
 
                 console.log(data);
-
                 var length = data.objects.length;
 
-                if (length > 0){
-                    var blank_row = $(document.createElement('p'))
-                        .attr('id', 'tags_header');
-                    blank_row.text('I FOUND THOSE ITEMS:');
-                    $('.tags').append(blank_row);
-                }else{
-                    alert('no information items!');
-                }
+                dust.renderArray('information_item', data.objects,function(err,out)
+                {
+                    $('#meida_list').append(out);
+                });
 
-                for (var i in data.objects)
-                    items.add(data.objects[i], "tags");
+                $('#search_results').show();
+
+//                if (length > 0){
+//                    var blank_row = $(document.createElement('p'))
+//                        .attr('id', 'tags_header');
+//                    blank_row.text('I FOUND THOSE ITEMS:');
+//                    $('.tags').append(blank_row);
+//                }else{
+//                    alert('no information items!');
+//                }
+//
+//                for (var i in data.objects)
+//                    items.add(data.objects[i], "tags");
             },
 
             error: function (xhr, ajaxOptions, thrownError) {

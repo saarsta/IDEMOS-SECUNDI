@@ -51,15 +51,30 @@
             </div>
             <!--/Main Navigation-->
 
-            <div class="user-area box">
-                <div class="frame"> <img src="/images/assets/image4.jpg" alt="image4"/> <span class="number">3</span> </div>
-                <h3>שם משתמש</h3>
-                <p><span class="number"></span>מספר טוקנים</p>
-                <br class="clear"/>
-                <div class="index">
-                    <p>מדד אקטיביות</p>
-                    <span class="index"> <span style="width:30%;">&nbsp;</span> </span> </div>
-                <a href="#" class="button">מה דעתך ?</a> </div>
+            <%if(logged){%>
+                <div class="user-area box">
+                    <div class="frame">
+                        <img width="59" height="62" src="http://<%=avatar%>" alt="<%=user.username%>"/>
+                        <span class="number"><%=user.tokens%></span>
+                    </div>
+                    <h3><%=user.username%></h3>
+                    <p><span class="number"></span>מספר טוקנים</p>
+                    <br class="clear"/>
+                    <div class="index">
+                        <p>מדד אקטיביות</p>
+                <span class="index">
+                    <span style="width:30%;">&nbsp;</span>
+                </span>
+                    </div>
+                    <a href="#" class="button">מה דעתך ?</a>
+                </div>
+                <%}else{%>
+                <div class="sociable box">
+                    <p>הנעה לפעולה הקוראת להרשם
+                        למערכת כדי להתחיל להשפיע</p>
+                    <a href="#" class="button btn_facebook_connect">Facebook Connect</a>
+                </div>
+            <%}%>
         </div>
     </div>
     <!--/Header-->

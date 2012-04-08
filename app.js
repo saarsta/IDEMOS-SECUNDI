@@ -66,9 +66,6 @@ require('j-forms').setAmazonCredentials({
     bucket: 'uru'
 });
 
-
-
-
 mongoose.connect(app.settings.DB_URL);
 
 function split_db_url(db_url)
@@ -131,12 +128,12 @@ app.configure(function(){
     logoutHandler: require("connect-auth/lib/events").redirectOnLogout("/acount/login")}));
 
 
-    var DONT_NEED_LOGIN_PAGES = [/^\/images/,/^\/css/, /stylesheets\/style.css/,/favicon.ico/,/account\/login/,/account\/register/,
+   /* var DONT_NEED_LOGIN_PAGES = [/^\/images/,/^\/css/, /stylesheets\/style.css/,/favicon.ico/,/account\/login/,/account\/register/,
         /facebookconnect.html/, /account\/afterSuccessFbConnect/,/account\/facebooklogin/,
-        /api\/subjects/,/^\/admin/, /^\/api\//];//TODO - change it to global
+        /api\/subjects/,/^\/admin/, /^\/api\//];//TODO - change it to global*/
 
     app.use(account.auth_middleware);
-    app.use(function(req, res, next){
+   /* app.use(function(req, res, next){
         var models = Models;
 
         for(var i=0; i<DONT_NEED_LOGIN_PAGES.length; i++)
@@ -188,7 +185,7 @@ app.configure(function(){
             next();
         }
     });
-
+*/
     app.use(express.methodOverride());
     app.use(i18n.init);
     app.use(app.router);

@@ -58,32 +58,34 @@ var items = {
 
 function loadInfoAndMeasures() {
 
+    $('#search_results').hide();
+
     db_functions.dbGetAllSubjects();
 
-    $.ajax({
-        url: '/api/information_items/?is_hot=true',
-        type: "GET",
-        async: true,
-        success: function (data) {
+    /*$.ajax({
+     url: '/api/information_items/?is_hot_info_item=true',
+     type: "GET",
+     async: true,
+     success: function (data) {
 
-            console.log(data);
-            var object = data.objects[i];
-            var length = data.objects.length;
+     console.log(data);
+     var object = data.objects[i];
+     var length = data.objects.length;
 
-            for(var i = 0; i < length; i++){
-                var hot_info_item_object = $(document.createElement('a'))
-                    .attr("id", 'hot_info_item_object' + i);
-                hot_info_item_object.attr('href', '');
-                hot_info_item_object.text(object.title);
-                console.log(hot_info_item_object);
-                $('.hot_information_item').append(hot_info_item_object).append(object.text_field);
-            }
-        },
+     for(var i = 0; i < length; i++){
+     var hot_info_item_object = $(document.createElement('a'))
+     .attr("id", 'hot_info_item_object' + i);
+     hot_info_item_object.attr('href', '');
+     hot_info_item_object.text(object.title);
+     console.log(hot_info_item_object);
+     $('.hot_information_item').append(hot_info_item_object).append(object.text_field);
+     }
+     },
 
-        error: function (xhr, ajaxOptions, thrownError) {
-            alert('error with hot items');
-        }
-    });
+     error: function (xhr, ajaxOptions, thrownError) {
+     alert('error with hot items');
+     }
+     });*/
 
     $('#btn_look').live("click", function(){
 

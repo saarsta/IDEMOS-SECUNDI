@@ -13,7 +13,9 @@
 };*/
 
 exports.meidaInit = function(req, res){
-    res.render('infoAndMeasures.ejs',{title:'מידע ומדדים',big_impressive_title:"כותרת גדולה ומרשימה",
+    res.render('infoAndMeasures.ejs',{logged: req.isAuthenticated(), title:'מידע ומדדים', big_impressive_title:"כותרת גדולה ומרשימה",
+        user: req.session.user,
+        avatar:req.session.avatar_url,
         extra_head:'<script src="/javascripts/infoAndMeasures.js"></script>'});
 };
 

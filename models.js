@@ -139,7 +139,8 @@ var Schemas = exports.Schemas = {
         discussions:{type:[ObjectId], ref:'Discussion', index:true,editable:false},
         is_visible:{type:Boolean, 'default':true},
         creation_date:{type:Date, 'default':Date.now,editable:false},
-        is_hot:{type:Boolean, 'default':false},
+        is_hot_object:{type:Boolean, 'default':false},
+        is_hot_info_item: {type:Boolean, 'default':false},
         tag_suggestions: [tag_suggestions],
         like_counter: {type: Number, 'default': 0, editable: false},
         //this two fields are for user suggestion of InformationItem, when admin create this it will remain false
@@ -153,14 +154,16 @@ var Schemas = exports.Schemas = {
     Subject:{
         name:{type:String,required:true},
         description: {type:mongoose_types.Text,required:true},
+        text_field_preview:{type:mongoose_types.Text},
         image_field:mongoose_types.File,
         tags:[String],
-        gui_order:{type:Number,'default':9999999,editable:false}
-//        is_hot:{type:Boolean,'default':false}
+        gui_order: {type:Number,'default':9999999,editable:false},
+        is_hot_object: {type:Boolean,'default':false}
     },
 
     Discussion:{
         title:{type:String, required:true},
+        text_field_preview:{type:mongoose_types.Text},
         subject_id:[
             {type:ObjectId, ref:'Subject', index:true, required:true}
         ],
@@ -170,6 +173,7 @@ var Schemas = exports.Schemas = {
         last_name:{type:String,editable:false},
         vision_text:String,
         vision_text_history:{type:[String],editable:false},
+        is_hot_object: {type:Boolean,'default':false},
         is_cycle:{type:Boolean, 'default':false,editable:false},
         tags:[String],
         users:[
@@ -178,6 +182,7 @@ var Schemas = exports.Schemas = {
         followers_count:{type:Number, 'default':0},
         is_visible:{type:Boolean, 'default':true},
         is_published:{type:Boolean, 'default':false},
+
         grade:Number,
         evaluate_counter:{type:Number, 'default':0},
         grade_sum:{type:Number, 'default':0},
@@ -187,11 +192,13 @@ var Schemas = exports.Schemas = {
 
     Cycle:{
         title: {type:String, required:true},
+        text_field_preview:{type:mongoose_types.Text},
         tags:[String],
         discussions:[
             {type:ObjectId, ref:'Discussion'}
         ],
         document: String,
+        is_hot_object: {type:Boolean,'default':false},
         followers_count: {type: Number}
     },
 
@@ -266,6 +273,7 @@ var Schemas = exports.Schemas = {
     Action:{
         title:{type:String, required:true},
         description:String,
+        text_field_preview:{type:mongoose_types.Text},
         creator_id:{type:ObjectId, ref:'User', index:true, required:true},
         first_name: String,
         last_name: String,
@@ -288,6 +296,7 @@ var Schemas = exports.Schemas = {
         num_of_going: {type: Number, 'default': 0},
         tokens:{type:Number, 'default':0},
         is_approved:{type:Boolean, 'default':false},
+        is_hot_object: {type:Boolean,'default':false},
         gamification: {approved_to_cycle :{type: Boolean, 'default': false}},
         location:mongoose_types.GeoPoint
     },
