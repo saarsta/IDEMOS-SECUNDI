@@ -163,8 +163,8 @@ function loadSelectedSubjectPage(subject_id, subject_name, tag_name) {
         db_functions.getInfoItemsOfSubjectByKeywords(key_words, subject_id, function(err, data){
 
                 if(!err){
-                    $('#info_items').html();
-                    dust.renderArray('hot_info_item_in_subject_1', data.objects,function(err,out)
+                    $('#info_items').empty();
+                    dust.renderArray('info_item_in_subject_1', data.objects,function(err,out)
                     {
                         $('#info_items').append(out);
                     });

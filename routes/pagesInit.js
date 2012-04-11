@@ -17,6 +17,7 @@ exports.meidaInit = function(req, res){
         user: req.session.user,
         avatar:req.session.avatar_url,
         tag_name: req.query.tag_name,
+        body_class:'layout',
         extra_head:'<script src="/javascripts/infoAndMeasures.js"></script>'});
 };
 
@@ -28,6 +29,7 @@ exports.subjectPageInit = function(req, res){
         tag_name: req.query.tag_name,
         user: req.session.user,
         avatar:req.session.avatar_url,
+        body_class:'layout1',
         extra_head:'<script src="/javascripts/selectedSubjectPage.js"></script>'});
 };
 
@@ -38,12 +40,14 @@ exports.createDiscussionPageInit = function(req, res){
         subject_name: req.query.subject_name,
         user: req.session.user,
         avatar:req.session.avatar_url,
+        body_class:'layout',
         extra_head:'<script src="/javascripts/createDiscussion.js"></script>'});
 }
 
 exports.discussionPageInit = function(req, res){
 
     res.render('discussionPage.ejs',{title:'discussionPageInit.ejs', discussion_id: req.query.discussion_id, subject_id: req.query.subject_id,
+        body_class:'layout',
         subject_name: req.query.subject_name});
 
 }
@@ -51,6 +55,7 @@ exports.discussionPageInit = function(req, res){
 exports.discussionPreviewPageInit = function(req, res){
 
     res.render('discussionPreviewPage.ejs',{title:'discussionPreviewPageInit.ejs', discussion_id: req.query.discussion_id, subject_id: req.query.subject_id,
+        body_class:'layout',
         subject_name: req.query.subject_name});
 
 }
@@ -63,6 +68,7 @@ exports.allDiscussions = function(req,res)
 {
     res.render('target_ejs.ejs',{
         title:'מידע ומדדים',
+        body_class:'layout',
         big_impressive_title:"כותרת גדולה ומרשימה",
         extra_head:'<script src="/javascripts/infoAndMeasures.js"></script>'
     });

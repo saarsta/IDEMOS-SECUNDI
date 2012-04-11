@@ -16,8 +16,8 @@ writer.write(compile_template('information_item','informationItem.html'));
 writer.write(compile_template('cycle','cycle.html'));
 writer.write(compile_template('discussion','discussion.html'));
 writer.write(compile_template('action','action.html'));
-writer.write(compile_template('hot_info_item','hot_info_item.html'));
-writer.write(compile_template('hot_info_item_in_subject_1','infoItemInSubject1.html'));
+writer.write(compile_template('hot_info_item','hotInfoItem.html'));
+writer.write(compile_template('info_item_in_subject_1','infoItemInSubject1.html'));
 writer.write(compile_template('shopping_cart_item_1','shoppingCartItem1.html'));
 
 

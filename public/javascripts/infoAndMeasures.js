@@ -59,7 +59,9 @@ var COUNTER;
 function loadInfoAndMeasures(tag_name) {
     COUNTER = 0;
 
-    if(tag_name){
+    $('#search_results').hide();
+    if(tag_name != undefined && tag_name != "undefined" && tag_name != null){
+        $('#search_results').show();
         $("#look_for_tags").attr('value', tag_name);
         db_functions.dbGetInfoItemsByTagName(tag_name, function(err,data){
             $('#information_items_list').empty();
@@ -68,15 +70,12 @@ function loadInfoAndMeasures(tag_name) {
                 $('#information_items_list').append(out);
             });
         });
-    }else{
-        $('#search_results').hide();
     }
 
     db_functions.dbGetAllSubjects();
     db_functions.getHotInfoItems();
 
     $('#btn_look').live("click", function(){
-
         $('.tags').html('');
         var tag_value = $("#look_for_tags").attr('value');
 
