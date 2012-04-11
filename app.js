@@ -137,6 +137,7 @@ app.configure(function(){
     app.use(i18n.init);
     app.use(app.router);
     app.use(express.static(__dirname + '/public'));
+    require('j-forms').s
 });
 
 // register helpers for use in templates

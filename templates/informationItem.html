@@ -1,9 +1,11 @@
 <li>
     <a href="<!--go to infoitem-->">
         <div class="image">
-            <img width="175" height="120" src="{image_field.url}" alt="{title}" />
+            <div style="width:175px; height:120px;">
+            <img  src="{image_field.url}" alt="{title}" />
+            </div>
             <p>{title}</p>
-            <p>{?text_field_preview}{text_field_preview}{:else} {text_field}{/text_field_preview}</p>
+            <p>{?text_field_preview}{text_field_preview|s}{:else} {text_field|s}{/text_field_preview}</p>
         </div>
     </a>
 </li>

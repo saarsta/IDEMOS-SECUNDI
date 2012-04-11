@@ -58,7 +58,6 @@ exports.referred_by_middleware = function(req,res,next)
 
 exports.auth_middleware = function (req, res, next) {
 
-    console.log("In auth_middleware, req.path is: " + req.path + "   method = " + req.method);
     // if this request needs to be authenticated
     for (var i = 0; i < DONT_NEED_LOGIN_PAGES.length; i++) {
         var dont = DONT_NEED_LOGIN_PAGES[i];

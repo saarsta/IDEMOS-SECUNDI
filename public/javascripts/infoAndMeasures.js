@@ -66,6 +66,8 @@ function loadInfoAndMeasures(tag_name) {
             dust.renderArray('information_item', data.objects,function(err,out)
             {
                 $('#information_items_list').append(out);
+            },function(){
+                $('#information_items_list img').autoscale();
             });
         });
     }else{
