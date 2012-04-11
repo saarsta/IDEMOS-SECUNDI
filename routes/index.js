@@ -3,5 +3,6 @@ exports.index = function(req, res){
         res.render('index.ejs', { title:'דף בית', logged: req.isAuthenticated(), user: req.session.user,
             avatar:req.session.avatar_url,
             big_impressive_title:"Halaou Big",
+            body_class:"",
             extra_head:{}})
 };

@@ -107,10 +107,15 @@ function loadSelectedSubjectPage(subject_id, subject_name, tag_name) {
 
     db_functions.getUserShopingCart(function(data){
 
-        for (var i in data.objects) {
+        dust.renderArray('shopping_cart_item_1', data.objects,function(err,out)
+        {
+            $('#shopping_cart').append(out);
+        });
+
+        /*for (var i in data.objects) {
             var item = items.add(data.objects[i], "shopping_cart");
             items.changeButton(item);
-        }
+        }*/
     });
 
     db_functions.getDiscussionsBySubject(subject_id, function(err, data){
@@ -158,8 +163,8 @@ function loadSelectedSubjectPage(subject_id, subject_name, tag_name) {
         db_functions.getInfoItemsOfSubjectByKeywords(key_words, subject_id, function(err, data){
 
                 if(!err){
-                    $('#info_items').html();
-                    dust.renderArray('hot_info_item_in_subject_1', data.objects,function(err,out)
+                    $('#info_items').empty();
+                    dust.renderArray('info_item_in_subject_1', data.objects,function(err,out)
                     {
                         $('#info_items').append(out);
                     });
