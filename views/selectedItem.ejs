@@ -1,0 +1,42 @@
+<div class="breadcrumb">
+    <p>חינוך <span>></span> <a href="#">לימודי ליבה</a></p>
+</div>
+
+<div id="search-form" class="form">
+    <form action="#" method="post">
+        <p class="clearfix">
+            <input type="text" title="search" class="textbox" value="חיפוש בתוך הנושא הנבחר" onblur="if(this.value=='') this.value='חיפוש בתוך הנושא הנבחר';" onfocus="if(this.value=='חיפוש בתוך הנושא הנבחר') this.value='';" />
+            <input type="submit" title="submit" class="submit-btn" value="חפש"/>
+        </p>
+    </form>
+</div>
+
+<div id="sidebar">
+
+    <div id="shopping_cart" class="widget1 clearfix">
+        <div class="information clearfix">
+            <h3>עגלת המידע</h3>
+            <a href="#" class="button">שתף</a>
+            <br class="clear"/>
+            <p>קריאה לפעולה כדי לאסוף מידע,
+                תכנים, גרפים, נתונים, תרשימים
+                ועוד ועוד כדי להציע מציאות חדשה.</p>
+            <a id="create_new_discussion" class="button suggest" >הצע מציאות חדשה</a>
+        </div>
+    </div>
+</div>
+
+
+<div id="main">
+    <div id="info_item_full_view" class="post clearfix"> </div>
+</div>
+
+
+</div>
+</div>
+
+<script type="text/javascript">
+    $(function() {
+        loadSelectedItemPage("<%= subject_id%>", "<%=info_id%>");
+    });
+</script>

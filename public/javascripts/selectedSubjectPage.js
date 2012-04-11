@@ -140,7 +140,7 @@ function loadSelectedSubjectPage(subject_id, subject_name, tag_name) {
             console.log(data);
             console.log(JSON.stringify(data));
 
-            dust.renderArray('hot_info_item_in_subject_1', data.objects,function(err,out)
+            dust.renderArray('info_item_in_subject_1', data.objects,function(err,out)
             {
                 $('#info_items').append(out);
             });

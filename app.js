@@ -163,6 +163,7 @@ app.get('/needlogin', function(req,res){});
 app.get('/account/logout', account.logout);
 app.get('/meida',pagesInit.meidaInit);
 app.get('/selectedSubjectPage', pagesInit.subjectPageInit);
+app.get('/selectedItem', pagesInit.selectedItemInit);
 app.get('/createDiscussion', pagesInit.createDiscussionPageInit);
 app.get('/discussion', pagesInit.discussionPageInit);
 app.get('/discussionPreview', pagesInit.discussionPreviewPageInit);
