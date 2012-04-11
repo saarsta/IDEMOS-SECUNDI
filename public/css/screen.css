@@ -112,7 +112,9 @@ div.post blockquote { margin-bottom:20px; }
 div.post blockquote p{ margin-bottom:5px; font-style:italic;}
 div.post blockquote p cite{ font-weight:bold; text-align:right; display:block;}
 
+/*
 div.post img { max-width:100%; }
+*/
 div.post img.alignleft{ float:left; margin:0 10px 10px 0; display: inline;}
 div.post img.alignright{ float:right; margin:0 0px 10px 10px; display: inline;}
 div.post img.aligncenter{ display:block; margin-left:auto; margin-right:auto; margin-bottom:10px;}
