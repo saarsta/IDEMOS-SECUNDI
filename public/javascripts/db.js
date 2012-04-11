@@ -50,7 +50,7 @@ var db_functions = {
     getItemsByTagNameAndType: function(type,tag_name,callback)
     {
         $.ajax({
-            url: '/api/' + type + '?tags=' + tag_name,
+            url: '/api/' + type + (tag_name ? '?tags=' + tag_name : ''),
             type: "GET",
             async: true,
             success: function (data) {

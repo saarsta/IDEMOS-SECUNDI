@@ -59,16 +59,26 @@ var COUNTER;
 function loadInfoAndMeasures(tag_name) {
     COUNTER = 0;
 
+    if( tag_name == 'חיפוש עפ TAGS')
+        tag_name = '';
+
+    $('#search_form').submit(function()
+    {
+        $('#btn_look').click();
+        return false;
+    });
+
     $('#search_results').hide();
     if(tag_name != undefined && tag_name != "undefined" && tag_name != null){
         $('#search_results').show();
         $("#look_for_tags").attr('value', tag_name);
     }
 
-    db_functions.dbGetAllSubjects(true);
+    db_functions.dbGetAllSubjects(!tag_name);
     db_functions.getHotInfoItems();
 
     $('#btn_look').live("click", function(){
+        $('#search_results').show();
         $('.tags').html('');
         var tag_value = $("#look_for_tags").val();
         tag_name = tag_value;
@@ -114,7 +124,8 @@ function loadInfoAndMeasures(tag_name) {
         click_list_type(type);
     });
 
-    click_list_type('information_items');
+    if($('#search_results:visible').length)
+        click_list_type('information_items');
     /*db_functions.getUserShopingCart(function(data){
 
         for (var i in data.objects) {
