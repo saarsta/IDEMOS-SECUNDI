@@ -91,6 +91,8 @@ function loadInfoAndMeasures(tag_name) {
         var results_div = $('#results_' + type);
         $('#search-content .slider:visible').hide();
         results_div.show();
+        $('.search-list li.active').removeClass('active');
+        $($('a[li-value=' + type +']').parent()).addClass('active');
         if(!results_div.is('[fetched]'))
         {
             $('ul',results_div).empty();
