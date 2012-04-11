@@ -58,13 +58,13 @@ app.configure('production', function(){
     app.set('root_path', 'http://uru.herokuapp.com');
     app.set('DB_URL',process.env.MONGOLAB_URI);
     app.use(express.errorHandler());
+    require('j-forms').setAmazonCredentials({
+        key: 'AKIAJM4EPWE637IGDTQA',
+        secret: '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',
+        bucket: 'uru'
+    });
 });
 
-require('j-forms').setAmazonCredentials({
-    key: 'AKIAJM4EPWE637IGDTQA',
-    secret: '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',
-    bucket: 'uru'
-});
 
 mongoose.connect(app.settings.DB_URL);
 

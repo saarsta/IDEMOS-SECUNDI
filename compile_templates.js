@@ -6,7 +6,6 @@ var dust = require('dust')
 function compile_template(name,file)
 {
     var str = fs.readFileSync(path.join(__dirname,'templates',file),'utf8');
-//    console.log(str);
     return dust.compile(str,name);
 }
 
