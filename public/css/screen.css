@@ -112,9 +112,7 @@ div.post blockquote { margin-bottom:20px; }
 div.post blockquote p{ margin-bottom:5px; font-style:italic;}
 div.post blockquote p cite{ font-weight:bold; text-align:right; display:block;}
 
-/*
 div.post img { max-width:100%; }
-*/
 div.post img.alignleft{ float:left; margin:0 10px 10px 0; display: inline;}
 div.post img.alignright{ float:right; margin:0 0px 10px 10px; display: inline;}
 div.post img.aligncenter{ display:block; margin-left:auto; margin-right:auto; margin-bottom:10px;}
@@ -352,10 +350,12 @@ div.post ul.list2, ul.list2{ margin:0px 0px 50px; padding:0px 0px;}
 ul.list2 li{ float:right; list-style:none; width:190px; padding:4px; border:2px solid #575756; background:#ffffff; margin:0px 0px 15px 12px; font-size:180%;}
 ul.list2 li:nth-child(4n){ margin-left:0px;}
 ul.list2 li:nth-child(5){ margin-right:120px;}
-ul.list2 li img{ border:2px solid #C6C6C6; margin-bottom:5px; vertical-align:bottom;}
+ul.list2 li div.img{ border:2px solid #C6C6C6; margin-bottom:5px; vertical-align:bottom;}
 ul.list2 li p{ font-size:100%; color:#706f6f; font-style:italic; margin-bottom:0px; text-align:center;}
 ul.list2 li span.link{text-align:center; margin-bottom:5px; display:block; }
 ul.list2 li a{ font-size:100%; color:#3c3c3b; font-style:italic;}
+
+
 
 ul.list2.areas li img{ margin-bottom:0px;}
 

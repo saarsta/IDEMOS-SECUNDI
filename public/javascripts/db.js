@@ -10,30 +10,55 @@
 
 dust.renderArray = function(template,arr,callback,endCallback)
 {
+    var out_arr = [];
+    var _err = null;
     for(var i=0; i<arr.length; i++)
     {
-        dust.render(template,arr[i],callback);
+        dust.render(template,arr[i],function(err,out){
+            if(callback)
+                callback(err,out);
+            if(err)
+                _err = err;
+            out_arr.push(out);
+        });
     }
     if(endCallback)
-        endCallback();
+        endCallback(_err,out_arr.join(''));
 };
 
 var db_functions = {
-    dbGetAllSubjects: function(){
+    dbGetAllSubjects: function(useSmall){
         $.ajax({
             url: '/api/subjects',
             type: "GET",
             async: true,
             success: function (data) {
                 var size = data.objects.length;
-                dust.renderArray('subject',data.objects,function(err,out)
+                dust.renderArray(useSmall?'subject_small' :'subject',data.objects,null,function(err,out)
                 {
                    $('#subjects_list').append(out);
+
                 });
             },
 
             error: function (xhr, ajaxOptions, thrownError) {
                 alert('error');
+            }
+        });
+    },
+
+    getItemsByTagNameAndType: function(type,tag_name,callback)
+    {
+        $.ajax({
+            url: '/api/' + type + '?tags=' + tag_name,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
             }
         });
     },
@@ -124,9 +149,10 @@ var db_functions = {
                 console.log("in hot info items");
                 console.log(data);
                 $('#hot_items_list').empty();
-                dust.renderArray('hot_info_item', data.objects,function(err,out)
+                dust.renderArray('hot_info_item', data.objects,null,function(err,out)
                 {
                     $('#hot_items_list').append(out);
+                    $('#hot_items_list img').autoscale();
                 });
             },
 

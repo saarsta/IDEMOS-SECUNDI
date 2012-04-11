@@ -163,7 +163,10 @@ var Schemas = exports.Schemas = {
 
     Discussion:{
         title:{type:String, required:true},
-        text_field_preview:{type:mongoose_types.Text},
+        text_field:{type:mongoose_types.Html},
+        text_field_preview:{type:mongoose_types.Html},
+        image_field: mongoose_types.File,
+        image_field_preview: mongoose_types.File,
         subject_id:[
             {type:ObjectId, ref:'Subject', index:true, required:true}
         ],
@@ -192,7 +195,10 @@ var Schemas = exports.Schemas = {
 
     Cycle:{
         title: {type:String, required:true},
-        text_field_preview:{type:mongoose_types.Text},
+        text_field:{type:mongoose_types.Html},
+        text_field_preview:{type:mongoose_types.Html},
+        image_field: mongoose_types.File,
+        image_field_preview: mongoose_types.File,
         tags:[String],
         discussions:[
             {type:ObjectId, ref:'Discussion'}
@@ -272,7 +278,10 @@ var Schemas = exports.Schemas = {
 
     Action:{
         title:{type:String, required:true},
-        text_field_preview:{type:mongoose_types.Text},
+        text_field:{type:mongoose_types.Html},
+        text_field_preview:{type:mongoose_types.Html},
+        image_field: mongoose_types.File,
+        image_field_preview: mongoose_types.File,
         description:String,
         creator_id:{type:ObjectId, ref:'User', index:true, required:true},
         first_name: String,

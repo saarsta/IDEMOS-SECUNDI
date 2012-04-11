@@ -63,34 +63,20 @@ function loadInfoAndMeasures(tag_name) {
     if(tag_name != undefined && tag_name != "undefined" && tag_name != null){
         $('#search_results').show();
         $("#look_for_tags").attr('value', tag_name);
-        db_functions.dbGetInfoItemsByTagName(tag_name, function(err,data){
-            $('#information_items_list').empty();
-            dust.renderArray('information_item', data.objects,function(err,out)
-            {
-                $('#information_items_list').append(out);
-            },function(){
-                $('#information_items_list img').autoscale();
-            });
-        });
     }
 
-    db_functions.dbGetAllSubjects();
+    db_functions.dbGetAllSubjects(true);
     db_functions.getHotInfoItems();
 
     $('#btn_look').live("click", function(){
         $('.tags').html('');
-        var tag_value = $("#look_for_tags").attr('value');
+        var tag_value = $("#look_for_tags").val();
+        tag_name = tag_value;
+        $('#search-content .slider').hide().removeAttr('fetched');
+        $('#results_info_items').show();
 
-        db_functions.dbGetInfoItemsByTagName(tag_value, function(err,data){
-            $('#information_items_list').empty();
-            dust.renderArray('information_item', data.objects,function(err,out)
-            {
-                $('#information_items_list').append(out);
-            });
+        click_list_type('information_items');
 
-            $('#search_results').show();
-
-        });
         event.stopPropagation();
     });
 
@@ -98,8 +84,35 @@ function loadInfoAndMeasures(tag_name) {
         COUNTER++;
         console.log(COUNTER);
         //bring me page naumer counter
-    })
+    });
 
+    function click_list_type(type)
+    {
+        var results_div = $('#results_' + type);
+        $('#search-content .slider:visible').hide();
+        results_div.show();
+        if(!results_div.is('[fetched]'))
+        {
+            $('ul',results_div).empty();
+            db_functions.getItemsByTagNameAndType(type,tag_name,function(err,data)
+            {
+                dust.renderArray(type, data.objects,null,function(err,out){
+                    $('ul',results_div).append(out);
+                    $('img',results_div).autoscale();
+                    results_div.show().attr('fetched','');
+                });
+            });
+        }
+    }
+
+    $('#search-content .search-type').click(function(type)
+    {
+        var a = $(this);
+        var type = a.attr('li-value');
+        click_list_type(type);
+    });
+
+    click_list_type('information_items');
     /*db_functions.getUserShopingCart(function(data){
 
         for (var i in data.objects) {

@@ -4,8 +4,9 @@
     });
 </script>
 
-</br></br></br></br></br></br>
-
+<div id="main">
+    <div class="post clearfix">
+        <h2><%= big_impressive_title %></h2>
 <div class="search-area">
     <div id="search-form" class="form">
         <form action="" method="post">
@@ -20,33 +21,47 @@
     <div id="search_results">
 
         <h3>תוצאות חיפוש (13):</h3>
-        <div class="search-content">
+        <div class="search-content" id="search-content">
             <ul class="search-list clearfix">
-                <li class="active"> <a href="#"> <span class="circle"></span> מידע ומדדים </a> </li>
-                <li> <a href="#"> <span class="circle"></span>מעגלי תנופה</a> </li>
-                <li> <a href="#"> <span class="circle"></span>דיונים</a> </li>
-                <li> <a href="#"> <span class="circle"></span>פעולות</a> </li>
-                <li> <a href="#"> <span class="circle"></span>בלוגים</a> </li>
+                <li class="active" li-value="info_items" > <a href="javascript:void(0)"  class="search-type" li-value="information_items"> <span class="circle"></span> מידע ומדדים </a> </li>
+                <li> <a href="javascript:void(0)" class="search-type" li-value="cycles"> <span class="circle"></span>מעגלי תנופה</a> </li>
+                <li> <a href="javascript:void(0)" class="search-type" li-value="discussions"> <span class="circle"></span>דיונים</a> </li>
+                <li> <a href="javascript:void(0)" class="search-type" li-value="actions"> <span class="circle"></span>פעולות</a> </li>
+                <li> <a href="javascript:void(0)" class="search-type" li-value="blogs"> <span class="circle"></span>בלוגים</a> </li>
             </ul>
 
-            <div id="info_items" class="slider clearfix">
+            <div id="results_information_items" class="slider clearfix">
+                <div>
                 <ul id="information_items_list" class="clearfix"> </ul>
-                <div class="controls"><a href="#" class="left-btn"></a></div>
+                </div>
+                <div class="controls"><a href="javascript:void(0)" class="left-btn"></a></div>
             </div>
 
-            <div id="cycles" class="slider clearfix">
+            <div id="results_cycles" class="slider clearfix" style="display:none;">
+                <div>
                 <ul id="cycle_list" class="clearfix"> </ul>
-                <div class="controls"><a href="#" class="left-btn"></a></div>
+                </div>
+                <div class="controls"><a href="javascript:void(0)" class="left-btn"></a></div>
             </div>
 
-            <div id="discussions" class="slider clearfix">
+            <div id="results_discussions" class="slider clearfix" style="display:none;">
+                <div>
                 <ul id="discussion_list" class="clearfix"> </ul>
-                <div class="controls"><a href="#" class="left-btn"></a></div>
+                </div>
+                <div class="controls"><a href="javascript:void(0)" class="left-btn"></a></div>
             </div>
 
-            <div id="actions" class="slider clearfix">
+            <div id="results_actions" class="slider clearfix" style="display:none;">
+                <div>
                 <ul id="action_list" class="clearfix"> </ul>
-                <div class="controls"><a href="#" class="left-btn"></a></div>
+                </div>
+                <div class="controls"><a href="javascript:void(0)" class="left-btn"></a></div>
+            </div>
+            <div id="blogs_actions" class="slider clearfix" style="display:none;">
+                <div>
+                <ul id="blogs_list" class="clearfix"> </ul>
+                </div>
+                <div class="controls"><a href="javascript:void(0)" class="left-btn"></a></div>
             </div>
         </div>
     </div>
@@ -62,8 +77,9 @@
     <ul id="hot_items_list" class="list2 clearfix"></ul>
 
     <button id="more_hot_items_btn" class="button1">עוד נושאים בוערים**</button>
-    <!--<a href="#" class="button1">עוד נושאים בוערים**</a>-->
+    <!--<a href="javascript:void(0)" class="button1">עוד נושאים בוערים**</a>-->
 </div>
-
+</div>
+</div>
 
 
