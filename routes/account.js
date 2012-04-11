@@ -91,6 +91,60 @@ exports.auth_middleware = function (req, res, next) {
     }
 };
 
+/* app.use(function(req, res, next){
+ var models = Models;
+
+ for(var i=0; i<DONT_NEED_LOGIN_PAGES.length; i++)
+ {
+ var dont = DONT_NEED_LOGIN_PAGES[i];
+ if (dont.exec(req.path))
+ {
+ next();
+ return;
+ }
+ }
+
+ if(req.isAuthenticated() && !req.session.user){
+
+
+ //            if(!req.session.user_id){
+ //                //means that user used registration, so we save user_id out of the AUTH
+
+ req.session.user_id = req.session.auth.user_id || req.session.auth.user._id;
+
+ //            }
+ //            var email = req.session.auth.user.email;
+ var facebook_id = req.session.auth.user.id;
+ models.User.findById(req.session.user_id ,function(err,object)
+ {
+ if(err)
+ {
+ console.log('couldn put user id' + err.message)
+ next();
+ }
+ else
+ {
+ req.session.user = object;
+ //if object doesnt exust in db it means we got here before registration completed
+ if (!object){
+ next();
+ }else{
+ req.session.user_id = object.id;
+ req.session.save(function(err)
+ {
+ if(err)
+ console.log('couldnt put user id' + err.message);
+ next();
+ });
+ }
+ }
+ });
+ }else{
+ next();
+ }
+ });
+ */
+
 exports.login = function (req, res) {
     if (req.method == 'GET') {
         res.render('login.ejs', {title:'Login', failed:false, exist_username:false, next:req.query.next});

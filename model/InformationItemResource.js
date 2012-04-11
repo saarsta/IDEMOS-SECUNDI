@@ -20,7 +20,7 @@ var InformationItemResource = module.exports = common.GamificationMongooseResour
     init:function () {
         this._super(models.InformationItem, null, null);
         this.allowed_methods = ['get', 'post', 'put'];
-        this.authentication = new common.SessionAuthentication();
+//        this.authentication = new common.SessionAuthentication();
         this.filtering = {tags:null, subject_id:null, title:null, text_field:null, users:null, is_hot:null, discussions:null};
         this.default_query = function (query) {
             return query.where('is_visible', true).sort('creation_date', 'descending');

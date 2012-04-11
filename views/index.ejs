@@ -1,16 +1,17 @@
 
 <script type="text/javascript">
     $(function() {
-        $('#btn_search_by_tag').live("click", function(){
+      /*  $('#btn_search_by_tag').live("click", function(){
 
             $('.tags').html('');
-            var tag_value = $("#look_for_tags").attr('value');
-
+            var tag_value = $("#btn_search_for_tags").attr('value');
+            console.log(tag_value);
             db_functions.dbGetInfoItemsByTagName(tag_value);
             event.stopPropagation();
-        });
+        });*/
     });
 </script>
+
 
 <%if(!logged){%>
 <div id="banner">
@@ -41,9 +42,9 @@
             <Br/> <Br/> <Br/> <Br/> <Br/> <Br/> <Br/> <Br/> <Br/> <Br/> <Br/>
         <%}%>
         <div id="search-form" class="form">
-            <form action="#" method="post">
+            <form action="/meida" method="GET">
                 <p class="clearfix">
-                    <input type="text" title="search" class="textbox" value="חיפוש עפ TAGS" onfocus="if(this.value=='חיפוש עפ TAGS') this.value='';" onblur="if(this.value=='') this.value='חיפוש עפ TAGS';"/>
+                    <input type="text" name="tag_name" id="tag_name" title="search" class="textbox" value="חיפוש עפ TAGS" onfocus="if(this.value=='חיפוש עפ TAGS') this.value='';" onblur="if(this.value=='') this.value='חיפוש עפ TAGS';"/>
                     <input type="submit" title="submit" id="btn_search_by_tag" class="submit-btn" value="חפש"/>
                 </p>
             </form>
@@ -185,15 +186,3 @@
     </div>
 </div>
 <!--/Content-->
-
-<script type="text/javascript">
-    $(function(){
-        $(".btn_facebook_connect").on("click", function(){
-            //alert('/account/facebooklogin?next=' + location.href);
-
-            document.location.href= '/account/facebooklogin?next=' + location.href;
-        })
-    })
-</script>
-</body>
-</html>

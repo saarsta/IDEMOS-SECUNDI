@@ -104,8 +104,6 @@ function laodDiscussionPage(data){
                     $("#discussion_grade").val("grade is: " + discussion_object.grade + " count: " + discussion_object  .evaluate_counter);
                 }
             });
-
-
         }
     });
 }

@@ -118,5 +118,14 @@
     <!-- /Footer-->
 </div>
 <!--/Container -->
+<script type="text/javascript">
+    $(function(){
+        $(".btn_facebook_connect").on("click", function(){
+            //alert('/account/facebooklogin?next=' + location.href);
+
+            document.location.href= '/account/facebooklogin?next=' + location.href;
+        })
+    })
+</script>
 </body>
 </html>

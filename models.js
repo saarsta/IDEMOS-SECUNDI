@@ -272,8 +272,8 @@ var Schemas = exports.Schemas = {
 
     Action:{
         title:{type:String, required:true},
-        description:String,
         text_field_preview:{type:mongoose_types.Text},
+        description:String,
         creator_id:{type:ObjectId, ref:'User', index:true, required:true},
         first_name: String,
         last_name: String,

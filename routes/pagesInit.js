@@ -16,21 +16,29 @@ exports.meidaInit = function(req, res){
     res.render('infoAndMeasures.ejs',{logged: req.isAuthenticated(), title:'מידע ומדדים', big_impressive_title:"כותרת גדולה ומרשימה",
         user: req.session.user,
         avatar:req.session.avatar_url,
+        tag_name: req.query.tag_name,
         extra_head:'<script src="/javascripts/infoAndMeasures.js"></script>'});
 };
 
 exports.subjectPageInit = function(req, res){
-
-    res.render('selectedSubjectPage.ejs',{title:'selectedSubjectPage.ejs', subject_id: req.query.subject_id,
-        subject_name: req.query.subject_name});
-
+    res.render('selectedSubjectPage.ejs',{title:'מידע ומדדים', logged: req.isAuthenticated(),
+        big_impressive_title:"",
+        subject_id: req.query.subject_id,
+        subject_name: req.query.subject_name,
+        tag_name: req.query.tag_name,
+        user: req.session.user,
+        avatar:req.session.avatar_url,
+        extra_head:'<script src="/javascripts/selectedSubjectPage.js"></script>'});
 };
 
 exports.createDiscussionPageInit = function(req, res){
-
-    res.render('createDiscussion.ejs',{title:'discussionInit.ejs', subject_id: req.query.subject_id,
-        subject_name: req.query.subject_name});
-
+    res.render('createDiscussion.ejs',{title:'discussionInit.ejs',  logged: req.isAuthenticated(),
+        big_impressive_title: "",
+        subject_id: req.query.subject_id,
+        subject_name: req.query.subject_name,
+        user: req.session.user,
+        avatar:req.session.avatar_url,
+        extra_head:'<script src="/javascripts/createDiscussion.js"></script>'});
 }
 
 exports.discussionPageInit = function(req, res){
