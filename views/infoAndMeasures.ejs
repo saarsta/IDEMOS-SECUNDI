@@ -1,46 +1,66 @@
 <script type="text/javascript">
     $(function() {
-        loadInfoAndMeasures();
+        loadInfoAndMeasures("<%=tag_name%>");
     });
 </script>
-<div id="search-form" class="form">
-    <form action="" method="post">
-        <p class="clearfix">
-            <input type="text" title="search" class="textbox" id="look_for_tags" />
-            <input type="submit" id="btn_look" title="submit" class="submit-btn" value="חפש"/>
-        </p>
-    </form>
+<div class="search-area">
+    <div id="search-form" class="form">
+        <form action="" method="post">
+            <p class="clearfix">
+                <input type="text" title="search" class="textbox" id="look_for_tags" />
+                <input type="button" id="btn_look" title="submit" class="submit-btn" value="חפש"/>
+            </p>
+        </form>
+    </div>
+
+
+    <div id="search_results">
+
+        <h3>תוצאות חיפוש (13):</h3>
+        <div class="search-content">
+            <ul class="search-list clearfix">
+                <li class="active"> <a href="#"> <span class="circle"></span> מידע ומדדים </a> </li>
+                <li> <a href="#"> <span class="circle"></span>מעגלי תנופה</a> </li>
+                <li> <a href="#"> <span class="circle"></span>דיונים</a> </li>
+                <li> <a href="#"> <span class="circle"></span>פעולות</a> </li>
+                <li> <a href="#"> <span class="circle"></span>בלוגים</a> </li>
+            </ul>
+
+            <div id="info_items" class="slider clearfix">
+                <ul id="information_items_list" class="clearfix"> </ul>
+                <div class="controls"><a href="#" class="left-btn"></a></div>
+            </div>
+
+            <div id="cycles" class="slider clearfix">
+                <ul id="cycle_list" class="clearfix"> </ul>
+                <div class="controls"><a href="#" class="left-btn"></a></div>
+            </div>
+
+            <div id="discussions" class="slider clearfix">
+                <ul id="discussion_list" class="clearfix"> </ul>
+                <div class="controls"><a href="#" class="left-btn"></a></div>
+            </div>
+
+            <div id="actions" class="slider clearfix">
+                <ul id="action_list" class="clearfix"> </ul>
+                <div class="controls"><a href="#" class="left-btn"></a></div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <h4 class="flR">בחירה מתוך 7 תחומי על</h4>
 
 <br class="clear" />
-<ul id="subjects_list" class="list2 clearfix">
-</ul>
+<ul id="subjects_list" class="list2 clearfix"></ul>
 
 <h2>הנושאים הבוערים</h2>
 <div class="topics">
-    <ul id="hot_items_list" class="list2 clearfix">
-        <li>
-            <img src="resources/images/assets/image6.jpg" alt="image6" />
-            <h4>כותרת</h4>
-            <p>כמה מילים אולי אפילו 2-3 משפטים הסבר ותיאור על הנושא המדובר</p>
-            <a href="#">נתונים אפשריים*</a>
-        </li>
-        <li>
-            <img src="resources/images/assets/image6.jpg" alt="image6" />
-            <h4>כותרת</h4>
-            <p>כמה מילים אולי אפילו 2-3 משפטים הסבר ותיאור על הנושא המדובר</p>
-            <a href="#">נתונים אפשריים*</a>
-        </li>
-        <li>
-            <img src="resources/images/assets/image6.jpg" alt="image6" />
-            <h4>כותרת</h4>
-            <p>כמה מילים אולי אפילו 2-3 משפטים הסבר ותיאור על הנושא המדובר</p>
-            <a href="#">נתונים אפשריים*</a>
-        </li>
-    </ul>
+    <ul id="hot_items_list" class="list2 clearfix"></ul>
 
-    <a href="#" class="button1">עוד נושאים בוערים**</a>
-
+    <button id="more_hot_items_btn" class="button1">עוד נושאים בוערים**</button>
+    <!--<a href="#" class="button1">עוד נושאים בוערים**</a>-->
 </div>
+
+
+

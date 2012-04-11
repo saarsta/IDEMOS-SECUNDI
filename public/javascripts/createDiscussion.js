@@ -70,8 +70,23 @@ function loadCreateDiscussionPage(subject_id, subject_name){
     var vision,
         title,
         first_post;
-
     var user_Shopping_cart;
+
+    $.ajax({
+        url: '/api/subjects/' + subject_id,
+        type: "GET",
+        async: true,
+        success: function (data) {
+            console.log(data);
+            $('#subject_img').attr("src", data.image_field.url
+            );
+        },
+
+        error: function (xhr, ajaxOptions, thrownError) {
+            console.log("error get subject");
+        }
+    });
+
     db_functions.getUserShopingCart(function(data){
         user_Shopping_cart = data;
         for (var i in data.objects) {
@@ -130,7 +145,7 @@ function loadCreateDiscussionPage(subject_id, subject_name){
         });
     });
 
-    $(".create_btn").live("click", function(){
+    $(".create_discussion_btn").live("click", function(){
 
         title = $(".title").val();
         vision = $(".vision").val();

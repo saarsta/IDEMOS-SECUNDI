@@ -1,40 +1,111 @@
-<h1> <%=subject_name%> </h1>
-<div>
-    <label for="look_for_keywords">look for info item by key words:</label>
-    <input type="text" name="keys" id="look_for_keywords">
-    <button type='submit' class="btn_look">look</button>
+<div class="breadcrumb">
+    <p><%=subject_name%><span></span> <a href="#"><%if(tag_name){tag_name}%></a></p>
 </div>
 
-<div>
-    <FORM class="active_discussions"
-            ACTION="return discussions.onSubmit(this.gourl)"
-            METHOD=POST onSubmit="return discussions.onSubmit(this.gourl)">
-        <SELECT NAME="gourl">
-            <OPTION VALUE="">Choose a Discussion... </OPTION>
-        </SELECT>
-
-        <INPUT TYPE=SUBMIT VALUE="Go">
-    </FORM>
+<div id="search-form" class="form">
+    <form action="#" method="post">
+        <p class="clearfix">
+            <input id="keyword_input" type="text" title="search" class="textbox" placeholder="חיפוש בתוך הנושא הנבחר"/>
+            <input type="button" id="look_keyword_btn" title="submit" class="submit-btn" value="חפש"/>
+        </p>
+    </form>
 </div>
 
-<div class="info_items_of_subject panel">
-    <p> INFORMATION ITEMS </p>
+<div id="sidebar">
+
+    <div class="widget1 clearfix">
+        <div class="information clearfix">
+            <h3>עגלת המידע</h3>
+            <a href="#" class="button">שתף</a>
+            <br class="clear"/>
+            <p>קריאה לפעולה כדי לאסוף מידע,
+                תכנים, גרפים, נתונים, תרשימים
+                ועוד ועוד כדי להציע מציאות חדשה.</p>
+            <a href="/createDiscussion?subject_id=<%=subject_id%>&subject_name=<%=subject_name%>" class="button suggest">הצע מציאות חדשה</a>
+        </div>
+
+        <div class="frame">
+            <img src="resources/images/assets/image11.jpg" alt="image"/>
+        </div>
+        <p>קריאה לפעולה כדי לאסוף מידע, תכנים, גרפים, נתונים, תרשימים ועוד ועוד כדי להציע מציאות חדשה.</p>
+        <a href="#" class="read-more">קרא עוד..</a>
+        <a href="#" class="button">שתף</a>
+    </div>
+
+    <div class="widget1 slideshow clearfix">
+        <div class="slides clearfix">
+            <div class="slide frame">
+                <img src="resources/images/assets/image9.jpg" alt="image9"/>
+            </div>
+            <a class="read-more" href="#">צפה במקור</a>
+            <span class="controls clearfix">
+              <a href="#"></a>	<a href="#"></a>	<a class="active" href="#"></a>
+            </span>
+            <a class="button" href="#">שתף</a>
+        </div>
+    </div>
+
+    <div class="widget1 information">
+        <ul>
+            <li class="clearfix">
+                <div class="image">
+                    <img src="resources/images/assets/image10.jpg" alt="image10"/>
+                    <span class="number">1</span>
+                </div>
+                <div class="description">
+                    <p>פיסיקה רשימות סטטיסטיקה אחד ב, זקוק פיסול גם חפש. מלא מוסיקה פילוסופיה דת. </p>
+                </div>
+            </li>
+            <li class="clearfix">
+                <div class="image">
+                    <img src="resources/images/assets/image10.jpg" alt="image10"/>
+                    <span class="number">2</span>
+                </div>
+                <div class="description">
+                    <p>פיסיקה רשימות סטטיסטיקה אחד ב, זקוק פיסול גם חפש. מלא מוסיקה פילוסופיה דת. </p>
+                </div>
+            </li>
+            <li class="clearfix">
+                <div class="image">
+                    <img src="resources/images/assets/image10.jpg" alt="image10"/>
+                    <span class="number">3</span>
+                </div>
+                <div class="description">
+                    <p>פיסיקה רשימות סטטיסטיקה אחד ב, זקוק פיסול גם חפש. מלא מוסיקה פילוסופיה דת. </p>
+                </div>
+            </li>
+        </ul>
+    </div>
 </div>
 
-<div class="shopping_cart panel">
-    <p> SHOPPONG CART </p>
-    <button class="reality_btn"> create new reality </button>
+<div id="main">
+    <div class="accordian">
+        <!--<h3><a href="#" class="arrow">&nbsp;</a> מעגלי תנופה קיימים בנושא (?) </h3>-->
+        <select name="" id="sel_cycle" class="arrow">
+            <option value="0">מעגלי תנופה קיימים בנושא </option>
+        </select>
+
+        </br>
+        <!--<h3><a href="#" class="arrow">&nbsp;</a>דיונים פעילים בנושא  (?)</h3>-->
+        <select name="" id="sel_discussion" class="arrow">
+            <option value="0">דיונים פעילים בנושא</option>
+        </select>
+    </div>
+    <div id="info_items" class="post">
+        <h3>מידע רלוונטי</h3>
+    </div>
 </div>
 
+<section>
+    <!-- tzfia betochen yachid -->
 
-<script src="http://www.google.com/jsapi"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/jquery-ui.min.js"></script>
 
-<script src="/javascripts/db.js"></script>
-<script src="/javascripts/selectedSubjectPage.js"></script>
+</section>
+
 <script type="text/javascript">
     $(function() {
-        loadSelectedSubjectPage("<%= subject_id%>", "<%=subject_name%>");
+        loadSelectedSubjectPage("<%= subject_id%>", "<%=tag_name%>", "<%=subject_name%>");
     });
 </script>
+
+

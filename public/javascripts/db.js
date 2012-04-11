@@ -26,25 +26,6 @@ var db_functions = {
                 {
                    $('#subjects_list').append(out);
                 });
-
-//                for (var i=0; i < size; i++){
-//                    var subject = data.objects[i];
-//
-//                    var subject_link = $(document.createElement('a'))
-//                        .attr("id", 'subject_link_' + i);
-//                    subject_link.attr('href', "/account/selectedSubjectPage?subject_id="+subject._id + '&subject_name=' + subject.name);
-//                    subject_link.text(subject.name);
-//                    $('#subjects_list').append(subject_link).append('<br />');
-//
-//                    if (subject.is_hot){
-//                        var hot_subject_link = $(document.createElement('a'))
-//                            .attr("id", 'hot_subject_link_' + i);
-//                        hot_subject_link.attr('href', "/account/selectedSubjectPage?subject_id="+subject._id + '&subject_name=' + subject.name);
-//                        hot_subject_link.text(subject.name);
-//                        console.log(hot_subject_link);
-//                        $('.hot_subject').append(hot_subject_link).append('<br />');
-//                    }
-//                }
             },
 
             error: function (xhr, ajaxOptions, thrownError) {
@@ -53,7 +34,7 @@ var db_functions = {
         });
     },
 
-    dbGetInfoItemsByTagName: function(tag_name){
+    dbGetInfoItemsByTagName: function(tag_name, callback){
         $.ajax({
             url: '/api/information_items?tags=' + tag_name,
             type: "GET",
@@ -61,41 +42,38 @@ var db_functions = {
             success: function (data) {
 
                 console.log(data);
+                callback(null, data);
+                /*$('#information_items_list').empty();
+                dust.renderArray('information_item', data.objects,function(err,out)
+                {
+                    $('#information_items_list').append(out);
+                });
 
-                var length = data.objects.length;
-
-                if (length > 0){
-                    var blank_row = $(document.createElement('p'))
-                        .attr('id', 'tags_header');
-                    blank_row.text('I FOUND THOSE ITEMS:');
-                    $('.tags').append(blank_row);
-                }else{
-                    alert('no information items!');
-                }
-
-                for (var i in data.objects)
-                    items.add(data.objects[i], "tags");
+                $('#search_results').show();
+                */
             },
 
             error: function (xhr, ajaxOptions, thrownError) {
-                alert('error');
+                console.log(thrownError);
+                callback(err, null);
             }
         });
     },
-    dbAddInfoItemToShoppingCart: function(info_item_id, callback){
+
+    addInfoItemToShoppingCart: function(info_item_id, callback){
         $.ajax({
             url: 'http://dev.empeeric.com/api/shopping_cart/' + info_item_id,
             type: "PUT",
             async: true,
             success: function () {
-//                            addInfoItemToUserShoppingCart(info_item_index, info_item_id);
-                callback(true);
+
+                callback(null, data);
                 console.log("item information inserted to shopping cart");
             },
 
             error: function (xhr, ajaxOptions, thrownError) {
-                callback(false);
-                alert('error');
+                callback(thrownError, null);
+                alert(thrownError);
             }
         });
     },
@@ -133,28 +111,43 @@ var db_functions = {
         });
     },
 
+    getHotInfoItems: function(){
+        $.ajax({
+            url: '/api/information_items/?is_hot_info_item=true',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log("in hot info items");
+                console.log(data);
+                $('#hot_items_list').empty();
+                dust.renderArray('hot_info_item', data.objects,function(err,out)
+                {
+                    $('#hot_items_list').append(out);
+                });
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('error with hot items');
+            }
+        });
+
+    },
+
     getInfoItemsOfSubjectByKeywords: function(keywords, subject_id, callback){
-        console.log("inside getInfoItemsOfSubjectByKeywords:");
         var keywords_arr = keywords.trim().replace(/\s+/g,".%2B");
-
-        console.log("keywords_arr: " + keywords_arr);
-
-
-
-        console.log('/api/information_items/?text_field__regex='+ keywords_arr + '&subject_id=' + subject_id);
         $.ajax({
             url: '/api/information_items/?text_field__regex='+ keywords_arr + '&subject_id=' + subject_id,
             type: "GET",
             async: true,
             success: function (data) {
                 console.log(data);
-
-                callback(true, data);
+                callback(null, data)
             },
 
             error: function (xhr, ajaxOptions, thrownError) {
-                callback(false, null);
-                alert('error');
+                console.log(thrownError);
+                callback(thrownError, null);
+
             }
 
         });
@@ -186,6 +179,12 @@ var db_functions = {
             async: true,
             success: function (data) {
                 console.log(data);
+
+                $('#discussion').empty();
+                dust.renderArray('information_item', data.objects,function(err,out)
+                {
+                    $('#discussion').append(out);
+                });
             },
 
             error: function (xhr, ajaxOptions, thrownError) {
@@ -200,7 +199,6 @@ var db_functions = {
             type: "GET",
             async: true,
             success: function (data) {
-//                console.log(data);
                 callback(null, data);
             },
 
@@ -208,7 +206,6 @@ var db_functions = {
                 callback(thrownError, null);
                 alert('error');
             }
-
         });
     },
 
@@ -314,6 +311,24 @@ var db_functions = {
 
             error: function (xhr, ajaxOptions, thrownError) {
                 alert('error');
+            }
+        });
+    },
+
+    addLikeToInfoItem: function(info_item_id, callback){
+        $.ajax({
+            url: '/api/likes',
+            type: "POST",
+            data: {"info_item_id" : info_item_id},
+            async: true,
+            success: function (data) {
+                console.log(data);
+                callback(null, data)
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
+                console.log(thrownError);
             }
         });
     },
@@ -486,6 +501,31 @@ var db_functions = {
             async: true,
             success: function (data) {
                 console.log(data);
+                var length = data.objects.length;
+                $('#cycle_list').empty();
+                dust.renderArray('information_item', data.objects,function(err,out)
+                {
+                    $('#cycle_list').append(out);
+                });
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('error');
+            }
+        });
+    },
+
+    getCyclesBySubject: function(subject_id){
+        $.ajax({
+            url: '/api/cycles?subject_id=' + subject_id,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+                $.each(data.objects, function(index, value){
+                    $("select#sel_cycle").append($("<option />").val(value._id).text(value.title));
+                });
+
             },
 
             error: function (xhr, ajaxOptions, thrownError) {
@@ -535,6 +575,26 @@ var db_functions = {
 
             error: function (xhr, ajaxOptions, thrownError) {
                 callback(thrownError, null);
+            }
+        });
+    },
+
+    getActionsByTagName: function(tag_name){
+        $.ajax({
+            url: '/api/actions?tags=' + tag_name,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+                $('#action_list').empty();
+                dust.renderArray('action', data.objects,function(err,out)
+                {
+                    $('#action_list').append(out);
+                });
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('error');
             }
         });
     },

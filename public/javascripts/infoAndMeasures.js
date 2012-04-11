@@ -54,51 +54,56 @@ var items = {
     remove: false
 };
 
+var COUNTER;
 
+function loadInfoAndMeasures(tag_name) {
+    COUNTER = 0;
 
-function loadInfoAndMeasures() {
+    if(tag_name){
+        $("#look_for_tags").attr('value', tag_name);
+        db_functions.dbGetInfoItemsByTagName(tag_name, function(err,data){
+            $('#information_items_list').empty();
+            dust.renderArray('information_item', data.objects,function(err,out)
+            {
+                $('#information_items_list').append(out);
+            });
+        });
+    }else{
+        $('#search_results').hide();
+    }
 
     db_functions.dbGetAllSubjects();
-
-    $.ajax({
-        url: '/api/information_items/?is_hot=true',
-        type: "GET",
-        async: true,
-        success: function (data) {
-
-            console.log(data);
-            var object = data.objects[i];
-            var length = data.objects.length;
-
-            for(var i = 0; i < length; i++){
-                var hot_info_item_object = $(document.createElement('a'))
-                    .attr("id", 'hot_info_item_object' + i);
-                hot_info_item_object.attr('href', '');
-                hot_info_item_object.text(object.title);
-                console.log(hot_info_item_object);
-                $('.hot_information_item').append(hot_info_item_object).append(object.text_field);
-            }
-        },
-
-        error: function (xhr, ajaxOptions, thrownError) {
-            alert('error with hot items');
-        }
-    });
+    db_functions.getHotInfoItems();
 
     $('#btn_look').live("click", function(){
 
         $('.tags').html('');
         var tag_value = $("#look_for_tags").attr('value');
 
-        db_functions.dbGetInfoItemsByTagName(tag_value);
+        db_functions.dbGetInfoItemsByTagName(tag_value, function(err,data){
+            $('#information_items_list').empty();
+            dust.renderArray('information_item', data.objects,function(err,out)
+            {
+                $('#information_items_list').append(out);
+            });
+
+            $('#search_results').show();
+
+        });
         event.stopPropagation();
     });
 
-    db_functions.getUserShopingCart(function(data){
+    $('#more_hot_items_btn').live("click", function(){
+        COUNTER++;
+        console.log(COUNTER);
+        //bring me page naumer counter
+    })
+
+    /*db_functions.getUserShopingCart(function(data){
 
         for (var i in data.objects) {
             var item = items.add(data.objects[i], "shopping_cart");
             items.changeButton(item);
         }
-    });
+    });*/
 }

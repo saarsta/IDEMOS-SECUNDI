@@ -20,7 +20,7 @@ var items = {
 
         item.find('button.add').click(function() {
             console.log("in add");
-            self = $(this);
+            var self = $(this);
             db_functions.dbAddInfoItemToShoppingCart($(this).val(), function didSucceed(flag){
                 if(flag){
                     var item = self.parent('.item').clone().appendTo('.shopping_cart');
@@ -85,29 +85,24 @@ var discussions = {
         }
 }
 
-/*
-function dropdown(mySel)
-{
-    var myWin, myVal;
-    myVal = mySel.options[mySel.selectedIndex].value;
-    if(myVal)
-    {
-        if(mySel.form.target)myWin = parent[mySel.form.target];
-        else myWin = window;
-        if (! myWin) return true;
-        myWin.location = myVal;
-    }
-    return false;
-}
-*/
-
-
 var subject_id,
     subject_name;
 
-function loadSelectedSubjectPage(id, name) {
-    subject_id = id;
-    subject_name = name;
+function loadSelectedSubjectPage(subject_id, subject_name, tag_name) {
+    subject_id = subject_id;
+    subject_name = subject_name;
+    tag_name = tag_name;
+
+
+    $('#btn_look').live("click", function(){
+
+        $('.tags').html('');
+        var tag_value = $("#look_for_tags").attr('value');
+
+        db_functions.dbGetInfoItemsByTagName(tag_value);
+        event.stopPropagation();
+    });
+
 
 
     db_functions.getUserShopingCart(function(data){
@@ -129,7 +124,6 @@ function loadSelectedSubjectPage(id, name) {
                 discussions.add(data.objects[i]);
             }
         }
-
     });
 
     $.ajax({
@@ -141,9 +135,14 @@ function loadSelectedSubjectPage(id, name) {
             console.log(data);
             console.log(JSON.stringify(data));
 
-            for (var i in data.objects){
+            dust.renderArray('hot_info_item_in_subject_1', data.objects,function(err,out)
+            {
+                $('#info_items').append(out);
+            });
+
+           /* for (var i in data.objects){
                 items.add(data.objects[i], "info_items_of_subject");
-            }
+            }*/
         },
 
         error: function (xhr, ajaxOptions, thrownError) {
@@ -151,27 +150,56 @@ function loadSelectedSubjectPage(id, name) {
         }
     });
 
-
-
-    $('.btn_look').live("click", function(){
-        var key_words = $("#look_for_keywords").val();
+    $('#look_keyword_btn').live("click", function(){
+        var key_words = $('#keyword_input').val();
         console.log("button clicked, key words are: " + key_words);
         $('.keys').html('');
 
-        db_functions.getInfoItemsOfSubjectByKeywords(key_words, subject_id, function didSucceed(flag, data){
+        db_functions.getInfoItemsOfSubjectByKeywords(key_words, subject_id, function(err, data){
 
-            if (flag){
+                if(!err){
+                    $('#info_items').html();
+                    dust.renderArray('hot_info_item_in_subject_1', data.objects,function(err,out)
+                    {
+                        $('#info_items').append(out);
+                    });
 
-                $(".info_items_of_subject ").html("");
-
-                for (var i in data.objects) {
-                    var item = items.add(data.objects[i], "info_items_of_subject");
-                    items.changeButton(item);
+                    /*$(".info_items_of_subject ").html("");
+                    for (var i in data.objects) {
+                        var item = items.add(data.objects[i], "info_items_of_subject");
+                        items.changeButton(item);
+                    }*/
                 }
+        });
+    });
+
+    db_functions.getCyclesBySubject(subject_id);
+
+    db_functions.getDiscussionsBySubject(subject_id, function(err, data){
+        $.each(data.objects, function(index, value){
+            $("select#sel_discussion").append($("<option />").val(value._id).text(value.title));
+        });
+    });
+
+    $(".button.add").live("click", function(){
+        var info_item_id = $(this).parent('div').attr('value');
+        db_functions.addInfoItemToShoppingCart(info_item_id, function(err, data){
+            if(!err){
+
             }
         });
-
     });
+
+    $(".like").live("click", function(){
+        var info_item_id = $(this).parent('div').attr('value');
+        db_functions.addLikeToInfoItem(info_item_id, function(err, data){
+            if(!err){
+
+            }
+        });
+    });
+
+
 
 
     /*$('.btn_look_for_discussions').live("click", function(){
@@ -189,9 +217,8 @@ function loadSelectedSubjectPage(id, name) {
 
     });*/
 
-    $('.reality_btn').live("click", function(){
+   /* $('.reality_btn').live("click", function(){
         window.location.replace("/account/createDiscussion?subject_id=" + subject_id + '&subject_name=' + subject_name);
-    });
+    });*/
+
 }
-
-

@@ -35,7 +35,7 @@ var LOGIN_PATH = '/account/login';
 
 var DONT_NEED_LOGIN_PAGES = [/^\/images/,/^\/static/, /^\/css/, /stylesheets\/style.css/, /favicon.ico/, /account\/login/, /account\/register/,
     /facebookconnect.html/, /account\/afterSuccessFbConnect/, /account\/facebooklogin/,
-    /api\/subjects/, /^\/admin/, /^\/api\//];//regex
+    /api\/subjects/, /^\/admin/, /^\/api\//, ];//regex
 
 
 exports.LOGIN_PATH = LOGIN_PATH;
@@ -57,7 +57,8 @@ exports.referred_by_middleware = function(req,res,next)
 };
 
 exports.auth_middleware = function (req, res, next) {
-//    console.log("In auth_middleware, req.path is: " + req.path + "   method = " + req.method);
+
+    console.log("In auth_middleware, req.path is: " + req.path + "   method = " + req.method);
     // if this request needs to be authenticated
     for (var i = 0; i < DONT_NEED_LOGIN_PAGES.length; i++) {
         var dont = DONT_NEED_LOGIN_PAGES[i];
@@ -66,14 +67,83 @@ exports.auth_middleware = function (req, res, next) {
             return;
         }
     }
-    if (req.isAuthenticated()) {
-        next();
+    if (req.isAuthenticated() && !req.session.user) {
+        req.session.user_id  = req.session.auth.user._id || req.session.auth.user_id;
+        models.User.findById(req.session.user_id ,function(err,user){
+            if(err){
+                console.log('couldn put user id' + err.message)
+                next();
+            }else{
+                req.session.user = user;
+                req.session.avatar_url = user.avatar_url();
+                req.session.save(function(err)
+                {
+                    if(err)
+                        console.log('couldnt put user id' + err.message);
+                    next();
+                });
+            }
+        });
     }
     else {
-        //res.redirect(LOGIN_PATH + '?next=' + req.path);
+//        res.redirect(LOGIN_PATH + '?next=' + req.path);
         next();
     }
 };
+
+/* app.use(function(req, res, next){
+ var models = Models;
+
+ for(var i=0; i<DONT_NEED_LOGIN_PAGES.length; i++)
+ {
+ var dont = DONT_NEED_LOGIN_PAGES[i];
+ if (dont.exec(req.path))
+ {
+ next();
+ return;
+ }
+ }
+
+ if(req.isAuthenticated() && !req.session.user){
+
+
+ //            if(!req.session.user_id){
+ //                //means that user used registration, so we save user_id out of the AUTH
+
+ req.session.user_id = req.session.auth.user_id || req.session.auth.user._id;
+
+ //            }
+ //            var email = req.session.auth.user.email;
+ var facebook_id = req.session.auth.user.id;
+ models.User.findById(req.session.user_id ,function(err,object)
+ {
+ if(err)
+ {
+ console.log('couldn put user id' + err.message)
+ next();
+ }
+ else
+ {
+ req.session.user = object;
+ //if object doesnt exust in db it means we got here before registration completed
+ if (!object){
+ next();
+ }else{
+ req.session.user_id = object.id;
+ req.session.save(function(err)
+ {
+ if(err)
+ console.log('couldnt put user id' + err.message);
+ next();
+ });
+ }
+ }
+ });
+ }else{
+ next();
+ }
+ });
+ */
 
 exports.login = function (req, res) {
     if (req.method == 'GET') {
@@ -331,7 +401,7 @@ exports.logout = function (req, res) {
     delete req.session['user_id'];
     req.session.save();
 
-    // req.session.destroy();
+    req.session.destroy();
     req.logout();
     res.end();
 };

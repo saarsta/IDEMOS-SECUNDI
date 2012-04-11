@@ -55,6 +55,8 @@ var LikeResource = module.exports = jest.MongooseResource.extend({
             function(like_obj, cbk){
                 like_obj.save(cbk);
             }
-        ],cbk);
+        ],function(err, result){
+            callback(err, result);
+        });
     }
 });
