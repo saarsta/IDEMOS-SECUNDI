@@ -15,6 +15,37 @@ exports.pendingActions = function(req, res){
         extra_head:'<script src="/resources/js/jquery.stylish-select.min.js"></script><script src="/resources/js/selectbox.js"></script><script src="/javascripts/pendingActionList.js"></script>'});
 };
 
+exports.actions = function(req, res){
+    res.render('actionList.ejs',{logged: req.isAuthenticated(), title:'נושא הדיון', all_pending_actions:"רשימת כל הפעולות הממתינות לאישור",
+        user: req.session.user,
+        avatar:req.session.avatar_url,
+        tag_name: req.query.tag_name,
+        body_class:'layout',
+        extra_head:'<script src="/resources/js/jquery.stylish-select.min.js"></script><script src="/resources/js/selectbox.js"></script><script src="/javascripts/actionList.js"></script>'});
+};
+
+exports.discussions = function(req, res){
+    res.render('discussionList.ejs',{logged: req.isAuthenticated(), title:'נושא הדיון', all_pending_actions:"רשימת כל הפעולות הממתינות לאישור",
+        user: req.session.user,
+        avatar:req.session.avatar_url,
+        tag_name: req.query.tag_name,
+        body_class:'layout',
+        extra_head:'<script src="/resources/js/jquery.stylish-select.min.js"></script><script src="/resources/js/selectbox.js"></script><script src="/javascripts/discussionList.js"></script>'});
+};
+
+exports.circles = function(req, res){
+    res.render('circleList.ejs',{logged: req.isAuthenticated(), title:'נושא הדיון', all_pending_actions:"רשימת כל הפעולות הממתינות לאישור",
+        user: req.session.user,
+        avatar:req.session.avatar_url,
+        tag_name: req.query.tag_name,
+        body_class:'layout',
+        extra_head:'<script src="/resources/js/jquery.stylish-select.min.js"></script><script src="/resources/js/selectbox.js"></script><script src="/javascripts/circleList.js"></script>'});
+};
+
+
+
+
+
 
 exports.actionsTestData = function(req, res){
     var data= {"objects":[
@@ -25,6 +56,20 @@ exports.actionsTestData = function(req, res){
     res.json(data);
 };
 
+exports.discussionsTestData = function(req, res){
+    var data= {"objects":[
+        {"_id":"4f4517346d35790100000008","image_field":{"url":"resources/images/assets/image3.jpg","size":777835},"subject":"נושא הדיון","summary":"תקציר נושא הדיון","renking":"דירוג נוכחי","creation_date":"תאריך פתיחה","participants":"מספר משתתפים"}],
+        "meta":{"total_count":3,"offset":0,"limit":20}};
+    res.json(data);
+};
+
+
+exports.circlesTestData = function(req, res){
+    var data= {"objects":[
+        {"_id":"4f4517346d35790100000008","image_field":{"url":"resources/images/assets/image3.jpg","size":777835},"subject":"נושא הדיון","summary":"תקציר נושא הדיון","renking":"דירוג נוכחי","creation_date":"תאריך פתיחה","participants":"מספר משתתפים"}],
+        "meta":{"total_count":3,"offset":0,"limit":20}};
+    res.json(data);
+};
 
 /*exports.index = function(req, res){
  res.render('index.ejs', { title: 'Express' })

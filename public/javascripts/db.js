@@ -31,12 +31,73 @@ var db_functions = {
 
     dbGetAllPendingActions: function(){
         $.ajax({
+        //    url: '/api/pendingActions',
             url: '/actionListTestData',
             type: "GET",
             async: true,
             success: function (data) {
                 var size = data.objects.length;
                 dust.renderArray('pending_action_list_item',data.objects,null,function(err,out)
+                {
+                    $('#mainList').append(out);
+
+                });
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('error');
+            }
+        });
+    },
+
+    dbGetAllActions: function(){
+        $.ajax({
+        //    url: '/api/actions',
+            url: '/actionListTestData',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                var size = data.objects.length;
+                dust.renderArray('action_list_item',data.objects,null,function(err,out)
+                {
+                    $('#mainList').append(out);
+
+                });
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('error');
+            }
+        });
+    },
+
+    dbGetAllDiscussions: function(){
+        $.ajax({
+        //    url: '/api/discussions',
+            url: '/discussionListTestData',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                var size = data.objects.length;
+                dust.renderArray('discussion_list_item',data.objects,null,function(err,out)
+                {
+                    $('#mainList').append(out);
+
+                });
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('error');
+            }
+        });
+    },
+
+    dbGetAllCircles: function(){
+        $.ajax({
+        //    url: '/api/circles',
+            url: '/circleListTestData',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                var size = data.objects.length;
+                dust.renderArray('discussion_list_item',data.objects,null,function(err,out)
                 {
                     $('#mainList').append(out);
 
@@ -115,7 +176,7 @@ var db_functions = {
             url: '/api/shopping_cart/' + info_item_id,
             type: "PUT",
             async: true,
-            success: function () {
+            success: function (data) {
 
                 callback(null, data);
                 console.log("item information inserted to shopping cart");
@@ -124,6 +185,24 @@ var db_functions = {
             error: function (xhr, ajaxOptions, thrownError) {
                 callback(thrownError, null);
                 alert(thrownError);
+            }
+        });
+    },
+
+    removeInfoItemFromShoppingCart: function(info_item_id, callback){
+        $.ajax({
+            url: '/api/shopping_cart/' + info_item_id,
+            type: "DELETE",
+            async: true,
+            success: function () {
+//                          removeInfoItemFromUserShoppingCart(info_item_index);
+                callback(null)
+                console.log('info item deleted from shopping cart');
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError);
+                console.log('error delete info item from shoping cart');
             }
         });
     },
@@ -145,21 +224,6 @@ var db_functions = {
         });
     },
 
-    dbDeleteInfoItemFromShoppingCart: function(info_item_id){
-        $.ajax({
-            url: '/api/shopping_cart/' + info_item_id,
-            type: "DELETE",
-            async: true,
-            success: function () {
-//                          removeInfoItemFromUserShoppingCart(info_item_index);
-                console.log('info item deleted from shopping cart');
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                console.log('error delete info item from shoping cart');
-            }
-        });
-    },
 
     getHotInfoItems: function(){
         $.ajax({
@@ -247,6 +311,22 @@ var db_functions = {
     getDiscussionsBySubject: function(subject_id, callback){
         $.ajax({
             url: '/api/discussions/?subject_id=' + subject_id + "&is_published=true",
+            type: "GET",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
+                alert('error');
+            }
+        });
+    },
+
+    getAllDiscussions: function(callback){
+        $.ajax({
+            url: '/api/discussions',
             type: "GET",
             async: true,
             success: function (data) {
@@ -603,6 +683,36 @@ var db_functions = {
     getNotApprovedActionByCycle: function(cycle_id, callback){
         $.ajax({
             url: '/api/actions?cycle_id='+ cycle_id + '&is_approved=false',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
+            }
+        });
+    },
+
+    getAllPendingActions: function(callback){
+        $.ajax({
+            url: '/api/actions?is_approved=false',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
+            }
+        });
+    },
+
+    getAllApprovedActions: function(callback){
+        $.ajax({
+            url: '/api/actions?is_approved=true',
             type: "GET",
             async: true,
             success: function (data) {

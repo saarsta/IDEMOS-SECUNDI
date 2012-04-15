@@ -21,6 +21,16 @@ function loadSelectedItemPage(subject_id, info_id){
         });
     });
 
+    $(".button.remove").live("click", function(){
+        var info_item_id = $(this).parent('div').attr('info_item_id');
+        var div = $(this).parent('div');
+        db_functions.removeInfoItemFromShoppingCart(info_item_id, function(err){
+            if(!err){
+                div.remove();
+            }
+        });
+    });
+
     if(subject_id.indexOf(',') > -1)
         subject_id = subject_id.split(',')[0];
     $.ajax({

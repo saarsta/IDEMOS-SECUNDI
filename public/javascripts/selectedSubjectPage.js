@@ -203,10 +203,20 @@ function loadSelectedSubjectPage(subject_id, subject_name, tag_name) {
         var info_item_id = $(this).parent('div').attr('value');
         db_functions.addInfoItemToShoppingCart(info_item_id, function(err, data){
             if(!err){
-                dust.render('shopping_cart_item_1', data,function(err,out)
+                dust.render('shopping_cart_item_1', data, function(err,out)
                 {
                     $('#shopping_cart').append(out);
                 });
+            }
+        });
+    });
+
+    $(".button.remove").live("click", function(){
+        var info_item_id = $(this).parent('div').attr('info_item_id');
+        var div = $(this).parent('div');
+        db_functions.removeInfoItemFromShoppingCart(info_item_id, function(err){
+            if(!err){
+                div.remove();
             }
         });
     });
