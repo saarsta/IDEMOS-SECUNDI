@@ -665,6 +665,23 @@ var db_functions = {
         });
     },
 
+    getAllCycles: function(callback){
+        $.ajax({
+            url: '/api/cycles',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log(thrownError);
+                callback(thrownError, null);
+            }
+        });
+    },
+
     getApprovedActionByCycle: function(cycle_id, callback){
         $.ajax({
             url: '/api/actions?cycle_id='+ cycle_id + '&is_approved=true',

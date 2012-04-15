@@ -93,7 +93,7 @@ var Schemas = exports.Schemas = {
     User: new Schema({
         username:String,
         identity_provider:{type:String, "enum":['facebook', 'register']},
-            facebook_id:String,
+        facebook_id:String,
         access_token:String,
         first_name:{type:String, required:true, validate:MinLengthValidator(2)},
         last_name:{type:String, required:true, validate:MinLengthValidator(2)},
@@ -194,6 +194,10 @@ var Schemas = exports.Schemas = {
     },
 
     Cycle:{
+        subject_id:[
+            {type:ObjectId, ref:'Subject', index:true, required:true}
+        ],
+        subject_name: [String],
         title: {type:String, required:true},
         text_field:{type:mongoose_types.Html},
         text_field_preview:{type:mongoose_types.Html},
@@ -205,7 +209,9 @@ var Schemas = exports.Schemas = {
         ],
         document: String,
         is_hot_object: {type:Boolean,'default':false},
-        followers_count: {type: Number}
+        followers_count: {type: Number, 'default':0},
+        num_of_comments: {type: Number, 'default':0},
+        upcoming_action: {type: ObjectId, ref: 'Action', index: true}
     },
 
     PostOrSuggestion:{
