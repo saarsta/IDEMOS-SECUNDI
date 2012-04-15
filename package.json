@@ -15,7 +15,6 @@
 		"jade": "",
         "sji": "",
         "underscore": "",
-        "dust":"",
         "i18n-mongoose":"",
         "j-forms":">= 0.0.52",
         "admin-with-forms":">= 0.0.13",
