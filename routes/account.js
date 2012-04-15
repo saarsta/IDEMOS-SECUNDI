@@ -326,7 +326,7 @@ exports.fb_connect = function (req, res) {
 
 exports.facebookShare = function(req,res)
 {
-    var link = req.query.link || req.app.settings.root_path;
+    var link = req.app.settings.root_path + (req.query.link || '');
     res.redirect("http://www.facebook.com/sharer/sharer.php?u=" + link + "&referrer=" + req.session.user_id);
 };
 
