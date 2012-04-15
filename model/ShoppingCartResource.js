@@ -55,7 +55,9 @@ ShoppingCartResource.prototype.update_obj = function(req,object,callback){
         callback({message:"information item is already in shoping cart", code: 401}, null);
     }else{
         object.users.push(req.session.user_id);
-        object.save(callback);
+        object.save(function(err, result){
+            callback(err, result);
+        });
     }
 }
 

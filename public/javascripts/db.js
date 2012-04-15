@@ -176,7 +176,7 @@ var db_functions = {
             url: '/api/shopping_cart/' + info_item_id,
             type: "PUT",
             async: true,
-            success: function () {
+            success: function (data) {
 
                 callback(null, data);
                 console.log("item information inserted to shopping cart");
@@ -185,6 +185,24 @@ var db_functions = {
             error: function (xhr, ajaxOptions, thrownError) {
                 callback(thrownError, null);
                 alert(thrownError);
+            }
+        });
+    },
+
+    removeInfoItemFromShoppingCart: function(info_item_id, callback){
+        $.ajax({
+            url: '/api/shopping_cart/' + info_item_id,
+            type: "DELETE",
+            async: true,
+            success: function () {
+//                          removeInfoItemFromUserShoppingCart(info_item_index);
+                callback(null)
+                console.log('info item deleted from shopping cart');
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError);
+                console.log('error delete info item from shoping cart');
             }
         });
     },
@@ -206,21 +224,6 @@ var db_functions = {
         });
     },
 
-    dbDeleteInfoItemFromShoppingCart: function(info_item_id){
-        $.ajax({
-            url: '/api/shopping_cart/' + info_item_id,
-            type: "DELETE",
-            async: true,
-            success: function () {
-//                          removeInfoItemFromUserShoppingCart(info_item_index);
-                console.log('info item deleted from shopping cart');
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                console.log('error delete info item from shoping cart');
-            }
-        });
-    },
 
     getHotInfoItems: function(){
         $.ajax({
