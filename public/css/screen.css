@@ -529,3 +529,7 @@ div.box.post{width:235px; float:right; margin:0 0 70px 15px; padding:7px 8px;}
 div.box.post p {color:#878787; line-height:20px; font-size:170%; margin-bottom:20px; display:block; }
 div.box.post a.button1{ margin:0px auto -25px; position:relative;}
 
+.hot_info_content{
+    height: 107px;
+    overflow: hidden;
+}
