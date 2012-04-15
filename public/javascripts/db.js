@@ -260,6 +260,22 @@ var db_functions = {
         });
     },
 
+    getAllDiscussions: function(callback){
+        $.ajax({
+            url: '/api/discussions',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
+                alert('error');
+            }
+        });
+    },
+
     createPreviewDiscussion: function(subject_id, vision, title, callback){
         $.ajax({
             url: '/api/discussions/',
@@ -603,6 +619,36 @@ var db_functions = {
     getNotApprovedActionByCycle: function(cycle_id, callback){
         $.ajax({
             url: '/api/actions?cycle_id='+ cycle_id + '&is_approved=false',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
+            }
+        });
+    },
+
+    getAllPendingActions: function(callback){
+        $.ajax({
+            url: '/api/actions?is_approved=false',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
+            }
+        });
+    },
+
+    getAllApprovedActions: function(callback){
+        $.ajax({
+            url: '/api/actions?is_approved=true',
             type: "GET",
             async: true,
             success: function (data) {
