@@ -24,3 +24,7 @@ ul.newList li a:focus {-moz-outline-style: none;}
 .newListSelected {width:145px; color:#fff; height:34px; padding:0; background:url(../images/theme/selectbox.png) no-repeat 5px 13px #9d9d9c; border:2px solid #3c3c3b;}
 .selectedTxt {width:118px; height:24px; padding:10px 7px 0 0; font-size:19px; color:#fff; font-style:italic;}
 ul.newList { color:#fff; width:149px; background:#9d9d9c; top:36px!important; left:-2px!important; }
+
+span.selectbox1 .newListSelected {width:145px; color:#fff; height:34px; padding:0; background:url(../images/theme/selectbox.png) no-repeat 5px 13px #9d9d9c; border:2px solid #3c3c3b;}
+span.selectbox1 .selectedTxt {width:118px; height:24px; padding:10px 7px 0 0; font-size:19px; color:#fff; font-style:italic;}
+span.selectbox1 ul.newList { color:#fff; width:149px; background:#9d9d9c; top:36px!important; left:-2px!important; }
