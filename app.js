@@ -173,6 +173,7 @@ app.get('/mmSearch', mmSearch.mm_search)
 app.get('/allDiscussions',pagesInit.allDiscussions);
 app.get('/pendingActionsCircle',circles.pendingActions);
 app.get('/actionListTestData',circles.actionsTestData);
+app.get('/facebookShare',account.facebookShare);
 
 
 

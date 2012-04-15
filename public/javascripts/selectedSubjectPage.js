@@ -106,7 +106,13 @@ function loadSelectedSubjectPage(subject_id, subject_name, tag_name) {
 
 
     db_functions.getUserShopingCart(function(data){
-
+        data.objects.forEach(function(obj)
+        {
+            obj.get_link = function( )
+            {
+                return encodeURIComponent('/selectedItem?subject_id=' + obj.subject_id + '&info_id=' + obj._id);
+            }
+        });
         dust.renderArray('shopping_cart_item_1', data.objects,function(err,out)
         {
             $('#shopping_cart').append(out);
@@ -140,6 +146,13 @@ function loadSelectedSubjectPage(subject_id, subject_name, tag_name) {
             console.log(data);
             console.log(JSON.stringify(data));
 
+            data.objects.forEach(function(obj)
+            {
+                obj.get_link = function( )
+                {
+                    return encodeURIComponent('/selectedItem?subject_id=' + obj.subject_id + '&info_id=' + obj._id);
+                }
+            });
             dust.renderArray('info_item_in_subject_1', data.objects,function(err,out)
             {
                 $('#info_items').append(out);

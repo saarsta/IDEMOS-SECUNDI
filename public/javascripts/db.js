@@ -112,7 +112,7 @@ var db_functions = {
 
     addInfoItemToShoppingCart: function(info_item_id, callback){
         $.ajax({
-            url: 'http://dev.empeeric.com/api/shopping_cart/' + info_item_id,
+            url: '/api/shopping_cart/' + info_item_id,
             type: "PUT",
             async: true,
             success: function () {
