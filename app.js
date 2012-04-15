@@ -138,9 +138,13 @@ app.configure(function(){
     app.use(account.auth_middleware);
     app.use(express.methodOverride());
     app.use(i18n.init);
+    app.use(function(req,res,next)
+    {
+        i18n.setLocale(req,'es');
+        next();
+    });
     app.use(app.router);
     app.use(express.static(__dirname + '/public'));
-
     require('j-forms').serve_static(app,express);
 });
 
@@ -149,6 +153,7 @@ app.helpers({
     __i: i18n.__,
     __n: i18n.__n
 });
+
 
 // Routes
 
