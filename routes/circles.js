@@ -6,13 +6,13 @@
  * To change this template use File | Settings | File Templates.
  */
 
-exports.actions = function(req, res){
-    res.render('actionList.ejs',{logged: req.isAuthenticated(), title:'נושא הדיון', all_pending_actions:"רשימת כל הפעולות הממתינות לאישור",
+exports.pendingActions = function(req, res){
+    res.render('pendingActionList.ejs',{logged: req.isAuthenticated(), title:'נושא הדיון', all_pending_actions:"רשימת כל הפעולות הממתינות לאישור",
         user: req.session.user,
         avatar:req.session.avatar_url,
         tag_name: req.query.tag_name,
         body_class:'layout',
-        extra_head:'<script src="/resources/js/jquery.stylish-select.min.js"></script><script src="/resources/js/selectbox.js"></script><script src="/javascripts/actionList.js"></script>'});
+        extra_head:'<script src="/resources/js/jquery.stylish-select.min.js"></script><script src="/resources/js/selectbox.js"></script><script src="/javascripts/pendingActionList.js"></script>'});
 };
 
 

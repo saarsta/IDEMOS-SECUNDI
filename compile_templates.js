@@ -21,7 +21,7 @@ writer.write(compile_template('hot_info_item','hotInfoItem.html'));
 writer.write(compile_template('info_item_in_subject_1','infoItemInSubject1.html'));
 writer.write(compile_template('shopping_cart_item_1','shoppingCartItem1.html'));
 writer.write(compile_template('info_item_full_view','infoItemFullView.html'));
-writer.write(compile_template('action_list_item','actionListItem.html'));
+writer.write(compile_template('pending_action_list_item','pendingActionListItem.html'));
 
 
 
