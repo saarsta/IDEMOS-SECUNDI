@@ -93,7 +93,7 @@ var Schemas = exports.Schemas = {
     User: new Schema({
         username:String,
         identity_provider:{type:String, "enum":['facebook', 'register']},
-        facebook_id:String,
+            facebook_id:String,
         access_token:String,
         first_name:{type:String, required:true, validate:MinLengthValidator(2)},
         last_name:{type:String, required:true, validate:MinLengthValidator(2)},
