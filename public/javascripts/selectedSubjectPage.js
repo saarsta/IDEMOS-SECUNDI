@@ -110,7 +110,7 @@ function loadSelectedSubjectPage(subject_id, subject_name, tag_name) {
         {
             obj.get_link = function( )
             {
-                return encodeURIComponent('/selectedItem?subject_id=' + obj.subject_id + '&info_id=' + obj._id);
+                return '/selectedItem?subject_id=' + obj.subject_id + '&info_id=' + obj._id;
             }
         });
         dust.renderArray('shopping_cart_item_1', data.objects,function(err,out)
@@ -150,7 +150,7 @@ function loadSelectedSubjectPage(subject_id, subject_name, tag_name) {
             {
                 obj.get_link = function( )
                 {
-                    return encodeURIComponent('/selectedItem?subject_id=' + obj.subject_id + '&info_id=' + obj._id);
+                    return '/selectedItem?subject_id=' + obj.subject_id + '&info_id=' + obj._id;
                 }
             });
             dust.renderArray('info_item_in_subject_1', data.objects,function(err,out)
