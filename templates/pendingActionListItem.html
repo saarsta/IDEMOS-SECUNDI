@@ -1,0 +1,19 @@
+<li class="clearfix">
+    <div class="frame">
+        <img src="{image_field.url}" alt="{title}" />
+    </div>
+    <div class="description">
+        <h4>{title}</h4>
+        <p>{description}</p>
+        <p>{participants} ( + {required_participation}),{participating_members}, {date}</p>
+        <p>{proposed_date} ({waiting_period})</p>
+    </div>
+    <div class="action">
+        <a href="#" class="button">שתף</a>
+        <a href="#" class="button">הגב</a>
+    </div>
+    <br class="clear" />
+    <ul class="clearfix">
+        {#popular_posts}<li><p>{.}</p></li>{/popular_posts}
+    </ul>
+</li>
