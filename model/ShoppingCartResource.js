@@ -45,6 +45,11 @@ util.inherits(ShoppingCartResource,resources.MongooseResource);
 ShoppingCartResource.prototype.update_obj = function(req,object,callback){
     var id = req.session.user_id;
     var is_exist = false;
+//    models.InformationItem.update({_id:object._id},{$addToSet:{users:id}},function(err,n)
+//    {
+//        callback(err,object);
+//    });
+    object.users = object.users || [];
     for(var i=0; i<object.users.length; i++){
         if (object.users[i] == id){
             is_exist = true;

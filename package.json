@@ -3,20 +3,20 @@
   , "version": "0.0.1"
   , "private": true
   , "dependencies": {
+        "connect":"= 1.8.6",
         "express": ">= 2.5.5",
         "ejs": ">= 0.0.1",
         "connect-auth": "",
         "mongoose":"",
-        "jest": ">= 0.0.74",
+        "jest": ">= 0.0.78",
         "express-resource": "",
-        "connect-mongo":"",
+        "connect-mongo":"= 0.1.7",
         "async": "",
 		"jade": "",
         "sji": "",
         "underscore": "",
-        "dust":"",
         "i18n-mongoose":"",
-        "j-forms":">= 0.0.52",
+        "j-forms":">= 0.0.54",
         "admin-with-forms":">= 0.0.13",
         "knox":""
   },

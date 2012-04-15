@@ -42,7 +42,7 @@ var SubjectResource = module.exports = function()
     this.allowed_methods = ['get','post'];
 //    this.authentication = new common.SessionAuthentication();
     this.filtering = {tags:null};
-    this.cache = subject_cache;
+  //  this.cache = subject_cache;
     //this.validation = new resources.Validation();
 };
 util.inherits(SubjectResource,resources.MongooseResource);
