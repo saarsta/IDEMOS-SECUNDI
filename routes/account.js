@@ -33,7 +33,7 @@ var DEFAULT_LOGIN_REDIRECT = '';
 
 var LOGIN_PATH = '/account/login';
 
-var DONT_NEED_LOGIN_PAGES = [/^\/images/,/^\/static/, /^\/css/, /stylesheets\/style.css/, /favicon.ico/, /account\/login/, /account\/register/,
+var DONT_NEED_LOGIN_PAGES = [/^\/images/,/^\/static/, /^\/css/, /stylesheets\/style.css/, /favicon.ico/, /account\/login/, /^\/account\/logout/, /account\/register/,
     /facebookconnect.html/, /account\/afterSuccessFbConnect/, /account\/facebooklogin/,
     /api\/subjects/, /^\/admin/, /^\/api\//, ];//regex
 
@@ -322,6 +322,12 @@ exports.fb_connect = function (req, res) {
     }
     else
         go();
+};
+
+exports.facebookShare = function(req,res)
+{
+    var link = req.app.settings.root_path + (req.query.link || '');
+    res.redirect("http://www.facebook.com/sharer/sharer.php?u=" + link + "&referrer=" + req.session.user_id);
 };
 
 function isUserInDataBase(user_facebook_id, callback) {

@@ -130,7 +130,7 @@ var Schemas = exports.Schemas = {
         title: {type: String, required: true},
         subject_id:{type:[ObjectId], ref:'Subject', index:true, required:true},
         category:{type:String, "enum":['test', 'statistics', 'infographic', 'graph'], required:true},
-        text_field:{type:mongoose_types.Html},
+        text_field:{type:mongoose_types.Text},
         text_field_preview:{type:mongoose_types.Html},
         image_field: mongoose_types.File,
         image_field_preview: mongoose_types.File,
