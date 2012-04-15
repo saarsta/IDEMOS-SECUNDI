@@ -70,7 +70,7 @@ function loadSelectedItemPage(subject_id, info_id){
         {
             obj.get_link = function( )
             {
-                return '/selectedItem?subject_id=' + data.subject_id + '&info_id=' + data._id;
+                return '/selectedItem?subject_id=' + obj.subject_id + '&info_id=' + obj._id;
             }
         });
         dust.renderArray('shopping_cart_item_1', data.objects,function(err,out)
