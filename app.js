@@ -34,6 +34,7 @@ var account = require('./routes/account');
 var infoAndMeasures = require('./routes/infoAndMeasures');
 var selectedSubjectPage = require('./routes/selectedSubjectPage');
 var pagesInit = require('./routes/pagesInit');
+var circles = require('./routes/circles');
 var mmSearch = require('./routes/mmSearch'),
     i18n = require('i18n-mongoose'),
     locale = require('./locale');
@@ -170,6 +171,8 @@ app.get('/discussionPreview', pagesInit.discussionPreviewPageInit);
 app.get('/cycle', pagesInit.cyclePageInit);
 app.get('/mmSearch', mmSearch.mm_search)
 app.get('/allDiscussions',pagesInit.allDiscussions);
+app.get('/actionsCircle',circles.actions);
+app.get('/actionListTestData',circles.actionsTestData);
 
 
 

@@ -27,6 +27,27 @@ dust.renderArray = function(template,arr,callback,endCallback)
 };
 
 var db_functions = {
+
+
+    dbGetAllActions: function(){
+        $.ajax({
+            url: '/actionListTestData',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                var size = data.objects.length;
+                dust.renderArray('action_list_item',data.objects,null,function(err,out)
+                {
+                    $('#mainList').append(out);
+
+                });
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('error');
+            }
+        });
+    },
+
     dbGetAllSubjects: function(useSmall){
         $.ajax({
             url: '/api/subjects',
