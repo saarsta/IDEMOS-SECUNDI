@@ -3,6 +3,7 @@
   , "version": "0.0.1"
   , "private": true
   , "dependencies": {
+        "connect":"= 1.8.6",
         "express": ">= 2.5.5",
         "ejs": ">= 0.0.1",
         "connect-auth": "",
