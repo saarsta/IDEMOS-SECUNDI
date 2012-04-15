@@ -10,7 +10,7 @@
         "mongoose":"",
         "jest": ">= 0.0.74",
         "express-resource": "",
-        "connect-mongo":"",
+        "connect-mongo":"= 0.1.7",
         "async": "",
 		"jade": "",
         "sji": "",
