@@ -410,6 +410,7 @@ div.slideshow div.description p{ text-align:justify;}
 
 div#sidebar div.slideshow div.slides{width:270px;}
 
+div.no_line_when_hover a, div.no_line_when_hover a:hover,div.no_line_when_hover a:visited {text-decoration: none}
 /*---- Breadcrumb ----*/
 div.breadcrumb{ margin:0px 0px 45px;}
 div.breadcrumb p{ font-size:330%; color:#000; line-height:33px; margin-bottom:0px;}

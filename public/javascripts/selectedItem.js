@@ -9,6 +9,18 @@
 
 function loadSelectedItemPage(subject_id, info_id){
 
+    $(".button.add").live("click", function(){
+        var info_item_id = $(this).parent('div').attr('value');
+        db_functions.addInfoItemToShoppingCart(info_item_id, function(err, data){
+            if(!err){
+                dust.render('shopping_cart_item_1', data,function(err,out)
+                {
+                    $('#shopping_cart').append(out);
+                });
+            }
+        });
+    });
+
     $.ajax({
         url: '/api/subjects/' + subject_id,
         type: "GET",

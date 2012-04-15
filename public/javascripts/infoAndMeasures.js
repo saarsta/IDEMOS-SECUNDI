@@ -65,7 +65,7 @@ function loadInfoAndMeasures(tag_name) {
         $("#look_for_tags").attr('value', tag_name);
     }
 
-    db_functions.dbGetAllSubjects(true);
+    db_functions.dbGetAllSubjects();
     db_functions.getHotInfoItems();
 
     $('#btn_look').live("click", function(){

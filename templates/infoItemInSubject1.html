@@ -1,12 +1,14 @@
-<div value="{_id}" class="action clearfix">
-    <p>{title}</p>
-    <img width="263" height="155" src="{?image_field_preview.url}{image_field_preview.url}{:else}{image_field.url}{/image_field_preview.url}" alt="{}"/>
-    <p>{?text_field_preview}{text_field_preview|s}{:else}{text_field|s}{/text_field_preview}</p>
-    <p>{#tags}<a href="#">{.}  &nbsp; </a>{/tags}  תגיות: </p>
-    <a href="#" class="button add">הוסף</a>
-    <a href="/selectedItem?subject_id={subject_id}&info_id={_id}" class="read-more">קרא עוד (קישור למקור?)</a>
-    <a href="#" class="button flL">שתף</a>
-    <a href="#" class="button flL like">1+</a>
+<div value="{_id}" class="action clearfix no_line_when_hover">
+    <a href="/selectedItem?subject_id={subject_id}&info_id={_id}">
+        <p>{title}</p>
+        <img width="263" height="155" src="{?image_field_preview.url}{image_field_preview.url}{:else}{image_field.url}{/image_field_preview.url}" alt="{}"/>
+        <p>{?text_field_preview}{text_field_preview|s}{:else}{text_field|s}{/text_field_preview}</p>
+        <p>{#tags}<a href="#">{.}  &nbsp; </a>{/tags}  תגיות: </p>
+        <a href="#" class="button add">הוסף</a>
+        <a href="/selectedItem?subject_id={subject_id}&info_id={_id}" class="read-more">קרא עוד (קישור למקור?)</a>
+        <a href="#" class="button flL">שתף</a>
+        <a href="#" class="button flL like">1+</a>
+    </a>
 </div>
 
 

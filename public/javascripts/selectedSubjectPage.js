@@ -190,7 +190,10 @@ function loadSelectedSubjectPage(subject_id, subject_name, tag_name) {
         var info_item_id = $(this).parent('div').attr('value');
         db_functions.addInfoItemToShoppingCart(info_item_id, function(err, data){
             if(!err){
-
+                dust.render('shopping_cart_item_1', data,function(err,out)
+                {
+                    $('#shopping_cart').append(out);
+                });
             }
         });
     });
