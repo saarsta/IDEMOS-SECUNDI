@@ -31,12 +31,73 @@ var db_functions = {
 
     dbGetAllPendingActions: function(){
         $.ajax({
+        //    url: '/api/pendingActions',
             url: '/actionListTestData',
             type: "GET",
             async: true,
             success: function (data) {
                 var size = data.objects.length;
                 dust.renderArray('pending_action_list_item',data.objects,null,function(err,out)
+                {
+                    $('#mainList').append(out);
+
+                });
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('error');
+            }
+        });
+    },
+
+    dbGetAllActions: function(){
+        $.ajax({
+        //    url: '/api/actions',
+            url: '/actionListTestData',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                var size = data.objects.length;
+                dust.renderArray('action_list_item',data.objects,null,function(err,out)
+                {
+                    $('#mainList').append(out);
+
+                });
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('error');
+            }
+        });
+    },
+
+    dbGetAllDiscussions: function(){
+        $.ajax({
+        //    url: '/api/discussions',
+            url: '/discussionListTestData',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                var size = data.objects.length;
+                dust.renderArray('discussion_list_item',data.objects,null,function(err,out)
+                {
+                    $('#mainList').append(out);
+
+                });
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('error');
+            }
+        });
+    },
+
+    dbGetAllCircles: function(){
+        $.ajax({
+        //    url: '/api/circles',
+            url: '/circleListTestData',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                var size = data.objects.length;
+                dust.renderArray('discussion_list_item',data.objects,null,function(err,out)
                 {
                     $('#mainList').append(out);
 

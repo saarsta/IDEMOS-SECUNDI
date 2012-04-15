@@ -8,10 +8,10 @@
 
 var COUNTER;
 
-function loadActionList() {
+function loadCircleList() {
     COUNTER = 0;
 
-    db_functions.dbGetAllPendingActions();
+    db_functions.dbGetAllCircles();
 
     /*
     if( tag_name == 'חיפוש עפ TAGS')
@@ -85,5 +85,5 @@ function loadActionList() {
 }
 
 $(function() {
-    loadActionList();
+    loadCircleList();
 });
