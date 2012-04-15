@@ -171,9 +171,16 @@ app.get('/discussionPreview', pagesInit.discussionPreviewPageInit);
 app.get('/cycle', pagesInit.cyclePageInit);
 app.get('/mmSearch', mmSearch.mm_search)
 app.get('/allDiscussions',pagesInit.allDiscussions);
-app.get('/pendingActionsCircle',circles.pendingActions);
-app.get('/actionListTestData',circles.actionsTestData);
 app.get('/facebookShare',account.facebookShare);
+app.get('/pendingActionsCircle',circles.pendingActions);
+app.get('/actionsCircle',circles.actions);
+app.get('/discussionsCircle',circles.discussions);
+app.get('/circlesCircle',circles.circles);
+
+
+app.get('/actionListTestData',circles.actionsTestData);
+app.get('/discussionListTestData',circles.discussionsTestData);
+app.get('/circleListTestData',circles.circlesTestData);
 
 
 
