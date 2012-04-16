@@ -251,7 +251,7 @@ var db_functions = {
     getInfoItemsOfSubjectByKeywords: function(keywords, subject_id, callback){
         var keywords_arr = keywords.trim().replace(/\s+/g,".%2B");
         $.ajax({
-            url: '/api/information_items/?text_field__regex='+ keywords_arr + '&subject_id=' + subject_id,
+            url: '/api/information_items/?text_field__regex='+ keywords_arr + '&text_field_preview__regex='+ keywords_arr + '&subject_id=' + subject_id,
             type: "GET",
             async: true,
             success: function (data) {
@@ -358,13 +358,13 @@ var db_functions = {
         });
     },
 
-    createDiscussion: function(subject_id, subject_name, vision, title, callback){
-        console.log('data: {"subject_id": subject_id, "vision_text": vision, "title": title, "is_published": true},');
+    createDiscussion: function(subject_id, subject_name, vision, title, tags, callback){
+        console.log('data: {"subject_id": subject_id, "vision_text": vision, "title": title, "tags": tags, "is_published": true},');
         $.ajax({
             url: '/api/discussions/',
             type: "POST",
             async: true,
-            data: {"subject_id": subject_id, "subject_name": subject_name, "vision_text": vision, "title": title, "is_published": true},
+            data: {"subject_id": subject_id, "subject_name": subject_name, "vision_text": vision, "title": title, "tags": tags, "is_published": true},
             success: function (data) {
                 console.log(data);
                 callback(null, data);
