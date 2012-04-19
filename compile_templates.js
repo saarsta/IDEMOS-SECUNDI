@@ -24,7 +24,7 @@ writer.write(compile_template('info_item_full_view','infoItemFullView.html'));
 writer.write(compile_template('pending_action_list_item','pendingActionListItem.html'));
 writer.write(compile_template('action_list_item','actionListItem.html'));
 writer.write(compile_template('discussion_list_item','discussionListItem.html'));
-writer.write(compile_template('circle_list_item','circleListItem.html'));
+writer.write(compile_template('cycle_list_item','cycleListItem.html'));
 
 
 //writer.write(compile_template('template_name','template_file.html'));

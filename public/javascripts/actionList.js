@@ -10,8 +10,8 @@ var COUNTER;
 
 function loadActionList() {
     COUNTER = 0;
-
-    db_functions.dbGetAllActions();
+    db_functions.dbGetAllSubjects(true);
+    db_functions.getAllApprovedActions();
 
     /*
     if( tag_name == 'חיפוש עפ TAGS')

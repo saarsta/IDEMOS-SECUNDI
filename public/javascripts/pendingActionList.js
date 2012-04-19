@@ -11,7 +11,7 @@ var COUNTER;
 function loadActionList() {
     COUNTER = 0;
 
-    db_functions.dbGetAllPendingActions();
+    db_functions.getAllPendingActions();
 
     /*
     if( tag_name == 'חיפוש עפ TAGS')
