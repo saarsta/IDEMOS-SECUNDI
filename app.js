@@ -162,6 +162,7 @@ app.get('/signup', function(req, res){
 });
 app.get('/account/facebooklogin', account.fb_connect);
 app.get('/account/afterSuccessFbConnect2', function(req,res){});
+app.get('/myuru',pagesInit.myUru);
 app.get('/needlogin', function(req,res){});
 app.get('/account/logout', account.logout);
 app.get('/meida',pagesInit.meidaInit);
@@ -171,7 +172,7 @@ app.get('/createDiscussion', pagesInit.createDiscussionPageInit);
 app.get('/discussion', pagesInit.discussionPageInit);
 app.get('/discussionPreview', pagesInit.discussionPreviewPageInit);
 app.get('/cycle', pagesInit.cyclePageInit);
-app.get('/mmSearch', mmSearch.mm_search)
+app.get('/mmSearch', mmSearch.mm_search);
 app.get('/allDiscussions',pagesInit.allDiscussions);
 app.get('/facebookShare',account.facebookShare);
 app.get('/pendingActionsCircle',circles.pendingActions);

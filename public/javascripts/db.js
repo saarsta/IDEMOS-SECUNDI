@@ -109,13 +109,39 @@ var db_functions = {
         });
     },
 
+
+   //todo: remove me
+    dbGetAllCirclesXXX: function(callback){
+        $.ajax({
+            //    url: '/api/circles',
+            url: '/circleListTestData',
+            type: "GET",
+            async: true,
+            success: function (data) {
+             callback(data);
+               /*
+                var size = data.objects.length;
+                dust.renderArray('discussion_list_item',data.objects,null,function(err,out)
+                {
+                    $('#mainList').append(out);
+
+                });
+                */
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('error');
+            }
+        });
+    },
+
+
     dbGetAllSubjects: function(useSmall){
         $.ajax({
             url: '/api/subjects',
             type: "GET",
             async: true,
             success: function (data) {
-                var size = data.objects.length;
+//                var size = data.objects.length;
                 dust.renderArray(useSmall?'subject_small' :'subject',data.objects,null,function(err,out)
                 {
                    $('#subjects_list').append(out);
