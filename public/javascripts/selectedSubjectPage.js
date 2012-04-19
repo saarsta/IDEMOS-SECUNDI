@@ -104,8 +104,7 @@ function loadSelectedSubjectPage(subject_id, subject_name, tag_name) {
     });
 
 
-
-    db_functions.getUserShopingCart(function(data){
+    db_functions.getUserShopingCart(function(err, data){
         data.objects.forEach(function(obj)
         {
             obj.get_link = function( )
@@ -113,6 +112,7 @@ function loadSelectedSubjectPage(subject_id, subject_name, tag_name) {
                 return '/selectedItem?subject_id=' + obj.subject_id + '&info_id=' + obj._id;
             }
         });
+
         dust.renderArray('shopping_cart_item_1', data.objects,function(err,out)
         {
             $('#shopping_cart').append(out);

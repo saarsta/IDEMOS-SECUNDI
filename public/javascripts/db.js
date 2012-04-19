@@ -212,15 +212,15 @@ var db_functions = {
             url: '/api/shopping_cart',
             type: "GET",
             async: true,
-            success: function (data) {
+            success: function (err, data) {
                 console.log(data);
-                callback(data);
+                callback(null, data);
             },
 
             error: function (xhr, ajaxOptions, thrownError) {
-                alert('error');
+                callback(thrownError, null);
+                cinsole.log(thrownError);
             }
-
         });
     },
 
@@ -814,6 +814,21 @@ var db_functions = {
         $.ajax({
             url: '/api/actions/' + action_id,
             type: "PUT",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
+            }
+        });
+    },
+
+    getAllItemsByUser: function(api_resource, callback){
+        $.ajax({
+            url: '/api/' + api_resource + 'get=myUru',
+            type: "GET",
             async: true,
             success: function (data) {
                 callback(null, data);

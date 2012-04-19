@@ -61,6 +61,15 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
         });
     },
 
+    get_objects: function (req, filters, sorts, limit, offset, callback) {
+
+        if(req.query.get == "myUru"){
+            filters.users = req.user._id;
+        }
+
+        this._super(req, filters, sorts, limit, offset, callback);
+    },
+
     create_obj:function (req, fields, callback) {
         var user_id = req.session.user_id;
         var self = this;

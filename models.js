@@ -99,6 +99,7 @@ var Schemas = exports.Schemas = {
         last_name:{type:String, required:true, validate:MinLengthValidator(2)},
         email:{type:String, required:true, validate:TestEmailValidator},
         gender:{type:String, "enum":['male', 'female']},
+        address: String,
         age:{type:Number, min:0},
         occupation: String,
         biography: String,
@@ -212,7 +213,8 @@ var Schemas = exports.Schemas = {
         is_hot_object: {type:Boolean,'default':false},
         followers_count: {type: Number, 'default':0},
         num_of_comments: {type: Number, 'default':0},
-        upcoming_action: {type: ObjectId, ref: 'Action', index: true}
+        upcoming_action: {type: ObjectId, ref: 'Action', index: true},
+        num_upcoming_actions: {type: Number, 'default':0}
     }, {strict: true}),
 
     PostOrSuggestion:{
