@@ -4,12 +4,12 @@
   , "private": true
   , "dependencies": {
         "connect":"= 1.8.6",
-        "express": ">= 2.5.5",
+        "express": "= 2.5.5",
         "ejs": ">= 0.0.1",
         "connect-auth": "",
         "mongoose":"",
-        "jest": ">= 0.0.78",
-        "express-resource": "",
+        "express-resource": "= 0.2.4",
+        "jest": ">= 0.0.79",
         "connect-mongo":"= 0.1.7",
         "async": "",
 		"jade": "",

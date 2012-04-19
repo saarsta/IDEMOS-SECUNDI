@@ -55,7 +55,7 @@ exports.createDiscussionPageInit = function(req, res){
         avatar:req.session.avatar_url,
         body_class:'layout',
         extra_head:'<script src="/javascripts/createDiscussion.js"></script>'});
-}
+};
 
 exports.discussionPageInit = function(req, res){
 
@@ -68,7 +68,7 @@ exports.discussionPageInit = function(req, res){
         avatar:req.session.avatar_url,
         body_class:'layout',
         extra_head:'<script src="/javascripts/discussionPage.js"></script>'});
-}
+};
 
 exports.discussionPreviewPageInit = function(req, res){
 
@@ -76,7 +76,7 @@ exports.discussionPreviewPageInit = function(req, res){
         body_class:'layout',
         subject_name: req.query.subject_name});
 
-}
+};
 
 exports.cyclePageInit = function(req, res){
     res.render('cyclePage.ejs',{title:'cyclePage.ejs', cycle_id: req.query.cycle_id, discussion_id: req.query.discussion_id, subject_name: req.query.subject_name});
@@ -90,4 +90,4 @@ exports.allDiscussions = function(req,res)
         big_impressive_title:"כותרת גדולה ומרשימה",
         extra_head:'<script src="/javascripts/infoAndMeasures.js"></script>'
     });
-}
+};

@@ -1,6 +1,6 @@
 <div id="main">
         <div class="post clearfix">
-          <h2>כותרת שקשורה לכל מעגלי התנופה</h2>
+          <h2><%= title %></h2>
           <div id="search-form" class="form">
             <form action="#" method="post">
               <p class="clearfix">
@@ -9,19 +9,12 @@
               </p>
             </form>
           </div>
-          <h4 class="flR">בחירה מתוך 7 תחומי על </h4>
+          <h4 class="flR"><%= subjects_title %></h4>
           <br class="clear"/>
-          <ul class="list2 areas clearfix">
-            <li><img src="resources/images/assets/image15.jpg" alt="image15"/></li>
-            <li><img src="resources/images/assets/image15.jpg" alt="image15"/></li>
-            <li><img src="resources/images/assets/image15.jpg" alt="image15"/></li>
-            <li><img src="resources/images/assets/image15.jpg" alt="image15"/></li>
-            <li><img src="resources/images/assets/image15.jpg" alt="image15"/></li>
-            <li><img src="resources/images/assets/image15.jpg" alt="image15"/></li>
-            <li><img src="resources/images/assets/image15.jpg" alt="image15"/></li>
+          <ul  id="subjects_list" class="list2 areas clearfix">
           </ul>
           <div class="title clearfix">
-            <h4>רשימת כל הדיונים במערכת</h4>
+            <h4><%= all_cycles %></h4>
             <div class="classified">
               <form action="#" method="post">
                <div> <span class="selectbox">

@@ -84,7 +84,7 @@ var Comment = new Schema({
     votes: [CommentVote],
     time: {type:Date, 'default':Date.now},
 //        status: [{type:String, "enum":['comment', 'reply'], 'default': 'comment'}],
-    replies: [Reply]
+    replies: {type:[Reply], editable:false}
 });
 
 
