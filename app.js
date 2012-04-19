@@ -182,7 +182,7 @@ app.get('/facebookShare',account.facebookShare);
 app.get('/pendingActionsCircle',circles.pendingActions);
 app.get('/actionsCircle',circles.actions);
 app.get('/discussionsCircle',circles.discussions);
-app.get('/circlesCircle',circles.circles);
+app.get('/cyclesCircle',circles.circles);
 
 
 app.get('/actionListTestData',circles.actionsTestData);
