@@ -50,6 +50,8 @@ app.configure('development', function(){
     app.set('root_path', 'http://dev.empeeric.com');
     app.set('DB_URL','mongodb://localhost/uru');
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+    require('./compile_templates');
+
 });
 
 app.configure('production', function(){
@@ -136,9 +138,13 @@ app.configure(function(){
     app.use(account.auth_middleware);
     app.use(express.methodOverride());
     app.use(i18n.init);
+    app.use(function(req,res,next)
+    {
+        i18n.setLocale(req,'es');
+        next();
+    });
     app.use(app.router);
     app.use(express.static(__dirname + '/public'));
-
     require('j-forms').serve_static(app,express);
 });
 
@@ -147,6 +153,7 @@ app.helpers({
     __i: i18n.__,
     __n: i18n.__n
 });
+
 
 // Routes
 
@@ -274,4 +281,3 @@ catch(e)
 
 var cron = require('./cron');
 
-require('./compile_templates');

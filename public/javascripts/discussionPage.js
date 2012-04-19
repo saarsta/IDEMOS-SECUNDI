@@ -47,22 +47,17 @@ var post_items = {
     }
 }
 
-var discussion_id;
+function laodDiscussionPage(discussion_id){
 
-function laodDiscussionPage(data){
-
-    discussion_id = data;
     console.log("discussion id = " + discussion_id);
     db_functions.getDiscussionById(discussion_id, function(err, discussion_object){
         if(err){
-
+            console.log(err);
         }
         else{
-            $(".title").val(discussion_object.title);
-            $(".vision").val(discussion_object  .vision_text);
-            $("#discussion_grade").val("grade is: " + discussion_object.grade + " count: " + discussion_object.evaluate_counter);
-            console.log($(".title").val());
-            console.log($(".vision").val());
+           dust.render('discussion_full_view', discussion_object, function(err, out){
+               $('#discussion').append(out);
+           })
         }
     });
 

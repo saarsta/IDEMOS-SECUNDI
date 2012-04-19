@@ -60,6 +60,7 @@ div#footer {padding:40px 0px; background:#dadada; }
 
 /*---- Layout ----*/
 body.layout div#content{ padding:90px 0px;}
+body.layout div#content div.content-inner{ padding-top:80px;}
 body.layout div#main{width:845px; float:none; padding-top:0px;}
 body.layout div#content h2{ margin-bottom:40px;}
 body.layout div#search-form{ margin-bottom:40px;}
@@ -70,6 +71,12 @@ body.layout1 div#main{width:525px; padding-top:0px;}
 body.layout1 div#sidebar{width:270px;}
 body.layout1 div#content h2{ margin-bottom:40px;}
 body.layout1 div#search-form{ margin-bottom:40px;}
+
+/*---- Layout2 ----*/
+body.layout2 div#content{ padding:170px 0px 90px;}
+body.layout2 div#main{padding-top:0px;}
+body.layout2 div#sidebar{margin-top:53px;}
+body.layout2 div#search{ margin-bottom:40px; padding:22px 15px;}
 
 
 /*------------------------------------------
@@ -215,6 +222,10 @@ div#header div.user-area div.index p{ margin-bottom:8px;}
 div#header div.user-area div.index span.index{ background:#b2b2b2; height:10px; display:block;}
 div#header div.user-area div.index span.index span{ display:block; background:#575756; height:10px;}
 div#header div.user-area a.button{ padding:0px 0px; width:165px; margin:10px auto -29px; display:block; text-align:center; position:relative;}
+div#header div.user-area a.button.bothers{ font-size:120%; height:19px; line-height:19px; background:#dadada; color:#000; margin:5px auto -20px; position:relative; border:2px solid #878787;}
+
+div#header div.user-area div.toucans p.meta-data span.value{ margin-bottom:0px; margin-left:10px; float:right; width:110px;}
+div#header div.user-area div.toucans p.meta-data span.value:last-child{ margin-left:0px; width:80px;}
 
 div#header div.user-area div.frame{ float:right; padding:3px; position:relative; margin-left:10px;}
 div#header div.user-area div.frame span.number{ width:25px; height:18px; background:url(../images/theme/number-bg1.png) no-repeat left top; text-align:center; padding:8px 0 0px 0px; display:block; position:absolute; right:22px; bottom:-14px; font-size:210%; font-weight:bold; color:#575756;}
@@ -286,6 +297,20 @@ div.box1 div.detail p{ text-align:justify;}
 /*---- Box2 ----*/
 div.box2{ border:2px solid #9d9d9c; padding:10px; background:#fff;}
 
+/*---- Box3 ----*/
+div.box3{ border:2px solid #9d9d9c; background: url(../images/theme/box3-bg.jpg) repeat-x left top #fff;}
+div.box3 div.box3-inner{ background: url(../images/theme/box3-inner-bg.jpg) repeat-x left bottom; padding:10px;}
+div.box3 div.title{ float:right; padding:40px 0px;}
+div.box3 div.title h4{ float:none; margin-bottom:0px; line-height:20px; color:#3c3c3b;}
+
+
+/*---- Section ----*/
+div#main div.section{ border-bottom:4px solid #dadada; padding-bottom:10px; margin-bottom:20px;}
+div#main div.section h2{ margin-bottom:20px;}
+div#main div.section:first-child{padding-bottom:50px;}
+div#main div.section.last{ margin-bottom:0px;}
+div#main div.section div.box.post{margin-bottom:0px;}
+
 
 /*---- Two Column Layout ----*/
 div.two-column-layout{ margin-bottom:70px;}
@@ -323,6 +348,9 @@ a.classified{ float:left; width:126px; margin-bottom:15px;}
 a.classified span.arrow{float:left; display:block; width:12px; line-height:34px; background:url(../images/theme/button-arrow.png) no-repeat left center;}
 
 a.read-more{ color:#878787; font-size:180%; color:#878787; line-height:20px;}
+
+a.view-more{color:#1d1d1b; font-size:140%; line-height:25px; text-decoration:none;}
+a.view-more:hover{ text-decoration:none;}
 
 /*---- Lists ----*/
 /*---- List1 ----*/
@@ -434,6 +462,19 @@ div.box.share p{color:#878787; line-height:20px; font-size:170%; margin-bottom:2
 div.box.share div.action-bottom{ position:absolute; left:0px; width:510px; bottom:-20px;}
 div.box.share div.action-bottom a.button{ margin:0px 0px 0px 10px;}
 
+/*---- Share1 ----*/
+div.share1{ padding:10px; position:relative; margin-bottom:30px;}
+div.share1 h4{ float:right;}
+div.share1 p input.textbox{width:800px; font-size:110%;}
+div.share1 div.action{ padding-top:10px; margin-bottom:0px;}
+div.share1 div.action input.submit-btn{ font-size:200%; font-style:italic; margin:0px 0px 0px 10px;}
+div.share1 a.close-btn{ width:25px; height:25px; background:url(../images/theme/close-btn.png) no-repeat left top; text-decoration:none; position:absolute; left:10px; top:10px;}
+
+/*---- Categories ----*/
+div.post ul.categories, ul.categories{ margin:0px 0px; padding:0px 0px;}
+ul.categories li{ float:left; text-align:center; list-style:none; font-size:160%; color:#878787; font-style:italic; margin-right:15px;}
+ul.categories li span.radio-btn, ul.categories li label{ display:block;}
+
 /*---- Activities ----*/
 div.post ul.list1.activities li{ margin-bottom:10px;}
 ul.list1.activities div.action{ margin-bottom:0px;}
@@ -449,15 +490,29 @@ div.title div.classified{ float:left;}
 
 /*---- Discussions ----*/
 div.discussions{ margin-bottom:35px;}
-div.discussions div.frame1{ margin-left:20px;}
-div.discussions div.description{width:375px; float:right;}
+div.discussions div.frame1{ margin-left:15px;}
+div.discussions div.description{width:380px; float:right;}
 div.discussions div.information{ float:left; width:168px; padding:8px; margin-bottom:20px;}
 div.discussions div.information img{ margin-bottom:5px}
 div.discussions div.information a.button{font-size:180%; display:block; padding:0px 0px; text-align:center;}
 
+div.discussions div.box3{ margin:10px 0px 40px;}
+div.discussions div.description h5{ margin-bottom:5px;}
+div.discussions div.description div.buttons a.button{ margin-right:5px;}
+div.discussions div.description div.buttons a.button.slider{background:#3c3c3b;}
+div.discussions div.description div.buttons a.button:last-child{ margin-right:0px;}
+div.discussions div.tags p{ font-size:170%; color:#878787; margin-bottom:5px;}
+div.discussions div.tags p a.add{ color:#575756; text-decoration:none; float:left; font-style:italic;}
+div.discussions div.tags p.highlight{line-height:16px; font-size:130%; color:#fff; float:left;}
+div.discussions div.tags p.highlight span{ float:right; display:block; margin-left:10px; background:#c6c6c6; padding:3px; width:298px;}
+div.discussions div.tags p.highlight span:last-child{ margin-left:0px; width:60px;}
+
 div.discussions ul.list1{ margin:20px 0px 10px;}
 div.discussions ul.list1 li:last-child{ margin-bottom:0px;}
 div.discussions ul.list1 div.frame{ margin:0px 0px 0px 10px;}
+div.discussions ul.list1 div.image{ margin:0px 0px 0px 10px; text-align:center; float:right; width:75px;}
+div.discussions ul.list1 div.image div.frame{ margin:0px 0px 5px 0px;}
+div.discussions ul.list1 div.image span{ color:#878787; font-size:80%; line-height:15px;}
 div.discussions ul.list1 h4{ color:#878787;}
 div.discussions ul.list1 p{ color:#878787; font-size:80%;}
 div.discussions ul.list1 p.meta-data{ color:#878787; font-size:100%;}
@@ -468,6 +523,7 @@ div.discussions ul.list1 div.action{ margin-bottom:0px;}
 div.follow{ background:#3c3c3b; padding:6px 10px; margin-bottom:20px;}
 div.follow p{ color:#fff; line-height:38px; margin-bottom:0px; float:right;}
 div.follow a.button{ float:left; border:2px solid #000;}
+div.follow a.close-btn { background: url("../images/theme/close-btn2.jpg") no-repeat scroll left top transparent; height:22px; float:left; display:block; text-decoration: none; margin:9px 9px 0px 9px; width: 25px;}
 
 /*---- Timelines ----*/
 div.timeline{ margin-bottom:40px;}
@@ -524,6 +580,111 @@ div.popup ul.list3 li:nth-child(6n){ margin-left:0px;}
 div.popup ul.list3 li div.frame1{ position:relative;}
 div.popup a.close-btn1{ width:25px; height:25px; background:url(../images/theme/close-btn.png) no-repeat left top; text-decoration:none; position:absolute; top:-10px; right:-10px;}
 
+div.popup.bothers ul{ clear:both; margin:0px 0px; padding:0px 0px;}
+div.popup.bothers ul li{ list-style:none; margin-bottom:20px;}
+div.popup.bothers ul li:last-child{ margin-bottom:0px;}
+div.popup.bothers ul li input.textbox{ width:785px; float:none; font-size:150%;}
+div.popup.bothers ul li textarea{background: none repeat scroll 0 0 #FFFFFF;  border: 2px solid #9D9D9C;  color: #878787; width:785px; padding:6px 9px; font-size:170%; font-style:italic; font-weight:bold;}
+div.popup.bothers ul li ul.categories{width:220px; margin:0px auto;}
+div.popup.bothers ul li ul.categories li{ font-size:150%;}
+div.popup.bothers ul li p.submit{width:120px; margin:0px auto; font-size:100%;}
+div.popup.bothers ul li p.submit input.submit-btn{width:110px; float:none;}
+div.popup.bothers ul li p.submit span{ color:#878787; font-size:150%; font-size:italic; display:block; text-align:center; padding-top:10px;}
+
+/*---- Loader ----*/
+div.loader{padding:10px 20px; }
+div.loader ul, div.post div.loader ul{ margin:0px 0px; padding:0px 0px;}
+div.loader ul li{ float:right;margin-left:24px; list-style:none; font-size:130%; color:#706f6f; font-style:italic;}
+div.loader ul li img { margin-bottom:10px; display:block}
+div.loader ul li:last-child{ margin:0px;}
+
+div.loader.box{ background:#fff;}
+div.user-area ul li{ margin-left:22px;}
+div.user-area ul li img{ margin-bottom:0px;}
+div.user-area div.loader{ background:#ededed; padding:4px 20px; }
+
+/*---- Updates ----*/
+ul.updates li{ font-size:160%; color:#878787; list-style:none;}
+ul.updates li ul li{ font-size:100%; padding:15px 0px; border-bottom:2px solid #b2b2b2;  list-style:none;}
+ul.updates li ul li p{line-height:20px; margin-bottom:0px; font-size:100%;}
+ul.updates li ul li a.button{ float:left; font-size:90%; height:24px; line-height:24px;}
+ul.updates li ul li div.frame1{ float:right; margin:0px 0px 10px 5px; padding:3px;}
+
+div.section ul.updates li ul li{ font-size:100%; padding:11px 0px; border-bottom:0px;}
+ul.updates li ul li.information a.button{ float:right; margin-top:28px;}
+
+
+/*---- Toucans ----*/
+div.toucans h4{ font-size:200%;}
+div.toucans p.meta-data{ color:#000; margin-bottom:0px;}
+div.toucans p.meta-data span.value{ margin-bottom:20px; display:block; line-height:33px; wi}
+div.toucans p.meta-data span.value:last-child{margin-bottom:0px;}
+div.toucans p.meta-data span.value span.number, div#header div.toucans p.meta-data span.value span.number{ background:url(../images/theme/number-bg2.png) no-repeat left top; width:35px; height:19px; text-align:center; padding:8px 0px; display:block; float:right; margin-left:5px; line-height:19px;}
+
+/*---- Profile ----*/
+div.profile{ margin-bottom:50px;}
+div.profile div.frame1{ float:right; padding:5px;}
+div.profile div.details{ float:left; width:620px;}
+div.profile div.information{ float:right; width:490px;}
+div.profile div.information p{ margin-bottom:0px; color:#706f6f; font-style:italic;}
+
+div.profile div.toucans{ float:left; width:120px; margin-bottom:30px;}
+div.profile div.toucans p.meta-data span.value{float:none;}
+div.profile div.loader{ clear:both;}
+
+/*---- Tabs ----*/
+div.tabs { margin-bottom:100px;}
+div.tabs ul.tabs-list, div.post div.tabs ul.tabs-list{ margin:0px 0px 30px 0px; padding:0px 0px;}
+div.tabs ul.tabs-list li{ list-style:none; color:#fff; line-height:50px; font-size:200%; width:185px; margin-left:15px; float:right; text-align:center;}
+div.tabs ul.tabs-list li a{ display:block; background:#c6c6c6; line-height:50px; color:#fff; text-align:center; font-style:italic; text-decoration:none; font-size:100%;}
+div.tabs ul.tabs-list li.active a, div.tabs ul.tabs-list li:hover a{ background:#878787; font-weight:bold; font-style:normal; text-decoration:none;}
+
+div.tabs div.tabs-content ul, div.post div.tabs div.tabs-content ul{ margin:0px 0px; padding:0px 0px;}
+div.tabs div.tabs-content ul li{ color:#3c3c3b; font-size:190%; text-align:center; list-style:none; width:138px; float:right; margin-left:30px;}
+div.tabs div.tabs-content ul li div.frame1{ padding:5px; margin-bottom:5px;}
+div.tabs div.tabs-content ul li p{ margin-bottom:10px; color:#3c3c3b; font-size:100%;}
+
+/*---- Topics1 ----*/
+body.layout div#content div.topics-1 h2{ margin-bottom:10px;}
+div.topics-1 { margin-bottom:50px;}
+div.topics-1 div.details{ float:right; width:460px;}
+div.topics-1 div.details p{ margin-bottom:5px; color:#3c3c3b;}
+div.topics-1 div.members{ padding-top:10px;}
+div.topics-1 a.button{ float:left; margin:0px 20px 20px 0px;}
+div.topics-1 a.suggest-action{ width:175px; margin:30px auto; text-align:center; float:none; display:block;}
+
+/*---- Members ----*/
+div.members ul, div.post div.members ul{ margin:0px 0px; padding:0px 0px;}
+div.members ul li{ float:right; list-style:none; font-size:150%; color:#3c3c3b; text-align:center; margin-left:20px;}
+div.members ul li:last-child{ margin-left:0px;}
+div.members ul li img{ margin:0px auto 5px; display:block;}
+
+/*---- Comments ----*/
+div.comments h2{ float:right; margin-bottom:20px;}
+body.layout div#content div.comments h2{ margin-bottom:20px;}
+div.comments div.sorting{ float:left;}
+div.comments ul.list1 { margin:0px 0px 50px 0px; padding:0px 0px;}
+div.comments ul.list1 li div.image{ float:right; width:75px; text-align:center; margin:0px 0px 0px 10px;}
+div.comments ul.list1 li div.image div.frame{ margin-bottom:5px; position:relative;}
+div.comments ul.list1 li div.image div.controls{width:70px; display:block; position:absolute; left:-2px; bottom:-12px;}
+div.comments ul.list1 li div.image div.controls a{ display:inline-block; margin-left:5px; background:url(../images/theme/controls-bg.png) no-repeat left bottom; width:14px; height:14px;}
+div.comments ul.list1 li div.image div.controls a:hover, ul.list5 li div.frame1 div.controls a.active{background:url(../images/theme/controls-bg.png) no-repeat left top;}
+div.comments ul.list1 li div.image span{color: #878787;font-size: 80%;line-height: 15px;}
+div.comments ul.list1 li div.description{width:720px;}
+div.comments ul.list1 li p {color: #878787;font-size: 80%;}
+div.comments ul.list1 li div.action{ margin-bottom:0px;}
+
+div.comments div.form{padding-bottom:5px; background:url(../images/theme/textarea-arrow.png) no-repeat 4px 96% #fff;}
+div.comments div.form div.description{ float:right; width:720px;}
+div.comments div.form div.frame1{ float:right; padding:3px; margin:0px 0px 10px 10px;}
+div.comments div.form h4, div.comments div.form p.meta-data{ font-size:170%; color:#878787; margin-bottom:0px; line-height:20px;}
+div.comments div.form textarea{ border:none; background:none; width:720px; height:50px; max-height:50px; clear:both; color:#b2b2b2; font-size:200%; font-style:italic; margin:0px 0px; padding:0px 0px;}
+div.comments div.form div.action{width:80px; float:left; margin-bottom:0px;}
+div.comments div.form div.action span{font-size:170%; color:#3c3c3b; display:block; margin-bottom:10px;}
+div.comments div.form div.action span input{float:right; margin:0px 0px 0px 5px;}
+div.comments div.form div.action input.submit-btn{ float:right; margin:10px 0px 0px 0px;}
+
+
 
 /*------------------------------------------
 // 4.1  INDEX PAGE SPECIFIC STYLES
@@ -533,3 +694,7 @@ div.box.post{width:235px; float:right; margin:0 0 70px 15px; padding:7px 8px;}
 div.box.post p {color:#878787; line-height:20px; font-size:170%; margin-bottom:20px; display:block; }
 div.box.post a.button1{ margin:0px auto -25px; position:relative;}
 
+.hot_info_content {
+    overflow: hidden;
+    height: 92px;
+}

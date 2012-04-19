@@ -98,7 +98,7 @@ var db_functions = {
             url: '/api/shopping_cart/' + info_item_id,
             type: "PUT",
             async: true,
-            success: function () {
+            success: function (data) {
 
                 callback(null, data);
                 console.log("item information inserted to shopping cart");
@@ -107,6 +107,24 @@ var db_functions = {
             error: function (xhr, ajaxOptions, thrownError) {
                 callback(thrownError, null);
                 alert(thrownError);
+            }
+        });
+    },
+
+    removeInfoItemFromShoppingCart: function(info_item_id, callback){
+        $.ajax({
+            url: '/api/shopping_cart/' + info_item_id,
+            type: "DELETE",
+            async: true,
+            success: function () {
+//                          removeInfoItemFromUserShoppingCart(info_item_index);
+                callback(null)
+                console.log('info item deleted from shopping cart');
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError);
+                console.log('error delete info item from shoping cart');
             }
         });
     },
@@ -128,21 +146,6 @@ var db_functions = {
         });
     },
 
-    dbDeleteInfoItemFromShoppingCart: function(info_item_id){
-        $.ajax({
-            url: '/api/shopping_cart/' + info_item_id,
-            type: "DELETE",
-            async: true,
-            success: function () {
-//                          removeInfoItemFromUserShoppingCart(info_item_index);
-                console.log('info item deleted from shopping cart');
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                console.log('error delete info item from shoping cart');
-            }
-        });
-    },
 
     getHotInfoItems: function(){
         $.ajax({
@@ -170,7 +173,7 @@ var db_functions = {
     getInfoItemsOfSubjectByKeywords: function(keywords, subject_id, callback){
         var keywords_arr = keywords.trim().replace(/\s+/g,".%2B");
         $.ajax({
-            url: '/api/information_items/?text_field__regex='+ keywords_arr + '&subject_id=' + subject_id,
+            url: '/api/information_items/?text_field__regex='+ keywords_arr + '&text_field_preview__regex='+ keywords_arr + '&subject_id=' + subject_id,
             type: "GET",
             async: true,
             success: function (data) {
@@ -285,13 +288,13 @@ var db_functions = {
         });
     },
 
-    createDiscussion: function(subject_id, subject_name, vision, title, callback){
-        console.log('data: {"subject_id": subject_id, "vision_text": vision, "title": title, "is_published": true},');
+    createDiscussion: function(subject_id, subject_name, vision, title, tags, callback){
+        console.log('data: {"subject_id": subject_id, "vision_text": vision, "title": title, "tags": tags, "is_published": true},');
         $.ajax({
             url: '/api/discussions/',
             type: "POST",
             async: true,
-            data: {"subject_id": subject_id, "subject_name": subject_name, "vision_text": vision, "title": title, "is_published": true},
+            data: {"subject_id": subject_id, "subject_name": subject_name, "vision_text": vision, "title": title, "tags": tags, "is_published": true},
             success: function (data) {
                 console.log(data);
                 callback(null, data);
@@ -607,6 +610,23 @@ var db_functions = {
 
             error: function (xhr, ajaxOptions, thrownError) {
                 alert('error');
+            }
+        });
+    },
+
+    getAllCycles: function(callback){
+        $.ajax({
+            url: '/api/cycles',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log(thrownError);
+                callback(thrownError, null);
             }
         });
     },

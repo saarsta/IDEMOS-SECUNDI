@@ -21,6 +21,16 @@ function loadSelectedItemPage(subject_id, info_id){
         });
     });
 
+    $(".button.remove").live("click", function(){
+        var info_item_id = $(this).parent('div').attr('info_item_id');
+        var div = $(this).parent('div');
+        db_functions.removeInfoItemFromShoppingCart(info_item_id, function(err){
+            if(!err){
+                div.remove();
+            }
+        });
+    });
+
     if(subject_id.indexOf(',') > -1)
         subject_id = subject_id.split(',')[0];
     $.ajax({
@@ -50,7 +60,7 @@ function loadSelectedItemPage(subject_id, info_id){
             console.log(data);
             $('#info_item_full_view').empty();
             data.get_link = function(){
-                return encodeURIComponent('/selectedItem?subject_id=' + data.subject_id + '&info_id=' + data._id);
+                return '/selectedItem?subject_id=' + data.subject_id + '&info_id=' + data._id;
             };
              dust.render('info_item_full_view', data, function(err,out)
              {
@@ -70,7 +80,7 @@ function loadSelectedItemPage(subject_id, info_id){
         {
             obj.get_link = function( )
             {
-                return encodeURIComponent('/selectedItem?subject_id=' + data.subject_id + '&info_id=' + data._id);
+                return '/selectedItem?subject_id=' + obj.subject_id + '&info_id=' + obj._id;
             }
         });
         dust.renderArray('shopping_cart_item_1', data.objects,function(err,out)

@@ -47,7 +47,7 @@ exports.selectedItemInit = function(req, res){
 };
 
 exports.createDiscussionPageInit = function(req, res){
-    res.render('createDiscussion.ejs',{title:'discussionInit.ejs',  logged: req.isAuthenticated(),
+    res.render('createDiscussion.ejs',{title:"יצירת דיון", logged: req.isAuthenticated(),
         big_impressive_title: "",
         subject_id: req.query.subject_id,
         subject_name: req.query.subject_name,
@@ -55,15 +55,20 @@ exports.createDiscussionPageInit = function(req, res){
         avatar:req.session.avatar_url,
         body_class:'layout',
         extra_head:'<script src="/javascripts/createDiscussion.js"></script>'});
-}
+};
 
 exports.discussionPageInit = function(req, res){
 
-    res.render('discussionPage.ejs',{title:'discussionPageInit.ejs', discussion_id: req.query.discussion_id, subject_id: req.query.subject_id,
+    res.render('discussionPage.ejs',{title:"דיון",
+        logged: req.isAuthenticated(),
+        discussion_id: req.query.discussion_id,
+        subject_id: req.query.subject_id,
+        big_impressive_title: req.query.subject_name,
+        user: req.session.user,
+        avatar:req.session.avatar_url,
         body_class:'layout',
-        subject_name: req.query.subject_name});
-
-}
+        extra_head:'<script src="/javascripts/discussionPage.js"></script>'});
+};
 
 exports.discussionPreviewPageInit = function(req, res){
 
@@ -71,7 +76,7 @@ exports.discussionPreviewPageInit = function(req, res){
         body_class:'layout',
         subject_name: req.query.subject_name});
 
-}
+};
 
 exports.cyclePageInit = function(req, res){
     res.render('cyclePage.ejs',{title:'cyclePage.ejs', cycle_id: req.query.cycle_id, discussion_id: req.query.discussion_id, subject_name: req.query.subject_name});
@@ -85,4 +90,4 @@ exports.allDiscussions = function(req,res)
         big_impressive_title:"כותרת גדולה ומרשימה",
         extra_head:'<script src="/javascripts/infoAndMeasures.js"></script>'
     });
-}
+};
