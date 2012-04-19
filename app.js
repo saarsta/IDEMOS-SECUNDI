@@ -179,10 +179,10 @@ app.get('/cycle', pagesInit.cyclePageInit);
 app.get('/mmSearch', mmSearch.mm_search)
 app.get('/allDiscussions',pagesInit.allDiscussions);
 app.get('/facebookShare',account.facebookShare);
-app.get('/pendingActionsCircle',circles.pendingActions);
-app.get('/actionsCircle',circles.actions);
-app.get('/discussionsCircle',circles.discussions);
-app.get('/cyclesCircle',circles.circles);
+app.get('/pendingActions',circles.pendingActions);
+app.get('/actions',circles.actions);
+app.get('/discussions',circles.discussions);
+app.get('/cycles',circles.circles);
 
 
 app.get('/actionListTestData',circles.actionsTestData);

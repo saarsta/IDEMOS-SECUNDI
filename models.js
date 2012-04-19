@@ -285,6 +285,7 @@ var Schemas = exports.Schemas = {
 
     Action:{
         title:{type:String, required:true},
+        type:{type:String},
         text_field:{type:mongoose_types.Html},
         text_field_preview:{type:mongoose_types.Html},
         image_field: mongoose_types.File,

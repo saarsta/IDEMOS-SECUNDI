@@ -6,7 +6,9 @@
  * To change this template use File | Settings | File Templates.
  */
 
-
+dust.filters['time'] = function(a){
+    return $.datepicker.formatDate('dd-mm-yy', new Date(Date.parse(a)));;
+};
 
 dust.renderArray = function(template,arr,callback,endCallback)
 {
@@ -258,6 +260,7 @@ var db_functions = {
                 dust.renderArray('discussion_list_item',data.objects,null,function(err,out)
                 {
                     $('#mainList').append(out);
+                    $('#mainList img').autoscale();
 
                 });
                 if(callback) callback(null, data);
@@ -509,7 +512,7 @@ var db_functions = {
     getAllCycles: function(){
         $.ajax({
              //  url: '/api/cycles',
-            url: '/circleListTestData',
+            url: '/api/cycles',
             type: "GET",
             async: true,
             success: function (data) {
@@ -614,22 +617,22 @@ var db_functions = {
         });
     },
 
-    getAllCycles: function(callback){
-        $.ajax({
-            url: '/api/cycles',
-            type: "GET",
-            async: true,
-            success: function (data) {
-                console.log(data);
-                callback(null, data);
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                console.log(thrownError);
-                callback(thrownError, null);
-            }
-        });
-    },
+//    getAllCycles: function(callback){
+//        $.ajax({
+//            url: '/api/cycles',
+//            type: "GET",
+//            async: true,
+//            success: function (data) {
+//                console.log(data);
+//                callback(null, data);
+//            },
+//
+//            error: function (xhr, ajaxOptions, thrownError) {
+//                console.log(thrownError);
+//                callback(thrownError, null);
+//            }
+//        });
+//    },
 
     getApprovedActionByCycle: function(cycle_id, callback){
         $.ajax({
@@ -695,6 +698,7 @@ var db_functions = {
                 dust.renderArray('action_list_item',data.objects,null,function(err,out)
                 {
                     $('#mainList').append(out);
+                    $('#mainList img').autoscale();
 
                 });
                 if(callback) callback(null, data);

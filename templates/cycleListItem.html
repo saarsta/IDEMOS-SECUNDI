@@ -1,21 +1,25 @@
 <li class="clearfix">
-    <div class="frame"> <img src="{image_field.url}" alt="image3"/> </div>
+    <div class="frame">
+        <div style="width:125px; height:98px;">
+            <img src="{image_field_preview.url}" alt="{title}"/>
+        </div>
+    </div>
+
     <div class="description">
         <h4>
-            נושא מעגל התנופה:
-            <br>{subject}
+            {title}
         </h4>
         <p>
             מספר עוקבים:
-            <br>{followers_count}
+            {followers_count}
         </p>
         <p>
             מספר תגובות:
-            <br>{num_of_comments}
+            {num_of_comments}
         </p>
         <p>
             מספר פעולות עתידיות:
-            <br>{}
+            {}
         </p>
         <p>
             (פעולות שהצליחו בעבר):
@@ -26,20 +30,12 @@
 
     <div class="action-bottom clearfix">
         <p class="meta-data">
-            הפעולה הקרובה: <a href="#">שם הפעולה</a> <span class="divider">|</span> <a href="#">תאריך ושעה</a> <span class="divider">|</span> <a href="#">מספר משתתפים</a>
-
-
-            <a href="#">
-           {upcoming_action.title}
-            </a>
-            <span class="divider">|</span>
-            <a href="#">{upcoming_action.execution_date}
-            </a>
-            <span class="divider">|</span>
-            <a href="#">
-              {upcoming_action.num_of_going}
-            </a>
-
+            הפעולה הקרובה: <a href="#"> {upcoming_action.title} </a>
+            <span class="divider">|</span> <a href="#">{upcoming_action.title}</a>
+            <span class="divider">|</span> <a href="#">
+            מספר משתתפים
+            {upcoming_action.num_of_going}
+        </a>
         </p>
         <a href="#" class="button">הצטרף</a>
     </div>

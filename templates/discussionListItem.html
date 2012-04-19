@@ -1,26 +1,26 @@
 <li class="clearfix">
     <div class="frame">
-        <img src="{image_field.url}" alt="image3"/>
+        <div style="width:125px; height:98px;"></div>
+            <img src="{image_field_preview.url}" alt="{title}"/>
+        </div>
     </div>
     <div class="description">
 
         <h4>
-            נושא הדיון:
        <br>     {title}</h4>
         <p>
-            תקציר נושא הדיון:
-        <br>    {text_field_preview}</p>
+        <br>    {text_field_preview|s}</p>
         <p>
             דירוג נוכחי:
-            <br> {grade}
+             {grade}
         </p>
         <p>
-            תאריך פתיחה?:
-            <br> {}
+            תאריך פתיחה:
+             {creation_date|time}
         </p>
         <p>
-            מספר משתתפים?:
-        <br> {followers_count}
+         מספר משתתפים:
+         {followers_count}
         </p>
     </div>
     <div class="action">
