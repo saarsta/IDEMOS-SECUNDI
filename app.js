@@ -251,33 +251,7 @@ rest_api.register_resource('article_update', new ArticleCommentResource());
 app.listen(app.settings.port);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 
-try
-{
-require('j-forms').forms.set_models(Models);
-
-var mongoose_admin = require('admin-with-forms');
-
-var admin = mongoose_admin.createAdmin(app,{root:'admin'});
-
-admin.ensureUserExists('admin','admin');
-
-admin.registerMongooseModel("User",Models.User,null,{list:['username','first_name','last_name']});
-admin.registerMongooseModel("InformationItem",Models.InformationItem, null,{list:['title'],order_by:['gui_order'],sortable:'gui_order',cloneable:true});
-admin.registerMongooseModel("Subject",Models.Subject,null,{list:['name'],order_by:['gui_order'],sortable:'gui_order'});
-admin.registerMongooseModel("Discussion",Models.Discussion,null,{list:['title'],cloneable:true});
-admin.registerMongooseModel("Cycle",Models.Cycle,null,{list:['title'],cloneable:true});
-admin.registerMongooseModel("Action",Models.Action,null,{list:['title'],cloneable:true});
-admin.registerMongooseModel('Locale',locale.Model, locale.Model.schema.tree,{list:['locale'],form:locale.LocaleForm});
-
-
-
-}
-
-catch(e)
-{
-    console.log(e);
-    console.log('admin is not operational, wow. exception: ' + e.message);
-}
+require('./admin')(app);
 
 var cron = require('./cron');
 
