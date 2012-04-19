@@ -10,6 +10,7 @@ var resources = require('jest'),
     util = require('util'),
     models = require('../models'),
     common = require('./common'),
+    async = require('async'),
     DISCUSSION_PRICE = 3;
 
 //Authorization
@@ -105,14 +106,42 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
     },
 
     update_obj:function (req, object, callback) {
-        if (object.is_published) {
-            callback("this discussion is already published", null);
-        } else {
-            req.gamification_type = "discussion";
-            req.token_price = DISCUSSION_PRICE;
-            object.is_published = true;
-            object.save(callback);
+        if(req.body.follower){
+            var user = req.user;
+//            var cycle_id = req._id;
+            var g_discussion_obj = null;
+            async.waterfall([
+
+                function(cbk){
+                    g_discussion_obj = object;
+                    if (common.isArgIsInList(object._id, user.discussions) == false){
+                        async.parallel([
+                            function(cbk2){
+                                models.User.update({_id: user._id}, {$addToSet: {discussions: object._id}}, cbk2);
+                            },
+
+                            function(cbk2){
+                                models.Discussion.update({_id: object._id}, {$inc: {followers_count: 1}}, cbk2);
+                            }
+                        ], cbk);
+                    }else{
+                        cbk({message:"user is already a follower",code:401}, null);
+                    }
+                }
+            ],function(err, result){
+                callback(err, g_discussion_obj);
+            });
+        }else{
+            if (object.is_published) {
+                callback("this discussion is already published", null);
+            } else {
+                req.gamification_type = "discussion";
+                req.token_price = DISCUSSION_PRICE;
+                object.is_published = true;
+                object.save(callback);
+            }
         }
+
     }
 });
 
