@@ -818,7 +818,7 @@ var db_functions = {
 
     getAllItemsByUser: function(api_resource, callback){
         $.ajax({
-            url: '/api/' + api_resource + 'get=myUru',
+            url: '/api/' + api_resource + '?get=myUru',
             type: "GET",
             async: true,
             success: function (data) {

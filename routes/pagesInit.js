@@ -91,7 +91,7 @@ exports.allDiscussions = function(req,res)
         extra_head:'<script src="/javascripts/infoAndMeasures.js"></script>'
     });
 };
-<<<<<<< HEAD
+
 
 exports.myUru = function(req,res)
 {
@@ -108,5 +108,4 @@ exports.myUru = function(req,res)
     });
 
 };
-=======
->>>>>>> d0633acab43ff53e3d4e2124af26ec3c94618b60
+

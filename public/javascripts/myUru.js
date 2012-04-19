@@ -28,9 +28,15 @@ function tabSelected(event, ui)
             });
         });*/
             break;
-        case 'tabCycle': db_functions.dbGetAllCirclesXXX(function(data){
-                        var size = data.objects.length;
+        case 'tabCycle':
+                        debugger;
+                        db_functions.getAllItemsByUser('cycles',function(error,data){
 
+                        if(data.objects===null){
+                            return ;
+                        }
+
+                        var size = data.objects.length;
                         dust.renderArray('myCycle_list_item',data.objects,null,function(err,out)
                         {
                             var seletedTab= $('#ulCycles');
