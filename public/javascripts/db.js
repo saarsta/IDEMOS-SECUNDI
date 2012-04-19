@@ -6,9 +6,14 @@
  * To change this template use File | Settings | File Templates.
  */
 
+dust.filters['date'] = function(a){
+    return $.datepicker.formatDate('dd-mm-yy', new Date(Date.parse(a)));;
+};
+
 dust.filters['time'] = function(a){
     return $.datepicker.formatDate('dd-mm-yy', new Date(Date.parse(a)));;
 };
+
 
 dust.renderArray = function(template,arr,callback,endCallback)
 {

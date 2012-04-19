@@ -11,6 +11,7 @@ var COUNTER;
 function loadCircleList() {
     COUNTER = 0;
     db_functions.dbGetAllSubjects(true);
+    var subject_id =
     db_functions.getAllCycles();
 
     /*
