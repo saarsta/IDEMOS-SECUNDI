@@ -695,6 +695,6 @@ div.box.post p {color:#878787; line-height:20px; font-size:170%; margin-bottom:2
 div.box.post a.button1{ margin:0px auto -25px; position:relative;}
 
 .hot_info_content {
-overflow: hidden;
-height: 92px;
+    overflow: hidden;
+    height: 92px;
 }
