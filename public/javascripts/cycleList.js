@@ -10,8 +10,8 @@ var COUNTER;
 
 function loadCircleList() {
     COUNTER = 0;
-
-    db_functions.dbGetAllCircles();
+    db_functions.dbGetAllSubjects(true);
+    db_functions.getAllCycles();
 
     /*
     if( tag_name == 'חיפוש עפ TAGS')

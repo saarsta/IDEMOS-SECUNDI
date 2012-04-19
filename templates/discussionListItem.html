@@ -1,16 +1,30 @@
 <li class="clearfix">
     <div class="frame">
-        <img src="resources/images/assets/image3.jpg" alt="image3"/>
+        <img src="{image_field.url}" alt="image3"/>
     </div>
     <div class="description">
-        <h4>נושא הדיון</h4>
-        <p>תקציר נושא הדיון</p>
-        <p>דירוג נוכחי</p>
-        <p>תאריך פתיחה?</p>
-        <p>מספר משתתפים?</p>
+
+        <h4>
+            נושא הדיון:
+       <br>     {title}</h4>
+        <p>
+            תקציר נושא הדיון:
+        <br>    {text_field_preview}</p>
+        <p>
+            דירוג נוכחי:
+            <br> {grade}
+        </p>
+        <p>
+            תאריך פתיחה?:
+            <br> {}
+        </p>
+        <p>
+            מספר משתתפים?:
+        <br> {followers_count}
+        </p>
     </div>
     <div class="action">
-        <a href="#" class="button">שתף</a>
+        <a href="/facebookShare?link={get_link}" class="button">שתף</a>
         <a href="#" class="button">הצטרף</a>
     </div>
 </li>

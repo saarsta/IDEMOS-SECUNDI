@@ -84,7 +84,7 @@ var Comment = new Schema({
     votes: [CommentVote],
     time: {type:Date, 'default':Date.now},
 //        status: [{type:String, "enum":['comment', 'reply'], 'default': 'comment'}],
-    replies: [Reply]
+    replies: {type:[Reply], editable:false}
 });
 
 
@@ -93,12 +93,13 @@ var Schemas = exports.Schemas = {
     User: new Schema({
         username:String,
         identity_provider:{type:String, "enum":['facebook', 'register']},
-            facebook_id:String,
+        facebook_id:String,
         access_token:String,
         first_name:{type:String, required:true, validate:MinLengthValidator(2)},
         last_name:{type:String, required:true, validate:MinLengthValidator(2)},
         email:{type:String, required:true, validate:TestEmailValidator},
         gender:{type:String, "enum":['male', 'female']},
+        address: String,
         age:{type:Number, min:0},
         occupation: String,
         biography: String,
@@ -193,7 +194,12 @@ var Schemas = exports.Schemas = {
                         has_rewarded_creator_for_high_grading_of_min_graders: {type: String, 'default': false}}
     },
 
-    Cycle:{
+    Cycle:new Schema({
+        subject:[{
+            id:{type:ObjectId, ref:'Subject', index:true, required:true},
+            name: {type:String}
+            }
+        ],
         title: {type:String, required:true},
         text_field:{type:mongoose_types.Html},
         text_field_preview:{type:mongoose_types.Html},
@@ -205,8 +211,11 @@ var Schemas = exports.Schemas = {
         ],
         document: String,
         is_hot_object: {type:Boolean,'default':false},
-        followers_count: {type: Number}
-    },
+        followers_count: {type: Number, 'default':0},
+        num_of_comments: {type: Number, 'default':0},
+        upcoming_action: {type: ObjectId, ref: 'Action', index: true},
+        num_upcoming_actions: {type: Number, 'default':0}
+    }, {strict: true}),
 
     PostOrSuggestion:{
         discussion_id:{type:Schema.ObjectId, ref:'Discussion', index:true, required:true},
@@ -361,6 +370,31 @@ var Schemas = exports.Schemas = {
     }
 };
 
+Schemas.Cycle.pre("save", function(next){
+
+    var self = this;
+
+    var iterator = function(subject, itr_cbk){
+        Subject.findById(subject.id, function(err, result){
+            if(err){
+               itr_cbk(err, null);
+            }else{
+                subject.name = result.name;
+                itr_cbk(null, result);
+            }
+        })
+    }
+
+    async.forEach(self.subject, iterator, function(err, result){
+        if(!err){
+            self.save(function(err, result){
+
+            })
+            next();
+        }
+    })
+});
+
 Schemas.User.methods.toString = function()
 {
     return this.first_name + ' ' + this.last_name;
@@ -407,7 +441,7 @@ var Models = module.exports = {
 //    CommentVote:mongoose.model('CommentVote', new Schema(Schemas.CommentVote, {strict: true})),
 //    Comment:mongoose.model('Comment', new Schema(Schemas.Comment, {strinct: true})),
     Article:mongoose.model('Article', new Schema(Schemas.Article, {strict: true})),
-    Cycle:mongoose.model('Cycle', new Schema(Schemas.Cycle, {strict: true})),
+    Cycle:mongoose.model('Cycle', Schemas.Cycle),
     Category:mongoose.model('Category', new Schema(Schemas.Category, {strict: true})),
     Action:mongoose.model('Action', new Schema(Schemas.Action, {strict: true})),
     ActionResource:mongoose.model('ActionResource', new Schema(Schemas.ActionResource, {strict: true})),

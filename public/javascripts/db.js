@@ -29,85 +29,7 @@ dust.renderArray = function(template,arr,callback,endCallback)
 var db_functions = {
 
 
-    dbGetAllPendingActions: function(){
-        $.ajax({
-        //    url: '/api/pendingActions',
-            url: '/actionListTestData',
-            type: "GET",
-            async: true,
-            success: function (data) {
-                var size = data.objects.length;
-                dust.renderArray('pending_action_list_item',data.objects,null,function(err,out)
-                {
-                    $('#mainList').append(out);
 
-                });
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert('error');
-            }
-        });
-    },
-
-    dbGetAllActions: function(){
-        $.ajax({
-        //    url: '/api/actions',
-            url: '/actionListTestData',
-            type: "GET",
-            async: true,
-            success: function (data) {
-                var size = data.objects.length;
-                dust.renderArray('action_list_item',data.objects,null,function(err,out)
-                {
-                    $('#mainList').append(out);
-
-                });
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert('error');
-            }
-        });
-    },
-
-    dbGetAllDiscussions: function(){
-        $.ajax({
-        //    url: '/api/discussions',
-            url: '/discussionListTestData',
-            type: "GET",
-            async: true,
-            success: function (data) {
-                var size = data.objects.length;
-                dust.renderArray('discussion_list_item',data.objects,null,function(err,out)
-                {
-                    $('#mainList').append(out);
-
-                });
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert('error');
-            }
-        });
-    },
-
-    dbGetAllCircles: function(){
-        $.ajax({
-        //    url: '/api/circles',
-            url: '/circleListTestData',
-            type: "GET",
-            async: true,
-            success: function (data) {
-                var size = data.objects.length;
-                dust.renderArray('discussion_list_item',data.objects,null,function(err,out)
-                {
-                    $('#mainList').append(out);
-
-                });
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert('error');
-            }
-        });
-    },
 
 
    //todo: remove me
@@ -238,15 +160,15 @@ var db_functions = {
             url: '/api/shopping_cart',
             type: "GET",
             async: true,
-            success: function (data) {
+            success: function (err, data) {
                 console.log(data);
-                callback(data);
+                callback(null, data);
             },
 
             error: function (xhr, ajaxOptions, thrownError) {
-                alert('error');
+                callback(thrownError, null);
+                cinsole.log(thrownError);
             }
-
         });
     },
 
@@ -277,7 +199,7 @@ var db_functions = {
     getInfoItemsOfSubjectByKeywords: function(keywords, subject_id, callback){
         var keywords_arr = keywords.trim().replace(/\s+/g,".%2B");
         $.ajax({
-            url: '/api/information_items/?text_field__regex='+ keywords_arr + '&subject_id=' + subject_id,
+            url: '/api/information_items/?text_field__regex='+ keywords_arr + '&text_field_preview__regex='+ keywords_arr + '&subject_id=' + subject_id,
             type: "GET",
             async: true,
             success: function (data) {
@@ -353,18 +275,26 @@ var db_functions = {
     getAllDiscussions: function(callback){
         $.ajax({
             url: '/api/discussions',
+           // url: '/discussionListTestData',
             type: "GET",
             async: true,
-            success: function (data) {
-                callback(null, data);
-            },
 
+            success: function (data) {
+                var size = data.objects.length;
+                dust.renderArray('discussion_list_item',data.objects,null,function(err,out)
+                {
+                    $('#mainList').append(out);
+
+                });
+                if(callback) callback(null, data);
+            },
             error: function (xhr, ajaxOptions, thrownError) {
                 callback(thrownError, null);
                 alert('error');
             }
         });
     },
+
 
     createPreviewDiscussion: function(subject_id, vision, title, callback){
         $.ajax({
@@ -384,13 +314,13 @@ var db_functions = {
         });
     },
 
-    createDiscussion: function(subject_id, subject_name, vision, title, callback){
-        console.log('data: {"subject_id": subject_id, "vision_text": vision, "title": title, "is_published": true},');
+    createDiscussion: function(subject_id, subject_name, vision, title, tags, callback){
+        console.log('data: {"subject_id": subject_id, "vision_text": vision, "title": title, "tags": tags, "is_published": true},');
         $.ajax({
             url: '/api/discussions/',
             type: "POST",
             async: true,
-            data: {"subject_id": subject_id, "subject_name": subject_name, "vision_text": vision, "title": title, "is_published": true},
+            data: {"subject_id": subject_id, "subject_name": subject_name, "vision_text": vision, "title": title, "tags": tags, "is_published": true},
             success: function (data) {
                 console.log(data);
                 callback(null, data);
@@ -602,6 +532,25 @@ var db_functions = {
         });
     },
 
+    getAllCycles: function(){
+        $.ajax({
+             //  url: '/api/cycles',
+            url: '/circleListTestData',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                var size = data.objects.length;
+                dust.renderArray('cycle_list_item',data.objects,null,function(err,out)
+                {
+                    $('#mainList').append(out);
+                });
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('error');
+            }
+        });
+    },
+
     getCycleById: function(cycle_id, callback){
         $.ajax({
             url: '/api/cycles/'+ cycle_id,
@@ -691,6 +640,23 @@ var db_functions = {
         });
     },
 
+    getAllCycles: function(callback){
+        $.ajax({
+            url: '/api/cycles',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log(thrownError);
+                callback(thrownError, null);
+            }
+        });
+    },
+
     getApprovedActionByCycle: function(cycle_id, callback){
         $.ajax({
             url: '/api/actions?cycle_id='+ cycle_id + '&is_approved=true',
@@ -723,30 +689,46 @@ var db_functions = {
 
     getAllPendingActions: function(callback){
         $.ajax({
+            //url: '/actionListTestData',
             url: '/api/actions?is_approved=false',
             type: "GET",
             async: true,
             success: function (data) {
-                callback(null, data);
+                var size = data.objects.length;
+                dust.renderArray('pending_action_list_item',data.objects,null,function(err,out)
+                {
+                    $('#mainList').append(out);
+                });
+                if(callback) callback(null, data);
             },
 
             error: function (xhr, ajaxOptions, thrownError) {
-                callback(thrownError, null);
+                if(callback) callback(thrownError, null);
+                // alert('error');
             }
         });
     },
 
+
     getAllApprovedActions: function(callback){
         $.ajax({
+            //  url: '/actionListTestData',
             url: '/api/actions?is_approved=true',
             type: "GET",
             async: true,
             success: function (data) {
-                callback(null, data);
+                var size = data.objects.length;
+                dust.renderArray('action_list_item',data.objects,null,function(err,out)
+                {
+                    $('#mainList').append(out);
+
+                });
+                if(callback) callback(null, data);
             },
 
             error: function (xhr, ajaxOptions, thrownError) {
                 callback(thrownError, null);
+                // alert('error');
             }
         });
     },
@@ -823,6 +805,21 @@ var db_functions = {
         $.ajax({
             url: '/api/actions/' + action_id,
             type: "PUT",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
+            }
+        });
+    },
+
+    getAllItemsByUser: function(api_resource, callback){
+        $.ajax({
+            url: '/api/' + api_resource + 'get=myUru',
+            type: "GET",
             async: true,
             success: function (data) {
                 callback(null, data);

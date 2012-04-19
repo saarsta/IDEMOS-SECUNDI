@@ -69,7 +69,8 @@ function loadCreateDiscussionPage(subject_id, subject_name){
 //    var subject_id = id;
     var vision,
         title,
-        first_post;
+        first_post,
+        tags;
     var user_Shopping_cart;
 
     $.ajax({
@@ -87,11 +88,11 @@ function loadCreateDiscussionPage(subject_id, subject_name){
         }
     });
 
-    db_functions.getUserShopingCart(function(data){
-        user_Shopping_cart = data;
-        for (var i in data.objects) {
-            var item = items.add(data.objects[i], "shopping_cart");
-            items.changeButton(item);
+    db_functions.getUserShopingCart(function(err, data){
+        if (!err){
+            dust.renderArray('shopping_cart_item_in_create_discussion_1', data.objects, null, function(err, out){
+                $('#shopping_cart').append(out);
+            })
         }
     });
 
@@ -145,15 +146,22 @@ function loadCreateDiscussionPage(subject_id, subject_name){
         });
     });
 
-    $(".create_discussion_btn").live("click", function(){
+    $("#create_discussion_btn").click(function(){
+        title = $("#title").val();
+        vision = $("#vision").val();
+        first_post = $("#first_post").val();
+        tags = $("#tags").val();
+        tags = tags.split(" ");
 
-        title = $(".title").val();
-        vision = $(".vision").val();
-        first_post = $(".first_post").val();
+       /* for(var i=0; i<tags[i].length; i++){
+            if(tags[i] == ""){
+                tags = tags.splice(i,1);
+                i--
+            }
+        }*/
 
         if (!created_discussion_id){
-
-            db_functions.createDiscussion(subject_id, subject_name, vision, title, function(err, data){
+            db_functions.createDiscussion(subject_id, subject_name, vision, title, tags, function(err, data){
                 if (err){
                 }else{
                     created_discussion_id = data._id;
@@ -173,11 +181,11 @@ function loadCreateDiscussionPage(subject_id, subject_name){
                                 console.log(err);
                             }else{
                                 console.log(data);
-                                window.location.replace("/account/discussion?discussion_id=" + created_discussion_id + '&subject_name=' + subject_name);
+                                window.location.replace("discussion?discussion_id=" + created_discussion_id + '&subject_name=' + subject_name);
                             }
                         });
                     }else{
-                        window.location.replace("/account/discussion?discussion_id=" + created_discussion_id + '&subject_name=' + subject_name);
+                        window.location.replace("discussion?discussion_id=" + created_discussion_id + '&subject_name=' + subject_name);
 
                     }
                 }
@@ -196,11 +204,11 @@ function loadCreateDiscussionPage(subject_id, subject_name){
                                 console.log(err);
                             }else{
                                 console.log(data);
-                                window.location.replace("/account/discussion?discussion_id=" + created_discussion_id + '&subject_name=' + subject_name);
+                                window.location.replace("discussion?discussion_id=" + created_discussion_id + '&subject_name=' + subject_name);
                             }
                         });
                     }else{
-                        window.location.replace("/account/discussion?discussion_id=" + created_discussion_id + '&subject_name=' + subject_name);
+                        window.location.replace("discussion?discussion_id=" + created_discussion_id + '&subject_name=' + subject_name);
 
                     }
                 }

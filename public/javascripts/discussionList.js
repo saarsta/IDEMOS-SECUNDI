@@ -10,8 +10,8 @@ var COUNTER;
 
 function loadDiscussionList() {
     COUNTER = 0;
-
-    db_functions.dbGetAllDiscussions();
+    db_functions.dbGetAllSubjects(true);
+    db_functions.getAllDiscussions();
 
     /*
     if( tag_name == 'חיפוש עפ TAGS')
