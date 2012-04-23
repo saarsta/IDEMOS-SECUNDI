@@ -11,6 +11,7 @@ var resources = require('jest'),
     models = require('../models'),
     common = require('./common');
 
+
 var VoteResource = module.exports = common.GamificationMongooseResource.extend({
     init:function(){
         this._super(models.Vote,'vote');
@@ -57,6 +58,7 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
 //                                    post_object.tokens -= parseInt(req.body.tokens);
                                 }
 
+                                post_object.popularity = calculate_popularity(post_object.votes_for, post_object.votes_for + post_object.votes_against);
                                 var vote_object = new self.model();
                                 fields.user_id = user_id;
                                 fields.post_id = post_id;
@@ -113,3 +115,18 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
         }
     }
 });
+
+
+function calculate_popularity(pos, n){
+
+    var confidence = 1.96;
+    if (n == 0)
+        return 0;
+
+
+    var norm = new NormalDistribution(0,1) // normal distribution
+    var z = norm.getQuantile(1-(1-confidence)/2);
+//    var z = Statistics2.pnormaldist(1-(1-confidence)/2);
+    var phat = 1.0*pos/n;
+        return (phat + z*z/(2*n) - z * Math.sqrt((phat*(1-phat)+z*z/(4*n))/n))/(1+z*z/n)
+}

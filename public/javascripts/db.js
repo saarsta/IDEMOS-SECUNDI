@@ -626,7 +626,7 @@ var db_functions = {
 
     getPopularPostsByCycleId: function(cycle_id, callback){
         $.ajax({
-            url: '/api/posts/'+ cycle_id + "get=popular_posts",
+            url: '/api/posts/'+ cycle_id + "&order_by=-popularity",
             type: "GET",
             async: true,
             success: function (data) {
@@ -856,6 +856,36 @@ var db_functions = {
 
             error: function (xhr, ajaxOptions, thrownError) {
                 alert('error');
+            }
+        });
+    },
+
+    getActionsByCycle: function(cycle_id, callback){
+        $.ajax({
+            url: '/api/actions?is_approved=true&cycle_id=' + cycle_id,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log(thrownError);
+            }
+        });
+    },
+
+    getPendingActionsByCycle: function(cycle_id, callback){
+        $.ajax({
+            url: '/api/actions?is_approved=false&cycle_id=' + cycle_id,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log(thrownError);
             }
         });
     },

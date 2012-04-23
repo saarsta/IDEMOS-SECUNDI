@@ -354,6 +354,7 @@ var Schemas = exports.Schemas = {
         votes_against: {type: Number, 'default': 0},
         total_votes: {type: Number, 'default': 0},
         //is_change_suggestion: {type:Boolean,'default':false},
+
         is_comment_on_vision:{type:Boolean, 'default':false},
         is_comment_on_action:{type:Boolean, 'default':false},
         ref_to_post_id:{type:Schema.ObjectId, ref:'Post', index:true}
