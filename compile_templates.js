@@ -11,6 +11,7 @@ function compile_template(name,file)
 
 var writer = fs.createWriteStream(path.join(__dirname,'public','js','compiled_templates.js'));
 
+
 writer.write(compile_template('subject','subject.html'));
 writer.write(compile_template('subject_small','subject_small.html'));
 writer.write(compile_template('information_items','informationItem.html'));
@@ -28,6 +29,14 @@ writer.write(compile_template('cycle_list_item','cycleListItem.html'));
 writer.write(compile_template('discussion_full_view','discussionFullView.html'));
 writer.write(compile_template('action_timeline','action_timeline.html'))
 
+
+writer.write(compile_template('myCycle_list_item','myCycleListItem.html'));
+writer.write(compile_template('myDiscussion_list_item','myDiscussionItem.html'));
+writer.write(compile_template('myAction_list_item','myActionItem.html'));
+
+//writer.write(compile_template('cycle_list_item','cycleListItem.html'));
+writer.write(compile_template('discussion_full_view','discussionFullView.html'))
+//
 
 
 //writer.write(compile_template('template_name','template_file.html'));

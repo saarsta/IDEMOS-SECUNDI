@@ -639,7 +639,7 @@ div.tabs { margin-bottom:100px;}
 div.tabs ul.tabs-list, div.post div.tabs ul.tabs-list{ margin:0px 0px 30px 0px; padding:0px 0px;}
 div.tabs ul.tabs-list li{ list-style:none; color:#fff; line-height:50px; font-size:200%; width:185px; margin-left:15px; float:right; text-align:center;}
 div.tabs ul.tabs-list li a{ display:block; background:#c6c6c6; line-height:50px; color:#fff; text-align:center; font-style:italic; text-decoration:none; font-size:100%;}
-div.tabs ul.tabs-list li.active a, div.tabs ul.tabs-list li:hover a{ background:#878787; font-weight:bold; font-style:normal; text-decoration:none;}
+div.tabs ul.tabs-list li.ui-state-active a, div.tabs ul.tabs-list li:hover a{ background:#878787; font-weight:bold; font-style:normal; text-decoration:none;}
 
 div.tabs div.tabs-content ul, div.post div.tabs div.tabs-content ul{ margin:0px 0px; padding:0px 0px;}
 div.tabs div.tabs-content ul li{ color:#3c3c3b; font-size:190%; text-align:center; list-style:none; width:138px; float:right; margin-left:30px;}

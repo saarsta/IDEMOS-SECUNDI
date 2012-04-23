@@ -119,7 +119,7 @@ var Schemas = exports.Schemas = {
         decoration_status:{type:String, "enum":['a', 'b', 'c']},
         invited_by: {type: ObjectId, ref: 'User'},
         has_been_invited : {type: Boolean, 'default': false},
-        tokens_achivements_to_user_who_invited_me: {},
+        tokens_achivements_to_user_who_invited_me: Schema.Types.Mixed,
         num_of_extra_tokens: {type:Number, 'default': 0, max:6},// i might change it to gamification.bonus.
         number_of_days_of_spending_all_tokens: {type: Number, 'default' : 0},
         blog_popularity_counter: {type: Number, 'default': 0},
@@ -203,7 +203,7 @@ var Schemas = exports.Schemas = {
         due_date : {type:Date, 'default':function(){ return Date.now() + 1000*3600*24*30;  }},
         subject:[{
             id:{type:ObjectId, ref:'Subject', index:true, required:true},
-            name: {type:String}
+            name: {type:String,editable:false}
             }
         ],
         title: {type:String, required:true},
@@ -418,7 +418,7 @@ Schemas.Cycle.pre("save", function(next){
     var self = this;
 
     var iterator = function(subject, itr_cbk){
-        Subject.findById(subject.id, function(err, result){
+        Models.Subject.findById(subject.id, function(err, result){
             if(err){
                itr_cbk(err, null);
             }else{
