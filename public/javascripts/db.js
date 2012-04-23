@@ -6,13 +6,6 @@
  * To change this template use File | Settings | File Templates.
  */
 
-dust.filters['date'] = function(a){
-    return $.datepicker.formatDate('dd-mm-yy', new Date(Date.parse(a)));;
-};
-
-dust.filters['time'] = function(a){
-    return $.datepicker.formatDate('dd-mm-yy', new Date(Date.parse(a)));;
-};
 
 
 dust.renderArray = function(template,arr,callback,endCallback)
@@ -975,4 +968,73 @@ function image_autoscale(obj, params)
     });
 
     obj.load();
-}
+};
+
+dust.filters['date'] = function(a){
+    return $.datepicker.formatDate('dd-mm-yy', new Date(Date.parse(a)));;
+};
+
+dust.filters['time'] = function(a){
+    return $.datepicker.formatDate('dd-mm-yy', new Date(Date.parse(a)));;
+};
+
+dust.filters['ago'] = function(a){
+    var amount = 0, unit, units, ago = 'לפני';
+    var timespan = new Date() - new Date(Date.parse(a));
+    if(timespan < 0)
+    {
+        timespan *= -1;
+        ago = 'עוד';
+    }
+    timespan /= 1000;
+    var weeks = Math.floor(timespan / (7*24*3600));
+    if(weeks)
+    {
+        amount = weeks;
+        unit = 'שבוע';
+        units = 'שבועות';
+    }
+    else
+    {
+        timespan = timespan % (7*24*3600);
+        var days = Math.floor(timespan / (24*3600));
+        if(days)
+        {
+            amount = days;
+            unit = 'יום';
+            units = "ימים";
+        }
+        else
+        {
+            timespan = timespan % (24*3600);
+            var hours = Math.floor(timespan / (3600));
+            if(hours)
+            {
+                amount = hours;
+                unit = 'שעה';
+                units = 'שעות';
+            }
+            else
+            {
+                timespan = timespan % 3600;
+                var minutes = Math.floor(timespan / 60);
+                if(minutes)
+                {
+                    amount = minutes;
+                    units = 'דקות';
+                    unit = "דקה";
+                }
+                else
+                {
+                    var seconds = Math.floor(timespan % 60);
+                    amount = seconds;
+                    units = "שניות";
+                    unit = 'שנייה';
+                }
+            }
+        }
+    }
+    return ago +  ' ' +
+        (amount > 1 ? amount + ' ' + units : unit);
+
+};
