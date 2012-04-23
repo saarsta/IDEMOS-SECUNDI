@@ -19,7 +19,11 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
         this._super(models.Cycle, null, FOLLOW_CYCLE_PRICE);
         this.authentication = new common.SessionAuthentication();
         this.allowed_methods = ['get', 'put'];
-        this.filtering = {tags: null}
+        this.filtering = {tags: null};
+        this.default_query = function(query){
+            return query.populate("discussion_id");
+        }
+
     },
 
     //happens when user want to become a cycle follower

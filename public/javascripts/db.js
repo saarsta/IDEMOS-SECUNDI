@@ -596,6 +596,41 @@ var db_functions = {
         });
     },
 
+    getPopularPostsByCycle: function(cycle_id, callback){
+        $.ajax({
+            url: '/api/posts/'+ cycle_id,
+            type: "GET",
+            async: true,
+            data: {"get": }
+            success: function (data) {
+                callback(null, data);
+
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
+
+            }
+        });
+    },
+
+    becomeDiscussionFollower: function(c, callback){
+        $.ajax({
+            url: '/api/discussions/'+ discussion_id + '?put=join',
+            type: "PUT",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
+
+            }
+        });
+    },
+
     addUserToCycleFollower: function(cycle_id, callback){
         $.ajax({
             url: '/api/cycles/'+ cycle_id,
@@ -818,6 +853,21 @@ var db_functions = {
             type: "POST",
             data: {"cycle_id": cycle_id, "title" : title, "description": description, "action_resources": action_resources  || [],
                    "required_participants": required_participants, "execution_date": execution_date},
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
+            }
+        });
+    },
+
+    getAllItemsByUser: function(api_resource, callback){
+        $.ajax({
+            url: '/api/' + api_resource + '?get=myUru',
+            type: "GET",
             async: true,
             success: function (data) {
                 callback(null, data);
