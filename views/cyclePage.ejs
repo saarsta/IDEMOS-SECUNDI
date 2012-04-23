@@ -1,78 +1,188 @@
-<h1> CYCLE </h1>
-<h1> discussion subject:  <%=subject_name%></h1>
-
-<div>
-    <textarea disabled="disabled" id="title"> </textarea>
-    <br />
-    <textarea disabled="disabled" rows="7" cols="20" id="documnet_"></textarea>
-    <br />
-    <textarea disabled="disabled" id="followers"> </textarea>
-    <br />
-    <button id="follow_btn">follow this cycle</button>
-    <br />
-    <button id="new_action_btn"> Suggest new action </button>
-</div>
-
-<div class="actions panel">
-    <p> APPROVED ACTIONS: </p>
-</div>
-
-    <div class="not_approved_actions panel">
-    <p> NOT YET APPROVED ACTIONS: </p>
-</div>
-
-<div class="popular_comments panel color">
-    <p> POPULAR COMMENTS </p>
-</div>
-
-<div class="shopping_cart right_panel">
-    <p> SHOPPONG CART </p>
-</div>
-
-
-<div id="popup_contact">
-    <div>
-        <textarea rows="" cols="" id="action_title">title</textarea>
-        <br />
-        <textarea rows="5" cols="12" id="action_description">descreption</textarea>
-        <br />
-        <textarea rows="5" cols="12" id="action_resources">resources</textarea>
-        <br />
-        <div>
-            <p>choose resources:</p>
-            <select id="select_resource" name="get_resource">
-            </select>
-            <select id="filter_categories" name="get_filter_resource">
-
-            </select>
-            <br />
-            <input type="text" placeholder="resource amount..." name="tags" id="resource_amount">
-                <label for="resource_amount"></label>
-            </input>
-            <br />
-            <input type="text" placeholder="required participants..." name="tags" id="required_participants">
-                <label for="required_participants"></label>
-            </input>
-            <br />
-            <input type="date" placeholder="when it happens..." id="execution_date">
-                <label for="execution_date"></label>
-            </input>
-            <br />
-            <button id="add_resource_btn">add resource</button>
+<div id="main">
+        <div class="post clearfix">
+          <h2>נושא הדיון</h2>
+          <div class="discussions clearfix">
+            <div class="frame1 flR"> <img src="resources/images/assets/image19.jpg" alt="image19"/> </div>
+            <div class="description clearfix">
+              <h3>תוכן המסמך<br/>
+                החזון הכללי</h3>
+              <p>שמו אינו מדינות דת, זקוק קבלו מועמדים מתן בה. גם אנגלית אקטואליה צעד. של בדף ישראל גיאוגרפיה, זכר לכאן בקלות לויקיפדיה גם. מתוך ותשובות ויש מה, חפש שאלות האטמוספירה של. קסאם בדפים מיזמים מדע על</p>
+              <a href="#" class="button flL">שתף</a> </div>
+            <div class="box information"> <img src="resources/images/assets/image20.jpg" alt="image20" /> <a href="#" class="button">קישור לעגלת המידע</a> </div>
+            <br class="clear" />
+            <img src="resources/images/assets/image21.jpg" alt="image21"/>
+            <ul class="list1">
+              <li class="clearfix">
+                <div class="description clearfix">
+                  <div class="frame"> <img alt="image23" src="resources/images/assets/image23.jpg"/> </div>
+                  <h4>המשתמש שפתח את הדיון</h4>
+                  <p class="meta-data">תארaיך | שעה</p>
+                  <p>שמו אינו מדינות דת, זקוק קבלו מועמדים מתן בה. גם אנגלית אקטואליה צעד. של בדף ישראל גיאוגרפיה, זכר לכאן בקלות לויקיפדיה גם. מתוך ותשובות ויש מה, חפש שאלות האטמוספירה של. קסאם בדפים מיזמים מדע על, קרן ומדעים מונחונים או. מתוך ותשובות ויש מה, חפש שאלות האטמוספירה של. קסאם בדפים מיזמים מדע על, קרן ומדעים מונחונים או. מתוך ותשובות ויש מה, חפש שאלות האטמוספירה של. קסאם בדפים מיזמים מדע על</p>
+                </div>
+                <div class="action"> <a class="button" href="#">הגב</a> <a class="button" href="#">שתף</a> <a class="button" href="#">Like</a> </div>
+              </li>
+              <li class="clearfix">
+                <div class="description clearfix">
+                  <div class="frame"> <img alt="image23" src="resources/images/assets/image23.jpg"/> </div>
+                  <h4>המשתמש שפתח את הדיון</h4>
+                  <p class="meta-data">תארaיך | שעה</p>
+                  <p>שמו אינו מדינות דת, זקוק קבלו מועמדים מתן בה. גם אנגלית אקטואליה צעד. של בדף ישראל גיאוגרפיה, זכר לכאן בקלות לויקיפדיה גם. מתוך ותשובות ויש מה, חפש שאלות האטמוספירה של. קסאם בדפים מיזמים מדע על, קרן ומדעים מונחונים או. מתוך ותשובות ויש מה, חפש שאלות האטמוספירה של. קסאם בדפים מיזמים מדע על, קרן ומדעים מונחונים או. מתוך ותשובות ויש מה, חפש שאלות האטמוספירה של. קסאם בדפים מיזמים מדע על</p>
+                </div>
+                <div class="action"> <a class="button" href="#">הגב</a> <a class="button" href="#">שתף</a> <a class="button" href="#">Like</a> </div>
+              </li>
+            </ul>
+              <a href="#" class="button flL">מעבר לדיון המתקיים</a>
+              <br class="clear" /><br/>
+             <h3>תגובות פופלריות מדיון אחר (רלוונטי)</h3> 
+            <ul class="list1"> 
+              <li class="clearfix">
+                <div class="description clearfix">
+                  <div class="frame"> <img alt="image23" src="resources/images/assets/image23.jpg"/> </div>
+                  <h4>המשתמש שפתח את הדיון</h4>
+                  <p class="meta-data">תארaיך | שעה</p>
+                  <p>שמו אינו מדינות דת, זקוק קבלו מועמדים מתן בה. גם אנגלית אקטואליה צעד. של בדף ישראל גיאוגרפיה, זכר לכאן בקלות לויקיפדיה גם. מתוך ותשובות ויש מה, חפש שאלות האטמוספירה של. קסאם בדפים מיזמים מדע על, קרן ומדעים מונחונים או. מתוך ותשובות ויש מה, חפש שאלות האטמוספירה של. קסאם בדפים מיזמים מדע על, קרן ומדעים מונחונים או. מתוך ותשובות ויש מה, חפש שאלות האטמוספירה של. קסאם בדפים מיזמים מדע על</p>
+                </div>
+                <div class="action"> <a class="button" href="#">הגב</a> <a class="button" href="#">שתף</a> <a class="button" href="#">Like</a> </div>
+              </li>
+            </ul>
+          </div>
+          
+          
+          <div class="follow clearfix">
+            <p>מספר העוקבים אaחרי מעגל תנופה זה: <strong>12,345,677</strong></p>
+            <a href="#" class="button">עקוב אחרי מעגל התנופה</a> </div>
+          <div class="timeline clearfix">
+            <h3><strong>Timeline</strong> (כותרת קצרה המתארת את התוכן -><strong> מרכז הדף</strong>, מרכז בתוכו את כל ההתרחשות וההיסטוריה סביב מעגל התנופה)</h3>
+            <a href="#" class="button">עבור לתצוגת מפה</a>
+            <div class="timeline-detail">
+              <div class="timeline-information">
+                <div class="box user-area">
+                  <div class="box-inner clearfix">
+                    <div class="frame1"><img src="resources/images/assets/image23.jpg" alt="image23" /></div>
+                    <p><a href="#">שם משתמש</a></p>
+                    <p>תאריך | שעה</p>
+                    <p>עשה משהו</p>
+                    <span class="arrow1"></span> </div>
+                </div>
+                <div class="box description">
+                  <div class="box-inner clearfix">
+                    <p>תיאור הפעולה | תאריך
+                      תומכים | חברים
+                      הצלחה | כשלון </p>
+                    <a href="#" class="button">הצטרף</a> <span class="arrow2"></span> </div>
+                </div>
+              </div>
+              <img src="resources/images/assets/image22.jpg" alt="image22" class="timeline" /> </div>
+          </div>
+          <div class="actions clearfix">
+            <div class="details"> <a href="#" class="button suggest">הצע פעולה חדשה</a>
+              <p class="meta-data">עדכונים, שיתופים, תוספות, הודעות *****</p>
+              <div class="frame1"> <img src="resources/images/assets/video-image1.jpg" alt="video-image1"/> </div>
+              <h4>קטע טקסט מעניין ורלוונטי</h4>
+              <p>שמו אינו מדינות דת, זקוק קבלו מועמדים מתן בה. גם אנגלית אקטואליה צעד. של בדף ישראל גיאוגרפיה, זכר לכאן בקלות לויקיפדיה גם. מתוך ותשובות ויש מה, חפש שאלות האטמוספירה של. קסאם בדפים מיזמים מדע על</p>
+              <a href="#" class="read-more">קרא עוד...</a> </div>
+            <div class="box1 pending-actions">
+              <div class="box1-inner">
+                <h3>פעולות הממתינות לאישור </h3>
+                <ul class="list4">
+                  <li>
+                    <h4>כותרת פעולה</h4>
+                    <p>תקציר הפעולה</p>
+                    <span class="meta-data">מידע רלוונטי (תאריך, משתתפים) </span> </li>
+                  <li>
+                    <h4>כותרת פעולה</h4>
+                    <p>תקציר הפעולה</p>
+                    <span class="meta-data">מידע רלוונטי (תאריך, משתתפים) </span> </li>
+                  <li>
+                    <h4>כותרת פעולה</h4>
+                    <p>תקציר הפעולה</p>
+                    <span class="meta-data">מידע רלוונטי (תאריך, משתתפים) </span> </li>
+                </ul>
+                <a href="#" class="button">הראה לי את כולן</a> </div>
+            </div>
+          </div>
+          <h3>משתתפים ופעילים</h3>
+                    <ul class="list5 clearfix">
+                      <li class="clearfix">
+                        <div class="frame1">
+                          <div class="slide"><img src="resources/images/assets/image18.jpg" alt="image18"/></div>
+                          <span class="controls"><a href="#"></a><a href="#"></a><a href="#"></a></span> </div>
+                        <div class="description">
+                          <p>שם משתמש</p>
+                          <p>מתי הצטרף</p>
+                          <p>עיטורים</p>
+                        </div>
+                      </li>
+                      <li class="clearfix">
+                        <div class="frame1">
+                          <div class="slide"><img src="resources/images/assets/image18.jpg" alt="image18"/></div>
+                          <span class="controls"><a href="#"></a><a href="#"></a><a href="#"></a></span> </div>
+                        <div class="description">
+                          <p>שם משתמש</p>
+                          <p>מתי הצטרף</p>
+                          <p>עיטורים</p>
+                        </div>
+                      </li>
+                      <li class="clearfix">
+                        <div class="frame1">
+                          <div class="slide"><img src="resources/images/assets/image18.jpg" alt="image18"/></div>
+                          <span class="controls"><a href="#"></a><a href="#"></a><a href="#"></a></span> </div>
+                        <div class="description">
+                          <p>שם משתמש</p>
+                          <p>מתי הצטרף</p>
+                          <p>עיטורים</p>
+                        </div>
+                      </li>
+                      <li class="clearfix">
+                        <div class="frame1">
+                          <div class="slide"><img src="resources/images/assets/image18.jpg" alt="image18"/></div>
+                          <span class="controls"><a href="#"></a><a href="#"></a><a href="#"></a></span> </div>
+                        <div class="description">
+                          <p>שם משתמש</p>
+                          <p>מתי הצטרף</p>
+                          <p>עיטורים</p>
+                        </div>
+                      </li>
+                      <li class="clearfix">
+                        <div class="frame1">
+                          <div class="slide"><img src="resources/images/assets/image18.jpg" alt="image18"/></div>
+                          <span class="controls"><a href="#"></a><a href="#"></a><a href="#"></a></span> </div>
+                        <div class="description">
+                          <p>שם משתמש</p>
+                          <p>מתי הצטרף</p>
+                          <p>עיטורים</p>
+                        </div>
+                      </li>
+                      <li class="clearfix">
+                        <div class="frame1">
+                          <div class="slide"><img src="resources/images/assets/image18.jpg" alt="image18"/></div>
+                          <span class="controls"><a href="#"></a><a href="#"></a><a href="#"></a></span> </div>
+                        <div class="description">
+                          <p>שם משתמש</p>
+                          <p>מתי הצטרף</p>
+                          <p>עיטורים</p>
+                        </div>
+                      </li>
+                      <li class="clearfix">
+                        <div class="frame1">
+                          <div class="slide"><img src="resources/images/assets/image18.jpg" alt="image18"/></div>
+                          <span class="controls"><a href="#"></a><a href="#"></a><a href="#"></a></span> </div>
+                        <div class="description">
+                          <p>שם משתמש</p>
+                          <p>מתי הצטרף</p>
+                          <p>עיטורים</p>
+                        </div>
+                      </li>
+                      <li class="clearfix">
+                        <div class="frame1">
+                          <div class="slide"><img src="resources/images/assets/image18.jpg" alt="image18"/></div>
+                          <span class="controls"><a href="#"></a><a href="#"></a><a href="#"></a></span> </div>
+                        <div class="description">
+                          <p>שם משתמש</p>
+                          <p>מתי הצטרף</p>
+                          <p>עיטורים</p>
+                        </div>
+                      </li>
+                    </ul>
         </div>
-        <button id="save_action_btn">save action</button>
-    </div>
-</div>
-
-<div id="backgroundPopup"></div>
-
-<script src="http://www.google.com/jsapi"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/jquery-ui.min.js"></script>
-<script src="/javascripts/db.js"></script>
-<script src="/javascripts/cycle.js"></script>
-<script type="text/javascript">
-    $(function() {
-        loadCyclePage("<%=cycle_id%>", "<%=discussion_id%>");
-    });
-</script>
+      </div>
