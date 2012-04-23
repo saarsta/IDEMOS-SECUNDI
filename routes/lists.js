@@ -48,7 +48,7 @@ exports.discussions = function(req, res){
     ]);
 };
 
-exports.circles = function(req, res){
+exports.cycles = function(req, res){
     exports.listOf(req,res,'cycles','cycle_list_item','כותרת שקשורה לכל מעגלי התנופה',"רשימת כל מעגלי התנופה",
         [
             {value:'-followers_count', label:'מספר עוקבים'},
