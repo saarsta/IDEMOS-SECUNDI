@@ -85,8 +85,12 @@ exports.discussionPreviewPageInit = function(req, res){
 };
 
 exports.cyclePageInit = function(req, res){
-    res.render('cyclePage.ejs',{title:'cyclePage.ejs', cycle_id: req.params.id,
+    res.render('cyclePage.ejs',{
+        title:'cyclePage.ejs',
+        cycle_id: req.params.id,
         tab:'cycles',
+        extra_head:'',
+        body_class:'layout',
         discussion_id: req.query.discussion_id, subject_name: req.query.subject_name});
 };
 

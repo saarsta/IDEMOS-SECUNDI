@@ -16,15 +16,18 @@
             <br/>
             {#action_resources}
             {.resource.name} - {.amount}
+        &nbsp;
             {/action_resources}
         </p>
         <p>
             {num_of_going} משתתפים
+            &nbsp;
             ( חסרים {required_participants} )
-            {execution_date|time}
+            &nbsp;
+            {execution_date|ago}
         </p>
         <p>תאריך הצעה(כמה זמן ממתין לאישור):
-            <br>{creation_date|time}</p>
+            <br>{creation_date|ago}</p>
     </div>
     <div class="action">
         <a href="/facebookShare?link={get_link_uri}" class="button">שתף</a>
