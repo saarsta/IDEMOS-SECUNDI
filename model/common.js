@@ -69,7 +69,7 @@ var TokenAuthorization = exports.TokenAuthorization = jest.Authorization.extend(
 var isArgIsInList = exports.isArgIsInList = function(arg_id, collection_list){
     var flag = false;
     for (var i = 0; i < collection_list.length; i++){
-        if (arg_id == collection_list[i]){
+        if (arg_id.id == collection_list[i].id){
             flag = true;
             break;
         }

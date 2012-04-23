@@ -10,6 +10,7 @@ var resources = require('jest'),
     util = require('util'),
     models = require('../models'),
     common = require('./common'),
+    async = require('async'),
     DISCUSSION_PRICE = 3;
 
 //Authorization
@@ -61,6 +62,15 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
         });
     },
 
+    get_objects: function (req, filters, sorts, limit, offset, callback) {
+
+        if(req.query.get == "myUru"){
+            filters.users = req.user._id;
+        }
+
+        this._super(req, filters, sorts, limit, offset, callback);
+    },
+
     create_obj:function (req, fields, callback) {
         var user_id = req.session.user_id;
         var self = this;
@@ -97,14 +107,33 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
 
     update_obj:function (req, object, callback) {
 
-        if (req.)
-        if (object.is_published) {
-            callback("this discussion is already published", null);
-        } else {
-            req.gamification_type = "discussion";
-            req.token_price = DISCUSSION_PRICE;
-            object.is_published = true;
-            object.save(callback);
+        user = req.user;
+        if (req.query.put == "follower"){
+            if (common.isArgIsInList(object._id, user.discussions) == false){
+                async.parallel([
+                    function(cbk2){
+                        models.User.update({_id: user._id}, {$addToSet: {discussions: object._id}}, cbk2);
+                    },
+
+                    function(cbk2){
+                        models.Discussion.update({_id: object._id}, {$inc: {followers_count: 1},  $addToSet: {users: user._id}}, cbk2);
+                    }
+                ], function(){
+                    object.followers_count++;
+                    callback(null, object);
+                });
+            }else{
+                callback({message:"user is already a follower",code:401}, null);
+            }
+        }else{
+            if (object.is_published) {
+                callback("this discussion is already published", null);
+            } else {
+                req.gamification_type = "discussion";
+                req.token_price = DISCUSSION_PRICE;
+                object.is_published = true;
+                object.save(callback);
+            }
         }
     }
 });
