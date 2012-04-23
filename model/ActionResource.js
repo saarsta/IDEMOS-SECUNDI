@@ -22,7 +22,18 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
             this.allowed_methods = ['get', 'post', 'put'];
             this.filtering = {cycle_id:null, is_approved:null, grade:null, num_of_going: null};
             this.authentication = new common.SessionAuthentication();
-            this.update_fields = [];
+            this.default_query = function(query){
+                return query.sort('execution_date','descending');
+            }
+        },
+
+        get_objects: function (req, filters, sorts, limit, offset, callback) {
+
+            if(req.query.get == "myUru"){
+                filters.users = req.user._id;
+            }
+
+            this._super(req, filters, sorts, limit, offset, callback);
         },
 
         create_obj:function (req, fields, callback) {

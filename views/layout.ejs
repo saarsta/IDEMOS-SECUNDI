@@ -38,25 +38,26 @@
             <div class="logo">
                 <h1><a href="/" rel="home" title="Go to homepage">Wireframes</a></h1>
             </div>
-
             <!-- Main Navigation-->
             <div id="main-navigation">
                 <ul class="clearfix">
-                    <li><a href="http://www.uru.org.il/story">מה זה עורו?</a></li>
-                    <li><a href="/meida">מידע ומדדים</a></li>
-                    <li><a href="javascript:void(0)">דיונים</a></li>
-                    <li><a href="javascript:void(0)">פעולות</a></li>
-                    <li><a href="javascript:void(0)">מעגלי תנופה</a></li>
+                    <li class="<%= tab=="story" ? 'active' :'' %>" ><a href="http://www.uru.org.il/story">מה זה עורו?</a></li>
+                    <li class="<%= tab=="information_items" ? 'active' :'' %>"><a href="/meida">מידע ומדדים</a></li>
+                    <li class="<%= tab=="discussions" ? 'active' :'' %>"><a href="/discussions">דיונים</a></li>
+                    <li class="<%= tab=="actions" ? 'active' :'' %>"><a href="/actions">פעולות</a></li>
+                    <li class="<%= tab=="cycles" ? 'active' :'' %>"><a href="/cycles">מעגלי תנופה</a></li>
                 </ul>
             </div>
             <!--/Main Navigation-->
 
             <%if(logged){%>
                 <div class="user-area box">
+                    <a href="/myuru">
                     <div class="frame">
                         <img width="59" height="62" src="http://<%=avatar%>" alt="<%=user.username%>"/>
                         <span class="number"><%=user.tokens%></span>
                     </div>
+                    </a>
                     <h3><%=user.username%></h3>
                     <p><span class="number"></span>מספר טוקנים</p>
                     <br class="clear"/>

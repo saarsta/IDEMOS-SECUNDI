@@ -6,6 +6,13 @@
  * To change this template use File | Settings | File Templates.
  */
 
+dust.filters['date'] = function(a){
+    return $.datepicker.formatDate('dd-mm-yy', new Date(Date.parse(a)));;
+};
+
+dust.filters['time'] = function(a){
+    return $.datepicker.formatDate('dd-mm-yy', new Date(Date.parse(a)));;
+};
 
 
 dust.renderArray = function(template,arr,callback,endCallback)
@@ -47,6 +54,33 @@ var db_functions = {
 
             error: function (xhr, ajaxOptions, thrownError) {
                 alert('error');
+            }
+        });
+    },
+
+    getListItems : function(type,query,callback)
+    {
+        var querystring = type;
+        switch(type)
+        {
+            case "actions":
+                querystring = "actions?is_approved=true";
+                break;
+            case "pendingActions":
+                querystring = "actions?is_approved=false";
+                break;
+        }
+        $.ajax({
+            url: '/api/' + querystring,
+            data:query,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
             }
         });
     },
@@ -258,6 +292,7 @@ var db_functions = {
                 dust.renderArray('discussion_list_item',data.objects,null,function(err,out)
                 {
                     $('#mainList').append(out);
+                    $('#mainList img').autoscale();
 
                 });
                 if(callback) callback(null, data);
@@ -563,7 +598,7 @@ var db_functions = {
     getAllCycles: function(){
         $.ajax({
              //  url: '/api/cycles',
-            url: '/circleListTestData',
+            url: '/api/cycles',
             type: "GET",
             async: true,
             success: function (data) {
@@ -631,9 +666,29 @@ var db_functions = {
         });
     },
 
-    addUserToCycleFollower: function(cycle_id, callback){
+ 
+
+    joinToCycleFollowers: function(cycle_id, callback){
         $.ajax({
             url: '/api/cycles/'+ cycle_id,
+            type: "PUT",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
+
+            }
+        });
+    },
+
+    joinToDiscussionFollowers: function(discussion_id, callback){
+        $.ajax({
+            url: '/api/discussions/'+ discussion_id,
+            data: {"follower": true},
             type: "PUT",
             async: true,
             success: function (data) {
@@ -784,6 +839,7 @@ var db_functions = {
                 dust.renderArray('action_list_item',data.objects,null,function(err,out)
                 {
                     $('#mainList').append(out);
+                    $('#mainList img').autoscale();
 
                 });
                 if(callback) callback(null, data);
@@ -892,13 +948,37 @@ var db_functions = {
                 callback(thrownError, null);
             }
         });
+    },
+
+    getAllItemsByUser: function(api_resource, callback){
+        $.ajax({
+            url: '/api/' + api_resource + '?get=myUru',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
+            }
+        });
+    },
+
+    joinToAction: function (callback){
+        $.ajax({
+            url: '/api/actoins',
+            type: "POST",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
+            }
+        });
     }
-/*
-
-{"title" : "ban tnuva!!!", "description" : "do not buy tnuva products", "category": "4f61f9403ac2bf440f000002",
-    "action_resources": [{"resource": {"category":"4f61f9403a2bf440f000002", "name": "lemons"}, "amount" : "78"}], "required_participants": "1", "cycle_id": "4f5f68c4d79ae4a81200000a", "is_approved": false}
-
-    */
 }
 
 
