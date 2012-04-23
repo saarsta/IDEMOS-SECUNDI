@@ -199,6 +199,39 @@ var db_functions = {
         });
     },
 
+    getUsersByCycle: function(cycle_id, callback){
+        $.ajax({
+            url: '/api/users?cycles=' + cycle_id,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+                callback(data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('error');
+            }
+
+        });
+    },
+
+    getUsersByDiscussion: function(discussion_id, callback){
+        $.ajax({
+            url: '/api/users?discussions=' + discussion_id,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+                callback(data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('error');
+            }
+
+        });
+    },
 
     getHotInfoItems: function(){
         $.ajax({
