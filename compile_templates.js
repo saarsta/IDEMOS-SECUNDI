@@ -33,8 +33,8 @@ writer.write(compile_template('myAction_list_item','myActionItem.html'));
 
 //writer.write(compile_template('cycle_list_item','cycleListItem.html'));
 writer.write(compile_template('discussion_full_view','discussionFullView.html'))
-writer.write(compile_template('shopping_cart_item_in_create_discussion_1', 'shoppingCartItemInCreateDiscussion1.html'))
 //
+
 
 //writer.write(compile_template('template_name','template_file.html'));
 

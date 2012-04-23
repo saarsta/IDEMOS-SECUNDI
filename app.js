@@ -16,8 +16,10 @@ var express = require('express'),
     SubjectResource = require('./model/SubjectResource');
     DiscussionResource = require('./model/DiscussionResource.js');
     PostResource = require('./model/PostResource.js');
+    PostsActionResource = require('./model/PostsActionResource.js');
     VoteResource = require('./model/VoteResource');
     GradeResource = require('./model/GradeResource');
+    GradeActionResource = require('./model/GradeActionResource');
     LikeResource = require('./model/LikeResource');
     JoinResource = require('./model/JoinResource');
     CategoryResource = require('./model/CategoryResource'),
@@ -34,7 +36,7 @@ var account = require('./routes/account');
 var infoAndMeasures = require('./routes/infoAndMeasures');
 var selectedSubjectPage = require('./routes/selectedSubjectPage');
 var pagesInit = require('./routes/pagesInit');
-var circles = require('./routes/circles');
+var lists = require('./routes/lists');
 var mmSearch = require('./routes/mmSearch'),
     i18n = require('i18n-mongoose'),
     locale = require('./locale');
@@ -172,23 +174,21 @@ app.get('/needlogin', function(req,res){});
 app.get('/account/logout', account.logout);
 app.get('/meida',pagesInit.meidaInit);
 app.get('/selectedSubjectPage', pagesInit.subjectPageInit);
-app.get('/selectedItem', pagesInit.selectedItemInit);
+app.get('/selectedItem/:id', pagesInit.selectedItemInit);
 app.get('/createDiscussion', pagesInit.createDiscussionPageInit);
-app.get('/discussion', pagesInit.discussionPageInit);
+app.get('/discussions/:id', pagesInit.discussionPageInit);
 app.get('/discussionPreview', pagesInit.discussionPreviewPageInit);
-app.get('/cycle', pagesInit.cyclePageInit);
+app.get('/cycles/:id', pagesInit.cyclePageInit);
 app.get('/mmSearch', mmSearch.mm_search);
 app.get('/allDiscussions',pagesInit.allDiscussions);
 app.get('/facebookShare',account.facebookShare);
-app.get('/pendingActionsCircle',circles.pendingActions);
-app.get('/actionsCircle',circles.actions);
-app.get('/discussionsCircle',circles.discussions);
-app.get('/cyclesCircle',circles.circles);
+app.get('/pendingActions',lists.pendingActions);
+app.get('/actions',lists.actions);
+app.get('/discussions',lists.discussions);
+app.get('/cycles',lists.cycles);
 
 
-app.get('/actionListTestData',circles.actionsTestData);
-app.get('/discussionListTestData',circles.discussionsTestData);
-app.get('/circleListTestData',circles.circlesTestData);
+
 
 
 
@@ -235,8 +235,10 @@ rest_api.register_resource('discussions_shopping_cart',new DiscussionShoppingCar
 rest_api.register_resource('subjects', new SubjectResource());
 rest_api.register_resource('discussions', new DiscussionResource());
 rest_api.register_resource('posts', new PostResource());
+rest_api.register_resource('posts_of_action', new PostsActionResource());
 rest_api.register_resource('votes', new VoteResource());
 rest_api.register_resource('grades', new GradeResource());
+rest_api.register_resource('grades_action', new GradeActionResource());
 rest_api.register_resource('likes', new LikeResource());
 rest_api.register_resource('joins', new JoinResource());
 rest_api.register_resource('suggestions', new SuggestionResource());

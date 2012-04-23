@@ -1,30 +1,32 @@
 <li class="clearfix">
+    <a href="{get_link}">
     <div class="frame">
-        <img src="{image_field.url}" alt="image3"/>
+        <div style="width:125px; height:98px;"></div>
+            <img src="{image_field_preview.url}" alt="{title}"/>
+        </div>
     </div>
     <div class="description">
 
         <h4>
-            נושא הדיון:
-       <br>     {title}</h4>
+        {title}</h4>
         <p>
-            תקציר נושא הדיון:
-        <br>    {text_field_preview}</p>
+        {text_field_preview|s}</p>
         <p>
             דירוג נוכחי:
-            <br> {grade}
+             {grade}
         </p>
         <p>
-            תאריך פתיחה?:
-            <br> {}
+           תאריך פתיחה:
+            {creation_date|time}
         </p>
         <p>
-            מספר משתתפים?:
+            מספר משתתפים:
         <br> {followers_count}
         </p>
     </div>
+    </a>
     <div class="action">
-        <a href="/facebookShare?link={get_link}" class="button">שתף</a>
-        <a href="#" class="button">הצטרף</a>
+        <a href="/facebookShare?link={get_link_uri}" class="button">שתף</a>
+        <a href="javascript:void(0)" class="button join_button" item_id='{_id}'>הצטרף</a>
     </div>
 </li>

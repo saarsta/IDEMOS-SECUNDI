@@ -77,6 +77,33 @@ var db_functions = {
         });
     },
 
+    getListItems : function(type,query,callback)
+    {
+        var querystring = type;
+        switch(type)
+        {
+            case "actions":
+                querystring = "actions?is_approved=true";
+                break;
+            case "pendingActions":
+                querystring = "actions?is_approved=false";
+                break;
+        }
+        $.ajax({
+            url: '/api/' + querystring,
+            data:query,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
+            }
+        });
+    },
+
     getItemsByTagNameAndType: function(type,tag_name,callback)
     {
         $.ajax({
@@ -160,15 +187,15 @@ var db_functions = {
             url: '/api/shopping_cart',
             type: "GET",
             async: true,
-            success: function (err, data) {
+            success: function (data) {
                 console.log(data);
-                callback(null, data);
+                callback(data);
             },
 
             error: function (xhr, ajaxOptions, thrownError) {
-                callback(thrownError, null);
-                cinsole.log(thrownError);
+                alert('error');
             }
+
         });
     },
 
@@ -284,6 +311,7 @@ var db_functions = {
                 dust.renderArray('discussion_list_item',data.objects,null,function(err,out)
                 {
                     $('#mainList').append(out);
+                    $('#mainList img').autoscale();
 
                 });
                 if(callback) callback(null, data);
@@ -437,6 +465,41 @@ var db_functions = {
         });
     },
 
+    getSortedPostByDiscussion: function(discussion_id, sort_by, callback){
+        $.ajax({
+            url: '/api/posts?discussion_id=' + discussion_id + "&" + sort_by,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log("posts are" + " " + data);
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
+                alert('get Posts error');
+            }
+        });
+    },
+
+    voteForPost: function(post_id, method, callback){
+        $.ajax({
+            url: '/api/votes/',
+            type: "POST",
+            async: true,
+            data: {"post_id": post_id, "method": method},
+            success: function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log(thrownError)
+                callback(thrownError, null);
+            }
+        });
+    },
+
     addPostToDiscussion: function(discussion_id, post_content, callback){
 
         $.ajax({
@@ -514,6 +577,25 @@ var db_functions = {
         });
     },
 
+    getPopularPostsByAction: function(action_id, callback){
+
+        $.ajax({
+            url: '/api/posts_action/',
+            type: "Get",
+            async: true,
+            data: {"action_id": action_id, "text": post_content, "ref_to_post_id": ref_to_post_id, "is_comment_on_vision": is_comment_on_vision},
+            success: function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
+                alert('create Post error');
+            }
+        });
+    },
+
     addDiscussionGrade: function(discussion_id, grade, callback){
         $.ajax({
             url: '/api/grades/',
@@ -535,7 +617,7 @@ var db_functions = {
     getAllCycles: function(){
         $.ajax({
              //  url: '/api/cycles',
-            url: '/circleListTestData',
+            url: '/api/cycles',
             type: "GET",
             async: true,
             success: function (data) {
@@ -554,6 +636,23 @@ var db_functions = {
     getCycleById: function(cycle_id, callback){
         $.ajax({
             url: '/api/cycles/'+ cycle_id,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
+
+            }
+        });
+    },
+
+    getPopularPostsByCycleId: function(cycle_id, callback){
+        $.ajax({
+            url: '/api/posts/'+ cycle_id + "&order_by=-popularity",
             type: "GET",
             async: true,
             success: function (data) {
@@ -587,7 +686,7 @@ var db_functions = {
 
     joinToDiscussionFollowers: function(discussion_id, callback){
         $.ajax({
-            url: '/api/discussions/'+ discussion_id,
+            url: '/api/discussions/'+ discussion_id + '/?put=follower',
             data: {"follower": true},
             type: "PUT",
             async: true,
@@ -739,6 +838,7 @@ var db_functions = {
                 dust.renderArray('action_list_item',data.objects,null,function(err,out)
                 {
                     $('#mainList').append(out);
+                    $('#mainList img').autoscale();
 
                 });
                 if(callback) callback(null, data);
@@ -786,6 +886,36 @@ var db_functions = {
         });
     },
 
+    getActionsByCycle: function(cycle_id, callback){
+        $.ajax({
+            url: '/api/actions?is_approved=true&cycle_id=' + cycle_id,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log(thrownError);
+            }
+        });
+    },
+
+    getPendingActionsByCycle: function(cycle_id, callback){
+        $.ajax({
+            url: '/api/actions?is_approved=false&cycle_id=' + cycle_id,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log(thrownError);
+            }
+        });
+    },
+
     getActionResoueces: function(callback){
         $.ajax({
             url: '/api/action_resources',
@@ -808,6 +938,21 @@ var db_functions = {
             type: "POST",
             data: {"cycle_id": cycle_id, "title" : title, "description": description, "action_resources": action_resources  || [],
                    "required_participants": required_participants, "execution_date": execution_date},
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
+            }
+        });
+    },
+
+    getAllItemsByUser: function(api_resource, callback){
+        $.ajax({
+            url: '/api/' + api_resource + '?get=myUru',
+            type: "GET",
             async: true,
             success: function (data) {
                 callback(null, data);
@@ -849,11 +994,12 @@ var db_functions = {
         });
     },
 
-    joinToAction: function (callback){
+    joinToAction: function(action_id, callback){
         $.ajax({
-            url: '/api/actoins',
-            type: "POST",
+            url: '/api/joins/',
+            type: "PUT",
             async: true,
+            data: {"action_id": action_id},
             success: function (data) {
                 callback(null, data);
             },
@@ -911,4 +1057,73 @@ function image_autoscale(obj, params)
     });
 
     obj.load();
-}
+};
+
+dust.filters['date'] = function(a){
+    return $.datepicker.formatDate('dd-mm-yy', new Date(Date.parse(a)));;
+};
+
+dust.filters['time'] = function(a){
+    return $.datepicker.formatDate('dd-mm-yy', new Date(Date.parse(a)));;
+};
+
+dust.filters['ago'] = function(a){
+    var amount = 0, unit, units, ago = 'לפני';
+    var timespan = new Date() - new Date(Date.parse(a));
+    if(timespan < 0)
+    {
+        timespan *= -1;
+        ago = 'עוד';
+    }
+    timespan /= 1000;
+    var weeks = Math.floor(timespan / (7*24*3600));
+    if(weeks)
+    {
+        amount = weeks;
+        unit = 'שבוע';
+        units = 'שבועות';
+    }
+    else
+    {
+        timespan = timespan % (7*24*3600);
+        var days = Math.floor(timespan / (24*3600));
+        if(days)
+        {
+            amount = days;
+            unit = 'יום';
+            units = "ימים";
+        }
+        else
+        {
+            timespan = timespan % (24*3600);
+            var hours = Math.floor(timespan / (3600));
+            if(hours)
+            {
+                amount = hours;
+                unit = 'שעה';
+                units = 'שעות';
+            }
+            else
+            {
+                timespan = timespan % 3600;
+                var minutes = Math.floor(timespan / 60);
+                if(minutes)
+                {
+                    amount = minutes;
+                    units = 'דקות';
+                    unit = "דקה";
+                }
+                else
+                {
+                    var seconds = Math.floor(timespan % 60);
+                    amount = seconds;
+                    units = "שניות";
+                    unit = 'שנייה';
+                }
+            }
+        }
+    }
+    return ago +  ' ' +
+        (amount > 1 ? amount + ' ' + units : unit);
+
+};

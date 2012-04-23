@@ -63,13 +63,11 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
 
             function(obj, cbk){
                 models.Action.update({_id:action_id},{$addToSet: {going_users: user_id, users: user_id},$inc:{num_of_going: 1}}, function(err, result){
-                    if (result){
-                        g_action_obj.num_of_going++;
-                    }
-                    cbk(err, result);
+                    cbk(err, obj);
                 });
             }
-        ],function(err, result){
+        ],function(err, obj){
+            g_action_obj.num_of_going++;
             callback(err, g_action_obj);
         });
     }

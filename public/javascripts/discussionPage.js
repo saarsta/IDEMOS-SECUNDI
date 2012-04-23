@@ -1,4 +1,4 @@
-
+/*
 var shopping_cart_items = {
     add: function(data) {
         var item =
@@ -45,11 +45,35 @@ var post_items = {
             }
         });
     }
-}
+}*/
 
 function laodDiscussionPage(discussion_id){
 
+
     console.log("discussion id = " + discussion_id);
+
+    $(".vote_for").live("click", function(){
+        var post_id = $(this).parent('div').attr("post_id");
+        db_functions.voteForPost(post_id, "add", function(err, post_obj){
+            if(!err){
+                console.log(post_obj);
+
+
+                //add to "bead number"
+            }
+        })
+    });
+
+    $(".vote_against").live("click", function(){
+        var post_id = $(this).parent('div').attr("post_id");
+        db_functions.voteForPost(post_id, "remove", function(err, post_obj){
+            if(!err){
+                console.log();
+                //add to "bead number"
+            }
+        })
+    });
+
     db_functions.getDiscussionById(discussion_id, function(err, discussion_object){
         if(err){
             console.log(err);
@@ -75,10 +99,17 @@ function laodDiscussionPage(discussion_id){
         if(err){
             console.log(err);
         }else{
-            console.log("posts are" + " " + data);
-            for (var i in data.objects){
+//            console.log("posts are" + " " + data);
+
+            dust.renderArray('post', data.objects, null, function(err, out){
+                if(!err){
+                    $("#posts").append(out);
+                }
+            })
+
+            /*for (var i in data.objects){
                 post_items.add(data.objects[i]);
-            }
+            }*/
         }
     });
 
@@ -101,4 +132,75 @@ function laodDiscussionPage(discussion_id){
             });
         }
     });
+
+    $('#sort').change(function() {
+        $("#posts").empty();
+
+        if ($(this).val() === 'op_date') {
+            db_functions.getPostByDiscussion(discussion_id, function(err, data){
+                if(err){
+                    console.log(err);
+                }else{
+                    dust.renderArray('post', data.objects, null, function(err, out){
+                        if(!err){
+                            $("#posts").append(out);
+                        }
+                    })
+                }
+            });
+
+        }
+        else{
+            if ($(this).val() === 'op_back_date') {
+                db_functions.getSortedPostByDiscussion(discussion_id, "order_by=creation_date", function(err, data){
+                    if(err){
+                        console.log(err);
+                    }else{
+                        dust.renderArray('post', data.objects, null, function(err, out){
+                            if(!err){
+                                $("#posts").append(out);
+                            }
+                        })
+                    }
+                });
+
+
+            }else{
+                if ($(this).val() === 'op_votes_for') {
+                    db_functions.getSortedPostByDiscussion(discussion_id, "order_by=-votes_for", function(err, data){
+                        if(err){
+                            console.log(err);
+                        }else{
+                            dust.renderArray('post', data.objects, null, function(err, out){
+                                if(!err){
+                                    $("#posts").append(out);
+                                }
+                            })
+                        }
+                    });
+
+                }else{
+                    if ($(this).val() === 'op_most_voted') {
+                        db_functions.getSortedPostByDiscussion(discussion_id, "order_by=-total_votes, -votes_for", function(err, data){
+                            if(err){
+                                console.log(err);
+                            }else{
+                                dust.renderArray('post', data.objects, null, function(err, out){
+                                    if(!err){
+                                        $("#posts").append(out);
+                                    }
+                                })
+                            }
+                        });
+                    }
+                }
+            }
+        }
+    });
+
+    $("#btn_close").live("click", function(){
+        $(this).parent('div').hide();
+    });
+
+
 }

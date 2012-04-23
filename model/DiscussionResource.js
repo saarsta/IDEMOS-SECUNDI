@@ -106,31 +106,25 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
     },
 
     update_obj:function (req, object, callback) {
-        if(req.body.follower){
-            var user = req.user;
-//            var cycle_id = req._id;
-            var g_discussion_obj = null;
-            async.waterfall([
 
-                function(cbk){
-                    g_discussion_obj = object;
-                    if (common.isArgIsInList(object._id, user.discussions) == false){
-                        async.parallel([
-                            function(cbk2){
-                                models.User.update({_id: user._id}, {$addToSet: {discussions: object._id}}, cbk2);
-                            },
+        user = req.user;
+        if (req.query.put == "follower"){
+            if (common.isArgIsInList(object._id, user.discussions) == false){
+                async.parallel([
+                    function(cbk2){
+                        models.User.update({_id: user._id}, {$addToSet: {discussions: object._id}}, cbk2);
+                    },
 
-                            function(cbk2){
-                                models.Discussion.update({_id: object._id}, {$inc: {followers_count: 1}}, cbk2);
-                            }
-                        ], cbk);
-                    }else{
-                        cbk({message:"user is already a follower",code:401}, null);
+                    function(cbk2){
+                        models.Discussion.update({_id: object._id}, {$inc: {followers_count: 1},  $addToSet: {users: user._id}}, cbk2);
                     }
-                }
-            ],function(err, result){
-                callback(err, g_discussion_obj);
-            });
+                ], function(){
+                    object.followers_count++;
+                    callback(null, object);
+                });
+            }else{
+                callback({message:"user is already a follower",code:401}, null);
+            }
         }else{
             if (object.is_published) {
                 callback("this discussion is already published", null);
@@ -141,7 +135,6 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                 object.save(callback);
             }
         }
-
     }
 });
 

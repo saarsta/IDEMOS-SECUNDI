@@ -93,6 +93,8 @@ div#header div.logo h1 a{position:relative; width:34px; height:0px; padding-top:
 div#main-navigation ul li{ float:right; margin-left:35px;}
 div#main-navigation ul li a {text-decoration:none; font-size:190%; color:#9d9d9c; font-style:italic; line-height:46px;}
 
+div#main-navigation ul li.active a { color:#333333; }
+
 /*---- Banner ----*/
 div#banner{ background:#ededed; padding:98px 0px 34px 0px;}
 div#banner div.frame{float:right; padding:11px 9px; margin-left:35px;}

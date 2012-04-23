@@ -99,7 +99,6 @@ var Schemas = exports.Schemas = {
         last_name:{type:String, required:true, validate:MinLengthValidator(2)},
         email:{type:String, required:true, validate:TestEmailValidator},
         gender:{type:String, "enum":['male', 'female']},
-        address: String,
         age:{type:Number, min:0},
         occupation: String,
         biography: String,
@@ -176,19 +175,22 @@ var Schemas = exports.Schemas = {
         creator_id:{type:ObjectId, ref:'User'},
         first_name:{type:String,editable:false},
         last_name:{type:String,editable:false},
+        vision_text_preview: String,//2-3 lines of the vision_text
         vision_text:String,
         vision_text_history:{type:[String],editable:false},
+        num_of_approved_change_suggestions: {type: Number, 'default': 0},
         is_hot_object: {type:Boolean,'default':false},
         is_cycle:{type:Boolean, 'default':false,editable:false},
         tags:[String],
         //for my uru
         users:[
-            {type:ObjectId, ref:'User'}
+            new Schema({user_id:{type:ObjectId, ref:'User'}, join_date: {type:Date, 'default':Date.now}})
         ],
+
         followers_count:{type:Number, 'default':0},
         is_visible:{type:Boolean, 'default':true},
         is_published:{type:Boolean, 'default':false},
-
+//        popular_comments: [{type: ObjectId, ref: 'Post', index: true}],
         grade:Number,
         evaluate_counter:{type:Number, 'default':0},
         grade_sum:{type:Number, 'default':0},
@@ -196,7 +198,8 @@ var Schemas = exports.Schemas = {
                         has_rewarded_creator_for_high_grading_of_min_graders: {type: String, 'default': false}}
     },
 
-    Cycle:new Schema({
+    Cycle: new Schema({
+        creation_date: {type:Date, 'default':Date.now},
         subject:[{
             id:{type:ObjectId, ref:'Subject', index:true, required:true},
             name: {type:String,editable:false}
@@ -215,23 +218,28 @@ var Schemas = exports.Schemas = {
         is_hot_object: {type:Boolean,'default':false},
         followers_count: {type: Number, 'default':0},
         num_of_comments: {type: Number, 'default':0},
+
         upcoming_action: {type: ObjectId, ref: 'Action', index: true},
         num_upcoming_actions: {type: Number, 'default':0},
         //users that conected somehow to the cycle for my uru
         users:[
-            {type:ObjectId, ref:'User'}
-        ]
+            new Schema({user_id:{type:ObjectId, ref:'User'}, join_date: {type:Date, 'default':Date.now}})
+        ],
+
+        upcoming_action: {type: ObjectId, ref: 'Action', index: true}
+
     }, {strict: true}),
 
     PostOrSuggestion:{
-        discussion_id:{type:Schema.ObjectId, ref:'Discussion', index:true, required:true},
         creator_id:{type:Schema.ObjectId, ref:'User'},
         first_name:{type:String},
         last_name:String,
         username:String,
+        avatar : mongoose_types.File,
         creation_date:{type:Date, 'default':Date.now},
         tokens:{type:Number, 'default':0, index: true},
         post_price:{type:Number, 'default':0},//how many tokens for creating post
+        popularity: {type:Number, 'default':0},
         gamification: {high_number_of_tokens_bonus : {type: Boolean, 'default': false}}
 //        achivements_for_creator: {}
     },
@@ -239,7 +247,7 @@ var Schemas = exports.Schemas = {
     Vote:{
         user_id:{type:ObjectId, ref:'User', index:true, required:true},
         post_id:{type:ObjectId, ref:'Post', index:true, required:true},
-        tokens:Number,
+//        tokens:Number,
         method:{type:String, "enum":['add', 'remove']},
         creation_date:{type:Date, 'default':Date.now}
     },
@@ -247,6 +255,13 @@ var Schemas = exports.Schemas = {
     Grade:{
         user_id:{type:ObjectId, ref:'User', index:true, required:true},
         discussion_id:{type:ObjectId, ref:'Discussion', index:true, required:true},
+        evaluation_grade:{type:Number, min:0, max:10},
+        creation_date:{type:Date, 'default':Date.now}
+    },
+
+    GradeAction:{
+        user_id:{type:ObjectId, ref:'User', index:true, required:true},
+        action_id:{type:ObjectId, ref:'Action', index:true, required:true},
         evaluation_grade:{type:Number, min:0, max:10},
         creation_date:{type:Date, 'default':Date.now}
     },
@@ -297,6 +312,7 @@ var Schemas = exports.Schemas = {
         text_field_preview:{type:mongoose_types.Html},
         image_field: mongoose_types.File,
         image_field_preview: mongoose_types.File,
+        type: String, //only admin can change this
         description:String,
         creator_id:{type:ObjectId, ref:'User', index:true, required:true},
         first_name: String,
@@ -305,11 +321,13 @@ var Schemas = exports.Schemas = {
         action_resources:[
             {resource: ActionResource, amount:Number, left_to_bring: Number}
         ],
-        popular_actions: [{type: ObjectId, ref: 'Action', index: true}],
 
-        //users that conected somehow to the action for my uru
+//        popular_actions: [{type: ObjectId, ref: 'Action', index: true}],
+
+
+        //users that conected somehow to the action
         users:[
-            {type:ObjectId, ref:'User'}
+            new Schema({user_id:{type:ObjectId, ref:'User'}, join_date: {type:Date, 'default':Date.now}})
         ],
         execution_date:{type:Date},
         creation_date:{type:Date, 'default':Date.now},
@@ -323,18 +341,35 @@ var Schemas = exports.Schemas = {
         is_approved:{type:Boolean, 'default':false},
         is_hot_object: {type:Boolean,'default':false},
         gamification: {approved_to_cycle :{type: Boolean, 'default': false}},
-        location:mongoose_types.GeoPoint
+        location:mongoose_types.GeoPoint,
+        grade:{type:Number, 'default':0},
+        evaluate_counter:{type:Number, 'default':0},
+        grade_sum:{type:Number, 'default':0}
     },
 
     Post:{
+        discussion_id:{type:Schema.ObjectId, ref:'Discussion', index:true, required:true},
         text:String,
+        votes_for: {type: Number, 'default': 0},
+        votes_against: {type: Number, 'default': 0},
+        total_votes: {type: Number, 'default': 0},
         //is_change_suggestion: {type:Boolean,'default':false},
+
         is_comment_on_vision:{type:Boolean, 'default':false},
         is_comment_on_action:{type:Boolean, 'default':false},
         ref_to_post_id:{type:Schema.ObjectId, ref:'Post', index:true}
     },
 
+    PostAction:{
+        action_id:{type:Schema.ObjectId, ref:'Action', index:true, required:true},
+        text:String,
+        is_comment_on_vision:{type:Boolean, 'default':false},
+        ref_to_post_id:{type:Schema.ObjectId, ref:'Post', index:true}
+    },
+
     Suggestion:{
+        discussion_id:{type:Schema.ObjectId, ref:'Discussion', index:true, required:true},
+
         //is_change_suggestion: {type:Boolean,'default':true},
         parts:[
             {start:Number, end:Number, text:String}
@@ -439,11 +474,13 @@ var Models = module.exports = {
     Subject:mongoose.model('Subject', new Schema(Schemas.Subject, {strict: true})),
     Discussion:mongoose.model('Discussion', new Schema(Schemas.Discussion, {strict: true})),
     Post:extend_model('Post', Schemas.PostOrSuggestion, Schemas.Post, 'posts'),
+    PostAction:extend_model('PostAction', Schemas.PostOrSuggestion, Schemas.PostAction, 'posts'),
     Suggestion:extend_model('Suggestion', Schemas.PostOrSuggestion, Schemas.Suggestion, 'posts'),
     PostOrSuggestion:mongoose.model('PostOrSuggestion', new Schema(Schemas.PostOrSuggestion, {strict: true}), 'posts'),
     Vote:mongoose.model('Vote', new Schema(Schemas.Vote, {strict: true})),
     Like:mongoose.model('Like', new Schema(Schemas.Like, {strict: true})),
     Grade:mongoose.model('Grade', new Schema(Schemas.Grade, {strict: true})),
+    GradeAction:mongoose.model('GradeAction', new Schema(Schemas.GradeAction, {strict: true})),
     Join:mongoose.model('Join', new Schema(Schemas.Join, {strict: true})),
 //    CommentVote:mongoose.model('CommentVote', new Schema(Schemas.CommentVote, {strict: true})),
 //    Comment:mongoose.model('Comment', new Schema(Schemas.Comment, {strinct: true})),

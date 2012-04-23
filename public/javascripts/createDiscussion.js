@@ -61,7 +61,6 @@ var items = {
 }
 
 
-var user_shopping_cart;
 var created_discussion_id = null;
 
 function loadCreateDiscussionPage(subject_id, subject_name){
@@ -88,11 +87,11 @@ function loadCreateDiscussionPage(subject_id, subject_name){
         }
     });
 
-    db_functions.getUserShopingCart(function(err, data){
-        if (!err){
-            dust.renderArray('shopping_cart_item_in_create_discussion_1', data.objects, null, function(err, out){
-                $('#shopping_cart').append(out);
-            })
+    db_functions.getUserShopingCart(function(data){
+        user_Shopping_cart = data;
+        for (var i in data.objects) {
+            var item = items.add(data.objects[i], "shopping_cart");
+            items.changeButton(item);
         }
     });
 
@@ -131,17 +130,17 @@ function loadCreateDiscussionPage(subject_id, subject_name){
                          }
                      });
                 }
-                for (var i = 0; user_Shopping_cart.objects.length; i++){
-
-                    db_functions.addInfoItemToDiscussionShoppingCart(user_Shopping_cart.objects[i]._id, data._id, function(err){
-                        if (err){
-                            console.log(err);
-                        }
-                        else{
-                            on_finish()
-                        }
-                    });
-                }
+//                for (var i = 0; user_Shopping_cart.objects.length; i++){
+//
+//                    db_functions.addInfoItemToDiscussionShoppingCart(user_Shopping_cart.objects[i]._id, data._id, function(err){
+//                        if (err){
+//                            console.log(err);
+//                        }
+//                        else{
+//                            on_finish()
+//                        }
+//                    });
+//                }
             }
         });
     });
@@ -166,13 +165,13 @@ function loadCreateDiscussionPage(subject_id, subject_name){
                 }else{
                     created_discussion_id = data._id;
                     console.log("discussion was created");
-                    for (var i in user_Shopping_cart.objects){
+                    /*for (var i in user_Shopping_cart.objects){
                         db_functions.addInfoItemToDiscussionShoppingCart(user_Shopping_cart.objects[i]._id, created_discussion_id, function(err){
                             if(err){
                                 console.log(err);
                             }
                         });
-                    }
+                    }*/
                     alert("discussion created!");
 
                     if ($.trim(first_post) != ""){

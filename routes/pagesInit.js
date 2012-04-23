@@ -18,6 +18,7 @@ exports.meidaInit = function(req, res){
         avatar:req.session.avatar_url,
         tag_name: req.query.tag_name,
         body_class:'layout',
+        tab:'information_items',
         extra_head:'<script src="/javascripts/infoAndMeasures.js"></script>'});
 };
 
@@ -30,6 +31,7 @@ exports.subjectPageInit = function(req, res){
         user: req.session.user,
         avatar:req.session.avatar_url,
         body_class:'layout1',
+        tab:'information_items',
         extra_head:'<script src="/javascripts/selectedSubjectPage.js"></script>'});
 };
 
@@ -39,10 +41,11 @@ exports.selectedItemInit = function(req, res){
         subject_id: req.query.subject_id,
 //        subject_name: req.query.subject_name,
 //        tag_name: req.query.tag_name,
-        info_id: req.query.info_id,
+        info_id: req.params.id,
         user: req.session.user,
         avatar:req.session.avatar_url,
         body_class:'layout1',
+        tab:'information_items',
         extra_head:'<script src="/javascripts/selectedItem.js"></script>'});
 };
 
@@ -54,6 +57,7 @@ exports.createDiscussionPageInit = function(req, res){
         user: req.session.user,
         avatar:req.session.avatar_url,
         body_class:'layout',
+        tab:'discussions',
         extra_head:'<script src="/javascripts/createDiscussion.js"></script>'});
 };
 
@@ -61,12 +65,13 @@ exports.discussionPageInit = function(req, res){
 
     res.render('discussionPage.ejs',{title:"דיון",
         logged: req.isAuthenticated(),
-        discussion_id: req.query.discussion_id,
+        discussion_id: req.params.id,
         subject_id: req.query.subject_id,
         big_impressive_title: req.query.subject_name,
         user: req.session.user,
         avatar:req.session.avatar_url,
         body_class:'layout',
+        tab:'discussions',
         extra_head:'<script src="/javascripts/discussionPage.js"></script>'});
 };
 
@@ -74,12 +79,23 @@ exports.discussionPreviewPageInit = function(req, res){
 
     res.render('discussionPreviewPage.ejs',{title:'discussionPreviewPageInit.ejs', discussion_id: req.query.discussion_id, subject_id: req.query.subject_id,
         body_class:'layout',
+        tab:'discussions',
         subject_name: req.query.subject_name});
 
 };
 
 exports.cyclePageInit = function(req, res){
-    res.render('cyclePage.ejs',{title:'cyclePage.ejs', cycle_id: req.query.cycle_id, discussion_id: req.query.discussion_id, subject_name: req.query.subject_name});
+    res.render('cyclePage.ejs',{
+
+        logged: req.isAuthenticated(),
+        title:'title',
+        extra_head:'<script src="/javascripts/cyclePage.js"></script>',
+        body_class:'layout',
+        user: req.session.user,
+        avatar:req.session.avatar_url,
+        cycle_id: req.params.id,
+        tab:'cycles',
+        discussion_id: req.query.discussion_id, subject_name: req.query.subject_name});
 };
 
 exports.allDiscussions = function(req,res)
@@ -88,6 +104,7 @@ exports.allDiscussions = function(req,res)
         title:'מידע ומדדים',
         body_class:'layout',
         big_impressive_title:"כותרת גדולה ומרשימה",
+        tab:'discussions',
         extra_head:'<script src="/javascripts/infoAndMeasures.js"></script>'
     });
 };

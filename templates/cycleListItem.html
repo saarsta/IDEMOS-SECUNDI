@@ -1,28 +1,34 @@
 <li class="clearfix">
-    <div class="frame"> <img src="{image_field.url}" alt="image3"/> </div>
+    <a href="{get_link}">
+    <div class="frame">
+        <div style="width:125px; height:98px;">
+            <img src="{image_field_preview.url}" alt="{title}"/>
+        </div>
+    </div>
+
     <div class="description">
         <h4>
-            נושא מעגל התנופה:
-            <br>{subject}
+            {title}
         </h4>
         <p>
             מספר עוקבים:
-            <br>{followers_count}
+            {followers_count}
         </p>
         <p>
             מספר תגובות:
-            <br>{num_of_comments}
+            {num_of_comments}
         </p>
         <p>
             מספר פעולות עתידיות:
-            <br>{}
+            {}
         </p>
         <p>
             (פעולות שהצליחו בעבר):
             <br>{}
         </p>
     </div>
-    <div class="action"> <a href="#" class="button">שתף</a> <a href="#" class="button">הצטרף</a> </div>
+    <div class="action"> <a href="/facebookShare?link={get_link_uri}" class="button">שתף</a>
+        <a href="javascript:void(0)" class="button join_button" item_id="{_id}">הצטרף</a> </div>
 
     <div class="action-bottom clearfix">
         <p class="meta-data">
@@ -33,7 +39,7 @@
            {upcoming_action.title}
             </a>
             <span class="divider">|</span>
-            <a href="#">{upcoming_action.execution_date}
+            <a href="#">{upcoming_action.execution_date|time}
             </a>
             <span class="divider">|</span>
             <a href="#">
@@ -41,7 +47,7 @@
             </a>
 
         </p>
-        <a href="#" class="button">הצטרף</a>
+        <a href="javascript:void(0)" class="button join_action_button" item_id="{upcoming_action._id}">הצטרף</a>
     </div>
-
+    </a>
 </li>

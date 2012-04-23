@@ -19,35 +19,41 @@
 
                 <div class="follow clearfix">
                     <p>הודעת מערכת (דיון זה מתעתד להיות מעגל תנופה. שתפו, הגיבו וגרמו לזה לקרות)</p>
-                    <a href="#" class="close-btn"></a>
+                    <a id="btn_close"  class="close-btn"></a>
                 </div>
 
                 <div class="comments">
                     <h2>תגובות</h2>
                     <div class="sorting">
-            	<span class="selectbox1">
-              	<select title="sorting">
-                      <option>מיין לפי - תאריך</option>
-                  </select>
-              </span>
+                        <span class="selectbox1">
+                        <select id="sort" title="sorting">
+                            <option value="op_date">מיין לפי - תאריך</option>
+
+                            <option value="op_back_date">
+                                  מיין לפי - מהסוף להתחלה
+
+                            </option>
+                            <option value="op_votes_for">
+                                מיין לפי - דירוג
+                            </option>
+
+                            <option value="op_most_voted">
+מיין לפי - מעורר עניין
+                            </option>
+                          </select>
+                      </span>
                     </div>
                     <br class="clear" />
                     <h5>(פוסט ראשון)</h5>
-                    <ul class="list1">
-                        <li class="clearfix">
+                    <ul class="list1" id="posts">
+
+                        <!--<li class="clearfix">
                             <div class="description clearfix">
                                 <div class="image"><div class="frame"> <img alt="image4" src="resources/images/assets/image4.jpg"/><div class="controls"><a href="#"></a><a href="#"></a></div> </div><span>שם משתמש תאריך</span></div>
                                 <p>שמו אינו מדינות דת, זקוק קבלו מועמדים מתן בה. גם אנגלית אקטואליה צעד. של בדף ישראל גיאוגרפיה, זכר לכאן בקלות לויקיפדיה גם. מתוך ותשובות ויש מה, חפש שאלות האטמוספירה של. קסאם בדפים מיזמים מדע על, קרן ומדעים מונחונים או. מתוך ותשובות ויש מה, חפש שאלות האטמוספירה של. קסאם בדפים מיזמים מדע על, קרן ומדעים מונחונים או. מתוך ותשובות ויש מה, חפש שאלות האטמוספירה של.</p>
                             </div>
                             <div class="action"> <a class="button" href="#">צטט</a> <a class="button" href="#">שתף</a> <a class="button" href="#">Like</a></div>
-                        </li>
-                        <li class="clearfix">
-                            <div class="description clearfix">
-                                <div class="image"><div class="frame"> <img alt="image4" src="resources/images/assets/image4.jpg"/><div class="controls"><a href="#"></a><a href="#"></a></div> </div><span>שם משתמש תאריך</span></div>
-                                <p>שמו אינו מדינות דת, זקוק קבלו מועמדים מתן בה. גם אנגלית אקטואליה צעד. של בדף ישראל גיאוגרפיה, זכר לכאן בקלות לויקיפדיה גם. מתוך ותשובות ויש מה, חפש שאלות האטמוספירה של. קסאם בדפים מיזמים מדע על, קרן ומדעים מונחונים או. מתוך ותשובות ויש מה, חפש שאלות האטמוספירה של. קסאם בדפים מיזמים מדע על, קרן ומדעים מונחונים או. מתוך ותשובות ויש מה, חפש שאלות האטמוספירה של.</p>
-                            </div>
-                            <div class="action"> <a class="button" href="#">צטט</a> <a class="button" href="#">שתף</a> <a class="button" href="#">Like</a></div>
-                        </li>
+                        </li>-->
                     </ul>
                     <h5>(כתיבת תגובה)</h5>
 
@@ -62,9 +68,9 @@
                                 <textarea title="post comments" onfocus="if(this.value=='כתוב תגובה') this.value='';" onblur="if(this.value=='') this.value='כתוב תגובה';" cols="1" rows="3">כתוב תגובה</textarea>
                             </div>
                             <div class="action">
-                                <span><label for="for">בעד</label><input type="checkbox" id="for" /></span>
-                                <span><label for="against">נגד</label><input type="checkbox" id="against" /></span>
-                                <span><label for="neutral">נייטרלי</label><input type="checkbox" id="neutral" /></span>
+                                <!--<span><label for="for">בעד</label><input type="checkbox" id="for" /></span>-->
+                                <!--<span><label for="against">נגד</label><input type="checkbox" id="against" /></span>-->
+                                <!--<span><label for="neutral">נייטרלי</label><input type="checkbox" id="neutral" /></span>-->
                                 <input type="submit" class="submit-btn" value="שלח" title="Send"/>
                             </div>
                         </form>
