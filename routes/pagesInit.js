@@ -121,6 +121,7 @@ exports.myUru = function(req,res)
         big_impressive_title:"כותרת גדולה ומרשימה",
         extra_head:'',
         tag_name: req.query.tag_name,
+        tab:'users',
         extra_head:'<script src="/javascripts/myUru.js"></script>'
     });
 
