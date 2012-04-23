@@ -16,8 +16,10 @@ var express = require('express'),
     SubjectResource = require('./model/SubjectResource');
     DiscussionResource = require('./model/DiscussionResource.js');
     PostResource = require('./model/PostResource.js');
+    PostsActionResource = require('./model/PostsActionResource.js');
     VoteResource = require('./model/VoteResource');
     GradeResource = require('./model/GradeResource');
+    GradeActionResource = require('./model/GradeActionResource');
     LikeResource = require('./model/LikeResource');
     JoinResource = require('./model/JoinResource');
     CategoryResource = require('./model/CategoryResource'),
@@ -34,7 +36,7 @@ var account = require('./routes/account');
 var infoAndMeasures = require('./routes/infoAndMeasures');
 var selectedSubjectPage = require('./routes/selectedSubjectPage');
 var pagesInit = require('./routes/pagesInit');
-var lists = require('./routes/lists.js');
+var lists = require('./routes/lists');
 var mmSearch = require('./routes/mmSearch'),
     i18n = require('i18n-mongoose'),
     locale = require('./locale');
@@ -182,7 +184,7 @@ app.get('/facebookShare',account.facebookShare);
 app.get('/pendingActions',lists.pendingActions);
 app.get('/actions',lists.actions);
 app.get('/discussions',lists.discussions);
-app.get('/cycles',lists.circles);
+app.get('/cycles',lists.cycles);
 
 
 
@@ -230,8 +232,10 @@ rest_api.register_resource('discussions_shopping_cart',new DiscussionShoppingCar
 rest_api.register_resource('subjects', new SubjectResource());
 rest_api.register_resource('discussions', new DiscussionResource());
 rest_api.register_resource('posts', new PostResource());
+rest_api.register_resource('posts_of_action', new PostsActionResource());
 rest_api.register_resource('votes', new VoteResource());
 rest_api.register_resource('grades', new GradeResource());
+rest_api.register_resource('grades_action', new GradeActionResource());
 rest_api.register_resource('likes', new LikeResource());
 rest_api.register_resource('joins', new JoinResource());
 rest_api.register_resource('suggestions', new SuggestionResource());

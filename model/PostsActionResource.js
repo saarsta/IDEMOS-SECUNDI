@@ -13,14 +13,14 @@ var resources = require('jest'),
     async = require('async'),
     POST_PRICE = 1;
 
-var PostResource = module.exports = common.GamificationMongooseResource.extend({
+var PostActionResource = module.exports = common.GamificationMongooseResource.extend({
     init:function () {
 
-        this._super(models.Post, 'post');
+        this._super(models.PostAction, 'post_action');
         this.allowed_methods = ['get', 'post'];
         this.authorization = new common.TokenAuthorization();
         this.authentication = new common.SessionAuthentication();
-        this.filtering = {discussion_id:null};
+        this.filtering = {action_id:null};
         this.default_query = function (query) {
             return query.sort('creation_date', 'descending');
         };
@@ -40,7 +40,6 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                 fields.creator_id = user_id;
                 fields.first_name = user.first_name;
                 fields.last_name = user.last_name;
-                fields.avatar = user.avatar;
 
                 for (var field in fields) {
                     post_object.set(field, fields[field]);
@@ -51,36 +50,36 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
 
             function(post_object, cbk){
 
-                var discussion_id = post_object.discussion_id;
+                var action_id = post_object.action_id;
                 post_object.save(function(err,result,num)
                 {
                     cbk(err,result);
                 });
             },
             function (object,cbk) {
-                var discussion_id = object.discussion_id;
-                //if post created successfuly, add user to discussion
-                // + add discussion to user
+                var action_id = object.action_id;
+                //if post created successfuly, add user to action
+                // + add action to user
                 //  + take tokens from the user
                 async.parallel([
                     function(cbk2)
                     {
-                        models.Discussion.update({_id:object.discussion_id}, {$addToSet: {users: user_id}}, cbk2);
+                        models.Action.update({_id:object.action_id}, {$addToSet: {users: user_id}}, cbk2);
 
                     },
                     function(cbk2)
                     {
-                            // add discussion_id to the list of discussions in user
+                        // add action_id to the list of actions in user
                         user.tokens -= POST_PRICE;
-                        if (common.isArgIsInList(object.discussion_id, user.discussions) == false) {
-                            user.discussions.push(object.discussion_id);
+                        if (common.isArgIsInList(object.action_id, user.actions) == false) {
+                            user.actions.push(object.action_id);
                         }
                         user.save(function(err,result)
                         {
                             cbk2(err,result);
                         });
                     }
-                    ],
+                ],
                     cbk);
 
             }
@@ -91,9 +90,4 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
     }
 });
 
-//util.inherits(PostResource, resources.MongooseResource);
-//
-//PostResource.prototype.create_obj =
-//}
-//
 

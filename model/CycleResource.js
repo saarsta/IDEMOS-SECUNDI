@@ -19,24 +19,7 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
         this._super(models.Cycle, null, FOLLOW_CYCLE_PRICE);
         this.authentication = new common.SessionAuthentication();
         this.allowed_methods = ['get', 'put'];
-        this.filtering = {tags: {
-            regex:null,
-            in:null,
-            exact:null
-        }};
-        this.default_query = function(query)
-        {
-            return query.populate('upcoming_action');
-        }
-    },
-
-    get_objects: function (req, filters, sorts, limit, offset, callback) {
-
-        if(req.query.get == "myUru"){
-            filters.users = req.user._id;
-        }
-
-        this._super(req, filters, sorts, limit, offset, callback);
+        this.filtering = {tags: null}
     },
 
     //happens when user want to become a cycle follower
@@ -59,7 +42,7 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
                         },
 
                         function(cbk2){
-                            models.Cycle.update({_id: cycle_id}, {$inc: {followers_count: 1}}, cbk2);
+                            models.Cycle.update({_id: cycle_id}, {$inc: {followers_count: 1},  $addToSet: {users: user._id}}, cbk2);
                         }
                     ], cbk);
                 }else{

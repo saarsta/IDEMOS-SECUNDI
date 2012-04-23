@@ -6,13 +6,6 @@
  * To change this template use File | Settings | File Templates.
  */
 
-dust.filters['date'] = function(a){
-    return $.datepicker.formatDate('dd-mm-yy', new Date(Date.parse(a)));;
-};
-
-dust.filters['time'] = function(a){
-    return $.datepicker.formatDate('dd-mm-yy', new Date(Date.parse(a)));;
-};
 
 
 dust.renderArray = function(template,arr,callback,endCallback)
@@ -168,15 +161,15 @@ var db_functions = {
             url: '/api/shopping_cart',
             type: "GET",
             async: true,
-            success: function (err, data) {
+            success: function (data) {
                 console.log(data);
-                callback(null, data);
+                callback(data);
             },
 
             error: function (xhr, ajaxOptions, thrownError) {
-                callback(thrownError, null);
-                cinsole.log(thrownError);
+                alert('error');
             }
+
         });
     },
 
@@ -292,7 +285,6 @@ var db_functions = {
                 dust.renderArray('discussion_list_item',data.objects,null,function(err,out)
                 {
                     $('#mainList').append(out);
-                    $('#mainList img').autoscale();
 
                 });
                 if(callback) callback(null, data);
@@ -446,6 +438,41 @@ var db_functions = {
         });
     },
 
+    getSortedPostByDiscussion: function(discussion_id, sort_by, callback){
+        $.ajax({
+            url: '/api/posts?discussion_id=' + discussion_id + "&" + sort_by,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log("posts are" + " " + data);
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
+                alert('get Posts error');
+            }
+        });
+    },
+
+    voteForPost: function(post_id, method, callback){
+        $.ajax({
+            url: '/api/votes/',
+            type: "POST",
+            async: true,
+            data: {"post_id": post_id, "method": method},
+            success: function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log(thrownError)
+                callback(thrownError, null);
+            }
+        });
+    },
+
     addPostToDiscussion: function(discussion_id, post_content, callback){
 
         $.ajax({
@@ -523,6 +550,25 @@ var db_functions = {
         });
     },
 
+    getPopularPostsByAction: function(action_id, callback){
+
+        $.ajax({
+            url: '/api/posts_action/',
+            type: "Get",
+            async: true,
+            data: {"action_id": action_id, "text": post_content, "ref_to_post_id": ref_to_post_id, "is_comment_on_vision": is_comment_on_vision},
+            success: function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
+                alert('create Post error');
+            }
+        });
+    },
+
     addDiscussionGrade: function(discussion_id, grade, callback){
         $.ajax({
             url: '/api/grades/',
@@ -544,7 +590,7 @@ var db_functions = {
     getAllCycles: function(){
         $.ajax({
              //  url: '/api/cycles',
-            url: '/api/cycles',
+            url: '/circleListTestData',
             type: "GET",
             async: true,
             success: function (data) {
@@ -577,27 +623,9 @@ var db_functions = {
         });
     },
 
-    joinToCycleFollowers: function(cycle_id, callback){
+    addUserToCycleFollower: function(cycle_id, callback){
         $.ajax({
             url: '/api/cycles/'+ cycle_id,
-            type: "PUT",
-            async: true,
-            success: function (data) {
-                callback(null, data);
-
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                callback(thrownError, null);
-
-            }
-        });
-    },
-
-    joinToDiscussionFollowers: function(discussion_id, callback){
-        $.ajax({
-            url: '/api/discussions/'+ discussion_id,
-            data: {"follower": true},
             type: "PUT",
             async: true,
             success: function (data) {
@@ -667,22 +695,22 @@ var db_functions = {
         });
     },
 
-//    getAllCycles: function(callback){
-//        $.ajax({
-//            url: '/api/cycles',
-//            type: "GET",
-//            async: true,
-//            success: function (data) {
-//                console.log(data);
-//                callback(null, data);
-//            },
-//
-//            error: function (xhr, ajaxOptions, thrownError) {
-//                console.log(thrownError);
-//                callback(thrownError, null);
-//            }
-//        });
-//    },
+    getAllCycles: function(callback){
+        $.ajax({
+            url: '/api/cycles',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log(thrownError);
+                callback(thrownError, null);
+            }
+        });
+    },
 
     getApprovedActionByCycle: function(cycle_id, callback){
         $.ajax({
@@ -748,7 +776,6 @@ var db_functions = {
                 dust.renderArray('action_list_item',data.objects,null,function(err,out)
                 {
                     $('#mainList').append(out);
-                    $('#mainList img').autoscale();
 
                 });
                 if(callback) callback(null, data);
@@ -842,37 +869,13 @@ var db_functions = {
                 callback(thrownError, null);
             }
         });
-    },
-
-    getAllItemsByUser: function(api_resource, callback){
-        $.ajax({
-            url: '/api/' + api_resource + '?get=myUru',
-            type: "GET",
-            async: true,
-            success: function (data) {
-                callback(null, data);
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                callback(thrownError, null);
-            }
-        });
-    },
-
-    joinToAction: function (callback){
-        $.ajax({
-            url: '/api/actoins',
-            type: "POST",
-            async: true,
-            success: function (data) {
-                callback(null, data);
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                callback(thrownError, null);
-            }
-        });
     }
+/*
+
+{"title" : "ban tnuva!!!", "description" : "do not buy tnuva products", "category": "4f61f9403ac2bf440f000002",
+    "action_resources": [{"resource": {"category":"4f61f9403a2bf440f000002", "name": "lemons"}, "amount" : "78"}], "required_participants": "1", "cycle_id": "4f5f68c4d79ae4a81200000a", "is_approved": false}
+
+    */
 }
 
 

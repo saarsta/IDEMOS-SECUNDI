@@ -1,4 +1,3 @@
-
 <li class="clearfix">
     <a href="{get_link}">
     <div class="frame">
@@ -32,12 +31,20 @@
 
     <div class="action-bottom clearfix">
         <p class="meta-data">
-            הפעולה הקרובה: <a href="#"> {upcoming_action.title} </a>
-            <span class="divider">|</span> <a href="#">{upcoming_action.title}</a>
-            <span class="divider">|</span> <a href="#">
-            מספר משתתפים
-            {upcoming_action.num_of_going}
-        </a>
+            הפעולה הקרובה: <a href="#">שם הפעולה</a> <span class="divider">|</span> <a href="#">תאריך ושעה</a> <span class="divider">|</span> <a href="#">מספר משתתפים</a>
+
+
+            <a href="#">
+           {upcoming_action.title}
+            </a>
+            <span class="divider">|</span>
+            <a href="#">{upcoming_action.execution_date}
+            </a>
+            <span class="divider">|</span>
+            <a href="#">
+              {upcoming_action.num_of_going}
+            </a>
+
         </p>
         <a href="#" class="button">הצטרף</a>
     </div>

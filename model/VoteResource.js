@@ -19,6 +19,8 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
         this.authentication = new common.SessionAuthentication();
         this.filtering = {discussion_id: null};
     },
+
+    //returns post_
     create_obj: function(req,fields,callback)
     {
         var self = this;
@@ -33,7 +35,7 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
                 }
                 else
                 {
-                    if (user_object.tokens >= req.body.tokens){
+                    if (user_object.tokens){
                         var post_id = req.body.post_id;
                         var method = req.body.method;
                         models.Post.findOne({_id :post_id},function(err,post_object){
@@ -43,23 +45,28 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
                             else{
                                 var discussion_id = post_object.discussion_id;
                                 var isNewFollower = false;
-                                user_object.tokens -= parseInt(req.body.tokens);
+                                user_object.tokens -= 1;
                                 if (method == 'add'){
-                                    post_object.tokens += parseInt(req.body.tokens);
+                                    post_object.votes_for += 1;
+
+//                                    post_object.tokens += parseInt(req.body.tokens);
                                 }
                                 else{
-                                    post_object.tokens -= parseInt(req.body.tokens);
+                                    post_object.votes_against += 1;
+
+//                                    post_object.tokens -= parseInt(req.body.tokens);
                                 }
 
                                 var vote_object = new self.model();
                                 fields.user_id = user_id;
                                 fields.post_id = post_id;
-                                fields.tokens = req.body.tokens;
 
+
+                                post_object.total_votes += 1;
                                 post_object.save();
 
                                 //check if is user is a new follower, if so insert discussion to user and increade followers in discussion
-                                if (common.isDiscussionIsInUser(discussion_id, user_object.discussions) == false){
+                                if (common.isArgIsInList(discussion_id, user_object.discussions) == false){
                                     user_object.discussions.push(discussion_id);
                                     isNewFollower = true;
                                 }
@@ -89,14 +96,14 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
                                             if (err){
                                                 callback(err, null);
                                             }
-                                            callback(self.elaborate_mongoose_errors(err),object);
+                                            callback(self.elaborate_mongoose_errors(err),post_object);
                                         });
                                     }
                                 });
                             }
                         });
                     }else{
-                        callback("Error: there is not enought tokens", null);
+                        callback({message: "Error: there is not enought tokens", code: 401}, null);
                     }
                 }
             });
@@ -106,8 +113,3 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
         }
     }
 });
-//
-//util.inherits(VoteResource, resources.MongooseResource);
-//
-//VoteResource.prototype.create_obj =
-//

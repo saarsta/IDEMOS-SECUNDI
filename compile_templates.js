@@ -26,7 +26,7 @@ writer.write(compile_template('action_list_item','actionListItem.html'));
 writer.write(compile_template('discussion_list_item','discussionListItem.html'));
 writer.write(compile_template('cycle_list_item','cycleListItem.html'));
 writer.write(compile_template('discussion_full_view','discussionFullView.html'))
-writer.write(compile_template('shopping_cart_item_in_create_discussion_1', 'shoppingCartItemInCreateDiscussion1.html'))
+
 
 //writer.write(compile_template('template_name','template_file.html'));
 
