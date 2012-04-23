@@ -568,9 +568,27 @@ var db_functions = {
         });
     },
 
-    addUserToCycleFollower: function(cycle_id, callback){
+    joinToCycleFollowers: function(cycle_id, callback){
         $.ajax({
             url: '/api/cycles/'+ cycle_id,
+            type: "PUT",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
+
+            }
+        });
+    },
+
+    joinToDiscussionFollowers: function(discussion_id, callback){
+        $.ajax({
+            url: '/api/discussions/'+ discussion_id,
+            data: {"follower": true},
             type: "PUT",
             async: true,
             success: function (data) {
@@ -829,13 +847,22 @@ var db_functions = {
                 callback(thrownError, null);
             }
         });
+    },
+
+    joinToAction: function (callback){
+        $.ajax({
+            url: '/api/actoins',
+            type: "POST",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
+            }
+        });
     }
-/*
-
-{"title" : "ban tnuva!!!", "description" : "do not buy tnuva products", "category": "4f61f9403ac2bf440f000002",
-    "action_resources": [{"resource": {"category":"4f61f9403a2bf440f000002", "name": "lemons"}, "amount" : "78"}], "required_participants": "1", "cycle_id": "4f5f68c4d79ae4a81200000a", "is_approved": false}
-
-    */
 }
 
 
