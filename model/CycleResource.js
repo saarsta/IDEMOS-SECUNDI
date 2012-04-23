@@ -22,15 +22,6 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
         this.filtering = {tags: null}
     },
 
-    get_objects: function (req, filters, sorts, limit, offset, callback) {
-
-        if(req.query.get == "myUru"){
-            filters.users = req.user._id;
-        }
-
-        this._super(req, filters, sorts, limit, offset, callback);
-    },
-
     //happens when user want to become a cycle follower
     update_obj: function(req, object, callback){
         var user = req.user;

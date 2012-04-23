@@ -87,11 +87,11 @@ function loadCreateDiscussionPage(subject_id, subject_name){
         }
     });
 
-    db_functions.getUserShopingCart(function(err, data){
-        if (!err){
-            dust.renderArray('shopping_cart_item_in_create_discussion_1', data.objects, null, function(err, out){
-                $('#shopping_cart').append(out);
-            })
+    db_functions.getUserShopingCart(function(data){
+        user_Shopping_cart = data;
+        for (var i in data.objects) {
+            var item = items.add(data.objects[i], "shopping_cart");
+            items.changeButton(item);
         }
     });
 

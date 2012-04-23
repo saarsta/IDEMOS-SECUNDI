@@ -367,7 +367,6 @@ function createNewUser(data, access_token, callback) {
     user.last_name = data.last_name;
     user.email = data.email; //there is a problem with email
     user.gender = data.gender;
-    user.address = data.location.name;
     user.facebook_id = data.id;
     if(data.invited_by)
         user.invited_by = data.invited_by;

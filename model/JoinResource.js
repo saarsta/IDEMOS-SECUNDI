@@ -25,7 +25,6 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
         var self = this;
         var action_id = req.body.action_id;
         var user_id = req.user._id;
-        var g_action_obj;
         async.waterfall([
 
             function(cbk){
@@ -42,7 +41,6 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
             },
 
             function(action, cbk){
-                g_action_obj = action;
                 var join_object = new self.model();
                 fields.user_id = user_id;
                 fields.action_creator_id = action.creator_id;
@@ -63,14 +61,11 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
 
             function(obj, cbk){
                 models.Action.update({_id:action_id},{$addToSet: {going_users: user_id, users: user_id},$inc:{num_of_going: 1}}, function(err, result){
-                    if (result){
-                        g_action_obj.num_of_going++;
-                    }
-                    cbk(err, result);
+                    cbk(err, obj);
                 });
             }
-        ],function(err, result){
-            callback(err, g_action_obj);
+        ],function(err, obj){
+            callback(err, obj);
         });
     }
 });
