@@ -624,12 +624,11 @@ var db_functions = {
         });
     },
 
-    getPopularPostsByCycle: function(cycle_id, callback){
+    getPopularPostsByCycleId: function(cycle_id, callback){
         $.ajax({
-            url: '/api/posts/'+ cycle_id,
+            url: '/api/posts/'+ cycle_id + "get=popular_posts",
             type: "GET",
             async: true,
-//            data: {"get": }
             success: function (data) {
                 callback(null, data);
 
@@ -641,25 +640,6 @@ var db_functions = {
             }
         });
     },
-
-    becomeDiscussionFollower: function(c, callback){
-        $.ajax({
-            url: '/api/discussions/'+ discussion_id + '?put=join',
-            type: "PUT",
-            async: true,
-            success: function (data) {
-                callback(null, data);
-
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                callback(thrownError, null);
-
-            }
-        });
-    },
-
- 
 
     joinToCycleFollowers: function(cycle_id, callback){
         $.ajax({
@@ -680,7 +660,7 @@ var db_functions = {
 
     joinToDiscussionFollowers: function(discussion_id, callback){
         $.ajax({
-            url: '/api/discussions/'+ discussion_id,
+            url: '/api/discussions/'+ discussion_id + '/?put=follower',
             data: {"follower": true},
             type: "PUT",
             async: true,
@@ -958,11 +938,12 @@ var db_functions = {
         });
     },
 
-    joinToAction: function (callback){
+    joinToAction: function(action_id, callback){
         $.ajax({
-            url: '/api/actoins',
-            type: "POST",
+            url: '/api/joins/',
+            type: "PUT",
             async: true,
+            data: {"action_id": action_id},
             success: function (data) {
                 callback(null, data);
             },
