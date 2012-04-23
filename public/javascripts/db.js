@@ -629,7 +629,7 @@ var db_functions = {
             url: '/api/posts/'+ cycle_id,
             type: "GET",
             async: true,
-            data: {"get": }
+//            data: {"get": }
             success: function (data) {
                 callback(null, data);
 

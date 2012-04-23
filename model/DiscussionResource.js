@@ -97,7 +97,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
 
     update_obj:function (req, object, callback) {
 
-        if (req.)
+       // if (req.)
         if (object.is_published) {
             callback("this discussion is already published", null);
         } else {
