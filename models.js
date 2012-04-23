@@ -184,8 +184,9 @@ var Schemas = exports.Schemas = {
         tags:[String],
         //for my uru
         users:[
-            {type:ObjectId, ref:'User'}
+            new Schema({user_id:{type:ObjectId, ref:'User'}, join_date: {type:Date, 'default':Date.now}})
         ],
+
         followers_count:{type:Number, 'default':0},
         is_visible:{type:Boolean, 'default':true},
         is_published:{type:Boolean, 'default':false},
@@ -223,7 +224,7 @@ var Schemas = exports.Schemas = {
         //users that conected somehow to the cycle for my uru
         users:[
             new Schema({user_id:{type:ObjectId, ref:'User'}, join_date: {type:Date, 'default':Date.now}})
-        ]
+        ],
 
         upcoming_action: {type: ObjectId, ref: 'Action', index: true}
 
@@ -326,7 +327,7 @@ var Schemas = exports.Schemas = {
 
         //users that conected somehow to the action
         users:[
-            {type:ObjectId, ref:'User'}
+            new Schema({user_id:{type:ObjectId, ref:'User'}, join_date: {type:Date, 'default':Date.now}})
         ],
         execution_date:{type:Date},
         creation_date:{type:Date, 'default':Date.now},
