@@ -51,7 +51,7 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
                         },
 
                         function(cbk2){
-                            models.Cycle.update({_id: cycle_id}, {$inc: {followers_count: 1}}, cbk2);
+                            models.Cycle.update({_id: cycle_id}, {$inc: {followers_count: 1},  $addToSet: {users: user._id}}, cbk2);
                         }
                     ], cbk);
                 }else{

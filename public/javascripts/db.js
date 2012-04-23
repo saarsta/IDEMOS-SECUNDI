@@ -411,6 +411,41 @@ var db_functions = {
         });
     },
 
+    getSortedPostByDiscussion: function(discussion_id, sort_by, callback){
+        $.ajax({
+            url: '/api/posts?discussion_id=' + discussion_id + "&" + sort_by,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log("posts are" + " " + data);
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
+                alert('get Posts error');
+            }
+        });
+    },
+
+    voteForPost: function(post_id, method, callback){
+        $.ajax({
+            url: '/api/votes/',
+            type: "POST",
+            async: true,
+            data: {"post_id": post_id, "method": method},
+            success: function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log(thrownError)
+                callback(thrownError, null);
+            }
+        });
+    },
+
     addPostToDiscussion: function(discussion_id, post_content, callback){
 
         $.ajax({
@@ -476,6 +511,25 @@ var db_functions = {
             type: "POST",
             async: true,
             data: {"discussion_id": discussion_id, "text": post_content, "ref_to_post_id": ref_to_post_id, "is_comment_on_vision": is_comment_on_vision},
+            success: function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
+                alert('create Post error');
+            }
+        });
+    },
+
+    getPopularPostsByAction: function(action_id, callback){
+
+        $.ajax({
+            url: '/api/posts_action/',
+            type: "Get",
+            async: true,
+            data: {"action_id": action_id, "text": post_content, "ref_to_post_id": ref_to_post_id, "is_comment_on_vision": is_comment_on_vision},
             success: function (data) {
                 console.log(data);
                 callback(null, data);

@@ -61,7 +61,6 @@ var items = {
 }
 
 
-var user_shopping_cart;
 var created_discussion_id = null;
 
 function loadCreateDiscussionPage(subject_id, subject_name){
@@ -131,17 +130,17 @@ function loadCreateDiscussionPage(subject_id, subject_name){
                          }
                      });
                 }
-                for (var i = 0; user_Shopping_cart.objects.length; i++){
-
-                    db_functions.addInfoItemToDiscussionShoppingCart(user_Shopping_cart.objects[i]._id, data._id, function(err){
-                        if (err){
-                            console.log(err);
-                        }
-                        else{
-                            on_finish()
-                        }
-                    });
-                }
+//                for (var i = 0; user_Shopping_cart.objects.length; i++){
+//
+//                    db_functions.addInfoItemToDiscussionShoppingCart(user_Shopping_cart.objects[i]._id, data._id, function(err){
+//                        if (err){
+//                            console.log(err);
+//                        }
+//                        else{
+//                            on_finish()
+//                        }
+//                    });
+//                }
             }
         });
     });
@@ -166,13 +165,13 @@ function loadCreateDiscussionPage(subject_id, subject_name){
                 }else{
                     created_discussion_id = data._id;
                     console.log("discussion was created");
-                    for (var i in user_Shopping_cart.objects){
+                    /*for (var i in user_Shopping_cart.objects){
                         db_functions.addInfoItemToDiscussionShoppingCart(user_Shopping_cart.objects[i]._id, created_discussion_id, function(err){
                             if(err){
                                 console.log(err);
                             }
                         });
-                    }
+                    }*/
                     alert("discussion created!");
 
                     if ($.trim(first_post) != ""){

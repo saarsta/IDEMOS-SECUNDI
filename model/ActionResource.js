@@ -20,8 +20,9 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
         init:function () {
             this._super(models.Action, null, ACTION_PRICE);
             this.allowed_methods = ['get', 'post', 'put'];
-            this.filtering = {category:null, cycle_id:null, is_approved:null, tokens:null};
+            this.filtering = {cycle_id:null, is_approved:null, grade:null, num_of_going: null};
             this.authentication = new common.SessionAuthentication();
+            this.update_fields = [];
         },
 
         get_objects: function (req, filters, sorts, limit, offset, callback) {

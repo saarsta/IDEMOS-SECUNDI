@@ -16,8 +16,10 @@ var express = require('express'),
     SubjectResource = require('./model/SubjectResource');
     DiscussionResource = require('./model/DiscussionResource.js');
     PostResource = require('./model/PostResource.js');
+    PostsActionResource = require('./model/PostsActionResource.js');
     VoteResource = require('./model/VoteResource');
     GradeResource = require('./model/GradeResource');
+    GradeActionResource = require('./model/GradeActionResource');
     LikeResource = require('./model/LikeResource');
     JoinResource = require('./model/JoinResource');
     CategoryResource = require('./model/CategoryResource'),
@@ -234,8 +236,10 @@ rest_api.register_resource('discussions_shopping_cart',new DiscussionShoppingCar
 rest_api.register_resource('subjects', new SubjectResource());
 rest_api.register_resource('discussions', new DiscussionResource());
 rest_api.register_resource('posts', new PostResource());
+rest_api.register_resource('posts_of_action', new PostsActionResource());
 rest_api.register_resource('votes', new VoteResource());
 rest_api.register_resource('grades', new GradeResource());
+rest_api.register_resource('grades_action', new GradeActionResource());
 rest_api.register_resource('likes', new LikeResource());
 rest_api.register_resource('joins', new JoinResource());
 rest_api.register_resource('suggestions', new SuggestionResource());
