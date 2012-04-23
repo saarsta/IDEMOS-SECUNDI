@@ -25,7 +25,9 @@ writer.write(compile_template('pending_action_list_item','pendingActionListItem.
 writer.write(compile_template('action_list_item','actionListItem.html'));
 writer.write(compile_template('discussion_list_item','discussionListItem.html'));
 writer.write(compile_template('cycle_list_item','cycleListItem.html'));
-writer.write(compile_template('discussion_full_view','discussionFullView.html'))
+writer.write(compile_template('discussion_full_view','discussionFullView.html'));
+writer.write(compile_template('action_timeline','action_timeline.html'))
+
 
 
 //writer.write(compile_template('template_name','template_file.html'));

@@ -542,7 +542,7 @@ div.box p{ color:#878787; margin-bottom:5px; line-height:20px; font-size:180%;}
 div.box p a{ color:#878787; text-decoration:none;}
 
 div.timeline div.box.user-area{width:150px; left:242px;}
-div.timeline div.box.description{width:170px; left:40px;}
+div.timeline div.box.description{width:170px;}
 div.timeline div.box.description p{ text-align:center;}
 div.timeline div.box.description a.button{ margin-top:10px; width:140px; font-size:180%; height:30px; line-height:30px; text-align:center;}
 
@@ -699,4 +699,21 @@ div.box.post a.button1{ margin:0px auto -25px; position:relative;}
 .hot_info_content {
     overflow: hidden;
     height: 92px;
+}
+
+.action_timeline{
+    position:absolute;width: 35px;height: 39px;left: 0px;top: -10px;
+}
+.action_timeline .action_circle
+{
+    position:absolute; width:18px; height:18px;left: 9px; background-image:url('../images/assets/circle.png')
+}
+
+.action_timeline .action_date
+{
+    position: absolute; top: 26px; width: 100%; text-align: center;
+}
+.action_timeline .box.description
+{
+    position: absolute; top: -159px; left: -90px;
 }
