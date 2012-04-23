@@ -58,6 +58,33 @@ var db_functions = {
         });
     },
 
+    getListItems : function(type,query,callback)
+    {
+        var querystring = type;
+        switch(type)
+        {
+            case "actions":
+                querystring = "actions?is_approved=true";
+                break;
+            case "pendingActions":
+                querystring = "actions?is_approved=false";
+                break;
+        }
+        $.ajax({
+            url: '/api/' + querystring,
+            data:query,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
+            }
+        });
+    },
+
     getItemsByTagNameAndType: function(type,tag_name,callback)
     {
         $.ajax({

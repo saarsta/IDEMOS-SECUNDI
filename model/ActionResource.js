@@ -22,6 +22,9 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
             this.allowed_methods = ['get', 'post', 'put'];
             this.filtering = {category:null, cycle_id:null, is_approved:null, tokens:null};
             this.authentication = new common.SessionAuthentication();
+            this.default_query = function(query){
+                return query.sort('execution_date','descending');
+            }
         },
 
         get_objects: function (req, filters, sorts, limit, offset, callback) {

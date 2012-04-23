@@ -109,7 +109,7 @@ function loadSelectedSubjectPage(subject_id, subject_name, tag_name) {
         {
             obj.get_link = function( )
             {
-                return '/selectedItem?subject_id=' + obj.subject_id + '&info_id=' + obj._id;
+                return '/selectedItem/' + obj._id + '?subject_id=' + obj.subject_id;
             }
         });
 
@@ -150,7 +150,7 @@ function loadSelectedSubjectPage(subject_id, subject_name, tag_name) {
             {
                 obj.get_link = function( )
                 {
-                    return '/selectedItem?subject_id=' + obj.subject_id + '&info_id=' + obj._id;
+                    return '/selectedItem/' + obj._id + '?subject_id=' + obj.subject_id;
                 }
             });
             dust.renderArray('info_item_in_subject_1', data.objects,function(err,out)

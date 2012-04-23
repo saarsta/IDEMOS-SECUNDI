@@ -34,7 +34,7 @@ var account = require('./routes/account');
 var infoAndMeasures = require('./routes/infoAndMeasures');
 var selectedSubjectPage = require('./routes/selectedSubjectPage');
 var pagesInit = require('./routes/pagesInit');
-var circles = require('./routes/circles');
+var lists = require('./routes/lists.js');
 var mmSearch = require('./routes/mmSearch'),
     i18n = require('i18n-mongoose'),
     locale = require('./locale');
@@ -171,23 +171,19 @@ app.get('/needlogin', function(req,res){});
 app.get('/account/logout', account.logout);
 app.get('/meida',pagesInit.meidaInit);
 app.get('/selectedSubjectPage', pagesInit.subjectPageInit);
-app.get('/selectedItem', pagesInit.selectedItemInit);
+app.get('/selectedItem/:id', pagesInit.selectedItemInit);
 app.get('/createDiscussion', pagesInit.createDiscussionPageInit);
-app.get('/discussion', pagesInit.discussionPageInit);
+app.get('/discussions/:id', pagesInit.discussionPageInit);
 app.get('/discussionPreview', pagesInit.discussionPreviewPageInit);
-app.get('/cycle', pagesInit.cyclePageInit);
+app.get('/cycles/:id', pagesInit.cyclePageInit);
 app.get('/mmSearch', mmSearch.mm_search)
 app.get('/allDiscussions',pagesInit.allDiscussions);
 app.get('/facebookShare',account.facebookShare);
-app.get('/pendingActions',circles.pendingActions);
-app.get('/actions',circles.actions);
-app.get('/discussions',circles.discussions);
-app.get('/cycles',circles.circles);
+app.get('/pendingActions',lists.pendingActions);
+app.get('/actions',lists.actions);
+app.get('/discussions',lists.discussions);
+app.get('/cycles',lists.circles);
 
-
-app.get('/actionListTestData',circles.actionsTestData);
-app.get('/discussionListTestData',circles.discussionsTestData);
-app.get('/circleListTestData',circles.circlesTestData);
 
 
 

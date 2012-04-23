@@ -148,7 +148,9 @@ exports.auth_middleware = function (req, res, next) {
 
 exports.login = function (req, res) {
     if (req.method == 'GET') {
-        res.render('login.ejs', {title:'Login', failed:false, exist_username:false, next:req.query.next});
+        res.render('login.ejs', {title:'Login',
+            tab:'user',
+            failed:false, exist_username:false, next:req.query.next});
     }
     else {
         req.authenticate('simple', function (err, is_authenticated) {
@@ -157,7 +159,9 @@ exports.login = function (req, res) {
                 res.redirect(next);
             }
             else {
-                res.render('login.ejs', {title:'Login', failed:true, exist_username:false, next:req.query.next});
+                res.render('login.ejs', {title:'Login',
+                    tab:'users',
+                    failed:true, exist_username:false, next:req.query.next});
             }
         });
     }
@@ -207,7 +211,9 @@ exports.register = function (req, res) {
                     }
                 });
             } else {
-                res.render('login.ejs', {title:'Login', failed:false, exist_username:true, next:req.query.next});
+                res.render('login.ejs', {title:'Login',
+                    tab:'users',
+                    failed:false, exist_username:true, next:req.query.next});
             }
         } else {
             throw "Error reading db.User";
@@ -443,7 +449,9 @@ exports.edit_user = function(req,res)
             // render page with form
             //res.render()
             var input = form.fields.avatar.render_str();
-            res.render('change_avatar.ejs',{input:input});
+            res.render('change_avatar.ejs',{input:input,
+                tab:'users'
+            });
         }
         else
         {
