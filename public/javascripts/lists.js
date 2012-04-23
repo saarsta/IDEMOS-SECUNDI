@@ -95,4 +95,26 @@ function loadListItems(original_type,template_name,subject,tag) {
         query['order_by'] = value;
         populate_bottom_list();
     });
+
+    $('#mainList').on('click','.join_button',function(){
+        var item_id = $(this).attr('item_id');
+        switch(original_type)
+        {
+            case 'discussions':
+                    db_functions.joinToDiscussionFollowers(item_id,function(){
+                        alert('צורפת');
+                    });
+                break;
+            case 'actions':
+                    db_functions.joinToAction(item_id,function(){
+
+                    });
+                break;
+            case "cycles":
+                db_functions.joinToCycleFollowers(item_id,function(){
+
+                });
+                break;
+        }
+    });
 }
