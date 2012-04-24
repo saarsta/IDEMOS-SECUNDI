@@ -252,11 +252,11 @@ var Schemas = exports.Schemas = {
 
     PostOrSuggestion:{
         creator_id:{type:Schema.ObjectId, ref:'User'},
-        first_name:{type:String},
-        last_name:String,
-        username:String,
-        avatar : mongoose_types.File,
-        creation_date:{type:Date, 'default':Date.now},
+        first_name:{type:String,editable:false},
+        last_name:{type:String, editable:false },
+        username:{type:String,editable:false},
+        avatar : {type:mongoose_types.File, editable:false},
+        creation_date:{type:Date, 'default':Date.now,editable:false},
         tokens:{type:Number, 'default':0, index: true},
         post_price:{type:Number, 'default':0},//how many tokens for creating post
         popularity: {type:Number, 'default':0},
