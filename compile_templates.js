@@ -27,7 +27,11 @@ writer.write(compile_template('action_list_item','actionListItem.html'));
 writer.write(compile_template('discussion_list_item','discussionListItem.html'));
 writer.write(compile_template('cycle_list_item','cycleListItem.html'));
 writer.write(compile_template('discussion_full_view','discussionFullView.html'));
-writer.write(compile_template('action_timeline','action_timeline.html'))
+writer.write(compile_template('action_timeline','action_timeline.html'));
+writer.write(compile_template('action_map','action_map.html'));
+writer.write(compile_template('cycle_main','cycle_main.html'));
+writer.write(compile_template('popular_posts','popular_posts.html'));
+
 
 
 writer.write(compile_template('myCycle_list_item','myCycleListItem.html'));

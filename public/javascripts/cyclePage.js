@@ -2,6 +2,13 @@
 function loadCyclePage(cycle_id,start_date, finish_date){
     db_functions.getCycleById(cycle_id,function(err,cycle)
     {
+
+        dust.render('cycle_main',cycle,function(err,out){
+            $('#cycleMain').prepend(out);
+        });
+
+
+
         var start_date = Date.parse(cycle.creation_date);
         var span = Date.parse(cycle.due_date) - start_date ;
         db_functions.getActionsByCycle(cycle_id,function(err,data)
@@ -26,3 +33,18 @@ function loadCyclePage(cycle_id,start_date, finish_date){
 
     });
 }
+//getPopularPostsByCycleId
+
+//dust.renderArray('hot_info_item', data.objects, null, function(err,out)
+//{
+//    $('#hot_items_list').append(out);
+//    $('#hot_items_list img').autoscale();
+//});
+
+//dust.render(template,arr[i],function(err,out){
+//    if(callback)
+//        callback(err,out);
+//    if(err)
+//        _err = err;
+//    out_arr.push(out);
+//});
