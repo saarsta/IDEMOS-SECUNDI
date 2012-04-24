@@ -15,7 +15,7 @@ var resources = require('jest'),
 
 ACTION_PRICE = 2;
 
-var ActionResource = exports.ActionResource = common.GamificationMongooseResource.extend(
+var ActionResource = module.exports = common.GamificationMongooseResource.extend(
     {
         init:function () {
             this._super(models.Action, null, ACTION_PRICE);

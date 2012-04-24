@@ -8,7 +8,7 @@
 var action = require('./ActionResource'),
     models = require('../models');
 
-var ActionPopulatedResource = module.exports = action.ActionResource.extend(
+var ActionPopulatedResource = module.exports = action.extend(
     {
         init:function () {
             this._super(models.Action, null, null)

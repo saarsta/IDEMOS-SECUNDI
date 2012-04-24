@@ -493,6 +493,11 @@ function extend_model(name, base_schema, schema, collection) {
 var Models = module.exports = {
     User:mongoose.model("User",Schemas.User),
     InformationItem:mongoose.model('InformationItem', new Schema(Schemas.InformationItem, {strict: true})),
+    Headline:mongoose.model('Headline', new Schema(Schemas.Headline, {strict: true})),
+
+    SuccessStory:mongoose.model('InformationItem', new Schema(Schemas.SuccessStory, {strict: true})),
+    InformationItem:mongoose.model('InformationItem', new Schema(Schemas.InformationItem, {strict: true})),
+
     Subject:mongoose.model('Subject', new Schema(Schemas.Subject, {strict: true})),
     Discussion:mongoose.model('Discussion', new Schema(Schemas.Discussion, {strict: true})),
     Post:extend_model('Post', Schemas.PostOrSuggestion, Schemas.Post, 'posts'),
