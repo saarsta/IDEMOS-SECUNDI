@@ -570,10 +570,10 @@ div.actions div.box1 a.button{ height:20px; line-height:20px; width:125px; text-
 
 
 /*---- Popup ----*/
-div.popup{ border:2px solid #3c3c3b; position:relative; padding:20px 10px 0px; background:#f6f6f6; width:810px; margin:0px auto;}
+div.popup{ border:2px solid #3c3c3b; position:absolute; top: 200px; right: 50px; padding:20px 10px 0px; background:#f6f6f6; width:810px; margin:0px auto;}
 div.popup a.close-btn{ width:25px; height:25px; background:url(../images/theme/close-btn.png) no-repeat left top; text-decoration:none; position:absolute; left:10px; top:10px;}
 div.popup div.form{ margin-bottom:30px;}
-div.popup div.form h2{ color:#000000; font-weight:normal; font-size:270%; line-height:40px; margin:0px 0px 0px 22px; font-style:italic; float:right;}
+div.popup div.form h2{ color:#000000; font-weight:normal; font-size:270%; line-height:40px; margin:0px 0px 0px 22px; font-style:italic;}
 div.popup div.form h2 p{ float:right; margin-bottom:0px;}
 div.popup div.form p input.textbox{background: none repeat scroll 0 0 #FFFFFF; border: 2px solid #9D9D9C; color: #878787; float: right; font-size: 200%; font-style: italic; height:24px; line-height: 24px; padding: 6px 9px; width:350px;}
 div.popup div.form p input.submit-btn{ background: none repeat scroll 0 0 #9D9D9C; border: 2px solid #3C3C3B; color: #FFFFFF; cursor: pointer; float:right; font-size: 200%; height:40px;  margin: 0 10px 0 0;  padding: 0 0 5px; vertical-align: middle;    width: 60px}
@@ -581,6 +581,41 @@ div.popup ul.list3{ margin:0px 10px 0px;}
 div.popup ul.list3 li:nth-child(6n){ margin-left:0px;}
 div.popup ul.list3 li div.frame1{ position:relative;}
 div.popup a.close-btn1{ width:25px; height:25px; background:url(../images/theme/close-btn.png) no-repeat left top; text-decoration:none; position:absolute; top:-10px; right:-10px;}
+
+div.popup {
+	background: white;
+	font-size: 14px;
+	padding-top: 0;
+	width: 700px;
+}
+.popup h2 {
+	font-size: 150% !important;
+}
+.popup form { margin: 0 5px 0 15px; }
+.popup input, .popup textarea, .popup button {
+	width: 100%;
+	margin: 3px 0; padding: 5px 7px;
+	font-family: arial;
+	font-size: 16px; color: darkgray;
+	background: #F6F6F6;
+	border: 2px solid black;
+}
+.popup textarea {
+	height: 100px;
+}
+.popup button {
+	width: 180px;
+	color: white;
+	background: #9D9D9C;
+}
+.popup.create-action input[name="title"] { width: 70%; border-width: 1px; padding: 5px 8px; }
+.popup.create-action input[name="date"] { width: 26%; float: left; margin-left: -18px;  border-width: 1px; padding: 5px 8px; }
+.popup.create-action button[name="find_location"] { position: relative; float: left; left: -8px; top: -50px; margin-bottom: -20px; }
+.popup.create-action button[type="submit"] { position: relative; right: 50%; margin-right: -90px; }
+.popup.create-action label.num { width: 200px; float: right; margin-left: 30px; }
+.popup.create-action textarea[name="addendum"] { width: 450px; margin-left: -18px; }
+.popup.create-action label.check { width: 70px; margin: 0 auto; display: block; }
+.popup.create-action input[type="checkbox"] { display: inline; width: 20px; }
 
 div.popup.bothers ul{ clear:both; margin:0px 0px; padding:0px 0px;}
 div.popup.bothers ul li{ list-style:none; margin-bottom:20px;}
