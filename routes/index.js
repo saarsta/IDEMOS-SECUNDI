@@ -4,5 +4,6 @@ exports.index = function(req, res){
             avatar:req.session.avatar_url,
             big_impressive_title:"עורו",
             body_class:"",
+            tab:'users',
             extra_head:{}})
 };

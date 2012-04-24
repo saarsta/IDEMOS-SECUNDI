@@ -108,3 +108,22 @@ exports.allDiscussions = function(req,res)
         extra_head:'<script src="/javascripts/infoAndMeasures.js"></script>'
     });
 };
+
+
+exports.myUru = function(req,res)
+{
+    res.render('my_uru.ejs',{
+        title:'הדף שלי',
+        user: req.session.user,
+        logged:true,
+        avatar:req.session.avatar_url,
+        body_class:'layout',
+        big_impressive_title:"כותרת גדולה ומרשימה",
+        extra_head:'',
+        tag_name: req.query.tag_name,
+        tab:'users',
+        extra_head:'<script src="/javascripts/myUru.js"></script>'
+    });
+
+};
+
