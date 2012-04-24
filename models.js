@@ -151,6 +151,21 @@ var Schemas = exports.Schemas = {
         gui_order:{type:Number,'default':9999999,editable:false}
     },
 
+    UpdateItem:{
+        title: {type: String, required: true},
+        text_field:{type:mongoose_types.Text},
+        text_field_preview:{type:mongoose_types.Html},
+        image_field: mongoose_types.File,
+        image_field_preview: mongoose_types.File,
+        tags:{type:[String], index:true},
+        cycles:{type:[ObjectId], ref:'Cycles', index:true, editable:false},
+        is_visible:{type:Boolean, 'default':true},
+
+        creation_date:{type:Date, 'default':Date.now,editable:false},
+        tag_suggestions: [tag_suggestions],
+        gui_order:{type:Number,'default':9999999,editable:false}
+    },
+
     Subject:{
         name:{type:String,required:true},
         description: {type:mongoose_types.Text,required:true},
@@ -200,6 +215,7 @@ var Schemas = exports.Schemas = {
 
     Cycle: new Schema({
         creation_date: {type:Date, 'default':Date.now},
+        due_date: {type:Date, 'default':Date.now},
         subject:[{
             id:{type:ObjectId, ref:'Subject', index:true, required:true},
             name: {type:String}
