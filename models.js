@@ -38,32 +38,9 @@ var tag_suggestions =  {
     tag_offers: {type:[ObjectId], ref:'User',editable:false}
 };
 
-/*
-var Reply = {
-    author: {type:ObjectId, ref:'User', index:true, required:true},
-    text: String,
-    votes: [{user_id: {type:ObjectId, ref:'User', index:true, required:true}}],
-    replies: [Reply]
-}
-*/
-
-/*var CommentVote = {
-    comment_id:{type:ObjectId, ref:'Comment', index:true, required:true},
-    user_id:{type:ObjectId, ref:'User', index:true, required:true},
-    time: {type:Date, 'default':Date.now}
-}
-
-var CommentOrReply = {
-    article_id :{type:ObjectId, ref:'Article', index:true, required:true},
-    author :{type:ObjectId, ref:'User', index:true, required:true},
-    text: String,
-    votes: [CommentVote],
-    time: {type:Date, 'default':Date.now},
-    status: [{type:String, "enum":['comment', 'reply'], 'default': 'comment'}],
-    reply_ref: {type:ObjectId, ref:'CommentOrReply', index:true}
-}*/
 var CommentVote = new Schema({
     user_id:{type:ObjectId, ref:'User', index:true, required:true},
+    method: {type:String, "enum":['vote_for', 'vote_against']},
     time: {type:Date, 'default':Date.now}
 });
 
@@ -151,7 +128,19 @@ var Schemas = exports.Schemas = {
         gui_order:{type:Number,'default':9999999,editable:false}
     },
 
-    UpdateItem:{
+    Headline:{
+        title: {type: String, required: true},
+        text_field:{type:mongoose_types.Text},
+        image_field: mongoose_types.File,
+        tags:{type:[String], index:true},
+        cycles:{type:[ObjectId], ref:'Cycles', index:true, editable:false},
+        actions: {type: [ObjectId], ref:'Action', index:true, editable:false},
+        is_visible:{type:Boolean, 'default':true},
+        creation_date:{type:Date, 'default':Date.now,editable:false},
+        gui_order:{type:Number,'default':9999999,editable:false}
+    },
+
+    SuccessStory:{
         title: {type: String, required: true},
         text_field:{type:mongoose_types.Text},
         text_field_preview:{type:mongoose_types.Html},
@@ -159,10 +148,23 @@ var Schemas = exports.Schemas = {
         image_field_preview: mongoose_types.File,
         tags:{type:[String], index:true},
         cycles:{type:[ObjectId], ref:'Cycles', index:true, editable:false},
+        actions: {type: [ObjectId], ref:'Action', index:true, editable:false},
         is_visible:{type:Boolean, 'default':true},
-
         creation_date:{type:Date, 'default':Date.now,editable:false},
-        tag_suggestions: [tag_suggestions],
+        gui_order:{type:Number,'default':9999999,editable:false}
+    },
+
+    Kilkul:{
+        user:{type:ObjectId, ref:'User',editable:false},
+        user_name: String,
+        title: {type: String, required: true},
+        text_field:{type:mongoose_types.Text},
+        text_field_preview:{type:mongoose_types.Html},
+        image_field: mongoose_types.File,
+        tags:{type:[String], index:true},
+        is_visible:{type: Boolean, 'default':true},
+        me_too_counter: {type:Number, 'default':0},
+        creation_date:{type:Date, 'default':Date.now,editable:false},
         gui_order:{type:Number,'default':9999999,editable:false}
     },
 
@@ -252,16 +254,15 @@ var Schemas = exports.Schemas = {
 
     PostOrSuggestion:{
         creator_id:{type:Schema.ObjectId, ref:'User'},
-        first_name:{type:String},
-        last_name:String,
-        username:String,
-        avatar : mongoose_types.File,
-        creation_date:{type:Date, 'default':Date.now},
+        first_name:{type:String,editable:false},
+        last_name:{type:String, editable:false },
+        username:{type:String,editable:false},
+        avatar : {type:mongoose_types.File, editable:false},
+        creation_date:{type:Date, 'default':Date.now,editable:false},
         tokens:{type:Number, 'default':0, index: true},
         post_price:{type:Number, 'default':0},//how many tokens for creating post
         popularity: {type:Number, 'default':0},
         gamification: {high_number_of_tokens_bonus : {type: Boolean, 'default': false}}
-//        achivements_for_creator: {}
     },
 
     Vote:{
@@ -403,18 +404,18 @@ var Schemas = exports.Schemas = {
 
     Comment : Comment,
 
-    Article: {
+    Article: new Schema({
         user_id:{type:ObjectId, ref:'User', index:true, required:true},
-        first_name: String,
-        last_name: String,
-        avatar : mongoose_types.File,
-        title : String,
-        text : String,
+        first_name: {type:String, editable:false},
+        last_name: {type:String,editable:false},
+        avatar : {type:String,editable:false},
+        title : {type:String, required:true},
+        text : {type:mongoose_types.Text, required:true},
         tags: [String],
-        time: {type: Date, 'default': Date.now},
+        time: {type: Date, 'default': Date.now, editable:false},
         popolarity_counter: {type: Number, 'default': 0},
         comments : [Comment]
-    },
+    } ,{strict: true}),
 
     Notifications: {
         user_id:{type:ObjectId, ref:'User', index:true, required:true},
@@ -470,10 +471,29 @@ Schemas.User.methods.avatar_url = function()
         return 'graph.facebook.com/' + this.facebook_id + '/picture/?type=large';
 };
 
+Schemas.Article.pre('save',function(next)
+{
+    var self = this;
+    if(!this.first_name && !this.last_name && this.user_id)
+    {
+        Models.User.findById(this.user_id,function(err,user)
+        {
+            if(!err)
+            {
+                self.first_name = user.first_name;
+                self.last_name = user.last_name;
+                self.avatar = user.avatar_url();
+            }
+            next();
+        });
+    }
+    next();
+});
+
 function extend_model(name, base_schema, schema, collection) {
     for (var key in base_schema)
         if (!schema[key]) schema[key] = base_schema[key];
-    schema._type = {type:String, 'default':name};
+    schema._type = {type:String, 'default':name,editable:false};
     var model = mongoose.model(name, new Schema(schema), collection);
     var old_find = model.find;
     model.find = function () {
@@ -491,6 +511,11 @@ function extend_model(name, base_schema, schema, collection) {
 var Models = module.exports = {
     User:mongoose.model("User",Schemas.User),
     InformationItem:mongoose.model('InformationItem', new Schema(Schemas.InformationItem, {strict: true})),
+    Headline:mongoose.model('Headline', new Schema(Schemas.Headline, {strict: true})),
+
+    SuccessStory:mongoose.model('InformationItem', new Schema(Schemas.SuccessStory, {strict: true})),
+    InformationItem:mongoose.model('InformationItem', new Schema(Schemas.InformationItem, {strict: true})),
+
     Subject:mongoose.model('Subject', new Schema(Schemas.Subject, {strict: true})),
     Discussion:mongoose.model('Discussion', new Schema(Schemas.Discussion, {strict: true})),
     Post:extend_model('Post', Schemas.PostOrSuggestion, Schemas.Post, 'posts'),
@@ -504,13 +529,14 @@ var Models = module.exports = {
     Join:mongoose.model('Join', new Schema(Schemas.Join, {strict: true})),
 //    CommentVote:mongoose.model('CommentVote', new Schema(Schemas.CommentVote, {strict: true})),
 //    Comment:mongoose.model('Comment', new Schema(Schemas.Comment, {strinct: true})),
-    Article:mongoose.model('Article', new Schema(Schemas.Article, {strict: true})),
+    Article:mongoose.model('Article', Schemas.Article),
     Cycle:mongoose.model('Cycle', Schemas.Cycle),
     Category:mongoose.model('Category', new Schema(Schemas.Category, {strict: true})),
     Action:mongoose.model('Action', new Schema(Schemas.Action, {strict: true})),
     ActionResource:mongoose.model('ActionResource', new Schema(Schemas.ActionResource, {strict: true})),
     Tag: mongoose.model('Tag', new Schema(Schemas.Tag, {strict: true})),
-    ResourceObligation: mongoose.model('ResourceObligation', new Schema(Schemas.ResourceObligation, {strict: true}))
-//    Schemas:Schemas
+    ResourceObligation: mongoose.model('ResourceObligation', new Schema(Schemas.ResourceObligation, {strict: true})),
+    Schemas:Schemas
 };
+
 

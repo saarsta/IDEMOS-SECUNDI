@@ -57,7 +57,9 @@
             </div>
             <!--/Main Navigation-->
 
-            <%if(logged&&user){%>
+            <%if(logged&&user){
+                   if(typeof(hide_block_user)==='undefined' || hide_block_user){%>
+
                 <div class="user-area box">
                     <a href="/myuru">
                     <div class="frame">
@@ -76,7 +78,7 @@
                     </div>
                     <a href="javascript:void(0)" class="button">מה דעתך ?</a>
                 </div>
-                <%}else{%>
+                <%}}else{%>
                 <div class="sociable box">
                     <p>הנעה לפעולה הקוראת להרשם
                         למערכת כדי להתחיל להשפיע</p>

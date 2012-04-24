@@ -20,32 +20,33 @@ util.inherits(SessionAuthentication,jest.Authentication);
 
 SessionAuthentication.prototype.is_authenticated = function(req,callback){
 
-    if(req.method != 'GET'){
-        var is_auth = req.isAuthenticated();
-        if(is_auth)
-        {
-            var user_id = req.session.user_id;
-            if(!user_id){
-                callback({message: "no user id"}, null);
-            }else{
-                models.User.findById(user_id,function(err,user)
+    var is_auth = req.isAuthenticated();
+    if(is_auth)
+    {
+        var user_id = req.session.user_id;
+        if(!user_id){
+            callback({message: "no user id"}, null);
+        }else{
+            models.User.findById(user_id,function(err,user)
+            {
+                if(err)
                 {
-                    if(err)
-                    {
-                        callback(err);
-                    }
-                    else
-                    {
-                        req.user = user;
-                        callback(null,true);
-                    }
-                });
-            }
+                    callback(err);
+                }
+                else
+                {
+                    req.user = user;
+                    callback(null,true);
+                }
+            });
         }
-        else
+    }
+    else
+    {
+        if(req.method != 'GET')
             callback(null,false);
-    }else{
-        callback(null,true);
+        else
+            callback(null,true);
     }
 
 };
@@ -172,7 +173,7 @@ function check_gamification_rewards(user,callback)
 
 function gamification_deserilize(self,base,req,res,obj,status)
 {
-    if(status == 201 || status == 204 && self.gamification_type || req.gamification_type)
+    if(status == 201 || status == 202 && self.gamification_type || req.gamification_type)
     {
         update_user_gamification(req, self.gamification_type || req.gamification_type, req.user, self.token_price || req.token_price,function(err,rewards)
         {

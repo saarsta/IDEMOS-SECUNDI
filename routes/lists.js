@@ -1,10 +1,3 @@
-/**
- * Created by JetBrains WebStorm.
- * User: liorur
- * Date: 12/04/12
- * Time: 13:36
- * To change this template use File | Settings | File Templates.
- */
 
 exports.listOf = function(req,res,type,template_name,title,list_title,sorts)
 {

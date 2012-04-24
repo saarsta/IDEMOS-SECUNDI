@@ -16,6 +16,7 @@ var mongoose_resource = require('jest'),
     SuggestionResource = require('./model/suggestionResource.js'),
     ActionResourceResource = require('./model/ActionResourceResource'),
     ActionResource = require('./model/ActionResource'),
+    ActionPopulatedResource = require('./model/ActionPopulatedResource'),
     CycleResource = require('./model/CycleResource'),
     article_resources = require('./model/ArticleResource'),
     ArticleResource = article_resources.ArticleResource,
@@ -43,6 +44,7 @@ module.exports = function(app)
     rest_api.register_resource('categories', new CategoryResource());
     rest_api.register_resource('action_resources', new ActionResourceResource());
     rest_api.register_resource('actions', new ActionResource());
+    rest_api.register_resource('actions_populated', new ActionPopulatedResource());
     rest_api.register_resource('cycles', new CycleResource());
     rest_api.register_resource('articles', new ArticleResource());
     rest_api.register_resource('tags', new TagResource());
