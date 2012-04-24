@@ -143,12 +143,27 @@ var Schemas = exports.Schemas = {
     SuccessStory:{
         title: {type: String, required: true},
         text_field:{type:mongoose_types.Text},
-        text_field_preview:{type:mongoose_types.Html},
+//        text_field_preview:{type:mongoose_types.Html},
         image_field: mongoose_types.File,
-        image_field_preview: mongoose_types.File,
+//        image_field_preview: mongoose_types.File,
         tags:{type:[String], index:true},
         cycles:{type:[ObjectId], ref:'Cycles', index:true, editable:false},
         actions: {type: [ObjectId], ref:'Action', index:true, editable:false},
+        is_visible:{type:Boolean, 'default':true},
+        creation_date:{type:Date, 'default':Date.now,editable:false},
+        gui_order:{type:Number,'default':9999999,editable:false}
+    },
+
+    //cycle updates
+    Update:{
+        title: {type: String, required: true},
+        text_field:{type:mongoose_types.Text},
+//        text_field_preview:{type:mongoose_types.Html},
+        image_field: mongoose_types.File,
+//        image_field_preview: mongoose_types.File,
+        tags:{type:[String], index:true},
+        cycles:{type:[ObjectId], ref:'Cycle', index:true},
+//        actions: {type: [ObjectId], ref:'Action', index:true},
         is_visible:{type:Boolean, 'default':true},
         creation_date:{type:Date, 'default':Date.now,editable:false},
         gui_order:{type:Number,'default':9999999,editable:false}
@@ -342,10 +357,7 @@ var Schemas = exports.Schemas = {
         action_resources:[
             {resource: ActionResource, amount:Number, left_to_bring: Number}
         ],
-
-//        popular_actions: [{type: ObjectId, ref: 'Action', index: true}],
-
-
+        tags:[String],
         //users that conected somehow to the action
         users:[
             new Schema({user_id:{type:ObjectId, ref:'User'}, join_date: {type:Date, 'default':Date.now}})
@@ -513,8 +525,9 @@ var Models = module.exports = {
     InformationItem:mongoose.model('InformationItem', new Schema(Schemas.InformationItem, {strict: true})),
     Headline:mongoose.model('Headline', new Schema(Schemas.Headline, {strict: true})),
 
-    SuccessStory:mongoose.model('InformationItem', new Schema(Schemas.SuccessStory, {strict: true})),
-    InformationItem:mongoose.model('InformationItem', new Schema(Schemas.InformationItem, {strict: true})),
+    SuccessStory:mongoose.model('SuccessStory', new Schema(Schemas.SuccessStory, {strict: true})),
+    Update: mongoose.model('Update', new Schema(Schemas.Update, {strict: true})),
+    Kilkulim:mongoose.model('Kilkulim', new Schema(Schemas.Kilkulim, {strict: true})),
 
     Subject:mongoose.model('Subject', new Schema(Schemas.Subject, {strict: true})),
     Discussion:mongoose.model('Discussion', new Schema(Schemas.Discussion, {strict: true})),
