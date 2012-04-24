@@ -54,5 +54,16 @@ module.exports = function(app)
            list:['name','category']
         });
 
+        admin.registerMongooseModel('SuccessStory',Models.SuccessStory,null,{
+            list:['title']
+        });
+
+        admin.registerMongooseModel('Headline',Models.Headline,null,{
+            list:['title']
+        });
+
+        admin.registerMongooseModel('Update',Models.Update,null,{
+            list:['title']
+        });
 
 };

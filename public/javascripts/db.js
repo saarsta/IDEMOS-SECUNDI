@@ -1048,9 +1048,62 @@ var db_functions = {
                 callback(thrownError, null);
             }
         });
+    },
+
+    getUpdatesOfCycle: function(cycle_id, callback){
+
+        $.ajax({
+            url: '/api/updates/?cycles=' + cycle_id,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log(thrownError);
+                callback(thrownError, null);
+            }
+        });
+    },
+
+    getSuccessStories: function(cycle_id, callback){
+
+        $.ajax({
+            url: '/api/success_stories',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log(thrownError);
+                callback(thrownError, null);
+            }
+        });
+    },
+
+    getHeadlines: function(cycle_id, callback){
+
+        $.ajax({
+            url: '/api/headlines',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log(thrownError);
+                callback(thrownError, null);
+            }
+        });
     }
 }
-
 
 $.prototype.autoscale = function(params)
 {
