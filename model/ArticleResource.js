@@ -39,6 +39,7 @@ var ArticleCommentResource = common.GamificationMongooseResource.extend({
         this.authentication = new common.SessionAuthentication();
         this.allowed_methods = ['put'];
         this.update_fields = [];
+        this.usage = this.usage || {};
         this.usage.add_comment = {
             url:'/<article_id>',
             method:'put',
