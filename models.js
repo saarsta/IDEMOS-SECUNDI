@@ -38,32 +38,9 @@ var tag_suggestions =  {
     tag_offers: {type:[ObjectId], ref:'User',editable:false}
 };
 
-/*
-var Reply = {
-    author: {type:ObjectId, ref:'User', index:true, required:true},
-    text: String,
-    votes: [{user_id: {type:ObjectId, ref:'User', index:true, required:true}}],
-    replies: [Reply]
-}
-*/
-
-/*var CommentVote = {
-    comment_id:{type:ObjectId, ref:'Comment', index:true, required:true},
-    user_id:{type:ObjectId, ref:'User', index:true, required:true},
-    time: {type:Date, 'default':Date.now}
-}
-
-var CommentOrReply = {
-    article_id :{type:ObjectId, ref:'Article', index:true, required:true},
-    author :{type:ObjectId, ref:'User', index:true, required:true},
-    text: String,
-    votes: [CommentVote],
-    time: {type:Date, 'default':Date.now},
-    status: [{type:String, "enum":['comment', 'reply'], 'default': 'comment'}],
-    reply_ref: {type:ObjectId, ref:'CommentOrReply', index:true}
-}*/
 var CommentVote = new Schema({
     user_id:{type:ObjectId, ref:'User', index:true, required:true},
+    method: {type:String, "enum":['vote_for', 'vote_against']},
     time: {type:Date, 'default':Date.now}
 });
 
@@ -151,7 +128,19 @@ var Schemas = exports.Schemas = {
         gui_order:{type:Number,'default':9999999,editable:false}
     },
 
-    UpdateItem:{
+    Headline:{
+        title: {type: String, required: true},
+        text_field:{type:mongoose_types.Text},
+        image_field: mongoose_types.File,
+        tags:{type:[String], index:true},
+        cycles:{type:[ObjectId], ref:'Cycles', index:true, editable:false},
+        actions: {type: [ObjectId], ref:'Action', index:true, editable:false},
+        is_visible:{type:Boolean, 'default':true},
+        creation_date:{type:Date, 'default':Date.now,editable:false},
+        gui_order:{type:Number,'default':9999999,editable:false}
+    },
+
+    SuccessStory:{
         title: {type: String, required: true},
         text_field:{type:mongoose_types.Text},
         text_field_preview:{type:mongoose_types.Html},
@@ -159,10 +148,23 @@ var Schemas = exports.Schemas = {
         image_field_preview: mongoose_types.File,
         tags:{type:[String], index:true},
         cycles:{type:[ObjectId], ref:'Cycles', index:true, editable:false},
+        actions: {type: [ObjectId], ref:'Action', index:true, editable:false},
         is_visible:{type:Boolean, 'default':true},
-
         creation_date:{type:Date, 'default':Date.now,editable:false},
-        tag_suggestions: [tag_suggestions],
+        gui_order:{type:Number,'default':9999999,editable:false}
+    },
+
+    Kilkul:{
+        user:{type:ObjectId, ref:'User',editable:false},
+        user_name: String,
+        title: {type: String, required: true},
+        text_field:{type:mongoose_types.Text},
+        text_field_preview:{type:mongoose_types.Html},
+        image_field: mongoose_types.File,
+        tags:{type:[String], index:true},
+        is_visible:{type: Boolean, 'default':true},
+        me_too_counter: {type:Number, 'default':0},
+        creation_date:{type:Date, 'default':Date.now,editable:false},
         gui_order:{type:Number,'default':9999999,editable:false}
     },
 

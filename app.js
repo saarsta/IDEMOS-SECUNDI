@@ -2,8 +2,6 @@
 /**
  * Module dependencies.
  */
-
-
 var express = require('express'),
     mongoose = require('mongoose'),
     MongoStore  = require('connect-mongo'),
@@ -79,7 +77,6 @@ app.configure(function(){
     ],
     trace: true,
     logoutHandler: require("connect-auth/lib/events").redirectOnLogout("/acount/login")}));
-
 
     app.use(account.auth_middleware);
     app.use(express.methodOverride());

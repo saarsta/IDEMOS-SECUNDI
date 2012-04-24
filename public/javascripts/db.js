@@ -740,9 +740,9 @@ var db_functions = {
         });
     },
 
-    /*getActionById: function(action_id, callback){
+    getActionById: function(action_id, callback){
         $.ajax({
-            url: '/api/actions/action_id',
+            url: '/api/actions_populated/' + action_id,
             type: "GET",
             async: true,
             success: function (data) {
@@ -753,7 +753,7 @@ var db_functions = {
                 callback(thrownError, null);
             }
         });
-    },*/
+    },
 
     getCyclesByTagName: function(tag_name){
         $.ajax({
