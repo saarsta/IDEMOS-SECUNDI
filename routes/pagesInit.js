@@ -122,7 +122,9 @@ exports.myUru = function(req,res)
         extra_head:'',
         tag_name: req.query.tag_name,
         tab:'users',
+        hide_block_user:false,
         extra_head:'<script src="/javascripts/myUru.js"></script>'
+
     });
 
 };
