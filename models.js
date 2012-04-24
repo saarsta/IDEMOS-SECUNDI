@@ -254,11 +254,11 @@ var Schemas = exports.Schemas = {
 
     PostOrSuggestion:{
         creator_id:{type:Schema.ObjectId, ref:'User'},
-        first_name:{type:String},
-        last_name:String,
-        username:String,
-        avatar : mongoose_types.File,
-        creation_date:{type:Date, 'default':Date.now},
+        first_name:{type:String,editable:false},
+        last_name:{type:String, editable:false },
+        username:{type:String,editable:false},
+        avatar : {type:mongoose_types.File, editable:false},
+        creation_date:{type:Date, 'default':Date.now,editable:false},
         tokens:{type:Number, 'default':0, index: true},
         post_price:{type:Number, 'default':0},//how many tokens for creating post
         popularity: {type:Number, 'default':0},
@@ -475,7 +475,7 @@ Schemas.User.methods.avatar_url = function()
 function extend_model(name, base_schema, schema, collection) {
     for (var key in base_schema)
         if (!schema[key]) schema[key] = base_schema[key];
-    schema._type = {type:String, 'default':name};
+    schema._type = {type:String, 'default':name,editable:false};
     var model = mongoose.model(name, new Schema(schema), collection);
     var old_find = model.find;
     model.find = function () {
@@ -515,4 +515,5 @@ var Models = module.exports = {
     ResourceObligation: mongoose.model('ResourceObligation', new Schema(Schemas.ResourceObligation, {strict: true}))
 //    Schemas:Schemas
 };
+
 
