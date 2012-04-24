@@ -32,30 +32,19 @@ var db_functions = {
 
 
 
-   //todo: remove me
-    dbGetAllCirclesXXX: function(callback){
-        $.ajax({
-            //    url: '/api/circles',
-            url: '/circleListTestData',
-            type: "GET",
-            async: true,
-            success: function (data) {
-             callback(data);
-               /*
-                var size = data.objects.length;
-                dust.renderArray('discussion_list_item',data.objects,null,function(err,out)
-                {
-                    $('#mainList').append(out);
 
-                });
-                */
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert('error');
-            }
-        });
+    connectPopup: function(callback){
+
+        //open popup window
+
+        var connected;
+        if(connected){
+
+        }
+
+        if(callback)
+            callback
     },
-
 
     dbGetAllSubjects: function(useSmall){
         $.ajax({
