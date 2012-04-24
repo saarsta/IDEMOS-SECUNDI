@@ -473,7 +473,7 @@ Schemas.User.methods.avatar_url = function()
 function extend_model(name, base_schema, schema, collection) {
     for (var key in base_schema)
         if (!schema[key]) schema[key] = base_schema[key];
-    schema._type = {type:String, 'default':name};
+    schema._type = {type:String, 'default':name,editable:false};
     var model = mongoose.model(name, new Schema(schema), collection);
     var old_find = model.find;
     model.find = function () {
@@ -513,4 +513,5 @@ var Models = module.exports = {
     ResourceObligation: mongoose.model('ResourceObligation', new Schema(Schemas.ResourceObligation, {strict: true}))
 //    Schemas:Schemas
 };
+
 
