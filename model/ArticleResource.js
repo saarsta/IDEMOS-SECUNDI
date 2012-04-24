@@ -6,14 +6,12 @@
  * To change this template use File | Settings | File Templates.
  */
 
-var resources = require('jest'),
-    util = require('util'),
-    models = require('../models'),
+var models = require('../models'),
     async = require('async'),
     common = require('./common'),
     _ = require('underscore');
 
-var ArticleResource = module.exports = common.GamificationMongooseResource.extend({
+var ArticleResource = common.GamificationMongooseResource.extend({
     init:function () {
         this._super(models.Article, null, null);
         this.authentication = new common.SessionAuthentication();

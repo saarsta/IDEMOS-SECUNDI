@@ -228,26 +228,4 @@ function loadSelectedSubjectPage(subject_id, subject_name, tag_name) {
         });
     });
 
-
-
-
-    /*$('.btn_look_for_discussions').live("click", function(){
-        console.log("button btn_look_for_discussions clicked");
-
-        db_functions.getDiscussionsBySubject(subject_id, function displayDiscussions(err, data){
-
-            if (err){
-                console.log(err);
-            }else{
-
-//               console.log(data);
-            }
-        });
-
-    });*/
-
-   /* $('.reality_btn').live("click", function(){
-        window.location.replace("/account/createDiscussion?subject_id=" + subject_id + '&subject_name=' + subject_name);
-    });*/
-
 }

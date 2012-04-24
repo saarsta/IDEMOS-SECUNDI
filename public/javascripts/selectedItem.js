@@ -7,7 +7,7 @@
  */
 
 
-function loadSelectedItemPage(subject_id, info_id){
+function loadSelectedItemPage(info_id){
 
     $(".button.add").live("click", function(){
         var info_item_id = $(this).parent('div').attr('value');
@@ -31,26 +31,7 @@ function loadSelectedItemPage(subject_id, info_id){
         });
     });
 
-    if(subject_id.indexOf(',') > -1)
-        subject_id = subject_id.split(',')[0];
-    $.ajax({
-        url: '/api/subjects/' + subject_id,
-        type: "GET",
-        async: true,
-        success: function (data) {
-            console.log(data);
-            var subject_name = data.name;
-            $("#create_new_discussion").attr('href', "/createDiscussion?subject_id=" +
-                subject_id + "&subject_name=" +
-                subject_name);
 
-//             $('#search_results').show();
-        },
-
-        error: function (xhr, ajaxOptions, thrownError) {
-            console.log(thrownError);
-        }
-    });
 
     $.ajax({
         url: '/api/information_items/' + info_id,
@@ -60,8 +41,9 @@ function loadSelectedItemPage(subject_id, info_id){
             console.log(data);
             $('#info_item_full_view').empty();
             data.get_link = function(){
-                return '/selectedItem?subject_id=' + data.subject_id + '&info_id=' + data._id;
+                return '/selectedItem/' + data._id;
             };
+            $("#create_new_discussion").attr('href', "/discussions/new?subject_id=" +  data.subject_id + "&subject_name=" + data.subject_name);
              dust.render('info_item_full_view', data, function(err,out)
              {
                  $('#info_item_full_view').append(out);
@@ -80,7 +62,7 @@ function loadSelectedItemPage(subject_id, info_id){
         {
             obj.get_link = function( )
             {
-                return '/selectedItem?subject_id=' + obj.subject_id + '&info_id=' + obj._id;
+                return '/selectedItem/' + obj._id;
             }
         });
         dust.renderArray('shopping_cart_item_1', data.objects,function(err,out)
