@@ -39,6 +39,34 @@ var ArticleCommentResource = common.GamificationMongooseResource.extend({
         this.authentication = new common.SessionAuthentication();
         this.allowed_methods = ['put'];
         this.update_fields = [];
+        this.usage.add_comment = {
+            url:'/<article_id>',
+            method:'put',
+            body:
+            {
+                type:"add_comment",
+                text:"<your comment>"
+            }
+        };
+        this.usage.add_vote = {
+            url :'/<article_id>',
+            method:'put',
+            body:{
+                type:"add_vote",
+                comment_time:"<comment_time>",
+                method:"vote_for"
+            }
+        };
+
+        this.usage.add_reply = {
+            url:'/<article_id>',
+            method:'put',
+            body:{
+                type:"add_reply",
+                comment_time:"<comment_time>",
+                text:"<your text reply>"
+            }
+        };
     },
 
     update_obj:function (req, object, callback) {
@@ -50,121 +78,99 @@ var ArticleCommentResource = common.GamificationMongooseResource.extend({
         var j_index = null;
         var exist = false;
 
+        switch (update_type) {
+            case "add_comment":
+                var comment = {};
+                comment.time = new Date().getTime();
+                comment.author = user_id;
+                comment.first_name = user.first_name;
+                comment.last_name = user.last_name;
+                comment.text = req.body.text;
+                comment.votes = [];
+                models.Article.update({_id:object._id}, {$addToSet:{comments:comment}}, function (err, result) {
+                    callback(err, result);
+                });
+                break;
 
-        async.waterfall([
-
-            function (cbk) {
-                switch (update_type) {
-                    case "add_comment":
-                        var comment = {};
-                        comment.time = new Date().getTime();
-                        comment.author = user_id;
-                        comment.first_name = user.first_name;
-                        comment.last_name = user.last_name;
-                        comment.text = req.body.text;
-                        comment.votes = [];
-                        models.Article.update({_id:object._id}, {$addToSet:{comments:comment}}, function (err, result) {
-                            cbk(err, result);
-                        });
+            case "add_vote":
+                var comment_vote = {};
+                comment_vote.user_id = user_id;
+                for (var i = 0; i < object.comments.length; i++) {
+                    if (object.comments[i].time - new Date(req.body.comment_time)) {
+                        i_index = i;
                         break;
-
-                    case "add_vote":
-                        var comment_vote = {};
-                        comment_vote.user_id = user_id;
-//                        var comment = _.find(object.comments,function(elm)
-//                        {
-//                            return elm.time == req.body.comment_time
-//                        });
-                        for (var i = 0; i < object.comments.length; i++) {
-                            if (object.comments[i].time - new Date(req.body.comment_time)) {
-                                i_index = i;
-                                break;
-                            }
-                            for (var j = 0; j < object.comments.length; i++) {
-                                if (object.comments[i].time - new Date(req.body.comment_time)) {
-                                    exist = true;
-                                    i_index = i;
-                                    j_index = j;
-                                    break;
-                                }
-                            }
+                    }
+                    for (var j = 0; j < object.comments.length; i++) {
+                        if (object.comments[i].time - new Date(req.body.comment_time)) {
+                            exist = true;
+                            i_index = i;
+                            j_index = j;
+                            break;
                         }
-
-                        if (!exist) {
-                            cbk({message:"comment isnt exist", code:404}, null);
-                        } else {
-                            models.Article.findById(object._id, function(err, result){
-                                if (!err){
-                                    if(j_index){
-                                        result.comments[i_index][j_index].votes.push(comment_vote);
-                                    }
-                                    result.comments[i_index].votes.push(comment_vote);
-                                    result.save(function(err, result){
-                                        cbk(err, result);
-                                    });
-                                }
-                            })
-                        }
-
-                    case "add_reply":
-
-                        var comment_time = req.body.comment_time;
-                        var reply = {};
-                        reply.date = new Date().getTime();
-                        reply.author = user_id;
-                        reply.first_name = user.first_name;
-                        reply.last_name = user.last_name;
-                        reply.text = req.body.text;
-
-                        for (var i = 0; i < object.comments.length; i++) {
-                            var comment_time = new Date.valueOf(comment_time);
-                            if(checkComment(object.comments[i],comment_time,reply) || checkRoot(object.comments[i], comment_time, reply)){
-                                exist = true;
-                                i_index = i;
-                                break;
-                            }
-                        }
-
-                        if (!exist) {
-                            cbk({message:"comment isnt exist", code:404}, null);
-                        } else {
-                            /*models.Article.findById(object._id, function(err, result){
-                                if (!err){
-                                    if (j_index){
-                                        if (result.comments[i_index][j_index].replies){
-                                            result.comments[i_index][j_index].replies.push(reply);
-                                        }else{
-                                            result.comments[i_index][j_index].replies = reply;
-                                        }
-                                    }else{
-                                        if (result.comments[i_index].reply){
-                                            result.comments[i_index].reply.push(reply);
-                                        }else{
-                                            result.comments[i_index].reply = reply;
-                                        }
-                                    }*/
-                                    result.save(function(err, result){
-                                        cbk(err, result);
-                                    });
-//                                }
-//                            })
-                        }
-
-                    case "add_tag":
-
-                        var tag_name = req.body.tag_name;
-                        models.Article.update({_id:object._id}, {$addToSet:{tags:tag_name}}, function (err, result) {
-                            cbk(err, result);
-                        });
-
-                        break;
-                    default:
-                        cbk({message:"no such method", code:404}, null);
+                    }
                 }
-            }
-        ], function(err, result){
-            callback(err, result);
-        });
+
+                if (!exist) {
+                    callback({message:"comment isnt exist", code:404}, null);
+                } else {
+                    var target_comment = null;
+                    if(j_index)
+                        target_comment = object.comments[i_index][j_index]
+                    else
+                        target_comment = object.comments[i_index];
+                    if(!_.find(target_comment.votes,function(vote)
+                    {
+                        return vote.user_id + '' === comment_vote.user_id;
+                    }))
+                    {
+                        target_comment.votes.push(comment_vote);
+                        object.save(function(err, result){
+                            callback(err, result);
+                        });
+                    }
+                    else
+                        callback({message:'user already voted', code:400});
+                }
+                break;
+
+            case "add_reply":
+
+                var comment_time = Date.parse(req.body.comment_time);
+                var reply = {};
+                reply.date = new Date().getTime();
+                reply.author = user_id;
+                reply.first_name = user.first_name;
+                reply.last_name = user.last_name;
+                reply.text = req.body.text;
+
+                for (var i = 0; i < object.comments.length; i++) {
+                    if(checkComment(object.comments[i],comment_time,reply) || checkRoot(object.comments[i], comment_time, reply)){
+                        exist = true;
+                        i_index = i;
+                        break;
+                    }
+                }
+
+                if (!exist) {
+                    callback({message:"comment isnt exist", code:404}, null);
+                } else {
+                    object.save(function(err, result){
+                        callback(err, result);
+                    });
+                }
+                break;
+            case "add_tag":
+
+                var tag_name = req.body.tag_name;
+                models.Article.update({_id:object._id}, {$addToSet:{tags:tag_name}}, function (err, result) {
+                    callback(err, result);
+                });
+
+                break;
+            default:
+                callback({message:"no such method", code:404}, null);
+                break;
+        }
     }
 });
 
