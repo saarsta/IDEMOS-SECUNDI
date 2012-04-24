@@ -1,0 +1,175 @@
+
+
+<script type="text/javascript" >
+
+    $(function(){
+
+        $('#avatarImg').autoscale();
+        $( ".tabs" ).tabs({
+            selected:1,
+            show:tabSelected
+        });
+    });
+
+</script>
+<div id="main">
+    <div class="post clearfix">
+        <div class="profile clearfix">
+            <h2>פרופיל משתמש</h2>
+
+
+
+
+            <div class="frame1">
+                <img  src="http://<%=avatar%>" alt="<%=user.username%>" width="202" height="226" />
+            </div>
+
+
+            <div class="details">
+                <div class="information">
+                    <p><%=user.username%></p>
+                    <p>עיר מגורים</p>
+                    <p>
+                        <% if(user.gender==='male'){ %>
+                        זכר
+                        <%} else{ %>נקבה<% } %> </p>
+                     <p><%=user.occupation %></p>
+                    <p><%=user.biography %></p>
+                </div>
+                <div class="toucans">
+                    <h4>כמות טוקנים</h4>
+                    <p class="meta-data clearfix">
+                        <span class="value clearfix"><span class="number">5</span>PROXY</span>
+                        <span class="value clearfix"><span class="number">3</span>REP</span>
+                    </p>
+                </div>
+                <div class="loader box clearfix">
+                    <ul class="clearfix">
+                        <li><img src="resources/images/theme/loader-image1.png" alt="loader1"/>         טקסט  </li>
+                        <li><img src="resources/images/theme/loader-image2.png" alt="loader2"/>         טקסט  </li>
+                        <li><img src="resources/images/theme/loader-image3.png" alt="loader3"/>         טקסט  </li>
+                        <li><img src="resources/images/theme/loader-image4.png" alt="loader4"/>         טקסט  </li>
+                        <li><img src="resources/images/theme/loader-image5.png" alt="loader5"/>         טקסט  </li>
+                        <li><img src="resources/images/theme/loader-image6.png" alt="loader6"/>         טקסט  </li>
+                        <li><img src="resources/images/theme/loader-image7.png" alt="loader7"/>         טקסט  </li>
+                        <li><img src="resources/images/theme/loader-image8.png" alt="loader8"/>         טקסט  </li>
+                        <li><img src="resources/images/theme/loader-image9.png" alt="loader9"/>         טקסט  </li>
+                        <li><img src="resources/images/theme/loader-image10.png" alt="loader10"/>         טקסט  </li>
+                        <li><img src="resources/images/theme/loader-image11.png" alt="loader11"/>         טקסט  </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+        <h2>מידע</h2>
+        <div class="tabs">
+            <ul class="tabs-list clearfix">
+                <li><a  href="#tabDiscussions">דיונים</a></li>
+                <li><a  href="#tabCycle">מעגלי תנופה</a></li>
+                <li><a  href="#tabActions">פעולות</a></li>
+                <li><a  href="#t4">קלקולים</a></li>
+            </ul>
+            <div class="tabs-content" id="tabDiscussions">
+                <ul class="clearfix" id="ulDiscussions">
+
+                </ul>
+
+            </div>
+            <div class="tabs-content" id="tabCycle">
+                <ul class="clearfix" id="ulCycles"> </ul>
+            </div>
+
+            <div class="tabs-content" id="tabActions">
+                <ul class="clearfix" id="ulActions"> </ul>
+            </div>
+            <div class="tabs-content" id="t4">
+                <ul class="clearfix">
+                    <li>
+                        <div class="frame1"><img src="resources/images/assets/image27.jpg" alt="image72" /></div>
+                        <p>נושא מעגל תנופה</p>
+                        <p>תחום</p>
+                        <p>תאריך הצטרפות</p>
+                    </li>
+                    <li>
+                        <div class="frame1"><img src="resources/images/assets/image27.jpg" alt="image72" /></div>
+                        <p>נושא מעגל תנופה</p>
+                        <p>תחום</p>
+                        <p>תאריך הצטרפות</p>
+                    </li>
+                    <li>
+                        <div class="frame1"><img src="resources/images/assets/image27.jpg" alt="image72" /></div>
+                        <p>נושא מעגל תנופה</p>
+                        <p>תחום</p>
+                        <p>תאריך הצטרפות</p>
+                    </li>
+                    <li>
+                        <div class="frame1"><img src="resources/images/assets/image27.jpg" alt="image72" /></div>
+                        <p>נושא מעגל תנופה</p>
+                        <p>תחום</p>
+                        <p>תאריך הצטרפות</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    <!--
+        <ul class="updates">
+            <li>
+                <ul>
+                    <li class="clearfix">
+                        <div class="frame1">
+                            <img src="resources/images/assets/image25.jpg" alt="image25"/>
+                        </div>
+                        <p>משתמש כזה וכזה הצטרף לפעולה שיצרת בנושא לימודי ליבה</p>
+                        <p class="meta-data">13/3/2012 | 9:34</p>
+                        <a href="#" class="button">שתף</a>
+                    </li>
+                    <li class="information clearfix">
+                        <div class="frame1">
+                            <img src="resources/images/assets/image18.jpg" alt="image18"/>
+                        </div>
+                        <p>הפגנה בנוzשא חוק חינם לילדים בגילאים 3-4</p>
+                        <p>כל מיני פרטים, משתתפים, תאריך</p>
+                        <a href="#" class="button">שתף</a>
+                    </li>
+                    <li class="clearfix">
+                        <div class="frame1"><img src="resources/images/assets/image25.jpg" alt="image25"/></div>
+                        <div class="frame1"><img src="resources/images/assets/image25.jpg" alt="image25"/></div>
+                        <div class="frame1"><img src="resources/images/assets/image25.jpg" alt="image25"/></div>
+                        <p>משתמש כזה וכזה הצטרף לפעולה שיצרת בנושא לימודי ליבה</p>
+                        <p class="meta-data">13/3/2012 | 9:34</p>
+                        <a href="#" class="button">שתף</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <ul>
+                    <li class="clearfix">
+                        <div class="frame1">
+                            <img src="resources/images/assets/image25.jpg" alt="image25"/>
+                        </div>
+                        <p>משתמש כזה וכזה הצטרף לפעולה שיצרת בנושא לימודי ליבה</p>
+                        <p class="meta-data">13/3/2012 | 9:34</p>
+                        <a href="#" class="button">שתף</a>
+                    </li>
+                    <li class="information clearfix">
+                        <div class="frame1">
+                            <img src="resources/images/assets/image18.jpg" alt="image18"/>
+                        </div>
+                        <p>הפגנה בנוzשא חוק חינם לילדים בגילאים 3-4</p>
+                        <p>כל מיני פרטים, משתתפים, תאריך</p>
+                        <a href="#" class="button">שתף</a>
+                    </li>
+                    <li class="clearfix">
+                        <div class="frame1"><img src="resources/images/assets/image25.jpg" alt="image25"/></div>
+                        <div class="frame1"><img src="resources/images/assets/image25.jpg" alt="image25"/></div>
+                        <div class="frame1"><img src="resources/images/assets/image25.jpg" alt="image25"/></div>
+                        <p>משתמש כזה וכזה הצטרף לפעולה שיצרת בנושא לימודי ליבה</p>
+                        <p class="meta-data">13/3/2012 | 9:34</p>
+                        <a href="#" class="button">שתף</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>-->
+    </div>
+</div>

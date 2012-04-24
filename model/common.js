@@ -20,32 +20,33 @@ util.inherits(SessionAuthentication,jest.Authentication);
 
 SessionAuthentication.prototype.is_authenticated = function(req,callback){
 
-    if(req.method != 'GET'){
-        var is_auth = req.isAuthenticated();
-        if(is_auth)
-        {
-            var user_id = req.session.user_id;
-            if(!user_id){
-                callback({message: "no user id"}, null);
-            }else{
-                models.User.findById(user_id,function(err,user)
+    var is_auth = req.isAuthenticated();
+    if(is_auth)
+    {
+        var user_id = req.session.user_id;
+        if(!user_id){
+            callback({message: "no user id"}, null);
+        }else{
+            models.User.findById(user_id,function(err,user)
+            {
+                if(err)
                 {
-                    if(err)
-                    {
-                        callback(err);
-                    }
-                    else
-                    {
-                        req.user = user;
-                        callback(null,true);
-                    }
-                });
-            }
+                    callback(err);
+                }
+                else
+                {
+                    req.user = user;
+                    callback(null,true);
+                }
+            });
         }
-        else
+    }
+    else
+    {
+        if(req.method != 'GET')
             callback(null,false);
-    }else{
-        callback(null,true);
+        else
+            callback(null,true);
     }
 
 };
