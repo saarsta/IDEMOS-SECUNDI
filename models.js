@@ -278,7 +278,6 @@ var Schemas = exports.Schemas = {
         post_price:{type:Number, 'default':0},//how many tokens for creating post
         popularity: {type:Number, 'default':0},
         gamification: {high_number_of_tokens_bonus : {type: Boolean, 'default': false}}
-//        achivements_for_creator: {}
     },
 
     Vote:{
@@ -417,18 +416,18 @@ var Schemas = exports.Schemas = {
 
     Comment : Comment,
 
-    Article: {
+    Article: new Schema({
         user_id:{type:ObjectId, ref:'User', index:true, required:true},
-        first_name: String,
-        last_name: String,
-        avatar : mongoose_types.File,
-        title : String,
-        text : String,
+        first_name: {type:String, editable:false},
+        last_name: {type:String,editable:false},
+        avatar : {type:String,editable:false},
+        title : {type:String, required:true},
+        text : {type:mongoose_types.Text, required:true},
         tags: [String],
-        time: {type: Date, 'default': Date.now},
+        time: {type: Date, 'default': Date.now, editable:false},
         popolarity_counter: {type: Number, 'default': 0},
         comments : [Comment]
-    },
+    } ,{strict: true}),
 
     Notifications: {
         user_id:{type:ObjectId, ref:'User', index:true, required:true},
@@ -484,6 +483,25 @@ Schemas.User.methods.avatar_url = function()
         return 'graph.facebook.com/' + this.facebook_id + '/picture/?type=large';
 };
 
+Schemas.Article.pre('save',function(next)
+{
+    var self = this;
+    if(!this.first_name && !this.last_name && this.user_id)
+    {
+        Models.User.findById(this.user_id,function(err,user)
+        {
+            if(!err)
+            {
+                self.first_name = user.first_name;
+                self.last_name = user.last_name;
+                self.avatar = user.avatar_url();
+            }
+            next();
+        });
+    }
+    next();
+});
+
 function extend_model(name, base_schema, schema, collection) {
     for (var key in base_schema)
         if (!schema[key]) schema[key] = base_schema[key];
@@ -524,14 +542,14 @@ var Models = module.exports = {
     Join:mongoose.model('Join', new Schema(Schemas.Join, {strict: true})),
 //    CommentVote:mongoose.model('CommentVote', new Schema(Schemas.CommentVote, {strict: true})),
 //    Comment:mongoose.model('Comment', new Schema(Schemas.Comment, {strinct: true})),
-    Article:mongoose.model('Article', new Schema(Schemas.Article, {strict: true})),
+    Article:mongoose.model('Article', Schemas.Article),
     Cycle:mongoose.model('Cycle', Schemas.Cycle),
     Category:mongoose.model('Category', new Schema(Schemas.Category, {strict: true})),
     Action:mongoose.model('Action', new Schema(Schemas.Action, {strict: true})),
     ActionResource:mongoose.model('ActionResource', new Schema(Schemas.ActionResource, {strict: true})),
     Tag: mongoose.model('Tag', new Schema(Schemas.Tag, {strict: true})),
-    ResourceObligation: mongoose.model('ResourceObligation', new Schema(Schemas.ResourceObligation, {strict: true}))
-//    Schemas:Schemas
+    ResourceObligation: mongoose.model('ResourceObligation', new Schema(Schemas.ResourceObligation, {strict: true})),
+    Schemas:Schemas
 };
 
 
