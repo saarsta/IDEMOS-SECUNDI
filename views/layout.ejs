@@ -1,3 +1,10 @@
+<%
+        // initializing optional params
+        var title = title || 'הבית של הרוב';
+        var tab = tab || '';
+        var body_class = body_class || 'layout';
+        var extra_head = extra_head || '';
+%>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
@@ -12,8 +19,8 @@
     <link rel="stylesheet" href="/resources/css/stylish-select.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="/resources/css/typography.css" type="text/css" media="screen" />
     <!-- JAVASCRIPTS -->
-    <script src="/js/jquery-1.7.2.min.js" type="text/javascript"></script>
-    <script src="/js/jquery-ui-1.8.19.custom.min.js" type="text/javascript"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js" type="text/javascript"></script>
     <script src="/resources/js/css_browser_selector.js" type="text/javascript"></script>
     <script src="/resources/js/selectivizr-min.js" type="text/javascript"></script>
     <!--[if lte IE 6]>
@@ -26,7 +33,6 @@
     <script src="/js/compiled_templates.js"></script>
     <script src="/javascripts/db.js"></script>
     <%- extra_head %>
-    <script src="/js/jquery-ui-1.8.18.custom.min.js" type="text/javascript"></script>
     <!-- CUSTOM JS CODE COMMON TO ALL PAGES -->
     <!-- CUSTOM JS CODE SPECIFIC TO THIS PAGE -->
 </head>
@@ -51,9 +57,13 @@
             </div>
             <!--/Main Navigation-->
 
+<<<<<<< HEAD
             <%if(logged){
                    if(typeof(hide_block_user)==='undefined' || hide_block_user){%>
 
+=======
+            <%if(logged&&user){%>
+>>>>>>> de86bf0f56ca40442f56c0da0b0f421f674727db
                 <div class="user-area box">
                     <a href="/myuru">
                     <div class="frame">

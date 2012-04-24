@@ -105,28 +105,26 @@ function loadSelectedSubjectPage(subject_id, subject_name, tag_name) {
 
 
 
-    db_functions.getUserShopingCart(function(data){
-        data.objects.forEach(function(obj)
-        {
-            obj.get_link = function( )
-            {
-                return '/selectedItem/' + obj._id + '?subject_id=' + obj.subject_id;
-            }
-        });
-        dust.renderArray('shopping_cart_item_1', data.objects,function(err,out)
-        {
-            $('#shopping_cart').append(out);
-        });
+    db_functions.getUserShopingCart(function(err, data){
 
-        /*for (var i in data.objects) {
-            var item = items.add(data.objects[i], "shopping_cart");
-            items.changeButton(item);
-        }*/
+        if(!err){
+            data.objects.forEach(function(obj)
+            {
+                obj.get_link = function( )
+                {
+                    return '/selectedItem/' + obj._id + '?subject_id=' + obj.subject_id;
+                }
+            });
+            dust.renderArray('shopping_cart_item_1', data.objects,function(err,out)
+            {
+                $('#shopping_cart').append(out);
+            });
+        }
     });
 
     db_functions.getDiscussionsBySubject(subject_id, function(err, data){
         if (err){
-            alert("error get discussion by subject");
+
         }else{
             console.log(subject_id);
             console.log(data);
@@ -229,27 +227,5 @@ function loadSelectedSubjectPage(subject_id, subject_name, tag_name) {
             }
         });
     });
-
-
-
-
-    /*$('.btn_look_for_discussions').live("click", function(){
-        console.log("button btn_look_for_discussions clicked");
-
-        db_functions.getDiscussionsBySubject(subject_id, function displayDiscussions(err, data){
-
-            if (err){
-                console.log(err);
-            }else{
-
-//               console.log(data);
-            }
-        });
-
-    });*/
-
-   /* $('.reality_btn').live("click", function(){
-        window.location.replace("/account/createDiscussion?subject_id=" + subject_id + '&subject_name=' + subject_name);
-    });*/
 
 }

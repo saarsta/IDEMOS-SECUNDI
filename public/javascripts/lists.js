@@ -102,7 +102,7 @@ function loadListItems(original_type,template_name,subject,tag) {
         {
             case 'discussions':
                     db_functions.joinToDiscussionFollowers(item_id,function(){
-                        alert('צורפת');
+
                     });
                 break;
             case 'actions':
@@ -117,4 +117,14 @@ function loadListItems(original_type,template_name,subject,tag) {
                 break;
         }
     });
+
+    if(original_type == 'cycles')
+    {
+        $('#mainList').on('click','.join_action_button',function(){
+            var item_id = $(this).attr('item_id');
+            db_functions.joinToAction(item_id,function(){
+
+            });
+        });
+    }
 }

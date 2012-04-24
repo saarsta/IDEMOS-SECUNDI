@@ -189,11 +189,11 @@ var db_functions = {
             async: true,
             success: function (data) {
                 console.log(data);
-                callback(data);
+                callback(null, data);
             },
 
             error: function (xhr, ajaxOptions, thrownError) {
-                alert('error');
+                console.log(thrownError, null);
             }
 
         });
@@ -242,7 +242,7 @@ var db_functions = {
                 console.log("in hot info items");
                 console.log(data);
                 $('#hot_items_list').empty();
-                dust.renderArray('hot_info_item', data.objects,null,function(err,out)
+                dust.renderArray('hot_info_item', data.objects, null, function(err,out)
                 {
                     $('#hot_items_list').append(out);
                     $('#hot_items_list img').autoscale();
@@ -251,6 +251,22 @@ var db_functions = {
 
             error: function (xhr, ajaxOptions, thrownError) {
                 alert('error with hot items');
+            }
+        });
+
+    },
+
+    getHotObjects: function(resource, callback){
+        $.ajax({
+            url: '/api/' + resource + '/?is_hot_object=true',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log(thrownError);
             }
         });
 
@@ -326,8 +342,8 @@ var db_functions = {
             },
 
             error: function (xhr, ajaxOptions, thrownError) {
+                console.log(thrownError);
                 callback(thrownError, null);
-                alert('error');
             }
         });
     },
@@ -926,10 +942,12 @@ var db_functions = {
             async: true,
             success: function (data) {
                 console.log(data);
+                callback(null,data);
             },
 
             error: function (xhr, ajaxOptions, thrownError) {
                 console.log(thrownError);
+                callback(thrownError);
             }
         });
     },
@@ -1093,7 +1111,7 @@ function image_autoscale(obj, params)
 };
 
 dust.filters['date'] = function(a){
-    return $.datepicker.formatDate('dd-mm-yy', new Date(Date.parse(a)));;
+    return $.datepicker.formatDate('dd/mm', new Date(Date.parse(a)));;
 };
 
 dust.filters['time'] = function(a){

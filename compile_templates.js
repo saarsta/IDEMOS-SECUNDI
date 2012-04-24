@@ -25,8 +25,11 @@ writer.write(compile_template('info_item_full_view','infoItemFullView.html'));
 writer.write(compile_template('pending_action_list_item','pendingActionListItem.html'));
 writer.write(compile_template('action_list_item','actionListItem.html'));
 writer.write(compile_template('discussion_list_item','discussionListItem.html'));
+writer.write(compile_template('cycle_list_item','cycleListItem.html'));
+writer.write(compile_template('discussion_full_view','discussionFullView.html'));
+writer.write(compile_template('action_timeline','action_timeline.html'))
 
-////writer.write(compile_template('circle_list_item','circleListItem.html'));
+
 writer.write(compile_template('myCycle_list_item','myCycleListItem.html'));
 writer.write(compile_template('myDiscussion_list_item','myDiscussionItem.html'));
 writer.write(compile_template('myAction_list_item','myActionItem.html'));
