@@ -7,6 +7,6 @@
         </div>
         <p>{title}</p>
         <p>{#subject}{.name}{@sep}, {/sep}{/subject}</p>
-        <p>{#users}{.join_date}{/users}</p>
+        <p>{#users}{.join_date|time}{/users}</p>
     </a>
 </li>

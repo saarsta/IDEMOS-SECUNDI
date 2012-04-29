@@ -1,0 +1,48 @@
+<div class="post clearfix">
+    <div class="timeline clearfix">
+        <h3>Timeline (+ קישור לצפייה בכל פעולות המערכת, לאו דווקא במעגל התנופה הנוכחי)</h3>
+        <!-- <a href="#" class="button">עבור לתצוגת מפה</a> -->
+        <div class="timeline-detail"> <img src="/resources/images/assets/image29.jpg" alt="image29" class="timeline" /> </div>
+    </div>
+    <div class="topics-1">
+        <h2>{.cycle_id.title}</h2>
+        <p>{.cycle_id.text_field|s}</p>
+         <br class="clear" />
+        <div class="frame1 flR" >
+            <div style="width: 254px;height:199px;">
+                 <img  id="actionImg" src="{image_field.url}" alt="{image_field.url}" />
+            </div>
+        </div>
+
+        <div class="details clearfix">
+            <p>{.creation_date|time}</p>
+            <p>{.type}</p>
+            <p>{.description}</p>
+            <p>מספר משתתפים:{.required_participants} כמות רצויה:{.num_of_going}</p>
+            <p>{#tags}{.}{@sep}, {/sep}{/tags}</p>
+
+            <div class="members">
+               <!-- <p>חברים משתתפים ({.required_participants}) + מדורגים הכי גבוה \ משפיעים \ מעוטרים</p> use latear -->
+                <p>משתתפים:</p>
+                <ul class="clearfix">
+                    {#going_users}
+                    <li><img src="http://<%=avatar%>" alt="{.username}" />{.username}</li>
+                    {/going_users}
+
+                </ul>
+            </div>
+
+        </div>
+        <a href="#" class="button">שתף</a>
+        <br class="clear" />
+        <h5>תיאור הפעולה</h5>
+        <a href="#" class="button">שתף</a>
+        <p>{.text_field|s}</p>
+        <br class="clear" />
+        <h5>משאבים נדרשים</h5>
+        <a href="#" class="button">שתף</a>
+          <p>{#action_resources}{.resource.name} {.amount}{@sep}, {/sep}{/action_resources}</p>
+        <br class="clear" />
+        <a href="#" class="button suggest-action">הצע פעולה חדשה</a>
+    </div>
+</div>
