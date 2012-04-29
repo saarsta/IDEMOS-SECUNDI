@@ -12,10 +12,20 @@ exports.cyclePageInit = function(req, res){
 
 exports.action = function(req,res)
 {
-    res.send('not yet');
+    res.render('action.ejs',{
+            action_id : req.params.id,
+            title:"פעולה",
+            user: req.session.user,
+            logged:true,
+            avatar:req.session.avatar_url,
+
+            big_impressive_title:"כותרת גדולה ומרשימה"
+
+        }
+    );
 };
 
 exports.newAction = function(req,res)
 {
-    res.send('not yet');
+    res.render('newAction.ejs',{});
 };

@@ -62,6 +62,11 @@ module.exports = function(app)
             list:['title']
         });
 
+        admin.registerMongooseModel('Kilkul',Models.Kilkul,null,{
+            list:['title']
+        });
+
+
         admin.registerMongooseModel('Update',Models.Update,null,{
             list:['title']
         });
