@@ -112,12 +112,13 @@ function loadSelectedSubjectPage(subject_id, subject_name, tag_name) {
             {
                 obj.get_link = function( )
                 {
-                    return '/selectedItem/' + obj._id + '?subject_id=' + obj.subject_id;
+                    return '/meida/' + obj._id + '?subject_id=' + obj.subject_id;
                 }
             });
-            dust.renderArray('shopping_cart_item_1', data.objects,function(err,out)
+            dust.renderArray('shopping_cart_item_1', data.objects,null,function(err,out)
             {
                 $('#shopping_cart').append(out);
+                $('#shopping_cart img').autoscale();
             });
         }
     });
@@ -148,12 +149,13 @@ function loadSelectedSubjectPage(subject_id, subject_name, tag_name) {
             {
                 obj.get_link = function( )
                 {
-                    return '/selectedItem/' + obj._id + '?subject_id=' + obj.subject_id;
+                    return '/meida/' + obj._id + '?subject_id=' + obj.subject_id;
                 }
             });
-            dust.renderArray('info_item_in_subject_1', data.objects,function(err,out)
+            dust.renderArray('info_item_in_subject_1', data.objects,null,function(err,out)
             {
                 $('#info_items').append(out);
+                $('#info_items img').autoscale();
             });
 
            /* for (var i in data.objects){
@@ -175,9 +177,10 @@ function loadSelectedSubjectPage(subject_id, subject_name, tag_name) {
 
                 if(!err){
                     $('#info_items').empty();
-                    dust.renderArray('info_item_in_subject_1', data.objects,function(err,out)
+                    dust.renderArray('info_item_in_subject_1', data.objects,null,function(err,out)
                     {
                         $('#info_items').append(out);
+                        $('#info_items img').autoscale();
                     });
 
                     /*$(".info_items_of_subject ").html("");
@@ -204,6 +207,7 @@ function loadSelectedSubjectPage(subject_id, subject_name, tag_name) {
                 dust.render('shopping_cart_item_1', data, function(err,out)
                 {
                     $('#shopping_cart').append(out);
+                    $('#shopping_cart img').autoscale();
                 });
             }
         });

@@ -173,7 +173,7 @@ function check_gamification_rewards(user,callback)
 
 function gamification_deserilize(self,base,req,res,obj,status)
 {
-    if(status == 201 || status == 204 && self.gamification_type || req.gamification_type)
+    if(status == 201 || status == 202 && self.gamification_type || req.gamification_type)
     {
         update_user_gamification(req, self.gamification_type || req.gamification_type, req.user, self.token_price || req.token_price,function(err,rewards)
         {

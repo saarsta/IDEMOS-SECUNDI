@@ -21,7 +21,15 @@ var mongoose_resource = require('jest'),
     article_resources = require('./model/ArticleResource'),
     ArticleResource = article_resources.ArticleResource,
     TagResource = require('./model/TagResource'),
-    ArticleCommentResource = article_resources.ArticleCommentResource;
+    ArticleCommentResource = article_resources.ArticleCommentResource,
+    HeadlineResource = require('./model/HeadlineResource'),
+    SuccessStoryResource = require('./model/SuccessStoryResource'),
+    UpdateResource = require('./model/UpdateResource'),
+    KilkulResource = require('./model/KilkulResource');
+
+
+
+
 
 
 module.exports = function(app)
@@ -29,6 +37,10 @@ module.exports = function(app)
     var rest_api = new mongoose_resource.Api('api',app);
     rest_api.register_resource('users',new UserResource());
     rest_api.register_resource('information_items',new InformationItemResource());
+    rest_api.register_resource('headlines',new HeadlineResource());
+    rest_api.register_resource('success_stories',new SuccessStoryResource());
+    rest_api.register_resource('updates',new UpdateResource());
+    rest_api.register_resource('kilkule',new KilkulResource());
     rest_api.register_resource('shopping_cart',new ShoppingCartResource());
     rest_api.register_resource('discussions_shopping_cart',new DiscussionShoppingCartResource());
     rest_api.register_resource('subjects', new SubjectResource());
