@@ -5,9 +5,9 @@
         <div class="timeline-detail"> <img src="/resources/images/assets/image29.jpg" alt="image29" class="timeline" /> </div>
     </div>
     <div class="topics-1">
-        <h2></h2>
-        <p>שמו אינו מדינות דת, זקוק קבלו מועמדים מתן בה. גם אנגלית אקטואליה צעד. של בדף ישראל גיאוגרפיה, זכר לכאן בקלות לויקיפדיה גם. מתוך ותשובות ויש מה, חפש שאלות האטמוספירה של. קסאם בדפים מיזמים מדע על. שמו אינו מדינות דת, זקוק קבלו מועמדים מתן בה. גם אנגלית אקטואליה צעד. של בדף ישראל גיאוגרפיה, זכר לכאן בקלות לויקיפדיה גם. מתוך ותשובות ויש מה, חפש שאלות האטמוספירה של. קסאם בדפים מיזמים מדע על </p><br/><br/><br/><br/><br/><br/>
-        <br class="clear" />
+        <h2>{.cycle_id.title}</h2>
+        <p>{.cycle_id.text_field|s}</p>
+         <br class="clear" />
         <div class="frame1 flR" >
             <div style="width: 254px;height:199px;">
                  <img  id="actionImg" src="{image_field.url}" alt="{image_field.url}" />
@@ -22,11 +22,12 @@
             <p>{#tags}{.}{@sep}, {/sep}{/tags}</p>
 
             <div class="members">
-                <p>חברים משתתפים ({.required_participants}) + מדורגים הכי גבוה \ משפיעים \ מעוטרים</p>
+               <!-- <p>חברים משתתפים ({.required_participants}) + מדורגים הכי גבוה \ משפיעים \ מעוטרים</p> use latear -->
+                <p>משתתפים:</p>
                 <ul class="clearfix">
-                    {#users}
-                    <li><img src="resources/images/assets/member.jpg" alt="member1" />שם משתמש</li>
-                    {/users}
+                    {#going_users}
+                    <li><img src="http://<%=avatar%>" alt="{.username}" />{.username}</li>
+                    {/going_users}
 
                 </ul>
             </div>

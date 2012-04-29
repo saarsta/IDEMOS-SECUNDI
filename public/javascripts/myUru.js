@@ -17,7 +17,7 @@ function tabSelected(event, ui)
     {
         case 'tabDiscussions':
             db_functions.getAllItemsByUser('discussions',function(error,data){
-                var size = data.objects.length;
+               // var size = data.objects.length;
                 dust.renderArray('myDiscussion_list_item',data.objects,null,function(err,out)
                 {
                     var seletedTab= $('#ulDiscussions');
