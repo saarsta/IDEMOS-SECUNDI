@@ -6,7 +6,9 @@
  * To change this template use File | Settings | File Templates.
  */
 var action = require('./ActionResource'),
-    models = require('../models');
+    models = require('../models'),
+    _= require('underscore');
+
 
 var ActionPopulatedResource = module.exports = action.extend(
     {
@@ -14,21 +16,20 @@ var ActionPopulatedResource = module.exports = action.extend(
             this._super();
             this.allowed_methods = ['get'];
             this.default_query = function(query){
-                return query.populate("cycle_id");
+                return query.populate("cycle_id").populate("going_users");
             }
+        },
+
+        get_object: function (req, id, callback) {
+
+            this._super(req, id, function(err,object)
+            {
+                _.sortBy(object.users,function(user)
+                {
+                    return user.num_of_extra_tokens;
+                })
+                callback(err,object);
+            });
         }
     }
-
-        /*get_object: function (req, id, callback) {
-
-                req.query = function(query){
-                    return query.populate("cycle_id");
-                }
-
-
-
-            this._super(req, id, callback);
-
-        }
-    }*/
-)
+);

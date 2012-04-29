@@ -1102,6 +1102,25 @@ var db_functions = {
                 callback(thrownError, null);
             }
         });
+    },
+
+    //blogs
+    getPopularArticles: function(cycle_id, callback){
+
+        $.ajax({
+            url: '/api/articles?oreder_by=-popolarity_counter',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log(thrownError);
+                callback(thrownError, null);
+            }
+        });
     }
 }
 
