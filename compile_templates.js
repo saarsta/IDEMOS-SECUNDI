@@ -28,7 +28,7 @@ writer.write(compile_template('discussion_list_item','discussionListItem.html'))
 writer.write(compile_template('cycle_list_item','cycleListItem.html'));
 writer.write(compile_template('discussion_full_view','discussionFullView.html'));
 writer.write(compile_template('action_timeline','action_timeline.html'))
-
+writer.write(compile_template('action_full_view','actionFullView.html'));
 
 writer.write(compile_template('myCycle_list_item','myCycleListItem.html'));
 writer.write(compile_template('myDiscussion_list_item','myDiscussionItem.html'));
@@ -36,6 +36,7 @@ writer.write(compile_template('myAction_list_item','myActionItem.html'));
 
 //writer.write(compile_template('cycle_list_item','cycleListItem.html'));
 writer.write(compile_template('discussion_full_view','discussionFullView.html'))
+
 //
 
 

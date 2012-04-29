@@ -20,14 +20,12 @@ function tabSelected(event, ui)
                 var size = data.objects.length;
                 dust.renderArray('myDiscussion_list_item',data.objects,null,function(err,out)
                 {
-
                     var seletedTab= $('#ulDiscussions');
                     // seletedTab.remove();
                     seletedTab.empty();
 
                     seletedTab.append(out);
                     $('img',seletedTab).autoscale();
-
                 });
             });
 
