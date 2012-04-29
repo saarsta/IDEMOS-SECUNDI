@@ -87,12 +87,24 @@ function loadCreateDiscussionPage(subject_id, subject_name){
         }
     });
 
-    db_functions.getUserShopingCart(function(data){
+    db_functions.getUserShopingCart(function(err,data){
         user_Shopping_cart = data;
-        for (var i in data.objects) {
+        for (var i=0; i < data.objects.length; i++) {
             var item = items.add(data.objects[i], "shopping_cart");
             items.changeButton(item);
         }
+        data.objects.forEach(function(obj)
+        {
+            obj.get_link = function( )
+            {
+                return '/meida/' + obj._id;
+            }
+        });
+        dust.renderArray('information_item_in_discussion', data.objects,function(err,out)
+        {
+            $('#shopping_cart').append(out);
+            $('#shopping_cart img').autoscale();
+        });
     });
 
     $(".preview_btn").live("click", function(){
@@ -115,7 +127,7 @@ function loadCreateDiscussionPage(subject_id, subject_name){
                     console.log(counter);
                     if(--counter == 0)
                     {
-                        window.location.replace("/account/discussion?discussion_id=" + created_discussion_id + '&subject_name=' + subject_name);
+                        window.location.replace("/discussions/" + created_discussion_id);
                     }
                 };
 
@@ -130,17 +142,6 @@ function loadCreateDiscussionPage(subject_id, subject_name){
                          }
                      });
                 }
-//                for (var i = 0; user_Shopping_cart.objects.length; i++){
-//
-//                    db_functions.addInfoItemToDiscussionShoppingCart(user_Shopping_cart.objects[i]._id, data._id, function(err){
-//                        if (err){
-//                            console.log(err);
-//                        }
-//                        else{
-//                            on_finish()
-//                        }
-//                    });
-//                }
             }
         });
     });
@@ -152,39 +153,23 @@ function loadCreateDiscussionPage(subject_id, subject_name){
         tags = $("#tags").val();
         tags = tags.split(" ");
 
-       /* for(var i=0; i<tags[i].length; i++){
-            if(tags[i] == ""){
-                tags = tags.splice(i,1);
-                i--
-            }
-        }*/
 
         if (!created_discussion_id){
             db_functions.createDiscussion(subject_id, subject_name, vision, title, tags, function(err, data){
                 if (err){
                 }else{
                     created_discussion_id = data._id;
-                    console.log("discussion was created");
-                    /*for (var i in user_Shopping_cart.objects){
-                        db_functions.addInfoItemToDiscussionShoppingCart(user_Shopping_cart.objects[i]._id, created_discussion_id, function(err){
-                            if(err){
-                                console.log(err);
-                            }
-                        });
-                    }*/
-                    alert("discussion created!");
 
                     if ($.trim(first_post) != ""){
                         db_functions.addPostToDiscussion(created_discussion_id, first_post, function(err, data){
                             if (err){
                                 console.log(err);
                             }else{
-                                console.log(data);
-                                window.location.replace("discussion?discussion_id=" + created_discussion_id + '&subject_name=' + subject_name);
+                                window.location.replace("/discussions/" + created_discussion_id);
                             }
                         });
                     }else{
-                        window.location.replace("discussion?discussion_id=" + created_discussion_id + '&subject_name=' + subject_name);
+                        window.location.replace("/discussions/" + created_discussion_id);
 
                     }
                 }
@@ -202,12 +187,11 @@ function loadCreateDiscussionPage(subject_id, subject_name){
                             if (err){
                                 console.log(err);
                             }else{
-                                console.log(data);
-                                window.location.replace("discussion?discussion_id=" + created_discussion_id + '&subject_name=' + subject_name);
+                                window.location.replace("/discussions/" + created_discussion_id);
                             }
                         });
                     }else{
-                        window.location.replace("discussion?discussion_id=" + created_discussion_id + '&subject_name=' + subject_name);
+                        window.location.replace("/discussions/" + created_discussion_id);
 
                     }
                 }

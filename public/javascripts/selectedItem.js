@@ -38,10 +38,11 @@ function loadSelectedItemPage(info_id){
         type: "GET",
         async: true,
         success: function (data) {
+            $('.breadcrumb').text(data.subject_name);
             console.log(data);
             $('#info_item_full_view').empty();
             data.get_link = function(){
-                return '/selectedItem/' + data._id;
+                return '/meida/' + data._id;
             };
             $("#create_new_discussion").attr('href', "/discussions/new?subject_id=" +  data.subject_id + "&subject_name=" + data.subject_name);
              dust.render('info_item_full_view', data, function(err,out)
@@ -62,7 +63,7 @@ function loadSelectedItemPage(info_id){
         {
             obj.get_link = function( )
             {
-                return '/selectedItem/' + obj._id;
+                return '/meida/' + obj._id;
             }
         });
         dust.renderArray('shopping_cart_item_1', data.objects,function(err,out)
