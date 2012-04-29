@@ -2,28 +2,32 @@
     <div class="timeline clearfix">
         <h3>Timeline (+ קישור לצפייה בכל פעולות המערכת, לאו דווקא במעגל התנופה הנוכחי)</h3>
         <!-- <a href="#" class="button">עבור לתצוגת מפה</a> -->
-        <div class="timeline-detail"> <img src="public/resources/images/assets/image29.jpg" alt="image29" class="timeline" /> </div>
+        <div class="timeline-detail"> <img src="/resources/images/assets/image29.jpg" alt="image29" class="timeline" /> </div>
     </div>
     <div class="topics-1">
-        <h2>נושא מעגל התנופה *</h2>
+        <h2></h2>
         <p>שמו אינו מדינות דת, זקוק קבלו מועמדים מתן בה. גם אנגלית אקטואליה צעד. של בדף ישראל גיאוגרפיה, זכר לכאן בקלות לויקיפדיה גם. מתוך ותשובות ויש מה, חפש שאלות האטמוספירה של. קסאם בדפים מיזמים מדע על. שמו אינו מדינות דת, זקוק קבלו מועמדים מתן בה. גם אנגלית אקטואליה צעד. של בדף ישראל גיאוגרפיה, זכר לכאן בקלות לויקיפדיה גם. מתוך ותשובות ויש מה, חפש שאלות האטמוספירה של. קסאם בדפים מיזמים מדע על </p><br/><br/><br/><br/><br/><br/>
         <br class="clear" />
-        <div class="frame1 flR"> <img src="resources/images/assets/image28.jpg" alt="image28"/> </div>
+        <div class="frame1 flR" >
+            <div style="width: 254px;height:199px;">
+                 <img  id="actionImg" src="{image_field.url}" alt="{image_field.url}" />
+            </div>
+        </div>
+
         <div class="details clearfix">
             <p>{.creation_date|time}</p>
             <p>{.type}</p>
             <p>{.description}</p>
             <p>מספר משתתפים:{.required_participants} כמות רצויה:{.num_of_going}</p>
-            <p>{#tags}{.name}{@sep}, {/sep}{/tags}</p>
+            <p>{#tags}{.}{@sep}, {/sep}{/tags}</p>
 
             <div class="members">
                 <p>חברים משתתפים ({.required_participants}) + מדורגים הכי גבוה \ משפיעים \ מעוטרים</p>
                 <ul class="clearfix">
+                    {#users}
                     <li><img src="resources/images/assets/member.jpg" alt="member1" />שם משתמש</li>
-                    <li><img src="resources/images/assets/member.jpg" alt="member2" />שם משתמש</li>
-                    <li><img src="resources/images/assets/member.jpg" alt="member3" />שם משתמש</li>
-                    <li><img src="resources/images/assets/member.jpg" alt="member4" />שם משתמש</li>
-                    <li><img src="resources/images/assets/member.jpg" alt="member5" />שם משתמש</li>
+                    {/users}
+
                 </ul>
             </div>
 
@@ -32,11 +36,11 @@
         <br class="clear" />
         <h5>תיאור הפעולה</h5>
         <a href="#" class="button">שתף</a>
-        <p>שמו אינו מדינות דת, זקוק קבלו מועמדים מתן בה. גם אנגלית אקטואליה צעד. של בדף ישראל גיאוגרפיה, זכר לכאן בקלות לויקיפדיה גם. מתוך ותשובות ויש מה, חפש שאלות האטמוספירה של. קסאם בדפים מיזמים מדע על. שמו אינו מדינות דת, זקוק קבלו מועמדים מתן בה. גם אנגלית אקטואליה צעד. של בדף ישראל גיאוגרפיה, זכר לכאן בקלות לויקיפדיה גם. מתוך ותשובות ויש מה, חפש שאלות האטמוספירה של. קסאם בדפים מיזמים מדע על </p>
+        <p>{.text_field|s}</p>
         <br class="clear" />
         <h5>משאבים נדרשים</h5>
         <a href="#" class="button">שתף</a>
-        <p>שמו אינו מדינות דת, זקוק קבלו מועמדים מתן בה. גם אנגלית אקטואליה צעד. של בדף ישראל גיאוגרפיה, זכר לכאן בקלות לויקיפדיה גם. מתוך ותשובות ויש מה, חפש שאלות האטמוספירה של. קסאם בדפים מיזמים מדע על. שמו אינו מדינות דת, זקוק קבלו מועמדים מתן בה. גם אנגלית אקטואליה צעד. של בדף ישראל גיאוגרפיה, זכר לכאן בקלות לויקיפדיה גם. מתוך ותשובות ויש מה, חפש שאלות האטמוספירה של. קסאם בדפים מיזמים מדע על </p>
+          <p>{#action_resources}{.resource.name} {.amount}{@sep}, {/sep}{/action_resources}</p>
         <br class="clear" />
         <a href="#" class="button suggest-action">הצע פעולה חדשה</a>
     </div>
