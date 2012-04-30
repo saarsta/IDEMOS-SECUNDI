@@ -28,8 +28,47 @@
     </div>
 </div>
 
+<!--Popup -->
+<div style='display:none'>
+    <div id='inline_content' class="popup create-action css3">
+        <a href="#" class="close-btn"></a>
+
+        <div class="form clearfix">
+            <form action="#" method="post">
+                <h2>יצירת פעולה חדשה</h2>
+
+                <input type="text" name="title" placeholder="כותרת" />
+                <input type="text" name="date" class="nf_datepicker" placeholder="תאריך" />
+                <textarea name="description" placeholder="טקסט חופשי"></textarea>
+                <button name="find_location">קבע את מיקום הפעולה</button>
+
+                <select type="text" name="toolbox" placeholder="ארגז כלים (פעולות קיימות במערכת – פעולת שטח, עצומה, הפגנה)"  />
+                <textarea name="resources" placeholder="משאבים דרושים"></textarea>
+
+                <label class="num">
+                    <input type="number" name="participants_count">
+                    מספר משתתפים רצוי
+                </label>
+                <!--<textarea name="addendum"></textarea>-->
+
+                <button type="submit">צור פעולה חדשה</button>
+                <label class="check">
+                    <input type="checkbox" value="on">
+                    שתף*
+                </label>
+            </form>
+        </div>
+    </div>
+</div>
+<!--/Popup -->
+
 <script>
     $(function(){
-       loadCyclePage("<%= cycle_id %>");
+        loadCyclePage("<%= cycle_id %>");
+        loadPopupData();
+        $("#newActionBtn").colorbox({inline:true});
+        if($().datetimepicker){
+            $('.nf_datepicker').datetimepicker();
+        }
     });
 </script>

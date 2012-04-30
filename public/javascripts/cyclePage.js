@@ -24,34 +24,6 @@ function loadCyclePage(cycle_id,start_date, finish_date){
         });
 
 
-        dust.renderArray('cycle_user',cycle.users,null,function(err,out)
-        {
-            $('#userList').append(out);
-        });
-        //bugbug:         cycle.users should be replaced with pending actions
-
-        db_functions.getPendingActionsByCycle(cycle_id,function(err,pendingActions)
-        {
-            dust.renderArray('cycle_pending_action',pendingActions.objects,null,function(err,out)
-            {
-                $('#cyclePendingActions').append(out);
-            });
-        });
-
-        db_functions.getPopularPostsByCycleId(cycle_id,function(err,posts)
-        {
-            //bugbug:         cycle.users should be replaced with  posts
-            dust.renderArray('cycle_popular_post',cycle.users,null,function(err,out)
-            {
-                $('#cyclePopularPosts').append(out);
-                $('#pupularPostsLink').click(function(){
-                    $('#cyclePopularPosts').slideToggle('slow', function() {
-                        // Animation complete.
-                    });
-                });
-            });
-        });
-
         var start_date = Date.parse(cycle.creation_date);
         var span = Date.parse(cycle.due_date) - start_date ;
         db_functions.getActionsByCycle(cycle_id,function(err,data)
@@ -78,3 +50,31 @@ function loadCyclePage(cycle_id,start_date, finish_date){
 }
 
 
+function loadPopupData(){
+   //toolbox data
+    (function(){
+       var selectValues = {"1":"test 1","2":"test 2"};
+       $.each(selectValues, function(key, value) {
+           $('[name=toolbox]')
+               .append($("<option></option>")
+               .attr("value",key)
+               .text(value));
+             })
+       })();
+
+}
+//getPopularPostsByCycleId
+
+//dust.renderArray('hot_info_item', data.objects, null, function(err,out)
+//{
+//    $('#hot_items_list').append(out);
+//    $('#hot_items_list img').autoscale();
+//});
+
+//dust.render(template,arr[i],function(err,out){
+//    if(callback)
+//        callback(err,out);
+//    if(err)
+//        _err = err;
+//    out_arr.push(out);
+//});
