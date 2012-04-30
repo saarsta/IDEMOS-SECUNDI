@@ -3,21 +3,20 @@ function loadCyclePage(cycle_id,start_date, finish_date){
     db_functions.getCycleById(cycle_id,function(err,cycle)
     {
         cycle=cycle[0];
-        var discussion_id=          cycle.discussions[0];
-        db_functions.getDiscussionById(discussion_id,function(err,discussion)
-        {
-            cycle.discussion=     discussion   ;
-            dust.render('cycle_main',cycle,function(err,out){
-                $('#cycleMain').prepend(out);
-            });
-            db_functions.getDiscussionShoppingCart(discussion_id,function(err,discussion)
-            {
-
-            } );
-
+        var discussion_id=          cycle.discussions[0]._id;
+        cycle.discussion=     cycle.discussions[0]   ;
+        dust.render('cycle_main',cycle,function(err,out){
+            $('#cycleMain').prepend(out);
         });
 
-        db_functions.getUpdatesOfCycle(cycle.discussions[0],function(err,update)
+        db_functions.getDiscussionShoppingCart(discussion_id,function(err,discussion)
+        {
+
+        } );
+
+
+
+        db_functions.getUpdatesOfCycle(cycle_id,function(err,update)
         {
             dust.render('cycle_update',update,function(err,out){
                 $('#cycleUpdate').prepend(out);
