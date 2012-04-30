@@ -2,7 +2,7 @@
 function loadCyclePage(cycle_id,start_date, finish_date){
     db_functions.getCycleById(cycle_id,function(err,cycle)
     {
-        cycle=cycle[0];
+
         var discussion_id=          cycle.discussions[0]._id;
         cycle.discussion=     cycle.discussions[0]   ;
 
@@ -13,11 +13,10 @@ function loadCyclePage(cycle_id,start_date, finish_date){
 
             $('#followCycleButton').click(function(){
 
-                if (!cycle.is_following   )
+                if (!cycle.is_follower   )
                 {
                     db_functions.joinToCycleFollowers(cycle_id,function(err,cycle1)
                     {
-
                         dust.render('cycle_main',cycle1,function(err,out){
 
                             $('#cycleMain').prepend(out);
