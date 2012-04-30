@@ -31,7 +31,7 @@ Authoriztion.prototype.limit_object = function(req,object,callback){
 
         callback(null, object);
     }else{
-        callback("Error: User Is Not Autthenticated", null);
+        callback({message:"Error: User Is Not Autthenticated", code:401} , null);
     }
 };
 
@@ -45,7 +45,7 @@ Authoriztion.prototype.edit_object = function(req,object,callback){
 
         callback(null, object);
     }else{
-        callback("Error: User Is Not Autthenticated", null);
+        callback({message:"Error: User Is Not Autthenticated", code:401} , null);
     }
    /* if(req.session.auth.user){
         var email = req.session.auth.user.email;
