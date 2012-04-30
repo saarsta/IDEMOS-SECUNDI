@@ -63,6 +63,14 @@
             width: 100%;
             height: 150px
         }
+
+        textarea {
+            resize: none;
+        }
+
+        .discussion_content{
+            position: relative;
+        }
     </style>
 
 <!-- JAVASCRIPTS -->
@@ -98,11 +106,11 @@
       <!-- Main Navigation-->
       <div id="main-navigation">
         <ul class="clearfix">
-          <li><a href="#">מה זה עורו?</a></li>
-          <li><a href="#">מידע ומדדים</a></li>
-          <li><a href="#">דיונים</a></li>
-          <li><a href="#">פעולות</a></li>
-          <li><a href="#">מעגלי תנופה</a></li>
+          <li class="<%= tab=="story" ? 'active' :'' %>" ><a href="http://www.uru.org.il/story">מה זה עורו?</a></li>
+          <li class="<%= tab=="information_items" ? 'active' :'' %>"><a href="/meida">מידע ומדדים</a></li>
+          <li class="<%= tab=="discussions" ? 'active' :'' %>"><a href="/discussions">דיונים</a></li>
+          <li class="<%= tab=="actions" ? 'active' :'' %>"><a href="/actions">פעולות</a></li>
+          <li class="<%= tab=="cycles" ? 'active' :'' %>"><a href="/cycles">מעגלי תנופה</a></li>
         </ul>
       </div>
       <!--/Main Navigation-->
@@ -148,9 +156,9 @@
           <div class="discussions clearfix">
             <div class="frame1 flR"> <img src="/resources/images/assets/image19.jpg" alt="image19"/> </div>
             <div class="description clearfix">
-                <p class="discussion_content">
+                <div class="discussion_content">
                     <textarea id="discussion_content"><%=discussion.vision_text%></textarea>
-                </p>
+                </div>
 							<div class="tags clearfix">
               	<p class="clearfix">
                 	תגיות 1, תגיות 2, תגיות 3
@@ -174,9 +182,9 @@
               <li class="clearfix">
                 <p id="discussion_content_txt"></p>
 
-                <textarea name="" id="" cols="30" rows="10" style="width: 100%;"></textarea><br>
+                <textarea name="discussion_suggest" id="discussion_suggest" cols="30" rows="10" style="width: 100%;"></textarea><br>
 
-                <input type="text" style="width: 100%;"><br><br>
+                <input type="text" name="discussion_tags" style="width: 100%;"><br><br>
 
 
                 <div style="text-align: center">
@@ -232,12 +240,14 @@
             <div class="box form clearfix">
             	<form action="#" method="post">
               	<div class="description clearfix">
+              	    <%if(logged&&user){
+                         if(typeof(hide_block_user)==='undefined' || hide_block_user){%>
                 	<div class="frame1">
-                  	<img src="/resources/images/assets/image25.jpg" alt="image25"/>
-                  </div>
-                  <h4>המשתמש </h4>
-                  <p class="meta-data">תאריך | שעה</p>
-                  <textarea title="post comments" onfocus="if(this.value=='כתוב תגובה') this.value='';" onblur="if(this.value=='') this.value='כתוב תגובה';" cols="1" rows="3">כתוב תגובה</textarea>
+                  	    <img src="http://<%=avatar%>" alt="<%=user.username%>" width="44" height="44" />
+                    </div>
+                    <h4><%=user.username%></h4>
+                    <%}}%>
+                    <textarea id="discussion_comment" title="post comments" onfocus="if(this.value=='כתוב תגובה') this.value='';" onblur="if(this.value=='') this.value='כתוב תגובה';" cols="1" rows="3">כתוב תגובה</textarea>
                 </div>
                 <div class="action">
                 	<span><label for="for">בעד</label><input type="checkbox" id="for" /></span>
@@ -349,11 +359,12 @@
                 e.preventDefault();
 
                 if($(this).hasClass("reply")){
-                    $("p#discussion_content_txt").text('"' + range.text +'"');
+                    $("textarea#discussion_comment").val('"' + range.text +'"').focus();
                 }
 
                 if($(this).hasClass("suggest")){
-
+                    $("p#discussion_content_txt").text('"' + range.text +'"');
+                    $("textarea#discussion_suggest").focus();
                 }
             })
         });
