@@ -491,7 +491,7 @@ var db_functions = {
             type: "GET",
             async: true,
             success: function (data) {
-                console.log("posts are" + " " + data);
+                console.log(data);
                 callback(null, data);
             },
 
@@ -973,12 +973,12 @@ var db_functions = {
     },
 
 
-    addAction: function(cycle_id, title, description, action_resources, required_participants, execution_date, callback){
+    addAction: function(cycle_id, title, description, action_resources, required_participants, execution_date, location, callback){
         $.ajax({
             url: '/api/actions',
             type: "POST",
             data: {"cycle_id": cycle_id, "title" : title, "description": description, "action_resources": action_resources  || [],
-                   "required_participants": required_participants, "execution_date": execution_date},
+                   "required_participants": required_participants, "execution_date": execution_date, "location": location},
             async: true,
             success: function (data) {
                 callback(null, data);

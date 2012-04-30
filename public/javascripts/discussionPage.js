@@ -90,7 +90,7 @@ function laodDiscussionPage(discussion_id){
         if(err){}
         else{
             for (var i in data.objects){
-                shopping_cart_items.add(data.objects[i]);
+                //shopping_cart_items.add(data.objects[i]);
             }
         }
     });
@@ -202,5 +202,16 @@ function laodDiscussionPage(discussion_id){
         $(this).parent('div').hide();
     });
 
+    $("#submit_post").on('click', function(e){
+        db_functions.addPostToDiscussion(discussion_id, $("textarea#discussion_comment").val(), function(err, post){
+            console.log(post);
+            dust.render('post', post, function(err, out){
+                $("#posts").append(out);
+            });
+        })
+    });
 
+    $('form').on('submit', function(e){
+        e.preventDefault();
+    })
 }
