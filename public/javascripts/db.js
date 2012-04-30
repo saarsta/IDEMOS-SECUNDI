@@ -109,7 +109,7 @@ var db_functions = {
     },
 
     dbGetInfoItemsByTagName: function(tag_name, callback){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/information_items?tags=' + tag_name,
             type: "GET",
             async: true,
@@ -117,25 +117,12 @@ var db_functions = {
 
                 console.log(data);
                 callback(null, data);
-                /*$('#information_items_list').empty();
-                dust.renderArray('information_item', data.objects,function(err,out)
-                {
-                    $('#information_items_list').append(out);
-                });
-
-                $('#search_results').show();
-                */
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                console.log(thrownError);
-                callback(err, null);
             }
         });
     },
 
     addInfoItemToShoppingCart: function(info_item_id, callback){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/shopping_cart/' + info_item_id,
             type: "PUT",
             async: true,
@@ -143,17 +130,12 @@ var db_functions = {
 
                 callback(null, data);
                 console.log("item information inserted to shopping cart");
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                callback(thrownError, null);
-                alert(thrownError);
             }
         });
     },
 
     removeInfoItemFromShoppingCart: function(info_item_id, callback){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/shopping_cart/' + info_item_id,
             type: "DELETE",
             async: true,
@@ -161,68 +143,48 @@ var db_functions = {
 //                          removeInfoItemFromUserShoppingCart(info_item_index);
                 callback(null)
                 console.log('info item deleted from shopping cart');
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                callback(thrownError);
-                console.log('error delete info item from shoping cart');
             }
         });
     },
 
     getUserShopingCart: function(callback){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/shopping_cart',
             type: "GET",
             async: true,
             success: function (data) {
                 console.log(data);
                 callback(null, data);
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                console.log(thrownError, null);
             }
-
         });
     },
 
     getUsersByCycle: function(cycle_id, callback){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/users?cycles=' + cycle_id,
             type: "GET",
             async: true,
             success: function (data) {
                 console.log(data);
                 callback(data);
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert('error');
             }
-
         });
     },
 
     getUsersByDiscussion: function(discussion_id, callback){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/users?discussions=' + discussion_id,
             type: "GET",
             async: true,
             success: function (data) {
                 console.log(data);
                 callback(data);
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert('error');
             }
-
         });
     },
 
     getHotInfoItems: function(){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/information_items/?is_hot_info_item=true',
             type: "GET",
             async: true,
@@ -235,26 +197,18 @@ var db_functions = {
                     $('#hot_items_list').append(out);
                     $('#hot_items_list img').autoscale();
                 });
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert('error with hot items');
             }
         });
 
     },
 
     getHotObjects: function(resource, callback){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/' + resource + '/?is_hot_object=true',
             type: "GET",
             async: true,
             success: function (data) {
                 console.log(data);
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                console.log(thrownError);
             }
         });
 
@@ -262,26 +216,19 @@ var db_functions = {
 
     getInfoItemsOfSubjectByKeywords: function(keywords, subject_id, callback){
         var keywords_arr = keywords.trim().replace(/\s+/g,".%2B");
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/information_items/?text_field__regex='+ keywords_arr + '&text_field_preview__regex='+ keywords_arr + '&subject_id=' + subject_id,
             type: "GET",
             async: true,
             success: function (data) {
                 console.log(data);
                 callback(null, data)
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                console.log(thrownError);
-                callback(thrownError, null);
-
             }
-
         });
     },
 
     getDiscussionById: function(discussion_id, callback){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/discussions/'+ discussion_id /*+ "&is_published=true"  i check it in the server - if isnt published only creator can sea it*/,
             type: "GET",
             async: true,
@@ -289,18 +236,12 @@ var db_functions = {
                 console.log(data);
 
                 callback(null, data);
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                callback(thrownError, null);
-                alert('error');
             }
-
         });
     },
 
     getDiscussionsByTagName: function(tag_name){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/discussions?tags=' + tag_name,
             type: "GET",
             async: true,
@@ -312,32 +253,23 @@ var db_functions = {
                 {
                     $('#discussion').append(out);
                 });
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert('error');
             }
         });
     },
 
     getDiscussionsBySubject: function(subject_id, callback){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/discussions/?subject_id=' + subject_id + "&is_published=true",
             type: "GET",
             async: true,
             success: function (data) {
                 callback(null, data);
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                console.log(thrownError);
-                callback(thrownError, null);
             }
         });
     },
 
     getAllDiscussions: function(callback){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/discussions',
            // url: '/discussionListTestData',
             type: "GET",
@@ -352,17 +284,13 @@ var db_functions = {
 
                 });
                 if(callback) callback(null, data);
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                callback(thrownError, null);
-                alert('error');
             }
         });
     },
 
 
     createPreviewDiscussion: function(subject_id, vision, title, callback){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/discussions/',
             type: "POST",
             async: true,
@@ -370,18 +298,12 @@ var db_functions = {
             success: function (data) {
                 console.log(data);
                 callback(null, data);
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                callback(thrownError, null);
-                alert('error');
             }
         });
     },
 
     createDiscussion: function(subject_id, subject_name, vision, title, tags, callback){
-        console.log('data: {"subject_id": subject_id, "vision_text": vision, "title": title, "tags": tags, "is_published": true},');
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/discussions/',
             type: "POST",
             async: true,
@@ -399,25 +321,19 @@ var db_functions = {
     },
 
     diployDiscussion: function(created_discussion_id, callback){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/discussions/' + created_discussion_id,
             type: "PUT",
             async: true,
             success: function () {
                 callback(null);
                 console.log("item information inserted to discussion shopping cart");
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                callback(thrownError);
-                alert('error');
             }
         });
     },
 
     getDiscussionShoppingCart: function(discussion_id, callback){
-
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/discussions_shopping_cart?discussion_id=' + discussion_id,
             type: "GET",
             async: true,
@@ -430,12 +346,11 @@ var db_functions = {
                 callback(thrownError, null);
             //    alert('error');
             }
-
         });
     } ,
 
     addInfoItemToDiscussionShoppingCart: function(info_item_id, created_discussion_id, callback){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/discussions_shopping_cart/' + info_item_id,
             type: "PUT",
             async: true,
@@ -443,32 +358,23 @@ var db_functions = {
             success: function () {
                 callback(null);
                 console.log("item information inserted to discussion shopping cart");
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                callback(thrownError);
-                alert('error');
             }
         });
     },
 
     deleteInfoItemFromDiscussionShoppingCart: function(info_item_id, created_discussion_id){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/discussions_shopping_cart/' + info_item_id + '/?discussion_id=' + created_discussion_id,
             type: "DELETE",
             async: true,
             success: function () {
                 console.log("item information inserted to discussion shopping cart");
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert('error');
             }
         });
     },
 
     addLikeToInfoItem: function(info_item_id, callback){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/likes',
             type: "POST",
             data: {"info_item_id" : info_item_id},
@@ -476,51 +382,36 @@ var db_functions = {
             success: function (data) {
                 console.log(data);
                 callback(null, data)
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                callback(thrownError, null);
-                console.log(thrownError);
             }
         });
     },
 
     getPostByDiscussion: function(discussion_id, callback){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/posts?discussion_id=' + discussion_id,
             type: "GET",
             async: true,
             success: function (data) {
                 console.log(data);
                 callback(null, data);
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                callback(thrownError, null);
-                alert('get Posts error');
             }
         });
     },
 
     getSortedPostByDiscussion: function(discussion_id, sort_by, callback){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/posts?discussion_id=' + discussion_id + "&" + sort_by,
             type: "GET",
             async: true,
             success: function (data) {
                 console.log("posts are" + " " + data);
                 callback(null, data);
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                callback(thrownError, null);
-                alert('get Posts error');
             }
         });
     },
 
     voteForPost: function(post_id, method, callback){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/votes/',
             type: "POST",
             async: true,
@@ -528,18 +419,12 @@ var db_functions = {
             success: function (data) {
                 console.log(data);
                 callback(null, data);
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                console.log(thrownError)
-                callback(thrownError, null);
             }
         });
     },
 
     addPostToDiscussion: function(discussion_id, post_content, callback){
-
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/posts/',
             type: "POST",
             async: true,
@@ -547,37 +432,24 @@ var db_functions = {
             success: function (data) {
                 console.log(data);
                 callback(null, data);
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                console.log(thrownError)
-                callback(thrownError, null);
-                alert('create Post error');
             }
         });
     },
 
     getDiscussionPostsByTokens: function(discussion_id, limit_number, callback){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/posts?discussion_id=' + discussion_id + '&is_comment_on_action=false&order_by=-tokens&limit=' + limit_number,
             type: "GET",
             async: true,
             success: function (data) {
                 console.log(data);
                 callback(null, data);
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                console.log(thrownError)
-                callback(thrownError, null);
-                alert('get Posts error');
             }
         });
     },
 
     addSuggestionToDiscussion: function(discussion_id, parts, callback){
-
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/suggestions/',
             type: "POST",
             async: true,
@@ -585,19 +457,13 @@ var db_functions = {
             success: function (data) {
                 console.log(data);
                 callback(null, data);
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                console.log(thrownError)
-                callback(thrownError, null);
-                alert('create Post error');
             }
         });
     },
     //this post/change_suggestion has ref to a post/suggestion/vision
     addCommentPostToDiscussion: function(discussion_id, post_content, ref_to_post_id, is_comment_on_vision, callback){
 
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/posts/',
             type: "POST",
             async: true,
@@ -605,18 +471,12 @@ var db_functions = {
             success: function (data) {
                 console.log(data);
                 callback(null, data);
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                callback(thrownError, null);
-                alert('create Post error');
             }
         });
     },
 
     getPopularPostsByAction: function(action_id, callback){
-
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/posts_of_action?action_id=' + action_id + '&order_by=-popularity',
             type: "Get",
             async: true,
@@ -624,17 +484,12 @@ var db_functions = {
             success: function (data) {
                 //console.log(data);
                 callback(null, data);
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                callback(thrownError, null);
-              //  alert('create Post error');
             }
         });
     },
 
     addDiscussionGrade: function(discussion_id, grade, callback){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/grades/',
             type: "POST",
             async: true,
@@ -642,17 +497,12 @@ var db_functions = {
             success: function (data) {
                 callback(null, data);
 
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                callback(thrownError, null);
-
             }
         });
     },
 
     getAllCycles: function(){
-        $.ajax({
+        this.loggedInAjax({
              //  url: '/api/cycles',
             url: '/api/cycles',
             type: "GET",
@@ -663,25 +513,17 @@ var db_functions = {
                 {
                     $('#mainList').append(out);
                 });
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert('error');
             }
         });
     },
 
     getCycleById: function(cycle_id, callback){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/cycles/'+ cycle_id,
             type: "GET",
             async: true,
             success: function (data) {
                 callback(null, data);
-
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                callback(thrownError, null);
 
             }
         });
@@ -706,74 +548,54 @@ var db_functions = {
     },*/
 
     getPopularPostsByDiscussionId: function(discussion_id, callback){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/posts/'+ discussion_id + "&order_by=-popularity",
             type: "GET",
             async: true,
             success: function (data) {
                 callback(null, data);
 
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                callback(thrownError, null);
-
             }
         });
     },
 
     joinToCycleFollowers: function(cycle_id, callback){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/cycles/'+ cycle_id,
             type: "PUT",
             async: true,
             success: function (data) {
                 callback(null, data);
 
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                callback(thrownError, null);
-
             }
         });
     },
 
     joinToDiscussionFollowers: function(discussion_id, callback){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/discussions/'+ discussion_id + '/?put=follower',
             data: {"follower": true},
             type: "PUT",
             async: true,
             success: function (data) {
                 callback(null, data);
-
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                callback(thrownError, null);
-
             }
         });
     },
 
      getActionById: function(action_id, callback){
-        $.ajax({
+         this.loggedInAjax({
             url: '/api/actions_populated/' + action_id,
             type: "GET",
             async: true,
             success: function (data) {
                 callback(null, data);
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                callback(thrownError, null);
             }
         });
     },
 
     getCyclesByTagName: function(tag_name){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/cycles?tags=' + tag_name,
             type: "GET",
             async: true,
@@ -785,16 +607,12 @@ var db_functions = {
                 {
                     $('#cycle_list').append(out);
                 });
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert('error');
             }
         });
     },
 
     getCyclesBySubject: function(subject_id){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/cycles?subject_id=' + subject_id,
             type: "GET",
             async: true,
@@ -803,64 +621,47 @@ var db_functions = {
                 $.each(data.objects, function(index, value){
                     $("select#sel_cycle").append($("<option />").val(value._id).text(value.title));
                 });
-
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert('error');
             }
         });
     },
 
     getAllCycles: function(callback){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/cycles',
             type: "GET",
             async: true,
             success: function (data) {
                 console.log(data);
                 callback(null, data);
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                console.log(thrownError);
-                callback(thrownError, null);
             }
         });
     },
 
     getApprovedActionByCycle: function(cycle_id, callback){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/actions?cycle_id='+ cycle_id + '&is_approved=true',
             type: "GET",
             async: true,
             success: function (data) {
                 callback(null, data);
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                callback(thrownError, null);
             }
         });
     },
 
     getNotApprovedActionByCycle: function(cycle_id, callback){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/actions?cycle_id='+ cycle_id + '&is_approved=false',
             type: "GET",
             async: true,
             success: function (data) {
                 callback(null, data);
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                callback(thrownError, null);
             }
         });
     },
 
     getAllPendingActions: function(callback){
-        $.ajax({
+        this.loggedInAjax({
+
             //url: '/actionListTestData',
             url: '/api/actions?is_approved=false',
             type: "GET",
@@ -883,7 +684,7 @@ var db_functions = {
 
 
     getAllApprovedActions: function(callback){
-        $.ajax({
+        this.loggedInAjax({
             //  url: '/actionListTestData',
             url: '/api/actions?is_approved=true',
             type: "GET",
@@ -897,47 +698,34 @@ var db_functions = {
 
                 });
                 if(callback) callback(null, data);
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                callback(thrownError, null);
-                // alert('error');
             }
         });
     },
 
     getCategories: function(callback){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/categories',
             type: "GET",
             async: true,
             success: function (data) {
                 callback(null, data);
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                callback(thrownError, null);
             }
         });
     },
 
     getActionResourceByCategoryId: function(category_id, callback){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/action_resource?category=' + category_id,
             type: "GET",
             async: true,
             success: function (data) {
                 callback(null, data);
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                callback(thrownError, null);
             }
         });
     },
 
     getActionsByTagName: function(tag_name){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/actions?tags=' + tag_name,
             type: "GET",
             async: true,
@@ -948,66 +736,48 @@ var db_functions = {
                 {
                     $('#action_list').append(out);
                 });
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert('error');
             }
         });
     },
 
     getActionsByCycle: function(cycle_id, callback){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/actions?is_approved=true&cycle_id=' + cycle_id,
             type: "GET",
             async: true,
             success: function (data) {
             //    console.log(data);
                 callback(null,data);
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-            //    console.log(thrownError);
-                callback(thrownError);
             }
         });
     },
 
     getPendingActionsByCycle: function(cycle_id, callback){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/actions?is_approved=false&cycle_id=' + cycle_id,
             type: "GET",
             async: true,
             success: function (data) {
                // console.log(data);
                 callback(null,data);
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-               // console.log(thrownError);
-                callback(thrownError,null);
             }
         });
     },
 
     getActionResoueces: function(callback){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/action_resources',
             type: "GET",
             async: true,
             success: function (data) {
                 callback(null, data);
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                callback(thrownError, null);
             }
         });
     },
 
 
     addAction: function(cycle_id, title, description, action_resources, required_participants, execution_date, location, callback){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/actions',
             type: "POST",
             data: {"cycle_id": cycle_id, "title" : title, "description": description, "action_resources": action_resources  || [],
@@ -1015,144 +785,100 @@ var db_functions = {
             async: true,
             success: function (data) {
                 callback(null, data);
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                callback(thrownError, null);
             }
         });
     },
 
     getAllItemsByUser: function(api_resource, callback){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/' + api_resource + '?get=myUru',
             type: "GET",
             async: true,
             success: function (data) {
                 callback(null, data);
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                callback(thrownError, null);
             }
         });
     },
 
     addUserToAction: function(action_id, callback){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/actions/' + action_id,
             type: "PUT",
             async: true,
             success: function (data) {
                 callback(null, data);
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                callback(thrownError, null);
             }
         });
     },
 
     getAllItemsByUser: function(api_resource, callback){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/' + api_resource + '?get=myUru',
             type: "GET",
             async: true,
             success: function (data) {
                 callback(null, data);
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                callback(thrownError, null);
             }
         });
     },
 
     joinToAction: function(action_id, callback){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/joins/',
             type: "PUT",
             async: true,
             data: {"action_id": action_id},
             success: function (data) {
                 callback(null, data);
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                callback(thrownError, null);
             }
         });
     },
 
     getUpdatesOfCycle: function(cycle_id, callback){
-
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/updates/?cycles=' + cycle_id,
             type: "GET",
             async: true,
             success: function (data) {
               //  console.log(data);
                 callback(null, data);
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-              //  console.log(thrownError);
-                callback(thrownError, null);
             }
         });
     },
 
     getSuccessStories: function(cycle_id, callback){
-
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/success_stories',
             type: "GET",
             async: true,
             success: function (data) {
             //    console.log(data);
                 callback(null, data);
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-              //  console.log(thrownError);
-                callback(thrownError, null);
             }
         });
     },
 
     getHeadlines: function(cycle_id, callback){
-
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/headlines',
             type: "GET",
             async: true,
             success: function (data) {
              //   console.log(data);
                 callback(null, data);
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-             //   console.log(thrownError);
-                callback(thrownError, null);
             }
         });
     },
 
     //blogs
     getPopularArticles: function(cycle_id, callback){
-
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/articles?oreder_by=-popolarity_counter',
             type: "GET",
             async: true,
             success: function (data) {
             //    console.log(data);
                 callback(null, data);
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-            //    console.log(thrownError);
-                callback(thrownError, null);
             }
         });
     }
