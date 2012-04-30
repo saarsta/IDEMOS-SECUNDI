@@ -617,10 +617,10 @@ var db_functions = {
     getPopularPostsByAction: function(action_id, callback){
 
         $.ajax({
-            url: '/api/posts_action/',
+            url: '/api/posts_of_action?action_id=' + action_id + '&order_by=-popularity',
             type: "Get",
             async: true,
-            data: {"action_id": action_id, "text": post_content, "ref_to_post_id": ref_to_post_id, "is_comment_on_vision": is_comment_on_vision},
+            data: {"action_id": action_id},
             success: function (data) {
                 console.log(data);
                 callback(null, data);
@@ -687,9 +687,27 @@ var db_functions = {
         });
     },
 
-    getPopularPostsByCycleId: function(cycle_id, callback){
+    //get posts by discussion replace it
+    /*getPopularPostsByCycleId: function(cycle_id, callback){
         $.ajax({
             url: '/api/posts/'+ cycle_id + "&order_by=-popularity",
+            type: "GET",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
+
+            }
+        });
+    },*/
+
+    getPopularPostsByDiscussionId: function(discussion_id, callback){
+        $.ajax({
+            url: '/api/posts/'+ discussion_id + "&order_by=-popularity",
             type: "GET",
             async: true,
             success: function (data) {
