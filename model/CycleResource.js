@@ -24,21 +24,45 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
             return query.populate("discussions");
         }
 
-//        this.fields = {
-//            document:null,
-//            title:null,
-//            users:{
-//                user_id:{
-//                    email:null,
-//                    first_name:null,
-//                    avatar_url:null
-//                },
-//                join_date:null
-//               //add more fields
-//            }
-//        }
-
-
+        this.fields = {
+            document:null,
+            title:null,
+            users:{
+                user_id:{
+                    email:null,
+                    first_name:null,
+                    avatar_url:null
+                },
+                join_date:null
+            },
+            creation_date: null,
+            text_field: null,
+            text_field_preview: null,
+            image_field: null,
+            image_field_preview: null,
+            tags:null,
+            discussions:{
+                title: null,
+                text_field: null,
+                text_field_preview: null,
+                image_field: null,
+                image_field_preview: null,
+                subject_id: null,
+                creation_date: null,
+                creator_id: null,
+                first_name: null,
+                last_name: null,
+                vision_text_preview: null,
+                vision_text: null,
+                grade: null
+            },
+            is_hot_object: null,
+            followers_count: null,
+            num_of_comments: null,
+            upcoming_action: null,
+            num_upcoming_actions: null,
+            is_follower: null
+        }
     },
 
     run_query: function(req,query,callback)
@@ -46,6 +70,18 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
         if(req.params.cycle)
             query.populate('users.user_id');
         this._super(req,query,callback);
+    },
+
+    get_object:function (req, id, callback) {
+        models.Cycle.findById(id, function (err, object) {
+            if (err) {
+                callback(err, null);
+            }
+            else {
+                object.is_follower = common.isArgIsInList(id, req.user.cycles);
+                callback(null, object);
+            }
+        });
     },
 
     get_objects: function (req, filters, sorts, limit, offset, callback) {

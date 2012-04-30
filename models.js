@@ -233,11 +233,7 @@ var Schemas = exports.Schemas = {
 
     Cycle: new Schema({
         creation_date: {type:Date, 'default':Date.now},
-
-
-
         due_date : {type:Date, 'default':function(){ return Date.now() + 1000*3600*24*30;  }},
-
         subject:[{
             id:{type:ObjectId, ref:'Subject', index:true, required:true},
             name: {type:String, editable:false}
