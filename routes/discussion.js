@@ -1,3 +1,4 @@
+var models = require('../models.js');
 
 exports.createDiscussionPageInit = function(req, res){
     res.render('createDiscussion.ejs',{title:"יצירת דיון", logged: req.isAuthenticated(),
@@ -11,16 +12,20 @@ exports.createDiscussionPageInit = function(req, res){
 };
 
 exports.discussionPageInit = function(req, res){
-
-    res.render('discussionPage.ejs',{title:"דיון",
-        logged: req.isAuthenticated(),
-        discussion_id: req.params.id,
-        subject_id: req.query.subject_id,
-        big_impressive_title: req.query.subject_name,
-        user: req.session.user,
-        avatar:req.session.avatar_url,
-        tab:'discussions',
-        extra_head:'<script src="/javascripts/discussionPage.js"></script>'});
+    models.Discussion.findById(req.params.id, function(err, discussion){
+        res.render('discussionPage.ejs',{
+            layout: false,
+            title:"דיון",
+            logged: req.isAuthenticated(),
+            discussion_id: req.params.id,
+            subject_id: req.query.subject_id,
+            big_impressive_title: req.query.subject_name,
+            user: req.session.user,
+            avatar:req.session.avatar_url,
+            tab:'discussions',
+            discussion: discussion,
+            extra_head:'<script src="/javascripts/discussionPage.js"></script>'});
+    });
 };
 
 exports.discussionPreviewPageInit = function(req, res){

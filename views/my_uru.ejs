@@ -22,14 +22,14 @@
 
             <div class="details">
                 <div class="information">
-                    <p><%=user.username%></p>
-                    <p>עיר מגורים</p>
+                    <p><%=user.username || user.first_name%></p>
+                    <p><%=user.address || ""%></p>
                     <p>
                         <% if(user.gender==='male'){ %>
                         זכר
                         <%} else{ %>נקבה<% } %> </p>
-                     <p><%=user.occupation %></p>
-                    <p><%=user.biography %></p>
+                     <p><%= user.occupation || "" %></p>
+                    <p><%=user.biography || ""%></p>
                 </div>
                 <div class="toucans">
                     <h4>כמות טוקנים</h4>
