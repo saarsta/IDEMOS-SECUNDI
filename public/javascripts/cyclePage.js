@@ -23,6 +23,34 @@ function loadCyclePage(cycle_id,start_date, finish_date){
             });
         });
 
+        dust.renderArray('cycle_user',cycle.users,null,function(err,out)
+        {
+            $('#userList').append(out);
+        });
+        //bugbug:         cycle.users should be replaced with pending actions
+
+        db_functions.getPendingActionsByCycle(cycle_id,function(err,pendingActions)
+        {
+            dust.renderArray('cycle_pending_action',pendingActions.objects,null,function(err,out)
+            {
+                $('#cyclePendingActions').append(out);
+            });
+        });
+
+        db_functions.getPopularPostsByDiscussionId(discussion_id,function(err,posts)
+        {
+            //bugbug:         cycle.users should be replaced with  posts
+            dust.renderArray('cycle_popular_post',cycle.users,null,function(err,out)
+            {
+                $('#cyclePopularPosts').append(out);
+                $('#pupularPostsLink').click(function(){
+                    $('#cyclePopularPosts').slideToggle('slow', function() {
+                        // Animation complete.
+                    });
+                });
+            });
+        });
+
 
         var start_date = Date.parse(cycle.creation_date);
         var span = Date.parse(cycle.due_date) - start_date ;
