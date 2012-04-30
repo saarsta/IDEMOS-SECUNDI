@@ -921,6 +921,21 @@ var db_functions = {
         });
     },
 
+    getActionResourceByCategoryId: function(category_id, callback){
+        $.ajax({
+            url: '/api/action_resource?category=' + category_id,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                callback(thrownError, null);
+            }
+        });
+    },
+
     getActionsByTagName: function(tag_name){
         $.ajax({
             url: '/api/actions?tags=' + tag_name,
