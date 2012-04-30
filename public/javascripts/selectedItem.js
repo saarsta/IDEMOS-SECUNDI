@@ -16,6 +16,7 @@ function loadSelectedItemPage(info_id){
                 dust.render('shopping_cart_item_1', data,function(err,out)
                 {
                     $('#shopping_cart').append(out);
+                    $('#shopping_cart img').autoscale();
                 });
             }
         });
@@ -48,6 +49,7 @@ function loadSelectedItemPage(info_id){
              dust.render('info_item_full_view', data, function(err,out)
              {
                  $('#info_item_full_view').append(out);
+                 $('#info_item_full_view img').autoscale();
              });
 
 //             $('#search_results').show();
@@ -58,7 +60,7 @@ function loadSelectedItemPage(info_id){
         }
     });
 
-    db_functions.getUserShopingCart(function(data){
+    db_functions.getUserShopingCart(function(err,data){
         data.objects.forEach(function(obj)
         {
             obj.get_link = function( )
@@ -66,9 +68,10 @@ function loadSelectedItemPage(info_id){
                 return '/meida/' + obj._id;
             }
         });
-        dust.renderArray('shopping_cart_item_1', data.objects,function(err,out)
+        dust.renderArray('shopping_cart_item_1', data.objects,null,function(err,out)
         {
             $('#shopping_cart').append(out);
+            $('#shopping_cart img').autoscale();
         });
 
         /*for (var i in data.objects) {
