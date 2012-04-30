@@ -32,7 +32,7 @@ writer.write(compile_template('action_full_view','actionFullView.html'));
 writer.write(compile_template('action_map','action_map.html'));
 writer.write(compile_template('cycle_main','cycle_main.html'));
 writer.write(compile_template('cycle_user','cycle_user.html'));
-writer.write(compile_template('cycle_action','cycle_action.html'));
+writer.write(compile_template('cycle_update','cycle_update.html'));
 writer.write(compile_template('cycle_pending_action','cycle_pending_action.html'));
 writer.write(compile_template('cycle_popular_post','cycle_popular_post.html'));
 

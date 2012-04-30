@@ -929,12 +929,12 @@ var db_functions = {
             type: "GET",
             async: true,
             success: function (data) {
-                console.log(data);
+            //    console.log(data);
                 callback(null,data);
             },
 
             error: function (xhr, ajaxOptions, thrownError) {
-                console.log(thrownError);
+            //    console.log(thrownError);
                 callback(thrownError);
             }
         });
@@ -946,11 +946,13 @@ var db_functions = {
             type: "GET",
             async: true,
             success: function (data) {
-                console.log(data);
+               // console.log(data);
+                callback(null,data);
             },
 
             error: function (xhr, ajaxOptions, thrownError) {
-                console.log(thrownError);
+               // console.log(thrownError);
+                callback(thrownError,null);
             }
         });
     },
@@ -1056,12 +1058,12 @@ var db_functions = {
             type: "GET",
             async: true,
             success: function (data) {
-                console.log(data);
+              //  console.log(data);
                 callback(null, data);
             },
 
             error: function (xhr, ajaxOptions, thrownError) {
-                console.log(thrownError);
+              //  console.log(thrownError);
                 callback(thrownError, null);
             }
         });
@@ -1074,12 +1076,12 @@ var db_functions = {
             type: "GET",
             async: true,
             success: function (data) {
-                console.log(data);
+            //    console.log(data);
                 callback(null, data);
             },
 
             error: function (xhr, ajaxOptions, thrownError) {
-                console.log(thrownError);
+              //  console.log(thrownError);
                 callback(thrownError, null);
             }
         });
@@ -1092,12 +1094,12 @@ var db_functions = {
             type: "GET",
             async: true,
             success: function (data) {
-                console.log(data);
+             //   console.log(data);
                 callback(null, data);
             },
 
             error: function (xhr, ajaxOptions, thrownError) {
-                console.log(thrownError);
+             //   console.log(thrownError);
                 callback(thrownError, null);
             }
         });
@@ -1111,12 +1113,12 @@ var db_functions = {
             type: "GET",
             async: true,
             success: function (data) {
-                console.log(data);
+            //    console.log(data);
                 callback(null, data);
             },
 
             error: function (xhr, ajaxOptions, thrownError) {
-                console.log(thrownError);
+            //    console.log(thrownError);
                 callback(thrownError, null);
             }
         });
