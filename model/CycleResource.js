@@ -25,6 +25,14 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
         }
 
     },
+
+    run_query: function(req,query,callback)
+    {
+        if(req.params.cycle)
+            query.populate('users.user_id');
+        this._super(req,query,callback);
+    },
+
     get_objects: function (req, filters, sorts, limit, offset, callback) {
 
         if(req.query.get == "myUru"){
