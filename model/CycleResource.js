@@ -22,21 +22,21 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
         this.filtering = {tags: null};
         this.default_query = function(query){
             return query.populate("discussion_id");
-        },
-
-        this.fields = {
-            document:null,
-            title:null,
-            users:{
-                user_id:{
-                    email:null,
-                    first_name:null,
-                    avatar_url:null
-                },
-                join_date:null
-                //add more fields
-            }
         }
+
+//        this.fields = {
+//            document:null,
+//            title:null,
+//            users:{
+//                user_id:{
+//                    email:null,
+//                    first_name:null,
+//                    avatar_url:null
+//                },
+//                join_date:null
+//               //add more fields
+//            }
+//        }
 
 
     },
