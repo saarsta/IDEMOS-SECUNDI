@@ -1,7 +1,7 @@
 <div id="main">
+
+
         <div class="post clearfix" id="cycleMain" >
-
-
           <div class="timeline clearfix">
             <h3><strong>Timeline</strong> (כותרת קצרה המתארת את התוכן -><strong> מרכז הדף</strong>, מרכז בתוכו את כל ההתרחשות וההיסטוריה סביב מעגל התנופה)</h3>
             <a href="#" class="button">עבור לתצוגת מפה</a>
@@ -14,7 +14,7 @@
               </div>
           </div>
           <div class="actions clearfix">
-            <div class="details"> <a href="#" class="button suggest">הצע פעולה חדשה</a>
+            <div class="details"> <a  href="#inline_content"  id="newActionBtn" class="button suggest">הצע פעולה חדשה</a>
               <p class="meta-data">עדכונים, שיתופים, תוספות, הודעות *****</p>
               <div class="frame1"> <img src="/resources/images/assets/video-image1.jpg" alt="video-image1"/> </div>
               <h4>קטע טקסט מעניין ורלוונטי</h4>
@@ -126,8 +126,48 @@
         </div>
       </div>
 
+
+<!--Popup -->
+<div style='display:none'>
+        <div id='inline_content' class="popup create-action css3">
+        <a href="#" class="close-btn"></a>
+
+        <div class="form clearfix">
+            <form action="#" method="post">
+                <h2>יצירת פעולה חדשה</h2>
+
+                <input type="text" name="title" placeholder="כותרת" />
+                <input type="text" name="date" class="nf_datepicker" placeholder="תאריך" />
+                <textarea name="description" placeholder="טקסט חופשי"></textarea>
+                <button name="find_location">קבע את מיקום הפעולה</button>
+
+                <select type="text" name="toolbox" placeholder="ארגז כלים (פעולות קיימות במערכת – פעולת שטח, עצומה, הפגנה)"  />
+                <textarea name="resources" placeholder="משאבים דרושים"></textarea>
+
+                <label class="num">
+                    <input type="number" name="participants_count">
+                    מספר משתתפים רצוי
+                </label>
+                <!--<textarea name="addendum"></textarea>-->
+
+                <button type="submit">צור פעולה חדשה</button>
+                <label class="check">
+                    <input type="checkbox" value="on">
+                    שתף*
+                </label>
+            </form>
+        </div>
+    </div>
+</div>
+<!--/Popup -->
+
         <script>
             $(function(){
                loadCyclePage("<%= cycle_id %>");
+                loadPopupData();
+               $("#newActionBtn").colorbox({inline:true});
+                if($().datetimepicker){
+                    $('.nf_datepicker').datetimepicker();
+                }
             });
         </script>
