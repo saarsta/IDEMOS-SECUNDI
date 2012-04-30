@@ -570,7 +570,7 @@ div.actions div.box1 a.button{ height:20px; line-height:20px; width:125px; text-
 
 
 /*---- Popup ----*/
-div.popup{ border:2px solid #3c3c3b; position:absolute; top: 200px; right: 50px; padding:20px 10px 0px; background:#f6f6f6; width:810px; margin:0px auto;}
+div.popup{ border:2px solid #3c3c3b; padding:20px 10px 0px; background:#f6f6f6; width:810px; margin:0px auto;}
 div.popup a.close-btn{ width:25px; height:25px; background:url(../images/theme/close-btn.png) no-repeat left top; text-decoration:none; position:absolute; left:10px; top:10px;}
 div.popup div.form{ margin-bottom:30px;}
 div.popup div.form h2{ color:#000000; font-weight:normal; font-size:270%; line-height:40px; margin:0px 0px 0px 22px; font-style:italic;}
@@ -762,3 +762,5 @@ div.box.post a.button1{ margin:0px auto -25px; position:relative;}
 .ui-tabs .ui-tabs-panel { display: block; border-width: 0; padding: 1em 1.4em; background: none; }
 .ui-tabs .ui-tabs-hide { display: none !important; }
 .myuru-li-img{width:123px; height: 109px}
+
+
