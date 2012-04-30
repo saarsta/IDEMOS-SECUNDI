@@ -491,7 +491,7 @@ var db_functions = {
             type: "GET",
             async: true,
             success: function (data) {
-                console.log("posts are" + " " + data);
+                console.log(data);
                 callback(null, data);
             },
 

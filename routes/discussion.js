@@ -24,6 +24,7 @@ exports.discussionPageInit = function(req, res){
             avatar:req.session.avatar_url,
             tab:'discussions',
             discussion: discussion,
+            url: req.url,
             extra_head:'<script src="/javascripts/discussionPage.js"></script>'});
     });
 };

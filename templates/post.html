@@ -3,27 +3,17 @@
         <div class="image">
             <div class="frame">
                 <img width="59" height="62" alt="{title}" src="{avatar}"/>
-                <div class="controls"><a href="#"></a><a href="#"></a></div>
+                <div class="controls"><a href="#"></a><a href="#"></a></div> 
             </div>
-            <span>{username}</span>
-            <span>{creation_date}</span>
-            <p>{text}</p>
+            <span>{username} {creation_date}</span>
         </div>
-
-        <div class="action">
-            <a class="button" href="#">צטט</a>
-            <a href="/facebookShare?link={get_link|u}" target="_blank" class="button">שתף</a>
-            <a class="button" href="#">Like</a>
-
-            <div post_id="{_id}">
-                <a class="button vote_for" href="#">
-                    בעד
-                </a>
-
-                <a class="button vote_against" href="#">
-                    נגד
-                </a>
-            </div>
-        </div>
+        <p>{text}</p>
+    </div>
+    <div class="action">
+        <a class="button" href="#">צטט</a>
+        <a class="button" href="/facebookShare?link={get_link|u}" target="_blank">שתף</a>
+        <a class="button" href="#">Like</a>
+        <a class="button" href="#">בעד</a>
+        <a class="button" href="#">נגד</a>
     </div>
 </li>
