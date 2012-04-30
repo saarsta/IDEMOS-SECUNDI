@@ -2,9 +2,33 @@
 function loadCyclePage(cycle_id,start_date, finish_date){
     db_functions.getCycleById(cycle_id,function(err,cycle)
     {
+        db_functions.getDiscussionById(cycle.discussions[0],function(err,discussion)
+        {
+            cycle.discussion=     discussion   ;
+            dust.render('cycle_main',cycle,function(err,out){
+                $('#cycleMain').prepend(out);
+            });
+        });
 
-        dust.render('cycle_main',cycle,function(err,out){
-            $('#cycleMain').prepend(out);
+        dust.render('cycle_action',cycle,function(err,out){
+            $('#cycleAction').prepend(out);
+        });
+        dust.renderArray('cycle_user',cycle.users,null,function(err,out)
+        {
+            $('#userList').append(out);
+        });
+        //bugbug:         cycle.users should be replaced with pending actions
+        dust.renderArray('cycle_pending_action',cycle.users,null,function(err,out)
+        {
+            $('#cyclePendingActions').append(out);
+        });
+        db_functions.getPopularPostsByCycleId(cycle_id,function(err,posts)
+        {
+            //bugbug:         cycle.users should be replaced with  posts
+            dust.renderArray('cycle_popular_post',cycle.users,null,function(err,out)
+            {
+                $('#cyclePopularPosts').append(out);
+            });
         });
 
 
@@ -33,6 +57,14 @@ function loadCyclePage(cycle_id,start_date, finish_date){
 
     });
 }
+
+             //gestdiscussioshopping cart
+//getcycleupdate
+//getpendingactionsbycyclce
+
+
+
+
 //getPopularPostsByCycleId
 
 //dust.renderArray('hot_info_item', data.objects, null, function(err,out)

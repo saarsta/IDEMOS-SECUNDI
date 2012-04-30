@@ -30,7 +30,10 @@ writer.write(compile_template('discussion_full_view','discussionFullView.html'))
 writer.write(compile_template('action_timeline','action_timeline.html'));
 writer.write(compile_template('action_map','action_map.html'));
 writer.write(compile_template('cycle_main','cycle_main.html'));
-writer.write(compile_template('popular_posts','popular_posts.html'));
+writer.write(compile_template('cycle_user','cycle_user.html'));
+writer.write(compile_template('cycle_action','cycle_action.html'));
+writer.write(compile_template('cycle_pending_action','cycle_pending_action.html'));
+writer.write(compile_template('cycle_popular_post','cycle_popular_post.html'));
 
 
 
