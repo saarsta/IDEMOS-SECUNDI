@@ -21,7 +21,7 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
         this.allowed_methods = ['get', 'put'];
         this.filtering = {tags: null};
         this.default_query = function(query){
-            return query.populate("discussion_id");
+            return query.populate("discussions");
         }
 
 //        this.fields = {
