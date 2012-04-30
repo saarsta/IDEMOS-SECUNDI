@@ -422,13 +422,13 @@ var db_functions = {
             type: "GET",
             async: true,
             success: function (data) {
-                console.log(data);
+           //     console.log(data);
                 callback(null, data);
             },
 
             error: function (xhr, ajaxOptions, thrownError) {
                 callback(thrownError, null);
-                alert('error');
+            //    alert('error');
             }
 
         });
@@ -622,13 +622,13 @@ var db_functions = {
             async: true,
             data: {"action_id": action_id, "text": post_content, "ref_to_post_id": ref_to_post_id, "is_comment_on_vision": is_comment_on_vision},
             success: function (data) {
-                console.log(data);
+                //console.log(data);
                 callback(null, data);
             },
 
             error: function (xhr, ajaxOptions, thrownError) {
                 callback(thrownError, null);
-                alert('create Post error');
+              //  alert('create Post error');
             }
         });
     },
