@@ -106,7 +106,7 @@ var Schemas = exports.Schemas = {
 
     InformationItem:{
         title: {type: String, required: true},
-        subject_id:{type:[ObjectId], ref:'Subject', index:true, required:true},
+        subject_id:[{type:ObjectId, ref:'Subject',required:true}],
         category:{type:String, "enum":['test', 'statistics', 'infographic', 'graph'], required:true},
         text_field:{type:mongoose_types.Text},
         text_field_preview:{type:mongoose_types.Html},
@@ -114,7 +114,7 @@ var Schemas = exports.Schemas = {
         image_field_preview: mongoose_types.File,
         tags:{type:[String], index:true},
         users:{type:[ObjectId], ref:'User',editable:false},
-        discussions:{type:[ObjectId], ref:'Discussion', index:true,editable:false},
+        discussions:{type:[ObjectId], ref:'Discussion', index:true,/*editable:false just untill the production*/},
         is_visible:{type:Boolean, 'default':true},
         creation_date:{type:Date, 'default':Date.now,editable:false},
         is_hot_object:{type:Boolean, 'default':false},
@@ -270,10 +270,10 @@ var Schemas = exports.Schemas = {
 
     PostOrSuggestion:{
         creator_id:{type:Schema.ObjectId, ref:'User'},
-        first_name:{type:String,editable:false},
-        last_name:{type:String, editable:false },
-        username:{type:String,editable:false},
-        avatar : {type:mongoose_types.File, editable:false},
+//        first_name:{type:String,editable:false},
+//        last_name:{type:String, editable:false },
+//        username:{type:String,editable:false},
+//        avatar : {type:mongoose_types.File, editable:false},
         creation_date:{type:Date, 'default':Date.now,editable:false},
         tokens:{type:Number, 'default':0, index: true},
         post_price:{type:Number, 'default':0},//how many tokens for creating post
