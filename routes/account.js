@@ -371,7 +371,10 @@ function createNewUser(data, access_token, callback) {
     user.identity_provider = "facebook";
     user.first_name = data.first_name;
     user.last_name = data.last_name;
-    user.email = data.email; //there is a problem with email
+    user.email = data.email;
+    if (data.hometown) {
+         user.address = data.hometown.name;
+    }
     user.gender = data.gender;
     user.facebook_id = data.id;
     if(data.invited_by)

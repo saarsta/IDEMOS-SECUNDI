@@ -77,6 +77,7 @@ var Schemas = exports.Schemas = {
         email:{type:String, required:true, validate:TestEmailValidator},
         gender:{type:String, "enum":['male', 'female']},
         age:{type:Number, min:0},
+        address: String,
         occupation: String,
         biography: String,
         discussions:[
@@ -419,13 +420,13 @@ var Schemas = exports.Schemas = {
     Article: new Schema({
         user_id:{type:ObjectId, ref:'User', index:true, required:true},
         first_name: {type:String, editable:false},
-        last_name: {type:String,editable:false},
-        avatar : {type:String,editable:false},
-        title : {type:String, required:true},
+        last_name: {type:String, editable:false},
+        avatar : {type:String, editable:false},
+        title : {type:String, required:true, required:true},
         text : {type:mongoose_types.Text, required:true},
         tags: [String],
         time: {type: Date, 'default': Date.now, editable:false},
-        popolarity_counter: {type: Number, 'default': 0},
+        popularity_counter: {type: Number, 'default': 0},
         comments : [Comment]
     } ,{strict: true}),
 
@@ -527,7 +528,7 @@ var Models = module.exports = {
 
     SuccessStory:mongoose.model('SuccessStory', new Schema(Schemas.SuccessStory, {strict: true})),
     Update: mongoose.model('Update', new Schema(Schemas.Update, {strict: true})),
-    Kilkulim:mongoose.model('Kilkulim', new Schema(Schemas.Kilkulim, {strict: true})),
+    Kilkul:mongoose.model('Kilkul', new Schema(Schemas.Kilkul, {strict: true})),
 
     Subject:mongoose.model('Subject', new Schema(Schemas.Subject, {strict: true})),
     Discussion:mongoose.model('Discussion', new Schema(Schemas.Discussion, {strict: true})),

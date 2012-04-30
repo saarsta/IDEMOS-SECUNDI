@@ -26,28 +26,39 @@ dust.renderArray = function(template,arr,callback,endCallback)
         endCallback(_err,out_arr.join(''));
 };
 
+var connectPopup = function(callback){
+
+    //open popup window
+
+    if(callback)
+        callback
+}
+
 var db_functions = {
 
 
 
 
-
-
-    connectPopup: function(callback){
-
-        //open popup window
-
-        var connected;
-        if(connected){
-
-        }
-
-        if(callback)
-            callback
+    loggedInAjax: function(options)
+    {
+        var onError = options.error || function()
+        {
+            console.log(arguments[2]);
+        };
+        options.error =  function (xhr, ajaxOptions, thrownError) {
+            if(thrownError == 401){
+                connectPopup(onError);
+            }
+            else
+                onError();
+        };
+        $.ajax(options);
     },
 
+
+
     dbGetAllSubjects: function(useSmall){
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/subjects',
             type: "GET",
             async: true,
@@ -58,10 +69,6 @@ var db_functions = {
                    $('#subjects_list').append(out);
 
                 });
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert('error');
             }
         });
     },
@@ -78,33 +85,25 @@ var db_functions = {
                 querystring = "actions?is_approved=false";
                 break;
         }
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/' + querystring,
             data:query,
             type: "GET",
             async: true,
             success: function (data) {
                 callback(null, data);
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                callback(thrownError, null);
             }
         });
     },
 
     getItemsByTagNameAndType: function(type,tag_name,callback)
     {
-        $.ajax({
+        this.loggedInAjax({
             url: '/api/' + type + (tag_name ? '?tags=' + tag_name : ''),
             type: "GET",
             async: true,
             success: function (data) {
                 callback(null, data);
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-                callback(thrownError, null);
             }
         });
     },
@@ -740,7 +739,7 @@ var db_functions = {
         });
     },
 
-    getActionById: function(action_id, callback){
+     getActionById: function(action_id, callback){
         $.ajax({
             url: '/api/actions_populated/' + action_id,
             type: "GET",
@@ -1090,6 +1089,25 @@ var db_functions = {
 
         $.ajax({
             url: '/api/headlines',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log(thrownError);
+                callback(thrownError, null);
+            }
+        });
+    },
+
+    //blogs
+    getPopularArticles: function(cycle_id, callback){
+
+        $.ajax({
+            url: '/api/articles?oreder_by=-popolarity_counter',
             type: "GET",
             async: true,
             success: function (data) {

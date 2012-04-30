@@ -17,24 +17,20 @@ function tabSelected(event, ui)
     {
         case 'tabDiscussions':
             db_functions.getAllItemsByUser('discussions',function(error,data){
-                var size = data.objects.length;
                 dust.renderArray('myDiscussion_list_item',data.objects,null,function(err,out)
                 {
-
                     var seletedTab= $('#ulDiscussions');
                     // seletedTab.remove();
                     seletedTab.empty();
 
                     seletedTab.append(out);
                     $('img',seletedTab).autoscale();
-
                 });
             });
 
             break;
         case 'tabCycle':
                         db_functions.getAllItemsByUser('cycles',function(error,data){
-                        var size = data.objects.length;
                         dust.renderArray('myCycle_list_item',data.objects,null,function(err,out)
                         {
                             var seletedTab= $('#ulCycles');
@@ -48,7 +44,6 @@ function tabSelected(event, ui)
 
         case 'tabActions':
             db_functions.getAllItemsByUser('actions',function(error,data){
-                var size = data.objects.length;
                 dust.renderArray('myAction_list_item',data.objects,null,function(err,out)
                 {
                     var seletedTab= $('#ulActions');
@@ -60,7 +55,19 @@ function tabSelected(event, ui)
             });
             break;
 
+        case 'ulKilkul':
+            db_functions.getAllItemsByUser('kilkuls',function(error,data){
+                dust.renderArray('myKilkulListItem',data.objects,null,function(err,out)
+                {
+                    var seletedTab= $('#ulKilkuls');
+                    // seletedTab.remove();
+                    seletedTab.empty();
+                    seletedTab.append(out);
+                    $('img',seletedTab).autoscale();
+                });
+            });
             break;
+
         default:
     }
 
