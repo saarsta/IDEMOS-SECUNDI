@@ -5,7 +5,7 @@
                 <img width="59" height="62" alt="{title}" src="{avatar}"/>
                 <div class="controls"><a href="#"></a><a href="#"></a></div> 
             </div>
-            <span>{username} {creation_date}</span>
+            <span>{username} {?creation_date}{creation_date|time}{/creation_date}</span>
         </div>
         <p>{text}</p>
     </div>
@@ -13,7 +13,7 @@
         <a class="button" href="#">צטט</a>
         <a class="button" href="/facebookShare?link={get_link|u}" target="_blank">שתף</a>
         <a class="button" href="#">Like</a>
-        <a class="button" href="#">בעד</a>
-        <a class="button" href="#">נגד</a>
+        <a class="button" href="#">{votes_for} בעד</a>
+        <a class="button" href="#">{votes_against} נגד</a>
     </div>
 </li>
