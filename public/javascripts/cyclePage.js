@@ -2,12 +2,56 @@
 function loadCyclePage(cycle_id,start_date, finish_date){
     db_functions.getCycleById(cycle_id,function(err,cycle)
     {
+        cycle=cycle[0];
+        var discussion_id=          cycle.discussions[0];
+        db_functions.getDiscussionById(discussion_id,function(err,discussion)
+        {
+            cycle.discussion=     discussion   ;
+            dust.render('cycle_main',cycle,function(err,out){
+                $('#cycleMain').prepend(out);
+            });
+            db_functions.getDiscussionShoppingCart(discussion_id,function(err,discussion)
+            {
 
-        dust.render('cycle_main',cycle,function(err,out){
-            $('#cycleMain').prepend(out);
+            } );
+
+        });
+
+        db_functions.getUpdatesOfCycle(cycle.discussions[0],function(err,update)
+        {
+            dust.render('cycle_update',update,function(err,out){
+                $('#cycleUpdate').prepend(out);
+            });
         });
 
 
+        dust.renderArray('cycle_user',cycle.users,null,function(err,out)
+        {
+            $('#userList').append(out);
+        });
+        //bugbug:         cycle.users should be replaced with pending actions
+
+        db_functions.getPendingActionsByCycle(cycle_id,function(err,pendingActions)
+        {
+            dust.renderArray('cycle_pending_action',pendingActions.objects,null,function(err,out)
+            {
+                $('#cyclePendingActions').append(out);
+            });
+        });
+
+        db_functions.getPopularPostsByCycleId(cycle_id,function(err,posts)
+        {
+            //bugbug:         cycle.users should be replaced with  posts
+            dust.renderArray('cycle_popular_post',cycle.users,null,function(err,out)
+            {
+                $('#cyclePopularPosts').append(out);
+                $('#pupularPostsLink').click(function(){
+                    $('#cyclePopularPosts').slideToggle('slow', function() {
+                        // Animation complete.
+                    });
+                });
+            });
+        });
 
         var start_date = Date.parse(cycle.creation_date);
         var span = Date.parse(cycle.due_date) - start_date ;
@@ -33,18 +77,5 @@ function loadCyclePage(cycle_id,start_date, finish_date){
 
     });
 }
-//getPopularPostsByCycleId
 
-//dust.renderArray('hot_info_item', data.objects, null, function(err,out)
-//{
-//    $('#hot_items_list').append(out);
-//    $('#hot_items_list img').autoscale();
-//});
 
-//dust.render(template,arr[i],function(err,out){
-//    if(callback)
-//        callback(err,out);
-//    if(err)
-//        _err = err;
-//    out_arr.push(out);
-//});
