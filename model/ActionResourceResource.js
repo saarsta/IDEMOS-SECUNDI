@@ -18,7 +18,7 @@ var ActionResourceResource = module.exports = function(){
     this.allowed_methods = ['get', 'post'];
     this.filtering = {category: null};
     this.authentication = new common.SessionAuthentication();
-//    this.autorization = new authoriztion();
+        //    this.autorization = new authoriztion();
 }
 
 util.inherits(ActionResourceResource, resources.MongooseResource);

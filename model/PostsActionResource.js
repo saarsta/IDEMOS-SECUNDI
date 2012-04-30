@@ -15,7 +15,6 @@ var resources = require('jest'),
 
 var PostActionResource = module.exports = common.GamificationMongooseResource.extend({
     init:function () {
-
         this._super(models.PostAction, 'post_action');
         this.allowed_methods = ['get', 'post'];
         this.authorization = new common.TokenAuthorization();
@@ -24,7 +23,6 @@ var PostActionResource = module.exports = common.GamificationMongooseResource.ex
         this.default_query = function (query) {
             return query.sort('creation_date', 'descending');
         };
-//    this.validation = new resources.Validation();=
     },
 
     create_obj:function (req, fields, callback) {

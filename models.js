@@ -114,7 +114,7 @@ var Schemas = exports.Schemas = {
         image_field_preview: mongoose_types.File,
         tags:{type:[String], index:true},
         users:{type:[ObjectId], ref:'User',editable:false},
-        discussions:{type:[ObjectId], ref:'Discussion', index:true,/*editable:false just untill the production*/},
+        discussions:{type:[ObjectId], ref:'Discussion', index:true/*editable:false just untill the production*/},
         is_visible:{type:Boolean, 'default':true},
         creation_date:{type:Date, 'default':Date.now,editable:false},
         is_hot_object:{type:Boolean, 'default':false},
