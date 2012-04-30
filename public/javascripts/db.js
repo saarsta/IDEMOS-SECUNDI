@@ -544,7 +544,7 @@ var db_functions = {
 
     getPopularPostsByDiscussionId: function(discussion_id, callback){
         this.loggedInAjax({
-            url: '/api/posts/'+ discussion_id + "&order_by=-popularity",
+            url: '/api/posts?discussion_id=' + discussion_id + "&order_by=-popularity",
             type: "GET",
             async: true,
             success: function (data) {
