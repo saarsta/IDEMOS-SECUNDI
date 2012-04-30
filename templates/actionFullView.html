@@ -26,7 +26,14 @@
                 <p>משתתפים:</p>
                 <ul class="clearfix">
                     {#going_users}
-                    <li><img src="http://<%=avatar%>" alt="{.username}" />{.username}</li>
+                        <!--<li><img src="http://<%=avatar%>" alt="{.username}" />{.username}</li>-->
+                    <li>
+                        <div>
+                        <img height="36px" width="42px" src="http://graph.facebook.com/{.facebook_id}/picture/?type=small" alt="{.username}" />
+                        </div>
+                          {.username}
+                    </li>
+
                     {/going_users}
 
                 </ul>

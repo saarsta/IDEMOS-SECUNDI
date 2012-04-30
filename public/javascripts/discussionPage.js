@@ -105,7 +105,7 @@ function laodDiscussionPage(discussion_id){
                 if(!err){
                     $("#posts").append(out);
                 }
-            })
+            });
 
             /*for (var i in data.objects){
                 post_items.add(data.objects[i]);
