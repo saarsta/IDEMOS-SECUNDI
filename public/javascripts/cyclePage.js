@@ -5,20 +5,56 @@ function loadCyclePage(cycle_id,start_date, finish_date){
         cycle=cycle[0];
         var discussion_id=          cycle.discussions[0]._id;
         cycle.discussion=     cycle.discussions[0]   ;
+
         dust.render('cycle_main',cycle,function(err,out){
+
             $('#cycleMain').prepend(out);
+
+
+            $('#followCycleButton').click(function(){
+
+                if (!cycle.is_following   )
+                {
+                    db_functions.joinToCycleFollowers(cycle_id,function(err,cycle1)
+                    {
+
+                        dust.render('cycle_main',cycle1,function(err,out){
+
+                            $('#cycleMain').prepend(out);
+                         });
+                    } );
+                }
+
+            });
         });
 
-        db_functions.getDiscussionShoppingCart(discussion_id,function(err,discussion)
+        db_functions.getDiscussionShoppingCart(discussion_id,function(err,InformationItems)
         {
+          //  InformationItems.
+            if(InformationItems.objects.length>0)
+            {
+                var current=1;
+                dust.render('cycle_information_item',InformationItems.objects [0],function(err,out){
+                    $('#cycleInformationItem').html(out);
+                });
+                setInterval(function ()
+                {
+                    dust.render('cycle_information_item',InformationItems.objects [current],function(err,out){
+                        $('#cycleInformationItem').html(out);
+                    });
+                    current= ++current %   ( InformationItems.objects.length);
+                } ,5000);
+            }
 
         } );
 
 
 
+
+
         db_functions.getUpdatesOfCycle(cycle_id,function(err,update)
         {
-            dust.render('cycle_update',update,function(err,out){
+            dust.render('cycle_update',update.objects[0],function(err,out){
                 $('#cycleUpdate').prepend(out);
             });
         });
@@ -40,7 +76,7 @@ function loadCyclePage(cycle_id,start_date, finish_date){
         db_functions.getPopularPostsByDiscussionId(discussion_id,function(err,posts)
         {
             //bugbug:         cycle.users should be replaced with  posts
-            dust.renderArray('cycle_popular_post',cycle.users,null,function(err,out)
+            dust.renderArray('cycle_popular_post',posts.objects,null,function(err,out)
             {
                 $('#cyclePopularPosts').append(out);
                 $('#pupularPostsLink').click(function(){

@@ -35,6 +35,9 @@ writer.write(compile_template('cycle_user','cycle_user.html'));
 writer.write(compile_template('cycle_update','cycle_update.html'));
 writer.write(compile_template('cycle_pending_action','cycle_pending_action.html'));
 writer.write(compile_template('cycle_popular_post','cycle_popular_post.html'));
+writer.write(compile_template('cycle_information_item','cycle_information_item.html'));
+
+
 
 writer.write(compile_template('myCycle_list_item','myCycleListItem.html'));
 writer.write(compile_template('myDiscussion_list_item','myDiscussionItem.html'));

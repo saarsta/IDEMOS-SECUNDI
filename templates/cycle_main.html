@@ -4,9 +4,13 @@
     <div class="description clearfix">
         <p>       {discussion.vision_text} </p>
         <a href="/facebookShare?link={get_link_uri}" class="button flL">שתף</a> </div>
-    <div class="box information"> <img src="/resources/images/assets/image20.jpg" alt="image20" /> <a href="#" class="button">קישור לעגלת המידע</a> </div>
+    <div class="box information" id="cycleInformationItem">
+
+
+
+    </div>
     <br class="clear" />
-    <img src="/resources/images/assets/image21.jpg" alt="image21" id="pupularPostsLink" />
+    <img src="/resources/images/assets/image21.jpg" alt="image21" id="pupularPostsLink" style="cursor: pointer" />
     <ul class="list1" id="cyclePopularPosts">
 
 
@@ -16,5 +20,18 @@
 
 </div>
 <div class="follow clearfix">
-    <p>מספר העוקבים אaחרי מעגל תנופה זה: <strong>{followers_count}</strong></p>
-    <a href="#" class="button">עקוב אחרי מעגל התנופה</a> </div>
+    <p>
+
+        מספר העוקבים אaחרי מעגל תנופה זה:
+
+
+        <strong>{followers_count}</strong></p>
+
+
+    {?following}
+
+    {:else}
+    <a href="#" id="followCycleButton"  class="button">עקוב אחרי מעגל התנופה</a>
+    {/following}
+
+</div>
