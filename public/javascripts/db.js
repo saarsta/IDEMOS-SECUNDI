@@ -51,7 +51,7 @@ var db_functions = {
                 });
             }
             else
-                onError(null,xhr,ajaxOptions,thrownError);
+                onError(xhr,ajaxOptions,thrownError);
         };
         $.ajax(options);
     },
@@ -218,7 +218,7 @@ var db_functions = {
     getInfoItemsOfSubjectByKeywords: function(keywords, subject_id, callback){
         var keywords_arr = keywords.trim().replace(/\s+/g,".%2B");
         this.loggedInAjax({
-            url: '/api/information_items/?text_field__regex='+ keywords_arr + '&text_field_preview__regex='+ keywords_arr + '&subject_id=' + subject_id,
+            url: '/api/information_items/?or=text_field__regex,text_field_preview__regex,title__regex&title__regex=' + keywords_arr + '&text_field__regex='+ keywords_arr + '&text_field_preview__regex='+ keywords_arr + '&subject_id=' + subject_id,
             type: "GET",
             async: true,
             success: function (data) {
@@ -402,6 +402,22 @@ var db_functions = {
         });
     },
 
+    getSuggestionByDiscussion: function(discussion_id, callback){
+        this.loggedInAjax({
+            url: '/api/suggestions?discussion_id=' + discussion_id,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function(data)
+            {
+                callback(data);
+            }
+        });
+    },
+
     getSortedPostByDiscussion: function(discussion_id, sort_by, callback){
         this.loggedInAjax({
             url: '/api/posts?discussion_id=' + discussion_id + "&" + sort_by,
@@ -423,6 +439,10 @@ var db_functions = {
             success: function (data) {
                 console.log(data);
                 callback(null, data);
+            },
+            error:function(data)
+            {
+                callback(data);
             }
         });
     },
@@ -501,6 +521,10 @@ var db_functions = {
             success: function (data) {
                 callback(null, data);
 
+            },
+            error:function(data)
+            {
+                callback(data);
             }
         });
     },

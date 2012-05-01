@@ -3,14 +3,16 @@ var models = require('../models.js');
 module.exports = function(router)
 {
     router.get('/new', function(req, res){
-        res.render('createDiscussion.ejs',{title:"יצירת דיון", logged: req.isAuthenticated(),
-            big_impressive_title: "",
-            subject_id: req.query.subject_id,
-            subject_name: req.query.subject_name,
-            user: req.session.user,
-            avatar:req.session.avatar_url,
-            tab:'discussions',
-            extra_head:'<script src="/javascripts/createDiscussion.js"></script>'});
+        models.Subject.findById(req.query.subject_id,function(err,subject)
+        {
+            res.render('createDiscussion.ejs',{title:"יצירת דיון", logged: req.isAuthenticated(),
+                big_impressive_title: "",
+                subject:subject,
+                user: req.session.user,
+                avatar:req.session.avatar_url,
+                tab:'discussions'
+            });
+        });
     });
 
     router.get('/:id', function(req, res){

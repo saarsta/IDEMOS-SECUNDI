@@ -1,16 +1,10 @@
-/**
- * Created by JetBrains WebStorm.
- * User: saar
- * Date: 23/02/12
- * Time: 12:02
- * To change this template use File | Settings | File Templates.
- */
 
 var resources = require('jest'),
     util = require('util'),
     models = require('../models'),
     common = require('./common'),
     async = require('async'),
+    _ = require('underscore'),
     DISCUSSION_PRICE = 3;
 
 //Authorization

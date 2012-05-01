@@ -110,10 +110,10 @@ var Schemas = exports.Schemas = {
         title: {type: String, required: true},
         subject_id:[{type:ObjectId, ref:'Subject',required:true}],
         category:{type:String, "enum":['test', 'statistics', 'infographic', 'graph'], required:true},
-        text_field:{type:mongoose_types.Text},
+        text_field:{type:mongoose_types.Text, required:true},
         text_field_preview:{type:mongoose_types.Html},
-        image_field: mongoose_types.File,
-        image_field_preview: mongoose_types.File,
+        image_field: {type:mongoose_types.File,required:true},
+        image_field_preview: {type:mongoose_types.File},
         tags:{type:[String], index:true},
         users:{type:[ObjectId], ref:'User',editable:false},
         discussions:{type:[ObjectId], ref:'Discussion', index:true/*editable:false just untill the production*/},
@@ -478,7 +478,7 @@ Schemas.User.methods.avatar_url = function()
     if(this.avatar && this.avatar.url)
         return this.avatar.url;
     else
-        return 'graph.facebook.com/' + this.facebook_id + '/picture/?type=large';
+        return 'http://graph.facebook.com/' + this.facebook_id + '/picture/?type=large';
 };
 
 Schemas.Article.pre('save',function(next)

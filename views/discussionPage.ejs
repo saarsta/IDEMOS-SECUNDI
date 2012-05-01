@@ -101,7 +101,7 @@
   <div id="header">
     <div class="wrapper clearfix">
       <div class="logo">
-        <h1><a href="#" rel="home" title="Go to homepage">Wireframes</a></h1>
+        <h1><a href="javascript:void(0)" rel="home" title="Go to homepage">Wireframes</a></h1>
       </div>
 
       <!-- Main Navigation-->
@@ -122,7 +122,7 @@
           <div class="user-area box">
               <a href="/myuru">
               <div class="frame">
-                  <img width="59" height="62" src="http://<%=avatar%>" alt="<%=user.username%>"/>
+                  <img width="59" height="62" src="<%=avatar%>" alt="<%=user.username%>"/>
                   <span class="number"><%=user.tokens%></span>
               </div>
               </a>
@@ -155,7 +155,7 @@
         <div class="post clearfix">
           <h2><%=discussion.title%></h2>
           <div class="discussions clearfix">
-            <div class="frame1 flR"> <img width="224" height="174" src="<%=discussion.image_field.url%>" alt="image19"/> </div>
+            <div class="frame1 flR"> <img width="224" height="174" src="<%= discussion.image_field ? discussion.image_field.url : '' %>" alt="image19"/> </div>
             <div class="description clearfix">
                 <div class="discussion_content">
                     <textarea id="discussion_content"><%=discussion.vision_text%></textarea>
@@ -163,49 +163,68 @@
 							<div class="tags clearfix">
               	<p class="clearfix">
                 	תגיות 1, תגיות 2, תגיות 3
-                  <a href="#" class="add">הוסף תגיות</a>
+                  <a href="javascript:void(0)" class="add">הוסף תגיות</a>
                 </p>
                 <p class="highlight clearfix">
-                	<span>הצעה לשינוי</span>
+                	<span id="suggest_button" style="cursor:pointer;">הצעה לשינוי</span>
                   <span>היסטוריה*</span>
                 </p>
               </div>
               <div class="buttons">
                 <a href="/facebookShare?link=<%=url%>" target="_blank" class="button flL">שתף</a>
-                <a href="#" class="button flL">דירוג המסמך (AKA סליידר)</a>
-                <a href="#" id="discussion_comment_reply_button" class="button flL">הגב</a>
+                <select id="rating_select">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                    <option>9</option>
+                    <option>10</option>
+                </select>
+                <button id="rating_button">
+                    דירוג המסמך
+                </button>
+                <a href="javascript:void(0)" id="discussion_comment_reply_button" class="button flL">הגב</a>
               </div>
             </div>
-            <div class="box information"> <img src="/resources/images/assets/image20.jpg" alt="image20" /> <a href="#" class="button">קישור לעגלת המידע</a> </div>
+            <div class="box information"> <img src="/resources/images/assets/image20.jpg" alt="image20" /> <a href="javascript:void(0)" class="button">קישור לעגלת המידע</a> </div>
             <br class="clear" />
-            <h3>הצעה לשינוי</h3>
+            <h3  >הצעה לשינוי</h3>
+            <ul id="suggestion_list">
+
+            </ul>
+            <div id="suggest_div" style="display:none;">
             <ul class="list1">
               <li class="clearfix">
                 <p id="discussion_content_txt"></p>
 
-                <textarea name="discussion_suggest" id="discussion_suggest" cols="30" rows="10" style="width: 100%;"></textarea><br>
+                <textarea name="discussion_suggest" id="discussion_suggest" cols="30" rows="10" style="width: 100%;;"></textarea><br>
 
                 <input type="text" name="discussion_tags" style="width: 100%;"><br><br>
 
 
                 <div style="text-align: center">
-                    <a style="font-size: 20px" class="button" href="#">
+                    <a style="font-size: 20px" class="button" id="send_suggestion" href="javascript:void(0)">
                     הצע
                     </a>
 
-                    <a style="font-size: 20px" class="button" href="#">
+                    <a style="font-size: 20px" class="button" id="close_suggest" href="javascript:void(0)">
                     אני מתחרט
                     </a>
                 </div>
 
               </li>
 	          </ul>
+            </div>
 	        </div>
 
 
           <div class="follow clearfix">
             <p>הודעת מערכת (דיון זה מתעתד להיות מעגל תנופה. שתפו, הגיבו וגרמו לזה לקרות)</p>
-            <a href="#" class="close-btn"></a>
+            <a href="javascript:void(0)" class="close-btn"></a>
          	</div>
 
 
@@ -228,12 +247,12 @@
             <h5>(כתיבת תגובה)</h5>
 
             <div class="box form clearfix">
-            	<form action="#" method="post">
+            	<form action="javascript:void(0)" method="post">
               	<div class="description clearfix">
               	    <%if(logged&&user){
                          if(typeof(hide_block_user)==='undefined' || hide_block_user){%>
                 	<div class="frame1">
-                  	    <img src="http://<%=avatar%>" alt="<%=user.username%>" width="44" height="44" />
+                  	    <img src="<%=avatar%>" alt="<%=user.username%>" width="44" height="44" />
                     </div>
                     <h4><%=user.username%></h4>
                     <%}}%>
@@ -258,21 +277,21 @@
     <div class="wrapper clearfix">
       <div id="footer-navigation">
         <ul>
-          <li><a href="#">שיתוף (פייסבוק, טוויטר)</a></li>
+          <li><a href="javascript:void(0)">שיתוף (פייסבוק, טוויטר)</a></li>
           <li class="divider">|</li>
-          <li><a href="#">מה זה עורו?</a></li>
+          <li><a href="javascript:void(0)">מה זה עורו?</a></li>
           <li class="divider">|</li>
-          <li><a href="#">מי אנחנו?</a></li>
+          <li><a href="javascript:void(0)">מי אנחנו?</a></li>
           <li class="divider">|</li>
-          <li><a href="#">חדשות</a></li>
+          <li><a href="javascript:void(0)">חדשות</a></li>
           <li class="divider">|</li>
-          <li><a href="#">תנאי שימוש</a></li>
+          <li><a href="javascript:void(0)">תנאי שימוש</a></li>
           <li class="divider">|</li>
-          <li><a href="#">בלוגים</a></li>
+          <li><a href="javascript:void(0)">בלוגים</a></li>
           <li class="divider">|</li>
-          <li><a href="#">צור קשר</a></li>
+          <li><a href="javascript:void(0)">צור קשר</a></li>
           <li class="divider">|</li>
-          <li><a href="#">עזרה</a></li>
+          <li><a href="javascript:void(0)">עזרה</a></li>
         </ul>
       </div>
     </div>
@@ -303,7 +322,8 @@
         };
 
         $(function(){
-            laodDiscussionPage("<%=discussion_id%>");
+
+            var discussion_id = "<%=discussion_id%>";
 
             var mouseDown, mouseUp, top, left;
             $('.discussion_content')
@@ -351,6 +371,7 @@
 
                 if($(this).hasClass("suggest")){
                     $("p#discussion_content_txt").text('"' + range.text +'"');
+                    $('#suggest_div').show();
                     $("textarea#discussion_suggest").focus();
                 }
             })
@@ -359,7 +380,250 @@
                 e.preventDefault();
 
                 $("textarea#discussion_comment").focus();
-            })
+            });
+
+            $('#posts').on('click','.vote_for',function(){
+                var post_id = $(this).parent('div').data("id");
+                var button = $(this);
+                db_functions.voteForPost(post_id, "add", function(err, post_obj){
+                    if(!err){
+                        var span = $('span',button);
+                        span.text(Number(span.text()) + 1);
+                    }
+                    else
+                    {
+                        if(err.responseText == 'Error: there is not enought tokens')
+                            alert('not enough tokens');
+                        if(err.responseText == 'user already voted for this post')
+                            alert('already voted');
+                    }
+                })
+            });
+
+            $('#posts').on('click',".vote_against", function(){
+                var post_id = $(this).parent('div').data("id");
+                var button = $(this);
+                db_functions.voteForPost(post_id, "remove", function(err, post_obj){
+                    if(!err){
+                        var span = $('span',button);
+                        span.text(Number(span.text()) + 1);
+                    }
+                    else
+                    {
+                        if(err.responseText == 'Error: there is not enought tokens')
+                            alert('not enough tokens');
+                        if(err.responseText == 'user already voted for this post')
+                            alert('already voted');
+
+                    }
+
+                })
+            });
+
+            $('#posts').on('click',".quote_button",function(){
+                var text = $('.post_text',$(this).parents('li')).text();
+                $("textarea#discussion_comment").val('"' + text +'"').focus();
+            });
+
+            db_functions.getDiscussionShoppingCart(discussion_id, function(err, data){
+
+                if(err){}
+                else{
+                    for (var i in data.objects){
+                        //shopping_cart_items.add(data.objects[i]);
+                    }
+                }
+            });
+
+            db_functions.getPostByDiscussion(discussion_id, function(err, data){
+                if(err){
+                    console.log(err);
+                }else{
+//            console.log("posts are" + " " + data);
+
+                    dust.renderArray('post', data.objects, null, function(err, out){
+                        if(!err){
+                            $("#posts").append(out);
+                            $('#posts img').autoscale();
+                        }
+                    });
+
+                    /*for (var i in data.objects){
+                     post_items.add(data.objects[i]);
+                     }*/
+                }
+            });
+
+            function render_suggestion(suggestion)
+            {
+                if(suggestion.parts && suggestion.parts.length)
+                {
+                    var original = $('#discussion_content').val();
+                    var text = suggestion.parts[0].text;
+                    var from = suggestion.parts[0].start;
+                    var end = suggestion.parts[0].end;
+
+                    var original_part = original.substr(from,end-from);
+                    var li = $('<li></li>');
+                    li.append('<p>' +
+                            'במקום:'
+                            +'"' + original_part + '"' +
+                            '</p>');
+                    li.append('<p>' +
+                            text +
+                            '</p>');
+                    $('#suggestion_list').append(li);
+                    return li;
+                }
+                return null;
+            }
+
+            db_functions.getSuggestionByDiscussion(discussion_id,function(err,data)
+                {
+                    $.each(data.objects,function(index,suggestion)
+                    {
+                        render_suggestion(suggestion);
+                    });
+                });
+
+            $("#btn_grade").live("click", function(){
+                var grade = $(".grade input").val();
+                console.log(" grade is :  " + grade);
+
+                var reg = /[0-9]$/;
+                if((reg.test(grade) == false) || !(grade >= 0 && grade <= 10)){
+                    alert('Invalid number');
+                }else{
+                    db_functions.addDiscussionGrade(discussion_id, grade, function(err, discussion_object){
+                        if (err){
+                            console.log(err);
+                        }
+                        else{
+                            console.log(discussion_object);
+                            $("#discussion_grade").val("grade is: " + discussion_object.grade + " count: " + discussion_object  .evaluate_counter);
+                        }
+                    });
+                }
+            });
+
+            $('#sort').change(function() {
+                $("#posts").empty();
+
+                if ($(this).val() === 'op_date') {
+                    db_functions.getPostByDiscussion(discussion_id, function(err, data){
+                        if(err){
+                            console.log(err);
+                        }else{
+                            dust.renderArray('post', data.objects, null, function(err, out){
+                                if(!err){
+                                    $("#posts").append(out);
+                                    $('#posts img').autoscale();
+                                }
+                            })
+                        }
+                    });
+
+                }
+                else{
+                    if ($(this).val() === 'op_back_date') {
+                        db_functions.getSortedPostByDiscussion(discussion_id, "order_by=creation_date", function(err, data){
+                            if(err){
+                                console.log(err);
+                            }else{
+                                dust.renderArray('post', data.objects, null, function(err, out){
+                                    if(!err){
+                                        $("#posts").append(out);
+                                        $('#posts img').autoscale();
+                                    }
+                                })
+                            }
+                        });
+
+
+                    }else{
+                        if ($(this).val() === 'op_votes_for') {
+                            db_functions.getSortedPostByDiscussion(discussion_id, "order_by=-votes_for", function(err, data){
+                                if(err){
+                                    console.log(err);
+                                }else{
+                                    dust.renderArray('post', data.objects, null, function(err, out){
+                                        if(!err){
+                                            $("#posts").append(out);
+                                        }
+                                    })
+                                }
+                            });
+
+                        }else{
+                            if ($(this).val() === 'op_most_voted') {
+                                db_functions.getSortedPostByDiscussion(discussion_id, "order_by=-total_votes, -votes_for", function(err, data){
+                                    if(err){
+                                        console.log(err);
+                                    }else{
+                                        dust.renderArray('post', data.objects, null, function(err, out){
+                                            if(!err){
+                                                $("#posts").append(out);
+                                            }
+                                        })
+                                    }
+                                });
+                            }
+                        }
+                    }
+                }
+            });
+
+            $("#btn_close").live("click", function(){
+                $(this).parent('div').hide();
+            });
+
+            $("#submit_post").on('click', function(e){
+                db_functions.addPostToDiscussion(discussion_id, $("textarea#discussion_comment").val(), function(err, post){
+                    dust.render('post', post, function(err, out){
+                        $("#posts").append(out);
+                        $("textarea#discussion_comment").val('');
+                    });
+                })
+            });
+
+            $('form').on('submit', function(e){
+                e.preventDefault();
+            });
+
+
+            $('#rating_button').click(function(){
+                var rating = Number($('#rating_select').val());
+                db_functions.addDiscussionGrade(discussion_id,rating,function(err,data)
+                {
+                    console.log(data);
+                });
+            });
+
+            $('#suggest_button').click(function()
+            {
+                $('#suggest_div').show();
+            });
+
+            $('#close_suggest').click(function(){
+                $('#suggest_div').hide();
+                $("textarea#discussion_suggest").val('');
+            });
+
+            $('#send_suggestion').click(function(){
+                var part = {start:range.start, end:range.end, text:$("textarea#discussion_suggest").val()};
+                db_functions.addSuggestionToDiscussion(discussion_id,[part],function(err,data)
+                {
+                    if(!err)
+                    {
+                        $('#suggest_div').hide();
+                        render_suggestion({parts:[part]});
+                        $("textarea#discussion_suggest").val('');
+                    }
+                });
+            });
+
+
+
         });
 
     </script>
