@@ -61,6 +61,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                 callback(err, null);
             }
             else {
+                object.is_follower = common.isArgIsInList(id,req.user.discussions);
                 callback(null, object);
             }
         });
