@@ -192,7 +192,7 @@ var Schemas = exports.Schemas = {
         text_field_preview:{type:mongoose_types.Text},
         image_field:mongoose_types.File,
         tags:[String],
-        gui_order: {type:Number,'default':9999999,editable:false},
+        gui_order: {type:Number,'default':9999999, editable:false},
         is_hot_object: {type:Boolean,'default':false}
     },
 
@@ -222,15 +222,15 @@ var Schemas = exports.Schemas = {
             new Schema({user_id:{type:ObjectId, ref:'User'}, join_date: {type:Date, 'default':Date.now}})
         ],
 
-        followers_count:{type:Number, 'default':0},
+        followers_count:{type:Number, 'default':0, editable:false},
         is_visible:{type:Boolean, 'default':true},
         is_published:{type:Boolean, 'default':false},
 //        popular_comments: [{type: ObjectId, ref: 'Post', index: true}],
         grade:Number,
-        evaluate_counter:{type:Number, 'default':0},
-        grade_sum:{type:Number, 'default':0},
+        evaluate_counter:{type:Number, 'default':0, editable:false},
+        grade_sum:{type:Number, 'default':0, editable:false},
         gamification: {has_rewarded_creator_of_turning_to_cycle: {type: Boolean, 'default': false},
-                        has_rewarded_creator_for_high_grading_of_min_graders: {type: String, 'default': false}}
+                        has_rewarded_creator_for_high_grading_of_min_graders: {type: String, 'default': false}, editable:false}
     },
 
     Cycle: new Schema({
@@ -252,18 +252,14 @@ var Schemas = exports.Schemas = {
         ],
         document: String,
         is_hot_object: {type:Boolean,'default':false},
-        followers_count: {type: Number, 'default':0},
-        num_of_comments: {type: Number, 'default':0},
-
-        upcoming_action: {type: ObjectId, ref: 'Action', index: true},
-        num_upcoming_actions: {type: Number, 'default':0},
+        followers_count: {type: Number, 'default':0, editable:false},
+        num_of_comments: {type: Number, 'default':0, editable:false},
+        upcoming_action: {type: ObjectId, ref: 'Action', index: true, editable:false},
+        num_upcoming_actions: {type: Number, 'default':0, editable:false},
         //users that conected somehow to the cycle for my uru
         users:[
             new Schema({user_id:{type:ObjectId, ref:'User'}, join_date: {type:Date, 'default':Date.now}})
-        ],
-
-        upcoming_action: {type: ObjectId, ref: 'Action', index: true}
-
+        ]
     }, {strict: true}),
 
     PostOrSuggestion:{
