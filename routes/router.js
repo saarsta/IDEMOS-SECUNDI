@@ -35,6 +35,5 @@ var Router = module.exports = Class.extend({
 
 Router.base = function(app)
 {
-    var router = new Router(app);
-    return router;
+    return new Router(app);
 };

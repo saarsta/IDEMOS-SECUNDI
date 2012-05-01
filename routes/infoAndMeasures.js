@@ -28,16 +28,19 @@ module.exports = function(router)
         });
     });
 
-    router.get('/meida/:id', function(req, res){
-        res.render('selectedItem.ejs',{title:'מידע ומדדים', logged: req.isAuthenticated(),
-            big_impressive_title:"",
-            tag_name: req.query.tag_name,
-            info_id: req.params.id,
-            user: req.session.user,
-            avatar:req.session.avatar_url,
-            body_class:'layout1',
-            tab:'information_items',
-            extra_head:'<script src="/javascripts/selectedItem.js"></script>'});
+    router.get('/:id', function(req, res){
+        models.InformationItem.findById(req.params.id).populate('subject_id').run(function(err,item)
+        {
+            res.render('selectedItem.ejs',{title:'מידע ומדדים', logged: req.isAuthenticated(),
+                big_impressive_title:"",
+                tag_name: req.query.tag_name,
+                info: item,
+                user: req.session.user,
+                avatar:req.session.avatar_url,
+                body_class:'layout1',
+                tab:'information_items',
+                extra_head:'<script src="/javascripts/selectedItem.js"></script>'});
+        });
     });
 };
 

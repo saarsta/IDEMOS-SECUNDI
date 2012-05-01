@@ -30,14 +30,13 @@ var connectPopup = function(callback){
 
     //open popup window
 
+    alert('please login');
+
     if(callback)
-        callback
-}
+        callback();
+};
 
 var db_functions = {
-
-
-
 
     loggedInAjax: function(options)
     {
@@ -46,11 +45,13 @@ var db_functions = {
             console.log(arguments[2]);
         };
         options.error =  function (xhr, ajaxOptions, thrownError) {
-            if(thrownError == 401){
-                connectPopup(onError);
+            if(xhr.status == 401 && xhr.responseText == 'not authenticated'){
+                connectPopup(function(){
+                    onError(xhr,ajaxOptions,thrownError);
+                });
             }
             else
-                onError();
+                onError(null,xhr,ajaxOptions,thrownError);
         };
         $.ajax(options);
     },
@@ -382,6 +383,9 @@ var db_functions = {
             success: function (data) {
                 console.log(data);
                 callback(null, data)
+            },
+            error:function(data){
+                callback(data);
             }
         });
     },

@@ -1,12 +1,3 @@
-/**
- * Created by JetBrains WebStorm.
- * User: saar
- * Date: 11/04/12
- * Time: 16:32
- * To change this template use File | Settings | File Templates.
- */
-
-
 function loadSelectedItemPage(info_id){
 
     $(".button.add").live("click", function(){
@@ -73,10 +64,5 @@ function loadSelectedItemPage(info_id){
             $('#shopping_cart').append(out);
             $('#shopping_cart img').autoscale();
         });
-
-        /*for (var i in data.objects) {
-         var item = items.add(data.objects[i], "shopping_cart");
-         items.changeButton(item);
-         }*/
     });
 }
