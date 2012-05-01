@@ -27,6 +27,22 @@ var InformationItemResource = module.exports = common.GamificationMongooseResour
         };
     },
 
+    get_object:function (req, id, callback) {
+        this._super(req, id, function(err, object){
+           object.user_likes = false;
+           if(req.user){
+               models.Like.find({user_id: req.user._id, info_item_id: id}, function(err, obj){
+                   if(obj)
+                      object.user_likes = true;
+                   callback(err, object)
+               })
+           }else{
+              callback(err, object)
+           }
+        });
+
+    },
+
     create_obj: function(req,fields,callback){
         var user_id = req.session.user_id;
         var self = this;

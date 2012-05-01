@@ -43,6 +43,7 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
             image_field_preview: null,
             tags:null,
             discussions: {
+                _id: null,
                 title: null,
                 text_field: null,
                 text_field_preview: null,
@@ -66,12 +67,12 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
         }
     },
 
-    run_query: function(req,query,callback)
+   /* run_query: function(req,query,callback)
     {
         if(req.params.cycle)
             query.populate('users.user_id');
         this._super(req,query,callback);
-    },
+    },*/
 
     get_object:function (req, id, callback) {
 

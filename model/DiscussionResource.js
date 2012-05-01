@@ -73,18 +73,33 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
     },
 
     get_object:function (req, id, callback) {
-       this._super(req, id, function(err, object){
-           if(object){
-               if(req.user){
-                   object.is_follower = common.isArgIsInList(id,req.user.discussions);
+        this._super(req, id, function(err, object){
+            if(object){
+                models.User.find({"discussions.discussion_id": id}, ["email", "first_name", "avatar", "facebook_id", "discussions"], function(err, objs){
+                    var users = [];
+                    if(!err){
+                        object.users = _.map(objs, function(user){
+                            var curr_discussion =  _.find(user.discussions, function(discussion){
+                                return discussion.cycle_id == id;
+                            });
+                            return {
+                                user_id:user,
+                                join_date: curr_discussion.join_date
+                            };
+                        });
+                    }
+                    else
+                        object.users = [];
+                    if(req.user){
+                        object.is_follower = common.isArgIsInList(id, req.user.discussions);
+                    }else{
+                        object.is_follower = false;
+                    }
+                });
 
-               }else{
-                   object.is_follower = false;
-               }
-           }
-           callback(null, object);
-
-       });
+            }
+            callback(err, object);
+        })
     },
 
     get_objects: function (req, filters, sorts, limit, offset, callback) {
