@@ -200,8 +200,8 @@ var Schemas = exports.Schemas = {
         title:{type:String, required:true},
 //        text_field:{type:mongoose_types.Html},
 //        text_field_preview:{type:mongoose_types.Html},
-        image_field: mongoose_types.File,
-        image_field_preview: mongoose_types.File,
+        image_field: { type:mongoose_types.File, required:true},
+        image_field_preview: { type:mongoose_types.File, require:true},
         subject_id:[
             {type:ObjectId, ref:'Subject', index:true, required:true}
         ],
@@ -210,12 +210,15 @@ var Schemas = exports.Schemas = {
         creator_id:{type:ObjectId, ref:'User'},
         first_name:{type:String,editable:false},
         last_name:{type:String,editable:false},
-        vision_text_preview: String,//2-3 lines of the vision_text
-        vision_text:String,
+        vision_text_preview: {type:mongoose_types.Text},//2-3 lines of the vision_text
+        vision_text:{type:mongoose_types.Text, required:true},
         vision_text_history:{type:[String],editable:false},
         num_of_approved_change_suggestions: {type: Number, 'default': 0},
         is_hot_object: {type:Boolean,'default':false},
-        is_cycle:{ flag:{type:Boolean, 'default':false, editable:false}, date:{type:Date, 'default':Date.now, editable:false}},
+        is_cycle:{
+            flag:{type:Boolean, 'default':false, editable:false},
+            date:{type:Date, 'default':Date.now, editable:false}
+        },
         tags:[String],
         //for my uru
         users:[
