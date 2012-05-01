@@ -14,24 +14,19 @@ module.exports = function(app)
 
     router.get('/', pagesInit.index);
 
-    router.post('/account/register',account.register);
+    router.include('/account',account.routing);
 
-    router.all(account.LOGIN_PATH, account.login);
     router.get('/signup', function(req, res){
         res.render('signup.ejs',{title:'Signup'});
     });
 
-    router.get('/account/facebooklogin', account.fb_connect);
-    router.get('/account/logout', account.logout);
     router.get('/facebookShare',account.facebookShare);
 
     router.get('/myuru',pagesInit.myUru);
 
     router.include('/meida',infoAndMeasures);
 
-    router.get('/discussions/new', discussion.createDiscussionPageInit);
-    router.get('/discussions/:id/preview', discussion.discussionPreviewPageInit);
-    router.get('/discussions/:id', discussion.discussionPageInit);
+    router.include('/discussions',discussion);
 
     router.get('/cycles/:id', cycles.cyclePageInit);
     router.get('/actions/new',cycles.newAction);

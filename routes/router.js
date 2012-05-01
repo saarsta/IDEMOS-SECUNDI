@@ -5,6 +5,15 @@ var Router = module.exports = Class.extend({
    init:function(app,path){
        this.app = app;
        this.base_path = path || '';
+       var methods = ['get','post','all','put','delete'];
+       var self = this;
+       methods.forEach(function(method)
+       {
+           self[method] = function(path)
+           {
+               this.register_func(this.app[method],arguments)
+           };
+       });
    },
    register_func : function(func,args)
    {
@@ -16,26 +25,7 @@ var Router = module.exports = Class.extend({
    {
         return this.base_path + path;
    },
-   get: function(path,callback)
-   {
-       return this.register_func(this.app.get,arguments);
-   },
-    post: function()
-    {
-        return this.register_func(this.app.post,arguments);
-    },
-    put: function()
-    {
-        return this.register_func(this.app.put,arguments);
-    },
-    delete: function()
-    {
-        return this.register_func(this.app.delete,arguments);
-    },
-    all: function(){
-       return this.register_func(this.app.all,arguments);
-    },
-    include:function(path,routing_module)
+   include:function(path,routing_module)
     {
         var my_router = new Router(this.app,this.build_path(path));
         routing_module(my_router);
