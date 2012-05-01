@@ -18,7 +18,7 @@
                         <h3>פעולות הממתינות לאישור </h3>
                         <ul class="list4" id="cyclePendingActions">
                         </ul>
-                        <a href="#" class="button">הראה לי את כולן</a>
+                        <a href="/pendingActions" class="button">הראה לי את כולן</a>
                     </div>
                 </div>
 
@@ -34,7 +34,7 @@
         <a href="#" class="close-btn"></a>
 
         <div class="form clearfix">
-            <form action="#" method="post">
+            <form name="frmAddaction" action="#" method="post">
                 <h2>יצירת פעולה חדשה</h2>
 
                 <input type="text" name="title" placeholder="כותרת" />
@@ -53,7 +53,7 @@
 
                 <button type="submit">צור פעולה חדשה</button>
                 <label class="check">
-                    <input type="checkbox" value="on">
+                    <input type="checkbox" value="false">
                     שתף*
                 </label>
             </form>
@@ -62,13 +62,40 @@
 </div>
 <!--/Popup -->
 
+<a  href="#inline_content"  id="newActionBtn" class="button suggest">הצע פעולה חדשה</a>
+
 <script>
     $(function(){
-        loadCyclePage("<%= cycle_id %>");
+        var cycle_id='<%= cycle_id %>';
+        loadCyclePage(cycle_id);
         loadPopupData();
         $("#newActionBtn").colorbox({inline:true});
         if($().datetimepicker){
             $('.nf_datepicker').datetimepicker();
         }
+
+        $('form[name=frmAddaction]').on('submit', function(e){
+            e.preventDefault();
+
+           $(this).find(":input").each(function(){
+               //console.log($(this).attr('name'));
+               //console.log($(this).val());
+
+
+           })
+           // var cycle_id=$('[name|titel]');
+            var title=this.title.value;
+            var    description=this.description.value;
+            var    action_resources;
+            var    required_participants=this.participants_count.value;
+            var    execution_date=this.date;
+            var   location;
+                debugger;
+            db_functions.addAction(cycle_id, title, description, action_resources,required_participants,execution_date,location ,function(error,data){
+
+                debugger;
+            });
+            
+        })
     });
 </script>
