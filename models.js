@@ -80,14 +80,16 @@ var Schemas = exports.Schemas = {
         address: String,
         occupation: String,
         biography: String,
+        //followers
         discussions:[
-            {type:ObjectId, ref:'Discussion'}
+            new Schema({discussion_id:{type:ObjectId, ref:'Discussion'}, join_date: {type:Date, 'default':Date.now}})
         ],
+        //followers
         cycles:[
-            {type:ObjectId, ref:'Cycle'}
+            new Schema({cycle_id:{type:ObjectId, ref:'Cycle'}, join_date: {type:Date, 'default':Date.now}})
         ],
         actions:[
-            {type:Schema.ObjectId, ref:'Action', index:true}
+            new Schema({action_id:{type:ObjectId, ref:'Action'}, join_date: {type:Date, 'default':Date.now}})
         ],
         password:String,
         tokens:{type:Number, 'default':9},
@@ -106,7 +108,7 @@ var Schemas = exports.Schemas = {
 
     InformationItem:{
         title: {type: String, required: true},
-        subject_id:{type:[ObjectId], ref:'Subject', index:true, required:true},
+        subject_id:[{type:ObjectId, ref:'Subject',required:true}],
         category:{type:String, "enum":['test', 'statistics', 'infographic', 'graph'], required:true},
         text_field:{type:mongoose_types.Text},
         text_field_preview:{type:mongoose_types.Html},
@@ -114,7 +116,7 @@ var Schemas = exports.Schemas = {
         image_field_preview: mongoose_types.File,
         tags:{type:[String], index:true},
         users:{type:[ObjectId], ref:'User',editable:false},
-        discussions:{type:[ObjectId], ref:'Discussion', index:true,editable:false},
+        discussions:{type:[ObjectId], ref:'Discussion', index:true/*editable:false just untill the production*/},
         is_visible:{type:Boolean, 'default':true},
         creation_date:{type:Date, 'default':Date.now,editable:false},
         is_hot_object:{type:Boolean, 'default':false},
@@ -196,8 +198,8 @@ var Schemas = exports.Schemas = {
 
     Discussion:{
         title:{type:String, required:true},
-        text_field:{type:mongoose_types.Html},
-        text_field_preview:{type:mongoose_types.Html},
+//        text_field:{type:mongoose_types.Html},
+//        text_field_preview:{type:mongoose_types.Html},
         image_field: mongoose_types.File,
         image_field_preview: mongoose_types.File,
         subject_id:[
@@ -213,7 +215,7 @@ var Schemas = exports.Schemas = {
         vision_text_history:{type:[String],editable:false},
         num_of_approved_change_suggestions: {type: Number, 'default': 0},
         is_hot_object: {type:Boolean,'default':false},
-        is_cycle:{type:Boolean, 'default':false,editable:false},
+        is_cycle:{ flag:{type:Boolean, 'default':false, editable:false}, date:{type:Date, 'default':Date.now, editable:false}},
         tags:[String],
         //for my uru
         users:[
@@ -233,11 +235,7 @@ var Schemas = exports.Schemas = {
 
     Cycle: new Schema({
         creation_date: {type:Date, 'default':Date.now},
-
-
-
         due_date : {type:Date, 'default':function(){ return Date.now() + 1000*3600*24*30;  }},
-
         subject:[{
             id:{type:ObjectId, ref:'Subject', index:true, required:true},
             name: {type:String, editable:false}
@@ -270,10 +268,10 @@ var Schemas = exports.Schemas = {
 
     PostOrSuggestion:{
         creator_id:{type:Schema.ObjectId, ref:'User'},
-        first_name:{type:String,editable:false},
-        last_name:{type:String, editable:false },
-        username:{type:String,editable:false},
-        avatar : {type:mongoose_types.File, editable:false},
+//        first_name:{type:String,editable:false},
+//        last_name:{type:String, editable:false },
+//        username:{type:String,editable:false},
+//        avatar : {type:mongoose_types.File, editable:false},
         creation_date:{type:Date, 'default':Date.now,editable:false},
         tokens:{type:Number, 'default':0, index: true},
         post_price:{type:Number, 'default':0},//how many tokens for creating post
@@ -359,7 +357,7 @@ var Schemas = exports.Schemas = {
             {resource: ActionResource, amount:Number, left_to_bring: Number}
         ],
         tags:[String],
-        //users that conected somehow to the action
+        //users that conected somehow to the action for my uru
         users:[
             new Schema({user_id:{type:ObjectId, ref:'User'}, join_date: {type:Date, 'default':Date.now}})
         ],
@@ -368,7 +366,7 @@ var Schemas = exports.Schemas = {
         required_participants:{type:Number, 'default':0},
         //users that are going to be in the action
         going_users: [
-            {type:ObjectId, ref:'User'}
+            new Schema({user_id: {type:ObjectId, ref:'User'}, join_date: {type: Date, 'default': Date.now}})
         ],
         num_of_going: {type: Number, 'default': 0},
         tokens:{type:Number, 'default':0},

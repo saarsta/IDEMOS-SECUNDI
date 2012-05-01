@@ -22,6 +22,9 @@ module.exports = function(app)
         admin.registerMongooseModel('Post',Models.Post,null,{
             list:['text','username']
         });
+        admin.registerMongooseModel('PostAction',Models.PostAction,null,{
+            list:['text','username']
+        });
         admin.registerMongooseModel('Suggestion',Models.Suggestion,null,{
             list:['username']
         });

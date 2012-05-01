@@ -1,49 +1,37 @@
 <h2>{title}</h2>
 <div class="discussions clearfix">
-    <div class="frame1 flR"> <img src="{image_field_preview.url}" alt="{title}"/></div>
+    <div class="frame1 flR"> <img src="{image_field.url}" alt="{title}"/></div>
     <div class="description clearfix">
-        <h3>תוכן המסמך<br/>
-            החזון הכללי</h3>
-        <p>שמו אינו מדינות דת, זקוק קבלו מועמדים מתן בה. גם אנגלית אקטואליה צעד. של בדף ישראל גיאוגרפיה, זכר לכאן בקלות לויקיפדיה גם. מתוך ותשובות ויש מה, חפש שאלות האטמוספירה של. קסאם בדפים מיזמים מדע על</p>
-        <a href="#" class="button flL">שתף</a> </div>
-    <div class="box information"> <img src="/resources/images/assets/image20.jpg" alt="image20" /> <a href="#" class="button">קישור לעגלת המידע</a> </div>
+        <p>       {discussion.vision_text} </p>
+        <a href="/facebookShare?link={get_link_uri}" class="button flL">שתף</a> </div>
+    <div class="box information" id="cycleInformationItem">
+
+
+
+    </div>
     <br class="clear" />
-    <img src="/resources/images/assets/image21.jpg" alt="image21"/>
-    <ul class="list1">
-        <li class="clearfix">
-            <div class="description clearfix">
-                <div class="frame"> <img alt="image23" src="/resources/images/assets/image23.jpg"/> </div>
-                <h4>המשתמש שפתח את הדיון</h4>
-                <p class="meta-data">תארaיך | שעה</p>
-                <p>שמו אינו מדינות דת, זקוק קבלו מועמדים מתן בה. גם אנגלית אקטואליה צעד. של בדף ישראל גיאוגרפיה, זכר לכאן בקלות לויקיפדיה גם. מתוך ותשובות ויש מה, חפש שאלות האטמוספירה של. קסאם בדפים מיזמים מדע על, קרן ומדעים מונחונים או. מתוך ותשובות ויש מה, חפש שאלות האטמוספירה של. קסאם בדפים מיזמים מדע על, קרן ומדעים מונחונים או. מתוך ותשובות ויש מה, חפש שאלות האטמוספירה של. קסאם בדפים מיזמים מדע על</p>
-            </div>
-            <div class="action"> <a class="button" href="#">הגב</a> <a class="button" href="#">שתף</a> <a class="button" href="#">Like</a> </div>
-        </li>
-        <li class="clearfix">
-            <div class="description clearfix">
-                <div class="frame"> <img alt="image23" src="/resources/images/assets/image23.jpg"/> </div>
-                <h4>המשתמש שפתח את הדיון</h4>
-                <p class="meta-data">תארaיך | שעה</p>
-                <p>שמו אינו מדינות דת, זקוק קבלו מועמדים מתן בה. גם אנגלית אקטואליה צעד. של בדף ישראל גיאוגרפיה, זכר לכאן בקלות לויקיפדיה גם. מתוך ותשובות ויש מה, חפש שאלות האטמוספירה של. קסאם בדפים מיזמים מדע על, קרן ומדעים מונחונים או. מתוך ותשובות ויש מה, חפש שאלות האטמוספירה של. קסאם בדפים מיזמים מדע על, קרן ומדעים מונחונים או. מתוך ותשובות ויש מה, חפש שאלות האטמוספירה של. קסאם בדפים מיזמים מדע על</p>
-            </div>
-            <div class="action"> <a class="button" href="#">הגב</a> <a class="button" href="#">שתף</a> <a class="button" href="#">Like</a> </div>
-        </li>
+    <img src="/resources/images/assets/image21.jpg" alt="image21" id="pupularPostsLink" style="cursor: pointer" />
+    <ul class="list1" id="cyclePopularPosts">
+
+
     </ul>
-    <a href="#" class="button flL">מעבר לדיון המתקיים</a>
-    <br class="clear" /><br/>
-    <h3>תגובות פופלריות מדיון אחר (רלוונטי)</h3>
-    <ul class="list1">
-        <li class="clearfix">
-            <div class="description clearfix">
-                <div class="frame"> <img alt="image23" src="/resources/images/assets/image23.jpg"/> </div>
-                <h4>המשתמש שפתח את הדיון</h4>
-                <p class="meta-data">תארaיך | שעה</p>
-                <p>שמו אינו מדינות דת, זקוק קבלו מועמדים מתן בה. גם אנגלית אקטואליה צעד. של בדף ישראל גיאוגרפיה, זכר לכאן בקלות לויקיפדיה גם. מתוך ותשובות ויש מה, חפש שאלות האטמוספירה של. קסאם בדפים מיזמים מדע על, קרן ומדעים מונחונים או. מתוך ותשובות ויש מה, חפש שאלות האטמוספירה של. קסאם בדפים מיזמים מדע על, קרן ומדעים מונחונים או. מתוך ותשובות ויש מה, חפש שאלות האטמוספירה של. קסאם בדפים מיזמים מדע על</p>
-            </div>
-            <div class="action"> <a class="button" href="#">הגב</a> <a class="button" href="#">שתף</a> <a class="button" href="#">Like</a> </div>
-        </li>
-    </ul>
+    <a href="/discussions/{id}" class="button flL">מעבר לדיון המתקיים</a>
+
+
 </div>
 <div class="follow clearfix">
-    <p>מספר העוקבים אaחרי מעגל תנופה זה: <strong>12,345,677</strong></p>
-    <a href="#" class="button">עקוב אחרי מעגל התנופה</a> </div>
+    <p>
+
+        מספר העוקבים אaחרי מעגל תנופה זה:
+
+
+        <strong>{followers_count}</strong></p>
+
+
+    {?is_follower}
+
+    {:else}
+    <a href="#" id="followCycleButton"  class="button">עקוב אחרי מעגל התנופה</a>
+    {/is_follower}
+
+</div>

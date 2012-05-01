@@ -27,6 +27,12 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
 //    this.validation = new resources.Validation();=
     },
 
+    run_query: function(req,query,callback)
+    {
+        query.populate('creator_id');
+        this._super(req,query,callback);
+    },
+
     create_obj:function (req, fields, callback) {
 
         var user_id = req.session.user_id;

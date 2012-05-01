@@ -8,10 +8,10 @@ var common = require('./common');
 var Authoriztion = function() {};
 util.inherits(Authoriztion,mongoose_resource.Authorization);
 
-Authoriztion.prototype.limit_object_list = function(req, query, callback){
-    if(req.session.auth.user){
+Authoriztion.prototype.limit_object_list = Authoriztion.prototype.limit_object = function(req, query, callback){
+    if(req.user){
 //        var email = req.session.auth.user.email;
-        var user_id = req.session.user.user_id;
+        var user_id = req.user._id;
 
 //        query.where('email', email);
         query.where('_id', user_id);
@@ -19,41 +19,6 @@ Authoriztion.prototype.limit_object_list = function(req, query, callback){
     }else{
         callback("Error: User Is Not Autthenticated", null);
     }
-};
-
-Authoriztion.prototype.limit_object = function(req,object,callback){
-    if(req.session.auth.user){
-//        var email = req.session.auth.user.email;
-        var user_id = req.session.user.user_id;
-
-//        object.where('email', email);
-        object.where('_id', user_id);
-
-        callback(null, object);
-    }else{
-        callback("Error: User Is Not Autthenticated", null);
-    }
-};
-
-Authoriztion.prototype.edit_object = function(req,object,callback){
-    if(req.session.auth.user){
-//        var email = req.session.auth.user.email;
-        var user_id = req.session.user.user_id;
-
-//        object.where('email', email);
-        object.where('_id', user_id);
-
-        callback(null, object);
-    }else{
-        callback("Error: User Is Not Autthenticated", null);
-    }
-   /* if(req.session.auth.user){
-        var email = req.session.auth.user.email;
-        object.where('email', email);
-        callback(null, object);
-    }else{
-        callback("Error: User Is Not Autthenticated", null);
-    }*/
 };
 
 
@@ -68,9 +33,9 @@ var UserResource = module.exports =  function() {
         email:null,
         gender:null,
         age:null,
-        discussions:null
+//        discussions:null
 //        avatar: null,
-//        avatar_url:null
+        avatar_url:null
     };
     this.update_fields = {
         first_name:null,
@@ -85,30 +50,3 @@ var UserResource = module.exports =  function() {
 
 
 util.inherits(UserResource,mongoose_resource.MongooseResource);
-
-
-UserResource.prototype.get_object = function(req,id,callback){
-    // do stuff before the method
-    UserResource.super_.prototype.get_object.call(this,req,id,function(err,object)
-    {
-        if(err) callback(err);
-        else
-        {
-            // DO stuff after the the method
-            //object.comments = Comment.find()
-            callback(null,object);
-        }
-    });
-};
-
-UserResource.prototype.limit_update_fields = function(req, callback){
-
-    UserResource.super_.prototype.get_object.call(this, req, function(err, object){
-        if(err){
-            callback(err);
-        } else{
-            callback(null, object);
-
-        }
-    });
-}
