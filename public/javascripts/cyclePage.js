@@ -37,16 +37,18 @@ function loadCyclePage(cycle_id,start_date, finish_date){
 function loadPopupData(){
    //toolbox data
     (function(){
-       var selectValues = {"1":"test 1","2":"test 2"};
-       $.each(selectValues, function(key, value) {
-           $('[name=toolbox]')
-               .append($("<option></option>")
-               .attr("value",key)
-               .text(value));
-             })
+          db_functions.getCategories(function(error,data){
+           $.each(data.objects, function(key, value) {
+               $('[name=toolbox]')
+                   .append($("<option></option>")
+                   .attr("value",value._id)
+                   .text(value.name));
+           })
+         });
        })();
-
+    
 }
+
 //getPopularPostsByCycleId
 
 //dust.renderArray('hot_info_item', data.objects, null, function(err,out)

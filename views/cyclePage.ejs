@@ -66,7 +66,8 @@
 
 <script>
     $(function(){
-        loadCyclePage("<%= cycle_id %>");
+        var cycle_id='<%= cycle_id %>';
+        loadCyclePage(cycle_id);
         loadPopupData();
         $("#newActionBtn").colorbox({inline:true});
         if($().datetimepicker){
@@ -77,9 +78,24 @@
             e.preventDefault();
 
            $(this).find(":input").each(function(){
-               console.log($(this).attr('name'));
-               console.log($(this).val());
+               //console.log($(this).attr('name'));
+               //console.log($(this).val());
+
+
            })
+           // var cycle_id=$('[name|titel]');
+            var title=this.title.value;
+            var    description=this.description.value;
+            var    action_resources;
+            var    required_participants=this.participants_count.value;
+            var    execution_date=this.date;
+            var   location;
+                debugger;
+            db_functions.addAction(cycle_id, title, description, action_resources,required_participants,execution_date,location ,function(error,data){
+
+                debugger;
+            });
+            
         })
     });
 </script>
