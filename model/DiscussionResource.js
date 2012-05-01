@@ -51,20 +51,39 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
         this.authorization = new Authorization();
         this.default_query = function (query) {
             return query.sort('creation_date', 'descending');
-        };
+        },
+            this.fields = {
+                title: null,
+                image_field: null,
+                image_field_preview: null,
+                subject_id: null,
+                creation_date: null,
+                creator_id: null,
+                first_name: null,
+                last_name: null,
+                vision_text_preview: null,
+                vision_text: null,
+                num_of_approved_change_suggestions: null,
+                is_cycle: null,
+                tags: null,
+                followers_count: null,
+                grade:Number
+            };
     },
 
     get_object:function (req, id, callback) {
-        var discussion_id = req.discussion;
-        models.Discussion.findOne({_id:discussion_id}, function (err, object) {
-            if (err) {
-                callback(err, null);
-            }
-            else {
-                object.is_follower = common.isArgIsInList(id,req.user.discussions);
-                callback(null, object);
-            }
-        });
+       this._super(req, id, function(err, object){
+           if(object){
+               if(req.user){
+                   object.is_follower = common.isArgIsInList(id,req.user.discussions);
+
+               }else{
+                   object.is_follower = false;
+               }
+           }
+           callback(null, object);
+
+       });
     },
 
     get_objects: function (req, filters, sorts, limit, offset, callback) {

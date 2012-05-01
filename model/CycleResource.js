@@ -12,6 +12,7 @@ var jest = require('jest'),
     models = require('../models'),
     common = require('./common'),
     async = require('async'),
+    _ = require('underscore'),
     FOLLOW_CYCLE_PRICE = 1;
 
 var CycleResource = module.exports = common.GamificationMongooseResource.extend({
@@ -27,7 +28,7 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
         this.fields = {
             document:null,
             title:null,
-            users:{
+            users: {
                 user_id:{
                     email:null,
                     first_name:null,
@@ -41,7 +42,7 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
             image_field: null,
             image_field_preview: null,
             tags:null,
-            discussions:{
+            discussions: {
                 title: null,
                 text_field: null,
                 text_field_preview: null,
@@ -73,15 +74,34 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
     },
 
     get_object:function (req, id, callback) {
-        models.Cycle.findById(id, function (err, object) {
-            if (err) {
-                callback(err, null);
+
+        this._super(req, id, function(err, object){
+            if(object){
+                models.User.find({"cycles.cycle_id": id}, ["email", "first_name", "avatar", "facebook_id", "cycles"], function(err, objs){
+                    var users = [];
+                    if(!err){
+                        object.users = _.map(objs, function(user){
+                            var curr_cycle =  _.find(user.cycles, function(cycle){
+                                    return cycle.cycle_id == id;
+                            });
+                            return {
+                                user_id:user,
+                                join_date: curr_cycle.join_date
+                            };
+                        });
+                    }
+                    else
+                        object.users = [];
+                    if(req.user){
+                        object.is_follower = common.isArgIsInList(id, req.user.cycles);
+                    }else{
+                        object.is_follower = false;
+                    }
+                });
+
             }
-            else {
-                object.is_follower = common.isArgIsInList(id, req.user.cycles);
-                callback(null, object);
-            }
-        });
+            callback(err, object);
+        })
     },
 
     get_objects: function (req, filters, sorts, limit, offset, callback) {
