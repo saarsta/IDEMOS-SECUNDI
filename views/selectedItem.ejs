@@ -39,7 +39,9 @@
                 <h3><%= info.title %></h3>
                 <a href="javascript:void(0);" class="button add">הוסף</a>
                 <a href="/facebookShare?link=/media/<%= info.id %>" target="_blank" class="button flL">שתף</a>
+                <% if(!user_like) { %>
                 <a href="javascript:void(0);" class="button flL" id="like_button">1+</a>
+                <% } %>
             </div>
             <P><%- info.text_field %></P>
             <p dir="rtl">

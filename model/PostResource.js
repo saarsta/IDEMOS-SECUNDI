@@ -11,6 +11,7 @@ var resources = require('jest'),
     models = require('../models'),
     common = require('./common'),
     async = require('async'),
+    _ = require('underscore'),
     POST_PRICE = 1;
 
 var PostResource = module.exports = common.GamificationMongooseResource.extend({
@@ -23,6 +24,24 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
         this.filtering = {discussion_id:null};
         this.default_query = function (query) {
             return query.sort('creation_date', 'descending');
+        };
+        this.fields = {
+            creator_id : {
+                first_name:null,
+                last_name:null,
+                avatar_url:null,
+                facebook_id:null
+            },
+            text:null,
+            popularity:null,
+            post_price:null,
+            tokens:null,
+            creation_date:null,
+            total_votes:null,
+            votes_against:null,
+            votes_for:null,
+            _id:null,
+            discussion_id:null
         };
 //    this.validation = new resources.Validation();=
     },
@@ -92,7 +111,13 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
             }
         ],function(err,result)
         {
-            callback(self.elaborate_mongoose_errors(err), post_object);
+            var rsp = {};
+            _.each(['text','popularity','creation_date','votes_for','votes_against'],function(field)
+            {
+                rsp[field] = post_object[field];
+            });
+            rsp.creator_id = req.user;
+            callback(self.elaborate_mongoose_errors(err), rsp);
         });
     }
 });
