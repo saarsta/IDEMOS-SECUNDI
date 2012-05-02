@@ -105,4 +105,7 @@ app.listen(app.settings.port);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 
 
-
+app.get('/tokens',function(req,res)
+{
+    res.send(require('./model/common').getGamificationTokenPrice(req.query.type));
+})

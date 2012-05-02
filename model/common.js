@@ -214,7 +214,23 @@ var GamificationMongooseResource = exports.GamificationMongooseResource = jest.M
     }
 });
 
+var token_prices = {};
+function load_token_prices(){
+    models.GamificationTokens.findOne({},function(err,doc)
+    {
+        if(doc)
+            token_prices = doc._doc;
+    });
+};
+
+load_token_prices();
+
 exports.getGamificationTokenPrice = function(type)
 {
-    return 1;
+    models.GamificationTokens.schema.pre('save',function(next)
+    {
+        setTimeout(load_token_prices,1000);
+        next();
+    });
+    return token_prices[type] || 0;
 };
