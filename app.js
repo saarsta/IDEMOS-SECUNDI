@@ -9,8 +9,6 @@ var express = require('express'),
 
 var app = module.exports = express.createServer();
 var account = require('./routes/account');
-var i18n = require('i18n-mongoose'),
-    locale = require('./locale');
 
 app.configure('deliver', function(){
     app.set('views', __dirname + '/deliver/views');
@@ -51,7 +49,6 @@ app.configure('production', function(){
         bucket: 'uru'
     });
 });
-
 
 mongoose.connect(app.settings.DB_URL);
 
