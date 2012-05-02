@@ -1039,7 +1039,7 @@ var Range = Class.extend({
 });
 
 Range.validate = function(range) {
-    if( ! range instanceof Range) {
+    if( ! range instanceof Range || isNaN(range)) {
         return false;
     }
     if(isNaN(range.getMinimum()) || isNaN(range.getMaximum()) || isNaN(range.getNumPoints()) || range.getMaximum() < range.getMinimum() || range.getNumPoints() <= 0) {
@@ -1159,7 +1159,7 @@ var ContinuousDistribution = Class.extend({
 /**
  * A normal distribution object
  */
-var NormalDistribution = ContinuousDistribution.extend({
+var NormalDistribution = exports.NormalDistribution = ContinuousDistribution.extend({
     init: function(mean, sigma) {
         this._super('Normal');
         this._mean = parseFloat(mean);

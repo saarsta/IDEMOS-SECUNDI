@@ -11,18 +11,35 @@ var resources = require('jest'),
     models = require('../models'),
     common = require('./common'),
     async = require('async'),
-    POST_PRICE = 1;
+    _ = require('underscore');
 
 var PostResource = module.exports = common.GamificationMongooseResource.extend({
     init:function () {
 
-        this._super(models.Post, 'post');
+        this._super(models.Post, 'post', common.getGamificationTokenPrice('post'));
         this.allowed_methods = ['get', 'post'];
         this.authorization = new common.TokenAuthorization();
         this.authentication = new common.SessionAuthentication();
         this.filtering = {discussion_id:null};
         this.default_query = function (query) {
             return query.sort('creation_date', 'descending');
+        };
+        this.fields = {
+            creator_id : {
+                first_name:null,
+                last_name:null,
+                avatar_url:null,
+                facebook_id:null
+            },
+            text:null,
+            popularity:null,
+            tokens:null,
+            creation_date:null,
+            total_votes:null,
+            votes_against:null,
+            votes_for:null,
+            _id:null,
+            discussion_id:null
         };
 //    this.validation = new resources.Validation();=
     },
@@ -76,8 +93,7 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                     },
                     function(cbk2)
                     {
-                            // add discussion_id to the list of discussions in user
-                        user.tokens -= POST_PRICE;
+                        // add discussion_id to the list of discussions in user
                         if (common.isArgIsInList(object.discussion_id, user.discussions) == false) {
                             user.discussions.push(object.discussion_id);
                         }
@@ -92,14 +108,14 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
             }
         ],function(err,result)
         {
-            callback(self.elaborate_mongoose_errors(err), post_object);
+            var rsp = {};
+            _.each(['text','popularity','creation_date','votes_for','votes_against'],function(field)
+            {
+                rsp[field] = post_object[field];
+            });
+            rsp.creator_id = req.user;
+            callback(self.elaborate_mongoose_errors(err), rsp);
         });
     }
 });
-
-//util.inherits(PostResource, resources.MongooseResource);
-//
-//PostResource.prototype.create_obj =
-//}
-//
 

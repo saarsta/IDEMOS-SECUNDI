@@ -21,7 +21,6 @@ writer.write(compile_template('actions','action.html'));
 writer.write(compile_template('hot_info_item','hotInfoItem.html'));
 writer.write(compile_template('info_item_in_subject_1','infoItemInSubject1.html'));
 writer.write(compile_template('shopping_cart_item_1','shoppingCartItem1.html'));
-writer.write(compile_template('info_item_full_view','infoItemFullView.html'));
 writer.write(compile_template('pending_action_list_item','pendingActionListItem.html'));
 writer.write(compile_template('action_list_item','actionListItem.html'));
 writer.write(compile_template('discussion_list_item','discussionListItem.html'));
@@ -35,6 +34,9 @@ writer.write(compile_template('cycle_user','cycle_user.html'));
 writer.write(compile_template('cycle_update','cycle_update.html'));
 writer.write(compile_template('cycle_pending_action','cycle_pending_action.html'));
 writer.write(compile_template('cycle_popular_post','cycle_popular_post.html'));
+writer.write(compile_template('cycle_information_item','cycle_information_item.html'));
+writer.write(compile_template('information_item_in_discussion','information_item_in_discussion.html'));
+
 
 writer.write(compile_template('myCycle_list_item','myCycleListItem.html'));
 writer.write(compile_template('myDiscussion_list_item','myDiscussionItem.html'));

@@ -1,16 +1,10 @@
-/**
- * Created by JetBrains WebStorm.
- * User: saar
- * Date: 23/02/12
- * Time: 12:02
- * To change this template use File | Settings | File Templates.
- */
 
 var resources = require('jest'),
     util = require('util'),
     models = require('../models'),
     common = require('./common'),
     async = require('async'),
+    _ = require('underscore'),
     DISCUSSION_PRICE = 3;
 
 //Authorization
@@ -51,19 +45,56 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
         this.authorization = new Authorization();
         this.default_query = function (query) {
             return query.sort('creation_date', 'descending');
-        };
+        },
+            this.fields = {
+                title: null,
+                image_field: null,
+                image_field_preview: null,
+                subject_id: null,
+                creation_date: null,
+                creator_id: null,
+                first_name: null,
+                last_name: null,
+                vision_text_preview: null,
+                vision_text: null,
+                num_of_approved_change_suggestions: null,
+                is_cycle: null,
+                tags: null,
+                followers_count: null,
+                grade:Number,
+                evaluate_counter: null,
+                _id:null
+            };
     },
 
     get_object:function (req, id, callback) {
-        var discussion_id = req.discussion;
-        models.Discussion.findOne({_id:discussion_id}, function (err, object) {
-            if (err) {
-                callback(err, null);
+        this._super(req, id, function(err, object){
+            if(object){
+                models.User.find({"discussions.discussion_id": id}, ["email", "first_name", "avatar", "facebook_id", "discussions"], function(err, objs){
+                    var users = [];
+                    if(!err){
+                        object.users = _.map(objs, function(user){
+                            var curr_discussion =  _.find(user.discussions, function(discussion){
+                                return discussion.cycle_id == id;
+                            });
+                            return {
+                                user_id:user,
+                                join_date: curr_discussion.join_date
+                            };
+                        });
+                    }
+                    else
+                        object.users = [];
+                    if(req.user){
+                        object.is_follower = common.isArgIsInList(id, req.user.discussions);
+                    }else{
+                        object.is_follower = false;
+                    }
+                });
+
             }
-            else {
-                callback(null, object);
-            }
-        });
+            callback(err, object);
+        })
     },
 
     get_objects: function (req, filters, sorts, limit, offset, callback) {

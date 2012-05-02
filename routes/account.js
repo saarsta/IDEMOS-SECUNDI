@@ -92,135 +92,152 @@ exports.auth_middleware = function (req, res, next) {
     }
 };
 
-/* app.use(function(req, res, next){
- var models = Models;
+exports.routing = function(router)
+{
+    router.post('/register',function (req, res) {
+        var data = req.body;
+        var user = new Models.User(data);
+        user.password = bcrypt.encrypt_sync(data.password, bcrypt.gen_salt_sync(10));
+        user.identity_provider = "register";
+        if(req.session.referred_by)
+        {
+            user.invited_by = req.session.referred_by;
+        }
+        /* user.num_of_extra_tokens = 10000000;////delete!!
+         user.invited_by = "4f69e4c52c18dffc11000002";////
+         user.num_of_extra_tokens = 4;////
+         user.has_been_invited = true; ////*/
 
- for(var i=0; i<DONT_NEED_LOGIN_PAGES.length; i++)
- {
- var dont = DONT_NEED_LOGIN_PAGES[i];
- if (dont.exec(req.path))
- {
- next();
- return;
- }
- }
+        user_model = Models.User;
 
- if(req.isAuthenticated() && !req.session.user){
+        user_model.find({username:user.username, identity_provider:'register'}, function (err, result) {
+            if (err == null) {
 
-
- //            if(!req.session.user_id){
- //                //means that user used registration, so we save user_id out of the AUTH
-
- req.session.user_id = req.session.auth.user_id || req.session.auth.user._id;
-
- //            }
- //            var email = req.session.auth.user.email;
- var facebook_id = req.session.auth.user.id;
- models.User.findById(req.session.user_id ,function(err,object)
- {
- if(err)
- {
- console.log('couldn put user id' + err.message)
- next();
- }
- else
- {
- req.session.user = object;
- //if object doesnt exust in db it means we got here before registration completed
- if (!object){
- next();
- }else{
- req.session.user_id = object.id;
- req.session.save(function(err)
- {
- if(err)
- console.log('couldnt put user id' + err.message);
- next();
- });
- }
- }
- });
- }else{
- next();
- }
- });
- */
-
-exports.login = function (req, res) {
-    if (req.method == 'GET') {
-        res.render('login.ejs', {title:'Login',
-            tab:'user',
-            failed:false, exist_username:false, next:req.query.next});
-    }
-    else {
-        req.authenticate('simple', function (err, is_authenticated) {
-            if (is_authenticated) {
-                var next = req.query.next || DEFAULT_LOGIN_REDIRECT;
-                res.redirect(next);
-            }
-            else {
-                res.render('login.ejs', {title:'Login',
-                    tab:'users',
-                    failed:true, exist_username:false, next:req.query.next});
-            }
-        });
-    }
-};
-
-exports.register = function (req, res) {
-    var data = req.body;
-    var user = new Models.User(data);
-    user.password = bcrypt.encrypt_sync(data.password, bcrypt.gen_salt_sync(10));
-    user.identity_provider = "register";
-    if(req.session.referred_by)
-    {
-        user.invited_by = req.session.referred_by;
-    }
-   /* user.num_of_extra_tokens = 10000000;////delete!!
-    user.invited_by = "4f69e4c52c18dffc11000002";////
-    user.num_of_extra_tokens = 4;////
-    user.has_been_invited = true; ////*/
-
-    user_model = Models.User;
-
-    user_model.find({username:user.username, identity_provider:'register'}, function (err, result) {
-        if (err == null) {
-
-            var test = result.length;
-            if (result.length < 1) {     //user is not registered
-                user.save(function (err, user) {
-                    if (err) {
+                var test = result.length;
+                if (result.length < 1) {     //user is not registered
+                    user.save(function (err, user) {
+                        if (err) {
 //                      res.send('something wrong: '+ err.message,500);
 
-                        res.render('login.ejs', {title:'Login', failed:true, exist_username:false, errors:err.errors, next:req.query.next});
-                    }
-                    else {
-                        console.log('new user has been created by registration');
-                        req.body['username'] = user.username;
-                        req.body['password'] = data['password'];
-                        req.authenticate('simple', function (err, is_authenticated) {
-                            if (err) res.send('something wrong: ' + err.message, 500);
-                            else {
-                                if (!is_authenticated) res.send('something wrong', 500);
+                            res.render('login.ejs', {title:'Login', failed:true, exist_username:false, errors:err.errors, next:req.query.next});
+                        }
+                        else {
+                            console.log('new user has been created by registration');
+                            req.body['username'] = user.username;
+                            req.body['password'] = data['password'];
+                            req.authenticate('simple', function (err, is_authenticated) {
+                                if (err) res.send('something wrong: ' + err.message, 500);
                                 else {
-                                    var next = req.query.next || DEFAULT_LOGIN_REDIRECT;
-                                    res.redirect(next);
+                                    if (!is_authenticated) res.send('something wrong', 500);
+                                    else {
+                                        var next = req.query.next || DEFAULT_LOGIN_REDIRECT;
+                                        res.redirect(next);
+                                    }
                                 }
-                            }
-                        });
-                    }
-                });
+                            });
+                        }
+                    });
+                } else {
+                    res.render('login.ejs', {title:'Login',
+                        tab:'users',
+                        failed:false, exist_username:true, next:req.query.next});
+                }
             } else {
-                res.render('login.ejs', {title:'Login',
-                    tab:'users',
-                    failed:false, exist_username:true, next:req.query.next});
+                throw "Error reading db.User";
             }
-        } else {
-            throw "Error reading db.User";
+        });
+
+    });
+
+    router.post('/login', function (req, res) {
+        if (req.method == 'GET') {
+            res.render('login.ejs', {title:'Login',
+                tab:'user',
+                failed:false, exist_username:false, next:req.query.next});
+        }
+        else {
+            req.authenticate('simple', function (err, is_authenticated) {
+                if (is_authenticated) {
+                    var next = req.query.next || DEFAULT_LOGIN_REDIRECT;
+                    res.redirect(next);
+                }
+                else {
+                    res.render('login.ejs', {title:'Login',
+                        tab:'users',
+                        failed:true, exist_username:false, next:req.query.next});
+                }
+            });
         }
     });
 
+    router.get('/facebooklogin',function (req, res) {
+        function go() {
+            req.authenticate("facebook", function (error, authenticated) {
+                var next = req.session['fb_next'];
+                var referred_by = req.session['referred_by'];
+                console.log(error);
+                if (authenticated) {
+
+                    var user_detailes = req.getAuthDetails().user;
+                    var access_token = req.session["access_token"];
+                    var user_fb_id = req.getAuthDetails().user.id;
+
+                    isUserInDataBase(user_fb_id, function (is_user_in_db) {
+
+                        if (!is_user_in_db) {
+                            user_detailes.invited_by = referred_by;
+                            createNewUser(user_detailes, access_token, function (_id) {
+                                req.session.user_id = _id;
+//                            req.session.auth.user._id = _id; i can delete this
+                                req.session.save(function (err, object) {
+                                    if (err != null) {
+                                        console.log(err);
+                                    } else {
+                                        console.log('user _id to session is ok')
+                                    }
+                                });
+                            });
+                        } else {
+
+                            updateUesrAccessToken(user_detailes, access_token, function (_id) {
+                                req.session.auth.user._id = _id;
+                                req.session.save(function (err, object) {
+                                    if (err != null) {
+                                        console.log(err);
+                                    } else {
+                                        console.log('user _id to session is ok')
+                                    }
+
+                                });
+                            });
+                        }
+                    });
+                    res.redirect(next || DEFAULT_LOGIN_REDIRECT);
+                }
+            });
+        }
+
+        if (req.query.next) {
+            req.session['fb_next'] = req.session['fb_next'];
+            req.session.save(go);
+        }
+        else
+            go();
+    });
+
+    router.get('/logout', function (req, res) {
+        res.clearCookie('connect.sid', {path:'/'});
+        delete req.session['user_id'];
+        delete req.session['user'];
+        req.session.save();
+
+        req.session.destroy();
+        req.logout();
+        res.end();
+    });
+
 };
+
 
 var https = require("https");
 
@@ -275,61 +292,6 @@ var SimpleAuthentication = exports.SimpleAuthentication = function (options) {
         });
     };
     return that;
-};
-
-exports.fb_connect = function (req, res) {
-    function go() {
-        req.authenticate("facebook", function (error, authenticated) {
-            var next = req.session['fb_next'];
-            var referred_by = req.session['referred_by'];
-            console.log(error);
-            if (authenticated) {
-
-                var user_detailes = req.getAuthDetails().user;
-                var access_token = req.session["access_token"];
-                var user_fb_id = req.getAuthDetails().user.id;
-
-                isUserInDataBase(user_fb_id, function (is_user_in_db) {
-
-                    if (!is_user_in_db) {
-                        user_detailes.invited_by = referred_by;
-                        createNewUser(user_detailes, access_token, function (_id) {
-                            req.session.user_id = _id;
-//                            req.session.auth.user._id = _id; i can delete this
-                            req.session.save(function (err, object) {
-                                if (err != null) {
-                                    console.log(err);
-                                } else {
-                                    console.log('user _id to session is ok')
-                                }
-                            });
-                        });
-                    } else {
-
-                        updateUesrAccessToken(user_detailes, access_token, function (_id) {
-                            req.session.auth.user._id = _id;
-                            req.session.save(function (err, object) {
-                                if (err != null) {
-                                    console.log(err);
-                                } else {
-                                    console.log('user _id to session is ok')
-                                }
-
-                            });
-                        });
-                    }
-                });
-                res.redirect(next || DEFAULT_LOGIN_REDIRECT);
-            }
-        });
-    }
-
-    if (req.query.next) {
-        req.session['fb_next'] = req.session['fb_next'];
-        req.session.save(go);
-    }
-    else
-        go();
 };
 
 exports.facebookShare = function(req,res)
@@ -412,15 +374,6 @@ function updateUesrAccessToken(data, access_token, callback) {
     });
 }
 
-exports.logout = function (req, res) {
-    res.clearCookie('connect.sid', {path:'/'});
-    delete req.session['user_id'];
-    req.session.save();
-
-    req.session.destroy();
-    req.logout();
-    res.end();
-};
 
 var forms = require('j-forms').forms;
 

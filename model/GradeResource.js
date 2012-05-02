@@ -10,7 +10,9 @@
 var resources = require('jest'),
     util = require('util'),
     models = require('../models'),
-    common = require('./common');
+    async = require('async'),
+    common = require('./common'),
+    _ = require('underscore');
 
 //Authorization
 var Authoriztion = function() {};
@@ -33,7 +35,6 @@ Authoriztion.prototype.edit_object = function(req,object,callback){
                 callback({message:"user already grade this discussion",code:401}, null);
             }else{
                 callback(null, object);
-
             }
         }
     })
@@ -41,25 +42,27 @@ Authoriztion.prototype.edit_object = function(req,object,callback){
 
 var GradeResource = module.exports = common.GamificationMongooseResource.extend({
     init:function(){
-        this._super(models.Grade,'grade');
+        this._super(models.Grade,'grade', common.getGamificationTokenPrice('grade'));
 //        GradeResource.super_.call(this,models.Grade);
         this.allowed_methods = ['get','post'];
         this.authorization = new Authoriztion();
         this.authentication = new common.SessionAuthentication();
         this.filtering = {discussion_id: null};
     },
+
     create_obj:function(req,fields,callback)
     {
         var user_id = req.session.user_id;
         var self = this;
         var object = new self.model();
+        var g_grade;
 
         object.user_id = user_id;
         for( var field in fields)
         {
             object.set(field,fields[field]);
         }
-        self.authorization.edit_object(req,object,function(err,object)
+        self.authorization.edit_object(req, object, function(err, object)
         {
             if(err) callback(err);
             else
@@ -70,48 +73,34 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
                         callback(err, null);
                     }
                     else{
-                        var isNewFollower = false;
-                        models.User.findOne({_id: grade_object.user_id}, function(err,user_object){
-                            if(err){
+                        var user = req.user;
+                        g_grade = grade_object;
+                        async.waterfall([
+                            /*function(cbk){
+                                models.Discussion.update({_id: grade_object.discussion_id}, {$addToSet: {users: {user_id: user._id, join_date:Date.now()}}}, cbk);
+                            },
+*/
+                            function(cbk){
+                                models.Discussion.findById(grade_object.discussion_id, cbk);
+                            },
 
-                            }else{
-                                if (common.isArgIsInList(grade_object.discussion_id, user_object.discussions)  == false){
-                                    isNewFollower = true;
-                                    user_object.discussions.push(grade_object.discussion_id);
-                                }
-
-                                models.Discussion.findOne({_id: grade_object.discussion_id}, function(err,discussion_object){
-                                    if (err){
-                                        callback(err, null);
-                                    }
-                                    else{
-//                                      // calculating the current discussion grade
-                                        // + insert user to discussion
-                                        // + increase followers if necessary
-
-                                        discussion_object.grade_sum += parseInt(grade_object.evaluation_grade);
-                                        discussion_object.evaluate_counter++;
-                                        discussion_object.grade = discussion_object.grade_sum / discussion_object.evaluate_counter;
-                                        if (isNewFollower){
-                                            discussion_object.followers_count++;
-                                        }
-                                        discussion_object.save(function(err){
-                                            if (err){
-                                                callback(err, null)
-                                            }
-                                            else{
-                                                callback(self.elaborate_mongoose_errors(err),discussion_object);
-                                            }
-                                        })
-                                    }
-                                });
-
+                            function(discussion_obj, cbk){
+                                /*_.find(discussion_obj.users, function(user){
+                                    user.user_id
+                                })*/
+                                discussion_obj.users.push({user_id: user._id, join_date:Date.now()})
+                                discussion_obj.grade_sum += grade_object._doc.grade;
+                                discussion_obj.grade = discussion_obj.grade_sum / discussion_obj.evaluate_counter;
+                                discussion_obj.evaluate_counter += 1;
+                                discussion_obj.save(cbk);
                             }
-                        });
+                        ], function(err, obj){
+                            callback(err, g_grade);
+                        })
                     }
                 });
             }
-        });
+        })
     }
 });
 
