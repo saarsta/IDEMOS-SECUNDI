@@ -17,7 +17,7 @@ var resources = require('jest'),
 
 var VoteResource = module.exports = common.GamificationMongooseResource.extend({
     init:function(){
-        this._super(models.Vote,'vote',1);
+        this._super(models.Vote,'vote', common.getGamificationTokenPrice('vote'));
         this.allowed_methods = ['post'];
     //    this.authorization = new Authoriztion();
         this.authentication = new common.SessionAuthentication();

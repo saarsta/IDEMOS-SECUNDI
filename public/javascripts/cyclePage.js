@@ -20,6 +20,7 @@ function loadCyclePage(cycle_id,start_date, finish_date){
                         dust.render('cycle_main',cycle1,function(err,out){
 
                             $('#cycleMain').prepend(out);
+                            $('#followCycleButton').hide();
                          });
                     } );
                 }

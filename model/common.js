@@ -213,3 +213,8 @@ var GamificationMongooseResource = exports.GamificationMongooseResource = jest.M
         gamification_deserilize(this, this._super, req, res, obj, status);
     }
 });
+
+exports.getGamificationTokenPrice = function(type)
+{
+    return 1;
+};

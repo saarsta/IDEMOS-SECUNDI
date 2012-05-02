@@ -11,13 +11,12 @@ var resources = require('jest'),
     models = require('../models'),
     common = require('./common'),
     async = require('async'),
-    _ = require('underscore'),
-    POST_PRICE = 1;
+    _ = require('underscore');
 
 var PostResource = module.exports = common.GamificationMongooseResource.extend({
     init:function () {
 
-        this._super(models.Post, 'post');
+        this._super(models.Post, 'post', common.getGamificationTokenPrice('post'));
         this.allowed_methods = ['get', 'post'];
         this.authorization = new common.TokenAuthorization();
         this.authentication = new common.SessionAuthentication();
@@ -34,7 +33,6 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
             },
             text:null,
             popularity:null,
-            post_price:null,
             tokens:null,
             creation_date:null,
             total_votes:null,
@@ -95,8 +93,7 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                     },
                     function(cbk2)
                     {
-                            // add discussion_id to the list of discussions in user
-                        user.tokens -= POST_PRICE;
+                        // add discussion_id to the list of discussions in user
                         if (common.isArgIsInList(object.discussion_id, user.discussions) == false) {
                             user.discussions.push(object.discussion_id);
                         }
@@ -121,10 +118,4 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
         });
     }
 });
-
-//util.inherits(PostResource, resources.MongooseResource);
-//
-//PostResource.prototype.create_obj =
-//}
-//
 

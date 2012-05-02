@@ -37,7 +37,7 @@ var ActionResource = {
 
 var tag_suggestions =  {
     tag_name: String,
-    tag_offers: {type:[ObjectId], ref:'User',editable:false}
+    tag_offers: {type:[ObjectId], ref:'User'}
 };
 
 var CommentVote = new Schema({
@@ -91,11 +91,11 @@ var Schemas = exports.Schemas = {
             new Schema({cycle_id:{type:ObjectId, ref:'Cycle'}, join_date: {type:Date, 'default':Date.now}})
         ],
         actions:[
-            new Schema({action_id:{type:ObjectId, ref:'Action'}, join_date: {type:Date, 'default':Date.now}})
+            new Schema( {action_id:{type:ObjectId, ref:'Action'}, join_date: {type:Date, 'default':Date.now}})
         ],
         password:String,
         tokens:{type:Number, 'default':9},
-        gamification:Schema.Types.Mixed,
+        gamification: Schema.Types.Mixed,
         updates: Schema.Types.Mixed,
         //score:{type:Number, 'default':0},
         decoration_status:{type:String, "enum":['a', 'b', 'c']},
@@ -123,7 +123,7 @@ var Schemas = exports.Schemas = {
         creation_date:{type:Date, 'default':Date.now,editable:false},
         is_hot_object:{type:Boolean, 'default':false},
         is_hot_info_item: {type:Boolean, 'default':false},
-        tag_suggestions: [tag_suggestions],
+        tag_suggestions: {type:[tag_suggestions] ,editable:false},
         like_counter: {type: Number, 'default': 0, editable: false},
         //this two fields are for user suggestion of InformationItem, when admin create this it will remain false
         created_by: {creator_id:{type: ObjectId, ref: 'User', editable: false}, did_user_created_this_item: {type: Boolean, 'default': false, editable: false}},
@@ -222,11 +222,15 @@ var Schemas = exports.Schemas = {
             date:{type:Date, 'default':Date.now, editable:false}
         },
         tags:[String],
-        //for my uru
+        //users that connected somehow to discussion for my uru
         users:[
             new Schema({user_id:{type:ObjectId, ref:'User'}, join_date: {type:Date, 'default':Date.now}})
         ],
 
+        //followers for my uru
+        followers:[
+            new Schema({user_id:{type:ObjectId, ref:'User'}, join_date: {type:Date, 'default':Date.now}})
+        ],
         followers_count:{type:Number, 'default':0, editable:false},
         is_visible:{type:Boolean, 'default':true},
         is_published:{type:Boolean, 'default':false},
@@ -275,7 +279,6 @@ var Schemas = exports.Schemas = {
 //        avatar : {type:mongoose_types.File, editable:false},
         creation_date:{type:Date, 'default':Date.now,editable:false},
         tokens:{type:Number, 'default':0, index: true},
-        post_price:{type:Number, 'default':0},//how many tokens for creating post
         popularity: {type:Number, 'default':0},
         gamification: {high_number_of_tokens_bonus : {type: Boolean, 'default': false}}
     },
@@ -443,9 +446,19 @@ var Schemas = exports.Schemas = {
         tag:{type:String, unique:true},
         popularity:{type:Number,'default':0,select:false}
     },
-    Token_Prices:new Schema({
-        ex_price:{type:mongoose_types.Integer, min:0}
-    })
+
+    GamificationTokens: {
+        create_discussion: {type: Number, 'default': 0},
+        post_on_discussion: {type: Number, 'default': 0},
+        post_on_action: {type: Number, 'default': 0},
+        suggestion_on_discussion: {type: Number, 'default': 0},
+        suggestion_on_action: {type: Number, 'default': 0},
+        grade_discussion: {type: Number, 'default': 0},
+        grade_action: {type: Number, 'default': 0},
+        vote_on_post: {type: Number, 'default': 0},
+        like_info_item: {type: Number, 'default': 0},
+        join_to_action: {type: Number, 'default': 0}
+    }
 };
 
 Schemas.Cycle.pre("save", function(next){
@@ -535,6 +548,8 @@ var Models = module.exports = {
     ActionResource:mongoose.model('ActionResource', new Schema(Schemas.ActionResource, {strict: true})),
     Tag: mongoose.model('Tag', new Schema(Schemas.Tag, {strict: true})),
     ResourceObligation: mongoose.model('ResourceObligation', new Schema(Schemas.ResourceObligation, {strict: true})),
+    GamificationTokens: mongoose.model('GamificationTokens', new Schema(Schemas.GamificationTokens, {strict: true})),
+
     Schemas:Schemas
 };
 

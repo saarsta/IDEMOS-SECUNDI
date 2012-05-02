@@ -62,6 +62,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                 tags: null,
                 followers_count: null,
                 grade:Number,
+                evaluate_counter: null,
                 _id:null
             };
     },
