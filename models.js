@@ -10,7 +10,9 @@ var mongoose = require("mongoose"),
     Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId,
     mongoose_types = require('j-forms').types,
-    form_fields = require('j-forms').fields;
+    utils = require('./utils'),
+    async = require('async');
+
 mongoose_types.loadTypes(mongoose);
 
 var MinLengthValidator = function (min) {
@@ -440,7 +442,10 @@ var Schemas = exports.Schemas = {
     Tag : {
         tag:{type:String, unique:true},
         popularity:{type:Number,'default':0,select:false}
-    }
+    },
+    Token_Prices:new Schema({
+        ex_price:{type:mongoose_types.Integer, min:0}
+    })
 };
 
 Schemas.Cycle.pre("save", function(next){
@@ -500,23 +505,6 @@ Schemas.Article.pre('save',function(next)
     next();
 });
 
-function extend_model(name, base_schema, schema, collection) {
-    for (var key in base_schema)
-        if (!schema[key]) schema[key] = base_schema[key];
-    schema._type = {type:String, 'default':name,editable:false};
-    var model = mongoose.model(name, new Schema(schema), collection);
-    var old_find = model.find;
-    model.find = function () {
-        var params = arguments.length ? arguments[0] : {};
-        params['_type'] = name;
-        if (arguments.length)
-            arguments[0] = params;
-        else
-            arguments = [params];
-        return old_find.apply(this, arguments);
-    };
-    return model;
-}
 
 var Models = module.exports = {
     User:mongoose.model("User",Schemas.User),
@@ -529,9 +517,9 @@ var Models = module.exports = {
 
     Subject:mongoose.model('Subject', new Schema(Schemas.Subject, {strict: true})),
     Discussion:mongoose.model('Discussion', new Schema(Schemas.Discussion, {strict: true})),
-    Post:extend_model('Post', Schemas.PostOrSuggestion, Schemas.Post, 'posts'),
-    PostAction:extend_model('PostAction', Schemas.PostOrSuggestion, Schemas.PostAction, 'posts'),
-    Suggestion:extend_model('Suggestion', Schemas.PostOrSuggestion, Schemas.Suggestion, 'posts'),
+    Post:utils.extend_model('Post', Schemas.PostOrSuggestion, Schemas.Post, 'posts'),
+    PostAction:utils.extend_model('PostAction', Schemas.PostOrSuggestion, Schemas.PostAction, 'posts'),
+    Suggestion:utils.extend_model('Suggestion', Schemas.PostOrSuggestion, Schemas.Suggestion, 'posts'),
     PostOrSuggestion:mongoose.model('PostOrSuggestion', new Schema(Schemas.PostOrSuggestion, {strict: true}), 'posts'),
     Vote:mongoose.model('Vote', new Schema(Schemas.Vote, {strict: true})),
     Like:mongoose.model('Like', new Schema(Schemas.Like, {strict: true})),
