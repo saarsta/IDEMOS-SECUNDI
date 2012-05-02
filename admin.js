@@ -73,5 +73,5 @@ module.exports = function(app)
             list:['title']
         });
 
-        admin.registerMongooseModel('GamificationTokens',Models.GamificationTokens,null,{});
+        admin.registerMongooseModel('GamificationTokens',Models.GamificationTokens,null, {list:['create_discussion']});
 };

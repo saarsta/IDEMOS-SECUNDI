@@ -42,7 +42,7 @@ Authoriztion.prototype.edit_object = function(req,object,callback){
 
 var GradeResource = module.exports = common.GamificationMongooseResource.extend({
     init:function(){
-        this._super(models.Grade,'grade');
+        this._super(models.Grade,'grade', common.getGamificationTokenPrice('grade'));
 //        GradeResource.super_.call(this,models.Grade);
         this.allowed_methods = ['get','post'];
         this.authorization = new Authoriztion();

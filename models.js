@@ -277,7 +277,6 @@ var Schemas = exports.Schemas = {
 //        avatar : {type:mongoose_types.File, editable:false},
         creation_date:{type:Date, 'default':Date.now,editable:false},
         tokens:{type:Number, 'default':0, index: true},
-        post_price:{type:Number, 'default':0},//how many tokens for creating post
         popularity: {type:Number, 'default':0},
         gamification: {high_number_of_tokens_bonus : {type: Boolean, 'default': false}}
     },
