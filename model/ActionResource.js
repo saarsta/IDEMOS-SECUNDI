@@ -58,7 +58,7 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                             req.gamification_type = "action";
                             //user.tokens -= ACTION_PRICE;
                             // add discussion_id and action_id to the lists in user
-                            models.User.update({_id:user_id}, {$addToSet:{/*cycles: cycle_id, */actions:action._doc._id}}, function (err, object) {
+                            models.User.update({_id:user_id}, {$addToSet:{/*cycles: cycle_id, */actions: action._doc._id}}, function (err, object) {
                                 callback(self.elaborate_mongoose_errors(err), action);
                             });
                         } else {
