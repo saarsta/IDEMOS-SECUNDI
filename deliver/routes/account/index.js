@@ -5,7 +5,7 @@
  * Time: 12:34 PM
  * To change this template use File | Settings | File Templates.
  */
-var sys = require('sys'),
+var sys = require('util'),
     mongoose = require('mongoose');
 var bcrypt;
 try {
@@ -40,7 +40,7 @@ var DONT_NEED_LOGIN_PAGES = [/^\/images/,/^\/static/, /^\/css/, /stylesheets\/st
 
 exports.LOGIN_PATH = LOGIN_PATH;
 
-var Models = require("../../models.js");
+var Models = require("../../../models.js");
 
 exports.referred_by_middleware = function(req,res,next)
 {
@@ -233,7 +233,6 @@ exports.routing = function(router)
 
         req.session.destroy();
         req.logout();
-        res.end();
     });
 
 };
@@ -335,7 +334,7 @@ function createNewUser(data, access_token, callback) {
     user.last_name = data.last_name;
     user.email = data.email;
     if (data.hometown) {
-         user.address = data.hometown.name;
+        user.address = data.hometown.name;
     }
     user.gender = data.gender;
     user.facebook_id = data.id;

@@ -5,7 +5,7 @@
  * Time: 12:34 PM
  * To change this template use File | Settings | File Templates.
  */
-var sys = require('sys'),
+var sys = require('util'),
     mongoose = require('mongoose');
 var bcrypt;
 try {
