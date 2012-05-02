@@ -93,7 +93,7 @@ exports.extend_model = function(name, base_schema, schema, collection) {
     for (var key in base_schema)
         if (!schema[key]) schema[key] = base_schema[key];
     schema._type = {type:String, 'default':name,editable:false};
-    var model = mongoose.model(name, new Schema(schema), collection);
+    var model = mongoose.model(name, new mongoose.Schema(schema), collection);
     var old_find = model.find;
     model.find = function () {
         var params = arguments.length ? arguments[0] : {};

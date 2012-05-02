@@ -548,7 +548,7 @@ var Models = module.exports = {
     ActionResource:mongoose.model('ActionResource', new Schema(Schemas.ActionResource, {strict: true})),
     Tag: mongoose.model('Tag', new Schema(Schemas.Tag, {strict: true})),
     ResourceObligation: mongoose.model('ResourceObligation', new Schema(Schemas.ResourceObligation, {strict: true})),
-    GamificationTokens: mongoose.model('GamificationTokens', new Schema(Schemas.GamificationTokens, {strict: true})),
+    GamificationTokens: utils.config_model('GamificationTokens', Schemas.GamificationTokens),
 
     Schemas:Schemas
 };
