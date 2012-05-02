@@ -12,7 +12,20 @@ var account = require('./routes/account');
 var i18n = require('i18n-mongoose'),
     locale = require('./locale');
 
+app.configure('deliver', function(){
+    app.set('views', __dirname + '/deliver/views');
+    app.set('public_folder', __dirname + '/deliver/public');
+    app.set("port", 80);
+    app.set('facebook_app_id', '175023072601087');
+    app.set('facebook_secret', '5ef7a37e8a09eca5ee54f6ae56aa003f');
+    app.set('root_path', 'http://dev.empeeric.com');
+    app.set('DB_URL','mongodb://localhost/uru');
+    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+});
+
 app.configure('development', function(){
+    app.set('views', __dirname + '/views');
+    app.set('public_folder', __dirname + '/public');
     app.set("port", 80);
     app.set('facebook_app_id', '175023072601087');
     app.set('facebook_secret', '5ef7a37e8a09eca5ee54f6ae56aa003f');
@@ -24,6 +37,8 @@ app.configure('development', function(){
 });
 
 app.configure('production', function(){
+    app.set('views', __dirname + '/views');
+    app.set('public_folder', __dirname + '/public');
     app.set("port", process.env.PORT);
     app.set('facebook_app_id', '375874372423704');
     app.set('facebook_secret', 'b079bf2df2f7055e3ac3db17d4d2becb');
@@ -40,26 +55,21 @@ app.configure('production', function(){
 
 mongoose.connect(app.settings.DB_URL);
 
-
 // Configuration
 var confdb = {
     db: require('./utils').split_db_url(app.settings.DB_URL),
     secret: '076ed61d63ea10a12rea879l1ve433s9'
 };
 
-
-i18n.configure({});
-
 app.configure(function(){
-    app.set('views', __dirname + '/views');
-    app.set('view engine', 'jade');
+    app.set('view engine', 'ejs');
     app.use(express.bodyParser());
     app.use(express.methodOverride());
     app.use(express.cookieParser());
     app.use(express.session({secret: confdb.secret,
         maxAge: new Date(Date.now() + 3600000),
         store: new MongoStore(confdb.db) }));
-    app.use(account.referred_by_middleware)
+    app.use(account.referred_by_middleware);
 
     var fbId = app.settings.facebook_app_id,
         fbSecret = app.settings.facebook_secret,
@@ -80,23 +90,13 @@ app.configure(function(){
 
     app.use(account.auth_middleware);
     app.use(express.methodOverride());
-    app.use(i18n.init);
     app.use(app.router);
-    app.use(express.static(__dirname + '/public'));
+    app.use(express.static(app.settings.public_folder));
     require('j-forms').serve_static(app,express);
 });
 
-// register helpers for use in templates
-app.helpers({
-    __i: i18n.__,
-    __n: i18n.__n
-});
-
-
-require('./routes')(app);
-
+app.settings.env == 'deliver' ? require('./deliver/routes')(app) : require('./routes')(app);
 require('./api')(app);
-
 require('./admin')(app);
 
 var cron = require('./cron');
@@ -104,8 +104,6 @@ var cron = require('./cron');
 app.listen(app.settings.port);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 
-
-app.get('/tokens',function(req,res)
-{
+app.get('/tokens',function(req,res){
     res.send(require('./model/common').getGamificationTokenPrice(req.query.type));
-})
+});
