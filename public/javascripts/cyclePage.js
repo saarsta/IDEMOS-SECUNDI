@@ -59,7 +59,7 @@ function loadCyclePage(cycle_id,start_date, finish_date){
             });
         });
 
-        dust.renderArray('cycle_user',cycle.users,null,function(err,out)
+        dust.renderArray('cycle_user',cycle.followers_users,null,function(err,out)
         {
             $('#userList').append(out);
         });

@@ -20,7 +20,7 @@
         </p>
         <p>
             מספר פעולות עתידיות:
-            {}
+            {num_upcoming_actions}
         </p>
         <p>
             (פעולות שהצליחו בעבר):
@@ -32,20 +32,20 @@
 
     <div class="action-bottom clearfix">
         <p class="meta-data">
-            הפעולה הקרובה: <a href="#">שם הפעולה</a> <span class="divider">|</span> <a href="#">תאריך ושעה</a> <span class="divider">|</span> <a href="#">מספר משתתפים</a>
-
-
             <a href="#">
+                הפעולה הקרובה:
            {upcoming_action.title}
             </a>
             <span class="divider">|</span>
-            <a href="#">{upcoming_action.execution_date|time}
+            <a href="#">
+                תאריך ביצוע:
+                {upcoming_action.execution_date|time}
             </a>
             <span class="divider">|</span>
             <a href="#">
+                מספר משתתפים:
               {upcoming_action.num_of_going}
             </a>
-
         </p>
         <a href="javascript:void(0)" class="button join_action_button" item_id="{upcoming_action._id}">הצטרף</a>
     </div>

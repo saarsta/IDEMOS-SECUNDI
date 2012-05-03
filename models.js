@@ -356,8 +356,8 @@ var Schemas = exports.Schemas = {
         type: String, //only admin can change this
         description:String,
         creator_id:{type:ObjectId, ref:'User', index:true, required:true},
-        first_name: String,
-        last_name: String,
+        first_name: {type: String, editable:false},
+        last_name: {type: String, editable:false},
         cycle_id:{type:ObjectId, ref:'Cycle', index:true, required:true},
         action_resources:[
             {resource: ActionResource, amount:Number, left_to_bring: Number}
@@ -367,22 +367,22 @@ var Schemas = exports.Schemas = {
         users:[
             new Schema({user_id:{type:ObjectId, ref:'User'}, join_date: {type:Date, 'default':Date.now}})
         ],
-        execution_date:{type:Date},
+        execution_date:{type:Date, 'default':Date.now},//change default
         creation_date:{type:Date, 'default':Date.now},
         required_participants:{type:Number, 'default':0},
         //users that are going to be in the action
         going_users: [
             new Schema({user_id: {type:ObjectId, ref:'User'}, join_date: {type: Date, 'default': Date.now}})
         ],
-        num_of_going: {type: Number, 'default': 0},
+        num_of_going: {type: Number, 'default': 0, editable:false},
         tokens:{type:Number, 'default':0},
         is_approved:{type:Boolean, 'default':false},
         is_hot_object: {type:Boolean,'default':false},
-        gamification: {approved_to_cycle :{type: Boolean, 'default': false}},
+        gamification: {approved_to_cycle :{type: Boolean, 'default': false}, editable:false},
         location:mongoose_types.GeoPoint,
         grade:{type:Number, 'default':0},
-        evaluate_counter:{type:Number, 'default':0},
-        grade_sum:{type:Number, 'default':0}
+        evaluate_counter:{type:Number, 'default':0, editable:false},
+        grade_sum:{type:Number, 'default':0, editable:false}
     },
 
     Post:{
@@ -452,6 +452,7 @@ var Schemas = exports.Schemas = {
 
     GamificationTokens: {
         create_discussion: {type: Number, 'default': 0},
+        create_action: {type: Number, 'default': 0},
         post_on_discussion: {type: Number, 'default': 0},
         post_on_action: {type: Number, 'default': 0},
         suggestion_on_discussion: {type: Number, 'default': 0},

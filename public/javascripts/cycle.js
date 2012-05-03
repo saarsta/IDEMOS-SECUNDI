@@ -207,13 +207,6 @@ function loadCyclePage(cycle_id, discussion_id){
                console.log(err);
            }else{
                console.log("Action was added!");
-              /* db_functions.getActionById(result._id, function(err, data){
-                   if(err){
-                       console.log(err);
-                   }else{
-                       action_item.add(data, "not_approved_actions");
-                   }
-               });*/
                $( "#popup_contact" ).dialog("close");
            }
        })

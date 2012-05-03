@@ -23,19 +23,23 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
         this.default_query = function(query){
             return query.populate("discussions");
         }
-
         this.fields = {
             _id:null,
             document:null,
             title:null,
-            users: {
-                user_id:{
-                    email:null,
-                    first_name:null,
-                    avatar_url:null
-                },
-                join_date:null
-            },
+//            users: /*{
+//                user_id:{
+//                    email:null,
+//                    first_name:null,
+//                    avatar_url:null
+//                },
+//                join_date:null*/
+//            },
+            followers_users: null,
+           /* users: {
+                user_id: null,
+                join_date: null
+            },*/
             creation_date: null,
             text_field: null,
             text_field_preview: null,
@@ -61,39 +65,51 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
             is_hot_object: null,
             followers_count: null,
             num_of_comments: null,
-            upcoming_action: null,
+            upcoming_action:{
+                _id: null,
+                title: null,
+                execution_date: null,
+                num_of_going: null
+            },
             num_upcoming_actions: null,
             is_follower: null
         }
     },
 
-   /* run_query: function(req,query,callback)
+    run_query: function(req,query,callback)
     {
-        if(req.params.cycle)
+        if(req.params.cycle){
             query.populate('users.user_id');
-        this._super(req,query,callback);
-    },*/
+        }else{
+            if (!(req.query.get == "myUru"))
+                query.populate('upcoming_action');
+        }
 
-    get_object:function (req, id, callback) {
+
+        this._super(req,query,callback);
+    },
+
+    get_object: function (req, id, callback) {
         this._super(req, id, function(err, object){
             if(object){
                 object.is_follower = false;
                 object.discussion = object.discussions[0]; //for now we have only one discussion for cycle
-                models.User.find({"cycles.cycle_id": id}, ["email", "first_name", "avatar", "facebook_id", "cycles"], function(err, objs){
-                    var users = [];
+                models.User.find({"cycles.cycle_id": id}, ["_id", "username", "email", "first_name", "avatar", "facebook_id", "cycles"], function(err, objs){
+                    var followers_users = [];
                     if(!err){
-                        object.users = _.map(objs, function(user){
+                        object.followers_users = _.map(objs, function(user){
+                            user.avatar = user.avatar_url();
                             var curr_cycle =  _.find(user.cycles, function(cycle){
                                     return cycle.cycle_id == id;
                             });
                             return {
-                                user_id:user,
+                                user_id: {username: user.username, first_name: user.first_name, avatar: user.avatar, _id: user._id},
                                 join_date: curr_cycle.join_date
                             };
                         });
                     }
                     else
-                        object.users = [];
+                        object.followers_users = [];
                     if(req.user)
                         object.is_follower = isArgIsInList2(id, req.user.cycles);
 
@@ -116,38 +132,59 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
     },
 
 
-    //happens when user want to become a cycle follower
+    //happens when user want to become a cycle follower or to leave it
     update_obj: function(req, object, callback){
         var user = req.user;
         var cycle_id = object._id;
         object.is_follower = false;
 
-        if (isArgIsInList1(cycle_id, user.cycles) == false){
-            async.parallel([
-                function(cbk2){
-                    models.User.update({_id: user._id}, {$addToSet: {cycles: {cycle_id:cycle_id, join_date:Date.now()}}}, cbk2);
-                },
+        if(req.query.put == "follow"){
+            if (isArgIsInList1(cycle_id, user.cycles, null) == false){
+                async.parallel([
+                    function(cbk2){
+                        models.User.update({_id: user._id}, {$addToSet: {cycles: {cycle_id:cycle_id, join_date:Date.now()}}}, cbk2);
+                    },
 
-                function(cbk2){
-                    models.Cycle.update({_id: cycle_id}, {$inc: {followers_count: 1},  $addToSet: {users: user._id}}, cbk2);
-                }
-            ], function(err, obj){
-                object.followers_count++;
-                object.is_follower = true;
-                callback(err, object);
-            });
+                    function(cbk2){
+                        models.Cycle.update({_id: cycle_id}, {$inc: {followers_count: 1},  $addToSet: {users: user._id}}, cbk2);
+                    }
+                ], function(err, obj){
+                    object.followers_count++;
+                    object.is_follower = true;
+                    callback(err, object);
+                });
+            }else{
+                callback({message:"user is already a follower", code:401}, null);
+            }
         }else{
-            callback({message:"user is already a follower", code:401}, null);
+            if(req.query.put == "leave"){
+                if (isArgIsInList1(cycle_id, user.cycles, "remove")){
+                    models.Cycle.update({_id: cycle_id}, {$inc: {followers_count: -1},  $addToSet: {users: user._id}}, function(err, num){
+                        object.followers_count--;
+                        object.is_follower = false;
+                        callback(err, object);
+                    });
+
+                }else{
+                    callback({message:"user is not a follower", code:401}, null);
+                }
+            }else{
+                callback({message:"no such request", code:400}, null);
+            }
         }
     }
 });
 
 
-var isArgIsInList1 = function(cycle_id, cycle_list_schema){
+var isArgIsInList1 = function(cycle_id, cycle_list_schema, method){
     var flag = false;
     for (var i = 0; i < cycle_list_schema.length; i++){
         cycle_id = cycle_id.id || cycle_id;
         if (cycle_id  == cycle_list_schema[i].cycle_id._id){
+            if(method == "remove")
+            {
+                //remove cycle
+            }
             flag = true;
             break;
         }

@@ -589,12 +589,22 @@ var db_functions = {
 
     joinToCycleFollowers: function(cycle_id, callback){
         this.loggedInAjax({
-            url: '/api/cycles/'+ cycle_id,
+            url: '/api/cycles/'+ cycle_id + '/?put=follow',
             type: "PUT",
             async: true,
             success: function (data) {
                 callback(null, data);
+            }
+        });
+    },
 
+    leaveCycleFollowers: function(cycle_id, callback){
+        this.loggedInAjax({
+            url: '/api/cycles/'+ cycle_id + '/?put=leave',
+            type: "PUT",
+            async: true,
+            success: function (data) {
+                callback(null, data);
             }
         });
     },

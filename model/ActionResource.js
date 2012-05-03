@@ -13,12 +13,10 @@ var resources = require('jest'),
     async = require('async'),
     common = require('./common');
 
-ACTION_PRICE = 2;
-
 var ActionResource = module.exports = common.GamificationMongooseResource.extend(
     {
         init:function () {
-            this._super(models.Action, null, ACTION_PRICE);
+            this._super(models.Action, null, common.getGamificationTokenPrice('vote'));
             this.allowed_methods = ['get', 'post', 'put'];
             this.filtering = {cycle_id:null, is_approved:null, grade:null, num_of_going: null};
             this.authentication = new common.SessionAuthentication();
@@ -40,8 +38,8 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
             var user_id = req.session.user_id;
             var self = this;
             var action_object = new self.model();
-
             var user = req.user;
+
             fields.creator_id = user_id;
             fields.first_name = user.first_name;
             fields.last_name = user.last_name;
@@ -55,12 +53,41 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                     var cycle_id = action_obj._doc.cycle_id;
                     action_obj.save(function (err, action) {
                         if (!err) {
-                            req.gamification_type = "action";
-                            //user.tokens -= ACTION_PRICE;
-                            // add discussion_id and action_id to the lists in user
-                            models.User.update({_id:user_id}, {$addToSet:{/*cycles: cycle_id, */actions: action._doc._id}}, function (err, object) {
-                                callback(self.elaborate_mongoose_errors(err), action);
-                            });
+
+                            async.parallel([
+                                function(cbk){
+                                    req.gamification_type = "action";
+                                    //user.tokens -= ACTION_PRICE;
+                                    // add discussion_id and action_id to the lists in user
+                                    models.User.update({_id:user_id}, {$addToSet:{/*cycles: cycle_id, */actions: action._doc._id}}, cbk)
+                                },
+
+                                function(cbk){
+                                    models.Cycle.findById(cycle_id, cbk);
+                                }
+
+                            ], function(err, arg){
+                                var cycle_obj = arg[1];
+
+                                if (cycle_obj.upcoming_action){
+                                    async.waterfall([
+                                        function(cbk){
+                                            models.Action.findById(cycle_obj.upcoming_action, cbk);
+                                        },
+
+                                        function(action2, cbk){
+                                            if(action2.execution_date > action.execution_date){
+                                                cycle_obj.upcoming_action = action._id;
+                                                cycle_obj.save(cbk);
+                                            }
+                                        }
+                                    ], callback(err, action))
+                                }else{
+                                    cycle_obj.upcoming_action = action._id;
+                                    cycle_obj.save(callback(err, action));
+                                }
+                            })
+
                         } else {
                             callback(self.elaborate_mongoose_errors(err), null);
                         }
