@@ -743,7 +743,7 @@ var db_functions = {
 
     getActionResourceByCategoryId: function(category_id, callback){
         this.loggedInAjax({
-            url: '/api/action_resource?category=' + category_id,
+            url: '/api/action_resources?category=' + category_id,
             type: "GET",
             async: true,
             success: function (data) {
@@ -886,7 +886,7 @@ var db_functions = {
         });
     },
 
-    getHeadlines: function(cycle_id, callback){
+    getHeadlines: function(callback){
         this.loggedInAjax({
             url: '/api/headlines',
             type: "GET",
@@ -909,7 +909,31 @@ var db_functions = {
                 callback(null, data);
             }
         });
+    },
+
+    getPopularTags: function(){
+        this.loggedInAjax({
+            url: '/api/tags',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            }
+        });
+    },
+
+    createKilkul: function(text_field, callback){
+        this.loggedInAjax({
+            url: '/api/kilkuls',
+            type: "POST",
+            async: true,
+            data: {"text_field": text_field},
+            success: function (data) {
+                callback(null, data);
+            }
+        });
     }
+
 }
 
 $.prototype.autoscale = function(params)

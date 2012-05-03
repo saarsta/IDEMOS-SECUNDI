@@ -4,8 +4,7 @@ var resources = require('jest'),
     models = require('../models'),
     common = require('./common'),
     async = require('async'),
-    _ = require('underscore'),
-    DISCUSSION_PRICE = 3;
+    _ = require('underscore');
 
 //Authorization
 var Authorization = common.TokenAuthorization.extend({
@@ -129,7 +128,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                         user.discussions.push(obj._id);
                         if (object.is_published) {
                             req.gamification_type = "discussion";
-                            req.token_price = DISCUSSION_PRICE;
+                            req.token_price = common.getGamificationTokenPrice('discussion');
                         }
                         user.save(function (err, user) {
                             callback(self.elaborate_mongoose_errors(err), obj);
@@ -141,8 +140,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
     },
 
     update_obj:function (req, object, callback) {
-
-        user = req.user;
+        var user = req.user;
         if (req.query.put == "follower"){
             if (common.isArgIsInList(object._id, user.discussions) == false){
                 async.parallel([
@@ -165,7 +163,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                 callback("this discussion is already published", null);
             } else {
                 req.gamification_type = "discussion";
-                req.token_price = DISCUSSION_PRICE;
+                req.token_price = common.getGamificationTokenPrice('discussion');
                 object.is_published = true;
                 object.save(callback);
             }

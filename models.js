@@ -123,11 +123,13 @@ var Schemas = exports.Schemas = {
         is_hot_info_item: {type:Boolean, 'default':false},
         tag_suggestions: {type:[tag_suggestions] ,editable:false},
         like_counter: {type: Number, 'default': 0, editable: false},
+        view_counter: {type: Number, 'default': '0'},
+
         //this two fields are for user suggestion of InformationItem, when admin create this it will remain false
         created_by: {creator_id:{type: ObjectId, ref: 'User', editable: false}, did_user_created_this_item: {type: Boolean, 'default': false, editable: false}},
         status: {type: String, "enum": ['approved', 'denied', 'waiting']},
         gamification: {rewarded_creator_for_high_liked: {type: String, 'default': false, editable: false},
-                       rewarded_creator_for_approval: {type: String, 'default': false, editable: false}},
+                       rewarded_creator_for_approval: {type: String, 'default': false, editable: false}, editable:false},
         gui_order:{type:Number,'default':9999999,editable:false}
     },
 
@@ -174,8 +176,8 @@ var Schemas = exports.Schemas = {
 
     Kilkul:{
         user:{type:ObjectId, ref:'User',editable:false},
-        user_name: String,
-        title: {type: String, required: true},
+        user_name: {type: String, editable:false},
+        title: {type: String},
         text_field:{type:mongoose_types.Text},
         text_field_preview:{type:mongoose_types.Html},
         image_field: mongoose_types.File,
@@ -425,6 +427,7 @@ var Schemas = exports.Schemas = {
         title : {type:String, required:true, required:true},
         text : {type:mongoose_types.Text, required:true},
         tags: [String],
+        view_counter: {type: Number, 'default': '0'},
         time: {type: Date, 'default': Date.now, editable:false},
         popularity_counter: {type: Number, 'default': 0},
         comments : [Comment]
@@ -455,7 +458,10 @@ var Schemas = exports.Schemas = {
         grade_action: {type: Number, 'default': 0},
         vote_on_post: {type: Number, 'default': 0},
         like_info_item: {type: Number, 'default': 0},
-        join_to_action: {type: Number, 'default': 0}
+        join_to_action: {type: Number, 'default': 0},
+        ceate_kilkul: {type: Number, 'default': 0},
+        join_kilkul: {type: Number, 'default': 0}
+
     }
 };
 

@@ -41,7 +41,7 @@ var DONT_NEED_LOGIN_PAGES = [/^\/images/,/^\/static/, /^\/css/, /stylesheets\/st
 exports.LOGIN_PATH = LOGIN_PATH;
 
 var Models = require("../models.js");
-
+var g_next;
 exports.referred_by_middleware = function(req,res,next)
 {
     if('referred_by' in req.query)
@@ -193,6 +193,7 @@ exports.routing = function(router)
                                     if (err != null) {
                                         console.log(err);
                                     } else {
+                                        res.redirect(next || DEFAULT_LOGIN_REDIRECT);
                                         console.log('user _id to session is ok')
                                     }
                                 });
@@ -205,6 +206,7 @@ exports.routing = function(router)
                                     if (err != null) {
                                         console.log(err);
                                     } else {
+                                        res.redirect(next || DEFAULT_LOGIN_REDIRECT);
                                         console.log('user _id to session is ok')
                                     }
 
@@ -212,14 +214,17 @@ exports.routing = function(router)
                             });
                         }
                     });
-                    res.redirect(next || DEFAULT_LOGIN_REDIRECT);
+//                    res.redirect(next || DEFAULT_LOGIN_REDIRECT);
                 }
             });
         }
 
         if (req.query.next) {
-            req.session['fb_next'] = req.session['fb_next'];
-            req.session.save(go);
+            req.session['fb_next'] = req.query.next;
+            req.session.save(function(err, obj){
+                go();
+            });
+
         }
         else
             go();
@@ -228,10 +233,11 @@ exports.routing = function(router)
     router.get('/logout', function (req, res) {
         res.clearCookie('connect.sid', {path:'/'});
         delete req.session['user_id'];
-        delete req.session['user'];
+        delete req.session['user']
         req.session.save();
-
         req.session.destroy();
+        res.redirect('/');
+
         req.logout();
         res.end();
     });

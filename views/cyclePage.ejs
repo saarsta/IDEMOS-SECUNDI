@@ -29,7 +29,7 @@
 </div>
 
 <!--Popup -->
-<div style='display:none'>
+<div id="new-action-popup" style='display:none'>
     <div id='inline_content' class="popup create-action css3">
         <a href="#" class="close-btn"></a>
 
@@ -38,12 +38,12 @@
                 <h2>יצירת פעולה חדשה</h2>
 
                 <input type="text" name="title" placeholder="כותרת" />
-                <input type="text" name="date" class="nf_datepicker" placeholder="תאריך" />
+                <input id="datepicker" type="text" name="date" class="nf_datepicker" placeholder="תאריך" />
                 <textarea name="description" placeholder="טקסט חופשי"></textarea>
                 <button name="find_location">קבע את מיקום הפעולה</button>
 
                 <select type="text" name="toolbox" placeholder="ארגז כלים (פעולות קיימות במערכת – פעולת שטח, עצומה, הפגנה)"  />
-                <textarea name="resources" placeholder="משאבים דרושים"></textarea>
+                <textarea id="resources" name="resources" placeholder="משאבים דרושים"></textarea>
 
                 <label class="num">
                     <input type="number" name="participants_count">
@@ -55,6 +55,7 @@
                 <label class="check">
                     <input type="checkbox" value="false">
                     שתף*
+
                 </label>
             </form>
         </div>
@@ -62,14 +63,12 @@
 </div>
 <!--/Popup -->
 
-<a  href="#inline_content"  id="newActionBtn" class="button suggest">הצע פעולה חדשה</a>
-
 <script>
     $(function(){
         var cycle_id='<%= cycle_id %>';
         loadCyclePage(cycle_id);
         loadPopupData();
-        $("#newActionBtn").colorbox({inline:true});
+        $(".new_action_btn").colorbox({inline:true});
         if($().datetimepicker){
             $('.nf_datepicker').datetimepicker();
         }
@@ -78,9 +77,6 @@
             e.preventDefault();
 
            $(this).find(":input").each(function(){
-               //console.log($(this).attr('name'));
-               //console.log($(this).val());
-
 
            })
            // var cycle_id=$('[name|titel]');
@@ -88,12 +84,17 @@
             var    description=this.description.value;
             var    action_resources;
             var    required_participants=this.participants_count.value;
-            var    execution_date=this.date;
+            var    execution_date = $( "#datepicker" ).datepicker("getDate");
+                  debugger;
             var   location;
                 debugger;
             db_functions.addAction(cycle_id, title, description, action_resources,required_participants,execution_date,location ,function(error,data){
-
-                debugger;
+                if(error){
+                    console.log(error);
+                }else{
+                    console.log('action created');
+                    $.colorbox.close()  ;
+                }
             });
             
         })

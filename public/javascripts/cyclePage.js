@@ -124,7 +124,23 @@ function loadPopupData(){
                    .attr("value",value._id)
                    .text(value.name));
            })
+
          });
+
+        $("select").change(function () {
+            $('#resources').empty();
+            $("select option:selected").each(function () {
+                var value = $(this).attr("value");
+                db_functions.getActionResourceByCategoryId(value, function(err, data){
+                    for(var i = 0; i < data.objects.length; i++){
+
+                        $('#resources').append(data.objects[i].name + ", ");
+                    }
+                })
+            });
+
+        })
+            .trigger('change');
        })();
     
 }

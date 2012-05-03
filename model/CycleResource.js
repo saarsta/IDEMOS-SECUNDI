@@ -12,12 +12,11 @@ var jest = require('jest'),
     models = require('../models'),
     common = require('./common'),
     async = require('async'),
-    _ = require('underscore'),
-    FOLLOW_CYCLE_PRICE = 1;
+    _ = require('underscore');
 
 var CycleResource = module.exports = common.GamificationMongooseResource.extend({
     init: function(){
-        this._super(models.Cycle, null, FOLLOW_CYCLE_PRICE);
+        this._super(models.Cycle, null, 0);
         this.authentication = new common.SessionAuthentication();
         this.allowed_methods = ['get', 'put'];
         this.filtering = {tags: null};

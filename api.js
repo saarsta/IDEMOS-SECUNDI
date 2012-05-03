@@ -40,7 +40,7 @@ module.exports = function(app)
     rest_api.register_resource('headlines',new HeadlineResource());
     rest_api.register_resource('success_stories',new SuccessStoryResource());
     rest_api.register_resource('updates',new UpdateResource());
-    rest_api.register_resource('kilkule',new KilkulResource());
+    rest_api.register_resource('kilkuls',new KilkulResource());
     rest_api.register_resource('shopping_cart',new ShoppingCartResource());
     rest_api.register_resource('discussions_shopping_cart',new DiscussionShoppingCartResource());
     rest_api.register_resource('subjects', new SubjectResource());
