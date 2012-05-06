@@ -30,9 +30,10 @@ app.configure('development', function(){
     app.set('root_path', 'http://dev.empeeric.com');
     app.set('DB_URL','mongodb://localhost/uru');
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-    require('./compile_templates');
+    require('./tools/compile_templates');
 
 });
+
 
 app.configure('production', function(){
     app.set('views', __dirname + '/views');
