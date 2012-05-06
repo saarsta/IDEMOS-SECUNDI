@@ -51,7 +51,7 @@
                 </label>
                 <!--<textarea name="addendum"></textarea>-->
 
-                <button type="submit">צור פעולה חדשה</button>
+                <button class="new_action_btn" type="submit">צור פעולה חדשה</button>
                 <label class="check">
                     <input type="checkbox" value="false">
                     שתף*
@@ -67,10 +67,11 @@
         var cycle_id='<%= cycle_id %>';
         loadCyclePage(cycle_id);
         loadPopupData();
-        $(".new_action_btn").colorbox({inline:true});
+/*
+        $("#newActionBtn").colorbox({inline:true});
         if($().datetimepicker){
             $('.nf_datepicker').datetimepicker();
-        }
+        }*/
 
         $('form[name=frmAddaction]').on('submit', function(e){
             e.preventDefault();
@@ -78,21 +79,19 @@
            $(this).find(":input").each(function(){
 
            })
-
             var title=this.title.value;
             var    description=this.description.value;
             var    action_resources;
             var    required_participants=this.participants_count.value;
             var    execution_date = $( "#datepicker" ).datepicker("getDate");
-                  debugger;
             var   location;
-                debugger;
             db_functions.addAction(cycle_id, title, description, action_resources,required_participants,execution_date,location ,function(error,data){
                 if(error){
                     console.log(error);
                 }else{
                     console.log('action created');
                     $.colorbox.close()  ;
+                    document.location.href=document.location.href;
                 }
             });
             
