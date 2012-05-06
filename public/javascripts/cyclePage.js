@@ -9,8 +9,6 @@ function loadCyclePage(cycle_id,start_date, finish_date){
         dust.render('cycle_main',cycle,function(err,out){
 
             $('#cycleMain').prepend(out);
-
-
             $('#followCycleButton').click(function(){
 
                 if (!cycle.is_follower   )
@@ -21,6 +19,7 @@ function loadCyclePage(cycle_id,start_date, finish_date){
 
                             $('#cycleMain').prepend(out);
                             $('#followCycleButton').hide();
+
                          });
                     } );
                 }
@@ -56,6 +55,11 @@ function loadCyclePage(cycle_id,start_date, finish_date){
         {
             dust.render('cycle_update',update.objects[0],function(err,out){
                 $('#cycleUpdate').prepend(out);
+                 $('#newActionBtn').colorbox({inline:true});
+                if($().datetimepicker){
+                    $('.nf_datepicker').datetimepicker();
+                }
+
             });
         });
 
@@ -65,9 +69,12 @@ function loadCyclePage(cycle_id,start_date, finish_date){
         });
         //bugbug:         cycle.users should be replaced with pending actions
 
-        db_functions.getPendingActionsByCycle(cycle_id,function(err,pendingActions)
+ 
+        db_functions.getPendingActionsByCycleOrederedByCreationDate(cycle_id,function(err,pendingActions)
         {
-            dust.renderArray('cycle_pending_action',pendingActions.objects,null,function(err,out)
+
+            var topPendingActions=pendingActions.objects;
+            dust.renderArray('cycle_pending_action',topPendingActions,null,function(err,out)
             {
                 $('#cyclePendingActions').append(out);
             });
