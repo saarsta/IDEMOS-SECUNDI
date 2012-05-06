@@ -122,7 +122,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
         var discussion_id = suggestion_object.discussion_id;
         var vision_changes;
         if (suggestion_object.is_approved) {
-            callback("this suggestion is already published", null);
+            callback({message:"this suggestion is already published", code: 401}, null);
         } else {
             suggestion_object.is_approved = true;
             var vision_changes_array = [];

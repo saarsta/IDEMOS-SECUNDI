@@ -32,9 +32,7 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                 filters.users = req.user._id;
             }
 
-            this._super(req, filters, sorts, limit, offset, function(err, objects){
-                _.each()
-            });
+            this._super(req, filters, sorts, limit, offset, callback);
         },
 
         create_obj:function (req, fields, callback) {

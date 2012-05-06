@@ -804,7 +804,7 @@ var db_functions = {
 
     getPendingActionsByCycleOrederedByCreationDate: function(cycle_id, callback){
         this.loggedInAjax({
-            url: '/api/actions?is_approved=false&cycle_id=' + cycle_id + '&order_by=-creation_date',
+            url: '/api/actions?is_approved=false&cycle_id=' + cycle_id + '&order_by=-creation_date&limit=3',
             type: "GET",
             async: true,
             success: function (data) {
