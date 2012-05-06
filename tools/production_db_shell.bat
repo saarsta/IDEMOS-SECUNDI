@@ -1,0 +1,1 @@
+mongo -u heroku_app2952775 -p nuulb7icv8aafrr7n592uie793 ds031107.mongolab.com:31107/heroku_app2952775

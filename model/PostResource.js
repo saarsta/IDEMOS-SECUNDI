@@ -73,7 +73,6 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                     post_object.set(field, fields[field]);
                 }
                 self.authorization.edit_object(req, post_object, cbk);
-                g_user = user;
             },
 
             function(post_object, cbk){
@@ -92,24 +91,17 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                 // + add discussion to user
                 //  + take tokens from the user
                 async.parallel([
-                    function(cbk2)
-                    {
-                        console.log('debugging waterfall 3 1');
-                        models.Discussion.update({_id:object.discussion_id}, {$addToSet: {users: user_id}}, cbk2);
-
-                    },
-                    function(cbk2)
-                    {
-                        console.log('debugging waterfall 3 2');
-                        // add discussion_id to the list of discussions in user
-                        if (common.isArgIsInList(object.discussion_id, user.discussions) == false) {
-                            user.discussions.push(object.discussion_id);
-                        }
-                        user.save(function(err,result)
+                        function(cbk2)
                         {
-                            cbk2(err,result);
-                        });
-                    }
+                            console.log('debugging waterfall 3 1');
+                            models.Discussion.update({_id:object.discussion_id}, {$addToSet: {users: user_id}}, cbk2);
+
+                        },
+                        function(cbk2)
+                        {
+                            console.log('debugging waterfall 3 2');
+                            models.User.update({_id:user._id},{$addToSet:{discussions:object.discussion_id}},cbk2);
+                        }
                     ],
                     cbk);
 

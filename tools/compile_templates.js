@@ -5,11 +5,11 @@ var dust = require('dust')
 
 function compile_template(name,file)
 {
-    var str = fs.readFileSync(path.join(__dirname,'templates',file),'utf8');
+    var str = fs.readFileSync(path.join(__dirname,'..','templates',file),'utf8');
     return dust.compile(str,name);
 }
 
-var writer = fs.createWriteStream(path.join(__dirname,'public','js','compiled_templates.js'));
+var writer = fs.createWriteStream(path.join(__dirname,'..','public','js','compiled_templates.js'));
 
 
 writer.write(compile_template('subject','subject.html'));
