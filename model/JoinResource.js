@@ -67,7 +67,9 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
                 });
             }
         ],function(err, obj){
-            g_action_obj.num_of_going++;
+            if(!err){
+                g_action_obj.num_of_going++;
+            }
             callback(err, g_action_obj);
         });
     }

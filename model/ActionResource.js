@@ -11,7 +11,8 @@ var resources = require('jest'),
     util = require('util'),
     models = require('../models'),
     async = require('async'),
-    common = require('./common');
+    common = require('./common'),
+    _ = require('underscore');
 
 var ActionResource = module.exports = common.GamificationMongooseResource.extend(
     {
@@ -31,7 +32,9 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                 filters.users = req.user._id;
             }
 
-            this._super(req, filters, sorts, limit, offset, callback);
+            this._super(req, filters, sorts, limit, offset, function(err, objects){
+                _.each()
+            });
         },
 
         create_obj:function (req, fields, callback) {

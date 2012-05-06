@@ -95,7 +95,7 @@ var Schemas = exports.Schemas = {
         ],
         password:String,
         tokens:{type:Number, 'default':9},
-        gamification: Schema.Types.Mixed,
+        gamification: {type:Schema.Types.Mixed,editable:false },
         updates: Schema.Types.Mixed,
         //score:{type:Number, 'default':0},
         decoration_status:{type:String, "enum":['a', 'b', 'c']},

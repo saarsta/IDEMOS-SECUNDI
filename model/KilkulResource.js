@@ -6,7 +6,7 @@ var common = require('./common')
 var KilkulResource = module.exports = common.GamificationMongooseResource.extend(
     {
         init:function () {
-            this._super(models.SuccessStory, null, null);
+            this._super(models.Kilkul, null, null);
             this.allowed_methods = ['get', 'post'];
             this.authentication = new common.SessionAuthentication();
 //            this.filtering = {};
