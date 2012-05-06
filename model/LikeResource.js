@@ -36,7 +36,10 @@ var LikeResource = module.exports = jest.MongooseResource.extend({
                     cbk({message: "Error: user has already liked this item ", code: 401}, null);
 
                 }else{
-                    models.InformationItem.update({_id: info_item_id}, {$inc: {like_counter: 1}}, cbk)
+                    models.InformationItem.update({_id: info_item_id}, {$inc: {like_counter: 1}}, function(err,count)
+                    {
+                        cbk(err,count);
+                    });
                 }
             },
 
