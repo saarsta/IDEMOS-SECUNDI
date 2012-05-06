@@ -57,9 +57,13 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
         var post_object = new self.model();
         var user = req.user;
 
+        console.log('debugging waterfall');
+
         async.waterfall([
 
-            function(cbk){
+            function(cbk)
+            {
+                console.log('debugging waterfall 1');
                 fields.creator_id = user_id;
                 fields.first_name = user.first_name;
                 fields.last_name = user.last_name;
@@ -74,6 +78,7 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
 
             function(post_object, cbk){
 
+                console.log('debugging waterfall 2');
                 var discussion_id = post_object.discussion_id;
                 post_object.save(function(err,result,num)
                 {
@@ -82,17 +87,20 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
             },
             function (object,cbk) {
                 var discussion_id = object.discussion_id;
+                console.log('debugging waterfall 3');
                 //if post created successfuly, add user to discussion
                 // + add discussion to user
                 //  + take tokens from the user
                 async.parallel([
                     function(cbk2)
                     {
+                        console.log('debugging waterfall 3 1');
                         models.Discussion.update({_id:object.discussion_id}, {$addToSet: {users: user_id}}, cbk2);
 
                     },
                     function(cbk2)
                     {
+                        console.log('debugging waterfall 3 2');
                         // add discussion_id to the list of discussions in user
                         if (common.isArgIsInList(object.discussion_id, user.discussions) == false) {
                             user.discussions.push(object.discussion_id);
