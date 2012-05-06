@@ -16,7 +16,7 @@ var ActionPopulatedResource = module.exports = action.extend(
             this._super();
             this.allowed_methods = ['get'];
             this.default_query = function(query){
-                return query.populate("cycle_id").populate("going_users");
+                return query.populate("cycle_id").populate("going_users.user_id");
             }
         },
 

@@ -125,14 +125,15 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                 //if success with creating new discussion - add discussion to user schema
                 object.save(function (err, obj) {
                     if (!err) {
-                        user.discussions.push(obj._id);
+//                        user.discussions.push(obj._id);
                         if (object.is_published) {
                             req.gamification_type = "discussion";
                             req.token_price = common.getGamificationTokenPrice('discussion');
                         }
-                        user.save(function (err, user) {
-                            callback(self.elaborate_mongoose_errors(err), obj);
-                        });
+                        models.User.update({_id:user._id},{$addToSet:{discussions:object._id}},callback);
+//                        user.save(function (err, user) {
+//                            callback(self.elaborate_mongoose_errors(err), obj);
+//                        });
                     }
                 });
             }
