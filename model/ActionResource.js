@@ -11,7 +11,8 @@ var resources = require('jest'),
     util = require('util'),
     models = require('../models'),
     async = require('async'),
-    common = require('./common');
+    common = require('./common'),
+    _ = require('underscore');
 
 var ActionResource = module.exports = common.GamificationMongooseResource.extend(
     {
@@ -20,6 +21,25 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
             this.allowed_methods = ['get', 'post', 'put'];
             this.filtering = {cycle_id:null, is_approved:null, grade:null, num_of_going: null};
             this.authentication = new common.SessionAuthentication();
+            this.fields = {
+                _id: null,
+                title: null,
+                text_field: null,
+                text_field_preview: null,
+                image_field: null,
+                image_field_preview: null,
+                description: null,
+                creator_id: null,
+                creator_id: null,
+                action_resources: null,
+                tags: null,
+                creation_date: null,
+                execution_date: null,
+                required_participants: null,
+                grade: null,
+                evaluate_counter: null,
+                is_follower: null
+            }
             this.default_query = function(query){
                 return query.sort('execution_date','descending');
             }
@@ -31,7 +51,21 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                 filters.users = req.user._id;
             }
 
-            this._super(req, filters, sorts, limit, offset, callback);
+            this._super(req, filters, sorts, limit, offset, function(err, response){
+                var user_id;
+
+                _.each(response.objects, function(object){
+                    object.is_follower = false;
+                    if(req.user){
+                        user_id = req.user._id;
+                        if(_.any(response.objects.going_users, function(user){
+                            user.user_id = user_id;
+                        }))
+                            object.is_follower = true;
+                    }
+                });
+                callback(err, response);
+            });
         },
 
         create_obj:function (req, fields, callback) {

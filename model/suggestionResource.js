@@ -120,35 +120,54 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
         //if suggestion approved we change the discussion vision
         // + save the ealier version of vison as parts in vison_changes
         var discussion_id = suggestion_object.discussion_id;
+        var g_discussion_obj;
         var vision_changes;
         if (suggestion_object.is_approved) {
-            callback("this suggestion is already published", null);
+            callback({message:"this suggestion is already published", code: 401}, null);
         } else {
-            suggestion_object.is_approved = true;
-            var vision_changes_array = [];
-            models.Discussion.findOne({_id:discussion_id}, function (err, discussion_object) {
-                var vision = discussion_object.vision_text;
-                var new_string = "";
-                var curr_position = 0;
-                var parts = suggestion_object.parts;
 
-                //changing the vision and save changes that have been so i can reverse it in change_vision
-                for (var i = 0; i < parts.length; i++) {
-                    //                changed_text = vision.slice(parts[i].start, parseInt(parts[i].end) + 1);
-                    new_string += vision.slice(curr_position, parts[i].start);
-                    new_string += parts[i].text;
-                    curr_position = parseInt(parts[i].end) + 1;
-                    //                vision_changes_array.push({start: parts[i].start, end: parts[i].end, text : changed_text});
+            async.waterfall([
 
-                    //                discussion_object.vision_changes.push({start: parts[i].start, end: parts[i].end, text : changed_text});
+                function(cbk){
+                    var vision_changes_array = [];
+                    models.Discussion.findOne({_id:discussion_id}, cbk);
+                },
+
+                function(discussion_object ,cbk){
+                    var vision = discussion_object.vision_text;
+                    var new_string = "";
+                    var curr_position = 0;
+                    var parts = suggestion_object.parts;
+                    //changing the vision and save changes that have been so i can reverse it in change_vision
+                    for (var i = 0; i < parts.length; i++) {
+                        //                changed_text = vision.slice(parts[i].start, parseInt(parts[i].end) + 1);
+                        new_string += vision.slice(curr_position, parts[i].start);
+                        new_string += parts[i].text;
+                        curr_position = parseInt(parts[i].end) + 1;
+                        //                vision_changes_array.push({start: parts[i].start, end: parts[i].end, text : changed_text});
+
+                        //                discussion_object.vision_changes.push({start: parts[i].start, end: parts[i].end, text : changed_text});
+                    }
+                    new_string += vision.slice(curr_position);
+                    //            discussion_object.vision_changes.push(vision_changes_array);
+
+                    discussion_object.vision_text_history.push(discussion_object.vision_text);
+                    discussion_object.vision_text = new_string;
+                    models.Discussion.update({_id:discussion_id}, {$addToSet: {vision_text_history: discussion_object.vision_text}, $set:{vision_text: new_string}}, function(err, counter){
+                        cbk(err, discussion_object);
+                    });
+
+//                    discussion_object.save(cbk);
+                },
+
+                function(disc_obj, cbk){
+                    g_discussion_obj = disc_obj;
+                    suggestion_object.is_approved = true;
+                    suggestion_object.save(cbk);
                 }
-                new_string += vision.slice(curr_position);
-                //            discussion_object.vision_changes.push(vision_changes_array);
-                discussion_object.vision_text_history.push(discussion_object.vision_text);
-                discussion_object.vision_text = new_string;
-                discussion_object.save();
-            });
-            suggestion_object.save(callback);
+            ], function(err, suggestion){
+                callback(err, g_discussion_obj);
+            })
         }
     }
 });

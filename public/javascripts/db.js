@@ -802,6 +802,18 @@ var db_functions = {
         });
     },
 
+    getPendingActionsByCycleOrederedByCreationDate: function(cycle_id, callback){
+        this.loggedInAjax({
+            url: '/api/actions?is_approved=false&cycle_id=' + cycle_id + '&order_by=-creation_date&limit=3',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                // console.log(data);
+                callback(null,data);
+            }
+        });
+    },
+
     getActionResoueces: function(callback){
         this.loggedInAjax({
             url: '/api/action_resources',
@@ -863,7 +875,7 @@ var db_functions = {
     joinToAction: function(action_id, callback){
         this.loggedInAjax({
             url: '/api/joins/',
-            type: "PUT",
+            type: "POST",
             async: true,
             data: {"action_id": action_id},
             success: function (data) {

@@ -237,9 +237,7 @@ exports.routing = function(router)
         req.session.save();
         req.session.destroy();
         res.redirect('/');
-
         req.logout();
-        res.end();
     });
 
 };
