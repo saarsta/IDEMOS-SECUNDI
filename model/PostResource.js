@@ -96,12 +96,13 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                             console.log('debugging waterfall 3 1');
                             models.Discussion.update({_id:object.discussion_id}, {$addToSet: {users: user_id}}, cbk2);
 
-                        },
-                        function(cbk2)
-                        {
-                            console.log('debugging waterfall 3 2');
-                            models.User.update({_id:user._id},{$addToSet:{discussions:object.discussion_id}},cbk2);
                         }
+//                    ,
+//                        function(cbk2)
+//                        {
+//                            console.log('debugging waterfall 3 2');
+//                            models.User.update({_id:user._id,'discussions.discussion_id':{$ne:}},{$addToSet:{discussions:object.discussion_id}},cbk2);
+//                        }
                     ],
                     cbk);
 

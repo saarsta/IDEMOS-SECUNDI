@@ -621,7 +621,18 @@ var db_functions = {
         });
     },
 
-     getActionById: function(action_id, callback){
+    leaveDiscussionFollowers: function(discussion_id, callback){
+        this.loggedInAjax({
+            url: '/api/discussions/'+ discussion_id + '/?put=leave',
+            type: "PUT",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            }
+        });
+    },
+
+    getActionById: function(action_id, callback){
          this.loggedInAjax({
             url: '/api/actions_populated/' + action_id,
             type: "GET",
@@ -878,6 +889,18 @@ var db_functions = {
             type: "POST",
             async: true,
             data: {"action_id": action_id},
+            success: function (data) {
+                callback(null, data);
+            }
+        });
+    },
+
+    leaveAction: function(join_id, callback){
+        this.loggedInAjax({
+            url: '/api/joins/' + join_id,
+            type: "DELETE",
+            async: true,
+
             success: function (data) {
                 callback(null, data);
             }

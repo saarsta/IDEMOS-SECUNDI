@@ -87,7 +87,6 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                     var cycle_id = action_obj._doc.cycle_id;
                     action_obj.save(function (err, action) {
                         if (!err) {
-
                             async.parallel([
                                 function(cbk){
                                     req.gamification_type = "action";

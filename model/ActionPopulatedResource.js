@@ -21,7 +21,6 @@ var ActionPopulatedResource = module.exports = action.extend(
         },
 
         get_object: function (req, id, callback) {
-
             this._super(req, id, function(err,object)
             {
                 _.sortBy(object.users,function(user)

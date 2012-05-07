@@ -611,6 +611,7 @@
 
             $('#send_suggestion').click(function(){
                 var part = {start:range.start, end:range.end, text:$("textarea#discussion_suggest").val()};
+//                part += " ";
                 db_functions.addSuggestionToDiscussion(discussion_id,[part],function(err,data)
                 {
                     if(!err)
