@@ -137,6 +137,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                 //if success with creating new discussion - add discussion to user schema
                 object.save(function (err, obj) {
                     if (!err) {
+
                         var user_discussion = {
                             discussion_id: obj._id,
                             join_date: Date.now()
@@ -149,7 +150,9 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                                 }
                             }
                             callback(err, obj);
+
                         });
+
                     }
                 });
             }
