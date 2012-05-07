@@ -21,19 +21,14 @@ util.inherits(Authoriztion,resources.Authorization);
 Authoriztion.prototype.edit_object = function(req,object,callback){
     //check if user already grade this discussion
     var flag = false;
-        models.Grade.find({"discussion_id": object.discussion_id}, function(err, objects){
+        models.Grade.findOne({"discussion_id": object.discussion_id, "user_id":req.user._id}, function(err, grade){
         if (err){
             callback(err, null);
         }else{
-            for (var i = 0; i < objects.length; i++){
-                if(req.session.user_id == objects[i].user_id){
-                    flag = true;
-                    break;
-                }
-            }
-            if (flag){
+            if (grade){
                 callback({message:"user already grade this discussion",code:401}, null);
             }else{
+                object.user_id = req.user._id;
                 callback(null, object);
             }
         }
@@ -47,60 +42,87 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
         this.allowed_methods = ['get','post'];
         this.authorization = new Authoriztion();
         this.authentication = new common.SessionAuthentication();
-        this.filtering = {discussion_id: null};
+        this.filtering = {discussion_id: {
+            exact:null,
+            in:null
+        }};
     },
 
     create_obj:function(req,fields,callback)
     {
-        var user_id = req.session.user_id;
+
         var self = this;
-        var object = new self.model();
-        var g_grade;
-
-        object.user_id = user_id;
-        for( var field in fields)
+        var new_grade = null;
+        self._super(req,fields,function(err,grade_object)
         {
-            object.set(field,fields[field]);
-        }
-        self.authorization.edit_object(req, object, function(err, object)
-        {
-            if(err) callback(err);
-            else
-            {
-                object.save(function(err,grade_object)
-                {
-                    if (err){
-                        callback(err, null);
-                    }
-                    else{
-                        var user = req.user;
-                        g_grade = grade_object;
-                        async.waterfall([
-                            /*function(cbk){
-                                models.Discussion.update({_id: grade_object.discussion_id}, {$addToSet: {users: {user_id: user._id, join_date:Date.now()}}}, cbk);
-                            },
-*/
-                            function(cbk){
-                                models.Discussion.findById(grade_object.discussion_id, cbk);
-                            },
+            async.waterfall([
 
-                            function(discussion_obj, cbk){
-                                /*_.find(discussion_obj.users, function(user){
-                                    user.user_id
-                                })*/
-                                discussion_obj.users.push({user_id: user._id, join_date:Date.now()})
-                                discussion_obj.grade_sum += grade_object._doc.grade;
-                                discussion_obj.grade = discussion_obj.grade_sum / discussion_obj.evaluate_counter;
-                                discussion_obj.evaluate_counter += 1;
-                                discussion_obj.save(cbk);
-                            }
-                        ], function(err, obj){
-                            callback(err, g_grade);
-                        })
-                    }
-                });
-            }
-        })
+                function(cbk){
+                    models.Discussion.findById(grade_object.discussion_id, cbk);
+                },
+
+                function(discussion_obj, cbk){
+                    //                             discussion_obj.users.push({user_id: user._id, join_date:Date.now()})
+                    async.parallel([
+                        function(cbk)
+                        {
+                            var add_grade = Number(grade_object.evaluation_grade);
+                            var grade = discussion_obj.grade_sum;
+                            grade += add_grade;
+                            var counter = discussion_obj.evaluate_counter + 1;
+                            new_grade = grade / counter;
+
+                            models.Discussion.update({_id:grade_object.discussion_id},
+                                {
+                                    $inc:{ grade_sum: add_grade, evaluate_counter: 1},
+                                    $set:{grade:grade}
+                                },cbk);
+                        }
+//                        ,function(cbk)
+//                        {
+//                            if(!_.any(discussion_obj.users, function(user){
+//                                return user.user_id ==  req.user._id;
+//                            }))
+//                            {
+//                                discussion_obj.users.push({user_id:req.user._id,join_date:Date.now()});
+//                                discussion_obj.save(cbk);
+//                            }
+//                            else
+//                                cbk();
+//                        }
+                    ],cbk);
+                }
+            ], function(err, obj){
+                callback(err, {new_grade:new_grade});
+            })
+
+        });
+//        var user_id = req.session.user_id;
+//        var self = this;
+//        var object = new self.model();
+//        var g_grade;
+//
+//        object.user_id = user_id;
+//        for( var field in fields)
+//        {
+//            object.set(field,fields[field]);
+//        }
+//        self.authorization.edit_object(req, object, function(err, object)
+//        {
+//            if(err) callback(err);
+//            else
+//            {
+//                object.save(function(err,grade_object)
+//                {
+//                    if (err){
+//                        callback(err, null);
+//                    }
+//                    else{
+//                        var user = req.user;
+//                    }
+//                });
+//            }
+//        })
     }
 });
 

@@ -130,7 +130,10 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                             req.gamification_type = "discussion";
                             req.token_price = common.getGamificationTokenPrice('discussion');
                         }
-                        models.User.update({_id:user._id},{$addToSet:{discussions:object._id}},callback);
+                        models.User.update({_id:user._id},{$addToSet:{discussions:object._id}},function(err,counter)
+                        {
+                            callback(err,obj);
+                        });
 //                        user.save(function (err, user) {
 //                            callback(self.elaborate_mongoose_errors(err), obj);
 //                        });
