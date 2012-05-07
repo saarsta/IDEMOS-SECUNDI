@@ -162,7 +162,8 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
     update_obj:function (req, object, callback) {
         var user = req.user;
         if (req.query.put == "follower"){
-            if (common.isArgIsInList(object._id, user.discussions) == false){
+            var disc = _.find(user.discussions, function(discussion) {return discussion.discussion_id + '' == object._id +'';} );
+            if(!disc){
                 async.parallel([
                     function(cbk2){
                         var user_discussion = {
