@@ -237,7 +237,7 @@ var Schemas = exports.Schemas = {
         is_visible:{type:Boolean, 'default':true},
         is_published:{type:Boolean, 'default':false},
 //        popular_comments: [{type: ObjectId, ref: 'Post', index: true}],
-        grade:Number,
+        grade:{ type:Number, 'default':0},
         evaluate_counter:{type:Number, 'default':0, editable:false},
         grade_sum:{type:Number, 'default':0, editable:false},
         gamification: {has_rewarded_creator_of_turning_to_cycle: {type: Boolean, 'default': false},
