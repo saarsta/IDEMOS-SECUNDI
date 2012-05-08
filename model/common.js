@@ -180,6 +180,7 @@ function gamification_deserilize(self,base,req,res,obj,status)
         {
             if(rewards)
                 obj['rewards'] = rewards;
+            obj.updated_user_tokens = req.user.tokens;
             base(req,res,obj,status);
         });
     }else{

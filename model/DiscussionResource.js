@@ -146,7 +146,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                             if(!err){
                                 if (object.is_published) {
                                     req.gamification_type = "discussion";
-                                    req.token_price = common.getGamificationTokenPrice('discussion');
+                                    req.token_price = /*common.getGamificationTokenPrice('discussion')*/ 3;
                                 }
                             }
                             callback(err, obj);

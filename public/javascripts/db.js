@@ -438,11 +438,8 @@ var db_functions = {
             data: {"post_id": post_id, "method": method},
             success: function (data) {
                 console.log(data);
+                alert('success');
                 callback(null, data);
-            },
-            error:function(data)
-            {
-                callback(data);
             }
         });
     },
@@ -519,6 +516,7 @@ var db_functions = {
             async: true,
             data: {"discussion_id": discussion_id, "evaluation_grade": grade},
             success: function (data) {
+                alert('discussion was graded !');
                 callback(null, data);
 
             },

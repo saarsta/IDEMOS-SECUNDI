@@ -89,6 +89,8 @@
                 if(error){
                     console.log(error);
                 }else{
+                    debugger
+                    $("#updated_user_tokens").text(data.updated_user_tokens);
                     console.log('action created');
                     $.colorbox.close()  ;
                     document.location.href=document.location.href;

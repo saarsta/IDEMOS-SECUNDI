@@ -21,7 +21,7 @@ util.inherits(Authoriztion,resources.Authorization);
 Authoriztion.prototype.edit_object = function(req,object,callback){
     //check if user already grade this discussion
     var flag = false;
-        models.Grade.findOne({"discussion_id": object.discussion_id, "user_id":req.user._id}, function(err, grade){
+        models.Grade.findOne({"discussion_id": object.discussion_id + "", "user_id":req.user._id}, function(err, grade){
         if (err){
             callback(err, null);
         }else{
@@ -37,7 +37,7 @@ Authoriztion.prototype.edit_object = function(req,object,callback){
 
 var GradeResource = module.exports = common.GamificationMongooseResource.extend({
     init:function(){
-        this._super(models.Grade,'grade', common.getGamificationTokenPrice('grade'));
+        this._super(models.Grade,'grade', /*common.getGamificationTokenPrice('grade')*/ 1);
 //        GradeResource.super_.call(this,models.Grade);
         this.allowed_methods = ['get','post'];
         this.authorization = new Authoriztion();
@@ -50,34 +50,36 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
 
     create_obj:function(req,fields,callback)
     {
-
         var self = this;
         var new_grade = null;
-        self._super(req,fields,function(err,grade_object)
+        var counter = 0;
+
+        self._super(req, fields, function(err, grade_object)
         {
-            async.waterfall([
+            if(!err){
+                async.waterfall([
 
-                function(cbk){
-                    models.Discussion.findById(grade_object.discussion_id, cbk);
-                },
+                    function(cbk){
+                        models.Discussion.findById(grade_object.discussion_id, cbk);
+                    },
 
-                function(discussion_obj, cbk){
-                    //                             discussion_obj.users.push({user_id: user._id, join_date:Date.now()})
-                    async.parallel([
-                        function(cbk)
-                        {
-                            var add_grade = Number(grade_object.evaluation_grade);
-                            var grade = discussion_obj.grade_sum;
-                            grade += add_grade;
-                            var counter = discussion_obj.evaluate_counter + 1;
-                            new_grade = grade / counter;
+                    function(discussion_obj, cbk){
+                        //                             discussion_obj.users.push({user_id: user._id, join_date:Date.now()})
+                        async.parallel([
+                            function(cbk)
+                            {
+                                var add_grade = Number(grade_object.evaluation_grade);
+                                var grade = discussion_obj.grade_sum;
+                                grade += add_grade;
+                                counter = discussion_obj.evaluate_counter + 1;
+                                new_grade = grade / counter;
 
-                            models.Discussion.update({_id:grade_object.discussion_id},
-                                {
-                                    $inc:{ grade_sum: add_grade, evaluate_counter: 1},
-                                    $set:{grade:grade}
-                                },cbk);
-                        }
+                                models.Discussion.update({_id:grade_object.discussion_id},
+                                    {
+                                        $inc:{ grade_sum: add_grade, evaluate_counter: 1},
+                                        $set:{grade: new_grade}
+                                    },cbk);
+                            }
 //                        ,function(cbk)
 //                        {
 //                            if(!_.any(discussion_obj.users, function(user){
@@ -90,11 +92,15 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
 //                            else
 //                                cbk();
 //                        }
-                    ],cbk);
-                }
-            ], function(err, obj){
-                callback(err, {new_grade:new_grade});
-            })
+                        ],cbk);
+                    }
+                ], function(err, obj){
+                    callback(err, {new_grade:new_grade, evaluate_counter: counter});
+                })
+            }else{
+                callback(err, null);
+            }
+
 
         });
 //        var user_id = req.session.user_id;

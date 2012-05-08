@@ -38,7 +38,8 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                 required_participants: null,
                 grade: null,
                 evaluate_counter: null,
-                is_follower: null
+                is_follower: null,
+                updated_user_tokens: null
             }
             this.default_query = function(query){
                 return query.sort('execution_date','descending');

@@ -18,8 +18,8 @@ var resources = require('jest'),
     util = require('util'),
     models = require('../models'),
     common = require('./common'),
-    async = require('async'),
-    CHANGE_SUGGESTION_PRICE = 2;
+    async = require('async');
+
 
 /*
  //Authorization
@@ -53,13 +53,20 @@ var resources = require('jest'),
 
 var SuggestionResource = module.exports = common.GamificationMongooseResource.extend({
     init:function () {
-        this._super(models.Suggestion, 'suggestion', CHANGE_SUGGESTION_PRICE);
+        this._super(models.Suggestion, 'suggestion', /*common.getGamificationTokenPrice('suggestion')*/2);
         this.allowed_methods = ['get', 'post', 'put'];
 //        this.authorization = new Authoriztion();
         this.authentication = new common.SessionAuthentication();
         this.filtering = {discussion_id:null};
         this.default_query = function (query) {
             return query.sort('creation_date', 'descending');
+        },
+
+        this.fields = {
+            _id: null,
+            creator_id: null,
+            parts: null,
+            updated_user_tokens: null
         };
         //    this.validation = new resources.Validation();=
     },
