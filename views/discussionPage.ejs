@@ -390,7 +390,11 @@
                 db_functions.voteForPost(post_id, "add", function(err, post_obj){
                     if(!err){
                         var span = $('span',button);
-                        span.text(Number(span.text()) + 1);
+//                        span.text(Number(span.text()) + 1);
+                        debugger
+                        var vote_against = button.closest('div.action').find('a.vote_against');
+                        vote_against.text(post_obj[2].votes_against);
+                        button.text(post_obj[2].votes_for);
                     }
                     else
                     {
@@ -407,8 +411,13 @@
                 var button = $(this);
                 db_functions.voteForPost(post_id, "remove", function(err, post_obj){
                     if(!err){
+//                        debugger
                         var span = $('span',button);
-                        span.text(Number(span.text()) + 1);
+//                        span.text(Number(span.text()) + 1);
+                        var vote_for = button.closest('div.action').find('a.vote_for');
+                        debugger
+                        vote_for.text(post_obj[2].votes_for);
+                        button.text(post_obj[2].votes_against);
                     }
                     else
                     {

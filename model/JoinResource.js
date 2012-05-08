@@ -11,11 +11,12 @@ var jest = require('jest'),
     models = require('../models'),
     common = require('./common'),
     async = require('async'),
+    _ = require('underscore'),
     JOIN_PRICE = 0;
 
 var JoinResource = module.exports = common.GamificationMongooseResource.extend({
     init:function(){
-        this._super(models.Join,'join_action', JOIN_PRICE);
+        this._super(models.Join,'join_action', common.getGamificationTokenPrice('join_action'));
         this.allowed_methods = ['get','post', 'delete'];
         this.authentication = new common.SessionAuthentication();
         this.filtering = {discussion_id: null};

@@ -107,7 +107,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
             _.each(results.objects, function(discussion){
                 discussion.is_follower = false;
                 if(user_discussions){
-                    if(_.find(user_discussions, function(user_discussion){ return user_discussion.discussion_id.id == discussion._id.id; })){
+                    if(_.find(user_discussions, function(user_discussion){ return user_discussion.discussion_id + "" == discussion._id + "" ; })){
                         discussion.is_follower = true;
                     }
                 }
