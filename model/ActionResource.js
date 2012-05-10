@@ -19,7 +19,12 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
         init:function () {
             this._super(models.Action, null, common.getGamificationTokenPrice('vote'));
             this.allowed_methods = ['get', 'post', 'put'];
-            this.filtering = {cycle_id:null, is_approved:null, grade:null, num_of_going: null};
+            this.filtering = {cycle_id:null, is_approved:null, grade:null, num_of_going: null,
+                'users.user_id': {
+                    exact:true,
+                    in:true
+                }
+            };
             this.authentication = new common.SessionAuthentication();
             this.fields = {
                 _id: null,
@@ -47,9 +52,9 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
         },
 
         get_objects: function (req, filters, sorts, limit, offset, callback) {
-
+            var user_id = req.query.user_id || req.user._id;
             if(req.query.get == "myUru"){
-                filters.users = req.user._id;
+                filters['users.user_id'] = user_id;
             }
 
             this._super(req, filters, sorts, limit, offset, function(err, response){

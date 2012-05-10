@@ -1,7 +1,6 @@
 
 
 <script type="text/javascript" >
-
     $(function(){
         $('#avatarImg').autoscale();
         $( ".tabs" ).tabs({
@@ -9,27 +8,27 @@
             show:tabSelected
         });
     });
-
+    var otherUser='<%=other_user._id%>';
 </script>
 <div id="main">
     <div class="post clearfix">
         <div class="profile clearfix">
             <h2>פרופיל משתמש</h2>
             <div class="frame1">
-                <img  id="actionImg" src="<%=avatar%>" alt="<%=user.username%>" width="202" height="226" />
+                <img  id="actionImg" src="<%=other_user.avatar_url()%>" alt="<%=other_user.username%>" width="202" height="226" />
             </div>
 
 
             <div class="details">
                 <div class="information">
-                    <p><%=user.username || user.first_name%></p>
-                    <p><%=user.address || ""%></p>
+                    <p><%=other_user.username || other_user.first_name%></p>
+                    <p><%=other_user.address || ""%></p>
                     <p>
-                        <% if(user.gender==='male'){ %>
+                        <% if(other_user.gender==='male'){ %>
                         זכר
                         <%} else{ %>נקבה<% } %> </p>
-                     <p><%= user.occupation || "" %></p>
-                    <p><%=user.biography || ""%></p>
+                    <p><%= other_user.occupation || "" %></p>
+                    <p><%=other_user.biography || ""%></p>
                 </div>
                 <div class="toucans">
                     <h4>כמות טוקנים</h4>
