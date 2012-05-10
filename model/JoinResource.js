@@ -11,12 +11,13 @@ var jest = require('jest'),
     models = require('../models'),
     common = require('./common'),
     async = require('async'),
+    _ = require('underscore'),
     JOIN_PRICE = 0;
 
 var JoinResource = module.exports = common.GamificationMongooseResource.extend({
     init:function(){
-        this._super(models.Join,'join_action', JOIN_PRICE);
-        this.allowed_methods = ['get','post'];
+        this._super(models.Join,'join_action', common.getGamificationTokenPrice('join_action'));
+        this.allowed_methods = ['get','post', 'delete'];
         this.authentication = new common.SessionAuthentication();
         this.filtering = {discussion_id: null};
     },
@@ -26,6 +27,8 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
         var action_id = req.body.action_id;
         var user_id = req.user._id;
         var g_action_obj;
+        var join_id;
+
         async.waterfall([
 
             function(cbk){
@@ -57,6 +60,7 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
 
             function(join_obj, cbk){
                 join_obj.save(function(err, result){
+                    join_id = join_obj._id;
                     cbk(err, result);
                 });
             },
@@ -69,8 +73,32 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
         ],function(err, obj){
             if(!err){
                 g_action_obj.num_of_going++;
+                g_action_obj.join_id = join_id;
             }
             callback(err, g_action_obj);
         });
+    },
+
+    delete_obj:function (req, object, callback) {
+        var self = this;
+        var base = this._super;
+        async.waterfall([
+            function(cbk){
+                models.Action.findById(object.action_id, cbk);
+            },
+
+            function(action_obj, cbk){
+                var obj = _.find(action_obj.going_users, function(going_user){
+                    return going_user.user_id == object.user_id;
+                })
+
+                action_obj.going_users.splice(_.indexOf(action_obj.going_users, obj));
+                action_obj.save(function(err, obj){
+                    cbk(err, obj);
+                });
+            }
+        ], function(err, obj){
+            base.call(self, req, object, callback);
+        })
     }
 });

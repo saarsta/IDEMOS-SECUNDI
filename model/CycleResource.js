@@ -128,7 +128,23 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
             filters.users = req.user._id;
         }
 
-        this._super(req, filters, sorts, limit, offset, callback);
+        this._super(req, filters, sorts, limit, offset, function(err, results){
+            var user_cycles;
+
+            if(req.user)
+                user_cycles = req.user.cycles;
+
+            _.each(results.objects, function(cycle){
+                cycle.is_follower = false;
+                if(user_cycles){
+                    if(_.find(user_cycles, function(user_cycle){ return user_cycle.cycle_id.id == cycle._id.id; })){
+                        cycle.is_follower = true;
+                    }
+                }
+            })
+
+            callback(err, results);
+        });
     },
 
 
@@ -158,13 +174,26 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
             }
         }else{
             if(req.query.put == "leave"){
+
                 if (isArgIsInList1(cycle_id, user.cycles, "remove")){
-                    models.Cycle.update({_id: cycle_id}, {$inc: {followers_count: -1},  $addToSet: {users: user._id}}, function(err, num){
+
+                    async.waterfall([
+                        function(cbk){
+                            user.save(function(err, user_obj){
+                                cbk(err, cbk);
+                            })
+                        },
+
+                        function(obj, cbk){
+                            models.Cycle.update({_id: cycle_id}, {$inc: {followers_count: -1}}, function(err, num){
+                                cbk(err, num);
+                            });
+                        }
+                    ], function(err, obj){
                         object.followers_count--;
                         object.is_follower = false;
                         callback(err, object);
-                    });
-
+                    })
                 }else{
                     callback({message:"user is not a follower", code:401}, null);
                 }
@@ -180,10 +209,12 @@ var isArgIsInList1 = function(cycle_id, cycle_list_schema, method){
     var flag = false;
     for (var i = 0; i < cycle_list_schema.length; i++){
         cycle_id = cycle_id.id || cycle_id;
-        if (cycle_id  == cycle_list_schema[i].cycle_id._id){
+        if (cycle_id  == cycle_list_schema[i].cycle_id.id){
             if(method == "remove")
             {
                 //remove cycle
+                cycle_list_schema.splice(i);
+
             }
             flag = true;
             break;

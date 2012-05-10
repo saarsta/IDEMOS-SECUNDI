@@ -10,24 +10,17 @@ var resources = require('jest'),
 var Authorization = common.TokenAuthorization.extend({
     limit_object_list:function (req, query, callback) {
 
-        if (req.method == "GET"){
-            if (req.session.auth.user) {
-                var id = req.session.user_id;
-
-                if (req.method == "PUT" || req.method == "DELETE") {
-                    query.where('is_published', false).where('creator_id', id);
-                    callback(null, query);
-                } else {
-                    query.or([
-                        { 'is_published':true },
-                        {'creator_id':id }
-                    ]);
-                    callback(null, query);
-                }
-            } else {
-                callback("Error: User Is Not Authenticated", null);
+        if (req.method == "PUT" || req.method == "DELETE") {
+            id = req.user._id;
+//            query.where('is_published', false).where('creator_id', id);
+            callback(null, query);
+        } else {
+            if(req.method == "GET"){
+                query.where('is_published', true);
+                callback(null, query);
+            } else{
+                callback(null, query);
             }
-
         }
     },
     limit_object:function (req, query, callback) {
@@ -62,7 +55,8 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                 followers_count: null,
                 grade:Number,
                 evaluate_counter: null,
-                _id:null
+                _id:null,
+                is_follower: null
             };
     },
 
@@ -74,7 +68,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                     if(!err){
                         object.users = _.map(objs, function(user){
                             var curr_discussion =  _.find(user.discussions, function(discussion){
-                                return discussion.cycle_id == id;
+                                return discussion.discussion_id == id;
                             });
                             return {
                                 user_id:user,
@@ -84,15 +78,16 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                     }
                     else
                         object.users = [];
-                    if(req.user){
-                        object.is_follower = common.isArgIsInList(id, req.user.discussions);
-                    }else{
-                        object.is_follower = false;
-                    }
+                    object.is_follower = false;
+                    if(req.user)
+                        if(_.find(req.user.discussions, function(user_discussion){return user_discussion.discussion_id == id})){
+                            object.is_follower = true;
+                        }
+                    callback(err, object);
                 });
-
+            }else{
+                callback(err, object);
             }
-            callback(err, object);
         })
     },
 
@@ -102,7 +97,24 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
             filters.users = req.user._id;
         }
 
-        this._super(req, filters, sorts, limit, offset, callback);
+        this._super(req, filters, sorts, limit, offset, function(err, results){
+
+            var user_discussions;
+
+            if(req.user)
+                user_discussions = req.user.discussions;
+
+            _.each(results.objects, function(discussion){
+                discussion.is_follower = false;
+                if(user_discussions){
+                    if(_.find(user_discussions, function(user_discussion){ return user_discussion.discussion_id + "" == discussion._id + "" ; })){
+                        discussion.is_follower = true;
+                    }
+                }
+            })
+
+            callback(err, results);
+        });
     },
 
     create_obj:function (req, fields, callback) {
@@ -125,14 +137,22 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                 //if success with creating new discussion - add discussion to user schema
                 object.save(function (err, obj) {
                     if (!err) {
-                        user.discussions.push(obj._id);
-                        if (object.is_published) {
-                            req.gamification_type = "discussion";
-                            req.token_price = common.getGamificationTokenPrice('discussion');
+
+                        var user_discussion = {
+                            discussion_id: obj._id,
+                            join_date: Date.now()
                         }
-                        user.save(function (err, user) {
-                            callback(self.elaborate_mongoose_errors(err), obj);
+                        models.User.update({_id: user._id}, {$addToSet: {discussions: user_discussion}}, function(err, num){
+                            if(!err){
+                                if (object.is_published) {
+                                    req.gamification_type = "discussion";
+                                    req.token_price = /*common.getGamificationTokenPrice('discussion')*/ 3;
+                                }
+                            }
+                            callback(err, obj);
+
                         });
+
                     }
                 });
             }
@@ -142,10 +162,15 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
     update_obj:function (req, object, callback) {
         var user = req.user;
         if (req.query.put == "follower"){
-            if (common.isArgIsInList(object._id, user.discussions) == false){
+            var disc = _.find(user.discussions, function(discussion) {return discussion.discussion_id + '' == object._id +'';} );
+            if(!disc){
                 async.parallel([
                     function(cbk2){
-                        models.User.update({_id: user._id}, {$addToSet: {discussions: object._id}}, cbk2);
+                        var user_discussion = {
+                            discussion_id: object._id,
+                            join_date: Date.now()
+                        }
+                        models.User.update({_id: user._id}, {$addToSet: {discussions: user_discussion}}, cbk2);
                     },
 
                     function(cbk2){
@@ -153,19 +178,48 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                     }
                 ], function(){
                     object.followers_count++;
+                    object.is_follower = true;
                     callback(null, object);
                 });
             }else{
                 callback({message:"user is already a follower",code:401}, null);
             }
         }else{
-            if (object.is_published) {
-                callback("this discussion is already published", null);
-            } else {
-                req.gamification_type = "discussion";
-                req.token_price = common.getGamificationTokenPrice('discussion');
-                object.is_published = true;
-                object.save(callback);
+            if(req.query.put == "leave"){
+
+                async.waterfall([
+                    function(cbk){
+                        var disc = _.find(user.discussions, function(discussion) {return discussion.discussion_id + '' == object._id +'';} );
+
+                        if(disc){
+                            //delete this discussion
+                                user.discussions.splice(_.indexOf(user.discussions, disc));
+                            user.save(cbk);
+                        }else{
+                            callback({message:"user is not a follower", code:401}, null);
+                        }
+                    },
+
+                    function(obj, cbk){
+                        models.Discussion.update({_id: object._id}, {$inc: {followers_count: -1}}, function(err, num){
+                            object.followers_count--;
+                            object.is_follower = false;
+
+                            callback(err, object);
+                        });
+                    }
+                ], function(err, result){
+                  callback(err, object);
+                })
+            }else{
+                if (object.is_published) {
+                    callback("this discussion is already published", null);
+                }else {
+                    req.gamification_type = "discussion";
+                    req.token_price = common.getGamificationTokenPrice('discussion');
+                    object.is_published = true;
+                    object.save(callback);
+                }
             }
         }
     }

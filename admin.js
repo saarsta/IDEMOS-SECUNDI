@@ -1,6 +1,8 @@
 var j_forms = require('j-forms'),
     mongoose_admin = require('admin-with-forms'),
     Models = require('./models'),
+    async = require('async'),
+    SuggestionResource = require('./model/suggestionResource'),
     locale = require('./locale');
 
 module.exports = function(app)
@@ -26,7 +28,20 @@ module.exports = function(app)
             list:['text','username']
         });
         admin.registerMongooseModel('Suggestion',Models.Suggestion,null,{
-            list:['username']
+            list:['parts.0.text'],
+            actions:[
+                {
+                    value:'approve',
+                    label:'Approve',
+                    func: function(user,ids,callback)
+                    {
+                        async.forEach(ids,function(id,cbk)
+                        {
+                            SuggestionResource.approveSuggestion(id,cbk);
+                        },callback);
+                    }
+                }
+            ]
         });
         admin.registerMongooseModel('Vote',Models.Vote,null,{
             list:['post_id','user_id']

@@ -16,12 +16,11 @@ var ActionPopulatedResource = module.exports = action.extend(
             this._super();
             this.allowed_methods = ['get'];
             this.default_query = function(query){
-                return query.populate("cycle_id").populate("going_users");
+                return query.populate("cycle_id").populate("going_users.user_id");
             }
         },
 
         get_object: function (req, id, callback) {
-
             this._super(req, id, function(err,object)
             {
                 _.sortBy(object.users,function(user)

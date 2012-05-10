@@ -16,16 +16,16 @@ var resources = require('jest'),
 //    jstat = require('./jstat');
 
 
-var VoteResource = module.exports = common.GamificationMongooseResource.extend({
+var VoteSuggestoinResource = module.exports = common.GamificationMongooseResource.extend({
     init:function(){
-        this._super(models.Vote,'vote', common.getGamificationTokenPrice('vote'));
+        this._super(models.VoteSuggestoinResource,'vote_suggestion', common.getGamificationTokenPrice('vote_suggestion'));
         this.allowed_methods = ['post'];
         //    this.authorization = new Authoriztion();
         this.authentication = new common.SessionAuthentication();
         this.filtering = {discussion_id: null};
     },
 
-    //returns post_
+    //returns suggestion_
     create_obj: function(req,fields,callback)
     {
         var self = this;
@@ -37,25 +37,25 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
             {
                 if(!err)
                 {
-                    var post_id = req.body.post_id;
-                    models.Vote.find({user_id: user_object._id + "" , post_id:post_id},function(err,votes)
+                    var suggestion_id = req.body.suggestion_id;
+                    models.Vote.find({user_id: user_object._id + "" , suggestion_id:suggestion_id},function(err,votes)
                     {
 
-                    if(err || votes.length>2)
-                        callback(err || {message: 'user already voted for this post', code: 401}, null);
+                        if(err || votes.length>2)
+                            callback(err || {message: 'user already voted for this suggestionn', code: 401}, null);
 
                         else
                         {
                             var method = req.body.method;
-                            models.Post.findOne({_id :post_id},function(err,post_object){
-                                if (err || !post_object){
-                                    callback(err || {message:'couldn\'t find post by id ' + post_id,code:400}, null);
+                            models.Suggestion.findOne({_id :suggestion_id},function(err,suggestion_object){
+                                if (err || !suggestion_object){
+                                    callback(err || {message:'couldn\'t find suggestion by id ' + suggestion_id,code:400}, null);
                                 }
                                 else{
-                                    if(post_object.creator_id + "" == req.user._id + ""){
-                                        callback({message:'soory, can\'t vote to your own post', code:401}, null);
+                                    if(suggestion_object.creator_id + "" == req.user._id + ""){
+                                        callback({message:'soory, can\'t vote to your own suggestion', code:401}, null);
                                     }else{
-                                        var discussion_id = post_object.discussion_id;
+                                        var discussion_id = suggestion_object.discussion_id;
                                         var isNewFollower = false;
 
                                         var sum = _.reduce(votes, function(memo, vote){
@@ -64,18 +64,18 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
                                                 num = 1
                                             return memo + num; }, 0);
                                         if(sum<0 && method == 'add'){
-                                            post_object.votes_against -= 1;
+                                            suggestion_object.votes_against -= 1;
                                         }else{
                                             if(sum>0 && method == 'remove'){
-                                                post_object.votes_for -= 1;
+                                                suggestion_object.votes_for -= 1;
                                             } else{
                                                 if (method == 'add'){
-                                                    post_object.votes_for += 1;
+                                                    suggestion_object.votes_for += 1;
 
                                                     //                                    post_object.tokens += parseInt(req.body.tokens);
                                                 }
                                                 else{
-                                                    post_object.votes_against += 1;
+                                                    suggestion_object.votes_against += 1;
 
                                                     //                                    post_object.tokens -= parseInt(req.body.tokens);
                                                 }
@@ -84,41 +84,16 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
 
 
 
-                                        post_object.popularity = calculate_popularity(post_object.votes_for, post_object.votes_for + post_object.votes_against);
+                                        suggestion_object.popularity = calculate_popularity(suggestion_object.votes_for, suggestion_object.votes_for + suggestion_object.votes_against);
                                         fields.user_id = user_object._id;
-                                        fields.post_id = post_id;
+                                        fields.suggestion_id = suggestion_id;
 
                                         async.parallel([
                                             function(cbk)
                                             {
-                                                post_object.total_votes += 1;
-                                                post_object.save(cbk);
+                                                suggestion_object.total_votes += 1;
+                                                suggestion_object.save(cbk);
                                             },
-//                                            function(cbk)
-//                                            {
-//                                                //check if is user is a new follower, if so insert discussion to user and increade followers in discussion
-//                                                if (common.isArgIsInList(discussion_id, user_object.discussions) == false){
-//                                                    user_object.discussions.push(discussion_id);
-//                                                    isNewFollower = true;
-//                                                    user_object.save(cbk);
-//                                                }
-//                                                else
-//                                                    cbk();
-//                                            },
-//                                            function(cbk)
-//                                            {
-//                                                if (isNewFollower){
-//                                                    models.Discussion.update({_id :discussion_id},{$inc:{followers_count:1}},function(err,count){
-//                                                        if (err || !count){
-//                                                            cbk(err);
-//                                                        }else{
-//                                                            cbk();
-//                                                        }
-//                                                    });
-//                                                }
-//                                                else
-//                                                    cbk();
-//                                            },
                                             function(cbk)
                                             {
                                                 for( var field in fields)
@@ -127,7 +102,7 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
                                                 }
                                                 vote_object.save(function(err,object)
                                                 {
-                                                    cbk(err, post_object);
+                                                    cbk(err, suggestion_object);
                                                 });
                                             }],
                                             callback);
