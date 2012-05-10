@@ -166,3 +166,35 @@ var InformationItemResource = module.exports = common.GamificationMongooseResour
         ], callback);
     }
 });
+
+//when admin approves infoitem:
+//status change to "approved"
+//user get gamification for it
+module.exports.approveInfoItem = function(id,callback){
+
+    var score = 10;
+    var game_type = "approved_information_item";
+
+    async.waterfall([
+        function(cbk){
+            models.InformationItem.findById(id,cbk);
+        },
+
+        function(info_item, cbk){
+            info_item.status = "approved";
+            info_item.save(cbk);
+        },
+
+        function(info_obj, cbk){
+            var creator_id = info_obj.created_by.creator_id;
+            var inc_user_gamification ={};
+
+            inc_user_gamification['gamification.'+game_type] = 1;
+            inc_user_gamification['score'] = score[game_type] || 0;
+
+            models.User.update({_id: creator_id},{$inc:inc_user_gamification}, cbk);
+        }
+    ], function(err, obj){
+        callback(err, obj);
+    })
+}

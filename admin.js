@@ -15,7 +15,22 @@ module.exports = function(app)
         admin.ensureUserExists('admin','admin');
 
         admin.registerMongooseModel("User",Models.User,null,{list:['username','first_name','last_name']});
-        admin.registerMongooseModel("InformationItem",Models.InformationItem, null,{list:['title'],order_by:['gui_order'],sortable:'gui_order',cloneable:true});
+        admin.registerMongooseModel("InformationItem",Models.InformationItem, null,{
+            list:['title'],
+            order_by:['gui_order'],
+            sortable:'gui_order',
+            cloneable:true,
+            actions:[
+                {
+                    value:'approve',
+                    label:'Approve',
+                    func: function(user,ids,callback)
+                    {
+                        Models.InformationItem.update({_id:{$in:ids}},{$set:{is_approved:true}},{multi:true},callback);
+                    }
+                }
+            ]
+        });
         admin.registerMongooseModel("Subject",Models.Subject,null,{list:['name'],order_by:['gui_order'],sortable:'gui_order'});
         admin.registerMongooseModel("Discussion",Models.Discussion,null,{list:['title'],cloneable:true});
         admin.registerMongooseModel("Cycle",Models.Cycle,null,{list:['title'],cloneable:true});
@@ -46,6 +61,11 @@ module.exports = function(app)
         admin.registerMongooseModel('Vote',Models.Vote,null,{
             list:['post_id','user_id']
         });
+
+        admin.registerMongooseModel('VoteSuggestion',Models.VoteSuggestion,null,{
+            list:['suggestion_id','user_id']
+        });
+
         admin.registerMongooseModel('Grade',Models.Grade,null,{
             list:['discussion_id','user_id']
         });

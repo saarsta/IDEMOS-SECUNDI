@@ -98,6 +98,7 @@ require('./api')(app);
 require('./admin')(app);
 
 var cron = require('./cron');
+cron.run(app);
 
 app.listen(app.settings.port);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

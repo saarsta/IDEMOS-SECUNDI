@@ -24,12 +24,19 @@ var ArticleResource = common.GamificationMongooseResource.extend({
         var self = this;
         var article_object = new self.model();
         var user = req.user;
+//        var total_tokens = user.tokens + user.num_of_extra_tokens;
 
-        fields.user_id = user_id;
-        fields.first_name = user.first_name;
-        fields.last_name = user.last_name;
+        if(user.tokens < /*common.getGamificationTokenPrice('create_blog')*/12){
+            callback({message: "user must have a least 12 tokens to open create a blog", code:401}, null);
+        }
+        else
+        {
+            fields.user_id = user_id;
+            fields.first_name = user.first_name;
+            fields.last_name = user.last_name;
 
-        self._super(req,fields,callback);
+            self._super(req,fields,callback);
+        }
     }
 });
 

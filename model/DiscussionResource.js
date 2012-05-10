@@ -121,42 +121,57 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
         var user_id = req.session.user_id;
         var self = this;
         var object = new self.model();
-
         var user = req.user;
-        fields.creator_id = user_id;
-        fields.first_name = user.first_name;
-        fields.last_name = user.last_name;
-        fields.users = user_id;
-        for (var field in fields) {
-            object.set(field, fields[field]);
-        }
 
-        self.authorization.edit_object(req, object, function (err, object) {
-            if (err) callback(err);
-            else {
-                //if success with creating new discussion - add discussion to user schema
-                object.save(function (err, obj) {
-                    if (!err) {
+        var min_tokens = /*common.getGamificationTokenPrice('create_discussion')*/ 10;
+//        var total_tokens = user.tokens + user.num_of_extra_tokens;
 
-                        var user_discussion = {
-                            discussion_id: obj._id,
-                            join_date: Date.now()
-                        }
-                        models.User.update({_id: user._id}, {$addToSet: {discussions: user_discussion}}, function(err, num){
-                            if(!err){
-                                if (object.is_published) {
-                                    req.gamification_type = "discussion";
-                                    req.token_price = /*common.getGamificationTokenPrice('discussion')*/ 3;
-                                }
-                            }
-                            callback(err, obj);
-
-                        });
-
+        models.InformationItems.count({users: req.user._id}, function(err, count){
+            if(!err){
+                if(total_tokens <  min_tokens && user.tokens < min_tokens - (Math.min(Math.floor(count/2), 2))){
+                    callback({message: "user must have a least 10 tokens to open create discussion", code:401}, null);
+                }
+                else
+                {
+                    fields.creator_id = user_id;
+                    fields.first_name = user.first_name;
+                    fields.last_name = user.last_name;
+                    fields.users = user_id;
+                    for (var field in fields) {
+                        object.set(field, fields[field]);
                     }
-                });
+
+                    self.authorization.edit_object(req, object, function (err, object) {
+                        if (err) callback(err);
+                        else {
+                            //if success with creating new discussion - add discussion to user schema
+                            object.save(function (err, obj) {
+                                if (!err) {
+
+                                    var user_discussion = {
+                                        discussion_id: obj._id,
+                                        join_date: Date.now()
+                                    }
+                                    models.User.update({_id: user._id}, {$addToSet: {discussions: user_discussion}}, function(err, num){
+                                        if(!err){
+                                            if (object.is_published) {
+                                                req.gamification_type = "discussion";
+                                                req.token_price = /*common.getGamificationTokenPrice('discussion')*/ 3;
+                                            }
+                                        }
+                                        callback(err, obj);
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+            }else{
+                callback(err, null);
             }
-        });
+
+        })
+
     },
 
     update_obj:function (req, object, callback) {

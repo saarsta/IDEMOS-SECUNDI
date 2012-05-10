@@ -94,7 +94,7 @@ var Schemas = exports.Schemas = {
             new Schema( {action_id:{type:ObjectId, ref:'Action'}, join_date: {type:Date, 'default':Date.now}})
         ],
         password:String,
-        tokens:{type:Number, 'default':9},
+        tokens:{type:Number, 'default':9, min: 0, max:15.9},
         gamification: {type:Schema.Types.Mixed,editable:false },
         updates: Schema.Types.Mixed,
         //score:{type:Number, 'default':0},
@@ -102,13 +102,14 @@ var Schemas = exports.Schemas = {
         invited_by: {type: ObjectId, ref: 'User'},
         has_been_invited : {type: Boolean, 'default': false},
         tokens_achivements_to_user_who_invited_me: Schema.Types.Mixed,
-        num_of_extra_tokens: {type:Number, 'default': 0, max:6},// i might change it to gamification.bonus.
+        num_of_extra_tokens: {type: mongoose_types.Integer, 'default': 0, max:6, min: 0},// i might change it to gamification.bonus.
         number_of_days_of_spending_all_tokens: {type: Number, 'default' : 0},
         blog_popularity_counter: {type: Number, 'default': 0},
         avatar : mongoose_types.File
     }),
 
     InformationItem:{
+
         title: {type: String, required: true},
         subject_id:[{type:ObjectId, ref:'Subject',required:true}],
         category:{type:String, "enum":['test', 'statistics', 'infographic', 'graph'], required:true},
@@ -268,9 +269,9 @@ var Schemas = exports.Schemas = {
         upcoming_action: {type: ObjectId, ref: 'Action', index: true, editable:false},
         num_upcoming_actions: {type: Number, 'default':0, editable:false},
         //users that conected somehow to the cycle for my uru
-        users:[
+        users:{type:[
             new Schema({user_id:{type:ObjectId, ref:'User'}, join_date: {type:Date, 'default':Date.now}})
-        ]
+        ], editable:false}
     }, {strict: true}),
 
     PostOrSuggestion:{
@@ -283,7 +284,7 @@ var Schemas = exports.Schemas = {
         votes_against: {type: Number, 'default': 0},
         total_votes: {type: Number, 'default': 0},
         creation_date:{type:Date, 'default':Date.now,editable:false},
-        tokens:{type:Number, 'default':0, index: true},
+//        tokens:{type:Number, 'default':0, index: true},
         popularity: {type:Number, 'default':0},
         gamification: {high_number_of_tokens_bonus : {type: Boolean, 'default': false}}
     },
@@ -445,12 +446,10 @@ var Schemas = exports.Schemas = {
 
     Notifications: {
         user_id:{type:ObjectId, ref:'User', index:true, required:true},
-        title: String,
-        description: String,
-        system_type: {},
-        link: {},
-        seen: {},
-        date: {}
+        type: {type:String, "enum": ['approved_info_item']},
+        entity_id: {type: ObjectId},
+        seen: {type:Boolean, 'default':false},
+        update_date: {type: Date, 'default': Date.now}
     },
 
     Tag : {
@@ -471,8 +470,18 @@ var Schemas = exports.Schemas = {
         like_info_item: {type: Number, 'default': 0},
         join_to_action: {type: Number, 'default': 0},
         ceate_kilkul: {type: Number, 'default': 0},
-        join_kilkul: {type: Number, 'default': 0}
-
+        join_kilkul: {type: Number, 'default': 0},
+        min_tokens_to_create_dicussion: {type: Number, 'default': 0},
+        min_tokens_to_create_action: {type: Number, 'default': 0},
+        min_tokens_to_create_blog: {type: Number, 'default': 0},
+        invite_X_people_who_got_Y_extra_tokens: {x: {type: Number, 'default': 1000}, y: {type: Number, 'default': 1000}},
+        invite_X_people_who_signed_in: {type: Number, 'default': 1000000},
+        X_tokens_for_post: {type: Number, 'default': 1000000},
+        X_tokens_for_all_my_posts: {type: Number, 'default': 1000000},
+        X_suggestions_for_a_discussion: {type: Number, 'default': 1000000},
+        discussion_high_graded_by_min_of_X_people: {type: Number, 'default': 1000000},
+        spend_tokens_for_X_days_in_a_row: {type: Number, 'default': 1000000},
+        X_tokens_for_all_my_posts: {type: Number, 'default': 1000000}
     }
 };
 
