@@ -22,7 +22,13 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
         this.allowed_methods = ['post'];
         //    this.authorization = new Authoriztion();
         this.authentication = new common.SessionAuthentication();
-        this.filtering = {discussion_id: null};
+        this.filtering = {discussion_id: null},
+        this.fields = {
+            votes_for: null,
+            votes_against: null,
+            popularity: null,
+            updated_user_tokens: null
+        };
     },
 
     //returns post_
@@ -41,105 +47,83 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
                     models.Vote.find({user_id: user_object._id + "" , post_id:post_id},function(err,votes)
                     {
 
-                    if(err || votes.length>2)
-                        callback(err || {message: 'user already voted for this post', code: 401}, null);
+                    if(err)
+                        callback(err, null);
 
                         else
                         {
-                            var method = req.body.method;
-                            models.Post.findOne({_id :post_id},function(err,post_object){
-                                if (err || !post_object){
-                                    callback(err || {message:'couldn\'t find post by id ' + post_id,code:400}, null);
-                                }
-                                else{
-                                    if(post_object.creator_id + "" == req.user._id + ""){
-                                        callback({message:'soory, can\'t vote to your own post', code:401}, null);
-                                    }else{
-                                        var discussion_id = post_object.discussion_id;
-                                        var isNewFollower = false;
+                            var total_tokens = req.user.tokens + req.user.num_of_extra_tokens;
+                           if(votes.length > 2 && !(votes.length == 3 && total_tokens > 12) || (votes.length == 4 && total_tokens > 15)){
+                               callback({message: 'user already voted for this post', code: 401}, null);
+                           }else{
+                               var method = req.body.method;
+                               models.Post.findOne({_id :post_id},function(err,post_object){
+                                   if (err || !post_object){
+                                       callback(err || {message:'couldn\'t find post by id ' + post_id,code:400}, null);
+                                   }
+                                   else{
+                                       if(post_object.creator_id + "" == req.user._id + ""){
+                                           callback({message:'soory, can\'t vote to your own post', code:401}, null);
+                                       }else{
+                                           var discussion_id = post_object.discussion_id;
+                                           var isNewFollower = false;
 
-                                        var sum = _.reduce(votes, function(memo, vote){
-                                            var num = - 1
-                                            if(vote.method == 'add')
-                                                num = 1
-                                            return memo + num; }, 0);
-                                        if(sum<0 && method == 'add'){
-                                            post_object.votes_against -= 1;
-                                        }else{
-                                            if(sum>0 && method == 'remove'){
-                                                post_object.votes_for -= 1;
-                                            } else{
-                                                if (method == 'add'){
-                                                    post_object.votes_for += 1;
+                                           var sum = _.reduce(votes, function(memo, vote){
+                                               var num = - 1;
+                                               if(vote.method == 'add')
+                                                   num = 1
+                                               return memo + num; }, 0);
+                                           if(sum<0 && method == 'add'){
+                                               post_object.votes_against -= 1;
+                                           }else{
+                                               if(sum>0 && method == 'remove'){
+                                                   post_object.votes_for -= 1;
+                                               } else{
+                                                   if (method == 'add'){
+                                                       post_object.votes_for += 1;
 
-                                                    //                                    post_object.tokens += parseInt(req.body.tokens);
-                                                }
-                                                else{
-                                                    post_object.votes_against += 1;
+                                                       //                                    post_object.tokens += parseInt(req.body.tokens);
+                                                   }
+                                                   else{
+                                                       post_object.votes_against += 1;
 
-                                                    //                                    post_object.tokens -= parseInt(req.body.tokens);
-                                                }
-                                            }
-                                        }
+                                                       //                                    post_object.tokens -= parseInt(req.body.tokens);
+                                                   }
+                                               }
+                                           }
+                                           post_object.popularity = calculate_popularity(post_object.votes_for, post_object.votes_for + post_object.votes_against);
+                                           fields.user_id = user_object._id;
+                                           fields.post_id = post_id;
 
-
-
-                                        post_object.popularity = calculate_popularity(post_object.votes_for, post_object.votes_for + post_object.votes_against);
-                                        fields.user_id = user_object._id;
-                                        fields.post_id = post_id;
-
-                                        async.parallel([
-                                            function(cbk)
-                                            {
-                                                post_object.total_votes += 1;
-                                                post_object.save(cbk);
-                                            },
-//                                            function(cbk)
-//                                            {
-//                                                //check if is user is a new follower, if so insert discussion to user and increade followers in discussion
-//                                                if (common.isArgIsInList(discussion_id, user_object.discussions) == false){
-//                                                    user_object.discussions.push(discussion_id);
-//                                                    isNewFollower = true;
-//                                                    user_object.save(cbk);
-//                                                }
-//                                                else
-//                                                    cbk();
-//                                            },
-//                                            function(cbk)
-//                                            {
-//                                                if (isNewFollower){
-//                                                    models.Discussion.update({_id :discussion_id},{$inc:{followers_count:1}},function(err,count){
-//                                                        if (err || !count){
-//                                                            cbk(err);
-//                                                        }else{
-//                                                            cbk();
-//                                                        }
-//                                                    });
-//                                                }
-//                                                else
-//                                                    cbk();
-//                                            },
-                                            function(cbk)
-                                            {
-                                                for( var field in fields)
-                                                {
-                                                    vote_object.set(field,fields[field]);
-                                                }
-                                                vote_object.save(function(err,object)
-                                                {
-                                                    cbk(err, post_object);
-                                                });
-                                            }],
-                                            callback);
-                                    }
-
-                                }
-                            });
+                                           async.parallel([
+                                               function(cbk)
+                                               {
+                                                   post_object.total_votes += 1;
+                                                   post_object.save(cbk);
+                                               },
+                                               function(cbk)
+                                               {
+                                                   for( var field in fields)
+                                                   {
+                                                       vote_object.set(field,fields[field]);
+                                                   }
+                                                   vote_object.save(function(err,object)
+                                                   {
+                                                       cbk(err, post_object);
+                                                   });
+                                               }],
+                                               function(err, args){
+                                                   callback(err, args[1])
+                                               });
+                                       }
+                                   }
+                               });
+                           }
                         }
                     });
                 }
                 else{
-                    callback({message: "Error: there is not enought tokens", code: 401}, null);
+                    callback(err, null);
                 }
             });
         }

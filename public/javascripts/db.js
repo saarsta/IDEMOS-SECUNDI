@@ -203,9 +203,9 @@ var db_functions = {
 
     },
 
-    getHotObjects: function(resource, callback){
+    getHotObjects: function(callback){
         this.loggedInAjax({
-            url: '/api/' + resource + '/?is_hot_object=true',
+            url: '/api/hot_objects',
             type: "GET",
             async: true,
             success: function (data) {

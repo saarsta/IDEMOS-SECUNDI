@@ -18,11 +18,17 @@ var resources = require('jest'),
 
 var VoteSuggestoinResource = module.exports = common.GamificationMongooseResource.extend({
     init:function(){
-        this._super(models.VoteSuggestoinResource,'vote_suggestion', common.getGamificationTokenPrice('vote_suggestion'));
+        this._super(models.VoteSuggestion,'vote_suggestion', common.getGamificationTokenPrice('vote_suggestion'));
         this.allowed_methods = ['post'];
         //    this.authorization = new Authoriztion();
         this.authentication = new common.SessionAuthentication();
-        this.filtering = {discussion_id: null};
+        this.filtering = {discussion_id: null},
+        this.fields = {
+            votes_for: null,
+            votes_against: null,
+            popularity: null,
+            updated_user_tokens: null
+        };
     },
 
     //returns suggestion_
@@ -38,7 +44,7 @@ var VoteSuggestoinResource = module.exports = common.GamificationMongooseResourc
                 if(!err)
                 {
                     var suggestion_id = req.body.suggestion_id;
-                    models.Vote.find({user_id: user_object._id + "" , suggestion_id:suggestion_id},function(err,votes)
+                    models.VoteSuggestion   .find({user_id: user_object._id + "" , suggestion_id:suggestion_id},function(err,votes)
                     {
 
                         if(err || votes.length>2)
@@ -56,7 +62,7 @@ var VoteSuggestoinResource = module.exports = common.GamificationMongooseResourc
                                         callback({message:'soory, can\'t vote to your own suggestion', code:401}, null);
                                     }else{
                                         var discussion_id = suggestion_object.discussion_id;
-                                        var isNewFollower = false;
+//                                        var isNewFollower = false;
 
                                         var sum = _.reduce(votes, function(memo, vote){
                                             var num = - 1
@@ -105,7 +111,9 @@ var VoteSuggestoinResource = module.exports = common.GamificationMongooseResourc
                                                     cbk(err, suggestion_object);
                                                 });
                                             }],
-                                            callback);
+                                            function(err, args){
+                                                callback(err, args[1])
+                                            });
                                     }
 
                                 }

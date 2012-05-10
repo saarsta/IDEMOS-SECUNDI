@@ -20,6 +20,11 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
         this.allowed_methods = ['get','post', 'delete'];
         this.authentication = new common.SessionAuthentication();
         this.filtering = {discussion_id: null};
+        this.fields = {
+            action_id: null,
+            is_follower: null,
+            join_id: null
+        }
     },
 
     create_obj: function(req,fields,callback){
@@ -74,6 +79,7 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
             if(!err){
                 g_action_obj.num_of_going++;
                 g_action_obj.join_id = join_id;
+                g_action_obj.is_follower = true;
             }
             callback(err, g_action_obj);
         });
@@ -82,6 +88,7 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
     delete_obj:function (req, object, callback) {
         var self = this;
         var base = this._super;
+        var g_action;
         async.waterfall([
             function(cbk){
                 models.Action.findById(object.action_id, cbk);
@@ -94,11 +101,13 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
 
                 action_obj.going_users.splice(_.indexOf(action_obj.going_users, obj));
                 action_obj.save(function(err, obj){
+                    action_obj.is_follower = false;
+                    g_action = action_obj;
                     cbk(err, obj);
                 });
             }
         ], function(err, obj){
-            base.call(self, req, object, callback);
+            base.call(self, req, object, callback/*(err, g_action)*/);
         })
     }
 });
