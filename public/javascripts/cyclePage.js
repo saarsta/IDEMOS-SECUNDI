@@ -138,7 +138,6 @@ function loadPopupData(){
          });
 
         $("select").change(function () {
-            debugger;
             $('#resources').empty();
             $("select option:selected").each(function () {
                 var value = $(this).attr("value");

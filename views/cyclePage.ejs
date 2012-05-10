@@ -86,8 +86,8 @@
            })
             var title=this.title.value;
             var    description=this.description.value;
-            var    action_resources=resourceSel.value;
-            var category=categorySel.value;
+            var    action_resources='action res';//resourceSel.value;
+           // var category=categorySel.value;
             var    required_participants=this.participants_count.value;
             var    execution_date = $( "#datepicker" ).datepicker("getDate");
             var   location;
@@ -95,7 +95,7 @@
                 if(error){
                     console.log(error);
                 }else{
-                    debugger
+
                     $("#updated_user_tokens").text(data.updated_user_tokens);
                     console.log('action created');
                     $.colorbox.close()  ;
