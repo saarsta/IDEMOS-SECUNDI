@@ -101,17 +101,39 @@ function loadListItems(original_type,template_name,subject,tag) {
         switch(original_type)
         {
             case 'discussions':
-                    db_functions.joinToDiscussionFollowers(item_id,function(){
+                db_functions.joinToDiscussionFollowers(item_id,function(){
 
-                    });
+                });
                 break;
             case 'actions':
-                    db_functions.joinToAction(item_id,function(){
+                db_functions.joinToAction(item_id,function(){
 
-                    });
+                });
                 break;
             case "cycles":
                 db_functions.joinToCycleFollowers(item_id,function(){
+
+                });
+                break;
+        }
+    });
+
+    $('#mainList').on('click','.leave_button',function(){
+        var item_id = $(this).attr('item_id');
+        switch(original_type)
+        {
+            case 'discussions':
+                db_functions.leaveDiscussionFollowers(item_id,function(){
+
+                });
+                break;
+            case 'actions':
+                db_functions.leaveAction(item_id,function(){
+
+                });
+                break;
+            case "cycles":
+                db_functions.leaveCycleFollowers(item_id,function(){
 
                 });
                 break;
