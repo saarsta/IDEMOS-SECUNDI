@@ -69,7 +69,7 @@ function loadCyclePage(cycle_id,start_date, finish_date){
         });
         //bugbug:         cycle.users should be replaced with pending actions
 
- 
+
         db_functions.getPendingActionsByCycleOrederedByCreationDate(cycle_id,function(err,pendingActions)
         {
 
@@ -124,17 +124,21 @@ function loadCyclePage(cycle_id,start_date, finish_date){
 function loadPopupData(){
    //toolbox data
     (function(){
+          var categorySel= $('[name=categorySel]');
           db_functions.getCategories(function(error,data){
            $.each(data.objects, function(key, value) {
-               $('[name=toolbox]')
-                   .append($("<option></option>")
+
+                categorySel.append($("<option></option>")
                    .attr("value",value._id)
                    .text(value.name));
            })
+           // categorySel.onChange
+
 
          });
 
         $("select").change(function () {
+            debugger;
             $('#resources').empty();
             $("select option:selected").each(function () {
                 var value = $(this).attr("value");

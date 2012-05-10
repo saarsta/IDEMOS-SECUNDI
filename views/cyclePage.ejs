@@ -42,8 +42,13 @@
                 <textarea name="description" placeholder="טקסט חופשי"></textarea>
                 <button name="find_location">קבע את מיקום הפעולה</button>
 
-                <select type="text" name="toolbox" placeholder="ארגז כלים (פעולות קיימות במערכת – פעולת שטח, עצומה, הפגנה)"  />
-                <textarea id="resources" name="resources" placeholder="משאבים דרושים"></textarea>
+                <select type="text" name="categorySel" placeholder="משאבים דרושים" > </select>
+
+                <select type="text" name="resourceSel" placeholder="ארגז כלים (פעולות קיימות במערכת – פעולת שטח, עצומה, הפגנה)"  ></select>
+               <!-- <textarea id="resources" name="resources" placeholder="משאבים דרושים"></textarea> -->
+
+                <input type="number" name="participants_count">
+
 
                 <label class="num">
                     <input type="number" name="participants_count">
@@ -81,7 +86,8 @@
            })
             var title=this.title.value;
             var    description=this.description.value;
-            var    action_resources;
+            var    action_resources=resourceSel.value;
+            var category=categorySel.value;
             var    required_participants=this.participants_count.value;
             var    execution_date = $( "#datepicker" ).datepicker("getDate");
             var   location;
