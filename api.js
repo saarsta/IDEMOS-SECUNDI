@@ -8,6 +8,7 @@ var mongoose_resource = require('jest'),
     PostResource = require('./model/PostResource.js');
     PostsActionResource = require('./model/PostsActionResource.js');
     VoteResource = require('./model/VoteResource');
+    VoteSuggestionResource = require('./model/VoteSuggestionResource');
     GradeResource = require('./model/GradeResource');
     GradeActionResource = require('./model/GradeActionResource');
     LikeResource = require('./model/LikeResource');
@@ -25,11 +26,8 @@ var mongoose_resource = require('jest'),
     HeadlineResource = require('./model/HeadlineResource'),
     SuccessStoryResource = require('./model/SuccessStoryResource'),
     UpdateResource = require('./model/UpdateResource'),
-    KilkulResource = require('./model/KilkulResource');
-
-
-
-
+    KilkulResource = require('./model/KilkulResource'),
+    HotObjectResource = require('./model/HotObjectResource');
 
 
 module.exports = function(app)
@@ -48,6 +46,7 @@ module.exports = function(app)
     rest_api.register_resource('posts', new PostResource());
     rest_api.register_resource('posts_of_action', new PostsActionResource());
     rest_api.register_resource('votes', new VoteResource());
+    rest_api.register_resource('votes_on_suggestion', new VoteSuggestionResource());
     rest_api.register_resource('grades', new GradeResource());
     rest_api.register_resource('grades_action', new GradeActionResource());
     rest_api.register_resource('likes', new LikeResource());
@@ -61,5 +60,5 @@ module.exports = function(app)
     rest_api.register_resource('articles', new ArticleResource());
     rest_api.register_resource('tags', new TagResource());
     rest_api.register_resource('article_update', new ArticleCommentResource());
-
+    rest_api.register_resource('hot_objects', new HotObjectResource());
 };

@@ -236,8 +236,13 @@ module.exports.approveSuggestion = function(id,callback)
         },
 
         function(disc_obj, cbk){
+
             suggestion_object.is_approved = true;
             suggestion_object.save(cbk);
+        },
+
+        function(sug_obj, cbk){
+            models.User.update({_id: sug_obj.creator_id}, {$inc: {"gamification.approved_suggestion": 1}}, cbk);
         }
     ], callback);
 }

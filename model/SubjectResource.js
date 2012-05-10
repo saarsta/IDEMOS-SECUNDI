@@ -39,7 +39,7 @@ function clear_cache()
 var SubjectResource = module.exports = function()
 {
     SubjectResource.super_.call(this,models.Subject);
-    this.allowed_methods = ['get','post'];
+    this.allowed_methods = ['get'];
 //    this.authentication = new common.SessionAuthentication();
     this.filtering = {tags:null};
   //  this.cache = subject_cache;
