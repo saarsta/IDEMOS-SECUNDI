@@ -471,21 +471,20 @@
                 if(suggestion.parts && suggestion.parts.length)
                 {
                     var original = $('#discussion_content').val();
-                    var text = suggestion.parts[0].text;
-                    var from = suggestion.parts[0].start;
-                    var end = suggestion.parts[0].end;
 
-                    var original_part = original.substr(from,end-from);
-                    var li = $('<li></li>');
-                    li.append('<p>' +
-                            'במקום:'
-                            +'"' + original_part + '"' +
-                            '</p>');
-                    li.append('<p>' +
-                            text +
-                            '</p>');
-                    $('#suggestion_list').append(li);
-                    return li;
+
+
+                    suggestion.original_part = function(){
+                        var text = suggestion.parts[0].text;
+                        var from = suggestion.parts[0].start;
+                        var end = suggestion.parts[0].end;
+                        return original.substr(from,end-from);
+                    };
+
+                    dust.render('discussion_suggestion',suggestion,function(err,out)
+                    {
+                        ('#suggestion_list').append(out);
+                    });
                 }
                 return null;
             }

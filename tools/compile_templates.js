@@ -44,6 +44,8 @@ writer.write(compile_template('myAction_list_item','myActionItem.html'));
 writer.write(compile_template('myKilkulListItem','myKilkulListItem.html'));
 writer.write(compile_template('post','post.html'));
 
+writer.write(compile_template('discussion_suggestion','discussion_suggestion.html'));
+
 
 //writer.write(compile_template('cycle_list_item','cycleListItem.html'));
 writer.write(compile_template('discussion_full_view','discussionFullView.html'))
