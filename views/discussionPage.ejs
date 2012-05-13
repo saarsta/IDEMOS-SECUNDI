@@ -527,8 +527,7 @@
                     db_functions.getPostByDiscussion(discussion_id, function(err, data){
                         if(err){
                             console.log(err);
-                        }else{
-                            dust.renderArray('post', data.objects, null, function(err, out){
+                        }else{dust.renderArray('post', data.objects, null, function(err, out){
                                 if(!err){
                                     $("#posts").append(out);
                                     $('#posts img').autoscale();
@@ -639,7 +638,6 @@
                 {
                     if(!err)
                     {
-                        debugger
                         $('#suggest_div').hide();
                         render_suggestion({parts:[part]});
                         $("textarea#discussion_suggest").val('');

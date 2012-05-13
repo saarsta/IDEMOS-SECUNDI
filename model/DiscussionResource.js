@@ -33,7 +33,12 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
         this._super(models.Discussion, null, 0);
         this.allowed_methods = ['get', 'post', 'put', 'delete'];
         this.authentication = new common.SessionAuthentication();
-        this.filtering = {subject_id:null, users:null, is_published:null, tags: null};
+        this.filtering = {subject_id:null, users:null, is_published:null, tags: null,
+            'users.user_id': {
+                exact:true,
+                in:true
+            }
+        };
         this.authorization = new Authorization();
         this.default_query = function (query) {
             return query.sort('creation_date', 'descending');
@@ -93,8 +98,9 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
 
     get_objects: function (req, filters, sorts, limit, offset, callback) {
 
+        var user_id = req.query.user_id || req.user._id;
         if(req.query.get == "myUru"){
-            filters.users = req.user._id;
+            filters['users.user_id'] = user_id;
         }
 
         this._super(req, filters, sorts, limit, offset, function(err, results){

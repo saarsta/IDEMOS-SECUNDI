@@ -13,10 +13,11 @@
 function tabSelected(event, ui)
 {
     var tabDivId=   ui.panel.id;
+    //otherUser is defined in his_uru.ejs
     switch (tabDivId)
     {
         case 'tabDiscussions':
-            db_functions.getAllItemsByUser('discussions',null,function(error,data){
+            db_functions.getAllItemsByUser('discussions',otherUser,function(error,data){
                 dust.renderArray('myDiscussion_list_item',data.objects,null,function(err,out)
                 {
                     var seletedTab= $('#ulDiscussions');
@@ -30,21 +31,20 @@ function tabSelected(event, ui)
 
             break;
         case 'tabCycle':
-
-                        db_functions.getAllItemsByUser('cycles',null,function(error,data){
-                        dust.renderArray('myCycle_list_item',data.objects,null,function(err,out)
-                        {
-                            var seletedTab= $('#ulCycles');
-                            // seletedTab.remove();
-                            seletedTab.empty();
-                            seletedTab.append(out);
-                            $('img',seletedTab).autoscale();
-                        });
-                    });
+            db_functions.getAllItemsByUser('cycles',otherUser,function(error,data){
+                dust.renderArray('myCycle_list_item',data.objects,null,function(err,out)
+                {
+                    var seletedTab= $('#ulCycles');
+                    // seletedTab.remove();
+                    seletedTab.empty();
+                    seletedTab.append(out);
+                    $('img',seletedTab).autoscale();
+                });
+            });
             break;
 
         case 'tabActions':
-            db_functions.getAllItemsByUser('actions',null,function(error,data){
+            db_functions.getAllItemsByUser('actions',otherUser,function(error,data){
                 dust.renderArray('myAction_list_item',data.objects,null,function(err,out)
                 {
                     var seletedTab= $('#ulActions');
@@ -57,7 +57,7 @@ function tabSelected(event, ui)
             break;
 
         case 'ulKilkul':
-            db_functions.getAllItemsByUser('kilkuls',null,function(error,data){
+            db_functions.getAllItemsByUser('kilkuls',otherUser,function(error,data){
                 dust.renderArray('myKilkulListItem',data.objects,null,function(err,out)
                 {
                     var seletedTab= $('#ulKilkuls');
