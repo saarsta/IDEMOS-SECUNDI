@@ -187,8 +187,16 @@
                 <button id="rating_button">
                     דירוג המסמך
                 </button>
-                <p id="current_grade"><%= discussion.grade %></p>
-                  <p id="current_graders"><%= discussion.evaluate_counter %></p>
+                <p id="current_grade">
+                    <%= discussion.grade %>
+  -   דירוג משוקלל
+
+                </p>
+                  <p id="current_graders">
+
+                      <%= discussion.evaluate_counter %>
+                       -   מספר מדרגים
+                  </p>
                 <a href="javascript:void(0)" id="discussion_comment_reply_button" class="button flL">הגב</a>
               </div>
             </div>
