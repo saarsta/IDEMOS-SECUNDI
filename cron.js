@@ -217,7 +217,6 @@ var Cron = exports.Cron = {
             }
         }
 
-
         async.waterfall([
 
             function (cbk) {

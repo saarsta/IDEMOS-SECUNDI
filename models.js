@@ -444,9 +444,11 @@ var Schemas = exports.Schemas = {
         comments : [Comment]
     } ,{strict: true}),
 
-    Notifications: {
+    Notification: {
         user_id:{type:ObjectId, ref:'User', index:true, required:true},
-        type: {type:String, "enum": ['approved_info_item']},
+        type: {type:String, "enum": ['approved_info_item'
+            , 'aprroved_discussion_i_created', 'aprroved_discussion_i_took_part', 'comment_on_discussion'
+            , 'been_quoted']},
         entity_id: {type: ObjectId},
         seen: {type:Boolean, 'default':false},
         update_date: {type: Date, 'default': Date.now}
@@ -573,6 +575,7 @@ var Models = module.exports = {
     ActionResource:mongoose.model('ActionResource', new Schema(Schemas.ActionResource, {strict: true})),
     Tag: mongoose.model('Tag', new Schema(Schemas.Tag, {strict: true})),
     ResourceObligation: mongoose.model('ResourceObligation', new Schema(Schemas.ResourceObligation, {strict: true})),
+    Notification: mongoose.model('Notification', new Schema(Schemas.Notification, {strict: true})),
     GamificationTokens: utils.config_model('GamificationTokens', Schemas.GamificationTokens),
 
     Schemas:Schemas

@@ -187,8 +187,16 @@
                 <button id="rating_button">
                     דירוג המסמך
                 </button>
-                <p id="current_grade"><%= discussion.grade %></p>
-                  <p id="current_graders"><%= discussion.evaluate_counter %></p>
+                <p id="current_grade">
+                    <%= discussion.grade %>
+  -   דירוג משוקלל
+
+                </p>
+                  <p id="current_graders">
+
+                      <%= discussion.evaluate_counter %>
+                       -   מספר מדרגים
+                  </p>
                 <a href="javascript:void(0)" id="discussion_comment_reply_button" class="button flL">הגב</a>
               </div>
             </div>
@@ -223,7 +231,6 @@
             </div>
 	        </div>
 
-
           <div class="follow clearfix">
             <p>הודעת מערכת (דיון זה מתעתד להיות מעגל תנופה. שתפו, הגיבו וגרמו לזה לקרות)</p>
             <a href="javascript:void(0)" class="close-btn"></a>
@@ -234,7 +241,7 @@
           	<h2>תגובות</h2>
             <div class="sorting">
             	<span class="selectbox1">
-              	<select title="sorting">
+              	<select title="sorting" id="sorting_select">
                     <option value="op_date">מיין לפי - תאריך</option>
                     <option value="op_back_date">מיין לפי - מהסוף להתחלה</option>
                     <option value="op_votes_for">מיין לפי - דירוג</option>
@@ -519,7 +526,7 @@
                 }
             });
 
-            $('#sort').change(function() {
+            $('#sorting_select').change(function() {
                 $("#posts").empty();
 
                 if ($(this).val() === 'op_date') {
@@ -591,7 +598,6 @@
 
             $("#submit_post").on('click', function(e){
                 db_functions.addPostToDiscussion(discussion_id, $("textarea#discussion_comment").val(), function(err, post){
-                    debugger
                     $("#user_tokens").text(post.updated_user_tokens);
                     dust.render('post', post, function(err, out){
                         $("#posts").append(out);
@@ -611,14 +617,20 @@
                 db_functions.addDiscussionGrade(discussion_id,rating,function(err,data)
                 {
                     console.log(data);
-                    debugger
                     $("#user_tokens").text(data.updated_user_tokens);
                     $("#current_grade").text(data.new_grade);
                     $("#current_graders").text(data.evaluate_counter);
-
-
                 });
             });
+
+            /*$('#sortind_select').change(function(){
+                var sort_value = $('#sorting_select').attr('value');
+
+                switch(sort_value){
+                    case "op_date":
+
+                }
+            });*/
 
             $('#suggest_button').click(function()
             {
