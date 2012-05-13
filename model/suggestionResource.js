@@ -59,15 +59,28 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
         this.authentication = new common.SessionAuthentication();
         this.filtering = {discussion_id:null};
         this.default_query = function (query) {
-            return query.sort('creation_date', 'descending');
-        },
+            return query.sort('creation_date', 'descending').populate('creator_id');
+        };
 
         this.fields = {
-            _id: null,
-            creator_id: null,
-            parts: null,
-            updated_user_tokens: null
+            creator_id : {
+                id:null,
+                first_name:null,
+                last_name:null,
+                avatar_url:null,
+                facebook_id:null
+            },
+            parts:null,
+            popularity:null,
+            tokens:null,
+            creation_date:null,
+            total_votes:null,
+            votes_against:null,
+            votes_for:null,
+            id:null,
+            updated_user_tokens:null
         };
+
         //    this.validation = new resources.Validation();=
     },
     create_obj:function (req, fields, callback) {

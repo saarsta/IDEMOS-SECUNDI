@@ -440,8 +440,32 @@ var db_functions = {
                 console.log(data);
                 alert('success');
                 callback(null, data);
+            },
+            error:function(rsp)
+            {
+                callback(rsp);
             }
         });
+    },
+
+    voteForSuggestion: function(suggestionId,method,callback)
+    {
+        this.loggedInAjax({
+            url: '/api/votes_on_suggestion/',
+            type: "POST",
+            async: true,
+            data: {"suggestion_id": suggestionId, "method": method},
+            success: function (data) {
+                console.log(data);
+                alert('success');
+                callback(null, data);
+            },
+            error:function(rsp)
+            {
+                callback(rsp);
+            }
+        });
+
     },
 
     addPostToDiscussion: function(discussion_id, post_content, callback){

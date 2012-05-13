@@ -44,7 +44,7 @@ var VoteSuggestoinResource = module.exports = common.GamificationMongooseResourc
                 if(!err)
                 {
                     var suggestion_id = req.body.suggestion_id;
-                    models.VoteSuggestion   .find({user_id: user_object._id + "" , suggestion_id:suggestion_id},function(err,votes)
+                    models.VoteSuggestion   .find({user_id: user_object._id , suggestion_id:suggestion_id},function(err,votes)
                     {
 
                         if(err || votes.length>2)
