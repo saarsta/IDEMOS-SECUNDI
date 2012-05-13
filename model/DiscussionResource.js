@@ -246,4 +246,35 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
     }
 });
 
+//TODO finish this
+module.exports.approveDiscussionToCycle = function(id, callback)
+    {
+      var creator_id;
+      var score = 0;
+
+      async.waterfall([
+          function(cbk){
+              models.Discussion.findById(id, cbk);
+          },
+
+          function(disc, cbk){
+              creator_id = disc.creator_id;
+              async.parallel([
+                  function(cbk2){
+                      models.Discussion.update({_id: id}, {$set: {
+                              "is_cycle.flag": true,
+                              "is_cycle.date": Date.now()}},
+                          cbk2);
+                  },
+
+                  function(cbk2){
+                      models.User.update({_id: creator_id}, {
+                          $inc: {"gamification.approved_discussion_to_cycle": 1,
+                                 "score": score}},
+                          cbk2);
+                  }
+              ], cbk);
+          }
+      ], callback)
+}
 
