@@ -11,9 +11,11 @@
                 <span>{creator_id.username} {?creation_date}{creation_date|time}{/creation_date}</span>
             </div>
         </a>
+        <p>{alternative_part}</p>
+        במקום:
         <p class='post_text'>{original_part}</p>
     </div>
-    <div class="action" data-id="{_id}">
+    <div class="action" data-id="{id}">
         <a class="button quote_button" href="javascript:void(0)">צטט</a>
         <a class="button" href="/facebookShare?link=/discussions/{discussion_id}" target="_blank">שתף</a>
         <!---<a class="button like_button" href="javascript:void(0)">Like</a-->

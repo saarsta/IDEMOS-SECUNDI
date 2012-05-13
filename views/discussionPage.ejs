@@ -391,10 +391,11 @@
                 $("textarea#discussion_comment").focus();
             });
 
-            $('#posts').on('click','.vote_for',function(){
+            $('#posts,#suggestion_list').on('click','.vote_for',function(){
                 var post_id = $(this).parent('div').data("id");
                 var button = $(this);
-                db_functions.voteForPost(post_id, "add", function(err, post_obj){
+                var func = $(this).parents('#posts').length ? db_functions.voteForPost : db_functions.voteForSuggestion;
+                func.call(db_functions,post_id, "add", function(err, post_obj){
                     if(!err){
                         var span = $('span',button);
 //                        span.text(Number(span.text()) + 1);
@@ -409,14 +410,17 @@
                             alert('not enough tokens');
                         if(err.responseText == 'user already voted for this post')
                             alert('already voted');
+                        if(err.responseText == 'soory, can\'t vote to your own suggestion')
+                            alert('can\'t vote for your own suggestion');
                     }
                 })
             });
 
-            $('#posts').on('click',".vote_against", function(){
+            $('#posts,#suggestion_list').on('click',".vote_against", function(){
                 var post_id = $(this).parent('div').data("id");
                 var button = $(this);
-                db_functions.voteForPost(post_id, "remove", function(err, post_obj){
+                var func = $(this).parents('#posts').length ? db_functions.voteForPost : db_functions.voteForSuggestion;
+                func.call(db_functions,post_id, "remove", function(err, post_obj){
                     if(!err){
 //                        debugger
                         var span = $('span',button);
@@ -432,13 +436,15 @@
                             alert('not enough tokens');
                         if(err.responseText == 'user already voted for this post')
                             alert('already voted');
+                        if(err.responseText == 'soory, can\'t vote to your own suggestion')
+                            alert('can\'t vote for your own suggestion');
 
                     }
 
                 })
             });
 
-            $('#posts').on('click',".quote_button",function(){
+            $('#posts,#suggestion_list').on('click',".quote_button",function(){
                 var text = $('.post_text',$(this).parents('li')).text();
                 $("textarea#discussion_comment").val('"' + text +'"').focus();
             });
@@ -482,15 +488,18 @@
 
 
                     suggestion.original_part = function(){
-                        var text = suggestion.parts[0].text;
                         var from = suggestion.parts[0].start;
                         var end = suggestion.parts[0].end;
                         return original.substr(from,end-from);
                     };
 
+                    suggestion.alternative_part = function(){
+                        return suggestion.parts[0].text;
+                    };
+
                     dust.render('discussion_suggestion',suggestion,function(err,out)
                     {
-                        ('#suggestion_list').append(out);
+                        $('#suggestion_list').append(out);
                     });
                 }
                 return null;
@@ -650,7 +659,7 @@
                     if(!err)
                     {
                         $('#suggest_div').hide();
-                        render_suggestion({parts:[part]});
+                        render_suggestion(data);
                         $("textarea#discussion_suggest").val('');
                         $("#user_tokens").text(data.updated_user_tokens);
                     }
