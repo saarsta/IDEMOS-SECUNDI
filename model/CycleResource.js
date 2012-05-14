@@ -219,8 +219,8 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
 var isArgIsInList1 = function(cycle_id, cycle_list_schema, method){
     var flag = false;
     for (var i = 0; i < cycle_list_schema.length; i++){
-        cycle_id = cycle_id.id || cycle_id;
-        if (cycle_id  == cycle_list_schema[i].cycle_id.id){
+        cycle_id = cycle_id + "" || cycle_id;
+        if (cycle_id  == cycle_list_schema[i].cycle_id + ""){
             if(method == "remove")
             {
                 //remove cycle

@@ -94,7 +94,7 @@ var Schemas = exports.Schemas = {
             new Schema( {action_id:{type:ObjectId, ref:'Action'}, join_date: {type:Date, 'default':Date.now}})
         ],
         password:String,
-        tokens:{type:Number, 'default':9, min: 0, max:15.9},
+        tokens:{type:Number, 'default':9, min: 0/*, max:15.9*/},
         gamification: {type:Schema.Types.Mixed,editable:false },
         updates: Schema.Types.Mixed,
         //score:{type:Number, 'default':0},

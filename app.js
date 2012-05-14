@@ -13,6 +13,7 @@ var account = require('./routes/account');
 app.configure('deliver', function(){
     app.set('views', __dirname + '/deliver/views');
     app.set('public_folder', __dirname + '/deliver/public');
+    app.set('public_folder2', __dirname + '/public');
     app.set("port", 80);
     app.set('facebook_app_id', '175023072601087');
     app.set('facebook_secret', '5ef7a37e8a09eca5ee54f6ae56aa003f');
@@ -91,6 +92,8 @@ app.configure(function(){
     app.use(express.methodOverride());
     app.use(app.router);
     app.use(express.static(app.settings.public_folder));
+    if(app.settings.public_folder2)
+        app.use(express.static(app.settings.public_folder2));
     require('j-forms').serve_static(app,express);
 });
 
