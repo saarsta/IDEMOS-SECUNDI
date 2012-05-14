@@ -232,7 +232,7 @@ exports.getGamificationTokenPrice = function(type)
 {
     models.GamificationTokens.schema.pre('save',function(next)
     {
-        setTimeout(load_token_prices,1000);
+        setTimeout(load_token_prices, 1000);
         next();
     });
     return token_prices[type] || 0;

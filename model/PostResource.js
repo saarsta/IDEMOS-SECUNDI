@@ -16,7 +16,7 @@ var resources = require('jest'),
 var PostResource = module.exports = common.GamificationMongooseResource.extend({
     init:function () {
 
-        this._super(models.Post, 'post', /*common.getGamificationTokenPrice('post')*/ 1);
+        this._super(models.Post, 'post', common.getGamificationTokenPrice('post') || 0);
         this.allowed_methods = ['get', 'post'];
         this.authorization = new common.TokenAuthorization();
         this.authentication = new common.SessionAuthentication();
