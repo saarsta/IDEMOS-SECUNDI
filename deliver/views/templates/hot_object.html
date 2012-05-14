@@ -1,0 +1,21 @@
+<div class="one">
+    <a href=""><img src="{image_field_preview.url}" alt="" /></a>
+    <h4><a href="">{title}</a></h4>
+    {text_field_preview|s}
+    <div class="tags">
+        <div class="info">
+            <span class="talks">33</span>
+            <span class="watched">151</span>
+        </div>
+        {#tags}
+        <a href="">{.}</a>{~n}
+        {/tags}
+        <div class="more">
+            <span></span>
+            <ul>
+                <li><a href="">הצג עוד תגיות</a></li>
+                <li><a href="">הוסף תגית</a></li>
+            </ul>
+        </div>
+    </div>
+</div>

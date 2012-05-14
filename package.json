@@ -19,7 +19,7 @@
         "j-forms":">= 0.0.55",
         "admin-with-forms":">= 0.0.15",
         "knox":"",
-        "dust":""
+        "dustjs-linkedin":""
   },
   "engines": { "node": ">= 0.6.17" }
 } 

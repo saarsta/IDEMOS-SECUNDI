@@ -138,7 +138,8 @@ var Schemas = exports.Schemas = {
 
     Headline:{
         title: {type: String, required: true},
-        text_field:{type:mongoose_types.Text},
+        type: {type: String, "enum": ["from_the_news_paper", "daily_survey", "conclusion"]},
+        text_field:{type:mongoose_types.Html},
         image_field: mongoose_types.File,
         tags:{type:[String], index:true},
         cycles:{type:[ObjectId], ref:'Cycles', index:true, editable:false},

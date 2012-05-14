@@ -19,6 +19,7 @@ app.configure('deliver', function(){
     app.set('root_path', 'http://dev.empeeric.com');
     app.set('DB_URL','mongodb://localhost/uru');
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+    require('./deliver/tools/compile_dust_templates');
 });
 
 app.configure('development', function(){
