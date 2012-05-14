@@ -107,7 +107,9 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
                 });
             }
         ], function(err, obj){
-            base.call(self, req, object, callback/*(err, g_action)*/);
+            base.call(self, req, object, function(err, obj){
+                callback(err, g_action);
+            }/*(err, g_action)*/);
         })
     }
 });
