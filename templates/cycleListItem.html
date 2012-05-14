@@ -28,7 +28,15 @@
         </p>
     </div>
     <div class="action"> <a href="/facebookShare?link={get_link_uri}" class="button">שתף</a>
-        <a href="javascript:void(0)" class="button join_button" item_id="{_id}">הצטרף</a> </div>
+
+        {?is_follower}
+        <a href="javascript:void(0)" class="button leave_button" item_id="{_id}" >עזוב</a>
+        {:else}
+        <a href="javascript:void(0)" class="button join_button" item_id="{_id}">הצטרף</a>
+        {/is_follower}
+
+
+    </div>
 
     <div class="action-bottom clearfix">
         <p class="meta-data">
@@ -47,6 +55,7 @@
               {upcoming_action.num_of_going}
             </a>
         </p>
+
         <a href="javascript:void(0)" class="button join_action_button" item_id="{upcoming_action._id}">הצטרף</a>
     </div>
     </a>
