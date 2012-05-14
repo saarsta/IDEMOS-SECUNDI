@@ -64,7 +64,7 @@
                     <a href="/myuru">
                     <div class="frame">
                         <img width="59" height="62" src="<%=avatar%>" alt="<%=user.username%>"/>
-                        <span class="number" id="updated_user_tokens"><%=user.tokens%></span>
+                        <span class="number" id="updated_user_tokens"><%=user.tokens|0%></span>
                     </div>
                     </a>
                     <h3><%=user.username%></h3>
