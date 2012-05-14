@@ -1,1 +1,3 @@
 mongodump -d uru
+
+pause

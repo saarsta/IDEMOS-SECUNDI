@@ -19,6 +19,15 @@ var SuccessStoryResource = module.exports = common.GamificationMongooseResource.
             this.default_query = function (query) {
                 return query.where('is_visible', true).sort('creation_date', 'descending');
             };
+            this.fields = {
+                _id:null,
+                title: null,
+                text_field: null,
+                image_field: null,
+                actions: null,
+                cycles: null,
+                tags: null
+            }
         }
     }
 )

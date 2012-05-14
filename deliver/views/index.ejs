@@ -137,50 +137,7 @@
                 <%}%>
                 <h2>סיפורי הצלחה</h2>
                 <div class="succes-box cf">
-                    <div class="one">
-                        <div class="img-box">
-                            <img src="images/succes-1.jpg" alt="" />
-                            <span class="flag"></span>
-                        </div>
-                        <h4><a href="">מנצחים את הבירוקרטיה לא להאמין: איך</a></h4>
-                        <p> התגלו נתונים מטרידים ...  בדו”ח של הלשכה המרכזית</p>
-                        <div class="tags">
-                            <a href="">אבטלה</a>
-                            <a href="">כלכלה</a>
-                            <a href="">עוני</a>
-                            <a href="">איזונים ובלמים</a>
-                            <a href="">אבטלה</a>
-                            <div class="more">
-                                <span></span>
-                                <ul>
-                                    <li><a href="">הצג עוד תגיות</a></li>
-                                    <li><a href="">הוסף תגית</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="one">
-                        <div class="img-box">
-                            <img src="images/succes-2.jpg" alt="" />
-                            <span class="flag"></span>
-                        </div>
-                        <h4><a href="">במחירי התקשורת על גב הצרכנים: עליות</a></h4>
-                        <p> התגלו נתונים מטרידים ...  בדו”ח של הלשכה המרכזית</p>
-                        <div class="tags">
-                            <a href="">אבטלה</a>
-                            <a href="">כלכלה</a>
-                            <a href="">עוני</a>
-                            <a href="">איזונים ובלמים</a>
-                            <a href="">אבטלה</a>
-                            <div class="more">
-                                <span></span>
-                                <ul>
-                                    <li><a href="">הצג עוד תגיות</a></li>
-                                    <li><a href="">הוסף תגית</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
             </div>
             <div class="left-col">
@@ -351,11 +308,19 @@
 
         db_functions.getHotObjects(function(data){
             $.each(data.objects, function(key, article){
-                dust.render('hot_objects', article, function(err, html){
+                dust.render('hot_object', article, function(err, html){
                     $('div.news-list').append(html);
                 })
             })
         });
+
+        db_functions.getSuccessStories(function(data){
+            $.each(data.objects, function(key, article){
+                dust.render('success_story', article, function(err, html){
+                    $('div.succes-box').append(html);
+                })
+            })
+        })
     })
 
 

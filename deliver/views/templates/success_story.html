@@ -1,0 +1,20 @@
+<div class="one">
+    <div class="img-box">
+        <img src="{image_field.url}" alt="" />
+        <span class="flag"></span>
+    </div>
+    <h4><a href="">{title}</a></h4>
+    <p> {text_field}</p>
+    <div class="tags">
+        {#tags}
+        <a href="">{.}</a>{~n}
+        {/tags}
+        <div class="more">
+            <span></span>
+            <ul>
+                <li><a href="">הצג עוד תגיות</a></li>
+                <li><a href="">הוסף תגית</a></li>
+            </ul>
+        </div>
+    </div>
+</div>

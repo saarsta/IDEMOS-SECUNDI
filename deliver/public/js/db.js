@@ -33,20 +33,15 @@ var db_functions = {
         });
     },
 
-    getAllSubjects: function(useSmall){
+    getSuccessStories: function(callback){
         this.loggedInAjax({
-            url: '/api/subjects',
+            url: '/api/success_stories',
             type: "GET",
             async: true,
             success: function (data) {
-//                var size = data.objects.length;
-                dust.renderArray(useSmall?'subject_small' :'subject',data.objects,null,function(err,out)
-                {
-                    $('#subjects_list').append(out);
-
-                });
+                callback(data);
             }
         });
-    },
+    }
 
 }
