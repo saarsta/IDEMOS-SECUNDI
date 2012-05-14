@@ -611,7 +611,7 @@ var db_functions = {
 
     joinToCycleFollowers: function(cycle_id, callback){
         this.loggedInAjax({
-            url: '/api/cycles/'+ cycle_id + '/?put=follow',
+                url: '/api/cycles/'+ cycle_id + '/?put=follow',
             type: "PUT",
             async: true,
             success: function (data) {
