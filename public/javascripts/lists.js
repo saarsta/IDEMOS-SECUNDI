@@ -101,18 +101,25 @@ function loadListItems(original_type,template_name,subject,tag) {
         switch(original_type)
         {
             case 'discussions':
-                db_functions.joinToDiscussionFollowers(item_id,function(){
+                db_functions.joinToDiscussionFollowers(item_id,function(err,data){
+                    dust.render('discussion_list_item', data, function(err, html){
+                        $("#"+data._id).replaceWith(html);
+                    })
 
                 });
                 break;
             case 'actions':
-                db_functions.joinToAction(item_id,function(){
-
+                db_functions.joinToAction(item_id,function(err,data){
+                    dust.render('action_list_item', data, function(err, html){
+                        $("#"+data._id).replaceWith(html);
+                    })
                 });
                 break;
             case "cycles":
-                db_functions.joinToCycleFollowers(item_id,function(){
-
+                db_functions.joinToCycleFollowers(item_id,function(err,data){
+                    dust.render('cycle_list_item', data, function(err, html){
+                        $("#"+data._id).replaceWith(html);
+                    })
                 });
                 break;
         }
@@ -123,18 +130,24 @@ function loadListItems(original_type,template_name,subject,tag) {
         switch(original_type)
         {
             case 'discussions':
-                db_functions.leaveDiscussionFollowers(item_id,function(){
-
+                db_functions.leaveDiscussionFollowers(item_id,function(err,data){
+                    dust.render('discussion_list_item', data, function(err, html){
+                        $("#"+data._id).replaceWith(html);
+                    })
                 });
                 break;
             case 'actions':
-                db_functions.leaveAction(item_id,function(){
-
+                db_functions.leaveAction(item_id,function(err,data){
+                    dust.render('action_list_item', data, function(err, html){
+                        $("#"+data._id).replaceWith(html);
+                    })
                 });
                 break;
             case "cycles":
-                db_functions.leaveCycleFollowers(item_id,function(){
-
+                db_functions.leaveCycleFollowers(item_id,function(err,data){
+                    dust.render('cycle_list_item', data, function(err, html){
+                        $("#"+data._id).replaceWith(html);
+                    })
                 });
                 break;
         }
