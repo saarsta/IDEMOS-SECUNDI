@@ -3,6 +3,7 @@ var Router = require('./router'),
     Account = require('./account');
 
 
+
 module.exports = function(app) {
     var router = Router.base(app);
     router.get('/', Navigation.index);
