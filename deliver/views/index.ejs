@@ -9,6 +9,9 @@
     <!--[if lte IE 7]><link href="css/ie.css" rel="stylesheet" type="text/css" /><![endif]-->
     <script src="js/jquery-1.6.1.min.js" type="text/javascript"></script>
     <script src="js/script.js" type="text/javascript"></script>
+    <script src="js/db.js" type="text/javascript"></script>
+    <script src="js/dust-full-0.3.0.js" type="text/javascript"></script>
+    <script src="js/compiled_templates.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $('.tikunim-box h2').click(function () {
@@ -90,93 +93,6 @@
             <div class="right-col">
                 <h2>עוררו עניין</h2>
                 <div class="news-list cf">
-                    <div class="one">
-                        <a href=""><img src="images/news-1.jpg" alt="" /></a>
-                        <h4><a href="">במדינת ישראל מתחת לקו העוני דו”ח הלמ”ס מזהיר: ב-2013 כל ילד שלישי</a></h4>
-                        <p> התגלו נתונים מטרידים על מצב העוני בישראל 2012 ...  בדו”ח של הלשכה המרכזית לסטטיסטיקה שפורסם השבוע</p>
-                        <div class="tags">
-                            <div class="info">
-                                <span class="talks">33</span>
-                                <span class="watched">151</span>
-                            </div>
-                            <a href="">אבטלה</a>
-                            <a href="">כלכלה</a>
-                            <a href="">עוני</a>
-                            <div class="more">
-                                <span></span>
-                                <ul>
-                                    <li><a href="">הצג עוד תגיות</a></li>
-                                    <li><a href="">הוסף תגית</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="one">
-                        <a href=""><img src="images/news-2.jpg" alt="" /></a>
-                        <h4><a href="">במדינת ישראל מתחת לקו העוני דו”ח הלמ”ס מזהיר: ב-2013 כל ילד שלישי</a></h4>
-                        <p> התגלו נתונים מטרידים על מצב העוני בישראל 2012 ...  בדו”ח של הלשכה המרכזית לסטטיסטיקה שפורסם השבוע</p>
-                        <div class="tags">
-                            <div class="info">
-                                <span class="talks">33</span>
-                                <span class="watched">151</span>
-                            </div>
-                            <a href="">אבטלה</a>
-                            <a href="">כלכלה</a>
-                            <a href="">עוני</a>
-                            <div class="more">
-                                <span></span>
-                                <ul>
-                                    <li><a href="">הצג עוד תגיות</a></li>
-                                    <li><a href="">הוסף תגית</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <!--#need to remove-->
-                    <%if(!user_logged){%>
-                    <div class="one">
-                        <a href=""><img src="images/news-3.jpg" alt="" /></a>
-                        <h4><a href="">ישילש דלי לכ 2013-ב :ריהזמ ס”מלה ח”וד ינועה וקל תחתמ לארשי תנידמב</a></h4>
-                        <p> עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה לש ח”ודב  ... 2012 לארשיב ינועה בצמ לע םידירטמ םינותנ ולגתה</p>
-                        <div class="tags">
-                            <div class="info">
-                                <span class="talks">33</span>
-                                <span class="watched">151</span>
-                            </div>
-                            <a href="">הלטבא</a>
-                            <a href="">הלכלכ</a>
-                            <a href="">ינוע</a>
-                            <div class="more">
-                                <span></span>
-                                <ul>
-                                    <li><a href="">תויגת דוע גצה</a></li>
-                                    <li><a href="">תיגת ףסוה</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="one">
-                        <a href=""><img src="images/news-4.jpg" alt="" /></a>
-                        <h4><a href="">ישילש דלי לכ 2013-ב :ריהזמ ס”מלה ח”וד ינועה וקל תחתמ לארשי תנידמב</a></h4>
-                        <p> עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה לש ח”ודב  ... 2012 לארשיב ינועה בצמ לע םידירטמ םינותנ ולגתה</p>
-                        <div class="tags">
-                            <div class="info">
-                                <span class="talks">33</span>
-                                <span class="watched">151</span>
-                            </div>
-                            <a href="">הלטבא</a>
-                            <a href="">הלכלכ</a>
-                            <a href="">ינוע</a>
-                            <div class="more">
-                                <span></span>
-                                <ul>
-                                    <li><a href="">תויגת דוע גצה</a></li>
-                                    <li><a href="">תיגת ףסוה</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <%}%>
                 </div>
                 <%if(user_logged){%>
                 <h2>עדכונים</h2>
@@ -221,50 +137,7 @@
                 <%}%>
                 <h2>סיפורי הצלחה</h2>
                 <div class="succes-box cf">
-                    <div class="one">
-                        <div class="img-box">
-                            <img src="images/succes-1.jpg" alt="" />
-                            <span class="flag"></span>
-                        </div>
-                        <h4><a href="">מנצחים את הבירוקרטיה לא להאמין: איך</a></h4>
-                        <p> התגלו נתונים מטרידים ...  בדו”ח של הלשכה המרכזית</p>
-                        <div class="tags">
-                            <a href="">אבטלה</a>
-                            <a href="">כלכלה</a>
-                            <a href="">עוני</a>
-                            <a href="">איזונים ובלמים</a>
-                            <a href="">אבטלה</a>
-                            <div class="more">
-                                <span></span>
-                                <ul>
-                                    <li><a href="">הצג עוד תגיות</a></li>
-                                    <li><a href="">הוסף תגית</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="one">
-                        <div class="img-box">
-                            <img src="images/succes-2.jpg" alt="" />
-                            <span class="flag"></span>
-                        </div>
-                        <h4><a href="">במחירי התקשורת על גב הצרכנים: עליות</a></h4>
-                        <p> התגלו נתונים מטרידים ...  בדו”ח של הלשכה המרכזית</p>
-                        <div class="tags">
-                            <a href="">אבטלה</a>
-                            <a href="">כלכלה</a>
-                            <a href="">עוני</a>
-                            <a href="">איזונים ובלמים</a>
-                            <a href="">אבטלה</a>
-                            <div class="more">
-                                <span></span>
-                                <ul>
-                                    <li><a href="">הצג עוד תגיות</a></li>
-                                    <li><a href="">הוסף תגית</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
             </div>
             <div class="left-col">
@@ -428,3 +301,27 @@
     </div>
 </body>
 </html>
+
+<script type="text/javascript">
+
+    $(function(){
+
+        db_functions.getHotObjects(function(data){
+            $.each(data.objects, function(key, article){
+                dust.render('hot_object', article, function(err, html){
+                    $('div.news-list').append(html);
+                })
+            })
+        });
+
+        db_functions.getSuccessStories(function(data){
+            $.each(data.objects, function(key, article){
+                dust.render('success_story', article, function(err, html){
+                    $('div.succes-box').append(html);
+                })
+            })
+        })
+    })
+
+
+</script>

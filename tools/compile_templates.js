@@ -1,5 +1,5 @@
 
-var dust = require('dust')
+var dust = require('dustjs-linkedin')
     ,path = require('path')
     ,fs = require('fs');
 
