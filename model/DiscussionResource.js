@@ -4,7 +4,8 @@ var resources = require('jest'),
     models = require('../models'),
     common = require('./common'),
     async = require('async'),
-    _ = require('underscore');
+    _ = require('underscore'),
+    notifications = require('notifications');
 
 //Authorization
 var Authorization = common.TokenAuthorization.extend({
@@ -248,9 +249,10 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
 
 //TODO finish this
 module.exports.approveDiscussionToCycle = function(id, callback)
-    {
+{
       var creator_id;
       var score = 0;
+//      var notification_type =
 
       async.waterfall([
           function(cbk){
@@ -272,6 +274,10 @@ module.exports.approveDiscussionToCycle = function(id, callback)
                           $inc: {"gamification.approved_discussion_to_cycle": 1,
                                  "score": score}},
                           cbk2);
+                  },
+
+                  function(cbk2){
+                      notifications.create_user_notification(notification_type, creator_id, cbk);
                   }
               ], cbk);
           }
