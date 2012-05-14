@@ -12,6 +12,8 @@
     res.render('index.ejs', { title: 'Express' })
 };*/
 
+var models = require('../models');
+
 exports.index = function(req, res){
     console.log(req.session.avatar_url);
     res.render('index.ejs', { title:'דף בית', logged: req.isAuthenticated(), user: req.session.user,
@@ -41,5 +43,38 @@ exports.myUru = function(req,res)
 
     });
 
+};
+
+exports.hisUru = function(req,res)
+{
+    var user_id = req.params.id;
+    models.User.findById(user_id,function(err,user)
+    {
+        if(err)
+            res.send('internal error',500);
+        else
+        {
+            if(!user)
+            {
+                res.send('user doesnt exists',400);
+            }
+            else
+            {
+                res.render('his_uru.ejs',{
+                    title:'הדף שלו',
+                    user: req.session.user,
+                    other_user : user,
+                    logged:true,
+                    avatar:req.session.avatar_url,
+                    body_class:'layout',
+                    big_impressive_title:"כותרת גדולה ומרשימה",
+                    tag_name: req.query.tag_name,
+                    tab:'users',
+                    extra_head:'<script src="/javascripts/hisUru.js"></script>'
+
+                });
+            }
+        }
+    });
 };
 

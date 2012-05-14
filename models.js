@@ -94,7 +94,7 @@ var Schemas = exports.Schemas = {
             new Schema( {action_id:{type:ObjectId, ref:'Action'}, join_date: {type:Date, 'default':Date.now}})
         ],
         password:String,
-        tokens:{type:Number, 'default':9, min: 0, max:15.9},
+        tokens:{type:Number, 'default':9, min: 0/*, max:15.9*/},
         gamification: {type:Schema.Types.Mixed,editable:false },
         updates: Schema.Types.Mixed,
         //score:{type:Number, 'default':0},
@@ -138,7 +138,8 @@ var Schemas = exports.Schemas = {
 
     Headline:{
         title: {type: String, required: true},
-        text_field:{type:mongoose_types.Text},
+        type: {type: String, "enum": ["from_the_news_paper", "daily_survey", "conclusion"]},
+        text_field:{type:mongoose_types.Html},
         image_field: mongoose_types.File,
         tags:{type:[String], index:true},
         cycles:{type:[ObjectId], ref:'Cycles', index:true, editable:false},
@@ -444,9 +445,11 @@ var Schemas = exports.Schemas = {
         comments : [Comment]
     } ,{strict: true}),
 
-    Notifications: {
+    Notification: {
         user_id:{type:ObjectId, ref:'User', index:true, required:true},
-        type: {type:String, "enum": ['approved_info_item']},
+        type: {type:String, "enum": ['approved_info_item'
+            , 'aprroved_discussion_i_created', 'aprroved_discussion_i_took_part', 'comment_on_discussion'
+            , 'been_quoted']},
         entity_id: {type: ObjectId},
         seen: {type:Boolean, 'default':false},
         update_date: {type: Date, 'default': Date.now}
@@ -573,6 +576,7 @@ var Models = module.exports = {
     ActionResource:mongoose.model('ActionResource', new Schema(Schemas.ActionResource, {strict: true})),
     Tag: mongoose.model('Tag', new Schema(Schemas.Tag, {strict: true})),
     ResourceObligation: mongoose.model('ResourceObligation', new Schema(Schemas.ResourceObligation, {strict: true})),
+    Notification: mongoose.model('Notification', new Schema(Schemas.Notification, {strict: true})),
     GamificationTokens: utils.config_model('GamificationTokens', Schemas.GamificationTokens),
 
     Schemas:Schemas

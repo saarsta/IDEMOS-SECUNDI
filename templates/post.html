@@ -1,5 +1,6 @@
 <li class="clearfix">
     <div class="description clearfix">
+        <a href="/uru/{creator_id.id}">
         <div class="image">
             <div class="frame">
                 <div style="width:59px; height:62px;">
@@ -9,6 +10,7 @@
             </div>
             <span>{creator_id.username} {?creation_date}{creation_date|time}{/creation_date}</span>
         </div>
+        </a>
         <p class='post_text'>{text}</p>
     </div>
     <div class="action" data-id="{_id}">

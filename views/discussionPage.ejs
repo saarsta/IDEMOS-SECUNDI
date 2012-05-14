@@ -187,8 +187,16 @@
                 <button id="rating_button">
                     דירוג המסמך
                 </button>
-                <p id="current_grade"><%= discussion.grade %></p>
-                  <p id="current_graders"><%= discussion.evaluate_counter %></p>
+                <p id="current_grade">
+                    <%= discussion.grade %>
+  -   דירוג משוקלל
+
+                </p>
+                  <p id="current_graders">
+
+                      <%= discussion.evaluate_counter %>
+                       -   מספר מדרגים
+                  </p>
                 <a href="javascript:void(0)" id="discussion_comment_reply_button" class="button flL">הגב</a>
               </div>
             </div>
@@ -223,7 +231,6 @@
             </div>
 	        </div>
 
-
           <div class="follow clearfix">
             <p>הודעת מערכת (דיון זה מתעתד להיות מעגל תנופה. שתפו, הגיבו וגרמו לזה לקרות)</p>
             <a href="javascript:void(0)" class="close-btn"></a>
@@ -234,7 +241,7 @@
           	<h2>תגובות</h2>
             <div class="sorting">
             	<span class="selectbox1">
-              	<select title="sorting">
+              	<select title="sorting" id="sorting_select">
                     <option value="op_date">מיין לפי - תאריך</option>
                     <option value="op_back_date">מיין לפי - מהסוף להתחלה</option>
                     <option value="op_votes_for">מיין לפי - דירוג</option>
@@ -384,10 +391,11 @@
                 $("textarea#discussion_comment").focus();
             });
 
-            $('#posts').on('click','.vote_for',function(){
+            $('#posts,#suggestion_list').on('click','.vote_for',function(){
                 var post_id = $(this).parent('div').data("id");
                 var button = $(this);
-                db_functions.voteForPost(post_id, "add", function(err, post_obj){
+                var func = $(this).parents('#posts').length ? db_functions.voteForPost : db_functions.voteForSuggestion;
+                func.call(db_functions,post_id, "add", function(err, post_obj){
                     if(!err){
                         var span = $('span',button);
 //                        span.text(Number(span.text()) + 1);
@@ -402,14 +410,17 @@
                             alert('not enough tokens');
                         if(err.responseText == 'user already voted for this post')
                             alert('already voted');
+                        if(err.responseText == 'soory, can\'t vote to your own suggestion')
+                            alert('can\'t vote for your own suggestion');
                     }
                 })
             });
 
-            $('#posts').on('click',".vote_against", function(){
+            $('#posts,#suggestion_list').on('click',".vote_against", function(){
                 var post_id = $(this).parent('div').data("id");
                 var button = $(this);
-                db_functions.voteForPost(post_id, "remove", function(err, post_obj){
+                var func = $(this).parents('#posts').length ? db_functions.voteForPost : db_functions.voteForSuggestion;
+                func.call(db_functions,post_id, "remove", function(err, post_obj){
                     if(!err){
 //                        debugger
                         var span = $('span',button);
@@ -425,13 +436,15 @@
                             alert('not enough tokens');
                         if(err.responseText == 'user already voted for this post')
                             alert('already voted');
+                        if(err.responseText == 'soory, can\'t vote to your own suggestion')
+                            alert('can\'t vote for your own suggestion');
 
                     }
 
                 })
             });
 
-            $('#posts').on('click',".quote_button",function(){
+            $('#posts,#suggestion_list').on('click',".quote_button",function(){
                 var text = $('.post_text',$(this).parents('li')).text();
                 $("textarea#discussion_comment").val('"' + text +'"').focus();
             });
@@ -471,21 +484,23 @@
                 if(suggestion.parts && suggestion.parts.length)
                 {
                     var original = $('#discussion_content').val();
-                    var text = suggestion.parts[0].text;
-                    var from = suggestion.parts[0].start;
-                    var end = suggestion.parts[0].end;
 
-                    var original_part = original.substr(from,end-from);
-                    var li = $('<li></li>');
-                    li.append('<p>' +
-                            'במקום:'
-                            +'"' + original_part + '"' +
-                            '</p>');
-                    li.append('<p>' +
-                            text +
-                            '</p>');
-                    $('#suggestion_list').append(li);
-                    return li;
+
+
+                    suggestion.original_part = function(){
+                        var from = suggestion.parts[0].start;
+                        var end = suggestion.parts[0].end;
+                        return original.substr(from,end-from);
+                    };
+
+                    suggestion.alternative_part = function(){
+                        return suggestion.parts[0].text;
+                    };
+
+                    dust.render('discussion_suggestion',suggestion,function(err,out)
+                    {
+                        $('#suggestion_list').append(out);
+                    });
                 }
                 return null;
             }
@@ -520,15 +535,14 @@
                 }
             });
 
-            $('#sort').change(function() {
+            $('#sorting_select').change(function() {
                 $("#posts").empty();
 
                 if ($(this).val() === 'op_date') {
                     db_functions.getPostByDiscussion(discussion_id, function(err, data){
                         if(err){
                             console.log(err);
-                        }else{
-                            dust.renderArray('post', data.objects, null, function(err, out){
+                        }else{dust.renderArray('post', data.objects, null, function(err, out){
                                 if(!err){
                                     $("#posts").append(out);
                                     $('#posts img').autoscale();
@@ -593,7 +607,6 @@
 
             $("#submit_post").on('click', function(e){
                 db_functions.addPostToDiscussion(discussion_id, $("textarea#discussion_comment").val(), function(err, post){
-                    debugger
                     $("#user_tokens").text(post.updated_user_tokens);
                     dust.render('post', post, function(err, out){
                         $("#posts").append(out);
@@ -613,14 +626,20 @@
                 db_functions.addDiscussionGrade(discussion_id,rating,function(err,data)
                 {
                     console.log(data);
-                    debugger
                     $("#user_tokens").text(data.updated_user_tokens);
                     $("#current_grade").text(data.new_grade);
                     $("#current_graders").text(data.evaluate_counter);
-
-
                 });
             });
+
+            /*$('#sortind_select').change(function(){
+                var sort_value = $('#sorting_select').attr('value');
+
+                switch(sort_value){
+                    case "op_date":
+
+                }
+            });*/
 
             $('#suggest_button').click(function()
             {
@@ -639,9 +658,8 @@
                 {
                     if(!err)
                     {
-                        debugger
                         $('#suggest_div').hide();
-                        render_suggestion({parts:[part]});
+                        render_suggestion(data);
                         $("textarea#discussion_suggest").val('');
                         $("#user_tokens").text(data.updated_user_tokens);
                     }

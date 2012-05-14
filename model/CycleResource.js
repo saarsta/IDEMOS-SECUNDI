@@ -19,10 +19,20 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
         this._super(models.Cycle, null, 0);
         this.authentication = new common.SessionAuthentication();
         this.allowed_methods = ['get', 'put'];
-        this.filtering = {tags: null};
+        this.filtering = {
+            tags: {
+                exact:true,
+                in:true,
+                regex:true
+            },
+            'users.user_id': {
+                exact:true,
+                in:true
+            }
+        };
         this.default_query = function(query){
             return query.populate("discussions");
-        }
+        };
         this.fields = {
             _id:null,
             document:null,
@@ -124,8 +134,9 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
 
     get_objects: function (req, filters, sorts, limit, offset, callback) {
 
+        var user_id = req.query.user_id || req.user._id;
         if(req.query.get == "myUru"){
-            filters.users = req.user._id;
+            filters['users.user_id'] = user_id;
         }
 
         this._super(req, filters, sorts, limit, offset, function(err, results){
@@ -208,8 +219,8 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
 var isArgIsInList1 = function(cycle_id, cycle_list_schema, method){
     var flag = false;
     for (var i = 0; i < cycle_list_schema.length; i++){
-        cycle_id = cycle_id.id || cycle_id;
-        if (cycle_id  == cycle_list_schema[i].cycle_id.id){
+        cycle_id = cycle_id + "" || cycle_id;
+        if (cycle_id  == cycle_list_schema[i].cycle_id + ""){
             if(method == "remove")
             {
                 //remove cycle

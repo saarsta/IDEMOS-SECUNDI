@@ -11,6 +11,7 @@ var resources = require('jest'),
     models = require('../models'),
     async = require('async'),
     common = require('./common'),
+    notifications = require('./notifications'),
 
     NUM_OF_TAG_SUGG_BEFORE_APPROVAL = 1,
     SUGGEST_TAG_PRICE = 1;
@@ -21,10 +22,13 @@ var InformationItemResource = module.exports = common.GamificationMongooseResour
         this._super(models.InformationItem, null, null);
         this.allowed_methods = ['get', 'post', 'put'];
 //        this.authentication = new common.SessionAuthentication();
-        this.filtering = {tags:null, subject_id:null, title:null, text_field:null, text_field_preview:null, users:null, is_hot_info_item:null, discussions:null};
+        this.filtering = {
+            tags:null, subject_id:null, title:null, text_field:null, text_field_preview:null, users:null, is_hot_info_item:null, discussions:null};
         this.default_query = function (query) {
             return query.where('is_visible', true).sort('creation_date', 'descending').populate('subject_id');
         };
+
+
     },
 
     get_object:function (req, id, callback) {
@@ -170,10 +174,13 @@ var InformationItemResource = module.exports = common.GamificationMongooseResour
 //when admin approves infoitem:
 //status change to "approved"
 //user get gamification for it
+//set user notifications
 module.exports.approveInfoItem = function(id,callback){
 
     var score = 10;
     var game_type = "approved_information_item";
+    var notification_type = "approved_info_item";
+    var creator_id;
 
     async.waterfall([
         function(cbk){
@@ -186,14 +193,20 @@ module.exports.approveInfoItem = function(id,callback){
         },
 
         function(info_obj, cbk){
-            var creator_id = info_obj.created_by.creator_id;
-            var inc_user_gamification ={};
+            var inc_user_gamification = {};
+            creator_id = info_obj.created_by.creator_id;
 
             inc_user_gamification['gamification.'+game_type] = 1;
             inc_user_gamification['score'] = score[game_type] || 0;
 
             models.User.update({_id: creator_id},{$inc:inc_user_gamification}, cbk);
+        },
+
+        function(obj, cbk){
+            notifications.create_user_notification(notification_type, creator_id, cbk);
         }
+
+
     ], function(err, obj){
         callback(err, obj);
     })

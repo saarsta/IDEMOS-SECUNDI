@@ -440,8 +440,32 @@ var db_functions = {
                 console.log(data);
                 alert('success');
                 callback(null, data);
+            },
+            error:function(rsp)
+            {
+                callback(rsp);
             }
         });
+    },
+
+    voteForSuggestion: function(suggestionId,method,callback)
+    {
+        this.loggedInAjax({
+            url: '/api/votes_on_suggestion/',
+            type: "POST",
+            async: true,
+            data: {"suggestion_id": suggestionId, "method": method},
+            success: function (data) {
+                console.log(data);
+                alert('success');
+                callback(null, data);
+            },
+            error:function(rsp)
+            {
+                callback(rsp);
+            }
+        });
+
     },
 
     addPostToDiscussion: function(discussion_id, post_content, callback){
@@ -587,7 +611,7 @@ var db_functions = {
 
     joinToCycleFollowers: function(cycle_id, callback){
         this.loggedInAjax({
-            url: '/api/cycles/'+ cycle_id + '/?put=follow',
+                url: '/api/cycles/'+ cycle_id + '/?put=follow',
             type: "PUT",
             async: true,
             success: function (data) {
@@ -848,16 +872,7 @@ var db_functions = {
         });
     },
 
-    getAllItemsByUser: function(api_resource, callback){
-        this.loggedInAjax({
-            url: '/api/' + api_resource + '?get=myUru',
-            type: "GET",
-            async: true,
-            success: function (data) {
-                callback(null, data);
-            }
-        });
-    },
+
 
     addUserToAction: function(action_id, callback){
         this.loggedInAjax({
@@ -870,9 +885,16 @@ var db_functions = {
         });
     },
 
-    getAllItemsByUser: function(api_resource, callback){
+    getAllItemsByUser: function(api_resource,userID, callback){
+        var userIdParam;
+        if(!userID){
+            userIdParam='';
+        }
+        else{
+            userIdParam='&user_id='+userID;
+        }
         this.loggedInAjax({
-            url: '/api/' + api_resource + '?get=myUru',
+            url: '/api/' + api_resource + '?get=myUru'+userIdParam,
             type: "GET",
             async: true,
             success: function (data) {

@@ -1,5 +1,5 @@
 
-var dust = require('dust')
+var dust = require('dustjs-linkedin')
     ,path = require('path')
     ,fs = require('fs');
 
@@ -43,6 +43,8 @@ writer.write(compile_template('myDiscussion_list_item','myDiscussionItem.html'))
 writer.write(compile_template('myAction_list_item','myActionItem.html'));
 writer.write(compile_template('myKilkulListItem','myKilkulListItem.html'));
 writer.write(compile_template('post','post.html'));
+
+writer.write(compile_template('discussion_suggestion','discussion_suggestion.html'));
 
 
 //writer.write(compile_template('cycle_list_item','cycleListItem.html'));

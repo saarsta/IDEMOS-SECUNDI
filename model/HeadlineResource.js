@@ -20,6 +20,17 @@ var HeadlineResource = module.exports = common.GamificationMongooseResource.exte
             this.default_query = function (query) {
                 return query.where('is_visible', true).sort('creation_date', 'descending');
             };
+            this.fields = {
+                _id: null,
+                title: null,
+                type: null,
+                text_field: null,
+                image_field: null,
+                tags: null,
+                cycles: null,
+                actions: null,
+                creation_date: null
+            }
         }
     }
 )

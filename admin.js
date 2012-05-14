@@ -2,6 +2,7 @@ var j_forms = require('j-forms'),
     mongoose_admin = require('admin-with-forms'),
     Models = require('./models'),
     async = require('async'),
+    DiscussionResource = require('./model/DiscussionResource'),
     SuggestionResource = require('./model/suggestionResource'),
     locale = require('./locale');
 
@@ -32,7 +33,23 @@ module.exports = function(app)
             ]
         });
         admin.registerMongooseModel("Subject",Models.Subject,null,{list:['name'],order_by:['gui_order'],sortable:'gui_order'});
-        admin.registerMongooseModel("Discussion",Models.Discussion,null,{list:['title'],cloneable:true});
+        admin.registerMongooseModel("Discussion",Models.Discussion,null,{
+            list:['title'],
+            cloneable:true,
+            actions:[
+                {
+                    value:'approve',
+                    label:'Approve',
+                    func: function(user,ids,callback)
+                    {
+                        async.forEach(ids,function(id,cbk)
+                        {
+                            DiscussionResource.approveDiscussionToCycle(id,cbk);
+                        },callback);
+                    }
+                }
+            ]
+        });
         admin.registerMongooseModel("Cycle",Models.Cycle,null,{list:['title'],cloneable:true});
         admin.registerMongooseModel("Action",Models.Action,null,{list:['title'],cloneable:true});
         admin.registerMongooseModel('Locale',locale.Model, locale.Model.schema.tree,{list:['locale'],form:locale.LocaleForm});

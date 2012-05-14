@@ -4,7 +4,8 @@ var resources = require('jest'),
     models = require('../models'),
     common = require('./common'),
     async = require('async'),
-    _ = require('underscore');
+    _ = require('underscore'),
+    notifications = require('notifications');
 
 //Authorization
 var Authorization = common.TokenAuthorization.extend({
@@ -33,7 +34,12 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
         this._super(models.Discussion, null, 0);
         this.allowed_methods = ['get', 'post', 'put', 'delete'];
         this.authentication = new common.SessionAuthentication();
-        this.filtering = {subject_id:null, users:null, is_published:null, tags: null};
+        this.filtering = {subject_id:null, users:null, is_published:null, tags: null,
+            'users.user_id': {
+                exact:true,
+                in:true
+            }
+        };
         this.authorization = new Authorization();
         this.default_query = function (query) {
             return query.sort('creation_date', 'descending');
@@ -93,8 +99,9 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
 
     get_objects: function (req, filters, sorts, limit, offset, callback) {
 
+        var user_id = req.query.user_id || req.user._id;
         if(req.query.get == "myUru"){
-            filters.users = req.user._id;
+            filters['users.user_id'] = user_id;
         }
 
         this._super(req, filters, sorts, limit, offset, function(err, results){
@@ -126,9 +133,9 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
         var min_tokens = /*common.getGamificationTokenPrice('create_discussion')*/ 10;
 //        var total_tokens = user.tokens + user.num_of_extra_tokens;
 
-        models.InformationItems.count({users: req.user._id}, function(err, count){
+        models.InformationItem.count({users: req.user._id}, function(err, count){
             if(!err){
-                if(total_tokens <  min_tokens && user.tokens < min_tokens - (Math.min(Math.floor(count/2), 2))){
+                if(user.tokens <  min_tokens && user.tokens < min_tokens - (Math.min(Math.floor(count/2), 2))){
                     callback({message: "user must have a least 10 tokens to open create discussion", code:401}, null);
                 }
                 else
@@ -240,4 +247,40 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
     }
 });
 
+//TODO finish this
+module.exports.approveDiscussionToCycle = function(id, callback)
+{
+      var creator_id;
+      var score = 0;
+//      var notification_type =
+
+      async.waterfall([
+          function(cbk){
+              models.Discussion.findById(id, cbk);
+          },
+
+          function(disc, cbk){
+              creator_id = disc.creator_id;
+              async.parallel([
+                  function(cbk2){
+                      models.Discussion.update({_id: id}, {$set: {
+                              "is_cycle.flag": true,
+                              "is_cycle.date": Date.now()}},
+                          cbk2);
+                  },
+
+                  function(cbk2){
+                      models.User.update({_id: creator_id}, {
+                          $inc: {"gamification.approved_discussion_to_cycle": 1,
+                                 "score": score}},
+                          cbk2);
+                  },
+
+                  function(cbk2){
+                      notifications.create_user_notification(notification_type, creator_id, cbk);
+                  }
+              ], cbk);
+          }
+      ], callback)
+}
 
