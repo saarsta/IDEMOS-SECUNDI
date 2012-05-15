@@ -48,6 +48,10 @@ exports.myUru = function(req,res)
 exports.hisUru = function(req,res)
 {
     var user_id = req.params.id;
+    if(user_id=== req.session.user._id){
+        res.redirect('/myuru');
+        return;
+    }
     models.User.findById(user_id,function(err,user)
     {
         if(err)
@@ -60,6 +64,7 @@ exports.hisUru = function(req,res)
             }
             else
             {
+
                 res.render('his_uru.ejs',{
                     title:'הדף שלו',
                     user: req.session.user,

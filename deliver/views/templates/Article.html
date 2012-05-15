@@ -1,0 +1,20 @@
+<div class="one{#.is_last} last{/.is_last}">
+    <div class="img-box">
+        <img src="{avatar}" alt="{title}" />
+        <span class="fillter"></span>
+    </div>
+    <h4><a href="">{.first_name} {.last_name}</a></h4>
+    <p>{.title}</p>
+    <div class="tags">
+          {#tags}
+			<a href="">{.}</a>{~n}
+        {/tags}
+        <div class="more">
+            <span></span>
+            <ul>
+                <li><a href="">הצג עוד תגיות</a></li>
+                <li><a href="">הוסף תגית</a></li>
+            </ul>
+        </div>
+    </div>
+</div>

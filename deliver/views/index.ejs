@@ -143,116 +143,16 @@
             <div class="left-col">
                 <h2>מה בכותרות</h2>
                 <div class="one-news">
-                    <h4 class="title">מן העתונות: <img src="images/news-logo.png" alt="" /></h4>
-                    <img src="images/news-5.jpg" alt="" />
-                    <h4><a href="">דו”ח הלמ”ס מזהיר: ב-2013 כל ילד שלישי
-                    במדינת ישראל מתחת לקו העוני</a></h4>
-                    <div class="tags">
-                        <a href="">אבטלה</a>
-                        <a href="">כלכלה</a>
-                        <a href="">עוני</a>
-                        <a href="">חברה וממשל</a>
-                        <a href="">עוני</a>
-                        <div class="more">
-                            <span></span>
-                            <ul>
-                                <li><a href="">הצג עוד תגיות</a></li>
-                                <li><a href="">הוסף תגית</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="line">
-                        <h4> הסקר היומי:</h4>
-                        <p>איזה פתק שמת בקלפי בבחירות האחרונות?
-                        התגלו נתונים מטרידים על מצב העוני בישראל 2012 ...</p>
-                        <img src="images/diagram.png" alt="" />
-                    </div>
-                    <div class="line cf">
-                        <h4>המסקנות:</h4>
-                        <div class="percent">
-                            <span>57%</span>
-                            לא יודעים
-                        </div>
-                        <div class="percent">
-                            <span>43%</span>
-                            יצביעו
-                        </div>
-                    </div>
+
                 </div>
                 <h2>מה מפריע לך?</h2>
-                <form class="comment-form" action="#">
-                    <textarea cols="0" rows="0">כתוב לנו מה מפריע לך ...</textarea>
+                <form  class="comment-form" action="#" >
+                    <textarea placeholder="כתוב לנו מה מפריע לך ..." name="feedbackTb" cols="0" rows="0"></textarea>
                     <input type="image" src="images/send-btn.png" />
                 </form>
             </div>
             <div class="blog-box">
                 <h2>מאמרים מובילים</h2>
-                <div class="one">
-                    <div class="img-box">
-                        <img src="images/user-1.jpg" alt="" />
-                        <span class="fillter"></span>
-                    </div>
-                    <h4><a href="">שמואל יעקבי</a></h4>
-                    <p> בדו”ח של הלשכה המרכז
-נתונים מטרידים על מצב העוני                    
-באזורי מרכז הארץ ...                     </p>
-                    <div class="tags">
-                        <a href="">אבטלה</a>
-                        <a href="">כלכלה</a>
-                        <a href="">עוני</a>
-                        <div class="more">
-                            <span></span>
-                            <ul>
-                                <li><a href="">הצג עוד תגיות</a></li>
-                                <li><a href="">הוסף תגית</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="one">
-                    <div class="img-box">
-                        <img src="images/user-2.jpg" alt="" />
-                        <span class="fillter"></span>
-                    </div>
-                    <h4><a href="">שמואל יעקבי</a></h4>
-                    <p> בדו”ח של הלשכה המרכז
-נתונים מטרידים על מצב העוני                    
-באזורי מרכז הארץ ...                     </p>
-                    <div class="tags">
-                        <a href="">אבטלה</a>
-                        <a href="">כלכלה</a>
-                        <a href="">עוני</a>
-                        <div class="more">
-                            <span></span>
-                            <ul>
-                                <li><a href="">הצג עוד תגיות</a></li>
-                                <li><a href="">הוסף תגית</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="one last">
-                    <div class="img-box">
-                        <img src="images/user-3.jpg" alt="" />
-                        <span class="fillter"></span>
-                    </div>
-                    <h4><a href="">שמואל יעקבי</a></h4>
-                    <p> בדו”ח של הלשכה המרכז
-נתונים מטרידים על מצב העוני                    
-באזורי מרכז הארץ ...                     </p>
-                    <div class="tags">
-                        <a href="">אבטלה</a>
-                        <a href="">כלכלה</a>
-                        <a href="">עוני</a>
-                        <div class="more">
-                            <span></span>
-                            <ul>
-                                <li><a href="">הצג עוד תגיות</a></li>
-                                <li><a href="">הוסף תגית</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -306,6 +206,23 @@
 
     $(function(){
 
+        $('form.comment-form').live('submit', function(e){
+            e.preventDefault();
+            var feedbackTb=this.feedbackTb;
+            if(feedbackTb.value.replace(/\s/g,"") == ""){
+                return;
+            }
+            db_functions.addKilkul(this.feedbackTb.value ,function(error,data){
+                if(error){
+                    console.log(error);
+                }else{
+                    feedbackTb.value='';
+                }
+            });
+
+        })
+
+
         db_functions.getHotObjects(function(data){
             $.each(data.objects, function(key, article){
                 dust.render('hot_object', article, function(err, html){
@@ -321,6 +238,27 @@
                 })
             })
         })
+
+        db_functions.getPopularArticles(3,function(data){
+            $.each(data.objects, function(index, article){
+                article.is_last = index == data.objects.length-1;
+                dust.render('article', article, function(err, html){
+                    $('div.blog-box').append(html);
+                })
+            })
+        })
+
+
+        db_functions.getPopularHeadlines(2,function(data){
+            debugger;
+            $.each(data.objects, function(index, headline){
+                dust.render('headline', headline, function(err, html){
+                    $('div.one-news').append(html);
+                })
+            })
+        })
+
+
     })
 
 

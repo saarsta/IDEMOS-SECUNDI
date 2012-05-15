@@ -964,7 +964,7 @@ var db_functions = {
     },
 
     //blogs
-    getPopularArticles: function(cycle_id, callback){
+   /* getPopularArticles: function(cycle_id, callback){
         this.loggedInAjax({
             url: '/api/articles?order_by=-popolarity_counter',
             type: "GET",
@@ -974,7 +974,7 @@ var db_functions = {
                 callback(null, data);
             }
         });
-    },
+    },*/
 
     getPopularTags: function(){
         this.loggedInAjax({
