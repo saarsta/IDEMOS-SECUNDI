@@ -148,7 +148,7 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
             _.each(results.objects, function(cycle){
                 cycle.is_follower = false;
                 if(user_cycles){
-                    if(_.find(user_cycles, function(user_cycle){ return user_cycle.cycle_id.id == cycle._id.id; })){
+                    if(_.find(user_cycles, function(user_cycle){ return user_cycle.cycle_id + "" == cycle._id + ""; })){
                         cycle.is_follower = true;
                     }
                 }
