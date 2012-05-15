@@ -36,7 +36,7 @@ var db_functions = {
     //blogs
     getPopularArticles: function(limit_number,callback){
         this.loggedInAjax({
-            url: '/api/articles?oreder_by=-popolarity_counter&limit=' + limit_number,
+            url: '/api/articles?order_by=-popularity_counter&limit=' + limit_number,
             type: "GET",
             async: true,
             success: function (data) {
