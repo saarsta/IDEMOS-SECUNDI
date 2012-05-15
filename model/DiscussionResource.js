@@ -176,9 +176,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
             }else{
                 callback(err, null);
             }
-
         })
-
     },
 
     update_obj:function (req, object, callback) {

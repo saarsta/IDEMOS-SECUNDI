@@ -19,10 +19,9 @@ var Authoriztion = function() {};
 util.inherits(Authoriztion,resources.Authorization);
 
 Authoriztion.prototype.edit_object = function(req,object,callback){
-    //check if user already grade this discussion
 
     if(req.method == 'POST'){
-        models.Grade.count({"discussion_id": object.discussion_id + "", "user_id":req.user._id}, function(err, count){
+        models.GradeSuggestion.count({"suggestion_id": object.suggestion_id + "", "user_id":req.user._id}, function(err, count){
             if (err){
                 callback(err, null);
             }else{
@@ -37,13 +36,15 @@ Authoriztion.prototype.edit_object = function(req,object,callback){
     }else{
         callback(null, object);
     }
+
+
 };
 
 var GradeResource = module.exports = common.GamificationMongooseResource.extend({
     init:function(){
-        this._super(models.Grade,'grade', null);
+        this._super(models.GradeSuggestion,'grade_suggestion', null);
 //        GradeResource.super_.call(this,models.Grade);
-        this.allowed_methods = ["get", "put", "post"];
+        this.allowed_methods = ['get','put','post'];
         this.authorization = new Authoriztion();
         this.authentication = new common.SessionAuthentication();
         this.filtering = {discussion_id: {
@@ -70,20 +71,20 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
                 async.waterfall([
 
                     function(cbk){
-                        models.Discussion.findById(grade_object.discussion_id, cbk);
+                        models.Suggestion.findById(grade_object.suggestion_id, cbk);
                     },
 
-                    function(discussion_obj, cbk){
+                    function(suggestion_obj, cbk){
                         async.parallel([
                             function(cbk)
                             {
                                 var add_grade = Number(grade_object.evaluation_grade);
-                                var grade = discussion_obj.grade_sum;
+                                var grade = suggestion_obj.grade_sum;
                                 grade += add_grade;
-                                counter = discussion_obj.evaluate_counter + 1;
+                                counter = suggestion_obj.evaluate_counter + 1;
                                 new_grade = grade / counter;
 
-                                models.Discussion.update({_id:grade_object.discussion_id},
+                                models.Suggestion.update({_id:grade_object.suggestion_id},
                                     {
                                         $inc:{ grade_sum: add_grade, evaluate_counter: 1},
                                         $set:{grade: new_grade}
@@ -92,11 +93,9 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
                         ],cbk);
                     }
 
-                    //calculate all change suggestion all over again
-
                 ], function(err, obj){
-                    req.gamification_type = "grade_discussion";
-                    req.token_price = common.getGamificationTokenPrice('grade_discussion') || 0;
+                    req.gamification_type = "grade_suggestion";
+                    req.token_price = common.getGamificationTokenPrice('grade_suggestion') || 0;
 
                     callback(err, {new_grade:new_grade, evaluate_counter: counter, already_graded: true});
                 })

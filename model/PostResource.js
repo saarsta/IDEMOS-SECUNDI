@@ -22,7 +22,7 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
         this.authentication = new common.SessionAuthentication();
         this.filtering = {discussion_id:null};
         this.default_query = function (query) {
-            return query.sort('creation_date', 'descending');
+            return query.sort('creation_date', 'ascending');
         };
         this.fields = {
             creator_id : {

@@ -323,6 +323,14 @@ var Schemas = exports.Schemas = {
         creation_date:{type:Date, 'default':Date.now}
     },
 
+    GradeSuggestion:{
+        user_id:{type:ObjectId, ref:'User', index:true, required:true},
+        suggestion_id:{type:ObjectId, ref:'Suggestion', index:true, required:true},
+        evaluation_grade:{type:Number, min:0, max:10},
+        creation_date:{type:Date, 'default':Date.now},
+        does_support_the_suggestion: {type:Boolean,'default':false}
+    },
+
     Like:{
         user_id:{type:ObjectId, ref:'User', index:true, required:true},
         info_item_id:{type:ObjectId, ref:'Post', index:true, required:true},
@@ -471,6 +479,7 @@ var Schemas = exports.Schemas = {
         suggestion_on_discussion: {type: Number, 'default': 0},
         suggestion_on_action: {type: Number, 'default': 0},
         grade_discussion: {type: Number, 'default': 0},
+        grade_suggestion: {type: Number, 'default': 0},
         grade_action: {type: Number, 'default': 0},
         vote_on_post: {type: Number, 'default': 0},
         like_info_item: {type: Number, 'default': 0},
