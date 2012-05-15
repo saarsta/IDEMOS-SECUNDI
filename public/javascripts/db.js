@@ -966,7 +966,7 @@ var db_functions = {
     //blogs
     getPopularArticles: function(cycle_id, callback){
         this.loggedInAjax({
-            url: '/api/articles?oreder_by=-popolarity_counter',
+            url: '/api/articles?order_by=-popolarity_counter',
             type: "GET",
             async: true,
             success: function (data) {

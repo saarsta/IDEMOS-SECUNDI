@@ -35,7 +35,13 @@ Authoriztion.prototype.edit_object = function(req,object,callback){
             }
         })
     }else{
-        callback(null, object);
+        if(req.method == 'PUT'){
+           if(!object.user_id == req.user._id)
+               callback({message:"its not your garde!",code:401}, null);
+            callback(null, object);
+        }else{
+            callback(null, object);
+        }
     }
 };
 
@@ -108,6 +114,51 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
 
     update_obj: function(req, object, callback){
 
+        async.waterfall([
+            function(cbk){
+                object.evaluation_grade = req.body.evaluation_grade;
+                object.save(function(err, obj){
+                    cbk(err, obj);
+                });
+
+            },
+
+            function(grade_obj, cbk){
+                calculate_discussion_grade(object.discussion_id, function(err, new_grade, evaluate_counter){
+                    cbk(err, new_grade, evaluate_counter);
+                });
+            }
+
+            //maybe do something with suggestion grade
+
+        ], function(err, new_grade, evaluate_counter){
+            callback(err, {new_grade: new_grade, evaluate_counter: evaluate_counter, already_graded: true});
+        })
     }
 })
 
+function calculate_discussion_grade(discussion_id, callback){
+
+    var count;
+    var grade_sum;
+    var new_grade;
+
+    async.waterfall([
+        function(cbk){
+            models.Grade.find({_id: discussion_id}, ["evaluation_grade"], cbk);
+        },
+
+        function(grades, cbk){
+            count = grades.length;
+            grade_sum = _.reduce(grades, function(memo, evaluation_grade){ return memo + evaluation_grade; }, 0);
+            new_grade = grade_sum / count;
+
+            models.Discussion.update({_id: discussion_id}, {$set: {grade: new_grade, evaluate_counter: count}})
+
+
+        }
+
+    ])
+
+
+}
