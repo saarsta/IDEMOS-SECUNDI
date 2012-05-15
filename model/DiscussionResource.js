@@ -4,8 +4,8 @@ var resources = require('jest'),
     models = require('../models'),
     common = require('./common'),
     async = require('async'),
-    _ = require('underscore'),
-    notifications = require('notifications');
+    _ = require('underscore')
+    notifications = require('./notifications');
 
 //Authorization
 var Authorization = common.TokenAuthorization.extend({

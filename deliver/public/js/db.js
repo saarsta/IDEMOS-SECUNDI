@@ -33,6 +33,42 @@ var db_functions = {
         });
     },
 
+    //blogs
+    getPopularArticles: function(limit_number,callback){
+        this.loggedInAjax({
+            url: '/api/articles?oreder_by=-popolarity_counter&limit=' + limit_number,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                //    console.log(data);
+                callback( data);
+            }
+        });
+    },
+
+    getPopularHeadlines: function(limit_number,callback){
+        this.loggedInAjax({
+            url: '/api/headlines?limit=' + limit_number,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                //   console.log(data);
+                callback( data);
+            }
+        });
+    },
+
+    addKilkul: function(text_field, callback){
+        this.loggedInAjax({
+            url: '/api/kilkuls',
+            type: "POST",
+            async: true,
+            data: {"text_field": text_field},
+            success: function (data) {
+                callback(null, data);
+            }
+        });
+    },
     getSuccessStories: function(callback){
         this.loggedInAjax({
             url: '/api/success_stories',

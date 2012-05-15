@@ -433,11 +433,11 @@ var Schemas = exports.Schemas = {
 
     Article: new Schema({
         user_id:{type:ObjectId, ref:'User', index:true, required:true},
-        first_name: {type:String, editable:false},
-        last_name: {type:String, editable:false},
+        first_name: {type:String/*, editable:false*/},
+        last_name: {type:String/*, *//**//*editable:false*/},
         avatar : {type:String, editable:false},
         title : {type:String, required:true, required:true},
-        text : {type:mongoose_types.Text, required:true},
+        text : {type:mongoose_types.Html, required:true},
         tags: [String],
         view_counter: {type: Number, 'default': '0'},
         time: {type: Date, 'default': Date.now, editable:false},
