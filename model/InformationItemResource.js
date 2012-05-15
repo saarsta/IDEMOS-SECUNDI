@@ -27,8 +27,6 @@ var InformationItemResource = module.exports = common.GamificationMongooseResour
         this.default_query = function (query) {
             return query.where('is_visible', true).sort('creation_date', 'descending').populate('subject_id');
         };
-
-
     },
 
     get_object:function (req, id, callback) {
@@ -203,7 +201,7 @@ module.exports.approveInfoItem = function(id,callback){
         },
 
         function(obj, cbk){
-            notifications.create_user_notification(notification_type, creator_id, cbk);
+            notifications.create_user_notification(notification_type, id, creator_id, cbk);
         }
 
 

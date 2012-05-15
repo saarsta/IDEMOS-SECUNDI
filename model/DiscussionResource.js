@@ -4,7 +4,7 @@ var resources = require('jest'),
     models = require('../models'),
     common = require('./common'),
     async = require('async'),
-    _ = require('underscore')
+    _ = require('underscore'),
     notifications = require('./notifications');
 
 //Authorization
@@ -247,40 +247,39 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
     }
 });
 
-//TODO finish this
-module.exports.approveDiscussionToCycle = function(id, callback)
-{
-      var creator_id;
-      var score = 0;
-//      var notification_type =
-
-      async.waterfall([
-          function(cbk){
-              models.Discussion.findById(id, cbk);
-          },
-
-          function(disc, cbk){
-              creator_id = disc.creator_id;
-              async.parallel([
-                  function(cbk2){
-                      models.Discussion.update({_id: id}, {$set: {
-                              "is_cycle.flag": true,
-                              "is_cycle.date": Date.now()}},
-                          cbk2);
-                  },
-
-                  function(cbk2){
-                      models.User.update({_id: creator_id}, {
-                          $inc: {"gamification.approved_discussion_to_cycle": 1,
-                                 "score": score}},
-                          cbk2);
-                  },
-
-                  function(cbk2){
-                      notifications.create_user_notification(notification_type, creator_id, cbk);
-                  }
-              ], cbk);
-          }
-      ], callback)
-}
+//module.exports.approveDiscussionToCycle = function(id, callback)
+//{
+//      var creator_id;
+//      var score = 0;
+//      var notification_type = 'aprroved_discussion_i_created';
+//
+//      async.waterfall([
+//          function(cbk){
+//              models.Discussion.findById(id, cbk);
+//          },
+//
+//          function(disc, cbk){
+//              creator_id = disc.creator_id;
+//              async.parallel([
+//                  function(cbk2){
+//                      models.Discussion.update({_id: id}, {$set: {
+//                              "is_cycle.flag": true,
+//                              "is_cycle.date": Date.now()}},
+//                          cbk2);
+//                  },
+//
+//                  function(cbk2){
+//                      models.User.update({_id: creator_id}, {
+//                          $inc: {"gamification.approved_discussion_to_cycle": 1,
+//                                 "score": score}},
+//                          cbk2);
+//                  },
+//
+//                  function(cbk2){
+//                      notifications.create_user_notification(notification_type, cycle_id,creator_id, cbk);
+//                  }
+//              ], cbk);
+//          }
+//      ], callback)
+//}
 
