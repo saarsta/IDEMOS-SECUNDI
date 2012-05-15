@@ -17,7 +17,7 @@
         "underscore": "",
         "i18n-mongoose":"",
         "j-forms":">= 0.0.55",
-        "admin-with-forms":">= 0.0.15",
+        "admin-with-forms":">= 0.0.25",
         "knox":"",
         "dustjs-linkedin":""
   },
