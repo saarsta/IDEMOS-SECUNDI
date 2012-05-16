@@ -1,0 +1,15 @@
+<h4>תגיות חמות</h4>
+<div class="tags">
+    {#objects}
+    <a href="/information_items?tag_name={.tag|u}" >{.tag}</a>{~n}
+    {/objects}
+    <div class="more">
+        <span></span>
+        <ul>
+            {@if cond="({meta.total_count} > {meta.limit} )"}
+            <li><a href="">הצג עוד תגיות</a></li>
+            {/if}
+            <li><a href="">הוסף תגית</a></li>
+        </ul>
+    </div>
+</div>

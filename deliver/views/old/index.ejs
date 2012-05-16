@@ -1,0 +1,190 @@
+
+<h2><%= big_impressive_title %></h2>
+
+<script type="text/javascript">
+    $(function() {
+      /*  $('#btn_search_by_tag').live("click", function(){
+
+            $('.tags').html('');
+            var tag_value = $("#btn_search_for_tags").attr('value');
+            console.log(tag_value);
+            db_functions.dbGetInfoItemsByTagName(tag_value);
+            event.stopPropagation();
+        });*/
+    });
+</script>
+
+
+<%if(!logged){%>
+<div id="banner">
+    <div class="wrapper clearfix">
+        <div class="frame">
+            <div class="image"><img src="resources/images/assets/video-image.jpg" alt="video"/></div>
+        </div>
+        <div class="description">
+            <h2>כותרת משכנעת מאוד</h2>
+            <p>נבחרים קלאסיים כדי על, היא דת תקשורת מיתולוגיה אנתרופולוגיה, כניסה פולנית לוח של. לוח עמוד מדינות אנציקלופדיה מה, בקר המלצת בארגז בה. החברה אתנולוגיה קרימינולוגיה שמו גם, בקלות קודמות אווירונאוטיקה מה כתב. אל מונחים הגולשות אתה, על היא צילום האנציקלופדיה. על כימיה ספינות ויש, לערך טכנולוגיה את אנא. מדע מיזמי הספרות אל</p>
+            <a href="#" class="read-more">קרא עוד...</a>
+            <a href="#" class="button1">הצטרף</a>
+        </div>
+    </div>
+</div>
+<%}else{%>
+    <Br/>
+    <Br/>
+    <Br/>
+    <Br/>
+<%}%>
+<!--/Banner-->
+
+<!--Search-->
+<div id="search">
+    <div class="wrapper">
+        <%if(logged){%>
+            <Br/> <Br/> <Br/> <Br/> <Br/> <Br/> <Br/> <Br/> <Br/> <Br/> <Br/>
+        <%}%>
+        <div id="search-form" class="form">
+            <form action="/meida" method="GET">
+                <p class="clearfix">
+                    <input type="text" name="tag_name" id="tag_name" title="search" class="textbox" value="חיפוש עפ TAGS" onfocus="if(this.value=='חיפוש עפ TAGS') this.value='';" onblur="if(this.value=='') this.value='חיפוש עפ TAGS';"/>
+                    <input type="submit" title="submit" id="btn_search_by_tag" class="submit-btn" value="חפש"/>
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
+<!--/Search-->
+
+
+
+        <div id="sidebar">
+            <h2>מה בכותרות?</h2>
+            <div class="widget">
+                <h3>כתבה בערוץ 2</h3>
+                <div class="image"><img src="resources/images/assets/video-image2.jpg" alt="video"/></div>
+                <p>נבחרים קלאסיים כדי על, היא דת תקשורת מיתולוגיה אנתרופול</p>
+            </div>
+
+            <div class="widget">
+                <h3>מדד הח"כ (או כל מדד אחר מעניין)</h3>
+                <div class="image"><img src="resources/images/assets/chart.jpg" alt="chart"/></div>
+                <p>נבחרים קלאסיים כדי על, היא דת תקשורת מיתולוגיה אנתרופול</p>
+            </div>
+
+            <div class="widget">
+                <h3>הסקר היומי</h3>
+                <img src="resources/images/assets/survey.jpg" alt="survey"/>
+                <p>נבחרים קלאסיים כדי על, היא דת תקשורת מיתולוגיה אנתרופול</p>
+            </div>
+
+
+        </div>
+        <div id="main">
+            <h2>הנושאים הבוערים</h2>
+
+            <div class="box post">
+                <img src="resources/images/assets/image.jpg" alt="image"/>
+                <h3>כותרת </h3>
+                <p>כמה מילים אולי אפילו 2-3 משפטים הסבר ותיאור על הנושא המדובר</p>
+                <a href="#" class="button1">הגב\הצטרף\שתף</a>
+            </div>
+
+            <div class="box post">
+                <img src="resources/images/assets/image.jpg" alt="image"/>
+                <h3>כותרת </h3>
+                <p>כמה מילים אולי אפילו 2-3 משפטים הסבר ותיאור על הנושא המדובר</p>
+                <a href="#" class="button1">הגב\הצטרף\שתף</a>
+            </div>
+
+            <div class="box post">
+                <img src="resources/images/assets/image.jpg" alt="image"/>
+                <h3>כותרת </h3>
+                <p>כמה מילים אולי אפילו 2-3 משפטים הסבר ותיאור על הנושא המדובר</p>
+                <a href="#" class="button1">הגב\הצטרף\שתף</a>
+            </div>
+
+            <div class="box post">
+                <img src="resources/images/assets/image.jpg" alt="image"/>
+                <h3>כותרת </h3>
+                <p>כמה מילים אולי אפילו 2-3 משפטים הסבר ותיאור על הנושא המדובר</p>
+                <a href="#" class="button1">הגב\הצטרף\שתף</a>
+            </div>
+        </div>
+        <br class="clear"/>
+        <div class="two-column-layout clearfix">
+            <div class="one-half share-form ">
+                <h2>שתף את מה שמפריע לך</h2>
+                <form action="#" method="post">
+                    <p><span class="textarea"><textarea rows="3" cols="1" title="share"  onfocus="if(this.value=='כתוב פה מה שבא לך') this.value='';" onblur="if(this.value=='') this.value='כתוב פה מה שבא לך';">כתוב פה מה שבא לך</textarea></span>
+                        <input type="submit" value="שלח דעתך" class="submit-btn" title="send"/></p>
+                </form>
+            </div>
+            <div class="one-half">
+                <h2>סיפורי הצלחה</h2>
+                <div class="stories box">
+                    <div class="two-column-layout1 clearfix">
+                        <div class="column">
+                            <div class="frame">
+                                <img src="resources/images/assets/image2.jpg" alt="image2"/>
+                                <span class="number">1</span>
+                            </div>
+                            <p>נבחרים קלאסיים כדי על, היא דת תקשורת מיתולוגיה אנתרופול</p>
+                        </div>
+                        <div class="column">
+                            <div class="frame">
+                                <img src="resources/images/assets/image2.jpg" alt="image2"/>
+                                <span class="number">2</span>
+                            </div>
+                            <p>נבחרים קלאסיים כדי על, היא דת תקשורת מיתולוגיה אנתרופול</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <h2>בלוגים פופלריים</h2>
+        <div class="one-third">
+            <div class="frame"> <a href="#"><img src="resources/images/assets/image1.jpg" alt="image1" /></a>
+            </div>
+            <div class="description">
+                <h3><a href="#">שם</a></h3>
+                <p>תיאור קצר</p>
+                <p>מתוך טקסט אחרון<br />
+                    או טקסט פופלרי</p>
+                <p>נבחרים קלאסיים כדי על, היא דת תקשורת מיתולוגיה אנתרופול</p>
+            </div>
+
+        </div>
+        <div class="one-third">
+            <div class="frame"> <a href="#"><img src="resources/images/assets/image1.jpg" alt="image1" /></a>
+            </div>
+            <div class="description">
+                <h3><a href="#">שם</a></h3>
+                <p>תיאור קצר</p>
+                <p>מתוך טקסט אחרון<br />
+                    או טקסט פופלרי</p>
+                <p>נבחרים קלאסיים כדי על, היא דת תקשורת מיתולוגיה אנתרופול</p>
+            </div>
+
+        </div>
+        <div class="one-third last">
+            <div class="frame"> <a href="#"><img src="resources/images/assets/image1.jpg" alt="image1" /></a>
+            </div>
+            <div class="description">
+                <h3><a href="#">שם</a></h3>
+                <p>תיאור קצר</p>
+                <p>מתוך טקסט אחרון<br />
+                    או טקסט פופלרי</p>
+                <p>נבחרים קלאסיים כדי על, היא דת תקשורת מיתולוגיה אנתרופול</p>
+            </div>
+
+        </div>
+
+        <br class="clear"/>
+
+    </div>
+</div>
+<!--/Content-->
+    </div>
+</div>
