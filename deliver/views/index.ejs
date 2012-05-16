@@ -26,7 +26,7 @@
 <body <%if(!user_logged){%>class="big-head"<%}%>>
     <div id="wrap">
         <div id="header">
-            <a href="" id="logo"></a>
+            <a href="/" id="logo"></a>
             <ul id="main-menu">
                 <%-partial('partials/menu.ejs')%>
             </ul>
@@ -83,9 +83,9 @@
                 <a class="btn" href="">הצטרפו והתחילו להשפיע!</a>
             </div>
             <%}%>
-            <form action="#" class="search-box">
+            <form action="/information_items" class="search-box">
                 <label>חיפוש לפי תגיות</label>
-                <input type="text" value="" />
+                <input type="text" value="" name='tag_name' />
                 <input type="submit" value="חפש" />
             </form>
         </div>
@@ -177,25 +177,7 @@
                     <li><a href="">עזרה</a></li>
                 </ul>
             </div>
-            <div class="three-col">
-                <h4>תגיות חמות</h4>
-                <div class="tags">
-                    <a href="">אבטלה</a>
-                    <a href="">כלכלה</a>
-                    <a href="">עוני</a>
-                    <a href="">תשתית</a><br />
-                    <a href="">דמוקרטיה וממשל</a>
-                    <a href="">אבטלה</a>
-                    <a href="">כלכלה</a>
-                    <a href="">עוני</a>
-                    <div class="more">
-                        <span></span>
-                        <ul>
-                            <li><a href="">הצג עוד תגיות</a></li>
-                            <li><a href="">הוסף תגית</a></li>
-                        </ul>
-                    </div>
-                </div>                
+            <div class="three-col" id="footer_tags">
             </div>
         </div>
     </div>
@@ -244,13 +226,12 @@
                 article.is_last = index == data.objects.length-1;
                 dust.render('article', article, function(err, html){
                     $('div.blog-box').append(html);
-                })
-            })
-        })
+                });
+            });
+        });
 
 
         db_functions.getPopularHeadlines(2,function(data){
-            debugger;
             $.each(data.objects, function(index, headline){
                 dust.render('headline', headline, function(err, html){
                     $('div.one-news').append(html);
@@ -258,8 +239,8 @@
             })
         })
 
-
-    })
+        db_functions.getAndRenderFooterTags();
+    });
 
 
 </script>

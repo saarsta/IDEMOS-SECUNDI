@@ -4,13 +4,40 @@ var infoAndMeasures = require('./infoAndMeasures'),
     account = require('./account'),
     cycles = require('./cycles'),
     discussion = require('./discussion'),
-    Router = require('./router');
+    Router = require('./router'),
+    _ = require('underscore');
+
+var OldRouter = Router.extend({
+    register_func:function(method,args)
+    {
+        var self = this;
+        var base = this._super;
+        var _handler = args[args.length-1];
+        var handler = function(req,res)
+        {
+            var _render = res.render;
+            res.render = function(){
+                arguments[0] = 'old/' + arguments[0];
+                _render.apply(res,arguments);
+            };
+            _handler.call(null,req,res);
+        };
+        args[args.length-1] = handler;
+        base.call(self,method,args);
+    },
+    include:function(path,routing_module)
+    {
+        var my_router = new OldRouter(this.app,this.build_path(path));
+        routing_module(my_router);
+        return my_router;
+    }
+});
 
 
 module.exports = function(app)
 {
 
-    var router = Router.base(app);
+    var router = new OldRouter(app);
 
     router.get('/', pagesInit.index);
 
@@ -26,6 +53,7 @@ module.exports = function(app)
     router.get('/uru/:id',pagesInit.hisUru);
 
     router.include('/meida',infoAndMeasures);
+    router.include('/information_items',infoAndMeasures);
 
     router.include('/discussions',discussion);
 

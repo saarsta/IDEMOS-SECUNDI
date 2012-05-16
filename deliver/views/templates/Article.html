@@ -1,35 +1,29 @@
-<style type="text/css">
-    .blog-box .one .img-box
-    {
-        float: right;
-        width: 112px;
-        margin-left: 27px;
-        position: relative;
-        ;height: 120px;
-        overflow:hidden
-    }
-    .blog-box .one .img-box img
-    {
-        display: block;
-        width:120%;
-    }
-</style>
 <div class="one{#.is_last} last{/.is_last}">
     <div class="img-box">
+        <div style="width:112px; height:120px;" class='auto-scale'>
         <img src="{avatar}" alt="{title}"/>
+        </div>
         <span class="fillter"></span>
     </div>
     <h4><a href="">{.first_name} {.last_name}</a></h4>
     <p>{.title}</p>
     <div class="tags">
           {#tags}
-			<a href="">{.}</a>{~n}
+			<a href="/information_items?tag_name={.|u}"
+        {@idx}
+        {@if cond="({.} > 1 )"}
+        style="display:none;"
+        {/if}
+        {/idx}
+        >{.}</a>{~n}
         {/tags}
         <div class="more">
             <span></span>
             <ul>
-                <li><a href="">הצג עוד תגיות</a></li>
-                <li><a href="">הוסף תגית</a></li>
+                {@if cond="('{tags}'.split(',').length > 2 )"}
+                <li><a href="javascript:void(0)">הצג עוד תגיות</a></li>
+                {/if}
+                <li><a href="javascript:void(0)">הוסף תגית</a></li>
             </ul>
         </div>
     </div>

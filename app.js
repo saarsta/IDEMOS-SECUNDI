@@ -12,6 +12,7 @@ var account = require('./routes/account');
 
 app.configure('deliver', function(){
     app.set('views', __dirname + '/deliver/views');
+    app.set('old_views', __dirname + '/views');
     app.set('public_folder', __dirname + '/deliver/public');
     app.set('public_folder2', __dirname + '/public');
     app.set("port", 80);
@@ -97,7 +98,9 @@ app.configure(function(){
     require('j-forms').serve_static(app,express);
 });
 
-app.settings.env == 'deliver' ? require('./deliver/routes')(app) : require('./routes')(app);
+if(app.settings.env == 'deliver')
+    require('./deliver/routes')(app);
+require('./routes')(app);
 require('./api')(app);
 require('./admin')(app);
 
