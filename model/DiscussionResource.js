@@ -62,13 +62,15 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                 grade:Number,
                 evaluate_counter: null,
                 _id:null,
-                is_follower: null
+                is_follower: null,
+                grade_id: null
             };
     },
 
     get_object:function (req, id, callback) {
         this._super(req, id, function(err, object){
             if(object){
+                object.grade_id = 0;
                 models.User.find({"discussions.discussion_id": id}, ["email", "first_name", "avatar", "facebook_id", "discussions"], function(err, objs){
                     var users = [];
                     if(!err){
@@ -85,11 +87,24 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                     else
                         object.users = [];
                     object.is_follower = false;
-                    if(req.user)
+                    if(req.user){
                         if(_.find(req.user.discussions, function(user_discussion){return user_discussion.discussion_id == id})){
                             object.is_follower = true;
                         }
-                    callback(err, object);
+                        models.Grade.findOne({user_id: req.user._id}, function(err, grade){
+                            if(err){
+                                callback(err, object);
+                            }
+                            else{
+                                if (grade)
+                                    object.grade_id = grade._id;
+                            }
+                            callback(err, object);
+                        });
+                    }else{
+                        callback(err, object);
+                    }
+
                 });
             }else{
                 callback(err, object);

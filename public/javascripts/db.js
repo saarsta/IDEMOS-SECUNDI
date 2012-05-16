@@ -533,10 +533,16 @@ var db_functions = {
         });
     },
 
-    addDiscussionGrade: function(discussion_id, grade, callback){
+    addDiscussionGrade: function(discussion_id, grade, grade_id, callback){
+        var url;
+        var type;
+
+        grade_id ? url = '/api/grades/' + grade_id : url = '/api/grades/';
+        grade_id ? type = "POST" : type = "PUT";
+
         this.loggedInAjax({
-            url: '/api/grades/',
-            type: "POST",
+            url: url,
+            type: type,
             async: true,
             data: {"discussion_id": discussion_id, "evaluation_grade": grade},
             success: function (data) {

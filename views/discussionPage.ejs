@@ -334,6 +334,7 @@
 
             var discussion_id = "<%=discussion_id%>";
             var mouseDown, mouseUp, top, left;
+            var grade_id = "<%=discussion.grade_id%>";
 
             $('.discussion_content')
                     .on('mousedown', function(e) {
@@ -506,12 +507,12 @@
             }
 
             db_functions.getSuggestionByDiscussion(discussion_id,function(err,data)
+            {
+                $.each(data.objects,function(index,suggestion)
                 {
-                    $.each(data.objects,function(index,suggestion)
-                    {
-                        render_suggestion(suggestion);
-                    });
+                    render_suggestion(suggestion);
                 });
+            });
 
             $("#btn_grade").live("click", function(){
                 var grade = $(".grade input").val();
@@ -521,12 +522,11 @@
                 if((reg.test(grade) == false) || !(grade >= 0 && grade <= 10)){
                     alert('Invalid number');
                 }else{
-                    db_functions.addDiscussionGrade(discussion_id, grade, function(err, discussion_object){
+                    db_functions.addDiscussionGrade(discussion_id, grade, grade_id, function(err, discussion_object){
                         if (err){
                             console.log(err);
                         }
                         else{
-                            debugger
                             console.log(discussion_object);
                             $("#user_tokens").text(discussion_object.updated_user_tokens);
                             $("#discussion_grade").val("grade is: " + discussion_object.grade + " count: " + discussion_object  .evaluate_counter);
