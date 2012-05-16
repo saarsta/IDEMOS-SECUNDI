@@ -1,4 +1,5 @@
-var models = require('../models.js');
+var models = require('../models.js'),
+    DiscussionResource = require('../model/DiscussionResource');
 
 module.exports = function(router)
 {
@@ -16,6 +17,7 @@ module.exports = function(router)
     });
 
     router.get('/:id', function(req, res){
+//        DiscussionResource.get_object(req, req.params.id, function(err, discussion) {
         models.Discussion.findById(req.params.id, function(err, discussion){
             res.render('discussionPage.ejs',{
                 layout: false,
