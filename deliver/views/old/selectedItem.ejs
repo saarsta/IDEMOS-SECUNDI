@@ -1,0 +1,112 @@
+<div class="breadcrumb">
+    <p>
+       <a href="/meida/subject/<%= info.subject_id[0].id %>"><%= info.subject_id[0].name %></a>
+    </p>
+</div>
+
+<div id="search-form" class="form">
+    <form action="/meida/subject/<%= info.subject_id[0].id %>" method="get">
+        <p class="clearfix">
+            <input type="text" name="keywords" title="search" class="textbox" value="חיפוש בתוך הנושא הנבחר" onblur="if(this.value=='') this.value='חיפוש בתוך הנושא הנבחר';" onfocus="if(this.value=='חיפוש בתוך הנושא הנבחר') this.value='';" />
+            <input type="submit" title="submit" class="submit-btn" value="חפש"/>
+        </p>
+    </form>
+</div>
+
+<div id="sidebar">
+
+    <div id="shopping_cart" class="widget1 clearfix">
+        <div class="information clearfix">
+            <h3>עגלת המידע</h3>
+            <!--<a href="javascript:void(0)" class="button">שתף</a>-->
+            <br class="clear"/>
+            <p>קריאה לפעולה כדי לאסוף מידע,
+                תכנים, גרפים, נתונים, תרשימים
+                ועוד ועוד כדי להציע מציאות חדשה.</p>
+            <a id="create_new_discussion" class="button suggest" href="/discussions/new?subject_id=<%= info.subject_id[0].id %>&subject_name=<%= info.subject_id[0].name %>" >הצע מציאות חדשה</a>
+        </div>
+    </div>
+</div>
+
+
+<div id="main">
+    <div id="info_item_full_view" class="post clearfix">
+        <div>
+            <div style="width:489px; height:287px;">
+                <img src="<%= info.image_field.url %>" alt="<%= info.name %>" />
+            </div>
+            <div class="title clearfix">
+                <h3><%= info.title %></h3>
+                <a href="javascript:void(0);" class="button add">הוסף</a>
+                <a href="/facebookShare?link=/media/<%= info.id %>" target="_blank" class="button flL">שתף</a>
+                <% if(!user_like) { %>
+                <a href="javascript:void(0);" class="button flL" id="like_button">1+</a>
+                <% } %>
+            </div>
+            <P><%- info.text_field %></P>
+            <p dir="rtl">
+                <% if(info.tags.length) { %>
+                תגיות:
+                <% } %>
+                <% for(var i=0; i<info.tags.length; i++) { %><%= info.tags[i] %>  &nbsp;
+            <% } %>
+            </p>
+        </div>
+    </div>
+</div>
+
+
+</div>
+</div>
+
+<script type="text/javascript">
+    $(function() {
+        var info_item_id = "<%= info.id %>";
+        $('#info_item_full_view img').autoscale();
+
+        $(".button.add").live("click", function(){
+            db_functions.addInfoItemToShoppingCart(info_item_id, function(err, data){
+                if(!err){
+                    dust.render('shopping_cart_item_1', data,function(err,out)
+                    {
+                        $('#shopping_cart').append(out);
+                        $('#shopping_cart img').autoscale();
+                    });
+                }
+            });
+        });
+
+        $(".button.remove").live("click", function(){
+            var div = $(this).parent('div');
+            db_functions.removeInfoItemFromShoppingCart(info_item_id, function(err){
+                if(!err){
+                    div.remove();
+                }
+            });
+        });
+
+        $('#like_button').click(function(){
+            db_functions.addLikeToInfoItem(info_item_id,function(err,data)
+            {
+                $('#like_button').fadeOut(300);
+            });
+        });
+
+
+
+        db_functions.getUserShopingCart(function(err,data){
+            data.objects.forEach(function(obj)
+            {
+                obj.get_link = function( )
+                {
+                    return '/meida/' + obj._id;
+                }
+            });
+            dust.renderArray('shopping_cart_item_1', data.objects,null,function(err,out)
+            {
+                $('#shopping_cart').append(out);
+                $('#shopping_cart img').autoscale();
+            });
+        });
+     });
+</script>

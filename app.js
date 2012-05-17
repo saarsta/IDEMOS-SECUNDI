@@ -12,6 +12,7 @@ var account = require('./routes/account');
 
 app.configure('deliver', function(){
     app.set('views', __dirname + '/deliver/views');
+    app.set('old_views', __dirname + '/views');
     app.set('public_folder', __dirname + '/deliver/public');
     app.set('public_folder2', __dirname + '/public');
     app.set("port", 80);
@@ -21,11 +22,14 @@ app.configure('deliver', function(){
     app.set('DB_URL','mongodb://localhost/uru');
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
     require('./deliver/tools/compile_dust_templates');
+    require('./tools/compile_templates');
 });
 
 app.configure('development', function(){
-    app.set('views', __dirname + '/views');
-    app.set('public_folder', __dirname + '/public');
+    app.set('views', __dirname + '/deliver/views');
+    app.set('old_views', __dirname + '/views');
+    app.set('public_folder', __dirname + '/deliver/public');
+    app.set('public_folder2', __dirname + '/public');
     app.set("port", 80);
     app.set('facebook_app_id', '175023072601087');
     app.set('facebook_secret', '5ef7a37e8a09eca5ee54f6ae56aa003f');
@@ -33,13 +37,16 @@ app.configure('development', function(){
     app.set('DB_URL','mongodb://localhost/uru');
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
     require('./tools/compile_templates');
+    require('./deliver/tools/compile_dust_templates');
 
 });
 
 
 app.configure('production', function(){
-    app.set('views', __dirname + '/views');
-    app.set('public_folder', __dirname + '/public');
+    app.set('views', __dirname + '/deliver/views');
+    app.set('old_views', __dirname + '/views');
+    app.set('public_folder', __dirname + '/deliver/public');
+    app.set('public_folder2', __dirname + '/public');
     app.set("port", process.env.PORT);
     app.set('facebook_app_id', '375874372423704');
     app.set('facebook_secret', 'b079bf2df2f7055e3ac3db17d4d2becb');
@@ -51,6 +58,8 @@ app.configure('production', function(){
         secret: 'loQKQjWXxSTnxYv1vsb97X4UW13E6nsagEWNMuNs',
         bucket: 'uru'
     });
+    require('./deliver/tools/compile_dust_templates');
+    require('./tools/compile_templates');
 });
 
 mongoose.connect(app.settings.DB_URL);
@@ -97,7 +106,9 @@ app.configure(function(){
     require('j-forms').serve_static(app,express);
 });
 
-app.settings.env == 'deliver' ? require('./deliver/routes')(app) : require('./routes')(app);
+if(app.settings.env == 'deliver')
+    require('./deliver/routes')(app);
+require('./routes')(app);
 require('./api')(app);
 require('./admin')(app);
 

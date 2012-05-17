@@ -1,0 +1,138 @@
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(
+                function(){
+
+                    $(".btn_facebook_connect").on("click", function(){
+                        document.location.href= '/account/facebooklogin?next=<%= next %>';
+                    })
+                }
+
+
+        )
+
+        $(
+                function validate(form_id,email) {
+
+                    var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+                    var address = document.forms[form_id].elements[email].value;
+                    if(reg.test(address) == false) {
+
+                        alert('Invalid Email Address');
+                        return false;
+                    }
+                }
+        )
+
+
+    </script>
+
+</head>
+
+<body>
+<section>
+    <div class="form _login">
+
+        <div>
+            <button class = "btn_facebook_connect">Facebook Connect</button>
+        </div>
+
+
+    </div>
+
+    <div class="form _register">
+        <form id="form_id" method='post' action='/account/register/'>
+            <% if(typeof(errors) != 'undefined') {
+                for(var e in errors)
+                {
+                    %> <%= e %> <%
+                }
+            } %>
+
+            <% if(exist_username) { %> Register failed... <% } %>
+            <label for="register_username">username:</label>
+            <input type="text" name="username" id="register_username">
+
+            <label for="register_password">password:</label>
+            <input type="password" name="password" id="register_password">
+
+            <label for="register_email">email:</label>
+            <input type="text" name="email" id="register_email">
+
+            <label for="first_name">first_name:</label>
+            <input type="text" name="first_name" id="first_name">
+
+            <label for="last_name">last_name:</label>
+            <input type="text" name="last_name" id="last_name">
+            <button type='submit' class = "btn_register">Register</button>
+        </form>
+
+    </div>
+    <% if(failed) { %> Login failed... <% } %>
+    <div class="form _connect_gmail">
+        <form method='post' action='/account/login/'>
+            <label for="gmail_username">username (email address):</label>
+            <input type="text" name="username" id="gmail_username" />
+
+            <label for="gmail_password">password:</label>
+            <input type="password" name="password" id="gmail_password" />
+            <button type='submit'>Connect</button>
+        </form>
+
+    </div>
+
+</section>
+
+
+</body>
+
+</html>
+
+
+<script type="text/javascript">
+
+    function stringValidation(form_field, field_name){
+        //user name validation
+       // var x = $("#register_username").val();
+        if (form_field==null || form_field=="")
+        {
+            alert(field_name + " must be filled out");
+            return false;
+        }
+    }
+
+    $(
+            function nameValidate(){
+
+                $(".btn_register").on("click", function(){
+
+                    //user name validation
+                   var x = $("#register_username").val();
+                   if (stringValidation(x, "username") == false) {
+                        return false;
+                   }
+
+                   x = $("#register_password").val();
+                   if (stringValidation(x, "password") == false) {
+                       return false;
+                   }
+
+                    var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+                    var address = $("#register_email").val();
+                    if(reg.test(address) == false) {
+
+                        alert('Invalid Email Address');
+                        return false;
+                    }
+
+
+                })
+            }
+    )
+</script>

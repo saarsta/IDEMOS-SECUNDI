@@ -575,6 +575,8 @@ body
     margin:0;
     color:#50504f;
     font: bold 16px/19px Arial;
+    height:60px;
+    overflow:hidden;
 }
 .news-list .one h4 a
 {
@@ -1100,4 +1102,14 @@ body
 #content .services-box h2 span
 {
     color:#3b63ef;
+}
+
+.blog-box .one .img-box
+{
+    float: right;
+    width: 112px;
+    margin-left: 27px;
+    position: relative;
+;height: 120px;
+    overflow:hidden
 }

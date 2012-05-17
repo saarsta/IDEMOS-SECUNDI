@@ -25,8 +25,13 @@ var ArticleResource = common.GamificationMongooseResource.extend({
 
             var iterator = function(article, itr_cbk){
                 models.User.findById(article.user_id, ["avatar", "facebook_id"], function(err, user_obj){
-                    article.avatar = user_obj.avatar_url();
-                    itr_cbk(err, user_obj);
+                    if(err)
+                        itr_cbk(err);
+                    else
+                    {
+                        article.avatar = user_obj.avatar_url();
+                        itr_cbk(err, user_obj);
+                    }
                 })
             }
 
