@@ -34,13 +34,18 @@ Authoriztion.prototype.edit_object = function(req,object,callback){
             }
         })
     }else{
-        callback(null, object);
+        if(req.method == 'PUT'){
+            if(!(object.user_id + "" == req.user._id + ""))
+                callback({message:"its not your garde!",code:401}, null);
+            else
+                callback(null, object);
+        }else{
+            callback(null, object);
+        }
     }
-
-
 };
 
-var GradeResource = module.exports = common.GamificationMongooseResource.extend({
+var GradeSuggestionResource = module.exports = common.GamificationMongooseResource.extend({
     init:function(){
         this._super(models.GradeSuggestion,'grade_suggestion', null);
 //        GradeResource.super_.call(this,models.Grade);
@@ -75,22 +80,12 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
                     },
 
                     function(suggestion_obj, cbk){
-                        async.parallel([
-                            function(cbk)
-                            {
-                                var add_grade = Number(grade_object.evaluation_grade);
-                                var grade = suggestion_obj.grade_sum;
-                                grade += add_grade;
-                                counter = suggestion_obj.evaluate_counter + 1;
-                                new_grade = grade / counter;
 
-                                models.Suggestion.update({_id:grade_object.suggestion_id},
-                                    {
-                                        $inc:{ grade_sum: add_grade, evaluate_counter: 1},
-                                        $set:{grade: new_grade}
-                                    },cbk);
-                            }
-                        ],cbk);
+                        calculateSuggestionGrade(suggestion_obj._id, suggestion_obj.discussion_id, function(err, _new_grade, _evaluate_counter){
+                            new_grade = _new_grade;
+                            counter = _evaluate_counter;
+                            cbk(err)
+                        });
                     }
 
                 ], function(err, obj){
@@ -106,7 +101,86 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
     },
 
     update_obj: function(req, object, callback){
+        var self = this;
+        var g_grade;
+        var discussion_id = req.body.discussion_id;
 
+        self._super(req, object, function(err, grade_object){
+
+            if(err){
+                callback(err, null);
+            }else{
+                var new_grade, evaluate_counter;
+                async.waterfall([
+
+                    function(cbk){
+                        g_grade = grade_object;
+                        calculateSuggestionGrade(object.suggestion_id, discussion_id, function(err, _new_grade, _evaluate_counter){
+                            if(!err){
+                                new_grade = _new_grade;
+                                evaluate_counter = _evaluate_counter;
+                            }
+                            cbk(err, 0);
+                        });
+                    }
+                ], function(err){
+                    callback(err, {new_grade: new_grade, evaluate_counter: evaluate_counter, grade_id: g_grade._id || 0})
+                })
+            }
+        });
     }
 })
 
+
+var calculateSuggestionGrade = GradeSuggestionResource.calculateSuggestionGrade = function (suggestion_id, discussion_id, callback){
+
+    // suggestios_grade_counter + discussion_grade_counter = all graders
+    var suggestios_grade_counter;
+    var discussion_grade_counter;
+
+    var suggestios_grade_sum = 0;
+    var discussion_grade_sum = 0;
+
+    var total_counter;
+    var total_sum;
+    var new_grade;
+
+    async.waterfall([
+
+        //get all grades for the suggestion,
+        function(cbk){
+            models.GradeSuggestion.find({suggestion_id: suggestion_id}, ["user_id", "evaluation_grade"], cbk);
+        },
+
+        function(sugg_grades, cbk){
+            var users = [];
+            suggestios_grade_counter = sugg_grades.length;
+
+            if(suggestios_grade_counter)
+                suggestios_grade_sum = _.reduce(sugg_grades, function(memo, grade){return memo + Number(grade.evaluation_grade); }, 0);
+
+            _.each(sugg_grades, function(grade){users.push(grade.user_id)});
+
+            //get all dicsussion grades that their creators didnot grade the suggestion
+            models.Grade.find({ discussion_id: discussion_id, user_id: { $nin: users }}, cbk);
+        },
+
+        function(disc_grades, cbk){
+            discussion_grade_counter = disc_grades.length;
+
+            if(discussion_grade_counter)
+                discussion_grade_sum = _.reduce(disc_grades, function(memo, grade){return memo + Number(grade.evaluation_grade); }, 0);
+
+            total_counter = suggestios_grade_counter + discussion_grade_counter;
+            total_sum = suggestios_grade_sum + discussion_grade_sum;
+
+            new_grade = total_sum/total_counter, total_counter;
+            models.Suggestion.update({suggestion_id: suggestion_id}, {$set: {grade: new_grade, evaluate_counter: total_counter}}, cbk);
+        }
+
+    ], function(err, disc_grades){
+
+        callback(err, new_grade, total_counter);
+    })
+
+}

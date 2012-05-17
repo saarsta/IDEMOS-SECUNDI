@@ -15,13 +15,38 @@
         במקום:
         <p class='post_text'>{original_part}</p>
     </div>
-    <div class="action" data-id="{id}">
+    <div class="action" id="{id}" data-grade="{grade_obj._id}">
         <a class="button quote_button" href="javascript:void(0)">צטט</a>
         <a class="button" href="/facebookShare?link=/discussions/{discussion_id}" target="_blank">שתף</a>
         <!---<a class="button like_button" href="javascript:void(0)">Like</a-->
-        <a class="button vote_for" href="javascript:void(0)"><span dir="ltr">{votes_for}</span>&nbsp;
+        <!--<a class="button vote_for" href="javascript:void(0)"><span dir="ltr">{votes_for}</span>&nbsp;
             בעד</a>
         <a class="button vote_against" href="javascript:void(0)"><span dir="ltr">{votes_against}</span>&nbsp;
-            נגד</a>
+            נגד</a>-->
+        <select class="sugg_rating_select">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6</option>
+            <option>7</option>
+            <option>8</option>
+            <option>9</option>
+            <option>10</option>
+        </select>
+
+        <button class="sugg_rating_button">
+דירוג המסמך במידה וההצעה לשינוי תתקבל
+        </button>
+        <p class="sugg_current_grade">
+          <span data-curr-grade-id="{grade_obj._id}">{grade}</span>
+            -   דירוג משוקלל
+
+        </p>
+        <p class="sugg_current_graders" data-grade="{grade_obj._id}">
+          {evaluate_counter}
+            -   מספר מדרגים
+        </p>
     </div>
 </li>

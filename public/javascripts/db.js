@@ -210,6 +210,9 @@ var db_functions = {
             async: true,
             success: function (data) {
                 console.log(data);
+            },
+            error:function(err){
+                callback(err, null);
             }
         });
 
@@ -224,6 +227,9 @@ var db_functions = {
             success: function (data) {
                 console.log(data);
                 callback(null, data)
+            },
+            error:function(err){
+                callback(err, null);
             }
         });
     },
@@ -237,6 +243,9 @@ var db_functions = {
                 console.log(data);
 
                 callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
             }
         });
     },
@@ -265,6 +274,9 @@ var db_functions = {
             async: true,
             success: function (data) {
                 callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
             }
         });
     },
@@ -285,6 +297,9 @@ var db_functions = {
 
                 });
                 if(callback) callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
             }
         });
     },
@@ -299,6 +314,10 @@ var db_functions = {
             success: function (data) {
                 console.log(data);
                 callback(null, data);
+            },
+
+            error:function(err){
+                callback(err, null);
             }
         });
     },
@@ -314,9 +333,8 @@ var db_functions = {
                 callback(null, data);
             },
 
-            error: function (xhr, ajaxOptions, thrownError) {
-                callback(thrownError, null);
-                alert(' createDiscussion error');
+            error:function(err){
+            callback(err, null);
             }
         });
     },
@@ -329,6 +347,9 @@ var db_functions = {
             success: function () {
                 callback(null);
                 console.log("item information inserted to discussion shopping cart");
+            },
+            error:function(err){
+                callback(err, null);
             }
         });
     },
@@ -343,9 +364,8 @@ var db_functions = {
                 callback(null, data);
             },
 
-            error: function (xhr, ajaxOptions, thrownError) {
-                callback(thrownError, null);
-            //    alert('error');
+            error:function(err){
+            callback(err, null);
             }
         });
     } ,
@@ -359,6 +379,9 @@ var db_functions = {
             success: function () {
                 callback(null);
                 console.log("item information inserted to discussion shopping cart");
+            },
+            error:function(err){
+                callback(err, null);
             }
         });
     },
@@ -370,6 +393,9 @@ var db_functions = {
             async: true,
             success: function () {
                 console.log("item information inserted to discussion shopping cart");
+            },
+            error:function(err){
+                callback(err, null);
             }
         });
     },
@@ -384,8 +410,8 @@ var db_functions = {
                 console.log(data);
                 callback(null, data)
             },
-            error:function(data){
-                callback(data);
+            error:function(err){
+                callback(err, null);
             }
         });
     },
@@ -398,6 +424,9 @@ var db_functions = {
             success: function (data) {
                 console.log(data);
                 callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
             }
         });
     },
@@ -411,9 +440,8 @@ var db_functions = {
                 console.log(data);
                 callback(null, data);
             },
-            error:function(data)
-            {
-                callback(data);
+            error:function(err){
+                callback(err, null);
             }
         });
     },
@@ -426,6 +454,9 @@ var db_functions = {
             success: function (data) {
                 console.log("posts are" + " " + data);
                 callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
             }
         });
     },
@@ -441,9 +472,8 @@ var db_functions = {
                 alert('success');
                 callback(null, data);
             },
-            error:function(rsp)
-            {
-                callback(rsp);
+            error:function(err){
+                callback(err, null);
             }
         });
     },
@@ -460,9 +490,8 @@ var db_functions = {
                 alert('success');
                 callback(null, data);
             },
-            error:function(rsp)
-            {
-                callback(rsp);
+            error:function(err){
+                callback(err, null);
             }
         });
 
@@ -477,6 +506,9 @@ var db_functions = {
             success: function (data) {
                 console.log(data);
                 callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
             }
         });
     },
@@ -489,6 +521,9 @@ var db_functions = {
             success: function (data) {
                 console.log(data);
                 callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
             }
         });
     },
@@ -502,6 +537,9 @@ var db_functions = {
             success: function (data) {
                 console.log(data);
                 callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
             }
         });
     },
@@ -516,6 +554,9 @@ var db_functions = {
             success: function (data) {
                 console.log(data);
                 callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
             }
         });
     },
@@ -529,6 +570,9 @@ var db_functions = {
             success: function (data) {
                 //console.log(data);
                 callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
             }
         });
     },
@@ -538,7 +582,7 @@ var db_functions = {
         var type;
 
         grade_id ? url = '/api/grades/' + grade_id : url = '/api/grades/';
-        grade_id ? type = "POST" : type = "PUT";
+        grade_id ? type = "PUT" : type = "POST";
 
         this.loggedInAjax({
             url: url,
@@ -548,11 +592,33 @@ var db_functions = {
             success: function (data) {
                 alert('discussion was graded !');
                 callback(null, data);
-
             },
-            error:function(data)
-            {
-                callback(data);
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },
+
+
+
+    addSuggestionGrade: function(suggestion_id, discussion_id, grade, grade_id, callback){
+        var url;
+        var type;
+
+        grade_id ? url = '/api/grades_suggestion/' + grade_id : url = '/api/grades_suggestion/';
+        grade_id ? type = "PUT" : type = "POST";
+
+        this.loggedInAjax({
+            url: url,
+            type: type,
+            async: true,
+            data: {"suggestion_id": suggestion_id, "discussion_id": discussion_id, "evaluation_grade": grade},
+            success: function (data) {
+                alert('suggestion was graded !');
+                callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
             }
         });
     },
@@ -1005,7 +1071,13 @@ var db_functions = {
         });
     }
 
-}
+};
+
+/*dust.filters.str = function(value)
+{
+    return JSON.stringify(value);
+};*/
+
 
 $.prototype.autoscale = function(params)
 {

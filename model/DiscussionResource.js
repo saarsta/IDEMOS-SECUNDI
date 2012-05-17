@@ -44,78 +44,97 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
         this.default_query = function (query) {
             return query.sort('creation_date', 'descending');
         },
-            this.fields = {
-                title: null,
-                image_field: null,
-                image_field_preview: null,
-                subject_id: null,
-                creation_date: null,
-                creator_id: null,
-                first_name: null,
-                last_name: null,
-                vision_text_preview: null,
-                vision_text: null,
-                num_of_approved_change_suggestions: null,
-                is_cycle: null,
-                tags: null,
-                followers_count: null,
-                grade:Number,
-                evaluate_counter: null,
-                _id:null,
-                is_follower: null,
-                grade_id: null
-            };
+        this.fields = {
+            title: null,
+            image_field: null,
+            image_field_preview: null,
+            subject_id: null,
+            creation_date: null,
+            creator_id: null,
+            first_name: null,
+            last_name: null,
+            vision_text_preview: null,
+            vision_text: null,
+            num_of_approved_change_suggestions: null,
+            is_cycle: null,
+            tags: null,
+            followers_count: null,
+            grade:Number,
+            evaluate_counter: null,
+            _id:null,
+            is_follower: null,
+            grade: null,
+            grade_obj: {
+                grade_id: null,
+                value: null
+            }
+        };
+    },
+
+    get_discussion: function(object,user,callback)
+    {
+
+
+            //this code get discussion followers and populate it to object.useres
+            //i dont need it for now.. put it to async when i do
+
+//            models.User.find({"discussions.discussion_id": id}, ["email", "first_name", "avatar", "facebook_id", "discussions"], function(err, objs){
+//                var users = [];
+//                if(!err){
+//                    object.users = _.map(objs, function(user){
+//                        var curr_discussion =  _.find(user.discussions, function(discussion){
+//                            return discussion.discussion_id == id;
+//                        });
+//                        return {
+//                            user_id:user,
+//                            join_date: curr_discussion.join_date
+//                        };
+//                    });
+//                }
+//                else
+//                    object.users = [];
+
+        if(object){
+            object.grade_obj= {};
+            object.is_follower = false;
+
+            if(user){
+                if(_.find(user.discussions, function(user_discussion){return user_discussion.discussion_id + "" == object._id})){
+                    object.is_follower = true;
+                }
+
+                models.Grade.findOne({user_id: user._id, discussion_id: object._id}, function(err, grade){
+                    if(err){
+                        callback(err, object);
+                    }
+                    else{
+                        if (grade)
+                            object.grade_obj["grade_id"] = grade._id;
+                            object.grade_obj["value"] = grade.evaluation_grade;
+                    }
+                    callback(err, object);
+                });
+            }else{
+                callback(null, object);
+
+            }
+        }else{
+            callback({message: "internal error" ,code: 500}, object);
+        }
     },
 
     get_object:function (req, id, callback) {
-        this._super(req, id, function(err, object){
-            if(object){
-                object.grade_id = 0;
-                models.User.find({"discussions.discussion_id": id}, ["email", "first_name", "avatar", "facebook_id", "discussions"], function(err, objs){
-                    var users = [];
-                    if(!err){
-                        object.users = _.map(objs, function(user){
-                            var curr_discussion =  _.find(user.discussions, function(discussion){
-                                return discussion.discussion_id == id;
-                            });
-                            return {
-                                user_id:user,
-                                join_date: curr_discussion.join_date
-                            };
-                        });
-                    }
-                    else
-                        object.users = [];
-                    object.is_follower = false;
-                    if(req.user){
-                        if(_.find(req.user.discussions, function(user_discussion){return user_discussion.discussion_id == id})){
-                            object.is_follower = true;
-                        }
-                        models.Grade.findOne({user_id: req.user._id}, function(err, grade){
-                            if(err){
-                                callback(err, object);
-                            }
-                            else{
-                                if (grade)
-                                    object.grade_id = grade._id;
-                            }
-                            callback(err, object);
-                        });
-                    }else{
-                        callback(err, object);
-                    }
-
-                });
-            }else{
-                callback(err, object);
-            }
+        var self = this;
+        self._super(req, id, function(err, object){
+            self.get_discussion(object,req.user,callback);
         })
     },
 
     get_objects: function (req, filters, sorts, limit, offset, callback) {
 
-        var user_id = req.query.user_id || req.user._id;
         if(req.query.get == "myUru"){
+            var user_id = req.query.user_id || req.user._id;
+
             filters['users.user_id'] = user_id;
         }
 
