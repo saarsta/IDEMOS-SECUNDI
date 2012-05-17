@@ -80,7 +80,7 @@
 <script src="/resources/js/selectivizr-min.js" type="text/javascript"></script>
 
 <script src="/js/dust-core-0.3.0.min.js"></script>
-<script src="/js/compiled_templates.js"></script>
+<script src="/js/compiled_templates_old.js"></script>
 <script src="/javascripts/db.js"></script>
 <script src="/resources/js/jquery-fieldselection.js" type="text/javascript"></script>
 <%-extra_head%>
@@ -334,7 +334,8 @@
 
             var discussion_id = "<%=discussion_id%>";
             var mouseDown, mouseUp, top, left;
-            var grade_id = "<%=discussion.grade_id%>";
+            var grade_id = "<%=discussion.grade_obj.grade_id%>";
+            var sugg_grade_id;
 
             $('.discussion_content')
                     .on('mousedown', function(e) {
@@ -400,7 +401,6 @@
                     if(!err){
                         var span = $('span',button);
 //                        span.text(Number(span.text()) + 1);
-                        debugger
                         var vote_against = button.closest('div.action').find('a.vote_against');
                         vote_against.text(post_obj.votes_against);
                         button.text(post_obj.votes_for);
@@ -423,11 +423,8 @@
                 var func = $(this).parents('#posts').length ? db_functions.voteForPost : db_functions.voteForSuggestion;
                 func.call(db_functions,post_id, "remove", function(err, post_obj){
                     if(!err){
-//                        debugger
                         var span = $('span',button);
-//                        span.text(Number(span.text()) + 1);
                         var vote_for = button.closest('div.action').find('a.vote_for');
-                        debugger
                         vote_for.text(post_obj.votes_for);
                         button.text(post_obj.votes_against);
                     }
@@ -514,27 +511,6 @@
                 });
             });
 
-            $("#btn_grade").live("click", function(){
-                var grade = $(".grade input").val();
-                console.log(" grade is :  " + grade);
-
-                var reg = /[0-9]$/;
-                if((reg.test(grade) == false) || !(grade >= 0 && grade <= 10)){
-                    alert('Invalid number');
-                }else{
-                    db_functions.addDiscussionGrade(discussion_id, grade, grade_id, function(err, discussion_object){
-                        if (err){
-                            console.log(err);
-                        }
-                        else{
-                            console.log(discussion_object);
-                            $("#user_tokens").text(discussion_object.updated_user_tokens);
-                            $("#discussion_grade").val("grade is: " + discussion_object.grade + " count: " + discussion_object  .evaluate_counter);
-                        }
-                    });
-                }
-            });
-
             $('#sorting_select').change(function() {
                 $("#posts").empty();
 
@@ -550,7 +526,6 @@
                             })
                         }
                     });
-
                 }
                 else{
                     if ($(this).val() === 'op_back_date') {
@@ -566,8 +541,6 @@
                                 })
                             }
                         });
-
-
                     }else{
                         if ($(this).val() === 'op_votes_for') {
                             db_functions.getSortedPostByDiscussion(discussion_id, "order_by=-votes_for", function(err, data){
@@ -623,23 +596,36 @@
 
             $('#rating_button').click(function(){
                 var rating = Number($('#rating_select').val());
-                db_functions.addDiscussionGrade(discussion_id,rating,function(err,data)
+                db_functions.addDiscussionGrade(discussion_id,rating, grade_id, function(err,data)
                 {
-                    console.log(data);
                     $("#user_tokens").text(data.updated_user_tokens);
                     $("#current_grade").text(data.new_grade);
                     $("#current_graders").text(data.evaluate_counter);
+
+                    $.each(data.suggestions, function(err, suggestion){
+                        $("#" + suggestion._id + " .sugg_current_grade").text("suggestion grade:" + suggestion.grade);
+                        $("#" + suggestion._id + " .sugg_current_graders").text("num of evaluates:" + suggestion.evaluators_counter);
+                    })
                 });
             });
 
-            /*$('#sortind_select').change(function(){
-                var sort_value = $('#sorting_select').attr('value');
+//            $('.sugg_rating_button').click(function(){
+            $('#suggestion_list').on('click','.sugg_rating_button',function(){
+                var rating = Number($(this).parent().find($(".sugg_rating_select")).val());
+                sugg_grade_id = $(this).parent().data('grade');
 
-                switch(sort_value){
-                    case "op_date":
+                var suggestion_id = $(this).parent().attr('id');
+                var parent = $(this).parent();
+                var self = this;
+                db_functions.addSuggestionGrade(suggestion_id, discussion_id,rating, sugg_grade_id, function(err,data)
+                {
+                    if(!err){
+                        parent.find('span[sugg_current_grade='+ suggestion_id + ']').text(data.new_grade);
+                        //$(parent + " .sugg_current_graders" + " ." + suggestion_id).text(data.evaluate_counter);
 
-                }
-            });*/
+                    }
+                });
+            });
 
             $('#suggest_button').click(function()
             {

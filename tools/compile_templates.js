@@ -9,7 +9,7 @@ function compile_template(name,file)
     return dust.compile(str,name);
 }
 
-var writer = fs.createWriteStream(path.join(__dirname,'..','public','js','compiled_templates.js'));
+var writer = fs.createWriteStream(path.join(__dirname,'..','public','js','compiled_templates_old.js'));
 
 
 writer.write(compile_template('subject','subject.html'));
