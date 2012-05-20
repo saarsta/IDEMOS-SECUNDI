@@ -20,37 +20,6 @@ var resources = require('jest'),
     common = require('./common'),
     async = require('async');
 
-
-/*
- //Authorization
- var Authoriztion = function() {};
- util.inherits(Authoriztion,resources.Authorization);
-
- Authoriztion.prototype.edit_object = function(req,object,callback){
-
- if(req.session.user_id){
- var user_id = req.session.user_id;
- models.User.findOne({_id :user_id},function(err,object)
- {
- if(err)
- {
- callback(err, null);
- }
- else
- {
- if (object.tokens >= CHANGE_SUGGESTION_PRICE){
- callback(null, object);
- }else{
- callback("Error: Unauthorized - there is not enought tokens", null);
- }
- }
- });
- }
- else{
- callback("Error: User Is Not Autthenticated", null);
- }
- };*/
-
 var SuggestionResource = module.exports = common.GamificationMongooseResource.extend({
     init:function () {
         this._super(models.Suggestion, 'suggestion', /*common.getGamificationTokenPrice('suggestion')*/2);

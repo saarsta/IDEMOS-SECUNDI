@@ -615,14 +615,16 @@
                 sugg_grade_id = $(this).parent().data('grade');
 
                 var suggestion_id = $(this).parent().attr('id');
-                var parent = $(this).parent();
                 var self = this;
                 db_functions.addSuggestionGrade(suggestion_id, discussion_id,rating, sugg_grade_id, function(err,data)
                 {
                     if(!err){
-                        parent.find('span[sugg_current_grade='+ suggestion_id + ']').text(data.new_grade);
-                        //$(parent + " .sugg_current_graders" + " ." + suggestion_id).text(data.evaluate_counter);
-
+                        db_functions.getSuggestionByDiscussion(discussion_id, function(err, data){
+                            $.each(data.objects,function(index,suggestion)
+                            {
+                                render_suggestion(suggestion);
+                            });
+                        })
                     }
                 });
             });

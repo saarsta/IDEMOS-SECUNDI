@@ -578,11 +578,16 @@ var db_functions = {
     },
 
     addDiscussionGrade: function(discussion_id, grade, grade_id, callback){
-        var url;
-        var type;
+        var url = '/api/grades/';
+        var type = "POST";
 
-        grade_id ? url = '/api/grades/' + grade_id : url = '/api/grades/';
-        grade_id ? type = "PUT" : type = "POST";
+//        grade_id ? url = '/api/grades/' + grade_id : url = '/api/grades/';
+//        grade_id ? type = "PUT" : type = "POST";
+
+        if(grade_id && grade_id !== "undefined"){
+            url = '/api/grades/' + grade_id;
+            type = "PUT";
+        }
 
         this.loggedInAjax({
             url: url,

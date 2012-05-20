@@ -175,7 +175,9 @@ var calculateSuggestionGrade = GradeSuggestionResource.calculateSuggestionGrade 
             total_sum = suggestios_grade_sum + discussion_grade_sum;
 
             new_grade = total_sum/total_counter, total_counter;
-            models.Suggestion.update({suggestion_id: suggestion_id}, {$set: {grade: new_grade, evaluate_counter: total_counter}}, cbk);
+            models.Suggestion.update({_id: suggestion_id}, {$set: {grade: new_grade, evaluate_counter: total_counter}}, function(err, args){
+                cbk(err, args);
+            });
         }
 
     ], function(err, disc_grades){

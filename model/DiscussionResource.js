@@ -108,9 +108,10 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                         callback(err, object);
                     }
                     else{
-                        if (grade)
+                        if (grade){
                             object.grade_obj["grade_id"] = grade._id;
                             object.grade_obj["value"] = grade.evaluation_grade;
+                        }
                     }
                     callback(err, object);
                 });

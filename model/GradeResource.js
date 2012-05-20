@@ -79,6 +79,8 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
         var new_grade = null;
         var counter = 0;
 
+
+
         self._super(req, fields, function(err, grade_object)
         {
             if(!err){
@@ -89,14 +91,19 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
                     },
 
                     function(discussion_obj, cbk){
-                        calculateDiscussionGrade(grade_object.discussion_id, function(err, new_grade, evaluate_counter){
-                            cbk(err, new_grade, evaluate_counter);
+                        calculateDiscussionGrade(grade_object.discussion_id, function(err, _new_grade, evaluate_counter){
+                            new_grade = _new_grade;
+                            counter = evaluate_counter;
+                            cbk(err, _new_grade);
                         });
                     },
 
                     //calculate all change suggestion all over again
                     function(obj, cbk){
-                        models.Suggestion.find({discussion_id: grade_object.discussion_id}, ["_id"], cbk);
+                        models.Suggestion.find({discussion_id: grade_object.discussion_id}, ["_id"], function(err, results)
+                        {
+                            cbk(err, results);
+                        });
                     },
 
                     function(suggestions, cbk){
@@ -105,11 +112,11 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
                         , cbk);
                     }
 
-                ], function(err, new_grade, evaluate_counter){
+                ], function(err, args){
                     req.gamification_type = "grade_discussion";
                     req.token_price = common.getGamificationTokenPrice('grade_discussion') || 0;
 
-                    callback(err, {new_grade:new_grade, evaluate_counter: evaluate_counter, grade_id: grade_object._id || 0});
+                    callback(err, {new_grade: new_grade, evaluate_counter: counter, grade_id: grade_object._id || 0});
                 })
             }else{
                 callback(err, null);
@@ -167,7 +174,7 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
                     }
 
                 ], function(err){
-                    callback(err, {new_grade: new_grade, evaluate_counter: evaluate_counter, grade_id: g_grade._id || 0})
+                    callback(err, {new_grade: new_grade, evaluate_counter: evaluate_counter, suggestions: suggestions,grade_id: g_grade._id || 0})
                 })
             }
         });
