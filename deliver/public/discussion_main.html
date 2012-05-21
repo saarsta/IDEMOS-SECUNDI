@@ -1,0 +1,408 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="css/reset.css" rel="stylesheet" type="text/css" />
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="css/colorbox.css" />
+    <!--[if lte IE 7]><link href="css/ie.css" rel="stylesheet" type="text/css" /><![endif]-->
+    <script src="js/jquery-1.6.1.min.js" type="text/javascript"></script>
+    <script src="js/jquery.cycle.all.js" type="text/javascript"></script>
+    <script src="js/jquery.colorbox-min.js" type="text/javascript"></script>
+    <script src="js/script.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.tikunim-box h2').click(function () {
+                $(this).parent().toggleClass('active');
+            });
+            $('.user-box h2').click(function () {
+                $(this).parent().toggleClass('active');
+            });
+            $(".inline").colorbox({ inline: true, width: "730" });
+        });
+    </script>
+</head>
+<body>
+    <div id="wrap">
+        <div id="header">
+            <a href="" id="logo"></a>
+            <ul id="main-menu">
+                <li><a href="">ורוע הז המ</a></li>
+                <li><a href="">עדימ רגאמ</a></li>
+                <li><a href="">םינויד</a></li>
+                <li><a href="">םיעוראו תולועפ</a></li>
+                <li><a href="">הפונת ילגעמ</a></li>
+            </ul>
+            <div class="user-box">
+                <span class="total-number">74</span>
+                <span class="icon"></span>
+                <h2>רבחתה</h2>
+                <div class="hide-box">
+                    <div class="user-login-box cf">
+                        <ul>
+                            <li class="tokens"><a href="">ילש םינקוטה <span class="icon-menu"></span><span class="number">74</span></a></li>
+                            <li class="chip"><a href="">ילש םינומיסאה <span class="icon-menu"></span><span class="number">325</span></a></li>
+                            <li class="respect"><a href="">דובכה דדמ <span class="icon-menu"></span><span class="number">10</span></a></li>
+                            <li class="settings"><a href="">תורדגה <span class="icon-menu"></span></a></li>
+                            <li class="help"><a href="">הרזע <span class="icon-menu"></span></a></li>
+                        </ul>
+                        <div class="btn-box">
+                            <a href="">גצה</a>
+                            <a href="">רתסה</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tikunim-box">
+                <span class="icon"></span>
+                <h2>םילשכ לע חווד</h2>
+                <div class="hide-box">
+                    <textarea cols="0" rows="0"></textarea>
+                    <input type="submit" value="חלש" />
+                </div>
+            </div>
+            <form action="#" class="search-box">
+                <label>תויגת יפל שופיח</label>
+                <input type="text" value="" />
+                <input type="submit" value="שפח" />
+            </form>
+        </div>
+        <div id="content" class="cf">
+            <div class="discussion-main">
+                <h2>םדוקה בלשב רחבנש ןוידה אשונ</h2>
+                <form action="#">
+                    <div class="top cf">
+                        <img class="floatRight" src="images/sample-2.jpg" alt="" />
+                        <div class="floatLeft">
+                            <div class="input">
+                                <input type="text" value="םידופיקה תא ליצהל םיבייח" />
+                            </div>
+                            <div class="textarea">
+                                <textarea rows="10" cols="50">אוה םבצמב םשאש ירקיעה םרוגה .תיב ירסח םידופיק יפלא םיבבותסמ ,המורדבו ץראה ןופצב ,לארשי לש הירפירפה ירוזאב
+.תונורחאה םינשה לש היינבהו חותיפה תפונת תובקעב םידופיקה לש םייעבטה היחמה ירוזא תא וסרהש ,ןיינבהו רפעה ינלבק
+הביל לא לארשי תנידמ לע ןכל .תואלקחלו יגולויבה ןווגמל בושח םמויקו לארשי לש ףונהמ דרפנ יתלב קלח םה םידופיקה
+.ועגפנש םידופיקה תויסולכוא תא םקשלו םהלש היחמה בחרמ לעו םהילע ןגהל ,הידופיק תא </textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tags-box">
+                        <div class="add-tag">
+                            <div class="input">
+                                <label>דופיק</label>
+                                <input type="text" value="" />
+                            </div>
+                            <input type="submit" value="ףסוה" />
+                        </div>
+                        <div class="tags-list">
+                            <span>הירפירפ</span>
+                            <span>הינבבו ןונכתב המרופרה</span>
+                            <span>היצלוגר</span>
+                            <span>רפע ינלבק</span>
+                            <span>םייח ילעב תויוכז</span>
+                        </div>
+                    </div>
+                    <div class="bottom">
+                        <div class="textarea">
+                            <textarea rows="10" cols="50">?ןוזחה רופישב ןוידב םיפתתשמהמ שקבל הצור תייה הרזע וזיא ?ךילע עיפשמ יחכונה בצמה ךיא ?היעבה המ - שרוד התאש תואיצמב ךרוצה תא רבסה .ןוידב ןושארה טסופה</textarea>
+                        </div>                        
+                        <input type="submit" value="ןויד תריצי" />
+                        <label><input type="checkbox" checked="checked" /> ךלש ריקה לע תרציש ןוידה תא ףתש</label>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="card">
+        <div class="extra">
+            <div class="card-top cf">
+                <a class="btn btn-1 inline" href="#user-search">ףתש</a>
+                <a class="btn btn-2" href=""><span class="number">11</span> םיפסונ עדימ יטירפ ףוסאל רוזח</a>
+                <h3 class="basket">עדימה תלג ע</h3>
+                <p>הלגעב םיטירפ 24 ךל שי</p>
+            </div>
+            <div class="card-products cf">
+                <div class="one-col">
+                    <div class="one">
+                        <a class="delete-app" href=""></a>
+                        <img src="images/news-2.jpg" alt="" />
+                        <h4>דעצמ יכלוה דגנ םידקת תרסח המילא האחמ ורצענ השימח ,םילשוריב הוואגה</h4>
+                        <p> עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה לש ח”ודב  ... 2012 לארשיב ינועה בצמ לע םידירטמ םינותנ ולגתה </p>
+                        <div class="btn-box">
+                            <a class="confirm" href="">ףתש</a>
+                            <a class="delete" href=""><span>רסה</span></a>
+                        </div>
+                    </div>
+                    <div class="one">
+                        <a class="delete-app" href=""></a>
+                        <h4>תודובע תובקעב תיב ירסח םידופיק יפלא הדוהי רבדמ רוזאב תויקוח אל תיתשת</h4>
+                        <p> עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה לש ח”ודב  ח”ודב .2012 לארשיב ינועה בצמ לע םידירטמ םינותנ ולגתה                         עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה לש ... תוכרעיה םישרודש רתויב םידירטמ םינותנ ולגתה </p>
+                        <div class="btn-box">
+                            <a class="confirm" href="">ףתש</a>
+                            <a class="delete" href=""><span>רסה</span></a>
+                        </div>
+                    </div>
+                    <div class="one">
+                        <a class="delete-app" href=""></a>
+                        <div class="diagram cf">
+                            <img src="images/diagram-two.png" alt="" />
+                            <div class="percent">
+                                <strong>57%</strong>
+                                םיעדוי אל
+                            </div>
+                            <div class="percent">
+                                <strong>43%</strong>
+                                ועיבצי
+                            </div>
+                        </div>
+                        <div class="btn-box">
+                            <a class="confirm" href="">ףתש</a>
+                            <a class="delete" href=""><span>רסה</span></a>
+                        </div>
+                    </div>
+                    <div class="loading">
+                        טירפ ןעוט
+                    </div>
+                </div>
+                <div class="one-col">
+                    <div class="one">
+                        <a class="delete-app" href=""></a>
+                        <div class="user cf">
+                            <div class="imb-box">
+                                <img src="images/user-1.jpg" alt="" />
+                                <span></span>
+                            </div>
+                            <h4>יבקעי לאומש</h4>
+                            <p>זכרמה הכשלה לש ח”ודב ינועה בצמ לע םידירטמ םינותנ  ... ץראה זכרמ ירוזאב</p>
+                        </div>
+                        <div class="btn-box">
+                            <a class="confirm" href="">ףתש</a>
+                            <a class="delete" href=""><span>רסה</span></a>
+                        </div>
+                    </div>
+                    <div class="one">
+                        <a class="delete-app" href=""></a>
+                        <div class="diagram cf">
+                            <img src="images/diagram-two.png" alt="" />
+                            <div class="percent">
+                                <strong>57%</strong>
+                                םיעדוי אל
+                            </div>
+                            <div class="percent">
+                                <strong>43%</strong>
+                                ועיבצי
+                            </div>
+                        </div>
+                        <div class="btn-box">
+                            <a class="confirm" href="">ףתש</a>
+                            <a class="delete" href=""><span>רסה</span></a>
+                        </div>
+                    </div>
+                    <div class="one">
+                        <a class="delete-app" href=""></a>
+                        <h4>תודובע תובקעב תיב ירסח םידופיק יפלא הדוהי רבדמ רוזאב תויקוח אל תיתשת</h4>
+                        <p> עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה לש ח”ודב  ח”ודב .2012 לארשיב ינועה בצמ לע םידירטמ םינותנ ולגתה                         עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה לש ... תוכרעיה םישרודש רתויב םידירטמ םינותנ ולגתה </p>
+                        <div class="btn-box">
+                            <a class="confirm" href="">ףתש</a>
+                            <a class="delete" href=""><span>רסה</span></a>
+                        </div>
+                    </div>
+                    <div class="one">
+                        <a class="delete-app" href=""></a>
+                        <img src="images/news-1.jpg" alt="" />
+                        <h4>דעצמ יכלוה דגנ םידקת תרסח המילא האחמ ורצענ השימח ,םילשוריב הוואגה</h4>
+                        <p> עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה לש ח”ודב  ... 2012 לארשיב ינועה בצמ לע םידירטמ םינותנ ולגתה </p>
+                        <div class="btn-box">
+                            <a class="confirm" href="">ףתש</a>
+                            <a class="delete" href=""><span>רסה</span></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="one-col">
+                    <div class="one">
+                        <a class="delete-app" href=""></a>
+                        <h4>תודובע תובקעב תיב ירסח םידופיק יפלא הדוהי רבדמ רוזאב תויקוח אל תיתשת</h4>
+                        <p> עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה לש ח”ודב  ח”ודב .2012 לארשיב ינועה בצמ לע םידירטמ םינותנ ולגתה                         עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה לש ... תוכרעיה םישרודש רתויב םידירטמ םינותנ ולגתה </p>
+                        <div class="btn-box">
+                            <a class="confirm" href="">ףתש</a>
+                            <a class="delete" href=""><span>רסה</span></a>
+                        </div>
+                    </div>
+                    <div class="one">
+                        <a class="delete-app" href=""></a>
+                        <img src="images/news-4.jpg" alt="" />
+                        <h4>דעצמ יכלוה דגנ םידקת תרסח המילא האחמ ורצענ השימח ,םילשוריב הוואגה</h4>
+                        <p> עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה לש ח”ודב  ... 2012 לארשיב ינועה בצמ לע םידירטמ םינותנ ולגתה </p>
+                        <div class="btn-box">
+                            <a class="confirm" href="">ףתש</a>
+                            <a class="delete" href=""><span>רסה</span></a>
+                        </div>
+                    </div>
+                    <div class="one">
+                        <a class="delete-app" href=""></a>
+                        <div class="user cf">
+                            <div class="imb-box">
+                                <img src="images/user-3.jpg" alt="" />
+                                <span></span>
+                            </div>
+                            <h4>יבקעי לאומש</h4>
+                            <p>זכרמה הכשלה לש ח”ודב ינועה בצמ לע םידירטמ םינותנ  ... ץראה זכרמ ירוזאב</p>
+                        </div>
+                        <div class="btn-box">
+                            <a class="confirm" href="">ףתש</a>
+                            <a class="delete" href=""><span>רסה</span></a>
+                        </div>
+                    </div>
+                    <div class="loading">
+                        טירפ ןעוט
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="display: none;">
+    <div class="popup" id="user-search">
+        <form class="search-top cf" action="#">
+            <label>ןוידב ףתתשהל םירבח ןמזה</label>
+            <div class="input">
+                <input type="text" value="" />
+            </div>
+            <input type="submit" value="שפח" />
+        </form>
+        <div class="search-result cf">
+            <div class="one">
+                <a class="delete-app" href=""></a>
+                <div class="img-box">
+                    <img width="58" src="images/user-1.jpg" alt="" />
+                    <span></span>
+                </div>
+                יבקעי לאומש
+            </div>
+            <div class="one">
+                <a class="delete-app" href=""></a>
+                <div class="img-box">
+                    <img width="58" src="images/user-1.jpg" alt="" />
+                    <span></span>
+                </div>
+                יבקעי לאומש
+            </div>
+            <div class="one">
+                <a class="delete-app" href=""></a>
+                <div class="img-box">
+                    <img width="58" src="images/user-1.jpg" alt="" />
+                    <span></span>
+                </div>
+                יבקעי לאומש
+            </div>
+            <div class="one">
+                <a class="delete-app" href=""></a>
+                <div class="img-box">
+                    <img width="58" src="images/user-1.jpg" alt="" />
+                    <span></span>
+                </div>
+                יבקעי לאומש
+            </div>
+            <div class="one">
+                <a class="delete-app" href=""></a>
+                <div class="img-box">
+                    <img width="58" src="images/user-1.jpg" alt="" />
+                    <span></span>
+                </div>
+                יבקעי לאומש
+            </div>
+            <div class="one">
+                <a class="delete-app" href=""></a>
+                <div class="img-box">
+                    <img width="58" src="images/user-1.jpg" alt="" />
+                    <span></span>
+                </div>
+                יבקעי לאומש
+            </div>
+            <div class="one">
+                <a class="delete-app" href=""></a>
+                <div class="img-box">
+                    <img width="58" src="images/user-1.jpg" alt="" />
+                    <span></span>
+                </div>
+                יבקעי לאומש
+            </div>
+            <div class="one">
+                <a class="delete-app" href=""></a>
+                <div class="img-box">
+                    <img width="58" src="images/user-1.jpg" alt="" />
+                    <span></span>
+                </div>
+                יבקעי לאומש
+            </div>
+            <div class="one">
+                <a class="delete-app" href=""></a>
+                <div class="img-box">
+                    <img width="58" src="images/user-1.jpg" alt="" />
+                    <span></span>
+                </div>
+                יבקעי לאומש
+            </div>
+            <div class="one">
+                <a class="delete-app" href=""></a>
+                <div class="img-box">
+                    <img width="58" src="images/user-1.jpg" alt="" />
+                    <span></span>
+                </div>
+                יבקעי לאומש
+            </div>
+        </div>
+        <form class="search-bottom cf" action="#">
+            <label>ליימ םהל חלש וא</label>
+            <div class="input">
+                <input type="text" value="" />
+            </div>
+            <input type="submit" value="חלש" />
+        </form>
+    </div>
+    </div>
+    <div id="footer">
+        <div class="extra cf">
+            <div class="one-col">
+                <h4>ורוע תעונת</h4>
+                <p>לש ולוקש ןמזה עיגהש הנבה ךותמ המקוה ורוע
+תויהל םיאכז ונלוכשו ,עמשיי לארשיב בוטה
+ לש ולוקש ןמזה עיגהש הנבה ךותמ המקוה ורו
+,עמשיי לארשיב בוטה .תוטלחהה תעביקב םיפתוש
+.תוטלחהה תעביקב םיפתושתויהל םיאכז ונלוכשו</p>
+            </div>
+            <div class="two-col">
+                <h4>םירושיק</h4>
+                <ul>
+                    <li><a href="">ונחנא ימ</a></li>
+                    <li><a href="">תושדח</a></li>
+                    <li><a href="">שומיש יאנת</a></li>
+                    <li><a href="">םיגולבש</a></li>
+                    <li><a href="">םיגולב</a></li>
+                    <li><a href="">הרזע</a></li>
+                </ul>
+            </div>
+            <div class="three-col">
+                <h4>תומח תויגת</h4>
+                <div class="tags">
+                    <a href="">הלטבא</a>
+                    <a href="">הלכלכ</a>
+                    <a href="">ינוע</a>
+                    <a href="">תיתשת</a><br />
+                    <a href="">לשממו היטרקומד</a>
+                    <a href="">הלטבא</a>
+                    <a href="">הלכלכ</a>
+                    <a href="">ינוע</a>
+                    <div class="more">
+                        <span></span>
+                        <ul>
+                            <li><a href="">תויגת דוע גצה</a></li>
+                            <li><a href="">תיגת ףסוה</a></li>
+                        </ul>
+                    </div>
+                </div>                
+            </div>
+        </div>
+    </div>
+</body>
+</html>
