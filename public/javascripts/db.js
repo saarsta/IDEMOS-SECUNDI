@@ -58,6 +58,22 @@ var db_functions = {
 
 
 
+    dbGetAllSubjects: function(useSmall){
+        this.loggedInAjax({
+            url: '/api/subjects',
+            type: "GET",
+            async: true,
+            success: function (data) {
+//                var size = data.objects.length;
+                dust.renderArray(useSmall?'subject_small' :'subject',data.objects,null,function(err,out)
+                {
+                   $('#subjects_list').append(out);
+
+                });
+            }
+        });
+    },
+
     getListItems : function(type,query,callback)
     {
         var querystring = type;
@@ -105,7 +121,7 @@ var db_functions = {
             }
         });
     },
-
+    
     addInfoItemToShoppingCart: function(info_item_id, callback){
         this.loggedInAjax({
             url: '/api/shopping_cart/' + info_item_id,
@@ -168,6 +184,24 @@ var db_functions = {
         });
     },
 
+    getHotInfoItems: function(){
+        this.loggedInAjax({
+            url: '/api/information_items/?is_hot_info_item=true',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log("in hot info items");
+                console.log(data);
+                $('#hot_items_list').empty();
+                dust.renderArray('hot_info_item', data.objects, null, function(err,out)
+                {
+                    $('#hot_items_list').append(out);
+                    $('#hot_items_list img').autoscale();
+                });
+            }
+        });
+
+    },
 
     getHotObjects: function(callback){
         this.loggedInAjax({

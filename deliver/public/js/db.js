@@ -94,7 +94,7 @@ var db_functions = {
         });
     },
 
-    dbGetAllSubjects: function(callback){
+    getAllSubjects: function(callback){
         this.loggedInAjax({
             url: '/api/subjects',
             type: "GET",
