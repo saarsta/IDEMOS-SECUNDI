@@ -44,63 +44,98 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
         this.default_query = function (query) {
             return query.sort('creation_date', 'descending');
         },
-            this.fields = {
-                title: null,
-                image_field: null,
-                image_field_preview: null,
-                subject_id: null,
-                creation_date: null,
-                creator_id: null,
-                first_name: null,
-                last_name: null,
-                vision_text_preview: null,
-                vision_text: null,
-                num_of_approved_change_suggestions: null,
-                is_cycle: null,
-                tags: null,
-                followers_count: null,
-                grade:Number,
-                evaluate_counter: null,
-                _id:null,
-                is_follower: null
-            };
+        this.fields = {
+            title: null,
+            image_field: null,
+            image_field_preview: null,
+            subject_id: null,
+            creation_date: null,
+            creator_id: null,
+            first_name: null,
+            last_name: null,
+            vision_text_preview: null,
+            vision_text: null,
+            num_of_approved_change_suggestions: null,
+            is_cycle: null,
+            tags: null,
+            followers_count: null,
+            grade:Number,
+            evaluate_counter: null,
+            _id:null,
+            is_follower: null,
+            grade: null,
+            grade_obj: {
+                grade_id: null,
+                value: null
+            }
+        };
     },
 
-    get_object:function (req, id, callback) {
-        this._super(req, id, function(err, object){
-            if(object){
-                models.User.find({"discussions.discussion_id": id}, ["email", "first_name", "avatar", "facebook_id", "discussions"], function(err, objs){
-                    var users = [];
-                    if(!err){
-                        object.users = _.map(objs, function(user){
-                            var curr_discussion =  _.find(user.discussions, function(discussion){
-                                return discussion.discussion_id == id;
-                            });
-                            return {
-                                user_id:user,
-                                join_date: curr_discussion.join_date
-                            };
-                        });
+    get_discussion: function(object,user,callback)
+    {
+
+
+            //this code get discussion followers and populate it to object.useres
+            //i dont need it for now.. put it to async when i do
+
+//            models.User.find({"discussions.discussion_id": id}, ["email", "first_name", "avatar", "facebook_id", "discussions"], function(err, objs){
+//                var users = [];
+//                if(!err){
+//                    object.users = _.map(objs, function(user){
+//                        var curr_discussion =  _.find(user.discussions, function(discussion){
+//                            return discussion.discussion_id == id;
+//                        });
+//                        return {
+//                            user_id:user,
+//                            join_date: curr_discussion.join_date
+//                        };
+//                    });
+//                }
+//                else
+//                    object.users = [];
+
+        if(object){
+            object.grade_obj= {};
+            object.is_follower = false;
+
+            if(user){
+                if(_.find(user.discussions, function(user_discussion){return user_discussion.discussion_id + "" == object._id})){
+                    object.is_follower = true;
+                }
+
+                models.Grade.findOne({user_id: user._id, discussion_id: object._id}, function(err, grade){
+                    if(err){
+                        callback(err, object);
                     }
-                    else
-                        object.users = [];
-                    object.is_follower = false;
-                    if(req.user)
-                        if(_.find(req.user.discussions, function(user_discussion){return user_discussion.discussion_id == id})){
-                            object.is_follower = true;
+                    else{
+                        if (grade){
+                            object.grade_obj["grade_id"] = grade._id;
+                            object.grade_obj["value"] = grade.evaluation_grade;
                         }
+                    }
                     callback(err, object);
                 });
             }else{
-                callback(err, object);
+                callback(null, object);
+
             }
+        }else{
+            callback({message: "internal error" ,code: 500}, object);
+        }
+    },
+
+    get_object:function (req, id, callback) {
+        var self = this;
+        self._super(req, id, function(err, object){
+            self.get_discussion(object,req.user,callback);
         })
     },
 
     get_objects: function (req, filters, sorts, limit, offset, callback) {
 
-        var user_id = req.query.user_id || req.user._id;
         if(req.query.get == "myUru"){
+            var user_id = req.query.user_id || req.user._id;
+
             filters['users.user_id'] = user_id;
         }
 
@@ -176,9 +211,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
             }else{
                 callback(err, null);
             }
-
         })
-
     },
 
     update_obj:function (req, object, callback) {
@@ -247,39 +280,4 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
     }
 });
 
-//module.exports.approveDiscussionToCycle = function(id, callback)
-//{
-//      var creator_id;
-//      var score = 0;
-//      var notification_type = 'aprroved_discussion_i_created';
-//
-//      async.waterfall([
-//          function(cbk){
-//              models.Discussion.findById(id, cbk);
-//          },
-//
-//          function(disc, cbk){
-//              creator_id = disc.creator_id;
-//              async.parallel([
-//                  function(cbk2){
-//                      models.Discussion.update({_id: id}, {$set: {
-//                              "is_cycle.flag": true,
-//                              "is_cycle.date": Date.now()}},
-//                          cbk2);
-//                  },
-//
-//                  function(cbk2){
-//                      models.User.update({_id: creator_id}, {
-//                          $inc: {"gamification.approved_discussion_to_cycle": 1,
-//                                 "score": score}},
-//                          cbk2);
-//                  },
-//
-//                  function(cbk2){
-//                      notifications.create_user_notification(notification_type, cycle_id,creator_id, cbk);
-//                  }
-//              ], cbk);
-//          }
-//      ], callback)
-//}
 

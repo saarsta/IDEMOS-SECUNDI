@@ -1,18 +1,28 @@
 <div class="one">
     <div class="img-box">
-        <img src="{image_field.url}" alt="" />
+        <div style='width:125px; height:80px;' class='auto-scale'>
+            <img src="{image_field.url}" alt="" />
+        </div>
         <span class="flag"></span>
     </div>
     <h4><a href="">{title}</a></h4>
     <p> {text_field}</p>
     <div class="tags">
         {#tags}
-        <a href="">{.}</a>{~n}
+        <a href="/information_items?tag_name={.|u}"
+        {@idx}
+        {@if cond="({.} > 3 )"}
+        style="display:none;"
+        {/if}
+        {/idx}
+        >{.}</a>{~n}
         {/tags}
         <div class="more">
             <span></span>
             <ul>
+                {@if cond="('{tags}'.split(',').length > 4 )"}
                 <li><a href="">הצג עוד תגיות</a></li>
+                {/if}
                 <li><a href="">הוסף תגית</a></li>
             </ul>
         </div>

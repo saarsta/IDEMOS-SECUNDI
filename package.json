@@ -9,7 +9,7 @@
         "connect-auth": "",
         "mongoose":"",
         "express-resource": "= 0.2.4",
-        "jest": ">= 0.0.88",
+        "jest": ">= 0.0.96",
         "connect-mongo":"= 0.1.7",
         "async": "",
 		"jade": "",
@@ -17,7 +17,7 @@
         "underscore": "",
         "i18n-mongoose":"",
         "j-forms":">= 0.0.55",
-        "admin-with-forms":">= 0.0.15",
+        "admin-with-forms":"= 0.0.19",
         "knox":"",
         "dustjs-linkedin":""
   },

@@ -16,7 +16,29 @@ var ArticleResource = common.GamificationMongooseResource.extend({
         this._super(models.Article, null, null);
         this.authentication = new common.SessionAuthentication();
         this.allowed_methods = ['get', 'post'];
+        this.filtering = {popularity_counter: null};
         this.update_fields = ["comments", "popolarity_counter", "title", "text", "tags"];
+    },
+
+    get_objects: function(req, filters, sorts, limit, offset, callback){
+        this._super(req, filters, sorts, limit, offset, function(err, results){
+
+            var iterator = function(article, itr_cbk){
+                models.User.findById(article.user_id, ["avatar", "facebook_id"], function(err, user_obj){
+                    if(err)
+                        itr_cbk(err);
+                    else
+                    {
+                        article.avatar = user_obj.avatar_url();
+                        itr_cbk(err, user_obj);
+                    }
+                })
+            }
+
+            async.forEach(results.objects,iterator, function(err, objects){
+                callback(err, results)
+            });
+        });
     },
 
     create_obj:function (req, fields, callback) {
@@ -34,7 +56,7 @@ var ArticleResource = common.GamificationMongooseResource.extend({
             fields.user_id = user_id;
             fields.first_name = user.first_name;
             fields.last_name = user.last_name;
-
+            fields.avatar=user.avatar;
             self._super(req,fields,callback);
         }
     }

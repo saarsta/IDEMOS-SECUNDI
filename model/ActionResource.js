@@ -53,18 +53,17 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
         },
 
         get_objects: function (req, filters, sorts, limit, offset, callback) {
-            var user_id = req.query.user_id || req.user._id;
             if(req.query.get == "myUru"){
+                var user_id = req.query.user_id || req.user._id;
                 filters['users.user_id'] = user_id;
             }
 
             this._super(req, filters, sorts, limit, offset, function(err, response){
-                var user_id;
 
                 _.each(response.objects, function(object){
                     object.is_follower = false;
                     if(req.user){
-                        user_id = req.user._id;
+                        var user_id = req.user._id;
                         if(_.any(object.going_users, function(user){ user.user_id = user_id;})){
                             object.is_follower = true;
                             models.Join.findOne({action_id: object._id, user_id: user_id}, function(err, join){

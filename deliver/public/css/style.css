@@ -575,6 +575,8 @@ body
     margin:0;
     color:#50504f;
     font: bold 16px/19px Arial;
+    height:60px;
+    overflow:hidden;
 }
 .news-list .one h4 a
 {
@@ -1023,21 +1025,17 @@ body
     position: relative;
     z-index: 5;
 }
-.services-blue a.service-1 span.text,
-.services-blue a.service-2 span.text,
-.services-blue a.service-6 span.text
+.services-blue a.service-1 span.text
 {
     display: block;
     padding-top: 50px;
 }
-.services-blue a.service-3 span.text,
-.services-blue a.service-5 span.text,
-.services-blue a.service-7 span.text
+.services-blue a.service-2 span.text
 {
     display: block;
     padding-top: 58px;
 }
-.services-blue a.service-4 span.text
+.services-blue a.service-3 span.text
 {
     display: block;
     padding-top: 38px;
@@ -1054,34 +1052,6 @@ body
     top: 0;
     opacity: 0.2;
 }
-.services-blue a.service-1 span.icon
-{
-    background-image: url(../images/icon-1.png);
-}
-.services-blue a.service-2 span.icon
-{
-    background-image: url(../images/icon-2.png);
-}
-.services-blue a.service-3 span.icon
-{
-    background-image: url(../images/icon-3.png);
-}
-.services-blue a.service-4 span.icon
-{
-    background-image: url(../images/icon-4.png);
-}
-.services-blue a.service-5 span.icon
-{
-    background-image: url(../images/icon-5.png);
-}
-.services-blue a.service-6 span.icon
-{
-    background-image: url(../images/icon-6.png);
-}
-.services-blue a.service-7 span.icon
-{
-    background-image: url(../images/icon-7.png);
-}
 .services-blue a:hover span.icon
 {
     opacity:1;
@@ -1089,6 +1059,7 @@ body
 .services-blue a:hover
 {
     text-indent: -9999px;
+    z-index: 5;
 }
 #content .services-box h2
 {
@@ -1100,4 +1071,657 @@ body
 #content .services-box h2 span
 {
     color:#3b63ef;
+}
+.services-box
+{
+    padding-bottom: 45px;
+}
+.services-green 
+{
+    margin: -22px 59px 0 0;
+    float: right;
+}
+.services-green span.empty
+{
+    background: url(../images/services-grey.png) no-repeat;
+    width: 130px;
+    height: 139px;
+    float: right;
+    margin-right: 11px;
+}
+.services-green a
+{
+    background: url(../images/services-green.png) no-repeat;
+    width: 130px;
+    height: 139px;
+    float: right;
+    margin-right: 11px;
+    color:#ffffff;
+    font: normal 22px/22px 'AdumaFOTMedium';
+    text-align: center;
+    text-decoration: none;
+    position: relative;
+    text-indent: -9999px;
+}
+.services-green a:hover
+{
+    text-indent: 0px;
+    z-index: 5;
+}
+.services-green a span.icon
+{
+    width: 130px;
+    height: 139px;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    opacity: 1;
+}
+.services-green a:hover span.icon
+{
+    opacity: 0.4;
+}
+.services-green a.service-8 span.icon
+{
+    background-image: url(../images/icon-8.png);
+}
+.services-green a.service-9 span.icon
+{
+    background-image: url(../images/icon-9.png);
+}
+.services-green a.service-10 span.icon
+{
+    background-image: url(../images/icon-10.png);
+}
+.services-green a.service-9 span.text,
+.services-green a.service-8 span.text,
+.services-green a.service-10 span.text
+{
+    display: block;
+    padding-top: 58px;
+}
+.one-slide
+{
+    width: 1008px;
+}
+#nav
+{
+    margin: -33px auto 24px;
+    text-align: center;
+}
+#nav a
+{
+    width: 8px;
+    height: 9px;
+    display: inline-block;
+    background: url(../images/nav-bg.png) 100% 0 no-repeat;
+    margin: 0 1px;
+    text-indent: -9999px;
+}
+#nav a:hover,
+#nav a.activeSlide
+{
+    background-position: 0 0;
+}
+/*----------------*/
+.discussion-main .top
+{
+    padding-bottom: 11px;
+    border-bottom: 1px solid #d4d9dc;
+}
+.discussion-main .top .floatLeft
+{
+    width: 673px;
+}
+.discussion-main .top .input
+{
+    border: 1px solid #bfc0c0;
+    border-radius: 2px;
+    background:#fff;
+    padding: 6px 7px;
+    margin-bottom: 9px;
+}
+.discussion-main .top .input input
+{
+    width: 100%;
+    padding:0;
+    height: 17px;
+    color:#50504f;
+    font: normal 13px/17px Arial;
+    background:#fff;
+    border: 0px solid transparent;
+    display: block;
+}
+.discussion-main .top .textarea
+{
+    border: 1px solid #bfc0c0;
+    border-radius: 2px;
+    background:#fff;
+    padding: 6px 7px;
+}
+.discussion-main .top .textarea textarea
+{
+    width: 100%;
+    padding:0;
+    display: block;
+    height: 110px;
+    color:#50504f;
+    font: normal 13px/17px Arial;
+    background:#fff;
+    border: 0px solid transparent;
+    resize: none;
+}
+.discussion-main .tags-box
+{
+    padding: 9px 0;
+    height: 15px;
+}
+.discussion-main .tags-box .add-tag
+{
+    float: right;
+    padding-left: 15px;
+}
+.discussion-main .tags-box .add-tag .input
+{
+    border: 1px solid #bfc0c0;
+    padding: 0 7px;
+    width: 234px;
+    float: right;
+    margin-left: 5px;
+    background:#fff;
+    border-radius: 3px;
+}
+.discussion-main .tags-box .add-tag .input label
+{
+    float: right;
+    padding-left: 2px;
+    background: url(../images/add-tag-border-left.png) 0 50% no-repeat;
+    color:#b7b6b6;
+    font: normal 11px/13px Arial;
+}
+.discussion-main .tags-box .add-tag .input input
+{
+    float: left;
+    width: 205px;
+    color:#b7b6b6;
+    font: normal 11px/13px Arial;
+    padding:0;
+    height: 13px;
+    border: none;
+    background:#fff;
+}
+.discussion-main .tags-box .add-tag input[type=submit]
+{
+    background:#3b63ef;
+    color:#fff;
+    font: normal 11px/13px Arial;
+    width: 38px;
+    padding: 0;
+    cursor: pointer;
+    float: right;
+    border: none;
+    border-radius: 3px;
+    height: 15px;
+}
+.discussion-main .tags-box .tags-list span
+{
+    float: right;
+    margin-left: 3px;
+    color:#fff;
+    background:#b7b6b6;
+    padding: 0 4px;
+    font: normal 11px/15px Arial;
+    border-radius: 3px;
+}
+.discussion-main .bottom
+{
+    text-align: center;
+}
+.discussion-main .bottom .textarea
+{
+    border: 1px solid #bfc0c0;
+    border-radius: 2px;
+    background:#fff;
+    padding: 6px 7px;
+    margin-bottom: 18px;
+}
+.discussion-main .bottom .textarea textarea
+{
+    width: 100%;
+    padding:0;
+    display: block;
+    height: 107px;
+    color:#50504f;
+    font: normal 13px/17px Arial;
+    background:#fff;
+    border: 0px solid transparent;
+    resize: none;
+}
+.discussion-main .bottom input[type=submit]
+{
+    display: block;
+    margin:0 auto 12px;
+    background: url(../images/green-btn.png) repeat-x;
+    height: 37px;
+    border: 1px solid #2eab35;
+    border-radius: 2px;
+    color:#fff;
+    width: 304px;
+    font: normal 22px/35px "AdumaFOTRegular";
+    cursor: pointer;
+}
+.discussion-main .bottom label
+{
+    display: inline-block;
+    color:#50504f;
+    font: normal 13px/15px Aial;    
+}
+.discussion-main .bottom label input
+{
+    float: right;
+    margin-left: 7px;
+}
+
+/*----------------------*/
+#card
+{
+    background:#d6dbde;
+    padding: 10px 0 5px;
+}
+#card .extra
+{
+    width: 980px;
+    margin: 0 auto;
+}
+#card .card-top 
+{
+    padding-bottom: 34px;
+}
+#card .card-top h3
+{
+    color:#50504f;
+    float: right;
+    padding-left: 37px;
+    margin: 0 0 0 13px;
+    font: normal 30px/32px "AdumaFOTRegular";    
+    background: url(../images/basket-icon.png) 0 50% no-repeat;
+}
+#card .card-top p
+{
+    color:#ffffff;
+    float: right;
+    margin: 0;
+    font: normal 22px/32px "AdumaFOTMedium";    
+}
+#card .card-top a.btn
+{
+    float: left;
+    color:#fff;
+    background:#757d7e url(../images/search-submit.png) 0 0 repeat-x;
+    height: 29px;
+    font: normal 22px/29px "AdumaFOTRegular";    
+    border: 1px solid #2e3030;
+    text-align: center;
+    border-radius: 2px;
+    text-decoration: none;
+    position: relative;
+    margin-right: 18px;
+}
+
+#card .card-top a.btn:hover
+{
+    background-color:#555a5d;
+}
+#card .card-top a.btn:active
+{
+    background-color:#919d9d;
+    background-position: 0 100%;
+}
+#card .card-top a.btn-1
+{
+    width: 110px;
+}
+#card .card-top a.btn-2
+{
+    padding:0 17px;
+}
+#card .card-top a.btn .number
+{
+    position: absolute;
+    left: -11px;
+    top: 2px;
+    width: 25px;
+    height: 14px;
+    background:#3b63ef;
+    border-radius: 2px;
+    font: bold 10px/14px ARial;
+}
+#card .card-products .one-col
+{
+    float: right;
+    width: 309px;
+    margin-right: 26px;
+}
+#card .card-products .one-col:first-child
+{
+    margin:0;
+}
+#card .card-products .one
+{
+    background:#fff;
+    padding: 8px 8px 12px;
+    margin-bottom: 30px;
+    position: relative;
+}
+#card .card-products .one .delete-app
+{
+    background: url(../images/delete-app.png) no-repeat;
+    width: 28px;
+    height: 28px;
+    position: absolute;
+    left: -12px;
+    top: -10px;
+}
+#card .card-products .one h4
+{
+    color:#50504f;
+    font: bold 16px/19px Arial;
+    margin:5px 0;
+}
+#card .card-products .one p
+{
+    color:#50504f;
+    font: normal 13px/17px Arial;
+    margin:0 0 12px;
+}
+#card .card-products .one .btn-box
+{
+    border-top: 1px solid #ebebeb;
+    padding-top: 12px;
+    text-align: center;
+}
+#card .card-products .one .btn-box a.confirm
+{
+    color:#fff;
+    background:#757d7e url(../images/search-submit.png) 0 0 repeat-x;
+    height: 29px;
+    font: normal 22px/29px "AdumaFOTRegular";    
+    border: 1px solid #2e3030;
+    text-align: center;
+    border-radius: 2px;
+    text-decoration: none;
+    position: relative;
+    margin-left: 5px;
+    width: 110px;
+    display: inline-block;
+}
+#card .card-products .one .btn-box a.delete
+{
+    color:#fff;
+    background:#b7b6b6 url(../images/search-submit.png) 0 0 repeat-x;
+    height: 29px;
+    font: normal 22px/29px "AdumaFOTRegular";    
+    border: 1px solid #8f8f8f;
+    text-align: center;
+    border-radius: 2px;
+    text-decoration: none;
+    position: relative;
+    width: 110px;
+    display: inline-block;
+}
+#card .card-products .one .btn-box a.delete span
+{
+    padding-right: 17px;
+    margin-right: -17px;
+    background: url(../images/close-icon.png) 100% 50% no-repeat;
+}
+#card .card-products .one .diagram
+{
+    padding: 0 2px 0 16px;
+}
+#card .card-products .one .diagram img
+{
+    float:left;
+    padding-top: 10px;
+}
+#card .card-products .one .diagram .percent
+{
+    float: right;
+    clear: right;
+    text-align: center;
+    color:#7c7c7c;
+    font: normal 13px/15px Arial;
+    padding-bottom: 7px;
+}
+#card .card-products .one .diagram .percent strong
+{
+    display: block;
+    color:#50504f;
+    font: normal 55px/57px "AdumaFOTRegular";   
+    margin-bottom: -10px;
+}
+#card .card-products .loading
+{
+    background: #ebedef url(../images/ajax-loader.gif) 50% 60% no-repeat;
+    height: 200px;
+    color:#939596;
+    font: bold 16px/165px Arial;
+    text-align: center;
+    margin-bottom: 30px;
+}
+#card .card-products .one .imb-box
+{
+    float: right;
+    width: 112px;
+    height: 120px;
+    position: relative;
+    margin-left: 27px;
+}
+#card .card-products .one .imb-box img
+{
+    display: block;
+}
+#card .card-products .one .imb-box span
+{
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: url(../images/user-fillter-white-big.png) no-repeat;
+    width: 112px;
+    height: 120px;
+}
+#card .card-products .one .user
+{
+    padding-bottom: 16px;
+}
+
+#card .card-products .one .user h4
+{
+    font: bold 13px/20px Arial;
+    margin: 0;
+    padding-top: 20px;
+}
+/*-------------------------------*/
+.popup
+{
+    margin:13px 15px;
+    width: 700px;
+    background:#ffffff;
+    box-shadow: 0 0 8px rgba(0,0,0,0.3);
+    position:relative;
+}
+#user-search .search-top
+{
+    background:#3b63ef;
+    padding: 17px 28px;
+}
+#user-search .search-top label
+{
+    float: right;
+    color:#ffffff;
+    font: normal 18px/31px "AdumaFOTRegular";
+    padding-left: 22px; 
+}
+#user-search .search-top .input
+{
+    border: 1px solid #b7b6b6;
+    border-radius: 2px;
+    width: 304px;
+    height: 25px;
+    background:#fff;
+    padding: 2px 10px;
+    float: right;
+}
+#user-search .search-top .input input
+{
+    font: normal 18px/25px "AdumaFOTRegular";
+    color:#000;
+    width: 100%;
+    height: 25px;
+    background:#fff;
+    border: none;
+}
+#user-search .search-top input[type=submit]
+{
+    float: left;
+    color:#fff;
+    background:#757d7e url(../images/search-submit.png) 0 0 repeat-x;
+    height: 29px;
+    font: normal 22px/29px "AdumaFOTRegular";    
+    border: 1px solid #2e3030;
+    text-align: center;
+    border-radius: 2px;
+    text-decoration: none;
+    position: relative;
+    width: 110px;
+}
+
+#user-search .search-top input[type=submit]:hover
+{
+    background-color:#555a5d;
+}
+#user-search .search-top input[type=submit]:active
+{
+    background-color:#919d9d;
+    background-position: 0 100%;
+}
+#user-search .search-bottom
+{
+    background:#ededed;
+    padding: 17px 28px;
+}
+#user-search .search-bottom label
+{
+    float: right;
+    color:#50504f;
+    font: normal 18px/31px "AdumaFOTRegular";
+    padding-left: 22px; 
+}
+#user-search .search-bottom .input
+{
+    border: 1px solid #b7b6b6;
+    border-radius: 2px;
+    width: 364px;
+    height: 25px;
+    background:#fff;
+    padding: 2px 10px;
+    float: right;
+}
+#user-search .search-bottom .input input
+{
+    font: normal 18px/25px "AdumaFOTRegular";
+    color:#000;
+    width: 100%;
+    height: 25px;
+    background:#fff;
+    border: none;
+}
+#user-search .search-bottom input[type=submit]
+{
+    float: left;
+    color:#fff;
+    background:#757d7e url(../images/search-submit.png) 0 0 repeat-x;
+    height: 29px;
+    font: normal 22px/29px "AdumaFOTRegular";    
+    border: 1px solid #2e3030;
+    text-align: center;
+    border-radius: 2px;
+    text-decoration: none;
+    position: relative;
+    width: 110px;
+}
+
+#user-search .search-bottom input[type=submit]:hover
+{
+    background-color:#555a5d;
+}
+#user-search .search-bottom input[type=submit]:active
+{
+    background-color:#919d9d;
+    background-position: 0 100%;
+}
+#user-search .search-result
+{
+    padding: 23px 35px 0 25px;
+}
+#user-search .search-result .one
+{
+    float: right;
+    padding-bottom: 15px;
+    margin-left: 22px;
+    width: 58px;
+    text-align: center;
+    color:#50504f;
+    font: bold 11px/16px Arial;
+    position: relative;
+    white-space: nowrap;
+}
+#user-search .search-result a.delete-app
+{
+    position: absolute;
+    left: -14px;
+    top: 0;
+    background: url(../images/delete-app-dark.png) no-repeat;
+    width: 28px;
+    height: 28px;
+    z-index: 10;
+}
+#user-search .search-result .img-box
+{
+    width: 58px;
+    height: 62px;
+    position: relative;
+    margin-bottom: 5px;
+}
+#user-search .search-result .img-box img
+{
+    width: 58px;
+    display: block;
+}
+#user-search .search-result .img-box span
+{
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: url(../images/user-fillter-white.png) no-repeat;
+    width: 58px;
+    height: 62px;
+}
+
+.blog-box .one .img-box
+{
+    float: right;
+    width: 112px;
+    margin-left: 27px;
+    position: relative;
+    height: 120px;
+    overflow:hidden
+}
+.item_text_preview
+{
+    height:34px;
+    overflow: hidden;
 }

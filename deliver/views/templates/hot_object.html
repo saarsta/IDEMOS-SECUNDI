@@ -1,5 +1,9 @@
 <div class="one">
-    <a href=""><img src="{image_field_preview.url}" alt="" /></a>
+    <a href="/{type}/{_id}">
+        <div style="width:292px; height:164px;" class="auto-scale">
+            <img src="{image_field_preview.url}" alt="" />
+        </div>
+    </a>
     <h4><a href="">{title}</a></h4>
     {text_field_preview|s}
     <div class="tags">
@@ -8,12 +12,20 @@
             <span class="watched">151</span>
         </div>
         {#tags}
-        <a href="">{.}</a>{~n}
+        <a href="/{type}s/?tag_name={.|u}"
+        {@idx}
+        {@if cond="({.} > 2 )"}
+            style="display:none;"
+        {/if}
+        {/idx}
+        >{.}</a>{~n}
         {/tags}
         <div class="more">
             <span></span>
             <ul>
+                {@if cond="('{tags}'.split(',').length > 3 )"}
                 <li><a href="">הצג עוד תגיות</a></li>
+                {/if}
                 <li><a href="">הוסף תגית</a></li>
             </ul>
         </div>

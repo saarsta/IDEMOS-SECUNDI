@@ -58,22 +58,6 @@ var db_functions = {
 
 
 
-    dbGetAllSubjects: function(useSmall){
-        this.loggedInAjax({
-            url: '/api/subjects',
-            type: "GET",
-            async: true,
-            success: function (data) {
-//                var size = data.objects.length;
-                dust.renderArray(useSmall?'subject_small' :'subject',data.objects,null,function(err,out)
-                {
-                   $('#subjects_list').append(out);
-
-                });
-            }
-        });
-    },
-
     getListItems : function(type,query,callback)
     {
         var querystring = type;
@@ -184,24 +168,6 @@ var db_functions = {
         });
     },
 
-    getHotInfoItems: function(){
-        this.loggedInAjax({
-            url: '/api/information_items/?is_hot_info_item=true',
-            type: "GET",
-            async: true,
-            success: function (data) {
-                console.log("in hot info items");
-                console.log(data);
-                $('#hot_items_list').empty();
-                dust.renderArray('hot_info_item', data.objects, null, function(err,out)
-                {
-                    $('#hot_items_list').append(out);
-                    $('#hot_items_list img').autoscale();
-                });
-            }
-        });
-
-    },
 
     getHotObjects: function(callback){
         this.loggedInAjax({
@@ -210,6 +176,9 @@ var db_functions = {
             async: true,
             success: function (data) {
                 console.log(data);
+            },
+            error:function(err){
+                callback(err, null);
             }
         });
 
@@ -224,6 +193,9 @@ var db_functions = {
             success: function (data) {
                 console.log(data);
                 callback(null, data)
+            },
+            error:function(err){
+                callback(err, null);
             }
         });
     },
@@ -237,6 +209,9 @@ var db_functions = {
                 console.log(data);
 
                 callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
             }
         });
     },
@@ -265,6 +240,9 @@ var db_functions = {
             async: true,
             success: function (data) {
                 callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
             }
         });
     },
@@ -285,6 +263,9 @@ var db_functions = {
 
                 });
                 if(callback) callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
             }
         });
     },
@@ -299,6 +280,10 @@ var db_functions = {
             success: function (data) {
                 console.log(data);
                 callback(null, data);
+            },
+
+            error:function(err){
+                callback(err, null);
             }
         });
     },
@@ -314,9 +299,8 @@ var db_functions = {
                 callback(null, data);
             },
 
-            error: function (xhr, ajaxOptions, thrownError) {
-                callback(thrownError, null);
-                alert(' createDiscussion error');
+            error:function(err){
+            callback(err, null);
             }
         });
     },
@@ -329,6 +313,9 @@ var db_functions = {
             success: function () {
                 callback(null);
                 console.log("item information inserted to discussion shopping cart");
+            },
+            error:function(err){
+                callback(err, null);
             }
         });
     },
@@ -343,9 +330,8 @@ var db_functions = {
                 callback(null, data);
             },
 
-            error: function (xhr, ajaxOptions, thrownError) {
-                callback(thrownError, null);
-            //    alert('error');
+            error:function(err){
+            callback(err, null);
             }
         });
     } ,
@@ -359,6 +345,9 @@ var db_functions = {
             success: function () {
                 callback(null);
                 console.log("item information inserted to discussion shopping cart");
+            },
+            error:function(err){
+                callback(err, null);
             }
         });
     },
@@ -370,6 +359,9 @@ var db_functions = {
             async: true,
             success: function () {
                 console.log("item information inserted to discussion shopping cart");
+            },
+            error:function(err){
+                callback(err, null);
             }
         });
     },
@@ -384,8 +376,8 @@ var db_functions = {
                 console.log(data);
                 callback(null, data)
             },
-            error:function(data){
-                callback(data);
+            error:function(err){
+                callback(err, null);
             }
         });
     },
@@ -398,6 +390,9 @@ var db_functions = {
             success: function (data) {
                 console.log(data);
                 callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
             }
         });
     },
@@ -411,9 +406,8 @@ var db_functions = {
                 console.log(data);
                 callback(null, data);
             },
-            error:function(data)
-            {
-                callback(data);
+            error:function(err){
+                callback(err, null);
             }
         });
     },
@@ -426,6 +420,9 @@ var db_functions = {
             success: function (data) {
                 console.log("posts are" + " " + data);
                 callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
             }
         });
     },
@@ -441,9 +438,8 @@ var db_functions = {
                 alert('success');
                 callback(null, data);
             },
-            error:function(rsp)
-            {
-                callback(rsp);
+            error:function(err){
+                callback(err, null);
             }
         });
     },
@@ -460,9 +456,8 @@ var db_functions = {
                 alert('success');
                 callback(null, data);
             },
-            error:function(rsp)
-            {
-                callback(rsp);
+            error:function(err){
+                callback(err, null);
             }
         });
 
@@ -477,6 +472,9 @@ var db_functions = {
             success: function (data) {
                 console.log(data);
                 callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
             }
         });
     },
@@ -489,6 +487,9 @@ var db_functions = {
             success: function (data) {
                 console.log(data);
                 callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
             }
         });
     },
@@ -502,6 +503,9 @@ var db_functions = {
             success: function (data) {
                 console.log(data);
                 callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
             }
         });
     },
@@ -516,6 +520,9 @@ var db_functions = {
             success: function (data) {
                 console.log(data);
                 callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
             }
         });
     },
@@ -529,24 +536,60 @@ var db_functions = {
             success: function (data) {
                 //console.log(data);
                 callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
             }
         });
     },
 
-    addDiscussionGrade: function(discussion_id, grade, callback){
+    addDiscussionGrade: function(discussion_id, grade, grade_id, callback){
+        var url = '/api/grades/';
+        var type = "POST";
+
+//        grade_id ? url = '/api/grades/' + grade_id : url = '/api/grades/';
+//        grade_id ? type = "PUT" : type = "POST";
+
+        if(grade_id && grade_id !== "undefined"){
+            url = '/api/grades/' + grade_id;
+            type = "PUT";
+        }
+
         this.loggedInAjax({
-            url: '/api/grades/',
-            type: "POST",
+            url: url,
+            type: type,
             async: true,
             data: {"discussion_id": discussion_id, "evaluation_grade": grade},
             success: function (data) {
                 alert('discussion was graded !');
                 callback(null, data);
-
             },
-            error:function(data)
-            {
-                callback(data);
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },
+
+
+
+    addSuggestionGrade: function(suggestion_id, discussion_id, grade, grade_id, callback){
+        var url;
+        var type;
+
+        grade_id ? url = '/api/grades_suggestion/' + grade_id : url = '/api/grades_suggestion/';
+        grade_id ? type = "PUT" : type = "POST";
+
+        this.loggedInAjax({
+            url: url,
+            type: type,
+            async: true,
+            data: {"suggestion_id": suggestion_id, "discussion_id": discussion_id, "evaluation_grade": grade},
+            success: function (data) {
+                alert('suggestion was graded !');
+                callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
             }
         });
     },
@@ -964,9 +1007,9 @@ var db_functions = {
     },
 
     //blogs
-    getPopularArticles: function(cycle_id, callback){
+   /* getPopularArticles: function(cycle_id, callback){
         this.loggedInAjax({
-            url: '/api/articles?oreder_by=-popolarity_counter',
+            url: '/api/articles?order_by=-popolarity_counter',
             type: "GET",
             async: true,
             success: function (data) {
@@ -974,7 +1017,7 @@ var db_functions = {
                 callback(null, data);
             }
         });
-    },
+    },*/
 
     getPopularTags: function(){
         this.loggedInAjax({
@@ -999,7 +1042,13 @@ var db_functions = {
         });
     }
 
-}
+};
+
+/*dust.filters.str = function(value)
+{
+    return JSON.stringify(value);
+};*/
+
 
 $.prototype.autoscale = function(params)
 {

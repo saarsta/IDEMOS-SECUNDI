@@ -1,0 +1,36 @@
+<div class="one">
+    <a href="/information_items/{|id}">
+        <div class="auto-scale" style="width:292px; height:164px;">
+            <img src="{image_field_preview.url}" alt="{title}" />
+        </div>
+    </a>
+    <h4><a href="">{title}</a></h4>
+    <div class="item_text_preview">
+        <p>{text_field_preview|s}</p>
+    </div>
+    <div class="tags">
+        <div class="info">
+            <span class="talks">33</span>
+            <span class="watched">151</span>
+        </div>
+        {#tags}
+        <a href="/information_items/?tag_name={.|u}"
+        {@idx}
+        {@if cond="({.} > 3 )"}
+        style="display:none;"
+        {/if}
+        {/idx}
+        >{.}</a>{~n}
+        {/tags}
+        <div class="more">
+            <span></span>
+            <ul>
+                {@if cond="('{tags}'.split(',').length > 3 )"}
+                <li><a href="javascript:void(0)">הצג עוד תגיות</a></li>
+                {/if}
+                <li><a href="javascript:void(0)">הוסף תגית</a></li>
+            </ul>
+        </div>
+
+    </div>
+</div>
