@@ -100,7 +100,14 @@ var db_functions = {
             type: "GET",
             async: true,
             success: function (data) {
-                 callback(null,data);
+                $.each(data.objects,function(index,obj)
+                {
+                    obj.word_count = function()
+                    {
+                        return Math.min($.trim(obj.name).split(/\s+/).length,3);
+                    };
+                });
+                callback(null,data);
             },
             error:function(data)
             {
@@ -147,10 +154,12 @@ function image_autoscale(obj, params)
     params = params || {};
     var fadeIn = params['fade'] || 300;
     obj.css({width:'', height:''}).hide();
+    obj.parent().addClass('image_loading');
     obj.load(function()
     {
         var elm = $(this);
         var parent = $(elm.parent());
+        parent.removeClass('image_loading');
         parent.css({'overflow':'hidden'});
         var parent_width = parent.innerWidth();
         var parent_height = parent.innerHeight();

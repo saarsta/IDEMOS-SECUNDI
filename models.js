@@ -414,14 +414,14 @@ var Schemas = exports.Schemas = {
         votes_for: {type: Number, 'default': 0},
         votes_against: {type: Number, 'default': 0},
         is_comment_on_vision:{type:Boolean, 'default':false},
-        is_comment_on_action:{type:Boolean, 'default':false},
-        ref_to_post_id:{type:Schema.ObjectId, ref:'Post', index:true}
+//        is_comment_on_action:{type:Boolean, 'default':false},
+        ref_to_post_id:{type:Schema.ObjectId, ref:'PostOrSuggestion', index:true}
     },
 
     PostAction:{
         action_id:{type:Schema.ObjectId, ref:'Action', index:true, required:true},
         text:String,
-        is_comment_on_vision:{type:Boolean, 'default':false},
+//        is_comment_on_vision:{type:Boolean, 'default':false},
         ref_to_post_id:{type:Schema.ObjectId, ref:'Post', index:true}
     },
 
@@ -460,10 +460,27 @@ var Schemas = exports.Schemas = {
 
     Notification: {
         user_id:{type:ObjectId, ref:'User', index:true, required:true},
-        type: {type:String, "enum": ['approved_info_item'
-            , 'aprroved_discussion_i_created', 'aprroved_discussion_i_took_part', 'comment_on_discussion'
-            , 'been_quoted']},
+        notificators: [{
+             notificator_id: {type:ObjectId, ref:'User'},
+             sub_entity_id:  {type: ObjectId}
+        }],
+        type: {type:String, "enum": [
+            'approved_info_item',
+            'aprroved_discussion_i_created',
+            'aprroved_discussion_i_took_part',
+            'comment_on_discussion_you_are_part_of',
+            "comment_on_discussion_you_created",
+            "change_suggestion_on_discussion_you_are_part_of",
+            "change_suggestion_on_discussion_you_created",
+            "approved_change_suggestion_you_created",
+            "approved_change_suggestion_you_graded",
+            'been_quoted',
+            "a_dicussion_created_with_info_item_that_you_like",
+            "a_dicussion_created_with_info_item_that_you_created"
+        ]},
+
         entity_id: {type: ObjectId},
+
         seen: {type:Boolean, 'default':false},
         update_date: {type: Date, 'default': Date.now}
     },

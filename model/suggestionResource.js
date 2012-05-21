@@ -18,7 +18,8 @@ var resources = require('jest'),
     util = require('util'),
     models = require('../models'),
     common = require('./common'),
-    async = require('async');
+    async = require('async'),
+    notifications = require('./notifications');
 
 var SuggestionResource = module.exports = common.GamificationMongooseResource.extend({
     init:function () {
@@ -53,10 +54,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                 _id: null,
                 evalueation_grade: null
             }
-
         };
-
-        //    this.validation = new resources.Validation();=
     },
 
     get_objects: function (req, filters, sorts, limit, offset, callback) {
@@ -95,6 +93,24 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
         var suggestion_object = new self.model();
         var isNewFollower = false;
         var user = req.user;
+        var discussion_id;
+        var discussion_creator_id;
+
+        var iterator = function(user_schema, itr_cbk){
+            if (user_schema.user_id == user_id)
+                itr_cbk(null, 0);
+            else{
+                if (discussion_creator_id == user_schema.user_id){
+                    notifications.create_user_notification("change_suggestion_on_discussion_you_created", discussion_id, user_schema.user_id, user_id, function(err, results){
+                        itr_cbk(err, results);
+                    });
+                }else{
+                    notifications.create_user_notification("change_suggestion_on_discussion_you_are_part_of", discussion_id, user_schema.user_id, user_id, function(err, results){
+                        itr_cbk(err, results);
+                    });
+                }
+            }
+        }
 
         fields.creator_id = user_id;
         fields.first_name = user.first_name;
@@ -111,34 +127,38 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
 
             function (suggestion_obj, cbk) {
                 suggestion_object.save(function(err,data){
+                    discussion_id = data.discussion_id;
                     cbk(err,data);
                 });
             },
 
             function (suggestion_obj, cbk) {
+                async.parallel([
+                    //add user to praticipants
+                    function (cbk2) {
+                        models.Discussion.update({_id:suggestion_object.discussion_id, "users.user_id": {$ne: user_id}},
+                            {$addToSet: {users: {user_id: user_id, join_date: Date.now}}},
+                        cbk2);
+                    },
 
-                if (common.isArgIsInList(suggestion_obj.discussion_id, user.discussions) == false) {
-                    var inc_discussion_followers_count = {};
-                    inc_discussion_followers_count["followers_count"] = 1;
-                    async.parallel([
-                        function (cbk2) {
-                            models.User.update({_id:user_id}, {$addToSet:{discussions:suggestion_obj.discussion_id}}, cbk2);
-                        },
-
-                        function (cbk2) {
-                            models.Discussion.update({_id:suggestion_object.discussion_id}, {$addToSet:{users:user._id}}, {$inc:inc_discussion_followers_count}, cbk2);
-                        }
-                    ], function(err,results)
-                    {
-                        cbk(null,suggestion_obj);
-                    });
-                } else {
-                    cbk(null,suggestion_obj);
-                }
+                    //add notification for the dicussion's participants or creator
+                    function(cbk2){
+                        models.Discussion.findById(suggestion_object.discussion_id, /*["users", "creator_id"],*/ function(err, disc_obj){
+                            if (err)
+                                cbk2(err, null);
+                            else{
+                                discussion_creator_id = disc_obj.creator_id;
+                                async.forEach(disc_obj.users, iterator, cbk2);
+                            }
+                        })
+                    }
+                ], function(err,results)
+                {
+                    cbk(err, suggestion_obj);
+                });
             }
         ], function (err, result) {
-            console.log(result);
-            callback(self.elaborate_mongoose_errors(err), result);
+            callback(err, result);
         });
     },
 
@@ -204,11 +224,22 @@ module.exports.approveSuggestion = function(id,callback)
     //if suggestion approved we change the discussion vision
     // + save the ealier version of vison as parts in vison_changes
     var suggestion_object;
+    var suggestion_creator;
+    var discussion_id;
+
+    var iterator = function(grade, itr_cbk){
+        if(suggestion_creator != grade.user_id){
+            notifications.create_user_notification("approved_change_suggestion_you_graded",
+                    discussion_id, suggestion_creator, null, null, itr_cbk);
+        }else{
+            itr_cbk(null, 0);
+        }
+    }
 
     async.waterfall([
         function(cbk)
         {
-            models.Suggestion.findById(id,cbk);
+            models.Suggestion.findById(id, cbk);
         },
 
         function(_suggestion_object,cbk){
@@ -216,7 +247,7 @@ module.exports.approveSuggestion = function(id,callback)
             if (suggestion_object.is_approved) {
                 callback({message:"this suggestion is already published", code: 401}, null);
             } else {
-                var discussion_id = suggestion_object.discussion_id;
+                discussion_id = suggestion_object.discussion_id;
                 var vision_changes_array = [];
                 models.Discussion.findOne({_id:discussion_id}, cbk);
             }
@@ -250,18 +281,55 @@ module.exports.approveSuggestion = function(id,callback)
                 function(err, counter){
                 cbk(err, discussion_object);
             });
-
-//                    discussion_object.save(cbk);
         },
 
         function(disc_obj, cbk){
-
             suggestion_object.is_approved = true;
             suggestion_object.save(cbk);
         },
 
-        function(sug_obj, cbk){
-            models.User.update({_id: sug_obj.creator_id}, {$inc: {"gamification.approved_suggestion": 1}}, cbk);
+
+        function(sug_obj, num, cbk){
+            var debug = 8;
+            suggestion_creator = sug_obj.creator_id;
+            async.parallel([
+                //set gamification
+                function(par_cbk){
+                    models.User.update({_id: sug_obj.creator_id}, {$inc: {"gamification.approved_suggestion": 1}}, function(err, obj){
+                        par_cbk(err, obj);
+                    });
+                },
+
+                //set notifications for creator
+                function(par_cbk){
+                    notifications.create_user_notification("approved_change_suggestion_you_created",
+                            discussion_id, sug_obj.creator_id, null, null, function(err, obj){
+                            par_cbk(err, obj);
+                        });
+                },
+
+                //set notifications for graders
+                function(par_cbk){
+
+                    async.waterfall([
+                        function(wtr_cbk){
+                            models.GradeSuggestion.find({_id: sug_obj._id}, wtr_cbk);
+                        },
+
+                        function(grades, wtr_cbk){
+                            async.forEach(grades, iterator, function(err, result){
+                                wtr_cbk(err || null, result || 0);
+                            });
+                        }
+                    ], function(err, args){
+                        par_cbk(err, args);
+                    });
+                }
+            ], function(err, args){
+                cbk(err, 8);
+            })
         }
-    ], callback);
+    ], function(err, arg){
+        callback(err, arg);
+    });
 }

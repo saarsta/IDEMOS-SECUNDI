@@ -178,7 +178,11 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                     fields.creator_id = user_id;
                     fields.first_name = user.first_name;
                     fields.last_name = user.last_name;
-                    fields.users = user_id;
+                    fields.users = {
+                        user_id: user_id,
+                        join_date: Date.now()
+                    };
+
                     for (var field in fields) {
                         object.set(field, fields[field]);
                     }
@@ -194,15 +198,25 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                                         discussion_id: obj._id,
                                         join_date: Date.now()
                                     }
-                                    models.User.update({_id: user._id}, {$addToSet: {discussions: user_discussion}}, function(err, num){
-                                        if(!err){
-                                            if (object.is_published) {
+
+                                    if (object.is_published) {
+                                        models.User.update({_id: user._id}, {$addToSet: {discussions: user_discussion}}, function(err, num){
+                                            if(!err){
+
+                                                //set gamification
                                                 req.gamification_type = "discussion";
                                                 req.token_price = /*common.getGamificationTokenPrice('discussion')*/ 3;
+
+                                                //find all information items and set notifications for their owners
+                                                notifications_for_the_info_items_relvant(obj._id, user_id, function(err, args){
+                                                    callback(err, args);
+                                                })
                                             }
-                                        }
-                                        callback(err, obj);
-                                    });
+                                            callback(err, obj);
+                                        });
+                                    }else{
+                                        callback(err, object);
+                                    }
                                 }
                             });
                         }
@@ -248,7 +262,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
 
                         if(disc){
                             //delete this discussion
-                                user.discussions.splice(_.indexOf(user.discussions, disc));
+                            user.discussions.splice(_.indexOf(user.discussions, disc));
                             user.save(cbk);
                         }else{
                             callback({message:"user is not a follower", code:401}, null);
@@ -273,11 +287,78 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                     req.gamification_type = "discussion";
                     req.token_price = common.getGamificationTokenPrice('discussion');
                     object.is_published = true;
-                    object.save(callback);
+
+                    object.save(function(err, disc_obj){
+                        notifications_for_the_info_items_relvant(disc_obj._id, user._id, function(err, args){
+                            callback(err, args);
+                        })
+                    });
                 }
             }
         }
     }
 });
 
+function notifications_for_the_info_items_relvant(discussion_id, notificator_id, callback){
+
+    var set_notification_for_liked_items = function(like, itr_cbk){
+        if(like.info_item_creator + "" != like.user_id + "" && like.info_item_creator != null){
+            notifications.create_user_notification("a_dicussion_created_with_info_item_that_you_like",
+                discussion_id, like.user_id, notificator_id, like.info_item_id, itr_cbk);
+        }else{
+            itr_cbk(null, 0);
+        }
+    }
+
+    var iterator = function(info_item, itr_cbk){
+
+        var creator_id = null;
+        if(info_item.created_by)
+            creator_id = info_item.created_by.creator_id;
+
+        async.parallel([
+
+            //set notifications for people that like the items
+            function(par_cbk){
+                async.waterfall([
+                    function(cbk){
+                        models.Like.find({info_item_id: info_item._id}, cbk);
+                    },
+
+                    function(likes, cbk){
+                        _.each(likes, function(like){like.info_item_creator = creator_id});
+                        async.forEach(likes, set_notification_for_liked_items, cbk);
+                    }
+
+                ], function(err, arg){
+                    par_cbk(err, arg);
+                })
+            },
+
+            //set notifications for information item's creators
+            function(par_cbk){
+                if(creator_id){
+                    notifications.create_user_notification("a_dicussion_created_with_info_item_that_you_created",
+                        discussion_id, creator_id, notificator_id, info_item._id, par_cbk);
+                }else{
+                    par_cbk(null, 0);
+                }
+            }
+        ], function(err, args){
+            itr_cbk(err, args);
+        })
+    }
+
+    async.waterfall([
+        function(cbk){
+            models.InformationItem.find({discussions: discussion_id}, cbk);
+        },
+
+        function(info_items, cbk){
+            async.forEach(info_items, iterator, cbk);
+        }
+    ], function(err, arg){
+        callback(err, arg);
+    })
+}
 
