@@ -20,37 +20,6 @@ var resources = require('jest'),
     common = require('./common'),
     async = require('async');
 
-
-/*
- //Authorization
- var Authoriztion = function() {};
- util.inherits(Authoriztion,resources.Authorization);
-
- Authoriztion.prototype.edit_object = function(req,object,callback){
-
- if(req.session.user_id){
- var user_id = req.session.user_id;
- models.User.findOne({_id :user_id},function(err,object)
- {
- if(err)
- {
- callback(err, null);
- }
- else
- {
- if (object.tokens >= CHANGE_SUGGESTION_PRICE){
- callback(null, object);
- }else{
- callback("Error: Unauthorized - there is not enought tokens", null);
- }
- }
- });
- }
- else{
- callback("Error: User Is Not Autthenticated", null);
- }
- };*/
-
 var SuggestionResource = module.exports = common.GamificationMongooseResource.extend({
     init:function () {
         this._super(models.Suggestion, 'suggestion', /*common.getGamificationTokenPrice('suggestion')*/2);
@@ -74,15 +43,52 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
             popularity:null,
             tokens:null,
             creation_date:null,
-            total_votes:null,
-            votes_against:null,
-            votes_for:null,
+            agrees:null,
+            not_agrees: null,
+            evaluate_counter:null,
+            grade:null,
             id:null,
-            updated_user_tokens:null
+            updated_user_tokens:null,
+            grade_obj: {
+                _id: null,
+                evalueation_grade: null
+            }
+
         };
 
         //    this.validation = new resources.Validation();=
     },
+
+    get_objects: function (req, filters, sorts, limit, offset, callback) {
+
+        var self = this;
+
+        var iterator = function(suggestion, itr_cbk){
+            if(req.user){
+                models.GradeSuggestion.findOne({user_id: req.user._id, suggestion_id: suggestion._id}, ["_id", "evaluation_grade"], function(err, grade_sugg_obj){
+                    if(!err)
+                        suggestion.grade_obj = grade_sugg_obj;
+
+                    itr_cbk(err, suggestion);
+                });
+            }
+            else{
+                suggestion.grade_obj = {};
+                itr_cbk(null, suggestion);
+            }
+        }
+
+        self._super(req, filters, sorts, limit, offset, function(err, results){
+
+            if(err)
+                callback(err, null);
+            else
+                async.forEach(results.objects, iterator, function(err, objs){
+                    callback(err, results);
+                });
+        });
+    },
+
     create_obj:function (req, fields, callback) {
         var user_id = req.session.user_id;
         var self = this;

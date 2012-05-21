@@ -109,7 +109,6 @@ var Schemas = exports.Schemas = {
     }),
 
     InformationItem:{
-
         title: {type: String, required: true},
         subject_id:[{type:ObjectId, ref:'Subject',required:true}],
         category:{type:String, "enum":['test', 'statistics', 'infographic', 'graph'], required:true},
@@ -151,7 +150,7 @@ var Schemas = exports.Schemas = {
 
     SuccessStory:{
         title: {type: String, required: true},
-        text_field:{type:mongoose_types.Text},
+        text_field:{type:mongoose_types.Html},
 //        text_field_preview:{type:mongoose_types.Html},
         image_field: mongoose_types.File,
 //        image_field_preview: mongoose_types.File,
@@ -284,8 +283,7 @@ var Schemas = exports.Schemas = {
 //        last_name:{type:String, editable:false },
 //        username:{type:String,editable:false},
 //        avatar : {type:mongoose_types.File, editable:false},
-        votes_for: {type: Number, 'default': 0},
-        votes_against: {type: Number, 'default': 0},
+
         total_votes: {type: Number, 'default': 0},
         creation_date:{type:Date, 'default':Date.now,editable:false},
 //        tokens:{type:Number, 'default':0, index: true},
@@ -413,7 +411,8 @@ var Schemas = exports.Schemas = {
         discussion_id:{type:Schema.ObjectId, ref:'Discussion', index:true, required:true},
         text:String,
         //is_change_suggestion: {type:Boolean,'default':false},
-
+        votes_for: {type: Number, 'default': 0},
+        votes_against: {type: Number, 'default': 0},
         is_comment_on_vision:{type:Boolean, 'default':false},
         is_comment_on_action:{type:Boolean, 'default':false},
         ref_to_post_id:{type:Schema.ObjectId, ref:'Post', index:true}
@@ -428,12 +427,15 @@ var Schemas = exports.Schemas = {
 
     Suggestion:{
         discussion_id:{type:Schema.ObjectId, ref:'Discussion', index:true, required:true},
-
         //is_change_suggestion: {type:Boolean,'default':true},
         parts:[
             {start:Number, end:Number, text:String}
         ],
-        is_approved:{type:Boolean, 'default':false}
+        is_approved:{type:Boolean, 'default':false},
+        evaluate_counter: {type: Number, 'default': 0},
+        grade: {type: Number, 'default': 0},
+        agrees: {type: Number, 'default': 0},
+        not_agrees: {type: Number, 'default': 0},
     },
 
     CommentVote: CommentVote,
@@ -570,7 +572,7 @@ var Models = module.exports = {
     Subject:mongoose.model('Subject', new Schema(Schemas.Subject, {strict: true})),
     Discussion:mongoose.model('Discussion', new Schema(Schemas.Discussion, {strict: true})),
     Post:utils.extend_model('Post', Schemas.PostOrSuggestion, Schemas.Post, 'posts'),
-    PostAction:utils.extend_model('PostAction', Schemas.PostOrSuggestion, Schemas.PostAction, 'posts'),
+    PostAction:utils.extend_model('PostAction', Schemas.PostOrSuggestion, Schemas.PostAction),
     Suggestion:utils.extend_model('Suggestion', Schemas.PostOrSuggestion, Schemas.Suggestion, 'posts'),
     PostOrSuggestion:mongoose.model('PostOrSuggestion', new Schema(Schemas.PostOrSuggestion, {strict: true}), 'posts'),
     Vote:mongoose.model('Vote', new Schema(Schemas.Vote, {strict: true})),
@@ -578,6 +580,7 @@ var Models = module.exports = {
     Like:mongoose.model('Like', new Schema(Schemas.Like, {strict: true})),
     Grade:mongoose.model('Grade', new Schema(Schemas.Grade, {strict: true})),
     GradeAction:mongoose.model('GradeAction', new Schema(Schemas.GradeAction, {strict: true})),
+    GradeSuggestion:mongoose.model('GradeSuggestion', new Schema(Schemas.GradeSuggestion, {strict: true})),
     Join:mongoose.model('Join', new Schema(Schemas.Join, {strict: true})),
 //    CommentVote:mongoose.model('CommentVote', new Schema(Schemas.CommentVote, {strict: true})),
 //    Comment:mongoose.model('Comment', new Schema(Schemas.Comment, {strinct: true})),
