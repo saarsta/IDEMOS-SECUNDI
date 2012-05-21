@@ -214,7 +214,8 @@ exports.routing = function(router)
                             });
                         }
                     });
-                    res.redirect(next || DEFAULT_LOGIN_REDIRECT);
+//                    res.redirect(next || DEFAULT_LOGIN_REDIRECT);
+
                 }
             });
         }
