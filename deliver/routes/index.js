@@ -1,6 +1,7 @@
 var Router = require('./router'),
     Navigation = require('./navigation'),
     InformationItems = require('./information_items'),
+    Discussions = require('./discussions'),
     Account = require('./account');
 
 
@@ -12,4 +13,6 @@ module.exports = function(app) {
     router.include('/account',Account.routing);
 
     router.include('/information_items',InformationItems);
+
+    router.include('/discussions',Discussions);
 };
