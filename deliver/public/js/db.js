@@ -131,20 +131,34 @@ var db_functions = {
     }
 };
 
+// handle image loading stuff
+
 $(function(){
-   $('body').bind('DOMNodeInserted',function(){
-       var target_element = event.srcElement || event.target;
-       if(target_element){
-          if($(target_element).is('.auto-scale'))
-            image_autoscale($('img',target_element));
-          else
-          {
-              var autoscale = $('.auto-scale',target_element);
-              if(autoscale.length)
-                  image_autoscale($('img',autoscale));
-          }
-       }
-   });
+    var callback = function(event){
+        var target_element = event.srcElement || event.target;
+        if(target_element){
+            if($(target_element).is('.auto-scale'))
+                image_autoscale($('img',target_element));
+            else
+            {
+                var autoscale = $('.auto-scale',target_element);
+                if(autoscale.length)
+                    image_autoscale($('img',autoscale));
+            }
+        }
+    };
+
+    if($.browser.msie && Number($.browser.version) == 8)
+    {
+        var _append = Element.prototype.appendChild;
+        Element.prototype.appendChild = function()
+        {
+            _append.apply(this,arguments);
+            callback({srcElement:this});
+        };
+    }
+    else
+        $('body').bind('DOMNodeInserted',callback);
 });
 
 function image_autoscale(obj, params)
