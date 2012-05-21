@@ -100,7 +100,14 @@ var db_functions = {
             type: "GET",
             async: true,
             success: function (data) {
-                 callback(null,data);
+                $.each(data.objects,function(index,obj)
+                {
+                    obj.word_count = function()
+                    {
+                        return Math.min($.trim(obj.name).split(/\s+/).length,3);
+                    };
+                });
+                callback(null,data);
             },
             error:function(data)
             {
