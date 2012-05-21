@@ -92,9 +92,37 @@ var db_functions = {
                 });
             }
         });
-    }
+    },
 
-}
+    dbGetAllSubjects: function(callback){
+        this.loggedInAjax({
+            url: '/api/subjects',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                 callback(null,data);
+            },
+            error:function(data)
+            {
+                callback(data);
+            }
+        });
+    },
+    getHotInfoItems: function(offset,callback){
+        this.loggedInAjax({
+            url: '/api/information_items/?is_hot_info_item=true&limit=6&offset=' + offset,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                callback(null,data);
+            },
+            error:function(data){
+                callback(data);
+            }
+        });
+
+    }
+};
 
 $(function(){
    $('body').bind('DOMNodeInserted',function(){

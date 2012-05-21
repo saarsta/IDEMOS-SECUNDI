@@ -1,7 +1,6 @@
 <script type="text/javascript">
     $(function() {
 
-        var tag_name = "<%= tag_name %>";
         var items = {
             add: function(data, parent) {
                 var item =
@@ -66,8 +65,6 @@
                 $("#look_for_tags").attr('value', tag_name);
             }
 
-            db_functions.dbGetAllSubjects();
-            db_functions.getHotInfoItems();
 
             $('#btn_look').live("click", function(){
                 $('#search_results').show();
