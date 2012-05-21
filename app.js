@@ -106,8 +106,8 @@ app.configure(function(){
     require('j-forms').serve_static(app,express);
 });
 
-require('./routes')(app);
 require('./deliver/routes')(app);
+require('./routes')(app);
 require('./api')(app);
 require('./admin')(app);
 
