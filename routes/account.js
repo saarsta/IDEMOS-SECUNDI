@@ -214,8 +214,6 @@ exports.routing = function(router)
                             });
                         }
                     });
-//                    res.redirect(next || DEFAULT_LOGIN_REDIRECT);
-
                 }
             });
         }
@@ -225,7 +223,6 @@ exports.routing = function(router)
             req.session.save(function(err, obj){
                 go();
             });
-
         }
         else
             go();
@@ -333,7 +330,6 @@ function isUserInDataBase(user_facebook_id, callback) {
 }
 
 function createNewUser(data, access_token, callback) {
-
     var user = new Models.User();
     user.username = data.username;
     user.identity_provider = "facebook";

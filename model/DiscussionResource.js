@@ -209,10 +209,10 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
 
                                                 //find all information items and set notifications for their owners
                                                 notifications_for_the_info_items_relvant(obj._id, user_id, function(err, args){
-                                                    callback(err, args);
+                                                    callback(err, obj);
                                                 })
-                                            }
-                                            callback(err, obj);
+                                            }else
+                                                callback(err, obj);
                                         });
                                     }else{
                                         callback(err, object);
