@@ -4,8 +4,8 @@ var models = require('../models.js'),
 
 module.exports = function(router)
 {
-    router.get('/new', function(req, res){
-        models.Subject.findById(req.query.subject_id,function(err,subject)
+    router.get('/new/:subject_id', function(req, res){
+        models.Subject.findById(req.params.subject_id,function(err,subject)
         {
             res.render('createDiscussion.ejs',{title:"יצירת דיון", logged: req.isAuthenticated(),
                 big_impressive_title: "",
