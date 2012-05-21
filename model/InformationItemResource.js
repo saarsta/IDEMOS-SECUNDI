@@ -201,7 +201,7 @@ module.exports.approveInfoItem = function(id,callback){
         },
 
         function(obj, cbk){
-            notifications.create_user_notification(notification_type, id, creator_id, cbk);
+            notifications.create_user_notification(notification_type, id,creator_id, null, null, cbk);
         }
 
 
