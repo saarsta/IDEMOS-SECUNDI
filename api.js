@@ -29,6 +29,7 @@ var mongoose_resource = require('jest'),
     UpdateResource = require('./model/UpdateResource'),
     KilkulResource = require('./model/KilkulResource'),
     HotObjectResource = require('./model/HotObjectResource');
+    NotificationResource = require('./model/NotificationResource');
 
 module.exports = function(app)
 {
@@ -62,4 +63,5 @@ module.exports = function(app)
     rest_api.register_resource('tags', new TagResource());
     rest_api.register_resource('article_update', new ArticleCommentResource());
     rest_api.register_resource('hot_objects', new HotObjectResource());
+    rest_api.register_resource('notifications', new NotificationResource());
 };

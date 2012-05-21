@@ -11,7 +11,8 @@ var resources = require('jest'),
     models = require('../models'),
     common = require('./common'),
     async = require('async'),
-    _ = require('underscore');
+    _ = require('underscore'),
+    notifications = require('./notifications');
 
 var PostResource = module.exports = common.GamificationMongooseResource.extend({
     init:function () {
@@ -57,6 +58,26 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
         var self = this;
         var post_object = new self.model();
         var user = req.user;
+//        var notification_type = "comment_on_discussion_you_are_part_of"
+        var discussion_id;
+        var discussion_creator_id;
+        var post_id;
+
+        var iterator = function(user_schema, itr_cbk){
+            if (user_schema.user_id == user_id)
+                itr_cbk(null, 0);
+            else{
+                if (discussion_creator_id + "" == user_schema.user_id + ""){
+                    notifications.create_user_notification("comment_on_discussion_you_created", discussion_id, user_schema.user_id, user_id, post_id,function(err, results){
+                        itr_cbk(err, results);
+                    });
+                }else{
+                    notifications.create_user_notification("comment_on_discussion_you_are_part_of", discussion_id, user_schema.user_id, user_id, post_id,function(err, results){
+                        itr_cbk(err, results);
+                    });
+                }
+            }
+        }
 
         console.log('debugging waterfall');
 
@@ -76,34 +97,63 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                 self.authorization.edit_object(req, post_object, cbk);
             },
 
-            function(post_object, cbk){
-
+            function(_post_object, cbk){
+                post_id = _post_object._id;
+                post_object = _post_object;
                 console.log('debugging waterfall 2');
-                var discussion_id = post_object.discussion_id;
+                discussion_id = post_object.discussion_id;
                 post_object.save(function(err,result,num)
                 {
                     cbk(err,result);
                 });
             },
             function (object,cbk) {
-                var discussion_id = object.discussion_id;
+//                discussion_id = object.discussion_id;
                 console.log('debugging waterfall 3');
                 //if post created successfuly, add user to discussion
                 // + add discussion to user
                 //  + take tokens from the user
-                async.parallel([
-                        function(cbk2)
-                        {
-                            console.log('debugging waterfall 3 1');
-                            models.Discussion.update({_id:object.discussion_id}, {$addToSet: {users: user_id}}, cbk2);
 
+                async.parallel([
+                    function(cbk2)
+                    {
+                        console.log('debugging waterfall 3 1');
+
+                        //add user that connected somehow to discussion
+                        models.Discussion.update({_id:object.discussion_id, "users.user_id": {$ne: user_id}},
+                            {$addToSet: {users: {user_id: user_id, join_date: Date.now}}}, cbk2);
+                    },
+
+                    //add notification for the dicussion's connected people or creator
+                    function(cbk2){
+                        console.log('debugging waterfall 3 2');
+
+                        models.Discussion.findById(object.discussion_id, /*["users", "creator_id"],*/ function(err, disc_obj){
+                             if (err)
+                                cbk2(err, null);
+                             else{
+                                discussion_creator_id = disc_obj.creator_id;
+                                async.forEach(disc_obj.users, iterator, cbk2);
+                             }
+                        })
+                    },
+
+                    //add notification for Qouted comment creator
+                    function(cbk2){
+                        console.log('debugging waterfall 3 3');
+
+                        if(post_object.ref_to_post_id){
+                            models.Post.findById(post_object.ref_to_post_id, function(err, quoted_post){
+                                if(err)
+                                    cbk2(err, null);
+                                else{
+                                    notifications.create_user_notification("been_quoted", discussion_id, quoted_post.creator_id, post_object.creator_id, post_object._id/*ref_to_post_id*/, cbk);
+                                }
+                            })
+                        }else{
+                            cbk2(null, 0);
                         }
-//                    ,
-//                        function(cbk2)
-//                        {
-//                            console.log('debugging waterfall 3 2');
-//                            models.User.update({_id:user._id,'discussions.discussion_id':{$ne:}},{$addToSet:{discussions:object.discussion_id}},cbk2);
-//                        }
+                    }
                     ],
                     cbk);
 

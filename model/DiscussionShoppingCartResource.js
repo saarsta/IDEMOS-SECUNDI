@@ -55,7 +55,11 @@ DiscussionShoppingCartResource.prototype.update_obj = function(req,object,callba
     if(is_exist){
         callback("information item is already in discussion shoping cart", null);
     }else{
+        //add item to discussion's shopping cart
         object.discussions.push(discussion_id);
+
+        //add notification for user
+
         object.save(callback);
     }
 }
