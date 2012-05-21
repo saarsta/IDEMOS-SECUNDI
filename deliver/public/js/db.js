@@ -92,9 +92,44 @@ var db_functions = {
                 });
             }
         });
-    }
+    },
 
-}
+    dbGetAllSubjects: function(callback){
+        this.loggedInAjax({
+            url: '/api/subjects',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                $.each(data.objects,function(index,obj)
+                {
+                    obj.word_count = function()
+                    {
+                        return Math.min($.trim(obj.name).split(/\s+/).length,3);
+                    };
+                });
+                callback(null,data);
+            },
+            error:function(data)
+            {
+                callback(data);
+            }
+        });
+    },
+    getHotInfoItems: function(offset,callback){
+        this.loggedInAjax({
+            url: '/api/information_items/?is_hot_info_item=true&limit=6&offset=' + offset,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                callback(null,data);
+            },
+            error:function(data){
+                callback(data);
+            }
+        });
+
+    }
+};
 
 $(function(){
    $('body').bind('DOMNodeInserted',function(){
@@ -119,10 +154,12 @@ function image_autoscale(obj, params)
     params = params || {};
     var fadeIn = params['fade'] || 300;
     obj.css({width:'', height:''}).hide();
+    obj.parent().addClass('image_loading');
     obj.load(function()
     {
         var elm = $(this);
         var parent = $(elm.parent());
+        parent.removeClass('image_loading');
         parent.css({'overflow':'hidden'});
         var parent_width = parent.innerWidth();
         var parent_height = parent.innerHeight();

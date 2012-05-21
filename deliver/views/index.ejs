@@ -2,73 +2,14 @@
 
 <html>
 <head>
-    <title></title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link href="css/reset.css" rel="stylesheet" type="text/css" />
-    <link href="css/style.css" rel="stylesheet" type="text/css" />
-    <!--[if lte IE 7]><link href="css/ie.css" rel="stylesheet" type="text/css" /><![endif]-->
-    <script src="js/jquery-1.6.1.min.js" type="text/javascript"></script>
-    <script src="js/script.js" type="text/javascript"></script>
-    <script src="js/db.js" type="text/javascript"></script>
-    <script src="js/dust-full-0.3.0.js" type="text/javascript"></script>
-    <script src="js/compiled_templates.js" type="text/javascript"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('.tikunim-box h2').click(function () {
-                $(this).parent().toggleClass('active');
-            });
-            $('.user-box h2').click(function () {
-                $(this).parent().toggleClass('active');
-            });
-        });
-    </script>
+    <%- partial('partials/head.ejs') %>
 </head>
 <body <%if(!user_logged){%>class="big-head"<%}%>>
     <div id="wrap">
         <div id="header">
-            <a href="/" id="logo"></a>
-            <ul id="main-menu">
                 <%-partial('partials/menu.ejs')%>
-            </ul>
-            <div class="user-box">
-                <span class="total-number">74</span>
-                <span class="icon"></span>
-                <h2>
-                <%if(user_logged){%><%=user.first_name%><%}else{%>התחבר<%}%>
-
-                </h2>
-                <div class="hide-box">
-                    <%if(user_logged){%>
-                    <div class="user-login-box cf">
-                        <ul>
-                            <li class="tokens"><a href="">הטוקנים שלי <span class="icon-menu"></span><span class="number"><%=user.tokens%></span></a></li>
-                            <li class="chip"><a href="">האסימונים שלי <span class="icon-menu"></span><span class="number">0</span></a></li>
-                            <li class="respect"><a href="">מדד הכבוד <span class="icon-menu"></span><span class="number">0</span></a></li>
-                            <li class="settings"><a href="">הגדרות <span class="icon-menu"></span></a></li>
-                            <li class="help"><a href="">עזרה <span class="icon-menu"></span></a></li>
-                        </ul>
-                        <div class="btn-box">
-                            <a href="">הצג</a>
-                            <a href="">הסתר</a>
-                        </div>
-                    </div>
-                    <%}else{%>
-                    <input type="text" value="שם משתמש" />
-                    <input type="text" value="ססמה" />
-                    <input type="submit" value="התחבר" />
-                    <div class="spacer"></div>
-                    <a class="facebook" href="/account/facebooklogin?next=<%=url%>"></a>
-                    <%}%>
-                </div>
-            </div>
-            <div class="tikunim-box">
-                <span class="icon"></span>
-                <h2>דווח על כשלים</h2>
-                <div class="hide-box">
-                    <textarea cols="0" rows="0"></textarea>
-                    <input type="submit" value="שלח" />
-                </div>
-            </div>
+                <%-partial('partials/user_box.ejs')%>
+                <%-partial('partials/failures.ejs')%>
             <%if(!user_logged){%>
             <div class="main-video">
                 <div class="video-box">
@@ -83,11 +24,7 @@
                 <a class="btn" href="">הצטרפו והתחילו להשפיע!</a>
             </div>
             <%}%>
-            <form action="/information_items" class="search-box">
-                <label>חיפוש לפי תגיות</label>
-                <input type="text" value="" name='tag_name' />
-                <input type="submit" value="חפש" />
-            </form>
+            <%- partial('partials/tag_search.ejs') %>
         </div>
         <div id="content" class="cf">   
             <div class="right-col">
@@ -156,31 +93,7 @@
             </div>
         </div>
     </div>
-    <div id="footer">
-        <div class="extra cf">
-            <div class="one-col">
-                <h4>תנועת עורו</h4>
-                <p>עורו הוקמה מתוך הבנה שהגיע הזמן שקולו של
-הטוב בישראל יישמע, ושכולנו זכאים להיות
-ורו הוקמה מתוך הבנה שהגיע הזמן שקולו של 
-שותפים בקיבעת ההחלטות. הטוב בישראל יישמע,
-ושכולנו זכאים להיותשותפים בקיבעת ההחלטות.</p>
-            </div>
-            <div class="two-col">
-                <h4>קישורים</h4>
-                <ul>
-                    <li><a href="">מי אנחנו</a></li>
-                    <li><a href="">חדשות</a></li>
-                    <li><a href="">תנאי שימוש</a></li>
-                    <li><a href="">שבלוגים</a></li>
-                    <li><a href="">בלוגים</a></li>
-                    <li><a href="">עזרה</a></li>
-                </ul>
-            </div>
-            <div class="three-col" id="footer_tags">
-            </div>
-        </div>
-    </div>
+    <%- partial('partials/footer.ejs') %>
 </body>
 </html>
 

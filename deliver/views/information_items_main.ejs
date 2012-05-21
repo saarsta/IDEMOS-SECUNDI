@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <%- partial('partials/head.ejs') %>
+</head>
+<body>
+<div id="wrap">
+<div id="header">
+    <%-partial('partials/menu.ejs')%>
+    <%-partial('partials/user_box.ejs')%>
+    <%-partial('partials/failures.ejs')%>
+
+    <%- partial('partials/tag_search.ejs') %>
+</div>
+<div id="content" class="cf">
+    <div class="services-box cf">
+        <h2><span dir='rtl'>
+7 תחומי על:
+        </span>
+            כאן תוכלו למצוא מחקרים, ניירות מידע, גרפים, וידאו ודו"חות
+            <br />
+            הנוגעים לסוגיות הרלוונטיות למשתמשי עורו ולדיונים שמתנהלים במערכת.
+            <br />
+            אתם מוזמנים להעלות לעמוד זה פרטי מידע חדשים.
+        </h2>
+        <div class="services-blue cf" id="subjects_list">
+        </div>
+        <div class="services-green">
+            <span class="empty"></span>
+            <a href="javascript:void(0)" class="service-8"><span class="text">הוסף פריט מידע</span><span class="icon"></span></a>
+            <a href="javascript:void(0)" class="service-9"><span class="text">
+                לעגלת המידע
+            </span><span class="icon"></span></a>
+            <a href="javascript:void(0)" class="service-10"><span class="text">
+                עורו
+            </span><span class="icon"></span></a>
+            <span class="empty"></span>
+            <span class="empty"></span>
+        </div>
+    </div>
+    <h2>
+עוררו עניין
+    </h2>
+    <div class="news-list cf">
+        <div class="slide" id="slide_list" style="height:714px;">
+        </div>
+    </div>
+</div>
+</div>
+<%- partial('partials/footer.ejs') %>
+</body>
+</html>
+<script type="text/javascript">
+
+    var tag_name = "<%= tag_name %>";
+
+
+    $(function(){
+
+        db_functions.getAndRenderFooterTags();
+
+        db_functions.dbGetAllSubjects(function(err,data)
+        {
+            $.each(data.objects,function(index,subject)
+            {
+                dust.render('subject',subject,function(err,out)
+                {
+                    $('#subjects_list').append(out);
+                })
+            });
+
+        });
+
+        function loadHotInfoItems(slide_page,objects)
+        {
+            $.each(objects,function(index,hot_item)
+            {
+                dust.render('hot_information_item',hot_item,function(err,out)
+                {
+                    slide_page.append(out);
+                })
+            });
+            slide_page.attr('data-loaded','true');
+        }
+
+        db_functions.getHotInfoItems(0,function(err,data)
+        {
+            var num_of_pages = Math.ceil(data.meta.total_count/data.meta.limit);
+            for(var i=0; i<num_of_pages; i++)
+            {
+                $('#slide_list').append($('<div class="one-slide"></div>'));
+            }
+            if(data.meta.total_count > data.meta.limit)
+            {
+                $('.slide').before('<div id="nav">')
+                        .cycle({
+                            fx:     'scrollLeft',
+                            speed:  '2000',
+                            timeout: 0,
+                            pager:  '#nav',
+                            before:function(currSlideElement, nextSlideElement, options, forwardFlag){
+                                var elm = $(nextSlideElement);
+                                var index = elm.index();
+                                if(!elm.data('loaded'))
+                                {
+                                    db_functions.getHotInfoItems(index*6,function(err,data)
+                                    {
+                                        loadHotInfoItems(elm,data.objects);
+                                    });
+                                }
+
+                            }
+                        });
+            }
+
+            var first_page = $($('#slide_list .one-slide')[0]);
+            loadHotInfoItems(first_page,data.objects);
+
+        });
+
+
+
+    });
+
+
+</script>
+
