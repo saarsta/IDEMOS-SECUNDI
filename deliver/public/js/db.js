@@ -147,10 +147,12 @@ function image_autoscale(obj, params)
     params = params || {};
     var fadeIn = params['fade'] || 300;
     obj.css({width:'', height:''}).hide();
+    obj.parent().addClass('image_loading');
     obj.load(function()
     {
         var elm = $(this);
         var parent = $(elm.parent());
+        parent.removeClass('image_loading');
         parent.css({'overflow':'hidden'});
         var parent_width = parent.innerWidth();
         var parent_height = parent.innerHeight();

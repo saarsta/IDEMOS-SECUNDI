@@ -1725,3 +1725,7 @@ body
     height:34px;
     overflow: hidden;
 }
+div.image_loading
+{
+    background: #EBEDEF url(../images/ajax-loader.gif) 50% 60% no-repeat
+}
