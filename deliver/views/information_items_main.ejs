@@ -60,7 +60,7 @@
 
         db_functions.getAndRenderFooterTags();
 
-        db_functions.dbGetAllSubjects(function(err,data)
+        db_functions.getAllSubjects(function(err,data)
         {
             $.each(data.objects,function(index,subject)
             {
