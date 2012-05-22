@@ -528,12 +528,12 @@ var db_functions = {
         });
     },
 
-    addSuggestionToDiscussion: function(discussion_id, parts, callback){
+    addSuggestionToDiscussion: function(discussion_id, parts, explanation, callback){
         this.loggedInAjax({
             url: '/api/suggestions/',
             type: "POST",
             async: true,
-            data: {"discussion_id": discussion_id, "parts": parts},
+            data: {"discussion_id": discussion_id, "parts": parts, "explanation": explanation},
             success: function (data) {
                 console.log(data);
                 callback(null, data);

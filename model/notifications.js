@@ -44,7 +44,9 @@ exports.create_user_notification = function (notification_type, entity_id, user_
                        })
                    }
                 }else{
-                    create_new_notification(notification_type, entity_id, user_id, notificatior_id, sub_entity, cbk);
+                    create_new_notification(notification_type, entity_id, user_id, notificatior_id, sub_entity, function(err, obj){
+                        cbk(err, obj);
+                    });
                 }
             }
         ], function(err, obj){

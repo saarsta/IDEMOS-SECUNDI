@@ -108,8 +108,12 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
 
                     function(suggestions, cbk){
                         async.forEach(suggestions, function(suggestion, itr_cbk){
-                            GradeSuggestion.calculateSuggestionGrade(suggestion._id, grade_object.discussion_id, itr_cbk);}
-                        , cbk);
+                            GradeSuggestion.calculateSuggestionGrade(suggestion._id, grade_object.discussion_id, null, function(err, obj){
+                                itr_cbk(err, obj);
+                            });}
+                        , function(err, args){
+                                cbk(err, args);
+                            });
                     }
 
                 ], function(err, args){
@@ -131,7 +135,7 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
         var suggestions = [];
 
         var iterator = function(suggestion, itr_cbk){
-            GradeSuggestion.calculateSuggestionGrade(suggestion._id, object.discussion_id, function(err, sugg_new_grade, sugg_total_counter){
+            GradeSuggestion.calculateSuggestionGrade(suggestion._id, object.discussion_id, null, function(err, sugg_new_grade, sugg_total_counter){
                 if(!err){
                     suggestions.push({
                         _id: suggestion._id,
