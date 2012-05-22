@@ -22,20 +22,20 @@ util.inherits(Authoriztion,resources.Authorization);
 Authoriztion.prototype.edit_object = function(req,object,callback){
     //check if user already grade this discussion
 
-    if(req.method == 'POST'){
-        models.Grade.count({"discussion_id": object.discussion_id + "", "user_id":req.user._id}, function(err, count){
-            if (err){
-                callback(err, null);
-            }else{
-                if (count > 0){
-                    callback({message:"user already grade this discussion",code:401}, null);
-                }else{
-                    object.user_id = req.user._id;
-                    callback(null, object);
-                }
-            }
-        })
-    }else{
+//    if(req.method == 'POST'){
+//        models.Grade.count({"discussion_id": object.discussion_id + "", "creator_id": req.user._id}, function(err, count){
+//            if (err){
+//                callback(err, null);
+//            }else{
+//                if (count > 0){
+//                    callback({message:"user already grade this discussion",code:401}, null);
+//                }else{
+//                    object.user_id = req.user._id;
+//                    callback(null, object);
+//                }
+//            }
+//        })
+//    }else{
         if(req.method == 'PUT'){
            if(!(object.user_id + "" == req.user._id + ""))
                callback({message:"its not your garde!",code:401}, null);
@@ -44,7 +44,7 @@ Authoriztion.prototype.edit_object = function(req,object,callback){
         }else{
             callback(null, object);
         }
-    }
+//    }
 };
 
 var GradeResource = module.exports = common.GamificationMongooseResource.extend({
@@ -91,11 +91,16 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
                     },
 
                     function(discussion_obj, cbk){
-                        calculateDiscussionGrade(grade_object.discussion_id, function(err, _new_grade, evaluate_counter){
-                            new_grade = _new_grade;
-                            counter = evaluate_counter;
-                            cbk(err, _new_grade);
-                        });
+                        //cant grade your own discussion
+                        if(discussion_obj.creator_id + "" == req.user._id + ""){
+                            cbk({message:"user already grade this discussion",code:401}, null);
+                        }else{
+                            calculateDiscussionGrade(grade_object.discussion_id, function(err, _new_grade, evaluate_counter){
+                                new_grade = _new_grade;
+                                counter = evaluate_counter;
+                                cbk(err, _new_grade);
+                            });
+                        }
                     },
 
                     //calculate all change suggestion all over again

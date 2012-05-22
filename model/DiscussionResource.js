@@ -175,52 +175,60 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                 }
                 else
                 {
-                    fields.creator_id = user_id;
-                    fields.first_name = user.first_name;
-                    fields.last_name = user.last_name;
-                    fields.users = {
-                        user_id: user_id,
-                        join_date: Date.now()
-                    };
+                    //vision cant be more than 800 words
+                    var vision_splited_to_words = fields.vision_text.split(" ");
+                    var words_counter = 0;
 
-                    for (var field in fields) {
-                        object.set(field, fields[field]);
-                    }
+                    _.each(vision_splited_to_words, function(word){ if (word != " " && word != "") words_counter++})
+                    if(words_counter >= 800){
+                        callback({message: "vision can't be more than 800 words", code:401}, null);
+                    }else{
+                        fields.creator_id = user_id;
+                        fields.first_name = user.first_name;
+                        fields.last_name = user.last_name;
+                        fields.users = {
+                            user_id: user_id,
+                            join_date: Date.now()
+                        };
 
-                    self.authorization.edit_object(req, object, function (err, object) {
-                        if (err) callback(err);
-                        else {
-                            //if success with creating new discussion - add discussion to user schema
-                            object.save(function (err, obj) {
-                                if (!err) {
-
-                                    var user_discussion = {
-                                        discussion_id: obj._id,
-                                        join_date: Date.now()
-                                    }
-
-                                    if (object.is_published) {
-                                        models.User.update({_id: user._id}, {$addToSet: {discussions: user_discussion}}, function(err, num){
-                                            if(!err){
-
-                                                //set gamification
-                                                req.gamification_type = "discussion";
-                                                req.token_price = /*common.getGamificationTokenPrice('discussion')*/ 3;
-
-                                                //find all information items and set notifications for their owners
-                                                notifications_for_the_info_items_relvant(obj._id, user_id, function(err, args){
-                                                    callback(err, obj);
-                                                })
-                                            }else
-                                                callback(err, obj);
-                                        });
-                                    }else{
-                                        callback(err, object);
-                                    }
-                                }
-                            });
+                        for (var field in fields) {
+                            object.set(field, fields[field]);
                         }
-                    });
+
+                        self.authorization.edit_object(req, object, function (err, object) {
+                            if (err) callback(err);
+                            else {
+                                //if success with creating new discussion - add discussion to user schema
+                                object.save(function (err, obj) {
+                                    if (!err) {
+                                        var user_discussion = {
+                                            discussion_id: obj._id,
+                                            join_date: Date.now()
+                                        }
+
+                                        if (object.is_published) {
+                                            models.User.update({_id: user._id}, {$addToSet: {discussions: user_discussion}}, function(err, num){
+                                                if(!err){
+
+                                                    //set gamification
+                                                    req.gamification_type = "discussion";
+                                                    req.token_price = /*common.getGamificationTokenPrice('discussion')*/ 3;
+
+                                                    //find all information items and set notifications for their owners
+                                                    notifications_for_the_info_items_relvant(obj._id, user_id, function(err, args){
+                                                        callback(err, obj);
+                                                    })
+                                                }else
+                                                    callback(err, obj);
+                                            });
+                                        }else{
+                                            callback(err, object);
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                    }
                 }
             }else{
                 callback(err, null);

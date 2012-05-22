@@ -26,6 +26,20 @@ var InformationItemResource = module.exports = common.GamificationMongooseResour
             tags:null, subject_id:null, title:null, text_field:null, text_field_preview:null, users:null, is_hot_info_item:null, discussions:null};
         this.default_query = function (query) {
             return query.where('is_visible', true).sort('creation_date', 'descending').populate('subject_id');
+        },
+        this.fields = {
+            _id: null,
+            title: null,
+            subject_id: {
+                _id: null,
+                name: null
+            },
+            category: null,
+            text_field: null,
+            text_field_preview: null,
+            tags: null,
+            like_counter: null,
+            view_counter: null
         };
     },
 
@@ -43,6 +57,20 @@ var InformationItemResource = module.exports = common.GamificationMongooseResour
            }
         });
 
+    },
+
+    get_objects: function (req, filters, sorts, limit, offset, callback) {
+
+        this._super(req, filters, sorts, limit, offset, function(err, results){
+
+            var new_results = {};
+            new_results.meta = results.meta;
+            new_results.objects = [];
+            _.each(results.objects, function(obj){if (obj.status == "approved") new_results.objects.push(obj)});;
+            new_results.meta.total_count = new_results.objects.length;
+
+            callback(err, new_results);
+        })
     },
 
     create_obj: function(req,fields,callback){
