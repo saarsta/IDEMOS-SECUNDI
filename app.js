@@ -122,7 +122,7 @@ app.get('/tokens',function(req,res){
 });
 
 
-app.get('/thresh/:voters/:rating',function(req,res)
+app.get('/api/thresh/:voters/:rating',function(req,res)
 {
     require('./tools/thresh_calc')(req.params.voters, req.params.rating,function(err,result)
     {
