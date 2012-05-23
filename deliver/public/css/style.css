@@ -587,19 +587,13 @@ body
     margin:0;
     color:#50504f;
     font: bold 16px/19px Arial;
+    overflow:hidden;
+    height:60px;
 }
 .news-list .one h4 a
 {
     color:#50504f;
     text-decoration: none;
-}
-.news-list .one p
-{
-    color:#50504f;
-    font: normal 13px/17px ARial;
-    height: 34px;
-    overflow: hidden;
-    margin-bottom: 30px;
 }
 .tags
 {
@@ -1140,4 +1134,12 @@ body
 .tikunim-box:hover .hide-box
 {
     display: block;
+}
+.item_text_preview
+{
+    color:#50504f;
+    font: normal 13px/17px ARial;
+    height: 34px;
+    overflow: hidden;
+    margin-bottom: 30px;
 }
