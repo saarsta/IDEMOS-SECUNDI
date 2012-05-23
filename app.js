@@ -124,8 +124,10 @@ app.get('/tokens',function(req,res){
 
 app.get('/api/thresh/:voters/:rating',function(req,res)
 {
-    require('./tools/thresh_calc')(req.params.voters, req.params.rating,function(err,result)
+    console.log('thresh');
+    require('./tools/thresh_calc.js')(req.params.voters, req.params.rating,function(err,result)
     {
-        res.send(result);
+        res.write(result + '');
+        res.end();
     });
 });
