@@ -25,7 +25,7 @@ exports.run = function(app)
         daily_cron.updateTagAutoComplete(function(err, result){
             console.log(err || result);
         })
-    }, 60*60*1000*24);
+    }, 60*1000);
 };
 
 var Cron = exports.Cron = {
