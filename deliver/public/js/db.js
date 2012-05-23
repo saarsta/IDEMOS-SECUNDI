@@ -134,6 +134,10 @@ var db_functions = {
 // handle image loading stuff
 
 $(function(){
+
+    db_functions.getAndRenderFooterTags();
+
+
     var callback = function(event){
         var target_element = event.srcElement || event.target;
         if(target_element){
