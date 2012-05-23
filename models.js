@@ -237,6 +237,7 @@ var Schemas = exports.Schemas = {
         followers_count:{type:Number, 'default':0, editable:false},
         is_visible:{type:Boolean, 'default':true},
         is_published:{type:Boolean, 'default':false},
+        threshold_for_accepting_change_suggestions: {type: Number, min: 2, max: 501, 'default': 500},
 //        popular_comments: [{type: ObjectId, ref: 'Post', index: true}],
         grade:{type:Number, 'default':0},
         evaluate_counter:{type:Number, 'default':0, editable:false},
