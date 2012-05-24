@@ -224,17 +224,37 @@ module.exports.approveSuggestion = function(id,callback)
 {
     //if suggestion approved we change the discussion vision
     // + save the ealier version of vison as parts in vison_changes
+
+    //+ suggestion grade becomes the discussion grade
     var suggestion_object;
     var suggestion_creator;
     var discussion_id;
+    var suggestion_grade;
 
-    var iterator = function(grade, itr_cbk){
-        if(suggestion_creator != grade.user_id){
-            notifications.create_user_notification("approved_change_suggestion_you_graded",
-                    discussion_id, suggestion_creator, null, null, itr_cbk);
-        }else{
-            itr_cbk(null, 0);
-        }
+    //set notifications
+    //update discussion grade
+    var iterator = function(sugg_grade, itr_cbk){
+
+        async.parallel([
+            function(cbk1){
+                if(suggestion_creator != sugg_grade.user_id){
+                    notifications.create_user_notification("approved_change_suggestion_you_graded",
+                        discussion_id, suggestion_creator, null, null, cbk1);
+                }else{
+                    cbk1(null, 0);
+                }
+            },
+            //update discussion grade with the suggestion grade
+            function(cbk1){
+                models.Grade.update({user_id: sugg_grade.user_id, discussion_id: discussion_id},
+                    {$set: {evaluation_grade: sugg_grade.evaluation_grade}},
+                    function(err, num){
+                        cbk1(err, num);
+                    });
+            }
+        ], function(err, args){
+            itr_cbk(err, args);
+        })
     }
 
     async.waterfall([
@@ -245,6 +265,7 @@ module.exports.approveSuggestion = function(id,callback)
 
         function(_suggestion_object,cbk){
             suggestion_object = _suggestion_object;
+            suggestion_grade = suggestion_object.grade;
             if (suggestion_object.is_approved) {
                 callback({message:"this suggestion is already published", code: 401}, null);
             } else {
@@ -275,10 +296,12 @@ module.exports.approveSuggestion = function(id,callback)
 
             discussion_object.vision_text_history.push(discussion_object.vision_text);
             discussion_object.vision_text = new_string;
+
+            //suggestion grade is the new discussion grade
             models.Discussion.update({_id:discussion_object._id},
-                {
-                    $addToSet: {vision_text_history: discussion_object.vision_text},
-                    $set:{vision_text: new_string}},
+            {
+                $addToSet: {vision_text_history: discussion_object.vision_text},
+                $set:{vision_text: new_string, grade: suggestion_grade}},
                 function(err, counter){
                 cbk(err, discussion_object);
             });
@@ -289,9 +312,7 @@ module.exports.approveSuggestion = function(id,callback)
             suggestion_object.save(cbk);
         },
 
-
         function(sug_obj, num, cbk){
-            var debug = 8;
             suggestion_creator = sug_obj.creator_id;
             async.parallel([
                 //set gamification
@@ -310,6 +331,7 @@ module.exports.approveSuggestion = function(id,callback)
                 },
 
                 //set notifications for graders
+                //for each suggestion grade - copy it to discussion grade
                 function(par_cbk){
 
                     async.waterfall([
@@ -317,8 +339,8 @@ module.exports.approveSuggestion = function(id,callback)
                             models.GradeSuggestion.find({_id: sug_obj._id}, wtr_cbk);
                         },
 
-                        function(grades, wtr_cbk){
-                            async.forEach(grades, iterator, function(err, result){
+                        function(sugg_grades, wtr_cbk){
+                            async.forEach(sugg_grades, iterator, function(err, result){
                                 wtr_cbk(err || null, result || 0);
                             });
                         }
