@@ -145,6 +145,21 @@ var db_functions = {
 
 $(function(){
 
+    $('#failureForm').live('submit', function(e){
+        e.preventDefault();
+        var feedbackTb=this.feedbackTb;
+        if(feedbackTb.value.replace(/\s/g,"") == ""){
+            return;
+        }
+        db_functions.addKilkul(this.feedbackTb.value ,function(error,data){
+            if(error){
+                console.log(error);
+            }else{
+                feedbackTb.value='';
+            }
+        });
+
+    });
     db_functions.getAndRenderFooterTags();
 
 

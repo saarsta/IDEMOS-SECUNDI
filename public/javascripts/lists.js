@@ -1,13 +1,19 @@
 
 function loadListItems(original_type,template_name,subject,tag) {
+   debugger
     var type = original_type;
+   //BUGBUG refctor ***************************/
     db_functions.dbGetAllSubjects(true);
-//    db_functions.getAllCycles();
+
+    /**************************************************/
     var query = {};
     if(subject)
         query['subject_id'] = subject;
-    if(tag == 'חיפוש עפ TAGS')
+    if(tag == 'חיפוש עפ TAGS'){
         tag = '';
+    }
+
+
     function populate_bottom_list()
     {
         db_functions.getListItems(original_type,query,function(err,data)

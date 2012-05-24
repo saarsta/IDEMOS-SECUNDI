@@ -119,22 +119,7 @@
         })
 
 
-        $('#failureForm').live('submit', function(e){
-            e.preventDefault();
-            alert('aa');
-            var feedbackTb=this.feedbackTb;
-            if(feedbackTb.value.replace(/\s/g,"") == ""){
-                return;
-            }
-            db_functions.addKilkul(this.feedbackTb.value ,function(error,data){
-                if(error){
-                    console.log(error);
-                }else{
-                    feedbackTb.value='';
-                }
-            });
 
-        })
 
 
         db_functions.getHotObjects(function(data){

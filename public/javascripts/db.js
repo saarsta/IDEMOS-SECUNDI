@@ -67,7 +67,18 @@ var db_functions = {
 //                var size = data.objects.length;
                 dust.renderArray(useSmall?'subject_small' :'subject',data.objects,null,function(err,out)
                 {
-                   $('#subjects_list').append(out);
+                    var subjectslist=  $('#subjects_list');
+                    subjectslist.empty();
+                    subjectslist.append(out);
+                    var subjects= $('#subjects_list').find('.subjectFilter').each(function() {
+                        $(this).click(function (e){
+                            var subject= $(this).find('span')[0].innerText;
+                            loadListItems('discussions','discussion_list_item',subject,'');
+
+                        })
+
+                    });
+
 
                 });
             }
