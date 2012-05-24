@@ -7,13 +7,17 @@ module.exports = function(req,res)
     models.Subject.findById(req.params.subject_id,function(err,subject)
     {
         // render whatever
-        res.render('youview.ejs',
+        console.log(subject)   ;
+        res.render('discussion_create.ejs',
             {
-                title:"יצירת דיון", logged: req.isAuthenticated(),
+                layout: false,
+                title:"יצירת דיון",
+                logged: req.isAuthenticated(),
                 big_impressive_title: "",
                 subject:subject,
                 user: req.session.user,
                 avatar:req.session.avatar_url,
+                user_logged: req.isAuthenticated(),
                 tab:'discussions'
         });
     });
