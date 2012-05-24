@@ -4,7 +4,8 @@ var resources = require('jest'),
     models = require('../models'),
     async = require('async'),
     common = require('./common'),
-    _ = require('underscore');
+    _ = require('underscore'),
+    Suggestion = require('./suggestionResource');
 
 //Authorization
 var Authoriztion = function() {};
@@ -65,6 +66,8 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
         var g_suggestion_obj;
         var is_agree;
         var discussion_evaluation_grade;
+        var num_of_agrees;
+        var discussion_id = fields.discussion_id;
 
         async.waterfall([
 
@@ -84,9 +87,35 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
 
             function(grade_suggestion_obj, cbk){
                 is_agree = grade_suggestion_obj.evaluation_grade >= discussion_evaluation_grade;
-                models.Suggestion.findById(grade_suggestion_obj.suggestion_id, function(err, sugg){
-                    cbk(err, sugg);
-                });
+                num_of_agrees = grade_suggestion_obj.agrees + Number(is_agree);
+
+                async.parallel([
+                    function(cbk1){
+                        models.Suggestion.findById(grade_suggestion_obj.suggestion_id, function(err, sugg){
+                            cbk1(err, sugg);
+                        });
+                    },
+
+                    //check if suggestion is approved
+                    function(cbk1){
+                        models.Discussion.findById(discussion_id, function(err, obj){
+                            if(!err){
+                                var real_threshold = obj.admin_threshold_for_accepting_change_suggestions || obj.threshold_for_accepting_change_suggestions;
+                                if(num_of_agrees >= real_threshold){
+                                    Suggestion.approveSuggestion(grade_suggestion_obj.suggestion_id, function(err, obj1){
+                                        cbk1(err, obj1);
+                                    })
+                                }else{
+                                    cbk1(err, obj);
+                                }
+                            }else{
+                                cbk1(err, null);
+                            }
+                        })
+                    }
+                ], function(err, args){
+                    cbk(err, args[0]);
+                })
             },
 
             function(suggestion_obj, cbk){

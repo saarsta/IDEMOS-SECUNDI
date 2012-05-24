@@ -135,7 +135,6 @@ var db_functions = {
 
 $(function(){
 
-
     $('#failureForm').live('submit', function(e){
         e.preventDefault();
         var feedbackTb=this.feedbackTb;
@@ -151,6 +150,8 @@ $(function(){
         });
 
     });
+    db_functions.getAndRenderFooterTags();
+
 
     var callback = function(event){
         var target_element = event.srcElement || event.target;
