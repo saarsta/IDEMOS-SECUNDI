@@ -134,6 +134,24 @@ var db_functions = {
 // handle image loading stuff
 
 $(function(){
+
+
+    $('#failureForm').live('submit', function(e){
+        e.preventDefault();
+        var feedbackTb=this.feedbackTb;
+        if(feedbackTb.value.replace(/\s/g,"") == ""){
+            return;
+        }
+        db_functions.addKilkul(this.feedbackTb.value ,function(error,data){
+            if(error){
+                console.log(error);
+            }else{
+                feedbackTb.value='';
+            }
+        });
+
+    });
+
     var callback = function(event){
         var target_element = event.srcElement || event.target;
         if(target_element){
