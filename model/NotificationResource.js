@@ -10,7 +10,9 @@ var NotificationCategoryResource = module.exports = resources.MongooseResource.e
         this.allowed_methods = ['get', 'put'];
         this.authentication = new common.SessionAuthentication();
         this.update_fields = {name: null};
-
+        this.default_query = function (query) {
+            return query.sort('creation_date', 'descending');
+        }
     },
 
     get_objects: function (req, filters, sorts, limit, offset, callback) {
