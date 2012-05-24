@@ -58,6 +58,33 @@ var db_functions = {
 
 
 
+    dbGetAllSubjects: function(useSmall){
+        this.loggedInAjax({
+            url: '/api/subjects',
+            type: "GET",
+            async: true,
+            success: function (data) {
+//                var size = data.objects.length;
+                dust.renderArray(useSmall?'subject_small' :'subject',data.objects,null,function(err,out)
+                {
+                    var subjectslist=  $('#subjects_list');
+                    subjectslist.empty();
+                    subjectslist.append(out);
+                    var subjects= $('#subjects_list').find('.subjectFilter').each(function() {
+                        $(this).click(function (e){
+                            var subject= $(this).find('span')[0].innerText;
+                            loadListItems('discussions','discussion_list_item',subject,'');
+
+                        })
+
+                    });
+
+
+                });
+            }
+        });
+    },
+
     getListItems : function(type,query,callback)
     {
         var querystring = type;
@@ -105,7 +132,7 @@ var db_functions = {
             }
         });
     },
-
+    
     addInfoItemToShoppingCart: function(info_item_id, callback){
         this.loggedInAjax({
             url: '/api/shopping_cart/' + info_item_id,
@@ -168,6 +195,24 @@ var db_functions = {
         });
     },
 
+    getHotInfoItems: function(){
+        this.loggedInAjax({
+            url: '/api/information_items/?is_hot_info_item=true',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log("in hot info items");
+                console.log(data);
+                $('#hot_items_list').empty();
+                dust.renderArray('hot_info_item', data.objects, null, function(err,out)
+                {
+                    $('#hot_items_list').append(out);
+                    $('#hot_items_list img').autoscale();
+                });
+            }
+        });
+
+    },
 
     getHotObjects: function(callback){
         this.loggedInAjax({
@@ -494,12 +539,12 @@ var db_functions = {
         });
     },
 
-    addSuggestionToDiscussion: function(discussion_id, parts, callback){
+    addSuggestionToDiscussion: function(discussion_id, parts, explanation, callback){
         this.loggedInAjax({
             url: '/api/suggestions/',
             type: "POST",
             async: true,
-            data: {"discussion_id": discussion_id, "parts": parts},
+            data: {"discussion_id": discussion_id, "parts": parts, "explanation": explanation},
             success: function (data) {
                 console.log(data);
                 callback(null, data);

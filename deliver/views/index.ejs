@@ -26,7 +26,7 @@
             <%}%>
             <%- partial('partials/tag_search.ejs') %>
         </div>
-        <div id="content" class="cf">   
+        <div id="content" class="cf">
             <div class="right-col">
                 <h2>עוררו עניין</h2>
                 <div class="news-list cf">
@@ -69,7 +69,7 @@
                         <div class="date">13.03.2012 ,21:09</div>
                         <a class="btn" href="">שתף</a>
                     </div>
-                    
+
                 </div>
                 <%}%>
                 <h2>סיפורי הצלחה</h2>
@@ -101,6 +101,7 @@
 
     $(function(){
 
+
         $('form.comment-form').live('submit', function(e){
             e.preventDefault();
             var feedbackTb=this.feedbackTb;
@@ -116,6 +117,9 @@
             });
 
         })
+
+
+
 
 
         db_functions.getHotObjects(function(data){
@@ -153,7 +157,8 @@
         })
 
         db_functions.getAndRenderFooterTags();
-    });
+
+    })
 
 
 </script>

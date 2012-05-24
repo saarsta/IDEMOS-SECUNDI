@@ -14,6 +14,8 @@
         <p>{alternative_part}</p>
         במקום:
         <p class='post_text'>{original_part}</p>
+        נימוק:
+        <p class='post_text'>{explanation}</p>
     </div>
     <div class="action" id="{id}" data-grade="{grade_obj._id}">
         <a class="button quote_button" href="javascript:void(0)">צטט</a>
@@ -48,5 +50,9 @@
           {evaluate_counter}
             -   מספר מדרגים
         </p>
+
+        <p class="sugg_agrees_total" data-grade="{grade_obj._id}">
+מספר אנשים בעד -
+            {agrees}
     </div>
 </li>

@@ -166,7 +166,7 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                 rsp[field] = post_object[field];
             });
             rsp.creator_id = req.user;
-            callback(self.elaborate_mongoose_errors(err), rsp);
+            callback(err, rsp);
         });
     }
 });

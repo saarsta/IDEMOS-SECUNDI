@@ -94,7 +94,7 @@ var db_functions = {
         });
     },
 
-    dbGetAllSubjects: function(callback){
+    getAllSubjects: function(callback){
         this.loggedInAjax({
             url: '/api/subjects',
             type: "GET",
@@ -155,20 +155,53 @@ var db_functions = {
     },
 };
 
+// handle image loading stuff
+
 $(function(){
-   $('body').bind('DOMNodeInserted',function(){
-       var target_element = event.srcElement || event.target;
-       if(target_element){
-          if($(target_element).is('.auto-scale'))
-            image_autoscale($('img',target_element));
-          else
-          {
-              var autoscale = $('.auto-scale',target_element);
-              if(autoscale.length)
-                  image_autoscale($('img',autoscale));
-          }
-       }
-   });
+
+    $('#failureForm').live('submit', function(e){
+        e.preventDefault();
+        var feedbackTb=this.feedbackTb;
+        if(feedbackTb.value.replace(/\s/g,"") == ""){
+            return;
+        }
+        db_functions.addKilkul(this.feedbackTb.value ,function(error,data){
+            if(error){
+                console.log(error);
+            }else{
+                feedbackTb.value='';
+            }
+        });
+
+    });
+    db_functions.getAndRenderFooterTags();
+
+
+    var callback = function(event){
+        var target_element = event.srcElement || event.target;
+        if(target_element){
+            if($(target_element).is('.auto-scale'))
+                image_autoscale($('img',target_element));
+            else
+            {
+                var autoscale = $('.auto-scale',target_element);
+                if(autoscale.length)
+                    image_autoscale($('img',autoscale));
+            }
+        }
+    };
+
+    if($.browser.msie && Number($.browser.version) == 8)
+    {
+        var _append = Element.prototype.appendChild;
+        Element.prototype.appendChild = function()
+        {
+            _append.apply(this,arguments);
+            callback({srcElement:this});
+        };
+    }
+    else
+        $('body').bind('DOMNodeInserted',callback);
 });
 
 function image_autoscale(obj, params)

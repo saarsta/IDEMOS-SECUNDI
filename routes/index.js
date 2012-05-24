@@ -24,11 +24,25 @@ var OldRouter = Router.extend({
         };
         args[args.length-1] = handler;
         base.call(self,method,args);
+
+        var _base_path = self.base_path;
+        self.base_path = '/old' + _base_path;
+        base.call(self,method,args);
+        self.base_path = _base_path;
     },
+
     include:function(path,routing_module)
     {
+        var self = this;
         var my_router = new OldRouter(this.app,this.build_path(path));
         routing_module(my_router);
+
+        var _base_path = self.base_path;
+        self.base_path = '/old' + _base_path;
+        var old_router = new OldRouter(this.app,this.build_path(path));
+        routing_module(old_router);
+        self.base_path = _base_path;
+
         return my_router;
     }
 });

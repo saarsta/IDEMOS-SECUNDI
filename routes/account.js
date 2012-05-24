@@ -214,7 +214,6 @@ exports.routing = function(router)
                             });
                         }
                     });
-//                    res.redirect(next || DEFAULT_LOGIN_REDIRECT);
                 }
             });
         }
@@ -224,7 +223,6 @@ exports.routing = function(router)
             req.session.save(function(err, obj){
                 go();
             });
-
         }
         else
             go();
@@ -300,8 +298,9 @@ var SimpleAuthentication = exports.SimpleAuthentication = function (options) {
 
 exports.facebookShare = function(req,res)
 {
-    var link = req.app.settings.root_path + (req.query.link || '');
-    res.redirect("http://www.facebook.com/sharer/sharer.php?u=" + link + "&referrer=" + req.session.user_id);
+    //var link = req.app.settings.root_path + (req.query.link || '');
+    //res.redirect("http://www.facebook.com/sharer/sharer.php?u=" + link + "&referrer=" + req.session.user_id);
+    res.send('soon will be enabled');
 };
 
 function isUserInDataBase(user_facebook_id, callback) {
@@ -331,7 +330,6 @@ function isUserInDataBase(user_facebook_id, callback) {
 }
 
 function createNewUser(data, access_token, callback) {
-
     var user = new Models.User();
     user.username = data.username;
     user.identity_provider = "facebook";

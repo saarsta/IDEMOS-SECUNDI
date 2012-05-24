@@ -1,18 +1,11 @@
-/**
- * Created by JetBrains WebStorm.
- * User: saar
- * Date: 01/03/12
- * Time: 13:54
- * To change this template use File | Settings | File Templates.
- */
-
 
 var resources = require('jest'),
     util = require('util'),
     models = require('../models'),
     async = require('async'),
     common = require('./common'),
-    _ = require('underscore');
+    _ = require('underscore'),
+    Suggestion = require('./suggestionResource');
 
 //Authorization
 var Authoriztion = function() {};
@@ -67,37 +60,81 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
     create_obj:function(req,fields,callback)
     {
         var self = this;
+        var base = this._super;
         var new_grade = null;
         var counter = 0;
+        var g_suggestion_obj;
+        var is_agree;
+        var discussion_evaluation_grade;
+        var num_of_agrees;
+        var discussion_id = fields.discussion_id;
 
-        self._super(req, fields, function(err, grade_object)
-        {
-            if(!err){
-                async.waterfall([
+        async.waterfall([
 
-                    function(cbk){
-                        models.Suggestion.findById(grade_object.suggestion_id, cbk);
+            //user can grade suggestion only if he grade the discussion
+            function(cbk){
+                models.Grade.findOne({user_id: req.user._id, discussion_id: fields.discussion_id}, cbk);
+            },
+
+            function(grade_discussion, cbk){
+                if(!grade_discussion)
+                    cbk({code: 401, message: "must grade discussion first"}, null);
+                else{
+                    discussion_evaluation_grade = grade_discussion.evaluation_grade;
+                    base.call(self, req, fields, cbk);
+                }
+            },
+
+            function(grade_suggestion_obj, cbk){
+                is_agree = grade_suggestion_obj.evaluation_grade >= discussion_evaluation_grade;
+                num_of_agrees = grade_suggestion_obj.agrees + Number(is_agree);
+
+                async.parallel([
+                    function(cbk1){
+                        models.Suggestion.findById(grade_suggestion_obj.suggestion_id, function(err, sugg){
+                            cbk1(err, sugg);
+                        });
                     },
 
-                    function(suggestion_obj, cbk){
-
-                        calculateSuggestionGrade(suggestion_obj._id, suggestion_obj.discussion_id, function(err, _new_grade, _evaluate_counter){
-                            new_grade = _new_grade;
-                            counter = _evaluate_counter;
-                            cbk(err)
-                        });
+                    //check if suggestion is approved
+                    function(cbk1){
+                        models.Discussion.findById(discussion_id, function(err, obj){
+                            if(!err){
+                                var real_threshold = obj.admin_threshold_for_accepting_change_suggestions || obj.threshold_for_accepting_change_suggestions;
+                                if(num_of_agrees >= real_threshold){
+                                    Suggestion.approveSuggestion(grade_suggestion_obj.suggestion_id, function(err, obj1){
+                                        cbk1(err, obj1);
+                                    })
+                                }else{
+                                    cbk1(err, obj);
+                                }
+                            }else{
+                                cbk1(err, null);
+                            }
+                        })
                     }
+                ], function(err, args){
+                    cbk(err, args[0]);
+                })
+            },
 
-                ], function(err, obj){
+            function(suggestion_obj, cbk){
+                calculateSuggestionGrade(suggestion_obj._id, suggestion_obj.discussion_id, is_agree, function(err, _new_grade, _evaluate_counter){
+                    if(!err){
+                        new_grade = _new_grade;
+                        counter = _evaluate_counter;
+                    }
+                    cbk(err)
+                });
+            }
+
+            ], function(err, obj){
+                if(!err){
                     req.gamification_type = "grade_suggestion";
                     req.token_price = common.getGamificationTokenPrice('grade_suggestion') || 0;
-
-                    callback(err, {new_grade:new_grade, evaluate_counter: counter, already_graded: true});
-                })
-            }else{
-                callback(err, null);
-            }
-        });
+                }
+                callback(err, {new_grade:new_grade, evaluate_counter: counter, already_graded: true});
+            })
     },
 
     update_obj: function(req, object, callback){
@@ -106,16 +143,14 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
         var discussion_id = req.body.discussion_id;
 
         self._super(req, object, function(err, grade_object){
-
             if(err){
                 callback(err, null);
             }else{
                 var new_grade, evaluate_counter;
                 async.waterfall([
-
                     function(cbk){
                         g_grade = grade_object;
-                        calculateSuggestionGrade(object.suggestion_id, discussion_id, function(err, _new_grade, _evaluate_counter){
+                        calculateSuggestionGrade(object.suggestion_id, discussion_id, null, function(err, _new_grade, _evaluate_counter){
                             if(!err){
                                 new_grade = _new_grade;
                                 evaluate_counter = _evaluate_counter;
@@ -132,7 +167,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
 })
 
 
-var calculateSuggestionGrade = GradeSuggestionResource.calculateSuggestionGrade = function (suggestion_id, discussion_id, callback){
+var calculateSuggestionGrade = GradeSuggestionResource.calculateSuggestionGrade = function (suggestion_id, discussion_id, is_agree_to_suggestion, callback){
 
     // suggestios_grade_counter + discussion_grade_counter = all graders
     var suggestios_grade_counter;
@@ -149,7 +184,9 @@ var calculateSuggestionGrade = GradeSuggestionResource.calculateSuggestionGrade 
 
         //get all grades for the suggestion,
         function(cbk){
-            models.GradeSuggestion.find({suggestion_id: suggestion_id}, ["user_id", "evaluation_grade"], cbk);
+            models.GradeSuggestion.find({suggestion_id: suggestion_id}, ["user_id", "evaluation_grade"], function(err, sug_grades){
+                cbk(err, sug_grades);
+            });
         },
 
         function(sugg_grades, cbk){
@@ -162,7 +199,9 @@ var calculateSuggestionGrade = GradeSuggestionResource.calculateSuggestionGrade 
             _.each(sugg_grades, function(grade){users.push(grade.user_id)});
 
             //get all dicsussion grades that their creators didnot grade the suggestion
-            models.Grade.find({ discussion_id: discussion_id, user_id: { $nin: users }}, cbk);
+            models.Grade.find({ discussion_id: discussion_id, user_id: { $nin: users }}, function(err, grades){
+                cbk(err, grades);
+            });
         },
 
         function(disc_grades, cbk){
@@ -174,15 +213,24 @@ var calculateSuggestionGrade = GradeSuggestionResource.calculateSuggestionGrade 
             total_counter = suggestios_grade_counter + discussion_grade_counter;
             total_sum = suggestios_grade_sum + discussion_grade_sum;
 
-            new_grade = total_sum/total_counter, total_counter;
-            models.Suggestion.update({_id: suggestion_id}, {$set: {grade: new_grade, evaluate_counter: total_counter}}, function(err, args){
-                cbk(err, args);
-            });
+            new_grade = total_sum/total_counter;
+            if(is_agree_to_suggestion != null){
+                if(is_agree_to_suggestion){
+                    models.Suggestion.update({_id: suggestion_id}, {$set: {grade: new_grade, evaluate_counter: suggestios_grade_counter, $inc: {agrees: 1}}}, function(err, args){
+                        cbk(err, args);
+                    });
+                }else{
+                    models.Suggestion.update({_id: suggestion_id}, {$set: {grade: new_grade, evaluate_counter: suggestios_grade_counter, $inc: {not_agrees: 1}}}, function(err, args){
+                        cbk(err, args);
+                    });
+                }
+            }else{
+                models.Suggestion.update({_id: suggestion_id}, {$set: {grade: new_grade, evaluate_counter: suggestios_grade_counter}}, function(err, args){
+                    cbk(err, args);
+                });
+            }
         }
-
     ], function(err, disc_grades){
-
         callback(err, new_grade, total_counter);
     })
-
 }

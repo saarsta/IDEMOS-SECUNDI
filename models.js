@@ -237,6 +237,8 @@ var Schemas = exports.Schemas = {
         followers_count:{type:Number, 'default':0, editable:false},
         is_visible:{type:Boolean, 'default':true},
         is_published:{type:Boolean, 'default':false},
+        threshold_for_accepting_change_suggestions: {type: Number, min: 2, max: 501, 'default': 2},
+        admin_threshold_for_accepting_change_suggestions: {type: Number, max: 500, 'default': 0},
 //        popular_comments: [{type: ObjectId, ref: 'Post', index: true}],
         grade:{type:Number, 'default':0},
         evaluate_counter:{type:Number, 'default':0, editable:false},
@@ -326,7 +328,9 @@ var Schemas = exports.Schemas = {
         suggestion_id:{type:ObjectId, ref:'Suggestion', index:true, required:true},
         evaluation_grade:{type:Number, min:0, max:10},
         creation_date:{type:Date, 'default':Date.now},
-        does_support_the_suggestion: {type:Boolean,'default':false}
+        //this field sets only when suggestion creates,
+        //suprot == user's suggestoin grade is e or gtr then user's discussion grade
+        does_support_the_suggestion: {type:Boolean}
     },
 
     Like:{
@@ -431,6 +435,7 @@ var Schemas = exports.Schemas = {
         parts:[
             {start:Number, end:Number, text:String}
         ],
+        explanation: {type:mongoose_types.Text},
         is_approved:{type:Boolean, 'default':false},
         evaluate_counter: {type: Number, 'default': 0},
         grade: {type: Number, 'default': 0},

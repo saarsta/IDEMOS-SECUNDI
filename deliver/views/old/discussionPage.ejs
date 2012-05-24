@@ -213,7 +213,7 @@
 
                 <textarea name="discussion_suggest" id="discussion_suggest" cols="30" rows="10" style="width: 100%;;"></textarea><br>
 
-                <input type="text" name="discussion_tags" style="width: 100%;"><br><br>
+                <input type="text" name="discussion_explanation" id="discussion_explanation" style="width: 100%;"><br><br>
 
 
                 <div style="text-align: center">
@@ -641,8 +641,9 @@
 
             $('#send_suggestion').click(function(){
                 var part = {start:range.start, end:range.end, text:$("textarea#discussion_suggest").val()};
+                var explanation = $("#discussion_explanation").val();
 //                part += " ";
-                db_functions.addSuggestionToDiscussion(discussion_id,[part],function(err,data)
+                db_functions.addSuggestionToDiscussion(discussion_id,[part], explanation, function(err,data)
                 {
                     if(!err)
                     {

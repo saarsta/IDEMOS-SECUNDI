@@ -120,3 +120,19 @@ console.log("Express server listening on port %d in %s mode", app.address().port
 app.get('/tokens',function(req,res){
     res.send(require('./model/common').getGamificationTokenPrice(req.query.type));
 });
+
+
+app.get('/api/thresh/:voters/:rating',function(req,res)
+{
+    console.log('thresh');
+    require('./tools/thresh_calc.js')(req.params.voters, req.params.rating,function(err,result)
+    {
+        if(err)
+        {
+            console.log(err);
+        }
+        res.write(result + '');
+
+        res.end();
+    });
+});

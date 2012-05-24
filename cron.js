@@ -19,7 +19,13 @@ exports.run = function(app)
         once_an_hour_cron.fillUsersTokens(function(err, result){
             console.log(err || result);
         })
-    },60*60*1000);
+    }, 60*60*1000);
+
+    setInterval(function(){
+        daily_cron.updateTagAutoComplete(function(err, result){
+            console.log(err || result);
+        })
+    }, 60 * 1000 * 24 * 60);
 };
 
 var Cron = exports.Cron = {
@@ -490,7 +496,7 @@ var daily_cron =  exports.daily_cron = {
                 if(err){
                     callback(err, null);
                 }else{
-                    async.forEach(tags, iterator, callback);
+                    async.forEach(tags, iterator, callback(err, "finish set tag popularity.."));
                 }
             })
 

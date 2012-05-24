@@ -58,9 +58,8 @@
 
     $(function(){
 
-        db_functions.getAndRenderFooterTags();
 
-        db_functions.dbGetAllSubjects(function(err,data)
+        db_functions.getAllSubjects(function(err,data)
         {
             $.each(data.objects,function(index,subject)
             {
@@ -113,9 +112,10 @@
                             }
                         });
             }
+            else{
+                loadHotInfoItems($($('.slide .one-slide')[0]),data.objects);
+            }
 
-            var first_page = $($('#slide_list .one-slide')[0]);
-            loadHotInfoItems(first_page,data.objects);
 
         });
 
