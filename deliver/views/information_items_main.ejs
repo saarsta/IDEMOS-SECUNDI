@@ -58,7 +58,6 @@
 
     $(function(){
 
-        db_functions.getAndRenderFooterTags();
 
         db_functions.getAllSubjects(function(err,data)
         {
@@ -113,8 +112,10 @@
                             }
                         });
             }
+            else{
+                loadHotInfoItems($($('.slide .one-slide')[0]),data.objects);
+            }
 
-            //loadHotInfoItems($($('.slide .one-slide')[0]),data.objects);
 
         });
 
