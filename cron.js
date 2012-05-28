@@ -30,15 +30,50 @@ exports.run = function(app)
 
 var Cron = exports.Cron = {
 
-    findWhoInvitedNumberOfUsersThatGotExtraTokens:function (extra_tokens, number, callback) {
+    findWhoInvitedNumberOfUsersThatGotExtraTokens:function(extra_tokens, number, callback) {
         var event = "invited " + number + " pepole that got " + extra_tokens + " tokens";
+        var path = "gamification.bonus." + event + "";
         var event_bonus = 2;
         var bucket = {};
         var invited_users = {};
 
+        var iterator = function(user, itr_cbk){
+            if(user.count >= number){
+                addTokensToUserByEventAndSetGamificationBonus(user._id, event, event_bonus);
+            }
+        }
+
         async.waterfall([
+            function(cbk){
+                models.User.find({path : true}, cbk);
+            },
+
+            function(users, cbk){
+                var user_ids = _.map(users, function(user) { return user._id});
+                models.User.collection.group(
+                {
+                    key: {invited_by: true},
+                    cond: {num_of_extra_tokens: {$gt: extra_tokens - 1}, invited_by: {$nin: user_ids}, has_been_invited: true},
+                    initial: {count: 0},
+                    reduce: function(obj,prev) {prev.count += 1}
+                }, function(err, result){
+                    cbk(err, result);
+                });
+            },
+
+            function(group_users, cbk){
+                async.forEach(group_users, iterator, cbk);
+            }
+        ], function(err, result){
+            callback(err,result);
+        })
+       /* async.waterfall([
             function (cbk) {
-                models.User.find({num_of_extra_tokens:extra_tokens, has_been_invited:true}, cbk);
+                models.User.find({num_of_extra_tokens: {$gt : extra_tokens - 1}, has_been_invited:true}, cbk);
+            },
+
+            function (users, cbk) {
+                async.forEach(users, iterator, cbk);
             },
 
             function (users, cbk) {
@@ -78,7 +113,7 @@ var Cron = exports.Cron = {
                     }
                 }
             }
-        ], callback);
+        ], callback);*/
     },
 
     findWhoInvitedMoreThenNumberOfRegisteredUsers:function (number, callback) {

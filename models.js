@@ -97,7 +97,8 @@ var Schemas = exports.Schemas = {
         tokens:{type:Number, 'default':9, min: 0/*, max:15.9*/},
         gamification: {type:Schema.Types.Mixed,editable:false },
         updates: Schema.Types.Mixed,
-        //score:{type:Number, 'default':0},
+        proxy: {type: Number, 'default': 0},
+        score:{type:Number, 'default':0},
         decoration_status:{type:String, "enum":['a', 'b', 'c']},
         invited_by: {type: ObjectId, ref: 'User'},
         has_been_invited : {type: Boolean, 'default': false},
@@ -211,6 +212,7 @@ var Schemas = exports.Schemas = {
             {type:ObjectId, ref:'Subject', index:true, required:true}
         ],
         subject_name:String,
+        system_message: String,
         creation_date:{type:Date, 'default':Date.now},
         creator_id:{type:ObjectId, ref:'User'},
         first_name:{type:String,editable:false},
