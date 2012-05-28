@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+           <!--
+
+
+
+             subject image on top
+           -->
+<html>
+<head>
+<%- partial('partials/head.ejs') %>
+</head>
+<body>
+    <div id="wrap">
+        <div id="header">
+              <%-partial('partials/menu.ejs')%>
+               <%-partial('partials/user_box.ejs')%>
+               <%-partial('partials/failures.ejs')%>
+
+               <%- partial('partials/tag_search.ejs') %>
+        </div>
+        <div id="content" class="cf">
+            <div class="discussion-main">
+                <h2><%= subject.name %></h2>
+                <form action="#">
+                    <div class="top cf">
+                        <img class="floatRight" src="<%= subject.image_field.url %>" alt="" />
+                        <div class="floatLeft">
+                            <div class="input">
+                                <input type="text" value="" placeholder="כותרת הדיון"/>
+                            </div>
+                            <div class="textarea">
+                                <textarea rows="10" cols="50" placeholder="תיאור מפורק של חזון המציאות החדשה"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tags-box">
+                        <div class="add-tag">
+                            <div class="input">
+                                <label></label>
+                                <input type="text" value="" placeholder="תאג חדש" />
+                            </div>
+                            <input type="submit" value="הוסף" />
+                        </div>
+                        <div class="tags-list">
+
+                        </div>
+                    </div>
+                    <div class="bottom">
+                        <div class="textarea">
+                            <textarea rows="10" cols="50" placeholder="" > </textarea>
+                        </div>
+                        <input type="submit" value="יצירת דיון" />
+                        <label><input type="checkbox" checked="checked" />שתף את הדיון שיצרת על הקיר שלך </label>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="card">
+        <div class="extra">
+            <div class="card-top cf">
+                <a class="btn btn-1 inline" href="#user-search">שתף</a>
+                <a class="btn btn-2" href=""><span class="number">11</span>חזור לאסוף פריטי מידע נוספים </a>
+                <h3 class="basket">עגלת המידע</h3>
+                <p>
+                יש לך
+                <span id="info_items_count"></span>
+                 פריטים בעגלה
+                </p>
+            </div>
+            <div class="card-products cf">
+                <div class="one-col" id="col1"> </div>
+                <div class="one-col" id="col2" > </div>
+                <div class="one-col" id="col3"> </div>
+            </div>
+        </div>
+    </div>
+    <div style="display: none;">
+    <div class="popup" id="user-search">
+        <form class="search-top cf" action="#">
+            <label>הזמן חברים להשתתף בדיון</label>
+            <div class="input">
+                <input type="text" value="" />
+            </div>
+            <input type="submit" value="שפח" />
+        </form>
+        <div class="search-result cf">
+            <div class="one">
+                <a class="delete-app" href=""></a>
+                <div class="img-box">
+                    <img width="58" src="/images/user-1.jpg" alt="" />
+                    <span></span>
+                </div>
+                יבקעי לאומש
+            </div>
+            <div class="one">
+                <a class="delete-app" href=""></a>
+                <div class="img-box">
+                    <img width="58" src="/images/user-1.jpg" alt="" />
+                    <span></span>
+                </div>
+                יבקעי לאומש
+            </div>
+            <div class="one">
+                <a class="delete-app" href=""></a>
+                <div class="img-box">
+                    <img width="58" src="/images/user-1.jpg" alt="" />
+                    <span></span>
+                </div>
+           שמואל יעקבי
+            </div>
+            <div class="one">
+                <a class="delete-app" href=""></a>
+                <div class="img-box">
+                    <img width="58" src="/images/user-1.jpg" alt="" />
+                    <span></span>
+                </div>
+                יבקעי לאומש
+            </div>
+            <div class="one">
+                <a class="delete-app" href=""></a>
+                <div class="img-box">
+                    <img width="58" src="/images/user-1.jpg" alt="" />
+                    <span></span>
+                </div>
+                יבקעי לאומש
+            </div>
+            <div class="one">
+                <a class="delete-app" href=""></a>
+                <div class="img-box">
+                    <img width="58" src="/images/user-1.jpg" alt="" />
+                    <span></span>
+                </div>
+                יבקעי לאומש
+            </div>
+            <div class="one">
+                <a class="delete-app" href=""></a>
+                <div class="img-box">
+                    <img width="58" src="/images/user-1.jpg" alt="" />
+                    <span></span>
+                </div>
+                יבקעי לאומש
+            </div>
+            <div class="one">
+                <a class="delete-app" href=""></a>
+                <div class="img-box">
+                    <img width="58" src="/images/user-1.jpg" alt="" />
+                    <span></span>
+                </div>
+                יבקעי לאומש
+            </div>
+            <div class="one">
+                <a class="delete-app" href=""></a>
+                <div class="img-box">
+                    <img width="58" src="/images/user-1.jpg" alt="" />
+                    <span></span>
+                </div>
+                יבקעי לאומש
+            </div>
+            <div class="one">
+                <a class="delete-app" href=""></a>
+                <div class="img-box">
+                    <img width="58" src="/images/user-1.jpg" alt="" />
+                    <span></span>
+                </div>
+                יבקעי לאומש
+            </div>
+        </div>
+        <form class="search-bottom cf" action="#">
+            <label>ליימ םהל חלש וא</label>
+            <div class="input">
+                <input type="text" value="" />
+            </div>
+            <input type="submit" value="חלש" />
+        </form>
+    </div>
+    </div>
+    <%- partial('partials/footer.ejs') %>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $(".inline").colorbox({ inline: true, width: "730" });
+
+
+        db_functions.getUserShopingCart(function(err,data)
+        {
+            $("#info_items_count").text( data.objects.length );
+            $.each(data.objects,function(index,information_item)
+            {
+                dust.render('information_item_box',information_item,function(err,out)
+                {
+                    var div= $('#col1')   ;
+                    if(  $('#col2').height() <   div.height() )
+                    {
+                          div  =$('#col2');
+                    }
+                    if(  $('#col3').height() <   div.height() )
+                    {
+                          div  =$('#col3');
+                    }
+                    div.append(out);
+                })
+            });
+
+
+             $('.delete-app').click(removeItemFromCart);
+             $('.delete').click(removeItemFromCart);
+             $('.confirm').click(function(){
+                 var item_id = $(this).attr('item_id');
+
+             });
+
+        });
+
+        function removeItemFromCart()
+        {
+              var item_id = $(this).attr('item_id');
+              $('#'+item_id).remove();
+              db_functions.removeInfoItemFromShoppingCart(item_id,function(err,data) {
+
+              });
+               return false  ;
+        }
+    });
+
+
+ </script>
+</body>
+</html>

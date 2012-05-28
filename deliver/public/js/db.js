@@ -138,7 +138,31 @@ var db_functions = {
             }
         });
 
-    }
+    }   ,
+
+    getUserShopingCart: function(callback){
+        this.loggedInAjax({
+            url: '/api/shopping_cart',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+                callback(null, data);
+            }
+        });
+    },
+    removeInfoItemFromShoppingCart: function(info_item_id, callback){
+        this.loggedInAjax({
+            url: '/api/shopping_cart/' + info_item_id,
+            type: "DELETE",
+            async: true,
+            success: function () {
+//                          removeInfoItemFromUserShoppingCart(info_item_index);
+                callback(null)
+                console.log('info item deleted from shopping cart');
+            }
+        });
+    },
 };
 
 // handle image loading stuff
