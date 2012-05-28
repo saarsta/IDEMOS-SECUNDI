@@ -578,7 +578,10 @@
             });
 
             $("#submit_post").on('click', function(e){
-                db_functions.addPostToDiscussion(discussion_id, $("textarea#discussion_comment").val(), function(err, post){
+
+                var ref_to_post_id = null; //TODO put here the real ref
+
+                db_functions.addCommentPostToDiscussion(discussion_id, $("textarea#discussion_comment").val(), ref_to_post_id, true,function(err, post){
                     $("#user_tokens").text(post.updated_user_tokens);
                     dust.render('post', post, function(err, out){
                         $("#posts").append(out);
