@@ -212,6 +212,8 @@ $(function(){
     }
     else
         $('body').bind('DOMNodeInserted',callback);
+
+    image_autoscale($('.auto-scale img'));
 });
 
 function image_autoscale(obj, params)
