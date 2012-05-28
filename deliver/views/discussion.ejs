@@ -34,7 +34,7 @@
             </div>
             <div class="add-offer-bottom cf">
                 <div class="btn-box">
-                    <a class="btn-green" href="">
+                    <a class="btn-green" id="discussion_comment_reply_button" href="#">
                         הגב
                     </a>
                     <a class="btn-grey" href="">
@@ -141,7 +141,9 @@
                 </div>
                 <div class="user-right">
                     <div class="img-box">
-                        <img width="60" src="/images/user-1.jpg" alt="" />
+                        <div style="width:112px; height:120px;" class='auto-scale'>
+                         <img  src="<%=avatar%>" alt="<%=user.username%>"  />
+                        </div>
                         <span></span>
                     </div>
                     <h4>אני</h4>
@@ -305,7 +307,7 @@
             </h3>
             <div class="text-box cf">
                 <div class="left">
-                    <textarea class="four-col" cols="0" rows="0"></textarea>
+                    <textarea id="discussion_comment" class="four-col" cols="0" rows="0"></textarea>
                 </div>
                 <div class="user-right">
                     <div class="img-box">
@@ -435,9 +437,13 @@
             });
 
             $("#discussion_comment_reply_button").on('click', function(e){
+                var discussionComment=  $("textarea#discussion_comment")[0];
                 e.preventDefault();
+                discussionComment.focus();
+               
+                discussionComment.value='ssddddddddd';
 
-                $("textarea#discussion_comment").focus();
+
             });
 
             $('#posts,#suggestion_list').on('click','.vote_for',function(){
