@@ -13,13 +13,13 @@ _ = require('underscore');
 
 exports.create_user_notification = function (notification_type, entity_id, user_id, notificatior_id, sub_entity, callback){
 
-    if(notificatior_id){
+    if(notificatior_id && notification_type != "been_quoted"){
 
         async.waterfall([
 
             function(cbk){
                 notification_type = notification_type + "";
-                models.Notification.findOne({type: notification_type, user_id: user_id}, cbk);
+                models.Notification.findOne({type: notification_type, user_id: user_id, seen: false}, cbk);
             },
 
             function(noti, cbk){

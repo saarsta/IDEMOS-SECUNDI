@@ -79,6 +79,16 @@ var db_functions = {
             }
         });
     },
+    getNotifications: function(callback){
+        this.loggedInAjax({
+            url: '/api/notifications?limit=3',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                callback(data);
+            }
+        });
+    },
     getAndRenderFooterTags:function()
     {
         this.loggedInAjax({
