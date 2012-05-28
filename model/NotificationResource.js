@@ -119,6 +119,7 @@ var iterator = function(notification, itr_cbk){
                         notification.message = user_obj.first_name + " " + user.last_name +
                             "הגיב על דיון שיצרת"
                         ;
+                        notification.pic = user_obj.avatar_url();
                     }
                     itr_cbk(err);
                 });

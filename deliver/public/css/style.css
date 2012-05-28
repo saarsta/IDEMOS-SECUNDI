@@ -1964,71 +1964,7 @@ body
     width: 39px;
     text-align: center;
 }
-.add-offer .text-box .edit-text
-{
-    position: relative;
-    background:#e7e01c;
-}
-.add-offer .text-box .edit-text .popup-window
-{
-    position: absolute;
-    left: 38px;
-    top: -32px;
-    background:#fff;
-    width: 160px;
-    box-shadow: 0 0 8px rgba(0,0,0,0.3);
-    padding: 11px 12px 11px 13px;
-}
-.add-offer .text-box .edit-text .popup-window .arrow
-{
-    background: url(../images/popup-window-arrow.png) no-repeat;
-    width: 16px;
-    height: 13px;
-    position: absolute;
-    left: 50%;
-    bottom:-13px;
-    margin-left:-8px;
-}
-.add-offer .text-box .edit-text .popup-window a.close
-{
-    width: 28px;
-    height: 28px;
-    background: url(../images/delete-app.png) no-repeat;
-    position: absolute;
-    left: -13px;
-    top:-13px;
-}
-.add-offer .text-box .edit-text .popup-window a.green-btn
-{
-    float: right;
-    margin-left: 6px;
-    border: 1px solid #58bc5d;
-    border-radius: 2px;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    background: #2fd43b url(../images/green-btn-border.png) 0 0 repeat-x;
-    width: 45px;
-    height: 17px;
-    color:#fff;
-    font: normal 15px/17px 'AdumaFOTRegular';
-    text-align: center;
-    text-decoration: none;
-}
-.add-offer .text-box .edit-text .popup-window a.grey-btn
-{
-    float: right;
-    border: 1px solid #a5a5a5;
-    border-radius: 2px;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    background: #b7b6b6 url(../images/search-submit.png) 0 0 repeat-x;
-    width: 105px;
-    height: 17px;
-    color:#fff;
-    font: normal 15px/17px 'AdumaFOTRegular';
-    text-align: center;
-    text-decoration: none;
-}
+
 
 /*-----------------------*/
 .card-left
@@ -2575,6 +2511,90 @@ body
 {
     width: 391px;
     left: -39px;
+}
+
+
+
+/******************************************************************************/
+
+.add-offer .text-box .edit-text
+{
+    position: relative;
+    background:#e7e01c;
+}
+
+
+ .popup-window
+{
+    position: absolute;
+    left: 38px;
+    top: -32px;
+    background:#fff;
+    width: 160px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.3);
+    padding: 11px 12px 11px 13px;
+}
+.popup-window .arrow
+{
+    background: url(../images/popup-window-arrow.png) no-repeat;
+    width: 16px;
+    height: 13px;
+    position: absolute;
+    left: 50%;
+    bottom:-13px;
+    margin-left:-8px;
+}
+ .popup-window a.close
+{
+    width: 28px;
+    height: 28px;
+    background: url(../images/delete-app.png) no-repeat;
+    position: absolute;
+    left: -13px;
+    top:-13px;
+}
+ .popup-window a.green-btn
+{
+    float: right;
+    margin-left: 6px;
+    border: 1px solid #58bc5d;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    background: #2fd43b url(../images/green-btn-border.png) 0 0 repeat-x;
+    width: 45px;
+    height: 17px;
+    color:#fff;
+    font: normal 15px/17px 'AdumaFOTRegular';
+    text-align: center;
+    text-decoration: none;
+}
+ .popup-window a.grey-btn
+{
+    float: right;
+    border: 1px solid #a5a5a5;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    background: #b7b6b6 url(../images/search-submit.png) 0 0 repeat-x;
+    width: 105px;
+    height: 17px;
+    color:#fff;
+    font: normal 15px/17px 'AdumaFOTRegular';
+    text-align: center;
+    text-decoration: none;
+}
+
+
+.popup-window {
+    display: none;
+    position: absolute;
+    border: 2px solid
+    #666;
+    direction: rtl;
+    float: left;
+    background:
+        white;
 }
 
 .information_item_link
