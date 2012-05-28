@@ -1,8 +1,10 @@
 <div class="one" id="{_id}">
     <a class="delete-app" href="" item_id="{_id}" ></a>
-   {?image_field_preview}<img src="{image_field_preview.url}" alt="{title}"/> {/image_field_preview}
-    <h4>{title}</h4>
-   {?text_field_preview}<p>{text_field_preview}</p>{/text_field_preview}
+  <div item_id="{_id}" class="information_item_link">
+        {?image_field_preview}<img src="{image_field_preview.url}" alt="{title}"/> {/image_field_preview}
+        <h4>{title}</h4>
+        {?text_field_preview}<p>{text_field_preview}</p>{/text_field_preview}
+    </div>
     <div class="btn-box">
         <a  class="confirm" href="/facebookShare?link=/media/{_id}">שתף</a>
         <a item_id="{_id}" class="delete" href=""><span>הסר</span></a>

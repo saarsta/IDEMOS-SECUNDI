@@ -2576,3 +2576,8 @@ body
     width: 391px;
     left: -39px;
 }
+
+.information_item_link
+{
+    cursor: pointer;
+}
