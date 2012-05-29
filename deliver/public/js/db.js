@@ -1,5 +1,24 @@
 
 
+dust.renderArray = function(template,arr,callback,endCallback)
+{
+    var out_arr = [];
+    var _err = null;
+    for(var i=0; i<arr.length; i++)
+    {
+        dust.render(template,arr[i],function(err,out){
+            if(callback)
+                callback(err,out);
+            if(err)
+                _err = err;
+            out_arr.push(out);
+        });
+    }
+    if(endCallback)
+        endCallback(_err,out_arr.join(''));
+};
+
+
 var db_functions = {
 
     loggedInAjax: function(options)
@@ -180,6 +199,38 @@ var db_functions = {
             }
         });
     },
+    addSuggestionToDiscussion: function(discussion_id, parts, explanation, callback){
+      debugger;
+        this.loggedInAjax({
+            url: '/api/suggestions/',
+            type: "POST",
+            async: true,
+            data: {"discussion_id": discussion_id, "parts": parts, "explanation": explanation},
+            success: function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },
+    getPostByDiscussion: function(discussion_id, callback){
+        this.loggedInAjax({
+            url: '/api/posts?discussion_id=' + discussion_id,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },
+
+
 
     addPostToDiscussion: function(discussion_id, post_content, callback){
         this.loggedInAjax({
@@ -195,7 +246,7 @@ var db_functions = {
                 callback(err, null);
             }
         });
-    },
+    }
 };
 
 // handle image loading stuff
