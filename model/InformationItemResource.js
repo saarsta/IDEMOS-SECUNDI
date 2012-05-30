@@ -37,6 +37,9 @@ var InformationItemResource = module.exports = common.GamificationMongooseResour
             category: null,
             text_field: null,
             text_field_preview: null,
+            discussions: null,
+            cycles: null,
+            actions: null,
             tags: null,
             like_counter: null,
             view_counter: null
@@ -58,6 +61,18 @@ var InformationItemResource = module.exports = common.GamificationMongooseResour
         });
 
     },
+
+//    get_objects: function (req, filters, sorts, limit, offset, callback) {
+//        var iterator = function()
+//        this._super(req, filters, sorts, limit, offset, function(err, results){
+//            if(!err){
+//                async.forEach(results.objects, iterator, function(err, objs){
+//
+//                })
+//            }function(info    m){if (info_item.cycles.length) info_item.discussi(info_item.cycles.length) info_item.discussions = {}});
+//            callback(err, results);
+//        })
+//    },
 
     create_obj: function(req,fields,callback){
         var user_id = req.session.user_id;
