@@ -51,7 +51,7 @@ SessionAuthentication.prototype.is_authenticated = function(req,callback){
 
 };
 
-var TokenAuthorization = exports.TokenAuthorization = jest.Authorization.extend( {
+var TokenAuthorization = exports.TokenAuthorization = jest.Authorization.extend({
     init:function(token_price)
     {
         this.token_price = token_price;

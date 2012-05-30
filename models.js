@@ -93,6 +93,9 @@ var Schemas = exports.Schemas = {
         actions:[
             new Schema( {action_id:{type:ObjectId, ref:'Action'}, join_date: {type:Date, 'default':Date.now}})
         ],
+        followers: [
+            new Schema({follower_id:{type:ObjectId, ref:'User'}, join_date: {type:Date, 'default':Date.now}})
+        ],
         password:String,
         tokens:{type:Number, 'default':9, min: 0/*, max:15.9*/},
         gamification: {type:Schema.Types.Mixed,editable:false },
@@ -119,10 +122,10 @@ var Schemas = exports.Schemas = {
         image_field_preview: {type:mongoose_types.File},
         tags:{type:[String], index:true},
         users:{type:[ObjectId], ref:'User',editable:false},
-        discussions:{type:[ObjectId], ref:'Discussion', index:true/*editable:false just untill the production*/},
-        cycles:{type:[ObjectId], ref:'Cycle', index:true/*editable:false just untill the production*/},
+        discussions:[{type:ObjectId, ref:'Discussion', index:true}],
+        cycles:{type:[ObjectId], ref:'Cycle', index:true},
         //this is for later
-        actions:{type:[ObjectId], ref:'Action', index:true/*editable:false just untill the production*/},
+        actions:{type:[ObjectId], ref:'Action', index:true},
         is_visible:{type:Boolean, 'default':true},
         creation_date:{type:Date, 'default':Date.now,editable:false},
         is_hot_object:{type:Boolean, 'default':false},
@@ -137,6 +140,11 @@ var Schemas = exports.Schemas = {
         gamification: {rewarded_creator_for_high_liked: {type: String, 'default': false, editable: false},
                        rewarded_creator_for_approval: {type: String, 'default': false, editable: false}, editable:false},
         gui_order:{type:Number,'default':9999999,editable:false}
+    },
+
+    //this is for
+    information_group: {
+        information_items:[{type:ObjectId, ref:'Information_item'}]
     },
 
     Headline:{
