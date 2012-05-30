@@ -201,7 +201,9 @@
                     </div>
                 </div>
             </div>
-            <a class="green-btn" href="">עצה</a>
+            <a   id="submit_post" class="green-btn" href="#">
+                הצע
+            </a>
         </div>
     </div>
 </div>
@@ -336,12 +338,12 @@
             });
 
             $('#comments,#suggestion_list').on('click','.vote_for',function(){
-
                 var post_id = $(this).parents('.comment-one').data("id");
                 var button = $(this);
                 var func = $(this).parents('#comments').length ? db_functions.voteForPost : db_functions.voteForSuggestion;
                 func.call(db_functions,post_id, "add", function(err, post_obj){
                     if(!err){
+
                         var votes_for = button.parent('div').find('.number');
                         votes_for.text(post_obj.votes_for);
                     }
@@ -372,8 +374,8 @@
                             alert('not enough tokens');
                         if(err.responseText == 'user already voted for this post')
                             alert('already voted');
-                        if(err.responseText == 'soory, can\'t vote to your own suggestion')
-                            alert('can\'t vote for your own suggestion');
+                        if(err.responseText == 'soory, can\'t vote to your own post')
+                        alert('soory, can\'t vote to your own post');
 
                     }
 
@@ -513,12 +515,13 @@
             });
 
             $("#submit_post").on('click', function(e){
+                e.preventDefault();
                 db_functions.addPostToDiscussion(discussion_id, $("textarea#discussion_comment").val(), function(err, post){
-                    $("#user_tokens").text(post.updated_user_tokens);
-                    dust.render('post', post, function(err, out){
-                        $("#posts").append(out);
+                   // $("#user_tokens").text(post.updated_user_tokens);
+                    dust.render('discussion_comment', post, function(err, out){
+                        debugger;
+                        $("#comments").append(out);
                         $("textarea#discussion_comment").val('');
-
                     });
                 })
             });

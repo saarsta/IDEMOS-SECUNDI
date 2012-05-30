@@ -18,9 +18,9 @@
                 <span></span>
             </div>
             <h4>
-                בועז ראשמור
+                {creator_id.first_name} {creator_id.last_name}
             </h4>
-            <div class="date">13.3.12</div>
+            <div class="date">{creator_id.username} {?creation_date}{creation_date|time}{/creation_date}</div>
             <div class="proxy">
                 <span>3</span>
             </div>
@@ -34,7 +34,7 @@
         <div class="status">
             <div class="yes">
                 <div class="green  vote_for">
-                    מסכים(2)
+ מסכים
                 </div>
                 <div class="number">{votes_for}</div>
             </div>

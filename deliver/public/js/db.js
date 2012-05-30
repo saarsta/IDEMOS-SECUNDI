@@ -1,5 +1,10 @@
 
 
+dust.filters['time'] = function(a){
+    return $.datepicker.formatDate('dd.mm.yy', new Date(Date.parse(a)));;
+};
+
+
 dust.renderArray = function(template,arr,callback,endCallback)
 {
     var out_arr = [];
