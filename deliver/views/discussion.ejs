@@ -97,27 +97,10 @@
             <h3><span>
 עגלת המידע
             </span></h3>
-            <div class="diagram-box cf">
-                <img src="/images/diagram-three.png" alt="" />
-                <div class="percent">
-                    <span>43%</span>
-                    יצביעו
-                </div>
-                <div class="percent">
-                    <span>57%</span>
-                    לא יודעים
-                </div>
-            </div>
             <div class="comment-slide">
                 <a href="" id="prev" ></a>
                 <a href="" id="next" ></a>
                 <div class="slide-c">
-                    <div class="one">
-                        של הלשכה שפורסם השבוע התגלו נתונים בדו”ח  בדו”ח של הלשכה המרכזית לסטטיסטיקה
-                    </div>
-                    <div class="one">
-                        של הלשכה שפורסם השבוע התגלו נתונים בדו”ח
-                    </div>
                 </div>
             </div>
         </div>
@@ -245,16 +228,6 @@
 
         $(".inline").colorbox({ inline: true, width: "730" });
 
-        $('.slide-c')
-                .after('<div id="nav2">')
-                .cycle({
-                    fx: 'turnDown',
-                    speed: 'fast',
-                    timeout: 0,
-                    pager: '#nav2',
-                    next: '#next',
-                    prev: '#prev'
-                });
 
         $(".slider").slider({
             value: 5.0,
@@ -274,8 +247,6 @@
         /***************************************************/
 
 
-        $(function(){
-
               function setCommentNumber(number) {
                  $('#comments_number')[0].innerHTML='('+number+')';
               }
@@ -284,7 +255,28 @@
             var mouseDown, mouseUp, top, left;
             var grade_id = "<%=discussion.grade_obj.grade_id%>";
             var sugg_grade_id;
-            $('.discussion_content')
+
+            db_functions.getDiscussionShoppingCart(discussion_id,function(err,data){
+                $.each(data.objects,function(index,item){
+                    dust.render('discussion_information_item',item,function(err,out){
+                        $('.slide-c').append(out);
+                    });
+                });
+
+                $('.slide-c')
+                        .after('<div id="nav2">')
+                        .cycle({
+                            fx: 'scrollHorz',
+                            speed: 'fast',
+                            timeout: 0,
+                            pager: '#nav2',
+                            next: '#next',
+                            prev: '#prev'
+                        });
+
+            });
+
+        $('.discussion_content')
                     .on('mousedown', function(e) {
                         mouseDown = e;
                     })
@@ -596,10 +588,6 @@
                     }
                 });
             });
-
-        });
-
-
 
     });
 </script>

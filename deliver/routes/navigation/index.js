@@ -1,6 +1,5 @@
 var Navigation = module.exports = {
     index : function(req, res){
-        console.log(req.session.user);
         res.render('index.ejs', {
             layout: false,
             url: req.url,

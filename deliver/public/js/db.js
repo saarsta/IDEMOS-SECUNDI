@@ -283,7 +283,24 @@ var db_functions = {
                 callback(err, null);
             }
         });
-    }
+    },
+
+    getDiscussionShoppingCart: function(discussion_id, callback){
+        this.loggedInAjax({
+            url: '/api/discussions_shopping_cart?discussion_id=' + discussion_id,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                //     console.log(data);
+                callback(null, data);
+            },
+
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    } ,
+
 };
 
 // handle image loading stuff
