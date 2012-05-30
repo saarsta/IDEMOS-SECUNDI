@@ -1314,7 +1314,7 @@ body
 .discussion-main .tags-box .add-tag .input input
 {
     float: left;
-    width: 205px;
+    width: 238px;
     color:#b7b6b6;
     font: normal 11px/13px Arial;
     padding:0;
@@ -2503,7 +2503,7 @@ body
 {
     border-left: 3px solid #3b63ef;
 }
-.comments-box .comment-one .user-right.hover .arrow 
+.comments-box .comment-one .user-right.hover .arrow
 {
     left: -9px;
 }
@@ -2595,4 +2595,9 @@ body
     float: left;
     background:
         white;
+}
+
+.information_item_link
+{
+    cursor: pointer;
 }
