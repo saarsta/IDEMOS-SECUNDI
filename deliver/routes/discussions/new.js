@@ -18,6 +18,7 @@ module.exports = function(req,res)
                 user: req.session.user,
                 avatar:req.session.avatar_url,
                 user_logged: req.isAuthenticated(),
+                url:req.url,
                 tab:'discussions'
         });
     });

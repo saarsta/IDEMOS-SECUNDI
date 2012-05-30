@@ -81,6 +81,7 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
         var threshold;
         var admin_threshold;
 
+        fields.user_id = req.user._id;
 
 
         self._super(req, fields, function(err, grade_object)
