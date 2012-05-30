@@ -163,7 +163,7 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
         ],function(err,result)
         {
             var rsp = {};
-            _.each(['text','popularity','creation_date','votes_for','votes_against'],function(field)
+            _.each(['text','popularity','creation_date','votes_for','votes_against', '_id'],function(field)
             {
                 rsp[field] = post_object[field];
             });
