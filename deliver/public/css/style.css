@@ -2013,7 +2013,7 @@ body
 {
     color:#50504f;
     font: normal 13px/17px Arial;
-    padding:0 20px;
+    padding:0 0;
     position: relative;
 }
 .card-left .comment-slide #prev
@@ -2022,7 +2022,7 @@ body
     height: 13px;
     background: url(../images/prev-next-arrow.png) 0 0 no-repeat;
     position: absolute;
-    left: 0;
+    left: -13px;
     top: 20px;
 }
 .card-left .comment-slide #next
@@ -2031,7 +2031,7 @@ body
     height: 13px;
     background: url(../images/prev-next-arrow.png) 100% 0 no-repeat;
     position: absolute;
-    right: 0;
+    right: -13px;
     top: 20px;
 }
 #nav2 
