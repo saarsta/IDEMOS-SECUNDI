@@ -8,7 +8,7 @@ var express = require('express'),
     auth = require("connect-auth");
 
 var app = module.exports = express.createServer();
-var account = require('./routes/account');
+var account = require('./deliver/routes/account');
 
 app.configure('deliver', function(){
     app.set('views', __dirname + '/deliver/views');
