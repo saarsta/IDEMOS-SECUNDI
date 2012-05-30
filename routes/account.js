@@ -37,6 +37,9 @@ var DONT_NEED_LOGIN_PAGES = [/^\/images/,/^\/static/, /^\/css/, /stylesheets\/st
     /facebookconnect.html/, /account\/afterSuccessFbConnect/, /account\/facebooklogin/,
     /api\/subjects/, /^\/admin/, /^\/api\//, ];//regex
 
+var REDIRECT_FOR_LOGIN_PAGES = [/^\/discussions\/new/];
+var _ = require('underscore');
+
 
 exports.LOGIN_PATH = LOGIN_PATH;
 
@@ -56,41 +59,6 @@ exports.referred_by_middleware = function(req,res,next)
         next();
 };
 
-exports.auth_middleware = function (req, res, next) {
-
-    // if this request needs to be authenticated
-    for (var i = 0; i < DONT_NEED_LOGIN_PAGES.length; i++) {
-        var dont = DONT_NEED_LOGIN_PAGES[i];
-        if (dont.exec(req.path)) {
-            next();
-            return;
-        }
-    }
-    if (req.isAuthenticated() && !req.session.user) {
-        //for now this only works for facebook connect
-//        req.session.user_id  = req.session.auth.user.id || req.session.auth.user_id;
-        models.User.findOne(/*req.session.user_id*/{facebook_id: req.session.auth.user.id} ,function(err,user){
-            if(err){
-                console.log('couldn put user id' + err.message)
-                next();
-            }else{
-                req.session.user_id = user._id;
-                req.session.user = user;
-                req.session.avatar_url = user.avatar_url();
-                req.session.save(function(err)
-                {
-                    if(err)
-                        console.log('couldnt put user id' + err.message);
-                    next();
-                });
-            }
-        });
-    }
-    else {
-//        res.redirect(LOGIN_PATH + '?next=' + req.path);
-        next();
-    }
-};
 
 exports.routing = function(router)
 {

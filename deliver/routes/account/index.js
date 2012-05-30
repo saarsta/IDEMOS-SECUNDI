@@ -37,6 +37,8 @@ var DONT_NEED_LOGIN_PAGES = [/^\/images/,/^\/static/, /^\/css/, /stylesheets\/st
     /facebookconnect.html/, /account\/afterSuccessFbConnect/, /account\/facebooklogin/,
     /api\/subjects/, /^\/admin/, /^\/api\//, ];//regex
 
+var REDIRECT_FOR_LOGIN_PAGES = [/^\/discussions\/new/];
+var _ = require('underscore');
 
 exports.LOGIN_PATH = LOGIN_PATH;
 
@@ -58,37 +60,49 @@ exports.referred_by_middleware = function(req,res,next)
 
 exports.auth_middleware = function (req, res, next) {
 
-    // if this request needs to be authenticated
-    for (var i = 0; i < DONT_NEED_LOGIN_PAGES.length; i++) {
-        var dont = DONT_NEED_LOGIN_PAGES[i];
-        if (dont.exec(req.path)) {
-            next();
-            return;
-        }
+//    if this request needs to be authenticated
+    if(_.any(DONT_NEED_LOGIN_PAGES,function(dont)
+    {
+        return dont.test(req.path);
+    }))
+    {
+        next();
+        return;
     }
-    if (req.isAuthenticated() && !req.session.user) {
-        //for now this only works for facebook connect
-//        req.session.user_id  = req.session.auth.user.id || req.session.auth.user_id;
-        models.User.findOne(/*req.session.user_id*/{facebook_id: req.session.auth.user.id} ,function(err,user){
-            if(err){
-                console.log('couldn put user id' + err.message)
-                next();
-            }else{
-                req.session.user_id = user._id;
-                req.session.user = user;
-                req.session.avatar_url = user.avatar_url();
-                req.session.save(function(err)
-                {
-                    if(err)
-                        console.log('couldnt put user id' + err.message);
+
+    if (req.isAuthenticated())
+    {
+        if(!req.session.user) {
+            //for now this only works for facebook connect
+    //        req.session.user_id  = req.session.auth.user.id || req.session.auth.user_id;
+            models.User.findOne(/*req.session.user_id*/{facebook_id: req.session.auth.user.id} ,function(err,user){
+                if(err){
+                    console.log('couldn put user id' + err.message)
                     next();
-                });
-            }
-        });
+                }else{
+                    req.session.user_id = user._id;
+                    req.session.user = user;
+                    req.session.avatar_url = user.avatar_url();
+                    req.session.save(function(err)
+                    {
+                        if(err)
+                            console.log('couldnt put user id' + err.message);
+                        next();
+                    });
+                }
+            });
+        }
+        else
+            next();
     }
     else {
-//        res.redirect(LOGIN_PATH + '?next=' + req.path);
-        next();
+        if(_.any(REDIRECT_FOR_LOGIN_PAGES,function(redirect_urls)
+        {
+            return redirect_urls.test(req.path);
+        }))
+            res.redirect(LOGIN_PATH + '?next=' + req.path);
+        else
+            next();
     }
 };
 
@@ -149,11 +163,13 @@ exports.routing = function(router)
 
     });
 
-    router.post('/login', function (req, res) {
+    router.all('/login', function (req, res) {
         if (req.method == 'GET') {
-            res.render('login.ejs', {title:'Login',
-                tab:'user',
-                failed:false, exist_username:false, next:req.query.next});
+            res.redirect('/account/facebooklogin');
+            return;
+//            res.render('login.ejs', {title:'Login',
+//                tab:'user',
+//                failed:false, exist_username:false, next:req.query.next});
         }
         else {
             req.authenticate('simple', function (err, is_authenticated) {
