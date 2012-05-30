@@ -73,7 +73,8 @@ var db_functions = {
                     var subjects= $('#subjects_list').find('.subjectFilter').each(function() {
                         $(this).click(function (e){
                             var subject= $(this).find('span')[0].innerText;
-                            loadListItems('discussions','discussion_list_item',subject,'');
+
+                           // loadListItems('discussions','discussion_list_item',subject,'');
 
                         })
 

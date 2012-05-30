@@ -21,24 +21,26 @@
         <div id="content" class="cf">
             <div class="discussion-main">
                 <h2><%= subject.name %></h2>
-                <form action="#">
+                <form id="request_form" action="#">
+                    <input type="hidden" name="subject_name" id="subject_name" value="<%= subject.name %>" >
+                    <input type="hidden" name="subject_id" id="subject_id" value="<%= subject.id %>" >
                     <div class="top cf">
                         <img class="floatRight" src="<%= subject.image_field.url %>" alt="" />
                         <div class="floatLeft">
                             <div class="input">
-                                <input type="text" value="" placeholder="כותרת הדיון"/>
+                                <input id="title" name="title" type="text" value="" placeholder="כותרת הדיון"/>
                             </div>
                             <div class="textarea">
-                                <textarea rows="10" cols="50" placeholder="תיאור מפורק של חזון המציאות החדשה"></textarea>
+                                <textarea id="vision" name="vision" rows="10" cols="50"  placeholder="תיאור מפורק של חזון המציאות החדשה"></textarea>
                             </div>
                         </div>
                     </div>
                     <div class="tags-box">
                         <div class="add-tag">
                             <div class="input">
-                                <input type="text" value="" placeholder="תאג חדש" />
+                                <input type="text" value="" id="tag" placeholder="תאג חדש" />
                             </div>
-                            <input type="submit" value="הוסף" />
+                            <input type="submit" value="הוסף" id="add_tag" />
                         </div>
                         <div class="tags-list">
 
@@ -46,7 +48,7 @@
                     </div>
                     <div class="bottom">
                         <div class="textarea">
-                            <textarea rows="10" cols="50" placeholder="" > </textarea>
+                            <textarea id="first_post" name="first_post" rows="10" cols="50" placeholder="" > </textarea>
                         </div>
                         <input type="submit" value="יצירת דיון" />
                         <label><input type="checkbox" checked="checked" />שתף את הדיון שיצרת על הקיר שלך </label>
@@ -178,6 +180,62 @@
 <script type="text/javascript">
     $(document).ready(function () {
 
+
+
+         $("#request_form").validate({
+         		errorElement: "p",
+               // errorLabelContainer: ".error-message",
+
+         		rules:{
+         			title:{required: true },
+                    vision:{required: true },
+         			first_post:{required: true },
+         		},
+         		messages:{
+         			title: "נא לבחור כותרת לדיון",
+         			vision: "נא להוסיף תיאור לדיון",
+         			first_post: "נא להזין פוסט ראשון",
+         		},
+         		highlight: function (element, errorClass) {
+         		    $(element).addClass('error').removeClass('valid');
+         	    },
+         		unhighlight: function (element, errorClass) {
+         		    $(element).removeClass('error').addClass('valid');
+         	    },
+           		submitHandler: function(form) {
+
+                     title = $("#title").val();
+                     vision = $("#vision").val();
+                     first_post = $("#first_post").val();
+                     var tags  = [];
+                      $(".new_tags").each(function(index) {
+                         tags.push( $(this).text());
+                     });
+                     subject_id   = $("#subject_id").val();
+                     subject_name  = $("#subject_name").val();
+
+                     db_functions.createDiscussion(subject_id, subject_name, vision, title, tags, function(err, data){
+                         if (err){
+                         }else{
+                             created_discussion_id = data._id;
+                             if ($.trim(first_post) != ""){
+                                 db_functions.addPostToDiscussion(created_discussion_id, first_post, function(err, data){
+                                     if (err){
+                                         console.log(err);
+                                     }else{
+                                         window.location.replace("/discussions/" + created_discussion_id);
+                                     }
+                                 });
+                             }else{
+                                 window.location.replace("/discussions/" + created_discussion_id);
+                             }
+                         }
+                     });
+
+
+           		}
+         	});
+
         $(".inline").colorbox({ inline: true, width: "730" });
 
 
@@ -214,12 +272,30 @@
         function removeItemFromCart()
         {
               var item_id = $(this).attr('item_id');
-              $('#'+item_id).remove();
               db_functions.removeInfoItemFromShoppingCart(item_id,function(err,data) {
-
+                    $('#'+item_id).remove();
               });
                return false  ;
         }
+
+
+         $("span.new_tags").live("click", function(){ $(this).remove(); });
+         $("div.information_item_link").live("click", function(){   window.location.replace("/information_items/" + $(this).attr('item_id')); });
+
+
+         $("#add_tag").click(   function(){
+               var tag_text =  $("#tag").val();
+               if(tag_text!="")
+               {
+                    var tag_element = $( document.createElement('span') );
+                    tag_element.text(   tag_text);
+                    tag_element.attr("class","new_tags");
+                    $(".tags-list").append(  tag_element)  ;
+                    $("#tag").val("");
+               }
+               return false;
+          });
+
     });
 
 

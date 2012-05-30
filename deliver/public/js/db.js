@@ -163,6 +163,39 @@ var db_functions = {
             }
         });
     },
+
+    createDiscussion: function(subject_id, subject_name, vision, title, tags, callback){
+        this.loggedInAjax({
+            url: '/api/discussions/',
+            type: "POST",
+            async: true,
+            data: {"subject_id": subject_id, "subject_name": subject_name, "vision_text": vision, "title": title, "tags": tags, "is_published": true},
+            success: function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },
+
+    addPostToDiscussion: function(discussion_id, post_content, callback){
+        this.loggedInAjax({
+            url: '/api/posts/',
+            type: "POST",
+            async: true,
+            data: {"discussion_id": discussion_id, "text": post_content},
+            success: function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },
 };
 
 // handle image loading stuff
@@ -212,6 +245,8 @@ $(function(){
     }
     else
         $('body').bind('DOMNodeInserted',callback);
+
+    image_autoscale($('.auto-scale img'));
 });
 
 function image_autoscale(obj, params)

@@ -2,11 +2,11 @@
     <a class="delete-app" href="" item_id="{_id}" ></a>
    {?image_field_preview}
     <div style="width:292px; height:194px;" class="auto-scale">
-        <img src="{image_field_preview.url}" alt="{title}"/>
+        <img src="{image_field_preview.url}" alt="{title}" title="{title}"/>
     </div>
     {/image_field_preview}
     <h4>{title}</h4>
-    <div class="item_text_preview">
+    <div item_id="{_id}" class="item_text_preview">
         {?text_field_preview}<p>{text_field_preview|s}</p>{/text_field_preview}
     </div>
     <div class="btn-box">

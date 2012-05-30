@@ -1,32 +1,58 @@
 
-var models = require('../../../models');
+var models = require('../../../models')
+    ,DiscussionResource = require('../../../model/DiscussionResource')
+    ,async = require('async');
 
 module.exports = function(req,res)
 {
-    var discussion_id = req.params.id;
+    var resource = new DiscussionResource();
 
-    models.Discussion.findById(discussion_id,function(err,discussion)
-    {
-        if(err)
-            res.render('500.ejs',{error:err});
-        else
+    async.parallel([
+        // get the user object
+        function(cbk) {
+            if(req.session.user)
+                models.User.findById(req.session.user._id,cbk);
+            else
+                cbk(null, null);
+        },
+        // get the discussion object
+        function(cbk)  {
+            models.Discussion.findById(req.params.id, cbk);
+        }
+    ],
+        function(err,results)
         {
-            if(!discussion)
-                res.redirect('/discussions');
+            if(err)
+                res.render('500.ejs',{error:err});
             else
             {
-                res.render('discussion.ejs',{
-                    title:"יצירת דיון",
-                    url: req.url,
-                    layout: false,
-                    user_logged: req.isAuthenticated(),
-                    big_impressive_title: "",
-                    user: req.session.user,
-                    avatar:req.session.avatar_url,
-                    tab:'discussions',
-                    discussion:discussion
+                // populate 'is follower' , 'grade object' ...
+                resource.get_discussion(results[1],results[0],function(err,discussion)
+                {
+                    if(err)
+                        res.render('500.ejs',{error:err});
+                    else
+                    {
+                        if(!discussion)
+                            res.redirect('/discussions');
+                        else
+                        {
+                            res.render('discussion.ejs',{
+                                layout: false,
+                                title:"דיון",
+                                user_logged: req.isAuthenticated(),
+                                discussion_id: req.params.id,
+                                subject_id: req.query.subject_id,
+                                user: req.session.user,
+                                avatar:req.session.avatar_url,
+                                tab:'discussions',
+                                discussion: discussion,
+                                url: req.url
+                            });
+                        }
+                    }
                 });
             }
-        }
-    })
+        });
+
 };
