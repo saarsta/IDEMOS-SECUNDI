@@ -120,6 +120,9 @@ var Schemas = exports.Schemas = {
         tags:{type:[String], index:true},
         users:{type:[ObjectId], ref:'User',editable:false},
         discussions:{type:[ObjectId], ref:'Discussion', index:true/*editable:false just untill the production*/},
+        cycles:{type:[ObjectId], ref:'Cycle', index:true/*editable:false just untill the production*/},
+        //this is for later
+        actions:{type:[ObjectId], ref:'Action', index:true/*editable:false just untill the production*/},
         is_visible:{type:Boolean, 'default':true},
         creation_date:{type:Date, 'default':Date.now,editable:false},
         is_hot_object:{type:Boolean, 'default':false},
@@ -421,7 +424,7 @@ var Schemas = exports.Schemas = {
         votes_against: {type: Number, 'default': 0},
         is_comment_on_vision:{type:Boolean, 'default':false},
 //        is_comment_on_action:{type:Boolean, 'default':false},
-        ref_to_post_id:{type:Schema.ObjectId, ref:'PostOrSuggestion', index:true}
+        ref_to_post_id:{type:Schema.ObjectId}
     },
 
     PostAction:{

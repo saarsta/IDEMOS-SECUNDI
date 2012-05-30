@@ -137,11 +137,11 @@
                     <label>
                         טיעונים, הצדקות ונימוקים:
                     </label>
-                    <textarea class="two-col" cols="0" rows="0"></textarea>
+                    <textarea id="discussion_explanation" class="two-col" cols="0" rows="0"></textarea>
                 </div>
                 <div class="user-right">
-                    <div class="img-box">
-                        <div style="width:112px; height:120px;" class='auto-scale'>
+                    <div class="img-box" style="overflow: hidden;" >
+                        <div style="width:70px; height:70px;" class='auto-scale'>
                          <img  src="<%=avatar%>" alt="<%=user.username%>"  />
                         </div>
                         <span></span>
@@ -159,7 +159,7 @@
             <a class="grey-btn" id="cancelWriteCommentBT" href="#"><span>
 מתחרט
             </span></a>
-            <a class="green-btn" href="#">
+            <a  id="send_suggestion" class="green-btn" href="#">
                 הצע
             </a>
         </div>
@@ -189,118 +189,10 @@
         </select>
         <h2>
             תגובות
-            <small>(4)</small></h2>
-        <div class="comment-one noBorder">
-            <div class="user-right">
-                <span class="arrow"></span>
-                <div class="left">
-                    <a href="">
-                        תן מנדט
-                    </a>
-                    <a href="">
-                        עקוב
-                    </a>
-                    <a href="">
-                        שלח הודעה
-                    </a>
-                </div>
-                <div class="right">
-                    <div class="img-box transparent-img">
-                        <img width="60" alt="" src="/images/user-1.jpg">
-                        <span></span>
-                    </div>
-                    <h4>
-                        בועז ראשמור
-                    </h4>
-                    <div class="date">13.3.12</div>
-                    <div class="proxy">
-                        <span>3</span>
-                    </div>
-                    <div class="respect">
-                        <span>20</span>
-                    </div>
-                </div>
+            <small id="comments_number"></small></h2>
+        <div id="comments">
+
             </div>
-            <div class="text">
-                <p>.הירפירפה יבשות ןובשח לע אובל םיכירצ אל םידופיק .איהש הממ רתוי תויהל ךופהת הירפירפהו ,ץראה זכרמב קר ונבי םה םינלבקה לע השקנ םא
-                    http://www,youtube.com/watch?tv=rs_9w7ZMG6Y</p>
-                <div class="status">
-                    <div class="yes">
-                        <div class="green">
-                            מסכים(2)
-                        </div>
-                        <div class="number">9</div>
-                    </div>
-                    <div class="no">
-                        <div class="red">
-                            לא מסכים
-                        </div>
-                        <div class="number">14</div>
-                    </div>
-                </div>
-            </div>
-            <div class="like-btn"><img src="/images/like-btn.png" alt="" /></div>
-            <div class="nav-btns">
-                <a href="">
-                    צטט
-                </a>
-                <a href="">
-                    שתף
-                </a>
-            </div>
-        </div>
-        <div class="comment-one">
-            <div class="user-right">
-                <span class="arrow"></span>
-                <div class="left">
-                    <a href="">
-                        תן מנדט
-                    </a>
-                    <a href="">
-                        עקוב
-                    </a>
-                    <a href="">
-                        שלח הודעה
-                    </a>
-                </div>
-                <div class="right">
-                    <div class="img-box">
-                        <img width="60" alt="" src="/images/user-1.jpg">
-                        <span></span>
-                    </div>
-                    <h4>
-                        רומשאר זעוב
-                    </h4>
-                    <div class="date">13.3.12</div>
-                    <div class="proxy">
-                        <span>3</span>
-                    </div>
-                    <div class="respect">
-                        <span>20</span>
-                    </div>
-                </div>
-            </div>
-            <div class="text">
-                <p>.<a href="">הירפירפה יבשות</a> ןובשח לע אובל םיכירצ אל םידופיק .איהש הממ רתוי תויהל ךופהת הירפירפהו ,ץראה זכרמב קר ונבי םה םינלבקה לע השקנ םא
-                    http://www,youtube.com/watch?tv=rs_9w7ZMG6Y</p>
-                <div class="date">13:00 ,13.3.12-ב הכרענ הבוגתה</div>
-                <div class="status">
-                    <div class="yes">
-                        <div class="green">םיכסמ(2)</div>
-                        <div class="number">9</div>
-                    </div>
-                    <div class="no">
-                        <div class="red">םיכסמ אל</div>
-                        <div class="number">14</div>
-                    </div>
-                </div>
-            </div>
-            <div class="like-btn"><img src="/images/like-btn.png" alt="" /></div>
-            <div class="nav-btns">
-                <a href="">טטצ</a>
-                <a href="">ףתש</a>
-            </div>
-        </div>
         <div class="write-comment">
             <h3>
                 כתיבת תגובה
@@ -310,12 +202,14 @@
                     <textarea id="discussion_comment" class="four-col" cols="0" rows="0"></textarea>
                 </div>
                 <div class="user-right">
-                    <div class="img-box">
-                        <img width="60" src="/images/user-1.jpg" alt="" />
+                    <div class="img-box" style="overflow: hidden;">
+                        <div style="width:70px; height:70px;" class='auto-scale'>
+                            <img  src="<%=avatar%>" alt="<%=user.username%>"  />
+                        </div>
                         <span></span>
                     </div>
                     <h4>אני</h4>
-                    <div class="date">13.3.12</div>
+                    <div class="date"><%=new Date() %></div>
                     <div class="proxy">
                         <span>3</span>
                     </div>
@@ -382,6 +276,10 @@
 
         $(function(){
 
+              function setCommentNumber(number) {
+                 $('#comments_number')[0].innerHTML='('+number+')';
+              }
+
             var discussion_id = "<%=discussion.id%>";
             var mouseDown, mouseUp, top, left;
             var grade_id = "<%=discussion.grade_obj.grade_id%>";
@@ -437,13 +335,12 @@
             });
 
             $("#discussion_comment_reply_button").on('click', function(e){
-                var discussionComment=  $("textarea#discussion_comment")[0];
+                var commenText;
+                var discussionComment=  $("textarea#discussion_comment")[0]  ;
+               commenText= '"'+ $('#discussion_content')[0].value+'"';
                 e.preventDefault();
                 discussionComment.focus();
-               
-                discussionComment.value='ssddddddddd';
-
-
+                discussionComment.value=commenText;
             });
 
             $('#posts,#suggestion_list').on('click','.vote_for',function(){
@@ -510,25 +407,21 @@
                 }
             });
 
-
+                */
             db_functions.getPostByDiscussion(discussion_id, function(err, data){
                 if(err){
                     console.log(err);
                 }else{
-//            console.log("posts are" + " " + data);
-
-                    dust.renderArray('post', data.objects, null, function(err, out){
+                    setCommentNumber( data.objects.length);
+                    dust.renderArray('discussion_comment', data.objects, null, function(err, out){
                         if(!err){
-                            $("#posts").append(out);
-                            $('#posts img').autoscale();
+                            $("#comments").append(out);
+                           // $('#posts img').autoscale();
                         }
                     });
-
-                    for (var i in data.objects){
-                     post_items.add(data.objects[i]);
-                     }
                 }
             });
+            /*
 
             function render_suggestion(suggestion)
             {
@@ -695,7 +588,7 @@
             $('#send_suggestion').click(function(){
                 var part = {start:range.start, end:range.end, text:$("textarea#discussion_suggest").val()};
                 var explanation = $("#discussion_explanation").val();
-//                part += " ";
+
                 db_functions.addSuggestionToDiscussion(discussion_id,[part], explanation, function(err,data)
                 {
                     if(!err)
