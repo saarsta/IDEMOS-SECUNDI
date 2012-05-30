@@ -343,17 +343,15 @@
                 discussionComment.value=commenText;
             });
 
-            $('#posts,#suggestion_list').on('click','.vote_for',function(){
-                var post_id = $(this).parent('div').data("id");
+            $('#comments,#suggestion_list').on('click','.vote_for',function(){
+
+                var post_id = $(this).parents('.comment-one').data("id");
                 var button = $(this);
-                var func = $(this).parents('#posts').length ? db_functions.voteForPost : db_functions.voteForSuggestion;
+                var func = $(this).parents('#comments').length ? db_functions.voteForPost : db_functions.voteForSuggestion;
                 func.call(db_functions,post_id, "add", function(err, post_obj){
                     if(!err){
-                        var span = $('span',button);
-//                        span.text(Number(span.text()) + 1);
-                        var vote_against = button.closest('div.action').find('a.vote_against');
-                        vote_against.text(post_obj.votes_against);
-                        button.text(post_obj.votes_for);
+                        var votes_for = button.parent('div').find('.number');
+                        votes_for.text(post_obj.votes_for);
                     }
                     else
                     {
@@ -361,22 +359,20 @@
                             alert('not enough tokens');
                         if(err.responseText == 'user already voted for this post')
                             alert('already voted');
-                        if(err.responseText == 'soory, can\'t vote to your own suggestion')
-                            alert('can\'t vote for your own suggestion');
+                        if(err.responseText == 'soory, can\'t vote to your own post')
+                            alert('soory, can\'t vote to your own post');
                     }
                 })
             });
 
-            $('#posts,#suggestion_list').on('click',".vote_against", function(){
-                var post_id = $(this).parent('div').data("id");
+            $('#comments,#suggestion_list').on('click',".vote_against", function(){
+                var post_id = $(this).parents('.comment-one').data("id");
                 var button = $(this);
-                var func = $(this).parents('#posts').length ? db_functions.voteForPost : db_functions.voteForSuggestion;
+                var func = $(this).parents('#comments').length ? db_functions.voteForPost : db_functions.voteForSuggestion;
                 func.call(db_functions,post_id, "remove", function(err, post_obj){
                     if(!err){
-                        var span = $('span',button);
-                        var vote_for = button.closest('div.action').find('a.vote_for');
-                        vote_for.text(post_obj.votes_for);
-                        button.text(post_obj.votes_against);
+                        var voteAgainst = button.parent('div').find('.number');
+                        voteAgainst.text(post_obj.votes_against);
                     }
                     else
                     {

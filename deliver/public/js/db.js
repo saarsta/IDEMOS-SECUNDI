@@ -232,6 +232,43 @@ var db_functions = {
 
 
 
+    voteForPost: function(post_id, method, callback){
+        this.loggedInAjax({
+            url: '/api/votes/',
+            type: "POST",
+            async: true,
+            data: {"post_id": post_id, "method": method},
+            success: function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },
+
+    voteForSuggestion: function(suggestionId,method,callback)
+    {
+        this.loggedInAjax({
+            url: '/api/votes_on_suggestion/',
+            type: "POST",
+            async: true,
+            data: {"suggestion_id": suggestionId, "method": method},
+            success: function (data) {
+                console.log(data);
+                alert('success');
+                callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
+            }
+        });
+
+    },
+
+
+
     addPostToDiscussion: function(discussion_id, post_content, callback){
         this.loggedInAjax({
             url: '/api/posts/',
