@@ -290,6 +290,21 @@ var db_functions = {
         });
     },
 
+    getSortedPostByDiscussion: function(discussion_id, sort_by, callback){
+        this.loggedInAjax({
+            url: '/api/posts?discussion_id=' + discussion_id + "&" + sort_by,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log("posts are" + " " + data);
+                callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },
+
     getDiscussionShoppingCart: function(discussion_id, callback){
         this.loggedInAjax({
             url: '/api/discussions_shopping_cart?discussion_id=' + discussion_id,
@@ -304,7 +319,7 @@ var db_functions = {
                 callback(err, null);
             }
         });
-    } ,
+    }
 
 };
 

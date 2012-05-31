@@ -159,14 +159,14 @@
 </div>
 <div class="comments-box">
     <div class="extra cf">
-        <select class="left-select">
-            <option>
+        <select class="left-select"  id="sorting_select">
+            <option id="date_sort_op">
                 מיין לפי תאריך
             </option>
-            <option>
+            <option id="user_sort_op">
                 מיין לפי יוזר
             </option>
-            <option>
+            <option id="result_sort_op">
                 מיין לפי תוצאות
             </option>
         </select>
@@ -447,63 +447,50 @@
                 });
             });*/
 
-            $('#sorting_select').change(function() {
-                $("#posts").empty();
 
-                if ($(this).val() === 'op_date') {
+            function     renderComments(comments ){
+                dust.renderArray('discussion_comment', comments, null, function(err, out){
+                    if(!err){
+                        var comments=   $("#comments");
+                        comments.empty();
+                        comments.append(out);
+                          }
+                } );
+            }
+            $('#sorting_select').change(function(e) {
+                 var comments=   $("#comments").empty();
+                var selectedOption= $(this).find(':selected')[0].id;
+                if (selectedOption=== 'date_sort_op') {
                     db_functions.getPostByDiscussion(discussion_id, function(err, data){
                         if(err){
                             console.log(err);
-                        }else{dust.renderArray('post', data.objects, null, function(err, out){
-                            if(!err){
-                                $("#posts").append(out);
-                                $('#posts img').autoscale();
-                            }
-                        })
-                        }
-                    });
-                }
-                else{
-                    if ($(this).val() === 'op_back_date') {
+                        }else{
+                            renderComments(data.objects)
+                        } })
+                    }
+                     else{if (selectedOption=== 'user_sort_op') {
                         db_functions.getSortedPostByDiscussion(discussion_id, "order_by=creation_date", function(err, data){
                             if(err){
                                 console.log(err);
                             }else{
-                                dust.renderArray('post', data.objects, null, function(err, out){
-                                    if(!err){
-                                        $("#posts").append(out);
-                                        $('#posts img').autoscale();
-                                    }
-                                })
-                            }
-                        });
-                    }else{
-                        if ($(this).val() === 'op_votes_for') {
+                                renderComments(data.objects)
+                            } })
+
+                    }else{if (selectedOption === 'op_votes_for') {           //BUGBUG  no option in UI
                             db_functions.getSortedPostByDiscussion(discussion_id, "order_by=-votes_for", function(err, data){
                                 if(err){
                                     console.log(err);
                                 }else{
-                                    dust.renderArray('post', data.objects, null, function(err, out){
-                                        if(!err){
-                                            $("#posts").append(out);
-                                        }
-                                    })
-                                }
-                            });
+                                    renderComments(data.objects)
+                                } })
 
-                        }else{
-                            if ($(this).val() === 'op_most_voted') {
+                        }else{ if (selectedOption === 'result_sort_op') {
                                 db_functions.getSortedPostByDiscussion(discussion_id, "order_by=-total_votes, -votes_for", function(err, data){
                                     if(err){
                                         console.log(err);
                                     }else{
-                                        dust.renderArray('post', data.objects, null, function(err, out){
-                                            if(!err){
-                                                $("#posts").append(out);
-                                            }
-                                        })
-                                    }
-                                });
+                                        renderComments(data.objects)
+                                    } })
                             }
                         }
                     }
