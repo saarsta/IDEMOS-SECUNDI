@@ -247,6 +247,7 @@
         });
 
 
+
         /***************************************************/
 
 
@@ -310,20 +311,7 @@
                 console.log(range);
             });
 
-            /*$("button.reply, .suggest").on("click", function(e){
-                e.preventDefault();
-                     alert('sss');
-                if($(this).hasClass("reply")){
-                    $("textarea#discussion_comment").val('"' + range.text +'"').focus();
-                }
 
-                if($(this).hasClass("suggest")){
-                    $('#discussion_content_txt').text('"' + range.text +'"');
-                    $('#write-comment').show();
-                    $('textarea#discussion_suggest').focus();
-                    $(".popup-window").hide();
-                }
-            });*/
 
         $('#pop_suggest_bt').on("click", function(e){
              e.preventDefault();
@@ -382,6 +370,13 @@
                 })
             });
 
+  /*      $('.comments-box .comment-one .user-right').hover(function () {
+            $(this).toggleClass('hover');
+        });*/
+
+        $('#comments,#suggestion_list').on('hover',".side_menu",function(e){
+            $(this).toggleClass('hover');
+        });
 
                  // copy the post text+ user to   discussion_comment
             $('#comments,#suggestion_list').on('click',".quote_button",function(e){
@@ -474,6 +469,7 @@
                         var comments=   $("#comments");
                         comments.empty();
                         comments.append(out);
+
                           }
                 } );
             }
