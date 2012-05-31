@@ -50,15 +50,10 @@
                     </div>
                 </div>
                 <div class="tags">
-                    <a href="">
-                        אבטלה
-                    </a>
-                    <a href="">
-                        כלכלה
-                    </a>
-                    <a href="">
-                        עוני
-                    </a>
+                   <% for (var c = 0; c <discussion. tags.length; c++) { %>
+                    <a href="#"> <%=discussion. tags[c] %></a>
+                    <% }%>
+
                     <div class="more">
                         <span></span>
                         <ul>
@@ -160,13 +155,13 @@
 <div class="comments-box">
     <div class="extra cf">
         <select class="left-select"  id="sorting_select">
-            <option id="date_sort_op">
+            <option id="creation_date">
                 מיין לפי תאריך
             </option>
-            <option id="user_sort_op">
+            <option id="first_name">
                 מיין לפי יוזר
             </option>
-            <option id="result_sort_op">
+            <option id="total_votes">
                 מיין לפי תוצאות
             </option>
         </select>
@@ -213,8 +208,8 @@
      <span class="popup-window">
          <span class="arrow"></span>
          <a class="close" href="#" ></a>
-        	 <a class="green-btn" href="#">הגב</a>
-         <a class="grey-btn suggest" href="#">
+        	 <a id="pop_post_bt" class="green-btn" href="#">הגב</a>
+             <a  id="pop_suggest_bt" class="grey-btn suggest" href="#">
      הצע הצעה לשינוי
          </a>
      </span>
@@ -227,6 +222,12 @@
 <%- partial('partials/footer.ejs') %>
 <script type="text/javascript">
     $(document).ready(function () {
+
+        var discussion_id = "<%=discussion.id%>";
+        var mouseDown, mouseUp, top, left;
+        var grade_id = "<%=discussion.grade_obj.grade_id%>";
+        var sugg_grade_id;
+        var   new_post_ref_id=null;  //if not null =>the create new post is connected to anther post
 
         $(".inline").colorbox({ inline: true, width: "730" });
 
@@ -253,10 +254,7 @@
                  $('#comments_number')[0].innerHTML='('+number+')';
               }
 
-            var discussion_id = "<%=discussion.id%>";
-            var mouseDown, mouseUp, top, left;
-            var grade_id = "<%=discussion.grade_obj.grade_id%>";
-            var sugg_grade_id;
+
 
             db_functions.getDiscussionShoppingCart(discussion_id,function(err,data){
                 $.each(data.objects,function(index,item){
@@ -278,8 +276,7 @@
 
             });
 
-        $('.discussion_content')
-                    .on('mousedown', function(e) {
+        $('.discussion_content').on('mousedown', function(e) {
                         mouseDown = e;
                     })
                     .on('mouseup', function(e){
@@ -313,9 +310,9 @@
                 console.log(range);
             });
 
-            $("button.reply, .suggest").on("click", function(e){
+            /*$("button.reply, .suggest").on("click", function(e){
                 e.preventDefault();
-
+                     alert('sss');
                 if($(this).hasClass("reply")){
                     $("textarea#discussion_comment").val('"' + range.text +'"').focus();
                 }
@@ -326,16 +323,19 @@
                     $('textarea#discussion_suggest').focus();
                     $(".popup-window").hide();
                 }
-            });
+            });*/
 
-            $("#discussion_comment_reply_button").on('click', function(e){
-                var commenText;
-                var discussionComment=  $("textarea#discussion_comment")[0]  ;
-               commenText= '"'+ $('#discussion_content')[0].value+'"';
-                e.preventDefault();
-                discussionComment.focus();
-                discussionComment.value=commenText;
-            });
+        $('#pop_suggest_bt').on("click", function(e){
+             e.preventDefault();
+            $('#discussion_content_txt').text('"' + range.text +'"');
+            $('#write-comment').show();
+            $('textarea#discussion_suggest').focus();
+            $(".popup-window").hide();
+        });
+
+
+
+
 
             $('#comments,#suggestion_list').on('click','.vote_for',function(){
                 var post_id = $(this).parents('.comment-one').data("id");
@@ -382,10 +382,36 @@
                 })
             });
 
-            $('#posts,#suggestion_list').on('click',".quote_button",function(){
-                var text = $('.post_text',$(this).parents('li')).text();
-                $("textarea#discussion_comment").val('"' + text +'"').focus();
+
+                 // copy the post text+ user to   discussion_comment
+            $('#comments,#suggestion_list').on('click',".quote_button",function(e){
+              var userName,
+                       text;
+
+                var postDiv=$(this).parents('.comment-one');
+                e.preventDefault();
+                userName=postDiv.data('creator_name');
+                new_post_ref_id=postDiv.data('id');
+                text = $('.post_text',postDiv).text();
+                text=userName+':"'+text+'"';
+                $("textarea#discussion_comment").val(text).focus();
+
+
             });
+         // focus and copy the selected text of discussion
+        $('#pop_post_bt').on("click", function(e){
+            e.preventDefault();
+            new_post_ref_id=null
+           $(".popup-window").hide();
+            $("textarea#discussion_comment").val('"' + range.text +'"').focus();
+
+        });
+
+          // just focus
+        $("#discussion_comment_reply_button").on('click', function(e){
+            e.preventDefault();
+            var discussionComment=  $("textarea#discussion_comment").focus();
+        } );
 
           /*  db_functions.getDiscussionShoppingCart(discussion_id, function(err, data){
 
@@ -398,19 +424,7 @@
             });
 
                 */
-            db_functions.getPostByDiscussion(discussion_id, function(err, data){
-                if(err){
-                    console.log(err);
-                }else{
-                    setCommentNumber( data.objects.length);
-                    dust.renderArray('discussion_comment', data.objects, null, function(err, out){
-                        if(!err){
-                            $("#comments").append(out);
-                           // $('#posts img').autoscale();
-                        }
-                    });
-                }
-            });
+
             /*
 
             function render_suggestion(suggestion)
@@ -449,6 +463,12 @@
 
 
             function     renderComments(comments ){
+                var i ;
+                for (i=0;i<comments.length;i++){
+                    comments[i].isFirst= (i===0);
+
+                }
+
                 dust.renderArray('discussion_comment', comments, null, function(err, out){
                     if(!err){
                         var comments=   $("#comments");
@@ -457,45 +477,36 @@
                           }
                 } );
             }
-            $('#sorting_select').change(function(e) {
-                 var comments=   $("#comments").empty();
-                var selectedOption= $(this).find(':selected')[0].id;
-                if (selectedOption=== 'date_sort_op') {
-                    db_functions.getPostByDiscussion(discussion_id, function(err, data){
-                        if(err){
-                            console.log(err);
-                        }else{
-                            renderComments(data.objects)
-                        } })
-                    }
-                     else{if (selectedOption=== 'user_sort_op') {
-                        db_functions.getSortedPostByDiscussion(discussion_id, "order_by=creation_date", function(err, data){
+
+             function loadPosts() {
+                var selectedOption= $ ('#sorting_select') .find(':selected')[0].id;
+                    db_functions.getSortedPostByDiscussion(discussion_id, selectedOption, function(err, data){
                             if(err){
                                 console.log(err);
                             }else{
                                 renderComments(data.objects)
-                            } })
-
-                    }else{if (selectedOption === 'op_votes_for') {           //BUGBUG  no option in UI
-                            db_functions.getSortedPostByDiscussion(discussion_id, "order_by=-votes_for", function(err, data){
-                                if(err){
-                                    console.log(err);
-                                }else{
-                                    renderComments(data.objects)
-                                } })
-
-                        }else{ if (selectedOption === 'result_sort_op') {
-                                db_functions.getSortedPostByDiscussion(discussion_id, "order_by=-total_votes, -votes_for", function(err, data){
-                                    if(err){
-                                        console.log(err);
-                                    }else{
-                                        renderComments(data.objects)
-                                    } })
                             }
-                        }
+                    })
+             }
+
+       $('#sorting_select').change(loadPosts );
+
+        loadPosts();
+          //init posts
+       /* db_functions.getPostByDiscussion(discussion_id, function(err, data){
+            if(err){
+                console.log(err);
+            }else{
+                setCommentNumber( data.objects.length);
+                dust.renderArray('discussion_comment', data.objects, null, function(err, out){
+                    if(!err){
+                        $("#comments").append(out);
+                        // $('#posts img').autoscale();
                     }
-                }
-            });
+                });
+            }
+        });*/
+
 
             $("#cancelWriteCommentBT").live("click", function(){
                 $('#write-comment').hide();
@@ -503,12 +514,12 @@
 
             $("#submit_post").on('click', function(e){
                 e.preventDefault();
-                db_functions.addPostToDiscussion(discussion_id, $("textarea#discussion_comment").val(), function(err, post){
+                db_functions.addPostToDiscussion(discussion_id, $("textarea#discussion_comment").val(),new_post_ref_id,function(err, post){
                    // $("#user_tokens").text(post.updated_user_tokens);
                     dust.render('discussion_comment', post, function(err, out){
-                        debugger;
                         $("#comments").append(out);
                         $("textarea#discussion_comment").val('');
+                        new_post_ref_id=null
                     });
                 })
             });
@@ -566,15 +577,14 @@
             $('#send_suggestion').click(function(){
                 var part = {start:range.start, end:range.end, text:$("textarea#discussion_suggest").val()};
                 var explanation = $("#discussion_explanation").val();
-
                 db_functions.addSuggestionToDiscussion(discussion_id,[part], explanation, function(err,data)
                 {
                     if(!err)
                     {
-                        $('#suggest_div').hide();
-                        render_suggestion(data);
+                        $('#write-comment').hide();
+                      /*  render_suggestion(data);
                         $("textarea#discussion_suggest").val('');
-                        $("#user_tokens").text(data.updated_user_tokens);
+                        $("#user_tokens").text(data.updated_user_tokens);*/
                     }
                 });
             });

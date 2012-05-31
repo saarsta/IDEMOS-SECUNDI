@@ -205,7 +205,6 @@ var db_functions = {
         });
     },
     addSuggestionToDiscussion: function(discussion_id, parts, explanation, callback){
-      debugger;
         this.loggedInAjax({
             url: '/api/suggestions/',
             type: "POST",
@@ -274,7 +273,7 @@ var db_functions = {
 
 
 
-    addPostToDiscussion: function(discussion_id, post_content, callback){
+    addPostToDiscussion: function(discussion_id, post_content, rafParentPostId,callback){
         this.loggedInAjax({
             url: '/api/posts/',
             type: "POST",
@@ -292,7 +291,7 @@ var db_functions = {
 
     getSortedPostByDiscussion: function(discussion_id, sort_by, callback){
         this.loggedInAjax({
-            url: '/api/posts?discussion_id=' + discussion_id + "&" + sort_by,
+            url: '/api/posts?discussion_id=' + discussion_id + "&order_by=" + sort_by,
             type: "GET",
             async: true,
             success: function (data) {

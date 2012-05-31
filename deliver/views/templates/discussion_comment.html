@@ -1,4 +1,6 @@
-    <div class="comment-one noBorder"  data-id="{_id}">
+    <div class="comment-one {#isFirst} noBorder{:else}{/isFirst}"
+         data-id="{_id}"
+            data-creator_name="{creator_id.first_name} {creator_id.last_name}">
         <div class="user-right">
              <span class="arrow"></span>
         <div class="left">
@@ -30,7 +32,7 @@
         </div>
     </div>
        <div class="text">
-        <p>{text}</p>
+        <p class="post_text">{text}</p>
         <div class="status">
             <div class="yes">
                 <div class="green  vote_for">
@@ -48,7 +50,7 @@
     </div>
     <div class="like-btn"><img src="/images/like-btn.png" alt="" /></div>
     <div class="nav-btns">
-        <a href="">
+        <a  class="quote_button" href="#">
             צטט
         </a>
         <a  href="/facebookShare?link=/discussions/{discussion_id}#post_{_id}" target="_blank">
