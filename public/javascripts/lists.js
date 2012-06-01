@@ -1,6 +1,5 @@
 
 function loadListItems(original_type,template_name,subject,tag) {
-   debugger
     var type = original_type;
    //BUGBUG refctor ***************************/
     db_functions.dbGetAllSubjects(true);

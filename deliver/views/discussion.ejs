@@ -251,8 +251,9 @@
         /***************************************************/
 
 
-              function setCommentNumber(number) {
-                 $('#comments_number')[0].innerHTML='('+number+')';
+              function setCommentNumber() {
+                var number=   $('#comments .comment-one').length;
+                $('#comments_number')[0].innerHTML='('+number+')';
               }
 
 
@@ -469,7 +470,7 @@
                         var comments=   $("#comments");
                         comments.empty();
                         comments.append(out);
-
+                          setCommentNumber  ()
                           }
                 } );
             }
@@ -515,7 +516,8 @@
                     dust.render('discussion_comment', post, function(err, out){
                         $("#comments").append(out);
                         $("textarea#discussion_comment").val('');
-                        new_post_ref_id=null
+                        new_post_ref_id=null;
+                        setCommentNumber()          ;
                     });
                 })
             });
