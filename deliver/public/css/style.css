@@ -1931,12 +1931,56 @@ body
 .add-offer .add-offer-bottom .slide-box .slider
 {
     height: 15px;
-    background: #375de0 url(../images/slider-bg.png) 0 0 repeat-x;
+    background: #375de0 url(../images/slider-bg-blue.png) 0 0 repeat-x;
     border-radius: 2px;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
     position: relative;
 }
+
+.ui-slider-range
+{
+    height: 15px;
+    background: #cccccc url(../images/slider-bg-grey.png) 0 0 repeat-x;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    position: relative;
+}
+
+.hidden_textarea
+{
+    background: transparent;
+    width: 460px;
+    resize:none;
+    border: none;
+    color:#7F7F7E;
+    font: normal 13px/17px Arial;
+}
+textarea::-moz-selection {
+    background:#E7E01C;
+}
+
+textarea::selection {
+    background:#E7E01C;
+}
+
+input[type=text]::selection{
+    background:#E7E01C;
+}
+
+input[type=text]::-moz-selection{
+    background:#E7E01C;
+}
+
+textarea.hidden_textarea::-moz-selection,
+textarea.hidden_textarea::selection
+{
+    color: red;
+    background-color: grey;
+}
+
+
 .add-offer .add-offer-bottom .slide-box .slider .ui-slider-handle
 {
     width: 22px;
