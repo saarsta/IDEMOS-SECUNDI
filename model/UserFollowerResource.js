@@ -14,6 +14,17 @@ var resources = require('jest'),
     _ = require('underscore');
 
 var Authorization = resources.Authorization.extend({
+    edit_object : function(req,object,callback){
+        if(req.user){
+            if(object._id + "" == req.user._id + "")
+                callback({message:"Error: Unauthorized - can't become your own follower", code: 401}, null);
+            else
+                callback();
+        }else{
+            callback({message: "Error: User Is Not Authenticated", code: 401}, null);
+        }
+    },
+
     limit_object_list: function(req, query, callback){
         if(req.user){
             var user_id = req.user._id;
@@ -21,7 +32,7 @@ var Authorization = resources.Authorization.extend({
             query.where('_id', user_id);
             callback(null, query);
         }else{
-            callback("Error: User Is Not Authenticated", null);
+            callback({message: "Error: User Is Not Authenticated", code: 401}, null);
         }
     }
 });
@@ -73,15 +84,15 @@ var UserFollowerResource = module.exports = common.GamificationMongooseResource.
 
         var follower_id = req.user._id;
         var follower = _.find(object.followers, function(follower){return follower.follower_id + "" == follower_id + ""});
-        var is_follower = {};
+
 
         if(follower){
             //delete follower
 
             follower.remove(function(err, res){
-                is_follower = false;
                 if(!err){
                     object.save(function(err, obj){
+                        obj.is_follower = false;
                         callback(err, obj);
                     })
                 }
@@ -95,7 +106,7 @@ var UserFollowerResource = module.exports = common.GamificationMongooseResource.
 
             object.followers.push(new_follower);
             object.save(function(err, obj){
-                is_follower = true;
+                obj.is_follower = true;
                 callback(err, obj);
             })
         }

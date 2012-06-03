@@ -12,7 +12,7 @@ var Authoriztion =  mongoose_resource.Authorization.extend({
             query.where('_id', user_id);
             callback(null, query);
         }else{
-            callback("Error: User Is Not Authenticated", null);
+            callback({message: "Error: User Is Not Authenticated", code: 401}, null);
         }
     }
 });

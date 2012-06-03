@@ -59,7 +59,6 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
             is_cycle: null,
             tags: null,
             followers_count: null,
-            grade:Number,
             evaluate_counter: null,
             _id:null,
             is_follower: null,
@@ -73,27 +72,6 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
 
     get_discussion: function(object,user,callback)
     {
-
-
-            //this code get discussion followers and populate it to object.useres
-            //i dont need it for now.. put it to async when i do
-
-//            models.User.find({"discussions.discussion_id": id}, ["email", "first_name", "avatar", "facebook_id", "discussions"], function(err, objs){
-//                var users = [];
-//                if(!err){
-//                    object.users = _.map(objs, function(user){
-//                        var curr_discussion =  _.find(user.discussions, function(discussion){
-//                            return discussion.discussion_id == id;
-//                        });
-//                        return {
-//                            user_id:user,
-//                            join_date: curr_discussion.join_date
-//                        };
-//                    });
-//                }
-//                else
-//                    object.users = [];
-
         if(object){
             object.grade_obj= {};
             object.is_follower = false;
@@ -117,7 +95,6 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                 });
             }else{
                 callback(null, object);
-
             }
         }else{
             callback({message: "internal error" ,code: 500}, object);
@@ -164,12 +141,28 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
         var self = this;
         var object = new self.model();
         var user = req.user;
+        var created_discussion_id;
 
         var min_tokens = /*common.getGamificationTokenPrice('create_discussion')*/ 10;
 //        var total_tokens = user.tokens + user.num_of_extra_tokens;
 
-        models.InformationItem.count({users: req.user._id}, function(err, count){
+        var iterator = function(info_item, itr_cbk){
+            info_item.discussions.push(created_discussion_id);
+
+            for(var i=0; i<info_item.users.length; i++)
+            {
+                if(object.users[i] == req.session.user_id)
+                {
+                    object.users.splice(i,1);
+                    i--;
+                }
+            }
+            info_item.save(itr_cbk());
+        }
+
+        models.InformationItem.find({users: req.user._id}, function(err, info_items){
             if(!err){
+                var count = info_items.length;
                 if(user.tokens <  min_tokens && user.tokens < min_tokens - (Math.min(Math.floor(count/2), 2))){
                     callback({message: "user must have a least 10 tokens to open create discussion", code:401}, null);
                 }
@@ -201,29 +194,40 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                                 //if success with creating new discussion - add discussion to user schema
                                 object.save(function (err, obj) {
                                     if (!err) {
-                                        var user_discussion = {
-                                            discussion_id: obj._id,
-                                            join_date: Date.now()
-                                        }
+                                        created_discussion_id = obj._id;
 
-                                        if (object.is_published) {
-                                            models.User.update({_id: user._id}, {$addToSet: {discussions: user_discussion}}, function(err, num){
-                                                if(!err){
+                                        //add info items to discussion shopping cart and delete it from user's shopping cart
+                                        async.forEach(info_items, iterator, function(err, result){
+                                            if(!err){
+                                                var user_discussion = {
+                                                    discussion_id: obj._id,
+                                                    join_date: Date.now()
+                                                }
 
-                                                    //set gamification
-                                                    req.gamification_type = "discussion";
-                                                    req.token_price = /*common.getGamificationTokenPrice('discussion')*/ 3;
+                                                if (object.is_published) {
+                                                    models.User.update({_id: user._id}, {$addToSet: {discussions: user_discussion}}, function(err, num){
+                                                        if(!err){
 
-                                                    //find all information items and set notifications for their owners
-                                                    notifications_for_the_info_items_relvant(obj._id, user_id, function(err, args){
-                                                        callback(err, obj);
-                                                    })
-                                                }else
+                                                            //set gamification
+                                                            req.gamification_type = "discussion";
+                                                            req.token_price = /*common.getGamificationTokenPrice('discussion')*/ 3;
+
+                                                            //find all information items and set notifications for their owners
+                                                            notifications_for_the_info_items_relvant(obj._id, user_id, function(err, args){
+                                                                callback(err, obj);
+                                                            })
+                                                        }else
+                                                            callback(err, obj);
+                                                    });
+                                                }else{
                                                     callback(err, obj);
-                                            });
-                                        }else{
-                                            callback(err, object);
-                                        }
+                                                }
+                                            }else{
+                                                callback(err, object);
+                                            }
+                                        })
+                                    }else{
+                                        callback(err, object);
                                     }
                                 });
                             }
