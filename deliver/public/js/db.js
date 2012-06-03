@@ -273,12 +273,12 @@ var db_functions = {
 
 
 
-    addPostToDiscussion: function(discussion_id, post_content, rafParentPostId,callback){
+    addPostToDiscussion: function(discussion_id, post_content, refParentPostId, callback){
         this.loggedInAjax({
             url: '/api/posts/',
             type: "POST",
             async: true,
-            data: {"discussion_id": discussion_id, "text": post_content},
+            data: {"discussion_id": discussion_id, "text": post_content, "ref_to_post_id" : refParentPostId},
             success: function (data) {
                 console.log(data);
                 callback(null, data);
@@ -311,6 +311,21 @@ var db_functions = {
             async: true,
             success: function (data) {
                 //     console.log(data);
+                callback(null, data);
+            },
+
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },
+
+    joinOrLeaveUserFollowers: function(user_id, callback){
+        this.loggedInAjax({
+            url: '/api/user_followers/' + user_id,
+            type: "PUT",
+            async: true,
+            success: function (data) {
                 callback(null, data);
             },
 

@@ -100,7 +100,6 @@ score.discussion = 30;
 
 function update_user_gamification(req, game_type, user, price, callback)
 {
-
     var inc_user_gamification ={};
     var inc_user_gamification_score ={};
     inc_user_gamification['gamification.'+game_type] = 1;

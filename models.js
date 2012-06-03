@@ -223,7 +223,7 @@ var Schemas = exports.Schemas = {
             {type:ObjectId, ref:'Subject', index:true, required:true}
         ],
         subject_name:String,
-        system_message: String,
+        system_message: {type:mongoose_types.Text, "default": "דיון זה מתעתד להיות מעגל תנופה. שתפו, הגיבו וגרמו לזה לקרות"},
         creation_date:{type:Date, 'default':Date.now},
         creator_id:{type:ObjectId, ref:'User'},
         first_name:{type:String,editable:false},
