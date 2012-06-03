@@ -50,14 +50,13 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
-.cf:after {
-	content: "";
-	display: block;
-	clear: both;
-	visibility: hidden;
-	line-height: 0;
-	height: 0;
-}
-/*.cf   { display: inline-block }*/
+.cf:after { content: "."; display: block; height: 0; 
+				  clear: both; visibility: hidden }
+.cf 		{ display: inline-block }
+
+/* Hides from IE-mac \*/
+* html .cf 
+				{ height: 1% }
+.cf 		{ display: block }
 .floatLeft {float: left;}
 .floatRight {float: right;}
