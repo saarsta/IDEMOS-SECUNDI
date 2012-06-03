@@ -25,7 +25,7 @@
                   <img src="<%= discussion.image_field ? discussion.image_field.url : '' %>" alt="" />
                 </div>
                 <div class="discussion_content discussion content">
-                    <textarea id="discussion_content" class="hidden_textarea" readonly ><%=discussion.vision_text%></textarea>
+                    <textarea id="discussion_content" class="hidden_textarea" ><%=discussion.vision_text%></textarea>
                 </div>
 
                 <p><a href="">
@@ -145,15 +145,18 @@
         </div>
     </div>
 </div>
+<% if(discussion.system_message) { %>
 <div class="system-notice">
     <div class="extra">
         <a class="close" href="javascript:void(0);"></a>
         <strong>
             הודעת מערכת:
         </strong>
-        דיון זה מתעתד להיות מעגל תנופה. שתפו, הגיבו וגרמו לזה לקרות
+        <%= discussion.system_message %>
+
     </div>
 </div>
+<% } %>
 <div class="comments-box">
     <div class="extra cf">
         <select class="left-select"  id="sorting_select">
@@ -228,7 +231,7 @@
     $(document).ready(function () {
 
         var discussion_id = "<%=discussion.id%>";
-        var mouseDown, mouseUp, top, left;
+        var mouseDown, mouseUp, top, left,range;
         var grade_id = "<%=discussion.grade_obj.grade_id%>";
         var sugg_grade_id;
         var   new_post_ref_id=null;  //if not null =>the create new post is connected to anther post
@@ -304,12 +307,14 @@
 
         $('.discussion_content').on('mousedown', function(e) {
                         mouseDown = e;
+                        console.log(e);
                     })
                     .on('mouseup', function(e){
                         mouseUp = e;
 
                         left = Math.ceil((mouseDown.clientX + mouseUp.clientX) / 2 - ($(".popup-window").width() / 2));
                         top = Math.min(mouseDown.clientY, mouseUp.clientY) - $(".popup-window").height() - 40 + $(window).scrollTop();
+                        console.log(e);
 
                     }).on('keydown', function(e){
                         console.log(e.keyCode == 27);
@@ -595,6 +600,10 @@
                         $("#user_tokens").text(data.updated_user_tokens);*/
                     }
                 });
+            });
+
+            $('.system-notice .close').click(function(){
+                $(this).parents('.system-notice').fadeOut(800);
             });
 
     });
