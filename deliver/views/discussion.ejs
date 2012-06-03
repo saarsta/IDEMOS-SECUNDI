@@ -236,7 +236,12 @@
         $(".inline").colorbox({ inline: true, width: "730" });
 
         $(".slider").slider({
-            value:<%=discussion.grade_obj.value%>,
+
+          <% if(discussion.grade_obj){ %>
+             value:<%=discussion.grade_obj.value%>,
+           <% }else{ %>
+              value:0,
+          <% } %>
             range: "max",
             min: 0,
             max: 10,
