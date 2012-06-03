@@ -594,12 +594,14 @@
         e.preventDefault();
         db_functions.addPostToDiscussion(discussion_id, $("textarea#discussion_comment").val(),new_post_ref_id,function(err, post){
             // $("#user_tokens").text(post.updated_user_tokens);
-            dust.render('discussion_comment', post, function(err, out){
-                $("#comments").append(out);
-                $("textarea#discussion_comment").val('');
-                new_post_ref_id=null;
-                setCommentNumber()          ;
-            });
+            if(!err){
+                dust.render('discussion_comment', post, function(err, out){
+                    $("#comments").append(out);
+                    $("textarea#discussion_comment").val('');
+                    new_post_ref_id=null;
+                    setCommentNumber()          ;
+                });
+            }
         })
     });
 
