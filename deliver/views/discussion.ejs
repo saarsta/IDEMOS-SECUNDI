@@ -247,7 +247,7 @@
 
                  db_functions.addDiscussionGrade(discussion_id,rating, grade_id, function(err,data)
                  {
-                        $("#amount").val(data.new_grade);
+                        $("#amount").val(Math.round(data.new_grade*100)/100);
                         $("#graders").text(data.evaluate_counter);
 
                         //$("#user_tokens").text(data.updated_user_tokens);
