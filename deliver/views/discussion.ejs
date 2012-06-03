@@ -25,7 +25,7 @@
                     <img src="<%= discussion.image_field ? discussion.image_field.url : '' %>" alt="" />
                 </div>
                 <div class="discussion_content discussion content">
-                    <textarea id="discussion_content" ><%=discussion.vision_text%></textarea>
+                    <textarea id="discussion_content" class="hidden_textarea" readonly ><%=discussion.vision_text%></textarea>
                 </div>
 
                 <p><a href="">
@@ -68,8 +68,8 @@
                 </div>
                 <div class="slide-box">
                     <div class="summary">
-                        <input type="text" id="amount" value="6.20" />
-                        <span> <%= discussion.evaluate_counter %> מדרגים</span>
+                        <input type="text" id="amount" value="<%= discussion.grade_obj.value %>" />
+                        <span> <div class="inlinediv" id="graders"><%= discussion.evaluate_counter %></div> מדרגים</span>
                     </div>
                     <div class="slider">
                     </div>
@@ -225,7 +225,13 @@
 
 <%- partial('partials/footer.ejs') %>
 <script type="text/javascript">
-$(document).ready(function () {
+    $(document).ready(function () {
+
+
+
+
+        /***************************************************/
+
 
     var discussion_id = "<%=discussion.id%>";
     var mouseDown, mouseUp, top, left;
@@ -233,26 +239,48 @@ $(document).ready(function () {
     var sugg_grade_id;
     var new_post_ref_id = null;  //if not null =>the create new post is connected to anther post
 
+        $(".slider").slider({
+            value: 0.0,
+            range: "max",
+            min: 0,
+            max: 10,
+            step: 0.10,
+            change: function (event, ui) {
+
+                 var rating = ui.value;
+
+                 db_functions.addDiscussionGrade(discussion_id,rating, grade_id, function(err,data)
+                 {
+                        $("#amount").val(data.new_grade);
+                        $("#graders").text(data.evaluate_counter);
+
+                        //$("#user_tokens").text(data.updated_user_tokens);
+                        //$("#current_grade").text(data.new_grade);
+                        //$("#current_graders").text(data.evaluate_counter);
+
+                        // $.each(data.suggestions, function(err, suggestion){
+                        //      $("#" + suggestion._id + " .sugg_current_grade").text("suggestion grade:" + suggestion.grade);
+                        //      $("#" + suggestion._id + " .sugg_current_graders").text("num of evaluates:" + suggestion.evaluators_counter);
+                        //   })
+                 });
+
+
+
+                $("#amount").val(ui.value);
+            }
+        });
+        $("#amount").val($(".slider").slider("value"));
+
     $(".inline").colorbox({ inline: true, width: "730" });
 
 
-    $(".slider").slider({
-        value: 5.0,
-        min: 0,
-        max: 10,
-        step: 0.10,
-        slide: function (event, ui) {
-            $("#amount").val(ui.value);
-        }
-    });
-    $("#amount").val($(".slider").slider("value"));
+
 //    $('.comments-box .comment-one .user-right').hover(function () {
 //        $(this).toggleClass('hover');
 //    });
 //    $('.comments-box .comment-one .user-right arrow').click(function () {
 //        $(this).next().animate({width: 'toggle'});
 //    });
-
 
 
     /***************************************************/
@@ -283,14 +311,14 @@ $(document).ready(function () {
 
     });
 
-    $('.discussion_content').on('mousedown', function(e) {
-        mouseDown = e;
-    })
-            .on('mouseup', function(e){
-                mouseUp = e;
+       $('.discussion_content').on('mousedown', function(e) {
+                        mouseDown = e;
+                    })
+                    .on('mouseup', function(e){
+                        mouseUp = e;
 
-                left = Math.ceil((mouseDown.clientX + mouseUp.clientX) / 2 - ($(".popup-window").width() / 2));
-                top = Math.min(mouseDown.clientY, mouseUp.clientY) - $(".popup-window").height() - 20 + $(window).scrollTop();
+                        left = Math.ceil((mouseDown.clientX + mouseUp.clientX) / 2 - ($(".popup-window").width() / 2));
+                        top = Math.min(mouseDown.clientY, mouseUp.clientY) - $(".popup-window").height() - 40 + $(window).scrollTop();
 
             }).on('keydown', function(e){
                 console.log(e.keyCode == 27);
@@ -549,21 +577,6 @@ $(document).ready(function () {
         e.preventDefault();
     });
 
-
-    $('#rating_button').click(function(){
-        var rating = Number($('#rating_select').val());
-        db_functions.addDiscussionGrade(discussion_id,rating, grade_id, function(err,data)
-        {
-            $("#user_tokens").text(data.updated_user_tokens);
-            $("#current_grade").text(data.new_grade);
-            $("#current_graders").text(data.evaluate_counter);
-
-            $.each(data.suggestions, function(err, suggestion){
-                $("#" + suggestion._id + " .sugg_current_grade").text("suggestion grade:" + suggestion.grade);
-                $("#" + suggestion._id + " .sugg_current_graders").text("num of evaluates:" + suggestion.evaluators_counter);
-            })
-        });
-    });
 
 //            $('.sugg_rating_button').click(function(){
     $('#suggestion_list').on('click','.sugg_rating_button',function(){

@@ -304,6 +304,33 @@ var db_functions = {
         });
     },
 
+    addDiscussionGrade: function(discussion_id, grade, grade_id, callback){
+        var url = '/api/grades/';
+        var type = "POST";
+
+//        grade_id ? url = '/api/grades/' + grade_id : url = '/api/grades/';
+//        grade_id ? type = "PUT" : type = "POST";
+
+        if(grade_id && grade_id !== "undefined"){
+            url = '/api/grades/' + grade_id;
+            type = "PUT";
+        }
+
+        this.loggedInAjax({
+            url: url,
+            type: type,
+            async: true,
+            data: {"discussion_id": discussion_id, "evaluation_grade": grade},
+            success: function (data) {
+
+                callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },
+
     getDiscussionShoppingCart: function(discussion_id, callback){
         this.loggedInAjax({
             url: '/api/discussions_shopping_cart?discussion_id=' + discussion_id,
