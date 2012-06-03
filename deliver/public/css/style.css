@@ -2374,6 +2374,7 @@ body
     color: #fff;
     font: normal 18px/37px'AdumaFOTRegular';
     text-align: center;
+    cursor: pointer;
 }
 .comments-box .text .status .no
 {
@@ -2387,6 +2388,7 @@ body
     color: #fff;
     font: normal 18px/37px'AdumaFOTRegular';
     text-align: center;
+    cursor: pointer;
 }
 .comments-box .text .status small
 {

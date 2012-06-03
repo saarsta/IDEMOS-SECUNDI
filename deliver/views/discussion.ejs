@@ -120,18 +120,20 @@
                 <div class="user-right">
                     <div class="img-box" style="overflow: hidden;" >
                         <div style="width:70px; height:70px;" class='auto-scale'>
-                         <img  src="<%=avatar%>" alt="<%=user.username%>"  />
+                         <img  src="<%=avatar%>" alt="אני"  />
                         </div>
                         <span></span>
                     </div>
                     <h4>אני</h4>
-                    <div class="date">13.3.12</div>
+                    <div class="date"><%=(new Date()).format('dd.mm.yy') %></div>
+                    <% if(user_logged){ %>
                     <div class="proxy">
                         <span>3</span>
                     </div>
                     <div class="respect">
                         <span>20</span>
                     </div>
+                    <% } %>
                 </div>
             </div>
             <a class="grey-btn" id="cancelWriteCommentBT" href="#"><span>
@@ -182,18 +184,20 @@
                 <div class="user-right">
                     <div class="img-box" style="overflow: hidden;">
                         <div style="width:70px; height:70px;" class='auto-scale'>
-                            <img  src="<%=avatar%>" alt="<%=user.username%>"  />
+                            <img  src="<%=avatar%>" alt="אני"  />
                         </div>
                         <span></span>
                     </div>
                     <h4>אני</h4>
-                    <div class="date"><%=new Date() %></div>
+                    <div class="date"><%=(new Date()).format('dd.mm.yy') %></div>
+                    <% if(user_logged){ %>
                     <div class="proxy">
                         <span>3</span>
                     </div>
                     <div class="respect">
                         <span>20</span>
                     </div>
+                    <% } %>
                 </div>
             </div>
             <a   id="submit_post" class="green-btn" href="#">
