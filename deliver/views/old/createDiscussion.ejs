@@ -184,7 +184,6 @@
                         if (err){
                         }else{
                             created_discussion_id = data._id;
-//                            debugger
 //                                $("#user_tokens").text(data.updated_user_tokens);
                             if ($.trim(first_post) != ""){
                                 db_functions.addPostToDiscussion(created_discussion_id, first_post, function(err, data){

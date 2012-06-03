@@ -1,6 +1,8 @@
-<div class="comment-one noBorder"  data-id="{_id}">
-    <div class="user-right">
-        <span class="arrow"></span>
+    <div class="comment-one {#isFirst} noBorder{:else}{/isFirst}"
+         data-id="{_id}"
+            data-creator_name="{creator_id.first_name} {creator_id.last_name}">
+        <div class="user-right side_menu">
+             <span class="arrow"></span>
         <div class="left">
             <a href="">
                 תן מנדט
@@ -18,9 +20,9 @@
                 <span></span>
             </div>
             <h4>
-                בועז ראשמור
+                {creator_id.first_name} {creator_id.last_name}
             </h4>
-            <div class="date">13.3.12</div>
+            <div class="date">{creator_id.username} {?creation_date}{creation_date|time}{/creation_date}</div>
             <div class="proxy">
                 <span>3</span>
             </div>
@@ -29,17 +31,17 @@
             </div>
         </div>
     </div>
-    <div class="text">
-        <p>{text}</p>
+       <div class="text">
+        <p class="post_text">{text}</p>
         <div class="status">
             <div class="yes">
-                <div class="green">
-                    מסכים(2)
+                <div class="green  vote_for">
+ מסכים
                 </div>
                 <div class="number">{votes_for}</div>
             </div>
             <div class="no">
-                <div class="red">
+                <div class="red vote_against">
                     לא מסכים
                 </div>
                 <div class="number">{votes_against}</div>
@@ -48,7 +50,7 @@
     </div>
     <div class="like-btn"><img src="/images/like-btn.png" alt="" /></div>
     <div class="nav-btns">
-        <a href="">
+        <a  class="quote_button" href="#">
             צטט
         </a>
         <a  href="/facebookShare?link=/discussions/{discussion_id}#post_{_id}" target="_blank">

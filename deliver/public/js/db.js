@@ -1,5 +1,10 @@
 
 
+dust.filters['time'] = function(a){
+    return $.datepicker.formatDate('dd.mm.yy', new Date(Date.parse(a)));;
+};
+
+
 dust.renderArray = function(template,arr,callback,endCallback)
 {
     var out_arr = [];
@@ -200,7 +205,6 @@ var db_functions = {
         });
     },
     addSuggestionToDiscussion: function(discussion_id, parts, explanation, callback){
-      debugger;
         this.loggedInAjax({
             url: '/api/suggestions/',
             type: "POST",
@@ -232,7 +236,44 @@ var db_functions = {
 
 
 
-    addPostToDiscussion: function(discussion_id, post_content, callback){
+    voteForPost: function(post_id, method, callback){
+        this.loggedInAjax({
+            url: '/api/votes/',
+            type: "POST",
+            async: true,
+            data: {"post_id": post_id, "method": method},
+            success: function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },
+
+    voteForSuggestion: function(suggestionId,method,callback)
+    {
+        this.loggedInAjax({
+            url: '/api/votes_on_suggestion/',
+            type: "POST",
+            async: true,
+            data: {"suggestion_id": suggestionId, "method": method},
+            success: function (data) {
+                console.log(data);
+                alert('success');
+                callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
+            }
+        });
+
+    },
+
+
+
+    addPostToDiscussion: function(discussion_id, post_content, rafParentPostId,callback){
         this.loggedInAjax({
             url: '/api/posts/',
             type: "POST",
@@ -240,6 +281,21 @@ var db_functions = {
             data: {"discussion_id": discussion_id, "text": post_content},
             success: function (data) {
                 console.log(data);
+                callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },
+
+    getSortedPostByDiscussion: function(discussion_id, sort_by, callback){
+        this.loggedInAjax({
+            url: '/api/posts?discussion_id=' + discussion_id + "&order_by=" + sort_by,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log("posts are" + " " + data);
                 callback(null, data);
             },
             error:function(err){
@@ -262,7 +318,7 @@ var db_functions = {
                 callback(err, null);
             }
         });
-    } ,
+    }
 
 };
 
