@@ -7,6 +7,8 @@ module.exports = function(req,res)
 {
     var resource = new DiscussionResource();
 
+    console.log('here');
+
     async.parallel([
         // get the user object
         function(cbk) {
@@ -17,7 +19,7 @@ module.exports = function(req,res)
         },
         // get the discussion object
         function(cbk)  {
-            models.Discussion.findById(req.params.id, cbk);
+            models.Discussion.findById(req.params[0], cbk);
         }
     ],
         function(err,results)
@@ -41,7 +43,7 @@ module.exports = function(req,res)
                                 layout: false,
                                 title:"דיון",
                                 user_logged: req.isAuthenticated(),
-                                discussion_id: req.params.id,
+                                discussion_id: req.params[0],
                                 subject_id: req.query.subject_id,
                                 user: req.session.user,
                                 avatar:req.session.avatar_url,
