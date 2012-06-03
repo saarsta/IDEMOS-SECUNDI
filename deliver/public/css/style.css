@@ -2423,6 +2423,7 @@ textarea.hidden_textarea::selection
     color: #fff;
     font: normal 18px/37px'AdumaFOTRegular';
     text-align: center;
+    cursor: pointer;
 }
 .comments-box .text .status .no
 {
@@ -2436,6 +2437,7 @@ textarea.hidden_textarea::selection
     color: #fff;
     font: normal 18px/37px'AdumaFOTRegular';
     text-align: center;
+    cursor: pointer;
 }
 .comments-box .text .status small
 {
