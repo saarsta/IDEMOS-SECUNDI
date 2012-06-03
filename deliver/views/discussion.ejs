@@ -25,7 +25,7 @@
                     <img src="<%= discussion.image_field ? discussion.image_field.url : '' %>" alt="" />
                 </div>
                 <div class="discussion_content discussion content">
-                    <textarea id="discussion_content" class="hidden_textarea" readonly ><%=discussion.vision_text%></textarea>
+                    <textarea id="discussion_content" class="hidden_textarea" ><%=discussion.vision_text%></textarea>
                 </div>
 
                 <p><a href="">
@@ -68,7 +68,7 @@
                 </div>
                 <div class="slide-box">
                     <div class="summary">
-                        <input type="text" id="amount" value="<%= discussion.grade_obj.value %>" />
+                        <input type="text" id="amount" value="<%= discussion.grade %>" />
                         <span> <div class="inlinediv" id="graders"><%= discussion.evaluate_counter %></div> מדרגים</span>
                     </div>
                     <div class="slider">
@@ -145,15 +145,18 @@
         </div>
     </div>
 </div>
+<% if(discussion.system_message) { %>
 <div class="system-notice">
     <div class="extra">
         <a class="close" href="javascript:void(0);"></a>
         <strong>
             הודעת מערכת:
         </strong>
-<%=discussion.system_message%>
+	        <%= discussion.system_message %>
+
     </div>
 </div>
+<% } %>
 <div class="comments-box">
     <div class="extra cf">
         <select class="left-select"  id="sorting_select">
@@ -226,10 +229,6 @@
 <%- partial('partials/footer.ejs') %>
 <script type="text/javascript">
     $(document).ready(function () {
-
-
-
-
         /***************************************************/
 
 
@@ -240,7 +239,12 @@
     var new_post_ref_id = null;  //if not null =>the create new post is connected to anther post
 
         $(".slider").slider({
-            value: 0.0,
+
+          <% if(discussion.grade_obj){ %>
+             value:<%=discussion.grade_obj.value%>,
+           <% }else{ %>
+              value:0,
+          <% } %>
             range: "max",
             min: 0,
             max: 10,
@@ -251,9 +255,9 @@
 
                  db_functions.addDiscussionGrade(discussion_id,rating, grade_id, function(err,data)
                  {
-                        $("#amount").val(data.new_grade);
+                        $("#amount").val(Math.round(data.new_grade*100)/100);
                         $("#graders").text(data.evaluate_counter);
-
+                        grade_id=data.grade_id;
                         //$("#user_tokens").text(data.updated_user_tokens);
                         //$("#current_grade").text(data.new_grade);
                         //$("#current_graders").text(data.evaluate_counter);
@@ -313,12 +317,14 @@
 
        $('.discussion_content').on('mousedown', function(e) {
                         mouseDown = e;
+                        console.log(e);
                     })
                     .on('mouseup', function(e){
                         mouseUp = e;
 
                         left = Math.ceil((mouseDown.clientX + mouseUp.clientX) / 2 - ($(".popup-window").width() / 2));
                         top = Math.min(mouseDown.clientY, mouseUp.clientY) - $(".popup-window").height() - 40 + $(window).scrollTop();
+                        console.log(e);
 
             }).on('keydown', function(e){
                 console.log(e.keyCode == 27);
@@ -608,6 +614,7 @@
         $("textarea#discussion_suggest").val('');
     });
 
+
     $('#send_suggestion').click(function(){
         var part = {start:range.start, end:range.end, text:$("textarea#discussion_suggest").val()};
         var explanation = $("#discussion_explanation").val();
@@ -621,7 +628,15 @@
                  $("#user_tokens").text(data.updated_user_tokens);*/
             }
         });
+
+
     });
+    
+                $('.system-notice .close').click(function(){
+                $(this).parents('.system-notice').fadeOut(800);
+            });
+
+
 
 });
 </script>

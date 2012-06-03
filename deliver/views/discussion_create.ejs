@@ -219,7 +219,7 @@
                          }else{
                              created_discussion_id = data._id;
                              if ($.trim(first_post) != ""){
-                                 db_functions.addPostToDiscussion(created_discussion_id, first_post, function(err, data){
+                                 db_functions.addPostToDiscussion(created_discussion_id, first_post,null, function(err, data){
                                      if (err){
                                          console.log(err);
                                      }else{
