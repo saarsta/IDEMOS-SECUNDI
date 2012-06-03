@@ -330,6 +330,27 @@ var db_functions = {
             }
         });
     },
+    addSuggestionGrade: function(suggestion_id, discussion_id, grade, grade_id, callback){
+        var url;
+        var type;
+
+        grade_id ? url = '/api/grades_suggestion/' + grade_id : url = '/api/grades_suggestion/';
+        grade_id ? type = "PUT" : type = "POST";
+
+        this.loggedInAjax({
+            url: url,
+            type: type,
+            async: true,
+            data: {"suggestion_id": suggestion_id, "discussion_id": discussion_id, "evaluation_grade": grade},
+            success: function (data) {
+
+                callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },
 
     getDiscussionShoppingCart: function(discussion_id, callback){
         this.loggedInAjax({
@@ -356,6 +377,20 @@ var db_functions = {
                 callback(null, data);
             },
 
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },
+    getSuggestionByDiscussion: function(discussion_id, callback){
+        this.loggedInAjax({
+            url: '/api/suggestions?discussion_id=' + discussion_id,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+                callback(null, data);
+            },
             error:function(err){
                 callback(err, null);
             }

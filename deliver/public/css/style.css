@@ -2045,7 +2045,8 @@ body
     font: bold 14px/24px Arial;
     display: inline-block;
 }
-.slide-box .slider
+.slide-box .slider,
+.slide-box .suggest_slider
 {
     height: 15px;
     background: url(../images/slider-big-bg.png) 0 0 no-repeat;
@@ -2069,7 +2070,8 @@ body
     color:#3b63ef;
     font: normal 12px/18px Arial;
 }
-.slide-box .slider .ui-slider-range
+.slide-box .slider .ui-slider-range ,
+.slide-box .suggest_slider .ui-slider-range
 {
     background: #375de0 url(../images/slider-bg.png) 0 0 repeat-x;
     height: 15px;
@@ -2124,7 +2126,8 @@ textarea.hidden_textarea::selection
     color: red;
     background-color: grey;
 }
-.slide-box .slider .ui-slider-handle
+.slide-box .slider .ui-slider-handle ,
+.slide-box .suggest_slider .ui-slider-handle
 {
     width: 22px;
     height: 30px;
@@ -2765,7 +2768,8 @@ textarea.hidden_textarea::selection
 {
     left: -9px;
 }
-.slider
+.slider,
+.suggest_slider
 {
     width: 391px;
     left: -39px;
@@ -2881,6 +2885,7 @@ textarea.hidden_textarea::selection
 {
     padding: 18px 140px 15px 150px;
     position: relative;
+    min-height: 140px;
 }
 .deals-box .one .top-box .text-left h4
 {
