@@ -1,7 +1,7 @@
 
 module.exports = function(router)
 {
-    router.all('/new/:subject_id',require('./new'));
+    router.all(/\/new\/([0-9a-f]+)\/?/,require('./new'));
 
-    router.all('/:id',require('./main'));
+    router.all(/\/([0-9a-f]+)\/?$/,require('./main'));
 };
