@@ -1957,6 +1957,11 @@ body
     color:#7F7F7E;
     font: normal 13px/17px Arial;
 }
+
+.inlinediv
+{
+    display: inline-block;
+}
 textarea::-moz-selection {
     background:#E7E01C;
 }
