@@ -245,7 +245,7 @@
            <% }else{ %>
               value:0,
           <% } %>
-            range: "max",
+            range: "min",
             min: 0,
             max: 10,
             step: 0.10,
@@ -258,14 +258,6 @@
                         $("#amount").val(Math.round(data.new_grade*100)/100);
                         $("#graders").text(data.evaluate_counter);
                         grade_id=data.grade_id;
-                        //$("#user_tokens").text(data.updated_user_tokens);
-                        //$("#current_grade").text(data.new_grade);
-                        //$("#current_graders").text(data.evaluate_counter);
-
-                        // $.each(data.suggestions, function(err, suggestion){
-                        //      $("#" + suggestion._id + " .sugg_current_grade").text("suggestion grade:" + suggestion.grade);
-                        //      $("#" + suggestion._id + " .sugg_current_graders").text("num of evaluates:" + suggestion.evaluators_counter);
-                        //   })
                  });
 
 
@@ -273,18 +265,43 @@
                 $("#amount").val(ui.value);
             }
         });
-        $("#amount").val($(".slider").slider("value"));
+        //$("#amount").val($(".slider").slider("value"));
+
+        $(".slider-two").slider({
+            disabled: true,
+            range: "min",
+            value: 0,
+            min: 0,
+            max: 11,
+            step: 0.10,
+            slide: function (event, ui) {
+                //$("#amount2").val(ui.value);
+            }
+        });
+        //$("#amount2").val($(".slider-two").slider("value"));
+        $(".slider-three").slider({
+            range: "min",
+            value: 8.20,
+            min: 0,
+            max: 11,
+            step: 0.10,
+            slide: function (event, ui) {
+                $("#amount3").val(ui.value);
+            }
+        });
+        $("#amount3").val($(".slider-three").slider("value"));
+
+
+
+    $('.comments-box .comment-one .user-right').hover(function () {
+            $(this).toggleClass('hover');
+        });
+
 
     $(".inline").colorbox({ inline: true, width: "730" });
 
 
 
-//    $('.comments-box .comment-one .user-right').hover(function () {
-//        $(this).toggleClass('hover');
-//    });
-//    $('.comments-box .comment-one .user-right arrow').click(function () {
-//        $(this).next().animate({width: 'toggle'});
-//    });
 
 
     /***************************************************/

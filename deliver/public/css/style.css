@@ -1739,13 +1739,11 @@ body
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
 }
-
 #user-search .search-top
 {
     background:#3b63ef;
     padding: 17px 28px;
 }
-
 #user-search .search-top label
 {
     float: right;
@@ -1905,7 +1903,6 @@ body
     float: right;
     width: 713px;
     background: #fdfdfd;
-    margin-bottom: 3px;
 }
 .add-offer h2
 {
@@ -2374,6 +2371,7 @@ textarea.hidden_textarea::selection
     color:#50504f;
     font: bold 13px/30px Arial;
     display: block;
+    cursor: pointer;
 }
 .write-comment .text-box .left textarea
 {
