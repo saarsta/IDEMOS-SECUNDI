@@ -23,6 +23,16 @@ dust.renderArray = function(template,arr,callback,endCallback)
         endCallback(_err,out_arr.join(''));
 };
 
+var connectPopup = function(callback){
+
+    //open popup window
+
+    alert('please login');
+
+    if(callback)
+        callback();
+};
+
 
 var db_functions = {
 
