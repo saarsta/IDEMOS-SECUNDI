@@ -68,7 +68,7 @@
                 </div>
                 <div class="slide-box">
                     <div class="summary">
-                        <input type="text" id="amount" value="<%= discussion.grade_obj.value %>" />
+                        <input type="text" id="amount" value="<%= discussion.grade %>" />
                         <span> <div class="inlinediv" id="graders"><%= discussion.evaluate_counter %></div> מדרגים</span>
                     </div>
                     <div class="slider">
@@ -239,7 +239,12 @@
         $(".inline").colorbox({ inline: true, width: "730" });
 
         $(".slider").slider({
-            value: 0.0,
+
+          <% if(discussion.grade_obj){ %>
+             value:<%=discussion.grade_obj.value%>,
+           <% }else{ %>
+              value:0,
+          <% } %>
             range: "max",
             min: 0,
             max: 10,
@@ -252,7 +257,7 @@
                  {
                         $("#amount").val(Math.round(data.new_grade*100)/100);
                         $("#graders").text(data.evaluate_counter);
-
+                        grade_id=data.grade_id;
                         //$("#user_tokens").text(data.updated_user_tokens);
                         //$("#current_grade").text(data.new_grade);
                         //$("#current_graders").text(data.evaluate_counter);
