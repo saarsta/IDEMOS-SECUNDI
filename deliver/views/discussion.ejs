@@ -372,8 +372,12 @@
         func.call(db_functions,post_id, "add", function(err, post_obj){
             if(!err){
 
-                var votes_for = button.parent('div').find('.number');
+//                var votes_for = button.parent('div').find('.number');
+                var votes_for = button.parents(".status").find(".yes").find(".number");
+                var votes_against = button.parents(".status").find(".no").find(".number");
+
                 votes_for.text(post_obj.votes_for);
+                votes_against.text(post_obj.votes_against);
             }
             else
             {
@@ -393,8 +397,11 @@
         var func = $(this).parents('#comments').length ? db_functions.voteForPost : db_functions.voteForSuggestion;
         func.call(db_functions,post_id, "remove", function(err, post_obj){
             if(!err){
-                var voteAgainst = button.parent('div').find('.number');
-                voteAgainst.text(post_obj.votes_against);
+                var votes_for = button.parents(".status").find(".yes").find(".number");
+                var votes_against = button.parents(".status").find(".no").find(".number");
+
+                votes_for.text(post_obj.votes_for);
+                votes_against.text(post_obj.votes_against);
             }
             else
             {
