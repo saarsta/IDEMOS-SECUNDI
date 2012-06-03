@@ -438,9 +438,9 @@
      $(this).toggleClass('hover');
      });*/
 
-//    $('#comments,#suggestion_list').on('hover',".side_menu",function(e){
-//        $(this).toggleClass('hover');
-//    });
+    $('#comments,#suggestion_list').on('hover',".side_menu",function(e){
+        $(this).toggleClass('hover');
+    });
     $('#comments,#suggestion_list').on('click',".arrow",function(e){
         $(this).next().animate({width: 'toggle'});
     });
