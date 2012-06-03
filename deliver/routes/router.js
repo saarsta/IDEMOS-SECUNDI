@@ -29,10 +29,17 @@ var Router = module.exports = Class.extend({
    {
         return this.is_regex(path) ? path.source : path;
    },
+   concat_regex:function(reg1,reg2){
+       var str1 = this.get_regex_source(reg1);
+       var str2 = this.get_regex_source(reg2);
+       if(str1[0] != '^')
+          str1 = '^' + str1;
+       return RegExp(str1 + str2);
+   },
    build_path:function(path)
    {
         if(this.is_regex(path) || this.is_regex(this.base_path))
-            return RegExp(this.get_regex_source(this.base_path) + this.get_regex_source(path));
+            return this.concat_regex(this.base_path,path);
         return this.base_path + path;
    },
    include:function(path,routing_module)
