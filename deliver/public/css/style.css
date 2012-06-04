@@ -2761,20 +2761,18 @@ textarea.hidden_textarea::selection
 .comments-box .comment-one .user-right .transparent-img span{
     background: url(../images/user-fillter-small-grey.png) no-repeat;
 }
-
-/*.comments-box .comment-one .user-right.hover .left*/
-/*{*/
-    /*display: block;*/
-/*}*/
-
+.comments-box .comment-one .user-right.hover .left
+{
+    display: block;
+}
 .comments-box .comment-one .user-right.hover
 {
     border-left: 3px solid #3b63ef;
 }
-/*.comments-box .comment-one .user-right.hover .arrow*/
-/*{*/
-    /*left: -9px;*/
-/*}*/
+.comments-box .comment-one .user-right.hover .arrow
+{
+    left: -9px;
+}
 .slider,
 .suggest_slider
 {
@@ -3047,18 +3045,18 @@ textarea.hidden_textarea::selection
 .deals-box .user-right .transparent-img span{
     background: url(../images/user-fillter-small-white.png) no-repeat;
 }
-/*.deals-box .user-right.hover .left*/
-/*{*/
-    /*display: block;*/
-/*}*/
-/*.deals-box .user-right.hover*/
-/*{*/
-    /*border-left: 3px solid #3b63ef;*/
-/*}*/
-/*.deals-box .user-right.hover .arrow*/
-/*{*/
-    /*left: -9px;*/
-/*}*/
+.deals-box .user-right.hover .left
+{
+    display: block;
+}
+.deals-box .user-right.hover
+{
+    border-left: 3px solid #3b63ef;
+}
+.deals-box .user-right.hover .arrow
+{
+    left: -9px;
+}
 .deals-box .one .bottom-box .status
 {
     float: left;
