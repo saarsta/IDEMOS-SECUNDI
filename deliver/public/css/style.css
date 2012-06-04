@@ -2093,13 +2093,18 @@ body
 .hidden_textarea
 {
     background: transparent;
+    height:10000%;
     width: 460px;
     resize:none;
     border: none;
     color:#7F7F7E;
     font: normal 13px/17px Arial;
 }
-
+.discussion_content
+{
+    height: 188px;
+    overflow: hidden;
+}
 .inlinediv
 {
     display: inline-block;
@@ -2756,18 +2761,20 @@ textarea.hidden_textarea::selection
 .comments-box .comment-one .user-right .transparent-img span{
     background: url(../images/user-fillter-small-grey.png) no-repeat;
 }
-.comments-box .comment-one .user-right.hover .left
-{
-    display: block;
-}
+
+/*.comments-box .comment-one .user-right.hover .left*/
+/*{*/
+    /*display: block;*/
+/*}*/
+
 .comments-box .comment-one .user-right.hover
 {
     border-left: 3px solid #3b63ef;
 }
-.comments-box .comment-one .user-right.hover .arrow
-{
-    left: -9px;
-}
+/*.comments-box .comment-one .user-right.hover .arrow*/
+/*{*/
+    /*left: -9px;*/
+/*}*/
 .slider,
 .suggest_slider
 {
@@ -3040,18 +3047,18 @@ textarea.hidden_textarea::selection
 .deals-box .user-right .transparent-img span{
     background: url(../images/user-fillter-small-white.png) no-repeat;
 }
-.deals-box .user-right.hover .left
-{
-    display: block;
-}
-.deals-box .user-right.hover
-{
-    border-left: 3px solid #3b63ef;
-}
-.deals-box .user-right.hover .arrow 
-{
-    left: -9px;
-}
+/*.deals-box .user-right.hover .left*/
+/*{*/
+    /*display: block;*/
+/*}*/
+/*.deals-box .user-right.hover*/
+/*{*/
+    /*border-left: 3px solid #3b63ef;*/
+/*}*/
+/*.deals-box .user-right.hover .arrow*/
+/*{*/
+    /*left: -9px;*/
+/*}*/
 .deals-box .one .bottom-box .status
 {
     float: left;
