@@ -208,8 +208,10 @@ exports.routing = function(router)
                                 req.session.save(function (err, object) {
                                     if (err != null) {
                                         console.log(err);
+
                                     } else {
-                                        console.log('user _id to session is ok')
+                                        console.log('user _id to session is ok');
+                                        res.redirect(next || DEFAULT_LOGIN_REDIRECT);
                                     }
                                 });
                             });
@@ -221,20 +223,20 @@ exports.routing = function(router)
                                     if (err != null) {
                                         console.log(err);
                                     } else {
-                                        console.log('user _id to session is ok')
+                                        console.log('user _id to session is ok');
+                                        res.redirect(next || DEFAULT_LOGIN_REDIRECT);
                                     }
 
                                 });
                             });
                         }
                     });
-                    res.redirect(next || DEFAULT_LOGIN_REDIRECT);
                 }
             });
         }
 
         if (req.query.next) {
-            req.session['fb_next'] = req.session['fb_next'];
+            req.session['fb_next'] = req.query.next;
             req.session.save(go);
         }
         else
