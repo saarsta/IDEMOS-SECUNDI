@@ -1,7 +1,19 @@
 
 
 dust.filters['time'] = function(a){
-    return $.datepicker.formatDate('dd.mm.yy', new Date(Date.parse(a)));;
+    console.log(a);
+    var date = $.datepicker.formatDate('dd.mm.yy', new Date(Date.parse(a)));
+    var hours = (new Date(Date.parse(a))).getHours();
+    var minutes = (new Date(Date.parse(a))).getMinutes();
+    if(minutes < 10)
+        minutes = "0" + minutes;
+    var time = hours + ":" + minutes;
+
+    return date + " " + time;
+};
+
+dust.filters['date'] = function(a){
+    return $.datetimepicker.formatDate('dd.mm.yy', new Date(Date.parse(a)));
 };
 
 
