@@ -28,9 +28,11 @@
                     <textarea id="discussion_content" class="hidden_textarea" ><%=discussion.vision_text%></textarea>
                 </div>
 
-                <p><a href="">
+                <p id="read_more" style="display:;">
+                    <a href="javascript:void(0);">
                     קרא עוד
-                </a></p>
+                </a>
+                </p>
             </div>
             <div class="add-offer-bottom cf">
                 <div class="btn-box">
@@ -302,11 +304,6 @@
 
 
 
-    $('.comments-box .comment-one .user-right').hover(function () {
-            $(this).toggleClass('hover');
-        });
-
-
     $(".inline").colorbox({ inline: true, width: "730" });
 
 
@@ -447,11 +444,16 @@
      $(this).toggleClass('hover');
      });*/
 
-    $('#comments,#suggestion_list').on('hover',".side_menu",function(e){
-        $(this).toggleClass('hover');
-    });
-    $('#comments,#suggestion_list').on('click',".arrow",function(e){
-        $(this).next().animate({width: 'toggle'});
+    $('#comments,#suggestion_list').on('mouseenter',".side_menu",function(e){
+        var side = $(this).addClass('hover');
+        $('.left',this).show().css({width:0}).animate({'width':87});
+//        side.addClass('hover');
+    }).on('mouseleave',".side_menu",function(e){
+          var side = $(this);
+        $('.left',this).animate({'width':0},function(){
+            side.removeClass('hover');
+            $(this).hide();
+        });
     });
 
     // copy the post text+ user to   discussion_comment
@@ -471,7 +473,7 @@
     });
 
     $('#comments,#suggestion_list').on('click',".follow_user",function(e){
-        var creator_id =  $(this).parents('.comment-one').data("creator_id");
+        var creator_id =  $(this).parents('.comment-one,.one').data("creator_id");
         var self = this;
 
         db_functions.joinOrLeaveUserFollowers(creator_id, function(err, user){
@@ -557,7 +559,7 @@
       });
 
 
-    function     renderComments(comments ){
+    function renderComments(comments ){
         var i ;
         for (i=0;i<comments.length;i++){
             comments[i].isFirst= (i===0);
@@ -569,7 +571,7 @@
                 var comments=   $("#comments");
                 comments.empty();
                 comments.append(out);
-                setCommentNumber  ()
+                setCommentNumber()
             }
         } );
     }

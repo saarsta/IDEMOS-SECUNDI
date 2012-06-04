@@ -7,8 +7,6 @@ module.exports = function(req,res)
 {
     var resource = new DiscussionResource();
 
-    console.log('here');
-
     async.parallel([
         // get the user object
         function(cbk) {
