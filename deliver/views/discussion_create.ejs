@@ -25,20 +25,30 @@
                     <input type="hidden" name="subject_name" id="subject_name" value="<%= subject.name %>" >
                     <input type="hidden" name="subject_id" id="subject_id" value="<%= subject.id %>" >
                     <div class="top cf">
-                        <img class="floatRight" src="<%= subject.image_field.url %>" alt="" />
+                        <div  style="width: 212px;height: 164px" class='auto-scale floatRight'>
+                            <img src="<%= subject.image_field.url %>" alt="" />
+                        </div>
                         <div class="floatLeft">
                             <div class="input">
-                                <input id="title" name="title" type="text" value="" placeholder="כותרת הדיון"/>
+                                <input id="title" name="title" type="text" value="" placeholder=
+                                        "זהו המקום לכתוב את החזון שלך עבור הנושא.
+התמקד בתיאור המצב הסופי שהיית רוצה לממש.
+"
+                                        />
                             </div>
                             <div class="textarea">
-                                <textarea id="vision" name="vision" rows="10" cols="50"  placeholder="תיאור מפורק של חזון המציאות החדשה"></textarea>
+                                <textarea id="vision" name="vision" rows="10" cols="50"  placeholder=
+                                        "תיאור מפורט של חזון המציאות החדשה"
+                                        ></textarea>
                             </div>
                         </div>
                     </div>
                     <div class="tags-box">
                         <div class="add-tag">
                             <div class="input">
-                                <input type="text" value="" id="tag" placeholder="תאג חדש" />
+                                <input type="text" value="" id="tag" placeholder=
+                                        "הוסף תגיות"
+                                        />
                             </div>
                             <input type="submit" value="הוסף" id="add_tag" />
                         </div>
@@ -48,7 +58,11 @@
                     </div>
                     <div class="bottom">
                         <div class="textarea">
-                            <textarea id="first_post" name="first_post" rows="10" cols="50" placeholder="" > </textarea>
+                            <textarea id="first_post" name="first_post" rows="10" cols="50" placeholder=
+                                    "הפוסט הראשון בדיון: הסבר את הצורך במציאות שאתה דורש - מה הבעיה? איך המצב הנוכחי משפיע עליך?
+איזו עזרה היית רוצה לבקש מהמשתתפים בדיון בשיפור החזון?
+"
+                                    > </textarea>
                         </div>
                         <input type="submit" value="יצירת דיון" />
                         <label><input type="checkbox" checked="checked" />שתף את הדיון שיצרת על הקיר שלך </label>

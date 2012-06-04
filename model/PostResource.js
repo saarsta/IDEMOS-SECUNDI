@@ -31,8 +31,7 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                 first_name:null,
                 last_name:null,
                 avatar_url:null,
-                score: null,
-                facebook_id:null
+                score: null
             },
             text:null,
             popularity:null,
@@ -42,7 +41,8 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
             votes_against:null,
             votes_for:null,
             _id:null,
-            discussion_id:null
+            discussion_id:null,
+            is_user_follower: null
         };
 //    this.validation = new resources.Validation();=
     },
@@ -51,6 +51,25 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
     {
         query.populate('creator_id');
         this._super(req,query,callback);
+    },
+
+    get_objects: function (req, filters, sorts, limit, offset, callback) {
+        this._super(req, filters, sorts, limit, offset, function(err, results){
+           var user_id;
+            if(req.user){
+                user_id = req.user._id;
+            }
+
+            _.each(results.objects, function(post){
+                if(user_id){
+                    var flag =  _.any(post.creator_id.followers, function(follower){return follower.follower_id + "" == user_id + ""});
+                    post.is_user_follower = flag;
+                }else{
+                    post.is_user_follower = false;
+                }
+            })
+            callback(err, results);
+        });
     },
 
     create_obj:function (req, fields, callback) {

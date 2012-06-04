@@ -50,7 +50,7 @@
                     </div>
                 </div>
                 <div class="tags">
-                    <% for (var c = 0; c <discussion. tags.length; c++) { %>
+                    <% for (var c = 0; c <discussion.tags.length; c++) { %>
                     <a href="javascript:void(0);"> <%=discussion. tags[c] %></a>
                     <% }%>
 
@@ -249,11 +249,7 @@
 
         $(".slider").slider({
 
-          <% if(discussion.grade_obj){ %>
-             value:<%=discussion.grade_obj.value%>,
-           <% }else{ %>
-              value:0,
-          <% } %>
+            value: "<%=discussion.grade_obj ? discussion.grade_obj.value : 0 %>",
             range: "min",
             min: 0,
             max: 10,
@@ -268,8 +264,6 @@
                         $("#graders").text(data.evaluate_counter);
                         grade_id=data.grade_id;
                  });
-
-
 
                 $("#amount").val(ui.value);
             }
@@ -676,9 +670,9 @@
 
     });
     
-                $('.system-notice .close').click(function(){
-                $(this).parents('.system-notice').fadeOut(800);
-            });
+        $('.system-notice .close').click(function(){
+        $(this).parents('.system-notice').fadeOut(800);
+    });
 
 
 
