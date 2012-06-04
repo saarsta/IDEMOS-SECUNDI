@@ -240,7 +240,7 @@
     $(document).ready(function () {
         /***************************************************/
 
-    var my_id= "<%=user._id%>";
+    var my_id= "<%=user_logged ? user._id : ''%>";
     var discussion_id = "<%=discussion.id%>";
     var mouseDown, mouseUp, top, left;
     var grade_id = "<%=discussion.grade_obj.grade_id%>";
@@ -614,7 +614,8 @@
         db_functions.addPostToDiscussion(discussion_id, $("textarea#discussion_comment").val(),new_post_ref_id,function(err, post){
             // $("#user_tokens").text(post.updated_user_tokens);
             if(!err){
-                setUserScore(my_id, post.creator_id.score);
+                if(my_id)
+                    setUserScore(my_id, post.creator_id.score);
                 dust.render('discussion_comment', post, function(err, out){
                     $("#comments").append(out);
                     $("textarea#discussion_comment").val('');
