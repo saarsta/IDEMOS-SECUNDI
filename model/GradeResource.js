@@ -121,7 +121,7 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
                         async.forEach(suggestions, function(suggestion, itr_cbk){
                             GradeSuggestion.calculateSuggestionGrade(suggestion._id, grade_object.discussion_id, null, function(err, obj){
                                 //check if suggestion is over the threshold
-                                if(suggestion.agrees.length > real_threshold){
+                                if(suggestion.agrees && suggestion.agrees.length > real_threshold){
 
                                     //approveSuggestion.exec()
 
