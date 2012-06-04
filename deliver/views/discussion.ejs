@@ -240,12 +240,14 @@
     $(document).ready(function () {
         /***************************************************/
 
-
+    var my_id= "<%=user._id%>";
     var discussion_id = "<%=discussion.id%>";
     var mouseDown, mouseUp, top, left;
     var grade_id = "<%=discussion.grade_obj.grade_id%>";
     var sugg_grade_id;
     var new_post_ref_id = null;  //if not null =>the create new post is connected to anther post
+    var postsNumber=0;
+
 
         $(".slider").slider({
 
@@ -316,8 +318,11 @@
     /***************************************************/
 
 
-    function setCommentNumber() {
-        var number=   $('#comments .comment-one').length;
+    function setUserScore(userID,score){
+        $('[ data-creator_id='+userID+']').find('.score').empty().append(score);
+    }
+    function setCommentNumber(number) {
+
         $('#comments_number')[0].innerHTML='('+number+')';
     }
 
@@ -563,13 +568,11 @@
             comments[i].isFirst= (i===0);
 
         }
-
         dust.renderArray('discussion_comment', comments, null, function(err, out){
             if(!err){
                 var comments=   $("#comments");
                 comments.empty();
                 comments.append(out);
-                setCommentNumber  ()
             }
         } );
     }
@@ -581,6 +584,8 @@
                 console.log(err);
             }else{
                 renderComments(data.objects)
+                postsNumber=data.meta.total_count;
+                setCommentNumber (postsNumber) ;
             }
         })
     }
@@ -613,11 +618,13 @@
         db_functions.addPostToDiscussion(discussion_id, $("textarea#discussion_comment").val(),new_post_ref_id,function(err, post){
             // $("#user_tokens").text(post.updated_user_tokens);
             if(!err){
+                setUserScore(my_id, post.creator_id.score);
                 dust.render('discussion_comment', post, function(err, out){
                     $("#comments").append(out);
                     $("textarea#discussion_comment").val('');
                     new_post_ref_id=null;
-                    setCommentNumber()          ;
+                    postsNumber++;
+                    setCommentNumber(postsNumber) ;
                 });
             }
         })
@@ -675,10 +682,10 @@
 
 
     });
-    
-                $('.system-notice .close').click(function(){
-                $(this).parents('.system-notice').fadeOut(800);
-            });
+
+        $('.system-notice .close').click(function(){
+        $(this).parents('.system-notice').fadeOut(800);
+    });
 
 
 
