@@ -36,7 +36,7 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
             text:null,
             popularity:null,
             tokens:null,
-            creation_date:null,
+            creation_date: null,
             total_votes:null,
             votes_against:null,
             votes_for:null,

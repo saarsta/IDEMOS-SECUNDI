@@ -439,13 +439,13 @@
      });*/
 
     $('#comments,#suggestion_list').on('mouseenter',".side_menu",function(e){
-        var side = $(this).addClass('hover');
+        $(this).addClass('hover');
         $('.left',this).show().css({width:0}).animate({'width':87});
-//        side.addClass('hover');
+
     }).on('mouseleave',".side_menu",function(e){
           var side = $(this);
+          side.removeClass('hover');
         $('.left',this).animate({'width':0},function(){
-            side.removeClass('hover');
             $(this).hide();
         });
     });
