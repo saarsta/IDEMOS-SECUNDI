@@ -631,7 +631,6 @@ var db_functions = {
             async: true,
             data: {"suggestion_id": suggestion_id, "discussion_id": discussion_id, "evaluation_grade": grade},
             success: function (data) {
-                alert('suggestion was graded !');
                 callback(null, data);
             },
             error:function(err){

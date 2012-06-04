@@ -143,6 +143,13 @@
                 הצע
             </a>
         </div>
+        <div class="deals-box">
+            <h2>הצעות לשינוי <small id="suggestion_number"></small></h2>
+            <div id="suggestion_list"> </div>
+            <div class="more-deals">
+                <a href="">עוד הצעות</a>
+            </div>
+        </div>
     </div>
 </div>
 <% if(discussion.system_message) { %>
@@ -157,6 +164,8 @@
     </div>
 </div>
 <% } %>
+
+
 <div class="comments-box">
     <div class="extra cf">
         <select class="left-select"  id="sorting_select">
@@ -382,7 +391,7 @@
 
 
 
-    $('#comments,#suggestion_list').on('click','.vote_for',function(){
+    $('#comments').on('click','.vote_for',function(){
         var post_id = $(this).parents('.comment-one').data("id");
         var button = $(this);
         var func = $(this).parents('#comments').length ? db_functions.voteForPost : db_functions.voteForSuggestion;
@@ -408,7 +417,7 @@
         })
     });
 
-    $('#comments,#suggestion_list').on('click',".vote_against", function(){
+    $('#comments').on('click',".vote_against", function(){
         var post_id = $(this).parents('.comment-one').data("id");
         var button = $(this);
         var func = $(this).parents('#comments').length ? db_functions.voteForPost : db_functions.voteForSuggestion;
@@ -461,7 +470,7 @@
         $("textarea#discussion_comment").val(text).focus();
     });
 
-    $('#comments').on('click',".follow_user",function(e){
+    $('#comments,#suggestion_list').on('click',".follow_user",function(e){
         var creator_id =  $(this).parents('.comment-one').data("creator_id");
         var self = this;
 
@@ -501,42 +510,51 @@
      });
 
      */
-
-    /*
-
+     var suggest_grade_id = new Object();
      function render_suggestion(suggestion)
      {
-     if(suggestion.parts && suggestion.parts.length)
-     {
-     var original = $('#discussion_content').val();
+        if(suggestion.parts && suggestion.parts.length){
+            var original = $('#discussion_content').val();
+            suggestion.original_part = function(){
+                var from = suggestion.parts[0].start;
+                var end = suggestion.parts[0].end;
+                return original.substr(from,end-from);
+            };
+            suggestion.alternative_part = function(){
+                return suggestion.parts[0].text;
+            };
 
-
-
-     suggestion.original_part = function(){
-     var from = suggestion.parts[0].start;
-     var end = suggestion.parts[0].end;
-     return original.substr(from,end-from);
-     };
-
-     suggestion.alternative_part = function(){
-     return suggestion.parts[0].text;
-     };
-
-     dust.render('discussion_suggestion',suggestion,function(err,out)
-     {
-     $('#suggestion_list').append(out);
-     });
+            dust.render('discussion_suggestion',suggestion,function(err,out) {
+                $('#suggestion_list').append(out);
+                var suggestion_grade_val =       suggestion.grade_obj ?    suggestion.grade_obj.value :0;
+                suggest_grade_id[suggestion.id]=  suggestion.grade_obj ?    suggestion.grade_obj._id :null;
+                $(".suggest_slider_"+suggestion.id).slider({
+                              value:suggestion_grade_val,
+                              range: "min",
+                              min: 0,
+                              max: 10,
+                              step: 0.10,
+                              change: function (event, ui) {
+                                   var rating = ui.value;
+                                   db_functions.addSuggestionGrade(suggestion.id,discussion_id,rating, suggest_grade_id[suggestion.id], function(err,data)
+                                   {
+                                          $("#suggest_grade_"+suggestion.id).val(Math.round(data.new_grade*100)/100);
+                                          $("#suggest_graders_"+suggestion.id).text(data.evaluate_counter);
+                                          suggest_grade_id[suggestion.id]= data.grade_id;
+                                   });
+                              }
+                          });
+            });
+         }
+        return null;
      }
-     return null;
-     }
+     db_functions.getSuggestionByDiscussion(discussion_id,function(err,data){
+            $.each(data.objects,function(index,suggestion){
+                render_suggestion(suggestion);
+            });
 
-     db_functions.getSuggestionByDiscussion(discussion_id,function(err,data)
-     {
-     $.each(data.objects,function(index,suggestion)
-     {
-     render_suggestion(suggestion);
-     });
-     });*/
+            $('#suggestion_number').text('('+data.objects.length+')');
+      });
 
 
     function     renderComments(comments ){
