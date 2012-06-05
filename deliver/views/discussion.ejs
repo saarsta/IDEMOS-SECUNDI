@@ -132,7 +132,9 @@
                 <div class="user-right">
                     <div class="img-box" style="overflow: hidden;">
                         <div style="width:70px; height:70px;" class='auto-scale'>
+                            <% if(user_logged) { %>
                             <img src="<%=avatar%>" alt="אני"/>
+                            <% } %>
                         </div>
                         <span></span>
                     </div>
@@ -285,10 +287,15 @@ $(document).ready(function () {
             my_discussion_grade = ui.value;
             db_functions.addDiscussionGrade(discussion_id, my_discussion_grade, grade_id, function (err, data) {
 
-                $("#amount").val(Math.round(data.new_grade * 100) / 100);
-                $("#graders").text(data.evaluate_counter);
-                $(".dark_bar").css('width', (my_discussion_grade * 10) + '%');
-                grade_id = data.grade_id;
+                if(!err)
+                {
+                    $("#amount").val(Math.round(data.new_grade * 100) / 100);
+                    $("#graders").text(data.evaluate_counter);
+                    $(".dark_bar").css('width', (my_discussion_grade * 10) + '%');
+                    grade_id = data.grade_id;
+                }
+                else
+                    console.log(err);
             });
         }
     });
