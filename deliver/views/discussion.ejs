@@ -147,7 +147,7 @@
             <h2>הצעות לשינוי <small id="suggestion_number"></small></h2>
             <div id="suggestion_list"> </div>
             <div class="more-deals">
-                <a href="">עוד הצעות</a>
+                <a href="" >עוד הצעות</a>
             </div>
         </div>
     </div>
@@ -246,12 +246,13 @@
     var grade_id = "<%=discussion.grade_obj.grade_id%>";
     var sugg_grade_id;
     var new_post_ref_id = null;  //if not null =>the create new post is connected to anther post
+    var discussion_grade=<%=discussion.grade_obj ? discussion.grade_obj.value : 0 %>;
     var postsNumber=0;
 
 
         $(".slider").slider({
 
-            value: "<%=discussion.grade_obj ? discussion.grade_obj.value : 0 %>",
+            value: discussion_grade,
             range: "min",
             min: 0,
             max: 10,
@@ -262,9 +263,12 @@
 
                  db_functions.addDiscussionGrade(discussion_id,rating, grade_id, function(err,data)
                  {
-                        $("#amount").val(Math.round(data.new_grade*100)/100);
-                        $("#graders").text(data.evaluate_counter);
-                        grade_id=data.grade_id;
+                    discussion_grade=      data.new_grade;
+                    $("#amount").val(Math.round(data.new_grade*100)/100);
+                    $("#graders").text(data.evaluate_counter);
+                    $(".dark_bar").css('width',(discussion_grade*10)+'%');
+
+                    grade_id=data.grade_id;
                  });
 
 
@@ -526,7 +530,7 @@
             };
 
             dust.render('discussion_suggestion',suggestion,function(err,out) {
-                $('#suggestion_list').append(out);
+                $('#suggestion_list').prepend(out);
                 var suggestion_grade_val =       suggestion.grade_obj ?    suggestion.grade_obj.value :0;
                 suggest_grade_id[suggestion.id]=  suggestion.grade_obj ?    suggestion.grade_obj._id :null;
                 $(".suggest_slider_"+suggestion.id).slider({
@@ -545,6 +549,9 @@
                                    });
                               }
                           });
+
+                 $(".suggest_slider_"+suggestion.id).prepend($("<div>").addClass("dark_bar").css('width',(discussion_grade*10)+'%'));
+
             });
          }
         return null;
@@ -555,6 +562,14 @@
             });
 
             $('#suggestion_number').text('('+data.objects.length+')');
+            if(data.objects.length>0)
+            {
+                $(".deals-box").show();
+            }
+            else
+           {
+                $(".deals-box").hide();
+           }
       });
 
 
@@ -671,9 +686,11 @@
             if(!err)
             {
                 $('#write-comment').hide();
-                /*  render_suggestion(data);
+                /*
                  $("textarea#discussion_suggest").val('');
                  $("#user_tokens").text(data.updated_user_tokens);*/
+                 render_suggestion    (data)
+                  $(".deals-box").show();
             }
         });
 

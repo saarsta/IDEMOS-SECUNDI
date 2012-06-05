@@ -2045,11 +2045,21 @@ body
 .slide-box .suggest_slider
 {
     height: 15px;
-    background: url(../images/slider-big-bg.png) 0 0 no-repeat;
+    background: url(../images/slider-unit-light.png) 0 0 repeat-x;
     border-radius: 2px;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
     position: relative;
+}
+.slide-box .suggest_slider .dark_bar
+{
+
+    background: url(../images/slider-unit-dark.png) 0 0 repeat-x;
+    height: 15px;
+    direction: rtl;
+    width: 50%;
+    position: absolute;
+    left:0;
 }
 .slider-popup
 {
@@ -3128,6 +3138,7 @@ textarea.hidden_textarea::selection
     font: normal 16px/25px 'AdumaFOTMedium';
     text-decoration: none;
     margin:0 auto;
+    display: none;
 }
 .big-diagram
 {
