@@ -268,7 +268,7 @@ $(document).ready(function () {
     var grade_id = "<%=discussion.grade_obj.grade_id%>";
     var sugg_grade_id;
     var new_post_ref_id = null;  //if not null =>the create new post is connected to anther post
-    var discussion_grade = <%= discussion.grade_obj ? discussion.grade_obj.value : 0 %>;
+    var discussion_grade = Number("<%= discussion.grade_obj ? discussion.grade_obj.value : 0 %>");
 
 
     var postsNumber = 0;
