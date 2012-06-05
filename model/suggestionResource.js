@@ -38,7 +38,8 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                 first_name:null,
                 last_name:null,
                 avatar_url:null,
-                facebook_id:null
+                facebook_id:null,
+                score: null
             },
             parts:null,
             popularity:null,
@@ -64,7 +65,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
 
         var iterator = function(suggestion, itr_cbk){
             if(req.user){
-                models.GradeSuggestion.findOne({user_id: req.user._id, suggestion_id: suggestion._id}, ["_id", "evaluation_grade"], function(err, grade_sugg_obj){
+                models.GradeSuggestion.findOne({user_id: req.user._id, suggestion_id: suggestion._id}/*, ["_id", "evaluation_grade"]*/, function(err, grade_sugg_obj){
                     if(!err)
                         suggestion.grade_obj = grade_sugg_obj;
 

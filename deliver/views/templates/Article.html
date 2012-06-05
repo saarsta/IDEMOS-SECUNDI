@@ -20,7 +20,7 @@
         <div class="more">
             <span></span>
             <ul>
-                {@if cond="('{tags}'.split(',').length > 2 )"}
+                {@if cond="({tags|length} > 2 )"}
                 <li><a href="javascript:void(0)">הצג עוד תגיות</a></li>
                 {/if}
                 <li><a href="javascript:void(0)">הוסף תגית</a></li>
