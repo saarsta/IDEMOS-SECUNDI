@@ -13,7 +13,7 @@ dust.filters['time'] = function(a){
 };
 
 dust.filters['date'] = function(a){
-    return $.datetimepicker.formatDate('dd.mm.yy', new Date(Date.parse(a)));
+    return $.datepicker.formatDate('dd.mm.yy', new Date(Date.parse(a)));
 };
 
 dust.filters['length'] = function(arr) {

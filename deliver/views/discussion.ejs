@@ -28,11 +28,13 @@
                     <textarea id="discussion_content" class="hidden_textarea" ><%=discussion.vision_text%></textarea>
                 </div>
 
+
                 <p id="read_more" style="display:;">
                     <a href="javascript:void(0);">
                         קרא עוד
                     </a>
                 </p>
+
             </div>
             <div class="add-offer-bottom cf">
                 <div class="btn-box">
@@ -52,7 +54,7 @@
                     </div>
                 </div>
                 <div class="tags">
-                    <% for (var c = 0; c <discussion.tags.length; c++) { %>
+                    <% for (var c = 0; c <discussion. tags.length; c++) { %>
                     <a href="javascript:void(0);"> <%=discussion. tags[c] %></a>
                     <% }%>
 
@@ -149,7 +151,7 @@
             <h2>הצעות לשינוי <small id="suggestion_number"></small></h2>
             <div id="suggestion_list"> </div>
             <div class="more-deals">
-                <a href="">עוד הצעות</a>
+                <a href="" >עוד הצעות</a>
             </div>
         </div>
     </div>
@@ -245,59 +247,68 @@
 $(document).ready(function () {
     /***************************************************/
 
-
+    var my_id= "<%=user_logged ? user._id : ''%>";
     var discussion_id = "<%=discussion.id%>";
     var mouseDown, mouseUp, top, left;
     var grade_id = "<%=discussion.grade_obj.grade_id%>";
     var sugg_grade_id;
     var new_post_ref_id = null;  //if not null =>the create new post is connected to anther post
+    var discussion_grade=<%=discussion.grade_obj ? discussion.grade_obj.value : 0 %>;
+    var postsNumber=0;
+
 
     $(".slider").slider({
 
-        value: "<%=discussion.grade_obj ? discussion.grade_obj.value : 0 %>",
-        range: "min",
-        min: 0,
-        max: 10,
-        step: 0.10,
-        change: function (event, ui) {
+            value: discussion_grade,
+            range: "min",
+            min: 0,
+            max: 10,
+            step: 0.10,
+            change: function (event, ui) {
+
 
             var rating = ui.value;
 
-            db_functions.addDiscussionGrade(discussion_id,rating, grade_id, function(err,data)
-            {
-                $("#amount").val(Math.round(data.new_grade*100)/100);
-                $("#graders").text(data.evaluate_counter);
-                grade_id=data.grade_id;
-            });
+                 db_functions.addDiscussionGrade(discussion_id,rating, grade_id, function(err,data)
+                 {
+                    discussion_grade=      data.new_grade;
+                    $("#amount").val(Math.round(data.new_grade*100)/100);
+                    $("#graders").text(data.evaluate_counter);
+                    $(".dark_bar").css('width',(discussion_grade*10)+'%');
 
-            $("#amount").val(ui.value);
-        }
-    });
-    //$("#amount").val($(".slider").slider("value"));
+                    grade_id=data.grade_id;
+                 });
 
-    $(".slider-two").slider({
-        disabled: true,
-        range: "min",
-        value: 0,
-        min: 0,
-        max: 11,
-        step: 0.10,
-        slide: function (event, ui) {
-            //$("#amount2").val(ui.value);
-        }
-    });
-    //$("#amount2").val($(".slider-two").slider("value"));
-    $(".slider-three").slider({
-        range: "min",
-        value: 8.20,
-        min: 0,
-        max: 11,
-        step: 0.10,
-        slide: function (event, ui) {
-            $("#amount3").val(ui.value);
-        }
-    });
-    $("#amount3").val($(".slider-three").slider("value"));
+
+
+                $("#amount").val(ui.value);
+            }
+        });
+        //$("#amount").val($(".slider").slider("value"));
+
+        $(".slider-two").slider({
+            disabled: true,
+            range: "min",
+            value: 0,
+            min: 0,
+            max: 11,
+            step: 0.10,
+            slide: function (event, ui) {
+                //$("#amount2").val(ui.value);
+            }
+        });
+        //$("#amount2").val($(".slider-two").slider("value"));
+        $(".slider-three").slider({
+            range: "min",
+            value: 8.20,
+            min: 0,
+            max: 11,
+            step: 0.10,
+            slide: function (event, ui) {
+                $("#amount3").val(ui.value);
+            }
+        });
+        $("#amount3").val($(".slider-three").slider("value"));
 
 
 
@@ -310,8 +321,11 @@ $(document).ready(function () {
     /***************************************************/
 
 
-    function setCommentNumber() {
-        var number=   $('#comments .comment-one').length;
+    function setUserScore(userID,score){
+        $('[ data-creator_id='+userID+']').find('.score').empty().append(score);
+    }
+    function setCommentNumber(number) {
+
         $('#comments_number')[0].innerHTML='('+number+')';
     }
 
@@ -513,50 +527,66 @@ $(document).ready(function () {
             };
 
             dust.render('discussion_suggestion',suggestion,function(err,out) {
-                $('#suggestion_list').append(out);
+                $('#suggestion_list').prepend(out);
                 var suggestion_grade_val =       suggestion.grade_obj ?    suggestion.grade_obj.value :0;
                 suggest_grade_id[suggestion.id]=  suggestion.grade_obj ?    suggestion.grade_obj._id :null;
                 $(".suggest_slider_"+suggestion.id).slider({
-                    value:suggestion_grade_val,
-                    range: "min",
-                    min: 0,
-                    max: 10,
-                    step: 0.10,
-                    change: function (event, ui) {
-                        var rating = ui.value;
-                        db_functions.addSuggestionGrade(suggestion.id,discussion_id,rating, suggest_grade_id[suggestion.id], function(err,data)
-                        {
-                            $("#suggest_grade_"+suggestion.id).val(Math.round(data.new_grade*100)/100);
-                            $("#suggest_graders_"+suggestion.id).text(data.evaluate_counter);
-                            suggest_grade_id[suggestion.id]= data.grade_id;
-                        });
-                    }
-                });
+
+                              value:suggestion_grade_val,
+                              range: "min",
+                              min: 0,
+                              max: 10,
+                              step: 0.10,
+                              change: function (event, ui) {
+                                   var rating = ui.value;
+                                   db_functions.addSuggestionGrade(suggestion.id,discussion_id,rating, suggest_grade_id[suggestion.id], function(err,data)
+                                   {
+                                          $("#suggest_grade_"+suggestion.id).val(Math.round(data.new_grade*100)/100);
+                                          $("#suggest_graders_"+suggestion.id).text(data.evaluate_counter);
+                                          suggest_grade_id[suggestion.id]= data.grade_id;
+                                   });
+                              }
+                          });
+
+                 $(".suggest_slider_"+suggestion.id).prepend($("<div>").addClass("dark_bar").css('width',(discussion_grade*10)+'%'));
+
+
             });
         }
         return null;
-    }
-    db_functions.getSuggestionByDiscussion(discussion_id,function(err,data){
-        $.each(data.objects,function(index,suggestion){
-            render_suggestion(suggestion);
-        });
 
-        $('#suggestion_number').text('('+data.objects.length+')');
-    });
+     }
+     db_functions.getSuggestionByDiscussion(discussion_id,function(err,data){
+            $.each(data.objects,function(index,suggestion){
+                render_suggestion(suggestion);
+            });
 
-    function renderComments(comments ){
+            $('#suggestion_number').text('('+data.objects.length+')');
+            if(data.objects.length>0)
+            {
+                $(".deals-box").show();
+            }
+            else
+           {
+                $(".deals-box").hide();
+           }
+      });
+
+
+    
+ 
+
+    function     renderComments(comments ){
         var i ;
         for (i=0;i<comments.length;i++){
             comments[i].isFirst= (i===0);
 
         }
-
         dust.renderArray('discussion_comment', comments, null, function(err, out){
             if(!err){
                 var comments=   $("#comments");
                 comments.empty();
                 comments.append(out);
-                setCommentNumber()
             }
         } );
     }
@@ -568,6 +598,8 @@ $(document).ready(function () {
                 console.log(err);
             }else{
                 renderComments(data.objects)
+                postsNumber=data.meta.total_count;
+                setCommentNumber (postsNumber) ;
             }
         })
     }
@@ -600,11 +632,14 @@ $(document).ready(function () {
         db_functions.addPostToDiscussion(discussion_id, $("textarea#discussion_comment").val(),new_post_ref_id,function(err, post){
             // $("#user_tokens").text(post.updated_user_tokens);
             if(!err){
+                if(my_id)
+                    setUserScore(my_id, post.creator_id.score);
                 dust.render('discussion_comment', post, function(err, out){
                     $("#comments").append(out);
                     $("textarea#discussion_comment").val('');
                     new_post_ref_id=null;
-                    setCommentNumber()          ;
+                    postsNumber++;
+                    setCommentNumber(postsNumber) ;
                 });
             }
         })
@@ -654,16 +689,20 @@ $(document).ready(function () {
             if(!err)
             {
                 $('#write-comment').hide();
-                /*  render_suggestion(data);
+                /*
                  $("textarea#discussion_suggest").val('');
                  $("#user_tokens").text(data.updated_user_tokens);*/
+                 render_suggestion    (data)
+                  $(".deals-box").show();
             }
         });
 
 
     });
 
-    $('.system-notice .close').click(function(){
+
+        $('.system-notice .close').click(function(){
+
         $(this).parents('.system-notice').fadeOut(800);
     });
 
