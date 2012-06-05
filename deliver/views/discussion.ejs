@@ -20,12 +20,13 @@
             </span>
                 <%=discussion.title%>
             </h2>
+
             <div class="text-box cf">
-                <div  style="width: 212px;height: 164px" class='auto-scale floatRight'>
-                    <img src="<%= discussion.image_field ? discussion.image_field.url : '' %>" alt="" />
+                <div style="width: 212px;height: 164px" class='auto-scale floatRight'>
+                    <img src="<%= discussion.image_field ? discussion.image_field.url : '' %>" alt=""/>
                 </div>
                 <div class="discussion_content discussion content">
-                    <textarea id="discussion_content" class="hidden_textarea" ><%=discussion.vision_text%></textarea>
+                    <textarea id="discussion_content" class="hidden_textarea"><%=discussion.vision_text%></textarea>
                 </div>
 
 
@@ -44,6 +45,7 @@
                     <a class="btn-grey" href="">
                         שתף
                     </a>
+
                     <div class="btns-grey">
                         <a href="">
                             הצעה לשינוי
@@ -54,7 +56,9 @@
                     </div>
                 </div>
                 <div class="tags">
-                    <% for (var c = 0; c <discussion. tags.length; c++) { %>
+                    <% for (var c = 0; c
+                    <discussion. tags.length
+                    ; c++) { %>
                     <a href="javascript:void(0);"> <%=discussion. tags[c] %></a>
                     <% }%>
 
@@ -72,8 +76,9 @@
                 </div>
                 <div class="slide-box">
                     <div class="summary">
-                        <input type="text" id="amount" value="<%= discussion.grade %>" />
-                        <span> <div class="inlinediv" id="graders"><%= discussion.evaluate_counter %></div> מדרגים</span>
+                        <input type="text" id="amount" value="<%= discussion.grade %>"/>
+                        <span> <div class="inlinediv" id="graders"><%= discussion.evaluate_counter %>
+                        </div> מדרגים</span>
                     </div>
                     <div class="slider">
                     </div>
@@ -96,9 +101,11 @@
             <h3><span>
 סל מידע
             </span></h3>
+
             <div class="comment-slide">
-                <a href="" id="prev" ></a>
-                <a href="" id="next" ></a>
+                <a href="" id="prev"></a>
+                <a href="" id="next"></a>
+
                 <div class="slide-c">
                 </div>
             </div>
@@ -107,9 +114,10 @@
             <h3>
                 הצעה לשינוי
             </h3>
+
             <div class="text-box cf">
                 <div class="left">
-                    <p id='discussion_content_txt'> <strong>:רובין כתב</strong>
+                    <p id='discussion_content_txt'><strong>:רובין כתב</strong>
 
                     </p>
                     <label>
@@ -122,13 +130,14 @@
                     <textarea id="discussion_explanation" class="two-col" cols="0" rows="0"></textarea>
                 </div>
                 <div class="user-right">
-                    <div class="img-box" style="overflow: hidden;" >
+                    <div class="img-box" style="overflow: hidden;">
                         <div style="width:70px; height:70px;" class='auto-scale'>
-                            <img  src="<%=avatar%>" alt="אני"  />
+                            <img src="<%=avatar%>" alt="אני"/>
                         </div>
                         <span></span>
                     </div>
                     <h4>אני</h4>
+
                     <div class="date"><%=(new Date()).format('dd.mm.yy') %></div>
                     <% if(user_logged){ %>
                     <div class="proxy">
@@ -143,15 +152,17 @@
             <a class="grey-btn" id="cancelWriteCommentBT" href="javascript:void(0);"><span>
 מתחרט
             </span></a>
-            <a  id="send_suggestion" class="green-btn" href="javascript:void(0);">
+            <a id="send_suggestion" class="green-btn" href="javascript:void(0);">
                 הצע
             </a>
         </div>
         <div class="deals-box">
-            <h2>הצעות לשינוי <small id="suggestion_number"></small></h2>
-            <div id="suggestion_list"> </div>
+            <h2>הצעות לשינוי
+                <small id="suggestion_number"></small>
+            </h2>
+            <div id="suggestion_list"></div>
             <div class="more-deals">
-                <a href="" >עוד הצעות</a>
+                <a href="">עוד הצעות</a>
             </div>
         </div>
     </div>
@@ -172,23 +183,25 @@
 
 <div class="comments-box">
     <div class="extra cf">
-        <select class="left-select"  id="sorting_select">
+        <select class="left-select" id="sorting_select">
             <option id="creation_date">
                 מיין לפי תאריך
             </option>
-           <!-- <option id="first_name">
+            <!-- <option id="first_name">
                 מיין לפי יוזר
             </option>-->
             <option id="-total_votes">
                 מיין לפי מעוררי עניין
             </option>
             <option id="-popularity">
-מיין לפי כמות אסימונים
+                מיין לפי כמות אסימונים
             </option>
         </select>
+
         <h2>
             תגובות
-            <small id="comments_number"></small></h2>
+            <small id="comments_number"></small>
+        </h2>
         <div id="comments">
 
         </div>
@@ -196,6 +209,7 @@
             <h3>
                 כתיבת תגובה
             </h3>
+
             <div class="text-box cf">
                 <div class="left">
                     <textarea id="discussion_comment" class="four-col" cols="0" rows="0"></textarea>
@@ -203,11 +217,12 @@
                 <div class="user-right">
                     <div class="img-box" style="overflow: hidden;">
                         <div style="width:70px; height:70px;" class='auto-scale'>
-                            <img  src="<%=avatar%>" alt="אני"  />
+                            <img src="<%=avatar%>" alt="אני"/>
                         </div>
                         <span></span>
                     </div>
                     <h4>אני</h4>
+
                     <div class="date"><%=(new Date()).format('dd.mm.yy') %></div>
                     <% if(user_logged){ %>
                     <div class="proxy">
@@ -219,7 +234,7 @@
                     <% } %>
                 </div>
             </div>
-            <a   id="submit_post" class="green-btn" href="javascript:void(0);">
+            <a id="submit_post" class="green-btn" href="javascript:void(0);">
                 הצע
             </a>
         </div>
@@ -230,9 +245,9 @@
 <span class="edit-text">-->
      <span class="popup-window">
          <span class="arrow"></span>
-         <a class="close" href="javascript:void(0);" ></a>
+         <a class="close" href="javascript:void(0);"></a>
         	 <a id="pop_post_bt" class="green-btn" href="javascript:void(0);">הגב</a>
-             <a  id="pop_suggest_bt" class="grey-btn suggest" href="javascript:void(0);">
+             <a id="pop_suggest_bt" class="grey-btn suggest" href="javascript:void(0);">
                  הצע הצעה לשינוי
              </a>
      </span>
@@ -247,91 +262,88 @@
 $(document).ready(function () {
     /***************************************************/
 
-    var my_id= "<%=user_logged ? user._id : ''%>";
+    var my_id = "<%=user_logged ? user._id : ''%>";
     var discussion_id = "<%=discussion.id%>";
     var mouseDown, mouseUp, top, left;
     var grade_id = "<%=discussion.grade_obj.grade_id%>";
     var sugg_grade_id;
     var new_post_ref_id = null;  //if not null =>the create new post is connected to anther post
-    var discussion_grade=<%=discussion.grade_obj ? discussion.grade_obj.value : 0 %>;
-    var postsNumber=0;
+    var discussion_grade =
+    <
+    %= discussion.grade_obj ? discussion.grade_obj.value : 0 % >;
+    var postsNumber = 0;
 
 
     $(".slider").slider({
 
-            value: discussion_grade,
-            range: "min",
-            min: 0,
-            max: 10,
-            step: 0.10,
-            change: function (event, ui) {
+        value:discussion_grade,
+        range:"min",
+        min:0,
+        max:10,
+        step:0.10,
+        change:function (event, ui) {
 
 
             var rating = ui.value;
 
-                 db_functions.addDiscussionGrade(discussion_id,rating, grade_id, function(err,data)
-                 {
-                    discussion_grade=      data.new_grade;
-                    $("#amount").val(Math.round(data.new_grade*100)/100);
-                    $("#graders").text(data.evaluate_counter);
-                    $(".dark_bar").css('width',(discussion_grade*10)+'%');
+            db_functions.addDiscussionGrade(discussion_id, rating, grade_id, function (err, data) {
+                discussion_grade = data.new_grade;
+                $("#amount").val(Math.round(data.new_grade * 100) / 100);
+                $("#graders").text(data.evaluate_counter);
+                $(".dark_bar").css('width', (discussion_grade * 10) + '%');
 
-                    grade_id=data.grade_id;
-                 });
-
+                grade_id = data.grade_id;
+            });
 
 
-                $("#amount").val(ui.value);
-            }
-        });
-        //$("#amount").val($(".slider").slider("value"));
+            $("#amount").val(ui.value);
+        }
+    });
+    //$("#amount").val($(".slider").slider("value"));
 
-        $(".slider-two").slider({
-            disabled: true,
-            range: "min",
-            value: 0,
-            min: 0,
-            max: 11,
-            step: 0.10,
-            slide: function (event, ui) {
-                //$("#amount2").val(ui.value);
-            }
-        });
-        //$("#amount2").val($(".slider-two").slider("value"));
-        $(".slider-three").slider({
-            range: "min",
-            value: 8.20,
-            min: 0,
-            max: 11,
-            step: 0.10,
-            slide: function (event, ui) {
-                $("#amount3").val(ui.value);
-            }
-        });
-        $("#amount3").val($(".slider-three").slider("value"));
-
-
-
-    $(".inline").colorbox({ inline: true, width: "730" });
+    $(".slider-two").slider({
+        disabled:true,
+        range:"min",
+        value:0,
+        min:0,
+        max:11,
+        step:0.10,
+        slide:function (event, ui) {
+            //$("#amount2").val(ui.value);
+        }
+    });
+    //$("#amount2").val($(".slider-two").slider("value"));
+    $(".slider-three").slider({
+        range:"min",
+        value:8.20,
+        min:0,
+        max:11,
+        step:0.10,
+        slide:function (event, ui) {
+            $("#amount3").val(ui.value);
+        }
+    });
+    $("#amount3").val($(".slider-three").slider("value"));
 
 
-
+    $(".inline").colorbox({ inline:true, width:"730" });
 
 
     /***************************************************/
 
 
-    function setUserScore(userID,score){
-        $('[ data-creator_id='+userID+']').find('.score').empty().append(score);
+    function setUserScore(userID, score) {
+        $('[ data-creator_id=' + userID + ']').find('.score').empty().append(score);
     }
+
     function setCommentNumber(number) {
 
-        $('#comments_number')[0].innerHTML='('+number+')';
+        $('#comments_number')[0].innerHTML = '(' + number + ')';
     }
 
-    db_functions.getDiscussionShoppingCart(discussion_id,function(err,data){
-        $.each(data.objects,function(index,item){
-            dust.render('discussion_information_item',item,function(err,out){
+    db_functions.getDiscussionShoppingCart(discussion_id, function (err, data) {
+        $.each(data.objects, function (index, item) {
+            dust.render('discussion_information_item', item, function (err, out) {
                 $('.slide-c').append(out);
             });
         });
@@ -339,72 +351,70 @@ $(document).ready(function () {
         $('.slide-c')
                 .after('<div id="nav2">')
                 .cycle({
-                    fx: 'scrollHorz',
-                    speed: 'fast',
-                    timeout: 0,
-                    pager: '#nav2',
-                    next: '#next',
-                    prev: '#prev'
+                    fx:'scrollHorz',
+                    speed:'fast',
+                    timeout:0,
+                    pager:'#nav2',
+                    next:'#next',
+                    prev:'#prev'
                 });
 
     });
 
-    $('.discussion_content').on('mousedown', function(e) {
+    $('.discussion_content').on('mousedown', function (e) {
         mouseDown = e;
         console.log(e);
     })
-            .on('mouseup', function(e){
+            .on('mouseup',
+            function (e) {
                 mouseUp = e;
 
                 left = Math.ceil((mouseDown.clientX + mouseUp.clientX) / 2 - ($(".popup-window").width() / 2));
                 top = Math.min(mouseDown.clientY, mouseUp.clientY) - $(".popup-window").height() - 40 + $(window).scrollTop();
                 console.log(e);
 
-            }).on('keydown', function(e){
+            }).on('keydown',
+            function (e) {
                 console.log(e.keyCode == 27);
-                if(!(e.shiftKey && (e.keyCode <=40 && e.keyCode >=37) || (e.ctrlKey && e.keyCode == 65))) e.preventDefault();
-            }).on('dragstart', function(e){
+                if (!(e.shiftKey && (e.keyCode <= 40 && e.keyCode >= 37) || (e.ctrlKey && e.keyCode == 65))) e.preventDefault();
+            }).on('dragstart', function (e) {
                 e.preventDefault();
             });
 
-    $('.popup-window .close').on('click', function(){
+    $('.popup-window .close').on('click', function () {
         $('.popup-window').hide();
     });
 
-    $('.popup-window').on('focus', function(e){
+    $('.popup-window').on('focus', function (e) {
         e.preventDefault();
     });
 
-    $("#discussion_content").select(function(){
+    $("#discussion_content").select(function () {
         range = $(this).getSelection();
         $(".popup-window")
-                .css({ top: top + 20, left: left, opacity: 0 })
+                .css({ top:top + 20, left:left, opacity:0 })
                 .show()
-                .animate({ top: '-=20px', opacity: 1 }, 100, 'linear');
+                .animate({ top:'-=20px', opacity:1 }, 100, 'linear');
 
         console.log(range);
     });
 
 
-
-    $('#pop_suggest_bt').on("click", function(e){
+    $('#pop_suggest_bt').on("click", function (e) {
         e.preventDefault();
-        $('#discussion_content_txt').text('"' + range.text +'"');
+        $('#discussion_content_txt').text('"' + range.text + '"');
         $('#write-comment').show();
         $('textarea#discussion_suggest').focus();
         $(".popup-window").hide();
     });
 
 
-
-
-
-    $('#comments').on('click','.vote_for',function(){
+    $('#comments').on('click', '.vote_for', function () {
         var post_id = $(this).parents('.comment-one').data("id");
         var button = $(this);
         var func = $(this).parents('#comments').length ? db_functions.voteForPost : db_functions.voteForSuggestion;
-        func.call(db_functions,post_id, "add", function(err, post_obj){
-            if(!err){
+        func.call(db_functions, post_id, "add", function (err, post_obj) {
+            if (!err) {
 
 //                var votes_for = button.parent('div').find('.number');
                 var votes_for = button.parents(".status").find(".yes").find(".number");
@@ -413,37 +423,35 @@ $(document).ready(function () {
                 votes_for.text(post_obj.votes_for);
                 votes_against.text(post_obj.votes_against);
             }
-            else
-            {
-                if(err.responseText == 'Error: there is not enought tokens')
+            else {
+                if (err.responseText == 'Error: there is not enought tokens')
                     alert('not enough tokens');
-                if(err.responseText == 'user already voted for this post')
+                if (err.responseText == 'user already voted for this post')
                     alert('already voted');
-                if(err.responseText == 'soory, can\'t vote to your own post')
+                if (err.responseText == 'soory, can\'t vote to your own post')
                     alert('soory, can\'t vote to your own post');
             }
         })
     });
 
-    $('#comments').on('click',".vote_against", function(){
+    $('#comments').on('click', ".vote_against", function () {
         var post_id = $(this).parents('.comment-one').data("id");
         var button = $(this);
         var func = $(this).parents('#comments').length ? db_functions.voteForPost : db_functions.voteForSuggestion;
-        func.call(db_functions,post_id, "remove", function(err, post_obj){
-            if(!err){
+        func.call(db_functions, post_id, "remove", function (err, post_obj) {
+            if (!err) {
                 var votes_for = button.parents(".status").find(".yes").find(".number");
                 var votes_against = button.parents(".status").find(".no").find(".number");
 
                 votes_for.text(post_obj.votes_for);
                 votes_against.text(post_obj.votes_against);
             }
-            else
-            {
-                if(err.responseText == 'Error: there is not enought tokens')
+            else {
+                if (err.responseText == 'Error: there is not enought tokens')
                     alert('not enough tokens');
-                if(err.responseText == 'user already voted for this post')
+                if (err.responseText == 'user already voted for this post')
                     alert('already voted');
-                if(err.responseText == 'soory, can\'t vote to your own post')
+                if (err.responseText == 'soory, can\'t vote to your own post')
                     alert('soory, can\'t vote to your own post');
 
             }
@@ -455,40 +463,41 @@ $(document).ready(function () {
      $(this).toggleClass('hover');
      });*/
 
-    $('#comments,#suggestion_list').on('mouseenter',".side_menu",function(e){
-        $(this).addClass('hover');
-        $('.left',this).show().css({width:0}).animate({'width':87});
+    $('#comments,#suggestion_list').on('mouseenter', ".side_menu",
+            function (e) {
+                $(this).addClass('hover');
+                $('.left', this).show().css({width:0}).animate({'width':87});
 
-    }).on('mouseleave',".side_menu",function(e){
+            }).on('mouseleave', ".side_menu", function (e) {
                 var side = $(this);
                 side.removeClass('hover');
-                $('.left',this).animate({'width':0},function(){
+                $('.left', this).animate({'width':0}, function () {
                     $(this).hide();
                 });
             });
 
     // copy the post text+ user to   discussion_comment
-    $('#comments,#suggestion_list').on('click',".quote_button",function(e){
+    $('#comments,#suggestion_list').on('click', ".quote_button", function (e) {
         var userName,
                 text;
 
-        var postDiv=$(this).parents('.comment-one');
+        var postDiv = $(this).parents('.comment-one');
         e.preventDefault();
         $("textarea#discussion_comment").focus();
-        userName=postDiv.data('creator_name');
-        new_post_ref_id=postDiv.data('id');
-        text = $('.post_text',postDiv).text();
-        text=userName+':"'+text+'"';
+        userName = postDiv.data('creator_name');
+        new_post_ref_id = postDiv.data('id');
+        text = $('.post_text', postDiv).text();
+        text = userName + ':"' + text + '"';
         text = text + " ";
         $("textarea#discussion_comment").val(text).focus();
     });
 
-    $('#comments,#suggestion_list').on('click',".follow_user",function(e){
-        var creator_id =  $(this).parents('.comment-one,.one').data("creator_id");
+    $('#comments,#suggestion_list').on('click', ".follow_user", function (e) {
+        var creator_id = $(this).parents('.comment-one,.one').data("creator_id");
         var self = this;
 
-        db_functions.joinOrLeaveUserFollowers(creator_id, function(err, user){
-            if(user.is_follower)
+        db_functions.joinOrLeaveUserFollowers(creator_id, function (err, user) {
+            if (user.is_follower)
                 $(self).text("עקוב");
             else
                 $(self).text("עזוב");
@@ -498,108 +507,103 @@ $(document).ready(function () {
     });
 
     // focus and copy the selected text of discussion
-    $('#pop_post_bt').on("click", function(e){
+    $('#pop_post_bt').on("click", function (e) {
         e.preventDefault();
         new_post_ref_id = null;
         $(".popup-window").hide();
-        $("textarea#discussion_comment").val('"' + range.text +'"').focus();
+        $("textarea#discussion_comment").val('"' + range.text + '"').focus();
 
     });
 
     // just focus
-    $("#discussion_comment_reply_button").on('click', function(e){
+    $("#discussion_comment_reply_button").on('click', function (e) {
         e.preventDefault();
-        var discussionComment=  $("textarea#discussion_comment").focus();
-    } );
+        var discussionComment = $("textarea#discussion_comment").focus();
+    });
 
     var suggest_grade_id = new Object();
-    function render_suggestion(suggestion)
-    {
-        if(suggestion.parts && suggestion.parts.length){
+
+    function render_suggestion(suggestion) {
+        if (suggestion.parts && suggestion.parts.length) {
             var original = $('#discussion_content').val();
-            suggestion.original_part = function(){
+            suggestion.original_part = function () {
                 var from = suggestion.parts[0].start;
                 var end = suggestion.parts[0].end;
-                return original.substr(from,end-from);
+                return original.substr(from, end - from);
             };
-            suggestion.alternative_part = function(){
+            suggestion.alternative_part = function () {
                 return suggestion.parts[0].text;
             };
 
-            dust.render('discussion_suggestion',suggestion,function(err,out) {
+            dust.render('discussion_suggestion', suggestion, function (err, out) {
                 $('#suggestion_list').prepend(out);
-                var suggestion_grade_val =       suggestion.grade_obj ?    suggestion.grade_obj.value :0;
-                suggest_grade_id[suggestion.id]=  suggestion.grade_obj ?    suggestion.grade_obj._id :null;
-                $(".suggest_slider_"+suggestion.id).slider({
+                var suggestion_grade_val = suggestion.grade_obj ? suggestion.grade_obj.value : 0;
+                suggest_grade_id[suggestion.id] = suggestion.grade_obj ? suggestion.grade_obj._id : null;
+                $(".suggest_slider_" + suggestion.id).slider({
 
-                              value:suggestion_grade_val,
-                              range: "min",
-                              min: 0,
-                              max: 10,
-                              step: 0.10,
-                              change: function (event, ui) {
-                                   var rating = ui.value;
-                                   db_functions.addSuggestionGrade(suggestion.id,discussion_id,rating, suggest_grade_id[suggestion.id], function(err,data)
-                                   {
-                                          $("#suggest_grade_"+suggestion.id).val(Math.round(data.new_grade*100)/100);
-                                          $("#suggest_graders_"+suggestion.id).text(data.evaluate_counter);
-                                          suggest_grade_id[suggestion.id]= data.grade_id;
-                                   });
-                              }
-                          });
+                    value:suggestion_grade_val,
+                    range:"min",
+                    min:0,
+                    max:10,
+                    step:0.10,
+                    change:function (event, ui) {
+                        var rating = ui.value;
+                        db_functions.addSuggestionGrade(suggestion.id, discussion_id, rating, suggest_grade_id[suggestion.id], function (err, data) {
+                            $("#suggest_grade_" + suggestion.id).val(Math.round(data.new_grade * 100) / 100);
+                            $("#suggest_graders_" + suggestion.id).text(data.evaluate_counter);
+                            suggest_grade_id[suggestion.id] = data.grade_id;
+                        });
+                    }
+                });
 
-                 $(".suggest_slider_"+suggestion.id).prepend($("<div>").addClass("dark_bar").css('width',(discussion_grade*10)+'%'));
+                $(".suggest_slider_" + suggestion.id).prepend($("<div>").addClass("dark_bar").css('width', (discussion_grade * 10) + '%'));
 
 
             });
         }
         return null;
 
-     }
-     db_functions.getSuggestionByDiscussion(discussion_id,function(err,data){
-            $.each(data.objects,function(index,suggestion){
-                render_suggestion(suggestion);
-            });
+    }
 
-            $('#suggestion_number').text('('+data.objects.length+')');
-            if(data.objects.length>0)
-            {
-                $(".deals-box").show();
-            }
-            else
-           {
-                $(".deals-box").hide();
-           }
-      });
+    db_functions.getSuggestionByDiscussion(discussion_id, function (err, data) {
+        $.each(data.objects, function (index, suggestion) {
+            render_suggestion(suggestion);
+        });
+
+        $('#suggestion_number').text('(' + data.objects.length + ')');
+        if (data.objects.length > 0) {
+            $(".deals-box").show();
+        }
+        else {
+            $(".deals-box").hide();
+        }
+    });
 
 
-    
- 
-
-    function     renderComments(comments ){
-        var i ;
-        for (i=0;i<comments.length;i++){
-            comments[i].isFirst= (i===0);
+    function renderComments(comments) {
+        var i;
+        for (i = 0; i < comments.length; i++) {
+            comments[i].isFirst = (i === 0);
 
         }
-        dust.renderArray('discussion_comment', comments, null, function(err, out){
-            if(!err){
-                var comments=   $("#comments");
+        dust.renderArray('discussion_comment', comments, null, function (err, out) {
+            if (!err) {
+                var comments = $("#comments");
                 comments.empty();
                 comments.append(out);
             }
-        } );
+        });
     }
 
     function loadPosts() {
-        var selectedOption= $ ('#sorting_select') .find(':selected')[0].id;
-        db_functions.getSortedPostByDiscussion(discussion_id, selectedOption, function(err, data){
-            if(err){
+        var selectedOption = $('#sorting_select').find(':selected')[0].id;
+        db_functions.getSortedPostByDiscussion(discussion_id, selectedOption, function (err, data) {
+            if (err) {
                 console.log(err);
-            }else{
+            } else {
                 renderComments(data.objects)
-                postsNumber=data.meta.total_count;
-                setCommentNumber (postsNumber) ;
+                postsNumber = data.meta.total_count;
+                setCommentNumber(postsNumber);
             }
         })
     }
@@ -623,46 +627,44 @@ $(document).ready(function () {
      });*/
 
 
-    $("#cancelWriteCommentBT").live("click", function(){
+    $("#cancelWriteCommentBT").live("click", function () {
         $('#write-comment').hide();
     });
 
-    $("#submit_post").on('click', function(e){
+    $("#submit_post").on('click', function (e) {
         e.preventDefault();
-        db_functions.addPostToDiscussion(discussion_id, $("textarea#discussion_comment").val(),new_post_ref_id,function(err, post){
+        db_functions.addPostToDiscussion(discussion_id, $("textarea#discussion_comment").val(), new_post_ref_id, function (err, post) {
             // $("#user_tokens").text(post.updated_user_tokens);
-            if(!err){
-                if(my_id)
+            if (!err) {
+                if (my_id)
                     setUserScore(my_id, post.creator_id.score);
-                dust.render('discussion_comment', post, function(err, out){
+                dust.render('discussion_comment', post, function (err, out) {
                     $("#comments").append(out);
                     $("textarea#discussion_comment").val('');
-                    new_post_ref_id=null;
+                    new_post_ref_id = null;
                     postsNumber++;
-                    setCommentNumber(postsNumber) ;
+                    setCommentNumber(postsNumber);
                 });
             }
         })
     });
 
-    $('form').on('submit', function(e){
+    $('form').on('submit', function (e) {
         e.preventDefault();
     });
 
 
 //            $('.sugg_rating_button').click(function(){
-    $('#suggestion_list').on('click','.sugg_rating_button',function(){
+    $('#suggestion_list').on('click', '.sugg_rating_button', function () {
         var rating = Number($(this).parent().find($(".sugg_rating_select")).val());
         sugg_grade_id = $(this).parent().data('grade');
 
         var suggestion_id = $(this).parent().attr('id');
         var self = this;
-        db_functions.addSuggestionGrade(suggestion_id, discussion_id,rating, sugg_grade_id, function(err,data)
-        {
-            if(!err){
-                db_functions.getSuggestionByDiscussion(discussion_id, function(err, data){
-                    $.each(data.objects,function(index,suggestion)
-                    {
+        db_functions.addSuggestionGrade(suggestion_id, discussion_id, rating, sugg_grade_id, function (err, data) {
+            if (!err) {
+                db_functions.getSuggestionByDiscussion(discussion_id, function (err, data) {
+                    $.each(data.objects, function (index, suggestion) {
                         render_suggestion(suggestion);
                     });
                 })
@@ -670,30 +672,27 @@ $(document).ready(function () {
         });
     });
 
-    $('#suggest_button').click(function()
-    {
+    $('#suggest_button').click(function () {
         $('#suggest_div').show();
     });
 
-    $('#close_suggest').click(function(){
+    $('#close_suggest').click(function () {
         $('#suggest_div').hide();
         $("textarea#discussion_suggest").val('');
     });
 
 
-    $('#send_suggestion').click(function(){
+    $('#send_suggestion').click(function () {
         var part = {start:range.start, end:range.end, text:$("textarea#discussion_suggest").val()};
         var explanation = $("#discussion_explanation").val();
-        db_functions.addSuggestionToDiscussion(discussion_id,[part], explanation, function(err,data)
-        {
-            if(!err)
-            {
+        db_functions.addSuggestionToDiscussion(discussion_id, [part], explanation, function (err, data) {
+            if (!err) {
                 $('#write-comment').hide();
                 /*
                  $("textarea#discussion_suggest").val('');
                  $("#user_tokens").text(data.updated_user_tokens);*/
-                 render_suggestion    (data)
-                  $(".deals-box").show();
+                render_suggestion(data)
+                $(".deals-box").show();
             }
         });
 
@@ -701,11 +700,10 @@ $(document).ready(function () {
     });
 
 
-        $('.system-notice .close').click(function(){
+    $('.system-notice .close').click(function () {
 
         $(this).parents('.system-notice').fadeOut(800);
     });
-
 
 
 });
