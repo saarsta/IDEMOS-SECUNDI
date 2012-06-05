@@ -225,6 +225,7 @@ var Schemas = exports.Schemas = {
         grade: {type: Number, 'default': 0},
         agrees: {type: Number, 'default': 0},
         not_agrees: {type: Number, 'default': 0},
+        admin_threshold_for_accepting_the_suggestion: {type: Number, max: 500, 'default': 0}
     },
 
     Notification: {

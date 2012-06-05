@@ -142,15 +142,20 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                     },
 
                     function(cbk1){
+                        if(suggestion_obj.admin_threshold_for_accepting_the_suggestion > 0)
+                            real_threshold = suggestion_obj.admin_threshold_for_accepting_the_suggestion;
+
                         if(curr_tokens_amout >= real_threshold){
                             Suggestion.approveSuggestion(suggestion_obj._id, function(err, obj1){
                                 cbk1(err, obj1);
                             })
                         }else{
-                            cbk1(err, obj);
+                            cbk1();
                         }
                     }
-                ])
+                ], function(err, args){
+                    cbk(err, args);
+                })
             }
 
             ], function(err, obj){
@@ -159,7 +164,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                     req.token_price = common.getGamificationTokenPrice('grade_suggestion') || 0;
                 }
                 callback(err, {
-                    new_grade:new_grade,
+                        new_grade:new_grade,
                     evaluate_counter: counter,
                     already_graded: true,
                     num_of_agrees: agrees,

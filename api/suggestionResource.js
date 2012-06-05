@@ -55,7 +55,9 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
             grade_obj: {
                 _id: null,
                 evalueation_grade: null
-            }
+            },
+            wanted_amount_of_tokens: null,
+            curr_amount_of_tokens: null
         };
     },
 
@@ -64,6 +66,9 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
         var self = this;
 
         var iterator = function(suggestion, itr_cbk){
+            suggestion.curr_amount_of_tokens = suggestion.agrees - suggestion.not_agrees;
+            //wanted amount of tokens is either what admin has entered to the specific suggestion, or the discussion threshold...
+            suggestion.wanted_amount_of_tokens = suggestion.admin_threshold_for_accepting_the_suggestion;
             if(req.user){
                 models.GradeSuggestion.findOne({user_id: req.user._id, suggestion_id: suggestion._id}/*, ["_id", "evaluation_grade"]*/, function(err, grade_sugg_obj){
                     if(!err)
