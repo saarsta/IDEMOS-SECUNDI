@@ -16,30 +16,6 @@ var mongoose = require("mongoose"),
 
 mongoose_types.loadTypes(mongoose);
 
-var MinLengthValidator = function (min) {
-    return [function (value) {
-        return value && value.length >= min;
-    }, 'Name must contain at least ' + min + ' letters'];
-};
-
-var RegexValidator = function (regex) {
-    return [function (value) {
-        return value && regex.exec(value)
-    }, 'Value is not at the correct pattern'];
-};
-
-var EmailValidator = RegexValidator(/[^@]+@[^@]+/);
-var TestEmailValidator = RegexValidator(/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/);
-
-var ActionResource = {
-        category: {type: ObjectId, ref: 'Category'},
-        name:String
-};
-
-var tag_suggestions =  {
-    tag_name: String,
-    tag_offers: {type:[ObjectId], ref:'User'}
-};
 
 var CommentVote = new Schema({
     user_id:{type:ObjectId, ref:'User', index:true, required:true},
@@ -70,79 +46,6 @@ var Comment = new Schema({
 
 
 var Schemas = exports.Schemas = {
-    User: new Schema({
-        username:String,
-        identity_provider:{type:String, "enum":['facebook', 'register']},
-        facebook_id:String,
-        access_token:String,
-        first_name:{type:String, required:true, validate:MinLengthValidator(2)},
-        last_name:{type:String, required:true, validate:MinLengthValidator(2)},
-        email:{type:String, required:true, validate:TestEmailValidator},
-        gender:{type:String, "enum":['male', 'female']},
-        age:{type:Number, min:0},
-        address: String,
-        occupation: String,
-        biography: String,
-        //followers
-        discussions:[
-            new Schema({discussion_id:{type:ObjectId, ref:'Discussion'}, join_date: {type:Date, 'default':Date.now}})
-        ],
-        //followers
-        cycles:[
-            new Schema({cycle_id:{type:ObjectId, ref:'Cycle'}, join_date: {type:Date, 'default':Date.now}})
-        ],
-        actions:[
-            new Schema( {action_id:{type:ObjectId, ref:'Action'}, join_date: {type:Date, 'default':Date.now}})
-        ],
-        followers: [
-            new Schema({follower_id:{type:ObjectId, ref:'User'}, join_date: {type:Date, 'default':Date.now}})
-        ],
-        password:String,
-        tokens:{type:Number, 'default':9, min: 0/*, max:15.9*/},
-        gamification: {type:Schema.Types.Mixed,editable:false },
-        updates: Schema.Types.Mixed,
-        proxy: {type: Number, 'default': 0},
-        score:{type:Number, 'default':0},
-        decoration_status:{type:String, "enum":['a', 'b', 'c']},
-        invited_by: {type: ObjectId, ref: 'User'},
-        has_been_invited : {type: Boolean, 'default': false},
-        tokens_achivements_to_user_who_invited_me: Schema.Types.Mixed,
-        num_of_extra_tokens: {type: mongoose_types.Integer, 'default': 0, max:6, min: 0},// i might change it to gamification.bonus.
-        number_of_days_of_spending_all_tokens: {type: Number, 'default' : 0},
-        blog_popularity_counter: {type: Number, 'default': 0},
-        avatar : mongoose_types.File
-    }),
-
-    InformationItem:new Schema({
-        title: {type: String, required: true},
-        tooltip:String,
-        subject_id:[{type:ObjectId, ref:'Subject',required:true}],
-        category:{type:String, "enum":['test', 'statistics', 'infographic', 'graph'], required:true},
-        text_field:{type:mongoose_types.Text, required:true},
-        text_field_preview:{type:mongoose_types.Html},
-        image_field: {type:mongoose_types.File,required:true},
-        image_field_preview: {type:mongoose_types.File},
-        tags:{type:[String], index:true},
-        users:{type:[ObjectId], ref:'User',editable:false},
-        discussions:[{type:ObjectId, ref:'Discussion', index:true}],
-        cycles:{type:[ObjectId], ref:'Cycle', index:true},
-        //this is for later
-        actions:{type:[ObjectId], ref:'Action', index:true},
-        is_visible:{type:Boolean, 'default':true},
-        creation_date:{type:Date, 'default':Date.now,editable:false},
-        is_hot_object:{type:Boolean, 'default':false},
-        is_hot_info_item: {type:Boolean, 'default':false},
-        tag_suggestions: {type:[tag_suggestions] ,editable:false},
-        like_counter: {type: Number, 'default': 0, editable: false},
-        view_counter: {type: Number, 'default': '0'},
-
-        //this two fields are for user suggestion of InformationItem, when admin create this it will remain false
-        created_by: {creator_id:{type: ObjectId, ref: 'User', editable: false}, did_user_created_this_item: {type: Boolean, 'default': false, editable: false}},
-        status: {type: String, "enum": ['approved', 'denied', 'waiting']},
-        gamification: {rewarded_creator_for_high_liked: {type: String, 'default': false, editable: false},
-                       rewarded_creator_for_approval: {type: String, 'default': false, editable: false}, editable:false},
-        gui_order:{type:Number,'default':9999999,editable:false}
-    }, {strict: true}),
 
     //this is for
     information_group: {
@@ -220,86 +123,6 @@ var Schemas = exports.Schemas = {
         is_hot_object: {type:Boolean,'default':false}
     },
 
-    Discussion:new Schema({
-        title:{type:String, required:true},
-        tooltip:String,
-//        text_field:{type:mongoose_types.Html},
-//        text_field_preview:{type:mongoose_types.Html},
-        image_field: { type:mongoose_types.File, required:true},
-        image_field_preview: { type:mongoose_types.File, require:true},
-        subject_id:[
-            {type:ObjectId, ref:'Subject', index:true, required:true}
-        ],
-        subject_name: String,
-        system_message: {type:mongoose_types.Html, "default": "דיון זה מתעתד להיות מעגל תנופה. שתפו, הגיבו וגרמו לזה לקרות"},
-        creation_date:{type:Date, 'default':Date.now},
-        creator_id:{type:ObjectId, ref:'User'},
-        first_name:{type:String,editable:false},
-        last_name:{type:String,editable:false},
-        vision_text_preview: {type:mongoose_types.Text},//2-3 lines of the vision_text
-        vision_text:{type:mongoose_types.Text, required:true},
-        vision_text_history:{type:[String],editable:false},
-        num_of_approved_change_suggestions: {type: Number, 'default': 0},
-        is_hot_object: {type:Boolean,'default':false},
-        is_cycle:{
-            flag:{type:Boolean, 'default':false, editable:false},
-            date:{type:Date, 'default':Date.now, editable:false}
-        },
-        tags:[String],
-        //users that connected somehow to discussion for my uru
-        users:[
-            new Schema({user_id:{type:ObjectId, ref:'User'}, join_date: {type:Date, 'default':Date.now}})
-        ],
-
-        //followers for my uru
-        followers:[
-            new Schema({user_id:{type:ObjectId, ref:'User'}, join_date: {type:Date, 'default':Date.now}})
-        ],
-        followers_count:{type:Number, 'default':0, editable:false},
-        is_visible:{type:Boolean, 'default':true},
-        is_published:{type:Boolean, 'default':false},
-        threshold_for_accepting_change_suggestions: {type: Number, min: 2, max: 501, 'default': 2},
-        admin_threshold_for_accepting_change_suggestions: {type: Number, max: 500, 'default': 0},
-//        popular_comments: [{type: ObjectId, ref: 'Post', index: true}],
-        grade:{type:Number, 'default':0},
-        evaluate_counter:{type:Number, 'default':0, editable:false},
-        grade_sum:{type:Number, 'default':0, editable:false},
-        gamification: {has_rewarded_creator_of_turning_to_cycle: {type: Boolean, 'default': false},
-                        has_rewarded_creator_for_high_grading_of_min_graders: {type: String, 'default': false}, editable:false}
-    }, {strict: true}),
-
-    Cycle: new Schema({
-        creation_date: {type:Date, 'default':Date.now},
-        due_date : {type:Date, 'default':function(){ return Date.now() + 1000*3600*24*30;  }},
-        subject:[{
-            id:{type:ObjectId, ref:'Subject', index:true, required:true},
-            name: {type:String, editable:false}
-            }
-        ],
-        title: {type:String, required:true},
-        tooltip:String,
-        text_field:{type:mongoose_types.Html},
-        text_field_preview:{type:mongoose_types.Html},
-        image_field: mongoose_types.File,
-        image_field_preview: mongoose_types.File,
-        tags:[String],
-        discussions:[
-            {type:ObjectId, ref:'Discussion'}
-        ],
-        document: String,
-        shopping_cart: [
-            {type:ObjectId, ref:'InformationItem'}
-        ],
-        is_hot_object: {type:Boolean,'default':false},
-        followers_count: {type: Number, 'default':0, editable:false},
-        num_of_comments: {type: Number, 'default':0, editable:false},
-        upcoming_action: {type: ObjectId, ref: 'Action', index: true, editable:false},
-        num_upcoming_actions: {type: Number, 'default':0, editable:false},
-        //users that conected somehow to the cycle for my uru
-        users:{type:[
-            new Schema({user_id:{type:ObjectId, ref:'User'}, join_date: {type:Date, 'default':Date.now}})
-        ], editable:false}
-    }, {strict: true}),
 
     PostOrSuggestion:{
         creator_id:{type:Schema.ObjectId, ref:'User'},
@@ -374,8 +197,6 @@ var Schemas = exports.Schemas = {
         name: {type:String}
     },
 
-    ActionResource:ActionResource,
-
     ActionSuggestion: {
         creator_id: {type:Schema.ObjectId, ref:'User', index:true, required:true},
         cycle_id: {type: ObjectId, ref: 'Cycle'},
@@ -393,48 +214,10 @@ var Schemas = exports.Schemas = {
         last_name: String,
         action_id: {type:ObjectId, ref:'Action', index:true, required:true},
         action_resources:[
-            {resource: ActionResource, amount:Number}
+            {resource: require('./action_resource'), amount:Number}
         ]
     },
 
-    Action:new Schema({
-        title:{type:String, required:true},
-        tooltip:String,
-        text_field:{type:mongoose_types.Html},
-        text_field_preview:{type:mongoose_types.Html},
-        image_field: mongoose_types.File,
-        image_field_preview: mongoose_types.File,
-        type: String, //only admin can change this
-        description:String,
-        creator_id:{type:ObjectId, ref:'User', index:true, required:true},
-        first_name: {type: String, editable:false},
-        last_name: {type: String, editable:false},
-        cycle_id:{type:ObjectId, ref:'Cycle', index:true, required:true},
-        action_resources:[
-            {resource: ActionResource, amount:Number, left_to_bring: Number}
-        ],
-        tags:[String],
-        //users that conected somehow to the action for my uru
-        users:[
-            new Schema({user_id:{type:ObjectId, ref:'User'}, join_date: {type:Date, 'default':Date.now}})
-        ],
-        execution_date:{type:Date, 'default':Date.now},//change default
-        creation_date:{type:Date, 'default':Date.now},
-        required_participants:{type:Number, 'default':0},
-        //users that are going to be in the action
-        going_users: [
-            new Schema({user_id: {type:ObjectId, ref:'User'}, join_date: {type: Date, 'default': Date.now}})
-        ],
-        num_of_going: {type: Number, 'default': 0, editable:false},
-        tokens:{type:Number, 'default':0},
-        is_approved:{type:Boolean, 'default':false},
-        is_hot_object: {type:Boolean,'default':false},
-        gamification: {approved_to_cycle :{type: Boolean, 'default': false}, editable:false},
-        location:mongoose_types.GeoPoint,
-        grade:{type:Number, 'default':0},
-        evaluate_counter:{type:Number, 'default':0, editable:false},
-        grade_sum:{type:Number, 'default':0, editable:false}
-    }, {strict: true}),
 
     Post:{
         discussion_id:{type:Schema.ObjectId, ref:'Discussion', index:true, required:true},
@@ -550,43 +333,7 @@ var Schemas = exports.Schemas = {
     }
 };
 
-Schemas.Cycle.pre("save", function(next){
 
-    var self = this;
-
-    var iterator = function(subject, itr_cbk){
-        Models.Subject.findById(subject.id, function(err, result){
-            if(err){
-               itr_cbk(err, null);
-            }else{
-                subject.name = result.name;
-                itr_cbk(null, result);
-            }
-        })
-    }
-
-    async.forEach(self.subject, iterator, function(err, result){
-        if(!err){
-            self.save(function(err, result){
-
-            })
-            next();
-        }
-    })
-});
-
-Schemas.User.methods.toString = function()
-{
-    return this.first_name + ' ' + this.last_name;
-};
-
-Schemas.User.methods.avatar_url = function()
-{
-    if(this.avatar && this.avatar.url)
-        return this.avatar.url;
-    else
-        return 'http://graph.facebook.com/' + this.facebook_id + '/picture/?type=large';
-};
 
 Schemas.Article.pre('save',function(next)
 {
@@ -607,7 +354,7 @@ Schemas.Article.pre('save',function(next)
     next();
 });
 
-var schemas_with_tooltip = [Schemas.Discussion,Schemas.Article,Schemas.Cycle,Schemas.InformationItem,Schemas.Action,Schemas.Headline,Schemas.Update];
+var schemas_with_tooltip = [require('./discussion'),Schemas.Article,require('./cycle'),require('./information_item'),require('./action'),Schemas.Headline,Schemas.Update];
 
 _.each(schemas_with_tooltip,function(schema,index){
     schema.methods.tooltip_or_title = function(){
@@ -617,8 +364,12 @@ _.each(schemas_with_tooltip,function(schema,index){
 
 
 var Models = module.exports = {
-    User:mongoose.model("User",Schemas.User),
-    InformationItem:mongoose.model('InformationItem', Schemas.InformationItem),
+    User:mongoose.model("User",require('./user')),
+    InformationItem:mongoose.model('InformationItem', require('./information_item')),
+    Discussion:mongoose.model('Discussion', require('./discussion')),
+    Cycle:mongoose.model('Cycle', require('./cycle')),
+    Action:mongoose.model('Action', require('./action')),
+
     Headline:mongoose.model('Headline', Schemas.Headline),
 
     SuccessStory:mongoose.model('SuccessStory', Schemas.SuccessStory),
@@ -626,7 +377,6 @@ var Models = module.exports = {
     Kilkul:mongoose.model('Kilkul', new Schema(Schemas.Kilkul, {strict: true})),
 
     Subject:mongoose.model('Subject', new Schema(Schemas.Subject, {strict: true})),
-    Discussion:mongoose.model('Discussion', Schemas.Discussion),
     Post:utils.extend_model('Post', Schemas.PostOrSuggestion, Schemas.Post, 'posts'),
     PostAction:utils.extend_model('PostAction', Schemas.PostOrSuggestion, Schemas.PostAction),
     Suggestion:utils.extend_model('Suggestion', Schemas.PostOrSuggestion, Schemas.Suggestion, 'posts'),
@@ -641,10 +391,8 @@ var Models = module.exports = {
 //    CommentVote:mongoose.model('CommentVote', new Schema(Schemas.CommentVote, {strict: true})),
 //    Comment:mongoose.model('Comment', new Schema(Schemas.Comment, {strinct: true})),
     Article:mongoose.model('Article', Schemas.Article),
-    Cycle:mongoose.model('Cycle', Schemas.Cycle),
     Category:mongoose.model('Category', new Schema(Schemas.Category, {strict: true})),
-    Action:mongoose.model('Action', Schemas.Action),
-    ActionResource:mongoose.model('ActionResource', new Schema(Schemas.ActionResource, {strict: true})),
+    ActionResource:mongoose.model('ActionResource', new Schema(require('./action_resource'), {strict: true})),
     Tag: mongoose.model('Tag', new Schema(Schemas.Tag, {strict: true})),
     ResourceObligation: mongoose.model('ResourceObligation', new Schema(Schemas.ResourceObligation, {strict: true})),
     Notification: mongoose.model('Notification', new Schema(Schemas.Notification, {strict: true})),

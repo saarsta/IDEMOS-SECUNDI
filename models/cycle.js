@@ -1,0 +1,64 @@
+var mongoose = require("mongoose"),
+    Schema = mongoose.Schema,
+    ObjectId = Schema.ObjectId,
+    async = require('async'),
+    mongoose_types = require('j-forms').types,
+    utils = require('./../utils');
+
+var Cycle = module.exports = new Schema({
+    creation_date: {type:Date, 'default':Date.now},
+    due_date : {type:Date, 'default':function(){ return Date.now() + 1000*3600*24*30;  }},
+    subject:[{
+        id:{type:ObjectId, ref:'Subject', index:true, required:true},
+        name: {type:String, editable:false}
+    }
+    ],
+    title: {type:String, required:true},
+    tooltip:String,
+    text_field:{type:mongoose_types.Html},
+    text_field_preview:{type:mongoose_types.Html},
+    image_field: mongoose_types.File,
+    image_field_preview: mongoose_types.File,
+    tags:[String],
+    discussions:[
+        {type:ObjectId, ref:'Discussion'}
+    ],
+    document: String,
+    shopping_cart: [
+        {type:ObjectId, ref:'InformationItem'}
+    ],
+    is_hot_object: {type:Boolean,'default':false},
+    followers_count: {type: Number, 'default':0, editable:false},
+    num_of_comments: {type: Number, 'default':0, editable:false},
+    upcoming_action: {type: ObjectId, ref: 'Action', index: true, editable:false},
+    num_upcoming_actions: {type: Number, 'default':0, editable:false},
+    //users that conected somehow to the cycle for my uru
+    users:{type:[
+        new Schema({user_id:{type:ObjectId, ref:'User'}, join_date: {type:Date, 'default':Date.now}})
+    ], editable:false}
+}, {strict: true});
+
+Cycle.pre("save", function(next){
+
+    var self = this;
+
+    var iterator = function(subject, itr_cbk){
+        mongoose.find('Subject').findById(subject.id, function(err, result){
+            if(err){
+                itr_cbk(err, null);
+            }else{
+                subject.name = result.name;
+                itr_cbk(null, result);
+            }
+        })
+    }
+
+    async.forEach(self.subject, iterator, function(err, result){
+        if(!err){
+            self.save(function(err, result){
+
+            })
+            next();
+        }
+    })
+});
