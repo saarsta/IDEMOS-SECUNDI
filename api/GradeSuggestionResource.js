@@ -64,7 +64,8 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
             evaluate_counter: null,
             already_graded: null,
             num_of_agrees: null,
-            num_of_not_agrees: null
+            num_of_not_agrees: null,
+            grade_id: null
         }
     },
 
@@ -83,6 +84,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
         var curr_tokens_amout;
         var discussion_id = fields.discussion_id;
         var real_threshold;
+        var grade_id;
 
         async.waterfall([
 
@@ -102,7 +104,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
 
             function(grade_suggestion_obj, cbk){
                 is_agree = grade_suggestion_obj.evaluation_grade >= discussion_evaluation_grade;
-
+                grade_id = grade_suggestion_obj._id;
                 async.parallel([
                     function(cbk1){
                         models.Suggestion.findById(grade_suggestion_obj.suggestion_id, function(err, sugg){
@@ -164,7 +166,8 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                     req.token_price = common.getGamificationTokenPrice('grade_suggestion') || 0;
                 }
                 callback(err, {
-                        new_grade:new_grade,
+                    grade_id: grade_id,
+                    new_grade:new_grade,
                     evaluate_counter: counter,
                     already_graded: true,
                     num_of_agrees: agrees,
@@ -197,7 +200,10 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                         });
                     }
                 ], function(err){
-                    callback(err, {new_grade: new_grade, evaluate_counter: evaluate_counter, grade_id: g_grade._id || 0})
+                    callback(err, {
+                        new_grade: new_grade,
+                        evaluate_counter: evaluate_counter,
+                        grade_id: g_grade._id || 0})
                 })
             }
         });
