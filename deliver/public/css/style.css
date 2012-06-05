@@ -1030,21 +1030,17 @@ body
     position: relative;
     z-index: 5;
 }
-.services-blue a.service-1 span.text,
-.services-blue a.service-2 span.text,
-.services-blue a.service-6 span.text
+.services-blue a.service-2 span.text
 {
     display: block;
     padding-top: 50px;
 }
-.services-blue a.service-3 span.text,
-.services-blue a.service-5 span.text,
-.services-blue a.service-7 span.text
+.services-blue a.service-1 span.text
 {
     display: block;
     padding-top: 58px;
 }
-.services-blue a.service-4 span.text
+.services-blue a.service-3 span.text
 {
     display: block;
     padding-top: 38px;

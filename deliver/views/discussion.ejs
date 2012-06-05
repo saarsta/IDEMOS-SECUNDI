@@ -240,19 +240,19 @@
     $(document).ready(function () {
         /***************************************************/
 
-    var my_id= "<%=user._id%>";
+    var my_id= "<%=user_logged ? user._id : ''%>";
     var discussion_id = "<%=discussion.id%>";
     var mouseDown, mouseUp, top, left;
     var grade_id = "<%=discussion.grade_obj.grade_id%>";
     var sugg_grade_id;
     var new_post_ref_id = null;  //if not null =>the create new post is connected to anther post
-    var discussion_grade=<% if(discussion.grade_obj){ %><%=discussion.grade_obj.value%><% }else{ %>0<% } %>;
+    var discussion_grade=<%=discussion.grade_obj ? discussion.grade_obj.value : 0 %>;
     var postsNumber=0;
 
 
         $(".slider").slider({
 
-            value: discussion_grade  ,
+            value: discussion_grade,
             range: "min",
             min: 0,
             max: 10,
@@ -302,11 +302,6 @@
         });
         $("#amount3").val($(".slider-three").slider("value"));
 
-
-
-    $('.comments-box .comment-one .user-right').hover(function () {
-            $(this).toggleClass('hover');
-        });
 
 
     $(".inline").colorbox({ inline: true, width: "730" });
@@ -452,11 +447,16 @@
      $(this).toggleClass('hover');
      });*/
 
-    $('#comments,#suggestion_list').on('hover',".side_menu",function(e){
-        $(this).toggleClass('hover');
-    });
-    $('#comments,#suggestion_list').on('click',".arrow",function(e){
-        $(this).next().animate({width: 'toggle'});
+    $('#comments,#suggestion_list').on('mouseenter',".side_menu",function(e){
+        $(this).addClass('hover');
+        $('.left',this).show().css({width:0}).animate({'width':87});
+
+    }).on('mouseleave',".side_menu",function(e){
+          var side = $(this);
+          side.removeClass('hover');
+        $('.left',this).animate({'width':0},function(){
+            $(this).hide();
+        });
     });
 
     // copy the post text+ user to   discussion_comment
@@ -476,7 +476,7 @@
     });
 
     $('#comments,#suggestion_list').on('click',".follow_user",function(e){
-        var creator_id =  $(this).parents('.comment-one').data("creator_id");
+        var creator_id =  $(this).parents('.comment-one,.one').data("creator_id");
         var self = this;
 
         db_functions.joinOrLeaveUserFollowers(creator_id, function(err, user){
@@ -629,7 +629,8 @@
         db_functions.addPostToDiscussion(discussion_id, $("textarea#discussion_comment").val(),new_post_ref_id,function(err, post){
             // $("#user_tokens").text(post.updated_user_tokens);
             if(!err){
-                setUserScore(my_id, post.creator_id.score);
+                if(my_id)
+                    setUserScore(my_id, post.creator_id.score);
                 dust.render('discussion_comment', post, function(err, out){
                     $("#comments").append(out);
                     $("textarea#discussion_comment").val('');
