@@ -30,7 +30,7 @@
                 </div>
 
 
-                <p id="read_more" style="display:;">
+                <p id="read_more" style="display:none;">
                     <a href="javascript:void(0);">
                         קרא עוד
                     </a>
@@ -542,9 +542,14 @@ $(document).ready(function () {
                     change:function (event, ui) {
                         var rating = ui.value;
                         db_functions.addSuggestionGrade(suggestion.id, discussion_id, rating, suggest_grade_id[suggestion.id], function (err, data) {
-                            $("#suggest_grade_" + suggestion.id).val(Math.round(data.new_grade * 100) / 100);
-                            $("#suggest_graders_" + suggestion.id).text(data.evaluate_counter);
-                            suggest_grade_id[suggestion.id] = data.grade_id;
+                            if(!err)
+                            {
+                                $("#suggest_grade_" + suggestion.id).val(Math.round(data.new_grade * 100) / 100);
+                                $("#suggest_graders_" + suggestion.id).text(data.evaluate_counter);
+                                suggest_grade_id[suggestion.id] = data.grade_id;
+                            }
+                            else
+                                console.log(err);
                         });
                     }
                 });
