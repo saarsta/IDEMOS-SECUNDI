@@ -110,7 +110,7 @@ body
 #main-menu li a
 {
     color:#50504f;
-    font-size: 20px;
+    font-size: 22px;
     line-height: 20px;
     font-family: 'AdumaFOTRegular';
     text-decoration: none;
@@ -491,9 +491,8 @@ body
     width: 110px;
     height: 31px;
     color:#ffffff;
-    font: normal 20px/31px 'AdumaFOTRegular';
+    font: normal 22px/31px 'AdumaFOTRegular';
     padding:0;
-    padding-top:3px;
     cursor: pointer;
 }
 .search-box input[type=submit]:hover
@@ -954,9 +953,8 @@ body
     width: 110px;
     height: 29px;
     color:#ffffff;
-    font: normal 20px/29px 'AdumaFOTRegular';
+    font: normal 22px/29px 'AdumaFOTRegular';
     padding:0;
-    padding-top:3px;
     cursor: pointer;
     text-align: center;
     text-decoration: none;
@@ -1017,10 +1015,10 @@ body
     float: right;
     margin-right: 11px;
     color:#ffffff;
-    font: normal 20px/20px 'AdumaFOTMedium';
+    font: normal 22px/22px 'AdumaFOTMedium';
     text-align: center;
     text-decoration: none;
-    padding: 3px 23px 0px 0px;
+    padding: 0 23px;
     position: relative;
 }
 .services-blue a:first-child
@@ -1165,8 +1163,7 @@ body
     float: right;
     margin-right: 11px;
     color:#ffffff;
-    font: normal 20px/20px 'AdumaFOTMedium';
-    padding-top:3px;
+    font: normal 22px/22px 'AdumaFOTMedium';
     text-align: center;
     text-decoration: none;
     position: relative;
@@ -1379,8 +1376,7 @@ body
     border-radius: 2px;
     color:#fff;
     width: 304px;
-    font: normal 20px/35px "AdumaFOTRegular";
-    padding-top:3px;
+    font: normal 22px/35px "AdumaFOTRegular";
     cursor: pointer;
 }
 .discussion-main .bottom label
@@ -1424,8 +1420,7 @@ body
     color:#ffffff;
     float: right;
     margin: 0;
-    font: normal 20px/32px "AdumaFOTMedium";
-    padding-top:3px;
+    font: normal 22px/32px "AdumaFOTMedium";    
 }
 #card .card-top a.btn
 {
@@ -1954,8 +1949,7 @@ body
     width: 110px;
     height: 29px;
     text-align: center;
-    font: normal 20px/29px 'AdumaFOTRegular';
-    padding-top:3px;
+    font: normal 22px/29px 'AdumaFOTRegular';
     color:#ffffff;
     border-radius: 2px;
     -moz-border-radius: 2px;
