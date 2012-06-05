@@ -62,7 +62,9 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
 
             new_grade: null,
             evaluate_counter: null,
-            already_graded: null
+            already_graded: null,
+            num_of_agrees: null,
+            num_of_not_agrees: null
         }
     },
 
@@ -75,8 +77,12 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
         var g_suggestion_obj;
         var is_agree;
         var discussion_evaluation_grade;
-        var num_of_agrees;
+        var agrees;
+        var not_agrees;
+        //this is agrees - not_agrees, for now...
+        var curr_tokens_amout;
         var discussion_id = fields.discussion_id;
+        var real_threshold;
 
         async.waterfall([
 
@@ -96,7 +102,6 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
 
             function(grade_suggestion_obj, cbk){
                 is_agree = grade_suggestion_obj.evaluation_grade >= discussion_evaluation_grade;
-                num_of_agrees = grade_suggestion_obj.agrees + Number(is_agree);
 
                 async.parallel([
                     function(cbk1){
@@ -109,14 +114,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                     function(cbk1){
                         models.Discussion.findById(discussion_id, function(err, obj){
                             if(!err){
-                                var real_threshold = obj.admin_threshold_for_accepting_change_suggestions || obj.threshold_for_accepting_change_suggestions;
-                                if(num_of_agrees >= real_threshold){
-                                    Suggestion.approveSuggestion(grade_suggestion_obj.suggestion_id, function(err, obj1){
-                                        cbk1(err, obj1);
-                                    })
-                                }else{
-                                    cbk1(err, obj);
-                                }
+                                real_threshold = obj.admin_threshold_for_accepting_change_suggestions || obj.threshold_for_accepting_change_suggestions;
                             }else{
                                 cbk1(err, null);
                             }
@@ -128,13 +126,31 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
             },
 
             function(suggestion_obj, cbk){
-                calculateSuggestionGrade(suggestion_obj._id, suggestion_obj.discussion_id, is_agree, function(err, _new_grade, _evaluate_counter){
-                    if(!err){
-                        new_grade = _new_grade;
-                        counter = _evaluate_counter;
+                agrees = suggestion_obj.agrees + Number(is_agree);
+                not_agrees = suggestion_obj.not_agrees + Number(!is_agree);
+                curr_tokens_amout = agrees - not_agrees;
+
+                async.parallel([
+                    function(cbk1){
+                        calculateSuggestionGrade(suggestion_obj._id, suggestion_obj.discussion_id, is_agree, function(err, _new_grade, _evaluate_counter){
+                            if(!err){
+                                new_grade = _new_grade;
+                                counter = _evaluate_counter;
+                            }
+                            cbk1(err)
+                        });
+                    },
+
+                    function(cbk1){
+                        if(curr_tokens_amout >= real_threshold){
+                            Suggestion.approveSuggestion(suggestion_obj._id, function(err, obj1){
+                                cbk1(err, obj1);
+                            })
+                        }else{
+                            cbk1(err, obj);
+                        }
                     }
-                    cbk(err)
-                });
+                ])
             }
 
             ], function(err, obj){
@@ -142,7 +158,15 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                     req.gamification_type = "grade_suggestion";
                     req.token_price = common.getGamificationTokenPrice('grade_suggestion') || 0;
                 }
-                callback(err, {new_grade:new_grade, evaluate_counter: counter, already_graded: true});
+                callback(err, {
+                    new_grade:new_grade,
+                    evaluate_counter: counter,
+                    already_graded: true,
+                    num_of_agrees: agrees,
+                    num_of_not_agrees: not_agrees,
+                    wanted_amount_of_tokens: real_threshold,
+                    curr_amount_of_tokens: curr_tokens_amout
+                });
             })
     },
 
