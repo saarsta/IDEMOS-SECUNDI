@@ -3839,3 +3839,7 @@ body.search-ative #header
 {
     display: none;
 }
+.post_text ul
+{
+    list-style:disc outside none;
+}

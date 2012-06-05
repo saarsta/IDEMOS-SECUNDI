@@ -1,7 +1,7 @@
 <div class="one">
     <a href="/{type}s/{_id}">
         <div style="width:292px; height:164px;" class="auto-scale">
-            <img src="{image_field_preview.url}" alt="" />
+            <img src="{image_field_preview.url}" alt="title"  title="{tooltip_or_title}" />
         </div>
     </a>
     <h4><a href="">{title}</a></h4>
@@ -25,7 +25,7 @@
         <div class="more">
             <span></span>
             <ul>
-                {@if cond="('{tags}'.split(',').length > 3 )"}
+                {@if cond="(0{tags|length} > 3 )"}
                 <li><a href="">הצג עוד תגיות</a></li>
                 {/if}
                 <li><a href="">הוסף תגית</a></li>

@@ -23,6 +23,7 @@ var HeadlineResource = module.exports = common.GamificationMongooseResource.exte
             this.fields = {
                 _id: null,
                 title: null,
+                tooltip_or_title:null,
                 type: null,
                 text_field: null,
                 image_field: null,

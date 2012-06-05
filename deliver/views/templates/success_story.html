@@ -1,7 +1,7 @@
 <div class="one">
     <div class="img-box">
         <div style='width:125px; height:80px;' class='auto-scale'>
-            <img src="{image_field.url}" alt="" />
+            <img src="{image_field.url}" alt="" title="{tooltip_or_title}"/>
         </div>
         <span class="flag"></span>
     </div>
@@ -20,7 +20,7 @@
         <div class="more">
             <span></span>
             <ul>
-                {@if cond="('{tags}'.split(',').length > 4 )"}
+                {@if cond="(0{tags|length} > 4 )"}
                 <li><a href="">הצג עוד תגיות</a></li>
                 {/if}
                 <li><a href="">הוסף תגית</a></li>

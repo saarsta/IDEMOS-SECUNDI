@@ -22,6 +22,7 @@ var SuccessStoryResource = module.exports = common.GamificationMongooseResource.
             this.fields = {
                 _id:null,
                 title: null,
+                tooltip_or_title:null,
                 text_field: null,
                 image_field: null,
                 actions: null,

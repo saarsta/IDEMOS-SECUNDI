@@ -42,7 +42,7 @@ var _ = require('underscore');
 
 exports.LOGIN_PATH = LOGIN_PATH;
 
-var Models = require("../../../models.js");
+var Models = require("../../../models");
 
 exports.referred_by_middleware = function(req,res,next)
 {
