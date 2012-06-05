@@ -108,7 +108,7 @@ app.configure(function(){
 
 require('./deliver/routes')(app);
 require('./routes')(app);
-require('./model')(app);
+require('./api')(app);
 require('./admin')(app);
 
 var cron = require('./cron');

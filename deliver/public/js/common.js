@@ -15,13 +15,15 @@ dust.filters['date'] = function(a){
     return $.datepicker.formatDate('dd.mm.yy', new Date(Date.parse(a)));
 };
 
+dust.filters['length'] = function(arr) {
+    return arr.length;
+};
+
 var tags_replace = {
     'b' : 'b',
     'i' : 'i',
     'u' : 'u',
     's': 's'
- //   'super':'sup',
- //   'sub':'sub'
 };
 
 dust.filters['tags'] = function(text) {
