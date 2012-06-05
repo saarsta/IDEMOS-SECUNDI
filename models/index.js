@@ -17,31 +17,7 @@ var mongoose = require("mongoose"),
 mongoose_types.loadTypes(mongoose);
 
 
-var CommentVote = new Schema({
-    user_id:{type:ObjectId, ref:'User', index:true, required:true},
-    method: {type:String, "enum":['vote_for', 'vote_against']},
-    time: {type:Date, 'default':Date.now}
-});
 
-var Reply = new Schema({
-    author: {type:ObjectId, ref:'User', index:true, required:true},
-    first_name: String,
-    last_name: String,
-    text: String,
-    time: {type:Date, 'default':Date.now},
-    votes: [CommentVote],
-    replies: [Reply]
-});
-
-var Comment = new Schema({
-//    article_id :{type:ObjectId, ref:'Article', index:true, required:true},
-    author :{type:ObjectId, ref:'User', index:true, required:true},
-    text: String,
-    votes: [CommentVote],
-    time: {type:Date, 'default':Date.now},
-//        status: [{type:String, "enum":['comment', 'reply'], 'default': 'comment'}],
-    replies: {type:[Reply], editable:false}
-});
 
 
 
@@ -251,27 +227,6 @@ var Schemas = exports.Schemas = {
         not_agrees: {type: Number, 'default': 0},
     },
 
-    CommentVote: CommentVote,
-
-    Reply: Reply,
-
-    Comment : Comment,
-
-    Article: new Schema({
-        user_id:{type:ObjectId, ref:'User', index:true, required:true},
-        first_name: {type:String/*, editable:false*/},
-        last_name: {type:String/*, *//**//*editable:false*/},
-        avatar : {type:String, editable:false},
-        title : {type:String, required:true, required:true},
-        tooltip:String,
-        text : {type:mongoose_types.Html, required:true},
-        tags: [String],
-        view_counter: {type: Number, 'default': '0'},
-        time: {type: Date, 'default': Date.now, editable:false},
-        popularity_counter: {type: Number, 'default': 0},
-        comments : [Comment]
-    } ,{strict: true}),
-
     Notification: {
         user_id:{type:ObjectId, ref:'User', index:true, required:true},
         notificators: [{
@@ -334,27 +289,7 @@ var Schemas = exports.Schemas = {
 };
 
 
-
-Schemas.Article.pre('save',function(next)
-{
-    var self = this;
-    if(!this.first_name && !this.last_name && this.user_id)
-    {
-        Models.User.findById(this.user_id,function(err,user)
-        {
-            if(!err)
-            {
-                self.first_name = user.first_name;
-                self.last_name = user.last_name;
-                self.avatar = user.avatar_url();
-            }
-            next();
-        });
-    }
-    next();
-});
-
-var schemas_with_tooltip = [require('./discussion'),Schemas.Article,require('./cycle'),require('./information_item'),require('./action'),Schemas.Headline,Schemas.Update];
+var schemas_with_tooltip = [require('./discussion'),require('./articles'),require('./cycle'),require('./information_item'),require('./action'),Schemas.Headline,Schemas.Update];
 
 _.each(schemas_with_tooltip,function(schema,index){
     schema.methods.tooltip_or_title = function(){
@@ -369,6 +304,7 @@ var Models = module.exports = {
     Discussion:mongoose.model('Discussion', require('./discussion')),
     Cycle:mongoose.model('Cycle', require('./cycle')),
     Action:mongoose.model('Action', require('./action')),
+    Article:mongoose.model('Article', require('./articles')),
 
     Headline:mongoose.model('Headline', Schemas.Headline),
 
@@ -388,9 +324,6 @@ var Models = module.exports = {
     GradeAction:mongoose.model('GradeAction', new Schema(Schemas.GradeAction, {strict: true})),
     GradeSuggestion:mongoose.model('GradeSuggestion', new Schema(Schemas.GradeSuggestion, {strict: true})),
     Join:mongoose.model('Join', new Schema(Schemas.Join, {strict: true})),
-//    CommentVote:mongoose.model('CommentVote', new Schema(Schemas.CommentVote, {strict: true})),
-//    Comment:mongoose.model('Comment', new Schema(Schemas.Comment, {strinct: true})),
-    Article:mongoose.model('Article', Schemas.Article),
     Category:mongoose.model('Category', new Schema(Schemas.Category, {strict: true})),
     ActionResource:mongoose.model('ActionResource', new Schema(require('./action_resource'), {strict: true})),
     Tag: mongoose.model('Tag', new Schema(Schemas.Tag, {strict: true})),
