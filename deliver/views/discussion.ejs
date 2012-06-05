@@ -30,8 +30,8 @@
 
                 <p id="read_more" style="display:;">
                     <a href="javascript:void(0);">
-                    קרא עוד
-                </a>
+                        קרא עוד
+                    </a>
                 </p>
             </div>
             <div class="add-offer-bottom cf">
@@ -92,7 +92,7 @@
         </div>
         <div class="card-left">
             <h3><span>
-עגלת המידע
+סל מידע
             </span></h3>
             <div class="comment-slide">
                 <a href="" id="prev" ></a>
@@ -161,7 +161,7 @@
         <strong>
             הודעת מערכת:
         </strong>
-	        <%= discussion.system_message %>
+        <%- discussion.system_message %>
 
     </div>
 </div>
@@ -174,11 +174,14 @@
             <option id="creation_date">
                 מיין לפי תאריך
             </option>
-            <option id="first_name">
+           <!-- <option id="first_name">
                 מיין לפי יוזר
+            </option>-->
+            <option id="-total_votes">
+                מיין לפי מעוררי עניין
             </option>
-            <option id="total_votes">
-                מיין לפי תוצאות
+            <option id="-popularity">
+מיין לפי כמות אסימונים
             </option>
         </select>
         <h2>
@@ -239,8 +242,8 @@
 
 <%- partial('partials/footer.ejs') %>
 <script type="text/javascript">
-    $(document).ready(function () {
-        /***************************************************/
+$(document).ready(function () {
+    /***************************************************/
 
 
     var discussion_id = "<%=discussion.id%>";
@@ -249,52 +252,52 @@
     var sugg_grade_id;
     var new_post_ref_id = null;  //if not null =>the create new post is connected to anther post
 
-        $(".slider").slider({
+    $(".slider").slider({
 
-            value: "<%=discussion.grade_obj ? discussion.grade_obj.value : 0 %>",
-            range: "min",
-            min: 0,
-            max: 10,
-            step: 0.10,
-            change: function (event, ui) {
+        value: "<%=discussion.grade_obj ? discussion.grade_obj.value : 0 %>",
+        range: "min",
+        min: 0,
+        max: 10,
+        step: 0.10,
+        change: function (event, ui) {
 
-                 var rating = ui.value;
+            var rating = ui.value;
 
-                 db_functions.addDiscussionGrade(discussion_id,rating, grade_id, function(err,data)
-                 {
-                        $("#amount").val(Math.round(data.new_grade*100)/100);
-                        $("#graders").text(data.evaluate_counter);
-                        grade_id=data.grade_id;
-                 });
+            db_functions.addDiscussionGrade(discussion_id,rating, grade_id, function(err,data)
+            {
+                $("#amount").val(Math.round(data.new_grade*100)/100);
+                $("#graders").text(data.evaluate_counter);
+                grade_id=data.grade_id;
+            });
 
-                $("#amount").val(ui.value);
-            }
-        });
-        //$("#amount").val($(".slider").slider("value"));
+            $("#amount").val(ui.value);
+        }
+    });
+    //$("#amount").val($(".slider").slider("value"));
 
-        $(".slider-two").slider({
-            disabled: true,
-            range: "min",
-            value: 0,
-            min: 0,
-            max: 11,
-            step: 0.10,
-            slide: function (event, ui) {
-                //$("#amount2").val(ui.value);
-            }
-        });
-        //$("#amount2").val($(".slider-two").slider("value"));
-        $(".slider-three").slider({
-            range: "min",
-            value: 8.20,
-            min: 0,
-            max: 11,
-            step: 0.10,
-            slide: function (event, ui) {
-                $("#amount3").val(ui.value);
-            }
-        });
-        $("#amount3").val($(".slider-three").slider("value"));
+    $(".slider-two").slider({
+        disabled: true,
+        range: "min",
+        value: 0,
+        min: 0,
+        max: 11,
+        step: 0.10,
+        slide: function (event, ui) {
+            //$("#amount2").val(ui.value);
+        }
+    });
+    //$("#amount2").val($(".slider-two").slider("value"));
+    $(".slider-three").slider({
+        range: "min",
+        value: 8.20,
+        min: 0,
+        max: 11,
+        step: 0.10,
+        slide: function (event, ui) {
+            $("#amount3").val(ui.value);
+        }
+    });
+    $("#amount3").val($(".slider-three").slider("value"));
 
 
 
@@ -332,16 +335,16 @@
 
     });
 
-       $('.discussion_content').on('mousedown', function(e) {
-                        mouseDown = e;
-                        console.log(e);
-                    })
-                    .on('mouseup', function(e){
-                        mouseUp = e;
+    $('.discussion_content').on('mousedown', function(e) {
+        mouseDown = e;
+        console.log(e);
+    })
+            .on('mouseup', function(e){
+                mouseUp = e;
 
-                        left = Math.ceil((mouseDown.clientX + mouseUp.clientX) / 2 - ($(".popup-window").width() / 2));
-                        top = Math.min(mouseDown.clientY, mouseUp.clientY) - $(".popup-window").height() - 40 + $(window).scrollTop();
-                        console.log(e);
+                left = Math.ceil((mouseDown.clientX + mouseUp.clientX) / 2 - ($(".popup-window").width() / 2));
+                top = Math.min(mouseDown.clientY, mouseUp.clientY) - $(".popup-window").height() - 40 + $(window).scrollTop();
+                console.log(e);
 
             }).on('keydown', function(e){
                 console.log(e.keyCode == 27);
@@ -443,12 +446,12 @@
         $('.left',this).show().css({width:0}).animate({'width':87});
 
     }).on('mouseleave',".side_menu",function(e){
-          var side = $(this);
-          side.removeClass('hover');
-        $('.left',this).animate({'width':0},function(){
-            $(this).hide();
-        });
-    });
+                var side = $(this);
+                side.removeClass('hover');
+                $('.left',this).animate({'width':0},function(){
+                    $(this).hide();
+                });
+            });
 
     // copy the post text+ user to   discussion_comment
     $('#comments,#suggestion_list').on('click',".quote_button",function(e){
@@ -495,20 +498,9 @@
         var discussionComment=  $("textarea#discussion_comment").focus();
     } );
 
-    /*  db_functions.getDiscussionShoppingCart(discussion_id, function(err, data){
-
-     if(err){}
-     else{
-     for (var i in data.objects){
-     //shopping_cart_items.add(data.objects[i]);
-     }
-     }
-     });
-
-     */
-     var suggest_grade_id = new Object();
-     function render_suggestion(suggestion)
-     {
+    var suggest_grade_id = new Object();
+    function render_suggestion(suggestion)
+    {
         if(suggestion.parts && suggestion.parts.length){
             var original = $('#discussion_content').val();
             suggestion.original_part = function(){
@@ -525,33 +517,32 @@
                 var suggestion_grade_val =       suggestion.grade_obj ?    suggestion.grade_obj.value :0;
                 suggest_grade_id[suggestion.id]=  suggestion.grade_obj ?    suggestion.grade_obj._id :null;
                 $(".suggest_slider_"+suggestion.id).slider({
-                              value:suggestion_grade_val,
-                              range: "min",
-                              min: 0,
-                              max: 10,
-                              step: 0.10,
-                              change: function (event, ui) {
-                                   var rating = ui.value;
-                                   db_functions.addSuggestionGrade(suggestion.id,discussion_id,rating, suggest_grade_id[suggestion.id], function(err,data)
-                                   {
-                                          $("#suggest_grade_"+suggestion.id).val(Math.round(data.new_grade*100)/100);
-                                          $("#suggest_graders_"+suggestion.id).text(data.evaluate_counter);
-                                          suggest_grade_id[suggestion.id]= data.grade_id;
-                                   });
-                              }
-                          });
+                    value:suggestion_grade_val,
+                    range: "min",
+                    min: 0,
+                    max: 10,
+                    step: 0.10,
+                    change: function (event, ui) {
+                        var rating = ui.value;
+                        db_functions.addSuggestionGrade(suggestion.id,discussion_id,rating, suggest_grade_id[suggestion.id], function(err,data)
+                        {
+                            $("#suggest_grade_"+suggestion.id).val(Math.round(data.new_grade*100)/100);
+                            $("#suggest_graders_"+suggestion.id).text(data.evaluate_counter);
+                            suggest_grade_id[suggestion.id]= data.grade_id;
+                        });
+                    }
+                });
             });
-         }
+        }
         return null;
-     }
-     db_functions.getSuggestionByDiscussion(discussion_id,function(err,data){
-            $.each(data.objects,function(index,suggestion){
-                render_suggestion(suggestion);
-            });
+    }
+    db_functions.getSuggestionByDiscussion(discussion_id,function(err,data){
+        $.each(data.objects,function(index,suggestion){
+            render_suggestion(suggestion);
+        });
 
-            $('#suggestion_number').text('('+data.objects.length+')');
-      });
-
+        $('#suggestion_number').text('('+data.objects.length+')');
+    });
 
     function renderComments(comments ){
         var i ;
@@ -671,8 +662,8 @@
 
 
     });
-    
-        $('.system-notice .close').click(function(){
+
+    $('.system-notice .close').click(function(){
         $(this).parents('.system-notice').fadeOut(800);
     });
 

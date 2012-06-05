@@ -49,6 +49,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
             image_field: null,
             image_field_preview: null,
             subject_id: null,
+            subject_name: null,
             creation_date: null,
             creator_id: null,
             first_name: null,
@@ -67,6 +68,17 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                 grade_id: null,
                 value: null
             }
+        };
+        this.update_fields = {
+            title: null,
+            image_field: null,
+            image_field_preview: null,
+            subject_id: null,
+            subject_name: null,
+            creation_date: null,
+            vision_text_preview: null,
+            vision_text: null,
+            tags: null
         };
     },
 
@@ -183,6 +195,11 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                             user_id: user_id,
                             join_date: Date.now()
                         };
+                        // create vision_text_preview - 200 chars
+                        if(fields.vision_text.length >= 200)
+                            fields.vision_text_preview = fields.vision_text.substr(0, 200);
+                        else
+                            fields.vision_text_preview = fields.vision_text;
 
                         for (var field in fields) {
                             object.set(field, fields[field]);

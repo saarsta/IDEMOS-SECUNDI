@@ -51,6 +51,15 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
         }};
         this.fields = {
             _id: null,
+
+            //just for debuging!!!
+            user_id: null,
+            suggestion_id: null,
+            evaluation_grade: null,
+            creation_date: null,
+            does_support_the_suggestion: null,
+            /////////////////////////////////
+
             new_grade: null,
             evaluate_counter: null,
             already_graded: null

@@ -16,6 +16,10 @@ dust.filters['date'] = function(a){
     return $.datetimepicker.formatDate('dd.mm.yy', new Date(Date.parse(a)));
 };
 
+dust.filters['length'] = function(arr) {
+    return arr.length;
+};
+
 
 dust.renderArray = function(template,arr,callback,endCallback)
 {

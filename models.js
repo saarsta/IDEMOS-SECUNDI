@@ -222,8 +222,8 @@ var Schemas = exports.Schemas = {
         subject_id:[
             {type:ObjectId, ref:'Subject', index:true, required:true}
         ],
-        subject_name:String,
-        system_message: {type:mongoose_types.Text, "default": "דיון זה מתעתד להיות מעגל תנופה. שתפו, הגיבו וגרמו לזה לקרות"},
+        subject_name: String,
+        system_message: {type:mongoose_types.Html, "default": "דיון זה מתעתד להיות מעגל תנופה. שתפו, הגיבו וגרמו לזה לקרות"},
         creation_date:{type:Date, 'default':Date.now},
         creator_id:{type:ObjectId, ref:'User'},
         first_name:{type:String,editable:false},
@@ -300,7 +300,9 @@ var Schemas = exports.Schemas = {
 //        avatar : {type:mongoose_types.File, editable:false},
         total_votes: {type: Number, 'default': 0},
         creation_date:{type:Date, 'default':Date.now,editable:false},
-//        tokens:{type:Number, 'default':0, index: true},
+        //for now there is no such thing as "tokens",
+        //this is for later when a user vote could be more than one vote
+        tokens:{type:Number, 'default':0, index: true},
         popularity: {type:Number, 'default':0},
         gamification: {high_number_of_tokens_bonus : {type: Boolean, 'default': false}}
     },
@@ -309,7 +311,8 @@ var Schemas = exports.Schemas = {
         user_id:{type:ObjectId, ref:'User', index:true, required:true},
         post_id:{type:ObjectId, ref:'Post', index:true, required:true},
 //        tokens:Number,
-        method:{type:String, "enum":['add', 'remove']},
+        ballance:{type:Number,'default':0},
+//        method:{type:String, "enum":['add', 'remove']},
         creation_date:{type:Date, 'default':Date.now}
     },
 
