@@ -18,6 +18,14 @@ var ArticleResource = common.GamificationMongooseResource.extend({
         this.allowed_methods = ['get', 'post'];
         this.filtering = {popularity_counter: null};
         this.update_fields = ["comments", "popolarity_counter", "title", "text", "tags"];
+        this.fields = {
+            tooltip_or_title:null,
+            title:null,
+            avatar:null,
+            first_name:null,
+            last_name:null,
+            tags:null
+        }
     },
 
     get_objects: function(req, filters, sorts, limit, offset, callback){

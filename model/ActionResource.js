@@ -8,7 +8,6 @@
 
 
 var resources = require('jest'),
-    util = require('util'),
     models = require('../models'),
     async = require('async'),
     common = require('./common'),
@@ -29,6 +28,7 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
             this.fields = {
                 _id: null,
                 title: null,
+                tooltip_or_title:null,
                 text_field: null,
                 text_field_preview: null,
                 image_field: null,

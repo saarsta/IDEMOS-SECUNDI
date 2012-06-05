@@ -46,6 +46,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
         },
         this.fields = {
             title: null,
+            tooltip_or_title:null,
             image_field: null,
             image_field_preview: null,
             subject_id: null,

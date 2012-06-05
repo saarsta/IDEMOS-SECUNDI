@@ -11,6 +11,7 @@ var mongoose = require("mongoose"),
     ObjectId = Schema.ObjectId,
     mongoose_types = require('j-forms').types,
     utils = require('./utils'),
+    _ = require('underscore'),
     async = require('async');
 
 mongoose_types.loadTypes(mongoose);
@@ -112,8 +113,9 @@ var Schemas = exports.Schemas = {
         avatar : mongoose_types.File
     }),
 
-    InformationItem:{
+    InformationItem:new Schema({
         title: {type: String, required: true},
+        tooltip:String,
         subject_id:[{type:ObjectId, ref:'Subject',required:true}],
         category:{type:String, "enum":['test', 'statistics', 'infographic', 'graph'], required:true},
         text_field:{type:mongoose_types.Text, required:true},
@@ -140,15 +142,16 @@ var Schemas = exports.Schemas = {
         gamification: {rewarded_creator_for_high_liked: {type: String, 'default': false, editable: false},
                        rewarded_creator_for_approval: {type: String, 'default': false, editable: false}, editable:false},
         gui_order:{type:Number,'default':9999999,editable:false}
-    },
+    }, {strict: true}),
 
     //this is for
     information_group: {
         information_items:[{type:ObjectId, ref:'Information_item'}]
     },
 
-    Headline:{
+    Headline:new Schema({
         title: {type: String, required: true},
+        tooltip:String,
         type: {type: String, "enum": ["from_the_news_paper", "daily_survey", "conclusion"]},
         text_field:{type:mongoose_types.Html},
         image_field: mongoose_types.File,
@@ -158,10 +161,11 @@ var Schemas = exports.Schemas = {
         is_visible:{type:Boolean, 'default':true},
         creation_date:{type:Date, 'default':Date.now,editable:false},
         gui_order:{type:Number,'default':9999999,editable:false}
-    },
+    }, {strict: true}),
 
-    SuccessStory:{
+    SuccessStory: new Schema({
         title: {type: String, required: true},
+        tooltip:String,
         text_field:{type:mongoose_types.Html},
 //        text_field_preview:{type:mongoose_types.Html},
         image_field: mongoose_types.File,
@@ -172,11 +176,12 @@ var Schemas = exports.Schemas = {
         is_visible:{type:Boolean, 'default':true},
         creation_date:{type:Date, 'default':Date.now,editable:false},
         gui_order:{type:Number,'default':9999999,editable:false}
-    },
+    }, {strict: true}),
 
     //cycle updates
-    Update:{
+    Update:new Schema({
         title: {type: String, required: true},
+        tooltip:String,
         text_field:{type:mongoose_types.Text},
 //        text_field_preview:{type:mongoose_types.Html},
         image_field: mongoose_types.File,
@@ -187,12 +192,13 @@ var Schemas = exports.Schemas = {
         is_visible:{type:Boolean, 'default':true},
         creation_date:{type:Date, 'default':Date.now,editable:false},
         gui_order:{type:Number,'default':9999999,editable:false}
-    },
+    }, {strict: true}),
 
     Kilkul:{
         user:{type:ObjectId, ref:'User'},
         user_name: {type: String, editable:false},
         title: {type: String},
+        tooltip:String,
         text_field:{type:mongoose_types.Text},
         text_field_preview:{type:mongoose_types.Html},
         image_field: mongoose_types.File,
@@ -205,6 +211,7 @@ var Schemas = exports.Schemas = {
 
     Subject:{
         name:{type:String,required:true},
+        tooltip:String,
         description: {type:mongoose_types.Text,required:true},
         text_field_preview:{type:mongoose_types.Text},
         image_field:mongoose_types.File,
@@ -213,8 +220,9 @@ var Schemas = exports.Schemas = {
         is_hot_object: {type:Boolean,'default':false}
     },
 
-    Discussion:{
+    Discussion:new Schema({
         title:{type:String, required:true},
+        tooltip:String,
 //        text_field:{type:mongoose_types.Html},
 //        text_field_preview:{type:mongoose_types.Html},
         image_field: { type:mongoose_types.File, required:true},
@@ -258,7 +266,7 @@ var Schemas = exports.Schemas = {
         grade_sum:{type:Number, 'default':0, editable:false},
         gamification: {has_rewarded_creator_of_turning_to_cycle: {type: Boolean, 'default': false},
                         has_rewarded_creator_for_high_grading_of_min_graders: {type: String, 'default': false}, editable:false}
-    },
+    }, {strict: true}),
 
     Cycle: new Schema({
         creation_date: {type:Date, 'default':Date.now},
@@ -269,6 +277,7 @@ var Schemas = exports.Schemas = {
             }
         ],
         title: {type:String, required:true},
+        tooltip:String,
         text_field:{type:mongoose_types.Html},
         text_field_preview:{type:mongoose_types.Html},
         image_field: mongoose_types.File,
@@ -385,8 +394,9 @@ var Schemas = exports.Schemas = {
         ]
     },
 
-    Action:{
+    Action:new Schema({
         title:{type:String, required:true},
+        tooltip:String,
         text_field:{type:mongoose_types.Html},
         text_field_preview:{type:mongoose_types.Html},
         image_field: mongoose_types.File,
@@ -421,7 +431,7 @@ var Schemas = exports.Schemas = {
         grade:{type:Number, 'default':0},
         evaluate_counter:{type:Number, 'default':0, editable:false},
         grade_sum:{type:Number, 'default':0, editable:false}
-    },
+    }, {strict: true}),
 
     Post:{
         discussion_id:{type:Schema.ObjectId, ref:'Discussion', index:true, required:true},
@@ -467,6 +477,7 @@ var Schemas = exports.Schemas = {
         last_name: {type:String/*, *//**//*editable:false*/},
         avatar : {type:String, editable:false},
         title : {type:String, required:true, required:true},
+        tooltip:String,
         text : {type:mongoose_types.Html, required:true},
         tags: [String],
         view_counter: {type: Number, 'default': '0'},
@@ -593,18 +604,26 @@ Schemas.Article.pre('save',function(next)
     next();
 });
 
+var schemas_with_tooltip = [Schemas.Discussion,Schemas.Article,Schemas.Cycle,Schemas.InformationItem,Schemas.Action,Schemas.Headline,Schemas.Update];
+
+_.each(schemas_with_tooltip,function(schema,index){
+    schema.methods.tooltip_or_title = function(){
+        return this.tooltip || this.title;
+    };
+});
+
 
 var Models = module.exports = {
     User:mongoose.model("User",Schemas.User),
-    InformationItem:mongoose.model('InformationItem', new Schema(Schemas.InformationItem, {strict: true})),
-    Headline:mongoose.model('Headline', new Schema(Schemas.Headline, {strict: true})),
+    InformationItem:mongoose.model('InformationItem', Schemas.InformationItem),
+    Headline:mongoose.model('Headline', Schemas.Headline),
 
-    SuccessStory:mongoose.model('SuccessStory', new Schema(Schemas.SuccessStory, {strict: true})),
-    Update: mongoose.model('Update', new Schema(Schemas.Update, {strict: true})),
+    SuccessStory:mongoose.model('SuccessStory', Schemas.SuccessStory),
+    Update: mongoose.model('Update', Schemas.Update),
     Kilkul:mongoose.model('Kilkul', new Schema(Schemas.Kilkul, {strict: true})),
 
     Subject:mongoose.model('Subject', new Schema(Schemas.Subject, {strict: true})),
-    Discussion:mongoose.model('Discussion', new Schema(Schemas.Discussion, {strict: true})),
+    Discussion:mongoose.model('Discussion', Schemas.Discussion),
     Post:utils.extend_model('Post', Schemas.PostOrSuggestion, Schemas.Post, 'posts'),
     PostAction:utils.extend_model('PostAction', Schemas.PostOrSuggestion, Schemas.PostAction),
     Suggestion:utils.extend_model('Suggestion', Schemas.PostOrSuggestion, Schemas.Suggestion, 'posts'),
@@ -621,7 +640,7 @@ var Models = module.exports = {
     Article:mongoose.model('Article', Schemas.Article),
     Cycle:mongoose.model('Cycle', Schemas.Cycle),
     Category:mongoose.model('Category', new Schema(Schemas.Category, {strict: true})),
-    Action:mongoose.model('Action', new Schema(Schemas.Action, {strict: true})),
+    Action:mongoose.model('Action', Schemas.Action),
     ActionResource:mongoose.model('ActionResource', new Schema(Schemas.ActionResource, {strict: true})),
     Tag: mongoose.model('Tag', new Schema(Schemas.Tag, {strict: true})),
     ResourceObligation: mongoose.model('ResourceObligation', new Schema(Schemas.ResourceObligation, {strict: true})),
