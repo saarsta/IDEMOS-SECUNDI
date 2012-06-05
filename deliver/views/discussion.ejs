@@ -246,13 +246,13 @@
     var grade_id = "<%=discussion.grade_obj.grade_id%>";
     var sugg_grade_id;
     var new_post_ref_id = null;  //if not null =>the create new post is connected to anther post
-    var discussion_grade=<%=discussion.grade_obj ? discussion.grade_obj.value : 0 %>;
+    var my_discussion_grade=<%=discussion.grade_obj ? discussion.grade_obj.value : 0 %>;
     var postsNumber=0;
 
 
         $(".slider").slider({
 
-            value: discussion_grade,
+            value: my_discussion_grade,
             range: "min",
             min: 0,
             max: 10,
@@ -263,17 +263,12 @@
 
                  db_functions.addDiscussionGrade(discussion_id,rating, grade_id, function(err,data)
                  {
-                    discussion_grade=      data.new_grade;
+                    my_discussion_grade=    rating  ;
                     $("#amount").val(Math.round(data.new_grade*100)/100);
                     $("#graders").text(data.evaluate_counter);
-                    $(".dark_bar").css('width',(discussion_grade*10)+'%');
-
+                    $(".dark_bar").css('width',(rating*10)+'%');
                     grade_id=data.grade_id;
                  });
-
-
-
-                $("#amount").val(ui.value);
             }
         });
         //$("#amount").val($(".slider").slider("value"));
@@ -550,7 +545,7 @@
                               }
                           });
 
-                 $(".suggest_slider_"+suggestion.id).prepend($("<div>").addClass("dark_bar").css('width',(discussion_grade*10)+'%'));
+                 $(".suggest_slider_"+suggestion.id).prepend($("<div>").addClass("dark_bar").css('width',( (suggestion.grade_obj ?    suggestion.grade_obj.value :my_discussion_grade)*10)+'%'));
 
             });
          }
