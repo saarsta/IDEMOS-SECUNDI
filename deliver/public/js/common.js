@@ -130,8 +130,8 @@ function image_autoscale(obj, params)
         var parent = $(elm.parent());
         parent.removeClass('image_loading');
         parent.css({'overflow':'hidden'});
-        var parent_width = parent.innerWidth();
-        var parent_height = parent.innerHeight();
+        var parent_width = Number(parent.css('width')) || parent.innerWidth();
+        var parent_height = Number(parent.css('height')) || parent.innerHeight();
         var parent_prop = parent_width * 1.0 / parent_height;
         parent.css({position:'relative'});
 
