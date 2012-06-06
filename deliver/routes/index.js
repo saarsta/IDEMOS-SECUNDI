@@ -14,5 +14,11 @@ module.exports = function(app) {
 
     router.include('/information_items',InformationItems);
 
+    // TODO remove this (only for backward comp)
+    router.include('/meida', InformationItems);
+
     router.include('/discussions',Discussions);
+
+
+
 };
