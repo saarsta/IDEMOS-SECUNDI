@@ -19,6 +19,9 @@ dust.filters['length'] = function(arr) {
     return arr.length;
 };
 
+dust.filters['grade'] = function(grade) {
+    return Math.round(grade * 100)/100;
+};
 var tags_replace = {
     'b' : 'b',
     'i' : 'i',

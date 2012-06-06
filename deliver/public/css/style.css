@@ -604,6 +604,7 @@ body
 .news-list .one .tags
 {
     border-top: 1px solid #ebebeb;
+    height: 16px;
 }
 .tags a
 {

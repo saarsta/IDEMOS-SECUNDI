@@ -76,7 +76,7 @@
                 </div>
                 <div class="slide-box">
                     <div class="summary">
-                        <input type="text" id="amount" value="<%= discussion.grade %>"/>
+                        <input type="text" id="amount" value="<%= Math.round(discussion.grade*100)/100 %>"/>
                         <span> <div class="inlinediv" id="graders"><%= discussion.evaluate_counter %>
                         </div> מדרגים</span>
                     </div>
