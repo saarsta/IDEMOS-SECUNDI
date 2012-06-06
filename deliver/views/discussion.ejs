@@ -556,8 +556,8 @@ $(document).ready(function () {
                             {
                                 $("#suggest_grade_" + suggestion.id).val(Math.round(data.new_grade * 100) / 100);
                                 $("#suggest_graders_" + suggestion.id).text(data.evaluate_counter);
-                                $("#agrees_" + suggestion.id).text(data.num_of_agrees);
-                                $("#not_agrees_" + suggestion.id).text(data.num_of_not_agrees);
+                                $("#agrees_" + suggestion.id).text(data.agrees);
+                                $("#not_agrees_" + suggestion.id).text(data.not_agrees);
                                 $("#wanted_amount_of_tokens_" + suggestion.id).text(data.wanted_amount_of_tokens);
                                 $("#curr_amount_of_tokens_" + suggestion.id).text(data.curr_amount_of_tokens);
                                 suggest_grade_id[suggestion.id] = data.grade_id;
