@@ -185,6 +185,7 @@
 
 <div class="comments-box">
     <div class="extra cf">
+
         <select class="left-select" id="sorting_select">
             <option id="creation_date">
                 מיין לפי תאריך
@@ -539,7 +540,7 @@ $(document).ready(function () {
 
             dust.render('discussion_suggestion', suggestion, function (err, out) {
                 $('#suggestion_list').prepend(out);
-                var suggestion_grade_val = suggestion.grade_obj ? suggestion.grade_obj.value : 0;
+                var suggestion_grade_val = suggestion.grade_obj ? suggestion.grade_obj.value : my_discussion_grade;
                 suggest_grade_id[suggestion.id] = suggestion.grade_obj ? suggestion.grade_obj._id : null;
                 $(".suggest_slider_" + suggestion.id).slider({
 
@@ -555,7 +556,12 @@ $(document).ready(function () {
                             {
                                 $("#suggest_grade_" + suggestion.id).val(Math.round(data.new_grade * 100) / 100);
                                 $("#suggest_graders_" + suggestion.id).text(data.evaluate_counter);
+                                $("#agrees_" + suggestion.id).text(data.num_of_agrees);
+                                $("#not_agrees_" + suggestion.id).text(data.num_of_not_agrees);
+                                $("#wanted_amount_of_tokens_" + suggestion.id).text(data.wanted_amount_of_tokens);
+                                $("#curr_amount_of_tokens_" + suggestion.id).text(data.curr_amount_of_tokens);
                                 suggest_grade_id[suggestion.id] = data.grade_id;
+                                //already_graded
                             }
                             else
                                 console.log(err);
@@ -563,7 +569,7 @@ $(document).ready(function () {
                     }
                 });
 
-                $(".suggest_slider_" + suggestion.id).prepend($("<div>").addClass("dark_bar").css('width', ((suggestion.grade_obj ? suggestion.grade_obj.value : my_discussion_grade) * 10) + '%'));
+                $(".suggest_slider_" + suggestion.id).prepend($("<div>").addClass("dark_bar").css('width',  (my_discussion_grade * 10) + '%'));
 
 
             });
