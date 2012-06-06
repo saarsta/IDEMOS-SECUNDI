@@ -94,43 +94,49 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
             },
 
             function(grade_discussion, cbk){
-                if(!grade_discussion)
-                    cbk({code: 401, message: "must grade discussion first"}, null);
+                //check if user has graded the discussion first
+                //if not - check if the creator of the discussion is the user that is trying to grade
+                // (if so - instead of the user discussion_grade we take the evaluated discussion.grade)
+                if(!grade_discussion){
+                    models.Discussion.findById(discussion_id, function(err, obj){
+                        if(err || !obj)
+                            cbk(err || {code: 401, message: "must grade discussion first"}, null);
+                        else{
+                            //check if suggestion is approved (al haderech)
+                            real_threshold = obj.admin_threshold_for_accepting_change_suggestions || obj.threshold_for_accepting_change_suggestions;
+                            if(req.user._id + "" == obj.creator_id + "")
+                                discussion_evaluation_grade = obj.grade;
+                            is_agree = fields.evaluation_grade >= discussion_evaluation_grade;
+
+                            base.call(self, req, fields, cbk);
+                        }
+                    })
+                }
                 else{
                     discussion_evaluation_grade = grade_discussion.evaluation_grade;
+                    is_agree = fields.evaluation_grade >= discussion_evaluation_grade;
+                    fields.does_support_the_suggestion = is_agree;
+
                     base.call(self, req, fields, cbk);
                 }
             },
 
             function(grade_suggestion_obj, cbk){
-                is_agree = grade_suggestion_obj.evaluation_grade >= discussion_evaluation_grade;
+//                is_agree = grade_suggestion_obj.evaluation_grade >= discussion_evaluation_grade;
                 grade_id = grade_suggestion_obj._id;
-                async.parallel([
-                    function(cbk1){
-                        models.Suggestion.findById(grade_suggestion_obj.suggestion_id, function(err, sugg){
-                            cbk1(err, sugg);
-                        });
-                    },
 
-                    //check if suggestion is approved
-                    function(cbk1){
-                        models.Discussion.findById(discussion_id, function(err, obj){
-                            if(!err){
-                                real_threshold = obj.admin_threshold_for_accepting_change_suggestions || obj.threshold_for_accepting_change_suggestions;
-                                cbk1(err, 1);
-                            }else{
-                                cbk1(err, null);
-                            }
-                        })
-                    }
-                ], function(err, args){
-                    cbk(err, args[0]);
-                })
+                //update grade suggstoin "does_support_the_suggestion"
+                //find suggestion
+
+                models.Suggestion.findById(grade_suggestion_obj.suggestion_id, function(err, sugg){
+                    cbk(err, sugg)
+                });
             },
 
             function(suggestion_obj, cbk){
                 agrees = suggestion_obj.agrees + Number(is_agree);
                 not_agrees = suggestion_obj.not_agrees + Number(!is_agree);
+
                 curr_tokens_amout = agrees - not_agrees;
 
                 async.parallel([
@@ -145,6 +151,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                     },
 
                     function(cbk1){
+                        //if there is an admin threshokd specified for the suggestion - he wins
                         if(suggestion_obj.admin_threshold_for_accepting_the_suggestion > 0)
                             real_threshold = suggestion_obj.admin_threshold_for_accepting_the_suggestion;
 
@@ -264,11 +271,11 @@ var calculateSuggestionGrade = GradeSuggestionResource.calculateSuggestionGrade 
             new_grade = total_sum/total_counter;
             if(is_agree_to_suggestion != null){
                 if(is_agree_to_suggestion){
-                    models.Suggestion.update({_id: suggestion_id}, {$set: {grade: new_grade, evaluate_counter: suggestios_grade_counter, $inc: {agrees: 1}}}, function(err, args){
+                    models.Suggestion.update({_id: suggestion_id}, {$set: {grade: new_grade, evaluate_counter: suggestios_grade_counter}, $inc: {agrees: 1}}, function(err, args){
                         cbk(err, args);
                     });
                 }else{
-                    models.Suggestion.update({_id: suggestion_id}, {$set: {grade: new_grade, evaluate_counter: suggestios_grade_counter, $inc: {not_agrees: 1}}}, function(err, args){
+                    models.Suggestion.update({_id: suggestion_id}, {$set: {grade: new_grade, evaluate_counter: suggestios_grade_counter}, $inc: {not_agrees: 1}}, function(err, args){
                         cbk(err, args);
                     });
                 }
@@ -281,4 +288,4 @@ var calculateSuggestionGrade = GradeSuggestionResource.calculateSuggestionGrade 
     ], function(err, disc_grades){
         callback(err, new_grade, total_counter);
     })
-}
+};
