@@ -3844,3 +3844,6 @@ body.search-ative #header
 {
     list-style:disc outside none;
 }
+.proxy {
+    display: none;
+}
