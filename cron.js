@@ -8,7 +8,7 @@
 
 var util = require('util'),
     models = require('./models'),
-    common = require('./model/common'),
+    common = require('./api/common'),
     async = require('async');
 
     g_all_users = null;

@@ -2,7 +2,7 @@
 var j_forms = require('j-forms');
 var async = require('async');
 var models = require('../models');
-var notifications = require('../model/notifications')
+var notifications = require('../api/notifications')
 
 module.exports = j_forms.forms.AdminForm.extend({
     actual_save : function(callback)

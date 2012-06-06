@@ -30,6 +30,7 @@ var InformationItemResource = module.exports = common.GamificationMongooseResour
         this.fields = {
             _id: null,
             title: null,
+            tooltip_or_title:null,
             subject_id: {
                 _id: null,
                 name: null

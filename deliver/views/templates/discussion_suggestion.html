@@ -13,7 +13,7 @@
             <div class="right">
                 <div class="img-box transparent-img" >
                     <div  style="width:60px; height:64px;" class="auto-scale" >
-                        <img width="60" alt="{title}" src="{creator_id.avatar_url}"/>
+                        <img alt="{title}" title="{creator_id.first_name} {creator_id.last_name}"  src="{creator_id.avatar_url}"/>
                     </div>
                     <span></span>
                 </div>
@@ -23,13 +23,23 @@
                     <span>3</span>
                 </div>
                 <div class="respect">
-                    <span>20</span>
+                    <span class="score">{creator_id.score}</span>
                 </div>
             </div>
         </div>
         <div class="text-left">
-            <h4>{original_part}</h4>
-            <p>{explanation}</p>
+            <h4>
+                טקסט מקורי:
+                {original_part}</h4>
+            <p>
+                הצעה לשינוי:
+                {alternative_part}
+            </p>
+            <p>
+                נימוק:
+                {explanation}
+            </p>
+
         </div>
         <a class="grey-btn" href="">הגב</a>
     </div>
@@ -37,21 +47,21 @@
         <div class="status">
             <div class="yes">
                 <div class="green">מסכים<small>(2)</small></div>
-                <div class="number"> {agrees}</div>
+                <div class="number" id="agrees_{id}"> {agrees}</div>
             </div>
             <div class="no">
                 <div class="red">לא מסכים</div>
-                <div class="number">{not_agrees}</div>
+                <div class="number" id="not_agrees_{id}">{not_agrees}</div>
             </div>
         </div>
         <div class="status">
             <div class="yes">
-                <div class="white"> נוכחית כמות טוקנים</div>
-                <div class="number">0</div>
+                <div class="white">כמות טוקנים נוכחית</div>
+                <div class="number" id="curr_amount_of_tokens_{id}">{curr_amount_of_tokens}</div>
             </div>
             <div class="no">
-                <div class="white"> רצויה כמות טוקנים</div>
-                <div class="number">0</div>
+                <div class="white"> כמות טוקנים רצויה</div>
+                <div class="number"  id="wanted_amount_of_tokens_{id}">{wanted_amount_of_tokens}</div>
             </div>
         </div>
         <div class="slide-box">

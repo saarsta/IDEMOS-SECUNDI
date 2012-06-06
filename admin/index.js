@@ -2,8 +2,8 @@ var j_forms = require('j-forms'),
     mongoose_admin = require('admin-with-forms'),
     Models = require('../models'),
     async = require('async'),
-    DiscussionResource = require('../model/DiscussionResource'),
-    SuggestionResource = require('../model/suggestionResource'),
+    DiscussionResource = require('../api/DiscussionResource'),
+    SuggestionResource = require('../api/suggestionResource'),
     locale = require('../locale');
 
 module.exports = function(app)

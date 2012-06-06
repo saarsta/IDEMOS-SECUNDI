@@ -27,6 +27,7 @@ var HotObjectResource = module.exports = jest.Resource.extend({
         this.fields = {
              _id: null,
             title: null,
+            tooltip_or_title:null,
             type: null,
             text_field_preview: null,
             image_field_preview: null,
