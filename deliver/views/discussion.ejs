@@ -213,7 +213,7 @@
                 כתיבת תגובה
             </h3>
 
-            <div class="text-box cf">
+            <div class="text-box cf" <%if(user_logged){%> data-creator_id="<%=user._id%>" <%}%> >
                 <div class="left">
                     <textarea id="discussion_comment" class="four-col" cols="0" rows="0"></textarea>
                 </div>
@@ -234,7 +234,7 @@
                         <span>3</span>
                     </div>
                     <div class="respect">
-                        <span>20</span>
+                        <span class="score" ><%=user.score%></span>
                     </div>
                     <% } %>
                 </div>
