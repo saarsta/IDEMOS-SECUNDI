@@ -148,6 +148,9 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                         if(suggestion_obj.admin_threshold_for_accepting_the_suggestion > 0)
                             real_threshold = suggestion_obj.admin_threshold_for_accepting_the_suggestion;
 
+                        //TODO for now
+                        real_threshold = 100;
+                        //TODO there is a problem with "approveSuggestion"
                         if(curr_tokens_amout >= real_threshold){
                             Suggestion.approveSuggestion(suggestion_obj._id, function(err, obj1){
                                 cbk1(err, obj1);
