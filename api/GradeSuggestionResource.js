@@ -14,11 +14,11 @@ util.inherits(Authoriztion,resources.Authorization);
 Authoriztion.prototype.edit_object = function(req,object,callback){
 
     if(req.method == 'POST'){
-        models.GradeSuggestion.count({"suggestion_id": object.suggestion_id + "", "user_id":req.user._id}, function(err, count){
+        models.GradeSuggestion.findOne({suggestion_id: object.suggestion_id + "", user_id:req.user._id}, function(err, obj){
             if (err){
                 callback(err, null);
             }else{
-                if (count > 0){
+                if (obj){
                     callback({message:"user already grade this discussion",code:401}, null);
                 }else{
                     object.user_id = req.user._id;
@@ -117,6 +117,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                         models.Discussion.findById(discussion_id, function(err, obj){
                             if(!err){
                                 real_threshold = obj.admin_threshold_for_accepting_change_suggestions || obj.threshold_for_accepting_change_suggestions;
+                                cbk1(err, 1);
                             }else{
                                 cbk1(err, null);
                             }
@@ -147,6 +148,9 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                         if(suggestion_obj.admin_threshold_for_accepting_the_suggestion > 0)
                             real_threshold = suggestion_obj.admin_threshold_for_accepting_the_suggestion;
 
+                        //TODO for now
+                        real_threshold = 100;
+                        //TODO there is a problem with "approveSuggestion"
                         if(curr_tokens_amout >= real_threshold){
                             Suggestion.approveSuggestion(suggestion_obj._id, function(err, obj1){
                                 cbk1(err, obj1);
