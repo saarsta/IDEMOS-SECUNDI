@@ -28,7 +28,6 @@ var tags_replace = {
 
 dust.filters['tags'] = function(text) {
     $.each(tags_replace,function(key,value) {
-        console.log(RegExp('\\[' + key + '\\]','g'));
         text = text.replace(RegExp('\\[' + key + '\\]','g'),'<' + value + '>').replace(RegExp('\\[\\/' + key +  '\\]','g'),'</' + value + '>')
     });
     text = text.replace(/\[list\]/g,'<ul><li>').replace(/\[\/list\]/g,'</li></ul>');
@@ -131,8 +130,8 @@ function image_autoscale(obj, params)
         var parent = $(elm.parent());
         parent.removeClass('image_loading');
         parent.css({'overflow':'hidden'});
-        var parent_width = parent.innerWidth();
-        var parent_height = parent.innerHeight();
+        var parent_width = Number(parent.css('width')) || parent.innerWidth();
+        var parent_height = Number(parent.css('height')) || parent.innerHeight();
         var parent_prop = parent_width * 1.0 / parent_height;
         parent.css({position:'relative'});
 
@@ -153,7 +152,7 @@ function image_autoscale(obj, params)
             left = (parent_width - width)/2;
         }
 
-        elm.css({position:'absolute', width:width, height:height, top:top, left:left});
+        elm.css({position:'absolute', height:height, top:top, left:left});
         elm.fadeIn(fadeIn)
     });
 
