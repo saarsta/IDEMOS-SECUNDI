@@ -71,8 +71,9 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
             suggestion.wanted_amount_of_tokens = suggestion.admin_threshold_for_accepting_the_suggestion;
             if(req.user){
                 models.GradeSuggestion.findOne({user_id: req.user._id, suggestion_id: suggestion._id}, ["_id", "evaluation_grade"], function(err, grade_sugg_obj){
-                    if(!err)
-                        var curr_grade_obj = {
+                    var curr_grade_obj = {};
+                    if(!err && grade_sugg_obj)
+                        curr_grade_obj = {
                             _id: grade_sugg_obj._id,
                             evalueation_grade: grade_sugg_obj.evaluation_grade
                         }
