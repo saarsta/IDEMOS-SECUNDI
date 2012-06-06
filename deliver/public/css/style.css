@@ -2099,7 +2099,7 @@ body
 .hidden_textarea
 {
     background: transparent;
-    height:10000%;
+    height:100%;
     width: 460px;
     resize:none;
     border: none;
