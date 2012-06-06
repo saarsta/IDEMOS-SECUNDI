@@ -19,6 +19,9 @@ dust.filters['length'] = function(arr) {
     return arr.length;
 };
 
+dust.filters['grade'] = function(grade) {
+    return Math.round(grade * 100)/100;
+};
 var tags_replace = {
     'b' : 'b',
     'i' : 'i',
@@ -32,6 +35,8 @@ dust.filters['tags'] = function(text) {
     });
     text = text.replace(/\[list\]/g,'<ul><li>').replace(/\[\/list\]/g,'</li></ul>');
     text = text.replace(/\[\*\]/g,'</li><li>').replace(/<ul><li>(.|\n)*?<\/li>/g,'<ul>');
+    text = text.replace(/\[url(?:=([^\]]*))\]((?:.|\n)*)?\[\/url\]/,'<a href="$1" target="_blank">$2</a>')
+    text = text.replace(/\[url\]((?:.|\n)*)?\[\/url\]/,'<a href="$1" target="_blank">$1</a>')
     return text;
 };
 

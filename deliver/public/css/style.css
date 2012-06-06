@@ -604,6 +604,7 @@ body
 .news-list .one .tags
 {
     border-top: 1px solid #ebebeb;
+    height: 16px;
 }
 .tags a
 {
@@ -2099,7 +2100,7 @@ body
 .hidden_textarea
 {
     background: transparent;
-    height:10000%;
+    height:100%;
     width: 460px;
     resize:none;
     border: none;
@@ -3842,4 +3843,7 @@ body.search-ative #header
 .post_text ul
 {
     list-style:disc outside none;
+}
+.proxy {
+    display: none;
 }

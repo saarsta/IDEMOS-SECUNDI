@@ -57,16 +57,16 @@
         <div class="status">
             <div class="yes">
                 <div class="white">כמות טוקנים נוכחית</div>
-                <div class="number" id="curr_amount_of_tokens_{id}">{curr_amount_of_tokens}</div>
+                <div class="number" dir="ltr" id="curr_amount_of_tokens_{id}">{curr_amount_of_tokens}</div>
             </div>
             <div class="no">
                 <div class="white"> כמות טוקנים רצויה</div>
-                <div class="number"  id="wanted_amount_of_tokens_{id}">{wanted_amount_of_tokens}</div>
+                <div class="number" id="wanted_amount_of_tokens_{id}">{wanted_amount_of_tokens}</div>
             </div>
         </div>
         <div class="slide-box">
             <div class="summary">
-                <input type="text" value="{grade}" id="suggest_grade_{id}">
+                <input type="text" value="{grade|grade}" id="suggest_grade_{id}">
                 <span><div class="inlinediv" id="suggest_graders_{id}">{evaluate_counter}</div> מדרגים</span>
             </div>
             <div class="suggest_slider suggest_slider_{id}"></div>

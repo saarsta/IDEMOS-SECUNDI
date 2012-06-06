@@ -96,7 +96,7 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
                     function(discussion_obj, cbk){
                         //cant grade your own discussion
                         if(discussion_obj.creator_id + "" == req.user._id + ""){
-                            cbk({message:"user already grade this discussion",code:401}, null);
+                            cbk({message:"cant grade your own discussion",code:401}, null);
                         }else{
                             admin_threshold = discussion_obj.admin_threshold_for_accepting_change_suggestions;
                             calculateDiscussionGrade(grade_object.discussion_id, function(err, _new_grade, evaluate_counter, _threshold){
