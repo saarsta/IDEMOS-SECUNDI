@@ -54,36 +54,61 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
             updated_user_tokens:null,
             grade_obj: {
                 _id: null,
-                evalueation_grade: null
+                evalueation_grade: null,
+                does_support_the_suggestion: null
             },
             wanted_amount_of_tokens: null,
             curr_amount_of_tokens: null
+
         };
     },
 
     get_objects: function (req, filters, sorts, limit, offset, callback) {
 
         var self = this;
+        var discussion_id = req.query.discussion_id;
+        var discussion_threshold;
 
         var iterator = function(suggestion, itr_cbk){
+            var curr_grade_obj = {};
+            suggestion.grade_obj = curr_grade_obj;
+            suggestion.is_agree = false;
+
             suggestion.curr_amount_of_tokens = suggestion.agrees - suggestion.not_agrees;
+
             //wanted amount of tokens is either what admin has entered to the specific suggestion, or the discussion threshold...
-            suggestion.wanted_amount_of_tokens = suggestion.admin_threshold_for_accepting_the_suggestion;
+            if(suggestion.admin_threshold_for_accepting_the_suggestion > 0)
+                suggestion.wanted_amount_of_tokens = suggestion.admin_threshold_for_accepting_the_suggestion;
+            else
+                suggestion.wanted_amount_of_tokens = discussion_threshold;
             if(req.user){
                 models.GradeSuggestion.findOne({user_id: req.user._id, suggestion_id: suggestion._id}, ["_id", "evaluation_grade"], function(err, grade_sugg_obj){
-                    var curr_grade_obj = {};
-                    if(!err && grade_sugg_obj)
+
+                    if(!err && grade_sugg_obj){
                         curr_grade_obj = {
                             _id: grade_sugg_obj._id,
-                            evalueation_grade: grade_sugg_obj.evaluation_grade
+                            evalueation_grade: grade_sugg_obj.evaluation_grade,
+                            does_support_the_suggestion: grade_sugg_obj.does_support_the_suggestion
                         }
                         suggestion.grade_obj = curr_grade_obj;
-
-                    itr_cbk(err, suggestion);
+                        itr_cbk(err, suggestion);
+                    }else{
+                        //check if user is the creator - if so return in grade object the
+                        if(!err){
+                            models.Discussion.findById(discussion_id, function(err, discussion){
+                                if(!err)
+                                    if(req.user._id + "" == discussion.creator_id + ""){
+                                        suggestion.grade_obj["evalueation_grade"] = discussion.grade;
+                                    }
+                                itr_cbk(err, suggestion);
+                            })
+                        }else{
+                            itr_cbk(err, suggestion);
+                        }
+                    }
                 });
             }
             else{
-                suggestion.grade_obj = {};
                 itr_cbk(null, suggestion);
             }
         }
@@ -93,9 +118,31 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
             if(err)
                 callback(err, null);
             else
-                async.forEach(results.objects, iterator, function(err, objs){
+                //arrange objects only if the request is from discussion page
+                if(!discussion_id)
                     callback(err, results);
-                });
+                else
+                    //for each object add grade_obj that reflects the user's grade for the suggestion,
+                    //if the user is the disvcussion creator - grade_obj contains the discussion evaluate grade
+                    //if the user is ofline grade_obj is {}
+
+                    async.waterfall([
+                        function(cbk){
+                            models.Discussion.findById(discussion_id, cbk);
+                        },
+
+                        function(discussion_obj, cbk){
+                            discussion_threshold = discussion_obj.threshold_for_accepting_change_suggestions;
+                            if(discussion_obj.admin_threshold_for_accepting_change_suggestions > 0)
+                                discussion_threshold = discussion_obj.admin_threshold_for_accepting_change_suggestions;
+
+                            async.forEach(results.objects, iterator, function(err, objs){
+                                cbk(err, results);
+                            });
+                        }
+                    ], function(err, results){
+                        callback(err, results);
+                    })
         });
     },
 
