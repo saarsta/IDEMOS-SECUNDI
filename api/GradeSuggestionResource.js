@@ -62,9 +62,9 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
 
             new_grade: null,
             evaluate_counter: null,
-            already_graded: null,
-            num_of_agrees: null,
-            num_of_not_agrees: null,
+//            already_graded: null,
+            agrees: null,
+            not_agrees: null,
             grade_id: null
         }
     },
@@ -169,9 +169,9 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                     grade_id: grade_id,
                     new_grade:new_grade,
                     evaluate_counter: counter,
-                    already_graded: true,
-                    num_of_agrees: agrees,
-                    num_of_not_agrees: not_agrees,
+//                    already_graded: true,
+                    agrees: agrees,
+                    not_agrees: not_agrees,
                     wanted_amount_of_tokens: real_threshold,
                     curr_amount_of_tokens: curr_tokens_amout
                 });
