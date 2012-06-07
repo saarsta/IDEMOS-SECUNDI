@@ -1,7 +1,7 @@
 import math
 
 class ThresholdCalc:
-    
+
     # minimum number of voters
     MIN_NUM_VOTERS = 1
     # maximum number of voters
