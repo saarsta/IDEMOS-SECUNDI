@@ -255,7 +255,7 @@ var db_functions = {
             url: '/api/posts/',
             type: "POST",
             async: true,
-            data: {"discussion_id": discussion_id, "text": post_content, "ref_to_post_id" : refParentPostId},
+            data: {"discussion_id": discussion_id, "text": post_content, "ref_to_post_id": refParentPostId},
             success: function (data) {
                 console.log(data);
                 callback(null, data);
