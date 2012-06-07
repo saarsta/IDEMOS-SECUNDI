@@ -119,7 +119,7 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
                     function(suggestions, cbk){
                         var real_threshold = admin_threshold || threshold;
                         async.forEach(suggestions, function(suggestion, itr_cbk){
-                            GradeSuggestion.calculateSuggestionGrade(suggestion._id, grade_object.discussion_id, null, function(err, obj){
+                            GradeSuggestion.calculateSuggestionGrade(suggestion._id, grade_object.discussion_id, null, null, function(err, obj){
                                 //check if suggestion is over the threshold
                                 if(suggestion.agrees && suggestion.agrees.length > real_threshold){
 
@@ -152,7 +152,7 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
         var suggestions = [];
 
         var iterator = function(suggestion, itr_cbk){
-            GradeSuggestion.calculateSuggestionGrade(suggestion._id, object.discussion_id, null, function(err, sugg_new_grade, sugg_total_counter){
+            GradeSuggestion.calculateSuggestionGrade(suggestion._id, object.discussion_id, null, null, function(err, sugg_new_grade, sugg_total_counter){
                 if(!err){
                     suggestions.push({
                         _id: suggestion._id,
