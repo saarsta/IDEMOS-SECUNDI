@@ -6,9 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-var resources = require('jest'),
-    util = require('util'),
-    models = require('../models'),
+var models = require('../models'),
     async = require('async'),
     common = require('./common'),
     notifications = require('./notifications'),
@@ -61,15 +59,20 @@ var InformationItemResource = module.exports = common.GamificationMongooseResour
         this._super(req, query, callback);
     },
 
+    add_user_likes:function(user_id,object,callback){
+        models.Like.count({user_id: user_id, info_item_id: object._id}, function(err, count){
+            if(count)
+                object.user_likes = true;
+            callback(err, object)
+        });
+    },
+
     get_object:function (req, id, callback) {
+        var self = this;
         this._super(req, id, function(err, object){
            object.user_likes = false;
            if(req.user){
-               models.Like.find({user_id: req.user._id, info_item_id: id}, function(err, obj){
-                   if(obj)
-                      object.user_likes = true;
-                   callback(err, object)
-               })
+               self.add_user_likes(req.user._id,object,callback);
            }else{
               callback(err, object)
            }

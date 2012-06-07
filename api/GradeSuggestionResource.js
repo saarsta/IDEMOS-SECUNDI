@@ -65,7 +65,10 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
 //            already_graded: null,
             agrees: null,
             not_agrees: null,
-            grade_id: null
+            grade_id: null,
+
+//            wanted_amount_of_tokens: null,
+            curr_amount_of_tokens: null
         }
     },
 
@@ -100,15 +103,21 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                 if(!grade_discussion){
                     models.Discussion.findById(discussion_id, function(err, obj){
                         if(err || !obj)
-                            cbk(err || {code: 401, message: "must grade discussion first"}, null);
+                            cbk(err || {code: 404, message: "the is no such discussion"}, null);
                         else{
-                            //check if suggestion is approved (al haderech)
-                            real_threshold = obj.admin_threshold_for_accepting_change_suggestions || obj.threshold_for_accepting_change_suggestions;
-                            if(req.user._id + "" == obj.creator_id + "")
+                            //if the creator of the discussion grade the suggestion without grdein the discussion - its ok
+                            // otherwise unauthorise
+                            if(req.user._id + "" != obj.creator_id + "")
+                                cbk({code: 401, message: "must grade discussion first"}, null);
+                            else{
                                 discussion_evaluation_grade = obj.grade;
-                            is_agree = fields.evaluation_grade >= discussion_evaluation_grade;
+                                is_agree = fields.evaluation_grade >= discussion_evaluation_grade;
 
-                            base.call(self, req, fields, cbk);
+                                //check if suggestion is approved (al haderech)
+                                real_threshold = obj.admin_threshold_for_accepting_change_suggestions || obj.threshold_for_accepting_change_suggestions;
+
+                                base.call(self, req, fields, cbk);
+                            }
                         }
                     })
                 }
@@ -141,7 +150,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
 
                 async.parallel([
                     function(cbk1){
-                        calculateSuggestionGrade(suggestion_obj._id, suggestion_obj.discussion_id, is_agree, function(err, _new_grade, _evaluate_counter){
+                        calculateSuggestionGrade(suggestion_obj._id, suggestion_obj.discussion_id, is_agree, null, function(err, _new_grade, _evaluate_counter){
                             if(!err){
                                 new_grade = _new_grade;
                                 counter = _evaluate_counter;
@@ -151,14 +160,13 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                     },
 
                     function(cbk1){
-                        //if there is an admin threshokd specified for the suggestion - he wins
+                        //if there is an admin threshokd specified for the suggestion - it wins
                         if(suggestion_obj.admin_threshold_for_accepting_the_suggestion > 0)
                             real_threshold = suggestion_obj.admin_threshold_for_accepting_the_suggestion;
 
-                        //TODO for now
-                        real_threshold = 100;
+
                         //TODO there is a problem with "approveSuggestion"
-                        if(curr_tokens_amout >= real_threshold){
+                        if(curr_tokens_amout >= /*real_threshold*/ 100){
                             Suggestion.approveSuggestion(suggestion_obj._id, function(err, obj1){
                                 cbk1(err, obj1);
                             })
@@ -183,7 +191,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
 //                    already_graded: true,
                     agrees: agrees,
                     not_agrees: not_agrees,
-                    wanted_amount_of_tokens: real_threshold,
+//                    wanted_amount_of_tokens: real_threshold,
                     curr_amount_of_tokens: curr_tokens_amout
                 });
             })
@@ -191,38 +199,116 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
 
     update_obj: function(req, object, callback){
         var self = this;
+        var base = this._super;
         var g_grade;
         var discussion_id = req.body.discussion_id;
+        var is_agree;
+        var discussion_evaluation_grade;
+        var did_user_change_his_agree;
+        var new_grade, evaluate_counter;
+        var grade_id = object._id;
+        var agrees;
+        var not_agrees;
+        var curr_tokens_amout;
+        var real_threshold;
+        var g_sugg_obj;
 
-        self._super(req, object, function(err, grade_object){
-            if(err){
-                callback(err, null);
-            }else{
-                var new_grade, evaluate_counter;
-                async.waterfall([
-                    function(cbk){
-                        g_grade = grade_object;
-                        calculateSuggestionGrade(object.suggestion_id, discussion_id, null, function(err, _new_grade, _evaluate_counter){
-                            if(!err){
-                                new_grade = _new_grade;
-                                evaluate_counter = _evaluate_counter;
+        async.waterfall([
+
+            //find the limit of between agree and not agree
+            function(cbk){
+                models.Discussion.findById(discussion_id, cbk);
+            },
+
+            function(discussion_obj, cbk){
+                real_threshold = discussion_obj.admin_threshold_for_accepting_change_suggestions || discussion_obj.threshold_for_accepting_change_suggestions;
+
+                if(discussion_obj.creator_id + "" == req.user._id + ""){
+                    discussion_evaluation_grade = discussion_obj.grade;
+                    is_agree =  object.evaluation_grade >=  discussion_evaluation_grade;
+                    models.Suggestion.findById(object.suggestion_id, cbk);
+                }
+                else
+                    models.Grade.findOne({discussion_id: discussion_id, user_id: req.user._id}, function(err, grade_discussion){
+                        if(!err){
+                            discussion_evaluation_grade = grade_discussion.evaluation_grade;
+                            is_agree =  object.evaluation_grade >=  discussion_evaluation_grade;
+                        }
+                        models.Suggestion.findById(object.suggestion_id, cbk);
+                    });
+            },
+
+            function(sugg_obj, cbk){
+                g_sugg_obj = sugg_obj;
+                agrees = sugg_obj.agrees;
+                not_agrees = sugg_obj.not_agrees;
+
+                did_user_change_his_agree = object.does_support_the_suggestion != is_agree;
+                object.does_support_the_suggestion = is_agree;
+                base.call(self, req, object, cbk);
+            },
+
+            function(grade_sugg_object, cbk){
+//                g_grade = grade_sugg_object;
+
+                calculateSuggestionGrade(object.suggestion_id, discussion_id, is_agree, did_user_change_his_agree, function(err, _new_grade, _evaluate_counter){
+                    if(!err){
+                        new_grade = _new_grade;
+                        evaluate_counter = _evaluate_counter;
+                        if(did_user_change_his_agree){
+                            if(is_agree){
+                                agrees = g_sugg_obj.agrees + 1;
+                                not_agrees = g_sugg_obj.not_agrees - 1;
                             }
-                            cbk(err, 0);
-                        });
-                    }
-                ], function(err){
-                    callback(err, {
-                        new_grade: new_grade,
-                        evaluate_counter: evaluate_counter,
-                        grade_id: g_grade._id || 0})
-                })
+                            else{
+                                agrees = g_sugg_obj.agrees - 1;
+                                not_agrees = g_sugg_obj.not_agrees + 1;
+                                curr_tokens_amout = agrees - not_agrees;
+                            }
+
+                            //if there is an admin threshokd specified for the suggestion - it wins
+                            if(g_sugg_obj.admin_threshold_for_accepting_the_suggestion > 0)
+                                real_threshold = g_sugg_obj.admin_threshold_for_accepting_the_suggestion;
+
+
+                            //TODO there is a problem with "approveSuggestion"
+                            if(curr_tokens_amout >= /*real_threshold*/ 100){
+                                Suggestion.approveSuggestion(g_sugg_obj._id, function(err, obj1){
+                                    cbk(err, obj1);
+                                })
+                            }else{
+                                cbk();
+                            }
+                        }
+                        else{
+                            cbk(null, 0);
+                        }
+                    }else
+                        cbk(err, 0);
+                });
             }
-        });
+        ], function(err){
+            callback(err, {
+//                new_grade: new_grade,
+//                evaluate_counter: evaluate_counter,
+//                grade_id: g_grade._id || 0}
+
+                grade_id: grade_id,
+                new_grade:new_grade,
+                evaluate_counter: evaluate_counter,
+                agrees: agrees,
+                not_agrees: not_agrees,
+//                wanted_amount_of_tokens: real_threshold,
+                curr_amount_of_tokens: curr_tokens_amout
+                }
+            )
+        })
     }
 })
 
 
-var calculateSuggestionGrade = GradeSuggestionResource.calculateSuggestionGrade = function (suggestion_id, discussion_id, is_agree_to_suggestion, callback){
+var calculateSuggestionGrade = GradeSuggestionResource.calculateSuggestionGrade =
+    function (suggestion_id, discussion_id,is_agree_to_suggestion, did_change_agreement_with_suggestion, callback){
 
     // suggestios_grade_counter + discussion_grade_counter = all graders
     var suggestios_grade_counter;
@@ -269,7 +355,7 @@ var calculateSuggestionGrade = GradeSuggestionResource.calculateSuggestionGrade 
             total_sum = suggestios_grade_sum + discussion_grade_sum;
 
             new_grade = total_sum/total_counter;
-            if(is_agree_to_suggestion != null){
+            if(is_agree_to_suggestion != null && did_change_agreement_with_suggestion == null){
                 if(is_agree_to_suggestion){
                     models.Suggestion.update({_id: suggestion_id}, {$set: {grade: new_grade, evaluate_counter: suggestios_grade_counter}, $inc: {agrees: 1}}, function(err, args){
                         cbk(err, args);
@@ -280,9 +366,20 @@ var calculateSuggestionGrade = GradeSuggestionResource.calculateSuggestionGrade 
                     });
                 }
             }else{
-                models.Suggestion.update({_id: suggestion_id}, {$set: {grade: new_grade, evaluate_counter: suggestios_grade_counter}}, function(err, args){
-                    cbk(err, args);
-                });
+
+                if(did_change_agreement_with_suggestion && is_agree_to_suggestion)
+                    models.Suggestion.update({_id: suggestion_id}, {$set: {grade: new_grade, evaluate_counter: suggestios_grade_counter},  $inc: {not_agrees: -1, agrees: 1}}, function(err, args){
+                        cbk(err, args);
+                    });
+                else
+                    if(did_change_agreement_with_suggestion && !is_agree_to_suggestion)
+                        models.Suggestion.update({_id: suggestion_id}, {$set: {grade: new_grade, evaluate_counter: suggestios_grade_counter},  $inc: {not_agrees: 1, agrees: -1}}, function(err, args){
+                            cbk(err, args);
+                        });
+                    else
+                        models.Suggestion.update({_id: suggestion_id}, {$set: {grade: new_grade, evaluate_counter: suggestios_grade_counter}}, function(err, args){
+                            cbk(err, args);
+                        });
             }
         }
     ], function(err, disc_grades){
