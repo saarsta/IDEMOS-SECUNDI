@@ -3127,6 +3127,7 @@ textarea.hidden_textarea::selection
 {
     border-top: 6px solid #d6dbde;
     margin-bottom: -25px;
+    display: none;
 }
 .more-deals a
 {
@@ -3139,7 +3140,6 @@ textarea.hidden_textarea::selection
     font: normal 16px/25px 'AdumaFOTMedium';
     text-decoration: none;
     margin:0 auto;
-    display: none;
 }
 .big-diagram
 {

@@ -359,9 +359,9 @@ var db_functions = {
             }
         });
     },
-    getSuggestionByDiscussion: function(discussion_id, callback){
+    getSuggestionByDiscussion: function(discussion_id,limit, offset, callback){
         this.loggedInAjax({
-            url: '/api/suggestions?discussion_id=' + discussion_id,
+            url: '/api/suggestions?discussion_id=' + discussion_id + (limit? '&limit='+limit:'') + (offset? '&offset=' + offset:'') ,
             type: "GET",
             async: true,
             success: function (data) {
@@ -370,6 +370,30 @@ var db_functions = {
             },
             error:function(err){
                 callback(err, null);
+            }
+        });
+    } ,
+
+    getListItems : function(type,query,callback)
+    {
+        var querystring = type;
+        switch(type)
+        {
+            case "actions":
+                querystring = "actions?is_approved=true";
+                break;
+            case "pendingActions":
+                querystring = "actions?is_approved=false";
+                break;
+        }
+        debugger;
+        this.loggedInAjax({
+            url: '/api/' + querystring,
+            data:query,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                callback(null, data);
             }
         });
     }
