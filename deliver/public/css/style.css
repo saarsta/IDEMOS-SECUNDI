@@ -3860,3 +3860,6 @@ body.search-ative #header
 .proxy {
     display: none;
 }
+.total-number    {
+    display: none;
+}
