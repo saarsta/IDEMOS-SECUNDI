@@ -17,13 +17,18 @@
         <div id="content" class="cf">
             <div class="rightCol">
                 <div class="nav-btn">
-                    <a href="">הוסף</a>
-                    <a href="">שתף</a>
-                    <span class="number">+1</span>
-                </div>             tag_name=tag
-                <h2><a href="/information_items/subject/<%= item.subject_id[0].id %>"><%= item.subject_id[0].name %></a> לימודי ליבה</h2>
+                    <a href="javascript:void(0);" class="add_button" >הוסף</a>
+                    <a href="/facebookShare?link=/media/<%= info.id %>" target="_blank">שתף</a>
+
+                     <% if(!user_likes) { %>
+
+                                    <a href="javascript:void(0);" class="number" id="like_button">1+</a>
+                          <% } %>
+
+                </div>
+                <h2><a href="/information_items/subject/<%= item.subject_id[0].id %>"><%= item.subject_id[0].name %></a>  <% if(tag_name) { %> <a class="last_breadcrum" href="/information_items/subject/<%= item.subject_id[0].id %>?tag_name=<%= tag_name %>"><%= tag_name %></a><% } %></h2>
                 <div class="text cf">
-                    <h3> במדינת ישראל מתחת לקו העוני דו”ח הלמ”ס מזהיר: ב-2013 כל ילד שלישי </h3>
+                    <h3><%=item.title%></h3>
                     <div class="tags-wrap">
                         <div class="down">
                             <span class="arrow"></span>
@@ -46,45 +51,13 @@
                             </div>
                         </div>
                     </div>
-                    <p>ובצמל הרושקש הנוזת לע םידירטמ םינותנ ולגתה עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה לש ח”ודב
-                    תויעבמ ךכ םושמו .לארשיב ינועה בצמ לע םידירטמ .תופסונ תורחא תויתואירב תויעבמ ךכ םושמו ,יתרבח-ילכלכה
-                     הנוזת תתמ לבוס לארשיב ישילש דלי לכ :םיאבה םינותנה םהיניבו 2012 לארשיב ינועה בצמ.תורחא תויתואירב
-                     הדח הילע :ח”ודה ינותנמ  ולגתה עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה לש ח”ודב .יתרבח-ילכלכה
-                    .תולטבומה תוירוה דח תוהמא רפסמב</p>
                     <div class="imb-box cf">
                         <a href="">
-                            <img src="images/sample-3.jpg" alt="" />
+                            <img src="<%=item.image_field.url%>" alt="<%=item.title%>" />
                             <span></span>
                         </a>
                     </div>
-                    <p> 2012 לארשיב ינועה בצמ לע םידירטמ םינותנ ולגתה עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה לש ח”ודב
- תויתואירב תויעבמ ךכ םושמו ,יתרבח-ילכלכה ובצמל הרושקש הנוזת תתמ לבוס לארשיב ישילש דלי לכ :םיאבה
- םסרופש ,רפס יתבמ םירשונ לש לודג רפסמ ,תולטבומה תוירוה דח תוהמא רפסמב הדח הילע :ח”ודה ינותנמ דוע
-.תורחא תויתואירב תויעבמ ךכ םושמו .לארשיב ינועה בצמ לע םידירטמ<br />
- הנוזת תתמ לבוס לארשיב ישילש דלי לכ :םיאבה םינותנה םהיניבו לארשיב ינועה בצמ לע םידירטמ םינותנ ולגתה
- ינועה בצמ לע םידירטמ םינותנ ולגתה עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה לש ח”ודב .יתרבח-ילכלכה
-.םידירטמ םינותנ ולגתה עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה לש ח”ודב<br />
- םהיניבו 2012 לארשיב ינועה בצמ לע םידירטמ םינותנ ולגתה עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה
-.תופסונ תורחא תויעבמ ךכ םושמו ,יתרבח-ילכלכה ובצמל הרושקש הנוזת תתמ לבוס לארשיב ישילש דלי לכ :םיאבה
- םסרופש ,רפס יתבמ םירשונ לש לודג רפסמ ,תולטבומה תוירוה דח תוהמא רפסמב הדח הילע :ח”ודה ינותנמ דוע
-.תורחא תויתואירב תויעבמ ךכ םושמו .לארשיב ינועה בצמ לע םידירטמ<br />
- 2012 לארשיב ינועה בצמ לע םידירטמ םינותנ ולגתה עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה לש ח”ודב
- תויתואירב תויעבמ ךכ םושמו ,יתרבח-ילכלכה ובצמל הרושקש הנוזת תתמ לבוס לארשיב ישילש דלי לכ :םיאבה
-.רפס יתבמ םירשונ לש לודג רפסמ ,תולטבומה תוירוה דח תוהמא רפסמב הדח הילע :ח”ודה ינותנמ דוע</p>
-                    <div class="imb-box cf">
-                       <img class="floatRight" src="images/sample-4.jpg" alt="" />
-                       <h3>םילבוס םידלי” :יול
-                       רשעב הנוזת-תתמ
-                       תונורחאה םינשב
-                       “הגיאדמ דאמ הרוצב</h3>
-                    </div>
-                    <p> 2012 לארשיב ינועה בצמ לע םידירטמ םינותנ ולגתה עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה לש ח”ודב
- תויתואירב תויעבמ ךכ םושמו ,יתרבח-ילכלכה ובצמל הרושקש הנוזת תתמ לבוס לארשיב ישילש דלי לכ :םיאבה
- םסרופש ,רפס יתבמ םירשונ לש לודג רפסמ ,תולטבומה תוירוה דח תוהמא רפסמב הדח הילע :ח”ודה ינותנמ דוע
-.תורחא תויתואירב תויעבמ ךכ םושמו .לארשיב ינועה בצמ לע םידירטמ<br />
- הנוזת תתמ לבוס לארשיב ישילש דלי לכ :םיאבה םינותנה םהיניבו לארשיב ינועה בצמ לע םידירטמ םינותנ ולגתה
- ינועה בצמ לע םידירטמ םינותנ ולגתה עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה לש ח”ודב .יתרבח-ילכלכה
-.םידירטמ םינותנ ולגתה עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה לש ח”ודב</p>
+                    <p><%- item.text_field %></p>
                     <div class="link-more">
                         <a href="">הבתכה תליחתל</a>
                     </div>
@@ -150,36 +123,88 @@
 
 <%- partial('partials/footer.ejs') %>
 
-    <script type="text/javascript">
-            $(document).ready(function () {
+<script type="text/javascript">
+$(document).ready(function () {
 
-                $(".inline").colorbox({ inline: true, width: "730" });
+            var info_item_id = "<%= info.id %>";
+            $('#info_item_full_view img').autoscale();
 
-                $('.slide-c')
-                .after('<div id="nav2">')
-                .cycle({
-                    fx: 'turnDown',
-                    speed: 'fast',
-                    timeout: 0,
-                    pager: '#nav2',
-                    next: '#next',
-                    prev: '#prev'
-                });
-
-                $(".slider").slider({
-                    value: 6.20,
-                    min: 0,
-                    max: 11,
-                    step: 0.10,
-                    slide: function (event, ui) {
-                        $("#amount").val(ui.value);
+            $("#add_button").live("click", function(){
+                db_functions.addInfoItemToShoppingCart(info_item_id, function(err, data){
+                    if(!err){
+                        dust.render('shopping_cart_item_1', data,function(err,out)
+                        {
+                            $('#shopping_cart').append(out);
+                            $('#shopping_cart img').autoscale();
+                        });
                     }
                 });
-                $("#amount").val($(".slider").slider("value"));
-                $('.comments-box .comment-one .user-right').hover(function () {
-                    $(this).toggleClass('hover');
+            });
+
+            $(".button.remove").live("click", function(){
+                var div = $(this).parent('div');
+                db_functions.removeInfoItemFromShoppingCart(info_item_id, function(err){
+                    if(!err){
+                        div.remove();
+                    }
                 });
             });
-        </script>
+
+            $('#like_button').click(function(){
+                db_functions.addLikeToInfoItem(info_item_id,function(err,data)
+                {
+                    $('#like_button').fadeOut(300);
+                });
+            });
+
+
+
+            db_functions.getUserShopingCart(function(err,data){
+                data.objects.forEach(function(obj)
+                {
+                    obj.get_link = function( )
+                    {
+                        return '/meida/' + obj._id;
+                    }
+                });
+                dust.renderArray('shopping_cart_item_1', data.objects,null,function(err,out)
+                {
+                    $('#shopping_cart').append(out);
+                    $('#shopping_cart img').autoscale();
+                });
+            });
+         });
+
+
+
+
+        $(".inline").colorbox({ inline: true, width: "730" });
+
+        $('.slide-c')
+        .after('<div id="nav2">')
+        .cycle({
+            fx: 'turnDown',
+            speed: 'fast',
+            timeout: 0,
+            pager: '#nav2',
+            next: '#next',
+            prev: '#prev'
+        });
+
+        $(".slider").slider({
+            value: 6.20,
+            min: 0,
+            max: 11,
+            step: 0.10,
+            slide: function (event, ui) {
+                $("#amount").val(ui.value);
+            }
+        });
+        $("#amount").val($(".slider").slider("value"));
+        $('.comments-box .comment-one .user-right').hover(function () {
+            $(this).toggleClass('hover');
+        });
+ });
+ </script>
 </body>
 </html>

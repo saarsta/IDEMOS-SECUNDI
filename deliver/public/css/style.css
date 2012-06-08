@@ -3171,6 +3171,18 @@ textarea.hidden_textarea::selection
     background: url(../images/arrow-left.png) 0 50% no-repeat;
     text-decoration: none;
 }
+.rightCol h2 a.last_breadcrum
+{
+
+    padding-left: 14px;
+    margin-left: 6px;
+    color: #50504F;
+    background:transparent;
+    text-decoration: none;
+}
+
+
+
 .rightCol .nav-btn
 {
     float: left;
@@ -3301,6 +3313,7 @@ textarea.hidden_textarea::selection
 {
     display: block;
     margin: 0 auto;
+    max-width: 531px;
 }
 .rightCol .text .imb-box a span
 {
