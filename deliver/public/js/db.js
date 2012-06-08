@@ -211,7 +211,34 @@ var db_functions = {
         });
     },
 
+    addLikeToInfoItem: function(info_item_id, callback){
+        this.loggedInAjax({
+            url: '/api/likes',
+            type: "POST",
+            data: {"info_item_id" : info_item_id},
+            async: true,
+            success: function (data) {
+                console.log(data);
+                callback(null, data)
+            },
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },
 
+    addInfoItemToShoppingCart: function(info_item_id, callback){
+        this.loggedInAjax({
+            url: '/api/shopping_cart/' + info_item_id,
+            type: "PUT",
+            async: true,
+            success: function (data) {
+
+                callback(null, data);
+                console.log("item information inserted to shopping cart");
+            }
+        });
+    },
 
     voteForPost: function(post_id, method, callback){
         this.loggedInAjax({

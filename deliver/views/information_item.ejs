@@ -17,13 +17,11 @@
         <div id="content" class="cf">
             <div class="rightCol">
                 <div class="nav-btn">
-                    <a href="javascript:void(0);" class="add_button" >הוסף</a>
-                    <a href="/facebookShare?link=/media/<%= info.id %>" target="_blank">שתף</a>
-
-                     <% if(!user_likes) { %>
-
-                                    <a href="javascript:void(0);" class="number" id="like_button">1+</a>
-                          <% } %>
+                    <a href="javascript:void(0);" id="add_button" >הוסף</a>
+                    <a href="/facebookShare?link=/media/<%= item.id %>" target="_blank">שתף</a>
+                     <% if(!item.user_likes) { %>
+                        <a href="javascript:void(0);" class="number" id="like_button">1+</a>
+                     <% } %>
 
                 </div>
                 <h2><a href="/information_items/subject/<%= item.subject_id[0].id %>"><%= item.subject_id[0].name %></a>  <% if(tag_name) { %> <a class="last_breadcrum" href="/information_items/subject/<%= item.subject_id[0].id %>?tag_name=<%= tag_name %>"><%= tag_name %></a><% } %></h2>
@@ -39,9 +37,8 @@
                             </ul>
                         </div>
                         <div class="tags">
-                            <a href="">אבטלה</a>
-                            <a href="">כלכלה</a>
-                            <a href="">עוני</a>
+                            <% for(var i=0; i<item.tags.length; i++) { %> <a href=""><%= item.tags[i] %> </a><% } %>
+
                             <div class="more">
                                 <span></span>
                                 <ul>
@@ -59,62 +56,21 @@
                     </div>
                     <p><%- item.text_field %></p>
                     <div class="link-more">
-                        <a href="">הבתכה תליחתל</a>
+                        <a href="#">לתחילת הכתבה</a>
                     </div>
                 </div>
             </div>
             <div class="leftCol">
                 <div class="left-top">
-                    <a class="grey-btn" href="">ףתש</a>
-                    <p>דועו םיפרג ,םינכת ,עדימ ףוסאל ידכ הלועפל האירק
-                    .השדח תואיצמ עיצהל ידכ דועו</p>
-                    <a class="green-btn" href="">השדח תואיצמ עצה</a>
+                    <a class="grey-btn" href="">שתף</a>
+                    <p>קריאה לפעולה כדי לאסוף מידע, תכנים, גרפים ועוד
+                       ועוד כדי להציע מציאות חדשה.                    </p>
+                    <a class="green-btn" href="/discussions/new/<%= item.subject_id[0].id %>">הצע מציאות חדשה</a>
                     <div class="link-more">
-                        <a href="">םיפסונ עדימ יטירפ ףוסאל רוזח</a>
+                        <a href="/information_items/">חזור לאסוף פריטי מידע נוספים</a>
                     </div>
                 </div>
                 <div class="card-products-left">
-                    <div class="one">
-                        <a href="" class="delete-app"></a>
-                        <div class="diagram cf">
-                            <img alt="" src="images/diagram-two.png">
-                            <div class="percent">
-                                <strong>57%</strong>
-                                םיעדוי אל
-                            </div>
-                            <div class="percent">
-                                <strong>43%</strong>
-                                ועיבצי
-                            </div>
-                        </div>
-                        <div class="btn-box">
-                            <a href="" class="confirm">ףתש</a>
-                            <a href="" class="delete"><span>רסה</span></a>
-                        </div>
-                    </div>
-                    <div class="one">
-                        <a href="" class="delete-app"></a>
-                        <h4>תודובע תובקעב תיב ירסח םידופיק יפלא הדוהי רבדמ רוזאב תויקוח אל תיתשת</h4>
-                        <p> עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה לש ח”ודב  ח”ודב .2012 לארשיב ינועה בצמ לע םידירטמ םינותנ ולגתה
-                         עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה לש ... תוכרעיה םישרודש רתויב םידירטמ םינותנ ולגתה </p>
-                        <div class="btn-box">
-                            <a href="" class="confirm">ףתש</a>
-                            <a href="" class="delete"><span>רסה</span></a>
-                        </div>
-                    </div>
-                    <div class="one">
-                        <a href="" class="delete-app"></a>
-                        <img alt="" src="images/news-4.jpg">
-                        <h4>דעצמ יכלוה דגנ םידקת תרסח המילא האחמ ורצענ השימח ,םילשוריב הוואגה</h4>
-                        <p> עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה לש ח”ודב  ... 2012 לארשיב ינועה בצמ לע םידירטמ םינותנ ולגתה </p>
-                        <div class="btn-box">
-                            <a href="" class="confirm">ףתש</a>
-                            <a href="" class="delete"><span>רסה</span></a>
-                        </div>
-                    </div>
-                    <div class="loading">
-                        טירפ ןעוט
-                    </div>
                 </div>
             </div>
         </div>
@@ -126,17 +82,18 @@
 <script type="text/javascript">
 $(document).ready(function () {
 
-            var info_item_id = "<%= info.id %>";
-            $('#info_item_full_view img').autoscale();
+            var info_item_id = "<%= item.id %>";
+            //bugbug shold this be used?
+            //$('#info_item_full_view img').autoscale();
 
             $("#add_button").live("click", function(){
-                db_functions.addInfoItemToShoppingCart(info_item_id, function(err, data){
+                db_functions.addInfoItemToShoppingCart(info_item_id, function(err, information_item){
                     if(!err){
-                        dust.render('shopping_cart_item_1', data,function(err,out)
-                        {
-                            $('#shopping_cart').append(out);
-                            $('#shopping_cart img').autoscale();
-                        });
+                       dust.render('information_item_box',information_item,function(err,out)
+                       {
+                           $(".card-products-left").append(out);
+                       });
+                       $("#add_button").hide();
                     }
                 });
             });
@@ -157,24 +114,41 @@ $(document).ready(function () {
                 });
             });
 
-
-
-            db_functions.getUserShopingCart(function(err,data){
-                data.objects.forEach(function(obj)
-                {
-                    obj.get_link = function( )
+            db_functions.getUserShopingCart(function(err,data)
+            {
+                    $.each(data.objects,function(index,information_item)
                     {
-                        return '/meida/' + obj._id;
-                    }
-                });
-                dust.renderArray('shopping_cart_item_1', data.objects,null,function(err,out)
-                {
-                    $('#shopping_cart').append(out);
-                    $('#shopping_cart img').autoscale();
-                });
+                        dust.render('information_item_box',information_item,function(err,out)
+                        {
+                            $(".card-products-left").append(out);
+                        })
+                        if(information_item._id==info_item_id)
+                        {
+                             $("#add_button").hide();
+                        }
+                    });
             });
-         });
 
+        $('.delete-app').live("click",removeItemFromCart);
+        $('.delete').live("click",removeItemFromCart);
+        $('.confirm').live("click",function(){
+          var item_id = $(this).attr('item_id');
+
+      });
+
+
+        function removeItemFromCart()
+        {
+              var item_id = $(this).attr('item_id');
+              db_functions.removeInfoItemFromShoppingCart(item_id,function(err,data) {
+                    $('#'+item_id).remove();
+              });
+               if(item_id==info_item_id)
+              {
+                   $("#add_button").show();
+              }
+               return false  ;
+        }
 
 
 
