@@ -114,7 +114,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                                 is_agree = fields.evaluation_grade >= discussion_evaluation_grade;
 
                                 //check if suggestion is approved (al haderech)
-                                real_threshold = obj.admin_threshold_for_accepting_change_suggestions || obj.threshold_for_accepting_change_suggestions;
+                                real_threshold = Number(obj.admin_threshold_for_accepting_change_suggestions) || obj.threshold_for_accepting_change_suggestions;
 
                                 base.call(self, req, fields, cbk);
                             }
@@ -219,7 +219,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
             },
 
             function(discussion_obj, cbk){
-                real_threshold = discussion_obj.admin_threshold_for_accepting_change_suggestions || discussion_obj.threshold_for_accepting_change_suggestions;
+                real_threshold = Number(discussion_obj.admin_threshold_for_accepting_change_suggestions) || discussion_obj.threshold_for_accepting_change_suggestions;
 
                 if(discussion_obj.creator_id + "" == req.user._id + ""){
                     discussion_evaluation_grade = discussion_obj.grade;
@@ -258,6 +258,8 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                             if(is_agree){
                                 agrees = g_sugg_obj.agrees + 1;
                                 not_agrees = g_sugg_obj.not_agrees - 1;
+                                curr_tokens_amout = agrees - not_agrees;
+
                             }
                             else{
                                 agrees = g_sugg_obj.agrees - 1;
