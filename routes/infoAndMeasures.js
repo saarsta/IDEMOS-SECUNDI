@@ -51,7 +51,9 @@ module.exports = function(router)
             function(err,results)
             {
                 if(!err)
-                    res.render('selectedItem.ejs',{title:'מידע ומדדים', logged: req.isAuthenticated(),
+                    res.render('selectedItem.ejs',{
+                        title:'מידע ומדדים',
+                        logged: req.isAuthenticated(),
                         big_impressive_title:"",
                         tag_name: req.query.tag_name,
                         info: results[1],

@@ -502,7 +502,7 @@ $(document).ready(function () {
             userName = postDiv.data('creator_name');
             new_post_ref_id = postDiv.data('id');
             text = $('.text-left p:last-child', postDiv).text();
-            text = userName + ':"' + text + '"';
+            text = userName + ' אמר:"' + text + '"\n';
             text = text + " ";
             $("textarea#discussion_comment").val(text).focus();
         });

@@ -101,6 +101,7 @@ var Schemas = exports.Schemas = {
 
 
     PostOrSuggestion:{
+        discussion_id:{type:Schema.ObjectId, ref:'Discussion', index:true, required:true},
         creator_id:{type:Schema.ObjectId, ref:'User'},
         first_name:{type:String,editable:false},
         last_name:{type:String, editable:false },
@@ -196,13 +197,10 @@ var Schemas = exports.Schemas = {
 
 
     Post:{
-        discussion_id:{type:Schema.ObjectId, ref:'Discussion', index:true, required:true},
         text:String,
-        //is_change_suggestion: {type:Boolean,'default':false},
         votes_for: {type: Number, 'default': 0},
         votes_against: {type: Number, 'default': 0},
         is_comment_on_vision:{type:Boolean, 'default':false},
-//        is_comment_on_action:{type:Boolean, 'default':false},
         ref_to_post_id:{type:Schema.ObjectId}
     },
 
@@ -214,8 +212,6 @@ var Schemas = exports.Schemas = {
     },
 
     Suggestion:{
-        discussion_id:{type:Schema.ObjectId, ref:'Discussion', index:true, required:true},
-        //is_change_suggestion: {type:Boolean,'default':true},
         parts:[
             {start:Number, end:Number, text:String}
         ],

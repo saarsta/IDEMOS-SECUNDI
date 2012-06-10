@@ -3171,6 +3171,18 @@ textarea.hidden_textarea::selection
     background: url(../images/arrow-left.png) 0 50% no-repeat;
     text-decoration: none;
 }
+.rightCol h2 a.last_breadcrum
+{
+
+    padding-left: 14px;
+    margin-left: 6px;
+    color: #50504F;
+    background:transparent;
+    text-decoration: none;
+}
+
+
+
 .rightCol .nav-btn
 {
     float: left;
@@ -3301,6 +3313,7 @@ textarea.hidden_textarea::selection
 {
     display: block;
     margin: 0 auto;
+    max-width: 531px;
 }
 .rightCol .text .imb-box a span
 {
@@ -3387,15 +3400,19 @@ textarea.hidden_textarea::selection
 {
     color:#3b63ef;
 }
-.leftCol .card-products-left
+.leftCol.card-products-left
 {
-    position: absolute;
+   /* position: absolute;
+    padding-top: 176px;
+    */
     left:0;
     bottom: 60px;
-    padding-top: 176px;
+
     z-index: 2;
     width: 308px;
 }
+
+
 .leftCol .card-products-left .one
 {
     background:#fff;

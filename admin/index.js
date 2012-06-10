@@ -58,7 +58,9 @@ module.exports = function(app)
     admin.registerMongooseModel("Action",Models.Action,null,{list:['title'],cloneable:true});
     admin.registerMongooseModel('Locale',locale.Model, locale.Model.schema.tree,{list:['locale'],form:locale.LocaleForm});
     admin.registerMongooseModel('Post',Models.Post,null,{
-        list:['text','username']
+        list:['text','username','discussion_id.title'],
+        list_populate:['discussion_id'],
+        order_by:['-discussion_id','-creation_date']
     });
     admin.registerMongooseModel('PostAction',Models.PostAction,null,{
         list:['text','username']
