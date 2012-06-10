@@ -1,32 +1,5 @@
-var _ = require('underscore');
+calc_thresh = require('./tools/test_thresh');
 
-var o = [
-    {
-        name: 'test',
-        value: '2'
-    },
+var thresh = calc_thresh.calculating_thresh(10, 10);
 
-    {
-        name: 'test2',
-        value: '3'
-    },
-
-    {
-        name: 'test4',
-        value: '4'
-    }
-];
-
-
-/*_.each(o, function(object, index, array){
-    console.log(arguments);
-    console.log("%s name is %s, value is %s", index, object.name, object.value);
-});*/
-
- var a = _.find(o, function(object, index, array){
-    object.name == "test"
-    console.log(arguments);
-    console.log("%s name is %s, value is %s", index, object.name, object.value);
-}, );
-
-console.log(a);
+console.log(thresh);

@@ -4,12 +4,19 @@ var exec = require('child_process').exec;
 
 module.exports = function(voters,rating,callback)
 {
+//    console.log('herh');
+//    // executes `pwd`
+//    exec(path.join(__dirname,"thresh_calc_cmd_line.py -v " + voters + " -r " + rating), function (error, stdout, stderr) {
+//        console.log('finished');
+//     if(error)
+//        callback(error);
+
     console.log('herh');
     // executes `pwd`
-    exec(path.join(__dirname,"thresh_calc_cmd_line.py -v " + voters + " -r " + rating), function (error, stdout, stderr) {
+    exec(path.join(__dirname,"test_thresh.js -v " + voters + " -r " + rating), function (error, stdout, stderr) {
         console.log('finished');
-     if(error)
-        callback(error);
+        if(error)
+            callback(error);
     else
     {
         console.log(stdout);

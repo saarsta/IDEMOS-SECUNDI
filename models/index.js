@@ -23,7 +23,7 @@ mongoose_types.loadTypes(mongoose);
 
 var Schemas = exports.Schemas = {
 
-    //this is for
+    //this is for share your information cart
     information_group: {
         information_items:[{type:ObjectId, ref:'Information_item'}]
     },

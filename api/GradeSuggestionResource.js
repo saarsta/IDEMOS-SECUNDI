@@ -164,9 +164,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                         if(suggestion_obj.admin_threshold_for_accepting_the_suggestion > 0)
                             real_threshold = suggestion_obj.admin_threshold_for_accepting_the_suggestion;
 
-
-                        //TODO there is a problem with "approveSuggestion"
-                        if(curr_tokens_amout >= /*real_threshold*/ 100){
+                        if(curr_tokens_amout >= real_threshold){
                             Suggestion.approveSuggestion(suggestion_obj._id, function(err, obj1){
                                 cbk1(err, obj1);
                             })
@@ -255,6 +253,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                     if(!err){
                         new_grade = _new_grade;
                         evaluate_counter = _evaluate_counter;
+
                         if(did_user_change_his_agree){
                             if(is_agree){
                                 agrees = g_sugg_obj.agrees + 1;
@@ -270,9 +269,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                             if(g_sugg_obj.admin_threshold_for_accepting_the_suggestion > 0)
                                 real_threshold = g_sugg_obj.admin_threshold_for_accepting_the_suggestion;
 
-
-                            //TODO there is a problem with "approveSuggestion"
-                            if(curr_tokens_amout >= /*real_threshold*/ 100){
+                            if(curr_tokens_amout >= real_threshold){
                                 Suggestion.approveSuggestion(g_sugg_obj._id, function(err, obj1){
                                     cbk(err, obj1);
                                 })

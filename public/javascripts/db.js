@@ -446,7 +446,7 @@ var db_functions = {
 
     getSuggestionByDiscussion: function(discussion_id, callback){
         this.loggedInAjax({
-            url: '/api/suggestions?discussion_id=' + discussion_id,
+            url: '/api/suggestions?discussion_id=' + discussion_id + "is_approved=false",
             type: "GET",
             async: true,
             success: function (data) {

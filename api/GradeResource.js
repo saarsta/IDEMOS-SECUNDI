@@ -14,7 +14,7 @@ var resources = require('jest'),
     common = require('./common'),
     GradeSuggestion = require('./GradeSuggestionResource'),
     _ = require('underscore');
-
+    calc_thresh = require('../deliver/tools/calc_thresh');
 //Authorization
 var Authoriztion = function() {};
 util.inherits(Authoriztion,resources.Authorization);
@@ -220,9 +220,7 @@ function calculateDiscussionGrade(discussion_id, callback){
                 new_grade = grade_sum / count;
 
                 //calculate threshhold here
-
-                threshold = 2; //here goes the code
-
+                threshold = calc_thresh.calculating_thresh(count, new_grade);
 
                 models.Discussion.update({_id: discussion_id}, {$set: {grade: new_grade, evaluate_counter: count, threshold_for_accepting_change_suggestions: threshold}}, cbk);
             }else{

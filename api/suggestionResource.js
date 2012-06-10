@@ -27,7 +27,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
         this.allowed_methods = ['get', 'post', 'put'];
 //        this.authorization = new Authoriztion();
         this.authentication = new common.SessionAuthentication();
-        this.filtering = {discussion_id:null};
+        this.filtering = {discussion_id:null, is_approved:null};
         this.default_query = function (query) {
             return query.sort('creation_date', 'descending').populate('creator_id');
         };
