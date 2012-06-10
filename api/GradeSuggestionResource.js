@@ -380,6 +380,6 @@ var calculateSuggestionGrade = GradeSuggestionResource.calculateSuggestionGrade 
             }
         }
     ], function(err, disc_grades){
-        callback(err, new_grade, total_counter);
+        callback(err, new_grade, suggestios_grade_counter);
     })
 };

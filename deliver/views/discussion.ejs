@@ -488,8 +488,8 @@ $(document).ready(function () {
         userName = postDiv.data('creator_name');
         new_post_ref_id = postDiv.data('id');
         text = $('.post_text', postDiv).text();
-        text = userName + ':"' + text + '"';
-        text = text + " ";
+        text = userName + " " + "כתב" + ':"'  + " " + text + '"';
+        text = text + "\n"
         $("textarea#discussion_comment").val(text).focus();
     });
 
