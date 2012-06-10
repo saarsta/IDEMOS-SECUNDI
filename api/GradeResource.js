@@ -22,29 +22,30 @@ util.inherits(Authoriztion,resources.Authorization);
 Authoriztion.prototype.edit_object = function(req,object,callback){
     //check if user already grade this discussion
 
-//    if(req.method == 'POST'){
-//        models.Grade.count({"discussion_id": object.discussion_id + "", "creator_id": req.user._id}, function(err, count){
-//            if (err){
-//                callback(err, null);
-//            }else{
-//                if (count > 0){
-//                    callback({message:"user already grade this discussion",code:401}, null);
-//                }else{
-//                    object.user_id = req.user._id;
-//                    callback(null, object);
-//                }
-//            }
-//        })
-//    }else{
-        if(req.method == 'PUT'){
-           if(!(object.user_id + "" == req.user._id + ""))
-               callback({message:"its not your garde!",code:401}, null);
-            else
-                callback(null, object);
-        }else{
-            callback(null, object);
-        }
-//    }
+    if(req.method == 'POST' || req.method == 'PUT'){
+        models.Discussion.count({"_id": object.discussion_id, "creator_id": req.user._id}, function(err, count){
+            if (err){
+                callback(err, null);
+            }else{
+                if (count > 0){
+                    callback({message:"cant grade your own discussion",code:401}, null);
+                }else{
+                    if(req.method == 'PUT'){
+                        if(!(object.user_id + "" == req.user._id + ""))
+                            callback({message:"its not your garde!",code:401}, null);
+                        else
+                            callback(null, object);
+                    }
+                    else{
+//                        object.user_id = req.user._id;
+                        callback(null, object);
+                    }
+                }
+            }
+        })
+    }else{
+        callback(null, object);
+    }
 };
 
 var GradeResource = module.exports = common.GamificationMongooseResource.extend({
