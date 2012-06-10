@@ -15,6 +15,8 @@ var resources = require('jest'),
     GradeSuggestion = require('./GradeSuggestionResource'),
     _ = require('underscore');
     calc_thresh = require('../deliver/tools/calc_thresh');
+    Suggestion = require('./suggestionResource');
+
 //Authorization
 var Authoriztion = function() {};
 util.inherits(Authoriztion,resources.Authorization);
@@ -125,9 +127,11 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
                                 if(suggestion.agrees && suggestion.agrees.length > real_threshold){
 
                                     //approveSuggestion.exec()
-
-                                }
-                                itr_cbk(err, obj);
+                                    Suggestion.approveSuggestion(suggestion._id, function(err, obj1){
+                                        itr_cbk(err, obj1);
+                                    })
+                                }else
+                                    itr_cbk(err, obj);
                             });}
                         , function(err, args){
                             cbk(err, args);

@@ -258,6 +258,8 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                             if(is_agree){
                                 agrees = g_sugg_obj.agrees + 1;
                                 not_agrees = g_sugg_obj.not_agrees - 1;
+                                curr_tokens_amout = agrees - not_agrees;
+
                             }
                             else{
                                 agrees = g_sugg_obj.agrees - 1;
