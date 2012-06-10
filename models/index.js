@@ -118,7 +118,7 @@ var Schemas = exports.Schemas = {
 
     Vote:{
         user_id:{type:ObjectId, ref:'User', index:true, required:true},
-        post_id:{type:ObjectId, ref:'Post', index:true, required:true},
+        post_id:{type:ObjectId, ref:'Post', index:true, required:true, onDelete:'delete'},
 //        tokens:Number,
         ballance:{type:Number,'default':0},
 //        method:{type:String, "enum":['add', 'remove']},
@@ -201,7 +201,7 @@ var Schemas = exports.Schemas = {
         votes_for: {type: Number, 'default': 0},
         votes_against: {type: Number, 'default': 0},
         is_comment_on_vision:{type:Boolean, 'default':false},
-        ref_to_post_id:{type:Schema.ObjectId}
+        ref_to_post_id:{type:Schema.ObjectId,onDelete:'setNull'}
     },
 
     PostAction:{
