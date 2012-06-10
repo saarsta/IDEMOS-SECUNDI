@@ -117,22 +117,14 @@ exports.routing = function(router)
         {
             user.invited_by = req.session.referred_by;
         }
-        /* user.num_of_extra_tokens = 10000000;////delete!!
-         user.invited_by = "4f69e4c52c18dffc11000002";////
-         user.num_of_extra_tokens = 4;////
-         user.has_been_invited = true; ////*/
 
-        user_model = Models.User;
+        var user_model = Models.User;
 
-        user_model.find({username:user.username, identity_provider:'register'}, function (err, result) {
-            if (err == null) {
-
-                var test = result.length;
-                if (result.length < 1) {     //user is not registered
+        user_model.findOne({first_name: user.first_name, last_name: user.last_name, identity_provider: 'register'}, function (err, result) {
+            if (!err) {
+                if (result) {     //user is not registered
                     user.save(function (err, user) {
                         if (err) {
-//                      res.send('something wrong: '+ err.message,500);
-
                             res.render('login.ejs', {title:'Login', failed:true, exist_username:false, errors:err.errors, next:req.query.next});
                         }
                         else {

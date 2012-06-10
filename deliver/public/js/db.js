@@ -330,6 +330,7 @@ var db_functions = {
                 callback(null, data);
             },
             error:function(err){
+                alert(err.responseText);
                 callback(err, null);
             }
         });
@@ -351,6 +352,7 @@ var db_functions = {
                 callback(null, data);
             },
             error:function(err){
+                alert(err.responseText);
                 callback(err, null);
             }
         });
