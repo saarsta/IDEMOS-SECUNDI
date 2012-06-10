@@ -17,7 +17,7 @@ var resources = require('jest'),
 var PostResource = module.exports = common.GamificationMongooseResource.extend({
     init:function () {
 
-        this._super(models.Post, 'post', common.getGamificationTokenPrice('post') || 0);
+        this._super(models.Post, 'post', null);
         this.allowed_methods = ['get', 'post'];
         this.authorization = new common.TokenAuthorization();
         this.authentication = new common.SessionAuthentication();
@@ -175,10 +175,21 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                         }else{
                             cbk2(null, 0);
                         }
+                    },
+
+                    //if this post create on discussion create, its free of tokens, otherwise put it on req
+                    function(cbk2){
+                        models.Post.count({discussion_id: post_object.discussion_id}, function(err, count){
+                            if(!err){
+                                if(count > 1)
+                                    req.token_price = common.getGamificationTokenPrice('post');
+                            }
+
+                            cbk2(err, count);
+                        })
                     }
                     ],
                     cbk);
-
             }
         ],function(err,result)
         {
