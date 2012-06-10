@@ -3,7 +3,7 @@ var mongoose = require("mongoose"),
     ObjectId = Schema.ObjectId,
     async = require('async'),
     mongoose_types = require('j-forms').types,
-    utils = require('./../utils');
+    utils = require('../utils');
 
 var Cycle = module.exports = new Schema({
     creation_date: {type:Date, 'default':Date.now},

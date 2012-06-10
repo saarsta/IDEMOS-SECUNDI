@@ -100,21 +100,6 @@ var Schemas = exports.Schemas = {
     },
 
 
-    PostOrSuggestion:{
-        discussion_id:{type:Schema.ObjectId, ref:'Discussion', index:true, required:true},
-        creator_id:{type:Schema.ObjectId, ref:'User'},
-        first_name:{type:String,editable:false},
-        last_name:{type:String, editable:false },
-//        username:{type:String,editable:false},
-//        avatar : {type:mongoose_types.File, editable:false},
-        total_votes: {type: Number, 'default': 0},
-        creation_date:{type:Date, 'default':Date.now,editable:false},
-        //for now there is no such thing as "tokens",
-        //this is for later when a user vote could be more than one vote
-        tokens:{type:Number, 'default':0, index: true},
-        popularity: {type:Number, 'default':0},
-        gamification: {high_number_of_tokens_bonus : {type: Boolean, 'default': false}}
-    },
 
     Vote:{
         user_id:{type:ObjectId, ref:'User', index:true, required:true},
@@ -196,32 +181,12 @@ var Schemas = exports.Schemas = {
     },
 
 
-    Post:{
-        text:String,
-        votes_for: {type: Number, 'default': 0},
-        votes_against: {type: Number, 'default': 0},
-        is_comment_on_vision:{type:Boolean, 'default':false},
-        ref_to_post_id:{type:Schema.ObjectId,onDelete:'setNull'}
-    },
 
     PostAction:{
         action_id:{type:Schema.ObjectId, ref:'Action', index:true, required:true},
         text:String,
 //        is_comment_on_vision:{type:Boolean, 'default':false},
         ref_to_post_id:{type:Schema.ObjectId, ref:'Post', index:true}
-    },
-
-    Suggestion:{
-        parts:[
-            {start:Number, end:Number, text:String}
-        ],
-        explanation: {type:mongoose_types.Text},
-        is_approved:{type:Boolean, 'default':false},
-        evaluate_counter: {type: Number, 'default': 0},
-        grade: {type: Number, 'default': 0},
-        agrees: {type: Number, 'default': 0},
-        not_agrees: {type: Number, 'default': 0},
-        admin_threshold_for_accepting_the_suggestion: {type: Number, max: 500, 'default': 0}
     },
 
     Notification: {
@@ -310,10 +275,10 @@ var Models = module.exports = {
     Kilkul:mongoose.model('Kilkul', new Schema(Schemas.Kilkul, {strict: true})),
 
     Subject:mongoose.model('Subject', new Schema(Schemas.Subject, {strict: true})),
-    Post:utils.extend_model('Post', Schemas.PostOrSuggestion, Schemas.Post, 'posts'),
-    PostAction:utils.extend_model('PostAction', Schemas.PostOrSuggestion, Schemas.PostAction),
-    Suggestion:utils.extend_model('Suggestion', Schemas.PostOrSuggestion, Schemas.Suggestion, 'posts'),
-    PostOrSuggestion:mongoose.model('PostOrSuggestion', new Schema(Schemas.PostOrSuggestion, {strict: true}), 'posts'),
+    Post:require('./post'),
+    PostAction:utils.extend_model('PostAction', Schemas.PostOrSuggestion, Schemas.PostAction).model,
+    Suggestion:require('./suggestion'),
+    PostOrSuggestion:mongoose.model('PostOrSuggestion', new Schema(require('./post_or_suggestion'), {strict: true}), 'posts'),
     Vote:mongoose.model('Vote', new Schema(Schemas.Vote, {strict: true})),
     VoteSuggestion:mongoose.model('VoteSuggestion', new Schema(Schemas.VoteSuggestion, {strict: true})),
     Like:mongoose.model('Like', new Schema(Schemas.Like, {strict: true})),

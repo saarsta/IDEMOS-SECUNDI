@@ -85,15 +85,18 @@ exports.cached_model = function(model,schema)
 };
 
 exports.config_model = function(name, schema_fields){
-    var model = exports.extend_model(name,{},schema_fields,'site_configs');
-    return exports.cached_model(model,model.schema);
+    var ext = exports.extend_model(name,{},schema_fields,'site_configs');
+    return exports.cached_model(ext.model,ext.schema);
 };
 
-exports.extend_model = function(name, base_schema, schema, collection) {
+exports.extend_model = function(name, base_schema, schema, collection,schemaFunc) {
     for (var key in base_schema)
         if (!schema[key]) schema[key] = base_schema[key];
     schema._type = {type:String, 'default':name,editable:false};
-    var model = mongoose.model(name, new mongoose.Schema(schema), collection);
+    var schemaObj = new mongoose.Schema(schema);
+    if(schemaFunc)
+        schemaFunc(schemaObj);
+    var model = mongoose.model(name, schemaObj, collection);
     var old_find = model.find;
     model.find = function () {
         var params = arguments.length ? arguments[0] : {};
@@ -104,7 +107,7 @@ exports.extend_model = function(name, base_schema, schema, collection) {
             arguments = [params];
         return old_find.apply(this, arguments);
     };
-    return model;
+    return {model:model, schema:schemaObj};
 };
 
 /*
