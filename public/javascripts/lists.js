@@ -15,6 +15,7 @@ function loadListItems(original_type,template_name,subject,tag) {
 
     function populate_bottom_list()
     {
+
         db_functions.getListItems(original_type,query,function(err,data)
         {
             $('#mainList').empty();

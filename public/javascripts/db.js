@@ -98,6 +98,7 @@ var db_functions = {
                 querystring = "actions?is_approved=false";
                 break;
         }
+        debugger;
         this.loggedInAjax({
             url: '/api/' + querystring,
             data:query,

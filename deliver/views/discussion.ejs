@@ -173,9 +173,7 @@
 <div class="system-notice">
     <div class="extra">
         <a class="close" href="javascript:void(0);"></a>
-        <strong>
-            הודעת מערכת:
-        </strong>
+
         <%- discussion.system_message %>
 
     </div>
@@ -188,16 +186,16 @@
 
         <select class="left-select" id="sorting_select">
             <option id="creation_date">
-                מיין לפי תאריך
+תאריך
             </option>
             <!-- <option id="first_name">
                 מיין לפי יוזר
             </option>-->
             <option id="-total_votes">
-                מיין לפי מעוררי עניין
+שנויים במחלוקת
             </option>
             <option id="-popularity">
-                מיין לפי כמות אסימונים
+פוסטים הכי טובים
             </option>
         </select>
 
@@ -480,7 +478,7 @@ $(document).ready(function () {
             });
 
     // copy the post text+ user to   discussion_comment
-    $('#comments,#suggestion_list').on('click', ".quote_button", function (e) {
+    $('#comments').on('click', ".quote_button", function (e) {
         var userName,
                 text;
 
@@ -494,6 +492,20 @@ $(document).ready(function () {
         text = text + " ";
         $("textarea#discussion_comment").val(text).focus();
     });
+
+    $('#suggestion_list').on('click', ".grey-btn", function (e) {
+            var userName,
+                    text;
+            var postDiv = $(this).parents('.one');
+            e.preventDefault();
+            $("textarea#discussion_comment").focus();
+            userName = postDiv.data('creator_name');
+            new_post_ref_id = postDiv.data('id');
+            text = $('.text-left p:last-child', postDiv).text();
+            text = userName + ' אמר:"' + text + '"\n';
+            text = text + " ";
+            $("textarea#discussion_comment").val(text).focus();
+        });
 
     $('#comments,#suggestion_list').on('click', ".follow_user", function (e) {
         var creator_id = $(this).parents('.comment-one,.one').data("creator_id");
@@ -578,14 +590,30 @@ $(document).ready(function () {
 
     }
 
-    db_functions.getSuggestionByDiscussion(discussion_id, function (err, data) {
+    db_functions.getSuggestionByDiscussion(discussion_id,1,0, function (err, data) {
         $.each(data.objects, function (index, suggestion) {
             render_suggestion(suggestion);
         });
 
-        $('#suggestion_number').text('(' + data.objects.length + ')');
+        $('#suggestion_number').text('(' + data.meta.total_count + ')');
         if (data.objects.length > 0) {
             $(".deals-box").show();
+            if(data.meta.total_count>2)
+            {
+               $(".more-deals").show();
+               $(".more-deals a").on('click', function (e) {
+
+                   db_functions.getSuggestionByDiscussion(discussion_id,null,1, function (err, data) {
+                        $.each(data.objects, function (index, suggestion) {
+                            render_suggestion(suggestion);
+                        });
+                   });
+                    $(".more-deals").hide();
+                   return false;
+               });
+
+            }
+
         }
         else {
             $(".deals-box").hide();

@@ -87,11 +87,12 @@ var isArgIsInList = exports.isArgIsInList = function(arg_id, collection_list){
 
 
 var score = {};
-score.grade = 10;
-score.vote = 10;
-score.post = 20;
-score.suggestion = 20;
-score.discussion = 30;
+score.grade = 1;
+score.vote = 1;
+//score.post = 20;
+//score.suggestion = 20;
+//score.discussion = 30;
+
 //
 //function approve_item (item,item_type,user,callback)
 //{

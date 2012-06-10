@@ -211,7 +211,34 @@ var db_functions = {
         });
     },
 
+    addLikeToInfoItem: function(info_item_id, callback){
+        this.loggedInAjax({
+            url: '/api/likes',
+            type: "POST",
+            data: {"info_item_id" : info_item_id},
+            async: true,
+            success: function (data) {
+                console.log(data);
+                callback(null, data)
+            },
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },
 
+    addInfoItemToShoppingCart: function(info_item_id, callback){
+        this.loggedInAjax({
+            url: '/api/shopping_cart/' + info_item_id,
+            type: "PUT",
+            async: true,
+            success: function (data) {
+
+                callback(null, data);
+                console.log("item information inserted to shopping cart");
+            }
+        });
+    },
 
     voteForPost: function(post_id, method, callback){
         this.loggedInAjax({
@@ -255,7 +282,7 @@ var db_functions = {
             url: '/api/posts/',
             type: "POST",
             async: true,
-            data: {"discussion_id": discussion_id, "text": post_content, "ref_to_post_id" : refParentPostId},
+            data: {"discussion_id": discussion_id, "text": post_content, "ref_to_post_id": refParentPostId},
             success: function (data) {
                 console.log(data);
                 callback(null, data);
@@ -359,9 +386,9 @@ var db_functions = {
             }
         });
     },
-    getSuggestionByDiscussion: function(discussion_id, callback){
+    getSuggestionByDiscussion: function(discussion_id,limit, offset, callback){
         this.loggedInAjax({
-            url: '/api/suggestions?discussion_id=' + discussion_id,
+            url: '/api/suggestions?discussion_id=' + discussion_id + (limit? '&limit='+limit:'') + (offset? '&offset=' + offset:'') ,
             type: "GET",
             async: true,
             success: function (data) {
@@ -370,6 +397,30 @@ var db_functions = {
             },
             error:function(err){
                 callback(err, null);
+            }
+        });
+    } ,
+
+    getListItems : function(type,query,callback)
+    {
+        var querystring = type;
+        switch(type)
+        {
+            case "actions":
+                querystring = "actions?is_approved=true";
+                break;
+            case "pendingActions":
+                querystring = "actions?is_approved=false";
+                break;
+        }
+        debugger;
+        this.loggedInAjax({
+            url: '/api/' + querystring,
+            data:query,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                callback(null, data);
             }
         });
     }

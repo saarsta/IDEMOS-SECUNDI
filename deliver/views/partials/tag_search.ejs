@@ -1,5 +1,8 @@
-<% tag_name = typeof(tag_name) == 'undefined' ? '' : tag_name %>
-<form action="/information_items" class="search-box">
+<%
+tag_name = typeof(tag_name) == 'undefined' ? '' : tag_name;
+tab = typeof(tab) == 'undefined' ? 'information_items' : tab;
+%>
+<form action="/<%= tab %>" class="search-box">
     <label>חיפוש לפי תגיות</label>
     <input type="text" name='tag_name' value="<%= tag_name %>" />
     <input type="submit" value="חפש" />

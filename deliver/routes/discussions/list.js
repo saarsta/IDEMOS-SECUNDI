@@ -7,6 +7,7 @@ module.exports = function(req,res)
     res.render('discussion_list.ejs',
         {
             layout: false,
+            tag_name:req.query.tag_name,
             title:"דיונים",
             logged: req.isAuthenticated(),
             big_impressive_title: "",
