@@ -1095,6 +1095,18 @@ body
     text-indent: -9999px;
     z-index: 5;
 }
+
+.services-blue .selected-subject span.icon
+{
+    opacity:1;
+}
+.services-blue .selected-subject
+{
+    text-indent: -9999px;
+    z-index: 5;
+}
+
+
 #content .services-box h2
 {
     line-height: 32px;

@@ -2,6 +2,9 @@
 
 <html>
 <head>
+    <style>
+        .subject_selected{color: #ff0000 ; font-size: 50px}
+    </style>
     <%- partial('partials/head.ejs') %>
     <script type="text/javascript">
         $(document).ready(function () {
@@ -24,7 +27,7 @@
 
     </div>
     <div id="content" class="cf">
-        <div class="services-box services-box-all cf">
+        <div id="subjects" class="services-box services-box-all cf">
             <div id="subjectsLevel1_blue" class="services-blue services-blue-two cf">
 
             </div>
@@ -35,12 +38,18 @@
                 <span class="empty"></span>
                 <a href="" class="service-10"><span class="text">לעגלת המידע</span><span class="icon"></span></a>
             </div>
-            <a class="green-btn" href="">צור דיון חדש</a>
+            <a  id="new_discussion_bt"  class="green-btn" href="#">צור דיון חדש</a>
         </div>
-        <select class="left-select">
-            <option>ךיראת יפל ןיימ</option>
-            <option>רזוי יפל ןיימ</option>
-            <option>םינויד תומכ יפל ןיימ</option>
+        <select id="sorting_select" class="left-select">
+            <option data-sortby="creation_date" >
+						תאריך
+						</option>
+            <option data-sortby="-grade">
+						דירוג
+						</option>
+            <option data-sortby="-followers_count">
+						עוקבים
+						</option>
         </select>
         <h2>כל הדיונים במערכת</h2>
         <div id="discussions_list">
@@ -48,54 +57,14 @@
         </div>
     </div>
 </div>
-<div id="footer">
-    <div class="extra cf">
-        <div class="one-col">
-            <h4>ורוע תעונת</h4>
-            <p>לש ולוקש ןמזה עיגהש הנבה ךותמ המקוה ורוע
-                תויהל םיאכז ונלוכשו ,עמשיי לארשיב בוטה
-                לש ולוקש ןמזה עיגהש הנבה ךותמ המקוה ורו
-                ,עמשיי לארשיב בוטה .תוטלחהה תעביקב םיפתוש
-                .תוטלחהה תעביקב םיפתושתויהל םיאכז ונלוכשו</p>
-        </div>
-        <div class="two-col">
-            <h4>םירושיק</h4>
-            <ul>
-                <li><a href="">ונחנא ימ</a></li>
-                <li><a href="">תושדח</a></li>
-                <li><a href="">שומיש יאנת</a></li>
-                <li><a href="">םיגולבש</a></li>
-                <li><a href="">םיגולב</a></li>
-                <li><a href="">הרזע</a></li>
-            </ul>
-        </div>
-        <div class="three-col">
-            <h4>תומח תויגת</h4>
-            <div class="tags">
-                <a href="">הלטבא</a>
-                <a href="">הלכלכ</a>
-                <a href="">ינוע</a>
-                <a href="">תיתשת</a><br />
-                <a href="">לשממו היטרקומד</a>
-                <a href="">הלטבא</a>
-                <a href="">הלכלכ</a>
-                <a href="">ינוע</a>
-                <div class="more">
-                    <span></span>
-                    <ul>
-                        <li><a href="">תויגת דוע גצה</a></li>
-                        <li><a href="">תיגת ףסוה</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<%- partial('partials/footer.ejs') %>
 </body>
 </html>
 <script type="text/javascript">
 
     $(function(){
+        var selectedTag='<%=tag_name? tag_name:'' %>';
+        var selectedSubject;
         db_functions.getAllSubjects(function(err,data)  {
             var level1subjects=data.objects.slice(0,5)
             var level2subjects=data.objects.slice(5,7)
@@ -112,8 +81,69 @@
 
         });
 
-        listCommon.reloadList('discussions_list','discussions','discussion_list_item');
+        function createDiscussionsQuery(){
+            var sortby=  $('#sorting_select').find(':selected').data('sortby');
+            var query='order_by='+sortby;
+            if(selectedTag){
+                query =query+'&tags='+selectedTag;
+            }
+            if(selectedSubject){
+                query =query+'&subject_id='+selectedSubject;
+            }
+            return query;
+        }
 
-    })
+        function loadDiscussionsListToPage(){
+            var query=createDiscussionsQuery();
+            listCommon.reloadList('discussions_list','discussions','discussion_list_item',query);
+
+        }
+
+        $('#subjects').on('click','.subjectItem',function(e){
+
+            var subjectId= $(this).data('subject_id');
+            e.preventDefault();
+
+            $('#subjects .subjectItem').removeClass('selected-subject')
+            if( selectedSubject!==subjectId){//select
+                selectedSubject=subjectId;
+                $(this).addClass('selected-subject')
+
+            }
+            else{ //unSelect
+
+                selectedSubject='';
+            }
+            loadDiscussionsListToPage();
+        })
+
+        $('#discussions_list').on('click','.join_button',function(e){
+
+            var item=  $(this).parents('[data-id]');
+            var item_id=   item.data('id');
+            var actionType=  $(this).data('action');
+            e.preventDefault();
+            db_functions.joinToDiscussionFollowers(item_id,actionType,function(err,data){
+                dust.render('discussion_list_item', data, function(err, html){
+                   // $("#"+data._id).replaceWith(html);
+                    item.replaceWith(html);
+            })
+            })
+        });
+
+        $('#sorting_select').change(loadDiscussionsListToPage);
+        loadDiscussionsListToPage();
+
+        $('#new_discussion_bt').on('click',function(e){
+            e.preventDefault();
+            if(selectedSubject){
+                window.location='discussions/new/'+selectedSubject ;
+            }else{
+                alert(
+				 'בחר נושא בבקשה');
+            }
+
+        })
+    })  ;
 
 </script>

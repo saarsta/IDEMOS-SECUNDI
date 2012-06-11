@@ -1,8 +1,10 @@
 <div class="one-box cf" data-id="{_id}">
     <div class="right">
+        <a href="/discussions/{_id}">
         <div style="width:141px; height:79px;" class="auto-scale">
-            <img class="floatRight" src="{image_field_preview.url}" alt="{title}" />
+            <img class="floatRight" src="{image_field_preview.url}" alt="{tooltip_or_title}" title="{tooltip_or_title}" />
         </div>
+        </a>
         <div class="text">
             <h4>{title}</h4>
             <p>{text_field_preview|s}</p>
@@ -23,9 +25,9 @@
     </div>
     <div class="left">
 		 {?is_follower}
-			<a href="#">עזוב</a>
+			<a class="join_button"  data-action="leave"  href="#">עזוב</a>
         {:else}
-			<a href="#">הצטרף</a>
+			<a class="join_button" data-action="follower"leave href="#">הצטרף</a>
         {/is_follower}
         <a href="#"><span>שתף</span></a>
     </div>
