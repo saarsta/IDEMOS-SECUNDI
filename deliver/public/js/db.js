@@ -402,6 +402,18 @@ var db_functions = {
             }
         });
     } ,
+    //actionType = follower or leave
+    joinToDiscussionFollowers: function(discussion_id,actionType, callback){
+        this.loggedInAjax({
+            url: '/api/discussions/'+ discussion_id + '/?put='+actionType,
+            data: {"follower": true},
+            type: "PUT",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            }
+        });
+    },
 
     getListItems : function(type,query,callback)
     {
@@ -415,7 +427,6 @@ var db_functions = {
                 querystring = "actions?is_approved=false";
                 break;
         }
-        debugger;
         this.loggedInAjax({
             url: '/api/' + querystring,
             data:query,

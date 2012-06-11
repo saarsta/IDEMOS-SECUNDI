@@ -23,9 +23,9 @@
     </div>
     <div class="left">
 		 {?is_follower}
-			<a href="#">עזוב</a>
+			<a class="join_button"  data-action="leave"  href="#">עזוב</a>
         {:else}
-			<a href="#">הצטרף</a>
+			<a class="join_button" data-action="follower"leave href="#">הצטרף</a>
         {/is_follower}
         <a href="#"><span>שתף</span></a>
     </div>
