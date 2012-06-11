@@ -388,7 +388,8 @@ var db_functions = {
             }
         });
     },
-    getSuggestionByDiscussion: function(discussion_id,limit, offset, callback){
+
+    getSuggestionByDiscussion: function(discussion_id, limit, offset, callback){
         this.loggedInAjax({
             url: '/api/suggestions?discussion_id=' + discussion_id + "&is_approved=false" + (limit? '&limit='+limit:'') + (offset? '&offset=' + offset:'') ,
             type: "GET",
@@ -401,7 +402,7 @@ var db_functions = {
                 callback(err, null);
             }
         });
-    } ,
+    },
 
     getListItems : function(type,query,callback)
     {
@@ -415,7 +416,6 @@ var db_functions = {
                 querystring = "actions?is_approved=false";
                 break;
         }
-        debugger;
         this.loggedInAjax({
             url: '/api/' + querystring,
             data:query,
@@ -425,6 +425,20 @@ var db_functions = {
                 callback(null, data);
             }
         });
-    }
+    },
 
+    getItemsCountByTagName: function(tag_name, callback){
+        this.loggedInAjax({
+            url: '/api/items_count_by_tag_name?tag_name=' + tag_name,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            },
+
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    }
 };

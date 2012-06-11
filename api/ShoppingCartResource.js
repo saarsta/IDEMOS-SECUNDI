@@ -22,7 +22,7 @@ var resources = require('jest'),
                     query.where('users', id);
                     callback(null, query);
         }else{
-            callback("Error: User Is Not Authenticated", null);
+            callback({message: "Error: User Is Not Authenticated", code: 401}, null);
         }
     };
 
