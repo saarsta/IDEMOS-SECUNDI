@@ -90,6 +90,7 @@ var Schemas = exports.Schemas = {
 
     Subject:{
         name:{type:String,required:true},
+        description: {type:mongoose_types.Text},
         tooltip:String,
         description: {type:mongoose_types.Text,required:true},
         text_field_preview:{type:mongoose_types.Text},
@@ -247,6 +248,7 @@ var Schemas = exports.Schemas = {
         discussion_high_graded_by_min_of_X_people: {type: Number, 'default': 1000000},
         spend_tokens_for_X_days_in_a_row: {type: Number, 'default': 1000000},
         X_tokens_for_all_my_posts: {type: Number, 'default': 1000000}
+
     }
 };
 

@@ -37,8 +37,19 @@ dust.filters['tags'] = function(text) {
     text = text.replace(/\[\*\]/g,'</li><li>').replace(/<ul><li>(.|\n)*?<\/li>/g,'<ul>');
     text = text.replace(/\[url(?:=([^\]]*))\]((?:.|\n)*)?\[\/url\]/,'<a href="$1" target="_blank">$2</a>')
     text = text.replace(/\[url\]((?:.|\n)*)?\[\/url\]/,'<a href="$1" target="_blank">$1</a>')
+
     return text;
 };
+
+dust.filters['post'] = function(text) {
+    text = dust.filters['tags'](text);
+    text = text.replace(/\[quote="([^"]*)"\s*\]\n?((?:.|\n)*)?\n?\[\/quote\]\n?/g,
+        '<div class="post_quote"><a href="javascript:void(0);">' +
+            'משתמש $1 כתב:' +
+            '</a><br>' +
+            '$2' + '</div>');
+    return text;
+}
 
 
 dust.renderArray = function(template,arr,callback,endCallback)
