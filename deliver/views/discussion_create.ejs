@@ -26,7 +26,7 @@
                     <input type="hidden" name="subject_id" id="subject_id" value="<%= subject.id %>" >
                     <div class="top cf">
                         <div  style="width: 212px;height: 164px" class='auto-scale floatRight'>
-                            <img src="<%= subject.image_field.url %>" alt="" />
+                            <img src="<%= subject.image_field ? subject.image_field.url : '' %>" alt="" />
                         </div>
                         <div class="floatLeft">
                             <div class="input">
@@ -62,7 +62,7 @@
                                     "הפוסט הראשון בדיון: הסבר את הצורך במציאות שאתה דורש - מה הבעיה? איך המצב הנוכחי משפיע עליך?
 איזו עזרה היית רוצה לבקש מהמשתתפים בדיון בשיפור החזון?
 "
-                                    > </textarea>
+                                    ></textarea>
                         </div>
                         <input type="submit" value="יצירת דיון" />
                         <label><input type="checkbox" checked="checked" />שתף את הדיון שיצרת על הקיר שלך </label>

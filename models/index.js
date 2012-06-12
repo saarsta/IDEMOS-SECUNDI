@@ -88,16 +88,6 @@ var Schemas = exports.Schemas = {
         gui_order:{type:Number,'default':9999999,editable:false}
     },
 
-    Subject:{
-        name:{type:String,required:true},
-        tooltip:String,
-        description: {type:mongoose_types.Text,required:true},
-        text_field_preview:{type:mongoose_types.Text},
-        image_field:mongoose_types.File,
-        tags:[String],
-        gui_order: {type:Number,'default':9999999, editable:false},
-        is_hot_object: {type:Boolean,'default':false}
-    },
 
 
 
@@ -274,7 +264,7 @@ var Models = module.exports = {
     Update: mongoose.model('Update', Schemas.Update),
     Kilkul:mongoose.model('Kilkul', new Schema(Schemas.Kilkul, {strict: true})),
 
-    Subject:mongoose.model('Subject', new Schema(Schemas.Subject, {strict: true})),
+    Subject:mongoose.model('Subject', require('./subject')),
     Post:require('./post'),
     PostAction:utils.extend_model('PostAction', Schemas.PostOrSuggestion, Schemas.PostAction).model,
     Suggestion:require('./suggestion'),

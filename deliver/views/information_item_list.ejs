@@ -31,7 +31,7 @@
             <a href="javascript:void(0)" class="service-9"><span class="text">
                 לעגלת המידע
             </span><span class="icon"></span></a>
-            <a href="javascript:void(0)" class="service-10"><span class="text">
+            <a href="" id="uru_subject_button" class="service-10"><span class="text">
                 עורו
             </span><span class="icon"></span></a>
             <span class="empty"></span>
@@ -60,7 +60,9 @@
 
         db_functions.getAllSubjects(function(err,data)
         {
-            $.each(data.objects,function(index,subject)
+            var uru_subject = data.objects[0];
+            $('#uru_subject_button').attr('href','/information_items/subject/' + uru_subject._id);
+            $.each(data.objects.slice(1),function(index,subject)
             {
                 dust.render('subject',subject,function(err,out)
                 {

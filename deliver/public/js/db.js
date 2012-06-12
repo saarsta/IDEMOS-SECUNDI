@@ -107,7 +107,7 @@ var db_functions = {
 
     getAllSubjects: function(callback){
         this.loggedInAjax({
-            url: '/api/subjects?limit=7',
+            url: '/api/subjects',
             type: "GET",
             async: true,
             success: function (data) {
