@@ -1131,7 +1131,7 @@ body
 {
     color:#50504f;
     font: normal 13px/17px ARial;
-    height: 34px;
+  /*  height: 34px;     */
     overflow: hidden;
     margin-bottom: 30px;
 }

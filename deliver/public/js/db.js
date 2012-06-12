@@ -428,3 +428,32 @@ var db_functions = {
     }
 
 };
+
+
+var search = {
+    fetch : function (search_term)
+    {
+//        $(".search-result-box .tabs").tabs();
+//
+//        $('.tab-slide-1')
+//            .after('<div class="nav-1 nav">')
+//            .cycle({
+//                fx: 'scrollLeft',
+//                speed: 'fast',
+//                timeout: 0,
+//                pager: '.nav-1',
+//                next: '.next-1',
+//                prev: '.prev-1'
+//            });
+//        $('.tab-slide-2')
+//            .after('<div class="nav-2 nav">')
+//            .cycle({
+//                fx: 'scrollLeft',
+//                speed: 'fast',
+//                timeout: 0,
+//                pager: '.nav-2',
+//                next: '.next-2',
+//                prev: '.prev-2'
+//            });
+    }
+}
