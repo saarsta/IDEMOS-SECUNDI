@@ -189,16 +189,18 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
 
             function (discussion_obj, cbk) {
 
-                var word_count = suggestion_object.getWordCount();
+                var word_count = suggestion_object.getCharCount();
                 suggestion_object.threshold_for_accepting_the_suggestion = calculate_sugg_threshold(word_count,
-                    discussion_obj.admin_threshold_for_accepting_change_suggestions || discussion_obj.threshold_for_accepting_change_suggestions);
+                    Number(discussion_obj.admin_threshold_for_accepting_change_suggestions) || Number(discussion_obj.threshold_for_accepting_change_suggestions));
                 self.authorization.edit_object(req, suggestion_object, cbk);
             },
 
             function (suggestion_obj, cbk) {
                 suggestion_object.save(function(err,data){
-                    discussion_id = data.discussion_id;
-                    suggestion_obj.wanted_amount_of_tokens = suggestion_obj.threshold_for_accepting_the_suggestion;
+                    if(data){
+                        discussion_id = data.discussion_id;
+                        suggestion_obj.wanted_amount_of_tokens = suggestion_obj.threshold_for_accepting_the_suggestion;
+                    }
                     cbk(err,data);
                 });
             },
@@ -229,6 +231,10 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                 });
             }
         ], function (err, result) {
+            if(err){
+                console.error(err);
+                console.trace();
+            }
             callback(err, result);
         });
     },
