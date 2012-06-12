@@ -582,6 +582,7 @@ body
     margin: 0 0 28px 28px;
     background:#fff;
 }
+/* changed by ishai */
 .news-list .one h4
 {
     padding: 12px 0 10px;
@@ -596,6 +597,7 @@ body
     color:#50504f;
     text-decoration: none;
 }
+/* end */
 .tags
 {
     padding: 12px 0 3px;
@@ -623,6 +625,7 @@ body
     display: inline-block;
     position: relative;
     vertical-align: middle;
+    z-index: 10;
 }
 .tags .more span
 {
@@ -991,6 +994,7 @@ body
     position: absolute;
     left:0;
     top: 0;
+    width: 59px;
 }
 .renewal .one p
 {
@@ -1095,6 +1099,18 @@ body
     text-indent: -9999px;
     z-index: 5;
 }
+
+.services-blue .selected-subject span.icon
+{
+    opacity:1;
+}
+.services-blue .selected-subject
+{
+    text-indent: -9999px;
+    z-index: 5;
+}
+
+
 #content .services-box h2
 {
     line-height: 32px;
@@ -1142,6 +1158,7 @@ body
 .services-box
 {
     padding-bottom: 45px;
+    position: relative;
 }
 .services-green 
 {
@@ -1900,6 +1917,7 @@ body
     float: right;
     width: 713px;
     background: #fdfdfd;
+    margin-bottom: 3px;
 }
 .add-offer h2
 {
@@ -1925,13 +1943,37 @@ body
 {
     color:#7f7f7e;
     font: normal 13px/17px Arial;
-    margin:0;
+    margin-bottom: 20px;
 }
-.add-offer .text-box p a
+.add-offer .text-box a
 {
     color:#3b63ef;
+    margin-bottom: -15px;
+    position: relative;
+    top: -15px;
+    display: inline-block;
 }
-
+.add-offer .text-box a.less-text
+{
+    display: none;
+}
+.add-offer .active a.more-text
+{
+    display: none;
+    
+}
+.add-offer .text-box .hide-text
+{
+    display: none;
+}
+.add-offer .active .hide-text
+{
+    display: block;
+}
+.add-offer .active a.less-text
+{
+    display: inline-block;
+}
 .add-offer .add-offer-bottom
 {
     margin:0 8px;
@@ -3883,4 +3925,796 @@ body.search-ative #header
     font-weight: bold;
     font-style: italic;
     color: #3d63ef;
+}
+/*--------------------------------*/
+.upload-popup
+{
+    background:#ffffff;
+    width: 570px;
+    display: none;
+    position: absolute;
+    right: -9px;
+    top: 427px;
+    z-index: 10;
+    box-shadow: 0 0 8px rgba(0,0,0,0.3);
+}
+.upload-active .upload-popup
+{
+    display: block;
+}
+.upload-active .services-blue a,
+.upload-active .services-green a,
+.upload-active .services-green span.empty
+{
+    opacity: 0.4;
+}
+.upload-active .services-green a.service-8
+{
+    opacity: 1;
+}
+.upload-popup .arrow
+{
+    width: 21px;
+    height: 17px;
+    background: url(../images/upload-popup-arrow.png) no-repeat;
+    position: absolute;
+    top: -17px;
+    left: 50%;
+    margin-left: -10px;
+}
+.upload-popup .upload-top
+{
+    padding: 14px 12px 20px 11px;
+}
+.upload-popup .upload-top textarea
+{
+    color:#50504f;
+    font: normal 12px/16px ARial;
+    padding: 7px 8px 7px 22px;
+    height: 55px;
+    resize: none;
+    width: 515px;
+    border: 1px solid #e1e0e0;
+    margin-bottom: 6px;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+}
+
+.upload-popup .upload-bottom
+{
+    background:#ededed;
+    padding: 10px;
+}
+.upload-popup .upload-bottom input
+{
+    background:#2fd43b url(../images/green-btn-border.png) 0 0 repeat-x;
+    display: block;
+    border: 1px solid #2eab35;
+    height: 29px;
+    text-align: center;
+    width: 112px;
+    margin: 0 auto;
+    cursor: pointer;
+    font: normal 22px/31px 'AdumaFOTRegular';
+    color:#ffffff;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    text-decoration: none;
+}
+.upload-popup .close-popup
+{
+    width: 9px;
+    height: 9px;
+    background: url(../images/close-icon-grey.png) no-repeat;
+    position: absolute;
+    left: 19px;
+    top: 22px;
+}
+.upload-popup .tab
+{
+    border: 1px solid #e1e0e0;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    padding:5px;
+}
+.upload-popup .tab input
+{
+    color:#50504f;
+    font: normal 12px/16px Arial;
+}
+
+.upload-tabs ul
+{
+    padding-right: 160px;
+    margin-bottom: -1px;
+    height: 58px;
+}
+.upload-tabs li
+{
+    float: right;
+    padding-left: 20px;
+}
+.upload-tabs li a
+{
+    width: 61px;
+    display: block;
+    padding-top: 27px;
+    padding-bottom: 14px;
+    text-align: center;
+    font: bold 12px/16px Arial;
+    color:#b7b6b6;
+    text-decoration: none;
+    position: relative;
+}
+.upload-tabs li a span
+{
+    height: 15px;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 5px;
+}
+.upload-tabs li a.pic span
+{
+    background: url(../images/image-icon.png) 50% 100% no-repeat;
+}
+.upload-tabs li a.video span
+{
+    background: url(../images/video-icon.png) 50% 100% no-repeat;
+}
+.upload-tabs li a.link span
+{
+    background: url(../images/link-icon.png) 50% 100% no-repeat;
+}
+
+.upload-tabs li a:hover,
+.upload-tabs li.ui-state-active a
+{
+    border: 1px solid #e1e0e0;
+    border-bottom: 1px solid #fff;
+    border-radius: 2px 2px 0 0;
+    color:#757d7e;
+    margin: -1px;
+}
+.upload-tabs li a:hover span,
+.upload-tabs li.ui-state-active a span
+{
+    background-position: 50% 0;
+}
+/*---------------------------*/
+.login-form
+{
+    border-top: 1px solid #cececd;
+    padding-top: 36px;
+    padding-left: 308px;
+    padding-bottom: 60px;
+}
+.login-form .areas
+{
+    border-bottom: 1px solid #cececd;
+    padding-bottom: 30px;
+    position: relative;
+    margin-bottom: 15px;
+}
+.login-form .areas .disable
+{
+    background: url(../images/disable-bg.png) repeat;
+    width: 100%;
+    height: 290px;
+    position: absolute;
+    left:0;
+    bottom: 0;
+}
+.login-form .title
+{
+    color:#50504f;
+    font: bold 16px/28px Arial;
+    padding-bottom: 55px;
+}
+.login-form .title a.link
+{
+    float: right;
+    color:#50504f;
+    font: normal 15px/40px Arial;
+    margin: -6px 0;
+    border: 1px solid #d2d1d1;
+    padding:0 20px;
+    box-shadow: 0 0 3px #b8c4ee;
+    background:#fff;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    text-decoration: none;
+}
+.login-form .title img
+{
+    float: right;
+}
+.login-form .title .spacer
+{
+    float: right;
+    margin: 13px 20px 0 14px;
+    background: url(../images/or-spacer.png) 0 0 no-repeat;
+    height: 6px;
+    width: 73px;
+}
+.login-form .one
+{
+    padding-bottom: 18px;
+}
+.login-form label
+{
+    float: right;
+    width: 124px;
+    color:#50504f;
+    font: bold 16px/32px Arial;
+}
+.login-form .input
+{
+}
+.login-form  input.text
+{
+    color:#50504f;
+    font: normal 15px/18px Arial;
+    border: none;
+    background:#fff;
+    overflow: hidden;
+    border: 1px solid #d2d1d1;
+    background:#fff;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    padding: 6px 9px;
+    width: 528px;
+    height: 18px;
+    display: block;
+}
+.login-form textarea
+{
+    color:#50504f;
+    font: normal 15px/18px Arial;
+    border: none;
+    overflow: hidden;
+    border: 1px solid #d2d1d1;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    background:#fff;
+    height: 28px;
+    padding: 6px 9px;
+    width: 184px;
+    display: block;
+    resize: none;
+    margin: 0;
+}
+.login-form textarea:focus,
+.login-form input:focus
+{
+    box-shadow: 0 0 3px #b8c4ee;
+}
+.login-form input[type=submit]
+{
+    display: block;
+    margin:0 auto 12px;
+    background: url(../images/green-btn.png) repeat-x;
+    height: 31px;
+    border: 1px solid #2eab35;
+    border-radius: 2px;
+    color:#fff;
+    width: 112px;
+    float: left;
+    font: normal 22px/31px "AdumaFOTRegular";
+    cursor: pointer;
+}
+/*------------------------*/
+.myuru-top .right
+{
+    float: right;
+    width: 711px;
+}
+.myuru-top .right .white-box
+{
+    background: #fff url(../images/border-vertical-dotted.png) 0 0 repeat-y; 
+    height: 202px;
+    padding: 18px 18px 0 0;
+}
+.myuru-top .right .user
+{
+    float: right;
+    width: 112px;
+    padding-left: 19px;
+    border-left: 1px solid #ececec;
+    height: 180px;
+}
+.myuru-top .right .user .img-box
+{
+    padding-bottom: 15px;
+    border-bottom: 1px solid #ececec;
+    margin-bottom: 4px;
+    position: relative;
+}
+.myuru-top .right .user .img-box img
+{
+    display: block;
+}
+.myuru-top .right .user .img-box span
+{
+    width: 112px;
+    height: 120px;
+    background: url(../images/user-fillter-white-big-empty.png) no-repeat;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+.myuru-top .right .user .proxy
+{
+    padding: 6px 9px 0 0;
+    color:#b7b6b6;
+    font: normal 12px/14px "AdumaFOTRegular";
+    position: relative;
+    background: url(../images/proxy-icon.png) 41px 7px no-repeat;
+}
+.myuru-top .right .user .proxy span
+{
+    position: absolute;
+    left: 10px;
+    top: 6px;
+    background: #263a81;
+    width: 26px;
+    height: 14px;
+    text-align: center;
+    color:#fff;
+    font: bold 10px/14px Arial;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+.myuru-top .right .user .respect
+{
+    padding: 6px 9px 0 0;
+    color:#b7b6b6;
+    font: normal 12px/14px "AdumaFOTRegular";
+    position: relative;
+    background: url(../images/respect-icon.png) 43px 6px no-repeat;
+}
+.myuru-top .right .user .respect span
+{
+    position: absolute;
+    left: 10px;
+    top: 6px;
+    background: #263a81;
+    width: 26px;
+    height: 14px;
+    text-align: center;
+    color:#fff;
+    font: bold 10px/14px Arial;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+.myuru-top .right .user-links
+{
+    float: right;
+    width: 131px;
+    padding: 28px 19px 0 24px;
+    height: 152px;
+    background: url(../images/user-links-bg.png) 0 0 no-repeat;
+    margin-left: 13px;
+}
+.myuru-top .right .user-links h4
+{
+    color:#50504f;
+    font: bold 17px/20px Arial;
+    margin-bottom: 12px;
+}
+.myuru-top .right .user-links ul
+{
+    border-top: 1px solid #ececec;
+}
+.myuru-top .right .user-links li
+{
+    color:#50504f;
+    font: bold 13px/25px Arial;
+    border-bottom: 1px solid #ececec;
+}
+.myuru-top .right form
+{
+    float: right;
+    width: 336px;
+    padding-top: 29px;
+}
+.myuru-top .right form textarea
+{
+    border: 1px solid #d6dbde;
+    width: 308px;
+    height: 71px;
+    display: block;
+    margin-bottom: 21px;
+    padding: 10px 13px;
+    color:#7f7f7e;
+    font: normal 13px/17px Arial;
+    resize: none;
+}
+.myuru-top .right form input
+{
+    display: block;
+    margin:0 auto 12px;
+    background: url(../images/green-btn.png) repeat-x;
+    height: 37px;
+    border: 1px solid #2eab35;
+    border-radius: 2px;
+    color:#fff;
+    width: 337px;
+    font: normal 22px/35px "AdumaFOTRegular";
+    cursor: pointer;
+}
+.myuru-top .left
+{
+    width: 269px;
+    float: left;
+}
+#content .myuru-top .left h2
+{
+    color:#3b63ef;
+}
+.myuru-top .left .white-box
+{
+    background:#fff;
+    height: 200px;
+    padding: 20px 31px 0 0;
+}
+.myuru-top .left .token-bar
+{
+    border: 1px solid #c6c6c6;
+    border-radius: 1px;
+    -moz-border-radius: 1px;
+    -webkit-border-radius: 1px;
+    background:#d6dbde;
+    width: 26px;
+    height: 129px;
+    position: relative;
+    padding: 23px 22px 24px;
+}
+.myuru-top .left .token-bar .top-number
+{
+    position: absolute;
+    color:#949494;
+    top: 20px;
+    right: 8px;
+    font: normal 12px/14px "AdumaFOTRegular";
+}
+.myuru-top .left .token-bar .bottom-number
+{
+    position: absolute;
+    bottom: 20px;
+    right: 11px;
+    color:#949494;
+    font: normal 12px/14px "AdumaFOTRegular";
+}
+.myuru-top .left .token-bar .token-popup
+{
+    position: absolute;
+    bottom: 3px;
+    right: 48px;
+    display: none;
+    z-index: 15;
+    width: 150px;
+    height: 83px;
+    background: url(../images/token-popup.png) no-repeat;
+    padding: 16px 24px 0 13px;
+}
+.myuru-top .left .token-bar:hover .token-popup
+{
+    display: block
+}
+.myuru-top .left .token-bar .token-popup .user-right
+{
+    float: right;
+    padding-left: 7px;
+    padding-top: 12px;
+    border-left: 1px solid #c5c5c5;
+    height: 55px;
+    margin-left: 7px;
+}
+.myuru-top .left .token-bar .token-popup .img-box
+{
+    position: relative;
+}
+.myuru-top .left .token-bar .token-popup .img-box img
+{
+    display: block;
+}
+.myuru-top .left .token-bar .token-popup .img-box  img.wraper
+{
+    position: absolute;
+    left:0;
+    top: 0;   
+}
+.myuru-top .left .token-bar .token-popup .user-left
+{
+    float: left;
+    width: 94px;
+    padding-top: 5px;
+}
+.myuru-top .left .token-bar .token-popup .user-left p
+{
+    color:#50504f;
+    font: bold 13px/15px Arial;
+    margin-bottom: 7px;
+}
+.myuru-top .left .token-bar .token-popup .user-left .proxy
+{
+    color:#b7b6b6;
+    font: normal 12px/14px "AdumaFOTRegular";
+    position: relative;
+    background: url(../images/proxy-icon.png) 100% 2px no-repeat;
+    padding-right: 20px;
+    margin-bottom: 6px;
+}
+.myuru-top .left .token-bar .token-popup .user-left .proxy span
+{
+    display: block;
+    background: #263a81;
+    width: 26px;
+    height: 14px;
+    text-align: center;
+    color:#fff;
+    font: bold 10px/14px Arial;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+.myuru-top .left .token-bar .token-popup .user-left .respect
+{
+    padding-right: 20px;
+    color:#b7b6b6;
+    font: normal 12px/14px "AdumaFOTRegular";
+    position: relative;
+    background: url(../images/respect-icon.png) 98% 0 no-repeat;
+}
+.myuru-top .left .token-bar .token-popup .user-left .respect span
+{
+    display: block;
+    background: #263a81;
+    width: 26px;
+    height: 14px;
+    text-align: center;
+    color:#fff;
+    font: bold 10px/14px Arial;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
+.myuru-top .left .token-bar .bars
+{
+    background: url(../images/token-bar-default.png) 0 100% repeat-y;
+    position: relative;
+}
+.myuru-top .left .token-bar .bars .info
+{
+    position: absolute;
+    right: 57px;
+    top: -7px;
+    width: 100px;
+    padding-right: 45px;
+    color:#7f7f7e;
+    font: bold 12px/15px Arial;
+}
+.myuru-top .left .token-bar .bars .grey .info
+{
+    background: url(../images/token-info-grey.png) 100% 50% no-repeat;
+}
+.myuru-top .left .token-bar .bars .green .info
+{
+    background: url(../images/token-info-geen.png) 100% 50% no-repeat;
+}
+.myuru-top .left .token-bar .bars .blue .info
+{
+    background: url(../images/token-info-blue.png) 100% 50% no-repeat;
+}
+
+
+
+.myuru-top .left .token-bar .bars .grey
+{
+    position: relative;
+    background: url(../images/token-bar-grey.png) 0 100% repeat-y;
+}
+.myuru-top .left .token-bar .bars .green
+{
+    position: relative;
+    background: url(../images/token-bar-green.png) 0 100% repeat-y;
+}
+.myuru-top .left .token-bar .bars .blue
+{
+    position: relative;
+    background: url(../images/token-bar-blue.png) 0 100% repeat-y;
+    z-index: 11;
+}
+.myuru-top .left .token-bar .bars .border
+{
+    position: absolute;
+    left:0 ;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: url(../images/token-bar-border.png) 50% 100% repeat-y;
+    z-index: 10;
+}
+#content .search-result-box
+{
+    width: auto;
+    height: 325px;
+}
+#content .search-result-box .tabs-nav{
+    padding-right: 255px;
+    margin-top: -35px;
+    padding-bottom: 13px;
+    border-bottom: 1px solid #cbcbcb;
+}
+#content .search-result-box .ui-tabs-panel
+{
+    width: 924px;
+    margin: 0 auto;
+}
+#content .search-result-box p,
+#content .search-result-box h4
+{
+    height: auto;
+}
+#content .search-result-box .slides-one .one
+{
+    height: 164px;
+}
+#content .search-result-box .slides-one,
+#content .search-result-box .tab-slide 
+{
+    height: 179px;
+}
+#content .search-result-box .btn-box
+{
+    clear: both;
+    border-top: 1px solid #d6dbde;
+    padding-top: 15px;
+}
+#content .search-result-box .btn-box a
+{
+    border: 1px solid #8f8f8f;
+    background:#b7b6b6 url(../images/search-submit.png) 0 0 repeat-x;
+    height: 28px;
+    color:#fff;
+    font-size: 18px;
+    line-height: 28px;
+    padding:0;
+    cursor: pointer;
+    width: 110px;
+    font-family: 'AdumaFOTMedium';
+    display: block;
+    text-decoration: none;
+    text-align: center;
+}
+#content .search-result-box .slide-wrap
+{
+    border: none;
+}
+#content .search-result-box .slide-wrap .nav 
+{
+    background: none;
+}
+.myuru-bottom .right
+{
+    float: right;
+    width: 671px;
+}
+.myuru-bottom .left
+{
+    float: left;
+    width: 268px;
+}
+/*------------------------*/
+.users-list
+{
+    background:#ffffff;
+    padding: 3px 27px 17px 30px;
+}
+.users-list .user-one
+{
+    padding: 7px 3px 9px 0;
+    border-bottom: 1px solid #d6dbde;
+}
+.users-list .user-right
+{
+    float: right;
+    width: 60px;
+    border-left: 1px solid #c6c6c6;
+    padding: 1px 0 2px 9px;
+    margin-left: 11px;
+}
+.users-list .user-right .img-box
+{
+    position: relative;
+}
+.users-list .user-right .img-box img
+{
+    display: block;
+    vertical-align: top;
+}
+.users-list .user-right .img-box .wraper
+{
+    position: absolute;
+    left:0;
+    top: 0;
+    width: 61px;
+}
+.users-list .user-left
+{
+    float: right;
+    padding-top: 5px
+}
+.users-list .user-left p
+{
+    color:#50504f;
+    font: bold 13px/15px Arial;
+    margin-bottom: 7px;
+}
+.users-list .user-left .proxy
+{
+    color:#b7b6b6;
+    font: normal 12px/14px "AdumaFOTRegular";
+    position: relative;
+    background: url(../images/proxy-icon.png) 100% 2px no-repeat;
+    padding-right: 20px;
+    margin-bottom: 6px;
+}
+.users-list .user-left .proxy span
+{
+    display: block;
+    background: #263a81;
+    width: 26px;
+    height: 14px;
+    text-align: center;
+    color:#fff;
+    font: bold 10px/14px Arial;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+.users-list .user-left .respect
+{
+    padding-right: 20px;
+    color:#b7b6b6;
+    font: normal 12px/14px "AdumaFOTRegular";
+    position: relative;
+    background: url(../images/respect-icon.png) 98% 0 no-repeat;
+}
+.users-list .user-left .respect span
+{
+    display: block;
+    background: #263a81;
+    width: 26px;
+    height: 14px;
+    text-align: center;
+    color:#fff;
+    font: bold 10px/14px Arial;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+.users-list .load
+{
+    padding-top: 16px;
+    color:#a7a7a7;
+    font: normal 16px/20px Arial;
+    padding-left: 25px;
+    text-align: center;
+    background: url(../images/ajax-loader-3.gif) 57px 18px no-repeat;
+}
+.myuru-bottom .renewal .one a.btn
+{
+    background-color:#b7b6b6;
+    border-color:#8f8f8f;
 }

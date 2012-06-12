@@ -1,0 +1,56 @@
+        $(document).ready(function () {
+            $('.tikunim-box h2').click(function () {
+                $(this).parent().toggleClass('active');
+            });
+            $('.user-box h2').click(function () {
+                $(this).parent().toggleClass('active');
+            });
+            $(".inline").colorbox({ inline: true, width: "730" });
+            $('.slide-c').after('<div id="nav2">').cycle({
+                fx: 'turnDown',
+                speed: 'fast',
+                timeout: 0,
+                pager: '#nav2',
+                next: '#next',
+                prev: '#prev'
+            });
+            $(".slider-one").slider({
+                range: "min",
+                value: 6.20,
+                min: 0,
+                max: 11,
+                step: 0.10,
+                slide: function (event, ui) {
+                    $("#amount").val(ui.value);
+                }
+            });
+            $("#amount").val($(".slider-one").slider("value"));
+            $(".slider-two").slider({
+                disabled: true,
+                range: "min",
+                value: 0,
+                min: 0,
+                max: 11,
+                step: 0.10,
+                slide: function (event, ui) {
+                    //$("#amount2").val(ui.value);
+                }
+            });
+            //$("#amount2").val($(".slider-two").slider("value"));
+            $(".slider-three").slider({
+                range: "min",
+                value: 8.20,
+                min: 0,
+                max: 11,
+                step: 0.10,
+                slide: function (event, ui) {
+                    $("#amount3").val(ui.value);
+                }
+            });
+            $("#amount3").val($(".slider-three").slider("value"));
+
+            
+            $('.user-right').hover(function () {
+                $(this).toggleClass('hover');
+            });
+        });

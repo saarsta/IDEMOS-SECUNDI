@@ -107,7 +107,7 @@ var db_functions = {
 
     getAllSubjects: function(callback){
         this.loggedInAjax({
-            url: '/api/subjects?limit=7',
+            url: '/api/subjects',
             type: "GET",
             async: true,
             success: function (data) {
@@ -400,6 +400,18 @@ var db_functions = {
             },
             error:function(err){
                 callback(err, null);
+            }
+        });
+    } ,
+    //actionType = follower or leave
+    joinToDiscussionFollowers: function(discussion_id,actionType, callback){
+        this.loggedInAjax({
+            url: '/api/discussions/'+ discussion_id + '/?put='+actionType,
+            data: {"follower": true},
+            type: "PUT",
+            async: true,
+            success: function (data) {
+                callback(null, data);
             }
         });
     },
