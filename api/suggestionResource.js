@@ -155,8 +155,9 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
         var discussion_creator_id;
         var num_of_words;
 
+
         var iterator = function(user_schema, itr_cbk){
-            if (user_schema.user_id == user_id)
+            if (user_schema.user_id == user_id || !user_schema.user_id)
                 itr_cbk(null, 0);
             else{
                 if (discussion_creator_id == user_schema.user_id){
