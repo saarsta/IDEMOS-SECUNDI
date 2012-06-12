@@ -37,6 +37,7 @@ module.exports = function(req,res)
                             res.redirect('/discussions');
                         else
                         {
+                            res.setHeader("Expires", "0");
                             res.render('discussion.ejs',{
                                 layout: false,
                                 title:"דיון",

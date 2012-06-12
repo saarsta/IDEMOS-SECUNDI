@@ -162,6 +162,7 @@ function loadListItems(original_type,template_name,subject,tag) {
     if(original_type == 'cycles')
     {
         $('#mainList').on('click','.join_action_button',function(){
+        debugger;
             var item_id = $(this).attr('item_id');
             db_functions.joinToAction(item_id,function(){
 

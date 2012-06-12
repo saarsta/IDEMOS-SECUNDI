@@ -1,0 +1,516 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="css/reset.css" rel="stylesheet" type="text/css" />
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <!--[if lte IE 7]><link href="css/ie.css" rel="stylesheet" type="text/css" /><![endif]-->
+    <script src="js/jquery-1.6.1.min.js" type="text/javascript"></script>
+    <script src="js/jquery-ui-1.8.20.custom.min.js" type="text/javascript"></script>
+    <script src="js/jquery.cycle.all.js" type="text/javascript"></script>
+    <script src="js/jquery.ui.tabs.min.js" type="text/javascript"></script>    
+    <script src="js/script.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.tikunim-box h2').click(function () {
+                $(this).parent().toggleClass('active');
+            });
+            $('.user-box h2').click(function () {
+                $(this).parent().toggleClass('active');
+            });
+            $(".search-result-box .tabs").tabs();
+
+            $('.tab-slide-1')
+            .after('<div class="nav-1 nav">')
+            .cycle({
+                fx: 'scrollLeft',
+                speed: 'fast',
+                timeout: 0,
+                pager: '.nav-1',
+                next: '.next-1',
+                prev: '.prev-1'
+            });
+            $('.tab-slide-2')
+            .after('<div class="nav-2 nav">')
+            .cycle({
+                fx: 'scrollLeft',
+                speed: 'fast',
+                timeout: 0,
+                pager: '.nav-2',
+                next: '.next-2',
+                prev: '.prev-2'
+            });
+        });
+    </script>
+</head>
+<body>
+    <div id="wrap">
+        <div id="header">
+            <a href="" id="logo"></a>
+            <ul id="main-menu">
+                <li><a href="">ורוע הז המ</a></li>
+                <li><a href="">עדימ רגאמ</a></li>
+                <li><a href="">םינויד</a></li>
+                <li><a href="">םיעוראו תולועפ</a></li>
+                <li><a href="">הפונת ילגעמ</a></li>
+            </ul>
+            <div class="user-box">
+                <span class="total-number">74</span>
+                <span class="icon"></span>
+                <h2>רבחתה</h2>
+                <div class="hide-box">
+                    <div class="user-login-box cf">
+                        <ul>
+                            <li class="tokens"><a href="">ילש םינקוטה <span class="icon-menu"></span><span class="number">74</span></a></li>
+                            <li class="chip"><a href="">ילש םינומיסאה <span class="icon-menu"></span><span class="number">325</span></a></li>
+                            <li class="respect"><a href="">דובכה דדמ <span class="icon-menu"></span><span class="number">10</span></a></li>
+                            <li class="settings"><a href="">תורדגה <span class="icon-menu"></span></a></li>
+                            <li class="help"><a href="">הרזע <span class="icon-menu"></span></a></li>
+                        </ul>
+                        <div class="btn-box">
+                            <a href="">גצה</a>
+                            <a href="">רתסה</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tikunim-box">
+                <span class="icon"></span>
+                <h2>םילשכ לע חווד</h2>
+                <div class="hide-box">
+                    <textarea cols="0" rows="0"></textarea>
+                    <input type="submit" value="חלש" />
+                </div>
+            </div>
+            <form action="#" class="search-box">
+                <label>תויגת יפל שופיח</label>
+                <input type="text" value="" />
+                <input type="submit" value="שפח" />
+            </form>
+        </div>
+        <div id="content" class="cf">
+            <div class="myuru-top">
+                <div class="right">
+                    <h2>הזמן חברים</h2>
+                    <div class="white-box">
+                        <div class="user">
+                            <div class="img-box">
+                                <img src="images/user-1.jpg" alt="" />
+                                <span></span>
+                            </div>
+                            <div class="proxy">
+                                <span>3</span> מנדטים
+                            </div>
+                            <div class="respect">
+                                <span>20</span> מוניטין
+                            </div>
+                        </div>
+                        <div class="user-links">
+                            <h4>שם משתמש</h4>
+                            <ul>
+                                <li>עיר מגורים</li>
+                                <li>זכר / נקבה</li>
+                                <li>משלח יד</li>
+                            </ul>
+                        </div>
+                        <form action="">
+                            <textarea cols="0" rows="0">כאן אפשר לכתוב ביוגרפיה קצרה דברים שאתה אוהב, אג’נדה, דעות, ומה שתרצה על עצמך. בנוסף, אפשר לכתוב ביוגרפיה קצרה דברים שאתה אוהב, אג’נדה, דעות, ומה שתרצה על עצמך.</textarea>
+                            <input type="submit" value="הזמן חברים" />
+                        </form>
+                    </div>
+                </div>
+                <div class="left">
+                    <h2>האסימונים שלי</h2>
+                    <div class="white-box">
+                        <div class="token-bar">
+                            <span class="top-number">15</span>
+                            <span class="bottom-number">0</span>
+                            <div class="token-popup">
+                                <div class="user-right">
+                                    <div class="img-box">
+                                        <img src="images/user-1.jpg" width="41" alt="" />
+                                        <img class="wraper" src="images/user-fillter-small-white.png" width="41" alt="" />
+                                    </div>
+                                </div>
+                                <div class="user-left">
+                                    <p>יונתן שפירא</p>
+                                    <div class="proxy">
+                                    <span>3</span>
+                                </div>
+                                <div class="respect">
+                                    <span>20</span>
+                                </div>
+                                </div>
+                            </div>
+                            <div class="bars">
+                                <div class="border"></div>
+                                <div class="empty" style="height: 51px"></div>
+                                <div class="grey" style="height: 17px">
+                                    <div class="info">מכסת אסימונים: 9</div>
+                                </div>
+                                <div class="green" style="height: 34px">
+                                    <div class="info">אסימונים זמינים: 4</div>
+                                </div>
+                                <div class="blue" style="height: 20px">
+                                    <div class="info">מוקצים לנציג: 3</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="search-result-box">
+                <h2>פעילות שלי במערכת</h2>
+                <div class="tabs">
+                    <ul class="tabs-nav">
+                        <li><a href="#tabs-1">דיונים</a></li>
+                        <li><a href="#tabs-2">מעגלי תנופה</a></li>
+                        <li><a href="#tabs-3">פעולות</a></li>
+                        <li><a href="#tabs-4">בלוגים</a></li>
+                    </ul>
+                    <div id="tabs-1">
+                        <div class="slide-wrap">
+                            <a class="prev prev-1" href=""></a>
+                            <a class="next next-1" href=""></a>
+                            <div class="tab-slide tab-slide-1">
+                                <div class="slides-one">
+                                    <div class="one">
+                                        <img class="floatRight" src="images/sample-6.jpg" alt="" />
+                                        <h4>נושא מעגל תנופה</h4>                                        <p>תחום <br /> תאריך הצטרפות</p>
+                                        <div class="btn-box">
+                                            <a href="">הספק לעקוב</a>
+                                        </div>
+                                    </div>
+                                    <div class="one">
+                                        <img class="floatRight" src="images/sample-6.jpg" alt="" />
+                                        <h4>נושא מעגל תנופה</h4>                                        <p>תחום <br /> תאריך הצטרפות</p>
+                                        <div class="btn-box">
+                                            <a href="">הספק לעקוב</a>
+                                        </div>
+                                    </div>
+                                    <div class="one">
+                                        <img class="floatRight" src="images/sample-6.jpg" alt="" />
+                                        <h4>נושא מעגל תנופה</h4>                                        <p>תחום <br /> תאריך הצטרפות</p>
+                                        <div class="btn-box">
+                                            <a href="">הספק לעקוב</a>
+                                        </div>
+                                    </div>                               
+                                </div>
+                                <div class="slides-one">
+                                    <div class="one">
+                                        <img class="floatRight" src="images/sample-6.jpg" alt="" />
+                                        <h4>נושא מעגל תנופה</h4>                                        <p>תחום <br /> תאריך הצטרפות</p>
+                                        <div class="btn-box">
+                                            <a href="">הספק לעקוב</a>
+                                        </div>
+                                    </div>
+                                    <div class="one">
+                                        <img class="floatRight" src="images/sample-6.jpg" alt="" />
+                                        <h4>נושא מעגל תנופה</h4>                                        <p>תחום <br /> תאריך הצטרפות</p>
+                                        <div class="btn-box">
+                                            <a href="">הספק לעקוב</a>
+                                        </div>
+                                    </div>
+                                    <div class="one">
+                                        <img class="floatRight" src="images/sample-6.jpg" alt="" />
+                                        <h4>נושא מעגל תנופה</h4>                                        <p>תחום <br /> תאריך הצטרפות</p>
+                                        <div class="btn-box">
+                                            <a href="">הספק לעקוב</a>
+                                        </div>
+                                    </div>                              
+                                </div>
+                            </div>                        
+                        </div>
+                    </div>
+                    <div id="tabs-2">
+                        <div class="slide-wrap">
+                            <a class="prev prev-2" href=""></a>
+                            <a class="next next-2" href=""></a>
+                            <div class="tab-slide tab-slide-2">
+                                <div class="slides-one">
+                                    <div class="one">
+                                        <img class="floatRight" src="images/sample-6.jpg" alt="" />
+                                        <h4>נושא מעגל תנופה</h4>                                        <p>תחום <br /> תאריך הצטרפות</p>
+                                        <div class="btn-box">
+                                            <a href="">הספק לעקוב</a>
+                                        </div>
+                                    </div>
+                                    <div class="one">
+                                        <img class="floatRight" src="images/sample-6.jpg" alt="" />
+                                        <h4>נושא מעגל תנופה</h4>                                        <p>תחום <br /> תאריך הצטרפות</p>
+                                        <div class="btn-box">
+                                            <a href="">הספק לעקוב</a>
+                                        </div>
+                                    </div>
+                                    <div class="one">
+                                        <img class="floatRight" src="images/sample-6.jpg" alt="" />
+                                        <h4>נושא מעגל תנופה</h4>                                        <p>תחום <br /> תאריך הצטרפות</p>
+                                        <div class="btn-box">
+                                            <a href="">הספק לעקוב</a>
+                                        </div>
+                                    </div>                               
+                                </div>
+                                <div class="slides-one">
+                                    <div class="one">
+                                        <img class="floatRight" src="images/sample-6.jpg" alt="" />
+                                        <h4>נושא מעגל תנופה</h4>                                        <p>תחום <br /> תאריך הצטרפות</p>
+                                        <div class="btn-box">
+                                            <a href="">הספק לעקוב</a>
+                                        </div>
+                                    </div>
+                                    <div class="one">
+                                        <img class="floatRight" src="images/sample-6.jpg" alt="" />
+                                        <h4>נושא מעגל תנופה</h4>                                        <p>תחום <br /> תאריך הצטרפות</p>
+                                        <div class="btn-box">
+                                            <a href="">הספק לעקוב</a>
+                                        </div>
+                                    </div>
+                                    <div class="one">
+                                        <img class="floatRight" src="images/sample-6.jpg" alt="" />
+                                        <h4>נושא מעגל תנופה</h4>                                        <p>תחום <br /> תאריך הצטרפות</p>
+                                        <div class="btn-box">
+                                            <a href="">הספק לעקוב</a>
+                                        </div>
+                                    </div>                              
+                                </div>
+                            </div>                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="myuru-bottom cf">
+                <div class="right">
+                    <h2>עדכונים</h2>
+                    <div class="renewal">
+                        <div class="one cf">
+                            <div class="right-image">
+                                <div class="img-box">
+                                    <img alt="" src="images/user-1.jpg">
+                                    <img alt="" src="images/user-fillter-white.png" class="shadow">
+                                </div>
+                            </div>
+                            <p><strong>יבקעי לאומש</strong> הבילה ידומילו ךוניח אשונב תרציש הנגפהה תלועפל ףרטצה </p>
+                            <div class="date">13.03.2012 ,21:09</div>
+                            <a href="" class="btn">ףתש</a>
+                        </div>
+                        <div class="one cf">
+                            <div class="right-image">
+                                <img alt="" src="images/sample-1.jpg">
+                            </div>
+                            <p><strong>3-4 םיאליגב םידליל םניח קוח אשונב תינומה הנגפה</strong></p>
+                            <p><strong>:םוקימ</strong> (הייריעה לומ ןיבר רככב םישגפנ) ביבא לת ,ריאמ ןג </p>
+                            <p><strong>:יתמ</strong> 17:00 העשב ,13.03.2012 </p>
+                            <a href="" class="btn">ףתש</a>
+                        </div>
+                        <div class="one cf">
+                            <div class="right-image">
+                                <div class="img-box img-box-space">
+                                    <img alt="" src="images/user-1.jpg">
+                                    <img alt="" src="images/user-fillter-white.png" class="shadow">
+                                </div>
+                                <div class="img-box">
+                                    <img alt="" src="images/user-1.jpg">
+                                    <img alt="" src="images/user-fillter-white.png" class="shadow">
+                                </div>
+                            </div>
+                            <p><strong>ךלש םירבח 2</strong> קלדה יריחמ אשונב המוצעל ופרטצה </p>
+                            <div class="date">13.03.2012 ,21:09</div>
+                            <a href="" class="btn">ףתש</a>
+                        </div>   
+                        <div class="one cf">
+                            <div class="right-image">
+                                <div class="img-box">
+                                    <img alt="" src="images/user-1.jpg">
+                                    <img alt="" src="images/user-fillter-white.png" class="shadow">
+                                </div>
+                            </div>
+                            <p><strong>יבקעי לאומש</strong> הבילה ידומילו ךוניח אשונב תרציש הנגפהה תלועפל ףרטצה </p>
+                            <div class="date">13.03.2012 ,21:09</div>
+                            <a href="" class="btn">ףתש</a>
+                        </div>
+                        <div class="one cf">
+                            <div class="right-image">
+                                <img alt="" src="images/sample-1.jpg">
+                            </div>
+                            <p><strong>3-4 םיאליגב םידליל םניח קוח אשונב תינומה הנגפה</strong></p>
+                            <p><strong>:םוקימ</strong> (הייריעה לומ ןיבר רככב םישגפנ) ביבא לת ,ריאמ ןג </p>
+                            <p><strong>:יתמ</strong> 17:00 העשב ,13.03.2012 </p>
+                            <a href="" class="btn">ףתש</a>
+                        </div>
+                        <div class="one cf">
+                            <div class="right-image">
+                                <div class="img-box img-box-space">
+                                    <img alt="" src="images/user-1.jpg">
+                                    <img alt="" src="images/user-fillter-white.png" class="shadow">
+                                </div>
+                                <div class="img-box">
+                                    <img alt="" src="images/user-1.jpg">
+                                    <img alt="" src="images/user-fillter-white.png" class="shadow">
+                                </div>
+                            </div>
+                            <p><strong>ךלש םירבח 2</strong> קלדה יריחמ אשונב המוצעל ופרטצה </p>
+                            <div class="date">13.03.2012 ,21:09</div>
+                            <a href="" class="btn">ףתש</a>
+                        </div>                   
+                    </div>
+                </div>
+                <div class="left">
+                    <h2>אחרי מי אני עוקב</h2>
+                    <div class="users-list">
+                        <div class="user-one cf">
+                            <div class="user-right">
+                                <div class="img-box">
+                                    <img width="60" alt="" src="images/user-1.jpg">
+                                    <img alt="" src="images/user-fillter-small-white.png" class="wraper">
+                                </div>
+                            </div>
+                            <div class="user-left">
+                                <p>שם משתמש</p>
+                                <div class="proxy">
+                                    <span>3</span>
+                                </div>
+                                <div class="respect">
+                                    <span>20</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="user-one cf">
+                            <div class="user-right">
+                                <div class="img-box">
+                                    <img width="60" alt="" src="images/user-1.jpg">
+                                    <img alt="" src="images/user-fillter-small-white.png" class="wraper">
+                                </div>
+                            </div>
+                            <div class="user-left">
+                                <p>שם משתמש</p>
+                                <div class="proxy">
+                                    <span>3</span>
+                                </div>
+                                <div class="respect">
+                                    <span>20</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="user-one cf">
+                            <div class="user-right">
+                                <div class="img-box">
+                                    <img width="60" alt="" src="images/user-1.jpg">
+                                    <img alt="" src="images/user-fillter-small-white.png" class="wraper">
+                                </div>
+                            </div>
+                            <div class="user-left">
+                                <p>שם משתמש</p>
+                                <div class="proxy">
+                                    <span>3</span>
+                                </div>
+                                <div class="respect">
+                                    <span>20</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="user-one cf">
+                            <div class="user-right">
+                                <div class="img-box">
+                                    <img width="60" alt="" src="images/user-1.jpg">
+                                    <img alt="" src="images/user-fillter-small-white.png" class="wraper">
+                                </div>
+                            </div>
+                            <div class="user-left">
+                                <p>שם משתמש</p>
+                                <div class="proxy">
+                                    <span>3</span>
+                                </div>
+                                <div class="respect">
+                                    <span>20</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="user-one cf">
+                            <div class="user-right">
+                                <div class="img-box">
+                                    <img width="60" alt="" src="images/user-1.jpg">
+                                    <img alt="" src="images/user-fillter-small-white.png" class="wraper">
+                                </div>
+                            </div>
+                            <div class="user-left">
+                                <p>שם משתמש</p>
+                                <div class="proxy">
+                                    <span>3</span>
+                                </div>
+                                <div class="respect">
+                                    <span>20</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="user-one cf">
+                            <div class="user-right">
+                                <div class="img-box">
+                                    <img width="60" alt="" src="images/user-1.jpg">
+                                    <img alt="" src="images/user-fillter-small-white.png" class="wraper">
+                                </div>
+                            </div>
+                            <div class="user-left">
+                                <p>שם משתמש</p>
+                                <div class="proxy">
+                                    <span>3</span>
+                                </div>
+                                <div class="respect">
+                                    <span>20</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="load">
+                            טירפ ןעוט
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="footer">
+        <div class="extra cf">
+            <div class="one-col">
+                <h4>ורוע תעונת</h4>
+                <p>לש ולוקש ןמזה עיגהש הנבה ךותמ המקוה ורוע
+תויהל םיאכז ונלוכשו ,עמשיי לארשיב בוטה
+ לש ולוקש ןמזה עיגהש הנבה ךותמ המקוה ורו
+,עמשיי לארשיב בוטה .תוטלחהה תעביקב םיפתוש
+.תוטלחהה תעביקב םיפתושתויהל םיאכז ונלוכשו</p>
+            </div>
+            <div class="two-col">
+                <h4>םירושיק</h4>
+                <ul>
+                    <li><a href="">ונחנא ימ</a></li>
+                    <li><a href="">תושדח</a></li>
+                    <li><a href="">שומיש יאנת</a></li>
+                    <li><a href="">םיגולבש</a></li>
+                    <li><a href="">םיגולב</a></li>
+                    <li><a href="">הרזע</a></li>
+                </ul>
+            </div>
+            <div class="three-col">
+                <h4>תומח תויגת</h4>
+                <div class="tags">
+                    <a href="">הלטבא</a>
+                    <a href="">הלכלכ</a>
+                    <a href="">ינוע</a>
+                    <a href="">תיתשת</a><br />
+                    <a href="">לשממו היטרקומד</a>
+                    <a href="">הלטבא</a>
+                    <a href="">הלכלכ</a>
+                    <a href="">ינוע</a>
+                    <div class="more">
+                        <span></span>
+                        <ul>
+                            <li><a href="">תויגת דוע גצה</a></li>
+                            <li><a href="">תיגת ףסוה</a></li>
+                        </ul>
+                    </div>
+                </div>                
+            </div>
+        </div>
+    </div>
+</body>
+</html>

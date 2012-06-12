@@ -21,6 +21,9 @@
                 $(this).parent().toggleClass('active');
             });
             $(".inline").colorbox({ inline: true, width: "730" });
+            $(".popup-add-text").colorbox({ inline: true, width: "730", href: "#popup-add-text" });
+            $(".inline2").colorbox({ inline: true, width: "420" });
+            
         });
     </script>
 </head>
@@ -107,7 +110,7 @@
                         <div class="textarea">
                             <textarea rows="10" cols="50">?ןוזחה רופישב ןוידב םיפתתשמהמ שקבל הצור תייה הרזע וזיא ?ךילע עיפשמ יחכונה בצמה ךיא ?היעבה המ - שרוד התאש תואיצמב ךרוצה תא רבסה .ןוידב ןושארה טסופה</textarea>
                         </div>                        
-                        <input type="submit" value="ןויד תריצי" />
+                        <input class="popup-add-text-link" type="submit" value="ןויד תריצי" />
                         <label><input type="checkbox" checked="checked" /> ךלש ריקה לע תרציש ןוידה תא ףתש</label>
                     </div>
                 </form>
@@ -118,7 +121,7 @@
         <div class="extra">
             <div class="card-top cf">
                 <a class="btn btn-1 inline" href="#user-search">ףתש</a>
-                <a class="btn btn-2" href=""><span class="number">11</span> םיפסונ עדימ יטירפ ףוסאל רוזח</a>
+                <a class="btn btn-2 inline2" href="#popup1"><span class="number">11</span> םיפסונ עדימ יטירפ ףוסאל רוזח</a>
                 <h3 class="basket">עדימה תלג ע</h3>
                 <p>הלגעב םיטירפ 24 ךל שי</p>
             </div>
@@ -130,8 +133,8 @@
                         <h4>דעצמ יכלוה דגנ םידקת תרסח המילא האחמ ורצענ השימח ,םילשוריב הוואגה</h4>
                         <p> עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה לש ח”ודב  ... 2012 לארשיב ינועה בצמ לע םידירטמ םינותנ ולגתה </p>
                         <div class="btn-box">
-                            <a class="confirm" href="">ףתש</a>
-                            <a class="delete" href=""><span>רסה</span></a>
+                            <a class="confirm inline2" href="#popup2">ףתש</a>
+                            <a class="delete inline2" href="#popup3"><span>רסה</span></a>
                         </div>
                     </div>
                     <div class="one">
@@ -225,8 +228,8 @@
                         <h4>תודובע תובקעב תיב ירסח םידופיק יפלא הדוהי רבדמ רוזאב תויקוח אל תיתשת</h4>
                         <p> עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה לש ח”ודב  ח”ודב .2012 לארשיב ינועה בצמ לע םידירטמ םינותנ ולגתה                         עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה לש ... תוכרעיה םישרודש רתויב םידירטמ םינותנ ולגתה </p>
                         <div class="btn-box">
-                            <a class="confirm" href="">ףתש</a>
-                            <a class="delete" href=""><span>רסה</span></a>
+                            <a class="confirm inline2" href="#popup2">ףתש</a>
+                            <a class="delete inline2" href="#popup3"><span>רסה</span></a>
                         </div>
                     </div>
                     <div class="one">
@@ -262,6 +265,45 @@
         </div>
     </div>
     <div style="display: none;">
+    <div class="popup" id="popup-add-text">
+        <div class="top-popup">
+            <h3>:רתאה להנמ רובע היעבה תא ראת</h3>
+        </div>
+        <div class="middle-popup">
+            <textarea rows="0" cols="0">... ונל בותכ</textarea>
+            <label>!ונביל תמושת תא תבסהש הדות</label>
+        </div>
+        <div class="popup-bottom">
+            <a class="dark-grey-btn" href="">חלש</a>
+        </div>
+    </div>
+    <div class="popup popup-small" id="popup1">
+        <div class="middle-popup">
+            <label>תכרעמל רבחתהל שי וז הלועפ עצבל ידכ</label>
+        </div>
+        <div class="popup-bottom">
+            <a class="green-btn" href="">רבחתה</a>
+            <a class="grey-btn" href="">לוטיב</a>
+        </div>
+    </div>
+    <div class="popup popup-small" id="popup2">
+        <div class="middle-popup">
+            <label>םינומיסא קיפסמ ךתושרב ןיא ,םירעטצמ ונא </label>
+        </div>
+        <div class="popup-bottom">
+            <a class="dark-grey-btn" href="">חלש</a>
+        </div>
+    </div>
+    <div class="popup popup-small" id="popup3">
+        <div class="middle-popup">
+            <label> וז הלועפ עצבל ידכ<br />
+            םינומיסא <span class="number">45</span> םישרדנ</label>
+        </div>
+        <div class="popup-bottom">
+            <a class="dark-grey-btn" href="">רושיא</a>
+            <a class="grey-btn" href="">לוטיב</a>
+        </div>
+    </div>
     <div class="popup" id="user-search">
         <form class="search-top cf" action="#">
             <label>ןוידב ףתתשהל םירבח ןמזה</label>
