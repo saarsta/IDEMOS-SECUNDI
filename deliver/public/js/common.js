@@ -146,29 +146,40 @@ function image_autoscale(obj, params)
         var parent = $(elm.parent());
         parent.removeClass('image_loading');
         parent.css({'overflow':'hidden'});
-        var parent_width = Number(parent.css('width')) || parent.innerWidth();
-        var parent_height = Number(parent.css('height')) || parent.innerHeight();
+        var parent_width = Number(parent.css('width').replace(/[^\d]/g,'')) || parent.innerWidth();
+        var parent_height = Number(parent.css('height').replace(/[^\d]/g,'')) || parent.innerHeight();
         var parent_prop = parent_width * 1.0 / parent_height;
         parent.css({position:'relative'});
+        console.log(parent);
+        console.log(parent_width);
+        console.log(parent_height);
 
         var width = elm.width();
         var height = elm.height();
-        var prop = width * 1.0 / height;
-        var top=0.0, left=0.0;
-        if( prop < parent_prop)
-        {
-            width = parent_width;
-            height = width / prop;
-            top = (parent_height - height)/2;
-        }
-        else
-        {
-            height = parent_height;
-            width = height * prop;
-            left = (parent_width - width)/2;
-        }
+        console.log(width);
+        console.log(height);
+        if(!width)        {
+            elm.css({position:'absolute', height:parent_height});
+        } else if(!height) {
+            elm.css({position:'absolute', width:parent_width});
+        } else {
+            var prop = width * 1.0 / height;
+            var top=0.0, left=0.0;
+            if( prop < parent_prop)
+            {
+                width = parent_width;
+                height = width / prop;
+                top = (parent_height - height)/2;
+            }
+            else
+            {
+                height = parent_height;
+                width = height * prop;
+                left = (parent_width - width)/2;
+            }
 
-        elm.css({position:'absolute', height:height, top:top, left:left});
+            elm.css({position:'absolute', height:height, top:top, left:left});
+        }
         elm.fadeIn(fadeIn)
     });
 
