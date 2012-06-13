@@ -186,16 +186,16 @@
 
         <select class="left-select" id="sorting_select">
             <option id="creation_date">
-תאריך
+                תאריך
             </option>
             <!-- <option id="first_name">
                 מיין לפי יוזר
             </option>-->
             <option id="-total_votes">
-שנויים במחלוקת
+                שנויים במחלוקת
             </option>
             <option id="-popularity">
-פוסטים הכי טובים
+                פוסטים הכי טובים
             </option>
         </select>
 
@@ -211,37 +211,38 @@
                 כתיבת תגובה
             </h3>
 
-            <div class="text-box cf" <%if(user_logged){%> data-creator_id="<%=user._id%>" <%}%> >
-                <div class="left">
-                    <textarea id="discussion_comment" class="four-col" cols="0" rows="0"></textarea>
-                </div>
-                <div class="user-right">
-                    <div class="img-box" style="overflow: hidden;">
-                        <div style="width:70px; height:70px;" class='auto-scale'>
-                            <% if(user_logged) { %>
-                            <img src="<%=avatar%>" alt="אני"/>
-                            <% } %>
-                        </div>
-                        <span></span>
-                    </div>
-                    <h4>אני</h4>
-
-                    <div class="date"><%=(new Date()).format('dd.mm.yy') %></div>
-                    <% if(user_logged){ %>
-                    <div class="proxy">
-                        <span>3</span>
-                    </div>
-                    <div class="respect">
-                        <span class="score" ><%=user.score%></span>
-                    </div>
-                    <% } %>
-                </div>
+            <div class="text-box cf"
+            <%if(user_logged){%> data-creator_id="<%=user._id%>" <%}%> >
+            <div class="left">
+                <textarea id="discussion_comment" class="four-col" cols="0" rows="0"></textarea>
             </div>
-            <a id="submit_post" class="green-btn" href="javascript:void(0);">
-                הצע
-            </a>
+            <div class="user-right">
+                <div class="img-box" style="overflow: hidden;">
+                    <div style="width:70px; height:70px;" class='auto-scale'>
+                        <% if(user_logged) { %>
+                        <img src="<%=avatar%>" alt="אני"/>
+                        <% } %>
+                    </div>
+                    <span></span>
+                </div>
+                <h4>אני</h4>
+
+                <div class="date"><%=(new Date()).format('dd.mm.yy') %></div>
+                <% if(user_logged){ %>
+                <div class="proxy">
+                    <span>3</span>
+                </div>
+                <div class="respect">
+                    <span class="score"><%=user.score%></span>
+                </div>
+                <% } %>
+            </div>
         </div>
+        <a id="submit_post" class="green-btn" href="javascript:void(0);">
+            הצע
+        </a>
     </div>
+</div>
 </div>
 <!--<div class="add-offer">
 <div class="text-box">
@@ -271,7 +272,7 @@ $(document).ready(function () {
     var grade_id = "<%=discussion.grade_obj.grade_id%>";
     var sugg_grade_id;
     var new_post_ref_id = null;  //if not null =>the create new post is connected to anther post
-    var my_discussion_grade =  Number("<%= discussion.grade_obj ? discussion.grade_obj.value || 0 : 0 %>");
+    var my_discussion_grade = Number("<%= discussion.grade_obj ? discussion.grade_obj.value || 0 : 0 %>");
 
     var postsNumber = 0;
 
@@ -288,8 +289,7 @@ $(document).ready(function () {
             my_discussion_grade = ui.value;
             db_functions.addDiscussionGrade(discussion_id, my_discussion_grade, grade_id, function (err, data) {
 
-                if(!err)
-                {
+                if (!err) {
                     $("#amount").val(Math.round(data.new_grade * 100) / 100);
                     $("#graders").text(data.evaluate_counter);
                     $(".dark_bar").css('width', (my_discussion_grade * 10) + '%');
@@ -302,29 +302,30 @@ $(document).ready(function () {
     });
     //$("#amount").val($(".slider").slider("value"));
 
-    $(".slider-two").slider({
-        disabled:true,
-        range:"min",
-        value:0,
-        min:0,
-        max:11,
-        step:0.10,
-        slide:function (event, ui) {
-            //$("#amount2").val(ui.value);
-        }
-    });
+//    $(".slider-two").slider({
+//        disabled:true,
+//        range:"min",
+//        value:0,
+//        min:0,
+//        max:11,
+//        step:0.10,
+//        slide:function (event, ui) {
+//            //$("#amount2").val(ui.value);
+//        }
+//    });
+
     //$("#amount2").val($(".slider-two").slider("value"));
-    $(".slider-three").slider({
-        range:"min",
-        value:8.20,
-        min:0,
-        max:11,
-        step:0.10,
-        slide:function (event, ui) {
-            $("#amount3").val(ui.value);
-        }
-    });
-    $("#amount3").val($(".slider-three").slider("value"));
+//    $(".slider-three").slider({
+//        range:"min",
+//        value:8.20,
+//        min:0,
+//        max:11,
+//        step:0.10,
+//        slide:function (event, ui) {
+//            $("#amount3").val(ui.value);
+//        }
+//    });
+//    $("#amount3").val($(".slider-three").slider("value"));
 
 
     $(".inline").colorbox({ inline:true, width:"730" });
@@ -488,27 +489,27 @@ $(document).ready(function () {
         userName = postDiv.data('creator_name');
         new_post_ref_id = postDiv.data('id');
         text = "[quote=" + '"' + userName + '"' + " " + "]\n"
-        +  $('.post_text', postDiv).text()
-        + '\n'
-        + "[/quote]"
-        + '\n';
+                + $('.post_text', postDiv).text()
+                + '\n'
+                + "[/quote]"
+                + '\n';
 
         $("textarea#discussion_comment").val(text).focus();
     });
 
     $('#suggestion_list').on('click', ".grey-btn", function (e) {
-            var userName,
-                    text;
-            var postDiv = $(this).parents('.one');
-            e.preventDefault();
-            $("textarea#discussion_comment").focus();
-            userName = postDiv.data('creator_name');
-            new_post_ref_id = postDiv.data('id');
-            text = $('.text-left p:last-child', postDiv).text();
-            text = userName + ' אמר:"' + text + '"\n';
-            text = text + " ";
-            $("textarea#discussion_comment").val(text).focus();
-        });
+        var userName,
+                text;
+        var postDiv = $(this).parents('.one');
+        e.preventDefault();
+        $("textarea#discussion_comment").focus();
+        userName = postDiv.data('creator_name');
+        new_post_ref_id = postDiv.data('id');
+        text = $('.text-left p:last-child', postDiv).text();
+        text = userName + ' אמר:"' + text + '"\n';
+        text = text + " ";
+        $("textarea#discussion_comment").val(text).focus();
+    });
 
     $('#comments,#suggestion_list').on('click', ".follow_user", function (e) {
         var creator_id = $(this).parents('.comment-one,.one').data("creator_id");
@@ -558,17 +559,24 @@ $(document).ready(function () {
                 var suggestion_grade_val = suggestion.grade_obj ? suggestion.grade_obj.evalueation_grade : my_discussion_grade;
                 suggest_grade_id[suggestion.id] = suggestion.grade_obj ? suggestion.grade_obj._id : null;
                 $(".suggest_slider_" + suggestion.id).slider({
-
                     value:suggestion_grade_val,
                     range:"min",
                     min:0,
                     max:10,
                     step:0.10,
+                    slide: function(event, ui){
+                        var rating = ui.value;
+                        if(rating > my_discussion_grade){
+                            $(this).parents(".bottom-box").find(".agree_disagree").removeClass("disagree").addClass("agree")
+                        }else{
+                            $(this).parents(".bottom-box").find(".agree_disagree").removeClass("agree").addClass("disagree");
+
+                        }
+                    },
                     change:function (event, ui) {
                         var rating = ui.value;
                         db_functions.addSuggestionGrade(suggestion.id, discussion_id, rating, suggest_grade_id[suggestion.id], function (err, data) {
-                            if(!err)
-                            {
+                            if (!err) {
                                 $("#suggest_grade_" + suggestion.id).val(Math.round(data.new_grade * 100) / 100);
                                 $("#suggest_graders_" + suggestion.id).text(data.evaluate_counter);
                                 $("#agrees_" + suggestion.id).text(data.agrees);
@@ -576,6 +584,7 @@ $(document).ready(function () {
                                 $("#wanted_amount_of_tokens_" + suggestion.id).text(data.wanted_amount_of_tokens);
                                 $("#curr_amount_of_tokens_" + suggestion.id).text(data.curr_amount_of_tokens);
                                 suggest_grade_id[suggestion.id] = data.grade_id;
+
                                 //already_graded
                             }
                             else
@@ -584,16 +593,14 @@ $(document).ready(function () {
                     }
                 });
 
-                $(".suggest_slider_" + suggestion.id).prepend($("<div>").addClass("dark_bar").css('width',  (my_discussion_grade * 10) + '%'));
-
-
+                $(".suggest_slider_" + suggestion.id).prepend($("<div>").addClass("dark_bar").css('width', (my_discussion_grade * 10) + '%'));
             });
         }
         return null;
 
     }
 
-    db_functions.getSuggestionByDiscussion(discussion_id,1,0, function (err, data) {
+    db_functions.getSuggestionByDiscussion(discussion_id, 1, 0, function (err, data) {
         $.each(data.objects, function (index, suggestion) {
             render_suggestion(suggestion);
         });
@@ -601,19 +608,18 @@ $(document).ready(function () {
         $('#suggestion_number').text('(' + data.meta.total_count + ')');
         if (data.objects.length > 0) {
             $(".deals-box").show();
-            if(data.meta.total_count>2)
-            {
-               $(".more-deals").show();
-               $(".more-deals a").on('click', function (e) {
+            if (data.meta.total_count > 2) {
+                $(".more-deals").show();
+                $(".more-deals a").on('click', function (e) {
 
-                   db_functions.getSuggestionByDiscussion(discussion_id,null,1, function (err, data) {
+                    db_functions.getSuggestionByDiscussion(discussion_id, null, 1, function (err, data) {
                         $.each(data.objects, function (index, suggestion) {
                             render_suggestion(suggestion);
                         });
-                   });
+                    });
                     $(".more-deals").hide();
-                   return false;
-               });
+                    return false;
+                });
 
             }
 

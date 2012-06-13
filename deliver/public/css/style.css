@@ -1160,7 +1160,7 @@ body
     padding-bottom: 45px;
     position: relative;
 }
-.services-green 
+.services-green
 {
     margin: -22px 59px 0 0;
     float: right;
@@ -1401,7 +1401,7 @@ body
 {
     display: inline-block;
     color:#50504f;
-    font: normal 13px/15px Aial;    
+    font: normal 13px/15px Aial;
 }
 .discussion-main .bottom label input
 {
@@ -1420,7 +1420,7 @@ body
     width: 980px;
     margin: 0 auto;
 }
-#card .card-top 
+#card .card-top
 {
     padding-bottom: 34px;
 }
@@ -1430,7 +1430,7 @@ body
     float: right;
     padding-left: 37px;
     margin: 0 0 0 13px;
-    font: normal 30px/32px "AdumaFOTRegular";    
+    font: normal 30px/32px "AdumaFOTRegular";
     background: url(../images/basket-icon.png) 0 50% no-repeat;
 }
 #card .card-top p
@@ -1438,7 +1438,7 @@ body
     color:#ffffff;
     float: right;
     margin: 0;
-    font: normal 22px/32px "AdumaFOTMedium";    
+    font: normal 22px/32px "AdumaFOTMedium";
 }
 #card .card-top a.btn
 {
@@ -1446,7 +1446,7 @@ body
     color:#fff;
     background:#757d7e url(../images/search-submit.png) 0 0 repeat-x;
     height: 29px;
-    font: normal 22px/29px "AdumaFOTRegular";    
+    font: normal 22px/29px "AdumaFOTRegular";
     border: 1px solid #2e3030;
     text-align: center;
     border-radius: 2px;
@@ -1532,7 +1532,7 @@ body
     color:#fff;
     background:#757d7e url(../images/search-submit.png) 0 0 repeat-x;
     height: 29px;
-    font: normal 22px/29px "AdumaFOTRegular";    
+    font: normal 22px/29px "AdumaFOTRegular";
     border: 1px solid #2e3030;
     text-align: center;
     border-radius: 2px;
@@ -1547,7 +1547,7 @@ body
     color:#fff;
     background:#b7b6b6 url(../images/search-submit.png) 0 0 repeat-x;
     height: 29px;
-    font: normal 22px/29px "AdumaFOTRegular";    
+    font: normal 22px/29px "AdumaFOTRegular";
     border: 1px solid #8f8f8f;
     text-align: center;
     border-radius: 2px;
@@ -1584,7 +1584,7 @@ body
 {
     display: block;
     color:#50504f;
-    font: normal 55px/57px "AdumaFOTRegular";   
+    font: normal 55px/57px "AdumaFOTRegular";
     margin-bottom: -10px;
 }
 #card .card-products .loading
@@ -1664,7 +1664,7 @@ body
     color:#fff;
     background:#757d7e url(../images/search-submit.png) 0 0 repeat-x;
     height: 29px;
-    font: normal 22px/29px "AdumaFOTRegular";    
+    font: normal 22px/29px "AdumaFOTRegular";
     border: 1px solid #2e3030;
     text-align: center;
     border-radius: 2px;
@@ -1704,7 +1704,7 @@ body
     color:#fff;
     background:#b7b6b6 url(../images/search-submit.png) 0 0 repeat-x;
     height: 29px;
-    font: normal 22px/29px "AdumaFOTRegular";    
+    font: normal 22px/29px "AdumaFOTRegular";
     border: 1px solid #8f8f8f;
     text-align: center;
     border-radius: 2px;
@@ -1736,7 +1736,7 @@ body
 .popup .middle-popup label
 {
     color:#50504f;
-    font: normal 22px/24px "AdumaFOTRegular"; 
+    font: normal 22px/24px "AdumaFOTRegular";
     margin: 0;
 }
 .popup .middle-popup label span.number
@@ -1763,7 +1763,7 @@ body
     float: right;
     color:#ffffff;
     font: normal 18px/31px "AdumaFOTRegular";
-    padding-left: 22px; 
+    padding-left: 22px;
 }
 #user-search .search-top .input
 {
@@ -1790,7 +1790,7 @@ body
     color:#fff;
     background:#757d7e url(../images/search-submit.png) 0 0 repeat-x;
     height: 29px;
-    font: normal 22px/29px "AdumaFOTRegular";    
+    font: normal 22px/29px "AdumaFOTRegular";
     border: 1px solid #2e3030;
     text-align: center;
     border-radius: 2px;
@@ -1818,7 +1818,7 @@ body
     float: right;
     color:#50504f;
     font: normal 18px/31px "AdumaFOTRegular";
-    padding-left: 22px; 
+    padding-left: 22px;
 }
 #user-search .search-bottom .input
 {
@@ -1845,7 +1845,7 @@ body
     color:#fff;
     background:#757d7e url(../images/search-submit.png) 0 0 repeat-x;
     height: 29px;
-    font: normal 22px/29px "AdumaFOTRegular";    
+    font: normal 22px/29px "AdumaFOTRegular";
     border: 1px solid #2e3030;
     text-align: center;
     border-radius: 2px;
@@ -1960,7 +1960,7 @@ body
 .add-offer .active a.more-text
 {
     display: none;
-    
+
 }
 .add-offer .text-box .hide-text
 {
@@ -2315,7 +2315,7 @@ textarea.hidden_textarea::selection
 {
     color:#bebebd;
     font: normal 50px/52px 'AdumaFOTRegular';
-    display: block;    
+    display: block;
 }
 .card-left .comment-slide
 {
@@ -2342,7 +2342,7 @@ textarea.hidden_textarea::selection
     right: -13px;
     top: 20px;
 }
-#nav2 
+#nav2
 {
     text-align: center;
     margin-top: 10px;
@@ -2370,7 +2370,7 @@ textarea.hidden_textarea::selection
 .write-comment h3
 {
     margin-right: 100px;
-    color:#757d7e;   
+    color:#757d7e;
     font: normal 25px/44px 'AdumaFOTMedium';
     border-top: 6px solid #d6dbde;
 }
@@ -2662,7 +2662,7 @@ textarea.hidden_textarea::selection
     color:#ffffff;
     font: normal 18px/29px 'AdumaFOTRegular';
     text-decoration: none;
-    margin-right: 7px;    
+    margin-right: 7px;
 }
 .comments-box .text .status
 {
@@ -2791,7 +2791,7 @@ textarea.hidden_textarea::selection
 .comments-box .comment-one .user-right .img-box
 {
     width: 60px;
-    margin: -10px auto 5px; 
+    margin: -10px auto 5px;
     position: relative;
 }
 .comments-box .comment-one .user-right .img-box img
@@ -3075,7 +3075,7 @@ textarea.hidden_textarea::selection
 .deals-box .user-right .img-box
 {
     width: 60px;
-    margin: -10px auto 5px; 
+    margin: -10px auto 5px;
     position: relative;
 }
 .deals-box .user-right .img-box img
@@ -3121,23 +3121,37 @@ textarea.hidden_textarea::selection
 }
 .deals-box .one .bottom-box .status .yes .green
 {
-    background: url(../images/status-green.png) no-repeat;
+    background: url(../images/status-white.png) no-repeat;
     width: 91px;
     height: 42px;
-    color: #fff;
+    color: #50504F;
     font: normal 18px/37px'AdumaFOTRegular';
     text-align: center;
+
+}
+
+.deals-box .one .bottom-box .status.agree .yes .green
+{
+    background: url(../images/status-green.png) no-repeat;
+    color: #fff;
 }
 
 .deals-box .one .bottom-box .status .no .red
 {
-    background: url(../images/status-red.png) no-repeat;
+    background: url(../images/status-white.png) no-repeat;
     width: 91px;
     height: 42px;
-    color: #fff;
+    color: #50504F;
     font: normal 18px/37px'AdumaFOTRegular';
     text-align: center;
 }
+
+.deals-box .one .bottom-box .status.disagree .no .red
+{
+    background: url(../images/status-red.png) no-repeat;
+    color: #fff;
+}
+
 .deals-box .one .bottom-box .status small
 {
     font-size: 13px;
@@ -3165,7 +3179,7 @@ textarea.hidden_textarea::selection
     padding-top: 10px;
     height: 30px;
 }
-.more-deals 
+.more-deals
 {
     border-top: 6px solid #d6dbde;
     margin-bottom: -25px;
@@ -3494,7 +3508,7 @@ textarea.hidden_textarea::selection
     color:#fff;
     background:#757d7e url(../images/search-submit.png) 0 0 repeat-x;
     height: 29px;
-    font: normal 22px/29px "AdumaFOTRegular";    
+    font: normal 22px/29px "AdumaFOTRegular";
     border: 1px solid #2e3030;
     text-align: center;
     border-radius: 2px;
@@ -3509,7 +3523,7 @@ textarea.hidden_textarea::selection
     color:#fff;
     background:#b7b6b6 url(../images/search-submit.png) 0 0 repeat-x;
     height: 29px;
-    font: normal 22px/29px "AdumaFOTRegular";    
+    font: normal 22px/29px "AdumaFOTRegular";
     border: 1px solid #8f8f8f;
     text-align: center;
     border-radius: 2px;
@@ -3546,7 +3560,7 @@ textarea.hidden_textarea::selection
 {
     display: block;
     color:#50504f;
-    font: normal 55px/57px "AdumaFOTRegular";   
+    font: normal 55px/57px "AdumaFOTRegular";
     margin-bottom: -10px;
 }
 .leftCol .card-products-left .loading
@@ -3646,7 +3660,7 @@ textarea.hidden_textarea::selection
 }
 .one-box .left a
 {
-    display: block;    
+    display: block;
     background:#757d7e url(../images/search-submit.png) 0 0 repeat-x;
     border: 1px solid #757d7e;
     border-radius: 2px;
@@ -3672,7 +3686,7 @@ textarea.hidden_textarea::selection
 {
     margin-left: 20px;
     margin-bottom: 16px;
-} 
+}
 .one-box .right .text
 {
     overflow: hidden;
@@ -4217,7 +4231,7 @@ body.search-ative #header
 }
 .myuru-top .right .white-box
 {
-    background: #fff url(../images/border-vertical-dotted.png) 0 0 repeat-y; 
+    background: #fff url(../images/border-vertical-dotted.png) 0 0 repeat-y;
     height: 202px;
     padding: 18px 18px 0 0;
 }
@@ -4431,7 +4445,7 @@ body.search-ative #header
 {
     position: absolute;
     left:0;
-    top: 0;   
+    top: 0;
 }
 .myuru-top .left .token-bar .token-popup .user-left
 {
@@ -4571,7 +4585,7 @@ body.search-ative #header
     height: 164px;
 }
 #content .search-result-box .slides-one,
-#content .search-result-box .tab-slide 
+#content .search-result-box .tab-slide
 {
     height: 179px;
 }
@@ -4601,7 +4615,7 @@ body.search-ative #header
 {
     border: none;
 }
-#content .search-result-box .slide-wrap .nav 
+#content .search-result-box .slide-wrap .nav
 {
     background: none;
 }

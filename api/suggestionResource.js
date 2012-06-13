@@ -59,7 +59,6 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
             },
             wanted_amount_of_tokens: null,
             curr_amount_of_tokens: null
-
         };
     },
 
@@ -71,8 +70,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
 
         var iterator = function(suggestion, itr_cbk){
             var curr_grade_obj = {};
-            suggestion.grade_obj = curr_grade_obj;
-            suggestion.is_agree = false;
+//            suggestion.grade_obj = curr_grade_obj;
 
             suggestion.curr_amount_of_tokens = suggestion.agrees - suggestion.not_agrees;
 
@@ -82,7 +80,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
             else
                 suggestion.wanted_amount_of_tokens = calculate_sugg_threshold(suggestion.getCharCount(), discussion_threshold);
             if(req.user){
-                models.GradeSuggestion.findOne({user_id: req.user._id, suggestion_id: suggestion._id}, ["_id", "evaluation_grade"], function(err, grade_sugg_obj){
+                models.GradeSuggestion.findOne({user_id: req.user._id, suggestion_id: suggestion._id}, ["_id", "evaluation_grade", "does_support_the_suggestion"], function(err, grade_sugg_obj){
                     if(!err && grade_sugg_obj){
                         curr_grade_obj = {
                             _id: grade_sugg_obj._id,
@@ -437,5 +435,9 @@ module.exports.approveSuggestion = function(id,callback)
 var calculate_sugg_threshold = function(factor, discussion_threshold){
     var log_base_75_of_x =
         Math.log(discussion_threshold) / Math.log(75);
-    return Math.pow(log_base_75_of_x, 1.6) * factor;
+    var result = Math.pow(log_base_75_of_x, 1.6) * factor;
+
+
+    return Math.round(result);
+
 }

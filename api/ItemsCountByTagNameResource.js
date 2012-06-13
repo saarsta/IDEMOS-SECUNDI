@@ -59,10 +59,10 @@ var ItemsByTagResource = module.exports = jest.Resource.extend({
         ], function(err, args){
             callback(err,{
                 info_items_count: args[0],
-                discussions_count:args[1],
-                cycles_count: args[2],
-                actions_count: args[3],
-                blogs_count: args[4]
+                discussions_count:args[1]|| null,
+                cycles_count: args[2]|| null,
+                actions_count: args[3]|| null,
+                blogs_count: args[4]|| null
             });
         });
     }

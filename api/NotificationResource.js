@@ -149,7 +149,7 @@ var iterator = function (users_hash) {
                         notification.message_of_notificators =
                             "הגיב על הצעה לשינוי שלקחת בה חלק"
                         ;
-                        itr_cbk(err);
+                        itr_cbk();
                     }
                     break;
                 case "comment_on_discussion_you_created" :
