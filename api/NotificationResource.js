@@ -68,32 +68,51 @@ var NotificationCategoryResource = module.exports = resources.MongooseResource.e
                     .uniq()
                     .value();
 
-                models.User.find({}, ['id', 'first_name', 'last_name', 'facebook_id', 'avatar'])
-                    .where('_id').in(notificator_ids).run(function (err, users) {
+                async.parallel([
+                    function(cbk){
+                        models.User.find({}, ['id', 'first_name', 'last_name', 'facebook_id', 'avatar'])
+                            .where('_id').in(notificator_ids).run(function (err, users) {
 
-                        var users_hash = {};
+                                if(!err){
+                                    var users_hash = {};
 
-                        _.each(users, function (user) {
-                            users_hash[user.id] = user;
-                        });
+                                    _.each(users, function (user) {
+                                        users_hash[user.id] = user;
+                                    });
+                                }
+                                cbk(err, users_hash);
+                            });
+                    },
 
-                        async.forEach(results.objects, iterator(users_hash), function (err, obj) {
-                            callback(err, results);
-                        })
-                    });
+                    function(cbk){
+                        models.Discussion.find({}, ['id', 'image_field_preview'])
+                            .where('_id').in(discussion_ids).run(function (err, discussions) {
 
+                                if(!err){
+                                    var discussions_hash = {};
+
+                                    _.each(discussions, function (discussion) {
+                                        discussions_hash[discussion.id] = discussion;
+                                    });
+                                }
+                                cbk(err, discussions_hash);
+                            });
+                    }
+                ], function(err, args){
+                    async.forEach(results.objects, iterator(args[0], args[1]), function (err, obj) {
+                        callback(err, results);
+                    })
+                })
             });
         }
     });
 
 
-var iterator = function (users_hash) {
+var iterator = function (users_hash, discussions_hash) {
     return function (notification, itr_cbk) {
         {
             var description_of_notificators;
             var message_of_notificators;
-            var link;
-            var pic;
             var user_obj = notification.notificators.length ?
                 users_hash[notification.notificators[0].notificator_id] : null;
 
@@ -113,6 +132,7 @@ var iterator = function (users_hash) {
                 case "comment_on_discussion_you_are_part_of":
                     var num_of_comments = notification.notificators.length;
                     notification.link = "/discussions/" + notification.entity_id;
+                    notification.pic = discussions_hash[notification.entity_id].image_field_preview || discussions_hash[notification.entity_id].image_field;
 
                     if (num_of_comments > 1) {
                         description_of_notificators = num_of_comments + " " +
@@ -136,6 +156,7 @@ var iterator = function (users_hash) {
                 case "change_suggestion_on_discussion_you_are_part_of":
                     var num_of_comments = notification.notificators.length;
                     notification.link = "/discussions/" + notification.entity_id;
+                    notification.pic = discussions_hash[notification.entity_id].image_field_preview || discussions_hash[notification.entity_id].image_field;
 
                     if (num_of_comments > 1) {
                         notification.description_of_notificators = num_of_comments + " " + "אנשים";
@@ -155,6 +176,7 @@ var iterator = function (users_hash) {
                 case "comment_on_discussion_you_created" :
                     var num_of_comments = notification.notificators.length;
                     notification.link = "/discussions/" + notification.entity_id;
+                    notification.pic = discussions_hash[notification.entity_id].image_field_preview || discussions_hash[notification.entity_id].image_field;
 
                     if (num_of_comments > 1) {
                         notification.description_of_notificators = num_of_comments + " " + "אנשים";
@@ -177,6 +199,7 @@ var iterator = function (users_hash) {
                 case "change_suggestion_on_discussion_you_created":
                     var num_of_comments = notification.notificators.length;
                     notification.link = "/discussions/" + notification.entity_id;
+                    notification.pic = discussions_hash[notification.entity_id].image_field_preview || discussions_hash[notification.entity_id].image_field;
 
                     if (num_of_comments > 1) {
                         notification.description_of_notificators = num_of_comments + " " + "אנשים";
@@ -199,27 +222,23 @@ var iterator = function (users_hash) {
                         "התקבלה הצעה לשינוי שהצעת"
                     ;
                     notification.link = "/discussions/" + notification.entity_id;
-                    models.Discussion.findById(notification.entity_id, function (err, disc) {
-                        if (!err)
-                            notification.pic = disc.image_field_preview;
-                        itr_cbk(err);
-                    });
+                    notification.pic = discussions_hash[notification.entity_id].image_field_preview || discussions_hash[notification.entity_id].image_field;
+
+                    itr_cbk();
                     break;
                 case "approved_change_suggestion_you_graded":
                     notification.message_of_notificators =
                         "התקבלה הצעה לשינוי שדירגת"
                     ;
                     notification.link = "/discussions/" + notification.entity_id;
-                    models.Discussions.findById(notification.entity_id, function (err, disc) {
-                        if (!err)
-                            notification.pic = disc.image_field_preview;
-                        itr_cbk(err);
-                    });
+                    notification.pic = discussions_hash[notification.entity_id].image_field_preview || discussions_hash[notification.entity_id].image_field;
+
+                        itr_cbk();
                     break;
                 case "been_quoted":
 
                     notification.link = "/discussions/" + notification.entity_id + '#post_' + notification.notificators[0].sub_entity_id;
-
+                    notification.pic = discussions_hash[notification.entity_id].image_field_preview || discussions_hash[notification.entity_id].image_field;
                     notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;
                     notification.message_of_notificators =
                         "ציטט אותך"
