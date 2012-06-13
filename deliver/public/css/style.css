@@ -552,6 +552,7 @@ body
 {
     padding-bottom: 80px;
     position: relative;
+    clear: both;
 }
 #content h2
 {

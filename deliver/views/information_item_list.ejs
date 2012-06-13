@@ -57,6 +57,18 @@
 
     $(function(){
 
+        if(tag_name!= '')
+       {
+             db_functions.getItemsCountByTagName(tag_name,function(err,data)
+             {
+                 dust.render('search_results',data,function(err,out)
+                 {
+                   $("body").addClass("search-ative");
+                      //{"info_items_count":0,"discussions_count":0,"cycles_count":3,"actions_count":0,"blogs_count":0}
+                    $(".search-box").before(out);
+                 });
+             });
+       }
 
         db_functions.getAllSubjects(function(err,data)
         {
