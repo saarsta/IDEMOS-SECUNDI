@@ -552,6 +552,7 @@ body
 {
     padding-bottom: 80px;
     position: relative;
+    clear: both;
 }
 #content h2
 {
@@ -1147,7 +1148,7 @@ body
 {
     color:#50504f;
     font: normal 13px/17px ARial;
-    height: 34px;
+  /*  height: 34px;     */
     overflow: hidden;
     margin-bottom: 30px;
 }
@@ -3837,8 +3838,6 @@ body.search-ative #header
 {
     color:#505050;
     font: bold 17px/19px ARial;
-    height: 38px;
-    overflow: hidden;
     margin-bottom: 10px;
 }
 .search-result-box .slides-one .one h4 a
@@ -3849,23 +3848,28 @@ body.search-ative #header
 {
     color:#505050;
     font: normal 13px/17px ARial;
-    height: 68px;
-    overflow: hidden;
     margin-bottom: 20px;
 }
+.search-result-box .slides-one .one .top-section
+{
+    height: 134px;
+    overflow: hidden;
+}
+
 .search-result-box .slides-one .one .tags
 {
     border-top: 1px solid #d6dbde;
 }
 .search-result-box .slides-one .one .floatRight
 {
-    margin: 2px 0 10px 13px;
+    margin: 2px 0 5px 13px;
 }
 .search-result-box .slide-wrap
 {
     position: relative;
     border-bottom: 1px solid #848383;
     text-align: center;
+    min-height: 224px;
 }
 .search-result-box .slide-wrap .prev
 {

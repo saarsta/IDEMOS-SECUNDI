@@ -467,10 +467,58 @@ var db_functions = {
                 callback(err, null);
             }
         });
+    }   ,
+
+    getDiscussionsByTagName: function(tag_name, callback){
+        db_functions.loggedInAjax({
+            url: '/api/discussions?tags=' + tag_name,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+                callback(null, data);
+            }
+        });
+    },
+
+    getCyclesByTagName: function(tag_name, callback){
+        db_functions.loggedInAjax({
+            url: '/api/cycles?tags=' + tag_name,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+                callback(null, data);
+            }
+        });
+    },
+    getActionsByTagName: function(tag_name, callback){
+        this.loggedInAjax({
+            url: '/api/actions?tags=' + tag_name,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+                callback(null, data);
+            }
+        });
+    },
+
+    getInfoItemsByTagName: function(tag_name, callback){
+        db_functions.loggedInAjax({
+            url: '/api/information_items?tags=' + tag_name,
+            type: "GET",
+            async: true,
+            success: function (data) {
+
+                console.log(data);
+                callback(null, data);
+            }
+        });
     },
 
     getBlogsByTagName:  function(tag_name, callback){
-        this.loggedInAjax({
+        db_functions.loggedInAjax({
             url: '/api/articles?tags=' + tag_name,
             type: "GET",
             async: true,
@@ -482,3 +530,32 @@ var db_functions = {
         });
     }
 };
+
+
+var search = {
+    fetch : function (search_term)
+    {
+//        $(".search-result-box .tabs").tabs();
+//
+//        $('.tab-slide-1')
+//            .after('<div class="nav-1 nav">')
+//            .cycle({
+//                fx: 'scrollLeft',
+//                speed: 'fast',
+//                timeout: 0,
+//                pager: '.nav-1',
+//                next: '.next-1',
+//                prev: '.prev-1'
+//            });
+//        $('.tab-slide-2')
+//            .after('<div class="nav-2 nav">')
+//            .cycle({
+//                fx: 'scrollLeft',
+//                speed: 'fast',
+//                timeout: 0,
+//                pager: '.nav-2',
+//                next: '.next-2',
+//                prev: '.prev-2'
+//            });
+    }
+}
