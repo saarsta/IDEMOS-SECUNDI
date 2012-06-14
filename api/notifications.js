@@ -15,7 +15,7 @@ _ = require('underscore');
 exports.create_user_notification = function(notification_type, entity_id, user_id, notificatior_id, sub_entity, callback){
 
     var single_notification_arr = ["been_quoted", "approved_info_item_i_created"];
-    if(notificatior_id && _.indexOf(notification_type, single_notification_arr) == -1){
+    if(notificatior_id && _.indexOf(single_notification_arr, notification_type) == -1){
 
         async.waterfall([
 
