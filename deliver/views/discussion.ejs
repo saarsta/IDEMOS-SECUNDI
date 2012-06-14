@@ -471,6 +471,22 @@ $(document).ready(function () {
         $("textarea#discussion_comment").val(text).focus();
     });
 
+    $('#comments').on('click', ".post_quote a", function (e) {
+
+        var post_id = $(this).parents(".comment-one").data("id");
+        var ref_to_post_id = $(this).parents(".comment-one").data("ref-id");
+//        var link = window.location.href;
+//
+//        //remove hash if exist
+//        if(window.location.hash){
+//            link = link.slice(0, link.indexOf("#"));
+//        }
+//        var post_ref_id;
+//        link = link + "#post_id" + post_ref_id;
+
+        scrollTo("#post_" + ref_to_post_id);
+    })
+
     $('#suggestion_list').on('click', ".grey-btn", function (e) {
         var userName,
                 text;
@@ -628,6 +644,8 @@ $(document).ready(function () {
                         })
                     }
                 }
+
+
             }
         });
     }
@@ -638,7 +656,7 @@ $(document).ready(function () {
             if (err) {
                 console.log(err);
             } else {
-                renderComments(data.objects)
+                renderComments(data.objects);
                 postsNumber = data.meta.total_count;
                 setCommentNumber(postsNumber);
             }

@@ -43,9 +43,12 @@ dust.filters['tags'] = function(text) {
 
 dust.filters['post'] = function(text) {
     text = dust.filters['tags'](text);
+
+
+
     text = text.replace(/\[quote="([^"]*)"\s*\]\n?((?:.|\n)*)?\n?\[\/quote\]\n?/g,
-        '<div class="post_quote"><a href="javascript:void(0);">' +
-            'משתמש $1 כתב:' +
+        '<div class="post_quote"><a class="ref_link" href="javascript:void(0);">' +
+            ' $1 כתב:' +
             '</a><br>' +
             '$2' + '</div>');
     text = text.replace(/\n/g, '<br>');
