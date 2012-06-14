@@ -50,7 +50,9 @@ app.configure('staging', function(){
 
 app.configure('production', function(){
     app.set('views', __dirname + '/deliver/views');
+    app.set('old_views', __dirname + '/views');
     app.set('public_folder', __dirname + '/deliver/public');
+    app.set('public_folder2', __dirname + '/public');
     app.set("port", process.env.PORT);
     app.set('facebook_app_id', '375874372423704');
     app.set('facebook_secret', 'b079bf2df2f7055e3ac3db17d4d2becb');
@@ -63,6 +65,7 @@ app.configure('production', function(){
         bucket: 'uru'
     });
     require('./deliver/tools/compile_dust_templates');
+    require('./tools/compile_templates');
 });
 
 mongoose.connect(app.settings.DB_URL);
@@ -110,7 +113,7 @@ app.configure(function(){
 });
 
 require('./deliver/routes')(app);
-if(app.settings.env != 'production')
+//if(app.settings.env != 'production')
     require('./routes')(app);
 require('./api')(app);
 require('./admin')(app);
