@@ -44,9 +44,9 @@
         <a class="grey-btn" href="javascript:void(0);" >הגב</a>
     </div>
     <div class="bottom-box cf">
-        <div class="status">
+        <div class="agree_disagree status {?grade_obj}{?grade_obj.does_support_the_suggestion}agree{:else}disagree{/grade_obj.does_support_the_suggestion}{/grade_obj}">
             <div class="yes">
-                <div class="green">מסכים</div>
+                <div class="green"  >מסכים</div>
                 <div class="number" id="agrees_{id}"> {agrees}</div>
             </div>
             <div class="no">

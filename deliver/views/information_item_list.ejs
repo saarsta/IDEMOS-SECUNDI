@@ -69,7 +69,7 @@
                     addSlides("discussions" ,data.discussions_count,db_functions.getDiscussionsByTagName);
                     addSlides("cycles" ,data.cycles_count,db_functions.getCyclesByTagName);
                     addSlides("actions" ,data.actions_count,db_functions.getActionsByTagName);
-                   // addSlides("blogs" ,data.blogs_count);
+                   // addSlides("blogs" ,data.blogs_count,db_functions.getBlogsByTagName);
                     $(".search-result-box .tabs").tabs();
                  });
              });
@@ -85,10 +85,12 @@
                 {
                     var section_data = new Object();
                     section_data.name= name;
-                    dust.render('search_topic',section_data,function(err,out)
+                    section_data.scroll =    data.objects.length >3;
+                    dust.render('search_section',section_data,function(err,out)
                     {
-                            $(".tabs").append(out);
-                       /*
+                        $(".tabs").append(out);
+
+                       /*   var citrus = fruits.slice(1,3);
                            $('.tab-slide-'+name)
                            .after('<div class="nav-'+name+' nav">')
                            .cycle({
@@ -108,7 +110,7 @@
             }
             else
             {
-                dust.render('search_topic_empty',null,function(err,out) {
+                dust.render('search_section_empty',null,function(err,out) {
                      $(".tabs").append(out);
                 });
             }

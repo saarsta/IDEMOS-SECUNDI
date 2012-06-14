@@ -10,20 +10,6 @@ var express = require('express'),
 var app = module.exports = express.createServer();
 var account = require('./deliver/routes/account');
 
-app.configure('deliver', function(){
-    app.set('views', __dirname + '/deliver/views');
-    app.set('old_views', __dirname + '/views');
-    app.set('public_folder', __dirname + '/deliver/public');
-    app.set('public_folder2', __dirname + '/public');
-    app.set("port", 80);
-    app.set('facebook_app_id', '175023072601087');
-    app.set('facebook_secret', '5ef7a37e8a09eca5ee54f6ae56aa003f');
-    app.set('root_path', 'http://dev.empeeric.com');
-    app.set('DB_URL','mongodb://localhost/uru');
-    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-    require('./deliver/tools/compile_dust_templates');
-    require('./tools/compile_templates');
-});
 
 app.configure('development', function(){
     app.set('views', __dirname + '/deliver/views');
@@ -42,11 +28,29 @@ app.configure('development', function(){
 });
 
 
-app.configure('production', function(){
+app.configure('staging', function(){
     app.set('views', __dirname + '/deliver/views');
     app.set('old_views', __dirname + '/views');
     app.set('public_folder', __dirname + '/deliver/public');
     app.set('public_folder2', __dirname + '/public');
+    app.set("port", process.env.PORT);
+    app.set('facebook_app_id', '436675376363069');
+    app.set('facebook_secret', '975fd0cb4702a7563eca70f11035501a');
+    app.set('root_path', 'http://uru-staging.herokuapp.com');
+    app.set('DB_URL',process.env.MONGOLAB_URI);
+    app.use(express.errorHandler());
+    require('j-forms').setAmazonCredentials({
+        key: 'AKIAJM4EPWE637IGDTQA',
+        secret: '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',
+        bucket: 'uru'
+    });
+    require('./deliver/tools/compile_dust_templates');
+    require('./tools/compile_templates');
+});
+
+app.configure('production', function(){
+    app.set('views', __dirname + '/deliver/views');
+    app.set('public_folder', __dirname + '/deliver/public');
     app.set("port", process.env.PORT);
     app.set('facebook_app_id', '375874372423704');
     app.set('facebook_secret', 'b079bf2df2f7055e3ac3db17d4d2becb');
@@ -59,7 +63,6 @@ app.configure('production', function(){
         bucket: 'uru'
     });
     require('./deliver/tools/compile_dust_templates');
-    require('./tools/compile_templates');
 });
 
 mongoose.connect(app.settings.DB_URL);
@@ -107,7 +110,8 @@ app.configure(function(){
 });
 
 require('./deliver/routes')(app);
-require('./routes')(app);
+if(process.env.NODE_ENV != 'production')
+    require('./routes')(app);
 require('./api')(app);
 require('./admin')(app);
 
@@ -116,11 +120,6 @@ cron.run(app);
 
 app.listen(app.settings.port);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
-
-app.get('/tokens',function(req,res){
-    res.send(require('./model/common').getGamificationTokenPrice(req.query.type));
-});
-
 
 app.get('/api/thresh/:voters/:rating',function(req,res)
 {

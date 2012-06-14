@@ -455,7 +455,7 @@ var db_functions = {
     }   ,
 
     getDiscussionsByTagName: function(tag_name, callback){
-        this.loggedInAjax({
+        db_functions.loggedInAjax({
             url: '/api/discussions?tags=' + tag_name,
             type: "GET",
             async: true,
@@ -490,8 +490,21 @@ var db_functions = {
     },
 
     getInfoItemsByTagName: function(tag_name, callback){
-        this.loggedInAjax({
+        db_functions.loggedInAjax({
             url: '/api/information_items?tags=' + tag_name,
+            type: "GET",
+            async: true,
+            success: function (data) {
+
+                console.log(data);
+                callback(null, data);
+            }
+        });
+    },
+
+    getBlogsByTagName:  function(tag_name, callback){
+        db_functions.loggedInAjax({
+            url: '/api/articles?tags=' + tag_name,
             type: "GET",
             async: true,
             success: function (data) {

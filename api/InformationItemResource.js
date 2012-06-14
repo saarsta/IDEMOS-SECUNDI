@@ -212,8 +212,9 @@ module.exports.approveInfoItem = function(id,callback){
 
     var score = 10;
     var game_type = "approved_information_item";
-    var notification_type = "approved_info_item";
+    var notification_type = "approved_info_item_i_created";
     var creator_id;
+    var info_item_id;
 
     async.waterfall([
         function(cbk){
@@ -227,6 +228,7 @@ module.exports.approveInfoItem = function(id,callback){
 
         function(info_obj, cbk){
             var inc_user_gamification = {};
+            info_item_id = info_obj._id;
             creator_id = info_obj.created_by.creator_id;
 
             inc_user_gamification['gamification.'+game_type] = 1;
@@ -235,12 +237,26 @@ module.exports.approveInfoItem = function(id,callback){
             models.User.update({_id: creator_id},{$inc:inc_user_gamification}, cbk);
         },
 
+        //notification for creator
         function(obj, cbk){
             notifications.create_user_notification(notification_type, id,creator_id, null, null, cbk);
-        }
+        },
 
+        //find people that like this info_item and set notification for likers
+        function(obj, cbk){
+            models.Like.find({info_item_id: info_item_id}, cbk);
+        },
+
+        function(likes, cbk){
+            async.forEach(likes, iterator, cbk);
+        }
 
     ], function(err, obj){
         callback(err, obj);
     })
+
+    var iterator = function(like, itr_cbk){
+        notifications.create_user_notification("approved_info_item_i_liked", id, creator_id, null, null, itr_cbk);
+    }
 }
+

@@ -16,7 +16,7 @@ var ArticleResource = common.GamificationMongooseResource.extend({
         this._super(models.Article, null, null);
         this.authentication = new common.SessionAuthentication();
         this.allowed_methods = ['get', 'post'];
-        this.filtering = {popularity_counter: null};
+        this.filtering = {popularity_counter: null, tags: null};
         this.update_fields = ["comments", "popolarity_counter", "title", "text", "tags"];
         this.fields = {
             tooltip_or_title:null,
