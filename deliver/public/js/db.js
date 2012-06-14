@@ -452,5 +452,20 @@ var db_functions = {
                 callback(err, null);
             }
         });
-    }
+    },
+
+    getBlogsByTagName:  function(tag_name, callback){
+        this.loggedInAjax({
+            url: '/api/articles?tags=' + tag_name,
+            type: "GET",
+            async: true,
+            success: function (data) {
+
+                console.log(data);
+                callback(null, data);
+            }
+        });
+    },
+
+
 };

@@ -181,12 +181,17 @@ var Schemas = exports.Schemas = {
 
     Notification: {
         user_id:{type:ObjectId, ref:'User', index:true, required:true},
-        notificators: [{
+        notificators: [new Schema(
+        {
              notificator_id: {type:ObjectId, ref:'User'},
-             sub_entity_id:  {type: ObjectId}
-        }],
+             sub_entity_id:  {type: ObjectId},
+            //only for votes notifications
+             ballance: Number
+        }
+        )],
         type: {type:String, "enum": [
-            'approved_info_item',
+            'approved_info_item_i_created',
+            'approved_info_item_i_liked',
             'approved_discussion_i_created',
             'approved_discussion_i_took_part',
             'comment_on_discussion_you_are_part_of',
@@ -197,7 +202,8 @@ var Schemas = exports.Schemas = {
             "approved_change_suggestion_you_graded",
             'been_quoted',
             "a_dicussion_created_with_info_item_that_you_like",
-            "a_dicussion_created_with_info_item_that_you_created"
+            "a_dicussion_created_with_info_item_that_you_created",
+            "user_gave_my_post_tokens"
         ]},
 
         entity_id: {type: ObjectId},

@@ -133,7 +133,20 @@ var db_functions = {
             }
         });
     },
-    
+
+    getBlogsByTagName:  function(tag_name, callback){
+        this.loggedInAjax({
+            url: '/api/articles?tags=' + tag_name,
+            type: "GET",
+            async: true,
+            success: function (data) {
+
+                console.log(data);
+                callback(null, data);
+            }
+        });
+    },
+
     addInfoItemToShoppingCart: function(info_item_id, callback){
         this.loggedInAjax({
             url: '/api/shopping_cart/' + info_item_id,

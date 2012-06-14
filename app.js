@@ -110,7 +110,8 @@ app.configure(function(){
 });
 
 require('./deliver/routes')(app);
-require('./routes')(app);
+if(process.env.NODE_ENV != 'production')
+    require('./routes')(app);
 require('./api')(app);
 require('./admin')(app);
 
@@ -119,11 +120,6 @@ cron.run(app);
 
 app.listen(app.settings.port);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
-
-app.get('/tokens',function(req,res){
-    res.send(require('./model/common').getGamificationTokenPrice(req.query.type));
-});
-
 
 app.get('/api/thresh/:voters/:rating',function(req,res)
 {
