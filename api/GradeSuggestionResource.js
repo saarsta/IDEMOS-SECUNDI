@@ -6,6 +6,7 @@ var resources = require('jest'),
     common = require('./common'),
     _ = require('underscore'),
     Suggestion = require('./suggestionResource');
+    notifications = require('./notifications');
 
 //Authorization
 var Authoriztion = function() {};
@@ -171,6 +172,18 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                         }else{
                             cbk1();
                         }
+                    },
+                    //set notification for suggestion creator ("user agree/disagree your suggestion")
+                    function(cbk){
+                        var method;
+                        if(suggestion_obj.does_support_the_suggestion)
+                            method = "add";
+                        else
+                            method = "remove";
+                        notifications.create_user_vote_or_grade_notification("user_gave_my_suggestion_tokens",
+                            discussion_id, suggestion_obj.creator_id, req.user._id, suggestion_obj._id, method, false,function(err, result){
+                                cbk(err, result);
+                            })
                     }
                 ], function(err, args){
                     cbk(err, args);
@@ -237,13 +250,33 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
             },
 
             function(sugg_obj, cbk){
+                var method;
                 g_sugg_obj = sugg_obj;
                 agrees = sugg_obj.agrees;
                 not_agrees = sugg_obj.not_agrees;
 
                 did_user_change_his_agree = object.does_support_the_suggestion != is_agree;
                 object.does_support_the_suggestion = is_agree;
-                base.call(self, req, object, cbk);
+                if(did_user_change_his_agree){
+                    if(is_agree)
+                        method = "add";
+                    else
+                        method = "remove"
+                }
+                async.parallel([
+                    function(cbk1){
+                        notifications.create_user_vote_or_grade_notification("user_gave_my_suggestion_tokens",
+                            discussion_id, sugg_obj.creator_id, req.user._id, sugg_obj._id, method, did_user_change_his_agree,function(err, result){
+                                cbk1(err, result);
+                            })
+                    },
+
+                    function(cbk1){
+                        base.call(self, req, object, cbk);
+                    }
+                ], function(err, args){
+                    cbk(err, args[1]);
+                })
             },
 
             function(grade_sugg_object, cbk){
