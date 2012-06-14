@@ -48,6 +48,7 @@ dust.filters['post'] = function(text) {
             'משתמש $1 כתב:' +
             '</a><br>' +
             '$2' + '</div>');
+    text = text.replace(/\n/g, '<br>');
     return text;
 }
 
@@ -68,6 +69,18 @@ dust.renderArray = function(template,arr,callback,endCallback)
     if(endCallback)
         endCallback(_err,out_arr.join(''));
 };
+
+var scrollTo = function(selector, options){
+    options = options || {};
+    var offset = $(selector).offset();
+    if (offset) {
+        $('html, body').animate({
+            scrollTop:offset.top
+        }, options.duration || 800);
+        return true;
+    }
+    return false;
+}
 
 var connectPopup = function(callback){
 
@@ -148,14 +161,9 @@ function image_autoscale(obj, params)
         var parent_height = Number(parent.css('height').replace(/[^\d]/g,'')) || parent.innerHeight();
         var parent_prop = parent_width * 1.0 / parent_height;
         parent.css({position:'relative'});
-        console.log(parent);
-        console.log(parent_width);
-        console.log(parent_height);
 
         var width = elm.width();
         var height = elm.height();
-        console.log(width);
-        console.log(height);
         if(!width)        {
             elm.css({position:'absolute', height:parent_height});
         } else if(!height) {

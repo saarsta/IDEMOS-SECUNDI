@@ -1,0 +1,26 @@
+<div class="slides-one">
+    {#items}
+        <div class="one">
+            <div class="top-section">
+                <img class="floatRight"   height="88" src="{image_field_preview.url}" alt="{title}" />
+                <h4>{title}</h4>
+                <p>{vision_text}</p>
+            </div>
+            <div class="tags">
+                <div class="info">
+                    <span class="talks">33</span>
+                    <span class="watched">151</span>
+                </div>
+                {#tags}
+                <a href="/information_items/?tag_name={.|u}"
+                {@idx}
+                {@if cond="({.} > 1 )"}
+                style="display:none;"
+                {/if}
+                {/idx}
+                >{.}</a>{~n}
+                {/tags}
+            </div>
+        </div>
+    {/items}
+</div>
