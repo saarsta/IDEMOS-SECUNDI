@@ -200,6 +200,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                             user_id: user_id,
                             join_date: Date.now()
                         };
+                        fields.is_published = true; //TODO this is only for now
                         // create vision_text_preview - 200 chars
                         if(fields.vision_text.length >= 200)
                             fields.vision_text_preview = fields.vision_text.substr(0, 200);
