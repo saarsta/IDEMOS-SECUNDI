@@ -211,6 +211,21 @@ var db_functions = {
         });
     },
 
+    getPostById: function(post_id, callback){
+        this.loggedInAjax({
+            url: '/api/posts/' + post_id,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },
+
     addLikeToInfoItem: function(info_item_id, callback){
         this.loggedInAjax({
             url: '/api/likes',
