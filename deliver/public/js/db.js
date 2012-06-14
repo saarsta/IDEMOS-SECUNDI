@@ -465,7 +465,5 @@ var db_functions = {
                 callback(null, data);
             }
         });
-    },
-
-
+    }
 };
