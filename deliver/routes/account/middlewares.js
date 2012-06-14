@@ -18,7 +18,7 @@ exports.referred_by_middleware = function(req,res,next)
 exports.auth_middleware = function (req, res, next) {
 
 //    if this request needs to be authenticated
-    if(_.any(DONT_NEED_LOGIN_PAGES,function(dont)
+    if(_.any(common.DONT_NEED_LOGIN_PAGES,function(dont)
     {
         return dont.test(req.path);
     }))

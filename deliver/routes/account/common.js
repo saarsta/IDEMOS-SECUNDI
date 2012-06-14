@@ -10,8 +10,6 @@ exports.DONT_NEED_LOGIN_PAGES = [/^\/images/,/^\/static/, /^\/css/, /stylesheets
 
 exports.REDIRECT_FOR_LOGIN_PAGES = [/^\/discussions\/new/];
 
-exports.LOGIN_PATH = LOGIN_PATH;
-
 var hash_password = exports.hash_password = function(password)
 {
 
