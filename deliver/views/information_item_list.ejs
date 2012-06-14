@@ -31,7 +31,7 @@
             <a href="javascript:void(0)" class="service-9"><span class="text">
                 לעגלת המידע
             </span><span class="icon"></span></a>
-            <a href="javascript:void(0)" class="service-10"><span class="text">
+            <a href="" id="uru_subject_button" class="service-10"><span class="text">
                 עורו
             </span><span class="icon"></span></a>
             <span class="empty"></span>
@@ -63,16 +63,65 @@
              {
                  dust.render('search_results',data,function(err,out)
                  {
-                   $("body").addClass("search-ative");
-                      //{"info_items_count":0,"discussions_count":0,"cycles_count":3,"actions_count":0,"blogs_count":0}
+                    $("body").addClass("search-ative");
                     $(".search-box").before(out);
+                    addSlides("infos" ,data.info_items_count,db_functions.getInfoItemsByTagName);
+                    addSlides("discussions" ,data.discussions_count,db_functions.getDiscussionsByTagName);
+                    addSlides("cycles" ,data.cycles_count,db_functions.getCyclesByTagName);
+                    addSlides("actions" ,data.actions_count,db_functions.getActionsByTagName);
+                   // addSlides("blogs" ,data.blogs_count);
+                    $(".search-result-box .tabs").tabs();
                  });
              });
        }
 
+
+
+       function addSlides(name,count, getItemsByTagName)
+       {
+            if (count>0)
+            {
+                getItemsByTagName  (tag_name,function(err,data)
+                {
+                    var section_data = new Object();
+                    section_data.name= name;
+                    dust.render('search_topic',section_data,function(err,out)
+                    {
+                            $(".tabs").append(out);
+                       /*
+                           $('.tab-slide-'+name)
+                           .after('<div class="nav-'+name+' nav">')
+                           .cycle({
+                               fx: 'scrollLeft',
+                               speed: 'fast',
+                               timeout: 0,
+                               pager: '.nav-'+name,
+                               next: '.next-'+name,
+                               prev: '.prev-'+name
+                           });
+
+                           */
+                    });
+
+                });
+
+            }
+            else
+            {
+                dust.render('search_topic_empty',null,function(err,out) {
+                     $(".tabs").append(out);
+                });
+            }
+
+
+
+       }
+
         db_functions.getAllSubjects(function(err,data)
         {
-            $.each(data.objects,function(index,subject)
+            var uru_subject = data.objects[0];
+            $('#uru_subject_button').attr('href','/information_items/subject/' + uru_subject._id);
+            $.each(data.objects.slice(1),function(index,subject)
             {
                 dust.render('subject',subject,function(err,out)
                 {

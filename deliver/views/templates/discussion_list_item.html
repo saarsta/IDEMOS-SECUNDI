@@ -1,17 +1,17 @@
 <div class="one-box cf" data-id="{_id}">
     <div class="right">
         <a href="/discussions/{_id}">
-        <div style="width:141px; height:79px;" class="auto-scale">
+        <div style="width:141px; height:79px; float:right;" class="auto-scale">
             <img class="floatRight" src="{image_field_preview.url}" alt="{tooltip_or_title}" title="{tooltip_or_title}" />
         </div>
         </a>
         <div class="text">
             <h4>{title}</h4>
-            <p>{text_field_preview|s}</p>
+            <p>{vision_text_preview|s}</p>
         </div>
         <div class="bottom cf">
             <div class="ratio">
-               דירוג נוכחי:  <span> {grade}</span>
+               דירוג נוכחי:  <span> {grade|grade}</span>
             </div>
             <div class="info">
                 <div class="first">

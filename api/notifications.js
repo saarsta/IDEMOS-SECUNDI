@@ -30,7 +30,7 @@ exports.create_user_notification = function (notification_type, entity_id, user_
 //                        cbk(err, num);
 //                    });
 
-                   if(_.any(noti.notificators,  function(notificator){notificator.notificator_id == notificatior_id})) {
+                   if(_.any(noti.notificators,  function(notificator){return notificator.notificator_id + "" == notificatior_id + ""})) {
                      cbk(null, 0);
                    }else{
                        var new_notificator = {

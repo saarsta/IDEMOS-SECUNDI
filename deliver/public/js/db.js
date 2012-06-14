@@ -107,7 +107,7 @@ var db_functions = {
 
     getAllSubjects: function(callback){
         this.loggedInAjax({
-            url: '/api/subjects?limit=7',
+            url: '/api/subjects',
             type: "GET",
             async: true,
             success: function (data) {
@@ -450,6 +450,54 @@ var db_functions = {
 
             error:function(err){
                 callback(err, null);
+            }
+        });
+    }   ,
+
+    getDiscussionsByTagName: function(tag_name, callback){
+        this.loggedInAjax({
+            url: '/api/discussions?tags=' + tag_name,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+                callback(null, data);
+            }
+        });
+    },
+
+    getCyclesByTagName: function(tag_name, callback){
+        db_functions.loggedInAjax({
+            url: '/api/cycles?tags=' + tag_name,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+                callback(null, data);
+            }
+        });
+    },
+    getActionsByTagName: function(tag_name, callback){
+        this.loggedInAjax({
+            url: '/api/actions?tags=' + tag_name,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+                callback(null, data);
+            }
+        });
+    },
+
+    getInfoItemsByTagName: function(tag_name, callback){
+        this.loggedInAjax({
+            url: '/api/information_items?tags=' + tag_name,
+            type: "GET",
+            async: true,
+            success: function (data) {
+
+                console.log(data);
+                callback(null, data);
             }
         });
     }

@@ -3900,6 +3900,10 @@ body.search-ative #header
 {
     display: none;
 }
+.post_text
+{
+    padding-bottom: 7px;
+}
 .post_text ul
 {
     list-style:disc outside none;
@@ -3909,6 +3913,19 @@ body.search-ative #header
 }
 .total-number    {
     display: none;
+}
+.post_quote {
+    border-top: 2px solid
+    #D6DBDE;
+    border-bottom: 2px solid
+    #D6DBDE;
+    padding: 2px;
+    margin-right: 10px;
+}
+.post_quote a {
+    font-weight: bold;
+    font-style: italic;
+    color: #3d63ef;
 }
 /*--------------------------------*/
 .upload-popup

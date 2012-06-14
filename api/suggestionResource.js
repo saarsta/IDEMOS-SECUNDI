@@ -80,10 +80,9 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
             if(suggestion.admin_threshold_for_accepting_the_suggestion > 0)
                 suggestion.wanted_amount_of_tokens = suggestion.admin_threshold_for_accepting_the_suggestion;
             else
-                suggestion.wanted_amount_of_tokens = discussion_threshold;
+                suggestion.wanted_amount_of_tokens = calculate_sugg_threshold(suggestion.getCharCount(), discussion_threshold);
             if(req.user){
                 models.GradeSuggestion.findOne({user_id: req.user._id, suggestion_id: suggestion._id}, ["_id", "evaluation_grade"], function(err, grade_sugg_obj){
-
                     if(!err && grade_sugg_obj){
                         curr_grade_obj = {
                             _id: grade_sugg_obj._id,
@@ -154,9 +153,11 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
         var user = req.user;
         var discussion_id;
         var discussion_creator_id;
+        var num_of_words;
+
 
         var iterator = function(user_schema, itr_cbk){
-            if (user_schema.user_id == user_id)
+            if (user_schema.user_id == user_id || !user_schema.user_id)
                 itr_cbk(null, 0);
             else{
                 if (discussion_creator_id == user_schema.user_id){
@@ -179,14 +180,28 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
             suggestion_object.set(field, fields[field]);
         }
 
+        //calculate threshold for the suggestion.. for this i need to get discussion threshold first
         async.waterfall([
             function (cbk) {
+                var discussion_thresh;
+                models.Discussion.findById(fields.discussion_id, cbk);
+            },
+
+
+            function (discussion_obj, cbk) {
+
+                var word_count = suggestion_object.getCharCount();
+                suggestion_object.threshold_for_accepting_the_suggestion = calculate_sugg_threshold(word_count,
+                    Number(discussion_obj.admin_threshold_for_accepting_change_suggestions) || Number(discussion_obj.threshold_for_accepting_change_suggestions));
                 self.authorization.edit_object(req, suggestion_object, cbk);
             },
 
             function (suggestion_obj, cbk) {
                 suggestion_object.save(function(err,data){
-                    discussion_id = data.discussion_id;
+                    if(data){
+                        discussion_id = data.discussion_id;
+                        suggestion_obj.wanted_amount_of_tokens = suggestion_obj.threshold_for_accepting_the_suggestion;
+                    }
                     cbk(err,data);
                 });
             },
@@ -217,6 +232,10 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                 });
             }
         ], function (err, result) {
+            if(err){
+                console.error(err);
+                console.trace();
+            }
             callback(err, result);
         });
     },
@@ -413,4 +432,10 @@ module.exports.approveSuggestion = function(id,callback)
     ], function(err, arg){
         callback(err, arg);
     });
+}
+
+var calculate_sugg_threshold = function(factor, discussion_threshold){
+    var log_base_75_of_x =
+        Math.log(discussion_threshold) / Math.log(75);
+    return Math.pow(log_base_75_of_x, 1.6) * factor;
 }

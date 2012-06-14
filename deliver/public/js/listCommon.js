@@ -7,6 +7,7 @@ var listCommon = (function(){
                   query={};
                 }
                 db_functions.getListItems(original_type,query, function(err,data){
+                    jqueryContainer.css('height',jqueryContainer.height());
                     jqueryContainer.empty();
                     data.objects.forEach(function(elm)
                     {
@@ -22,6 +23,7 @@ var listCommon = (function(){
                     dust.renderArray(template_name,data.objects,null,function(err,out)
                     {
                         jqueryContainer.append(out);
+                        jqueryContainer.css('height','');
                        // $('#mainList img').autoscale();
                     });
                 });

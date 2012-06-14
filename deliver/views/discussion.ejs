@@ -275,7 +275,7 @@ $(document).ready(function () {
 
     var postsNumber = 0;
 
-
+    $("#discussion_content").val($("#discussion_content").text());
     $(".slider").slider({
 
         value:my_discussion_grade,
@@ -487,9 +487,12 @@ $(document).ready(function () {
         $("textarea#discussion_comment").focus();
         userName = postDiv.data('creator_name');
         new_post_ref_id = postDiv.data('id');
-        text = $('.post_text', postDiv).text();
-        text = userName + " " + "כתב" + ':"'  + " " + text + '"';
-        text = text + "\n"
+        text = "[quote=" + '"' + userName + '"' + " " + "]\n"
+        +  $('.post_text', postDiv).text()
+        + '\n'
+        + "[/quote]"
+        + '\n';
+
         $("textarea#discussion_comment").val(text).focus();
     });
 
@@ -624,6 +627,7 @@ $(document).ready(function () {
     function renderComments(comments) {
         var i;
         for (i = 0; i < comments.length; i++) {
+            comments[i].text = comments[i].text.replace(/\n/g, '<br>');
             comments[i].isFirst = (i === 0);
 
         }

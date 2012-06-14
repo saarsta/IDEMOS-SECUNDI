@@ -80,7 +80,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
             creation_date: null,
             vision_text_preview: null,
             vision_text: null,
-            tags: null,
+            tags: null
         };
     },
 
