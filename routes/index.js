@@ -55,7 +55,7 @@ module.exports = function(app)
 
     router.get('/', pagesInit.index);
 
-    router.include('/account',account.routing);
+    //router.include('/account',account.routing);
 
     router.get('/signup', function(req, res){
         res.render('signup.ejs',{title:'Signup'});

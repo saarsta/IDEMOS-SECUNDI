@@ -110,7 +110,7 @@ app.configure(function(){
 });
 
 require('./deliver/routes')(app);
-if(process.env.NODE_ENV != 'production')
+if(app.settings.env != 'production')
     require('./routes')(app);
 require('./api')(app);
 require('./admin')(app);
@@ -121,17 +121,3 @@ cron.run(app);
 app.listen(app.settings.port);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 
-app.get('/api/thresh/:voters/:rating',function(req,res)
-{
-    console.log('thresh');
-    require('./tools/thresh_calc.js')(req.params.voters, req.params.rating,function(err,result)
-    {
-        if(err)
-        {
-            console.log(err);
-        }
-        res.write(result + '');
-
-        res.end();
-    });
-});
