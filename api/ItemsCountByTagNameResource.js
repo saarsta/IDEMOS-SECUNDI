@@ -37,7 +37,6 @@ var ItemsByTagResource = module.exports = jest.Resource.extend({
         async.parallel([
             function(cbk){
                 models.Cycle.count({tags: tag_name},cbk);
-
             },
 
             function(cbk){
@@ -58,11 +57,11 @@ var ItemsByTagResource = module.exports = jest.Resource.extend({
 
         ], function(err, args){
             callback(err,{
-                info_items_count: args[0],
-                discussions_count:args[1]|| null,
-                cycles_count: args[2]|| null,
-                actions_count: args[3]|| null,
-                blogs_count: args[4]|| null
+                cycles_count: args[0] || 0,
+                discussions_count:args[1]|| 0,
+                info_items_count: args[2]|| 0,
+                actions_count: args[3]|| 0,
+                blogs_count: args[4]|| 0
             });
         });
     }
