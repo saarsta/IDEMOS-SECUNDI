@@ -17,7 +17,7 @@ exports.auth_middleware = middlewares.auth_middleware;
 
 exports.routing = function(router)
 {
-    router.post('/register',require('./register'));
+    router.all('/register',require('./register'));
 
     router.all('/login',require('./login'));
 
@@ -27,8 +27,6 @@ exports.routing = function(router)
 
 };
 
-
-var https = require("https");
 
 
 exports.facebookShare = require('./facebook_share');

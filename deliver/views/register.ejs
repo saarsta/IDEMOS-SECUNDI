@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <%- partial('partials/head.ejs') %>
+</head>
+<body>
+    <div id="wrap">
+        <div id="header">
+            <%-partial('partials/menu.ejs')%>
+            <%-partial('partials/user_box.ejs')%>
+            <%-partial('partials/failures.ejs')%>
+            <%-partial('partials/tag_search.ejs') %>
+        </div>
+        <div id="content" class="cf">   
+            <h2>
+                ברוכים הבאים!
+            </h2>
+            <form class="login-form cf" method="POST">
+                <div class="areas">
+                    <div class="title">
+                        <a href="/account/facebooklogin"><img src="/images/facebook-btn.png" alt="" /></a>
+                        <span class="spacer"></span>
+                        מלא את הפרטים הבאים:
+
+                    </div>
+                    <div class="one">
+                        <label>
+                            שם:
+                        </label>
+
+                        <input name="first_name" class="text" type="text" />
+                    </div>
+                    <div class="one">
+                        <label>
+                            שם משפחה:
+                        </label>
+                        <input name="last_name" class="text" type="text" value="" />
+                    </div>
+                    <div class="one">
+                        <label>
+                            סיסמה:
+                        </label>
+                        <input name="password" class="text" type="text" value="" />
+                    </div>
+                    <div class="one">
+                        <label>
+                            דוא”ל:
+                        </label>
+                        <input name="email" class="text" type="text" value="" />
+                    </div>
+                    <div class="one">
+                        <label>
+                            קוד הזמנה:
+                        </label>
+                        <textarea name="code" cols="0" rows="0"></textarea>
+                    </div>
+                </div>
+                <input type="submit" value="שלח" />
+            </form>
+        </div>
+    </div>
+    <%- partial('partials/footer.ejs') %>
+</body>
+</html>
