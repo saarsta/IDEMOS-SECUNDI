@@ -15,7 +15,7 @@ _ = require('underscore');
 exports.create_user_notification = function(notification_type, entity_id, user_id, notificatior_id, sub_entity, callback){
 
     var single_notification_arr = ["been_quoted", "approved_info_item_i_created"];
-    if(notificatior_id && _.indexOf(notification_type, single_notification_arr) == -1){
+    if(notificatior_id && _.indexOf(single_notification_arr, notification_type) == -1){
 
         async.waterfall([
 
@@ -81,7 +81,8 @@ var create_new_notification = function(notification_type, entity_id, user_id, no
     });
 }
 
-exports.create_user_vote_or_grade_notification = function(notification_type, entity_id, user_id, notificatior_id, sub_entity, vote_for_or_against, callback){
+exports.create_user_vote_or_grade_notification = function(notification_type, entity_id, user_id, notificatior_id,
+                                                        sub_entity, vote_for_or_against, did_change_the_sugg_agreement,callback){
 
     async.waterfall([
 
@@ -96,7 +97,10 @@ exports.create_user_vote_or_grade_notification = function(notification_type, ent
 
                 var notificator = _.find(noti.notificators,  function(notificator){return notificator.notificator_id + "" == notificatior_id + ""});
                 if(notificator){
-                    notificator.ballance += vote_for_or_against == "add" ? 1 : -1;
+                    if(did_change_the_sugg_agreement)
+                        notificator.ballance += vote_for_or_against == "add" ? 2 : -2;
+                    else
+                        notificator.ballance += vote_for_or_against == "add" ? 1 : -1;
                 }else{
                     var new_notificator = {
                         notificator_id: notificatior_id,
@@ -125,7 +129,7 @@ exports.create_user_vote_or_grade_notification = function(notification_type, ent
                 notification.update_date = new Date();
 
                 notification.save(function(err, obj){
-                    callback(err, obj);
+                    cbk(err, obj);
                 });
             }
         }

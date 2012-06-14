@@ -203,7 +203,8 @@ var Schemas = exports.Schemas = {
             'been_quoted',
             "a_dicussion_created_with_info_item_that_you_like",
             "a_dicussion_created_with_info_item_that_you_created",
-            "user_gave_my_post_tokens"
+            "user_gave_my_post_tokens",
+            "user_gave_my_suggestion_tokens"
         ]},
 
         entity_id: {type: ObjectId},

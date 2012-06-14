@@ -60,7 +60,9 @@ var NotificationCategoryResource = module.exports = resources.MongooseResource.e
                     "change_suggestion_on_discussion_you_created",
                     "approved_change_suggestion_you_created",
                     "approved_change_suggestion_you_graded",
-                    "been_quoted"
+                    "been_quoted",
+                    "user_gave_my_post_tokens",
+                    "user_gave_my_suggestion_tokens"
                 ];
 
                 var discussion_ids = _.chain(results.objects)
@@ -304,18 +306,61 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                             "נתן לך"
                         + notification.notificators[0].ballance +
                                 "טוקנים"
+                                + " "
+                                + "על פוסט/ים שכתבת"
                         ;
                     }else{
-                        var token_sum = _.reduce(notification.notificators, function(sum, notificator){notificator.ballance}, 0);
+                        var token_sum = _.reduce(notification.notificators, function(sum, notificator){return sum + Number(notificator.ballance)}, 0);
                         notification.link = "/discussions/" + notification.entity_id;
-                        notification.pic = info_items_hash[notification.entity_id].image_field_preview
-                            || info_items_hash[notification.entity_id].image_field;
-                        notification.description_of_notificators = num_of_comments + " " + "אנשים";
+                        notification.pic = discussions_hash[notification.entity_id].image_field_preview
+                            || discussions_hash[notification.entity_id].image_field;
+                        notification.description_of_notificators = num_of_users_that_vote_my_post +
+                            " " +
+                             "אנשים"
+                            ;
                         notification.message_of_notificators =
                             "נתנו לך"
 
-                                + token_sum +
+                             + " " + token_sum + " " +
                                 "טוקנים"
+                        + " "
+                        + "על פוסט/ים שכתבת"
+
+                        ;
+                    }
+                    itr_cbk();
+                    break;
+                case "user_gave_my_suggestion_tokens":
+                    var num_of_users_that_vote_my_sugg = notification.notificators.length;
+
+                    if(num_of_users_that_vote_my_sugg == 1){
+                        notification.link = "/discussions/" + notification.entity_id + "#suggestion_" + notification.notificators[0].sub_entity_id;
+                        notification.pic = user_obj.avatar_url();
+                        notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;
+                        notification.message_of_notificators =
+                            "נתן לך"
+                        + notification.notificators[0].ballance +
+                                "טוקנים"
+                        + " "
+                        + "על הצעה/ות לשינוי שלך"
+
+                        ;
+                    }else{
+                        var token_sum = _.reduce(notification.notificators, function(sum, notificator){return sum + Number(notificator.ballance)}, 0);
+                        notification.link = "/discussions/" + notification.entity_id;
+                        notification.pic = discussions_hash[notification.entity_id].image_field_preview
+                            || discussions_hash[notification.entity_id].image_field;
+                        notification.description_of_notificators = num_of_users_that_vote_my_sugg +
+                            " " +
+                             "אנשים"
+                            ;
+                        notification.message_of_notificators =
+                            "נתנו לך"
+
+                             + " " + token_sum + " " +
+                                "טוקנים"  +
+                                " " +
+                                + "על הצעה/ות לשינוי שלך"
                         ;
                     }
                     itr_cbk();

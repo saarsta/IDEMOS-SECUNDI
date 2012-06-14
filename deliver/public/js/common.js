@@ -51,7 +51,6 @@ dust.filters['post'] = function(text) {
     return text;
 }
 
-
 dust.renderArray = function(template,arr,callback,endCallback)
 {
     var out_arr = [];
@@ -79,7 +78,6 @@ var connectPopup = function(callback){
     if(callback)
         callback();
 };
-
 
 // handle image loading stuff
 
