@@ -438,6 +438,23 @@ var db_functions = {
             }
         });
     },
+    getAllItemsByUser: function(api_resource,userID, callback){
+        var userIdParam;
+        if(!userID){
+            userIdParam='';
+        }
+        else{
+            userIdParam='&user_id='+userID;
+        }
+        this.loggedInAjax({
+            url: '/api/' + api_resource + '?get=myUru'+userIdParam,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            }
+        });
+    },
 
     getItemsCountByTagName: function(tag_name, callback){
         this.loggedInAjax({
