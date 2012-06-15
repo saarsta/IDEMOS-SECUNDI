@@ -12,6 +12,7 @@ var resources = require('jest'),
     async = require('async'),
     _ = require('underscore'),
     common = require('./common');
+    notifications = require('./notifications');
 //,
 //    jstat = require('./jstat');
 
@@ -34,6 +35,7 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
     //returns post_
     create_obj:function (req, fields, callback) {
         var self = this;
+        var discussion_id;
         //check if user has enought tokens, if so reduce it from user tokens and adds/redueces it form post tokens
         if (req.user) {
             var user_object = req.user;
@@ -65,7 +67,7 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
                                 if (post_object.creator_id + "" == req.user._id + "") {
                                     callback({message:'soory, can\'t vote to your own post', code:401}, null);
                                 } else {
-                                    var discussion_id = post_object.discussion_id;
+                                    discussion_id = post_object.discussion_id;
                                     var isNewFollower = false;
 
                                     // update the post object votes count & popularity
@@ -107,11 +109,18 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
                                             post_object.save(cbk);
                                         },
                                         function (cbk) {
-//                                            for (var field in fields) {
-//                                                vote_object.set(field, fields[field]);
-//                                            }
                                             vote_object.save(function (err, object) {
-                                                cbk(err, post_object);
+
+                                                //set notification for post creator
+                                                if(!err){
+                                                    notifications.create_user_vote_or_grade_notification("user_gave_my_post_tokens",
+                                                        discussion_id, post_object.creator_id, vote_object.user_id, post_object._id, method, false, function(err, result){
+                                                            cbk(err, post_object);
+                                                        })
+                                                }else{
+                                                    cbk(err, post_object);
+                                                }
+
                                             });
                                         }],
                                         function (err, args) {

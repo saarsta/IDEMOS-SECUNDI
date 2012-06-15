@@ -95,6 +95,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                             models.Discussion.findById(discussion_id, function(err, discussion){
                                 if(!err)
                                     if(req.user._id + "" == discussion.creator_id + ""){
+                                        suggestion.grade_obj = {};
                                         suggestion.grade_obj["evalueation_grade"] = discussion.grade;
                                     }
                                 itr_cbk(err, suggestion);

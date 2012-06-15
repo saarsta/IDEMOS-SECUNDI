@@ -6,14 +6,16 @@
  * To change this template use File | Settings | File Templates.
  */
 
-models = require('../models'),
+var models = require('../models'),
 async = require('async'),
 _ = require('underscore');
 
 
-exports.create_user_notification = function (notification_type, entity_id, user_id, notificatior_id, sub_entity, callback){
 
-    if(notificatior_id && notification_type != "been_quoted"){
+exports.create_user_notification = function(notification_type, entity_id, user_id, notificatior_id, sub_entity, callback){
+
+    var single_notification_arr = ["been_quoted", "approved_info_item_i_created"];
+    if(notificatior_id && _.indexOf(single_notification_arr, notification_type) == -1){
 
         async.waterfall([
 
@@ -79,6 +81,62 @@ var create_new_notification = function(notification_type, entity_id, user_id, no
     });
 }
 
+exports.create_user_vote_or_grade_notification = function(notification_type, entity_id, user_id, notificatior_id,
+                                                        sub_entity, vote_for_or_against, did_change_the_sugg_agreement,callback){
+
+    async.waterfall([
+
+        function(cbk){
+            notification_type = notification_type + "";
+            models.Notification.findOne({type: notification_type, user_id: user_id, seen: false}, cbk);
+        },
+
+        function(noti, cbk){
+            if(noti){
+                var date = Date.now();
+
+                var notificator = _.find(noti.notificators,  function(notificator){return notificator.notificator_id + "" == notificatior_id + ""});
+                if(notificator){
+                    if(did_change_the_sugg_agreement)
+                        notificator.ballance += vote_for_or_against == "add" ? 2 : -2;
+                    else
+                        notificator.ballance += vote_for_or_against == "add" ? 1 : -1;
+                }else{
+                    var new_notificator = {
+                        notificator_id: notificatior_id,
+                        sub_entity_id: sub_entity,
+                        ballance: vote_for_or_against == "add" ? 1 : -1
+                    }
+                    noti.notificators.push(new_notificator);
+                }
+                noti.update_date = date;
+                noti.save(function(err, obj){
+                        cbk(err, obj);
+                })
+            }else{
+                var notification = new models.Notification();
+                var notificator = {
+                    notificator_id: notificatior_id,
+                    sub_entity_id: sub_entity,
+                    ballance: vote_for_or_against == "add" ? 1 : -1
+                }
+
+                notification.user_id = user_id;
+                notification.notificators = notificator;
+                notification.type = notification_type;
+                notification.entity_id = entity_id;
+                notification.seen = false;
+                notification.update_date = new Date();
+
+                notification.save(function(err, obj){
+                    cbk(err, obj);
+                });
+            }
+        }
+    ], function(err, obj){
+        callback(err, obj);
+    })
+}
 
 exports.update_user_notification = function (notification_type, obj_id,user, callback){
 

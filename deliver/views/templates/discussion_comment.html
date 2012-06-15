@@ -1,9 +1,10 @@
-    <div class="comment-one {#isFirst} noBorder{:else}{/isFirst}"
-         data-id="{_id}"
-            data-creator_name="{creator_id.first_name} {creator_id.last_name}"
-            data-creator_id="{creator_id.id}">
-        <div class="user-right side_menu">
-             <span class="arrow"></span>
+<div id="post_{_id}" class="comment-one {#isFirst} noBorder{:else}{/isFirst}"
+     data-id="{_id}" data-ref-id="{ref_to_post_id}"
+     data-creator_name="{creator_id.first_name} {creator_id.last_name}"
+     data-creator_id="{creator_id.id}">
+    <div class="user-right side_menu">
+        <span class="arrow"></span>
+
         <div class="left">
             <a href="">
                 תן מנדט
@@ -18,13 +19,15 @@
         <div class="right">
             <div class="img-box transparent-img">
                 <div style="width:60px; height:64px;" class="auto-scale">
-                    <img alt="{title}" title="{creator_id.first_name} {creator_id.last_name}" src="{creator_id.avatar_url}">
+                    <img alt="{title}" title="{creator_id.first_name} {creator_id.last_name}"
+                         src="{creator_id.avatar_url}">
                 </div>
                 <span></span>
             </div>
             <h4>
                 {creator_id.first_name} {creator_id.last_name}
             </h4>
+
             <div class="date" dir="ltr">{creator_id.username} {?creation_date}{creation_date|time}{/creation_date}</div>
             <div class="proxy">
                 <span>3</span>
@@ -34,16 +37,16 @@
             </div>
         </div>
     </div>
-       <div class="text">
+    <div class="text">
         <div class="post_text">
-        <p>
-            {text|s|post}
-        </p>
+            <p>
+                {text|s|post}
+            </p>
         </div>
         <div class="status">
             <div class="yes">
                 <div class="green  vote_for">
- מסכים
+                    מסכים
                 </div>
                 <div class="number">{votes_for}</div>
             </div>
@@ -55,12 +58,12 @@
             </div>
         </div>
     </div>
-    <div class="like-btn"><img src="/images/like-btn.png" alt="" /></div>
+    <div class="like-btn"><img src="/images/like-btn.png" alt=""/></div>
     <div class="nav-btns">
-        <a  class="quote_button" href="javascript:void(0);">
+        <a class="quote_button" href="javascript:void(0);">
             צטט
         </a>
-        <a  href="/facebookShare?link=/discussions/{discussion_id}#post_{_id}" target="_blank">
+        <a href="/facebookShare?link=/discussions/{discussion_id}#post_{_id}" target="_blank">
             שתף
         </a>
     </div>

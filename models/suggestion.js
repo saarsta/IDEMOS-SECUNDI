@@ -12,7 +12,7 @@ var Suggestion = {
     parts:[
         {start:Number, end:Number, text:String}
     ],
-        explanation: {type:mongoose_types.Text},
+    explanation: {type:mongoose_types.Text},
     is_approved:{type:Boolean, 'default':false},
     evaluate_counter: {type: Number, 'default': 0},
     grade: {type: Number, 'default': 0},

@@ -43,14 +43,17 @@ dust.filters['tags'] = function(text) {
 
 dust.filters['post'] = function(text) {
     text = dust.filters['tags'](text);
+
+
+
     text = text.replace(/\[quote="([^"]*)"\s*\]\n?((?:.|\n)*)?\n?\[\/quote\]\n?/g,
-        '<div class="post_quote"><a href="javascript:void(0);">' +
-            'משתמש $1 כתב:' +
+        '<div class="post_quote"><a class="ref_link" href="javascript:void(0);">' +
+            ' $1 כתב:' +
             '</a><br>' +
             '$2' + '</div>');
+    text = text.replace(/\n/g, '<br>');
     return text;
 }
-
 
 dust.renderArray = function(template,arr,callback,endCallback)
 {
@@ -70,6 +73,18 @@ dust.renderArray = function(template,arr,callback,endCallback)
         endCallback(_err,out_arr.join(''));
 };
 
+var scrollTo = function(selector, options){
+    options = options || {};
+    var offset = $(selector).offset();
+    if (offset) {
+        $('html, body').animate({
+            scrollTop:offset.top
+        }, options.duration || 800);
+        return true;
+    }
+    return false;
+}
+
 var connectPopup = function(callback){
 
     //open popup window
@@ -79,7 +94,6 @@ var connectPopup = function(callback){
     if(callback)
         callback();
 };
-
 
 // handle image loading stuff
 
@@ -150,14 +164,9 @@ function image_autoscale(obj, params)
         var parent_height = Number(parent.css('height').replace(/[^\d]/g,'')) || parent.innerHeight();
         var parent_prop = parent_width * 1.0 / parent_height;
         parent.css({position:'relative'});
-        console.log(parent);
-        console.log(parent_width);
-        console.log(parent_height);
 
         var width = elm.width();
         var height = elm.height();
-        console.log(width);
-        console.log(height);
         if(!width)        {
             elm.css({position:'absolute', height:parent_height});
         } else if(!height) {

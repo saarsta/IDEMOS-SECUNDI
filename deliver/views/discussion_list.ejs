@@ -43,13 +43,13 @@
             <a  id="new_discussion_bt"  class="green-btn" href="#">צור דיון חדש</a>
         </div>
         <select id="sorting_select" class="left-select">
-            <option data-sortby="creation_date" >
+            <option value="-creation_date" >
 						תאריך
 						</option>
-            <option data-sortby="-grade">
+            <option value="-grade">
 						דירוג
 						</option>
-            <option data-sortby="-followers_count">
+            <option value="-followers_count">
 						עוקבים
 						</option>
         </select>
@@ -91,7 +91,7 @@
         });
 
         function createDiscussionsQuery(){
-            var sortby=  $('#sorting_select').find(':selected').data('sortby');
+            var sortby=  $('#sorting_select').val();
             var query='order_by='+sortby;
 //            if(selectedTag){
 //                query =query+'&tags='+selectedTag;
