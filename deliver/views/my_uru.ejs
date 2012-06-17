@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <%- partial('partials/head.ejs') %>
+    <!--<script type="text/javascript">
+        $(document).ready(function () {
+
+            $(".search-result-box .tabs").tabs();
+
+            $('.tab-slide-1')
+                    .after('<div class="nav-1 nav">')
+                    .cycle({
+                        fx: 'scrollLeft',
+                        speed: 'fast',
+                        timeout: 0,
+                        pager: '.nav-1',
+                        next: '.next-1',
+                        prev: '.prev-1'
+                    });
+            $('.tab-slide-2')
+                    .after('<div class="nav-2 nav">')
+                    .cycle({
+                        fx: 'scrollLeft',
+                        speed: 'fast',
+                        timeout: 0,
+                        pager: '.nav-2',
+                        next: '.next-2',
+                        prev: '.prev-2'
+                    });
+        });
+    </script>-->
+</head>
+<body>
+<div id="wrap">
+<div id="header">
+    <%-partial('partials/menu.ejs')%>
+    <%-partial('partials/user_box.ejs')%>
+    <%-partial('partials/failures.ejs')%>
+    <%- partial('partials/tag_search.ejs') %>
+</div>
+<div id="content" class="cf">
+<div class="myuru-top">
+    <div class="right">
+        <h2>הזמן חברים</h2>
+        <div class="white-box">
+            <div class="user">
+                <div class="img-box" style="overflow:hidden;">
+				    <div style="width:112px; height:120px; float:right;" class="auto-scale">
+                        <img src="<%=avatar%>" alt="<%=user.first_name+' '+ user.last_name%>" />
+                     </div>
+                    <span></span>
+                </div>
+                <div class="proxy">
+                    <span>3</span> מנדטים
+                </div>
+                <div class="respect">
+                    <span>20</span> מוניטין
+                </div>
+            </div>
+            <div class="user-links">
+                <h4><%=user.first_name+' '+ user.last_name%></h4>
+                <ul>
+                    <li><%= user.address || ""%></li>
+                    <li><%= user.gender==='male'?'זכר':'נכבה' %></li>
+                    <li><%= user.םccupation || ""%></li>
+                </ul>
+            </div>
+            <form action="">
+                <textarea cols="0" rows="0">כאן אפשר לכתוב ביוגרפיה קצרה דברים שאתה אוהב, אג’נדה, דעות, ומה שתרצה על עצמך. בנוסף, אפשר לכתוב ביוגרפיה קצרה דברים שאתה אוהב, אג’נדה, דעות, ומה שתרצה על עצמך.</textarea>
+                <input type="submit" value="הזמן חברים" />
+            </form>
+        </div>
+    </div>
+    <div class="left">
+        <h2>האסימונים שלי</h2>
+        <div class="white-box">
+            <div class="token-bar">
+                <span class="top-number">15</span>
+                <span class="bottom-number">0</span>
+                <div class="token-popup">
+                    <div class="user-right">
+                        <div class="img-box">
+                            <img src="images/user-1.jpg" width="41" alt="" />
+                            <img class="wraper" src="images/user-fillter-small-white.png" width="41" alt="" />
+                        </div>
+                    </div>
+                    <div class="user-left">
+                        <p>יונתן שפירא</p>
+                        <div class="proxy">
+                            <span>3</span>
+                        </div>
+                        <div class="respect">
+                            <span>20</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bars">
+                    <div class="border"></div>
+                    <div class="empty" style="height: 51px"></div>
+                    <div class="grey" style="height: 17px">
+                        <div class="info">מכסת אסימונים: 9</div>
+                    </div>
+                    <div class="green" style="height: 34px">
+                        <div class="info">אסימונים זמינים: 4</div>
+                    </div>
+                    <div class="blue" style="height: 20px">
+                        <div class="info">מוקצים לנציג: 3</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="search-result-box">
+    <h2>פעילות שלי במערכת</h2>
+    <div class="tabs">
+        <ul class="tabs-nav">
+            <li><a href="#discussions-tab">דיונים</a></li>
+            <li><a href="#cycles-tab">מעגלי תנופה</a></li>
+            <li><a href="#actions-tab">פעולות</a></li>
+            <li><a href="#blogs-tab">בלוגים</a></li>
+        </ul>
+        <div id="discussions-tab">
+
+        </div>
+        <div id="cycles-tab">
+
+        </div>
+        <div id="actions-tab">
+
+        </div>
+        <div id="blogs-tab">
+
+        </div>
+
+    </div>
+</div>
+<div class="myuru-bottom cf">
+    <div class="right">
+        <h2>עדכונים</h2>
+        <div class="renewal">
+            <div class="one cf">
+                <div class="right-image">
+                    <div class="img-box">
+                        <img alt="" src="images/user-1.jpg">
+                        <img alt="" src="images/user-fillter-white.png" class="shadow">
+                    </div>
+                </div>
+                <p><strong>יבקעי לאומש</strong> הבילה ידומילו ךוניח אשונב תרציש הנגפהה תלועפל ףרטצה </p>
+                <div class="date">13.03.2012 ,21:09</div>
+                <a href="" class="btn">ףתש</a>
+            </div>
+            <div class="one cf">
+                <div class="right-image">
+                    <img alt="" src="images/sample-1.jpg">
+                </div>
+                <p><strong>3-4 םיאליגב םידליל םניח קוח אשונב תינומה הנגפה</strong></p>
+                <p><strong>:םוקימ</strong> (הייריעה לומ ןיבר רככב םישגפנ) ביבא לת ,ריאמ ןג </p>
+                <p><strong>:יתמ</strong> 17:00 העשב ,13.03.2012 </p>
+                <a href="" class="btn">ףתש</a>
+            </div>
+            <div class="one cf">
+                <div class="right-image">
+                    <div class="img-box img-box-space">
+                        <img alt="" src="images/user-1.jpg">
+                        <img alt="" src="images/user-fillter-white.png" class="shadow">
+                    </div>
+                    <div class="img-box">
+                        <img alt="" src="images/user-1.jpg">
+                        <img alt="" src="images/user-fillter-white.png" class="shadow">
+                    </div>
+                </div>
+                <p><strong>ךלש םירבח 2</strong> קלדה יריחמ אשונב המוצעל ופרטצה </p>
+                <div class="date">13.03.2012 ,21:09</div>
+                <a href="" class="btn">ףתש</a>
+            </div>
+            <div class="one cf">
+                <div class="right-image">
+                    <div class="img-box">
+                        <img alt="" src="images/user-1.jpg">
+                        <img alt="" src="images/user-fillter-white.png" class="shadow">
+                    </div>
+                </div>
+                <p><strong>יבקעי לאומש</strong> הבילה ידומילו ךוניח אשונב תרציש הנגפהה תלועפל ףרטצה </p>
+                <div class="date">13.03.2012 ,21:09</div>
+                <a href="" class="btn">ףתש</a>
+            </div>
+            <div class="one cf">
+                <div class="right-image">
+                    <img alt="" src="images/sample-1.jpg">
+                </div>
+                <p><strong>3-4 םיאליגב םידליל םניח קוח אשונב תינומה הנגפה</strong></p>
+                <p><strong>:םוקימ</strong> (הייריעה לומ ןיבר רככב םישגפנ) ביבא לת ,ריאמ ןג </p>
+                <p><strong>:יתמ</strong> 17:00 העשב ,13.03.2012 </p>
+                <a href="" class="btn">ףתש</a>
+            </div>
+            <div class="one cf">
+                <div class="right-image">
+                    <div class="img-box img-box-space">
+                        <img alt="" src="images/user-1.jpg">
+                        <img alt="" src="images/user-fillter-white.png" class="shadow">
+                    </div>
+                    <div class="img-box">
+                        <img alt="" src="images/user-1.jpg">
+                        <img alt="" src="images/user-fillter-white.png" class="shadow">
+                    </div>
+                </div>
+                <p><strong>ךלש םירבח 2</strong> קלדה יריחמ אשונב המוצעל ופרטצה </p>
+                <div class="date">13.03.2012 ,21:09</div>
+                <a href="" class="btn">ףתש</a>
+            </div>
+        </div>
+    </div>
+    <div class="left">
+        <h2>אחרי מי אני עוקב</h2>
+        <div class="users-list">
+            <div class="user-one cf">
+                <div class="user-right">
+                    <div class="img-box">
+                        <img width="60" alt="" src="images/user-1.jpg">
+                        <img alt="" src="images/user-fillter-small-white.png" class="wraper">
+                    </div>
+                </div>
+                <div class="user-left">
+                    <p>שם משתמש</p>
+                    <div class="proxy">
+                        <span>3</span>
+                    </div>
+                    <div class="respect">
+                        <span>20</span>
+                    </div>
+                </div>
+            </div>
+            <div class="user-one cf">
+                <div class="user-right">
+                    <div class="img-box">
+                        <img width="60" alt="" src="images/user-1.jpg">
+                        <img alt="" src="images/user-fillter-small-white.png" class="wraper">
+                    </div>
+                </div>
+                <div class="user-left">
+                    <p>שם משתמש</p>
+                    <div class="proxy">
+                        <span>3</span>
+                    </div>
+                    <div class="respect">
+                        <span>20</span>
+                    </div>
+                </div>
+            </div>
+            <div class="user-one cf">
+                <div class="user-right">
+                    <div class="img-box">
+                        <img width="60" alt="" src="images/user-1.jpg">
+                        <img alt="" src="images/user-fillter-small-white.png" class="wraper">
+                    </div>
+                </div>
+                <div class="user-left">
+                    <p>שם משתמש</p>
+                    <div class="proxy">
+                        <span>3</span>
+                    </div>
+                    <div class="respect">
+                        <span>20</span>
+                    </div>
+                </div>
+            </div>
+            <div class="user-one cf">
+                <div class="user-right">
+                    <div class="img-box">
+                        <img width="60" alt="" src="images/user-1.jpg">
+                        <img alt="" src="images/user-fillter-small-white.png" class="wraper">
+                    </div>
+                </div>
+                <div class="user-left">
+                    <p>שם משתמש</p>
+                    <div class="proxy">
+                        <span>3</span>
+                    </div>
+                    <div class="respect">
+                        <span>20</span>
+                    </div>
+                </div>
+            </div>
+            <div class="user-one cf">
+                <div class="user-right">
+                    <div class="img-box">
+                        <img width="60" alt="" src="images/user-1.jpg">
+                        <img alt="" src="images/user-fillter-small-white.png" class="wraper">
+                    </div>
+                </div>
+                <div class="user-left">
+                    <p>שם משתמש</p>
+                    <div class="proxy">
+                        <span>3</span>
+                    </div>
+                    <div class="respect">
+                        <span>20</span>
+                    </div>
+                </div>
+            </div>
+            <div class="user-one cf">
+                <div class="user-right">
+                    <div class="img-box">
+                        <img width="60" alt="" src="images/user-1.jpg">
+                        <img alt="" src="images/user-fillter-small-white.png" class="wraper">
+                    </div>
+                </div>
+                <div class="user-left">
+                    <p>שם משתמש</p>
+                    <div class="proxy">
+                        <span>3</span>
+                    </div>
+                    <div class="respect">
+                        <span>20</span>
+                    </div>
+                </div>
+            </div>
+            <div class="load">
+                טירפ ןעוט
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+<%- partial('partials/footer.ejs') %>
+</body>
+</html>
+<script type="text/javascript">
+
+
+
+    $(function(){
+
+        //$(".search-result-box .tabs").tabs();
+
+        $('.tab-slide-1')
+                .after('<div class="nav-1 nav">')
+                .cycle({
+                    fx: 'scrollLeft',
+                    speed: 'fast',
+                    timeout: 0,
+                    pager: '.nav-1',
+                    next: '.next-1',
+                    prev: '.prev-1'
+                });
+        $('.tab-slide-2')
+                .after('<div class="nav-2 nav">')
+                .cycle({
+                    fx: 'scrollLeft',
+                    speed: 'fast',
+                    timeout: 0,
+                    pager: '.nav-2',
+                    next: '.next-2',
+                    prev: '.prev-2'
+                });
+
+
+
+        function tabSelected(event, ui){
+           function convertToTabModel(data){
+            var i,
+                tabGroups=0,
+                tabModel={
+                    groups:[]
+                }   ;
+               for(i = 0 ;i<data.objects.length;i++)
+               {
+                    if(tabModel.groups[tabGroups]===undefined){
+                        tabModel.groups[tabGroups]={group:[]};
+                    }
+                   tabModel.groups[tabGroups].group[i%3] = data.objects[i];
+                    if(i%3===2){
+                        tabGroups++;
+                    }
+               }
+             return tabModel;
+           }
+           var tabDivId=   ui.panel.id;
+            db_functions.getAllItemsByUser('discussions',null,function(error,data){
+                var  tabDataModel =convertToTabModel(data) ;
+                dust.render('myuru_tab',tabDataModel,function(err,out)
+                {
+                    var seletedTab= $('#discussions-tab');
+                    // seletedTab.remove();
+                    seletedTab.empty();
+
+                    seletedTab.append(out);
+                   // $('img',seletedTab).autoscale();
+                });
+            });
+
+            switch (tabDivId)
+            {
+
+
+
+               /* case 'tabDiscussions':
+
+                    db_functions.getAllItemsByUser('discussions',null,function(error,data){
+                        dust.renderArray('myDiscussion_list_item',data.objects,null,function(err,out)
+                        {
+                            var seletedTab= $('#ulDiscussions');
+                            // seletedTab.remove();
+                            seletedTab.empty();
+
+                            seletedTab.append(out);
+                            $('img',seletedTab).autoscale();
+                        });
+                    });
+
+                    break;
+                case 'tabCycle':
+
+                    db_functions.getAllItemsByUser('cycles',null,function(error,data){
+                        dust.renderArray('myCycle_list_item',data.objects,null,function(err,out)
+                        {
+                            var seletedTab= $('#ulCycles');
+                            // seletedTab.remove();
+                            seletedTab.empty();
+                            seletedTab.append(out);
+                            $('img',seletedTab).autoscale();
+                        });
+                    });
+                    break;
+
+                case 'tabActions':
+                    db_functions.getAllItemsByUser('actions',null,function(error,data){
+                        dust.renderArray('myAction_list_item',data.objects,null,function(err,out)
+                        {
+                            var seletedTab= $('#ulActions');
+                            // seletedTab.remove();
+                            seletedTab.empty();
+                            seletedTab.append(out);
+                            $('img',seletedTab).autoscale();
+                        });
+                    });
+                    break;
+
+                case 'ulKilkul':
+                    db_functions.getAllItemsByUser('kilkuls',null,function(error,data){
+                        dust.renderArray('myKilkulListItem',data.objects,null,function(err,out)
+                        {
+                            var seletedTab= $('#ulKilkuls');
+                            // seletedTab.remove();
+                            seletedTab.empty();
+                            seletedTab.append(out);
+                            $('img',seletedTab).autoscale();
+                        });
+                    });
+                    break;
+
+                default:*/
+            }
+
+
+
+        }
+
+
+
+
+
+        $( ".tabs" ).tabs({
+            selected:0,
+            show:tabSelected
+        });
+    });
+</script>
+
