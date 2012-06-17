@@ -67,6 +67,7 @@ module.exports = function(app)
     });
     admin.registerMongooseModel('Suggestion',Models.Suggestion,null,{
         list:['parts.0.text'],
+        form:require('./suggestion'),
         actions:[
             {
                 value:'approve',

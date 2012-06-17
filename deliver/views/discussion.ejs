@@ -634,18 +634,20 @@ $(document).ready(function () {
                 var hash = window.location.hash;
                 if(hash){
                     if(!scrollTo(hash)){
-                        var post_id = hash.substr(6, hash.length);
-                        db_functions.getPostById(post_id,function(err, post){
-                            dust.render('discussion_comment', post, function (err, out) {
-                                if(!err)
-                                    comments.append(out);
-                                    scrollTo(hash);
-                            })
-                        })
+                        var match = /^#post_([0-9a-f]+)/.exec(hash);
+                        if(match) {
+                            var post_id = match[1];
+
+                            db_functions.getPostById(post_id,function(err, post){
+                                dust.render('discussion_comment', post, function (err, out) {
+                                    if(!err)
+                                        comments.append(out);
+                                        scrollTo(hash);
+                                });
+                            });
+                        }
                     }
                 }
-
-
             }
         });
     }
