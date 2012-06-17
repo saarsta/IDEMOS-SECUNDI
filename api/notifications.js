@@ -63,6 +63,8 @@ exports.create_user_notification = function(notification_type, entity_id, user_i
 
 var create_new_notification = function(notification_type, entity_id, user_id, notificatior_id, sub_entity_id, callback){
 
+    console.log("user_id");
+    console.log(user_id);
     var notification = new models.Notification();
     var notificator = {
         notificator_id: notificatior_id,

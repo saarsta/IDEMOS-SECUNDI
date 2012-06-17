@@ -85,6 +85,8 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
         var post_id;
 
         var iterator = function(user_schema, itr_cbk){
+            console.log("user_schema.user_id");
+            console.log(user_schema.user_id);
             if (user_schema.user_id == user_id)
                 itr_cbk(null, 0);
             else{
