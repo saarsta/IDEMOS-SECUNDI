@@ -44,7 +44,7 @@ var Discussion = module.exports = new Schema({
     followers_count:{type:Number, 'default':0, editable:false},
     is_visible:{type:Boolean, 'default':true},
     is_published:{type:Boolean, 'default':false},
-    threshold_for_accepting_change_suggestions: {type: Number, min: 2, max: 501, 'default': 2},
+    threshold_for_accepting_change_suggestions: {type: Number, min: 2, max: 501, 'default': 2, editable: false},
     admin_threshold_for_accepting_change_suggestions: {type: Number, max: 500, 'default': 0},
 //        popular_comments: [{type: ObjectId, ref: 'Post', index: true}],
     grade:{type:Number, 'default':0},

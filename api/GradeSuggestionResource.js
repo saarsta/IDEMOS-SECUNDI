@@ -115,7 +115,9 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                                 is_agree = fields.evaluation_grade >= discussion_evaluation_grade;
 
                                 //check if suggestion is approved (al haderech)
-                                real_threshold = Number(obj.admin_threshold_for_accepting_change_suggestions) || obj.threshold_for_accepting_change_suggestions;
+
+                                //i think there is no need for that, threshold is in suggestion
+//                                real_threshold = Number(obj.admin_threshold_for_accepting_change_suggestions) || obj.threshold_for_accepting_change_suggestions;
 
                                 base.call(self, req, fields, cbk);
                             }
@@ -162,8 +164,8 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
 
                     function(cbk1){
                         //if there is an admin threshokd specified for the suggestion - it wins
-                        if(suggestion_obj.admin_threshold_for_accepting_the_suggestion > 0)
-                            real_threshold = suggestion_obj.admin_threshold_for_accepting_the_suggestion;
+
+                        real_threshold = Number(suggestion_obj.admin_threshold_for_accepting_the_suggestion) || suggestion_obj.threshold_for_accepting_the_suggestion;
 
                         if(curr_tokens_amout >= real_threshold){
                             Suggestion.approveSuggestion(suggestion_obj._id, function(err, obj1){
@@ -301,8 +303,8 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                             }
 
                             //if there is an admin threshokd specified for the suggestion - it wins
-                            if(g_sugg_obj.admin_threshold_for_accepting_the_suggestion > 0)
-                                real_threshold = g_sugg_obj.admin_threshold_for_accepting_the_suggestion;
+
+                            real_threshold = Number(g_sugg_obj.admin_threshold_for_accepting_the_suggestion) || g_sugg_obj.threshold_for_accepting_the_suggestion;
 
                             if(curr_tokens_amout >= real_threshold){
                                 Suggestion.approveSuggestion(g_sugg_obj._id, function(err, obj1){
@@ -337,7 +339,6 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
         })
     }
 })
-
 
 var calculateSuggestionGrade = GradeSuggestionResource.calculateSuggestionGrade =
     function (suggestion_id, discussion_id,is_agree_to_suggestion, did_change_agreement_with_suggestion, discussion_thresh, callback){

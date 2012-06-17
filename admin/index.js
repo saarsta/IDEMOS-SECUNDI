@@ -131,6 +131,8 @@ module.exports = function(app)
         list:['title']
     });
 
-
     admin.registerSingleRowModel(Models.GamificationTokens,'GamificationTokens');
+
+    admin.registerSingleRowModel(Models.ThresholdCalcVariables,'ThresholdCalcVariables');
+
 };

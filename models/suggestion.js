@@ -18,8 +18,8 @@ var Suggestion = {
     grade: {type: Number, 'default': 0},
     agrees: {type: Number, 'default': 0, editable:false},
     not_agrees: {type: Number, 'default': 0, editable:false},
-    threshold_for_accepting_the_suggestion: {type: Number, max: 500, 'default': 0},
-    admin_threshold_for_accepting_the_suggestion: {type: Number, max: 500, 'default': 0}
+    threshold_for_accepting_the_suggestion: {type: Number, max: 500, 'default': 0, editable: false},
+    admin_threshold_for_accepting_the_suggestion: {type: Number, max: 500, 'default': 0},
 };
 
 var extension = utils.extend_model('Suggestion', require('./post_or_suggestion'), Suggestion, 'posts',function(schema) {
