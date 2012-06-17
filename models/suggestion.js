@@ -16,8 +16,8 @@ var Suggestion = {
     is_approved:{type:Boolean, 'default':false},
     evaluate_counter: {type: Number, 'default': 0},
     grade: {type: Number, 'default': 0},
-    agrees: {type: Number, 'default': 0},
-    not_agrees: {type: Number, 'default': 0},
+    agrees: {type: Number, 'default': 0, editable:false},
+    not_agrees: {type: Number, 'default': 0, editable:false},
     threshold_for_accepting_the_suggestion: {type: Number, max: 500, 'default': 0},
     admin_threshold_for_accepting_the_suggestion: {type: Number, max: 500, 'default': 0}
 };
