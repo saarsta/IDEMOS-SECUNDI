@@ -651,7 +651,7 @@ $(document).ready(function () {
     }
 
     function loadPosts() {
-        var selectedOption = $(this).val();
+        var selectedOption = $("#sorting_select").val();
         db_functions.getSortedPostByDiscussion(discussion_id, selectedOption, function (err, data) {
             if (err) {
                 console.log(err);
