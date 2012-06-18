@@ -404,9 +404,24 @@ var db_functions = {
         });
     },
 
-    getUserFollowers: function(user_id, callback){
+    getOnWhomUserFollows: function(user_id, callback){
         this.loggedInAjax({
             url: '/api/user_followers/' + user_id ? user_id : "",
+            type: "GET",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            },
+
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },
+
+    getUserFollowers: function(user_id, callback){
+        this.loggedInAjax({
+            url: '/api/users?followers.follower_id=' + user_id,
             type: "GET",
             async: true,
             success: function (data) {

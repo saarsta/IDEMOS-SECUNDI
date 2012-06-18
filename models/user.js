@@ -52,7 +52,9 @@ var User = module.exports = new Schema({
     tokens:{type:Number, 'default':9, min: 0/*, max:15.9*/},
     gamification: {type:Schema.Types.Mixed,editable:false },
     updates: Schema.Types.Mixed,
-    proxy: {type: Number, 'default': 0},
+    proxy: [
+        new Schema({user_id:{type:ObjectId, ref:'User'}, number_of_tokens: {type:Number, 'default': 0, min: 0, max: 3}})
+    ],
     score:{type:Number, 'default':0},
     decoration_status:{type:String, "enum":['a', 'b', 'c']},
     invited_by: {type: ObjectId, ref: 'User'},
