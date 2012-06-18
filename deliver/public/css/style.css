@@ -3395,7 +3395,7 @@ textarea.hidden_textarea::selection
     margin: -36px 0 0 -36px;
     width: 72px;
     height: 72px;
-    background: url(../images/play-btn.png) no-repeat;
+
 }
 .rightCol .text .imb-box .floatRight
 {
@@ -4853,4 +4853,8 @@ body.search-ative #header
     position: absolute;
     left: -14px;
     top: -13px;
+}
+
+.gray_and_soon {
+    background-color: InactiveCaption!important;
 }

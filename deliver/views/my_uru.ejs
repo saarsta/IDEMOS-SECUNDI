@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <%- partial('partials/head.ejs') %>
+
+</head>
+<body>
+<div id="wrap">
+<div id="header">
+    <%-partial('partials/menu.ejs')%>
+    <%-partial('partials/user_box.ejs')%>
+    <%-partial('partials/failures.ejs')%>
+    <%- partial('partials/tag_search.ejs') %>
+</div>
+<div id="content" class="cf">
+<div class="myuru-top">
+    <div class="right">
+        <h2>הזמן חברים</h2>
+        <div class="white-box">
+            <div class="user">
+                <div class="img-box" style="overflow:hidden;">
+				    <div style="width:112px; height:120px; float:right;" class="auto-scale">
+                        <img src="<%=avatar%>" alt="<%=user.first_name+' '+ user.last_name%>" />
+                     </div>
+                    <span></span>
+                </div>
+                <div class="proxy">
+                    <span><%=user.proxy%></span> מנדטים
+                </div>
+                <div class="respect">
+                    <span><%=user.score%></span> מוניטין
+                </div>
+            </div>
+            <div class="user-links">
+                <h4><%=user.first_name+' '+ user.last_name%></h4>
+                <ul>
+                    <li><%= user.address || ""%></li>
+                    <li><%= user.gender==='male'?'זכר':'נכבה' %></li>
+                    <li><%= user.םccupation || ""%></li>
+                </ul>
+            </div>
+            <form action="">
+                <textarea cols="0" rows="0"><% if(user.Biography){%> <%=user.Biography%> <% } else { %>כאן אפשר לכתוב ביוגרפיה קצרה דברים שאתה אוהב, אג’נדה, דעות, ומה שתרצה על עצמך. <% } %>
+				</textarea>
+                <input type="submit" value="הזמן חברים" />
+            </form>
+        </div>
+    </div>
+    <div class="left">
+        <h2>האסימונים שלי</h2>
+        <div class="white-box">
+            <div class="token-bar">
+                <span class="top-number">15</span>
+                <span class="bottom-number">0</span>
+                <div class="token-popup">
+                    <div class="user-right">
+                        <div class="img-box">
+                            <img src="images/user-1.jpg" width="41" alt="" />
+                            <img class="wraper" src="images/user-fillter-small-white.png" width="41" alt="" />
+                        </div>
+                    </div>
+                    <div class="user-left">
+                        <p>יונתן שפירא</p>
+                        <div class="proxy">
+                            <span>3</span>
+                        </div>
+                        <div class="respect">
+                            <span>20</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bars">
+                    <div class="border"></div>
+                    <div class="empty" style="height: 51px"></div>
+                    <div class="grey" style="height: 17px">
+                        <div class="info">מכסת אסימונים: 9</div>
+                    </div>
+                    <div class="green" style="height: 34px">
+                        <div class="info">אסימונים זמינים: 4</div>
+                    </div>
+                    <div class="blue" style="height: 20px">
+                        <div class="info">מוקצים לנציג: 3</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="search-result-box">
+    <h2>פעילות שלי במערכת</h2>
+    <div class="tabs">
+        <ul class="tabs-nav">
+            <li><a href="#discussions-tab">דיונים</a></li>
+            <li><a href="#cycles-tab">מעגלי תנופה</a></li>
+            <li><a href="#actions-tab">פעולות</a></li>
+            <li><a href="#blogs-tab">בלוגים</a></li>
+        </ul>
+        <div id="discussions-tab">
+
+        </div>
+        <div id="cycles-tab">
+
+        </div>
+        <div id="actions-tab">
+
+        </div>
+        <div id="articles-tab">
+
+        </div>
+
+    </div>
+</div>
+<div class="myuru-bottom cf">
+    <div class="right">
+        <h2>עדכונים</h2>
+        <div id="renewal" class="renewal">
+
+
+        </div>
+    </div>
+    <div class="left">
+        <h2>אחרי מי אני עוקב</h2>
+        <div id="users-list" class="users-list">
+
+
+        </div>
+    </div>
+</div>
+</div>
+</div>
+<%- partial('partials/footer.ejs') %>
+</body>
+</html>
+<script type="text/javascript">
+
+
+
+    $(function(){
+
+        //$(".search-result-box .tabs").tabs();
+        var userId='<%=user._id %>'
+        function tabSelected(event, ui){
+           function convertToTabModel(data){
+                var i,
+                tabGroups=0,
+                tabModel={
+                    groups:[]
+                    }   ;
+
+               for(i = 0 ;i<data.objects.length;i++)
+               {
+                    if(tabModel.groups[tabGroups]===undefined){
+                        tabModel.groups[tabGroups]={group:[]};
+                    }
+                   tabModel.groups[tabGroups].group[i%3] = data.objects[i];
+                    if(i%3===2){
+                        tabGroups++;
+                       // return  tabModel;
+                    }
+               }
+
+             return tabModel;
+           }
+           var tabDivId=   ui.panel.id;
+           var type=tabDivId.substr(0, tabDivId.indexOf('-'));
+            db_functions.getAllItemsByUser(type,null,function(error,data){
+                var  tabDataModel =convertToTabModel(data) ;
+
+                dust.render('myuru_tab',tabDataModel,function(err,out)
+                {
+                    var seletedTab= $('#'+type+'-tab');
+
+                    // seletedTab.remove();
+                    seletedTab.empty();
+
+                    seletedTab.append(out);
+                   // $('img',seletedTab).autoscale();
+
+                    seletedTab.find('.tab-slide-1')
+                            .after('<div class="nav-1 nav">')
+                            .cycle({
+                                fx: 'scrollLeft',
+                                speed: 'fast',
+                                timeout: 0,
+                                pager: '.nav-1',
+                                next: '.next-1',
+                                prev: '.prev-1'
+                            });
+
+
+
+                });
+            });
+
+
+
+
+
+        }
+
+        $( ".tabs" ).tabs({
+            selected:0,
+            show:tabSelected
+        });
+
+        db_functions.getNotifications(function (data) {
+            $.each(data.objects, function (index, notification) {
+                dust.render('notification', notification, function (err, html) {
+                    $('#renewal').append(html);
+                })
+            })
+        }) ;
+
+
+        db_functions.getOnWhomUserFollows(userId,function (e,data) {
+                debugger;
+            $.each(data.objects, function (index, notification) {
+                dust.renderArray('myuru_follower_item', notification,null, function (err, html) {
+                    $('#users-list').append(html);
+                })
+            })
+        }) ;
+    });
+</script>
+

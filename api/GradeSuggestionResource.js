@@ -115,7 +115,9 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                                 is_agree = fields.evaluation_grade >= discussion_evaluation_grade;
 
                                 //check if suggestion is approved (al haderech)
-                                real_threshold = Number(obj.admin_threshold_for_accepting_change_suggestions) || obj.threshold_for_accepting_change_suggestions;
+
+                                //i think there is no need for that, threshold is in suggestion
+//                                real_threshold = Number(obj.admin_threshold_for_accepting_change_suggestions) || obj.threshold_for_accepting_change_suggestions;
 
                                 base.call(self, req, fields, cbk);
                             }
@@ -151,7 +153,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
 
                 async.parallel([
                     function(cbk1){
-                        calculateSuggestionGrade(suggestion_obj._id, suggestion_obj.discussion_id, is_agree, null, function(err, _new_grade, _evaluate_counter){
+                        calculateSuggestionGrade(suggestion_obj._id, suggestion_obj.discussion_id, is_agree, null, null, function(err, _new_grade, _evaluate_counter){
                             if(!err){
                                 new_grade = _new_grade;
                                 counter = _evaluate_counter;
@@ -162,8 +164,8 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
 
                     function(cbk1){
                         //if there is an admin threshokd specified for the suggestion - it wins
-                        if(suggestion_obj.admin_threshold_for_accepting_the_suggestion > 0)
-                            real_threshold = suggestion_obj.admin_threshold_for_accepting_the_suggestion;
+
+                        real_threshold = Number(suggestion_obj.admin_threshold_for_accepting_the_suggestion) || suggestion_obj.threshold_for_accepting_the_suggestion;
 
                         if(curr_tokens_amout >= real_threshold){
                             Suggestion.approveSuggestion(suggestion_obj._id, function(err, obj1){
@@ -282,7 +284,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
             function(grade_sugg_object, cbk){
 //                g_grade = grade_sugg_object;
 
-                calculateSuggestionGrade(object.suggestion_id, discussion_id, is_agree, did_user_change_his_agree, function(err, _new_grade, _evaluate_counter){
+                calculateSuggestionGrade(object.suggestion_id, discussion_id, is_agree, did_user_change_his_agree, null, function(err, _new_grade, _evaluate_counter){
                     if(!err){
                         new_grade = _new_grade;
                         evaluate_counter = _evaluate_counter;
@@ -301,8 +303,8 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                             }
 
                             //if there is an admin threshokd specified for the suggestion - it wins
-                            if(g_sugg_obj.admin_threshold_for_accepting_the_suggestion > 0)
-                                real_threshold = g_sugg_obj.admin_threshold_for_accepting_the_suggestion;
+
+                            real_threshold = Number(g_sugg_obj.admin_threshold_for_accepting_the_suggestion) || g_sugg_obj.threshold_for_accepting_the_suggestion;
 
                             if(curr_tokens_amout >= real_threshold){
                                 Suggestion.approveSuggestion(g_sugg_obj._id, function(err, obj1){
@@ -338,9 +340,8 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
     }
 })
 
-
 var calculateSuggestionGrade = GradeSuggestionResource.calculateSuggestionGrade =
-    function (suggestion_id, discussion_id,is_agree_to_suggestion, did_change_agreement_with_suggestion, callback){
+    function (suggestion_id, discussion_id,is_agree_to_suggestion, did_change_agreement_with_suggestion, discussion_thresh, callback){
 
     // suggestios_grade_counter + discussion_grade_counter = all graders
     var suggestios_grade_counter;
@@ -376,7 +377,7 @@ var calculateSuggestionGrade = GradeSuggestionResource.calculateSuggestionGrade 
                 cbk(err, grades);
             });
         },
-
+        
         function(disc_grades, cbk){
             discussion_grade_counter = disc_grades.length;
 
@@ -387,6 +388,7 @@ var calculateSuggestionGrade = GradeSuggestionResource.calculateSuggestionGrade 
             total_sum = suggestios_grade_sum + discussion_grade_sum;
 
             new_grade = total_sum/total_counter;
+             
             if(is_agree_to_suggestion != null && did_change_agreement_with_suggestion == null){
                 if(is_agree_to_suggestion){
                     models.Suggestion.update({_id: suggestion_id}, {$set: {grade: new_grade, evaluate_counter: suggestios_grade_counter}, $inc: {agrees: 1}}, function(err, args){
@@ -415,6 +417,34 @@ var calculateSuggestionGrade = GradeSuggestionResource.calculateSuggestionGrade 
             }
         }
     ], function(err, disc_grades){
-        callback(err, new_grade, suggestios_grade_counter);
+        if(discussion_thresh){
+            //set suggestion threshold
+            async.waterfall([
+                function(cbk){
+                    models.Suggestion.findById(suggestion_id, cbk);
+                },
+                
+                function(sugg_obj, cbk){
+                    var num_of_words_to_calc_sugg_threshold;
+                    num_of_words_to_calc_sugg_threshold = sugg_obj.getCharCount();
+                    var sugg_thresh = calculate_sugg_threshold(num_of_words_to_calc_sugg_threshold, discussion_thresh);
+
+                    models.Suggestion.update({_id: suggestion_id}, {$set: {threshold_for_accepting_the_suggestion: sugg_thresh}}, cbk);
+                }
+                
+            ], function(err, obj){
+                callback(err, new_grade, suggestios_grade_counter);
+            })
+        }else{
+            callback(err, new_grade, suggestios_grade_counter);    
+        }
     })
 };
+
+var calculate_sugg_threshold = function(factor, discussion_threshold){
+    var log_base_75_of_x =
+        Math.log(factor) / Math.log(75);
+    var result = Math.pow(log_base_75_of_x, common.getThresholdCalcVariables("SCALE_PARAM")) * discussion_threshold;
+
+    return Math.round(result);
+}

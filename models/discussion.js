@@ -44,12 +44,14 @@ var Discussion = module.exports = new Schema({
     followers_count:{type:Number, 'default':0, editable:false},
     is_visible:{type:Boolean, 'default':true},
     is_published:{type:Boolean, 'default':false},
-    threshold_for_accepting_change_suggestions: {type: Number, min: 2, max: 501, 'default': 2},
+    threshold_for_accepting_change_suggestions: {type: Number, min: 2, max: 501, 'default': 2, editable: false},
     admin_threshold_for_accepting_change_suggestions: {type: Number, max: 500, 'default': 0},
 //        popular_comments: [{type: ObjectId, ref: 'Post', index: true}],
     grade:{type:Number, 'default':0},
-    evaluate_counter:{type:Number, 'default':0, editable:false},
+    evaluate_counter:{type:Number, 'default':0},
     grade_sum:{type:Number, 'default':0, editable:false},
+//    grades_count_thresh:{type:Number, 'default':0, editable:false},
+
     gamification: {has_rewarded_creator_of_turning_to_cycle: {type: Boolean, 'default': false},
         has_rewarded_creator_for_high_grading_of_min_graders: {type: String, 'default': false}, editable:false}
 }, {strict: true});

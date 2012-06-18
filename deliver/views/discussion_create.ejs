@@ -75,7 +75,7 @@
     <div id="card">
         <div class="extra">
             <div class="card-top cf">
-                <a class="btn btn-1 inline" href="/facebookShare?link=/information_cart/{_id}">שתף</a>
+                <a class="btn btn-1 inline gray_and_soon" href="/facebookShare?link=/information_cart/{_id}">שתף</a>
                 <a class="btn btn-2" href="/information_items/"><span class="number" style="display:none;"></span>חזור לאסוף פריטי מידע נוספים </a>
                 <h3 class="basket">
                     סל מידע
@@ -232,16 +232,29 @@
                      subject_id   = $("#subject_id").val();
                      subject_name  = $("#subject_name").val();
 
-                     db_functions.createDiscussion(subject_id, subject_name, vision, title, tags, function(err, data){
+                     db_functions.createDiscussion(subject_id, vision, title, tags, function(err, data){
                          if (err){
                          }else{
+                             creator_id= data.creator_id;
                              created_discussion_id = data._id;
                              if ($.trim(first_post) != ""){
                                  db_functions.addPostToDiscussion(created_discussion_id, first_post,null, function(err, data){
                                      if (err){
                                          console.log(err);
                                      }else{
-                                         window.location.replace("/discussions/" + created_discussion_id);
+                                        FB.ui({method: 'apprequests', message: 'New URU Discussion'}, function(response) {
+                                            var request_id =   response.request;
+                                            if(response && response.hasOwnProperty('to')) {
+                                                var ids=[];
+                                                for(i = 0; i < response.to.length; i++) {
+                                                    ids.push (request_id+"_"+response.to[i])
+                                                    console.log("" + i + " ID: " + response.to[i]);
+                                                }
+                                                db_functions.addFacebookRequest("/discussions/" + created_discussion_id+"?user_id="+creator_id, ids,function(err, data){
+                                                       window.location.replace("/discussions/" + created_discussion_id);
+                                                });
+                                            }
+                                        });
                                      }
                                  });
                              }else{

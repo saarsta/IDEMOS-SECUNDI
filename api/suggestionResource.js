@@ -78,7 +78,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
             if(suggestion.admin_threshold_for_accepting_the_suggestion > 0)
                 suggestion.wanted_amount_of_tokens = suggestion.admin_threshold_for_accepting_the_suggestion;
             else
-                suggestion.wanted_amount_of_tokens = calculate_sugg_threshold(suggestion.getCharCount(), discussion_threshold);
+                suggestion.wanted_amount_of_tokens = Number(suggestion.threshold_for_accepting_the_suggestion) || calculate_sugg_threshold(suggestion.getCharCount(), discussion_threshold);
             if(req.user){
                 models.GradeSuggestion.findOne({user_id: req.user._id, suggestion_id: suggestion._id}, ["_id", "evaluation_grade", "does_support_the_suggestion"], function(err, grade_sugg_obj){
                     if(!err && grade_sugg_obj){
@@ -435,8 +435,8 @@ module.exports.approveSuggestion = function(id,callback)
 
 var calculate_sugg_threshold = function(factor, discussion_threshold){
     var log_base_75_of_x =
-        Math.log(discussion_threshold) / Math.log(75);
-    var result = Math.pow(log_base_75_of_x, 1.6) * factor;
+        Math.log(factor) / Math.log(75);
+    var result = Math.pow(log_base_75_of_x, common.getThresholdCalcVariables("SCALE_PARAM")) * discussion_threshold;
 
 
     return Math.round(result);

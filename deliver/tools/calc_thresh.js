@@ -1,7 +1,9 @@
+var common = require('../../api/common')
+
 var calculating_thresh = exports.calculating_thresh = function (num_voters , rating) {
 
-    // minimum number of voters
-    var MIN_NUM_VOTERS = 1;
+// minimum number of voters
+   var MIN_NUM_VOTERS = 1;
 
 // maximum number of voters
     var MAX_NUM_VOTERS = 1000;
@@ -13,13 +15,13 @@ var calculating_thresh = exports.calculating_thresh = function (num_voters , rat
     var MAX_RATING = 10;
 
 // expected threshold for minimum rating and maximum number of voters
-    var MIN_THRESH = 2;
+    var MIN_THRESH = common.getThresholdCalcVariables('MIN_THRESH');
 
 // expected threshold for maximum rating and maximum number of voters
-    var MAX_THRESH = 500;
+    var MAX_THRESH = common.getThresholdCalcVariables('MAX_THRESH');
 
 // maximum reduction ratio (for minimum number of voters)
-    var MAX_RED_RATIO = 2;
+    var MAX_RED_RATIO = common.getThresholdCalcVariables('MAX_RED_RATIO');
 
 // in advance calculation
     var MIDDLE_THRESH = Math.pow((MAX_THRESH / MIN_THRESH), 0.5) * MIN_THRESH;

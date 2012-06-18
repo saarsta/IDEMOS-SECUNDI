@@ -165,7 +165,7 @@ var db_functions = {
         });
     },
 
-    createDiscussion: function(subject_id, subject_name, vision, title, tags, callback){
+    createDiscussion: function(subject_id, vision, title, tags, callback){
         this.loggedInAjax({
             url: '/api/discussions/',
             type: "POST",
@@ -187,6 +187,21 @@ var db_functions = {
             type: "POST",
             async: true,
             data: {"discussion_id": discussion_id, "parts": parts, "explanation": explanation},
+            success: function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },
+    addFacebookRequest: function(link,request_ids ,callback){
+        this.loggedInAjax({
+            url: '/api/fb_request/',
+            type: "POST",
+            async: true,
+            data: {"link": link, "fb_request_ids": request_ids},
             success: function (data) {
                 console.log(data);
                 callback(null, data);
@@ -404,6 +419,36 @@ var db_functions = {
         });
     },
 
+    getUserFollowers: function(user_id, callback){
+        this.loggedInAjax({
+            url: '/api/user_followers/' + user_id ? user_id : "",
+            type: "GET",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            },
+
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },
+
+    getOnWhomUserFollows: function(user_id, callback){
+        this.loggedInAjax({
+            url: '/api/users?followers.follower_id=' + user_id,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            },
+
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },
+
     getSuggestionByDiscussion: function(discussion_id, limit, offset, callback){
         this.loggedInAjax({
             url: '/api/suggestions?discussion_id=' + discussion_id + "&is_approved=false" + (limit? '&limit='+limit:'') + (offset? '&offset=' + offset:'') ,
@@ -446,6 +491,23 @@ var db_functions = {
         this.loggedInAjax({
             url: '/api/' + querystring,
             data:query,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            }
+        });
+    },
+    getAllItemsByUser: function(api_resource,userID, callback){
+        var userIdParam;
+        if(!userID){
+            userIdParam='';
+        }
+        else{
+            userIdParam='&user_id='+userID;
+        }
+        this.loggedInAjax({
+            url: '/api/' + api_resource + '?get=myUru'+userIdParam,
             type: "GET",
             async: true,
             success: function (data) {

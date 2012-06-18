@@ -1,4 +1,3 @@
-
 var resources = require('jest'),
     util = require('util'),
     models = require('../models'),
@@ -16,10 +15,10 @@ var Authorization = common.TokenAuthorization.extend({
 //            query.where('is_published', false).where('creator_id', id);
             callback(null, query);
         } else {
-            if(req.method == "GET"){
+            if (req.method == "GET") {
                 query.where('is_published', true);
                 callback(null, query);
-            } else{
+            } else {
                 callback(null, query);
             }
         }
@@ -34,8 +33,8 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
         this._super(models.Discussion, null, 0);
         this.allowed_methods = ['get', 'post', 'put', 'delete'];
         this.authentication = new common.SessionAuthentication();
-        this.filtering = {subject_id:null, users:null, is_published:null, tags: null,
-            'users.user_id': {
+        this.filtering = {subject_id:null, users:null, is_published:null, tags:null,
+            'users.user_id':{
                 exact:true,
                 in:true
             }
@@ -44,106 +43,109 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
         this.default_query = function (query) {
             return query.sort('creation_date', 'descending');
         },
-        this.fields = {
-            title: null,
-            tooltip_or_title:null,
-            image_field: null,
-            image_field_preview: null,
-            subject_id: null,
-            subject_name: null,
-            creation_date: null,
-            creator_id: null,
-            first_name: null,
-            last_name: null,
-            vision_text_preview: null,
-            vision_text: null,
-            num_of_approved_change_suggestions: null,
-            is_cycle: null,
-            tags: null,
-            followers_count: null,
-            evaluate_counter: null,
-            _id:null,
-            is_follower: null,
-            grade: null,
+            this.fields = {
+                title:null,
+                tooltip_or_title:null,
+                image_field:null,
+                image_field_preview:null,
+                subject_id:null,
+                subject_name:null,
+                creation_date:null,
+                creator_id:null,
+                first_name:null,
+                last_name:null,
+                vision_text_preview:null,
+                vision_text:null,
+                num_of_approved_change_suggestions:null,
+                is_cycle:null,
+                tags:null,
+                followers_count:null,
+                evaluate_counter:null,
+                _id:null,
+                is_follower:null,
+                grade:null,
 
-            grade_obj: {
-                grade_id: null,
-                value: null
-            }
-        };
+                grade_obj:{
+                    grade_id:null,
+                    value:null
+                }
+            };
         this.update_fields = {
-            title: null,
-            image_field: null,
-            image_field_preview: null,
-            subject_id: null,
-            subject_name: null,
-            creation_date: null,
-            vision_text_preview: null,
-            vision_text: null,
-            tags: null
+            title:null,
+            image_field:null,
+            image_field_preview:null,
+            subject_id:null,
+            subject_name:null,
+            creation_date:null,
+            vision_text_preview:null,
+            vision_text:null,
+            tags:null
         };
     },
 
-    get_discussion: function(object,user,callback)
-    {
-        if(object){
-            object.grade_obj= {};
+    get_discussion:function (object, user, callback) {
+        if (object) {
+            object.grade_obj = {};
             object.is_follower = false;
 //            object.threshold = object.threshold_for_accepting_change_suggestions;
 //            if(object.admin_threshold_for_accepting_change_suggestions > 0)
 //                object.threshold = object.admin_threshold_for_accepting_change_suggestions;
 
-            if(user){
-                if(_.find(user.discussions, function(user_discussion){return user_discussion.discussion_id + "" == object._id})){
+            if (user) {
+                if (_.find(user.discussions, function (user_discussion) {
+                    return user_discussion.discussion_id + "" == object._id
+                })) {
                     object.is_follower = true;
                 }
 
-                models.Grade.findOne({user_id: user._id, discussion_id: object._id}, function(err, grade){
-                    if(err){
+                models.Grade.findOne({user_id:user._id, discussion_id:object._id}, function (err, grade) {
+                    if (err) {
                         callback(err, object);
                     }
-                    else{
-                        if (grade){
+                    else {
+                        if (grade) {
                             object.grade_obj["grade_id"] = grade._id;
                             object.grade_obj["value"] = grade.evaluation_grade;
                         }
                     }
                     callback(err, object);
                 });
-            }else{
+            } else {
                 callback(null, object);
             }
-        }else{
-            callback({message: "internal error" ,code: 500}, object);
+        } else {
+            callback({message:"internal error", code:500}, object);
         }
     },
 
     get_object:function (req, id, callback) {
         var self = this;
-        self._super(req, id, function(err, object){
-            self.get_discussion(object,req.user,callback);
+        self._super(req, id, function (err, object) {
+            self.get_discussion(object, req.user, callback);
         })
     },
 
-    get_objects: function (req, filters, sorts, limit, offset, callback) {
+    get_objects:function (req, filters, sorts, limit, offset, callback) {
 
-        if(req.query.get == "myUru"){
+        if (req.query.get == "myUru") {
             var user_id = req.query.user_id || req.user._id;
 
             filters['users.user_id'] = user_id;
         }
 
-        this._super(req, filters, sorts, limit, offset, function(err, results){
+        this._super(req, filters, sorts, limit, offset, function (err, results) {
 
             var user_discussions;
 
-            if(req.user)
+            if (req.user)
                 user_discussions = req.user.discussions;
 
-            _.each(results.objects, function(discussion){
+            _.each(results.objects, function (discussion) {
                 discussion.is_follower = false;
-                if(user_discussions){
-                    if(_.find(user_discussions, function(user_discussion){ return user_discussion.discussion_id + "" == discussion._id + "" ; })){
+                if (user_discussions) {
+                    if (_.find(user_discussions, function (user_discussion) {
+                        return user_discussion.discussion_id + "" == discussion._id + "";
+                    })) {
                         discussion.is_follower = true;
                     }
                 }
@@ -163,100 +165,110 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
         var min_tokens = /*common.getGamificationTokenPrice('create_discussion')*/ 10;
 //        var total_tokens = user.tokens + user.num_of_extra_tokens;
 
-        var iterator = function(info_item, itr_cbk){
+        var iterator = function (info_item, itr_cbk) {
             info_item.discussions.push(created_discussion_id);
 
-            for(var i=0; i<info_item.users.length; i++)
-            {
-                if(object.users[i] == req.session.user_id)
-                {
-                    object.users.splice(i,1);
+            for (var i = 0; i < info_item.users.length; i++) {
+                if (object.users[i] == req.session.user_id) {
+                    object.users.splice(i, 1);
                     i--;
                 }
             }
             info_item.save(itr_cbk());
         }
 
-        models.InformationItem.find({users: req.user._id}, function(err, info_items){
-            if(!err){
+        models.InformationItem.find({users:req.user._id}, function (err, info_items) {
+            if (!err) {
                 var count = info_items.length;
-                if(user.tokens <  min_tokens && user.tokens < min_tokens - (Math.min(Math.floor(count/2), 2))){
-                    callback({message: "user must have a least 10 tokens to open create discussion", code:401}, null);
+                if (user.tokens < min_tokens && user.tokens < min_tokens - (Math.min(Math.floor(count / 2), 2))) {
+                    callback({message:"user must have a least 10 tokens to open create discussion", code:401}, null);
                 }
-                else
-                {
+                else {
                     //vision cant be more than 800 words
                     var vision_splited_to_words = fields.vision_text.split(" ");
                     var words_counter = 0;
 
-                    _.each(vision_splited_to_words, function(word){ if (word != " " && word != "") words_counter++})
-                    if(words_counter >= 800){
-                        callback({message: "vision can't be more than 800 words", code:401}, null);
-                    }else{
-                        fields.creator_id = user_id;
-                        fields.first_name = user.first_name;
-                        fields.last_name = user.last_name;
-                        fields.users = {
-                            user_id: user_id,
-                            join_date: Date.now()
-                        };
-                        // create vision_text_preview - 200 chars
-                        if(fields.vision_text.length >= 200)
-                            fields.vision_text_preview = fields.vision_text.substr(0, 200);
-                        else
-                            fields.vision_text_preview = fields.vision_text;
+                    _.each(vision_splited_to_words, function (word) {
+                        if (word != " " && word != "") words_counter++
+                    })
+                    if (words_counter >= 800) {
+                        callback({message:"vision can't be more than 800 words", code:401}, null);
+                    } else {
 
-                        for (var field in fields) {
-                            object.set(field, fields[field]);
-                        }
+                        //get subject_name
+                        models.Subject.findById(fields.subject_id, function (err, subject) {
+                            if (!err) {
+                                fields.subject_name = subject.name;
+                                fields.creator_id = user_id;
+                                fields.first_name = user.first_name;
+                                fields.last_name = user.last_name;
+                                fields.users = {
+                                    user_id:user_id,
+                                    join_date:Date.now()
+                                };
+                                fields.is_published = true; //TODO this is only for now
+                                // create vision_text_preview - 200 chars
+                                if (fields.vision_text.length >= 200)
+                                    fields.vision_text_preview = fields.vision_text.substr(0, 200);
+                                else
+                                    fields.vision_text_preview = fields.vision_text;
 
-                        self.authorization.edit_object(req, object, function (err, object) {
-                            if (err) callback(err);
-                            else {
-                                //if success with creating new discussion - add discussion to user schema
-                                object.save(function (err, obj) {
-                                    if (!err) {
-                                        created_discussion_id = obj._id;
+                                for (var field in fields) {
+                                    object.set(field, fields[field]);
+                                }
 
-                                        //add info items to discussion shopping cart and delete it from user's shopping cart
-                                        async.forEach(info_items, iterator, function(err, result){
-                                            if(!err){
-                                                var user_discussion = {
-                                                    discussion_id: obj._id,
-                                                    join_date: Date.now()
-                                                }
+                                self.authorization.edit_object(req, object, function (err, object) {
+                                    if (err) callback(err);
+                                    else {
+                                        //if success with creating new discussion - add discussion to user schema
+                                        object.save(function (err, obj) {
+                                            if (!err) {
+                                                created_discussion_id = obj._id;
 
-                                                if (object.is_published) {
-                                                    models.User.update({_id: user._id}, {$addToSet: {discussions: user_discussion}}, function(err, num){
-                                                        if(!err){
+                                                //add info items to discussion shopping cart and delete it from user's shopping cart
+                                                async.forEach(info_items, iterator, function (err, result) {
+                                                    if (!err) {
+                                                        var user_discussion = {
+                                                            discussion_id:obj._id,
+                                                            join_date:Date.now()
+                                                        }
 
-                                                            //set gamification
-                                                            req.gamification_type = "discussion";
-                                                            req.token_price = /*common.getGamificationTokenPrice('discussion')*/ 3;
+                                                        if (object.is_published) {
+                                                            models.User.update({_id:user._id}, {$addToSet:{discussions:user_discussion}}, function (err, num) {
+                                                                if (!err) {
 
-                                                            //find all information items and set notifications for their owners
-                                                            notifications_for_the_info_items_relvant(obj._id, user_id, function(err, args){
-                                                                callback(err, obj);
-                                                            })
-                                                        }else
+                                                                    //set gamification
+                                                                    req.gamification_type = "discussion";
+                                                                    req.token_price = /*common.getGamificationTokenPrice('discussion')*/ 3;
+
+                                                                    //find all information items and set notifications for their owners
+                                                                    notifications_for_the_info_items_relvant(obj._id, user_id, function (err, args) {
+                                                                        callback(err, obj);
+                                                                    })
+                                                                } else
+                                                                    callback(err, obj);
+                                                            });
+                                                        } else {
                                                             callback(err, obj);
-                                                    });
-                                                }else{
-                                                    callback(err, obj);
-                                                }
-                                            }else{
+                                                        }
+                                                    } else {
+                                                        callback(err, object);
+                                                    }
+                                                })
+                                            } else {
                                                 callback(err, object);
                                             }
-                                        })
-                                    }else{
-                                        callback(err, object);
+                                        });
                                     }
                                 });
                             }
-                        });
+                            else {
+                                callback(err, null);
+                            }
+                        })
                     }
                 }
-            }else{
+            } else {
                 callback(err, null);
             }
         })
@@ -264,66 +276,70 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
 
     update_obj:function (req, object, callback) {
         var user = req.user;
-        if (req.query.put == "follower"){
-            var disc = _.find(user.discussions, function(discussion) {return discussion.discussion_id + '' == object._id +'';} );
-            if(!disc){
+        if (req.query.put == "follower") {
+            var disc = _.find(user.discussions, function (discussion) {
+                return discussion.discussion_id + '' == object._id + '';
+            });
+            if (!disc) {
                 async.parallel([
-                    function(cbk2){
+                    function (cbk2) {
                         var user_discussion = {
-                            discussion_id: object._id,
-                            join_date: Date.now()
+                            discussion_id:object._id,
+                            join_date:Date.now()
                         }
-                        models.User.update({_id: user._id}, {$addToSet: {discussions: user_discussion}}, cbk2);
+                        models.User.update({_id:user._id}, {$addToSet:{discussions:user_discussion}}, cbk2);
                     },
 
-                    function(cbk2){
-                        models.Discussion.update({_id: object._id}, {$inc: {followers_count: 1},  $addToSet: {users: user._id}}, cbk2);
+                    function (cbk2) {
+                        models.Discussion.update({_id:object._id}, {$inc:{followers_count:1}, $addToSet:{users:user._id}}, cbk2);
                     }
-                ], function(){
+                ], function () {
                     object.followers_count++;
                     object.is_follower = true;
                     callback(null, object);
                 });
-            }else{
-                callback({message:"user is already a follower",code:401}, null);
+            } else {
+                callback({message:"user is already a follower", code:401}, null);
             }
-        }else{
-            if(req.query.put == "leave"){
+        } else {
+            if (req.query.put == "leave") {
 
                 async.waterfall([
-                    function(cbk){
-                        var disc = _.find(user.discussions, function(discussion) {return discussion.discussion_id + '' == object._id +'';} );
+                    function (cbk) {
+                        var disc = _.find(user.discussions, function (discussion) {
+                            return discussion.discussion_id + '' == object._id + '';
+                        });
 
-                        if(disc){
+                        if (disc) {
                             //delete this discussion
                             user.discussions.splice(_.indexOf(user.discussions, disc));
                             user.save(cbk);
-                        }else{
+                        } else {
                             callback({message:"user is not a follower", code:401}, null);
                         }
                     },
 
-                    function(obj, cbk){
-                        models.Discussion.update({_id: object._id}, {$inc: {followers_count: -1}}, function(err, num){
+                    function (obj, cbk) {
+                        models.Discussion.update({_id:object._id}, {$inc:{followers_count:-1}}, function (err, num) {
                             object.followers_count--;
                             object.is_follower = false;
 
                             callback(err, object);
                         });
                     }
-                ], function(err, result){
-                  callback(err, object);
+                ], function (err, result) {
+                    callback(err, object);
                 })
-            }else{
+            } else {
                 if (object.is_published) {
                     callback("this discussion is already published", null);
-                }else {
+                } else {
                     req.gamification_type = "discussion";
                     req.token_price = common.getGamificationTokenPrice('discussion');
                     object.is_published = true;
 
-                    object.save(function(err, disc_obj){
-                        notifications_for_the_info_items_relvant(disc_obj._id, user._id, function(err, args){
+                    object.save(function (err, disc_obj) {
+                        notifications_for_the_info_items_relvant(disc_obj._id, user._id, function (err, args) {
                             callback(err, args);
                         })
                     });
@@ -333,65 +349,67 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
     }
 });
 
-function notifications_for_the_info_items_relvant(discussion_id, notificator_id, callback){
+function notifications_for_the_info_items_relvant(discussion_id, notificator_id, callback) {
 
-    var set_notification_for_liked_items = function(like, itr_cbk){
-        if(like.info_item_creator + "" != like.user_id + "" && like.info_item_creator != null){
+    var set_notification_for_liked_items = function (like, itr_cbk) {
+        if (like.info_item_creator + "" != like.user_id + "" && like.info_item_creator != null) {
             notifications.create_user_notification("a_dicussion_created_with_info_item_that_you_like",
                 discussion_id, like.user_id, notificator_id, like.info_item_id, itr_cbk);
-        }else{
+        } else {
             itr_cbk(null, 0);
         }
     }
 
-    var iterator = function(info_item, itr_cbk){
+    var iterator = function (info_item, itr_cbk) {
 
         var creator_id = null;
-        if(info_item.created_by)
+        if (info_item.created_by)
             creator_id = info_item.created_by.creator_id;
 
         async.parallel([
 
             //set notifications for people that like the items
-            function(par_cbk){
+            function (par_cbk) {
                 async.waterfall([
-                    function(cbk){
-                        models.Like.find({info_item_id: info_item._id}, cbk);
+                    function (cbk) {
+                        models.Like.find({info_item_id:info_item._id}, cbk);
                     },
 
-                    function(likes, cbk){
-                        _.each(likes, function(like){like.info_item_creator = creator_id});
+                    function (likes, cbk) {
+                        _.each(likes, function (like) {
+                            like.info_item_creator = creator_id
+                        });
                         async.forEach(likes, set_notification_for_liked_items, cbk);
                     }
 
-                ], function(err, arg){
+                ], function (err, arg) {
                     par_cbk(err, arg);
                 })
             },
 
             //set notifications for information item's creators
-            function(par_cbk){
-                if(creator_id){
+            function (par_cbk) {
+                if (creator_id) {
                     notifications.create_user_notification("a_dicussion_created_with_info_item_that_you_created",
                         discussion_id, creator_id, notificator_id, info_item._id, par_cbk);
-                }else{
+                } else {
                     par_cbk(null, 0);
                 }
             }
-        ], function(err, args){
+        ], function (err, args) {
             itr_cbk(err, args);
         })
     }
 
     async.waterfall([
-        function(cbk){
-            models.InformationItem.find({discussions: discussion_id}, cbk);
+        function (cbk) {
+            models.InformationItem.find({discussions:discussion_id}, cbk);
         },
 
-        function(info_items, cbk){
+        function (info_items, cbk) {
             async.forEach(info_items, iterator, cbk);
         }
-    ], function(err, arg){
+    ], function (err, arg) {
         callback(err, arg);
     })
 }

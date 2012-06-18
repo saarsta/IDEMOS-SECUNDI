@@ -88,9 +88,6 @@ var Schemas = exports.Schemas = {
         gui_order:{type:Number,'default':9999999,editable:false}
     },
 
-
-
-
     Vote:{
         user_id:{type:ObjectId, ref:'User', index:true, required:true},
         post_id:{type:ObjectId, ref:'Post', index:true, required:true, onDelete:'delete'},
@@ -170,8 +167,6 @@ var Schemas = exports.Schemas = {
         ]
     },
 
-
-
     PostAction:{
         action_id:{type:Schema.ObjectId, ref:'Action', index:true, required:true},
         text:String,
@@ -218,6 +213,11 @@ var Schemas = exports.Schemas = {
         popularity:{type:Number,'default':0,select:false}
     },
 
+    FBRequest : {
+        link:{type:String, unique:true},
+        fb_request_ids:{type:[String]}
+    },
+
     GamificationTokens: {
         create_discussion: {type: Number, 'default': 0},
         create_action: {type: Number, 'default': 0},
@@ -245,6 +245,13 @@ var Schemas = exports.Schemas = {
         spend_tokens_for_X_days_in_a_row: {type: Number, 'default': 1000000},
         X_tokens_for_all_my_posts: {type: Number, 'default': 1000000}
 
+    },
+
+    ThresholdCalcVariables: {
+        MIN_THRESH: {type: Number, 'default': 2},
+        MAX_THRESH: {type: Number, 'default': 500},
+        MAX_RED_RATIO: {type: Number, 'default': 2},
+        SCALE_PARAM:  {type: Number, 'default': 1.6}
     }
 };
 
@@ -287,9 +294,11 @@ var Models = module.exports = {
     Category:mongoose.model('Category', new Schema(Schemas.Category, {strict: true})),
     ActionResource:mongoose.model('ActionResource', new Schema(require('./action_resource'), {strict: true})),
     Tag: mongoose.model('Tag', new Schema(Schemas.Tag, {strict: true})),
+    FBRequest: mongoose.model('FBRequest', new Schema(Schemas.FBRequest, {strict: true})),
     ResourceObligation: mongoose.model('ResourceObligation', new Schema(Schemas.ResourceObligation, {strict: true})),
     Notification: mongoose.model('Notification', new Schema(Schemas.Notification, {strict: true})),
     GamificationTokens: utils.config_model('GamificationTokens', Schemas.GamificationTokens),
+    ThresholdCalcVariables: utils.config_model('ThresholdCalcVariables', Schemas.ThresholdCalcVariables),
 
     Schemas:Schemas
 };

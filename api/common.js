@@ -244,3 +244,24 @@ exports.getGamificationTokenPrice = function(type)
     });
     return token_prices[type] || 0;
 };
+
+var threshold_calc_variables = {};
+function load_threshold_calc_variables(){
+    models.ThresholdCalcVariables.findOne({},function(err,doc)
+    {
+        if(doc)
+            threshold_calc_variables = doc._doc;
+    });
+};
+
+load_threshold_calc_variables();
+
+exports.getThresholdCalcVariables = function(type)
+{
+    models.ThresholdCalcVariables.schema.pre('save',function(next)
+    {
+        setTimeout(load_threshold_calc_variables, 1000);
+        next();
+    });
+    return threshold_calc_variables[type] || 0;
+};

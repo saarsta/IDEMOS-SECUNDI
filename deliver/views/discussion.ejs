@@ -42,15 +42,15 @@
                     <a class="btn-green" id="discussion_comment_reply_button" href="javascript:void(0);">
                         הגב
                     </a>
-                    <a class="btn-grey" href="">
+                    <a class="btn-grey gray_and_soon" href="">
                         שתף
                     </a>
 
                     <div class="btns-grey">
-                        <a href="">
+                        <a class="gray_and_soon" href="">
                             הצעה לשינוי
                         </a>
-                        <a href="">
+                        <a class="gray_and_soon" href="">
                             היסטוריה
                         </a>
                     </div>
@@ -185,16 +185,16 @@
     <div class="extra cf">
 
         <select class="left-select" id="sorting_select">
-            <option id="creation_date">
+            <option value="-creation_date">
                 תאריך
             </option>
             <!-- <option id="first_name">
                 מיין לפי יוזר
             </option>-->
-            <option id="-total_votes">
+            <option value="-total_votes">
                 שנויים במחלוקת
             </option>
-            <option id="-popularity">
+            <option value="-popularity">
                 פוסטים הכי טובים
             </option>
         </select>
@@ -556,7 +556,7 @@ $(document).ready(function () {
                     step:0.10,
                     slide: function(event, ui){
                         var rating = ui.value;
-                        if(rating > my_discussion_grade){
+                        if(rating >= my_discussion_grade){
                             $(this).parents(".bottom-box").find(".agree_disagree").removeClass("disagree").addClass("agree")
                         }else{
                             $(this).parents(".bottom-box").find(".agree_disagree").removeClass("agree").addClass("disagree");
@@ -634,24 +634,26 @@ $(document).ready(function () {
                 var hash = window.location.hash;
                 if(hash){
                     if(!scrollTo(hash)){
-                        var post_id = hash.substr(6, hash.length);
-                        db_functions.getPostById(post_id,function(err, post){
-                            dust.render('discussion_comment', post, function (err, out) {
-                                if(!err)
-                                    comments.append(out);
-                                    scrollTo(hash);
-                            })
-                        })
+                        var match = /^#post_([0-9a-f]+)/.exec(hash);
+                        if(match) {
+                            var post_id = match[1];
+
+                            db_functions.getPostById(post_id,function(err, post){
+                                dust.render('discussion_comment', post, function (err, out) {
+                                    if(!err)
+                                        comments.append(out);
+                                        scrollTo(hash);
+                                });
+                            });
+                        }
                     }
                 }
-
-
             }
         });
     }
 
     function loadPosts() {
-        var selectedOption = $('#sorting_select').find(':selected')[0].id;
+        var selectedOption = $("#sorting_select").val();
         db_functions.getSortedPostByDiscussion(discussion_id, selectedOption, function (err, data) {
             if (err) {
                 console.log(err);
