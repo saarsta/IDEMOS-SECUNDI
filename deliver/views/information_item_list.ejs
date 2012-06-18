@@ -14,9 +14,7 @@
 </div>
 <div id="content" class="cf">
     <div class="services-box cf">
-        <h2><span dir='rtl'>
-7 תחומי על:
-        </span>
+        <h2>
             כאן תוכלו למצוא מחקרים, ניירות מידע, גרפים, וידאו ודו"חות
             <br />
             הנוגעים לסוגיות הרלוונטיות למשתמשי עורו ולדיונים שמתנהלים במערכת.
@@ -52,20 +50,21 @@
 </html>
 <script type="text/javascript">
 
-    var tag_name = "<% if (typeof tag_name != 'undefined') { %><%= tag_name %><% } %>";
+    var tag_name = "<%= tag_name || '' %>";
 
 
     $(function(){
 
-       if(tag_name!= '')
-       {
-            function hideSearchResults()
-            {
-               $('.search-result-box').hide();
-               $("body").removeClass("search-ative");
-               return false;
+        function hideSearchResults()
+        {
+            $('.search-result-box').hide();
+            $("body").removeClass("search-ative");
+            return false;
 
-            }
+        }
+
+        if(tag_name!= '')
+       {
 
 
              db_functions.getItemsCountByTagName(tag_name,function(err,data)
@@ -128,12 +127,12 @@
                        //  {
                               $('.tab-slide-'+name).after('<div class="nav-'+name+' nav">')
                                 .cycle({
-                                    fx: 'scrollLeft',
+                                    fx: 'scrollHorz',
                                     speed: 'fast',
                                     timeout: 0,
                                     pager: '.nav-'+name,
-                                    next: '.next-'+name,
-                                    prev: '.prev-'+name
+                                    next: '.prev-'+name,
+                                    prev: '.next-'+name
                                 });
 
                        //  }

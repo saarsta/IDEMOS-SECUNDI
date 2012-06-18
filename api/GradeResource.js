@@ -83,6 +83,7 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
         var counter = 0;
         var threshold;
         var admin_threshold;
+        var discussion_thresh;
 
         fields.user_id = req.user._id;
 
@@ -98,6 +99,7 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
 
                     function(discussion_obj, cbk){
                         //cant grade your own discussion
+                        discussion_thresh = Number(discussion_obj.admin_threshold_for_accepting_change_suggestions) || discussion_obj.threshold_for_accepting_change_suggestions
                         if(discussion_obj.creator_id + "" == req.user._id + ""){
                             cbk({message:"cant grade your own discussion",code:401}, null);
                         }else{
@@ -120,10 +122,12 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
                     },
 
                     function(suggestions, cbk){
-                        var real_threshold = Number(admin_threshold) || threshold;
+//                        var real_threshold = Number(admin_threshold) || threshold;
+                        var real_threshold
                         async.forEach(suggestions, function(suggestion, itr_cbk){
-                            GradeSuggestion.calculateSuggestionGrade(suggestion._id, grade_object.discussion_id, null, null, function(err, obj){
+                            GradeSuggestion.calculateSuggestionGrade(suggestion._id, grade_object.discussion_id, null, null, discussion_thresh,function(err, obj){
                                 //check if suggestion is over the threshold
+                                real_threshold = Number(suggestion.admin_threshold_for_accepting_the_suggestion) || suggestion.threshold_for_accepting_the_suggestion;
                                 if(suggestion.agrees && suggestion.agrees.length > real_threshold){
 
                                     //approveSuggestion.exec()
@@ -155,9 +159,10 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
         var g_grade;
         var self = this;
         var suggestions = [];
+        var discussion_thresh;
 
         var iterator = function(suggestion, itr_cbk){
-            GradeSuggestion.calculateSuggestionGrade(suggestion._id, object.discussion_id, null, null, function(err, sugg_new_grade, sugg_total_counter){
+            GradeSuggestion.calculateSuggestionGrade(suggestion._id, object.discussion_id, null, null, discussion_thresh, function(err, sugg_new_grade, sugg_total_counter){
                 if(!err){
                     suggestions.push({
                         _id: suggestion._id,
@@ -186,9 +191,14 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
                         });
                     },
 
+                    //get discussion threshold so i can update every suggestion threshold
+                    function(obj, cbk){
+                        models.Discussion.findById(object.discussion_id, cbk);
+                    },
                     //maybe do something with suggestion grade
                     //calculate all change suggestion all over again
-                    function(obj,cbk){
+                    function(discussion_obj,cbk){
+                        discussion_thresh = Number(discussion_obj.admin_threshold_for_accepting_change_suggestions) || discussion_obj.threshold_for_accepting_change_suggestions;
                         models.Suggestion.find({discussion_id: grade_object.discussion_id}, ["_id"], function(err, results)
                         {
                             cbk(err, results);

@@ -591,7 +591,7 @@ body
     color:#50504f;
     font: bold 16px/19px Arial;
     overflow:hidden;
-    height:60px;
+    height:40px;
 }
 .news-list .one h4 a
 {
@@ -1148,7 +1148,7 @@ body
 {
     color:#50504f;
     font: normal 13px/17px ARial;
-  /*  height: 34px;     */
+    height: 54px;
     overflow: hidden;
     margin-bottom: 30px;
 }

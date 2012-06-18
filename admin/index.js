@@ -67,6 +67,7 @@ module.exports = function(app)
     });
     admin.registerMongooseModel('Suggestion',Models.Suggestion,null,{
         list:['parts.0.text'],
+        form:require('./suggestion'),
         actions:[
             {
                 value:'approve',
@@ -131,6 +132,8 @@ module.exports = function(app)
         list:['title']
     });
 
-
     admin.registerSingleRowModel(Models.GamificationTokens,'GamificationTokens');
+
+    admin.registerSingleRowModel(Models.ThresholdCalcVariables,'ThresholdCalcVariables');
+
 };

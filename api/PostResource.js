@@ -41,6 +41,7 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
             votes_against:null,
             votes_for:null,
             _id:null,
+            ref_to_post_id: null,
             discussion_id:null,
             is_user_follower: null
         };
@@ -84,19 +85,26 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
         var post_id;
 
         var iterator = function(user_schema, itr_cbk){
-            if (user_schema.user_id == user_id)
-                itr_cbk(null, 0);
-            else{
-                if (discussion_creator_id + "" == user_schema.user_id + ""){
-                    notifications.create_user_notification("comment_on_discussion_you_created", discussion_id, user_schema.user_id, user_id, post_id,function(err, results){
-                        itr_cbk(err, results);
-                    });
-                }else{
-                    notifications.create_user_notification("comment_on_discussion_you_are_part_of", discussion_id, user_schema.user_id, user_id, post_id,function(err, results){
-                        itr_cbk(err, results);
-                    });
+            if(user_schema.user_id){
+                if (user_schema.user_id == user_id)
+                    itr_cbk(null, 0);
+                else{
+                    if (discussion_creator_id + "" == user_schema.user_id + ""){
+                        notifications.create_user_notification("comment_on_discussion_you_created", discussion_id, user_schema.user_id, user_id, post_id,function(err, results){
+                            itr_cbk(err, results);
+                        });
+                    }else{
+                        notifications.create_user_notification("comment_on_discussion_you_are_part_of", discussion_id, user_schema.user_id, user_id, post_id,function(err, results){
+                            itr_cbk(err, results);
+                        });
+                    }
                 }
+            }else{
+                console.log("in the following discussion - there is a user with no _id");
+                console.log(discussion_id);
+                itr_cbk()
             }
+
         }
 
         console.log('debugging waterfall');

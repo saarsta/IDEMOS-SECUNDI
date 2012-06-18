@@ -5,7 +5,7 @@ var Router = module.exports = Class.extend({
    init:function(app,path){
        this.app = app;
        this.base_path = path || '';
-       var methods = ['get','post','all','put','delete'];
+       var methods = ['get','post','put','delete'];
        var self = this;
        methods.forEach(function(method)
        {
@@ -14,6 +14,21 @@ var Router = module.exports = Class.extend({
                this.register_func(this.app[method],arguments)
            };
        });
+   },
+   all:function() {
+       if(typeof(arguments[arguments.length-1]) == 'object') {
+           var funcObject = arguments[arguments.length-1];
+           arguments[arguments.length-1] = function(req,res) {
+               var method = req.method.toLowerCase();
+               if( method in funcObject)
+                   funcObject[method](req,res);
+               else
+                   res.send('method not supported',400);
+           };
+           this.register_func(this.app.all,arguments);
+       }
+       else
+           this.register_func(this.app.all,arguments);
    },
    register_func : function(func,args)
    {

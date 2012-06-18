@@ -44,7 +44,7 @@ var ItemsByTagResource = module.exports = jest.Resource.extend({
             },
 
             function(cbk){
-                models.InformationItem.count({tags: tag_name}, cbk);
+                models.InformationItem.count({tags: tag_name, status: "approved", is_visible: true}, cbk);
             },
 
             function(cbk){

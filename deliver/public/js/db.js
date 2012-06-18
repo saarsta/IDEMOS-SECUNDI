@@ -211,6 +211,21 @@ var db_functions = {
         });
     },
 
+    getPostById: function(post_id, callback){
+        this.loggedInAjax({
+            url: '/api/posts/' + post_id,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },
+
     addLikeToInfoItem: function(info_item_id, callback){
         this.loggedInAjax({
             url: '/api/likes',
@@ -431,6 +446,23 @@ var db_functions = {
         this.loggedInAjax({
             url: '/api/' + querystring,
             data:query,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            }
+        });
+    },
+    getAllItemsByUser: function(api_resource,userID, callback){
+        var userIdParam;
+        if(!userID){
+            userIdParam='';
+        }
+        else{
+            userIdParam='&user_id='+userID;
+        }
+        this.loggedInAjax({
+            url: '/api/' + api_resource + '?get=myUru'+userIdParam,
             type: "GET",
             async: true,
             success: function (data) {

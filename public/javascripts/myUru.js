@@ -10,12 +10,12 @@
 
 
 
-function tabSelected(event, ui)
-{
+function tabSelected(event, ui){
     var tabDivId=   ui.panel.id;
     switch (tabDivId)
     {
         case 'tabDiscussions':
+
             db_functions.getAllItemsByUser('discussions',null,function(error,data){
                 dust.renderArray('myDiscussion_list_item',data.objects,null,function(err,out)
                 {

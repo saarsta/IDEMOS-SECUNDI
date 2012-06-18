@@ -185,16 +185,16 @@
     <div class="extra cf">
 
         <select class="left-select" id="sorting_select">
-            <option id="creation_date">
+            <option value="-creation_date">
                 תאריך
             </option>
             <!-- <option id="first_name">
                 מיין לפי יוזר
             </option>-->
-            <option id="-total_votes">
+            <option value="-total_votes">
                 שנויים במחלוקת
             </option>
-            <option id="-popularity">
+            <option value="-popularity">
                 פוסטים הכי טובים
             </option>
         </select>
@@ -276,6 +276,7 @@ $(document).ready(function () {
 
     var postsNumber = 0;
 
+
     $("#discussion_content").val($("#discussion_content").text());
     $(".slider").slider({
 
@@ -300,33 +301,6 @@ $(document).ready(function () {
             });
         }
     });
-    //$("#amount").val($(".slider").slider("value"));
-
-//    $(".slider-two").slider({
-//        disabled:true,
-//        range:"min",
-//        value:0,
-//        min:0,
-//        max:11,
-//        step:0.10,
-//        slide:function (event, ui) {
-//            //$("#amount2").val(ui.value);
-//        }
-//    });
-
-    //$("#amount2").val($(".slider-two").slider("value"));
-//    $(".slider-three").slider({
-//        range:"min",
-//        value:8.20,
-//        min:0,
-//        max:11,
-//        step:0.10,
-//        slide:function (event, ui) {
-//            $("#amount3").val(ui.value);
-//        }
-//    });
-//    $("#amount3").val($(".slider-three").slider("value"));
-
 
     $(".inline").colorbox({ inline:true, width:"730" });
 
@@ -357,8 +331,8 @@ $(document).ready(function () {
                     speed:'fast',
                     timeout:0,
                     pager:'#nav2',
-                    next:'#next',
-                    prev:'#prev'
+                    next:'#prev',
+                    prev:'#next'
                 });
 
     });
@@ -497,6 +471,22 @@ $(document).ready(function () {
         $("textarea#discussion_comment").val(text).focus();
     });
 
+    $('#comments').on('click', ".post_quote a", function (e) {
+
+        var post_id = $(this).parents(".comment-one").data("id");
+        var ref_to_post_id = $(this).parents(".comment-one").data("ref-id");
+//        var link = window.location.href;
+//
+//        //remove hash if exist
+//        if(window.location.hash){
+//            link = link.slice(0, link.indexOf("#"));
+//        }
+//        var post_ref_id;
+//        link = link + "#post_id" + post_ref_id;
+
+        scrollTo("#post_" + ref_to_post_id);
+    })
+
     $('#suggestion_list').on('click', ".grey-btn", function (e) {
         var userName,
                 text;
@@ -633,7 +623,6 @@ $(document).ready(function () {
     function renderComments(comments) {
         var i;
         for (i = 0; i < comments.length; i++) {
-            comments[i].text = comments[i].text.replace(/\n/g, '<br>');
             comments[i].isFirst = (i === 0);
 
         }
@@ -642,17 +631,34 @@ $(document).ready(function () {
                 var comments = $("#comments");
                 comments.empty();
                 comments.append(out);
+                var hash = window.location.hash;
+                if(hash){
+                    if(!scrollTo(hash)){
+                        var match = /^#post_([0-9a-f]+)/.exec(hash);
+                        if(match) {
+                            var post_id = match[1];
+
+                            db_functions.getPostById(post_id,function(err, post){
+                                dust.render('discussion_comment', post, function (err, out) {
+                                    if(!err)
+                                        comments.append(out);
+                                        scrollTo(hash);
+                                });
+                            });
+                        }
+                    }
+                }
             }
         });
     }
 
     function loadPosts() {
-        var selectedOption = $('#sorting_select').find(':selected')[0].id;
+        var selectedOption = $("#sorting_select").val();
         db_functions.getSortedPostByDiscussion(discussion_id, selectedOption, function (err, data) {
             if (err) {
                 console.log(err);
             } else {
-                renderComments(data.objects)
+                renderComments(data.objects);
                 postsNumber = data.meta.total_count;
                 setCommentNumber(postsNumber);
             }
