@@ -213,6 +213,11 @@ var Schemas = exports.Schemas = {
         popularity:{type:Number,'default':0,select:false}
     },
 
+    FBRequest : {
+        link:{type:String, unique:true},
+        fb_request_ids:{type:[String]}
+    },
+
     GamificationTokens: {
         create_discussion: {type: Number, 'default': 0},
         create_action: {type: Number, 'default': 0},
@@ -288,6 +293,7 @@ var Models = module.exports = {
     Category:mongoose.model('Category', new Schema(Schemas.Category, {strict: true})),
     ActionResource:mongoose.model('ActionResource', new Schema(require('./action_resource'), {strict: true})),
     Tag: mongoose.model('Tag', new Schema(Schemas.Tag, {strict: true})),
+    FBRequest: mongoose.model('FBRequest', new Schema(Schemas.FBRequest, {strict: true})),
     ResourceObligation: mongoose.model('ResourceObligation', new Schema(Schemas.ResourceObligation, {strict: true})),
     Notification: mongoose.model('Notification', new Schema(Schemas.Notification, {strict: true})),
     GamificationTokens: utils.config_model('GamificationTokens', Schemas.GamificationTokens),
