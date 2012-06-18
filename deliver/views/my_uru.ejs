@@ -26,10 +26,10 @@
                     <span></span>
                 </div>
                 <div class="proxy">
-                    <span>3</span> מנדטים
+                    <span><%=user.proxy%></span> מנדטים
                 </div>
                 <div class="respect">
-                    <span>20</span> מוניטין
+                    <span><%=user.score%></span> מוניטין
                 </div>
             </div>
             <div class="user-links">
@@ -41,7 +41,8 @@
                 </ul>
             </div>
             <form action="">
-                <textarea cols="0" rows="0">כאן אפשר לכתוב ביוגרפיה קצרה דברים שאתה אוהב, אג’נדה, דעות, ומה שתרצה על עצמך. בנוסף, אפשר לכתוב ביוגרפיה קצרה דברים שאתה אוהב, אג’נדה, דעות, ומה שתרצה על עצמך.</textarea>
+                <textarea cols="0" rows="0"><% if(user.Biography){%> <%=user.Biography%> <% } else { %>כאן אפשר לכתוב ביוגרפיה קצרה דברים שאתה אוהב, אג’נדה, דעות, ומה שתרצה על עצמך. <% } %>
+				</textarea>
                 <input type="submit" value="הזמן חברים" />
             </form>
         </div>
@@ -196,7 +197,7 @@
                     seletedTab.append(out);
                    // $('img',seletedTab).autoscale();
 
-                    $('.tab-slide-1')
+                    seletedTab.find('.tab-slide-1')
                             .after('<div class="nav-1 nav">')
                             .cycle({
                                 fx: 'scrollLeft',
@@ -219,7 +220,7 @@
         }
 
         $( ".tabs" ).tabs({
-            selected:1,
+            selected:0,
             show:tabSelected
         });
 
@@ -233,7 +234,7 @@
 
 
         db_functions.getUserFollowers(null,function (data) {
-          debugger;
+
            /* $.each(data.objects, function (index, notification) {
                 dust.render('notification', notification, function (err, html) {
                     $('#renewal').append(html);
