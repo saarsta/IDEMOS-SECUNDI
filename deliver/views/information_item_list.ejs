@@ -52,7 +52,7 @@
 </html>
 <script type="text/javascript">
 
-    var tag_name = "<%= tag_name %>";
+    var tag_name = "<% if (typeof tag_name != 'undefined') { %><%= tag_name %><% } %>";
 
 
     $(function(){
