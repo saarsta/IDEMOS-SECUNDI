@@ -35,6 +35,7 @@ module.exports = j_forms.forms.AdminForm.extend({
                 "<p>number of graders = " + self.num_of_graders + "</p>" +
                     "<p>avg grade = " + self.grade + "</p>" +
                     "<p>char counter = " + self.char_count + "</p>" +
+                    "<p>suggestion threshold= " + self.instance.threshold_for_accepting_the_suggestion + "</p>" +
                     "<p>discussion threshold = " + self.discussion_thresh + "</p>"
         );
     }
