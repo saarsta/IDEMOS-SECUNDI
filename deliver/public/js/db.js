@@ -165,7 +165,7 @@ var db_functions = {
         });
     },
 
-    createDiscussion: function(subject_id, subject_name, vision, title, tags, callback){
+    createDiscussion: function(subject_id, vision, title, tags, callback){
         this.loggedInAjax({
             url: '/api/discussions/',
             type: "POST",

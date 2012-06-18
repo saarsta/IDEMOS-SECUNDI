@@ -232,7 +232,7 @@
                      subject_id   = $("#subject_id").val();
                      subject_name  = $("#subject_name").val();
 
-                     db_functions.createDiscussion(subject_id, subject_name, vision, title, tags, function(err, data){
+                     db_functions.createDiscussion(subject_id, vision, title, tags, function(err, data){
                          if (err){
                          }else{
                              created_discussion_id = data._id;

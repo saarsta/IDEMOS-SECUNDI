@@ -95,6 +95,9 @@ var connectPopup = function(callback){
         callback();
 };
 
+
+//tooltip prexiew
+//$(".gray_and_soon").
 // handle image loading stuff
 
 $(function(){
