@@ -95,9 +95,24 @@ var connectPopup = function(callback){
         callback();
 };
 
+
+
 // handle image loading stuff
 
 $(function(){
+
+    function initTooltip(ui){
+        ui.tooltip({
+            bodyHandler: function() {
+                return "" +
+                    "בקרוב"
+            },
+            showURL: false
+        });
+        ui.attr('disabled','disabled');
+        ui.attr('href','javascript:void(0)');
+    }
+
 
     $('#failureForm').live('submit', function(e){
         e.preventDefault();
@@ -128,6 +143,14 @@ $(function(){
                 if(autoscale.length)
                     image_autoscale($('img',autoscale));
             }
+            if($(target_element).is('.gray_and_soon'))
+                initTooltip($(target_element));
+            else
+            {
+                var tooltip = $('.gray_and_soon',target_element);
+                if(tooltip.length)
+                    initTooltip(tooltip);
+            }
         }
     };
 
@@ -144,6 +167,7 @@ $(function(){
         $('body').bind('DOMNodeInserted',callback);
 
     image_autoscale($('.auto-scale img'));
+    initTooltip($(".gray_and_soon"));
 });
 
 function image_autoscale(obj, params)

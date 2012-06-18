@@ -146,7 +146,7 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
                     req.gamification_type = "grade_discussion";
                     req.token_price = common.getGamificationTokenPrice('grade_discussion') || 0;
 
-                        callback(err, {new_grade: new_grade, evaluate_counter: counter, grade_id: grade_object._id || 0});
+                    callback(err, {new_grade: new_grade, evaluate_counter: counter, grade_id: grade_object._id || 0});
                 })
             }else{
                 callback(err, null);
@@ -235,7 +235,7 @@ function calculateDiscussionGrade(discussion_id, callback){
                 new_grade = grade_sum / count;
 
                 //calculate threshhold here
-                threshold = calc_thresh.calculating_thresh(count, new_grade);
+                threshold = calc_thresh.calculating_thresh(count, new_grade) || 1.6;
 
                 models.Discussion.update({_id: discussion_id}, {$set: {grade: new_grade, evaluate_counter: count, threshold_for_accepting_change_suggestions: threshold}}, cbk);
             }else{

@@ -443,10 +443,8 @@ var calculateSuggestionGrade = GradeSuggestionResource.calculateSuggestionGrade 
 
 var calculate_sugg_threshold = function(factor, discussion_threshold){
     var log_base_75_of_x =
-        Math.log(discussion_threshold) / Math.log(75);
-    var result = Math.pow(log_base_75_of_x, 1.6) * factor;
-
+        Math.log(factor) / Math.log(75);
+    var result = Math.pow(log_base_75_of_x, common.getThresholdCalcVariables("SCALE_PARAM")) * discussion_threshold;
 
     return Math.round(result);
-
 }

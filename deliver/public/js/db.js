@@ -165,7 +165,7 @@ var db_functions = {
         });
     },
 
-    createDiscussion: function(subject_id, subject_name, vision, title, tags, callback){
+    createDiscussion: function(subject_id, vision, title, tags, callback){
         this.loggedInAjax({
             url: '/api/discussions/',
             type: "POST",
@@ -408,6 +408,36 @@ var db_functions = {
         this.loggedInAjax({
             url: '/api/user_followers/' + user_id,
             type: "PUT",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            },
+
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },
+
+    getUserFollowers: function(user_id, callback){
+        this.loggedInAjax({
+            url: '/api/user_followers/' + user_id ? user_id : "",
+            type: "GET",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            },
+
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },
+
+    getOnWhomUserFollows: function(user_id, callback){
+        this.loggedInAjax({
+            url: '/api/users?followers.follower_id=' + user_id,
+            type: "GET",
             async: true,
             success: function (data) {
                 callback(null, data);
