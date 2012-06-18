@@ -3,6 +3,7 @@
 <html>
 <head>
     <%- partial('partials/head.ejs') %>
+
     <!--<script type="text/javascript">
         $(document).ready(function () {
 
@@ -130,7 +131,7 @@
         <div id="actions-tab">
 
         </div>
-        <div id="blogs-tab">
+        <div id="articles-tab">
 
         </div>
 
@@ -139,77 +140,9 @@
 <div class="myuru-bottom cf">
     <div class="right">
         <h2>עדכונים</h2>
-        <div class="renewal">
-            <div class="one cf">
-                <div class="right-image">
-                    <div class="img-box">
-                        <img alt="" src="images/user-1.jpg">
-                        <img alt="" src="images/user-fillter-white.png" class="shadow">
-                    </div>
-                </div>
-                <p><strong>יבקעי לאומש</strong> הבילה ידומילו ךוניח אשונב תרציש הנגפהה תלועפל ףרטצה </p>
-                <div class="date">13.03.2012 ,21:09</div>
-                <a href="" class="btn">ףתש</a>
-            </div>
-            <div class="one cf">
-                <div class="right-image">
-                    <img alt="" src="images/sample-1.jpg">
-                </div>
-                <p><strong>3-4 םיאליגב םידליל םניח קוח אשונב תינומה הנגפה</strong></p>
-                <p><strong>:םוקימ</strong> (הייריעה לומ ןיבר רככב םישגפנ) ביבא לת ,ריאמ ןג </p>
-                <p><strong>:יתמ</strong> 17:00 העשב ,13.03.2012 </p>
-                <a href="" class="btn">ףתש</a>
-            </div>
-            <div class="one cf">
-                <div class="right-image">
-                    <div class="img-box img-box-space">
-                        <img alt="" src="images/user-1.jpg">
-                        <img alt="" src="images/user-fillter-white.png" class="shadow">
-                    </div>
-                    <div class="img-box">
-                        <img alt="" src="images/user-1.jpg">
-                        <img alt="" src="images/user-fillter-white.png" class="shadow">
-                    </div>
-                </div>
-                <p><strong>ךלש םירבח 2</strong> קלדה יריחמ אשונב המוצעל ופרטצה </p>
-                <div class="date">13.03.2012 ,21:09</div>
-                <a href="" class="btn">ףתש</a>
-            </div>
-            <div class="one cf">
-                <div class="right-image">
-                    <div class="img-box">
-                        <img alt="" src="images/user-1.jpg">
-                        <img alt="" src="images/user-fillter-white.png" class="shadow">
-                    </div>
-                </div>
-                <p><strong>יבקעי לאומש</strong> הבילה ידומילו ךוניח אשונב תרציש הנגפהה תלועפל ףרטצה </p>
-                <div class="date">13.03.2012 ,21:09</div>
-                <a href="" class="btn">ףתש</a>
-            </div>
-            <div class="one cf">
-                <div class="right-image">
-                    <img alt="" src="images/sample-1.jpg">
-                </div>
-                <p><strong>3-4 םיאליגב םידליל םניח קוח אשונב תינומה הנגפה</strong></p>
-                <p><strong>:םוקימ</strong> (הייריעה לומ ןיבר רככב םישגפנ) ביבא לת ,ריאמ ןג </p>
-                <p><strong>:יתמ</strong> 17:00 העשב ,13.03.2012 </p>
-                <a href="" class="btn">ףתש</a>
-            </div>
-            <div class="one cf">
-                <div class="right-image">
-                    <div class="img-box img-box-space">
-                        <img alt="" src="images/user-1.jpg">
-                        <img alt="" src="images/user-fillter-white.png" class="shadow">
-                    </div>
-                    <div class="img-box">
-                        <img alt="" src="images/user-1.jpg">
-                        <img alt="" src="images/user-fillter-white.png" class="shadow">
-                    </div>
-                </div>
-                <p><strong>ךלש םירבח 2</strong> קלדה יריחמ אשונב המוצעל ופרטצה </p>
-                <div class="date">13.03.2012 ,21:09</div>
-                <a href="" class="btn">ףתש</a>
-            </div>
+        <div id="renewal" class="renewal">
+
+
         </div>
     </div>
     <div class="left">
@@ -336,36 +269,18 @@
 
         //$(".search-result-box .tabs").tabs();
 
-        $('.tab-slide-1')
-                .after('<div class="nav-1 nav">')
-                .cycle({
-                    fx: 'scrollLeft',
-                    speed: 'fast',
-                    timeout: 0,
-                    pager: '.nav-1',
-                    next: '.next-1',
-                    prev: '.prev-1'
-                });
-        $('.tab-slide-2')
-                .after('<div class="nav-2 nav">')
-                .cycle({
-                    fx: 'scrollLeft',
-                    speed: 'fast',
-                    timeout: 0,
-                    pager: '.nav-2',
-                    next: '.next-2',
-                    prev: '.prev-2'
-                });
+
 
 
 
         function tabSelected(event, ui){
            function convertToTabModel(data){
-            var i,
+                var i,
                 tabGroups=0,
                 tabModel={
                     groups:[]
-                }   ;
+                    }   ;
+
                for(i = 0 ;i<data.objects.length;i++)
                {
                     if(tabModel.groups[tabGroups]===undefined){
@@ -374,99 +289,61 @@
                    tabModel.groups[tabGroups].group[i%3] = data.objects[i];
                     if(i%3===2){
                         tabGroups++;
+                       // return  tabModel;
                     }
                }
+
              return tabModel;
            }
            var tabDivId=   ui.panel.id;
-            db_functions.getAllItemsByUser('discussions',null,function(error,data){
+           var type=tabDivId.substr(0, tabDivId.indexOf('-'));
+            db_functions.getAllItemsByUser(type,null,function(error,data){
                 var  tabDataModel =convertToTabModel(data) ;
+
                 dust.render('myuru_tab',tabDataModel,function(err,out)
                 {
-                    var seletedTab= $('#discussions-tab');
+                    var seletedTab= $('#'+type+'-tab');
+
                     // seletedTab.remove();
                     seletedTab.empty();
 
                     seletedTab.append(out);
                    // $('img',seletedTab).autoscale();
+
+                    $('.tab-slide-1')
+                            .after('<div class="nav-1 nav">')
+                            .cycle({
+                                fx: 'scrollLeft',
+                                speed: 'fast',
+                                timeout: 0,
+                                pager: '.nav-1',
+                                next: '.next-1',
+                                prev: '.prev-1'
+                            });
+
+
+
                 });
             });
 
-            switch (tabDivId)
-            {
 
-
-
-               /* case 'tabDiscussions':
-
-                    db_functions.getAllItemsByUser('discussions',null,function(error,data){
-                        dust.renderArray('myDiscussion_list_item',data.objects,null,function(err,out)
-                        {
-                            var seletedTab= $('#ulDiscussions');
-                            // seletedTab.remove();
-                            seletedTab.empty();
-
-                            seletedTab.append(out);
-                            $('img',seletedTab).autoscale();
-                        });
-                    });
-
-                    break;
-                case 'tabCycle':
-
-                    db_functions.getAllItemsByUser('cycles',null,function(error,data){
-                        dust.renderArray('myCycle_list_item',data.objects,null,function(err,out)
-                        {
-                            var seletedTab= $('#ulCycles');
-                            // seletedTab.remove();
-                            seletedTab.empty();
-                            seletedTab.append(out);
-                            $('img',seletedTab).autoscale();
-                        });
-                    });
-                    break;
-
-                case 'tabActions':
-                    db_functions.getAllItemsByUser('actions',null,function(error,data){
-                        dust.renderArray('myAction_list_item',data.objects,null,function(err,out)
-                        {
-                            var seletedTab= $('#ulActions');
-                            // seletedTab.remove();
-                            seletedTab.empty();
-                            seletedTab.append(out);
-                            $('img',seletedTab).autoscale();
-                        });
-                    });
-                    break;
-
-                case 'ulKilkul':
-                    db_functions.getAllItemsByUser('kilkuls',null,function(error,data){
-                        dust.renderArray('myKilkulListItem',data.objects,null,function(err,out)
-                        {
-                            var seletedTab= $('#ulKilkuls');
-                            // seletedTab.remove();
-                            seletedTab.empty();
-                            seletedTab.append(out);
-                            $('img',seletedTab).autoscale();
-                        });
-                    });
-                    break;
-
-                default:*/
-            }
 
 
 
         }
 
-
-
-
-
         $( ".tabs" ).tabs({
-            selected:0,
+            selected:1,
             show:tabSelected
         });
+
+        db_functions.getNotifications(function (data) {
+            $.each(data.objects, function (index, notification) {
+                dust.render('notification', notification, function (err, html) {
+                    $('#renewal').append(html);
+                })
+            })
+        }) ;
     });
 </script>
 
