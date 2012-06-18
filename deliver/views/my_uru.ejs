@@ -121,24 +121,8 @@
     </div>
     <div class="left">
         <h2>אחרי מי אני עוקב</h2>
-        <div class="users-list">
-            <div class="user-one cf">
-                <div class="user-right">
-                    <div class="img-box">
-                        <img width="60" alt="" src="images/user-1.jpg">
-                        <img alt="" src="images/user-fillter-small-white.png" class="wraper">
-                    </div>
-                </div>
-                <div class="user-left">
-                    <p>שם משתמש</p>
-                    <div class="proxy">
-                        <span>3</span>
-                    </div>
-                    <div class="respect">
-                        <span>20</span>
-                    </div>
-                </div>
-            </div>
+        <div id="users-list" class="users-list">
+
 
         </div>
     </div>
@@ -155,11 +139,7 @@
     $(function(){
 
         //$(".search-result-box .tabs").tabs();
-
-
-
-
-
+        var userId='<%=user._id %>'
         function tabSelected(event, ui){
            function convertToTabModel(data){
                 var i,
@@ -233,13 +213,13 @@
         }) ;
 
 
-        db_functions.getUserFollowers(null,function (data) {
-
-           /* $.each(data.objects, function (index, notification) {
-                dust.render('notification', notification, function (err, html) {
-                    $('#renewal').append(html);
+        db_functions.getOnWhomUserFollows(userId,function (e,data) {
+                debugger;
+            $.each(data.objects, function (index, notification) {
+                dust.renderArray('myuru_follower_item', notification,null, function (err, html) {
+                    $('#users-list').append(html);
                 })
-            })*/
+            })
         }) ;
     });
 </script>
