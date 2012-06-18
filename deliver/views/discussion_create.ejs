@@ -75,7 +75,7 @@
     <div id="card">
         <div class="extra">
             <div class="card-top cf">
-                <a class="btn btn-1 inline" href="/facebookShare?link=/information_cart/{_id}">שתף</a>
+                <a class="btn btn-1 inline gray_and_soon" href="/facebookShare?link=/information_cart/{_id}">שתף</a>
                 <a class="btn btn-2" href="/information_items/"><span class="number" style="display:none;"></span>חזור לאסוף פריטי מידע נוספים </a>
                 <h3 class="basket">
                     סל מידע
@@ -232,7 +232,7 @@
                      subject_id   = $("#subject_id").val();
                      subject_name  = $("#subject_name").val();
 
-                     db_functions.createDiscussion(subject_id, subject_name, vision, title, tags, function(err, data){
+                     db_functions.createDiscussion(subject_id, vision, title, tags, function(err, data){
                          if (err){
                          }else{
                              created_discussion_id = data._id;

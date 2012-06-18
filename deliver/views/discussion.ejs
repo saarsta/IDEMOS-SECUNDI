@@ -46,7 +46,7 @@
                         שתף
                     </a>
 
-                    <div class="btns-grey">
+                    <div class="btns-grey ">
                         <a href="">
                             הצעה לשינוי
                         </a>
@@ -556,7 +556,7 @@ $(document).ready(function () {
                     step:0.10,
                     slide: function(event, ui){
                         var rating = ui.value;
-                        if(rating > my_discussion_grade){
+                        if(rating >= my_discussion_grade){
                             $(this).parents(".bottom-box").find(".agree_disagree").removeClass("disagree").addClass("agree")
                         }else{
                             $(this).parents(".bottom-box").find(".agree_disagree").removeClass("agree").addClass("disagree");
