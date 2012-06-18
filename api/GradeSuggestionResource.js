@@ -446,7 +446,5 @@ var calculate_sugg_threshold = function(factor, discussion_threshold){
         Math.log(discussion_threshold) / Math.log(75);
     var result = Math.pow(log_base_75_of_x, 1.6) * factor;
 
-
     return Math.round(result);
-
 }

@@ -404,6 +404,21 @@ var db_functions = {
         });
     },
 
+    getUserFollowers: function(user_id, callback){
+        this.loggedInAjax({
+            url: '/api/user_followers/' + user_id ? user_id : "",
+            type: "GET",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            },
+
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },
+
     getSuggestionByDiscussion: function(discussion_id, limit, offset, callback){
         this.loggedInAjax({
             url: '/api/suggestions?discussion_id=' + discussion_id + "&is_approved=false" + (limit? '&limit='+limit:'') + (offset? '&offset=' + offset:'') ,
@@ -430,6 +445,8 @@ var db_functions = {
             }
         });
     },
+
+
 
     getListItems : function(type,query,callback)
     {
