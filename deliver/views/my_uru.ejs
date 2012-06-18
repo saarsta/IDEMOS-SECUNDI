@@ -4,33 +4,6 @@
 <head>
     <%- partial('partials/head.ejs') %>
 
-    <!--<script type="text/javascript">
-        $(document).ready(function () {
-
-            $(".search-result-box .tabs").tabs();
-
-            $('.tab-slide-1')
-                    .after('<div class="nav-1 nav">')
-                    .cycle({
-                        fx: 'scrollLeft',
-                        speed: 'fast',
-                        timeout: 0,
-                        pager: '.nav-1',
-                        next: '.next-1',
-                        prev: '.prev-1'
-                    });
-            $('.tab-slide-2')
-                    .after('<div class="nav-2 nav">')
-                    .cycle({
-                        fx: 'scrollLeft',
-                        speed: 'fast',
-                        timeout: 0,
-                        pager: '.nav-2',
-                        next: '.next-2',
-                        prev: '.prev-2'
-                    });
-        });
-    </script>-->
 </head>
 <body>
 <div id="wrap">
@@ -165,94 +138,7 @@
                     </div>
                 </div>
             </div>
-            <div class="user-one cf">
-                <div class="user-right">
-                    <div class="img-box">
-                        <img width="60" alt="" src="images/user-1.jpg">
-                        <img alt="" src="images/user-fillter-small-white.png" class="wraper">
-                    </div>
-                </div>
-                <div class="user-left">
-                    <p>שם משתמש</p>
-                    <div class="proxy">
-                        <span>3</span>
-                    </div>
-                    <div class="respect">
-                        <span>20</span>
-                    </div>
-                </div>
-            </div>
-            <div class="user-one cf">
-                <div class="user-right">
-                    <div class="img-box">
-                        <img width="60" alt="" src="images/user-1.jpg">
-                        <img alt="" src="images/user-fillter-small-white.png" class="wraper">
-                    </div>
-                </div>
-                <div class="user-left">
-                    <p>שם משתמש</p>
-                    <div class="proxy">
-                        <span>3</span>
-                    </div>
-                    <div class="respect">
-                        <span>20</span>
-                    </div>
-                </div>
-            </div>
-            <div class="user-one cf">
-                <div class="user-right">
-                    <div class="img-box">
-                        <img width="60" alt="" src="images/user-1.jpg">
-                        <img alt="" src="images/user-fillter-small-white.png" class="wraper">
-                    </div>
-                </div>
-                <div class="user-left">
-                    <p>שם משתמש</p>
-                    <div class="proxy">
-                        <span>3</span>
-                    </div>
-                    <div class="respect">
-                        <span>20</span>
-                    </div>
-                </div>
-            </div>
-            <div class="user-one cf">
-                <div class="user-right">
-                    <div class="img-box">
-                        <img width="60" alt="" src="images/user-1.jpg">
-                        <img alt="" src="images/user-fillter-small-white.png" class="wraper">
-                    </div>
-                </div>
-                <div class="user-left">
-                    <p>שם משתמש</p>
-                    <div class="proxy">
-                        <span>3</span>
-                    </div>
-                    <div class="respect">
-                        <span>20</span>
-                    </div>
-                </div>
-            </div>
-            <div class="user-one cf">
-                <div class="user-right">
-                    <div class="img-box">
-                        <img width="60" alt="" src="images/user-1.jpg">
-                        <img alt="" src="images/user-fillter-small-white.png" class="wraper">
-                    </div>
-                </div>
-                <div class="user-left">
-                    <p>שם משתמש</p>
-                    <div class="proxy">
-                        <span>3</span>
-                    </div>
-                    <div class="respect">
-                        <span>20</span>
-                    </div>
-                </div>
-            </div>
-            <div class="load">
-                טירפ ןעוט
-            </div>
+
         </div>
     </div>
 </div>
@@ -343,6 +229,16 @@
                     $('#renewal').append(html);
                 })
             })
+        }) ;
+
+
+        db_functions.getUserFollowers(null,function (data) {
+          debugger;
+           /* $.each(data.objects, function (index, notification) {
+                dust.render('notification', notification, function (err, html) {
+                    $('#renewal').append(html);
+                })
+            })*/
         }) ;
     });
 </script>
