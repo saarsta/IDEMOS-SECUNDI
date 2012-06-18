@@ -2574,6 +2574,10 @@ textarea.hidden_textarea::selection
     color:#b7b6b6;
     font: normal 12px/15px Arial;
 }
+.left-select-inner
+{
+    margin-top: 19px;
+}
 .comments-box h2
 {
     border-top: 6px solid #d6dbde;
@@ -3293,14 +3297,16 @@ textarea.hidden_textarea::selection
     font: normal 13px/20px Arial;
     margin-bottom: 15px;
 }
-.rightCol .text .tags-wrap
+.rightCol .text .tags-wrap,
+.main-text .tags-wrap
 {
     border-top: 1px solid #ebebeb;
     border-bottom: 1px solid #ebebeb;
     padding-bottom: 9px;
     margin-bottom: 25px;
 }
-.rightCol .text .tags-wrap .down
+.rightCol .text .tags-wrap .down,
+.main-text .tags-wrap .down
 {
     float: left;
     width: 15px;
@@ -3308,7 +3314,8 @@ textarea.hidden_textarea::selection
     position: relative;
     margin-top: 12px;
 }
-.rightCol .text .tags-wrap .down ul
+.rightCol .text .tags-wrap .down ul,
+.main-text .tags-wrap .down ul
 {
     position: absolute;
     width: 183px;
@@ -3316,9 +3323,11 @@ textarea.hidden_textarea::selection
     right: -3px;
     border: 1px solid #eeecec;
     background:#fff;
-    display: none
+    display: none;
+    z-index: 10;
 }
-.rightCol .text .tags-wrap .down ul a
+.rightCol .text .tags-wrap .down ul a,
+.main-text .tags-wrap .down ul a
 {
     display: block;
     color:#b7b6b6;
@@ -3328,22 +3337,28 @@ textarea.hidden_textarea::selection
 }
 .rightCol .text .tags-wrap .down ul a:hover,
 .rightCol .text .tags-wrap .down ul a:active
+.main-text .tags-wrap .down ul a:hover,
+.main-text .tags-wrap .down ul a:active
 {
     color:#fff;
     background:#616160;
 }
-.rightCol .text .tags-wrap .down span
+.rightCol .text .tags-wrap .down span,
+.main-text .tags-wrap .down span
+
 {
     width: 15px;
     height: 15px;
     display: block;
     background:#fff url(../images/down-arrow.png) 50% 50% no-repeat;
 }
-.rightCol .text .tags-wrap .down:hover ul
+.rightCol .text .tags-wrap .down:hover ul,
+.main-text .tags-wrap .down:hover ul
 {
     display: block;
 }
-.rightCol .text .tags-wrap .down:hover span
+.rightCol .text .tags-wrap .down:hover span,
+.main-text .tags-wrap .down:hover span
 {
     border: 1px solid #eeecec;
     padding: 2px;
@@ -4735,4 +4750,107 @@ body.search-ative #header
 {
     background-color:#b7b6b6;
     border-color:#8f8f8f;
+}
+*---------------------------*/
+.main-text
+{
+    background:#fff;
+    padding: 20px 28px 45px;
+}
+.main-text .one .right
+{
+    float: right;
+    width: 425px;
+}
+.main-text .one .left
+{
+    float: left;
+    width: 112px;
+}
+.main-text .main-text-top
+{
+    padding-bottom: 11px;
+}
+.main-text .one h4
+{
+    color:#50504f;
+    font: bold 16px/18px Arial;
+    margin-bottom: 4px;
+}
+.main-text .one h5
+{
+    color:#757d7e;
+    font: italic 12px/17px Arial;
+    margin-bottom: 5px;
+}
+.main-text .one p
+{
+    color:#50504f;
+    font: normal 13px/17px Arial;
+    margin-bottom: 0px;
+}
+.main-text .left a.grey-btn
+{
+    background:#757d7e url(../images/search-submit.png) 0 0 repeat-x;
+    display: block;
+    border: 1px solid #2e3030;
+    height: 29px;
+    font: normal 22px/29px "AdumaFOTRegular";  
+    color:#fff;
+    text-align: center;
+    border-radius: 2px;
+    text-decoration: none;
+    position: relative;
+    width: 110px;
+    display: block;
+    margin-bottom: 8px;
+}
+.main-text .left a.grey-btn span
+{
+    padding-right: 14px;
+    margin-right: -14px;
+    background: url(../images/plus-icon-white.png) 100% 50% no-repeat;
+}
+.main-text .left a.like-icon
+{
+    background: url(../images/like-icon.png) no-repeat;
+    width: 35px;
+    height: 31px;
+    display: block;
+    float: left;
+}
+.main-text .tags-wrap .down
+{
+    margin-right: 12px;
+}
+.main-text .one .right .oh
+{
+    overflow: hidden;
+}
+.main-text .one .right img
+{
+    float:right;
+    margin-left: 15px;
+}
+.main-text .notice
+{
+    background:#3b63ef;
+    padding: 0 12px 0 20px;
+    font: bold 13px/33px Arial;
+    color:#fff;
+    position: relative;
+    margin-bottom: 9px;
+}
+.main-text .notice a.link
+{
+    color:#fff;
+    float: left;
+}
+.main-text .notice a.close{
+    width: 28px;
+    height: 28px;
+    background: url(../images/delete-app.png) no-repeat;
+    position: absolute;
+    left: -14px;
+    top: -13px;
 }

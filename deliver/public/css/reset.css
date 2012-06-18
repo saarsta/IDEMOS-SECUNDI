@@ -60,3 +60,7 @@ table {
 .cf 		{ display: block }
 .floatLeft {float: left;}
 .floatRight {float: right;}
+a
+{
+    color:#3b63ef;
+}
