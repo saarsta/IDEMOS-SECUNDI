@@ -53,8 +53,9 @@ var User = module.exports = new Schema({
     gamification: {type:Schema.Types.Mixed,editable:false },
     updates: Schema.Types.Mixed,
     proxy: [
-        new Schema({user_id:{type:ObjectId, ref:'User'}, number_of_tokens: {type:Number, 'default': 0, min: 0, max: 3}})
+        new Schema({user_id:{type:ObjectId, ref:'User'}, number_of_tokens: {type:Number, 'default': 0, min: 0, max: 3}, given_date: {type:Date, 'default':Date.now}})
     ],
+    num_of_given_mandates: {type: Number, 'default': 0},
     score:{type:Number, 'default':0},
     decoration_status:{type:String, "enum":['a', 'b', 'c']},
     invited_by: {type: ObjectId, ref: 'User'},
