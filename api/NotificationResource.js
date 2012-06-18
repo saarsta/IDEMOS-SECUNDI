@@ -152,6 +152,8 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
             var user_obj = notification.notificators.length ?
                 users_hash[notification.notificators[0].notificator_id] : null;
 
+            var discussion = discussions_hash[notification.entity_id+''];
+
             switch (notification.type) {
                 case "approved_info_item_i_created":
                     notification.message_of_notificators =
@@ -173,8 +175,10 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                     break;
                 case "comment_on_discussion_you_are_part_of":
                     var num_of_comments = notification.notificators.length;
-                    notification.link = "/discussions/" + notification.entity_id;
-                    notification.pic = discussions_hash[notification.entity_id].image_field_preview || discussions_hash[notification.entity_id].image_field;
+                    if(discussion){
+                        notification.link = "/discussions/" + notification.entity_id;
+                        notification.pic = discussions_hash[notification.entity_id + ""].image_field_preview || discussions_hash[notification.entity_id + ""].image_field;
+                    }
 
                     if (num_of_comments > 1) {
                         description_of_notificators = num_of_comments + " " +
@@ -197,9 +201,10 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                     break;
                 case "change_suggestion_on_discussion_you_are_part_of":
                     var num_of_comments = notification.notificators.length;
-                    notification.link = "/discussions/" + notification.entity_id;
-                    notification.pic = discussions_hash[notification.entity_id].image_field_preview || discussions_hash[notification.entity_id].image_field;
-
+                    if(discussion){
+                        notification.link = "/discussions/" + notification.entity_id + "";
+                        notification.pic = discussions_hash[notification.entity_id + ""].image_field_preview || discussions_hash[notification.entity_id + ""].image_field;
+                    }
                     if (num_of_comments > 1) {
                         notification.description_of_notificators = num_of_comments + " " + "אנשים";
                         notification.message_of_notificators =
@@ -217,9 +222,10 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                     break;
                 case "comment_on_discussion_you_created" :
                     var num_of_comments = notification.notificators.length;
-                    notification.link = "/discussions/" + notification.entity_id;
-                    notification.pic = discussions_hash[notification.entity_id].image_field_preview || discussions_hash[notification.entity_id].image_field;
-
+                    if(discussion){
+                        notification.link = "/discussions/" + notification.entity_id + "";
+                        notification.pic = discussions_hash[notification.entity_id + ""].image_field_preview || discussions_hash[notification.entity_id + ""].image_field;
+                    }
                     if (num_of_comments > 1) {
                         notification.description_of_notificators = num_of_comments + " " + "אנשים";
                         notification.message_of_notificators =
@@ -240,9 +246,10 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                     break;
                 case "change_suggestion_on_discussion_you_created":
                     var num_of_comments = notification.notificators.length;
-                    notification.link = "/discussions/" + notification.entity_id;
-                    notification.pic = discussions_hash[notification.entity_id].image_field_preview || discussions_hash[notification.entity_id].image_field;
-
+                    if(discussion){
+                        notification.link = "/discussions/" + notification.entity_id;
+                        notification.pic = discussions_hash[notification.entity_id + ""].image_field_preview || discussions_hash[notification.entity_id + ""].image_field;
+                    }
                     if (num_of_comments > 1) {
                         notification.description_of_notificators = num_of_comments + " " + "אנשים";
                         notification.message_of_notificators =
@@ -263,24 +270,27 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                     notification.message_of_notificators =
                         "התקבלה הצעה לשינוי שהצעת"
                     ;
-                    notification.link = "/discussions/" + notification.entity_id;
-                    notification.pic = discussions_hash[notification.entity_id].image_field_preview || discussions_hash[notification.entity_id].image_field;
-
+                    if(discussion){
+                        notification.link = "/discussions/" + notification.entity_id;
+                        notification.pic = discussions_hash[notification.entity_id + ""].image_field_preview || discussions_hash[notification.entity_id + ""].image_field;
+                    }
                     itr_cbk();
                     break;
                 case "approved_change_suggestion_you_graded":
                     notification.message_of_notificators =
                         "התקבלה הצעה לשינוי שדירגת"
                     ;
-                    notification.link = "/discussions/" + notification.entity_id;
-                    notification.pic = discussions_hash[notification.entity_id].image_field_preview || discussions_hash[notification.entity_id].image_field;
-
-                        itr_cbk();
+                    if(discussion){
+                        notification.link = "/discussions/" + notification.entity_id;
+                        notification.pic = discussions_hash[notification.entity_id + ""].image_field_preview || discussions_hash[notification.entity_id + ""].image_field;
+                    }
+                    itr_cbk();
                     break;
                 case "been_quoted":
-
-                    notification.link = "/discussions/" + notification.entity_id + '#post_' + notification.notificators[0].sub_entity_id;
-                    notification.pic = discussions_hash[notification.entity_id].image_field_preview || discussions_hash[notification.entity_id].image_field;
+                    if(discussion){
+                        notification.link = "/discussions/" + notification.entity_id + '#post_' + notification.notificators[0].sub_entity_id;
+                        notification.pic = discussions_hash[notification.entity_id + ""].image_field_preview || discussions_hash[notification.entity_id + ""].image_field;
+                    }
                     notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;
                     notification.message_of_notificators =
                         "ציטט אותך"
@@ -291,15 +301,18 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                     notification.message_of_notificators =
                         "פריט מידע שעשית לו לייק תוייג בדיון"
                     ;
-                    notification.link = "/information_items/" + notification.entity_id;
-                    notification.pic = info_items_hash[notification.entity_id].image_field_preview || info_items_hash[notification.entity_id].image_field;
+                    if(discussion){
+                        notification.link = "/information_items/" + notification.entity_id;
+                        notification.pic = info_items_hash[notification.entity_id + ""].image_field_preview || info_items_hash[notification.entity_id + ""].image_field;
+                    }
                     itr_cbk();
                     break;
                 case "user_gave_my_post_tokens":
                     var num_of_users_that_vote_my_post = notification.notificators.length;
-
                     if(num_of_users_that_vote_my_post == 1){
-                        notification.link = "/discussions/" + notification.entity_id + "#post_" + notification.notificators[0].sub_entity_id;
+                        if(discussion){
+                            notification.link = "/discussions/" + notification.entity_id + "#post_" + notification.notificators[0].sub_entity_id;
+                        }
                         notification.pic = user_obj.avatar_url();
                         notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;
                         notification.message_of_notificators =
@@ -311,9 +324,11 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                         ;
                     }else{
                         var token_sum = _.reduce(notification.notificators, function(sum, notificator){return sum + Number(notificator.ballance)}, 0);
-                        notification.link = "/discussions/" + notification.entity_id;
-                        notification.pic = discussions_hash[notification.entity_id].image_field_preview
-                            || discussions_hash[notification.entity_id].image_field;
+                        if(discussion){
+                            notification.link = "/discussions/" + notification.entity_id;
+                            notification.pic = discussions_hash[notification.entity_id + ""].image_field_preview
+                                || discussions_hash[notification.entity_id + ""].image_field;
+                        }
                         notification.description_of_notificators = num_of_users_that_vote_my_post +
                             " " +
                              "אנשים"
@@ -334,7 +349,9 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                     var num_of_users_that_vote_my_sugg = notification.notificators.length;
 
                     if(num_of_users_that_vote_my_sugg == 1){
-                        notification.link = "/discussions/" + notification.entity_id + "#suggestion_" + notification.notificators[0].sub_entity_id;
+                        if(discussion){
+                            notification.link = "/discussions/" + notification.entity_id + "#suggestion_" + notification.notificators[0].sub_entity_id;
+                        }
                         notification.pic = user_obj.avatar_url();
                         notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;
                         notification.message_of_notificators =
@@ -347,9 +364,11 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                         ;
                     }else{
                         var token_sum = _.reduce(notification.notificators, function(sum, notificator){return sum + Number(notificator.ballance)}, 0);
-                        notification.link = "/discussions/" + notification.entity_id;
-                        notification.pic = discussions_hash[notification.entity_id].image_field_preview
-                            || discussions_hash[notification.entity_id].image_field;
+                        if(discussion){
+                            notification.link = "/discussions/" + notification.entity_id;
+                            notification.pic = discussions_hash[notification.entity_id + ""].image_field_preview
+                                || discussions_hash[notification.entity_id + ""].image_field;
+                        }
                         notification.description_of_notificators = num_of_users_that_vote_my_sugg +
                             " " +
                              "אנשים"

@@ -80,11 +80,16 @@ var UserFollowerResource = module.exports = common.GamificationMongooseResource.
         })
     },
 
+//    get_objects: function (req, filters, sorts, limit, offset, callback) {
+//        this._super(req, filters, sorts, limit, offset, function(err, results){
+//            var a = 8;
+//        })
+//    },
+
     update_obj: function (req, object, callback) {
 
-        var follower_id = req.user._id;
+            var follower_id = req.user._id;
         var follower = _.find(object.followers, function(follower){return follower.follower_id + "" == follower_id + ""});
-
 
         if(follower){
             //delete follower
