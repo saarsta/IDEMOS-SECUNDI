@@ -446,8 +446,6 @@ var db_functions = {
         });
     },
 
-
-
     getListItems : function(type,query,callback)
     {
         var querystring = type;

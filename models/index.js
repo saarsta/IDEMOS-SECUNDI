@@ -245,7 +245,8 @@ var Schemas = exports.Schemas = {
     ThresholdCalcVariables: {
         MIN_THRESH: {type: Number, 'default': 2},
         MAX_THRESH: {type: Number, 'default': 500},
-        MAX_RED_RATIO: {type: Number, 'default': 2}
+        MAX_RED_RATIO: {type: Number, 'default': 2},
+        SCALE_PARAM:  {type: Number, 'default': 1.6}
     }
 };
 
