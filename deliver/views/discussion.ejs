@@ -268,6 +268,7 @@ $(document).ready(function () {
 
     var my_id = "<%=user_logged ? user._id : ''%>";
     var discussion_id = "<%=discussion.id%>";
+    var creator_id = "<%=discussion.creator_id%>";
     var mouseDown, mouseUp, top, left;
     var grade_id = "<%=discussion.grade_obj.grade_id%>";
     var sugg_grade_id;
@@ -275,11 +276,12 @@ $(document).ready(function () {
     var my_discussion_grade = Number("<%= discussion.grade_obj ? discussion.grade_obj.value || 0 : 0 %>");
 
     var postsNumber = 0;
+    var is_creator= (my_id==creator_id);
 
 
     $("#discussion_content").val($("#discussion_content").text());
     $(".slider").slider({
-
+        disabled: is_creator ,
         value:my_discussion_grade,
         range:"min",
         min:0,
