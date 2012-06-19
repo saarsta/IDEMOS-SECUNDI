@@ -31,6 +31,7 @@ var mongoose_resource = require('jest'),
     HotObjectResource = require('./HotObjectResource');
     NotificationResource = require('./NotificationResource');
     UserFollowerResource = require('./UserFollowerResource');
+    UserProxyResource = require('./UserProxyResource');
     ItemsCountByTagNameResource = require('./ItemsCountByTagNameResource');
 
 module.exports = function(app)
@@ -67,5 +68,6 @@ module.exports = function(app)
     rest_api.register_resource('hot_objects', new HotObjectResource());
     rest_api.register_resource('notifications', new NotificationResource());
     rest_api.register_resource('user_followers', new UserFollowerResource());
+    rest_api.register_resource('user_proxies', new UserProxyResource());
     rest_api.register_resource('items_count_by_tag_name', new ItemsCountByTagNameResource());
 };

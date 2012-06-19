@@ -404,6 +404,38 @@ var db_functions = {
         });
     },
 
+    addOrRemoveProxyMandate: function(user_id, proxy_id, number_of_namdates, callback){
+        this.loggedInAjax({
+            url: '/api/user_proxies/' + user_id,
+            type: "PUT",
+            dara: {proxy_id: proxy_id, number_of_tokens: number_of_namdates},
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            },
+
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },
+
+    deleteProxy: function(user_id, proxy_id, callback){
+        this.loggedInAjax({
+            url: '/api/user_proxies/' + user_id,
+            type: "DELETE",
+            dara: {proxy_id: proxy_id   },
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            },
+
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },
+
     getOnWhomUserFollows: function(user_id, callback){
         this.loggedInAjax({
             url: '/api/user_followers/' + user_id ? user_id : "",

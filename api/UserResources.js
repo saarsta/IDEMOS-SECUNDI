@@ -3,20 +3,6 @@ var mongoose_resource = require('jest');
 var util = require('util');
 var common = require('./common');
 
-//Authorization
-//var Authoriztion =  mongoose_resource.Authorization.extend({
-//    limit_object_list: function(req, query, callback){
-//        if(req.user){
-//            var user_id = req.user._id;
-//
-//            query.where('_id', user_id);
-//            callback(null, query);
-//        }else{
-//            callback({message: "Error: User Is Not Authenticated", code: 401}, null);
-//        }
-//    }
-//});
-
 var UserResource = module.exports =  mongoose_resource.MongooseResource.extend({
     init: function() {
         this._super(Model.User, null);

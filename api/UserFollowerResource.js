@@ -46,7 +46,7 @@ var UserFollowerResource = module.exports = common.GamificationMongooseResource.
         this.fields = {
             _id: null,
             first_name: null,
-            lsat_name: null,
+            last_name: null,
             followers: {
                 follower_id: {
                     _id: null,
