@@ -4,16 +4,16 @@ var mongoose_resource = require('jest'),
     ShoppingCartResource = require('./ShoppingCartResource'),
     DiscussionShoppingCartResource = require('./DiscussionShoppingCartResource'),
     SubjectResource = require('./SubjectResource'),
-    DiscussionResource = require('./DiscussionResource.js');
-    PostResource = require('./PostResource.js');
-    PostsActionResource = require('./PostsActionResource.js');
-    VoteResource = require('./VoteResource');
-    VoteSuggestionResource = require('./VoteSuggestionResource');
-    GradeResource = require('./GradeResource');
-    GradeSuggestionResource = require('./GradeSuggestionResource');
-    GradeActionResource = require('./GradeActionResource');
-    LikeResource = require('./LikeResource');
-    JoinResource = require('./JoinResource');
+    DiscussionResource = require('./DiscussionResource.js'),
+    PostResource = require('./PostResource.js'),
+    PostsActionResource = require('./PostsActionResource.js'),
+    VoteResource = require('./VoteResource'),
+    VoteSuggestionResource = require('./VoteSuggestionResource'),
+    GradeResource = require('./GradeResource'),
+    GradeSuggestionResource = require('./GradeSuggestionResource'),
+    GradeActionResource = require('./GradeActionResource'),
+    LikeResource = require('./LikeResource'),
+    JoinResource = require('./JoinResource'),
     CategoryResource = require('./CategoryResource'),
     SuggestionResource = require('./suggestionResource.js'),
     ActionResourceResource = require('./ActionResourceResource'),
@@ -33,6 +33,8 @@ var mongoose_resource = require('jest'),
     UserFollowerResource = require('./UserFollowerResource');
     UserProxyResource = require('./UserProxyResource');
     ItemsCountByTagNameResource = require('./ItemsCountByTagNameResource');
+    FBRequestResource = require('./FBRequestResource');
+
 
 module.exports = function(app)
 {
@@ -70,4 +72,5 @@ module.exports = function(app)
     rest_api.register_resource('user_followers', new UserFollowerResource());
     rest_api.register_resource('user_proxies', new UserProxyResource());
     rest_api.register_resource('items_count_by_tag_name', new ItemsCountByTagNameResource());
+    rest_api.register_resource('fb_request', new FBRequestResource());
 };

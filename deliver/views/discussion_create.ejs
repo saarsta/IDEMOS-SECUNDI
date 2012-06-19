@@ -235,13 +235,31 @@
                      db_functions.createDiscussion(subject_id, vision, title, tags, function(err, data){
                          if (err){
                          }else{
+                             creator_id= data.creator_id;
                              created_discussion_id = data._id;
                              if ($.trim(first_post) != ""){
                                  db_functions.addPostToDiscussion(created_discussion_id, first_post,null, function(err, data){
                                      if (err){
                                          console.log(err);
                                      }else{
-                                         window.location.replace("/discussions/" + created_discussion_id);
+                                        FB.ui({method: 'apprequests', message: 'New URU Discussion'}, function(response) {
+
+                                            if(response && response.hasOwnProperty('to')) {
+                                                var request_id =   response.request;
+                                                var ids=[];
+                                                for(i = 0; i < response.to.length; i++) {
+                                                    ids.push (request_id+"_"+response.to[i])
+                                                    console.log("" + i + " ID: " + response.to[i]);
+                                                }
+                                                db_functions.addFacebookRequest("/discussions/" + created_discussion_id+"?user_id="+creator_id, ids,function(err, data){
+                                                       window.location.replace("/discussions/" + created_discussion_id);
+                                                });
+                                            }
+                                            else
+                                            {
+                                                window.location.replace("/discussions/" + created_discussion_id);
+                                            }
+                                        });
                                      }
                                  });
                              }else{

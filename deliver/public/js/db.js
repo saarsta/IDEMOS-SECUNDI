@@ -196,6 +196,21 @@ var db_functions = {
             }
         });
     },
+    addFacebookRequest: function(link,request_ids ,callback){
+        this.loggedInAjax({
+            url: '/api/fb_request/',
+            type: "POST",
+            async: true,
+            data: {"link": link, "fb_request_ids": request_ids},
+            success: function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },
     getPostByDiscussion: function(discussion_id, callback){
         this.loggedInAjax({
             url: '/api/posts?discussion_id=' + discussion_id,
@@ -404,6 +419,7 @@ var db_functions = {
         });
     },
 
+
     addOrRemoveProxyMandate: function(user_id, proxy_id, number_of_namdates, callback){
         this.loggedInAjax({
             url: '/api/user_proxies/' + user_id,
@@ -435,8 +451,8 @@ var db_functions = {
             }
         });
     },
-
-    getOnWhomUserFollows: function(user_id, callback){
+    
+    getUserFollowers: function(user_id, callback){
         this.loggedInAjax({
             url: '/api/user_followers/' + user_id ? user_id : "",
             type: "GET",
@@ -451,7 +467,7 @@ var db_functions = {
         });
     },
 
-    getUserFollowers: function(user_id, callback){
+    getOnWhomUserFollows: function(user_id, callback){
         this.loggedInAjax({
             url: '/api/users?followers.follower_id=' + user_id,
             type: "GET",
