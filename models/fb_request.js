@@ -3,12 +3,17 @@ var mongoose = require('mongoose')
 
 
 var FBRequest = module.exports  =  new Schema({
-    link:{type:String, unique:true},
+    link:{type:String, required: true},
     fb_request_ids:{type:[String]},
     creator:{type:Schema.ObjectId,ref:'User'}
 }, {strict: true});
 
 
 FBRequest.statics.getLink = function(request_id, callback) {
-    this.findOne().where('fb_request_ids',request_id).run(callback);
+    this.findOne().where('fb_request_ids',request_id).run(function(err,link) {
+        if(err)
+            callback(err);
+        else
+            callback(null, link.link);
+    });
 };

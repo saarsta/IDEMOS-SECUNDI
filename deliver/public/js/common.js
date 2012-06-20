@@ -11,6 +11,10 @@ dust.filters['time'] = function(a){
     return date + " " + time;
 };
 
+dust.filters['round'] = function(num){
+    return Math.round(num);
+};
+
 dust.filters['date'] = function(a){
     return $.datepicker.formatDate('dd.mm.yy', new Date(Date.parse(a)));
 };
