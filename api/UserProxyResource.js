@@ -43,13 +43,30 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
             first_name: null,
             last_name: null,
             num_of_given_mandates: null,
-            proxy: null,
+            proxy: {
+                user_id:{
+                    _id: null,
+                    facebook_id: null,
+                    avatar_url: null,
+                    first_name: null,
+                    last_name: null,
+                    number_of_tokens: null
+                }
+            },
             tokens: null
         }
 //        this.default_query = function(query){
 //            return query.populate("followers.follower_id");
 //        };
 
+    },
+
+    run_query: function(req,query,callback)
+    {
+        if(req.method == 'GET'){
+            query.populate("proxy.user_id");
+        };
+        this._super(req,query,callback);
     },
 
     update_obj: function (req, object, callback) {
