@@ -95,7 +95,6 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
             //tokens will be removed once a day by a cron
                 proxy.number_of_tokens_to_get_back = req.body.number_of_tokens;
 
-
             object.proxy.push(proxy);
         }
 
@@ -103,17 +102,21 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
         object.proxy_id = null;
         object.number_of_tokens = null;
 
-        //save user object
-        object.save(function(err, user_obj){
-            if(!err && req.body.number_of_tokens > 0){
-                //update proxy-user new tokens
-                models.User.update({_id: proxy_id}, {$inc: {num_of_given_mandates: number_of_tokens}}, function(err, num){
+        if(proxy.number_of_tokens > 3)
+            callback({message:"Error: Unauthorized - max mandate is 3!", code: 401}, null)
+        else{
+            //save user object
+            object.save(function(err, user_obj){
+                if(!err && req.body.number_of_tokens > 0){
+                    //update proxy-user new tokens
+                    models.User.update({_id: proxy_id}, {$inc: {num_of_given_mandates: number_of_tokens}}, function(err, num){
+                        callback(err, user_obj);
+                    })
+                }else{
                     callback(err, user_obj);
-                })
-            }else{
-                callback(err, user_obj);
-            }
-        })
+                }
+            })
+        }
     },
 
     delete_obj: function(req,object,callback){
