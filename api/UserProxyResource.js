@@ -73,6 +73,7 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
     get_object: function(req, id, callback){
       this._super(req, id, function(err, obj){
          obj.daily_tokens = 9 + obj.num_of_extra_tokens;
+         callback(err, obj);
       })
     },
 
