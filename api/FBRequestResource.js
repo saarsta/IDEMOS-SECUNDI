@@ -19,5 +19,19 @@ var FBRequestResource = module.exports = jest.MongooseResource.extend({
         this.default_query = function (query) {
             return query;
         };
+
+        this.filtering = {
+            fb_request_ids:{
+                exact:null,
+                in:null
+            }
+        };
+
+        this.authorization = new (jest.Authorization.extend({
+            edit_object: function(req,object,callback) {
+                object.creator =  req.user._id;
+                callback(null,object);
+            }
+        }));
     }
 });
