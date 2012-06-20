@@ -80,7 +80,7 @@ var calc = function (num_voters/*, rating*/) {
 //print 'threshold:', thresh
 
 // calculate threshold
-    var thresh = Math.pow(BASE, (rating / div)) * MUL + inc;
+var thresh = Math.pow(BASE, (rating / div)) * MUL + inc;
 
 
 //#  round up
@@ -93,8 +93,8 @@ var calc = function (num_voters/*, rating*/) {
 //thresh = self.clamp(thresh, self.MIN_THRESH, self.MAX_THRESH)
 
 // clamp
-    thresh = clamp(thresh, MIN_THRESH, MAX_THRESH);
+thresh = clamp(thresh, MIN_THRESH, MAX_THRESH);
 
 
-    return thresh
+return thresh
 }

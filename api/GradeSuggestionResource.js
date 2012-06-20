@@ -121,6 +121,8 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
 
                                 //i think there is no need for that, threshold is in suggestion
 //                                real_threshold = Number(obj.admin_threshold_for_accepting_change_suggestions) || obj.threshold_for_accepting_change_suggestions;
+
+                                fields.does_support_the_suggestion = is_agree;
                                 fields.proxy_power = proxy_power;
                                 base.call(self, req, fields, cbk);
                             }
@@ -191,7 +193,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                             })
                     }
                 ], function(err, args){
-                    cbk(err, args);
+                     cbk(err, args);
                 })
             }
 

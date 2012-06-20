@@ -86,7 +86,7 @@ exports.cached_model = function(model,schema)
 
 exports.config_model = function(name, schema_fields){
     var ext = exports.extend_model(name,{},schema_fields,'site_configs');
-    return exports.cached_model(ext.model,ext.schema);
+    return ext.model;//exports.cached_model(ext.model,ext.schema);
 };
 
 exports.extend_model = function(name, base_schema, schema, collection,schemaFunc) {
@@ -106,6 +106,16 @@ exports.extend_model = function(name, base_schema, schema, collection,schemaFunc
         else
             arguments = [params];
         return old_find.apply(this, arguments);
+    };
+    var old_findOne = model.findOne;
+    model.findOne = function () {
+        var params = arguments.length ? arguments[0] : {};
+        params['_type'] = name;
+        if (arguments.length)
+            arguments[0] = params;
+        else
+            arguments = [params];
+        return old_findOne.apply(this, arguments);
     };
     return {model:model, schema:schemaObj};
 };

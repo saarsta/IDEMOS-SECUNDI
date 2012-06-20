@@ -53,7 +53,8 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
                     number_of_tokens: null
                 }
             },
-            tokens: null
+            tokens: null,
+            daily_tokens: null
         }
 //        this.default_query = function(query){
 //            return query.populate("followers.follower_id");
@@ -67,6 +68,12 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
             query.populate("proxy.user_id");
         };
         this._super(req,query,callback);
+    },
+
+    get_object: function(req, id, callback){
+      this._super(req, id, function(err, obj){
+         obj.daily_tokens = 9 + obj.num_of_extra_tokens;
+      })
     },
 
     update_obj: function (req, object, callback) {

@@ -47,11 +47,11 @@
             <div class="agree_disagree status {?grade_obj}{?grade_obj.does_support_the_suggestion}agree{:else}disagree{/grade_obj.does_support_the_suggestion}{/grade_obj}">
             <div class="yes">
                 <div class="green"  >מסכים</div>
-                <div class="number" id="agrees_{id}"> {agrees}</div>
+                <div class="number" id="agrees_{id}"> {agrees|round}</div>
             </div>
             <div class="no">
                 <div class="red">לא מסכים</div>
-                <div class="number" id="not_agrees_{id}">{not_agrees}</div>
+                <div class="number" id="not_agrees_{id}">{not_agrees|round}</div>
             </div>
         </div>
         <div class="status">
@@ -71,7 +71,7 @@
         <div class="slide-box">
             <div class="summary">
                 <input type="text" value="{grade|grade}" id="suggest_grade_{id}">
-                <span><div class="inlinediv" id="suggest_graders_{id}">{evaluate_counter}</div> מדרגים</span>
+                <span><div class="inlinediv" id="suggest_graders_{id}">{evaluate_counter|round}</div> מדרגים</span>
             </div>
             <div class="suggest_slider suggest_slider_{id}"></div>
             <div class="slider-numbers">
