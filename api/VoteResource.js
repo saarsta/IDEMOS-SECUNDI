@@ -13,9 +13,8 @@ var resources = require('jest'),
     _ = require('underscore'),
     common = require('./common');
     notifications = require('./notifications');
-//,
-//    jstat = require('./jstat');
 
+//  jstat = require('./jstat');
 
 var VoteResource = module.exports = common.GamificationMongooseResource.extend({
     init:function () {
@@ -49,7 +48,9 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
                     if (!vote_object)
                         vote_object = new self.model();
 
-                    var total_tokens = req.user.tokens + req.user.num_of_extra_tokens;
+                    var proxy_power = user_object.num_of_given_mandates ? 1 + user_object.num_of_given_mandates * 1/9 : 1;
+
+                    var total_tokens = /*req.user.tokens +*/ req.user.num_of_extra_tokens;
                     var method = req.body.method;
                     var ballance = vote_object ? vote_object.ballance || 0 : 0;
                     var ballance_delta = method == 'add' ? 1 : -1;
@@ -78,23 +79,17 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
 
                                     } else {
                                         if (ballance > 0 && method == 'remove') {
-                                            post_object.votes_for -= 1;
-                                            post_object.total_votes -= 1;
+                                            post_object.votes_for -= 1 * proxy_power;
+                                            post_object.total_votes -= 1 * proxy_power;
 
                                         } else {
                                             if (method == 'add') {
-                                                post_object.votes_for += 1;
-                                                post_object.total_votes += 1;
-
-
-                                                //                                    post_object.tokens += parseInt(req.body.tokens);
+                                                post_object.votes_for += 1 * proxy_power;
+                                                post_object.total_votes += 1 * proxy_power;
                                             }
                                             else {
-                                                post_object.votes_against += 1;
-                                                post_object.total_votes += 1;
-
-
-                                                //                                    post_object.tokens -= parseInt(req.body.tokens);
+                                                post_object.votes_against += 1 * proxy_power;
+                                                post_object.total_votes += 1 * proxy_power;
                                             }
                                         }
                                     }

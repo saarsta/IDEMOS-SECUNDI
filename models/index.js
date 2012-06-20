@@ -109,6 +109,7 @@ var Schemas = exports.Schemas = {
         user_id:{type:ObjectId, ref:'User', index:true, required:true},
         discussion_id:{type:ObjectId, ref:'Discussion', index:true, required:true},
         evaluation_grade:{type:Number, min:0, max:10},
+        proxy_power:{type:Number, min: 1, 'default': 1},
         creation_date:{type:Date, 'default':Date.now}
     },
 
@@ -123,6 +124,7 @@ var Schemas = exports.Schemas = {
         user_id:{type:ObjectId, ref:'User', index:true, required:true},
         suggestion_id:{type:ObjectId, ref:'Suggestion', index:true, required:true},
         evaluation_grade:{type:Number, min:0, max:10},
+        proxy_power:{type:Number, min: 1, 'default': 1},
         creation_date:{type:Date, 'default':Date.now},
         //this field sets only when suggestion creates,
         //suprot == user's suggestoin grade is e or gtr then user's discussion grade
@@ -213,11 +215,6 @@ var Schemas = exports.Schemas = {
         popularity:{type:Number,'default':0,select:false}
     },
 
-    FBRequest : {
-        link:{type:String, unique:true},
-        fb_request_ids:{type:[String]}
-    },
-
     GamificationTokens: {
         create_discussion: {type: Number, 'default': 0},
         create_action: {type: Number, 'default': 0},
@@ -294,7 +291,7 @@ var Models = module.exports = {
     Category:mongoose.model('Category', new Schema(Schemas.Category, {strict: true})),
     ActionResource:mongoose.model('ActionResource', new Schema(require('./action_resource'), {strict: true})),
     Tag: mongoose.model('Tag', new Schema(Schemas.Tag, {strict: true})),
-    FBRequest: mongoose.model('FBRequest', new Schema(Schemas.FBRequest, {strict: true})),
+    FBRequest: mongoose.model('FBRequest',require('./fb_request')),
     ResourceObligation: mongoose.model('ResourceObligation', new Schema(Schemas.ResourceObligation, {strict: true})),
     Notification: mongoose.model('Notification', new Schema(Schemas.Notification, {strict: true})),
     GamificationTokens: utils.config_model('GamificationTokens', Schemas.GamificationTokens),

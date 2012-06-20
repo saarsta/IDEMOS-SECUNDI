@@ -270,10 +270,11 @@ $(document).ready(function () {
     var discussion_id = "<%=discussion.id%>";
     var creator_id = "<%=discussion.creator_id%>";
     var mouseDown, mouseUp, top, left;
-    var grade_id = "<%=discussion.grade_obj.grade_id%>";
+    var grade_id = "<%= discussion.grade_obj ? discussion.grade_obj.grade_id : 0 %>";
     var sugg_grade_id;
     var new_post_ref_id = null;  //if not null =>the create new post is connected to anther post
     var my_discussion_grade = Number("<%= discussion.grade_obj ? discussion.grade_obj.value || 0 : 0 %>");
+    var discussion_grade = Number("<%= discussion.grade%>");
 
     var postsNumber = 0;
     var is_creator= (my_id==creator_id);
@@ -558,7 +559,8 @@ $(document).ready(function () {
                     step:0.10,
                     slide: function(event, ui){
                         var rating = ui.value;
-                        if(rating >= my_discussion_grade){
+                        var grade = is_creator ? discussion_grade : my_discussion_grade;
+                        if(rating >= grade){
                             $(this).parents(".bottom-box").find(".agree_disagree").removeClass("disagree").addClass("agree")
                         }else{
                             $(this).parents(".bottom-box").find(".agree_disagree").removeClass("agree").addClass("disagree");

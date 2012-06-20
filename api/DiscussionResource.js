@@ -85,7 +85,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
 
     get_discussion:function (object, user, callback) {
         if (object) {
-            object.grade_obj = {};
+
             object.is_follower = false;
 //            object.threshold = object.threshold_for_accepting_change_suggestions;
 //            if(object.admin_threshold_for_accepting_change_suggestions > 0)
@@ -104,6 +104,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                     }
                     else {
                         if (grade) {
+                            object.grade_obj = {};
                             object.grade_obj["grade_id"] = grade._id;
                             object.grade_obj["value"] = grade.evaluation_grade;
                         }

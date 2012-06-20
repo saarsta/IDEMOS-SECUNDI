@@ -345,7 +345,7 @@ var db_functions = {
 //        grade_id ? url = '/api/grades/' + grade_id : url = '/api/grades/';
 //        grade_id ? type = "PUT" : type = "POST";
 
-        if(grade_id && grade_id !== "undefined"){
+        if(grade_id && grade_id !== "undefined" && grade_id !== "0"){
             url = '/api/grades/' + grade_id;
             type = "PUT";
         }
@@ -395,6 +395,22 @@ var db_functions = {
             async: true,
             success: function (data) {
                 //     console.log(data);
+                callback(null, data);
+            },
+
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },
+
+    updateUserDetails: function(user_id, biography,callback){
+        this.loggedInAjax({
+            url: '/api/users/' + user_id,
+            type: "PUT",
+            data: {biography: biography},
+            async: true,
+            success: function (data) {
                 callback(null, data);
             },
 
