@@ -24,7 +24,7 @@ module.exports = function(req,res)
     }
 
 
-    var ודקר = req.session.user  ;
+    var user= req.session.user  ;
     var tokensBarModel= new TokensBarModel(10,user);
 
     res.render('my_uru.ejs',
