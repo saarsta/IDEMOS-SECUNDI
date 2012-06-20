@@ -5,9 +5,29 @@ module.exports = function(req,res)
 {
 
     function TokensBarModel(tokenPixels,user){
+        var totalProxy=2;
+        var dailyTokens = Math.floor(user.DailyTokens);
+        var gupFromFull=  15- 2// dailyTokens;
+        var  availableTokens=this.dailyTokens-this.totalProxy-user.tokens;
+
+        function convertToPixels(num){
+          return (num*tokenPixels)+'px';
+        }
+        this.gupFromFullPixels=function (){
+          return convertToPixels(gupFromFull)  ;
+        }
+        this.gupFromFullPixels=function (){
+            return convertToPixels(gupFromFull)  ;
+        }
+
 
     }
-    var user = req.session.user
+
+
+    var user = req.session.user  ;
+    var tokensBarModelXX= new TokensBarModel(10,user);
+    var dddd =tokensBarModelXX.gupFromFullPixels();
+
 
 
 
