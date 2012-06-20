@@ -3,6 +3,14 @@ var models = require('../../../models');
 
 module.exports = function(req,res)
 {
+
+    function TokensBarModel(tokenPixels,user){
+
+    }
+    var user = req.session.user
+
+
+
     res.render('my_uru.ejs',
         {
             layout: false,
@@ -11,7 +19,7 @@ module.exports = function(req,res)
             title:"אורו שלי",
             logged: req.isAuthenticated(),
             big_impressive_title: "",
-            user: req.session.user,
+            user: user,
             avatar:req.session.avatar_url,
             user_logged: req.isAuthenticated(),
             url:req.url,
