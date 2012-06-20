@@ -24,12 +24,8 @@ module.exports = function(req,res)
     }
 
 
-    var user = req.session.user  ;
-    var tokensBarModelXX= new TokensBarModel(10,user);
-    var dddd =tokensBarModelXX.gupFromFullPixels();
-
-
-
+    var ודקר = req.session.user  ;
+    var tokensBarModel= new TokensBarModel(10,user);
 
     res.render('my_uru.ejs',
         {
@@ -43,6 +39,7 @@ module.exports = function(req,res)
             avatar:req.session.avatar_url,
             user_logged: req.isAuthenticated(),
             url:req.url,
+            tokensBarModel:tokensBarModel,
             tab:''
         });
 };
