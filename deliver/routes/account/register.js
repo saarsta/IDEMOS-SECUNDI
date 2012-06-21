@@ -14,12 +14,12 @@ module.exports = {
 
         var user_model = Models.User;
 
-        user_model.findOne({first_name:user.first_name, last_name:user.last_name, identity_provider:'register'}, function (err, result) {
+        user_model.findOne({email: user.email, identity_provider:'register'}, function (err, result) {
             if (!err) {
                 if (result) {     //user is not registered
                     user.save(function (err, user) {
                         if (err) {
-                            res.render('login.ejs', {title:'Login', failed:true, exist_username:false, errors:err.errors, next:req.query.next});
+                            res.render('login.ejs', {title:'Login', failed:true, exist_username:false, errors: err.errors, next: req.query.next});
                         }
                         else {
                             console.log('new user has been created by registration');
@@ -46,8 +46,8 @@ module.exports = {
                 throw "Error reading db.User";
             }
         });
-
     },
+
     get:function (req, res) {
         res.render('register.ejs',{
             url: req.url,

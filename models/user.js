@@ -18,22 +18,21 @@ var RegexValidator = function (regex) {
 };
 
 
-var TestEmailValidator = RegexValidator(/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/);
-
 
 var User = module.exports = new Schema({
-    username:String,
+//    username:String,
     identity_provider:{type:String, "enum":['facebook', 'register']},
     facebook_id:String,
     access_token:String,
     first_name:{type:String, required:true, validate:MinLengthValidator(2)},
     last_name:{type:String, required:true, validate:MinLengthValidator(2)},
-    email:{type:String, required:true, validate:TestEmailValidator},
+    email:{type:String, required:true, match:/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/},
     gender:{type:String, "enum":['male', 'female']},
     age:{type:Number, min:0},
     address: String,
     occupation: String,
     biography: String,
+    invitation_code: String,
     //followers
     discussions:[
         new Schema({discussion_id:{type:ObjectId, ref:'Discussion'}, join_date: {type:Date, 'default':Date.now}})

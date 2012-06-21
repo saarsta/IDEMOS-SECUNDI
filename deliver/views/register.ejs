@@ -16,7 +16,7 @@
             <h2>
                 ברוכים הבאים!
             </h2>
-            <form class="login-form cf" method="POST">
+            <form id="register_form" action="/account/register" class="login-form cf" method="POST">
                 <div class="areas">
                     <div class="title">
                         <a href="/account/facebooklogin"><img src="/images/facebook-btn.png" alt="" /></a>
@@ -29,31 +29,31 @@
                             שם:
                         </label>
 
-                        <input name="first_name" class="text" type="text" />
+                        <input id="first_name" name="first_name" class="text" type="text" />
                     </div>
                     <div class="one">
                         <label>
                             שם משפחה:
                         </label>
-                        <input name="last_name" class="text" type="text" value="" />
+                        <input id="last_name" name="last_name" class="text" type="text" value="" />
                     </div>
                     <div class="one">
                         <label>
                             סיסמה:
                         </label>
-                        <input name="password" class="text" type="text" value="" />
+                        <input id="password" name="password" class="text" type="text" value="" />
                     </div>
                     <div class="one">
                         <label>
                             דוא”ל:
                         </label>
-                        <input name="email" class="text" type="text" value="" />
+                        <input id="email" name="email" class="text" type="text" value="" />
                     </div>
                     <div class="one">
                         <label>
                             קוד הזמנה:
                         </label>
-                        <textarea name="code" cols="0" rows="0"></textarea>
+                        <textarea id="invitation_code" name="invitation_code" cols="0" rows="0"></textarea>
                     </div>
                 </div>
                 <input type="submit" value="שלח" />
@@ -63,3 +63,23 @@
     <%- partial('partials/footer.ejs') %>
 </body>
 </html>
+
+
+<script type="text/javascript">
+    $(function(){
+        $('#register_form').validate({
+            rules:{
+                first_name:{required: true },
+                last_name:{required: true },
+                password:{required: true },
+                email:{required: true }
+            },
+            highlight: function (element, errorClass) {
+                $(element).addClass('error').removeClass('valid');
+            },
+            unhighlight: function (element, errorClass) {
+                $(element).removeClass('error').addClass('valid');
+            }
+        })
+    })
+</script>
