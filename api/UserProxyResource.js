@@ -43,13 +43,38 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
             first_name: null,
             last_name: null,
             num_of_given_mandates: null,
-            proxy: null,
-            tokens: null
+            proxy: {
+                user_id:{
+                    _id: null,
+                    facebook_id: null,
+                    avatar_url: null,
+                    first_name: null,
+                    last_name: null,
+                    number_of_tokens: null
+                }
+            },
+            tokens: null,
+            daily_tokens: null
         }
 //        this.default_query = function(query){
 //            return query.populate("followers.follower_id");
 //        };
 
+    },
+
+    run_query: function(req,query,callback)
+    {
+        if(req.method == 'GET'){
+            query.populate("proxy.user_id");
+        };
+        this._super(req,query,callback);
+    },
+
+    get_object: function(req, id, callback){
+      this._super(req, id, function(err, obj){
+         obj.daily_tokens = 9 + obj.num_of_extra_tokens;
+         callback(err, obj);
+      })
     },
 
     update_obj: function (req, object, callback) {
@@ -95,7 +120,6 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
             //tokens will be removed once a day by a cron
                 proxy.number_of_tokens_to_get_back = req.body.number_of_tokens;
 
-
             object.proxy.push(proxy);
         }
 
@@ -103,17 +127,21 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
         object.proxy_id = null;
         object.number_of_tokens = null;
 
-        //save user object
-        object.save(function(err, user_obj){
-            if(!err && req.body.number_of_tokens > 0){
-                //update proxy-user new tokens
-                models.User.update({_id: proxy_id}, {$inc: {num_of_given_mandates: number_of_tokens}}, function(err, num){
+        if(proxy.number_of_tokens > 3)
+            callback({message:"Error: Unauthorized - max mandate is 3!", code: 401}, null)
+        else{
+            //save user object
+            object.save(function(err, user_obj){
+                if(!err && req.body.number_of_tokens > 0){
+                    //update proxy-user new tokens
+                    models.User.update({_id: proxy_id}, {$inc: {num_of_given_mandates: number_of_tokens}}, function(err, num){
+                        callback(err, user_obj);
+                    })
+                }else{
                     callback(err, user_obj);
-                })
-            }else{
-                callback(err, user_obj);
-            }
-        })
+                }
+            })
+        }
     },
 
     delete_obj: function(req,object,callback){

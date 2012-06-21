@@ -8,7 +8,6 @@ var express = require('express'),
     auth = require("connect-auth");
 
 var app = module.exports = express.createServer();
-var account = require('./deliver/routes/account');
 
 
 app.configure('development', function(){
@@ -69,6 +68,8 @@ app.configure('production', function(){
 });
 
 mongoose.connect(app.settings.DB_URL);
+
+var account = require('./deliver/routes/account');
 
 // Configuration
 var confdb = {

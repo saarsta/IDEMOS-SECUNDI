@@ -72,7 +72,7 @@
                 </div>
                 <div class="bars">
                     <div class="border"></div>
-                    <div class="empty" style="height: 51px"></div>
+                    <div class="empty" style="height:<%=tokensBarModel.gupFromFullPixels()%>"></div>
                     <div class="grey" style="height: 17px">
                         <div class="info">מכסת אסימונים: 9</div>
                     </div>
@@ -141,11 +141,12 @@
         //$(".search-result-box .tabs").tabs();
         var userId='<%=user._id %>'
         function tabSelected(event, ui){
-           function convertToTabModel(data){
+           function convertToTabModel(data,type){
                 var i,
                 tabGroups=0,
                 tabModel={
                     groups:[]
+                    ,type:type
                     }   ;
 
                for(i = 0 ;i<data.objects.length;i++)
@@ -165,8 +166,7 @@
            var tabDivId=   ui.panel.id;
            var type=tabDivId.substr(0, tabDivId.indexOf('-'));
             db_functions.getAllItemsByUser(type,null,function(error,data){
-                var  tabDataModel =convertToTabModel(data) ;
-
+                var  tabDataModel =convertToTabModel(data,type) ;
                 dust.render('myuru_tab',tabDataModel,function(err,out)
                 {
                     var seletedTab= $('#'+type+'-tab');
