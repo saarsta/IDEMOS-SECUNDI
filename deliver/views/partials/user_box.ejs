@@ -1,9 +1,13 @@
 <div class="user-box">
     <span class="total-number">74</span>
-    <span class="icon"></span>
+
+    <%if(user_logged){%>
+    <a href="/myuru">
+        <span class="icon"></span>
+    </a>
+    <%}else{%> <span class="icon"></span><%}%>
     <h2>
         <%if(user_logged){%><%=user.first_name%><%}else{%>התחבר<%}%>
-
     </h2>
     <div class="hide-box">
         <%if(user_logged){%>

@@ -245,7 +245,7 @@
                                         FB.ui({method: 'apprequests', message: 'New URU Discussion'}, function(response) {
 
                                             if(response && response.hasOwnProperty('to')) {
-                                                var request_id =   response.request;
+                                                var request_id = response.request;
                                                 var ids=[];
                                                 for(i = 0; i < response.to.length; i++) {
                                                     ids.push (request_id+"_"+response.to[i])

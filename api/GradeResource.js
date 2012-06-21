@@ -84,7 +84,9 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
         var threshold;
         var admin_threshold;
         var discussion_thresh;
+        var proxy_power = req.user.num_of_given_mandates ? 1 + req.user.num_of_given_mandates * 1/9 : 1;
 
+        fields.proxy_power = proxy_power;
         fields.user_id = req.user._id;
 
 
@@ -125,7 +127,7 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
 //                        var real_threshold = Number(admin_threshold) || threshold;
                         var real_threshold
                         async.forEach(suggestions, function(suggestion, itr_cbk){
-                            GradeSuggestion.calculateSuggestionGrade(suggestion._id, grade_object.discussion_id, null, null, discussion_thresh,function(err, obj){
+                            GradeSuggestion.calculateSuggestionGrade(suggestion._id, grade_object.discussion_id, null, null, discussion_thresh, null, null,function(err, obj){
                                 //check if suggestion is over the threshold
                                 real_threshold = Number(suggestion.admin_threshold_for_accepting_the_suggestion) || suggestion.threshold_for_accepting_the_suggestion;
                                 if(suggestion.agrees && suggestion.agrees.length > real_threshold){
@@ -160,9 +162,10 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
         var self = this;
         var suggestions = [];
         var discussion_thresh;
+        var proxy_power = req.user.num_of_given_mandates ? 1 + req.user.num_of_given_mandates * 1/9 : 1;
 
         var iterator = function(suggestion, itr_cbk){
-            GradeSuggestion.calculateSuggestionGrade(suggestion._id, object.discussion_id, null, null, discussion_thresh, function(err, sugg_new_grade, sugg_total_counter){
+            GradeSuggestion.calculateSuggestionGrade(suggestion._id, object.discussion_id, null, null, discussion_thresh, null, null,function(err, sugg_new_grade, sugg_total_counter){
                 if(!err){
                     suggestions.push({
                         _id: suggestion._id,
@@ -174,8 +177,8 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
             });
         }
 
+        object.proxy_power = proxy_power;
         self._super(req, object, function(err, grade_object){
-
             if(err){
                 callback(err, null);
             }else{
@@ -225,17 +228,20 @@ function calculateDiscussionGrade(discussion_id, callback){
     var threshold;
     async.waterfall([
         function(cbk){
-            models.Grade.find({discussion_id: discussion_id}, ["evaluation_grade"], cbk);
+            models.Grade.find({discussion_id: discussion_id}, ["evaluation_grade", "proxy_power"], cbk);
         },
 
         function(grades, cbk){
             count = grades.length;
             if(count){
-                grade_sum = _.reduce(grades, function(memo, grade){return memo + Number(grade.evaluation_grade); }, 0);
+                //calculate grade_sum with take proxy power in consideration
+                grade_sum = _.reduce(grades, function(memo, grade){return memo + Number(grade.evaluation_grade * (grade.proxy_power || 1)); }, 0);
+                //calculate count with take proxy power in consideration
+                count = _.reduce(grades, function(memo, grade){return memo + Number(grade.proxy_power || 1)}, 0);
                 new_grade = grade_sum / count;
 
                 //calculate threshhold here
-                threshold = calc_thresh.calculating_thresh(count, new_grade) || 1.6;
+                threshold = calc_thresh.calculating_thresh(count, new_grade) || 500;
 
                 models.Discussion.update({_id: discussion_id}, {$set: {grade: new_grade, evaluate_counter: count, threshold_for_accepting_change_suggestions: threshold}}, cbk);
             }else{

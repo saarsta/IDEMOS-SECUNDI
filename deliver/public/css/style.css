@@ -1148,7 +1148,7 @@ body
 {
     color:#50504f;
     font: normal 13px/17px ARial;
-   /*height: 54px; */
+    height: 54px;
     overflow: hidden;
     margin-bottom: 30px;
 }
@@ -4526,6 +4526,7 @@ body.search-ative #header
 {
     background: url(../images/token-bar-default.png) 0 100% repeat-y;
     position: relative;
+    height: 134px;
 }
 .myuru-top .left .token-bar .bars .info
 {
@@ -4857,4 +4858,13 @@ body.search-ative #header
 
 .gray_and_soon {
     background-color: InactiveCaption!important;
+}
+
+
+
+.search-result-box .slides-one .one div div
+{
+    color:#505050;
+    font: normal 13px/17px ARial;
+   /* margin-bottom: 10px;*/
 }

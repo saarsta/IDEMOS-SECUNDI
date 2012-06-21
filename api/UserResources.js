@@ -3,20 +3,6 @@ var mongoose_resource = require('jest');
 var util = require('util');
 var common = require('./common');
 
-//Authorization
-//var Authoriztion =  mongoose_resource.Authorization.extend({
-//    limit_object_list: function(req, query, callback){
-//        if(req.user){
-//            var user_id = req.user._id;
-//
-//            query.where('_id', user_id);
-//            callback(null, query);
-//        }else{
-//            callback({message: "Error: User Is Not Authenticated", code: 401}, null);
-//        }
-//    }
-//});
-
 var UserResource = module.exports =  mongoose_resource.MongooseResource.extend({
     init: function() {
         this._super(Model.User, null);
@@ -26,6 +12,7 @@ var UserResource = module.exports =  mongoose_resource.MongooseResource.extend({
 //            facebook_id:null,
             first_name:null,
             last_name:null,
+            biography: null,
 //            email:null,
             gender:null,
             age:null,
@@ -34,10 +21,11 @@ var UserResource = module.exports =  mongoose_resource.MongooseResource.extend({
             avatar_url:null
         };
         this.update_fields = {
-            first_name:null,
-            last_name:null,
-            gender:null,
-            age:null
+//            first_name:null,
+//            last_name:null,
+//            gender:null,
+//            age:null
+            biography: null
         }
         this.allowed_methods = ['get','post','put','delete'];
         this.authentication = new common.SessionAuthentication();
@@ -46,6 +34,15 @@ var UserResource = module.exports =  mongoose_resource.MongooseResource.extend({
             exact:true,
             in:true
         }}
+    },
+
+    //update user biography
+    update_obj: function (req, object, callback) {
+        object.biography = req.body.biography;
+
+        object.save(function(err, user_obj){
+            callback(err, user_obj);
+        })
     }
 });
 

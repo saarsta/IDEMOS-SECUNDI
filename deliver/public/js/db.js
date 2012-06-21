@@ -345,7 +345,7 @@ var db_functions = {
 //        grade_id ? url = '/api/grades/' + grade_id : url = '/api/grades/';
 //        grade_id ? type = "PUT" : type = "POST";
 
-        if(grade_id && grade_id !== "undefined"){
+        if(grade_id && grade_id !== "undefined" && grade_id !== "0"){
             url = '/api/grades/' + grade_id;
             type = "PUT";
         }
@@ -404,6 +404,22 @@ var db_functions = {
         });
     },
 
+    updateUserDetails: function(user_id, biography,callback){
+        this.loggedInAjax({
+            url: '/api/users/' + user_id,
+            type: "PUT",
+            data: {biography: biography},
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            },
+
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },
+
     joinOrLeaveUserFollowers: function(user_id, callback){
         this.loggedInAjax({
             url: '/api/user_followers/' + user_id,
@@ -419,6 +435,39 @@ var db_functions = {
         });
     },
 
+
+    addOrRemoveProxyMandate: function(user_id, proxy_id, number_of_namdates, callback){
+        this.loggedInAjax({
+            url: '/api/user_proxies/' + user_id,
+            type: "PUT",
+            dara: {proxy_id: proxy_id, number_of_tokens: number_of_namdates},
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            },
+
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },
+
+    deleteProxy: function(user_id, proxy_id, callback){
+        this.loggedInAjax({
+            url: '/api/user_proxies/' + user_id,
+            type: "DELETE",
+            dara: {proxy_id: proxy_id   },
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            },
+
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },
+    
     getUserFollowers: function(user_id, callback){
         this.loggedInAjax({
             url: '/api/user_followers/' + user_id ? user_id : "",

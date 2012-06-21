@@ -1,10 +1,3 @@
-/**
- * Created by JetBrains WebStorm.
- * User: saar
- * Date: 20/03/12
- * Time: 19:36
- * To change this template use File | Settings | File Templates.
- */
 
 var util = require('util'),
     models = require('./models'),
@@ -450,6 +443,94 @@ var once_an_hour_cron =   exports.once_an_hour_cron = {
 
 
 var daily_cron =  exports.daily_cron = {
+
+    //taking back mandates from proxy
+    takeProxyMandatesBack: function(callback){
+
+        var proxies_ids_and_number_of_tokens_to_get_back = [
+            {
+                proxy_id: null,
+                num_of_extra_tokens: null
+            }
+        ];
+
+        var proxy_notifications = [
+            {
+                proxy_id: null,
+                notificator_id: null,
+                number_of_taken_tokens: null
+            }
+        ];
+
+        var user_notifications = [
+            {
+                user_id: null,
+                proxy_id: null,
+                number_of_tokens_i_got_back: null
+            }
+        ];
+
+        async.waterfall([
+            function(cbk){
+                models.User.find().where("proxy.number_of_tokens_to_get_back").gt(0).run(cbk);
+            },
+
+            function(users, cbk){
+                _.forEach(users, function(user, itr_cbk){
+                    _.each(user.proxy, function(proxy){
+                        if(proxy.number_of_tokens_to_get_back > 0){
+
+                            //create a list of proxies and sum the number of tokens to take from them
+                            var exist_proxy = _.find(proxies_ids_and_number_of_tokens_to_get_back, function(proxy){return proxy.proxy_id == proxy.user_id});
+
+                            if(exist_proxy)
+                                exist_proxy.num_of_extra_tokens += proxy.number_of_tokens_to_get_back;
+                            else
+                                proxies_ids_and_number_of_tokens_to_get_back.push({prox_id: proxy.user_id, num_of_extra_tokens: proxy.number_of_tokens_to_get_back})
+
+                            //reduce tokens from my tokens
+                            user.tokens += proxy.number_of_tokens_to_get_back;
+
+                            //set notifications for proxy
+                            proxy_notifications.push({
+                                proxy_id: proxy.user_id,
+                                notificator_id: user._id,
+                                number_of_taken_tokens: proxy.number_of_tokens_to_get_back
+                            })
+
+                            //set notifications for user
+                            user_notifications.push({
+                                user_id: user._id,
+                                proxy_id: proxy.user_id,
+                                number_of_tokens_i_got_back: proxy.number_of_tokens_to_get_back
+                            })
+
+                            //reset number_of_tokens_to_get_back
+                            proxy.number_of_tokens_to_get_back = 0;
+                        }
+                    })
+
+                    models.User.save(function(err, user_obj){
+                        itr_cbk(err, user_obj);
+                    })
+                }, cbk);
+            },
+
+            function(obj, cbk){
+                //update proxies with their new amount off mandates
+                _.forEach(proxies_ids_and_number_of_tokens_to_get_back, function(proxy, itr_cbk){
+
+                    var num = proxy.num_of_extra_tokens * -1;
+                    models.User.update({_id: proxy.proxy_id}, {$inc: {num_of_given_mandates: num}}, function(err, num){
+                        cbk(err, num);
+                    })
+                }, cbk);
+            }
+        ], function(err, obj){
+            callback(err, obj);
+        })
+    },
+
     //    בזבוז של כל הטוקנים במשך X ימים
     //this should happen before the tokens fill again
     findWhoSpentAllTokensInNumberOfDaysInARow: function(num_of_days, callback){
