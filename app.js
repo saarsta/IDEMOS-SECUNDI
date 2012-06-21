@@ -102,7 +102,7 @@ app.configure(function(){
         })
     ],
     trace: true,
-    logoutHandler: require("connect-auth/lib/events").redirectOnLogout("/acount/login")}));
+    logoutHandler: require("connect-auth/lib/events").redirectOnLogout("/")}));
 
     app.use(account.auth_middleware);
     app.use(express.methodOverride());
