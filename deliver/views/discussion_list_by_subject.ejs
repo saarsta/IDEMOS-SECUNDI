@@ -60,6 +60,7 @@
 <script type="text/javascript">
 
     $(function(){
+        current_section=1;
         var selectedTag='<%=tag_name? tag_name:'' %>';
         var selectedSubject = '<%= subject.id %>';
         function createDiscussionsQuery(){

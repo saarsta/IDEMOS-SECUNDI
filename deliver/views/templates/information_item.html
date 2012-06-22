@@ -1,0 +1,45 @@
+ <div class="one cf" item_id="{_id}">
+     <div class="main-text-top cf">
+         <div class="right">
+             <h4><a href="/information_items/{_id}">{title}</a></h4>
+             {?created_by}<h5>
+             הועלה ע”י
+             {created_by.fist_name} {created_by.last_name}
+         </h5>
+             {/created_by}
+             {?text_field_preview}<p>{text_field_preview|s}</p>{/text_field_preview}
+         </div>
+         <div class="left">
+             <a href="javascript:void(0);" id="add_button_{_id}" add_item_id="{_id}" class="grey-btn add_button"><span>הוסף</span></a>
+             <a href="/facebookShare?link=/information_items/{_id}" class="grey-btn">שתף</a>
+             <a href="javascript:void(0);" class="like-icon"></a>
+         </div>
+     </div>
+     <div id="notices_{_id}"> </div>
+     <div class="tags-wrap">
+         <div class="down">
+             <span class="arrow"></span>
+             <ul>
+                 <li><a href="">קישור לפריט מידע זה</a></li>
+                 <li><a href="">דווח על התנהגות לא הולמת</a></li>
+                 <li><a href="">אל תציג פריט מידע זה</a></li>
+             </ul>
+         </div>
+         <div class="tags">
+             {#tags}
+             <a href="">{.}</a>
+             {/tags}
+             <div class="more">
+                 <span></span>
+                 <ul>
+                     <li><a href="">הצג עוד תגיות</a></li>
+                     <li><a href="">הוסף תגית</a></li>
+                 </ul>
+             </div>
+             <div class="info">
+                 <span class="talks">33</span>
+                 <span class="watched">{view_counter}</span>
+             </div>
+         </div>
+     </div>
+ </div>
