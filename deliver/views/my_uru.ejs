@@ -57,7 +57,7 @@
                     <div class="user-right">
                         <div class="img-box">
                             <img src="images/user-1.jpg" width="41" alt="" />
-                            <img class="wraper" src="images/user-fillter-small-white.png" width="41" alt="" />
+                            <img class="wraper" src="/images/user-fillter-small-white.png" width="41" alt="" />
                         </div>
                     </div>
                     <div class="user-left">
@@ -139,7 +139,7 @@
     $(function(){
 
         //$(".search-result-box .tabs").tabs();
-        var userId='<%=user._id %>'
+        var userId='<%=user._id %>';
         function tabSelected(event, ui){
            function convertToTabModel(data,type){
                 var i,
@@ -214,7 +214,6 @@
 
 
         db_functions.getOnWhomUserFollows(userId,function (e,data) {
-                debugger;
             $.each(data.objects, function (index, notification) {
                 dust.renderArray('myuru_follower_item', notification,null, function (err, html) {
                     $('#users-list').append(html);

@@ -21,6 +21,23 @@ var db_functions = {
         $.ajax(options);
     },
 
+    registerUser: function(first_name, last_name, password, email, invitation, callback){
+        this.loggedInAjax({
+            url: '/account/register',
+            type: "POST",
+            async: true,
+            success: function (err, data) {
+                console.log(data);
+
+                callback(data);
+            },
+            error:function(err, data)
+            {
+                callback(err);
+            }
+        });
+    },
+
     getHotObjects: function(callback){
         this.loggedInAjax({
             url: '/api/hot_objects',
@@ -70,6 +87,7 @@ var db_functions = {
             }
         });
     },
+
     getSuccessStories: function(callback){
         this.loggedInAjax({
             url: '/api/success_stories',
@@ -80,6 +98,7 @@ var db_functions = {
             }
         });
     },
+
     getNotifications: function(callback){
         this.loggedInAjax({
             url: '/api/notifications?limit=3',
@@ -360,7 +379,8 @@ var db_functions = {
                 callback(null, data);
             },
             error:function(err){
-                alert(err.responseText);
+                if(err.responseText != "not authenticated")
+                    alert(err.responseText);
                 callback(err, null);
             }
         });
@@ -382,7 +402,8 @@ var db_functions = {
                 callback(null, data);
             },
             error:function(err){
-                alert(err.responseText);
+                if(err.responseText != "not authenticated")
+                    alert(err.responseText);
                 callback(err, null);
             }
         });
