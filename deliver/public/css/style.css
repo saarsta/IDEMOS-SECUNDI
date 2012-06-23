@@ -4439,9 +4439,9 @@ body.search-ative #header
     background: url(../images/token-popup.png) no-repeat;
     padding: 16px 24px 0 13px;
 }
-.myuru-top .left .token-bar:hover .token-popup
+.myuru-top .left .token-bar:hover .token-popup1
 {
-    display: block
+    display: block;
 }
 .myuru-top .left .token-bar .token-popup .user-right
 {
@@ -4458,7 +4458,7 @@ body.search-ative #header
 }
 .myuru-top .left .token-bar .token-popup .img-box img
 {
-    display: block;
+     display: block;
 }
 .myuru-top .left .token-bar .token-popup .img-box  img.wraper
 {
