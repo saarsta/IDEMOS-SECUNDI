@@ -3,10 +3,40 @@ var async = require('async');
 
 module.exports = function (req, res) {
 
-    function TokensBarModel(tokenPixels, numExtraTokens, tokens, proxy) {
+    function TokensBarModel(tokenPixels, numExtraTokens, tokens, proxies) {
 
-        this.proxy = proxy;
-        this.totalProxy = proxy.sum;// blue;
+        function calcTotalProxy(proxies){
+            var sum= 0;
+            var proc,i;
+
+            for (i=0; i< proxies.length;i++){
+                proc= proxies[i];
+               sum = sum+proc.number_of_tokens;
+            }
+            return sum;
+        }
+
+        function createProxy(proxies){
+            var proxy={ proxies:[]}
+            var i=0;
+            var proc;
+            for (i=0; i< proxies.length;i++){
+                proc= proxies[i];
+                proxy.proxies.push(  {
+                    name:proc.details.first_name+' '+ proc.details.last_name,
+                    proxy:proc.number_of_tokens,
+                    _id: proc.details._id ,
+                    avatar:proc.details.avatar,
+                    score:-1
+
+                })
+            }
+            return proxy;
+        };
+        this.proxy=createProxy(proxies)
+
+       // this.proxies = proxies;
+        this.totalProxy = calcTotalProxy(proxies)// blue;
         var dailyTokens = 9 + numExtraTokens;
         this.floorDailyTokens = Math.floor(dailyTokens);
 
@@ -53,7 +83,7 @@ module.exports = function (req, res) {
                 models.User.findById(proxy_user.user_id, ["_id", "first_name", "last_name", "facebook_id", "avatar"], function (err, curr_proxy_user) {
                     if (!err) {
                         curr_proxy_user.avatar = curr_proxy_user.avatar_url();
-                        proxy_user.user_id = curr_proxy_user;
+                        proxy_user.details = curr_proxy_user;
                     }
                     itr_cbk();
                 })
@@ -63,19 +93,20 @@ module.exports = function (req, res) {
         }
 
     ], function (err, user_obj) {
-        var dummyProxy = {
+       /* var proxy = {
             sum:5,
             proxies:[
                 {name:'avner', proxy:2, _id:1},
                 {name:'moty', proxy:1, _id:2},
                 {name:'ron', proxy:2, _id:3}
             ]
-        }
 
-        var num_of_extra_tokens = 2//user_obj.num_of_extra_tokens ;
-        var tokens = 4 // user_obj.tokens;
+        }
+*/     var proxy =  user_obj.proxy  ;
+        var num_of_extra_tokens = user_obj.num_of_extra_tokens;
+        var tokens =  user_obj.tokens+'';
         var proxy = user_obj.proxy;
-        var tokensBarModel = new TokensBarModel(9, num_of_extra_tokens, tokens, dummyProxy);
+        var tokensBarModel = new TokensBarModel(9, num_of_extra_tokens, tokens, proxy);
         res.render('my_uru.ejs',
             {
                 layout:false,
