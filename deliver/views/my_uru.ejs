@@ -53,7 +53,7 @@
             <div class="token-bar">
                 <span class="top-number">15</span>
                 <span class="bottom-number">0</span>
-                <div class="token-popup">
+             <!--   <div class="token-popup token-popup1">
                     <div class="user-right">
                         <div class="img-box">
                             <img src="images/user-1.jpg" width="41" alt="" />
@@ -69,19 +69,52 @@
                             <span>20</span>
                         </div>
                     </div>
-                </div>
+                </div>-->
                 <div class="bars">
                     <div class="border"></div>
                     <div class="empty" style="height:<%=tokensBarModel.gupFromFullPixels()%>"></div>
-                    <div class="grey" style="height: 17px">
-                        <div class="info">מכסת אסימונים: 9</div>
+                    <div class="grey" style="height:<%=tokensBarModel.dailyTokensPixels()%>">
+                        <div class="info">מכסת אסימונים:<%=tokensBarModel.floorDailyTokens %> </div>
                     </div>
-                    <div class="green" style="height: 34px">
-                        <div class="info">אסימונים זמינים: 4</div>
+                    <div class="green" style="height:<%=tokensBarModel.tokensPixels()%>">
+                        <div class="info">אסימונים זמינים: <%=tokensBarModel.floorTokens %></div>
                     </div>
-                    <div class="blue" style="height: 20px">
-                        <div class="info">מוקצים לנציג: 3</div>
-                    </div>
+                    <%  var userProxy; 
+						for(var j=0 ;j<tokensBarModel.proxy.proxies.length;j++){
+						userProxy=tokensBarModel.proxy.proxies[j]; %>
+							<div class="blue" style="height:<%=tokensBarModel.convertToPixels(userProxy.proxy)%>">
+								<div class="info">
+								     
+									  <span>  <%=userProxy.name %> </span> 
+									  <span> <%=userProxy.proxy.toString() %> </span> 
+									  <span> מוקצים ל </span>
+
+                                    <div class="token-popup">
+                                        <div class="user-right">
+                                            <div class="img-box">
+                                                <img src="images/user-1.jpg" width="41" alt="" />
+                                                <img class="wraper" src="/images/user-fillter-small-white.png" width="41" alt="" />
+                                            </div>
+                                        </div>
+                                        <div class="user-left">
+                                            <p>יונתן שפירא</p>
+                                            <div class="proxy">
+                                                <span>3</span>
+                                            </div>
+                                            <div class="respect">
+                                                <span>20</span>
+                                            </div>
+                                        </div>
+                                    </div>
+										
+										
+																					
+									
+									  
+									 
+								</div>
+							</div>
+					<%}%>
                 </div>
             </div>
         </div>
@@ -212,6 +245,11 @@
             })
         }) ;
 
+           $('.blue').hover(function(e){
+            $(this).find('.token-popup').css("display","block");
+        },function(e){
+               $(this).find('.token-popup').css('display','');
+           })
 
         db_functions.getOnWhomUserFollows(userId,function (e,data) {
             $.each(data.objects, function (index, notification) {
