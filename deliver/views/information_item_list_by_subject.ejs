@@ -50,7 +50,7 @@
                                {
                                    $("#notices_"+information_item._id).append(out);
                                });
-                        }
+                        } );
                         $.each(information_item.cycles,function(index,cycle){
                                cycle.section="מעגל תנופה";
                                dust.render('information_item_notice',cycle,function(err,out)
@@ -58,16 +58,16 @@
                                    $("#notices_"+information_item._id).append(out);
                                });
 
-                        }
+                        } );
                         $.each(information_item.actions,function(index,action){
                                action.section="פעולה";
                                dust.render('information_item_notice',action,function(err,out)
                                {
                                    $("#notices_"+information_item._id).append(out);
                                });
-                        }
+                        } );
 
-                   }
+                   } );
 
                   // add shopping cart and remove 'add' button
                   db_functions.getUserShopingCart(function(err,data)
