@@ -30,6 +30,9 @@
         <form id="register_form" action="/account/login" method="POST">
             <input name="email" type="text" placeholder='דוא"ל'/>
             <input name="password" type="password" placeholder="ססמה" />
+            <a class="forgot_password" href="/account/reset_password">
+                שכחת סיסמה?
+            </a>
             <input type="submit" value="התחבר" />
         </form>
         <div class="spacer"></div>
@@ -44,11 +47,11 @@
             rules:{
                 email:{required: true },
                 password:{required: true }
-            },
-            messages:{
-                email: "דואל    ",
-                password: "סיסמה"
             }
+//            messages:{
+//                email: "דואל    ",
+//                password: "סיסמה"
+//            }
         });
     });
 </script>

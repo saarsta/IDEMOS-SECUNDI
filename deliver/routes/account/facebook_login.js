@@ -27,7 +27,6 @@ module.exports = function (req, res) {
                             req.session.save(function (err, object) {
                                 if (err != null) {
                                     console.log(err);
-
                                 } else {
                                     console.log('user _id to session is ok');
                                     res.redirect(next || common.DEFAULT_LOGIN_REDIRECT);

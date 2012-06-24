@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-
+<%
+var error_message = error_message || '';
+%>
 <html>
 <head>
     <%- partial('partials/head.ejs') %>
@@ -20,6 +22,9 @@
         </h2>
 
         <form action="/account/code_after_fb_connect" class="login-form cf" method="POST">
+            <%if(error_message){%>
+            <span class="err_msg"><%=error_message%></span>
+            <%}%>
             <div class="areas">
                 <div class="disable"></div>
                 <div class="title">

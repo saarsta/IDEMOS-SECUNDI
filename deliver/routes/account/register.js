@@ -19,14 +19,24 @@ module.exports = {
                 if (!result || (result.identity_provider == "facebook" && !result.password)) {
                  //user is not registered or registered with fbconnect
 
-                    if(result.identity_provider == "facebook" && !result.password){
+                    if(result && result.identity_provider == "facebook" && !result.password){
                         result.password = user.password;
                         user = result;
                     }
 
                     user.save(function (err, user) {
                         if (err) {
-                            res.render('/account/register.ejs'/*, {title:'Login', failed:true, exist_username:false, errors: err.errors, next: req.query.next}*/);
+                            res.render('register.ejs', {
+                                url: req.url,
+                                tag_name:req.query.tag_name,
+                                layout: false,
+                                user_logged: req.isAuthenticated(),
+                                user: user,
+                                next: req.query.next,
+                                title: "רישום",
+                                big_impressive_title: "",
+                                error_message: err
+                            })
                         }
                         else {
                             req.body['email'] = user.email;

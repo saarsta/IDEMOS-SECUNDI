@@ -48,7 +48,7 @@ exports.myUru = function(req,res)
 exports.hisUru = function(req,res)
 {
     var user_id = req.params.id;
-    if(user_id=== req.session.user._id){
+    if(user_id === req.session.user._id){
         res.redirect('/myuru');
         return;
     }

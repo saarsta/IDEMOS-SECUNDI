@@ -1,5 +1,7 @@
 ﻿<!DOCTYPE html>
-
+<%
+        var error_message = error_message || '';
+%>
 <html>
 <head>
     <%- partial('partials/head.ejs') %>
@@ -18,6 +20,9 @@
                 ברוכים הבאים!
             </h2>
             <form id="register_form" action="/account/register" class="login-form cf" method="POST">
+                <%if(error_message){%>
+                    <span class="err_msg"><%=error_message%></span>
+                <%}%>
                 <div class="areas">
                     <div class="title">
                         <a href="/account/facebooklogin"><img src="/images/facebook-btn.png" alt="" /></a>
@@ -69,18 +74,32 @@
 <script type="text/javascript">
     $(function(){
         $('#register_form').validate({
+            errorElement: "p",
+
             rules:{
                 first_name:{required: true },
                 last_name:{required: true },
                 password:{required: true },
-                email:{required: true }
+                email:{required: true}
+            },
+            message:
+            {
+                first_name:"נא להזין שם פרטי",
+                last_name:"נא להזין שם משפחה",
+                password: "נא להזין סיסמה",
+                email: "נא להזין כתובת מייל"
             },
             highlight: function (element, errorClass) {
                 $(element).addClass('error').removeClass('valid');
             },
             unhighlight: function (element, errorClass) {
                 $(element).removeClass('error').addClass('valid');
-            }
+//            },
+//            submitHandler: function(form) {
+//                first_name = $("#first_name").val();
+//                last_name = $("#last_name").val();
+//                password = $("#password").val();
+//            }
         })
     })
 </script>
