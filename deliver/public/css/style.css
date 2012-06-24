@@ -284,6 +284,17 @@ body
     margin-bottom: 10px;
     display: block;
 }
+.user-box .hide-box input[type=password]
+{
+    height: 15px;
+    border: 1px solid #d8d8d8;
+    padding:1px 4px;
+    width: 113px;
+    color:#a5a5a4;
+    font: normal 12px/15px Arial;
+    margin-bottom: 10px;
+    display: block;
+}
 .user-box .hide-box input[type=submit]
 {
     border: 1px solid #0f1e54;
@@ -4147,7 +4158,7 @@ body.search-ative #header
     font: bold 16px/28px Arial;
     padding-bottom: 55px;
 }
-.login-form .title a.link
+.login-form .title .link
 {
     float: right;
     color:#50504f;
@@ -4162,6 +4173,22 @@ body.search-ative #header
     -webkit-border-radius: 3px;
     text-decoration: none;
 }
+
+.login-form .title button
+{
+    float: right;
+    display: block;
+    margin:0 auto 12px;
+    background: #757D7E url(../images/search-submit.png) 0 0 repeat-x;
+    height: 31px;
+    border: 1px solid #2E3030;
+    border-radius: 2px;
+    color:#fff;
+    width: 212px;
+    font: normal 22px/31px "AdumaFOTRegular";
+    cursor: pointer;
+}
+
 .login-form .title img
 {
     float: right;

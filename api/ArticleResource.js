@@ -37,7 +37,8 @@ var ArticleResource = common.GamificationMongooseResource.extend({
                         itr_cbk(err);
                     else
                     {
-                        article.avatar = user_obj.avatar_url();
+                        if(user_obj)
+                            article.avatar = user_obj.avatar_url();
                         itr_cbk(err, user_obj);
                     }
                 })

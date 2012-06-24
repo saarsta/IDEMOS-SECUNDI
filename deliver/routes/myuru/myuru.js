@@ -28,7 +28,7 @@ module.exports = function(req,res)
 
     models.User.findById(req.session.user._id, ["tokens", "num_of_extra_tokens", "proxy"], function(err, user_obj){
 
-        var daily_tokens = 9 + user_obj.num_of_extra_tokens
+        var daily_tokens = 9 + user_obj.num_of_extra_tokens;
         res.render('my_uru.ejs',
             {
                 layout: false,

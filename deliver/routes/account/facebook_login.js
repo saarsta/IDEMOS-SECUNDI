@@ -4,6 +4,7 @@ var models = require('../../../models')
 
 module.exports = function (req, res) {
     function go() {
+
         req.authenticate("facebook", function (error, authenticated) {
             var next = req.session['fb_next'];
             var referred_by = req.session['referred_by'];
@@ -17,6 +18,8 @@ module.exports = function (req, res) {
                 isUserInDataBase(user_fb_id, function (is_user_in_db) {
 
                     if (!is_user_in_db) {
+                        req.session['fb_next'] = "/account/code_after_fb_connect";
+                        next = req.session['fb_next'];
                         user_detailes.invited_by = referred_by;
                         createNewUser(user_detailes, access_token, function (_id) {
                             req.session.user_id = _id;
@@ -32,7 +35,6 @@ module.exports = function (req, res) {
                             });
                         });
                     } else {
-
                         updateUesrAccessToken(user_detailes, access_token, function (_id) {
                             req.session.auth.user._id = _id;
                             req.session.save(function (err, object) {
@@ -53,6 +55,7 @@ module.exports = function (req, res) {
 
     if (req.query.next) {
         req.session['fb_next'] = req.query.next;
+
         req.session.save(go);
     }
     else

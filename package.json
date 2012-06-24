@@ -19,7 +19,8 @@
         "j-forms":">= 0.0.58",
         "admin-with-forms":">= 0.0.46",
         "knox":"",
-        "dustjs-linkedin":""
+        "dustjs-linkedin":"",
+        "sendgrid": ""
   },
   "engines": { "node": ">= 0.6.17" }
 } 

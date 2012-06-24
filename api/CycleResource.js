@@ -68,8 +68,6 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
                 creator_id: null,
                 first_name: null,
                 last_name: null,
-                vision_text_preview: null,
-                vision_text: null,
                 grade: null
             },
             is_hot_object: null,
