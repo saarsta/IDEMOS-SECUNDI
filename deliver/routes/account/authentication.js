@@ -8,17 +8,19 @@ var SimpleAuthentication = module.exports = function (options) {
     var that = Basic(options);
     var my = {};
 
-    function validatePasswordFunction(username, password, successCallback, failureCallback) {
+    function validatePasswordFunction(request, email, password, successCallback, failureCallback) {
 
         var user_model = Models.User;
 
-        user_model.findOne({username:username, identity_provider:'register'}, function (err, result) {
+        user_model.findOne({email: email/*, identity_provider:'register'*/}, function (err, result) {
             if (err == null) {
 
                 if (result == null) {     //user is not registered
                     failureCallback();
                 } else {
                     if (common.check_password(result.password, password)) {
+                        request.session.user_id = result._id;
+                        request.session.user = result;
                         successCallback(result.id);
                     } else {
                         failureCallback();
@@ -34,13 +36,12 @@ var SimpleAuthentication = module.exports = function (options) {
 
     that.authenticate = function (request, response, callback) {
         var self = this;
-        var username = request.body.username;
         var password = request.body.password;
         var email = request.body.email;
 //        var _id = request.body._id;
 
-        validatePasswordFunction(username, password, function (custom) {
-            var result = /*custom || {"username": username  "email": email };*/{'user_id':custom};
+        validatePasswordFunction(request, email, password, function (custom) {
+            var result = {'user_id':custom};
             self.success(result, callback);
         }, function (error) {
             if (error)

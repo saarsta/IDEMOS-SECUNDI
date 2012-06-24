@@ -27,11 +27,28 @@
             </div>
         </div>
         <%}else{%>
-        <input type="text" value="שם משתמש" />
-        <input type="text" value="ססמה" />
-        <input type="submit" value="התחבר" />
+        <form id="register_form" action="/account/login" method="POST">
+            <input name="email" type="text" placeholder='דוא"ל'/>
+            <input name="password" type="password" placeholder="ססמה" />
+            <input type="submit" value="התחבר" />
+        </form>
         <div class="spacer"></div>
         <a class="facebook" href="/account/facebooklogin?next=<%=url%>"></a>
         <%}%>
     </div>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#register_form").validate({
+            rules:{
+                email:{required: true },
+                password:{required: true }
+            },
+            messages:{
+                email: "דואל    ",
+                password: "סיסמה"
+            }
+        });
+    });
+</script>

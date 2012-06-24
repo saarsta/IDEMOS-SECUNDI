@@ -25,6 +25,14 @@ exports.routing = function(router)
 
     router.get('/logout', require('./logout'));
 
+    router.all('/code_after_fb_connect', require('./code_after_fb_connent'));
+
+    router.all('/reset_password', require('./reset_password'));
+
+    router.all('/forgot_password', require('./forgot_password'));
+
+
+
 };
 
 

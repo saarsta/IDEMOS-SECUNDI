@@ -5,7 +5,8 @@
     <%- partial('partials/head.ejs') %>
 </head>
 <body>
-    <div id="wrap">
+<%- partial('partials/body_top.ejs') %>
+<div id="wrap">
         <div id="header">
             <%-partial('partials/menu.ejs')%>
             <%-partial('partials/user_box.ejs')%>
@@ -41,7 +42,7 @@
                         <label>
                             סיסמה:
                         </label>
-                        <input id="password" name="password" class="text" type="text" value="" />
+                        <input id="password" name="password" type="password" class="text" type="text" value="" />
                     </div>
                     <div class="one">
                         <label>

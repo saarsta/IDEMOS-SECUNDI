@@ -30,24 +30,24 @@ exports.auth_middleware = function (req, res, next) {
     if (req.isAuthenticated())
     {
         if(!req.session.user) {
-            //for now this only works for facebook connect
-            //        req.session.user_id  = req.session.auth.user.id || req.session.auth.user_id;
-            models.User.findOne(/*req.session.user_id*/{facebook_id: req.session.auth.user.id} ,function(err,user){
-                if(err){
-                    console.log('couldn put user id' + err.message)
-                    next();
-                }else{
-                    req.session.user_id = user._id;
-                    req.session.user = user;
-                    req.session.avatar_url = user.avatar_url();
-                    req.session.save(function(err)
-                    {
-                        if(err)
-                            console.log('couldnt put user id' + err.message);
+                models.User.findOne(/*req.session.user_id*/{_id: req.session.auth.user._id || req.session.user_id} ,function(err,user){
+                    if(err){
+                        console.log('couldn put user id' + err.message)
                         next();
-                    });
-                }
-            });
+                    }else{
+                        if(user){
+                            req.session.user_id = user._id;
+                            req.session.avatar_url = user.avatar_url();
+                        }
+                        req.session.user = user;
+                        req.session.save(function(err)
+                        {
+                            if(err)
+                                console.log('couldnt put user id' + err.message);
+                            next();
+                        });
+                    }
+                });
         }
         else
             next();

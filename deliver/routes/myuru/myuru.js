@@ -92,21 +92,14 @@ module.exports = function (req, res) {
             })
         }
 
-    ], function (err, user_obj) {
-       /* var proxy = {
-            sum:5,
-            proxies:[
-                {name:'avner', proxy:2, _id:1},
-                {name:'moty', proxy:1, _id:2},
-                {name:'ron', proxy:2, _id:3}
-            ]
 
-        }
-*/     var proxy =  user_obj.proxy  ;
+    ], function (err, user_obj) {
+        var proxy =  user_obj.proxy  ;
         var num_of_extra_tokens = user_obj.num_of_extra_tokens;
         var tokens =  user_obj.tokens+'';
         var proxy = user_obj.proxy;
         var tokensBarModel = new TokensBarModel(9, num_of_extra_tokens, tokens, proxy);
+
         res.render('my_uru.ejs',
             {
                 layout:false,
