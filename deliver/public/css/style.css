@@ -4430,8 +4430,8 @@ body.search-ative #header
 .myuru-top .left .token-bar .token-popup
 {
     position: absolute;
-    bottom: 3px;
-    right: 48px;
+   /* bottom: -53px;*/
+    /* right: 48px;*/
     display: none;
     z-index: 15;
     width: 150px;
