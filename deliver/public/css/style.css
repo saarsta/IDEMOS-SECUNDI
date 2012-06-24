@@ -491,6 +491,8 @@ body
     font: normal 20px/24px 'AdumaFOTRegular';
     float: right;
 }
+
+
 .search-box input[type=submit]
 {
     float: right;
@@ -1159,7 +1161,7 @@ body
 {
     color:#50504f;
     font: normal 13px/17px ARial;
-    height: 54px;
+
     overflow: hidden;
     margin-bottom: 30px;
 }
@@ -4128,6 +4130,12 @@ body.search-ative #header
 {
     background-position: 50% 0;
 }
+
+.tabs img
+{
+    max-height: 88px;
+    max-width: 100px;
+}
 /*---------------------------*/
 .login-form
 {
@@ -4466,9 +4474,9 @@ body.search-ative #header
     background: url(../images/token-popup.png) no-repeat;
     padding: 16px 24px 0 13px;
 }
-.myuru-top .left .token-bar:hover .token-popup
+.myuru-top .left .token-bar:hover .token-popup1
 {
-    display: block
+    display: block;
 }
 .myuru-top .left .token-bar .token-popup .user-right
 {
@@ -4485,7 +4493,7 @@ body.search-ative #header
 }
 .myuru-top .left .token-bar .token-popup .img-box img
 {
-    display: block;
+     display: block;
 }
 .myuru-top .left .token-bar .token-popup .img-box  img.wraper
 {
@@ -4799,11 +4807,13 @@ body.search-ative #header
 {
     padding-bottom: 11px;
 }
-.main-text .one h4
+.main-text .one h4 ,
+.main-text .one h4 a
 {
     color:#50504f;
     font: bold 16px/18px Arial;
     margin-bottom: 4px;
+    text-decoration: none;
 }
 .main-text .one h5
 {
@@ -4887,11 +4897,71 @@ body.search-ative #header
     background-color: InactiveCaption!important;
 }
 
-
-
 .search-result-box .slides-one .one div div
 {
     color:#505050;
     font: normal 13px/17px ARial;
    /* margin-bottom: 10px;*/
 }
+
+#search_form
+{
+    position: relative;
+}
+#search_suggest
+{
+    position: absolute;
+    background-color: #b9c9fd;
+    top:48px;
+    right:182px;
+    width:660px;
+    z-index:10;
+    border:1px solid #0F2FA0;
+    border-top:none;
+    border-radius: 2px 2px 2px 2px;
+    display: none;
+}
+#search_suggest  li
+{
+   padding: 4px 10px;
+    color:   #7f868c;
+    cursor: pointer;
+}
+#search_suggest  li:hover
+ {
+     background-color: #3B63EF  ;
+     color:#FFF;
+ }
+#search_suggest  li.topborder   ,
+#search_suggest  li:hover.topborder
+{
+    background-color: #b9c9fd  ;
+    border-top:1px solid #97a9e9;
+    margin-right: 20px;
+    margin-left: 20px;
+    height: 1px ;
+    cursor: default;
+    padding: 0;
+}
+
+
+
+.search-box input:focus
+{
+    background:#b9c9fd;
+    color: #000;
+}
+
+.uplod_image_paceholder
+{
+    background-color: #CCC;
+    width: 242px;
+    height: 124px;
+    cursor: pointer;
+    font-size: 40px;
+    text-align: center;
+    padding: 20px;
+
+}
+
+

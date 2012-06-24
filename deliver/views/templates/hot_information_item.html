@@ -4,14 +4,14 @@
             <img src="{image_field_preview.url}" alt="{title}"  title="{tooltip_or_title}" />
         </div>
     </a>
-    <h4><a href="">{title}</a></h4>
+    <h4><a href="/information_items/{_id}">{title}</a></h4>
     <div class="item_text_preview">
         <p>{text_field_preview|s}</p>
     </div>
     <div class="tags">
         <div class="info">
             <span class="talks">33</span>
-            <span class="watched">151</span>
+            <span class="watched">{view_counter}</span>
         </div>
         {#tags}
         <a href="/information_items/?tag_name={.|u}"

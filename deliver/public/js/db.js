@@ -601,6 +601,21 @@ var db_functions = {
         });
     }   ,
 
+
+    getTagsBySearchTerm: function(search_term, callback){
+        this.loggedInAjax({
+            url: '/api/tags?tag__contains=' + search_term,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                callback(search_term,null, data);
+            },
+            error:function(err){
+                callback(search_term,err, null);
+            }
+        });
+    }   ,
+
     getDiscussionsByTagName: function(tag_name, callback){
         db_functions.loggedInAjax({
             url: '/api/discussions?tags=' + tag_name,
@@ -660,34 +675,23 @@ var db_functions = {
                 callback(null, data);
             }
         });
+    },
+
+    getInfoItemsOfSubjectByKeywords: function(keywords, subject_id, callback){
+        var keywords_arr = keywords.trim().replace(/\s+/g,".%2B");
+        this.loggedInAjax({
+            url: '/api/information_items/?or=text_field__regex,text_field_preview__regex,title__regex&title__regex=' + keywords_arr + '&text_field__regex='+ keywords_arr + '&text_field_preview__regex='+ keywords_arr + '&subject_id=' + subject_id,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+                callback(null, data)
+            },
+            error:function(err){
+                callback(err, null);
+            }
+        });
     }
 };
 
 
-var search = {
-    fetch : function (search_term)
-    {
-//        $(".search-result-box .tabs").tabs();
-//
-//        $('.tab-slide-1')
-//            .after('<div class="nav-1 nav">')
-//            .cycle({
-//                fx: 'scrollLeft',
-//                speed: 'fast',
-//                timeout: 0,
-//                pager: '.nav-1',
-//                next: '.next-1',
-//                prev: '.prev-1'
-//            });
-//        $('.tab-slide-2')
-//            .after('<div class="nav-2 nav">')
-//            .cycle({
-//                fx: 'scrollLeft',
-//                speed: 'fast',
-//                timeout: 0,
-//                pager: '.nav-2',
-//                next: '.next-2',
-//                prev: '.prev-2'
-//            });
-    }
-}

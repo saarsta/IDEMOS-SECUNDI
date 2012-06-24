@@ -6,6 +6,7 @@
     <script src="/resources/js/jquery-fieldselection.js" type="text/javascript"></script>
 </head>
 <body>
+<%- partial('partials/body_top.ejs') %>
 <div id="wrap">
     <div id="header">
         <%-partial('partials/menu.ejs')%>
@@ -265,7 +266,7 @@
 <script type="text/javascript">
 $(document).ready(function () {
     /***************************************************/
-
+    current_section=1;
     var my_id = "<%=user_logged ? user._id : ''%>";
     var discussion_id = "<%=discussion.id%>";
     var creator_id = "<%=discussion.creator_id%>";
