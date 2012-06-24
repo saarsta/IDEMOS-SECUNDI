@@ -2,25 +2,119 @@
 
 <html>
 <head>
-    <title></title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link href="/css/reset.css" rel="stylesheet" type="text/css" />
-    <link href="/css/style.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="/css/colorbox.css" />
-    <!--[if lte IE 7]><link href="/css/ie.css" rel="stylesheet" type="text/css" /><![endif]-->
-    <script src="/js/jquery-1.6.1.min.js" type="text/javascript"></script>
-    <script src="/js/jquery.cycle.all.js" type="text/javascript"></script>
-    <script src="/js/jquery.colorbox-min.js" type="text/javascript"></script>
-    <script src="/js/jquery-ui-1.8.20.custom.min.js" type="text/javascript"></script>
-    <script src="/js/script.js" type="text/javascript"></script>
-    <script type="text/javascript">
+
+  <%- partial('partials/head.ejs') %>
+
+</head>
+<body>
+<%- partial('partials/body_top.ejs') %>
+<div id="wrap">
+<div id="header">
+    <%-partial('partials/menu.ejs')%>
+    <%-partial('partials/user_box.ejs')%>
+    <%-partial('partials/failures.ejs')%>
+    <%-partial('partials/tag_search.ejs') %>
+</div>
+<div id="content" class="cf">
+<div class="rightCol">
+    <select class="left-select left-select-inner">
+        <option>מיין לפי יוזר</option>
+        <option>מיין לפי תוצאות</option>
+        <option>מיין לפי כמות דיונים</option>
+    </select>
+    <h2>
+        <a href="/information_items/subject/<%= subject.id %>"><%= subject.name %></a>  <% if(tag_name) { %> <a class="last_breadcrum" href="/information_items/subject/<%= subject.id %>?tag_name=<%= tag_name %>"><%= tag_name %></a><% } %>
+    </h2>
+    <div class="main-text" id="info_items"></div>
+</div>
+<%- partial('partials/shopping_cart.ejs') %>
+</div>
+</div>
+<%- partial('partials/footer.ejs') %>
+  <script type="text/javascript">
         $(document).ready(function () {
-            $('.tikunim-box h2').click(function () {
-                $(this).parent().toggleClass('active');
+
+            var subject_id = "<%= subject.id%>";
+            var tag_name = "<%=tag_name || ''%>";
+            current_section=0;
+            db_functions.getInfoItemsOfSubjectByKeywords(tag_name,subject_id,function(err,data)
+            {
+                  dust.renderArray('information_item', data.objects,null,function(err,out)
+                  {
+                      $('#info_items').append(out);
+                  });
+                  //add notices to each item
+                   $.each(data.objects,function(index,information_item){
+                        $.each(information_item.discussions,function(index,discussion){
+                                discussion.section="דיון";
+                               dust.render('information_item_notice',discussion,function(err,out)
+                               {
+                                   $("#notices_"+information_item._id).append(out);
+                               });
+                        } );
+                        $.each(information_item.cycles,function(index,cycle){
+                               cycle.section="מעגל תנופה";
+                               dust.render('information_item_notice',cycle,function(err,out)
+                               {
+                                   $("#notices_"+information_item._id).append(out);
+                               });
+
+                        } );
+                        $.each(information_item.actions,function(index,action){
+                               action.section="פעולה";
+                               dust.render('information_item_notice',action,function(err,out)
+                               {
+                                   $("#notices_"+information_item._id).append(out);
+                               });
+                        } );
+
+                   } );
+
+                  // add shopping cart and remove 'add' button
+                  db_functions.getUserShopingCart(function(err,data)
+                  {
+                        $.each(data.objects,function(index,information_item)
+                        {
+                            dust.render('information_item_box',information_item,function(err,out)
+                            {
+                                $(".card-products-left").append(out);
+                            });
+                            $("#add_button_"+information_item._id).hide();
+                        });
+                  });
+
+
             });
-            $('.user-box h2').click(function () {
-                $(this).parent().toggleClass('active');
+
+        $('.delete-app').live("click",removeItemFromCart);
+        $('.delete').live("click",removeItemFromCart);
+
+        function removeItemFromCart()
+        {
+              var item_id = $(this).attr('item_id');
+              db_functions.removeInfoItemFromShoppingCart(item_id,function(err,data) {
+                    $('#'+item_id).remove();
+              });
+               $("#add_button_"+item_id).show();
+
+               return false  ;
+        }
+        $(".add_button").live("click", function(){
+            var item_id=$(this).attr('add_item_id');
+            db_functions.addInfoItemToShoppingCart(item_id, function(err, information_item){
+                if(!err){
+                   dust.render('information_item_box',information_item,function(err,out)
+                   {
+                       $(".card-products-left").append(out);
+                   });
+                   $("#add_button_"+item_id).hide();
+                }
             });
+        });
+
+
+
+
             $(".inline").colorbox({ inline: true, width: "730" });
 
 
@@ -30,385 +124,5 @@
             });
         });
     </script>
-</head>
-<body>
-<%- partial('partials/body_top.ejs') %>
-<div id="wrap">
-<div id="header">
-    <a href="" id="logo"></a>
-    <ul id="main-menu">
-        <li><a href="">ורוע הז המ</a></li>
-        <li><a href="">עדימ רגאמ</a></li>
-        <li><a href="">םינויד</a></li>
-        <li><a href="">םיעוראו תולועפ</a></li>
-        <li><a href="">הפונת ילגעמ</a></li>
-    </ul>
-    <div class="user-box">
-        <span class="total-number">74</span>
-        <span class="icon"></span>
-        <h2>רבחתה</h2>
-        <div class="hide-box">
-            <div class="user-login-box cf">
-                <ul>
-                    <li class="tokens"><a href="">ילש םינקוטה <span class="icon-menu"></span><span class="number">74</span></a></li>
-                    <li class="chip"><a href="">ילש םינומיסאה <span class="icon-menu"></span><span class="number">325</span></a></li>
-                    <li class="respect"><a href="">דובכה דדמ <span class="icon-menu"></span><span class="number">10</span></a></li>
-                    <li class="settings"><a href="">תורדגה <span class="icon-menu"></span></a></li>
-                    <li class="help"><a href="">הרזע <span class="icon-menu"></span></a></li>
-                </ul>
-                <div class="btn-box">
-                    <a href="">גצה</a>
-                    <a href="">רתסה</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="tikunim-box">
-        <span class="icon"></span>
-        <h2>םילשכ לע חווד</h2>
-        <div class="hide-box">
-            <textarea cols="0" rows="0"></textarea>
-            <input type="submit" value="חלש" />
-        </div>
-    </div>
-    <form action="#" class="search-box">
-        <label>תויגת יפל שופיח</label>
-        <input type="text" value="" />
-        <input type="submit" value="שפח" />
-    </form>
-</div>
-<div id="content" class="cf">
-<div class="rightCol">
-<select class="left-select left-select-inner">
-    <option>רזוי יפל ןיימ</option>
-    <option>תואצות יפל ןיימ</option>
-    <option>םינויד תומכ יפל ןיימ</option>
-</select>
-<h2><a href="">ךוניח</a> הביל ידומיל</h2>
-<div class="main-text">
-<div class="one cf">
-    <div class="main-text-top cf">
-        <div class="right">
-            <h4>לילגב םייברע םיבושיב םילטובמ תורגבה ינחבמ</h4>
-            <h5>ןהכ רמוע י”ע הלעוה</h5>
-            <p> בצמ לע םידירטמ םינותנ ולגתה עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה לש ח”ודב
-                תא תאשל תוצלאנש תוירוה דח תוהמא לש ןבצמ תודוא םישק תינותנ םהיניב ,לארשיב ינועה
-                םינותנ ולגתה עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה לש ח”ודב .הסנרפה לוע
-                דוע ארק ... תוירוה דח תוהמא לש ןבצמ תודוא םישק תינותנ םהיניב ,לארשיב ינועה</p>
-        </div>
-        <div class="left">
-            <a href="" class="grey-btn"><span>ףסוה</span></a>
-            <a href="" class="grey-btn">ףתש</a>
-            <a href="" class="like-icon"></a>
-        </div>
-    </div>
-    <div class="tags-wrap">
-        <div class="down">
-            <span class="arrow"></span>
-            <ul>
-                <li><a href="">הז עדימ טירפל רושיק</a></li>
-                <li><a href="">תמלוה אל תוגהנתה לע חווד</a></li>
-                <li><a href="">הז עדימ טירפ גיצת לא</a></li>
-            </ul>
-        </div>
-        <div class="tags">
-            <a href="">הלטבא</a>
-            <a href="">הלכלכ</a>
-            <a href="">ינוע</a>
-            <div class="more">
-                <span></span>
-                <ul>
-                    <li><a href="">תויגת דוע גצה</a></li>
-                    <li><a href="">תיגת ףסוה</a></li>
-                </ul>
-            </div>
-            <div class="info">
-                <span class="talks">33</span>
-                <span class="watched">151</span>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="one cf">
-    <div class="main-text-top cf">
-        <div class="right">
-            <img src="images/sample-7.jpg" alt="" />
-            <div class="oh">
-                <h4>םידומילה תנש תארקל םירומב רוסחמ</h4>
-                <p>רשאכ םויה הרעס ררוע רעס ןועדג תוברתהו ךוניחה רש
-                    לש ח”ודב ,לארשיב ינועה בצמ לע םידירטמ םינותנ ולגתה
-                    .עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה
-                    ילואש יאדכו הרעס ררוע רעס ןועדג תוברתהו ךוניחה רש
-                    עובשה הקיטסיטטסל תיזכרמה הכשלה <a href="">דוע ארק ...</a></p>
-            </div>
-        </div>
-        <div class="left">
-            <a href="" class="grey-btn"><span>ףסוה</span></a>
-            <a href="" class="grey-btn">ףתש</a>
-            <a href="" class="like-icon"></a>
-        </div>
-    </div>
-    <div class="notice">
-        <a class="close" href=""></a>
-        <a class="link" href="">לגעמל רובע</a>
-        ל”הצמ תוטמתשהה :אשונב הפונת לגעמל ךיושמ הז עדימ טירפ
-    </div>
-    <div class="tags-wrap">
-        <div class="down">
-            <span class="arrow"></span>
-            <ul>
-                <li><a href="">הז עדימ טירפל רושיק</a></li>
-                <li><a href="">תמלוה אל תוגהנתה לע חווד</a></li>
-                <li><a href="">הז עדימ טירפ גיצת לא</a></li>
-            </ul>
-        </div>
-        <div class="tags">
-            <a href="">הלטבא</a>
-            <a href="">הלכלכ</a>
-            <a href="">ינוע</a>
-            <div class="more">
-                <span></span>
-                <ul>
-                    <li><a href="">תויגת דוע גצה</a></li>
-                    <li><a href="">תיגת ףסוה</a></li>
-                </ul>
-            </div>
-            <div class="info">
-                <span class="talks">33</span>
-                <span class="watched">151</span>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="one cf">
-    <div class="main-text-top cf">
-        <div class="right">
-            <h4>לילגב םייברע םיבושיב םילטובמ תורגבה ינחבמ</h4>
-            <h5>ןהכ רמוע י”ע הלעוה</h5>
-            <p> בצמ לע םידירטמ םינותנ ולגתה עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה לש ח”ודב
-                תא תאשל תוצלאנש תוירוה דח תוהמא לש ןבצמ תודוא םישק תינותנ םהיניב ,לארשיב ינועה
-                םינותנ ולגתה עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה לש ח”ודב .הסנרפה לוע
-                דוע ארק ... תוירוה דח תוהמא לש ןבצמ תודוא םישק תינותנ םהיניב ,לארשיב ינועה</p>
-        </div>
-        <div class="left">
-            <a href="" class="grey-btn"><span>ףסוה</span></a>
-            <a href="" class="grey-btn">ףתש</a>
-            <a href="" class="like-icon"></a>
-        </div>
-    </div>
-    <div class="tags-wrap">
-        <div class="down">
-            <span class="arrow"></span>
-            <ul>
-                <li><a href="">הז עדימ טירפל רושיק</a></li>
-                <li><a href="">תמלוה אל תוגהנתה לע חווד</a></li>
-                <li><a href="">הז עדימ טירפ גיצת לא</a></li>
-            </ul>
-        </div>
-        <div class="tags">
-            <a href="">הלטבא</a>
-            <a href="">הלכלכ</a>
-            <a href="">ינוע</a>
-            <div class="more">
-                <span></span>
-                <ul>
-                    <li><a href="">תויגת דוע גצה</a></li>
-                    <li><a href="">תיגת ףסוה</a></li>
-                </ul>
-            </div>
-            <div class="info">
-                <span class="talks">33</span>
-                <span class="watched">151</span>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="one cf">
-    <div class="main-text-top cf">
-        <div class="right">
-            <h4>לילגב םייברע םיבושיב םילטובמ תורגבה ינחבמ</h4>
-            <h5>ןהכ רמוע י”ע הלעוה</h5>
-            <p> בצמ לע םידירטמ םינותנ ולגתה עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה לש ח”ודב
-                תא תאשל תוצלאנש תוירוה דח תוהמא לש ןבצמ תודוא םישק תינותנ םהיניב ,לארשיב ינועה
-                םינותנ ולגתה עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה לש ח”ודב .הסנרפה לוע
-                דוע ארק ... תוירוה דח תוהמא לש ןבצמ תודוא םישק תינותנ םהיניב ,לארשיב ינועה</p>
-        </div>
-        <div class="left">
-            <a href="" class="grey-btn"><span>ףסוה</span></a>
-            <a href="" class="grey-btn">ףתש</a>
-            <a href="" class="like-icon"></a>
-        </div>
-    </div>
-    <div class="tags-wrap">
-        <div class="down">
-            <span class="arrow"></span>
-            <ul>
-                <li><a href="">הז עדימ טירפל רושיק</a></li>
-                <li><a href="">תמלוה אל תוגהנתה לע חווד</a></li>
-                <li><a href="">הז עדימ טירפ גיצת לא</a></li>
-            </ul>
-        </div>
-        <div class="tags">
-            <a href="">הלטבא</a>
-            <a href="">הלכלכ</a>
-            <a href="">ינוע</a>
-            <div class="more">
-                <span></span>
-                <ul>
-                    <li><a href="">תויגת דוע גצה</a></li>
-                    <li><a href="">תיגת ףסוה</a></li>
-                </ul>
-            </div>
-            <div class="info">
-                <span class="talks">33</span>
-                <span class="watched">151</span>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="one cf">
-    <div class="main-text-top cf">
-        <div class="right">
-            <h4>לילגב םייברע םיבושיב םילטובמ תורגבה ינחבמ</h4>
-            <h5>ןהכ רמוע י”ע הלעוה</h5>
-            <p> בצמ לע םידירטמ םינותנ ולגתה עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה לש ח”ודב
-                תא תאשל תוצלאנש תוירוה דח תוהמא לש ןבצמ תודוא םישק תינותנ םהיניב ,לארשיב ינועה
-                םינותנ ולגתה עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה לש ח”ודב .הסנרפה לוע
-                דוע ארק ... תוירוה דח תוהמא לש ןבצמ תודוא םישק תינותנ םהיניב ,לארשיב ינועה</p>
-        </div>
-        <div class="left">
-            <a href="" class="grey-btn"><span>ףסוה</span></a>
-            <a href="" class="grey-btn">ףתש</a>
-            <a href="" class="like-icon"></a>
-        </div>
-    </div>
-    <div class="tags-wrap">
-        <div class="down">
-            <span class="arrow"></span>
-            <ul>
-                <li><a href="">הז עדימ טירפל רושיק</a></li>
-                <li><a href="">תמלוה אל תוגהנתה לע חווד</a></li>
-                <li><a href="">הז עדימ טירפ גיצת לא</a></li>
-            </ul>
-        </div>
-        <div class="tags">
-            <a href="">הלטבא</a>
-            <a href="">הלכלכ</a>
-            <a href="">ינוע</a>
-            <div class="more">
-                <span></span>
-                <ul>
-                    <li><a href="">תויגת דוע גצה</a></li>
-                    <li><a href="">תיגת ףסוה</a></li>
-                </ul>
-            </div>
-            <div class="info">
-                <span class="talks">33</span>
-                <span class="watched">151</span>
-            </div>
-        </div>
-    </div>
-</div>
-</div>
-</div>
-<div class="leftCol">
-    <div class="left-top">
-        <a class="grey-btn" href="">ףתש</a>
-        <p>דועו םיפרג ,םינכת ,עדימ ףוסאל ידכ הלועפל האירק
-            .השדח תואיצמ עיצהל ידכ דועו</p>
-        <a class="green-btn" href="">השדח תואיצמ עצה</a>
-        <div class="link-more">
-            <a href="">םיפסונ עדימ יטירפ ףוסאל רוזח</a>
-        </div>
-    </div>
-    <div class="card-products-left">
-        <div class="one">
-            <a href="" class="delete-app"></a>
-            <div class="diagram cf">
-                <img alt="" src="images/diagram-two.png">
-                <div class="percent">
-                    <strong>57%</strong>
-                    םיעדוי אל
-                </div>
-                <div class="percent">
-                    <strong>43%</strong>
-                    ועיבצי
-                </div>
-            </div>
-            <div class="btn-box">
-                <a href="" class="confirm">ףתש</a>
-                <a href="" class="delete"><span>רסה</span></a>
-            </div>
-        </div>
-        <div class="one">
-            <a href="" class="delete-app"></a>
-            <h4>תודובע תובקעב תיב ירסח םידופיק יפלא הדוהי רבדמ רוזאב תויקוח אל תיתשת</h4>
-            <p> עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה לש ח”ודב  ח”ודב .2012 לארשיב ינועה בצמ לע םידירטמ םינותנ ולגתה
-                עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה לש ... תוכרעיה םישרודש רתויב םידירטמ םינותנ ולגתה </p>
-            <div class="btn-box">
-                <a href="" class="confirm">ףתש</a>
-                <a href="" class="delete"><span>רסה</span></a>
-            </div>
-        </div>
-        <div class="one">
-            <a href="" class="delete-app"></a>
-            <img alt="" src="images/news-4.jpg">
-            <h4>דעצמ יכלוה דגנ םידקת תרסח המילא האחמ ורצענ השימח ,םילשוריב הוואגה</h4>
-            <p> עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה לש ח”ודב  ... 2012 לארשיב ינועה בצמ לע םידירטמ םינותנ ולגתה </p>
-            <div class="btn-box">
-                <a href="" class="confirm">ףתש</a>
-                <a href="" class="delete"><span>רסה</span></a>
-            </div>
-        </div>
-        <div class="loading">
-            טירפ ןעוט
-        </div>
-    </div>
-</div>
-</div>
-</div>
-<div id="footer">
-    <div class="extra cf">
-        <div class="one-col">
-            <h4>ורוע תעונת</h4>
-            <p>לש ולוקש ןמזה עיגהש הנבה ךותמ המקוה ורוע
-                תויהל םיאכז ונלוכשו ,עמשיי לארשיב בוטה
-                לש ולוקש ןמזה עיגהש הנבה ךותמ המקוה ורו
-                ,עמשיי לארשיב בוטה .תוטלחהה תעביקב םיפתוש
-                .תוטלחהה תעביקב םיפתושתויהל םיאכז ונלוכשו</p>
-        </div>
-        <div class="two-col">
-            <h4>םירושיק</h4>
-            <ul>
-                <li><a href="">ונחנא ימ</a></li>
-                <li><a href="">תושדח</a></li>
-                <li><a href="">שומיש יאנת</a></li>
-                <li><a href="">םיגולבש</a></li>
-                <li><a href="">םיגולב</a></li>
-                <li><a href="">הרזע</a></li>
-            </ul>
-        </div>
-        <div class="three-col">
-            <h4>תומח תויגת</h4>
-            <div class="tags">
-                <a href="">הלטבא</a>
-                <a href="">הלכלכ</a>
-                <a href="">ינוע</a>
-                <a href="">תיתשת</a><br />
-                <a href="">לשממו היטרקומד</a>
-                <a href="">הלטבא</a>
-                <a href="">הלכלכ</a>
-                <a href="">ינוע</a>
-                <div class="more">
-                    <span></span>
-                    <ul>
-                        <li><a href="">תויגת דוע גצה</a></li>
-                        <li><a href="">תיגת ףסוה</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 </body>
 </html>

@@ -26,8 +26,8 @@
                     <input type="hidden" name="subject_name" id="subject_name" value="<%= subject.name %>" >
                     <input type="hidden" name="subject_id" id="subject_id" value="<%= subject.id %>" >
                     <div class="top cf">
-                        <div  style="width: 212px;height: 164px" class='auto-scale floatRight'>
-                            <img src="<%= subject.image_field ? subject.image_field.url : '' %>" alt="" />
+                        <div  class="uplod_image_paceholder floatRight">
+                                לבחירת תמונה לדיון לחץ כאן
 
                         </div>
                         <div class="floatLeft">
@@ -67,7 +67,7 @@
                                     ></textarea>
                         </div>
                         <input type="submit" value="יצירת דיון" />
-                        <label><input type="checkbox" checked="checked" />שתף את הדיון שיצרת על הקיר שלך </label>
+                        <label><input id="invite_friends" type="checkbox" checked="checked" />הזמן חברים לדיון </label>
                     </div>
                 </form>
             </div>
@@ -199,7 +199,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
 
-
+         current_section=1;
 
          $("#request_form").validate({
          		errorElement: "p",
@@ -242,24 +242,32 @@
                                      if (err){
                                          console.log(err);
                                      }else{
-                                        FB.ui({method: 'apprequests', message: 'New URU Discussion'}, function(response) {
 
-                                            if(response && response.hasOwnProperty('to')) {
-                                                var request_id = response.request;
-                                                var ids=[];
-                                                for(i = 0; i < response.to.length; i++) {
-                                                    ids.push (request_id+"_"+response.to[i])
-                                                    console.log("" + i + " ID: " + response.to[i]);
+                                        if ($('#invite_friends').is(':checked'))    {
+                                            FB.ui({method: 'apprequests', message: 'New URU Discussion'}, function(response) {
+
+                                                if(response && response.hasOwnProperty('to')) {
+                                                    var request_id = response.request;
+                                                    var ids=[];
+                                                    for(i = 0; i < response.to.length; i++) {
+                                                        ids.push (request_id+"_"+response.to[i])
+                                                        console.log("" + i + " ID: " + response.to[i]);
+                                                    }
+                                                    db_functions.addFacebookRequest("/discussions/" + created_discussion_id+"?user_id="+creator_id, ids,function(err, data){
+                                                           window.location.replace("/discussions/" + created_discussion_id);
+                                                    });
                                                 }
-                                                db_functions.addFacebookRequest("/discussions/" + created_discussion_id+"?user_id="+creator_id, ids,function(err, data){
-                                                       window.location.replace("/discussions/" + created_discussion_id);
-                                                });
-                                            }
-                                            else
-                                            {
-                                                window.location.replace("/discussions/" + created_discussion_id);
-                                            }
-                                        });
+                                                else
+                                                {
+                                                    window.location.replace("/discussions/" + created_discussion_id);
+                                                }
+                                            });
+                                         }
+                                         else
+                                         {
+                                            window.location.replace("/discussions/" + created_discussion_id);
+                                         }
+
                                      }
                                  });
                              }else{

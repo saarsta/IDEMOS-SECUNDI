@@ -60,20 +60,8 @@
                     </div>
                 </div>
             </div>
-            <div class="leftCol">
-                <div class="left-top">
-                    <a class="grey-btn gray_and_soon" href="">שתף</a>
-                    <p>
-                        הוסיפו פריטי מידע שישמשו כבסיס ליצירת חזון ולדיון בו
-                    </p>
-                    <a class="green-btn" href="/discussions/new/<%= item.subject_id[0].id %>">הצע מציאות חדשה</a>
-                    <div class="link-more">
-                        <a href="/information_items/subject/<%= item.subject_id[0].id %>">חזור לאסוף פריטי מידע נוספים</a>
-                    </div>
-                </div>
-                <div class="card-products-left">
-                </div>
-            </div>
+            <% subject= item.subject_id[0] %>
+            <%- partial('partials/shopping_cart.ejs') %>
         </div>
     </div>
 
@@ -83,7 +71,7 @@
 <script type="text/javascript">
 $(document).ready(function () {
 
-
+            var current_section=0;
             var info_item_id = "<%= item.id %>";
             //bugbug shold this be used?
             //$('#info_item_full_view img').autoscale();
@@ -139,8 +127,8 @@ $(document).ready(function () {
       });
 
 
-        function removeItemFromCart()
-        {
+       function removeItemFromCart()
+       {
               var item_id = $(this).attr('item_id');
               db_functions.removeInfoItemFromShoppingCart(item_id,function(err,data) {
                     $('#'+item_id).remove();
@@ -150,7 +138,7 @@ $(document).ready(function () {
                    $("#add_button").show();
               }
                return false  ;
-        }
+       }
 
 
 
