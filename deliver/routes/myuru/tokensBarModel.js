@@ -22,7 +22,7 @@ var TokensBarModel =function (tokenPixels, numExtraTokens, tokens, proxies) {
                     proxy:proc.number_of_tokens,
                     _id: proc.details._id ,
                     avatar:proc.details.avatar,
-                    score:-1
+                    score:proc.details.score
 
                 })
             }

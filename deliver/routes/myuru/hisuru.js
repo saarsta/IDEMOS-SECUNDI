@@ -4,13 +4,16 @@ var TokensBarModel= require('./tokensBarModel')
 
 module.exports = function (req, res) {
 
-    var userID= req.params[0];
-   // console.log( req.params);
+    var isHisuru=req.params[0]? true: false;
+    var userID= isHisuru? req.params[0]: req.session.user._id;
     var user = req.session.user;
+    if(isHisuru&&  userID===req.session.user._id){
+        isHisuru=false;
+    }
 
     async.waterfall([
         function (cbk) {
-            models.User.findById(userID, ["tokens", "num_of_extra_tokens", "proxy", "biography"], function(err, user){
+            models.User.findById(userID, ["tokens", "num_of_extra_tokens", "proxy", "biography","first_name","last_name","facebook_id", "avatar","score"], function(err, user){
                 req.session.user.biography = user.biography;
                 cbk(err, user);
             })
@@ -21,7 +24,7 @@ module.exports = function (req, res) {
                 user_obj.proxy = [];
             }
             async.forEach(user_obj.proxy, function (proxy_user, itr_cbk) {
-                models.User.findById(proxy_user.user_id, ["_id", "first_name", "last_name", "facebook_id", "avatar"], function (err, curr_proxy_user) {
+                models.User.findById(proxy_user.user_id, ["_id", "first_name", "last_name", "facebook_id", "avatar","score"], function (err, curr_proxy_user) {
                     if (!err) {
                         curr_proxy_user.avatar = curr_proxy_user.avatar_url();
                         proxy_user.details = curr_proxy_user;
@@ -41,16 +44,20 @@ module.exports = function (req, res) {
         var proxy = user_obj.proxy;
         var tokensBarModel = new TokensBarModel(9, num_of_extra_tokens, tokens, proxy);
 
+        console.log(req.session.avatar_url);
+        console.log(user_obj.avatar_url());
+
         res.render('my_uru.ejs',
             {
                 layout:false,
                 tag_name:req.query.tag_name,
-
+                biographyReadonly:isHisuru,
                 title:"אורו שלי",
                 logged:req.isAuthenticated(),
                 big_impressive_title:"",
-                user:user,
-                avatar:req.session.avatar_url,
+                user:user,//current user
+                pageUser:user_obj ,///  hisuru user
+                avatar:user_obj.avatar_url(),
                 user_logged:req.isAuthenticated(),
                 url:req.url,
                 tokensBarModel:tokensBarModel,
@@ -59,28 +66,3 @@ module.exports = function (req, res) {
     })
 };
 
-
-/*
-
- var models = require('../../../models');
-
- module.exports = function(req,res)
- {
- res.render('my_uru.ejs',{
- */
-/*  title:'הדף שלי',
- user: req.session.user,
- logged:true,
- avatar:req.session.avatar_url,
- // body_class:'layout',
- big_impressive_title:"כותרת גדולה ומרשימה",
- extra_head:'',
- tag_name: req.query.tag_name,
- tab:'users',
- hide_block_user:false,
- extra_head:'<script src="/javascripts/myUru.js"></script>'*//*
-
-
- });
-
- };*/

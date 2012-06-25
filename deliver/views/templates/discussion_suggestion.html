@@ -11,12 +11,14 @@
                 <a href="">שלח הודעה</a>
             </div>
             <div class="right">
+              <a href="/myuru/{creator_id.id}">
                 <div class="img-box transparent-img" >
                     <div  style="width:60px; height:64px;" class="auto-scale" >
                         <img alt="{title}" title="{creator_id.first_name} {creator_id.last_name}"  src="{creator_id.avatar_url}"/>
                     </div>
                     <span></span>
                 </div>
+              </a>
                 <h4>  {creator_id.first_name} {creator_id.last_name}</h4>
                 <div class="date">{creator_id.username} {?creation_date}{creation_date|time}{/creation_date}</div>
                 <div class="proxy">

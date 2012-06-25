@@ -55,11 +55,12 @@ module.exports = function (req, res) {
             {
                 layout:false,
                 tag_name:req.query.tag_name,
-
+                biographyReadonly:false,
                 title:"אורו שלי",
                 logged:req.isAuthenticated(),
                 big_impressive_title:"",
                 user:user,
+                pageUser:user,
                 avatar:req.session.avatar_url,
                 user_logged:req.isAuthenticated(),
                 url:req.url,
