@@ -1,5 +1,6 @@
 var j_forms = require('j-forms'),
     mongoose_admin = require('admin-with-forms'),
+    mongoose = require('mongoose'),
     Models = require('../models'),
     async = require('async'),
     DiscussionResource = require('../api/DiscussionResource'),
@@ -137,5 +138,15 @@ module.exports = function(app)
     admin.registerSingleRowModel(Models.GamificationTokens,'GamificationTokens');
 
     admin.registerSingleRowModel(Models.ThresholdCalcVariables,'ThresholdCalcVariables');
+
+    admin.registerMongooseModel('Admin_Users',mongoose.model('_MongooseAdminUser'),null,{
+        list:['username']
+    });
+
+    admin.registerMongooseModel('Password Change Form',mongoose.model('_MongooseAdminUser'),null,{
+        list:['username'] ,
+        form:require('./admin'),
+        createable:false
+    });
 
 };
