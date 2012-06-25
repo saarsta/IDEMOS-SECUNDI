@@ -62,9 +62,7 @@ module.exports = function (req, res) {
         this.ProxyPixels = function () { //blue
             return this.convertToPixels(this.totalProxy);
         }
-
     }
-
 
     var user = req.session.user;
 
