@@ -249,7 +249,8 @@ var Schemas = exports.Schemas = {
         MAX_THRESH: {type: Number, 'default': 500},
         MAX_RED_RATIO: {type: Number, 'default': 2},
         SCALE_PARAM:  {type: Number, 'default': 1.6}
-    }
+    },
+
 };
 
 
@@ -296,6 +297,8 @@ var Models = module.exports = {
     Notification: mongoose.model('Notification', new Schema(Schemas.Notification, {strict: true})),
     GamificationTokens: utils.config_model('GamificationTokens', Schemas.GamificationTokens),
     ThresholdCalcVariables: utils.config_model('ThresholdCalcVariables', Schemas.ThresholdCalcVariables),
+
+    ImageUpload: mongoose.model('ImageUpload', require('./image_upload')),
 
     Schemas:Schemas
 };
