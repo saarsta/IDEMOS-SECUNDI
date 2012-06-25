@@ -117,6 +117,18 @@ $(function(){
         ui.attr('href','javascript:void(0)');
     }
 
+    function initTooltipWithMessage(ui, message){
+        ui.tooltip({
+            bodyHandler: function() {
+                return "" +
+                    message
+            },
+            showURL: false
+        });
+        ui.attr('disabled','disabled');
+        ui.attr('href','javascript:void(0)');
+    }
+
 
     $('#failureForm').live('submit', function(e){
         e.preventDefault();
@@ -172,6 +184,8 @@ $(function(){
 
     image_autoscale($('.auto-scale img'));
     initTooltip($(".gray_and_soon"));
+    initTooltipWithMessage($(".cycle_comming_soon"), "כאן יתקיים התהליך למימוש המציאות הנדרשת שהסכמנו לגביה במערכת הדיונים, באמצעות פעולות, אירועים ועדכונים שוטפים. יעלה בקרוב."   );
+    initTooltipWithMessage($(".action_comming_soon"), "יעלה בקרוב");
 });
 
 function image_autoscale(obj, params)

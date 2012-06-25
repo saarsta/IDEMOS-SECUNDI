@@ -186,7 +186,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                 }
                 else {
                     //vision cant be more than 800 words
-                    var vision_splited_to_words = fields.vision_text.split(" ");
+                    var vision_splited_to_words = fields.text_field.split(" ");
                     var words_counter = 0;
 
                     _.each(vision_splited_to_words, function (word) {
@@ -208,7 +208,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                                     join_date:Date.now()
                                 };
                                 fields.is_published = true; //TODO this is only for now
-                                // create vision_text_preview - 200 chars
+                                // create text_field_preview - 200 chars
                                 if (fields.text_field.length >= 200)
                                     fields.text_field_preview = fields.text_field.substr(0, 200);
                                 else
