@@ -4,12 +4,13 @@ var TokensBarModel= require('./tokensBarModel')
 
 module.exports = function (req, res) {
 
-    var userID= req.params;
+    var userID= req.params[0];
+   // console.log( req.params);
     var user = req.session.user;
 
     async.waterfall([
         function (cbk) {
-            models.User.findById(req.session.user._id, ["tokens", "num_of_extra_tokens", "proxy", "biography"], function(err, user){
+            models.User.findById(userID, ["tokens", "num_of_extra_tokens", "proxy", "biography"], function(err, user){
                 req.session.user.biography = user.biography;
                 cbk(err, user);
             })
@@ -38,17 +39,6 @@ module.exports = function (req, res) {
         var num_of_extra_tokens = user_obj.num_of_extra_tokens;
         var tokens =  user_obj.tokens+'';
         var proxy = user_obj.proxy;
-        //todo remove me
-     /*   proxy =[
-            {details:
-                {last_name:'aaa',_id:'1111',avatar:'http://graph.facebook.com/1010279474/picture/?type=large',first_name:'avi'},
-                number_of_tokens:2
-            },
-            {details:
-            {last_name:'man',_id:'1111',avatar:'http://graph.facebook.com/1010279474/picture/?type=large',first_name:'run'},
-                number_of_tokens:1
-            }
-        ]*/
         var tokensBarModel = new TokensBarModel(9, num_of_extra_tokens, tokens, proxy);
 
         res.render('my_uru.ejs',
