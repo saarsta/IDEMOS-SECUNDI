@@ -35,7 +35,8 @@ module.exports = function(app)
     admin.registerMongooseModel("Subject",Models.Subject,null,{list:['name'],order_by:['gui_order'],sortable:'gui_order'});
     admin.registerMongooseModel("Discussion",Models.Discussion,null,{
         list:['title'],
-        cloneable:true
+        cloneable:true,
+        form:require('./discussion')
 //            actions:[
 //                {
 //                    value:'approve',

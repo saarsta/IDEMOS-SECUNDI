@@ -59,6 +59,7 @@ module.exports = function (req, res) {
                 pageUser:user_obj ,///  hisuru user
                 avatar:user_obj.avatar_url(),
                 user_logged:req.isAuthenticated(),
+                facebook_app_id:req.app.settings.facebook_app_id,
                 url:req.url,
                 tokensBarModel:tokensBarModel,
                 tab:''
