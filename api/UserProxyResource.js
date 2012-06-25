@@ -8,11 +8,15 @@ var resources = require('jest'),
 var Authorization = resources.Authorization.extend({
     edit_object : function(req,object,callback){
         if(req.user){
-            if (object._id + "" == req.user._id + "")
-                if(req.body.number_of_tokens > object.tokens)
-                    callback({message:"Error: Unauthorized - you don't have enougth tokens tp give!", code: 401}, null);
+            if (object._id + "" == req.user._id + ""){
+                if(req.user._id + "" == req.body.proxy_id + "")
+                    callback({message:"Error: Unauthorized - can't be your own proxy!", code: 401}, null);
                 else
-                    callback();
+                    if(req.body.number_of_tokens > object.tokens)
+                        callback({message:"Error: Unauthorized - you don't have enougth tokens to give!", code: 401}, null);
+                    else
+                        callback(null, object);
+            }
             else
                 callback({message:"Error: Unauthorized - can't set other people proxies!", code: 401}, null);
         }else{
@@ -83,6 +87,9 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
         var number_of_tokens = req.body.number_of_tokens;
         var proxy = _.find(object.proxy, function(proxy_user){return proxy_user.user_id + "" == proxy_id + ""});
 
+        var self = this;
+        var base = this._super;
+
         if(proxy){
             //edit proxy's mandates(tokens)
             if (req.body.number_of_tokens > 0){
@@ -123,15 +130,12 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
             object.proxy.push(proxy);
         }
 
-        //TODO ask ishai why the fuck it saves it on my user obj
-        object.proxy_id = null;
-        object.number_of_tokens = null;
-
         if(proxy.number_of_tokens > 3)
             callback({message:"Error: Unauthorized - max mandate is 3!", code: 401}, null)
         else{
             //save user object
-            object.save(function(err, user_obj){
+
+            base.call(self, req, object, function(err, user_obj){
                 if(!err && req.body.number_of_tokens > 0){
                     //update proxy-user new tokens
                     models.User.update({_id: proxy_id}, {$inc: {num_of_given_mandates: number_of_tokens}}, function(err, num){
