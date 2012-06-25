@@ -425,7 +425,7 @@ var db_functions = {
         });
     },
 
-    updateUserDetails: function(user_id, biography,callback){
+    updateUserDetails: function(user_id, biography, callback){
         this.loggedInAjax({
             url: '/api/users/' + user_id,
             type: "PUT",
@@ -461,7 +461,7 @@ var db_functions = {
         this.loggedInAjax({
             url: '/api/user_proxies/' + user_id,
             type: "PUT",
-            dara: {proxy_id: proxy_id, number_of_tokens: number_of_namdates},
+            data: {proxy_id: proxy_id, number_of_tokens: number_of_namdates},
             async: true,
             success: function (data) {
                 callback(null, data);
