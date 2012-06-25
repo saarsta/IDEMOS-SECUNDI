@@ -101,7 +101,7 @@ var db_functions = {
 
     getNotifications: function(callback){
         this.loggedInAjax({
-            url: '/api/notifications?limit=3',
+            url: '/api/notifications?limit=40',
             type: "GET",
             async: true,
             success: function (data) {
