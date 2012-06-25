@@ -28,12 +28,13 @@ var mongoose_resource = require('jest'),
     SuccessStoryResource = require('./SuccessStoryResource'),
     UpdateResource = require('./UpdateResource'),
     KilkulResource = require('./KilkulResource'),
-    HotObjectResource = require('./HotObjectResource');
-    NotificationResource = require('./NotificationResource');
-    UserFollowerResource = require('./UserFollowerResource');
-    UserProxyResource = require('./UserProxyResource');
-    ItemsCountByTagNameResource = require('./ItemsCountByTagNameResource');
-    FBRequestResource = require('./FBRequestResource');
+    HotObjectResource = require('./HotObjectResource'),
+    NotificationResource = require('./NotificationResource'),
+    UserFollowerResource = require('./UserFollowerResource'),
+    UserProxyResource = require('./UserProxyResource'),
+    ItemsCountByTagNameResource = require('./ItemsCountByTagNameResource'),
+    FBRequestResource = require('./FBRequestResource'),
+    ImageUploadResource = require('./ImageUploadResource');
 
 
 module.exports = function(app)
@@ -73,4 +74,5 @@ module.exports = function(app)
     rest_api.register_resource('user_proxies', new UserProxyResource());
     rest_api.register_resource('items_count_by_tag_name', new ItemsCountByTagNameResource());
     rest_api.register_resource('fb_request', new FBRequestResource());
+    rest_api.register('image_upload',new ImageUploadResource());
 };

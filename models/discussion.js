@@ -22,8 +22,6 @@ var Discussion = module.exports = new Schema({
     creator_id:{type:ObjectId, ref:'User'},
     first_name:{type:String,editable:false},
     last_name:{type:String,editable:false},
-    vision_text_preview: {type:mongoose_types.Text},//2-3 lines of the vision_text
-    vision_text:{type:mongoose_types.Text, required:true},
     text_field_preview: {type:mongoose_types.Text},//2-3 lines of the vision_text
     text_field:{type:mongoose_types.Text, required:true},
     vision_text_history:{type:[String],editable:false},

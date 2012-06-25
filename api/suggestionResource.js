@@ -257,7 +257,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                 },
 
                 function(discussion_object, cbk){
-                    var vision = discussion_object.vision_text;
+                    var vision = discussion_object.text_field;
                     var new_string = "";
                     var curr_position = 0;
                     var parts = suggestion_object.parts;
@@ -275,8 +275,8 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                     new_string += vision.slice(curr_position);
                     //            discussion_object.vision_changes.push(vision_changes_array);
 
-                    discussion_object.vision_text_history.push(discussion_object.vision_text);
-                    discussion_object.vision_text = new_string;
+                    discussion_object.vision_text_history.push(discussion_object.text_field);
+                    discussion_object.text_field = new_string;
                     models.Discussion.update({_id:discussion_id}, {$addToSet: {vision_text_history: discussion_object.vision_text}, $set:{vision_text: new_string}}, function(err, counter){
                         cbk(err, discussion_object);
                     });
@@ -352,7 +352,7 @@ module.exports.approveSuggestion = function(id,callback)
         },
 
         function(discussion_object, cbk){
-            var vision = discussion_object.vision_text;
+            var vision = discussion_object.text_field;
             var new_string = "";
             var curr_position = 0;
             var parts = suggestion_object.parts;
@@ -370,14 +370,14 @@ module.exports.approveSuggestion = function(id,callback)
             new_string += vision.slice(curr_position);
             //            discussion_object.vision_changes.push(vision_changes_array);
 
-            discussion_object.vision_text_history.push(discussion_object.vision_text);
-            discussion_object.vision_text = new_string;
+            discussion_object.vision_text_history.push(discussion_object.text_field);
+            discussion_object.text_field = new_string;
 
             //suggestion grade is the new discussion grade
             models.Discussion.update({_id:discussion_object._id},
             {
-                $addToSet: {vision_text_history: discussion_object.vision_text},
-                $set:{vision_text: new_string, grade: suggestion_grade}},
+                $addToSet: {vision_text_history: discussion_object.text_field},
+                $set:{text_field: new_string, grade: suggestion_grade}},
                 function(err, counter){
                 cbk(err, discussion_object);
             });

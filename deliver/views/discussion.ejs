@@ -27,7 +27,7 @@
                     <img src="<%= discussion.image_field ? discussion.image_field.url : '' %>" alt=""/>
                 </div>
                 <div class="discussion_content discussion content">
-                    <textarea id="discussion_content" class="hidden_textarea"><%=discussion.vision_text%></textarea>
+                    <textarea id="discussion_content" class="hidden_textarea"><%=discussion.text_field%></textarea>
                 </div>
 
 
@@ -43,7 +43,7 @@
                     <a class="btn-green" id="discussion_comment_reply_button" href="javascript:void(0);">
                         הגב
                     </a>
-                    <a class="btn-grey gray_and_soon" href="">
+                    <a class="btn-grey" href="/facebookShare?link=/discussions/<%=discussion.id%>">
                         שתף
                     </a>
 
