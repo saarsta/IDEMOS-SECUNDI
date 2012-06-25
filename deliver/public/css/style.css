@@ -3839,10 +3839,11 @@ body.search-ative #header
 {
     width: 273px;
     padding: 14px 8px 0 9px;
-    height: 178px;
+    height: 174px;
     float: right;
     margin: 0 13px;
     background:#fff;
+    cursor: pointer;
 }
 .search-result-box .slides-one .one:hover
 {
