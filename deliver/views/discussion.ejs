@@ -280,6 +280,7 @@ $(document).ready(function () {
     var postsNumber = 0;
     var is_creator= (my_id==creator_id);
 
+    var vision = "<%=discussion.text_field%>";
 
     $("#discussion_content").val($("#discussion_content").text());
     $(".slider").slider({
@@ -680,21 +681,6 @@ $(document).ready(function () {
     $('#sorting_select').change(loadPosts);
 
     loadPosts();
-    //init posts
-    /* db_functions.getPostByDiscussion(discussion_id, function(err, data){
-     if(err){
-     console.log(err);
-     }else{
-     setCommentNumber( data.objects.length);
-     dust.renderArray('discussion_comment', data.objects, null, function(err, out){
-     if(!err){
-     $("#comments").append(out);
-     // $('#posts img').autoscale();
-     }
-     });
-     }
-     });*/
-
 
     $("#cancelWriteCommentBT").live("click", function () {
         $('#write-comment').hide();
@@ -753,6 +739,10 @@ $(document).ready(function () {
 
     $('#send_suggestion').click(function () {
         var part = {start:range.start, end:range.end, text:$("textarea#discussion_suggest").val()};
+        //arrange spaces
+        if(vision[part.end - 1] == " " && part.text[part.text.length - 1] != " ")
+
+            part.text += " ";
         var explanation = $("#discussion_explanation").val();
         db_functions.addSuggestionToDiscussion(discussion_id, [part], explanation, function (err, data) {
             if (!err) {
