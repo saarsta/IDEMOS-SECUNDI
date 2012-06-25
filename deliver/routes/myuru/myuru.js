@@ -70,7 +70,8 @@ module.exports = function (req, res) {
 
     async.waterfall([
         function (cbk) {
-            models.User.findById(req.session.user._id, ["tokens", "num_of_extra_tokens", "proxy"], function(err, user){
+            models.User.findById(req.session.user._id, ["tokens", "num_of_extra_tokens", "proxy", "biography"], function(err, user){
+                req.session.user.biography = user.biography;
                 cbk(err, user);
             })
         },

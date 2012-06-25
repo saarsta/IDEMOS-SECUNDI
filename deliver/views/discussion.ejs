@@ -389,6 +389,13 @@ $(document).ready(function () {
     });
 
 
+    $('#comments').on('click', '#add_or_remove_proxy', function () {
+        var proxy_id = $(this).parents('.comment-one').data("creator_id");
+        db_functions.addOrRemoveProxyMandate(my_id, proxy_id, 1, function(err, data){
+            var a = 8;
+        })
+    });
+
     $('#comments').on('click', '.vote_for', function () {
         var post_id = $(this).parents('.comment-one').data("id");
         var button = $(this);
