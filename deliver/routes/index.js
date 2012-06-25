@@ -3,7 +3,8 @@ var Router = require('./router'),
     InformationItems = require('./information_items'),
     Discussions = require('./discussions'),
     Account = require('./account'),
-    MyUru= require('./myuru');
+    MyUru= require('./myuru'),
+    HisUru= require('./hisuru') ;
 
 
 
@@ -21,6 +22,7 @@ module.exports = function(app) {
 
     router.include('/discussions',Discussions);
     router.include('/myuru',MyUru);
+    router.include('/hisuru',HisUru);
 
 
 

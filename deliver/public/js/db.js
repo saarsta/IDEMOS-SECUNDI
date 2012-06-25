@@ -189,7 +189,7 @@ var db_functions = {
             url: '/api/discussions/',
             type: "POST",
             async: true,
-            data: {"subject_id": subject_id, "subject_name": subject_name, "vision_text": vision, "title": title, "tags": tags, "is_published": true},
+            data: {"subject_id": subject_id, "subject_name": subject_name, "text_field": vision, "title": title, "tags": tags, "is_published": true},
             success: function (data) {
                 console.log(data);
                 callback(null, data);

@@ -39,6 +39,7 @@ module.exports = function (req, res) {
         this.totalProxy = calcTotalProxy(proxies)// blue;
         var dailyTokens = 9 + numExtraTokens;
         this.floorDailyTokens = Math.floor(dailyTokens);
+      //  this.floorDailyTokens=2;
 
         this.gupFromFull = 15 - this.floorDailyTokens; //light gray
         this.floorTokens = Math.floor(tokens); //green
@@ -62,9 +63,7 @@ module.exports = function (req, res) {
         this.ProxyPixels = function () { //blue
             return this.convertToPixels(this.totalProxy);
         }
-
     }
-
 
     var user = req.session.user;
 
