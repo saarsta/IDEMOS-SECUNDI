@@ -27,6 +27,8 @@ var FBRequestResource = module.exports = jest.MongooseResource.extend({
             }
         };
 
+        this.authentication = new common.SessionAuthentication();
+
         this.authorization = new (jest.Authorization.extend({
             edit_object: function(req,object,callback) {
                 object.creator =  req.user._id;

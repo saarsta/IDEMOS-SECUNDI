@@ -10,9 +10,9 @@ module.exports = function(req,res)
     async.parallel([
         // get the user object
         function(cbk) {
-            if(req.session.user)
-                models.User.findById(req.session.user._id,cbk);
-            else
+//            if(req.session.user)
+//                models.User.findById(req.session.user._id,cbk);
+//            else
                 cbk(null, null);
         },
         // get the discussion object

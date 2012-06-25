@@ -6,6 +6,7 @@
     <script src="/resources/js/jquery-fieldselection.js" type="text/javascript"></script>
 </head>
 <body>
+<%- partial('partials/body_top.ejs') %>
 <div id="wrap">
     <div id="header">
         <%-partial('partials/menu.ejs')%>
@@ -387,6 +388,13 @@ $(document).ready(function () {
         $(".popup-window").hide();
     });
 
+
+    $('#comments').on('click', '#add_or_remove_proxy', function () {
+        var proxy_id = $(this).parents('.comment-one').data("creator_id");
+        db_functions.addOrRemoveProxyMandate(my_id, proxy_id, 1, function(err, data){
+            var a = 8;
+        })
+    });
 
     $('#comments').on('click', '.vote_for', function () {
         var post_id = $(this).parents('.comment-one').data("id");

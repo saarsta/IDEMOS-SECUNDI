@@ -14,16 +14,32 @@ module.exports = {
 
         var user_model = Models.User;
 
-        user_model.findOne({email: user.email, identity_provider:'register'}, function (err, result) {
+        user_model.findOne({email: user.email/*, identity_provider:'register'*/}, function (err, result) {
             if (!err) {
-                if (result) {     //user is not registered
+                if (!result || (result.identity_provider == "facebook" && !result.password)) {
+                 //user is not registered or registered with fbconnect
+
+                    if(result && result.identity_provider == "facebook" && !result.password){
+                        result.password = user.password;
+                        user = result;
+                    }
+
                     user.save(function (err, user) {
                         if (err) {
-                            res.render('login.ejs', {title:'Login', failed:true, exist_username:false, errors: err.errors, next: req.query.next});
+                            res.render('register.ejs', {
+                                url: req.url,
+                                tag_name:req.query.tag_name,
+                                layout: false,
+                                user_logged: req.isAuthenticated(),
+                                user: user,
+                                next: req.query.next,
+                                title: "רישום",
+                                big_impressive_title: "",
+                                error_message: err
+                            })
                         }
                         else {
-                            console.log('new user has been created by registration');
-                            req.body['username'] = user.username;
+                            req.body['email'] = user.email;
                             req.body['password'] = data['password'];
                             req.authenticate('simple', function (err, is_authenticated) {
                                 if (err) res.send('something wrong: ' + err.message, 500);
@@ -37,11 +53,14 @@ module.exports = {
                             });
                         }
                     });
-                } else {
-                    res.render('login.ejs', {title:'Login',
-                        tab:'users',
-                        failed:false, exist_username:true, next:req.query.next});
-                }
+                 }
+                 else{
+                        //send messaage: email is all ready in use
+
+                        res.render('account/register.ejs'/*, {title:'Login',
+                         tab:'users',
+                         failed:false, exist_username:true, next:req.query.next}*/);
+                 }
             } else {
                 throw "Error reading db.User";
             }
@@ -49,18 +68,38 @@ module.exports = {
     },
 
     get:function (req, res) {
+//        console.log(req.session.auth.user.user_id);
+        var user = {
+            _id: req.session.auth.user ? req.session.auth.user.user_id : null
+        }
+
         res.render('register.ejs',{
             url: req.url,
-            tag_name:req.query.tag_name||'',
+            tag_name:req.query.tag_name,
             layout: false,
             user_logged: req.isAuthenticated(),
-            user: req.session.user,
-            auth_user: req.session.auth.user,
-            tab:'user',
-            avatar_url: req.session.avatar_url,
-            failed:false,
-            exist_username:false,
-            next:req.query.next
+            user: user /*req.session.auth.user*/,
+//            auth_user: req.session.auth.user,
+//            tab:'user',
+//            avatar_url: req.session.avatar_url,
+//            failed:false,
+//            exist_username:false,
+            next: req.query.next,
+            title: "רישום",
+            big_impressive_title: ""
+
+//            layout: false,
+//            tag_name:req.query.tag_name,
+
+//            title:"אורו שלי",
+//            logged: req.isAuthenticated(),
+//            big_impressive_title: "",
+//            user: user,
+//            avatar:req.session.avatar_url,
+//            user_logged: req.isAuthenticated(),
+//            url:req.url,
+//            tokensBarModel:tokensBarModel,
+//            tab:''
         });
     }
 };

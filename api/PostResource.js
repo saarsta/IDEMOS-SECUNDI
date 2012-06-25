@@ -63,7 +63,9 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
 
             _.each(results.objects, function(post){
                 if(user_id){
-                    var flag =  _.any(post.creator_id.followers, function(follower){return follower.follower_id + "" == user_id + ""});
+                    var flag = false;
+                    if(post.creator_id)
+                       flag =  _.any(post.creator_id.followers, function(follower){return follower.follower_id + "" == user_id + ""});
                     post.is_user_follower = flag;
                 }else{
                     post.is_user_follower = false;

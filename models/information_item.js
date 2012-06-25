@@ -35,6 +35,7 @@ var InformationItem = module.exports = new Schema({
 
     //this two fields are for user suggestion of InformationItem, when admin create this it will remain false
     created_by: {creator_id:{type: ObjectId, ref: 'User', editable: false}, did_user_created_this_item: {type: Boolean, 'default': false, editable: false}},
+    discussion_counter:{type:Number,'default':0},
     status: {type: String, "enum": ['approved', 'denied', 'waiting']},
     gamification: {rewarded_creator_for_high_liked: {type: String, 'default': false, editable: false},
         rewarded_creator_for_approval: {type: String, 'default': false, editable: false}, editable:false},

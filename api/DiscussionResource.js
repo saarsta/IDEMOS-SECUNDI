@@ -43,33 +43,33 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
         this.default_query = function (query) {
             return query.sort('creation_date', 'descending');
         },
-            this.fields = {
-                title:null,
-                tooltip_or_title:null,
-                image_field:null,
-                image_field_preview:null,
-                subject_id:null,
-                subject_name:null,
-                creation_date:null,
-                creator_id:null,
-                first_name:null,
-                last_name:null,
-                vision_text_preview:null,
-                vision_text:null,
-                num_of_approved_change_suggestions:null,
-                is_cycle:null,
-                tags:null,
-                followers_count:null,
-                evaluate_counter:null,
-                _id:null,
-                is_follower:null,
-                grade:null,
+        this.fields = {
+            title:null,
+            tooltip_or_title:null,
+            image_field:null,
+            image_field_preview:null,
+            subject_id:null,
+            subject_name:null,
+            creation_date:null,
+            creator_id:null,
+            first_name:null,
+            last_name:null,
+            text_field_preview:null,
+            text_field:null,
+            num_of_approved_change_suggestions:null,
+            is_cycle:null,
+            tags:null,
+            followers_count:null,
+            evaluate_counter:null,
+            _id:null,
+            is_follower:null,
+            grade:null,
 
-                grade_obj:{
-                    grade_id:null,
-                    value:null
-                }
-            };
+            grade_obj:{
+                grade_id:null,
+                value:null
+            }
+        };
         this.update_fields = {
             title:null,
             image_field:null,
@@ -77,8 +77,8 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
             subject_id:null,
             subject_name:null,
             creation_date:null,
-            vision_text_preview:null,
-            vision_text:null,
+            text_field_preview:null,
+            text_field:null,
             tags:null
         };
     },
@@ -209,10 +209,10 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                                 };
                                 fields.is_published = true; //TODO this is only for now
                                 // create vision_text_preview - 200 chars
-                                if (fields.vision_text.length >= 200)
-                                    fields.vision_text_preview = fields.vision_text.substr(0, 200);
+                                if (fields.text_field.length >= 200)
+                                    fields.text_field_preview = fields.text_field.substr(0, 200);
                                 else
-                                    fields.vision_text_preview = fields.vision_text;
+                                    fields.text_field_preview = fields.text_field;
 
                                 for (var field in fields) {
                                     object.set(field, fields[field]);

@@ -6,6 +6,7 @@
 
 </head>
 <body>
+<%- partial('partials/body_top.ejs') %>
 <div id="wrap">
 <div id="header">
     <%-partial('partials/menu.ejs')%>
@@ -41,9 +42,9 @@
                 </ul>
             </div>
             <form action="">
-                <textarea cols="0" rows="0"><% if(user.Biography){%> <%=user.Biography%> <% } else { %>כאן אפשר לכתוב ביוגרפיה קצרה דברים שאתה אוהב, אג’נדה, דעות, ומה שתרצה על עצמך. <% } %>
+                <textarea id="biography" cols="0" rows="0"><% if(user.Biography){%> <%=user.Biography%> <% } else { %>כאן אפשר לכתוב ביוגרפיה קצרה דברים שאתה אוהב, אג’נדה, דעות, ומה שתרצה על עצמך. <% } %>
 				</textarea>
-                <input type="submit" value="הזמן חברים" />
+                <input id="invite_friends_bt" type="submit" value="הזמן חברים" />
             </form>
         </div>
     </div>
@@ -70,6 +71,30 @@
                         </div>
                     </div>
                 </div>-->
+        <%  var userProxy;
+                for(var j=0 ;j<tokensBarModel.proxy.proxies.length;j++){
+                userProxy=tokensBarModel.proxy.proxies[j]; %>
+                <div id="token-popup<%=userProxy._id %>" class="token-popup" >
+                    <div class="user-right">
+                        <div class="img-box">
+                            <div class="auto-scale"  style="width: 41px;height: 44px">
+                                 <img src="<%=userProxy.avatar %>" alt="" />
+                            </div>
+                            <img class="wraper" src="/images/user-fillter-small-white.png" width="41" alt="" />
+                        </div>
+                    </div>
+                    <div class="user-left">
+                       <p><%=userProxy.name %></p>
+                        <div class="proxy">
+                            <span><%=userProxy.proxy%></span>
+                        </div>
+                        <div class="respect">
+                            <span><%=userProxy.score%></span>
+                        </div>
+                    </div>
+                </div>
+              <%}%>
+
                 <div class="bars">
                     <div class="border"></div>
                     <div class="empty" style="height:<%=tokensBarModel.gupFromFullPixels()%>"></div>
@@ -82,35 +107,13 @@
                     <%  var userProxy; 
 						for(var j=0 ;j<tokensBarModel.proxy.proxies.length;j++){
 						userProxy=tokensBarModel.proxy.proxies[j]; %>
-							<div class="blue" style="height:<%=tokensBarModel.convertToPixels(userProxy.proxy)%>">
+							<div class="blue"  data-userid="<%=userProxy._id%>" style="height:<%=tokensBarModel.convertToPixels(userProxy.proxy)%>">
 								<div class="info">
 								     
 									  <span>  <%=userProxy.name %> </span> 
 									  <span> <%=userProxy.proxy.toString() %> </span> 
 									  <span> מוקצים ל </span>
 
-                                    <div class="token-popup">
-                                        <div class="user-right">
-                                            <div class="img-box">
-                                                <img src="images/user-1.jpg" width="41" alt="" />
-                                                <img class="wraper" src="/images/user-fillter-small-white.png" width="41" alt="" />
-                                            </div>
-                                        </div>
-                                        <div class="user-left">
-                                            <p>יונתן שפירא</p>
-                                            <div class="proxy">
-                                                <span>3</span>
-                                            </div>
-                                            <div class="respect">
-                                                <span>20</span>
-                                            </div>
-                                        </div>
-                                    </div>
-										
-										
-																					
-									
-									  
 									 
 								</div>
 							</div>
@@ -127,7 +130,7 @@
             <li><a href="#discussions-tab">דיונים</a></li>
             <li><a href="#cycles-tab">מעגלי תנופה</a></li>
             <li><a href="#actions-tab">פעולות</a></li>
-            <li><a href="#blogs-tab">בלוגים</a></li>
+            <li><a href="#articles-tab">בלוגים</a></li>
         </ul>
         <div id="discussions-tab">
 
@@ -245,19 +248,81 @@
             })
         }) ;
 
-           $('.blue').hover(function(e){
-            $(this).find('.token-popup').css("display","block");
+
+        /**************************************************************************/
+        var popupOpen=false;
+        $('.blue').hover(function(e){
+          if(!popupOpen){
+               var userID= $(this).data('userid');
+               var tokenbarPosition = $('.token-bar').offset();
+
+                var y= tokenbarPosition.top - window.mouseYPos  +130 ;
+                var x=  60;
+            $('#token-popup'+userID).css("display","block")
+                                       .css('bottom',y+'px')
+                                        .css('right',x+'px');
+            popupOpen=true;
+         }
+
         },function(e){
-               $(this).find('.token-popup').css('display','');
+               var userID= $(this).data('userid');
+               $('#token-popup'+userID).css("display",'');
+               popupOpen=false;
            })
 
+        $(document).mousemove(function(e){
+            window.mouseXPos = e.pageX;
+            window.mouseYPos = e.pageY;
+        });
+        /**************************************************************************/
         db_functions.getOnWhomUserFollows(userId,function (e,data) {
-            $.each(data.objects, function (index, notification) {
-                dust.renderArray('myuru_follower_item', notification,null, function (err, html) {
+
+                dust.renderArray('myuru_follower_item', data.objects,null, function (err, html) {
                     $('#users-list').append(html);
-                })
+
             })
         }) ;
+
+        var biography  = $('#biography').val();
+        $('#biography').blur(function() {
+           var bio=   $('#biography').val();
+            if(bio!==biography)   {
+                biography = bio;
+                db_functions.updateUserDetails(userId,bio,function (e,data) {
+                    if(e) {
+                           console.log(e);
+                    }
+                })
+            }
+
+        });
+
+        $('#invite_friends_bt').click(function(e){
+            e.preventDefault();
+            FB.ui({method: 'apprequests', message: 'New URU Discussion'}, function(response) {
+
+                if(response && response.hasOwnProperty('to')) {
+                    var request_id = response.request;
+                    var ids=[];
+                    for(i = 0; i < response.to.length; i++) {
+                        ids.push (request_id+"_"+response.to[i])
+                        console.log("" + i + " ID: " + response.to[i]);
+                    }
+                     db_functions.addFacebookRequest("/", ids,function(err, data){
+                    // db_functions.addFacebookRequest("/discussions" + created_discussion_id+"?user_id="+creator_id, ids,function(err, data){
+                       // window.location.replace("/discussions/" + created_discussion_id);
+                        alert('sended');
+                    });
+                }
+                /*else
+                {
+                    window.location.replace("/discussions/" + created_discussion_id);
+                }*/
+            });
+
+        })
+
+
     });
 </script>
 
