@@ -18,6 +18,7 @@ module.exports = function(req,res)
                 user: req.session.user,
                 avatar:req.session.avatar_url,
                 user_logged: req.isAuthenticated(),
+                facebook_app_id:req.app.settings.facebook_app_id,
                 url:req.url,
                 tab:'discussions'
         });
