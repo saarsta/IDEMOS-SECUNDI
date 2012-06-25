@@ -63,7 +63,7 @@ module.exports = function(app)
 
     router.get('/facebookShare',account.facebookShare);
 
-    router.get('/myuru',pagesInit.myUru);
+    //router.get('/myuru',pagesInit.myUru);
     router.get('/uru/:id',pagesInit.hisUru);
 
     router.include('/meida',infoAndMeasures);

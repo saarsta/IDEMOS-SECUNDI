@@ -46,7 +46,8 @@
                   //add notices to each item
                    $.each(data.objects,function(index,information_item){
                         $.each(information_item.discussions,function(index,discussion){
-                                discussion.section="דיון";
+                               discussion.section="דיון";
+                               discussion.section_url="discussions";
                                dust.render('information_item_notice',discussion,function(err,out)
                                {
                                    $("#notices_"+information_item._id).append(out);
@@ -54,6 +55,7 @@
                         } );
                         $.each(information_item.cycles,function(index,cycle){
                                cycle.section="מעגל תנופה";
+                               cycle.section_url="cycles";
                                dust.render('information_item_notice',cycle,function(err,out)
                                {
                                    $("#notices_"+information_item._id).append(out);
@@ -62,6 +64,7 @@
                         } );
                         $.each(information_item.actions,function(index,action){
                                action.section="פעולה";
+                               action.section_url="actions";
                                dust.render('information_item_notice',action,function(err,out)
                                {
                                    $("#notices_"+information_item._id).append(out);
@@ -85,7 +88,10 @@
 
 
             });
+        $('.notice .close').live("click", function(){
 
+            $(this).parent().fadeOut();
+        });
         $('.delete-app').live("click",removeItemFromCart);
         $('.delete').live("click",removeItemFromCart);
 

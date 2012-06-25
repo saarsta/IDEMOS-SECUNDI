@@ -129,6 +129,12 @@ function addSlides(name,count, getItemsByTagName, callbackCreateTabs)
     }
 }
 
+
+$(".tab-slide-information_items .slides-one .one").live('click',function() { window.location.replace("/information_items/" + $(this).attr("item_id"));  });
+$(".tab-slide-discussions .slides-one .one").live('click',function() { window.location.replace("/discussions/" + $(this).attr("item_id"));  });
+$(".tab-slide-actions .slides-one .one").live('click',function() { window.location.replace("/actions/" + $(this).attr("item_id"));  });
+$(".tab-slide-blogs .slides-one .one").live('click',function() { window.location.replace("/blogs/" + $(this).attr("item_id"));  });
+$(".tab-slide-cycles .slides-one .one").live('click',function() { window.location.replace("/cycles/" + $(this).attr("item_id"));  });
 $("#search_term").blur(function() {
     setTimeout( "$('#search_suggest').hide()",200);
 
