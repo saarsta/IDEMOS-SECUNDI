@@ -71,7 +71,7 @@
                         </div>
                     </div>
                 </div>-->
-        <%  var userProxy;
+    <!--    <%  var userProxy;
                 for(var j=0 ;j<tokensBarModel.proxy.proxies.length;j++){
                 userProxy=tokensBarModel.proxy.proxies[j]; %>
                 <div id="token-popup<%=userProxy._id %>" class="token-popup" >
@@ -93,29 +93,50 @@
                         </div>
                     </div>
                 </div>
-              <%}%>
+              <%}%>-->
 
                 <div class="bars">
                     <div class="border"></div>
                     <div class="empty" style="height:<%=tokensBarModel.gupFromFullPixels()%>"></div>
-                    <div class="grey" style="height:<%=tokensBarModel.dailyTokensPixels()%>">
-                        <div class="info">מכסת אסימונים:<%=tokensBarModel.floorDailyTokens %> </div>
-                    </div>
+                  <% if (tokensBarModel.tokensIUsed!==0){ %>
+                        <div class="grey" style="height:<%=tokensBarModel.dailyTokensPixels()%>">
+                            <div class="info">מכסת אסימונים:<%=tokensBarModel.floorDailyTokens %> </div>
+                        </div>
+                    <% } %>
                     <div class="green" style="height:<%=tokensBarModel.tokensPixels()%>">
                         <div class="info">אסימונים זמינים: <%=tokensBarModel.floorTokens %></div>
                     </div>
                     <%  var userProxy; 
 						for(var j=0 ;j<tokensBarModel.proxy.proxies.length;j++){
 						userProxy=tokensBarModel.proxy.proxies[j]; %>
-							<div class="blue"  data-userid="<%=userProxy._id%>" style="height:<%=tokensBarModel.convertToPixels(userProxy.proxy)%>">
-								<div class="info">
-								     
-									  <span>  <%=userProxy.name %> </span> 
-									  <span> <%=userProxy.proxy.toString() %> </span> 
-									  <span> מוקצים ל </span>
 
-									 
+
+
+
+                        <div class="blue"  data-userid="<%=userProxy._id%>" style="height:<%=tokensBarModel.convertToPixels(userProxy.proxy)%>">
+								<div class="info" style="overflow: hidden">
+									 מוקצים לנציג:
+                                    <%=userProxy.proxy%>
 								</div>
+                                    <div id="token-popup<%=userProxy._id %>" class="token-popup" >
+                                        <div class="user-right">
+                                            <div class="img-box">
+                                                <div class="auto-scale"  style="width: 41px;height: 44px">
+                                                    <img src="<%=userProxy.avatar %>" alt="" />
+                                                </div>
+                                                <img class="wraper" src="/images/user-fillter-small-white.png" width="41" alt="" />
+                                            </div>
+                                        </div>
+                                        <div class="user-left">
+                                            <p><%=userProxy.name %></p>
+                                            <div class="proxy">
+                                                <span><%=userProxy.proxy%></span>
+                                            </div>
+                                            <div class="respect">
+                                                <span><%=userProxy.score%></span>
+                                            </div>
+                                        </div>
+                                    </div>
 							</div>
 					<%}%>
                 </div>
@@ -250,7 +271,7 @@
 
 
         /**************************************************************************/
-        var popupOpen=false;
+/*        var popupOpen=false;
         $('.blue').hover(function(e){
           if(!popupOpen){
                var userID= $(this).data('userid');
@@ -273,7 +294,33 @@
         $(document).mousemove(function(e){
             window.mouseXPos = e.pageX;
             window.mouseYPos = e.pageY;
-        });
+        });*/
+
+
+
+        $('.blue').hover(function(e){
+
+            var userID= $(this).data('userid');
+            var x= e.pageX<370? 80:10;
+                var y= e.offsetY-50  ;//tokenbarPosition.top - window.mouseYPos  +130 ;
+
+                $('#token-popup'+userID).css("display","block")
+                        .css('bottom',y+'px')
+                   //    .css('right',x+'px');
+
+
+        },function(e){
+            var userID= $(this).data('userid');
+            $('#token-popup'+userID).css("display",'');
+          //  popupOpen=false;
+        })
+
+      /*  $(document).mousemove(function(e){
+            window.mouseXPos = e.pageX;
+            window.mouseYPos = e.pageY;
+        });*/
+
+
         /**************************************************************************/
         db_functions.getOnWhomUserFollows(userId,function (e,data) {
 
