@@ -280,7 +280,7 @@ $(document).ready(function () {
     var postsNumber = 0;
     var is_creator= (my_id==creator_id);
 
-    var vision = "<%=discussion.text_field%>";
+    var vision = $('#discussion_content').text();
 
     $("#discussion_content").val($("#discussion_content").text());
     $(".slider").slider({
