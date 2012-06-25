@@ -3,7 +3,7 @@ var common = require('./common');
 
 module.exports =  function (req, res) {
     if (req.method == 'GET') {
-        res.redirect('/account/login');
+        res.redirect('/account/register');
         return;
 //            res.render('login.ejs', {title:'Login',
 //                tab:'user',

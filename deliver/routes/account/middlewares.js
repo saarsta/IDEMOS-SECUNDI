@@ -57,7 +57,7 @@ exports.auth_middleware = function (req, res, next) {
         {
             return redirect_urls.test(req.path);
         }))
-            res.redirect(LOGIN_PATH + '?next=' + req.path);
+            res.redirect(common.LOGIN_PATH + '?next=' + req.path);
         else
             next();
     }
