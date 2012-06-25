@@ -24,7 +24,7 @@
 
             <div class="text-box cf">
                 <div style="width: 212px;height: 164px" class='auto-scale floatRight'>
-                    <img src="<%= discussion.image_field ? discussion.image_field.url : '' %>" alt=""/>
+                    <img src="<%= discussion.image_field ? discussion.image_field.url ||'' : '' %>" alt=""/>
                 </div>
                 <div class="discussion_content discussion content">
                     <textarea id="discussion_content" class="hidden_textarea"><%=discussion.text_field%></textarea>
