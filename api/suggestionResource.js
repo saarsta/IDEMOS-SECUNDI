@@ -357,27 +357,35 @@ module.exports.approveSuggestion = function(id,callback)
             var curr_position = 0;
             var parts = suggestion_object.parts;
 
-            //changing the vision and save changes that have been so i can reverse it in change_vision
-            for (var i = 0; i < parts.length; i++) {
-                //                changed_text = vision.slice(parts[i].start, parseInt(parts[i].end) + 1);
-                new_string += vision.slice(curr_position, parts[i].start);
-                new_string += parts[i].text;
-                curr_position = parseInt(parts[i].end) + 1;
-                //                vision_changes_array.push({start: parts[i].start, end: parts[i].end, text : changed_text});
 
-                //                discussion_object.vision_changes.push({start: parts[i].start, end: parts[i].end, text : changed_text});
-            }
-            new_string += vision.slice(curr_position);
+
+        /*  for now!!!
+
+                        //changing the vision and save changes that have been so i can reverse it in change_vision
+                        for (var i = 0; i < parts.length; i++) {
+                            //                changed_text = vision.slice(parts[i].start, parseInt(parts[i].end) + 1);
+                            new_string += vision.slice(curr_position, parts[i].start);
+                            new_string += parts[i].text;
+                            curr_position = parseInt(parts[i].end) + 1;
+                            //                vision_changes_array.push({start: parts[i].start, end: parts[i].end, text : changed_text});
+
+                            //                discussion_object.vision_changes.push({start: parts[i].start, end: parts[i].end, text : changed_text});
+                        }
+                        new_string += vision.slice(curr_position);
             //            discussion_object.vision_changes.push(vision_changes_array);
 
+        */
+
+            var str = vision.slice(0, parts[0].start) + parts[0].text + vision.slice(parts[0].end, vision.length + 1);
             discussion_object.vision_text_history.push(discussion_object.text_field);
-            discussion_object.text_field = new_string;
+            discussion_object.text_field = str;
 
             //suggestion grade is the new discussion grade
             models.Discussion.update({_id:discussion_object._id},
             {
-                $addToSet: {vision_text_history: discussion_object.text_field},
-                $set:{text_field: new_string, grade: suggestion_grade}},
+//                $addToSet: {vision_text_history: discussion_object.text_field},
+                $set:{text_field: str, grade: suggestion_grade}
+            },
                 function(err, counter){
                 cbk(err, discussion_object);
             });
