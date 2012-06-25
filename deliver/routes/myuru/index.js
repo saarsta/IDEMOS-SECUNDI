@@ -3,7 +3,7 @@ module.exports = function(router)
 {
 
     router.all('', require('./myuru'));
-  //  router.all('/hisuru/', require('./hisuru'));
+   router.all(/\/([0-9a-f]+)\/?$/,require('./hisuru'));
 
 };
 

@@ -2,7 +2,11 @@
 
 <html>
 <head>
+    <script>
+        var facebookAppId = '<%= facebook_app_id %>';
+    </script>
     <%- partial('partials/head.ejs') %>
+    <%- partial('partials/facebook.ejs') %>
 
 </head>
 <body>
@@ -130,10 +134,10 @@
                                         <div class="user-left">
                                             <p><%=userProxy.name %></p>
                                             <div class="proxy">
-                                                <span><%=userProxy.proxy%></span>
+                                                <span dir="ltr"><%=userProxy.proxy%></span>
                                             </div>
                                             <div class="respect">
-                                                <span><%=userProxy.score%></span>
+                                                <span dir="ltr"><%=userProxy.score%></span>
                                             </div>
                                         </div>
                                     </div>
@@ -346,7 +350,7 @@
 
         $('#invite_friends_bt').click(function(e){
             e.preventDefault();
-            FB.ui({method: 'apprequests', message: 'New URU Discussion'}, function(response) {
+            FB.ui({method: 'apprequests', message: 'Come see that great site'}, function(response) {
 
                 if(response && response.hasOwnProperty('to')) {
                     var request_id = response.request;
@@ -358,7 +362,7 @@
                      db_functions.addFacebookRequest("/", ids,function(err, data){
                     // db_functions.addFacebookRequest("/discussions" + created_discussion_id+"?user_id="+creator_id, ids,function(err, data){
                        // window.location.replace("/discussions/" + created_discussion_id);
-                        alert('sended');
+                        alert('sent');
                     });
                 }
                 /*else
