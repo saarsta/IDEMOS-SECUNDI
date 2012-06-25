@@ -1,17 +1,24 @@
+var current_section = current_section || -1;
+
 $(document).ready(function () {
 
 
 
-var search_term = "";
+    var search_term = "";
 var sections =['information_items','discussions','cycles','actions','blogs']  ;
 
 $('#search_form').submit(function() {
-    search_term  =$("#search_term").val();
-    displaySearchResults() ;
-    return false;
+    if(current_section >= 0) {
+        search_term  =$("#search_term").val();
+        displaySearchResults() ;
+        return false;
+    }
+    else
+        return true;
 });
 
 function displaySearchResults(){
+
 
     db_functions.getItemsCountByTagName(search_term,function(err,data)
     {
@@ -167,48 +174,31 @@ $("#search_term").keyup(function() {
             displaySuggestResults(data.objects);
         }
     });
+
+
 });
 
-function displaySuggestResults(tags)
-{
-
-    $("#search_suggest li:first").siblings().remove();
-    if(tags.length>0)
+    function displaySuggestResults(tags)
     {
-        dust.renderArray('search_suggest_item', tags, null, function (err, out) {
-            $("#search_suggest").append(out);
-            $("#search_suggest").show();
-        });
-    }
-    else
-    {
-        $("#search_suggest").hide();
+
+        $("#search_suggest li:first").siblings().remove();
+        if(tags.length>0)
+        {
+            dust.renderArray('search_suggest_item', tags, null, function (err, out) {
+                $("#search_suggest").append(out);
+                $("#search_suggest").show();
+            });
+        }
+        else
+        {
+            $("#search_suggest").hide();
+
+        }
 
     }
-}
-/*
- $( "#search_term" ).autocomplete({
- minLength: 2,
- source: function( request, response ) {
- var term = request.term;
- if ( term in cache ) {
- response( cache[ term ] );
- return;
- }
 
- db_functions.getTagsBySearchTerm(term,function( ret_term, err, data ) {
- cache[ term ] = data;
- if ( term === ret_term ) {
- response( $.map(data.objects, function(item) {
- return {
- label: item.tag,
- value: item._id
- }
- }))  ;
- }
- });
- }
- });
- */
+    search_term  =$("#search_term").val()
+    if(search_term)
+        displaySearchResults();
 
 });

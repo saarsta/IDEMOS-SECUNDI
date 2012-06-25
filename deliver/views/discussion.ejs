@@ -264,9 +264,10 @@
 
 <%- partial('partials/footer.ejs') %>
 <script type="text/javascript">
+var current_section=1;
+
 $(document).ready(function () {
     /***************************************************/
-    current_section=1;
     var my_id = "<%=user_logged ? user._id : ''%>";
     var discussion_id = "<%=discussion.id%>";
     var creator_id = "<%=discussion.creator_id%>";
@@ -280,7 +281,7 @@ $(document).ready(function () {
     var postsNumber = 0;
     var is_creator= (my_id==creator_id);
 
-    var vision = "<%=discussion.text_field%>";
+    var vision = $('#discussion_content').text();
 
     $("#discussion_content").val($("#discussion_content").text());
     $(".slider").slider({
