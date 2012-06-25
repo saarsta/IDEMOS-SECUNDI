@@ -13,7 +13,8 @@ module.exports = function(app)
 
     var admin = mongoose_admin.createAdmin(app,{root:'admin'});
 
-    admin.ensureUserExists('admin','admin');
+    admin.ensureUserExists('Uruad','uruadmin!@#uruadmin');
+    admin.ensureUserExists('ishai','istheadmin');
 
     admin.registerMongooseModel("User",Models.User,null,{list:['username','first_name','last_name']});
     admin.registerMongooseModel("InformationItem",Models.InformationItem, null,{
