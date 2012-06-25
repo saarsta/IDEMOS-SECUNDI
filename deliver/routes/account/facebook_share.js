@@ -6,5 +6,5 @@ module.exports = function(req,res)
         res.redirect("http://www.facebook.com/sharer/sharer.php?u=" + link + "&referrer=" + req.session.user_id);
     }
     else
-        res.send('soon will be enabled');
+        res.send('Soon will you\'ll be able to share');
 };

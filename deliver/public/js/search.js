@@ -1,4 +1,4 @@
-var current_section = current_section || 0;
+var current_section = current_section || -1;
 
 $(document).ready(function () {
 
@@ -9,9 +9,13 @@ $(document).ready(function () {
 var sections =['information_items','discussions','cycles','actions','blogs']  ;
 
 $('#search_form').submit(function() {
-    search_term  =$("#search_term").val();
-    displaySearchResults() ;
-    return false;
+    if(current_section >= 0) {
+        search_term  =$("#search_term").val();
+        displaySearchResults() ;
+        return false;
+    }
+    else
+        return true;
 });
 
 function displaySearchResults(){

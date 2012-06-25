@@ -16,6 +16,8 @@ module.exports = function(app) {
 
     router.include('/account',Account.routing);
 
+    router.all('/facebookShare',require('./account/facebook_share'));
+
     router.include('/information_items',InformationItems);
 
     // TODO remove this (only for backward comp)
