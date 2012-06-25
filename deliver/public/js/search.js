@@ -1,8 +1,11 @@
+var current_section = current_section || 0;
+
 $(document).ready(function () {
 
 
 
-var search_term = "";
+
+    var search_term = "";
 var sections =['information_items','discussions','cycles','actions','blogs']  ;
 
 $('#search_form').submit(function() {
@@ -12,6 +15,7 @@ $('#search_form').submit(function() {
 });
 
 function displaySearchResults(){
+
 
     db_functions.getItemsCountByTagName(search_term,function(err,data)
     {

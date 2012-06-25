@@ -69,9 +69,10 @@
 <%- partial('partials/footer.ejs') %>
 
 <script type="text/javascript">
-$(document).ready(function () {
+    var current_section=0;
 
-            var current_section=0;
+    $(document).ready(function () {
+
             var info_item_id = "<%= item.id %>";
             //bugbug shold this be used?
             //$('#info_item_full_view img').autoscale();
