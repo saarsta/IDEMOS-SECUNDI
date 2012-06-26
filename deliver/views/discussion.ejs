@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-
+<%
+var error_message = error_message || '';
+%>
 <html>
 <head>
     <%- partial('partials/head.ejs') %>
@@ -43,7 +45,8 @@
                     <a class="btn-green" id="discussion_comment_reply_button" href="javascript:void(0);">
                         הגב
                     </a>
-                    <a class="btn-grey" href="/facebookShare?link=/discussions/<%=discussion.id%>">
+
+                    <a class="btn-grey share" rel="/facebookShare?link=/discussions/<%=discussion.id%>" href="/facebookShare?link=/discussions/<%=discussion.id%>">
                         שתף
                     </a>
 
@@ -340,6 +343,11 @@ $(document).ready(function () {
                     next:'#prev',
                     prev:'#next'
                 });
+
+        if(data.objects.length < 2){
+            $("#prev").hide();
+            $("#next").hide();
+        }
 
     });
 
