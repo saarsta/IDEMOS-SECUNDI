@@ -11,7 +11,7 @@ module.exports = function(req,res)
         // get the user object
         function(cbk) {
             if(req.session.user)
-                models.User.findById(req.session.user._id,cbk);
+                models.User.findById(req.session.user._id, cbk);
             else
             {
                 console.log('no user on session!');
@@ -24,7 +24,7 @@ module.exports = function(req,res)
             models.Discussion.findById(req.params[0], cbk);
         }
     ],
-        function(err,results)
+        function(err, results)
         {
             if(err)
                 res.render('500.ejs',{error:err});
