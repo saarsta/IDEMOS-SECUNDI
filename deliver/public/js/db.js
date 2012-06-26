@@ -220,7 +220,8 @@ var db_functions = {
             url: '/api/fb_request/',
             type: "POST",
             async: true,
-            data: {"link": link, "fb_request_ids": request_ids},
+            contentType:'application/json',
+            data: JSON.stringify({"link": link, "fb_request_ids": request_ids}),
             success: function (data) {
                 console.log(data);
                 callback(null, data);
