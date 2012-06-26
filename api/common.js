@@ -230,18 +230,22 @@ function load_token_prices(){
     {
         if(doc)
             token_prices = doc._doc;
+        console.log(doc);
+        if(err)
+            console.error(err);
     });
 };
 
 load_token_prices();
 
+models.GamificationTokens.schema.pre('save',function(next)
+{
+    setTimeout(load_token_prices, 1000);
+    next();
+});
+
 exports.getGamificationTokenPrice = function(type)
 {
-    models.GamificationTokens.schema.pre('save',function(next)
-    {
-        setTimeout(load_token_prices, 1000);
-        next();
-    });
     return token_prices[type] || 0;
 };
 
@@ -251,17 +255,21 @@ function load_threshold_calc_variables(){
     {
         if(doc)
             threshold_calc_variables = doc._doc;
+        console.log(doc);
+        if(err)
+            console.error(err);
     });
 };
 
 load_threshold_calc_variables();
 
+models.ThresholdCalcVariables.schema.pre('save',function(next)
+{
+    setTimeout(load_threshold_calc_variables, 1000);
+    next();
+});
+
 exports.getThresholdCalcVariables = function(type)
 {
-    models.ThresholdCalcVariables.schema.pre('save',function(next)
-    {
-        setTimeout(load_threshold_calc_variables, 1000);
-        next();
-    });
     return threshold_calc_variables[type] || 0;
 };

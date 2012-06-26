@@ -21,7 +21,7 @@
                     <a href="javascript:void(0);" id="add_button" >הוסף</a>
                     <a href="/facebookShare?link=/media/<%= item.id %>" target="_blank">שתף</a>
                      <% if(!item.user_likes) { %>
-                        <a href="javascript:void(0);" class="number" id="like_button">1+</a>
+                        <a class="hide" href="javascript:void(0);" class="number" id="like_button">1+</a>
                      <% } %>
 
                 </div>
@@ -69,9 +69,10 @@
 <%- partial('partials/footer.ejs') %>
 
 <script type="text/javascript">
-$(document).ready(function () {
+    var current_section=0;
 
-            var current_section=0;
+    $(document).ready(function () {
+
             var info_item_id = "<%= item.id %>";
             //bugbug shold this be used?
             //$('#info_item_full_view img').autoscale();

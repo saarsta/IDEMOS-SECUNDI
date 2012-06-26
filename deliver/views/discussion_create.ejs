@@ -7,7 +7,11 @@
            -->
 <html>
 <head>
-<%- partial('partials/head.ejs') %>
+    <script>
+        var facebookAppId = '<%= facebook_app_id %>';
+    </script>
+    <%- partial('partials/head.ejs') %>
+    <%- partial('partials/facebook.ejs') %>
 </head>
 <body>
 <%- partial('partials/body_top.ejs') %>
@@ -40,7 +44,7 @@
                             </div>
                             <div class="textarea">
                                 <textarea id="vision" name="vision" rows="10" cols="50"  placeholder=
-                                        "תיאור מפורט של חזון המציאות החדשה"
+"תיאור מפורט של חזון המציאות החדשה (עד 800 מילים)"
                                         ></textarea>
                             </div>
                         </div>
@@ -197,9 +201,9 @@
     </div>
     <%- partial('partials/footer.ejs') %>
 <script type="text/javascript">
+    var current_section=1;
     $(document).ready(function () {
 
-         current_section=1;
 
          $("#request_form").validate({
          		errorElement: "p",

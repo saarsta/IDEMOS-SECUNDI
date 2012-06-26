@@ -87,9 +87,6 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
         if (object) {
 
             object.is_follower = false;
-//            object.threshold = object.threshold_for_accepting_change_suggestions;
-//            if(object.admin_threshold_for_accepting_change_suggestions > 0)
-//                object.threshold = object.admin_threshold_for_accepting_change_suggestions;
 
             if (user) {
                 if (_.find(user.discussions, function (user_discussion) {

@@ -1,0 +1,30 @@
+
+
+<script type="text/javascript">
+
+    var facebookAppId = facebookAppId || '175023072601087';
+
+    var tag_name = "<% if (typeof tag_name !== "undefined") {%> <%= tag_name || '' %><% } %>";
+    var current_section=null;
+    $(document).ready(function () {
+        $('.tikunim-box h2').click(function () {
+            $(this).parent().toggleClass('active');
+        });
+        $('.user-box h2').click(function () {
+            $(this).parent().toggleClass('active');
+        });
+    });
+
+    $.getScript("//connect.facebook.net/en_US/all.js", function () {
+        FB.init({
+            appId:facebookAppId, // App ID local
+            //appId      : '321148554570158', // App Production
+            status:true, // check login status
+            cookie:false, // enable cookies to allow the server to access the session
+            xfbml:true, // parse XFBML
+            oauth:true
+        });
+    });
+
+
+</script>

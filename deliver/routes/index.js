@@ -3,17 +3,20 @@ var Router = require('./router'),
     InformationItems = require('./information_items'),
     Discussions = require('./discussions'),
     Account = require('./account'),
-    MyUru= require('./myuru'),
-    HisUru= require('./hisuru') ;
+    MyUru= require('./myuru');
+  //  HisUru= require('./hisuru') ;
 
 
 
 
 module.exports = function(app) {
     var router = Router.base(app);
-    router.get('/', Navigation.index);
+
+    router.include('',Navigation) ;
 
     router.include('/account',Account.routing);
+
+    router.all('/facebookShare',require('./account/facebook_share'));
 
     router.include('/information_items',InformationItems);
 
@@ -22,7 +25,8 @@ module.exports = function(app) {
 
     router.include('/discussions',Discussions);
     router.include('/myuru',MyUru);
-    router.include('/hisuru',HisUru);
+   // router.include('/hisuru',MyUru);
+  //  router.include('/hisuru',HisUru);
 
 
 

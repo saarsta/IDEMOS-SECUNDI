@@ -44,6 +44,7 @@ function render_information_item_page(req,res,item) {
         user: req.session.user,
         auth_user: req.session.auth.user,
         tab:'information_items',
-        avatar_url: req.session.avatar_url
+        avatar_url: req.session.avatar_url,
+        description: item.text_field_preview
     });
 }

@@ -47,8 +47,14 @@ var InformationItemResource = module.exports = common.GamificationMongooseResour
                 title: null
             },
             discussion_counter:null,
-            cycles: null,
-            actions: null,
+            cycles: {
+                _id: null,
+                title: null
+            },
+            actions: {
+                _id : null,
+                title: null
+            },
             tags: null,
             like_counter: null,
             view_counter: null
@@ -58,7 +64,7 @@ var InformationItemResource = module.exports = common.GamificationMongooseResour
     run_query: function(req,query,callback)
     {
         if(query._conditions.subject_id){
-            query.populate('discussions');
+            query.populate('discussions').populate('cycles').populate('actions');
         }
 
         this._super(req, query, callback);

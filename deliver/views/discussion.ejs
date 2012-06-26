@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-
+<%
+var error_message = error_message || '';
+%>
 <html>
 <head>
     <%- partial('partials/head.ejs') %>
@@ -12,7 +14,7 @@
         <%-partial('partials/menu.ejs')%>
         <%-partial('partials/user_box.ejs')%>
         <%-partial('partials/failures.ejs')%>
-        <%- partial('partials/tag_search.ejs') %>
+        <%-partial('partials/tag_search.ejs') %>
     </div>
     <div id="content" class="cf">
         <div class="add-offer">
@@ -24,7 +26,7 @@
 
             <div class="text-box cf">
                 <div style="width: 212px;height: 164px" class='auto-scale floatRight'>
-                    <img src="<%= discussion.image_field ? discussion.image_field.url : '' %>" alt=""/>
+                    <img src="<%= discussion.image_field ? discussion.image_field.url ||'' : '' %>" alt=""/>
                 </div>
                 <div class="discussion_content discussion content">
                     <textarea id="discussion_content" class="hidden_textarea"><%=discussion.text_field%></textarea>
@@ -43,7 +45,7 @@
                     <a class="btn-green" id="discussion_comment_reply_button" href="javascript:void(0);">
                         הגב
                     </a>
-                    <a href="">
+                    <a class="btn-grey" href="/facebookShare?link=/discussions/<%=discussion.id%>">
                         שתף
                     </a>
 
@@ -78,7 +80,7 @@
                 <div class="slide-box">
                     <div class="summary">
                         <input type="text" id="amount" value="<%= Math.round(discussion.grade*100)/100 %>"/>
-                        <span> <div class="inlinediv" id="graders"><%= discussion.evaluate_counter %>
+                        <span> <div class="inlinediv" id="graders"><%= Math.round(discussion.evaluate_counter) %>
                         </div> מדרגים</span>
                     </div>
                     <div class="slider">
@@ -264,9 +266,10 @@
 
 <%- partial('partials/footer.ejs') %>
 <script type="text/javascript">
+var current_section=1;
+
 $(document).ready(function () {
     /***************************************************/
-    current_section=1;
     var my_id = "<%=user_logged ? user._id : ''%>";
     var discussion_id = "<%=discussion.id%>";
     var creator_id = "<%=discussion.creator_id%>";
@@ -280,6 +283,7 @@ $(document).ready(function () {
     var postsNumber = 0;
     var is_creator= (my_id==creator_id);
 
+    var vision = $('#discussion_content').text();
 
     $("#discussion_content").val($("#discussion_content").text());
     $(".slider").slider({
@@ -680,21 +684,6 @@ $(document).ready(function () {
     $('#sorting_select').change(loadPosts);
 
     loadPosts();
-    //init posts
-    /* db_functions.getPostByDiscussion(discussion_id, function(err, data){
-     if(err){
-     console.log(err);
-     }else{
-     setCommentNumber( data.objects.length);
-     dust.renderArray('discussion_comment', data.objects, null, function(err, out){
-     if(!err){
-     $("#comments").append(out);
-     // $('#posts img').autoscale();
-     }
-     });
-     }
-     });*/
-
 
     $("#cancelWriteCommentBT").live("click", function () {
         $('#write-comment').hide();
@@ -753,6 +742,10 @@ $(document).ready(function () {
 
     $('#send_suggestion').click(function () {
         var part = {start:range.start, end:range.end, text:$("textarea#discussion_suggest").val()};
+        //arrange spaces
+        if(vision[part.end - 1] == " " && part.text[part.text.length - 1] != " ")
+
+            part.text += " ";
         var explanation = $("#discussion_explanation").val();
         db_functions.addSuggestionToDiscussion(discussion_id, [part], explanation, function (err, data) {
             if (!err) {
