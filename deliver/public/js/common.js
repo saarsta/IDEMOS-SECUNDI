@@ -105,6 +105,19 @@ var connectPopup = function(callback){
 
 $(function(){
 
+    function fbs_click(ui) {
+//        u = location.href;
+//        t = document.title;
+
+        var u = ui.attr('rel');
+        window.open(
+            'http://www.facebook.com/sharer.php?u=' + encodeURIComponent(u),
+            'sharer',
+            'toolbar=0,status=0,width=640,height=109'
+        );
+        return false;
+    }
+
     function initTooltip(ui){
         ui.tooltip({
             bodyHandler: function() {
@@ -169,6 +182,27 @@ $(function(){
             }
         }
     };
+    var callback = function(event){
+        var target_element = event.srcElement || event.target;
+        if(target_element){
+            if($(target_element).is('.auto-scale'))
+                image_autoscale($('img',target_element));
+            else
+            {
+                var autoscale = $('.auto-scale',target_element);
+                if(autoscale.length)
+                    image_autoscale($('img',autoscale));
+            }
+            if($(target_element).is('.share'))
+                fbs_click($(target_element));
+            else
+            {
+                var tooltip = $('.share',target_element);
+                if(tooltip.length)
+                    fbs_click(tooltip);
+            }
+        }
+    };
 
     if($.browser.msie && Number($.browser.version) == 8)
     {
@@ -186,6 +220,16 @@ $(function(){
     initTooltip($(".gray_and_soon"));
     initTooltipWithMessage($(".cycle_comming_soon"), "כאן יתקיים התהליך למימוש המציאות הנדרשת שהסכמנו לגביה במערכת הדיונים, באמצעות פעולות, אירועים ועדכונים שוטפים. יעלה בקרוב."   );
     initTooltipWithMessage($(".action_comming_soon"), "יעלה בקרוב");
+
+//    $(".share").on('click', function(e){
+//      e.preventDefault();
+//
+//      console.log("clicked");
+//      fbs_click($(this));
+//
+//    });
+
+
 });
 
 function image_autoscale(obj, params)

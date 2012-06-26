@@ -45,7 +45,7 @@ var error_message = error_message || '';
                     <a class="btn-green" id="discussion_comment_reply_button" href="javascript:void(0);">
                         הגב
                     </a>
-                    <a class="btn-grey" href="/facebookShare?link=/discussions/<%=discussion.id%>">
+                    <a class="btn-grey share" rel="/facebookShare?link=/discussions/<%=discussion.id%>" href="/facebookShare?link=/discussions/<%=discussion.id%>">
                         שתף
                     </a>
 
@@ -326,10 +326,13 @@ $(document).ready(function () {
     }
 
     db_functions.getDiscussionShoppingCart(discussion_id, function (err, data) {
+
         $.each(data.objects, function (index, item) {
             dust.render('discussion_information_item', item, function (err, out) {
                 $('.slide-c').append(out);
             });
+
+
         });
 
         $('.slide-c')
@@ -342,6 +345,11 @@ $(document).ready(function () {
                     next:'#prev',
                     prev:'#next'
                 });
+
+        if(data.objects.length < 2){
+            $("#prev").hide();
+            $("#next").hide();
+        }
 
     });
 

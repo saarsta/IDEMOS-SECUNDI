@@ -19,13 +19,13 @@
             <div class="rightCol">
                 <div class="nav-btn">
                     <a href="javascript:void(0);" id="add_button" >הוסף</a>
-                    <a href="/facebookShare?link=/media/<%= item.id %>" target="_blank">שתף</a>
+                    <a class="share" href="/facebookShare?link=/media/<%= item.id %>" target="_blank">שתף</a>
                      <% if(!item.user_likes) { %>
                         <a class="hide" href="javascript:void(0);" class="number" id="like_button">1+</a>
                      <% } %>
 
                 </div>
-                <h2><a href="/information_items/subject/<%= item.subject_id[0].id %>"><%= item.subject_id[0].name %></a>  <% if(tag_name) { %> <a class="last_breadcrum" href="/information_items/subject/<%= item.subject_id[0].id %>?tag_name=<%= tag_name %>"><%= tag_name %></a><% } %></h2>
+                <h2><a class="share" href="/information_items/subject/<%= item.subject_id[0].id %>"><%= item.subject_id[0].name %></a>  <% if(tag_name) { %> <a class="last_breadcrum" href="/information_items/subject/<%= item.subject_id[0].id %>?tag_name=<%= tag_name %>"><%= tag_name %></a><% } %></h2>
                 <div class="text cf">
                     <h3><%=item.title%></h3>
                     <div class="tags-wrap">
@@ -169,6 +169,7 @@
         $('.comments-box .comment-one .user-right').hover(function () {
             $(this).toggleClass('hover');
         });
+
 
 
 

@@ -33,36 +33,38 @@ module.exports = function(req,res)
                 res.render('500.ejs',{error:err});
             else
             {
-                // populate 'is follower' , 'grade object' ...
-                resource.get_discussion(results[1],results[0],function(err,discussion)
+                if(!results[1])
+                    res.redirect('/discussions');
+                else
                 {
-                    console.log("get_discussion with: user:");
-                    console.log(results[0]);
-                    if(err)
-                        res.render('500.ejs',{error:err});
-                    else
+                    // populate 'is follower' , 'grade object' ...
+                    resource.get_discussion(results[1],results[0],function(err,discussion)
                     {
-                        if(!discussion)
-                            res.redirect('/discussions');
+                        console.log("get_discussion with: user:");
+                        console.log(results[0]);
+                        if(err)
+                            res.render('500.ejs',{error:err});
                         else
                         {
-                            res.setHeader("Expires", "0");
-                            res.render('discussion.ejs',{
-                                layout: false,
-                                title:"דיון",
-                                user_logged: req.isAuthenticated(),
-                                discussion_id: req.params[0],
-                                subject_id: req.query.subject_id,
-                                user: req.session.user,
-                                avatar:req.session.avatar_url,
-                                tab:'discussions',
-                                discussion: discussion,
-                                url: req.url,
-                                description: discussion.text_field_preview
-                            });
+
+                                res.setHeader("Expires", "0");
+                                res.render('discussion.ejs',{
+                                    layout: false,
+                                    title:"דיון",
+                                    user_logged: req.isAuthenticated(),
+                                    discussion_id: req.params[0],
+                                    subject_id: req.query.subject_id,
+                                    user: req.session.user,
+                                    avatar:req.session.avatar_url,
+                                    tab:'discussions',
+                                    discussion: discussion,
+                                    url: req.url,
+                                    description: discussion.text_field_preview
+                                });
+
                         }
-                    }
-                });
+                    });
+                }
             }
         });
 
