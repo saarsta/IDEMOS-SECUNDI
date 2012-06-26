@@ -9,7 +9,7 @@ var listCommon = (function(){
                 db_functions.getListItems(original_type,query, function(err,data){
                     jqueryContainer.css('height',jqueryContainer.height());
                     jqueryContainer.empty();
-                    data.objects.forEach(function(elm)
+                    $.each(data.objects,function(index,elm)
                     {
                         elm.get_link = function()
                         {

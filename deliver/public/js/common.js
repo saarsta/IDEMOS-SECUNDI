@@ -148,7 +148,12 @@ $(function(){
     db_functions.getAndRenderFooterTags();
 
 
+    var inCallback = false;
+
     var callback = function(event){
+        if(inCallback)
+            return;
+        inCallback = true;
         var target_element = event.srcElement || event.target;
         if(target_element){
             if($(target_element).is('.auto-scale'))
@@ -168,6 +173,7 @@ $(function(){
                     initTooltip(tooltip);
             }
         }
+        inCallback = false;
     };
 
     if($.browser.msie && Number($.browser.version) == 8)
@@ -175,7 +181,7 @@ $(function(){
         var _append = Element.prototype.appendChild;
         Element.prototype.appendChild = function()
         {
-            _append.apply(this,arguments);
+            _append.call(this,arguments[0],arguments[1]);
             callback({srcElement:this});
         };
     }
@@ -230,6 +236,7 @@ function image_autoscale(obj, params)
             }
 
             elm.css({position:'absolute', height:height, top:top, left:left});
+            //elm.attr('height',height);
         }
         elm.fadeIn(fadeIn)
     });
