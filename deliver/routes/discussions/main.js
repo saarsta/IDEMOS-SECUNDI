@@ -16,6 +16,9 @@ module.exports = function(req,res)
             {
                 console.log('no user on session!');
                 console.log(req.session);
+                console.log("req.session.user_id");
+                console.log(req.session.user_id);
+
                 cbk(null, null);
             }
         },
