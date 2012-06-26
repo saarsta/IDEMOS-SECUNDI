@@ -30,7 +30,7 @@ exports.auth_middleware = function (req, res, next) {
     if (req.isAuthenticated())
     {
         if(!req.session.user) {
-                models.User.findOne(/*req.session.user_id*/{_id: req.session.auth.user._id || req.session.user_id} ,function(err,user){
+                models.User.findById(req.session.auth.user._id || req.session.user_id ,function(err,user){
                     if(err){
                         console.log('couldn put user id' + err.message)
                         next();
