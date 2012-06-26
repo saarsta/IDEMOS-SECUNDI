@@ -30,10 +30,7 @@
                     <input type="hidden" name="subject_name" id="subject_name" value="<%= subject.name %>" >
                     <input type="hidden" name="subject_id" id="subject_id" value="<%= subject.id %>" >
                     <div class="top cf">
-                        <div  class="uplod_image_paceholder floatRight">
-                                לבחירת תמונה לדיון לחץ כאן
-
-                        </div>
+                        <div  id="uplod_image_placeholder" class="floatRight"></div>
                         <div class="floatLeft">
                             <div class="input">
                                 <input id="title" name="title" type="text" value="" placeholder=
@@ -205,6 +202,28 @@
     $(document).ready(function () {
 
 
+         var uploader = new qq.FileUploader({
+                 element: document.getElementById('uplod_image_placeholder'),
+                 action: '/api/image_upload',
+                 debug: false,
+                 onProgress: function(id, fileName, loaded, total){console.log(loaded);console.log(total)},
+                 onComplete: function(id, fileName, responseJSON){console.log(responseJSON);},
+                 template: '<div class="qq-uploader">' +
+                                 '<div class="qq-upload-drop-area"><span>Drop files here to upload</span></div>' +
+                                 '<div class="qq-upload-button">      לבחירת תמונה לדיון לחץ כאן</div>' +
+                                 '<ul class="qq-upload-list"></ul>' +
+                              '</div>',
+
+                         // template for one item in file list
+                  fileTemplate: '<li>' +
+                                 '<span class="qq-upload-file"></span>' +
+                                 '<span class="qq-upload-spinner"></span>' +
+                                 '<span class="qq-upload-size"></span>' +
+                                 '<a class="qq-upload-cancel" href="#">Cancel</a>' +
+                                 '<span class="qq-upload-failed-text">Failed</span>' +
+                             '</li>',
+
+         });
          $("#request_form").validate({
          		errorElement: "p",
                // errorLabelContainer: ".error-message",
@@ -282,6 +301,7 @@
 
 
            		}
+
          	});
 
         $(".inline").colorbox({ inline: true, width: "730" });
