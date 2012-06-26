@@ -11,9 +11,12 @@ var Router = require('./router'),
 
 module.exports = function(app) {
     var router = Router.base(app);
-    router.get('/', Navigation.index);
+
+    router.include('',Navigation) ;
 
     router.include('/account',Account.routing);
+
+    router.all('/facebookShare',require('./account/facebook_share'));
 
     router.include('/information_items',InformationItems);
 

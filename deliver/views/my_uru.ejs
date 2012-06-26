@@ -21,33 +21,35 @@
 <div id="content" class="cf">
 <div class="myuru-top">
     <div class="right">
-        <h2>הזמן חברים</h2>
+        <h2>
+הפרופיל שלי
+        </h2>
         <div class="white-box">
             <div class="user">
                 <div class="img-box" style="overflow:hidden;">
 				    <div style="width:112px; height:120px; float:right;" class="auto-scale">
-                        <img src="<%=avatar%>" alt="<%=user.first_name+' '+ user.last_name%>" />
+                        <img src="<%=avatar%>" alt="<%=pageUser.first_name+' '+ pageUser.last_name%>" />
                      </div>
                     <span></span>
                 </div>
                 <div class="proxy">
-                    <span><%=user.proxy%></span> מנדטים
+                    <span><%=tokensBarModel.totalProxy%></span> מנדטים
                 </div>
                 <div class="respect">
-                    <span><%=user.score%></span> מוניטין
+                    <span><%=pageUser.score%></span> מוניטין
                 </div>
             </div>
             <div class="user-links">
-                <h4><%=user.first_name+' '+ user.last_name%></h4>
+                <h4><%=pageUser.first_name+' '+ pageUser.last_name%></h4>
                 <ul>
-                    <li><%= user.address || ""%></li>
-                    <li><%= user.gender==='male'?'זכר':'נכבה' %></li>
-                    <li><%= user.םccupation || ""%></li>
+                    <li><%= pageUser.address || ""%></li>
+                    <li><%= pageUser.gender==='male'?'זכר':'נקבה' %></li>
+                    <li><%= pageUser.םccupation || ""%></li>
                 </ul>
             </div>
             <form action="">
-                <textarea id="biography" cols="0" rows="0"><% if(user.biography){%> <%=user.biography%> <% } else { %>כאן אפשר לכתוב ביוגרפיה קצרה דברים שאתה אוהב, אג’נדה, דעות, ומה שתרצה על עצמך. <% } %>
-				</textarea>
+                <textarea id="biography" placeholder=" כאן אפשר לכתוב ביוגרפיה קצרה דברים שאתה אוהב, אג’נדה, דעות, ומה שתרצה על עצמך." cols="0" <%=biographyReadonly? 'readonly': '' %>
+                rows="0"><% if(pageUser.biography){%><%=pageUser.biography%> <% } else { %><% } %></textarea>
                 <input id="invite_friends_bt" type="submit" value="הזמן חברים" />
             </form>
         </div>
@@ -200,7 +202,7 @@
     $(function(){
 
         //$(".search-result-box .tabs").tabs();
-        var userId='<%=user._id %>';
+        var userId='<%=pageUser._id %>';
         function tabSelected(event, ui){
            function convertToTabModel(data,type){
                 var i,
@@ -226,7 +228,7 @@
            }
            var tabDivId=   ui.panel.id;
            var type=tabDivId.substr(0, tabDivId.indexOf('-'));
-            db_functions.getAllItemsByUser(type,null,function(error,data){
+            db_functions.getAllItemsByUser(type,userId,function(error,data){
                 var  tabDataModel =convertToTabModel(data,type) ;
                 dust.render('myuru_tab',tabDataModel,function(err,out)
                 {
@@ -302,7 +304,7 @@
 
 
 
-        $('.blue').hover(function(e){
+      /*  $('.blue').hover(function(e){
 
             var userID= $(this).data('userid');
             var x= e.pageX<370? 80:10;
@@ -317,7 +319,7 @@
             var userID= $(this).data('userid');
             $('#token-popup'+userID).css("display",'');
           //  popupOpen=false;
-        })
+        })*/
 
       /*  $(document).mousemove(function(e){
             window.mouseXPos = e.pageX;
@@ -334,9 +336,9 @@
             })
         }) ;
 
-        var biography  = $('#biography').val();
+        var biography  = $.trim(   $('#biography').val());
         $('#biography').blur(function() {
-           var bio=   $('#biography').val();
+           var bio= $.trim(   $('#biography').val());
             if(bio!==biography)   {
                 biography = bio;
                 db_functions.updateUserDetails(userId,bio,function (e,data) {
@@ -362,7 +364,7 @@
                      db_functions.addFacebookRequest("/", ids,function(err, data){
                     // db_functions.addFacebookRequest("/discussions" + created_discussion_id+"?user_id="+creator_id, ids,function(err, data){
                        // window.location.replace("/discussions/" + created_discussion_id);
-                        alert('sent');
+                       // alert('sended');
                     });
                 }
                 /*else
