@@ -34,17 +34,25 @@ module.exports = function (req, res) {
                             });
                         });
                     } else {
-                        updateUesrAccessToken(user_detailes, access_token, function (_id) {
-                            req.session.auth.user._id = _id;
-                            req.session.save(function (err, object) {
-                                if (err != null) {
-                                    console.log(err);
-                                } else {
-                                    console.log('user _id to session is ok');
-                                    res.redirect(next || common.DEFAULT_LOGIN_REDIRECT);
-                                }
+                        updateUesrAccessToken(user_detailes, access_token, function (err,_id) {
+                            if(err){
+                                console.error(err);
+                                console.trace();
+                                res.send("error in registration", 500);
+                            }else{
+                                req.session.auth.user._id = _id;
+                                req.session.save(function (err, object) {
+                                    if (err != null) {
+                                        console.error(err);
+                                        console.trace();
+                                        res.send("error in registration", 500);
+                                    } else {
+                                        console.log('user _id to session is ok');
+                                        res.redirect(next || common.DEFAULT_LOGIN_REDIRECT);
+                                    }
 
-                            });
+                                });
+                            }
                         });
                     }
                 });
@@ -128,7 +136,7 @@ function updateUesrAccessToken(data, access_token, callback) {
             if (err) {
                 return callback(err);
             } else {
-                callback(user.id);
+                callback(null,user.id);
             }
         });
 //        res.end();

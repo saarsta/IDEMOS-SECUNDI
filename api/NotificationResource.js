@@ -313,8 +313,11 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                         if(discussion){
                             notification.link = "/discussions/" + notification.entity_id + "#post_" + notification.notificators[0].sub_entity_id;
                         }
-                        notification.pic = user_obj.avatar_url();
-                        notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;
+                        //TODO dont know why sometimes there is no user_obj... (i can see it in the discussion admin)
+                        if(user_obj){
+                            notification.pic = user_obj.avatar_url();
+                            notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;
+                        }
                         notification.message_of_notificators =
                             "נתן לך"
                         + notification.notificators[0].ballance +
@@ -352,8 +355,12 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                         if(discussion){
                             notification.link = "/discussions/" + notification.entity_id + "#suggestion_" + notification.notificators[0].sub_entity_id;
                         }
-                        notification.pic = user_obj.avatar_url();
-                        notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;
+                        if(user_obj){
+                            notification.pic = user_obj.avatar_url();
+                            notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;
+                            notification.pic = user_obj.avatar_url();
+                            notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;
+                        }
                         notification.message_of_notificators =
                             "נתן לך"
                         + notification.notificators[0].ballance +
