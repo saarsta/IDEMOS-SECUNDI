@@ -10,10 +10,17 @@ module.exports = function(req,res)
     async.parallel([
         // get the user object
         function(cbk) {
-//            if(req.session.user)
-//                models.User.findById(req.session.user._id,cbk);
-//            else
+            if(req.session.user)
+                models.User.findById(req.session.user._id, cbk);
+            else
+            {
+                console.log('no user on session!');
+                console.log(req.session);
+                console.log("req.session.user_id");
+                console.log(req.session.user_id);
+
                 cbk(null, null);
+            }
         },
         // get the discussion object
         function(cbk)  {
@@ -29,6 +36,8 @@ module.exports = function(req,res)
                 // populate 'is follower' , 'grade object' ...
                 resource.get_discussion(results[1],results[0],function(err,discussion)
                 {
+                    console.log("get_discussion with: user:");
+                    console.log(results[0]);
                     if(err)
                         res.render('500.ejs',{error:err});
                     else
