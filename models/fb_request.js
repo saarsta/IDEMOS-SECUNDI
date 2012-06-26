@@ -10,7 +10,8 @@ var FBRequest = module.exports  =  new Schema({
 
 
 FBRequest.statics.getLink = function(request_id, callback) {
-    this.findOne().where('fb_request_ids',request_id).run(function(err,link) {
+    console.log(request_id);
+    this.findOne().where('fb_request_ids').in(request_id).run(function(err,link) {
         if(err)
             callback(err);
         else

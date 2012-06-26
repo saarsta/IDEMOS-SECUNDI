@@ -248,23 +248,9 @@
                                      }else{
 
                                         if ($('#invite_friends').is(':checked'))    {
-                                            FB.ui({method: 'apprequests', message: 'New URU Discussion'}, function(response) {
 
-                                                if(response && response.hasOwnProperty('to')) {
-                                                    var request_id = response.request;
-                                                    var ids=[];
-                                                    for(i = 0; i < response.to.length; i++) {
-                                                        ids.push (request_id+"_"+response.to[i])
-                                                        console.log("" + i + " ID: " + response.to[i]);
-                                                    }
-                                                    db_functions.addFacebookRequest("/discussions/" + created_discussion_id+"?user_id="+creator_id, ids,function(err, data){
-                                                           window.location.replace("/discussions/" + created_discussion_id);
-                                                    });
-                                                }
-                                                else
-                                                {
-                                                    window.location.replace("/discussions/" + created_discussion_id);
-                                                }
+                                            sendFacebookInvite('New URU Discussion', "/discussions/" + created_discussion_id,function(err, data){
+                                                window.location.replace("/discussions/" + created_discussion_id);
                                             });
                                          }
                                          else
