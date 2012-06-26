@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-
+<%
+var error_message = error_message || '';
+%>
 <html>
 <head>
     <%- partial('partials/head.ejs') %>
@@ -12,7 +14,7 @@
         <%-partial('partials/menu.ejs')%>
         <%-partial('partials/user_box.ejs')%>
         <%-partial('partials/failures.ejs')%>
-        <%- partial('partials/tag_search.ejs') %>
+        <%-partial('partials/tag_search.ejs') %>
     </div>
     <div id="content" class="cf">
         <div class="add-offer">
@@ -78,7 +80,7 @@
                 <div class="slide-box">
                     <div class="summary">
                         <input type="text" id="amount" value="<%= Math.round(discussion.grade*100)/100 %>"/>
-                        <span> <div class="inlinediv" id="graders"><%= discussion.evaluate_counter %>
+                        <span> <div class="inlinediv" id="graders"><%= Math.round(discussion.evaluate_counter) %>
                         </div> מדרגים</span>
                     </div>
                     <div class="slider">

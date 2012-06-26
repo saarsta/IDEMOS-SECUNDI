@@ -192,7 +192,9 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
 
                         itr_cbk();
                     } else {
-                        notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;
+                        if(user_obj){
+                            notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;
+                        }
                         notification.message_of_notificators =
                             "הגיב על דיון שאתה חלק ממנו"
                         ;
@@ -212,8 +214,9 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                         ;
                         itr_cbk()
                     } else {
-
-                        notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;
+                        if(user_obj){
+                            notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;
+                        }
                         notification.message_of_notificators =
                             "הגיב על הצעה לשינוי שלקחת בה חלק"
                         ;
@@ -233,12 +236,13 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                         ;
                         itr_cbk(null, 1);
                     } else {
-
-                        notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;
+                        if(user_obj){
+                            notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;
+                            notification.pic = user_obj.avatar_url();
+                        }
                         notification.message_of_notificators =
                             "הגיב על דיון שיצרת"
                         ;
-                        notification.pic = user_obj.avatar_url();
 
                         itr_cbk();
 
@@ -257,8 +261,9 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                         ;
                         itr_cbk();
                     } else {
-
-                        notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;
+                        if(user_obj){
+                            notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;
+                        }
                         notification.message_of_notificators =
                             "הגיב על הצעה שלינוי שיצרת"
                         ;
@@ -291,7 +296,8 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                         notification.link = "/discussions/" + notification.entity_id + '#post_' + notification.notificators[0].sub_entity_id;
                         notification.pic = discussions_hash[notification.entity_id + ""].image_field_preview || discussions_hash[notification.entity_id + ""].image_field;
                     }
-                    notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;
+                    if(user_obj)
+                         notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;
                     notification.message_of_notificators =
                         "ציטט אותך"
                     ;

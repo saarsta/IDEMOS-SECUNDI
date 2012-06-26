@@ -57,7 +57,8 @@ module.exports = function(req,res)
                                 avatar:req.session.avatar_url,
                                 tab:'discussions',
                                 discussion: discussion,
-                                url: req.url
+                                url: req.url,
+                                description: discussion.text_field_preview
                             });
                         }
                     }
