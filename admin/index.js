@@ -69,8 +69,10 @@ module.exports = function(app)
         list:['text','username']
     });
     admin.registerMongooseModel('Suggestion',Models.Suggestion,null,{
-        list:['parts.0.text'],
+        list:['parts.0.text', 'discussion_id.title'],
+        list_populate:['discussion_id'],
         form:require('./suggestion'),
+        order_by:['-discussion_id','-creation_date'],
         actions:[
             {
                 value:'approve',
@@ -133,6 +135,12 @@ module.exports = function(app)
 
     admin.registerMongooseModel('Kilkul',Models.Kilkul,null,{
         list:['title']
+    });
+
+    admin.registerMongooseModel('FBRequest',Models.FBRequest,null,{
+        list_populate:['creator'],
+        list:['link','creator.first_name','creator.last_name']
+
     });
 
     admin.registerSingleRowModel(Models.GamificationTokens,'GamificationTokens');
