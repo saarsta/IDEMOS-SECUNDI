@@ -14,6 +14,6 @@ FBRequest.statics.getLink = function(request_id, callback) {
         if(err)
             callback(err);
         else
-            callback(null, link.link);
+            callback(null, link);
     });
 };

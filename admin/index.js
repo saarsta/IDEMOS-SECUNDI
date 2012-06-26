@@ -135,9 +135,17 @@ module.exports = function(app)
         list:['title']
     });
 
+    admin.registerMongooseModel('FBRequest',Models.FBRequest,null,{
+        list_populate:['creator'],
+        list:['link','creator.first_name','creator.last_name']
+
+    });
+
     admin.registerSingleRowModel(Models.GamificationTokens,'GamificationTokens');
 
     admin.registerSingleRowModel(Models.ThresholdCalcVariables,'ThresholdCalcVariables');
+
+
 
     admin.registerMongooseModel('Admin_Users',mongoose.model('_MongooseAdminUser'),null,{
         list:['username']
