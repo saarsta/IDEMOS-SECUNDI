@@ -105,17 +105,21 @@ var connectPopup = function(callback){
 
 $(function(){
 
-    function fbs_click(ui) {
-//        u = location.href;
-//        t = document.title;
+    var host = window.location.protocol + '//' + window.location.host;
 
-        var u = ui.attr('rel');
-        window.open(
-            'http://www.facebook.com/sharer.php?u=' + encodeURIComponent(u),
-            'sharer',
-            'toolbar=0,status=0,width=640,height=109'
-        );
-        return false;
+    function fbs_click(ui) {
+
+        ui.click( function() {
+
+            var u = $(this).attr('rel');
+            window.open(
+                'http://www.facebook.com/sharer.php?u=' + encodeURIComponent(host + u),
+                'sharer',
+                'toolbar=0,status=0'
+            );
+            return false;
+        });
+        ui.attr('href','javascript:void(0);');
     }
 
     function initTooltip(ui){
@@ -218,16 +222,9 @@ $(function(){
 
     image_autoscale($('.auto-scale img'));
     initTooltip($(".gray_and_soon"));
+    fbs_click($('.share'));
     initTooltipWithMessage($(".cycle_comming_soon"), "כאן יתקיים התהליך למימוש המציאות הנדרשת שהסכמנו לגביה במערכת הדיונים, באמצעות פעולות, אירועים ועדכונים שוטפים. יעלה בקרוב."   );
     initTooltipWithMessage($(".action_comming_soon"), "יעלה בקרוב");
-
-//    $(".share").on('click', function(e){
-//      e.preventDefault();
-//
-//      console.log("clicked");
-//      fbs_click($(this));
-//
-//    });
 
 
 });
