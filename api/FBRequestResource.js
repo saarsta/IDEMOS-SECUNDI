@@ -14,11 +14,7 @@ jest = require('jest'),
 var FBRequestResource = module.exports = jest.MongooseResource.extend({
     init:function(){
         this._super(models.FBRequest);
-        this.allowed_methods = ["get", "post"];
-
-        this.default_query = function (query) {
-            return query;
-        };
+        this.allowed_methods = ["post"];
 
         this.filtering = {
             fb_request_ids:{
@@ -26,6 +22,17 @@ var FBRequestResource = module.exports = jest.MongooseResource.extend({
                 in:null
             }
         };
+
+        this.update_fields = {
+            link:null,
+            fb_request_ids:null
+        };
+
+        this.fields = {
+            link:null,
+            fb_request_ids:null
+        };
+
 
         this.authentication = new common.SessionAuthentication();
 

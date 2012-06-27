@@ -220,7 +220,8 @@ var db_functions = {
             url: '/api/fb_request/',
             type: "POST",
             async: true,
-            data: {"link": link, "fb_request_ids": request_ids},
+            contentType:'application/json',
+            data: JSON.stringify({"link": link, "fb_request_ids": request_ids}),
             success: function (data) {
                 console.log(data);
                 callback(null, data);
@@ -678,7 +679,7 @@ var db_functions = {
     },
 
     getInfoItemsOfSubjectByKeywords: function(keywords, subject_id,sort_by, callback){
-        var keywords_arr = keywords.trim().replace(/\s+/g,".%2B");
+        var keywords_arr = $.trim(keywords).replace(/\s+/g,".%2B");
         db_functions.loggedInAjax({
             url: '/api/information_items/?or=text_field__regex,text_field_preview__regex,title__regex&title__regex=' + keywords_arr + '&text_field__regex='+ keywords_arr + '&text_field_preview__regex='+ keywords_arr + '&subject_id=' + subject_id+'&order_by='+sort_by,
             type: "GET",

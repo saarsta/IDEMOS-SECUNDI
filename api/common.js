@@ -239,7 +239,6 @@ function load_token_prices(){
     {
         if(doc)
             token_prices = doc._doc;
-        console.log(doc);
         if(err)
             console.error(err);
     });
@@ -264,7 +263,6 @@ function load_threshold_calc_variables(){
     {
         if(doc)
             threshold_calc_variables = doc._doc;
-        console.log(doc);
         if(err)
             console.error(err);
     });

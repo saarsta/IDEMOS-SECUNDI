@@ -46,7 +46,7 @@ var error_message = error_message || '';
                         הגב
                     </a>
 
-                    <a class="btn-grey share" rel="/facebookShare?link=/discussions/<%=discussion.id%>" href="/facebookShare?link=/discussions/<%=discussion.id%>">
+                    <a class="btn-grey share" rel="/discussions/<%=discussion.id%>" href="/facebookShare?link=/discussions/<%=discussion.id%>">
                         שתף
                     </a>
 
@@ -259,6 +259,20 @@ var error_message = error_message || '';
                  הצע הצעה לשינוי
              </a>
      </span>
+
+<form id="proxy_form" style="display:none;">
+    <fieldset>
+        <label for="give_tokens">Tokens</label>
+        <select id="give_tokens" name="tokens" dir="ltr">
+            <option>-3</option>
+            <option>-2</option>
+            <option>-1</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+        </select>
+    </fieldset>
+</form>
 <!--</span>
 </div>
 </div>
@@ -270,6 +284,7 @@ var error_message = error_message || '';
 var current_section=1;
 
 $(document).ready(function () {
+
     /***************************************************/
     var my_id = "<%=user_logged ? user._id : ''%>";
     var discussion_id = "<%=discussion.id%>";
@@ -285,6 +300,36 @@ $(document).ready(function () {
     var is_creator= (my_id==creator_id);
 
     var vision = $('#discussion_content').text();
+
+    var onGiveProxy;
+
+    $( "#proxy_form" ).dialog({
+        autoOpen: false,
+        height: 300,
+        width: 350,
+        modal: true,
+        buttons: {
+            "תן/קח אסימונים": function() {
+
+                var self = this;
+
+                $( self ).dialog( "disable" );
+                var bValid = true;
+                if(onGiveProxy) {
+                    onGiveProxy(Number($('#give_tokens',this).val()),function() {
+                        $( self ).dialog( "close" );
+                    });
+                }
+            },
+            'בטל': function() {
+                $( this ).dialog( "close" );
+            }
+        },
+        open:function(){
+            $(this).dialog('enable');
+        }
+    });
+
 
     $("#discussion_content").val($("#discussion_content").text());
     $(".slider").slider({
@@ -403,6 +448,12 @@ $(document).ready(function () {
 
 
     $('#comments').on('click', '#add_or_remove_proxy', function () {
+        $( "#proxy_form" ).dialog( "open" );
+
+        onGiveProxy = function(tokens,callback) {
+            console.log(tokens);
+            setTimeout(callback,1000);
+        };
         var proxy_id = $(this).parents('.comment-one').data("creator_id");
         db_functions.addOrRemoveProxyMandate(my_id, proxy_id, 1, function(err, data){
             var a = 8;
@@ -570,6 +621,7 @@ $(document).ready(function () {
 
             dust.render('discussion_suggestion', suggestion, function (err, out) {
                 $('#suggestion_list').prepend(out);
+                image_autoscale($('#suggestion_list .auto-scale img'));
                 var suggestion_grade_val = suggestion.grade_obj ? suggestion.grade_obj.evalueation_grade : my_discussion_grade;
                 suggest_grade_id[suggestion.id] = suggestion.grade_obj ? suggestion.grade_obj._id : null;
                 $(".suggest_slider_" + suggestion.id).slider({
@@ -673,6 +725,8 @@ $(document).ready(function () {
                         }
                     }
                 }
+
+                image_autoscale($('.auto-scale img',comments));
             }
         });
     }
