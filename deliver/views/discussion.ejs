@@ -259,6 +259,20 @@ var error_message = error_message || '';
                  הצע הצעה לשינוי
              </a>
      </span>
+
+<form id="proxy_form" style="display:none;">
+    <fieldset>
+        <label for="give_tokens">Tokens</label>
+        <select id="give_tokens" name="tokens" dir="ltr">
+            <option>-3</option>
+            <option>-2</option>
+            <option>-1</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+        </select>
+    </fieldset>
+</form>
 <!--</span>
 </div>
 </div>
@@ -270,6 +284,7 @@ var error_message = error_message || '';
 var current_section=1;
 
 $(document).ready(function () {
+
     /***************************************************/
     var my_id = "<%=user_logged ? user._id : ''%>";
     var discussion_id = "<%=discussion.id%>";
@@ -285,6 +300,36 @@ $(document).ready(function () {
     var is_creator= (my_id==creator_id);
 
     var vision = $('#discussion_content').text();
+
+    var onGiveProxy;
+
+    $( "#proxy_form" ).dialog({
+        autoOpen: false,
+        height: 300,
+        width: 350,
+        modal: true,
+        buttons: {
+            "תן/קח אסימונים": function() {
+
+                var self = this;
+
+                $( self ).dialog( "disable" );
+                var bValid = true;
+                if(onGiveProxy) {
+                    onGiveProxy(Number($('#give_tokens',this).val()),function() {
+                        $( self ).dialog( "close" );
+                    });
+                }
+            },
+            'בטל': function() {
+                $( this ).dialog( "close" );
+            }
+        },
+        open:function(){
+            $(this).dialog('enable');
+        }
+    });
+
 
     $("#discussion_content").val($("#discussion_content").text());
     $(".slider").slider({
@@ -403,6 +448,12 @@ $(document).ready(function () {
 
 
     $('#comments').on('click', '#add_or_remove_proxy', function () {
+        $( "#proxy_form" ).dialog( "open" );
+
+        onGiveProxy = function(tokens,callback) {
+            console.log(tokens);
+            setTimeout(callback,1000);
+        };
         var proxy_id = $(this).parents('.comment-one').data("creator_id");
         db_functions.addOrRemoveProxyMandate(my_id, proxy_id, 1, function(err, data){
             var a = 8;
