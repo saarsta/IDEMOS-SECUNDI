@@ -33,6 +33,15 @@ var tags_replace = {
     's': 's'
 };
 
+function sendFacebookInvite(message,link,callback) {
+    FB.ui({method: 'apprequests', message: message}, function(response) {
+
+        var request_id = response.request;
+
+        db_functions.addFacebookRequest(link, request_id,callback);
+    });
+}
+
 dust.filters['tags'] = function(text) {
     $.each(tags_replace,function(key,value) {
         text = text.replace(RegExp('\\[' + key + '\\]','g'),'<' + value + '>').replace(RegExp('\\[\\/' + key +  '\\]','g'),'</' + value + '>')
@@ -165,7 +174,12 @@ $(function(){
     db_functions.getAndRenderFooterTags();
 
 
+    var inCallback = false;
+
     var callback = function(event){
+        if(inCallback)
+            return;
+        inCallback = true;
         var target_element = event.srcElement || event.target;
         if(target_element){
             if($(target_element).is('.auto-scale'))
@@ -185,6 +199,7 @@ $(function(){
                     initTooltip(tooltip);
             }
         }
+        inCallback = false;
     };
     var callback = function(event){
         var target_element = event.srcElement || event.target;
@@ -213,7 +228,7 @@ $(function(){
         var _append = Element.prototype.appendChild;
         Element.prototype.appendChild = function()
         {
-            _append.apply(this,arguments);
+            _append.call(this,arguments[0],arguments[1]);
             callback({srcElement:this});
         };
     }
@@ -271,6 +286,7 @@ function image_autoscale(obj, params)
             }
 
             elm.css({position:'absolute', height:height, top:top, left:left});
+            //elm.attr('height',height);
         }
         elm.fadeIn(fadeIn)
     });

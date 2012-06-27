@@ -621,6 +621,7 @@ $(document).ready(function () {
 
             dust.render('discussion_suggestion', suggestion, function (err, out) {
                 $('#suggestion_list').prepend(out);
+                image_autoscale($('#suggestion_list .auto-scale img'));
                 var suggestion_grade_val = suggestion.grade_obj ? suggestion.grade_obj.evalueation_grade : my_discussion_grade;
                 suggest_grade_id[suggestion.id] = suggestion.grade_obj ? suggestion.grade_obj._id : null;
                 $(".suggest_slider_" + suggestion.id).slider({
@@ -724,6 +725,8 @@ $(document).ready(function () {
                         }
                     }
                 }
+
+                image_autoscale($('.auto-scale img',comments));
             }
         });
     }

@@ -322,14 +322,6 @@
 <script type="text/javascript">
         var range;
 
-        String.prototype.trim = function () {
-            var str = this.replace(/^\s\s*/, ''),
-                    ws = /\s/,
-                    i = str.length;
-            while (ws.test(str.charAt(--i)));
-            return str.slice(0, i + 1);
-        };
-
         $(function(){
 
             var discussion_id = "<%=discussion_id%>";
