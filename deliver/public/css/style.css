@@ -4976,3 +4976,14 @@ body.search-ative #header
 }
 
 
+.ie7_message {
+    display:none;
+    background-color: #CCC;
+    border: black 2px solid;
+    padding: 50px;
+    color: #50504F;
+    text-decoration: none;
+    font-size: 22px;
+    line-height: 20px;
+    font-family: 'AdumaFOTRegular';
+}
