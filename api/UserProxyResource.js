@@ -54,7 +54,8 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
                     avatar_url: null,
                     first_name: null,
                     last_name: null,
-                    number_of_tokens: null
+                    number_of_tokens: null,
+                    num_of_given_mandates: null
                 }
             },
             tokens: null,
@@ -76,7 +77,8 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
 
     get_object: function(req, id, callback){
       this._super(req, id, function(err, obj){
-         obj.daily_tokens = 9 + obj.num_of_extra_tokens;
+          if(obj)
+                obj.daily_tokens = 9 + obj.num_of_extra_tokens;
          callback(err, obj);
       })
     },
@@ -93,7 +95,7 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
         if(proxy){
             //edit proxy's mandates(tokens)
             if (req.body.number_of_tokens > 0){
-                proxy.number_of_tokens += req.body.number_of_tokens;
+                proxy.number_of_tokens += Number(req.body.number_of_tokens);
                 //reduce tokens from my tokens
                 object.tokens -= req.body.number_of_tokens;
 

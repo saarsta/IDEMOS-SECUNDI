@@ -26,13 +26,7 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
             return query.sort('creation_date', 'ascending');
         };
         this.fields = {
-            creator_id : {
-                id:null,
-                first_name:null,
-                last_name:null,
-                avatar_url:null,
-                score: null
-            },
+            creator_id : common.user_public_fields,
             text:null,
             popularity:null,
             tokens:null,
