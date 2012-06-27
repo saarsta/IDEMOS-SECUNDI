@@ -42,13 +42,14 @@ function sendFacebookInvite(message,link,callback) {
     });
 }
 
-function sendFacebookShare(name,link,callback) {
-    db_functions.addFacebookRequest(link, 'share',function(err,link_obj) {
+function sendFacebookShare(link, name,callback) {
+    db_functions.addFacebookRequest(link, null,function(err,link_obj) {
         if(err)
             callback(err);
         else {
-            link = link_obj.link;
-            FB.ui({method: 'send', name: name, link:link}, function(response) {
+            link =  window.location.origin + link_obj.link;
+            FB.ui({method: 'feed', link: link, name: name}, function(response) {
+
                 console.log(response);
                 callback();
             });
@@ -136,7 +137,7 @@ $(function(){
 
         ui.click( function() {
 
-            sendFacebookShare($(this).attr('rel'),$(this).data('name'),function(err) {
+            sendFacebookShare($(this).attr('rel'), $(this).data('name'), function(err) {
                 console.log(err);
             });
 //            var u = ;

@@ -50,13 +50,13 @@
                 <div class="green  vote_for">
                     מסכים
                 </div>
-                <div class="number">{votes_for}</div>
+                <div class="number">{votes_for|round}</div>
             </div>
             <div class="no">
                 <div class="red vote_against">
                     לא מסכים
                 </div>
-                <div class="number">{votes_against}</div>
+                <div class="number">{votes_against|round}</div>
             </div>
         </div>
     </div>
@@ -65,7 +65,7 @@
         <a class="quote_button" href="javascript:void(0);">
             צטט
         </a>
-        <a class="share" href="/facebookShare?link=/discussions/{discussion_id}#post_{_id}" target="_blank">
+        <a class="share" rel="/discussions/{discussion_id}#post_{_id}" data-name="{text}" href="/facebookShare?link=/discussions/{discussion_id}#post_{_id}" target="_blank">
             שתף
         </a>
     </div>

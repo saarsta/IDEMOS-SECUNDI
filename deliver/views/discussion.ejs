@@ -46,7 +46,7 @@ var error_message = error_message || '';
                         הגב
                     </a>
 
-                    <a class="btn-grey share" rel="/discussions/<%=discussion.id%>" data-name="<%=discussion.title%>" href="/facebookShare?link=/discussions/<%=discussion.id%>">
+                    <a class="btn-grey share" rel="/discussions/<%=discussion.id%>" data-name="<%=discussion.text_field_preview%>" href="/facebookShare?link=/discussions/<%=discussion.id%>">
                         שתף
                     </a>
 
@@ -346,7 +346,7 @@ $(document).ready(function () {
 
                 if (!err) {
                     $("#amount").val(Math.round(data.new_grade * 100) / 100);
-                    $("#graders").text(data.evaluate_counter);
+                    $("#graders").text(Math.round(data.evaluate_counter));
                     $(".dark_bar").css('width', (my_discussion_grade * 10) + '%');
                     grade_id = data.grade_id;
                 }
@@ -645,11 +645,11 @@ $(document).ready(function () {
                         db_functions.addSuggestionGrade(suggestion.id, discussion_id, rating, suggest_grade_id[suggestion.id], function (err, data) {
                             if (!err) {
                                 $("#suggest_grade_" + suggestion.id).val(Math.round(data.new_grade * 100) / 100);
-                                $("#suggest_graders_" + suggestion.id).text(data.evaluate_counter);
-                                $("#agrees_" + suggestion.id).text(data.agrees);
-                                $("#not_agrees_" + suggestion.id).text(data.not_agrees);
+                                $("#suggest_graders_" + suggestion.id).text(Math.round(data.evaluate_counter));
+                                $("#agrees_" + suggestion.id).text(Math.round(data.agrees));
+                                $("#not_agrees_" + suggestion.id).text(Math.round(data.not_agrees));
                                 $("#wanted_amount_of_tokens_" + suggestion.id).text(data.wanted_amount_of_tokens);
-                                $("#curr_amount_of_tokens_" + suggestion.id).text(data.curr_amount_of_tokens);
+                                $("#curr_amount_of_tokens_" + suggestion.id).text(Math.round(data.curr_amount_of_tokens));
                                 suggest_grade_id[suggestion.id] = data.grade_id;
 
                                 //already_graded
