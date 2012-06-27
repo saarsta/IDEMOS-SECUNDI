@@ -42,6 +42,22 @@ function sendFacebookInvite(message,link,callback) {
     });
 }
 
+function sendFacebookShare(name,link,callback) {
+    db_functions.addFacebookRequest(link, 'share',function(err,link_obj) {
+        if(err)
+            callback(err);
+        else {
+            link = link_obj.link;
+            FB.ui({method: 'send', name: name, link:link}, function(response) {
+                console.log(response);
+                callback();
+            });
+        }
+    });
+
+}
+
+
 dust.filters['tags'] = function(text) {
     $.each(tags_replace,function(key,value) {
         text = text.replace(RegExp('\\[' + key + '\\]','g'),'<' + value + '>').replace(RegExp('\\[\\/' + key +  '\\]','g'),'</' + value + '>')
@@ -120,12 +136,15 @@ $(function(){
 
         ui.click( function() {
 
-            var u = $(this).attr('rel');
-            window.open(
-                'http://www.facebook.com/sharer.php?u=' + encodeURIComponent(host + u),
-                'sharer',
-                'toolbar=0,status=0'
-            );
+            sendFacebookShare($(this).attr('rel'),$(this).data('name'),function(err) {
+                console.log(err);
+            });
+//            var u = ;
+//            window.open(
+//                'http://www.facebook.com/sharer.php?u=' + encodeURIComponent(host + u),
+//                'sharer',
+//                'toolbar=0,status=0'
+//            );
             return false;
         });
         ui.attr('href','javascript:void(0);');
