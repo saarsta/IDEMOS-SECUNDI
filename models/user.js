@@ -47,7 +47,7 @@ var User = module.exports = new Schema({
     followers: [
         new Schema({follower_id:{type:ObjectId, ref:'User'}, join_date: {type:Date, 'default':Date.now}})
     ],
-    password:String,
+    password: {type: String, editable:false},
     validation_code: {type: String, editable:false},
     tokens:{type:Number, 'default':9, min: 0/*, max:15.9*/},
     gamification: {type:Schema.Types.Mixed,editable:false },

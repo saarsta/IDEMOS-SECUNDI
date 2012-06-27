@@ -17,7 +17,7 @@ var Discussion = module.exports = new Schema({
         {type:ObjectId, ref:'Subject', index:true, required:true}
     ],
     subject_name: String,
-    system_message: {type:mongoose_types.Html, "default": "דיון זה מתעתד להיות מעגל תנופה. שתפו, הגיבו וגרמו לזה לקרות"},
+    system_message: {type:mongoose_types.Html},
     creation_date:{type:Date, 'default':Date.now},
     creator_id:{type:ObjectId, ref:'User'},
     first_name:{type:String,editable:false},
