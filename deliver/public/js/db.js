@@ -10,10 +10,16 @@ var db_functions = {
             console.log(arguments[2]);
         };
         options.error =  function (xhr, ajaxOptions, thrownError) {
-            if(xhr.status == 401 && xhr.responseText == 'not authenticated'){
-                connectPopup(function(){
-                    onError(xhr,ajaxOptions,thrownError);
-                });
+            if(xhr.status == 401 && (xhr.responseText == 'not authenticated' || xhr.responseText == "Error: Unauthorized - there is not enought tokens" || xhr.responseText == "user must have a least 10 tokens to open create discussion")){
+                if (xhr.responseText == 'not authenticated'){
+                    connectPopup(function(){
+                        onError(xhr,ajaxOptions,thrownError);
+                    });
+                }else if (xhr.responseText == 'Error: Unauthorized - there is not enought tokens')
+                {
+                    alert("??? ????? ???????? ????? ???? ????? ??");
+                }else if (xhr.responseText == "user must have a least 10 tokens to open create discussion")
+                    alert("???? ??????? ?? 10 ???????? ????? ????? ????");
             }
             else
                 onError(xhr,ajaxOptions,thrownError);
@@ -196,6 +202,8 @@ var db_functions = {
             },
 
             error:function(err){
+                if(err.responseText == "vision can't be more than 800 words")
+                    alert("???? ????? ???? ????? 800 ????? ??? ?????");
                 callback(err, null);
             }
         });

@@ -230,6 +230,8 @@ function load_token_prices(){
     {
         if(doc)
             token_prices = doc._doc;
+        if(err)
+            console.error(err);
     });
 };
 
