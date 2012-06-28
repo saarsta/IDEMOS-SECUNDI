@@ -67,9 +67,13 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
 
                                     var flag = false;
 
-                                    var proxy = _.find(proxies, function(proxy){ return proxy.user_id + "" == post.creator_id + ""});
+                                    var proxy = _.find(proxies, function(proxy){
+                                        if(!post.creator_id)
+                                            return null;
+                                        else
+                                            return proxy.user_id + "" == post.creator_id._id + ""});
                                     if(proxy)
-                                        proxy.mandates_curr_user_gave_creator = proxy.number_of_tokens;
+                                        post.mandates_curr_user_gave_creator = proxy.number_of_tokens;
                                     if(post.creator_id)
                                         flag =  _.any(post.creator_id.followers, function(follower){return follower.follower_id + "" == user_id + ""});
                                     post.is_user_follower = flag;

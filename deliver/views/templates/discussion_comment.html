@@ -1,5 +1,5 @@
 <div id="post_{_id}" class="comment-one {#isFirst} noBorder{:else}{/isFirst}"
-     data-id="{_id}" data-ref-id="{ref_to_post_id}"
+     data-id="{_id}" data-ref-id="{ref_to_post_id}" data-num-given-mandates="{mandates_curr_user_gave_creator}"
      data-creator_name="{creator_id.first_name} {creator_id.last_name}"
      data-creator_id="{creator_id.id}">
     <div class="user-right side_menu">
@@ -32,7 +32,7 @@
 
             <div class="date" dir="ltr">{creator_id.username} {?creation_date}{creation_date|time}{/creation_date}</div>
             <div class="proxy">
-                <span>{creator_id.num_of_given_mandates}</span>
+                <span class="num">{creator_id.num_of_given_mandates}</span>
             </div>
             <div class="respect">
                 <span class="score">{creator_id.score}</span>

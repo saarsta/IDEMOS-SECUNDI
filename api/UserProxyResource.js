@@ -12,10 +12,14 @@ var Authorization = resources.Authorization.extend({
                 if(req.user._id + "" == req.body.proxy_id + "")
                     callback({message:"Error: Unauthorized - can't be your own proxy!", code: 401}, null);
                 else
-                    if(req.body.number_of_tokens > object.tokens)
+                    if(req.body.req_number_of_tokens > object.tokens)
                         callback({message:"Error: Unauthorized - you don't have enougth tokens to give!", code: 401}, null);
                     else
+                    {
                         callback(null, object);
+
+                    }
+
             }
             else
                 callback({message:"Error: Unauthorized - can't set other people proxies!", code: 401}, null);
@@ -47,6 +51,8 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
             first_name: null,
             last_name: null,
             num_of_given_mandates: null,
+
+
             proxy: {
                 user_id:{
                     _id: null,
@@ -56,7 +62,8 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
                     last_name: null,
                     number_of_tokens: null,
                     num_of_given_mandates: null
-                }
+                },
+                number_of_tokens_to_get_back: null
             },
             tokens: null,
             daily_tokens: null
@@ -86,7 +93,7 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
     update_obj: function (req, object, callback) {
         //proxy is a list of peopole for whom i gave my mandates, and it saved in my schema
         var proxy_id = req.body.proxy_id;
-        var number_of_tokens = req.body.number_of_tokens;
+        var number_of_tokens = req.body.req_number_of_tokens;
         var proxy = _.find(object.proxy, function(proxy_user){return proxy_user.user_id + "" == proxy_id + ""});
 
         var self = this;
@@ -94,10 +101,10 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
 
         if(proxy){
             //edit proxy's mandates(tokens)
-            if (req.body.number_of_tokens > 0){
-                proxy.number_of_tokens += Number(req.body.number_of_tokens);
+            if (req.body.req_number_of_tokens > 0){
+                proxy.number_of_tokens += Number(req.body.req_number_of_tokens);
                 //reduce tokens from my tokens
-                object.tokens -= req.body.number_of_tokens;
+                object.tokens -= req.body.req_number_of_tokens;
 
 
 
@@ -105,9 +112,12 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
 
 
 
-            }else
+            }else{
                 //tokens will be removed once a day by a cron
-                proxy.number_of_tokens_to_get_back += req.body.number_of_tokens;
+                proxy.number_of_tokens_to_get_back = proxy.number_of_tokens_to_get_back || 0;
+                proxy.number_of_tokens_to_get_back += (Number(req.body.req_number_of_tokens) * -1);
+            }
+
         }else{
             //edit proxy's mandates(tokens)
             proxy = {
@@ -116,10 +126,10 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
                 number_of_tokens_to_get_back: null
             };
 
-            if (req.body.number_of_tokens > 0){
-                proxy.number_of_tokens = req.body.number_of_tokens;
+            if (req.body.req_number_of_tokens > 0){
+                proxy.number_of_tokens = req.body.req_number_of_tokens;
                 //reduce tokens from my tokens
-                object.tokens -= req.body.number_of_tokens;
+                object.tokens -= req.body.req_number_of_tokens;
 
 
                 //set notification here
@@ -127,18 +137,24 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
 
             }else
             //tokens will be removed once a day by a cron
-                proxy.number_of_tokens_to_get_back = req.body.number_of_tokens;
+                proxy.number_of_tokens_to_get_back = Number(req.body.number_of_tokens) * -1;
 
             object.proxy.push(proxy);
         }
 
         if(proxy.number_of_tokens > 3)
             callback({message:"Error: Unauthorized - max mandate is 3!", code: 401}, null)
+        else if (proxy.number_of_tokens_to_get_back > proxy.number_of_tokens)
+            callback({message:"Error: Unauthorized - can't take more tokens then you gave", code: 401}, null)
         else{
             //save user object
 
+            //why the guck is it pn user????
+            object.number_of_tokens = 0;
+            object.number_of_tokens_to_get_back = 0;
+
             base.call(self, req, object, function(err, user_obj){
-                if(!err && req.body.number_of_tokens > 0){
+                if(!err && req.body.req_number_of_tokens > 0){
                     //update proxy-user new tokens
                     models.User.update({_id: proxy_id}, {$inc: {num_of_given_mandates: number_of_tokens}}, function(err, num){
                         callback(err, user_obj);

@@ -157,7 +157,7 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
             switch (notification.type) {
                 case "approved_info_item_i_created":
                     notification.message_of_notificators =
-                        "פריט מידע שהצעת התקבל"
+                        "פריט מידע שהתעניינת בו תויג כחלק מדיון"
                     ;
                     notification.link = "/information_items/" + notification.entity_id;
                     notification.pic = info_items_hash[notification.notificators[0].sub_entity_id].image_field_preview
@@ -182,10 +182,10 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
 
                     if (num_of_comments > 1) {
                         description_of_notificators = num_of_comments + " " +
-                            "אנשים"
+                            "תגובות"
                         ;
                         message_of_notificators =
-                            " הגיבו על דיון שאתה חלק ממנו"
+"חדשות בדיון שהשתתפש בו"
                         ;
                         notification.description_of_notificators = description_of_notificators;
                         notification.message_of_notificators = message_of_notificators;
@@ -196,7 +196,7 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                             notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;
                         }
                         notification.message_of_notificators =
-                            "הגיב על דיון שאתה חלק ממנו"
+                            "הגיב על דיון שהשתתפת בו"
                         ;
                         itr_cbk()
                     }

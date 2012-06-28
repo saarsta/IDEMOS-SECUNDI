@@ -10,10 +10,16 @@ var db_functions = {
             console.log(arguments[2]);
         };
         options.error =  function (xhr, ajaxOptions, thrownError) {
-            if(xhr.status == 401 && xhr.responseText == 'not authenticated'){
-                connectPopup(function(){
-                    onError(xhr,ajaxOptions,thrownError);
-                });
+            if(xhr.status == 401 && (xhr.responseText == 'not authenticated' || xhr.responseText == "Error: Unauthorized - there is not enought tokens" || xhr.responseText == "user must have a least 10 tokens to open create discussion")){
+                if (xhr.responseText == 'not authenticated'){
+                    connectPopup(function(){
+                        onError(xhr,ajaxOptions,thrownError);
+                    });
+                }else if (xhr.responseText == 'Error: Unauthorized - there is not enought tokens')
+                {
+                    alert("אין מספיק אסימונים בשביל לבצע פעולה זו");
+                }else if (xhr.responseText == "user must have a least 10 tokens to open create discussion")
+                    alert("צריך מינימום של 10 אסימונים בשביל ליצור דיון");
             }
             else
                 onError(xhr,ajaxOptions,thrownError);
@@ -196,6 +202,8 @@ var db_functions = {
             },
 
             error:function(err){
+                if(err.responseText == "vision can't be more than 800 words")
+                    alert("חזון הדיון צריך להיות 800 מילים לכל היותר");
                 callback(err, null);
             }
         });
@@ -462,7 +470,7 @@ var db_functions = {
         db_functions.loggedInAjax({
             url: '/api/user_proxies/' + user_id,
             type: "PUT",
-            data: {proxy_id: proxy_id, number_of_tokens: number_of_namdates},
+            data: {proxy_id: proxy_id, req_number_of_tokens: number_of_namdates},
             async: true,
             success: function (data) {
                 callback(null, data);

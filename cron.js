@@ -19,6 +19,18 @@ exports.run = function(app)
             console.log(err || result);
         })
     }, 60 * 1000 * 24 * 60);
+
+//    setInterval(function(){
+//        daily_cron.takeProxyMandatesBack(function(err, result){
+//        console.log(err || result);
+//        })
+//    },20 * 1000);
+
+//    setInterval(function(){
+//        daily_cron.takeProxyMandatesBack(function(err, result){
+//        console.log(err || result);
+//        })
+//    },20 * 1000);
 };
 
 var Cron = exports.Cron = {
@@ -472,59 +484,72 @@ var daily_cron =  exports.daily_cron = {
 
         async.waterfall([
             function(cbk){
-                models.User.find().where("proxy.number_of_tokens_to_get_back").gt(0).run(cbk);
+                models.User.find().where("proxy.number_of_tokens_to_get_back").gt(0).run(function(err, results){
+                    cbk(err, results);
+                });
             },
 
             function(users, cbk){
-                _.forEach(users, function(user, itr_cbk){
-                    _.each(user.proxy, function(proxy){
-                        if(proxy.number_of_tokens_to_get_back > 0){
+                if(users){
+                    async.forEach(users, function(user, itr_cbk){
+                        _.each(user.proxy, function(proxy){
+                            if(proxy.number_of_tokens_to_get_back > 0){
 
-                            //create a list of proxies and sum the number of tokens to take from them
-                            var exist_proxy = _.find(proxies_ids_and_number_of_tokens_to_get_back, function(proxy){return proxy.proxy_id == proxy.user_id});
+                                //create a list of proxies and sum the number of tokens to take from them
+                                var exist_proxy = _.find(proxies_ids_and_number_of_tokens_to_get_back, function(proxy){return proxy.proxy_id == proxy.user_id});
 
-                            if(exist_proxy)
-                                exist_proxy.num_of_extra_tokens += proxy.number_of_tokens_to_get_back;
-                            else
-                                proxies_ids_and_number_of_tokens_to_get_back.push({prox_id: proxy.user_id, num_of_extra_tokens: proxy.number_of_tokens_to_get_back})
+                                if(exist_proxy)
+                                    exist_proxy.num_of_extra_tokens += proxy.number_of_tokens_to_get_back;
+                                else
+                                    proxies_ids_and_number_of_tokens_to_get_back.push({prox_id: proxy.user_id, num_of_extra_tokens: proxy.number_of_tokens_to_get_back})
 
-                            //reduce tokens from my tokens
-                            user.tokens += proxy.number_of_tokens_to_get_back;
+                                //reduce tokens from my tokens
+                                user.tokens += proxy.number_of_tokens_to_get_back;
 
-                            //set notifications for proxy
-                            proxy_notifications.push({
-                                proxy_id: proxy.user_id,
-                                notificator_id: user._id,
-                                number_of_taken_tokens: proxy.number_of_tokens_to_get_back
-                            })
+                                //set notifications for proxy
+                                proxy_notifications.push({
+                                    proxy_id: proxy.user_id,
+                                    notificator_id: user._id,
+                                    number_of_taken_tokens: proxy.number_of_tokens_to_get_back
+                                })
 
-                            //set notifications for user
-                            user_notifications.push({
-                                user_id: user._id,
-                                proxy_id: proxy.user_id,
-                                number_of_tokens_i_got_back: proxy.number_of_tokens_to_get_back
-                            })
+                                //set notifications for user
+                                user_notifications.push({
+                                    user_id: user._id,
+                                    proxy_id: proxy.user_id,
+                                    number_of_tokens_i_got_back: proxy.number_of_tokens_to_get_back
+                                })
 
-                            //reset number_of_tokens_to_get_back
-                            proxy.number_of_tokens_to_get_back = 0;
-                        }
-                    })
+                                //reset number_of_tokens_to_get_back
+                                proxy.number_of_tokens -=  proxy.number_of_tokens_to_get_back;
+                                proxy.number_of_tokens_to_get_back = 0;
+                            }
+                        })
 
-                    models.User.save(function(err, user_obj){
-                        itr_cbk(err, user_obj);
-                    })
-                }, cbk);
+                        user.save(function(err, user_obj){
+                            itr_cbk(err, user_obj);
+                        })
+                    }, function(err, results){
+                        cbk(err, results);
+                    });
+                }else{
+                    cbk(null, 0);
+                }
             },
 
             function(obj, cbk){
-                //update proxies with their new amount off mandates
-                _.forEach(proxies_ids_and_number_of_tokens_to_get_back, function(proxy, itr_cbk){
+                if(obj != 0){
+                    //update proxies with their new amount off mandates
+                    async.forEach(proxies_ids_and_number_of_tokens_to_get_back, function(proxy, itr_cbk){
 
-                    var num = proxy.num_of_extra_tokens * -1;
-                    models.User.update({_id: proxy.proxy_id}, {$inc: {num_of_given_mandates: num}}, function(err, num){
-                        cbk(err, num);
-                    })
-                }, cbk);
+                        var num = proxy.num_of_extra_tokens * -1;
+                        models.User.update({_id: proxy.proxy_id}, {$inc: {num_of_given_mandates: num}}, function(err, num){
+                            itr_cbk(err, num);
+                        })
+                    }, cbk);
+                }else{
+                    cbk(null, 0);
+                }
             }
         ], function(err, obj){
             callback(err, obj);
