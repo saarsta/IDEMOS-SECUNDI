@@ -157,7 +157,7 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
             switch (notification.type) {
                 case "approved_info_item_i_created":
                     notification.message_of_notificators =
-                        "פריט מידע שהצעת התקבל"
+                        "פריט מידע שהתעניינת בו תויג כחלק מדיון"
                     ;
                     notification.link = "/information_items/" + notification.entity_id;
                     notification.pic = info_items_hash[notification.notificators[0].sub_entity_id].image_field_preview
@@ -182,19 +182,21 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
 
                     if (num_of_comments > 1) {
                         description_of_notificators = num_of_comments + " " +
-                            "אנשים"
+                            "תגובות"
                         ;
                         message_of_notificators =
-                            " הגיבו על דיון שאתה חלק ממנו"
+"חדשות בדיון שהשתתפש בו"
                         ;
                         notification.description_of_notificators = description_of_notificators;
                         notification.message_of_notificators = message_of_notificators;
 
                         itr_cbk();
                     } else {
-                        notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;
+                        if(user_obj){
+                            notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;
+                        }
                         notification.message_of_notificators =
-                            "הגיב על דיון שאתה חלק ממנו"
+                            "הגיב על דיון שהשתתפת בו"
                         ;
                         itr_cbk()
                     }
@@ -212,8 +214,9 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                         ;
                         itr_cbk()
                     } else {
-
-                        notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;
+                        if(user_obj){
+                            notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;
+                        }
                         notification.message_of_notificators =
                             "הגיב על הצעה לשינוי שלקחת בה חלק"
                         ;
@@ -233,12 +236,13 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                         ;
                         itr_cbk(null, 1);
                     } else {
-
-                        notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;
+                        if(user_obj){
+                            notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;
+                            notification.pic = user_obj.avatar_url();
+                        }
                         notification.message_of_notificators =
                             "הגיב על דיון שיצרת"
                         ;
-                        notification.pic = user_obj.avatar_url();
 
                         itr_cbk();
 
@@ -257,8 +261,9 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                         ;
                         itr_cbk();
                     } else {
-
-                        notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;
+                        if(user_obj){
+                            notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;
+                        }
                         notification.message_of_notificators =
                             "הגיב על הצעה שלינוי שיצרת"
                         ;
@@ -291,7 +296,8 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                         notification.link = "/discussions/" + notification.entity_id + '#post_' + notification.notificators[0].sub_entity_id;
                         notification.pic = discussions_hash[notification.entity_id + ""].image_field_preview || discussions_hash[notification.entity_id + ""].image_field;
                     }
-                    notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;
+                    if(user_obj)
+                         notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;
                     notification.message_of_notificators =
                         "ציטט אותך"
                     ;
@@ -313,8 +319,11 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                         if(discussion){
                             notification.link = "/discussions/" + notification.entity_id + "#post_" + notification.notificators[0].sub_entity_id;
                         }
-                        notification.pic = user_obj.avatar_url();
-                        notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;
+                        //TODO dont know why sometimes there is no user_obj... (i can see it in the discussion admin)
+                        if(user_obj){
+                            notification.pic = user_obj.avatar_url();
+                            notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;
+                        }
                         notification.message_of_notificators =
                             "נתן לך"
                         + notification.notificators[0].ballance +
@@ -352,8 +361,12 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                         if(discussion){
                             notification.link = "/discussions/" + notification.entity_id + "#suggestion_" + notification.notificators[0].sub_entity_id;
                         }
-                        notification.pic = user_obj.avatar_url();
-                        notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;
+                        if(user_obj){
+                            notification.pic = user_obj.avatar_url();
+                            notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;
+                            notification.pic = user_obj.avatar_url();
+                            notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;
+                        }
                         notification.message_of_notificators =
                             "נתן לך"
                         + notification.notificators[0].ballance +

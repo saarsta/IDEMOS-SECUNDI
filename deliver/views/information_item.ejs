@@ -19,9 +19,9 @@
             <div class="rightCol">
                 <div class="nav-btn">
                     <a href="javascript:void(0);" id="add_button" >הוסף</a>
-                    <a href="/facebookShare?link=/media/<%= item.id %>" target="_blank">שתף</a>
+                    <a class="share" rel="/media/<%= item.id %>" href="/facebookShare?link=/media/<%= item.id %>" target="_blank">שתף</a>
                      <% if(!item.user_likes) { %>
-                        <a href="javascript:void(0);" class="number" id="like_button">1+</a>
+                        <a class="hide" href="javascript:void(0);" class="number" id="like_button">1+</a>
                      <% } %>
 
                 </div>
@@ -169,6 +169,7 @@
         $('.comments-box .comment-one .user-right').hover(function () {
             $(this).toggleClass('hover');
         });
+
 
 
 

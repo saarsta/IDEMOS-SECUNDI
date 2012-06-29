@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-
+<%
+var error_message = error_message || '';
+%>
 <html>
 <head>
     <%- partial('partials/head.ejs') %>
@@ -12,7 +14,7 @@
         <%-partial('partials/menu.ejs')%>
         <%-partial('partials/user_box.ejs')%>
         <%-partial('partials/failures.ejs')%>
-        <%- partial('partials/tag_search.ejs') %>
+        <%-partial('partials/tag_search.ejs') %>
     </div>
     <div id="content" class="cf">
         <div class="add-offer">
@@ -43,7 +45,8 @@
                     <a class="btn-green" id="discussion_comment_reply_button" href="javascript:void(0);">
                         הגב
                     </a>
-                    <a class="btn-grey" href="/facebookShare?link=/discussions/<%=discussion.id%>">
+
+                    <a class="btn-grey share" rel="/discussions/<%=discussion.id%>" data-name="<%=discussion.text_field_preview%>" href="/facebookShare?link=/discussions/<%=discussion.id%>">
                         שתף
                     </a>
 
@@ -78,7 +81,7 @@
                 <div class="slide-box">
                     <div class="summary">
                         <input type="text" id="amount" value="<%= Math.round(discussion.grade*100)/100 %>"/>
-                        <span> <div class="inlinediv" id="graders"><%= discussion.evaluate_counter %>
+                        <span> <div class="inlinediv" id="graders"><%= Math.round(discussion.evaluate_counter) %>
                         </div> מדרגים</span>
                     </div>
                     <div class="slider">
@@ -256,6 +259,20 @@
                  הצע הצעה לשינוי
              </a>
      </span>
+
+<form id="proxy_form" style="display:none;">
+    <fieldset>
+        <label for="give_tokens">Tokens</label>
+        <select id="give_tokens" name="tokens" dir="ltr">
+            <option>-3</option>
+            <option>-2</option>
+            <option>-1</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+        </select>
+    </fieldset>
+</form>
 <!--</span>
 </div>
 </div>
@@ -267,6 +284,7 @@
 var current_section=1;
 
 $(document).ready(function () {
+
     /***************************************************/
     var my_id = "<%=user_logged ? user._id : ''%>";
     var discussion_id = "<%=discussion.id%>";
@@ -283,6 +301,38 @@ $(document).ready(function () {
 
     var vision = $('#discussion_content').text();
 
+    var onGiveProxy;
+
+
+    $( "#proxy_form" ).dialog({
+        autoOpen: false,
+        height: 300,
+        width: 350,
+        modal: true,
+        buttons: {
+            "תן/קח אסימונים": function() {
+
+                var self = this;
+
+                $( self ).dialog( "disable" );
+                var bValid = true;
+                if(onGiveProxy) {
+
+                    onGiveProxy(Number($('#give_tokens',this).val()),function() {
+                        $( self ).dialog( "close" );
+                    });
+                }
+            },
+            'בטל': function() {
+                $( this ).dialog( "close" );
+            }
+        },
+        open:function(){
+            $(this).dialog('enable');
+        }
+    });
+
+
     $("#discussion_content").val($("#discussion_content").text());
     $(".slider").slider({
         disabled: is_creator ,
@@ -298,7 +348,7 @@ $(document).ready(function () {
 
                 if (!err) {
                     $("#amount").val(Math.round(data.new_grade * 100) / 100);
-                    $("#graders").text(data.evaluate_counter);
+                    $("#graders").text(Math.round(data.evaluate_counter));
                     $(".dark_bar").css('width', (my_discussion_grade * 10) + '%');
                     grade_id = data.grade_id;
                 }
@@ -324,10 +374,13 @@ $(document).ready(function () {
     }
 
     db_functions.getDiscussionShoppingCart(discussion_id, function (err, data) {
+
         $.each(data.objects, function (index, item) {
             dust.render('discussion_information_item', item, function (err, out) {
                 $('.slide-c').append(out);
             });
+
+
         });
 
         $('.slide-c')
@@ -340,6 +393,11 @@ $(document).ready(function () {
                     next:'#prev',
                     prev:'#next'
                 });
+
+        if(data.objects.length < 2){
+            $("#prev").hide();
+            $("#next").hide();
+        }
 
     });
 
@@ -392,10 +450,37 @@ $(document).ready(function () {
 
 
     $('#comments').on('click', '#add_or_remove_proxy', function () {
+        $( "#proxy_form" ).dialog( "open" );
+        var self = this;
         var proxy_id = $(this).parents('.comment-one').data("creator_id");
-        db_functions.addOrRemoveProxyMandate(my_id, proxy_id, 1, function(err, data){
-            var a = 8;
-        })
+        var given_mandates = $(this).parents('.comment-one').data("num-given-mandates");
+
+        onGiveProxy = function(tokens,callback) {
+            console.log(tokens);
+
+            if(given_mandates + tokens > 3 || given_mandates + tokens < -3){
+                alert("can't give more then 3 tokens to a user" || "can't take more tokens then u gave a user");
+                setTimeout(callback,1000);
+            }else{
+                db_functions.addOrRemoveProxyMandate(my_id, proxy_id, tokens, function(err, data){
+
+                    if(err){
+                        alert(err.responseText);
+                        callback(err);
+                    }
+                    else{
+//                    $(self).parents('.comment-one').data("num-given-mandates", $(self).parents('.comment-one').data("num-given-mandates") + tokens);
+//                    $(self).parents('.comment-one').find(".proxy.num").value =  $(self).parents('.comment-one').find(".proxy.num").value + tokens;
+                        if(tokens < 0)
+                            alert("האסימונים ילקחו בקרוב");
+                        callback(err, data);
+                    }
+                })
+
+            }
+
+        };
+
     });
 
     $('#comments').on('click', '.vote_for', function () {
@@ -559,6 +644,7 @@ $(document).ready(function () {
 
             dust.render('discussion_suggestion', suggestion, function (err, out) {
                 $('#suggestion_list').prepend(out);
+                image_autoscale($('#suggestion_list .auto-scale img'));
                 var suggestion_grade_val = suggestion.grade_obj ? suggestion.grade_obj.evalueation_grade : my_discussion_grade;
                 suggest_grade_id[suggestion.id] = suggestion.grade_obj ? suggestion.grade_obj._id : null;
                 $(".suggest_slider_" + suggestion.id).slider({
@@ -582,11 +668,11 @@ $(document).ready(function () {
                         db_functions.addSuggestionGrade(suggestion.id, discussion_id, rating, suggest_grade_id[suggestion.id], function (err, data) {
                             if (!err) {
                                 $("#suggest_grade_" + suggestion.id).val(Math.round(data.new_grade * 100) / 100);
-                                $("#suggest_graders_" + suggestion.id).text(data.evaluate_counter);
-                                $("#agrees_" + suggestion.id).text(data.agrees);
-                                $("#not_agrees_" + suggestion.id).text(data.not_agrees);
+                                $("#suggest_graders_" + suggestion.id).text(Math.round(data.evaluate_counter));
+                                $("#agrees_" + suggestion.id).text(Math.round(data.agrees));
+                                $("#not_agrees_" + suggestion.id).text(Math.round(data.not_agrees));
                                 $("#wanted_amount_of_tokens_" + suggestion.id).text(data.wanted_amount_of_tokens);
-                                $("#curr_amount_of_tokens_" + suggestion.id).text(data.curr_amount_of_tokens);
+                                $("#curr_amount_of_tokens_" + suggestion.id).text(Math.round(data.curr_amount_of_tokens));
                                 suggest_grade_id[suggestion.id] = data.grade_id;
 
                                 //already_graded
@@ -662,6 +748,8 @@ $(document).ready(function () {
                         }
                     }
                 }
+
+                image_autoscale($('.auto-scale img',comments));
             }
         });
     }

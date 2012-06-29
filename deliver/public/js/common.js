@@ -33,6 +33,32 @@ var tags_replace = {
     's': 's'
 };
 
+function sendFacebookInvite(message,link,callback) {
+    FB.ui({method: 'apprequests', message: message}, function(response) {
+
+        var request_id = response.request;
+
+        db_functions.addFacebookRequest(link, request_id,callback);
+    });
+}
+
+function sendFacebookShare(link, name,callback) {
+    db_functions.addFacebookRequest(link, null,function(err,link_obj) {
+        if(err)
+            callback(err);
+        else {
+            link =  window.location.origin + link_obj.link;
+            FB.ui({method: 'feed', link: link, name: name}, function(response) {
+
+                console.log(response);
+                callback();
+            });
+        }
+    });
+
+}
+
+
 dust.filters['tags'] = function(text) {
     $.each(tags_replace,function(key,value) {
         text = text.replace(RegExp('\\[' + key + '\\]','g'),'<' + value + '>').replace(RegExp('\\[\\/' + key +  '\\]','g'),'</' + value + '>')
@@ -105,6 +131,26 @@ var connectPopup = function(callback){
 
 $(function(){
 
+    var host = window.location.protocol + '//' + window.location.host;
+
+    function fbs_click(ui) {
+
+        ui.click( function() {
+
+            sendFacebookShare($(this).attr('rel'), $(this).data('name'), function(err) {
+                console.log(err);
+            });
+//            var u = ;
+//            window.open(
+//                'http://www.facebook.com/sharer.php?u=' + encodeURIComponent(host + u),
+//                'sharer',
+//                'toolbar=0,status=0'
+//            );
+            return false;
+        });
+        ui.attr('href','javascript:void(0);');
+    }
+
     function initTooltip(ui){
         ui.tooltip({
             bodyHandler: function() {
@@ -148,7 +194,12 @@ $(function(){
     db_functions.getAndRenderFooterTags();
 
 
+    var inCallback = false;
+
     var callback = function(event){
+        if(inCallback)
+            return;
+        inCallback = true;
         var target_element = event.srcElement || event.target;
         if(target_element){
             if($(target_element).is('.auto-scale'))
@@ -168,6 +219,28 @@ $(function(){
                     initTooltip(tooltip);
             }
         }
+        inCallback = false;
+    };
+    var callback = function(event){
+        var target_element = event.srcElement || event.target;
+        if(target_element){
+            if($(target_element).is('.auto-scale'))
+                image_autoscale($('img',target_element));
+            else
+            {
+                var autoscale = $('.auto-scale',target_element);
+                if(autoscale.length)
+                    image_autoscale($('img',autoscale));
+            }
+            if($(target_element).is('.share'))
+                fbs_click($(target_element));
+            else
+            {
+                var tooltip = $('.share',target_element);
+                if(tooltip.length)
+                    fbs_click(tooltip);
+            }
+        }
     };
 
     if($.browser.msie && Number($.browser.version) == 8)
@@ -175,7 +248,7 @@ $(function(){
         var _append = Element.prototype.appendChild;
         Element.prototype.appendChild = function()
         {
-            _append.apply(this,arguments);
+            _append.call(this,arguments[0],arguments[1]);
             callback({srcElement:this});
         };
     }
@@ -184,8 +257,11 @@ $(function(){
 
     image_autoscale($('.auto-scale img'));
     initTooltip($(".gray_and_soon"));
+    fbs_click($('.share'));
     initTooltipWithMessage($(".cycle_comming_soon"), "כאן יתקיים התהליך למימוש המציאות הנדרשת שהסכמנו לגביה במערכת הדיונים, באמצעות פעולות, אירועים ועדכונים שוטפים. יעלה בקרוב."   );
     initTooltipWithMessage($(".action_comming_soon"), "יעלה בקרוב");
+
+
 });
 
 function image_autoscale(obj, params)
@@ -230,6 +306,7 @@ function image_autoscale(obj, params)
             }
 
             elm.css({position:'absolute', height:height, top:top, left:left});
+            //elm.attr('height',height);
         }
         elm.fadeIn(fadeIn)
     });

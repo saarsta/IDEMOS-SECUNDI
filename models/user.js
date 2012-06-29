@@ -47,15 +47,15 @@ var User = module.exports = new Schema({
     followers: [
         new Schema({follower_id:{type:ObjectId, ref:'User'}, join_date: {type:Date, 'default':Date.now}})
     ],
-    password:String,
+    password: {type: String, editable:false},
     validation_code: {type: String, editable:false},
     tokens:{type:Number, 'default':9, min: 0/*, max:15.9*/},
     gamification: {type:Schema.Types.Mixed,editable:false },
     updates: Schema.Types.Mixed,
     //proxy - people i gave my tokens
     proxy: [
-        new Schema({user_id:{type:ObjectId, ref:'User'}, number_of_tokens: {type:Number, 'default': 0, min: 0, max: 3},
-            number_of_tokens_to_get_back: {type:Number, 'default': 0, min: 0, max: 3}})
+        new Schema({user_id:{type:ObjectId, ref:'User'}, number_of_tokens: {type:Number, 'default': 0, /*min: 0,*/ max: 3},
+            number_of_tokens_to_get_back: {type:Number, 'default': 0,/* min: 0,*/ max: 3}})
     ],
     num_of_given_mandates: {type: Number, 'default': 0},
     score:{type:Number, 'default':0},

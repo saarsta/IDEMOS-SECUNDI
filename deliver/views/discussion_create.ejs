@@ -30,10 +30,7 @@
                     <input type="hidden" name="subject_name" id="subject_name" value="<%= subject.name %>" >
                     <input type="hidden" name="subject_id" id="subject_id" value="<%= subject.id %>" >
                     <div class="top cf">
-                        <div  class="uplod_image_paceholder floatRight">
-                                לבחירת תמונה לדיון לחץ כאן
-
-                        </div>
+                        <div  id="uplod_image_placeholder" class="floatRight"></div>
                         <div class="floatLeft">
                             <div class="input">
                                 <input id="title" name="title" type="text" value="" placeholder=
@@ -44,7 +41,7 @@
                             </div>
                             <div class="textarea">
                                 <textarea id="vision" name="vision" rows="10" cols="50"  placeholder=
-                                        "תיאור מפורט של חזון המציאות החדשה"
+"תיאור מפורט של חזון המציאות החדשה (עד 800 מילים)"
                                         ></textarea>
                             </div>
                         </div>
@@ -80,7 +77,7 @@
     <div id="card">
         <div class="extra">
             <div class="card-top cf">
-                <a class="btn btn-1 inline" href="/facebookShare?link=/information_cart/{_id}">שתף</a>
+                <a class="btn btn-1 inline share" rel="/information_cart/{_id}" href="/facebookShare?link=/information_cart/{_id}">שתף</a>
                 <a class="btn btn-2" href="/information_items/"><span class="number" style="display:none;"></span>חזור לאסוף פריטי מידע נוספים </a>
                 <h3 class="basket">
                     סל מידע
@@ -205,6 +202,28 @@
     $(document).ready(function () {
 
 
+         var uploader = new qq.FileUploader({
+                 element: document.getElementById('uplod_image_placeholder'),
+                 action: '/api/image_upload',
+                 debug: false,
+                 onProgress: function(id, fileName, loaded, total){console.log(loaded);console.log(total)},
+                 onComplete: function(id, fileName, responseJSON){console.log(responseJSON);},
+                 template: '<div class="qq-uploader">' +
+                                 '<div class="qq-upload-drop-area"><span>Drop files here to upload</span></div>' +
+                                 '<div class="qq-upload-button">      לבחירת תמונה לדיון לחץ כאן</div>' +
+                                 '<ul class="qq-upload-list"></ul>' +
+                              '</div>',
+
+                         // template for one item in file list
+                  fileTemplate: '<li>' +
+                                 '<span class="qq-upload-file"></span>' +
+                                 '<span class="qq-upload-spinner"></span>' +
+                                 '<span class="qq-upload-size"></span>' +
+                                 '<a class="qq-upload-cancel" href="#">Cancel</a>' +
+                                 '<span class="qq-upload-failed-text">Failed</span>' +
+                             '</li>',
+
+         });
          $("#request_form").validate({
          		errorElement: "p",
                // errorLabelContainer: ".error-message",
@@ -248,23 +267,9 @@
                                      }else{
 
                                         if ($('#invite_friends').is(':checked'))    {
-                                            FB.ui({method: 'apprequests', message: 'New URU Discussion'}, function(response) {
 
-                                                if(response && response.hasOwnProperty('to')) {
-                                                    var request_id = response.request;
-                                                    var ids=[];
-                                                    for(i = 0; i < response.to.length; i++) {
-                                                        ids.push (request_id+"_"+response.to[i])
-                                                        console.log("" + i + " ID: " + response.to[i]);
-                                                    }
-                                                    db_functions.addFacebookRequest("/discussions/" + created_discussion_id+"?user_id="+creator_id, ids,function(err, data){
-                                                           window.location.replace("/discussions/" + created_discussion_id);
-                                                    });
-                                                }
-                                                else
-                                                {
-                                                    window.location.replace("/discussions/" + created_discussion_id);
-                                                }
+                                            sendFacebookInvite('New URU Discussion', "/discussions/" + created_discussion_id,function(err, data){
+                                                window.location.replace("/discussions/" + created_discussion_id);
                                             });
                                          }
                                          else
@@ -282,6 +287,7 @@
 
 
            		}
+
          	});
 
         $(".inline").colorbox({ inline: true, width: "730" });

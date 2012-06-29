@@ -1,5 +1,6 @@
 var j_forms = require('j-forms'),
     mongoose_admin = require('admin-with-forms'),
+    mongoose = require('mongoose'),
     Models = require('../models'),
     async = require('async'),
     DiscussionResource = require('../api/DiscussionResource'),
@@ -13,7 +14,8 @@ module.exports = function(app)
 
     var admin = mongoose_admin.createAdmin(app,{root:'admin'});
 
-    admin.ensureUserExists('admin','admin');
+    admin.ensureUserExists('Uruad','uruadmin!@#uruadmin');
+    admin.ensureUserExists('ishai','istheadmin');
 
     admin.registerMongooseModel("User",Models.User,null,{list:['username','first_name','last_name']});
     admin.registerMongooseModel("InformationItem",Models.InformationItem, null,{
@@ -67,8 +69,10 @@ module.exports = function(app)
         list:['text','username']
     });
     admin.registerMongooseModel('Suggestion',Models.Suggestion,null,{
-        list:['parts.0.text'],
+        list:['parts.0.text', 'discussion_id.title'],
+        list_populate:['discussion_id'],
         form:require('./suggestion'),
+        order_by:['-discussion_id','-creation_date'],
         actions:[
             {
                 value:'approve',
@@ -133,8 +137,26 @@ module.exports = function(app)
         list:['title']
     });
 
+    admin.registerMongooseModel('FBRequest',Models.FBRequest,null,{
+        list_populate:['creator'],
+        list:['link','creator.first_name','creator.last_name']
+
+    });
+
     admin.registerSingleRowModel(Models.GamificationTokens,'GamificationTokens');
 
     admin.registerSingleRowModel(Models.ThresholdCalcVariables,'ThresholdCalcVariables');
+
+
+
+    admin.registerMongooseModel('Admin_Users',mongoose.model('_MongooseAdminUser'),null,{
+        list:['username']
+    });
+
+    admin.registerMongooseModel('Password Change Form',mongoose.model('_MongooseAdminUser'),null,{
+        list:['username'] ,
+        form:require('./admin'),
+        createable:false
+    });
 
 };

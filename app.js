@@ -64,7 +64,7 @@ app.configure('production', function(){
     app.set('sendgrid_user',process.env.SENDGRID_USERNAME || 'app2952775@heroku.com');
     app.set('sendgrid_key',process.env.SENDGRID_PASSWORD || 'a0oui08x');
     app.set('system_email','dor@uru.org.il');
-    app.set('root_path', 'http://uru.herokuapp.com');
+    app.set('root_path', 'http://www.uru.org.il');
     app.set('DB_URL',process.env.MONGOLAB_URI);
     app.use(express.errorHandler());
     require('j-forms').setAmazonCredentials({

@@ -10,10 +10,16 @@ var db_functions = {
             console.log(arguments[2]);
         };
         options.error =  function (xhr, ajaxOptions, thrownError) {
-            if(xhr.status == 401 && xhr.responseText == 'not authenticated'){
-                connectPopup(function(){
-                    onError(xhr,ajaxOptions,thrownError);
-                });
+            if(xhr.status == 401 && (xhr.responseText == 'not authenticated' || xhr.responseText == "Error: Unauthorized - there is not enought tokens" || xhr.responseText == "user must have a least 10 tokens to open create discussion")){
+                if (xhr.responseText == 'not authenticated'){
+                    connectPopup(function(){
+                        onError(xhr,ajaxOptions,thrownError);
+                    });
+                }else if (xhr.responseText == 'Error: Unauthorized - there is not enought tokens')
+                {
+                    alert("אין מספיק אסימונים בשביל לבצע פעולה זו");
+                }else if (xhr.responseText == "user must have a least 10 tokens to open create discussion")
+                    alert("צריך מינימום של 10 אסימונים בשביל ליצור דיון");
             }
             else
                 onError(xhr,ajaxOptions,thrownError);
@@ -22,7 +28,7 @@ var db_functions = {
     },
 
     registerUser: function(first_name, last_name, password, email, invitation, callback){
-        this.loggedInAjax({
+        db_functions.loggedInAjax({
             url: '/account/register',
             type: "POST",
             async: true,
@@ -39,7 +45,7 @@ var db_functions = {
     },
 
     getHotObjects: function(callback){
-        this.loggedInAjax({
+        db_functions.loggedInAjax({
             url: '/api/hot_objects',
             type: "GET",
             async: true,
@@ -53,7 +59,7 @@ var db_functions = {
 
     //blogs
     getPopularArticles: function(limit_number,callback){
-        this.loggedInAjax({
+        db_functions.loggedInAjax({
             url: '/api/articles?order_by=-popularity_counter&limit=' + limit_number,
             type: "GET",
             async: true,
@@ -65,7 +71,7 @@ var db_functions = {
     },
 
     getPopularHeadlines: function(limit_number,callback){
-        this.loggedInAjax({
+        db_functions.loggedInAjax({
             url: '/api/headlines?limit=' + limit_number,
             type: "GET",
             async: true,
@@ -77,7 +83,7 @@ var db_functions = {
     },
 
     addKilkul: function(text_field, callback){
-        this.loggedInAjax({
+        db_functions.loggedInAjax({
             url: '/api/kilkuls',
             type: "POST",
             async: true,
@@ -89,7 +95,7 @@ var db_functions = {
     },
 
     getSuccessStories: function(callback){
-        this.loggedInAjax({
+        db_functions.loggedInAjax({
             url: '/api/success_stories',
             type: "GET",
             async: true,
@@ -100,7 +106,7 @@ var db_functions = {
     },
 
     getNotifications: function(callback){
-        this.loggedInAjax({
+        db_functions.loggedInAjax({
             url: '/api/notifications?limit=40',
             type: "GET",
             async: true,
@@ -111,7 +117,7 @@ var db_functions = {
     },
     getAndRenderFooterTags:function()
     {
-        this.loggedInAjax({
+        db_functions.loggedInAjax({
             url:'/api/tags?limit=10',
             type:'GET',
             async:true,
@@ -125,7 +131,7 @@ var db_functions = {
     },
 
     getAllSubjects: function(callback){
-        this.loggedInAjax({
+        db_functions.loggedInAjax({
             url: '/api/subjects',
             type: "GET",
             async: true,
@@ -146,7 +152,7 @@ var db_functions = {
         });
     },
     getHotInfoItems: function(offset,callback){
-        this.loggedInAjax({
+        db_functions.loggedInAjax({
             url: '/api/information_items/?is_hot_info_item=true&limit=6&offset=' + offset,
             type: "GET",
             async: true,
@@ -161,7 +167,7 @@ var db_functions = {
     }   ,
 
     getUserShopingCart: function(callback){
-        this.loggedInAjax({
+        db_functions.loggedInAjax({
             url: '/api/shopping_cart',
             type: "GET",
             async: true,
@@ -172,7 +178,7 @@ var db_functions = {
         });
     },
     removeInfoItemFromShoppingCart: function(info_item_id, callback){
-        this.loggedInAjax({
+        db_functions.loggedInAjax({
             url: '/api/shopping_cart/' + info_item_id,
             type: "DELETE",
             async: true,
@@ -185,7 +191,7 @@ var db_functions = {
     },
 
     createDiscussion: function(subject_id, vision, title, tags, callback){
-        this.loggedInAjax({
+        db_functions.loggedInAjax({
             url: '/api/discussions/',
             type: "POST",
             async: true,
@@ -196,12 +202,14 @@ var db_functions = {
             },
 
             error:function(err){
+                if(err.responseText == "vision can't be more than 800 words")
+                    alert("חזון הדיון צריך להיות 800 מילים לכל היותר");
                 callback(err, null);
             }
         });
     },
     addSuggestionToDiscussion: function(discussion_id, parts, explanation, callback){
-        this.loggedInAjax({
+        db_functions.loggedInAjax({
             url: '/api/suggestions/',
             type: "POST",
             async: true,
@@ -216,11 +224,12 @@ var db_functions = {
         });
     },
     addFacebookRequest: function(link,request_ids ,callback){
-        this.loggedInAjax({
+        db_functions.loggedInAjax({
             url: '/api/fb_request/',
             type: "POST",
             async: true,
-            data: {"link": link, "fb_request_ids": request_ids},
+            contentType:'application/json',
+            data: JSON.stringify({"link": link, "fb_request_ids": request_ids}),
             success: function (data) {
                 console.log(data);
                 callback(null, data);
@@ -231,7 +240,7 @@ var db_functions = {
         });
     },
     getPostByDiscussion: function(discussion_id, callback){
-        this.loggedInAjax({
+        db_functions.loggedInAjax({
             url: '/api/posts?discussion_id=' + discussion_id,
             type: "GET",
             async: true,
@@ -246,7 +255,7 @@ var db_functions = {
     },
 
     getPostById: function(post_id, callback){
-        this.loggedInAjax({
+        db_functions.loggedInAjax({
             url: '/api/posts/' + post_id,
             type: "GET",
             async: true,
@@ -261,7 +270,7 @@ var db_functions = {
     },
 
     addLikeToInfoItem: function(info_item_id, callback){
-        this.loggedInAjax({
+        db_functions.loggedInAjax({
             url: '/api/likes',
             type: "POST",
             data: {"info_item_id" : info_item_id},
@@ -277,7 +286,7 @@ var db_functions = {
     },
 
     addInfoItemToShoppingCart: function(info_item_id, callback){
-        this.loggedInAjax({
+        db_functions.loggedInAjax({
             url: '/api/shopping_cart/' + info_item_id,
             type: "PUT",
             async: true,
@@ -290,7 +299,7 @@ var db_functions = {
     },
 
     voteForPost: function(post_id, method, callback){
-        this.loggedInAjax({
+        db_functions.loggedInAjax({
             url: '/api/votes/',
             type: "POST",
             async: true,
@@ -307,7 +316,7 @@ var db_functions = {
 
     voteForSuggestion: function(suggestionId,method,callback)
     {
-        this.loggedInAjax({
+        db_functions.loggedInAjax({
             url: '/api/votes_on_suggestion/',
             type: "POST",
             async: true,
@@ -327,7 +336,7 @@ var db_functions = {
 
 
     addPostToDiscussion: function(discussion_id, post_content, refParentPostId, callback){
-        this.loggedInAjax({
+        db_functions.loggedInAjax({
             url: '/api/posts/',
             type: "POST",
             async: true,
@@ -343,7 +352,7 @@ var db_functions = {
     },
 
     getSortedPostByDiscussion: function(discussion_id, sort_by, callback){
-        this.loggedInAjax({
+        db_functions.loggedInAjax({
             url: '/api/posts?discussion_id=' + discussion_id + "&order_by=" + sort_by,
             type: "GET",
             async: true,
@@ -369,7 +378,7 @@ var db_functions = {
             type = "PUT";
         }
 
-        this.loggedInAjax({
+        db_functions.loggedInAjax({
             url: url,
             type: type,
             async: true,
@@ -392,7 +401,7 @@ var db_functions = {
         grade_id ? url = '/api/grades_suggestion/' + grade_id : url = '/api/grades_suggestion/';
         grade_id ? type = "PUT" : type = "POST";
 
-        this.loggedInAjax({
+        db_functions.loggedInAjax({
             url: url,
             type: type,
             async: true,
@@ -410,7 +419,7 @@ var db_functions = {
     },
 
     getDiscussionShoppingCart: function(discussion_id, callback){
-        this.loggedInAjax({
+        db_functions.loggedInAjax({
             url: '/api/discussions_shopping_cart?discussion_id=' + discussion_id,
             type: "GET",
             async: true,
@@ -426,7 +435,7 @@ var db_functions = {
     },
 
     updateUserDetails: function(user_id, biography, callback){
-        this.loggedInAjax({
+        db_functions.loggedInAjax({
             url: '/api/users/' + user_id,
             type: "PUT",
             data: {biography: biography},
@@ -442,7 +451,7 @@ var db_functions = {
     },
 
     joinOrLeaveUserFollowers: function(user_id, callback){
-        this.loggedInAjax({
+        db_functions.loggedInAjax({
             url: '/api/user_followers/' + user_id,
             type: "PUT",
             async: true,
@@ -458,10 +467,10 @@ var db_functions = {
 
 
     addOrRemoveProxyMandate: function(user_id, proxy_id, number_of_namdates, callback){
-        this.loggedInAjax({
+        db_functions.loggedInAjax({
             url: '/api/user_proxies/' + user_id,
             type: "PUT",
-            data: {proxy_id: proxy_id, number_of_tokens: number_of_namdates},
+            data: {proxy_id: proxy_id, req_number_of_tokens: number_of_namdates},
             async: true,
             success: function (data) {
                 callback(null, data);
@@ -474,7 +483,7 @@ var db_functions = {
     },
 
     deleteProxy: function(user_id, proxy_id, callback){
-        this.loggedInAjax({
+        db_functions.loggedInAjax({
             url: '/api/user_proxies/' + user_id,
             type: "DELETE",
             dara: {proxy_id: proxy_id   },
@@ -490,7 +499,7 @@ var db_functions = {
     },
     
     getUserFollowers: function(user_id, callback){
-        this.loggedInAjax({
+        db_functions.loggedInAjax({
             url: '/api/user_followers/' + user_id ? user_id : "",
             type: "GET",
             async: true,
@@ -505,7 +514,7 @@ var db_functions = {
     },
 
     getOnWhomUserFollows: function(user_id, callback){
-        this.loggedInAjax({
+        db_functions.loggedInAjax({
             url: '/api/users?followers.follower_id=' + user_id,
             type: "GET",
             async: true,
@@ -520,7 +529,7 @@ var db_functions = {
     },
 
     getSuggestionByDiscussion: function(discussion_id, limit, offset, callback){
-        this.loggedInAjax({
+        db_functions.loggedInAjax({
             url: '/api/suggestions?discussion_id=' + discussion_id + "&is_approved=false" + (limit? '&limit='+limit:'') + (offset? '&offset=' + offset:'') ,
             type: "GET",
             async: true,
@@ -535,7 +544,7 @@ var db_functions = {
     } ,
     //actionType = follower or leave
     joinToDiscussionFollowers: function(discussion_id,actionType, callback){
-        this.loggedInAjax({
+        db_functions.loggedInAjax({
             url: '/api/discussions/'+ discussion_id + '/?put='+actionType,
             data: {"follower": true},
             type: "PUT",
@@ -558,7 +567,7 @@ var db_functions = {
                 querystring = "actions?is_approved=false";
                 break;
         }
-        this.loggedInAjax({
+        db_functions.loggedInAjax({
             url: '/api/' + querystring,
             data:query,
             type: "GET",
@@ -576,7 +585,7 @@ var db_functions = {
         else{
             userIdParam='&user_id='+userID;
         }
-        this.loggedInAjax({
+        db_functions.loggedInAjax({
             url: '/api/' + api_resource + '?get=myUru'+userIdParam,
             type: "GET",
             async: true,
@@ -587,8 +596,8 @@ var db_functions = {
     },
 
     getItemsCountByTagName: function(tag_name, callback){
-        this.loggedInAjax({
-            url: '/api/items_count_by_tag_name?tag_name=' + tag_name,
+        db_functions.loggedInAjax({
+            url: '/api/items_count_by_tag_name' + (tag_name ? '?tag_name=' + tag_name : ''),
             type: "GET",
             async: true,
             success: function (data) {
@@ -603,7 +612,7 @@ var db_functions = {
 
 
     getTagsBySearchTerm: function(search_term, callback){
-        this.loggedInAjax({
+        db_functions.loggedInAjax({
             url: '/api/tags?tag__contains=' + search_term,
             type: "GET",
             async: true,
@@ -618,7 +627,7 @@ var db_functions = {
 
     getDiscussionsByTagName: function(tag_name, callback){
         db_functions.loggedInAjax({
-            url: '/api/discussions?tags=' + tag_name,
+            url: '/api/discussions' + (tag_name ? '?tags=' + tag_name : ''),
             type: "GET",
             async: true,
             success: function (data) {
@@ -630,7 +639,7 @@ var db_functions = {
 
     getCyclesByTagName: function(tag_name, callback){
         db_functions.loggedInAjax({
-            url: '/api/cycles?tags=' + tag_name,
+            url: '/api/cycles' + (tag_name ? '?tags=' + tag_name : ''),
             type: "GET",
             async: true,
             success: function (data) {
@@ -640,8 +649,8 @@ var db_functions = {
         });
     },
     getActionsByTagName: function(tag_name, callback){
-        this.loggedInAjax({
-            url: '/api/actions?tags=' + tag_name,
+        db_functions.loggedInAjax({
+            url: '/api/actions' + (tag_name ? '?tags=' + tag_name : ''),
             type: "GET",
             async: true,
             success: function (data) {
@@ -653,7 +662,7 @@ var db_functions = {
 
     getInfoItemsByTagName: function(tag_name, callback){
         db_functions.loggedInAjax({
-            url: '/api/information_items?tags=' + tag_name,
+            url: '/api/information_items' + (tag_name ? '?tags=' + tag_name : ''),
             type: "GET",
             async: true,
             success: function (data) {
@@ -666,7 +675,7 @@ var db_functions = {
 
     getBlogsByTagName:  function(tag_name, callback){
         db_functions.loggedInAjax({
-            url: '/api/articles?tags=' + tag_name,
+            url: '/api/articles' + (tag_name ? '?tags=' + tag_name : ''),
             type: "GET",
             async: true,
             success: function (data) {
@@ -677,10 +686,10 @@ var db_functions = {
         });
     },
 
-    getInfoItemsOfSubjectByKeywords: function(keywords, subject_id, callback){
-        var keywords_arr = keywords.trim().replace(/\s+/g,".%2B");
-        this.loggedInAjax({
-            url: '/api/information_items/?or=text_field__regex,text_field_preview__regex,title__regex&title__regex=' + keywords_arr + '&text_field__regex='+ keywords_arr + '&text_field_preview__regex='+ keywords_arr + '&subject_id=' + subject_id,
+    getInfoItemsOfSubjectByKeywords: function(keywords, subject_id,sort_by, callback){
+        var keywords_arr = $.trim(keywords).replace(/\s+/g,".%2B");
+        db_functions.loggedInAjax({
+            url: '/api/information_items/?or=text_field__regex,text_field_preview__regex,title__regex&title__regex=' + keywords_arr + '&text_field__regex='+ keywords_arr + '&text_field_preview__regex='+ keywords_arr + '&subject_id=' + subject_id+'&order_by='+sort_by,
             type: "GET",
             async: true,
             success: function (data) {

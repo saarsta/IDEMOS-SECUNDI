@@ -26,13 +26,8 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
             return query.sort('creation_date', 'ascending');
         };
         this.fields = {
-            creator_id : {
-                id:null,
-                first_name:null,
-                last_name:null,
-                avatar_url:null,
-                score: null
-            },
+            creator_id : common.user_public_fields,
+                mandates_curr_user_gave_creator: null,
             text:null,
             popularity:null,
             tokens:null,
@@ -59,19 +54,37 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
            var user_id;
             if(req.user){
                 user_id = req.user._id;
-            }
 
-            _.each(results.objects, function(post){
-                if(user_id){
-                    var flag = false;
-                    if(post.creator_id)
-                       flag =  _.any(post.creator_id.followers, function(follower){return follower.follower_id + "" == user_id + ""});
-                    post.is_user_follower = flag;
-                }else{
-                    post.is_user_follower = false;
-                }
-            })
-            callback(err, results);
+                        models.User.findById(user_id, function(err, user_obj){
+
+                            if(err)
+                                callback(err);
+                            else{
+                                var proxies = user_obj.proxy;
+
+                                _.each(results.objects, function(post){
+
+
+                                    var flag = false;
+
+                                    var proxy = _.find(proxies, function(proxy){
+                                        if(!post.creator_id)
+                                            return null;
+                                        else
+                                            return proxy.user_id + "" == post.creator_id._id + ""});
+                                    if(proxy)
+                                        post.mandates_curr_user_gave_creator = proxy.number_of_tokens;
+                                    if(post.creator_id)
+                                        flag =  _.any(post.creator_id.followers, function(follower){return follower.follower_id + "" == user_id + ""});
+                                    post.is_user_follower = flag;
+                                })
+                                callback(err, results);
+                            }
+                        });
+            }else{
+                _.each(results.objects, function(post){ post.is_user_follower = false; })
+                callback(err, results);
+            }
         });
     },
 
