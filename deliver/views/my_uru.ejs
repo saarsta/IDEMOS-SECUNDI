@@ -5,6 +5,21 @@
     <script>
         var facebookAppId = '<%= facebook_app_id %>';
     </script>
+  <!--  <style type="text/css">
+        .tooltip {
+            display:block;
+            background:#ff0000;
+            font-size:12px;
+            height:70px;
+            width:160px;
+            padding:25px;
+            color:#eee;
+            top:0px;
+            left:0px;
+        }
+    </style>
+
+    <script src="http://cdn.jquerytools.org/1.2.7/full/jquery.tools.min.js"></script>-->
     <%- partial('partials/head.ejs') %>
     <%- partial('partials/facebook.ejs') %>
 
@@ -102,15 +117,18 @@
 
                 <div class="bars">
                     <div class="border"></div>
+
                     <div class="empty" style="height:<%=tokensBarModel.gupFromFullPixels()%>"></div>
                   <% if (tokensBarModel.tokensIUsed!==0){ %>
                         <div class="grey" style="height:<%=tokensBarModel.dailyTokensPixels()%>">
-                            <div class="info">מכסת אסימונים:<%=tokensBarModel.floorDailyTokens %> </div>
+                            <div class="info">מכסת אסימונים:<%=tokensBarModel.TokensSum %> </div>
                         </div>
                     <% } %>
+                    <% if (tokensBarModel.floorTokens!==0){ %>
                     <div class="green" style="height:<%=tokensBarModel.tokensPixels()%>">
                         <div class="info">אסימונים זמינים: <%=tokensBarModel.floorTokens %></div>
                     </div>
+                    <% } %>
                     <%  var userProxy; 
 						for(var j=0 ;j<tokensBarModel.proxy.proxies.length;j++){
 						userProxy=tokensBarModel.proxy.proxies[j]; %>
@@ -143,7 +161,10 @@
                                         </div>
                                     </div>
 							</div>
-					<%}%>
+					  <!--  <div class="tooltip" style="background: #adff2f">
+                            Working
+					    </div>-->
+                    <%}%>
                 </div>
             </div>
         </div>
@@ -202,6 +223,8 @@
 
         //$(".search-result-box .tabs").tabs();
         var userId='<%=pageUser._id %>';
+
+
         function tabSelected(event, ui){
            function convertToTabModel(data,type){
                 var i,
@@ -356,6 +379,16 @@
             });
 
         })
+
+        $('.blue').tooltip({
+            // use div.tooltip as our tooltip
+            tip: '.tooltip',
+
+
+            // tweak the position
+            position: "center  right",
+            offset: [-380, -750]
+        });
 
 
     });
