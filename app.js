@@ -15,7 +15,7 @@ app.configure('development', function(){
     app.set('old_views', __dirname + '/views');
     app.set('public_folder', __dirname + '/deliver/public');
     app.set('public_folder2', __dirname + '/public');
-    app.set('port',80);
+    app.set('port',3000);
     app.set('facebook_app_id', '175023072601087');
     app.set('facebook_secret', '5ef7a37e8a09eca5ee54f6ae56aa003f');
     app.set('sendgrid_user','app2952775@heroku.com');
