@@ -21,7 +21,9 @@
         "knox":"",
         "dustjs-linkedin":"",
         "sendgrid": "",
-        "sendgrid-nodejs": ""
+        "sendgrid-nodejs": "",
+        "facebook-signed-request" : "",
+        "request" : ""
   },
   "engines": { "node": "<= 0.7" }
 } 
