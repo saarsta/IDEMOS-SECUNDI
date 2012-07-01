@@ -97,16 +97,26 @@ exports.create_user_vote_or_grade_notification = function(notification_type, ent
 
                 var notificator = _.find(noti.notificators,  function(notificator){return notificator.notificator_id + "" == notificatior_id + ""});
                 if(notificator){
-                    if(did_change_the_sugg_agreement)
+                    if(did_change_the_sugg_agreement){
                         notificator.ballance += vote_for_or_against == "add" ? 2 : -2;
-                    else
+                        notificator.votes_for +=  vote_for_or_against == "add" ? 1 : -1;
+                        notificator.votes_against += vote_for_or_against == "add" ? -1 : 1;
+                    }
+                    else{
                         notificator.ballance += vote_for_or_against == "add" ? 1 : -1;
+                        notificator.votes_against += vote_for_or_against == "add" ? 1 : -1;
+                        notificator.votes_for += vote_for_or_against == "add" ? -1 : 1;
+                    }
                 }else{
                     var new_notificator = {
                         notificator_id: notificatior_id,
                         sub_entity_id: sub_entity,
-                        ballance: vote_for_or_against == "add" ? 1 : -1
+                        ballance: vote_for_or_against == "add" ? 1 : -1,
+                        votes_for : vote_for_or_against == "add" ? 1 : 0,
+                        votes_against : vote_for_or_against == "add" ? 0 : 1
                     }
+                    noti.entity_id = entity_id,
+
                     noti.notificators.push(new_notificator);
                 }
                 noti.update_date = date;

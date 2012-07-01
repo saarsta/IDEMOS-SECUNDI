@@ -280,14 +280,17 @@
                                      }
                                  });
                              }else{
-                                 window.location.replace("/discussions/" + created_discussion_id);
+                                 if ($('#invite_friends').is(':checked'))    {
+
+                                     sendFacebookInvite('New URU Discussion', "/discussions/" + created_discussion_id,function(err, data){
+                                         window.location.replace("/discussions/" + created_discussion_id);
+                                     });
+                                 }else
+                                     window.location.replace("/discussions/" + created_discussion_id);
                              }
                          }
                      });
-
-
            		}
-
          	});
 
         $(".inline").colorbox({ inline: true, width: "730" });
@@ -318,9 +321,7 @@
              $('.delete').click(removeItemFromCart);
              $('.confirm').click(function(){
                  var item_id = $(this).attr('item_id');
-
              });
-
         });
 
         function removeItemFromCart()
@@ -331,7 +332,6 @@
               });
                return false  ;
         }
-
 
          $("span.new_tags").live("click", function(){ $(this).remove(); });
          $("div.information_item_link").live("click", function(){   window.location.replace("/information_items/" + $(this).attr('item_id')); });
