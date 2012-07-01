@@ -153,6 +153,12 @@ module.exports = function(app)
         list:['username']
     });
 
+    admin.registerMongooseModel('Footer_Link',mongoose.model('FooterLink'),null,{
+        list:['link','title'],
+        order_by:['gui_order'],
+        sortable:'gui_order'
+    });
+
     admin.registerMongooseModel('Password Change Form',mongoose.model('_MongooseAdminUser'),null,{
         list:['username'] ,
         form:require('./admin'),

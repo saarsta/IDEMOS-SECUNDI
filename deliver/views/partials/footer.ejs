@@ -9,10 +9,17 @@
         <div class="two-col">
             <h4>קישורים</h4>
             <ul>
-                <!--<li><a href="/team">
-צוות עורו
+                <li><a href="/about">
+אודות עורו
                 </a></li>
-                <li><a href="/founders">
+                <%
+                 var links =  footer_links();
+                for(var i=0; i< links.length; i++) { %>
+                <li><a href="/page/<%= links[i].link %>">
+                    <%= links[i].name %>
+                </a></li>
+                <% } %>
+                <!--li><a href="/founders">
 מייסדים
                 </a></li>
                 <li><a href="">חדשות</a></li>

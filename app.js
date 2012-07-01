@@ -5,6 +5,7 @@
 var express = require('express'),
     mongoose = require('mongoose'),
     MongoStore  = require('connect-mongo'),
+    async = require('async'),
     auth = require("connect-auth");
 
 var app = module.exports = express.createServer();
@@ -15,7 +16,7 @@ app.configure('development', function(){
     app.set('old_views', __dirname + '/views');
     app.set('public_folder', __dirname + '/deliver/public');
     app.set('public_folder2', __dirname + '/public');
-    app.set('port',3000);
+    app.set('port',80);
     app.set('facebook_app_id', '175023072601087');
     app.set('facebook_secret', '5ef7a37e8a09eca5ee54f6ae56aa003f');
     app.set('sendgrid_user','app2952775@heroku.com');
@@ -133,6 +134,27 @@ require('./deliver/routes/account/forgot_password').init(app);
 var cron = require('./cron');
 cron.run(app);
 
-app.listen(app.settings.port);
-console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+
+
+async.waterfall([
+        function(cbk) {
+            mongoose.model('FooterLink').load(cbk);
+        }
+    ],
+    function(err) {
+        if(err) {
+            console.error('init failed');
+            console.error(err);
+            console.trace();
+        }
+        else {
+            app.helpers({
+                'footer_links':function() { return mongoose.model('FooterLink').getFooterLinks(); }
+            });
+
+            app.listen(app.settings.port);
+            console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+        }
+    }
+);
 
