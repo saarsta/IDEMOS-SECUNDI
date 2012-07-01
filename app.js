@@ -5,6 +5,7 @@
 var express = require('express'),
     mongoose = require('mongoose'),
     MongoStore  = require('connect-mongo'),
+    async = require('async'),
     auth = require("connect-auth");
 
 var app = module.exports = express.createServer();
@@ -133,6 +134,27 @@ require('./deliver/routes/account/forgot_password').init(app);
 var cron = require('./cron');
 cron.run(app);
 
-app.listen(app.settings.port);
-console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+
+
+async.waterfall([
+        function(cbk) {
+            mongoose.model('FooterLink').load(cbk);
+        }
+    ],
+    function(err) {
+        if(err) {
+            console.error('init failed');
+            console.error(err);
+            console.trace();
+        }
+        else {
+            app.helpers({
+                'footer_links':function() { return mongoose.model('FooterLink').getFooterLinks(); }
+            });
+
+            app.listen(app.settings.port);
+            console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+        }
+    }
+);
 

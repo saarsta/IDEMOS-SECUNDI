@@ -304,6 +304,8 @@ var Models = module.exports = {
 
     ImageUpload: mongoose.model('ImageUpload', require('./image_upload')),
 
+    FooterLink : mongoose.model('FooterLink',require('./footer_link')),
+
     Schemas:Schemas
 };
 

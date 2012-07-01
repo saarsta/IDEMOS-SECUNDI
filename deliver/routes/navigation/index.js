@@ -7,5 +7,7 @@ module.exports = function(router) {
     router.get('/team',require('./team'));
 
     router.get('/founders',require('./founders'));
+
+    router.get('/page/:link',require('./page'));
 };
 

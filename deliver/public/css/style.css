@@ -4626,7 +4626,8 @@ body.search-ative #header
 #content .search-result-box
 {
     width: auto;
-    height: 325px;
+   /* height: 325px;*/
+    height:400px;
 }
 #content .search-result-box .tabs-nav{
     padding-right: 255px;
@@ -5010,5 +5011,12 @@ body.search-ative #header
 
 .qq-upload-failed-text {display:none;}
 .qq-upload-fail .qq-upload-failed-text {display:inline;}
+
+
+
+.ui-tabs
+{
+     padding-top: 26px;
+}
 
 
