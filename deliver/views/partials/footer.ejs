@@ -15,7 +15,7 @@
                 <%
                  var links =  footer_links();
                 for(var i=0; i< links.length; i++) { %>
-                <li><a href="/page/<%= links[i].link %>">
+                <li><a href="<%= links[i].link ? links[i].link : '/page/' + links[i].tab %>">
                     <%= links[i].name %>
                 </a></li>
                 <% } %>
