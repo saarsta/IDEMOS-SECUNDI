@@ -105,9 +105,9 @@ var db_functions = {
         });
     },
 
-    getNotifications: function(callback){
+    getNotifications: function(limit, callback){
         db_functions.loggedInAjax({
-            url: '/api/notifications?limit=40',
+            url: '/api/notifications?' + (limit? '&limit='+limit:''),
             type: "GET",
             async: true,
             success: function (data) {

@@ -121,7 +121,7 @@
             })
         });
 
-        db_functions.getNotifications(function (data) {
+        db_functions.getNotifications(5, function (data) {
             $.each(data.objects, function (index, notification) {
                 dust.render('notification', notification, function (err, html) {
                     $('.renewal').append(html);
