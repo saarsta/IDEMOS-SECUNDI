@@ -15,14 +15,12 @@
         <%-partial('partials/tag_search.ejs') %>
     </div>
 
-    <div id="content" class="cf">
-        <% if(page.title) { %>
-            <h2>
-                <%= page.title %>
-            </h2>
-        <% } %>
-        <%- page.html %>
-    </div>
+    <% if(page.title) { %>
+        <h2>
+            <%= page.title %>
+        </h2>
+    <% } %>
+    <%- page.html %>
 </div>
 
 
