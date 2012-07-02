@@ -36,7 +36,7 @@ var Cycle = module.exports = new Schema({
     users:{type:[
         new Schema({user_id:{type:ObjectId, ref:'User'}, join_date: {type:Date, 'default':Date.now}})
     ], editable:false},
-    is_hidden:{type:Boolean,'default':false}
+    is_hidden:{type:Boolean,'default':true}
 }, {strict: true});
 
 Cycle.pre("save", function(next){

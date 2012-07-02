@@ -42,5 +42,5 @@ var InformationItem = module.exports = new Schema({
         rewarded_creator_for_approval: {type: String, 'default': false, editable: false}
     },
     gui_order:{type:Number,'default':9999999,editable:false},
-    is_hidden:{type:Boolean,'default':false}
+    is_hidden:{type:Boolean,'default':true}
 }, {strict: true});

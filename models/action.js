@@ -46,5 +46,5 @@ var Action = module.exports = new Schema({
     grade:{type:Number, 'default':0},
     evaluate_counter:{type:Number, 'default':0, editable:false},
     grade_sum:{type:Number, 'default':0, editable:false},
-    is_hidden:{type:Boolean,'default':false}
+    is_hidden:{type:Boolean,'default':true}
 }, {strict: true});

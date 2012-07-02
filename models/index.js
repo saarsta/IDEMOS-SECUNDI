@@ -40,7 +40,7 @@ var Schemas = exports.Schemas = {
         is_visible:{type:Boolean, 'default':true},
         creation_date:{type:Date, 'default':Date.now,editable:false},
         gui_order:{type:Number,'default':9999999,editable:false},
-        is_hidden:{type:Boolean,'default':false}
+        is_hidden:{type:Boolean,'default':true}
     }, {strict: true}),
 
     SuccessStory: new Schema({
@@ -56,7 +56,7 @@ var Schemas = exports.Schemas = {
         is_visible:{type:Boolean, 'default':true},
         creation_date:{type:Date, 'default':Date.now,editable:false},
         gui_order:{type:Number,'default':9999999,editable:false},
-        is_hidden:{type:Boolean,'default':false}
+        is_hidden:{type:Boolean,'default':true}
     }, {strict: true}),
 
     //cycle updates
@@ -73,7 +73,7 @@ var Schemas = exports.Schemas = {
         is_visible:{type:Boolean, 'default':true},
         creation_date:{type:Date, 'default':Date.now,editable:false},
         gui_order:{type:Number,'default':9999999,editable:false},
-        is_hidden:{type:Boolean,'default':false}
+        is_hidden:{type:Boolean,'default':true}
     }, {strict: true}),
 
     Kilkul:{
@@ -89,7 +89,7 @@ var Schemas = exports.Schemas = {
         me_too_counter: {type:Number, 'default':0},
         creation_date:{type:Date, 'default':Date.now,editable:false},
         gui_order:{type:Number,'default':9999999,editable:false},
-        is_hidden:{type:Boolean,'default':false}
+        is_hidden:{type:Boolean,'default':true}
     },
 
     Vote:{
@@ -150,7 +150,7 @@ var Schemas = exports.Schemas = {
 
     Category: {
         name: {type:String},
-        is_hidden:{type:Boolean,'default':false}
+        is_hidden:{type:Boolean,'default':true}
     },
 
     ActionSuggestion: {

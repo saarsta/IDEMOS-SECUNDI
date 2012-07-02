@@ -48,7 +48,7 @@ var Article = module.exports = new Schema({
     time: {type: Date, 'default': Date.now, editable:false},
     popularity_counter: {type: Number, 'default': 0},
     comments : [Comment],
-    is_hidden:{type:Boolean,'default':false}
+    is_hidden:{type:Boolean,'default':true}
 } ,{strict: true});
 
 Article.pre('save',function(next)
