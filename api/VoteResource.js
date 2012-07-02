@@ -109,7 +109,7 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
                                                 //set notification for post creator
                                                 if(!err){
                                                     notifications.create_user_vote_or_grade_notification("user_gave_my_post_tokens",
-                                                        discussion_id, post_object.creator_id, vote_object.user_id, post_object._id, method, false, function(err, result){
+                                                        discussion_id, post_object.creator_id, vote_object.user_id, post_object._id, method, false, false, function(err, result){
                                                             cbk(err, post_object);
                                                         })
                                                 }else{
