@@ -182,13 +182,17 @@ var Schemas = exports.Schemas = {
         {
              notificator_id: {type:ObjectId, ref:'User'},
              sub_entity_id:  {type: ObjectId},
+
             //only for votes notifications
-             ballance: Number
+             ballance: Number,
+             votes_for: {type: Number, 'default': 0},
+             votes_against: {type: Number, 'default' : 0}
+
         }
         )],
         type: {type:String, "enum": [
             'approved_info_item_i_created',
-            'approved_info_item_i_liked',
+//            'approved_info_item_i_liked',
             'approved_discussion_i_created',
             'approved_discussion_i_took_part',
             'comment_on_discussion_you_are_part_of',

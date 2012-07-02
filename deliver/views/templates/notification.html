@@ -5,11 +5,17 @@
             <img class="shadow" src="" alt=""/>
         </div>
     </div>
+    <!--<p>-->
+        <!--<strong>-->
+        <!--{description_of_notificators}-->
+        <!--</strong>-->
+         <!--<a href="{link}"> {message_of_notificators}</a>-->
+    <!--</p>-->
     <p>
         <strong>
-        {description_of_notificators}
+            {description_of_notificators} {message_of_notificators}
         </strong>
-         <a href="{link}"> {message_of_notificators}</a>
+        <a href="{link}">{?name}{name}{/name}</a>
     </p>
     <div class="date">{update_date|date}</div>
     <a class="btn share" rel="{link|uc}" href="/facebookShare?link={link|uc}">שתף</a>

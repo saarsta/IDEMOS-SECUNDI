@@ -6,10 +6,11 @@ var mongoose = require('mongoose')
     ,_ = require('underscore');
 
 var FooterLink = module.exports = new Schema({
-    link:{type:String, required:true},
+    tab:{type:String,required:true},
+    link:{type:String},
     name:{type:String, required:true},
     title:{type:String, required:false},
-    html:{type:types.Html,required:true},
+    html:{type:types.Text,required:true},
     is_published:{type:Boolean, 'default':true},
     gui_order:{type:Number,'default':Number.MAX_VALUE,editable:false}
 });
@@ -36,6 +37,6 @@ FooterLink.pre('save',function(next) {
 
 FooterLink.statics.getFooterLink = function(link) {
     return _.find(links,function(footer_link) {
-        return footer_link.link == link;
+        return footer_link.tab == link;
     });
 };

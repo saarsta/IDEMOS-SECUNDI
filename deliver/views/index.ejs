@@ -113,7 +113,7 @@
         });
 
 
-        db_functions.getPopularHeadlines(2, function (data) {
+        db_functions.getPopularHeadlines(3, function (data) {
             $.each(data.objects, function (index, headline) {
                 dust.render('headline', headline, function (err, html) {
                     $('div.one-news').append(html);
