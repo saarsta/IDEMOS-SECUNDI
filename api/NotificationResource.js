@@ -187,6 +187,7 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                         description_of_notificators = num_of_comments + " " +
                             "תגובות"
                         ;
+
                         message_of_notificators =
 "חדשות בדיון שהשתתפת בו - "                        ;
                         notification.description_of_notificators = description_of_notificators;
@@ -404,10 +405,9 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                                 "תמכו בהצעה שהעלית (ו"
                                     + against_sum
                                     + " "
-
-                                    + "התנגדו לה"
-                            " " +
-"בדיון - "
+                                    + "התנגדו לה)"
+                                + " "
+ + "בדיון - "
                             ;
                         }else if (supprorts_sum){
                             notification.description_of_notificators = supprorts_sum +
