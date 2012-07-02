@@ -150,8 +150,12 @@
             if(selectedSubject){
                 window.location='discussions/new/'+selectedSubject ;
             }else{
-                alert(
-				 'בחר נושא בבקשה');
+                var config={
+                   massage:'בחר נושא בבקשה'
+				  ,okButtonText:'סגור'
+                }
+                popupProvider.showOkPopup(config);
+
             }
 
         })
