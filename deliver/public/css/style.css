@@ -4483,7 +4483,7 @@ body.search-ative #header
     background: url(../images/token-popup.png) no-repeat;
     padding: 16px 24px 0 13px;
 }
-.myuru-top .left .token-bar:hover .token-popup1
+.myuru-top .left .token-bar:hover .token-popup
 {
     display: block;
 }
