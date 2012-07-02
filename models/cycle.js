@@ -35,7 +35,8 @@ var Cycle = module.exports = new Schema({
     //users that conected somehow to the cycle for my uru
     users:{type:[
         new Schema({user_id:{type:ObjectId, ref:'User'}, join_date: {type:Date, 'default':Date.now}})
-    ], editable:false}
+    ], editable:false},
+    is_hidden:{type:Boolean,'default':false}
 }, {strict: true});
 
 Cycle.pre("save", function(next){

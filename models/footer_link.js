@@ -11,7 +11,7 @@ var FooterLink = module.exports = new Schema({
     name:{type:String, required:true},
     title:{type:String, required:false},
     html:{type:types.Text,required:true},
-    is_published:{type:Boolean, 'default':true},
+    is_hidden:{type:Boolean,'default':false},
     gui_order:{type:Number,'default':Number.MAX_VALUE,editable:false}
 });
 
