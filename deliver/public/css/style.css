@@ -5014,9 +5014,23 @@ body.search-ative #header
 
 
 
+
 .ui-tabs
 {
      padding-top: 26px;
 }
 
+
+
+.ie7_message {
+    display:none;
+    background-color: #CCC;
+    border: black 2px solid;
+    padding: 50px;
+    color: #50504F;
+    text-decoration: none;
+    font-size: 22px;
+    line-height: 20px;
+    font-family: 'AdumaFOTRegular';
+}
 
