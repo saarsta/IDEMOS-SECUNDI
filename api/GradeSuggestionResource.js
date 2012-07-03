@@ -273,16 +273,17 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                         method = "remove"
                 }
                 async.parallel([
-                    function (cbk1) {
-                        if(did_user_change_his_agree){
-                            notifications.create_user_vote_or_grade_notification("user_gave_my_suggestion_tokens",
-                                sugg_obj._id, sugg_obj.creator_id, req.user._id, discussion_id, method, did_user_change_his_agree, true,function (err, result) {
-                                    cbk1(err, result);
-                                })
-                        }else{
-                            cbk1(null, 0);
-                        }
-                    },
+                    //TODO fix it!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//                    function (cbk1) {
+//                        if(did_user_change_his_agree){
+//                            notifications.create_user_vote_or_grade_notification("user_gave_my_suggestion_tokens",
+//                                sugg_obj._id, sugg_obj.creator_id, req.user._id, discussion_id, method, did_user_change_his_agree, true,function (err, result) {
+//                                    cbk1(err, result);
+//                                })
+//                        }else{
+//                            cbk1(null, 0);
+//                        }
+//                    },
 
                     function (cbk1) {
                         object.proxy_power = proxy_power;
