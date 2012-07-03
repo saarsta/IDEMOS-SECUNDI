@@ -180,7 +180,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                         }
                     },
                     //set notification for suggestion creator ("user agree/disagree your suggestion")
-                    function (cbk) {
+                    function (cbk1) {
                         var method;
                         if (is_agree)
                             method = "add";
@@ -188,7 +188,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                             method = "remove";
                         notifications.create_user_vote_or_grade_notification("user_gave_my_suggestion_tokens",
                             suggestion_obj._id, suggestion_obj.creator_id, req.user._id, discussion_id, method, false, true, function (err, result) {
-                                cbk(err, result);
+                                cbk1(err, result);
                             })
                     }
                 ], function (err, args) {
@@ -206,7 +206,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                 new_grade:new_grade,
                 evaluate_counter:counter,
 //                    already_graded: true,
-                agrees:agrees,
+                agrees: agrees,
                 not_agrees:not_agrees,
 //                    wanted_amount_of_tokens: real_threshold,
                 curr_amount_of_tokens:curr_tokens_amout
@@ -262,6 +262,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                 g_sugg_obj = sugg_obj;
                 agrees = sugg_obj.agrees;
                 not_agrees = sugg_obj.not_agrees;
+                curr_tokens_amout = agrees = not_agrees;
 
                 did_user_change_his_agree = object.does_support_the_suggestion != is_agree;
                 object.does_support_the_suggestion = is_agree;

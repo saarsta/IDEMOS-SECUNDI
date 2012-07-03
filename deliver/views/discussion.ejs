@@ -667,7 +667,7 @@ $(document).ready(function () {
                         var rating = ui.value;
                         db_functions.addSuggestionGrade(suggestion.id, discussion_id, rating, suggest_grade_id[suggestion.id], function (err, data) {
                             if (!err) {
-                                $("#suggest_grade_" + suggestion.id).val(Math.round(data.new_grade * 100) / 100);
+                                $("#suggest_grade_" + suggestion.id).val(Math.round((data.new_grade * 100) / 100));
                                 $("#suggest_graders_" + suggestion.id).text(Math.round(data.evaluate_counter));
                                 $("#agrees_" + suggestion.id).text(Math.round(data.agrees));
                                 $("#not_agrees_" + suggestion.id).text(Math.round(data.not_agrees));
