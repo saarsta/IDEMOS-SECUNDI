@@ -145,7 +145,7 @@ function update_user_gamification(req, game_type, user, price, callback)
 //                })
 
 //                check_gamification_rewards(user, callback);
-                callback(err, num);//TODO change it
+                callback(err, 0);//TODO change it
                 console.log('user gamification saved');
 
             }
