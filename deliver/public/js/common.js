@@ -223,29 +223,25 @@ $(function(){
                 if(tooltip.length)
                     initTooltip(tooltip);
             }
-        }
-        inCallback = false;
-    };
-    var callback = function(event){
-        var target_element = event.srcElement || event.target;
-        if(target_element){
-            if($(target_element).is('.auto-scale'))
-                image_autoscale($('img',target_element));
-            else
-            {
-                var autoscale = $('.auto-scale',target_element);
-                if(autoscale.length)
-                    image_autoscale($('img',autoscale));
-            }
             if($(target_element).is('.share'))
                 fbs_click($(target_element));
             else
             {
-                var tooltip = $('.share',target_element);
+                var share = $('.share',target_element);
+                if(share.length)
+                    fbs_click(share);
+            }
+
+            if($(target_element).is('.action_comming_soon'))
+                initTooltipWithMessage($(target_element), "יעלה בקרוב");
+            else
+            {
+                var tooltip = $('.action_comming_soon',target_element);
                 if(tooltip.length)
-                    fbs_click(tooltip);
+                    initTooltipWithMessage(tooltip, "יעלה בקרוב");
             }
         }
+        inCallback = false;
     };
 
     if($.browser.msie && Number($.browser.version) == 8)

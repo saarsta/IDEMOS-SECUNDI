@@ -15,7 +15,7 @@
         <%if(!user_logged){%>
         <div class="main-video">
             <div class="video-box">
-                <iframe width="416" height="267" src="http://www.youtube.com/embed/6LYw5crRh8E" frameborder="0" allowfullscreen></iframe>
+                <img class="video_img" width="416" height="267" src="images/hp11_not logged_main video image.png" alt=""/>
             </div>
             <p>
                 עורו היא תנועה חברתית לייצוג הרוב בישראל. אנו מאמינים שבעידן שבו אנו חיים, כולנו מסוגלים וזכאים להשתתף בקבלת ההחלטות. לכן, עורו מנהלת פלטפורמה לדיון ציבורי, יסודי ואפקטיבי שיוביל שינוי בסדר היום. אצלנו, האג'נדה מוכתבת מלמטה.
@@ -69,6 +69,11 @@
 
     $(function () {
 
+
+        $(".video-box").on('click', function(){
+            $('.video_img').remove();
+            $(this).append('<object width="560" height="315"><param name="movie" value="http://www.youtube.com/v/6LYw5crRh8E?version=3&autoplay=1&amp;hl=en_US&amp;rel=0"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/6LYw5crRh8E?version=3&autoplay=1&amp;hl=en_US&amp;rel=0" type="application/x-shockwave-flash" width="416" height="267" allowscriptaccess="always" allowfullscreen="true"></embed></object>');
+        });
 
         $('form.comment-form').live('submit', function (e) {
             e.preventDefault();
