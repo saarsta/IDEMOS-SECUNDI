@@ -5058,3 +5058,6 @@ body.search-ative #header
     font-family: 'AdumaFOTRegular';
 }
 
+.video_img:hover{
+    cursor: pointer
+}
