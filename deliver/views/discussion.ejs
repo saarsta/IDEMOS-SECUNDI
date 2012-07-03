@@ -285,7 +285,6 @@ var current_section=1;
 
 $(document).ready(function () {
 
-    /***************************************************/
     var my_id = "<%=user_logged ? user._id : ''%>";
     var discussion_id = "<%=discussion.id%>";
     var creator_id = "<%=discussion.creator_id%>";
@@ -841,6 +840,8 @@ $(document).ready(function () {
                  $("#user_tokens").text(data.updated_user_tokens);*/
                 render_suggestion(data)
                 $(".deals-box").show();
+            }else{
+                var err = err;
             }
         });
 
