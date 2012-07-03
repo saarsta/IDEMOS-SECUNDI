@@ -286,7 +286,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
 
                     function (cbk1) {
                         object.proxy_power = proxy_power;
-                        base.call(self, req, object, cbk);
+                        base.call(self, req, object, cbk1);
                     }
                 ], function (err, args) {
                     cbk(err, args[1]);
