@@ -4797,7 +4797,7 @@ body.search-ative #header
     background-color:#b7b6b6;
     border-color:#8f8f8f;
 }
-*---------------------------*/
+
 .main-text
 {
     background:#fff;
@@ -4831,7 +4831,7 @@ body.search-ative #header
     font: italic 12px/17px Arial;
     margin-bottom: 5px;
 }
-.main-text .one p
+.main-text .one .text_field
 {
     color:#50504f;
     font: normal 13px/17px Arial;
@@ -4859,6 +4859,30 @@ body.search-ative #header
     margin-right: -14px;
     background: url(../images/plus-icon-white.png) 100% 50% no-repeat;
 }
+
+.main-text .left a.grey-btn-info
+{
+    background:#757d7e url(../images/search-submit.png) 0 0 repeat-x;
+    display: block;
+    border: 1px solid #2e3030;
+    height: 29px;
+    font: normal 15px/34px "AdumaFOTRegular";
+    color:#fff;
+    text-align: center;
+    border-radius: 2px;
+    text-decoration: none;
+    position: relative;
+    width: 110px;
+    display: block;
+    margin-bottom: 8px;
+}
+.main-text .left a.grey-btn-info span
+{
+    padding-right: 14px;
+    margin-right: 0px;
+    background: url(../images/plus-icon-white.png) 100% 30% no-repeat;
+}
+
 .main-text .left a.like-icon
 {
     background: url(../images/like-icon.png) no-repeat;

@@ -243,7 +243,7 @@ var error_message = error_message || '';
             </div>
         </div>
         <a id="submit_post" class="green-btn" href="javascript:void(0);">
-            הצע
+פרסם
         </a>
     </div>
 </div>
@@ -450,36 +450,36 @@ $(document).ready(function () {
 
 
     $('#comments').on('click', '#add_or_remove_proxy', function () {
-        $( "#proxy_form" ).dialog( "open" );
-        var self = this;
-        var proxy_id = $(this).parents('.comment-one').data("creator_id");
-        var given_mandates = $(this).parents('.comment-one').data("num-given-mandates");
-
-        onGiveProxy = function(tokens,callback) {
-            console.log(tokens);
-
-            if(given_mandates + tokens > 3 || given_mandates + tokens < -3){
-                alert("can't give more then 3 tokens to a user" || "can't take more tokens then u gave a user");
-                setTimeout(callback,1000);
-            }else{
-                db_functions.addOrRemoveProxyMandate(my_id, proxy_id, tokens, function(err, data){
-
-                    if(err){
-                        alert(err.responseText);
-                        callback(err);
-                    }
-                    else{
-//                    $(self).parents('.comment-one').data("num-given-mandates", $(self).parents('.comment-one').data("num-given-mandates") + tokens);
-//                    $(self).parents('.comment-one').find(".proxy.num").value =  $(self).parents('.comment-one').find(".proxy.num").value + tokens;
-                        if(tokens < 0)
-                            alert("האסימונים ילקחו בקרוב");
-                        callback(err, data);
-                    }
-                })
-
-            }
-
-        };
+//        $( "#proxy_form" ).dialog( "open" );
+//        var self = this;
+//        var proxy_id = $(this).parents('.comment-one').data("creator_id");
+//        var given_mandates = $(this).parents('.comment-one').data("num-given-mandates");
+//
+//        onGiveProxy = function(tokens,callback) {
+//            console.log(tokens);
+//
+//            if(given_mandates + tokens > 3 || given_mandates + tokens < -3){
+//                alert("can't give more then 3 tokens to a user" || "can't take more tokens then u gave a user");
+//                setTimeout(callback,1000);
+//            }else{
+//                db_functions.addOrRemoveProxyMandate(my_id, proxy_id, tokens, function(err, data){
+//
+//                    if(err){
+//                        alert(err.responseText);
+//                        callback(err);
+//                    }
+//                    else{
+////                    $(self).parents('.comment-one').data("num-given-mandates", $(self).parents('.comment-one').data("num-given-mandates") + tokens);
+////                    $(self).parents('.comment-one').find(".proxy.num").value =  $(self).parents('.comment-one').find(".proxy.num").value + tokens;
+//                        if(tokens < 0)
+//                            alert("האסימונים ילקחו בקרוב");
+//                        callback(err, data);
+//                    }
+//                })
+//
+//            }
+//
+//        };
 
     });
 

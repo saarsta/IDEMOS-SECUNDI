@@ -18,7 +18,9 @@
         <div id="content" class="cf">
             <div class="rightCol">
                 <div class="nav-btn">
-                    <a href="javascript:void(0);" id="add_button" >הוסף</a>
+                    <a style="width: 158px" href="javascript:void(0);" id="add_button" >
+                        הוסף לסל המידע
+                    </a>
                     <a class="share" rel="/media/<%= item.id %>" href="/facebookShare?link=/media/<%= item.id %>" target="_blank">שתף</a>
                      <% if(!item.user_likes) { %>
                         <a class="hide" href="javascript:void(0);" class="number" id="like_button">1+</a>
@@ -71,22 +73,27 @@
 <script type="text/javascript">
     var current_section=0;
 
+
+
     $(document).ready(function () {
+        var is_logged = "<%= user_logged %>" == "true";
 
             var info_item_id = "<%= item.id %>";
             //bugbug shold this be used?
             //$('#info_item_full_view img').autoscale();
 
             $("#add_button").live("click", function(){
-                db_functions.addInfoItemToShoppingCart(info_item_id, function(err, information_item){
-                    if(!err){
-                       dust.render('information_item_box',information_item,function(err,out)
-                       {
-                           $(".card-products-left").append(out);
-                       });
-                       $("#add_button").hide();
-                    }
-                });
+
+                    db_functions.addInfoItemToShoppingCart(info_item_id, function(err, information_item){
+                        if(!err){
+                            dust.render('information_item_box',information_item,function(err,out)
+                            {
+                                $(".card-products-left").append(out);
+                            });
+                            $("#add_button").hide();
+                        }
+                    });
+
             });
 
             $(".button.remove").live("click", function(){
@@ -105,20 +112,23 @@
                 });
             });
 
+        if(is_logged){
             db_functions.getUserShopingCart(function(err,data)
             {
-                    $.each(data.objects,function(index,information_item)
+                $.each(data.objects,function(index,information_item)
+                {
+                    dust.render('information_item_box',information_item,function(err,out)
                     {
-                        dust.render('information_item_box',information_item,function(err,out)
-                        {
-                            $(".card-products-left").append(out);
-                        })
-                        if(information_item._id==info_item_id)
-                        {
-                             $("#add_button").hide();
-                        }
-                    });
+                        $(".card-products-left").append(out);
+                    })
+                    if(information_item._id==info_item_id)
+                    {
+                        $("#add_button").hide();
+                    }
+                });
             });
+        }
+
 
         $('.delete-app').live("click",removeItemFromCart);
         $('.delete').live("click",removeItemFromCart);
