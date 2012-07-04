@@ -116,6 +116,10 @@ body
     font-family: 'AdumaFOTRegular';
     text-decoration: none;
 }
+#main-menu li.menu_item ul li a
+{
+    font-size:16x;
+}
 #main-menu li.menu_item a:hover,
 #main-menu li.menu_item a:active,
 #main-menu li.menu_item a.active
@@ -128,7 +132,7 @@ body
     top:0;
     right:0;
     margin-top: 21px;
-    padding: 5px 20px 0px 10px;
+    padding: 5px 20px 0px 4px;
     background-color: White;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
