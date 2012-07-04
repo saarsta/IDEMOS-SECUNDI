@@ -474,7 +474,7 @@ var calculateSuggestionGrade = GradeSuggestionResource.calculateSuggestionGrade 
                             if (sugg._id != suggestion_id && sugg.parts[0].start < g_approved_sugg.parts[0].end - 1){
                                 if(sugg.threshold_for_accepting_the_suggestion > 500)
                                     sugg.threshold_for_accepting_the_suggestion = 500;
-                                    
+
                                 sugg.parts[0].start = g_approved_sugg.parts[0].text.length > change_length ? sugg.parts[0].start + change_length : sugg.parts[0].start - change_length;
                                 sugg.save(function(err, sugg){
                                     itr_cbk(err, sugg);
