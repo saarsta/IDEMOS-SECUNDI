@@ -41,9 +41,13 @@ var tags_replace = {
 function sendFacebookInvite(message,link,callback) {
     FB.ui({method: 'apprequests', message: message}, function(response) {
 
-        var request_id = response.request;
+        if(!response)
+            callback('canceled');
+        else {
+            var request_id = response.request;
 
-        db_functions.addFacebookRequest(link, request_id,callback);
+            db_functions.addFacebookRequest(link, request_id,callback);
+        }
     });
 }
 
