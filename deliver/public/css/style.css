@@ -96,18 +96,19 @@ body
     list-style: none;
     padding: 56px 100px 58px 0;
 }
-#main-menu li
+#main-menu li.menu_item
 {
     float: right;
     padding:0 20px;
     border-right: 1px solid #cac9c9;
     line-height: 20px;
+    position:relative;
 }
-#main-menu li:first-child
+#main-menu li.menu_item:first-child
 {
     border: none;
 }
-#main-menu li a
+#main-menu li.menu_item a
 {
     color:#50504f;
     font-size: 22px;
@@ -115,12 +116,28 @@ body
     font-family: 'AdumaFOTRegular';
     text-decoration: none;
 }
-#main-menu li a:hover,
-#main-menu li a:active,
-#main-menu li a.active
+#main-menu li.menu_item a:hover,
+#main-menu li.menu_item a:active,
+#main-menu li.menu_item a.active
 {
     color:#3b63ef;
 }
+#main-menu li.menu_item ul {
+    display: none;
+    position:absolute;
+    top:0;
+    right:0;
+    margin-top: 21px;
+    padding:5px 20px;
+    background-color: White;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    z-index:7;
+}
+#main-menu li.menu_item ul a {
+    line-height: 40px;
+}
+#main-menu li.menu_item:hover ul { display: block; }
 
 .user-box
 {
