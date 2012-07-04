@@ -27,7 +27,7 @@ var user_public_fields = exports.user_public_fields = {
 var SessionAuthentication = exports.SessionAuthentication = function () { };
 util.inherits(SessionAuthentication,jest.Authentication);
 
-SessionAuthentication.prototype.is_authenticated = function(req,callback){
+SessionAuthentication.prototype.is_authenticated = function(req, callback){
 
     var is_auth = req.isAuthenticated();
     if(is_auth)
@@ -36,7 +36,7 @@ SessionAuthentication.prototype.is_authenticated = function(req,callback){
         if(!user_id){
             callback({message: "no user id"}, null);
         }else{
-            models.User.findById(user_id,function(err,user)
+            models.User.findById(user_id, function(err,user)
             {
                 if(err)
                 {
@@ -45,7 +45,7 @@ SessionAuthentication.prototype.is_authenticated = function(req,callback){
                 else
                 {
                     req.user = user;
-                    callback(null,true);
+                    callback(null, true);
                 }
             });
         }
