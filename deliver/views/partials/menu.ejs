@@ -8,11 +8,12 @@
         <ul>
             <%
             var links =  footer_links();
-            for(var i=0; i< links.length; i++) { %>
+            for(var i=0; i< links.length; i++) {
+                if(links[i].is_on_top) { %>
             <li><a href="<%= links[i].link ? links[i].link : '/page/' + links[i].tab %>">
                 <%= links[i].name %>
             </a></li>
-            <% } %>
+            <% } } %>
         </ul>
     </li>
     <li class="menu_item"><a href="/information_items">מאגר מידע</a></li>
