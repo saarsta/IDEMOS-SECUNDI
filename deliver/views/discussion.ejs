@@ -290,6 +290,12 @@ $(document).ready(function () {
     /***************************************************/
     var my_id = "<%=user_logged ? user._id : ''%>";
     var discussion_id = "<%=discussion.id%>";
+    <% if(user_logged){ %>
+        var proxy= JSON.parse('<%-proxy%>');
+      <% } else{ %>
+       var proxy= [];
+    <% } %>
+
     var creator_id = "<%=discussion.creator_id%>";
     var mouseDown, mouseUp, top, left;
     var grade_id = "<%= discussion.grade_obj ? discussion.grade_obj.grade_id : 0 %>";
@@ -451,7 +457,74 @@ $(document).ready(function () {
     });
 
 
-    $('#comments').on('click', '#add_or_remove_proxy', function () {
+    $('#comments').on('click', '#add_or_remove_proxy', function (e) {
+        e.preventDefault();
+        return;
+
+        function findUserProxy(userId){
+                for(var i in proxy ){
+                    var userProxy = proxy[i];
+                    if(userProxy.user_id===userId){
+                        return userProxy;
+                    }
+                }
+            return null;
+        }
+       var userData = $(this).parents('.comment-one') ;
+        var proxyId = userData.data('creator_id');
+        var userName = userData.data('creator_name');
+        var userProxy=findUserProxy(proxyId);
+        if(!userProxy){
+        //you didn't give proxy to this user
+            userProxy={number_of_tokens:0,
+                number_of_tokens_to_get_back: 0,
+                user_id: proxyId
+            }
+
+
+        }
+
+        var config={
+					massage:'תן מנדט ל'+userName
+            ,onOkCilcked:function(e){
+                e.preventDefault();
+                newAmount=  $('.give-mandats-popup').find(':checked').val()
+                var changeProxy=newAmount- (userProxy.number_of_tokens-userProxy.number_of_tokens_to_get_back)   ;
+                if(changeProxy==0){
+                    $.colorbox.close();
+                }
+
+                db_functions.addOrRemoveProxyMandate(my_id, proxyId, changeProxy, function(err, data){
+
+                    if(err){
+
+                        alert(err.responseText)      ;
+                       // popupProvider.showOkPopup({massage :err.responseText});
+
+                    }
+                    else{
+//                    $(self).parents('.comment-one').data("num-given-mandates", $(self).parents('.comment-one').data("num-given-mandates") + tokens);
+//                    $(self).parents('.comment-one').find(".proxy.num").value =  $(self).parents('.comment-one').find(".proxy.num").value + tokens;
+                        if(changeProxy < 0)  {
+                            alert('האסימונים ילקחו בקרוב')  ;
+                           // popupProvider.showOkPopup({massage : "האסימונים ילקחו בקרוב"});
+                        }
+                      //  callback(err, data);
+                    }
+                })
+
+                $.colorbox.close();
+
+
+            }
+            ,userProxy:userProxy
+			};
+        popupProvider.showGiveMandatPopup(config);
+
+
+    });
+   /* $('#comments').on('click', '#add_or_remove_proxy', function () {
+
         $( "#proxy_form" ).dialog( "open" );
         var self = this;
         var proxy_id = $(this).parents('.comment-one').data("creator_id");
@@ -483,9 +556,10 @@ $(document).ready(function () {
 
         };
 
-    });
+    });*/
 
     $('#comments').on('click', '.vote_for', function () {
+
         var post_id = $(this).parents('.comment-one').data("id");
         var button = $(this);
         var func = $(this).parents('#comments').length ? db_functions.voteForPost : db_functions.voteForSuggestion;
@@ -621,6 +695,7 @@ $(document).ready(function () {
         new_post_ref_id = null;
         $(".popup-window").hide();
         $("textarea#discussion_comment").val('"' + range.text + '"').focus();
+
 
     });
 

@@ -34,5 +34,38 @@ var popupProvider={
             }
         });
 
+    },
+
+    showGiveMandatPopup:function(popupConfig){
+        var defaults = {
+            massage:''
+
+            ,onCancelCilcked:function(e){
+                e.preventDefault();
+                $.colorbox.close();
+            }
+            ,onOkCilcked:function(e){
+                e.preventDefault();
+                $.colorbox.close();
+            }
+        };
+      // var giveTokens=3;
+        popupConfig = $.extend(defaults,popupConfig);
+
+        dust.render('give_mandat_popup',popupConfig,function(err,out){
+            if(!err){
+                $.colorbox({ html:out,
+                    onComplete:function(e){
+                        var realProxy= popupConfig.userProxy.number_of_tokens-popupConfig.userProxy.number_of_tokens_to_get_back;
+                        $('.ok-button').click(popupConfig.onOkCilcked);
+                        $('.cancel-button').click(popupConfig.onCancelCilcked);
+                        $('.give-mandats-popup input').eq(realProxy).attr('checked', true);
+
+                    }
+                });
+
+            }
+        });
+
     }
 }
