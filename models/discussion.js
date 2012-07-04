@@ -58,3 +58,7 @@ var Discussion = module.exports = new Schema({
         has_rewarded_creator_for_high_grading_of_min_graders: {type: String, 'default': false}, editable:false},
     is_hidden:{type:Boolean,'default':true}
 }, {strict: true});
+
+Discussion.methods.toString = function() {
+    return this.title;
+};
