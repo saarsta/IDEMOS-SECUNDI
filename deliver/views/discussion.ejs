@@ -731,7 +731,7 @@ $(document).ready(function () {
         $('#suggestion_number').text('(' + data.meta.total_count + ')');
         if (data.objects.length > 0) {
             $(".deals-box").show();
-            if (data.meta.total_count > 2) {
+            if (data.meta.total_count >= 2) {
                 $(".more-deals").show();
                 $(".more-deals a").on('click', function (e) {
 
