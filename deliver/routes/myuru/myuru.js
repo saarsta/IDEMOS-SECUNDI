@@ -38,7 +38,6 @@ module.exports = function (req, res) {
             })
         }
 
-
     ], function (err, user_obj) {
         var proxy =  user_obj.proxy  ;
         var num_of_extra_tokens = user_obj.num_of_extra_tokens;
