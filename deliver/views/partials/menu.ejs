@@ -1,12 +1,25 @@
 <a href="/" id="logo"></a>
 <ul id="main-menu">
-    <li><a href="/about">
+    <li class="menu_item about_item">
+        <a href="/about">
+
 אודות עורו
-    </a></li>
-    <li><a href="/information_items">מאגר מידע</a></li>
-    <li><a href="/discussions">דיונים</a></li>
-    <li><a class="cycle_comming_soon" href="/javascript:void(0)">מעגלי תנופה</a></li>
-    <li><a class="action_comming_soon" href="javascript:void(0)">
+        </a>
+        <ul>
+            <%
+            var links =  footer_links();
+            for(var i=0; i< links.length; i++) {
+                if(links[i].is_on_top) { %>
+            <li><a href="<%= links[i].link ? links[i].link : '/page/' + links[i].tab %>">
+                <%= links[i].name %>
+            </a></li>
+            <% } } %>
+        </ul>
+    </li>
+    <li class="menu_item"><a href="/information_items">מאגר מידע</a></li>
+    <li class="menu_item"><a href="/discussions">דיונים</a></li>
+    <li class="menu_item"><a class="cycle_comming_soon" href="javascript:void(0)">מעגלי תנופה</a></li>
+    <li class="menu_item"><a class="action_comming_soon" href="javascript:void(0)">
         פעולות ואירועים
     </a></li>
 </ul>
