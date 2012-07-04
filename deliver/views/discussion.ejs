@@ -613,7 +613,7 @@ $(document).ready(function () {
        var explanation = $('.explanation', postDiv).text();
 
 
-       if($('.explanation', postDiv).text() == "נימוק :"){
+       if($('.explanation', postDiv).text().trim() == "נימוק:"){
 
            text = "[quote=" + '"' + userName + '"' + " " + "]\n"
                    + change_text
