@@ -493,8 +493,8 @@ $(document).ready(function () {
                 var votes_for = button.parents(".status").find(".yes").find(".number");
                 var votes_against = button.parents(".status").find(".no").find(".number");
 
-                votes_for.text(post_obj.votes_for);
-                votes_against.text(post_obj.votes_against);
+                votes_for.text(Math.round(post_obj.votes_for));
+                votes_against.text(Math.round(post_obj.votes_against));
             }
             else {
                 if (err.responseText == 'Error: there is not enought tokens')
@@ -516,8 +516,8 @@ $(document).ready(function () {
                 var votes_for = button.parents(".status").find(".yes").find(".number");
                 var votes_against = button.parents(".status").find(".no").find(".number");
 
-                votes_for.text(post_obj.votes_for);
-                votes_against.text(post_obj.votes_against);
+                votes_for.text(Math.round(post_obj.votes_for));
+                votes_against.text(Math.round(post_obj.votes_against));
             }
             else {
                 if (err.responseText == 'Error: there is not enought tokens')
