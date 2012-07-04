@@ -18,7 +18,8 @@ module.exports = function(app)
     admin.ensureUserExists('ishai','istheadmin');
 
     admin.registerMongooseModel("User",Models.User,null,{
-        list:['username','first_name','last_name']
+        list:['username','first_name','last_name'],
+        filters:['email','first_name','last_name','facebook_id','gender','age','invitation_code','identity_provider']
     });
     admin.registerMongooseModel("InformationItem",Models.InformationItem, null,{
         list:['title'],
