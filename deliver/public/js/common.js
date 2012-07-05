@@ -89,8 +89,8 @@ dust.filters['post'] = function(text) {
         '<div class="post_quote"><a class="ref_link" href="javascript:void(0);">' +
             ' $1 כתב:' +
             '</a><br>' +
-            '$2' + '</div>');
-    text = text.replace(/\n/g, '<br>');
+            '$2' + '</div><span class="actual_text">');
+    text = text.replace(/\n/g, '<br>') + '</span>';
     return text;
 }
 

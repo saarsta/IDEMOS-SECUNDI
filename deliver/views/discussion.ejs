@@ -559,8 +559,11 @@ $(document).ready(function () {
         $("textarea#discussion_comment").focus();
         userName = postDiv.data('creator_name');
         new_post_ref_id = postDiv.data('id');
+
+        var text_to_quote = $('.actual_text',postDiv).length ? $('.actual_text', postDiv).text() : $('.post_text', postDiv).text();
+
         text = "[quote=" + '"' + userName + '"' + " " + "]\n"
-                + $('.post_text', postDiv).text()
+                + text_to_quote
                 + '\n'
                 + "[/quote]"
                 + '\n';
