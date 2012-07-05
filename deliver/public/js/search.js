@@ -1,4 +1,3 @@
-var current_section = current_section || -1;
 
 $(document).ready(function () {
 
@@ -8,6 +7,7 @@ $(document).ready(function () {
 var sections =['information_items','discussions','cycles','actions','blogs']  ;
 
 $('#search_form').submit(function() {
+    var current_section = typeof(window.current_section) == 'undefined' || window.current_section == null ? -1 : window.current_section;
     if(current_section >= 0) {
         search_term  =$("#search_term").val();
         displaySearchResults() ;

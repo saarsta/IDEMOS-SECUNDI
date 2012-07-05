@@ -69,6 +69,8 @@
 
     $(function () {
 
+        var user_logged = "<%= user_logged %>" == 'true';
+
 
         $(".video-box").on('click', function(){
             $('.video_img').remove();
@@ -125,13 +127,17 @@
             })
         });
 
-        db_functions.getNotifications(5, function (data) {
-            $.each(data.objects, function (index, notification) {
-                dust.render('notification', notification, function (err, html) {
-                    $('.renewal').append(html);
+        if(user_logged) {
+
+            db_functions.getNotifications(5, function (data) {
+                $.each(data.objects, function (index, notification) {
+                    dust.render('notification', notification, function (err, html) {
+                        $('.renewal').append(html);
+                    })
                 })
-            })
-        })
+            });
+            current_section = 0;
+        }
     })
 
 
