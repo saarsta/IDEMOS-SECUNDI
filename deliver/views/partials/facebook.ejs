@@ -1,8 +1,6 @@
 
-
 <script type="text/javascript">
-
-    var facebookAppId = facebookAppId || '175023072601087';
+    var facebookAppId = '<%= settings.facebook_app_id %>';
 
     var tag_name = "<% if (typeof tag_name !== "undefined") {%> <%= tag_name || '' %><% } %>";
     var current_section=null;
