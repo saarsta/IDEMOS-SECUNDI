@@ -135,6 +135,48 @@ var connectPopup = function(callback){
 };
 
 
+function initTooltip(ui){
+    ui.tooltip({
+        bodyHandler: function() {
+            return "" +
+                "בקרוב"
+        },
+        showURL: false
+    });
+    ui.attr('disabled','disabled');
+    ui.attr('href','javascript:void(0)');
+}
+
+function initTooltipWithMessage(ui, message){
+    ui.tooltip({
+        bodyHandler: function() {
+            return "" +
+                message
+        },
+        showURL: false
+    });
+    ui.attr('disabled','disabled');
+    ui.attr('href','javascript:void(0)');
+}
+
+function fbs_click(ui) {
+
+    ui.click( function() {
+
+        sendFacebookShare($(this).attr('rel'), $(this).data('name'), function(err) {
+            console.log(err);
+        });
+//            var u = ;
+//            window.open(
+//                'http://www.facebook.com/sharer.php?u=' + encodeURIComponent(host + u),
+//                'sharer',
+//                'toolbar=0,status=0'
+//            );
+        return false;
+    });
+    ui.attr('href','javascript:void(0);');
+}
+
 
 // handle image loading stuff
 
@@ -142,47 +184,6 @@ $(function(){
 
     var host = window.location.protocol + '//' + window.location.host;
 
-    function fbs_click(ui) {
-
-        ui.click( function() {
-
-            sendFacebookShare($(this).attr('rel'), $(this).data('name'), function(err) {
-                console.log(err);
-            });
-//            var u = ;
-//            window.open(
-//                'http://www.facebook.com/sharer.php?u=' + encodeURIComponent(host + u),
-//                'sharer',
-//                'toolbar=0,status=0'
-//            );
-            return false;
-        });
-        ui.attr('href','javascript:void(0);');
-    }
-
-    function initTooltip(ui){
-        ui.tooltip({
-            bodyHandler: function() {
-                return "" +
-                    "בקרוב"
-            },
-            showURL: false
-        });
-        ui.attr('disabled','disabled');
-        ui.attr('href','javascript:void(0)');
-    }
-
-    function initTooltipWithMessage(ui, message){
-        ui.tooltip({
-            bodyHandler: function() {
-                return "" +
-                    message
-            },
-            showURL: false
-        });
-        ui.attr('disabled','disabled');
-        ui.attr('href','javascript:void(0)');
-    }
 
 
     $('#failureForm').live('submit', function(e){

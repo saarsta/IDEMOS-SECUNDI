@@ -716,6 +716,9 @@ $(document).ready(function () {
                     }
                 });
 
+                initTooltipWithMessage($('#suggestion_list .right .proxy'),'מנדטים');
+                initTooltipWithMessage($('#suggestion_list .right .respect'),'מוניטין');
+
                 $(".suggest_slider_" + suggestion.id).prepend($("<div>").addClass("dark_bar").css('width', (my_discussion_grade * 10) + '%'));
             });
         }
@@ -783,6 +786,10 @@ $(document).ready(function () {
                 }
 
                 image_autoscale($('.auto-scale img',comments));
+
+                initTooltipWithMessage($('#comments .right .proxy'),'מנדטים');
+                initTooltipWithMessage($('#comments .right .respect'),'מוניטין');
+
             }
         });
     }
