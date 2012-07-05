@@ -162,7 +162,7 @@ module.exports = function(app)
     });
 
     admin.registerMongooseModel('Footer_Link',mongoose.model('FooterLink'),null,{
-        list:['link','title'],
+        list:['tab','name'],
         order_by:['gui_order'],
         sortable:'gui_order'
     });
