@@ -976,8 +976,12 @@ body
 .renewal
 {
     background:#fff;
-    padding: 0 8px;
-    margin-bottom: 30px;
+    padding: 0 8px 30px 8px;
+    margin-bottom: 20px;
+}
+.renewal>a
+{
+    float:left;
 }
 .renewal .one
 {

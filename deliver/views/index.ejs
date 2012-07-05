@@ -130,11 +130,12 @@
         if(user_logged) {
 
             db_functions.getNotifications(5, function (data) {
-                $.each(data.objects, function (index, notification) {
-                    dust.render('notification', notification, function (err, html) {
-                        $('.renewal').append(html);
-                    })
-                })
+                dust.renderArray('notification', data.objects, null,function (err, html) {
+                    $('.renewal').append(html).append('<a href="/myuru">' +
+'                        קרא עוד...' +
+                    '</a>');
+
+                });
             });
             current_section = 0;
         }
