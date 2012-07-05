@@ -139,6 +139,7 @@ body
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
     z-index:7;
+    width: 95px;
 }
 #main-menu li.menu_item ul a {
     line-height: 40px;
