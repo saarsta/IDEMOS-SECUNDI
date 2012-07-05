@@ -42,6 +42,23 @@
          }
          return _findOne.apply(this,arguments);
      };
+
+     var _count = model.count;
+     model.count = function()
+     {
+         if(model.schema.paths.is_hidden && SHOW_ONLY_PUBLISHED)
+         {
+             var query = arguments.length > 0 && typeof(arguments[0]) == 'object' ? arguments[0] : {};
+             query['is_hidden'] = {$ne:true};
+             if(arguments.length == 0)
+                 arguments = [query];
+             else if(typeof(arguments[0]) != 'object')
+                 arguments.unshift(query);
+             else
+                 arguments[0] = query;
+         }
+         return _count.apply(this,arguments);
+     };
      return model;
  };
 
