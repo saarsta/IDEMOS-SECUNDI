@@ -559,8 +559,11 @@ $(document).ready(function () {
         $("textarea#discussion_comment").focus();
         userName = postDiv.data('creator_name');
         new_post_ref_id = postDiv.data('id');
+
+        var text_to_quote = $('.actual_text',postDiv).length ? $('.actual_text', postDiv).text() : $('.post_text', postDiv).text();
+
         text = "[quote=" + '"' + userName + '"' + " " + "]\n"
-                + $('.post_text', postDiv).text()
+                + text_to_quote
                 + '\n'
                 + "[/quote]"
                 + '\n';
@@ -716,6 +719,9 @@ $(document).ready(function () {
                     }
                 });
 
+                initTooltipWithMessage($('#suggestion_list .right .proxy'),'מנדטים');
+                initTooltipWithMessage($('#suggestion_list .right .respect'),'מוניטין');
+
                 $(".suggest_slider_" + suggestion.id).prepend($("<div>").addClass("dark_bar").css('width', (my_discussion_grade * 10) + '%'));
             });
         }
@@ -783,6 +789,10 @@ $(document).ready(function () {
                 }
 
                 image_autoscale($('.auto-scale img',comments));
+
+                initTooltipWithMessage($('#comments .right .proxy'),'מנדטים');
+                initTooltipWithMessage($('#comments .right .respect'),'מוניטין');
+
             }
         });
     }

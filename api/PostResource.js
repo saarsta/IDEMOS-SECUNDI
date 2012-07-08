@@ -27,7 +27,7 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
         };
         this.fields = {
             creator_id : common.user_public_fields,
-                mandates_curr_user_gave_creator: null,
+            mandates_curr_user_gave_creator: null,
             text:null,
             popularity:null,
             tokens:null,

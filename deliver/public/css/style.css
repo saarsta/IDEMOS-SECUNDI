@@ -107,6 +107,8 @@ body
 #main-menu li.menu_item:first-child
 {
     border: none;
+    padding-left:10px;
+    margin-left:10px;
 }
 #main-menu li.menu_item a
 {
@@ -132,11 +134,12 @@ body
     top:0;
     right:0;
     margin-top: 21px;
-    padding: 5px 20px 0px 4px;
+    padding: 5px 20px 0px 10px;
     background-color: White;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
     z-index:7;
+    width: 95px;
 }
 #main-menu li.menu_item ul a {
     line-height: 40px;
@@ -976,8 +979,12 @@ body
 .renewal
 {
     background:#fff;
-    padding: 0 8px;
-    margin-bottom: 30px;
+    padding: 0 8px 30px 8px;
+    margin-bottom: 20px;
+}
+.renewal>a
+{
+    float:left;
 }
 .renewal .one
 {

@@ -33,14 +33,8 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
         };
 
         this.fields = {
-            creator_id : {
-                id:null,
-                first_name:null,
-                last_name:null,
-                avatar_url:null,
-                facebook_id:null,
-                score: null
-            },
+            creator_id : common.user_public_fields,
+            mandates_curr_user_gave_creator: null,
             parts:null,
             popularity:null,
             tokens:null,
