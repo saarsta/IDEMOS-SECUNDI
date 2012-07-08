@@ -2,17 +2,23 @@
 <ul id="main-menu">
     <li class="menu_item about_item">
         <a href="/about">
+
 אודות עורו
         </a>
         <ul>
             <%
             var links =  footer_links();
-            for(var i=0; i< links.length; i++) {
-                if(links[i].is_on_top) { %>
-            <li><a href="<%= links[i].link ? links[i].link : '/page/' + links[i].tab %>">
-                <%= links[i].name %>
-            </a></li>
-            <% } } %>
+            var pages = ['about', 'team', 'founders'];
+
+            links.forEach(function(menu){
+            var page =  pages.indexOf(menu.tab) === -1 ? '/page/' : '/';
+            if(menu.is_on_top)  { %>
+                <li><a href="<%= menu.link ? menu.link : page + menu.tab %>">
+                    <%= menu.name %>
+                </a></li>
+            <% }}) %>
+
+
         </ul>
     </li>
     <li class="menu_item"><a href="/information_items">מאגר מידע</a></li>

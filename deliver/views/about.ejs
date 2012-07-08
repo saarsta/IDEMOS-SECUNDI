@@ -15,11 +15,53 @@
         <%-partial('partials/tag_search.ejs') %>
     </div>
 
-    <div id="content" class="cf" style="background-image: url('/images/about.png'); background-position: center -30px; height: 1300px; padding-bottom:0px;">
+    <!--<div id="content" class="cf" style="background-image: url('/images/about.png'); background-position: center -30px; height: 1300px; padding-bottom:0px;">-->
+        <div id="content" class="cf">
+            <h2><a href="" style="text-decoration: none;">
+עורו - הבית של הרוב
+            </a></h2>
+            <div class="rightCol">
+                <div class="main-text">
+
+                </div>
+            </div>
+            <div class="leftCol">
+                <div class="about-left">
+
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 
 
 <%- partial('partials/footer.ejs') %>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        db_functions.getAboutUruTexts(function (data) {
+                $.each(data.objects, function (index, item) {
+                    dust.render('about_text', item, function (err, out) {
+                        $('.main-text').append(out);
+                    });
+                });
+
+        });
+
+        db_functions.getAboutUruItems(function (data) {
+
+            $.each(data.objects, function (index, item) {
+                dust.render('about_item', item, function (err, out) {
+                    $('.about-left').append(out);
+                });
+            });
+        });
+    });
+
+</script>
+
 </body>
 </html>

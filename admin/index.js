@@ -145,6 +145,19 @@ module.exports = function(app)
         list:['title']
     });
 
+    admin.registerMongooseModel('AboutUruText',Models.AboutUruText,null,{
+        list:['title']
+    });
+
+    admin.registerMongooseModel('AboutUruItem',Models.AboutUruItem,null,{
+        list:['text_field']
+    });
+
+    admin.registerMongooseModel('Team',Models.Team,null,{
+            list:['name'],
+            cloneable:true
+        });
+
     admin.registerMongooseModel('FBRequest',Models.FBRequest,null,{
         list_populate:['creator'],
         list:['link','creator.first_name','creator.last_name']

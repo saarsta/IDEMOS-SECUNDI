@@ -259,6 +259,29 @@ var Schemas = exports.Schemas = {
         MAX_RED_RATIO: {type: Number, 'default': 2},
         MAX_NUM_VOTERS: {type: Number, 'default': 1000},
         SCALE_PARAM:  {type: Number, 'default': 1.6}
+    },
+
+    AboutUruText: {
+        title: {type: String, required:true},
+        text_field:{type:mongoose_types.Html,  required:true},
+        is_hidden:{type:Boolean,'default':true}
+
+    },
+
+    AboutUruItem: {
+        img_field: { type:mongoose_types.File, required:true},
+        img_text: String,
+        text_field: String,
+        is_hidden:{type:Boolean,'default':true}
+    },
+
+    Team:{
+        name: String,
+        duty: String,
+        text_field:{type:mongoose_types.Html, required:true},
+        img_field: {type:mongoose_types.File, required:true},
+        is_hidden:{type:Boolean,'default':true}
+
     }
 };
 
@@ -304,6 +327,9 @@ var Models = module.exports = {
     FBRequest: mongoose.model('FBRequest',require('./fb_request')),
     ResourceObligation: mongoose.model('ResourceObligation', new Schema(Schemas.ResourceObligation, {strict: true})),
     Notification: mongoose.model('Notification', new Schema(Schemas.Notification, {strict: true})),
+    AboutUruText: mongoose.model('AboutUruText', new Schema(Schemas.AboutUruText, {strict: true})),
+    AboutUruItem: mongoose.model('AboutUruItem', new Schema(Schemas.AboutUruItem, {strict: true})),
+    Team: mongoose.model('Team', new Schema(Schemas.Team, {strict: true})),
     GamificationTokens: utils.config_model('GamificationTokens', Schemas.GamificationTokens),
     ThresholdCalcVariables: utils.config_model('ThresholdCalcVariables', Schemas.ThresholdCalcVariables),
 
