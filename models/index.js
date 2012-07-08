@@ -257,6 +257,7 @@ var Schemas = exports.Schemas = {
         MIN_THRESH: {type: Number, 'default': 2},
         MAX_THRESH: {type: Number, 'default': 500},
         MAX_RED_RATIO: {type: Number, 'default': 2},
+        MAX_NUM_VOTERS: {type: Number, 'default': 1000},
         SCALE_PARAM:  {type: Number, 'default': 1.6}
     }
 };

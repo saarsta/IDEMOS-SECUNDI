@@ -6,7 +6,7 @@ var calculating_thresh = exports.calculating_thresh = function (num_voters , rat
    var MIN_NUM_VOTERS = 1;
 
 // maximum number of voters
-    var MAX_NUM_VOTERS = 1000;
+    var MAX_NUM_VOTERS = common.getThresholdCalcVariables('MIN_THRESH') || 1000;
 
 // minimum rating
     var MIN_RATING = 0;
