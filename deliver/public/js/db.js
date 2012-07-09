@@ -59,6 +59,42 @@ var db_functions = {
         });
     },
 
+    getAboutUruTexts: function(callback){
+        db_functions.loggedInAjax({
+            url: '/api/about_uru_texts',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+                callback(data);
+            }
+        });
+    },
+
+    getAboutUruItems: function(callback){
+        db_functions.loggedInAjax({
+            url: '/api/about_uru_items',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+                callback(data);
+            }
+        });
+    },
+
+    getTeam: function(callback){
+        db_functions.loggedInAjax({
+            url: '/api/team',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+                callback(data);
+            }
+        });
+    },
+
     //blogs
     getPopularArticles: function(limit_number,callback){
         db_functions.loggedInAjax({
@@ -336,8 +372,6 @@ var db_functions = {
         });
 
     },
-
-
 
     addPostToDiscussion: function(discussion_id, post_content, refParentPostId, callback){
         db_functions.loggedInAjax({
@@ -628,6 +662,19 @@ var db_functions = {
             }
         });
     }   ,
+
+    getItemsByTagNameAndType: function(type,tag_name,page,callback)
+    {
+        this.loggedInAjax({
+            url: '/api/' + type + '?limit=3&offset=' + (page*3) + (tag_name ? '&tags=' + tag_name : ''),
+            type: "GET",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            }
+        });
+    },
+
 
     getDiscussionsByTagName: function(tag_name, callback){
         db_functions.loggedInAjax({

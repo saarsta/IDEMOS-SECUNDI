@@ -15,11 +15,32 @@
         <%-partial('partials/tag_search.ejs') %>
     </div>
 
-    <div id="content" class="cf">
+
+        <div id="content" class="cf">
+            <h2><a style="text-decoration: none" href="">צוות עורו</a></h2>
+            <div class="staff-box cf" id="team">
+
+            </div>
+
     </div>
 </div>
 
 
 <%- partial('partials/footer.ejs') %>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        db_functions.getTeam(function (data) {
+            $.each(data.objects, function (index, item) {
+                dust.render('team', item, function (err, out) {
+                    $('#team').append(out);
+                });
+            });
+        });
+    });
+
+</script>
+
 </body>
 </html>

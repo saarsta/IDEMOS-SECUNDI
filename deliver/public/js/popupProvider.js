@@ -37,6 +37,8 @@ var popupProvider={
     },
 
     showGiveMandatPopup:function(popupConfig){
+
+        this.self = this;
         var defaults = {
             massage:''
 
@@ -48,24 +50,34 @@ var popupProvider={
                 e.preventDefault();
                 $.colorbox.close();
             }
+            ,onClosed :function(e){
+
+            }
         };
       // var giveTokens=3;
         popupConfig = $.extend(defaults,popupConfig);
+        this.popupConfig=popupConfig;
 
-        dust.render('give_mandat_popup',popupConfig,function(err,out){
-            if(!err){
-                $.colorbox({ html:out,
-                    onComplete:function(e){
-                        var realProxy= popupConfig.userProxy.number_of_tokens-popupConfig.userProxy.number_of_tokens_to_get_back;
-                        $('.ok-button').click(popupConfig.onOkCilcked);
-                        $('.cancel-button').click(popupConfig.onCancelCilcked);
-                        $('.give-mandats-popup input').eq(realProxy).attr('checked', true);
-
-                    }
-                });
-
+        var popup;
+        dust.render('give_mandat_popup', popupConfig, function(err,out) {
+            if (err) {
+                return;
             }
-        });
 
+            popup = $.colorbox({ html:out,
+                onComplete:function (e) {
+                    var realProxy = popupConfig.userProxy.number_of_tokens - popupConfig.userProxy.number_of_tokens_to_get_back;
+                    $('.ok-button').click(popupConfig.onOkCilcked);
+                    $('.cancel-button').click(popupConfig.onCancelCilcked);
+                    $('.give-mandats-popup input').eq(realProxy).attr('checked', true);
+
+                },
+                onClosed:function (e) {
+                    popupConfig.onClosed(e);
+                }
+            });
+        });
+        return popup;
     }
+
 }
