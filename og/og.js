@@ -67,33 +67,30 @@ var actionLinkHandler = function(  data , callback ){
             if ( config.actions[ action ] ){
 
                 config.userFinder( null , user_data , function( err , user ){
-                        if ( err ){
-                            callback( err , false );
+                    if ( err ){
+                        callback( err , false );
+                    }
+                    else {
+                        var aData = {
+                            object : rData.objects[0].url,
+                            user : user
                         }
-                        else {
-                            var aData = {
-                                object : rData.objects[0].url,
-                                user : user
+                        config.actions[ action ].action_link_cb( null , aData , function( err , suc ){
+                            if ( err ){
+                                callback( err , false );
                             }
-                            config.actions[ action ].action_link_cb( null , aData , function( err , suc ){
-                                if ( err ){
-                                    callback( err , false );
-                                }
-                                else{
-                                    if ( suc ) doAction( null ,{
-                                        action: action,
-                                        object : rData.objects[0].url,
-                                        fid : rData.user_id
-                                    }, null);
-                                    callback( null , suc);
-                                }
-                            } );
-                        }
+                            else{
+                                if ( suc ) doAction( null ,{
+                                    action: action,
+                                    object : rData.objects[0].url,
+                                    fid : rData.user_id
+                                }, null);
+                                callback( null , suc);
+                            }
+                        } );
+                    }
                 });
-
             }
-
-
         }
         else{
             console.log("Action link signed request was invalid");

@@ -22,10 +22,13 @@ var NotificationCategoryResource = module.exports = resources.MongooseResource.e
                     sub_entity_id: null,
                     notificator_id: null,
                     ballance: null,
+                    votes_for: null,
+                    votes_against: null,
                     first_name:null,
                     last_name:null,
                     avatar_url:null
                 },
+                entity_id: null,
                 description_of_notificators:null,
                 message_of_notificators:null,
                 name: null,
@@ -429,7 +432,7 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                     if(num_of_users_that_vote_my_sugg == 1){
 
                         var support_or_not = "התנגד ל";
-                        if(notification.notificators[0].ballance > 0 )
+                        if(notification.notificators[0].votes_for > 0 )
                             support_or_not = "תמך ב";
 
                         notification.message_of_notificators =

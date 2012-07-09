@@ -98,6 +98,10 @@ exports.create_user_vote_or_grade_notification = function(notification_type, ent
 
         function(noti, cbk){
             if(noti){
+
+                //this tow lines tries to prevant a bug that i dont understand
+                if(!noti.user_id)
+                    noti.user_id = user_id;
                 var date = Date.now();
 
                 var notificator = _.find(noti.notificators, function(notificator){return notificator.notificator_id + "" == notificatior_id + ""});
