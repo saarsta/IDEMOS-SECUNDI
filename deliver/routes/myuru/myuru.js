@@ -25,10 +25,13 @@ module.exports = function (req, res) {
             }
             async.forEach(user_obj.proxy, function (proxy_user, itr_cbk) {
                 models.User.findById(proxy_user.user_id, ["_id", "first_name", "last_name", "facebook_id", "avatar","score"], function (err, curr_proxy_user) {
-                    if (!err) {
+                    if (!err && curr_proxy_user !== null) {
                         curr_proxy_user.avatar = curr_proxy_user.avatar_url();
                         proxy_user.details = curr_proxy_user;
                     }
+                    if(curr_proxy_user == null)
+
+                        console.error("curr_proxy_user is null");
                     itr_cbk();
                 })
             }, function (err, ocj) {
@@ -36,9 +39,11 @@ module.exports = function (req, res) {
             })
         }
 
-
     ], function (err, user_obj) {
-        var proxy =  user_obj.proxy  ;
+        if(!user_obj.proxy)
+            console.error("data curruption with user proxies");
+        var proxy =  user_obj.proxy || [];
+
         var num_of_extra_tokens = user_obj.num_of_extra_tokens;
         var tokens =  user_obj.tokens;
         var proxy = user_obj.proxy;

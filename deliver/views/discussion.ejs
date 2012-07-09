@@ -243,7 +243,7 @@ var error_message = error_message || '';
             </div>
         </div>
         <a id="submit_post" class="green-btn" href="javascript:void(0);">
-            הצע
+פרסם
         </a>
     </div>
 </div>
@@ -457,6 +457,7 @@ $(document).ready(function () {
     });
 
 
+
     $('#comments').on('click', '#add_or_remove_proxy', function (e) {
         e.preventDefault();
         return;
@@ -570,8 +571,8 @@ $(document).ready(function () {
                 var votes_for = button.parents(".status").find(".yes").find(".number");
                 var votes_against = button.parents(".status").find(".no").find(".number");
 
-                votes_for.text(post_obj.votes_for);
-                votes_against.text(post_obj.votes_against);
+                votes_for.text(Math.round(post_obj.votes_for));
+                votes_against.text(Math.round(post_obj.votes_against));
             }
             else {
                 if (err.responseText == 'Error: there is not enought tokens')
@@ -593,8 +594,8 @@ $(document).ready(function () {
                 var votes_for = button.parents(".status").find(".yes").find(".number");
                 var votes_against = button.parents(".status").find(".no").find(".number");
 
-                votes_for.text(post_obj.votes_for);
-                votes_against.text(post_obj.votes_against);
+                votes_for.text(Math.round(post_obj.votes_for));
+                votes_against.text(Math.round(post_obj.votes_against));
             }
             else {
                 if (err.responseText == 'Error: there is not enought tokens')
@@ -662,16 +663,50 @@ $(document).ready(function () {
     })
 
     $('#suggestion_list').on('click', ".grey-btn", function (e) {
+//        var userName,
+//                text;
+//        var postDiv = $(this).parents('.one');
+//        e.preventDefault();
+//        $("textarea#discussion_comment").focus();
+//        userName = postDiv.data('creator_name');
+//        new_post_ref_id = postDiv.data('id');
+//        text = $('.text-left p:last-child', postDiv).text();
+//        text = userName + ' אמר:"' + text + '"\n';
+//        text = text + " ";
+//        $("textarea#discussion_comment").val(text).focus();
+//
+//
+
+
         var userName,
                 text;
+
         var postDiv = $(this).parents('.one');
         e.preventDefault();
         $("textarea#discussion_comment").focus();
         userName = postDiv.data('creator_name');
         new_post_ref_id = postDiv.data('id');
-        text = $('.text-left p:last-child', postDiv).text();
-        text = userName + ' אמר:"' + text + '"\n';
-        text = text + " ";
+
+       var change_text = $('.change_text', postDiv).text();
+       var explanation = $('.explanation', postDiv).text();
+
+
+       if($('.explanation', postDiv).text().trim() == "נימוק:"){
+
+           text = "[quote=" + '"' + userName + '"' + " " + "]\n"
+                   + change_text
+                   + '\n'
+                   + "[/quote]"
+                   + '\n';
+       }else{
+           text = "[quote=" + '"' + userName + '"' + " " + "]\n"
+                   + change_text
+                   + '\n'
+                   + explanation
+                   + '\n'
+                   + "[/quote]"
+                   + '\n';
+       }
         $("textarea#discussion_comment").val(text).focus();
     });
 
@@ -744,7 +779,7 @@ $(document).ready(function () {
                         var rating = ui.value;
                         db_functions.addSuggestionGrade(suggestion.id, discussion_id, rating, suggest_grade_id[suggestion.id], function (err, data) {
                             if (!err) {
-                                $("#suggest_grade_" + suggestion.id).val(Math.round(data.new_grade * 100) / 100);
+                                $("#suggest_grade_" + suggestion.id).val(Math.round((data.new_grade * 100) / 100));
                                 $("#suggest_graders_" + suggestion.id).text(Math.round(data.evaluate_counter));
                                 $("#agrees_" + suggestion.id).text(Math.round(data.agrees));
                                 $("#not_agrees_" + suggestion.id).text(Math.round(data.not_agrees));
@@ -775,7 +810,7 @@ $(document).ready(function () {
         $('#suggestion_number').text('(' + data.meta.total_count + ')');
         if (data.objects.length > 0) {
             $(".deals-box").show();
-            if (data.meta.total_count > 2) {
+            if (data.meta.total_count >= 2) {
                 $(".more-deals").show();
                 $(".more-deals a").on('click', function (e) {
 
@@ -870,10 +905,6 @@ $(document).ready(function () {
         })
     });
 
-    $('form').on('submit', function (e) {
-        e.preventDefault();
-    });
-
 
 //            $('.sugg_rating_button').click(function(){
     $('#suggestion_list').on('click', '.sugg_rating_button', function () {
@@ -918,6 +949,8 @@ $(document).ready(function () {
                  $("#user_tokens").text(data.updated_user_tokens);*/
                 render_suggestion(data)
                 $(".deals-box").show();
+            }else{
+                var err = err;
             }
         });
 

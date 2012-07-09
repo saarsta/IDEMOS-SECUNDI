@@ -1,7 +1,52 @@
  var mongoose = require('mongoose');
 
+ var SHOW_ONLY_PUBLISHED = false;
 
-exports.split_db_url = function(db_url)
+ exports.setShowOnlyPublished = function(show_only_published) {
+    SHOW_ONLY_PUBLISHED = show_only_published;
+ };
+
+ var _mongoose_model = mongoose.model;
+ mongoose.model = function(name,schema,collection)
+ {
+     var model = _mongoose_model.apply(mongoose,arguments);
+     var _find = model.find;
+     model.find = function()
+     {
+         if(model.schema.paths.is_hidden && SHOW_ONLY_PUBLISHED)
+         {
+             var query = arguments.length > 0 && typeof(arguments[0]) == 'object' ? arguments[0] : {};
+             query['is_hidden'] = {$ne:true};
+             if(arguments.length == 0)
+                 arguments = [query];
+             else if(typeof(arguments[0]) != 'object')
+                 arguments.unshift(query);
+             else
+                 arguments[0] = query;
+         }
+         return _find.apply(this,arguments);
+     };
+     var _findOne = model.findOne;
+     model.findOne = function()
+     {
+         if(model.schema.paths.is_hidden && SHOW_ONLY_PUBLISHED)
+         {
+             var query = arguments.length > 0 && typeof(arguments[0]) == 'object' ? arguments[0] : {};
+             query['is_hidden'] = {$ne:true};
+             if(arguments.length == 0)
+                 arguments = [query];
+             else if(typeof(arguments[0]) != 'object')
+                 arguments.unshift(query);
+             else
+                 arguments[0] = query;
+         }
+         return _findOne.apply(this,arguments);
+     };
+     return model;
+ };
+
+
+ exports.split_db_url = function(db_url)
 {
     var parts = db_url.split('/');
     var conf = {

@@ -34,6 +34,7 @@
   <script type="text/javascript">
   $(document).ready(function () {
 
+        var is_logged = "<%= user_logged %>" == "true";
         var subject_id = "<%= subject.id%>";
         var tag_name = "<%=tag_name || ''%>";
         current_section=0;
@@ -107,8 +108,9 @@
                        } );
 
                       // add shopping cart and remove 'add' button
-                      db_functions.getUserShopingCart(function(err,data)
-                      {      $(".card-products-left").empty();
+                    if(is_logged){
+                        db_functions.getUserShopingCart(function(err,data)
+                        {      $(".card-products-left").empty();
                             $.each(data.objects,function(index,information_item)
                             {
                                 dust.render('information_item_box',information_item,function(err,out)
@@ -117,7 +119,8 @@
                                 });
                                 $("#add_button_"+information_item._id).hide();
                             });
-                      });
+                        });
+                    }
 
 
                 });

@@ -17,9 +17,11 @@ var db_functions = {
                     });
                 }else if (xhr.responseText == 'Error: Unauthorized - there is not enought tokens')
                 {
+
                     alert("אין מספיק אסימונים בשביל לבצע פעולה זו");
                 }else if (xhr.responseText == "user must have a least 10 tokens to open create discussion")
                     alert("צריך מינימום של 10 אסימונים בשביל ליצור דיון");
+
             }
             else
                 onError(xhr,ajaxOptions,thrownError);
@@ -105,9 +107,9 @@ var db_functions = {
         });
     },
 
-    getNotifications: function(callback){
+    getNotifications: function(limit, callback){
         db_functions.loggedInAjax({
-            url: '/api/notifications?limit=40',
+            url: '/api/notifications?' + (limit? '&limit='+limit:''),
             type: "GET",
             async: true,
             success: function (data) {
@@ -203,7 +205,9 @@ var db_functions = {
 
             error:function(err){
                 if(err.responseText == "vision can't be more than 800 words")
+
                     alert("חזון הדיון צריך להיות 800 מילים לכל היותר");
+
                 callback(err, null);
             }
         });

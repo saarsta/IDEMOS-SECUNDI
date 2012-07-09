@@ -188,11 +188,17 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                         console.log('debugging waterfall 3 3');
 
                         if(post_object.ref_to_post_id){
-                            models.Post.findById(post_object.ref_to_post_id, function(err, quoted_post){
+                            models.PostOrSuggestion.findById(post_object.ref_to_post_id, function(err, quoted_post){
                                 if(err)
                                     cbk2(err, null);
                                 else{
-                                    notifications.create_user_notification("been_quoted", discussion_id, quoted_post.creator_id, post_object.creator_id, post_object._id/*ref_to_post_id*/, cbk);
+                                    if(quoted_post)
+                                        notifications.create_user_notification("been_quoted", discussion_id, quoted_post.creator_id, post_object.creator_id, post_object._id/*ref_to_post_id*/, cbk2);
+                                    else
+                                    {
+                                        console.log("there is no post with post_object.ref_to_post_id id");
+                                        cbk2(err, 0);
+                                    }
                                 }
                             })
                         }else{

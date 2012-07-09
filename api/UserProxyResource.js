@@ -67,7 +67,11 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
             },
             tokens: null,
             daily_tokens: null
-        }
+        };
+        this.update_fields = {
+
+        };
+
 //        this.default_query = function(query){
 //            return query.populate("followers.follower_id");
 //        };
@@ -187,7 +191,7 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
                     callback(err, user_obj);
                 });
             }
-            callback(err, "didn't find proxy");
+            callback({message: "didn't find proxy"});
         });
     }
 })
