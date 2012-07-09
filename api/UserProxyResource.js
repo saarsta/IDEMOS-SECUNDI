@@ -52,7 +52,6 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
             last_name: null,
             num_of_given_mandates: null,
 
-
             proxy: {
                 user_id:{
                     _id: null,
@@ -60,9 +59,9 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
                     avatar_url: null,
                     first_name: null,
                     last_name: null,
-                    number_of_tokens: null,
                     num_of_given_mandates: null
                 },
+                number_of_tokens: null,
                 number_of_tokens_to_get_back: null,
 
                 //this number is the number of mandates that i gave to the proxy minus the number of mandates that i want to get back
@@ -84,7 +83,7 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
 
     run_query: function(req,query,callback)
     {
-        if(req.method == 'GET'){
+        if(req.method == 'GET' || 'PUT'){
             query.populate("proxy.user_id");
         };
         this._super(req,query,callback);
@@ -92,9 +91,10 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
 
     get_object: function(req, id, callback){
       this._super(req, id, function(err, obj){
-          if(obj)
+          if(obj){
                 obj.daily_tokens = 9 + obj.num_of_extra_tokens;
                 _.each(obj.proxy, function(proxy){proxy.calc_num_of_mandates = proxy.number_of_tokens - proxy.number_of_tokens_to_get_back;})
+          }
          callback(err, obj);
       })
     },
@@ -103,7 +103,7 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
         //proxy is a list of peopole for whom i gave my mandates, and it saved in my schema
         var proxy_id = req.body.proxy_id;
         var number_of_tokens = req.body.req_number_of_tokens;
-        var proxy = _.find(object.proxy, function(proxy_user){return proxy_user.user_id + "" == proxy_id + ""});
+        var proxy = _.find(object.proxy, function(proxy_user){return proxy_user.user_id._id + "" == proxy_id + ""});
 
         var self = this;
         var base = this._super;
@@ -151,6 +151,10 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
 
         if(is_new_proxy)
             object.proxy.push(proxy);
+
+
+
+
 //        }else{
 //            //edit proxy's mandates(tokens)
 //            proxy = {
@@ -186,16 +190,37 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
                         object.number_of_tokens = 0;
                         object.number_of_tokens_to_get_back = 0;
 
-            proxy.calc_num_of_mandates = proxy.number_of_tokens - proxy.number_of_tokens_to_get_back;
             base.call(self, req, object, function(err, user_obj){
+                if(user_obj)
+                     _.each(user_obj.proxy, function(proxy){proxy.calc_num_of_mandates = proxy.number_of_tokens - proxy.number_of_tokens_to_get_back;})
+
                 if(!err && number_of_tokens > 0){
                     //update proxy-user new tokens
 
                     models.User.update({_id: proxy_id}, {$inc: {num_of_given_mandates: number_of_tokens}}, function(err, num){
-                        callback(err, user_obj);
+
+                        if(is_new_proxy){
+                            //if this is the a new proxy i need to populate it manualy
+                            models.User.findById(proxy_id, function(err, user){
+                                if(!err){
+                                    var user_id = {
+                                        _id: user._id,
+                                        facebook_id: user.facebook_id,
+                                        avatar_url: user.avatar_url,
+                                        first_name: user.first_name,
+                                        last_name: user.last_name,
+                                        num_of_given_mandates: user.num_of_given_mandates
+                                    }
+
+                                    proxy.user_id = user_id;
+                                }
+                                _.each(user_obj.proxy, function(curr_proxy){if(curr_proxy.user_id + "" == proxy_id){curr_proxy = proxy}});
+                                callback(err, user_obj);
+                            })
+                        }else
+                            callback(err, user_obj);
                     })
                 }else{
-
                     callback(err, user_obj);
                 }
             })
@@ -209,7 +234,7 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
         //find specified proxy and delete it
         for(var i=0; i<object.proxy.length; i++)
         {
-            if(object.proxy[i].user_id + "" == req.body.proxy_id)
+            if(object.proxy[i].user_id._id + "" == req.body.proxy_id)
             {
                 flag = true;
                 num_of_tokens = object.proxy[i].number_of_tokens;
@@ -222,8 +247,8 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
                 models.User.update({_id: object._id}, {$inc: {toknes: num_of_tokens}}, function(err, num){
                     callback(err, user_obj);
                 });
-            }
-            callback({message: "didn't find proxy"});
+            }else
+                callback({message: "didn't find proxy"});
         });
     }
 })
