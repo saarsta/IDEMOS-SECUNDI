@@ -13,7 +13,7 @@ var popupProvider={
 
     showOkPopup:function(popupConfig){
         var defaults = {
-        okButtonText:'ok'
+        okButtonText:'סגור'
         ,massage:''
         ,onOkCilcked:function(e){
             e.preventDefault();

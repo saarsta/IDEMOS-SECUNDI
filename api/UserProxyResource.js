@@ -100,10 +100,13 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
     },
 
     update_obj: function (req, object, callback) {
-        //proxy is a list of peopole for whom i gave my mandates, and it saved in my schema
+        //proxy is a list of people for whom i gave my mandates, and it saved in my schema
         var proxy_id = req.body.proxy_id;
         var number_of_tokens = req.body.req_number_of_tokens;
-        var proxy = _.find(object.proxy, function(proxy_user){return proxy_user.user_id._id + "" == proxy_id + ""});
+        var proxy = _.find(object.proxy, function(proxy_user){
+            var id = proxy_user.user_id ? proxy_user.user_id._id + "" : -1;
+            return id == proxy_id + ""
+        });
 
         var self = this;
         var base = this._super;
