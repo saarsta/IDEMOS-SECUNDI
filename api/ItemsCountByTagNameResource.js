@@ -46,7 +46,7 @@ var ItemsByTagResource = module.exports = jest.Resource.extend({
             },
 
             function(cbk){
-                models.Discussion.count(query, cbk);
+                models.Discussion.count(_.extend({is_published:true},query), cbk);
             },
 
             function(cbk){
