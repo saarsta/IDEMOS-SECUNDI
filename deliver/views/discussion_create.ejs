@@ -75,7 +75,10 @@
         <div class="extra">
             <div class="card-top cf">
                 <a class="btn btn-1 inline share" rel="/information_cart/{_id}" href="/facebookShare?link=/information_cart/{_id}">שתף</a>
-                <a class="btn btn-2" href="/information_items/"><span class="number" style="display:none;"></span>חזור לאסוף פריטי מידע נוספים </a>
+               <!-- <a class="btn btn-2" href="/information_items/"><span class="number" style="display:none;"></span>חזור לאסוף פריטי מידע נוספים </a>-->
+                <a class="btn btn-2" id="collect_information_item_bt"  href="#login_to_system_popup"><span class="number" style="display:none;">
+
+                </span>חזור לאסוף פריטי מידע נוספים </a>
                 <h3 class="basket">
                     סל מידע
                 </h3>
@@ -93,6 +96,8 @@
             </div>
         </div>
     </div>
+
+
     <div style="display: none;">
     <div class="popup" id="user-search">
         <form class="search-top cf" action="#">
@@ -192,7 +197,11 @@
             <input type="submit" value="חלש" />
         </form>
     </div>
-    </div>
+
+
+   </div>
+
+
     <%- partial('partials/footer.ejs') %>
 <script type="text/javascript">
     var current_section=1;
@@ -348,6 +357,17 @@
           });
 
     });
+
+   /* $('#collect_information_item_bt').click(function(e){
+        e.preventDefault();
+      //  $().colorbox({ inline: true, width: "420", href: "#login_to_system_popup" });
+
+        var popupProvider= new PopupProvider();
+        var config= PopupConfig();
+        popupProvider.ShowOkPopup(config);
+    })
+    //$('#collect_information_item_bt').colorbox({ inline: true, width: "420" });
+    //login_to_system_popup*/
 
 
  </script>
