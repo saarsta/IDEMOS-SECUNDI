@@ -79,5 +79,4 @@ var popupProvider={
         });
         return popup;
     }
-
 }
