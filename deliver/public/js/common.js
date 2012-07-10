@@ -83,7 +83,9 @@ dust.filters['tags'] = function(text) {
 dust.filters['post'] = function(text) {
     text = dust.filters['tags'](text);
 
+//    text = text.replace(/\[img\]/g,'<div style="width:240px; height:133px;"><img src="').replace(/\[\/img\]/g,'"/></div>');
 
+    text = text.replace(/\[img\]/g,'cxcxxczcc').replace(/\[\/img\]/g,'cxzczcxzczxcc');
 
     text = text.replace(/\[quote="([^"]*)"\s*\]\n?((?:.|\n)*)?\n?\[\/quote\]\n?/g,
         '<div class="post_quote"><a class="ref_link" href="javascript:void(0);">' +
@@ -91,6 +93,13 @@ dust.filters['post'] = function(text) {
             '</a><br><br>' +
             '$2' + '</div><br><span class="actual_text">');
     text = text.replace(/\n/g, '<br>') + '</span>';
+    return text;
+}
+
+dust.filters['qa'] = function(text) {
+    text = dust.filters['tags'](text);
+//    text = text.replace(/\[img\]/g,'<div style="width:240px; height:133px;"><img src="').replace(/\[\/img\]/g,'"/></div>');
+    text = text.replace(/\[\*\]/g,'</li><li>').replace(/<ul><li>(.|\n)*?<\/li>/g,'<ul>');
     return text;
 }
 

@@ -38,6 +38,7 @@ var mongoose_resource = require('jest'),
     AboutUruTextResource = require('./AboutUruTextResource');
     AboutUruItemResource = require('./AboutUruItemResource');
     TeamResource = require('./TeamResource');
+    QaResource = require('./QaResource');
 
 
 module.exports = function(app)
@@ -78,6 +79,7 @@ module.exports = function(app)
     rest_api.register_resource('about_uru_texts', new AboutUruTextResource());
     rest_api.register_resource('about_uru_items', new AboutUruItemResource());
     rest_api.register_resource('team', new TeamResource());
+    rest_api.register_resource('qa', new QaResource());
     rest_api.register_resource('items_count_by_tag_name', new ItemsCountByTagNameResource());
     rest_api.register_resource('fb_request', new FBRequestResource());
     rest_api.register('image_upload',new ImageUploadResource());

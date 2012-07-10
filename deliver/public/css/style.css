@@ -614,6 +614,12 @@ body
     float: right;
     width: 644px;
 }
+
+#content .right-column .wide
+{
+    float: right;
+    width: 981px;
+}
 #content .left-col
 {
     float: left;
@@ -924,7 +930,7 @@ body
 #footer
 {
     background:#3b63ef;
-    height: 150px;
+    height: 154px;
     padding-top: 15px;
 }
 #footer .extra
