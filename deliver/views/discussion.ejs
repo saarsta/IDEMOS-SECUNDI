@@ -486,12 +486,12 @@ $(document).ready(function () {
                 number_of_tokens_to_get_back:0,
                 user_id:proxyId
             }
-
-
         }
 
         var config = {
-            massage:'תן מנדט ל' + userName,
+            massage:
+                   'בחר את מספר המנדטים שאתה רוצה לתת ל- '
+                           + userName,
             userProxy:userProxy,
             onOkCilcked: function (e) {
                 e.preventDefault();
@@ -515,7 +515,7 @@ $(document).ready(function () {
                     else{
                         if (changeProxy < 0) {
                             $(document).one('cbox_closed', function (e) {
-                                popupProvider.showOkPopup( {massage:"האסימונים ילקחו בקרוב"})
+                                popupProvider.showOkPopup( {massage:"האסימונים יעמדו לרשותך שוב בסוף היום"})
                             });
                         }
 
@@ -575,7 +575,9 @@ $(document).ready(function () {
         }
 
         var config = {
-            massage:'תן מנדט ל' + userName,
+            massage:
+                    'בחר את מספר המנדטים שאתה רוצה לתת ל- '
+                            + userName,
             userProxy:userProxy,
             onOkCilcked: function (e) {
                 e.preventDefault();
