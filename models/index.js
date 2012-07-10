@@ -39,7 +39,8 @@ var Schemas = exports.Schemas = {
         actions: {type: [ObjectId], ref:'Action', index:true, editable:false},
         is_visible:{type:Boolean, 'default':true},
         creation_date:{type:Date, 'default':Date.now,editable:false},
-        gui_order:{type:Number,'default':9999999,editable:false}
+        gui_order:{type:Number,'default':9999999,editable:false},
+        is_hidden:{type:Boolean,'default':true}
     }, {strict: true}),
 
     SuccessStory: new Schema({
@@ -54,7 +55,8 @@ var Schemas = exports.Schemas = {
         actions: {type: [ObjectId], ref:'Action', index:true, editable:false},
         is_visible:{type:Boolean, 'default':true},
         creation_date:{type:Date, 'default':Date.now,editable:false},
-        gui_order:{type:Number,'default':9999999,editable:false}
+        gui_order:{type:Number,'default':9999999,editable:false},
+        is_hidden:{type:Boolean,'default':true}
     }, {strict: true}),
 
     //cycle updates
@@ -70,7 +72,8 @@ var Schemas = exports.Schemas = {
 //        actions: {type: [ObjectId], ref:'Action', index:true},
         is_visible:{type:Boolean, 'default':true},
         creation_date:{type:Date, 'default':Date.now,editable:false},
-        gui_order:{type:Number,'default':9999999,editable:false}
+        gui_order:{type:Number,'default':9999999,editable:false},
+        is_hidden:{type:Boolean,'default':true}
     }, {strict: true}),
 
     Kilkul:{
@@ -85,7 +88,8 @@ var Schemas = exports.Schemas = {
         is_visible:{type: Boolean, 'default':true},
         me_too_counter: {type:Number, 'default':0},
         creation_date:{type:Date, 'default':Date.now,editable:false},
-        gui_order:{type:Number,'default':9999999,editable:false}
+        gui_order:{type:Number,'default':9999999,editable:false},
+        is_hidden:{type:Boolean,'default':true}
     },
 
     Vote:{
@@ -145,7 +149,8 @@ var Schemas = exports.Schemas = {
     },
 
     Category: {
-        name: {type:String}
+        name: {type:String},
+        is_hidden:{type:Boolean,'default':true}
     },
 
     ActionSuggestion: {
@@ -252,9 +257,32 @@ var Schemas = exports.Schemas = {
         MIN_THRESH: {type: Number, 'default': 2},
         MAX_THRESH: {type: Number, 'default': 500},
         MAX_RED_RATIO: {type: Number, 'default': 2},
+        MAX_NUM_VOTERS: {type: Number, 'default': 1000},
         SCALE_PARAM:  {type: Number, 'default': 1.6}
     },
 
+    AboutUruText: {
+        title: {type: String, required:true},
+        text_field:{type:mongoose_types.Html,  required:true},
+        is_hidden:{type:Boolean,'default':true}
+
+    },
+
+    AboutUruItem: {
+        img_field: { type:mongoose_types.File, required:true},
+        img_text: String,
+        text_field: String,
+        is_hidden:{type:Boolean,'default':true}
+    },
+
+    Team:{
+        name: String,
+        duty: String,
+        text_field:{type:mongoose_types.Html, required:true},
+        img_field: {type:mongoose_types.File, required:true},
+        is_hidden:{type:Boolean,'default':true}
+
+    }
 };
 
 
@@ -299,6 +327,9 @@ var Models = module.exports = {
     FBRequest: mongoose.model('FBRequest',require('./fb_request')),
     ResourceObligation: mongoose.model('ResourceObligation', new Schema(Schemas.ResourceObligation, {strict: true})),
     Notification: mongoose.model('Notification', new Schema(Schemas.Notification, {strict: true})),
+    AboutUruText: mongoose.model('AboutUruText', new Schema(Schemas.AboutUruText, {strict: true})),
+    AboutUruItem: mongoose.model('AboutUruItem', new Schema(Schemas.AboutUruItem, {strict: true})),
+    Team: mongoose.model('Team', new Schema(Schemas.Team, {strict: true})),
     GamificationTokens: utils.config_model('GamificationTokens', Schemas.GamificationTokens),
     ThresholdCalcVariables: utils.config_model('ThresholdCalcVariables', Schemas.ThresholdCalcVariables),
 

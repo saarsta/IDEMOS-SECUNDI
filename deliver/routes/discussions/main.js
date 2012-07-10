@@ -37,9 +37,12 @@ module.exports = function(req,res)
                     res.redirect('/discussions');
                 else
                 {
+
                     // populate 'is follower' , 'grade object' ...
                     resource.get_discussion(results[1],results[0],function(err,discussion)
                     {
+                        var proxyJson= results[0] ?  JSON.stringify(results[0].proxy) : null;
+                        console.log(proxyJson)   ;
                         if(err)
                             res.render('500.ejs',{error:err});
                         else
@@ -57,9 +60,9 @@ module.exports = function(req,res)
                                     tab:'discussions',
                                     discussion: discussion,
                                     url: req.url,
+                                    proxy:proxyJson,
                                     description: discussion.text_field_preview
                                 });
-
                         }
                     });
                 }

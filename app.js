@@ -27,7 +27,7 @@ app.configure('development', function(){
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
     require('./tools/compile_templates');
     require('./deliver/tools/compile_dust_templates');
-
+    require('./utils').setShowOnlyPublished(false);
 });
 
 
@@ -52,6 +52,7 @@ app.configure('staging', function(){
     });
     require('./deliver/tools/compile_dust_templates');
     require('./tools/compile_templates');
+    require('./utils').setShowOnlyPublished(false);
 });
 
 app.configure('production', function(){
@@ -75,6 +76,7 @@ app.configure('production', function(){
     });
     require('./deliver/tools/compile_dust_templates');
     require('./tools/compile_templates');
+    require('./utils').setShowOnlyPublished(true);
 });
 
 mongoose.connect(app.settings.DB_URL);

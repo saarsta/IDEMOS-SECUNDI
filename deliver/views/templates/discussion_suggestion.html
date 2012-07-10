@@ -1,14 +1,16 @@
-<div id="{_id}" class="one"
+<div id="{_id}" class="one discussion-item"
      data-id="{id}"
      data-creator_name="{creator_id.first_name} {creator_id.last_name}"
      data-creator_id="{creator_id.id}">
     <div class="top-box">
         <div class="user-right side_menu">
             <span class="arrow"></span>
-            <div class="left gray_and_soon">
-                <a href="">תן מנדט</a>
-                <a href="javascript:void(0);" class="follow_user">עקוב</a>
-                <a href="">שלח הודעה</a>
+            <div class="left">
+                <a id="add_or_remove_proxy" href="javascript:void(0);" disabled="disabled">
+                    תן מנדט
+                </a>
+                <a href="javascript:void(0);" class="follow_user gray_and_soon">עקוב</a>
+                <a class="gray_and_soon" href="javascript:void(0);" >שלח הודעה</a>
             </div>
             <div class="right">
               <a href="/myuru/{creator_id.id}">
@@ -22,7 +24,7 @@
                 <h4>  {creator_id.first_name} {creator_id.last_name}</h4>
                 <div class="date">{creator_id.username} {?creation_date}{creation_date|time}{/creation_date}</div>
                 <div class="proxy">
-                    <span>3</span>
+                    <span class="num">{creator_id.num_of_given_mandates}</span>
                 </div>
                 <div class="respect">
                     <span class="score">{creator_id.score}</span>
@@ -32,14 +34,14 @@
         <div class="text-left">
             <h4>
                 טקסט מקורי:
-                {original_part}</h4>
-            <p>
+&nbsp;{original_part}</h4>
+            <p class="change_text">
                 הצעה לשינוי:
-                {alternative_part}
+&nbsp;{alternative_part}
             </p>
-            <p>
+            <p class="explanation">
                 נימוק:
-                {explanation}
+&nbsp;{explanation}
             </p>
 
         </div>

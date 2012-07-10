@@ -15,8 +15,7 @@
         <%if(!user_logged){%>
         <div class="main-video">
             <div class="video-box">
-                <img src="/images/home.jpg" alt=""/>
-                <span style="background-image:none"></span>
+                <img class="video_img" width="416" height="267" src="images/hp11_not logged_main video image.png" alt=""/>
             </div>
             <p>
                 עורו היא תנועה חברתית לייצוג הרוב בישראל. אנו מאמינים שבעידן שבו אנו חיים, כולנו מסוגלים וזכאים להשתתף בקבלת ההחלטות. לכן, עורו מנהלת פלטפורמה לדיון ציבורי, יסודי ואפקטיבי שיוביל שינוי בסדר היום. אצלנו, האג'נדה מוכתבת מלמטה.
@@ -70,6 +69,13 @@
 
     $(function () {
 
+        var user_logged = "<%= user_logged %>" == 'true';
+
+
+        $(".video-box").on('click', function(){
+            $('.video_img').remove();
+            $(this).append('<object width="560" height="315"><param name="movie" value="http://www.youtube.com/v/6LYw5crRh8E?version=3&autoplay=1&amp;hl=en_US&amp;rel=0"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/6LYw5crRh8E?version=3&autoplay=1&amp;hl=en_US&amp;rel=0" type="application/x-shockwave-flash" width="416" height="267" allowscriptaccess="always" allowfullscreen="true"></embed></object>');
+        });
 
         $('form.comment-form').live('submit', function (e) {
             e.preventDefault();
@@ -121,13 +127,18 @@
             })
         });
 
-        db_functions.getNotifications(function (data) {
-            $.each(data.objects, function (index, notification) {
-                dust.render('notification', notification, function (err, html) {
-                    $('.renewal').append(html);
-                })
-            })
-        })
+        if(user_logged) {
+
+            db_functions.getNotifications(5, function (data) {
+                dust.renderArray('notification', data.objects, null,function (err, html) {
+                    $('.renewal').append(html).append('<a href="/myuru">' +
+'                        קרא עוד...' +
+                    '</a>');
+
+                });
+            });
+            current_section = 0;
+        }
     })
 
 

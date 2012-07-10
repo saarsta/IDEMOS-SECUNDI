@@ -31,7 +31,8 @@ var TokensBarModel =function (tokenPixels, numExtraTokens, tokens, proxies) {
             return proxy;
         };
         var startOfDayTokens; //blue+green+darkGray
-        this.proxy=createProxy(proxies)
+
+        this.proxy = createProxy(proxies)
         this.totalProxy = calcTotalProxy(proxies)// blue;
         startOfDayTokens=USER_DAILY_TOKENS+numExtraTokens;
     this.tokensIUsed = startOfDayTokens-Math.floor(tokens) ; //dark gray

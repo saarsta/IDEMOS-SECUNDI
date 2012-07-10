@@ -180,15 +180,15 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                         }
                     },
                     //set notification for suggestion creator ("user agree/disagree your suggestion")
-                    function (cbk) {
+                    function (cbk1) {
                         var method;
-                        if (suggestion_obj.does_support_the_suggestion)
+                        if (is_agree)
                             method = "add";
                         else
                             method = "remove";
                         notifications.create_user_vote_or_grade_notification("user_gave_my_suggestion_tokens",
-                            discussion_id, suggestion_obj.creator_id, req.user._id, suggestion_obj._id, method, false, true, function (err, result) {
-                                cbk(err, result);
+                            suggestion_obj._id, suggestion_obj.creator_id, req.user._id, discussion_id, method, false, true, function (err, result) {
+                                cbk1(err, result);
                             })
                     }
                 ], function (err, args) {
@@ -206,7 +206,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                 new_grade:new_grade,
                 evaluate_counter:counter,
 //                    already_graded: true,
-                agrees:agrees,
+                agrees: agrees,
                 not_agrees:not_agrees,
 //                    wanted_amount_of_tokens: real_threshold,
                 curr_amount_of_tokens:curr_tokens_amout
@@ -262,6 +262,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                 g_sugg_obj = sugg_obj;
                 agrees = sugg_obj.agrees;
                 not_agrees = sugg_obj.not_agrees;
+                curr_tokens_amout = agrees = not_agrees;
 
                 did_user_change_his_agree = object.does_support_the_suggestion != is_agree;
                 object.does_support_the_suggestion = is_agree;
@@ -275,7 +276,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                     function (cbk1) {
                         if(did_user_change_his_agree){
                             notifications.create_user_vote_or_grade_notification("user_gave_my_suggestion_tokens",
-                                discussion_id, sugg_obj.creator_id, req.user._id, sugg_obj._id, method, did_user_change_his_agree, true,function (err, result) {
+                                sugg_obj._id, sugg_obj.creator_id, req.user._id, discussion_id, method, did_user_change_his_agree, true,function (err, result) {
                                     cbk1(err, result);
                                 })
                         }else{
@@ -285,7 +286,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
 
                     function (cbk1) {
                         object.proxy_power = proxy_power;
-                        base.call(self, req, object, cbk);
+                        base.call(self, req, object, cbk1);
                     }
                 ], function (err, args) {
                     cbk(err, args[1]);
@@ -470,6 +471,9 @@ var calculateSuggestionGrade = GradeSuggestionResource.calculateSuggestionGrade 
                     function (suggestions, cbk) {
                         async.forEach(suggestions, function (sugg, itr_cbk) {
                             if (sugg._id != suggestion_id && sugg.parts[0].start < g_approved_sugg.parts[0].end - 1){
+                                if(sugg.threshold_for_accepting_the_suggestion > 500)
+                                    sugg.threshold_for_accepting_the_suggestion = 500;
+
                                 sugg.parts[0].start = g_approved_sugg.parts[0].text.length > change_length ? sugg.parts[0].start + change_length : sugg.parts[0].start - change_length;
                                 sugg.save(function(err, sugg){
                                     itr_cbk(err, sugg);

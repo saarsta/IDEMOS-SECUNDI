@@ -37,7 +37,7 @@ module.exports = function(router)
             {
                 if(req.session.user){
                     models.Like.find({user_id: req.session.user._id, info_item_id: req.params.id}, function(err, obj){
-                        var is_like = obj.length ? true : false;
+                        var is_like = obj && obj.length ? true : false;
                         cbk(err,is_like);
                     });
                 }

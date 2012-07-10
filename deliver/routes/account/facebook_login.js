@@ -18,8 +18,8 @@ module.exports = function (req, res) {
                 isUserInDataBase(user_fb_id, function (is_user_in_db) {
 
                     if (!is_user_in_db) {
-                        req.session['fb_next'] = "/account/code_after_fb_connect";
-                        next = req.session['fb_next'];
+//                        req.session['fb_next'] = "/account/code_after_fb_connect";
+//                        next = req.session['fb_next'];
                         user_detailes.invited_by = referred_by;
                         createNewUser(user_detailes, access_token, function (_id) {
                             req.session.user_id = _id;
@@ -29,7 +29,7 @@ module.exports = function (req, res) {
                                     console.log(err);
                                 } else {
                                     console.log('user _id to session is ok');
-                                    res.redirect(next || common.DEFAULT_LOGIN_REDIRECT);
+                                    redirectAfterLogin(req,res,next);
                                 }
                             });
                         });
@@ -48,7 +48,7 @@ module.exports = function (req, res) {
                                         res.send("error in registration", 500);
                                     } else {
                                         console.log('user _id to session is ok');
-                                        res.redirect(next || common.DEFAULT_LOGIN_REDIRECT);
+                                        redirectAfterLogin(req,res,next);
                                     }
 
                                 });
@@ -67,6 +67,12 @@ module.exports = function (req, res) {
     }
     else
         go();
+};
+
+function redirectAfterLogin(req,res,redirect_to) {
+    if(!redirect_to || /^\/account\/register/.test(redirect_to))
+        redirect_to = common.DEFAULT_LOGIN_REDIRECT;
+    res.redirect(redirect_to);
 };
 
 function isUserInDataBase(user_facebook_id, callback) {

@@ -22,10 +22,13 @@ var NotificationCategoryResource = module.exports = resources.MongooseResource.e
                     sub_entity_id: null,
                     notificator_id: null,
                     ballance: null,
+                    votes_for: null,
+                    votes_against: null,
                     first_name:null,
                     last_name:null,
                     avatar_url:null
                 },
+                entity_id: null,
                 description_of_notificators:null,
                 message_of_notificators:null,
                 name: null,
@@ -54,6 +57,10 @@ var NotificationCategoryResource = module.exports = resources.MongooseResource.e
                     .uniq()
                     .value();
 
+                var post_or_suggestion_notification_types = [
+                    "user_gave_my_post_tokens",
+                    "user_gave_my_suggestion_tokens"
+                ];
                 var discussion_notification_types = [
                     "comment_on_discussion_you_are_part_of",
                     "change_suggestion_on_discussion_you_are_part_of",
@@ -62,8 +69,6 @@ var NotificationCategoryResource = module.exports = resources.MongooseResource.e
                     "approved_change_suggestion_you_created",
                     "approved_change_suggestion_you_graded",
                     "been_quoted",
-                    "user_gave_my_post_tokens",
-                    "user_gave_my_suggestion_tokens",
                     "a_dicussion_created_with_info_item_that_you_like",
                     "a_dicussion_created_with_info_item_that_you_created"
                 ];
@@ -71,6 +76,40 @@ var NotificationCategoryResource = module.exports = resources.MongooseResource.e
                 var discussion_ids = _.chain(results.objects)
                     .map(function (notification) {
                         return  _.indexOf(discussion_notification_types, notification.type) > -1
+                            ? notification.entity_id : null;
+                    })
+                    .compact()
+                    .uniq()
+                    .value();
+
+                var discussion_notification_types_as_sub_entity = [
+                    "user_gave_my_post_tokens",
+                    "user_gave_my_suggestion_tokens"
+                ];
+
+                var discussion_ids_as_sub_entity = _.chain(results.objects)
+                    .map(function (notification) {
+                        return  _.indexOf(discussion_notification_types_as_sub_entity, notification.type) > -1
+                            ? notification.notificators[0].sub_entity_id : null;
+                    })
+                    .compact()
+                    .uniq()
+                    .value();
+
+                discussion_ids_as_sub_entity = _.chain(discussion_ids_as_sub_entity)
+                    .compact()
+                    .uniq()
+                    .value();
+
+                discussion_ids = _.union(discussion_ids, discussion_ids_as_sub_entity);
+                discussion_ids = _.chain(discussion_ids).map(function(id) { return id + ''; })
+                    .compact()
+                    .uniq()
+                    .value();
+
+                var post_or_suggestion_ids = _.chain(results.objects)
+                    .map(function (notification) {
+                        return  _.indexOf(post_or_suggestion_notification_types, notification.type) > -1
                             ? notification.entity_id : null;
                     })
                     .compact()
@@ -95,7 +134,6 @@ var NotificationCategoryResource = module.exports = resources.MongooseResource.e
                     function(cbk){
                         models.User.find({}, ['id', 'first_name', 'last_name', 'facebook_id', 'avatar'])
                             .where('_id').in(notificator_ids).run(function (err, users) {
-
                                 if(!err){
                                     var users_hash = {};
 
@@ -108,9 +146,16 @@ var NotificationCategoryResource = module.exports = resources.MongooseResource.e
                     },
 
                     function(cbk){
-                        models.Discussion.find({}, ['id', 'title', 'image_field_preview', 'image_field'])
-                            .where('_id').in(discussion_ids).run(function (err, discussions) {
+                        models.Discussion.find()
+                            .where('_id')
+                            .in(discussion_ids)
+                            .select(['id', 'title', 'image_field_preview', 'image_field'])
+                            .exec(function (err, discussions) {
 
+                                var got_ids = _.pluck(discussions,'id');
+                                var not_found_ids = _.without(discussion_ids,got_ids);
+                                if(not_found_ids.length)
+                                   console.log(not_found_ids);
                                 if(!err){
                                     var discussions_hash = {};
 
@@ -325,12 +370,17 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                     break;
                 case "user_gave_my_post_tokens":
                     var num_of_users_that_vote_my_post = notification.notificators.length;
+                    if(discussion){
+                        var latest_notificator = getLatestNotificator(notification.notificators);
+                        notification.link = "/discussions/" + notification.notificators[0].sub_entity_id;
+                        notification.link += latest_notificator ? "#post_" + notification.entity_id : "";
+                        notification.pic = discussions_hash[notification.notificators[0].sub_entity_id + ""].image_field_preview
+                            || discussions_hash[notification.notificators[0].sub_entity_id + ""].image_field;
+                        notification.name = discussions_hash[notification.notificators[0].sub_entity_id + ""].title;
+
+                    }
                     if(num_of_users_that_vote_my_post == 1){
-                        if(discussion){
-                            var latest_notificator = getLatestNotificator(notification.notificators);
-                            notification.link = "/discussions/" + notification.entity_id;
-                            notification.link += latest_notificator ? "#post_" + latest_notificator.sub_entity_id : "";
-                        }
+
                         if(user_obj){
                             notification.pic = user_obj.avatar_url();
                             notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;
@@ -346,12 +396,7 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
 ;
                     }else{
                         var token_sum = _.reduce(notification.notificators, function(sum, notificator){return sum + Number(notificator.ballance)}, 0);
-                        if(discussion){
-                            notification.link = "/discussions/" + notification.entity_id;
-                            notification.pic = discussions_hash[notification.entity_id + ""].image_field_preview
-                                || discussions_hash[notification.entity_id + ""].image_field;
-                            notification.name = discussions_hash[notification.entity_id + ""].title;
-                        }
+
                         notification.description_of_notificators = num_of_users_that_vote_my_post +
                             " " +
                              "חברי עורו"
@@ -370,25 +415,29 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                 case "user_gave_my_suggestion_tokens":
                     var num_of_users_that_vote_my_sugg = notification.notificators.length;
 
-                    if(discussion){
                         var latest_notificator = getLatestNotificator(notification.notificators);
-                        notification.link = "/discussions/" + notification.entity_id;
-                        notification.link += latest_notificator ? "#post_" + latest_notificator.sub_entity_id : "";
-                        notification.name = discussions_hash[notification.entity_id + ""].title;
-                    }
+                        notification.link = "/discussions/" + notification.notificators[0].sub_entity_id;
+                        notification.link += "#post_" + notification.entity_id;
+
+                        console.log("bla bla");
+                        console.log(notification.notificators[0].sub_entity_id + "");
+                        console.log(discussions_hash[notification.notificators[0].sub_entity_id + ""] && discussions_hash[notification.notificators[0].sub_entity_id + ""].title);
+
+                        notification.name = discussions_hash[notification.notificators[0].sub_entity_id + ""] && discussions_hash[notification.notificators[0].sub_entity_id + ""].title;
+
                     if(user_obj){
                         notification.pic = user_obj.avatar_url();
                         notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;
                     }
                     if(num_of_users_that_vote_my_sugg == 1){
 
-                        var support_or_not = "התנגד";
-                        if(notification.notificators[0].ballance > 0 )
-                            support_or_not = "תמך"
+                        var support_or_not = "התנגד ל";
+                        if(notification.notificators[0].votes_for > 0 )
+                            support_or_not = "תמך ב";
 
                         notification.message_of_notificators =
                             support_or_not
-                        + "בהצעה לשינוי שהעלת בדיון - "
+                        + "הצעה לשינוי שהעלת בדיון - "
                         ;
                     }else{
                         var token_sum = _.reduce(notification.notificators, function(sum, notificator){return sum + Number(notificator.ballance)}, 0);

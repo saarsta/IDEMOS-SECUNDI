@@ -205,6 +205,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                                     join_date:Date.now()
                                 };
                                 fields.is_published = true; //TODO this is only for now
+                                fields.is_hidden = false;
                                 // create text_field_preview - 200 chars
                                 if (fields.text_field.length >= 200)
                                     fields.text_field_preview = fields.text_field.substr(0, 200);

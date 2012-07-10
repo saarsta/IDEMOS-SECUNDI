@@ -20,17 +20,11 @@ exports.run = function(app)
         })
     }, 60 * 1000 * 24 * 60);
 
-//    setInterval(function(){
-//        daily_cron.takeProxyMandatesBack(function(err, result){
-//        console.log(err || result);
-//        })
-//    },20 * 1000);
-
-//    setInterval(function(){
-//        daily_cron.takeProxyMandatesBack(function(err, result){
-//        console.log(err || result);
-//        })
-//    },20 * 1000);
+    setInterval(function(){
+        daily_cron.takeProxyMandatesBack(function(err, result){
+        console.log(err || result);
+        })
+    },60 * 1000 * 24 * 60);
 };
 
 var Cron = exports.Cron = {
@@ -458,7 +452,7 @@ var daily_cron =  exports.daily_cron = {
 
     //taking back mandates from proxy
     takeProxyMandatesBack: function(callback){
-
+        console.log("1");
         var proxies_ids_and_number_of_tokens_to_get_back = [
             {
                 proxy_id: null,
@@ -484,27 +478,33 @@ var daily_cron =  exports.daily_cron = {
 
         async.waterfall([
             function(cbk){
-                models.User.find().where("proxy.number_of_tokens_to_get_back").gt(0).run(function(err, results){
+                console.log("2");
+
+                //TODO this doesnt return anything
+//                models.User.find().where("proxy.number_of_tokens_to_get_back").gt(0).run(function(err, results){
+                models.User.find({}, function(err, results){
+                    console.log("2.1");
                     cbk(err, results);
                 });
             },
 
             function(users, cbk){
-                if(users){
+
+                console.log("3");
                     async.forEach(users, function(user, itr_cbk){
                         _.each(user.proxy, function(proxy){
                             if(proxy.number_of_tokens_to_get_back > 0){
 
                                 //create a list of proxies and sum the number of tokens to take from them
-                                var exist_proxy = _.find(proxies_ids_and_number_of_tokens_to_get_back, function(proxy){return proxy.proxy_id == proxy.user_id});
+                                var exist_proxy = _.find(proxies_ids_and_number_of_tokens_to_get_back, function(proxy){return proxy.proxy_id + "" == proxy.user_id + ""});
 
                                 if(exist_proxy)
                                     exist_proxy.num_of_extra_tokens += proxy.number_of_tokens_to_get_back;
                                 else
-                                    proxies_ids_and_number_of_tokens_to_get_back.push({prox_id: proxy.user_id, num_of_extra_tokens: proxy.number_of_tokens_to_get_back})
+                                    proxies_ids_and_number_of_tokens_to_get_back.push({proxy_id: proxy.user_id, num_of_extra_tokens: proxy.number_of_tokens_to_get_back})
 
-                                //reduce tokens from my tokens
-                                user.tokens += proxy.number_of_tokens_to_get_back;
+//                                //reduce tokens from my tokens
+//                                user.num_of_mandates_i_gave -= proxy.number_of_tokens_to_get_back;
 
                                 //set notifications for proxy
                                 proxy_notifications.push({
@@ -526,18 +526,27 @@ var daily_cron =  exports.daily_cron = {
                             }
                         })
 
-                        user.save(function(err, user_obj){
-                            itr_cbk(err, user_obj);
-                        })
+                        if(user.proxy && user.proxy.length > 0){
+                            user.save(function(err, user_obj){
+                                if(err){
+                                    console.error(err);
+                                    console.log(user);
+                                }
+
+                                itr_cbk(err, user_obj);
+                            })
+                        }else
+                            itr_cbk();
+
+
+
                     }, function(err, results){
                         cbk(err, results);
                     });
-                }else{
-                    cbk(null, 0);
-                }
             },
 
             function(obj, cbk){
+                console.log("4");
                 if(obj != 0){
                     //update proxies with their new amount off mandates
                     async.forEach(proxies_ids_and_number_of_tokens_to_get_back, function(proxy, itr_cbk){
@@ -546,12 +555,15 @@ var daily_cron =  exports.daily_cron = {
                         models.User.update({_id: proxy.proxy_id}, {$inc: {num_of_given_mandates: num}}, function(err, num){
                             itr_cbk(err, num);
                         })
-                    }, cbk);
+                    }, function(err, result){
+                        cbk(err, result)
+                    });
                 }else{
                     cbk(null, 0);
                 }
             }
         ], function(err, obj){
+            console.log("5");
             callback(err, obj);
         })
     },
