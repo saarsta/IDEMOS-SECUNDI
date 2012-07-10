@@ -263,13 +263,14 @@
 
                      db_functions.createDiscussion(subject_id, vision, title, tags, function(err, data){
                          if (err){
+
                          }else{
                              creator_id= data.creator_id;
                              created_discussion_id = data._id;
                              if ($.trim(first_post) != ""){
                                  db_functions.addPostToDiscussion(created_discussion_id, first_post,null, function(err, data){
                                      if (err){
-                                         console.log(err);
+                                         console.error(err);
                                      }else{
 
                                         if ($('#invite_friends').is(':checked'))    {

@@ -88,11 +88,11 @@ dust.filters['post'] = function(text) {
     text = text.replace(/\[img\]/g,'cxcxxczcc').replace(/\[\/img\]/g,'cxzczcxzczxcc');
 
     text = text.replace(/\[quote="([^"]*)"\s*\]\n?((?:.|\n)*)?\n?\[\/quote\]\n?/g,
-        '<div class="post_quote"><a class="ref_link" href="javascript:void(0);">' +
+        '<div class="post_quote"><p><a class="ref_link" href="javascript:void(0);" style="display: block; margin-bottom: 8px; text-decoration: underline;">' +
             ' $1 כתב:' +
-            '</a><br><br>' +
-            '$2' + '</div><br><span class="actual_text">');
-    text = text.replace(/\n/g, '<br>') + '</span>';
+            '</a>' +
+            '<strong>$2</strong>' + '</p></div><br><p><span class="actual_text">');
+    text = text.replace(/\n/g, '<br>') + '</span></p>';
     return text;
 }
 

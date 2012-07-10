@@ -2508,6 +2508,7 @@ textarea.hidden_textarea::selection
 .write-comment .text-box .left textarea.four-col
 {
     height: 92px;
+    resize: none;
 }
 .write-comment .text-box .left textarea.two-col
 {
@@ -4000,9 +4001,6 @@ body.search-ative #header
     list-style:disc outside none;
 }
 
-.total-number    {
-    display: none;
-}
 .post_quote {
     border-top: 2px solid
     #D6DBDE;

@@ -225,7 +225,7 @@ var Schemas = exports.Schemas = {
     },
 
     GamificationTokens: {
-        create_discussion: {type: Number, 'default': 0},
+        create_discussion: {type: Number, 'default': 3},
         create_action: {type: Number, 'default': 0},
         post_on_discussion: {type: Number, 'default': 0},
         post_on_action: {type: Number, 'default': 0},
@@ -239,7 +239,7 @@ var Schemas = exports.Schemas = {
         join_to_action: {type: Number, 'default': 0},
         ceate_kilkul: {type: Number, 'default': 0},
         join_kilkul: {type: Number, 'default': 0},
-        min_tokens_to_create_dicussion: {type: Number, 'default': 0},
+        min_tokens_to_create_dicussion: {type: Number, 'default': 10},
         min_tokens_to_create_action: {type: Number, 'default': 0},
         min_tokens_to_create_blog: {type: Number, 'default': 0},
         invite_X_people_who_got_Y_extra_tokens: {x: {type: Number, 'default': 1000}, y: {type: Number, 'default': 1000}},
