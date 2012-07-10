@@ -56,7 +56,37 @@ module.exports.userFinder = function ( err , data , callback ){
  *
  */
 module.exports.actions = {
-    "example_action" : {
+    "comment" : {
+        action_link_cb : function(err , data , callback){
+            callback(null , true);
+        }
+    }
+    ,"create" : {
+        action_link_cb : function(err , data , callback){
+            callback(null , true);
+        }
+    }
+    ,"go" : {
+        action_link_cb : function(err , data , callback){
+            callback(null , true);
+        }
+    }
+    ,"rank" : {
+        action_link_cb : function(err , data , callback){
+            callback(null , true);
+        }
+    }
+    ,"suggest" : {
+        action_link_cb : function(err , data , callback){
+            callback(null , true);
+        }
+    }
+    ,"support" : {
+        action_link_cb : function(err , data , callback){
+            callback(null , true);
+        }
+    }
+    ,"join" : {
         action_link_cb : function(err , data , callback){
             callback(null , true);
         }
