@@ -95,6 +95,18 @@ var db_functions = {
         });
     },
 
+    getQaItems: function(callback){
+        db_functions.loggedInAjax({
+            url: '/api/qa',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+                callback(data);
+            }
+        });
+    },
+
     //blogs
     getPopularArticles: function(limit_number,callback){
         db_functions.loggedInAjax({

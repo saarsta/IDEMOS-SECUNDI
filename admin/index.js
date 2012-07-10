@@ -158,6 +158,10 @@ module.exports = function(app)
             cloneable:true
         });
 
+    admin.registerMongooseModel('Qa',Models.Qa,null,{
+                list:['title']
+    });
+
     admin.registerMongooseModel('FBRequest',Models.FBRequest,null,{
         list_populate:['creator'],
         list:['link','creator.first_name','creator.last_name']

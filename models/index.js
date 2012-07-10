@@ -282,6 +282,13 @@ var Schemas = exports.Schemas = {
         img_field: {type:mongoose_types.File, required:true},
         is_hidden:{type:Boolean,'default':true}
 
+    },
+
+    Qa:{
+        title: {type: String, required:true},
+        text_field:{type:mongoose_types.Html},
+        img_field: {type:mongoose_types.File},
+        is_hidden:{type:Boolean,'default':true}
     }
 };
 
@@ -330,6 +337,7 @@ var Models = module.exports = {
     AboutUruText: mongoose.model('AboutUruText', new Schema(Schemas.AboutUruText, {strict: true})),
     AboutUruItem: mongoose.model('AboutUruItem', new Schema(Schemas.AboutUruItem, {strict: true})),
     Team: mongoose.model('Team', new Schema(Schemas.Team, {strict: true})),
+    Qa: mongoose.model('Qa', new Schema(Schemas.Qa, {strict: true})),
     GamificationTokens: utils.config_model('GamificationTokens', Schemas.GamificationTokens),
     ThresholdCalcVariables: utils.config_model('ThresholdCalcVariables', Schemas.ThresholdCalcVariables),
 
