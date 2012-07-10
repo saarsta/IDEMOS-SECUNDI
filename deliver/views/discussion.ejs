@@ -462,15 +462,100 @@ $(document).ready(function () {
     });
 
 
+
+    $('#suggestion_list').on('click', '#add_or_remove_proxy', function (e) {
+        e.preventDefault();
+
+        function findUserProxy(userId) {
+            for (var i in proxy) {
+                var userProxy = proxy[i];
+                if (userProxy.user_id) {
+                    return userProxy;
+                }
+            }
+            return null;
+        }
+
+        var userData = $(this).parents('.discussion-item');
+        var proxyId = userData.data('creator_id');
+        var userName = userData.data('creator_name');
+        var userProxy = findUserProxy(proxyId);
+        if (!userProxy) {
+            //you didn't give proxy to this user
+            userProxy = {number_of_tokens:0,
+                number_of_tokens_to_get_back:0,
+                user_id:proxyId
+            }
+
+
+        }
+
+        var config = {
+            massage:'תן מנדט ל' + userName,
+            userProxy:userProxy,
+            onOkCilcked: function (e) {
+                e.preventDefault();
+                newAmount = $('.give-mandats-popup').find(':checked').val();
+                var changeProxy = newAmount - (userProxy.number_of_tokens - userProxy.number_of_tokens_to_get_back);
+                if (changeProxy == 0) {
+                    $.colorbox.close();
+                }
+
+                db_functions.addOrRemoveProxyMandate(my_id, proxyId, changeProxy, function (err, data) {
+                    //  var msg_params = err ? {massage:err.responseText} : {massage:"האסימונים ילקחו בקרוב"};
+                    if(data && data.proxy){
+                        proxy=data.proxy;
+                    }
+                    if(err){
+                        $(document).one('cbox_closed', function (e) {
+
+                            popupProvider.showOkPopup({massage:err.responseText});
+                        });
+                    }
+                    else{
+                        if (changeProxy < 0) {
+                            $(document).one('cbox_closed', function (e) {
+                                popupProvider.showOkPopup( {massage:"האסימונים ילקחו בקרוב"})
+                            });
+                        }
+
+                    }
+                    $.colorbox.close();
+
+                    //                else {
+                    //                    $(self).parents('.comment-one').data("num-given-mandates", $(self).parents('.comment-one').data("num-given-mandates") + tokens);
+                    //                    $(self).parents('.comment-one').find(".proxy.num").value =  $(self).parents('.comment-one').find(".proxy.num").value + tokens;
+                    //                    if (changeProxy < 0) {
+                    //alerXXt('האסימונים ילקחו בקרוב')  ;
+                    //                        config.onClosed = function (e) {
+                    //                            popupProvider.showOkPopup();
+                    //                        }
+                    //                    }
+                    //  callback(err, data);
+                    //                }
+                })
+            }
+        };
+        popupProvider.showGiveMandatPopup(config);
+        // $.colorbox.close();
+    });
+
+
+
+
     $('#comments').on('click', '#add_or_remove_proxy', function (e) {
         e.preventDefault();
 
         function findUserProxy(userId) {
             for (var i in proxy) {
                 var userProxy = proxy[i];
-                if (userProxy.user_id === userId) {
+                if (userProxy.user_id === userId ) {
                     return userProxy;
                 }
+                else if (userProxy.user_id&& userProxy.user_id._id === userId ) {
+                    return userProxy;
+                }
+
             }
             return null;
         }
@@ -503,7 +588,7 @@ $(document).ready(function () {
                 db_functions.addOrRemoveProxyMandate(my_id, proxyId, changeProxy, function (err, data) {
                   //  var msg_params = err ? {massage:err.responseText} : {massage:"האסימונים ילקחו בקרוב"};
                    if(data && data.proxy){
-                       proxy=proxy;
+                       proxy=data.proxy;
                    }
                     if(err){
                         $(document).one('cbox_closed', function (e) {
@@ -540,12 +625,38 @@ $(document).ready(function () {
     });
 
 
-    $('#comments').on('click', '.vote_for', function () {
 
+     function vote(actionType){
+         var post_id = $(this).parents('.comment-one').data("id");
+         var button = $(this);
+         var func = $(this).parents('#comments').length ? db_functions.voteForPost : db_functions.voteForSuggestion;
+         func.call(db_functions, post_id, "add", function (err, post_obj) {
+             if (!err) {
+
+//                var votes_for = button.parent('div').find('.number');
+                 var votes_for = button.parents(".status").find(".yes").find(".number");
+                 var votes_against = button.parents(".status").find(".no").find(".number");
+
+                 votes_for.text(Math.round(post_obj.votes_for));
+                 votes_against.text(Math.round(post_obj.votes_against));
+             }
+             else {
+                 if (err.responseText == 'Error: there is not enought tokens')
+                     alert('not enough tokens');
+                 if (err.responseText == 'user already voted for this post')
+                     popupProvider.showOkPopup( {massage:'already voted'});
+                 if (err.responseText == 'soory, can\'t vote to your own post')
+                     alert('soory, can\'t vote to your own post');
+             }
+         })
+     }
+
+
+    function vote(actionType){
         var post_id = $(this).parents('.comment-one').data("id");
         var button = $(this);
         var func = $(this).parents('#comments').length ? db_functions.voteForPost : db_functions.voteForSuggestion;
-        func.call(db_functions, post_id, "add", function (err, post_obj) {
+        func.call(db_functions, post_id, actionType, function (err, post_obj) {
             if (!err) {
 
 //                var votes_for = button.parent('div').find('.number');
@@ -557,38 +668,23 @@ $(document).ready(function () {
             }
             else {
                 if (err.responseText == 'Error: there is not enought tokens')
-                    alert('not enough tokens');
+                    popupProvider.showOkPopup( {massage:     'אין לך מספיק טוקנים'});
                 if (err.responseText == 'user already voted for this post')
-                    alert('already voted');
+                    popupProvider.showOkPopup( {massage:     'כבר הצבעת'});
                 if (err.responseText == 'soory, can\'t vote to your own post')
-                    alert('soory, can\'t vote to your own post');
+                    popupProvider.showOkPopup( {massage:     'מצטערים, לא ניתן להצביע לתגובה של עצמך'});
             }
         })
+    }
+
+    $('#comments').on('click', '.vote_for', function () {
+        vote.apply($(this),['add']);
+
     });
 
     $('#comments').on('click', ".vote_against", function () {
-        var post_id = $(this).parents('.comment-one').data("id");
-        var button = $(this);
-        var func = $(this).parents('#comments').length ? db_functions.voteForPost : db_functions.voteForSuggestion;
-        func.call(db_functions, post_id, "remove", function (err, post_obj) {
-            if (!err) {
-                var votes_for = button.parents(".status").find(".yes").find(".number");
-                var votes_against = button.parents(".status").find(".no").find(".number");
+        vote.apply($(this),['remove']);
 
-                votes_for.text(Math.round(post_obj.votes_for));
-                votes_against.text(Math.round(post_obj.votes_against));
-            }
-            else {
-                if (err.responseText == 'Error: there is not enought tokens')
-                    alert('not enough tokens');
-                if (err.responseText == 'user already voted for this post')
-                    alert('already voted');
-                if (err.responseText == 'soory, can\'t vote to your own post')
-                    alert('soory, can\'t vote to your own post');
-
-            }
-
-        })
     });
 
     /*      $('.comments-box .comment-one .user-right').hover(function () {
