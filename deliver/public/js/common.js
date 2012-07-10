@@ -88,8 +88,8 @@ dust.filters['post'] = function(text) {
     text = text.replace(/\[quote="([^"]*)"\s*\]\n?((?:.|\n)*)?\n?\[\/quote\]\n?/g,
         '<div class="post_quote"><a class="ref_link" href="javascript:void(0);">' +
             ' $1 כתב:' +
-            '</a><br>' +
-            '$2' + '</div><span class="actual_text">');
+            '</a><br><br>' +
+            '$2' + '</div><br><span class="actual_text">');
     text = text.replace(/\n/g, '<br>') + '</span>';
     return text;
 }
