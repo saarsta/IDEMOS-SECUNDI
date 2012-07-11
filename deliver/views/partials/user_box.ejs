@@ -2,7 +2,7 @@
         var unseen_notifications = user_logged ? user.unseen_notifications || 0 : 0;
 %>
 
-<div class="user-box">
+<div class="user-box .user-box-hover">
     <%if(unseen_notifications > 0){%><span class="total-number"> <%=unseen_notifications%></span><%}%>
 
     <%if(user_logged){%>

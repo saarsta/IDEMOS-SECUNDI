@@ -1,0 +1,118 @@
+
+.login-popup
+{
+    background: #3b63ef;
+    height: 100%;
+    width:500px;
+
+   /* border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    padding: 7px 10px 8px;
+    position: absolute;
+    left: 0;
+    top: 47px;*/
+
+}
+.login-popup> div
+{
+    padding: 20px
+}
+.login-popup  input[type=submit]
+{
+    border: 1px solid #0f1e54;
+    background:#263a81 url(../images/submit-btn.png) 0 0 repeat-x;
+    height: 28px;
+    color:#fff;
+    font-size: 18px;
+    line-height: 28px;
+    padding:0;
+    cursor: pointer;
+    width: 100%;
+    font-family: 'AdumaFOTMedium';
+    margin-top: 8px;
+    display:block;
+}
+
+
+
+.user-box span.icon
+{
+    width: 21px;
+    height: 22px;
+    background: url(../images/user-icon.png) 0 50% no-repeat;
+    display: block;
+    float: left;
+}
+
+.login-popup  h2,
+
+{
+    color:#fff;
+    font-size: 18px;
+    line-height: 22px;
+    font-weight: normal;
+    font-family: 'AdumaFOTMedium';
+    padding-left: 25px;
+    display: none;
+}
+
+
+
+.login-popup .spacer
+{
+    background: url(../images/spacer-user-box.png) 50% 50% no-repeat;
+    height: 18px;
+}
+.login-popup a.facebook
+{
+    display: block;
+    background: url(../images/facebook-btn.png) no-repeat;
+    height: 28px;
+    width: 123px;
+    margin: 0 auto;
+}
+.login-popup input[type=text]
+{
+    height: 15px;
+    border: 1px solid #d8d8d8;
+    padding:1px 4px;
+    width: 113px;
+    color:#a5a5a4;
+    font: normal 12px/15px Arial;
+    margin-bottom: 10px;
+    display: block;
+}
+.forgot_password
+{
+    height: 10px;
+    padding:1px 4px;
+    width: 113px;
+    color:#a5a5a4;
+    font: normal 12px/15px Arial;
+    margin-bottom: 10px;
+    display: block;
+}
+.login-popup input[type=password]
+{
+    height: 15px;
+    border: 1px solid #d8d8d8;
+    padding:1px 4px;
+    width: 113px;
+    color:#a5a5a4;
+    font: normal 12px/15px Arial;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.login-popup input[type=submit]:hover
+{
+    background:#152151 url(../images/submit-btn.png) 0 0 repeat-x;
+}
+.login-popup input[type=submit]:active
+{
+    background:#3c63ef url(../images/submit-btn.png) 0 100% repeat-x;
+}
+
+
+
