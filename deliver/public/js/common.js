@@ -51,14 +51,27 @@ function sendFacebookInvite(message,link,callback) {
     });
 }
 
-function sendFacebookShare(link, name,callback) {
-    db_functions.addFacebookRequest(link, null,function(err,link_obj) {
+function sendFacebookShare(link, title, src, text_preview, callback) {
+    db_functions.addFacebookRequest(link, null, function(err,link_obj) {
         if(err)
             callback(err);
         else {
+            text_preview = text_preview.replace(/(<([^>]+)>)/ig,"");
             link =  window.location.origin + link_obj.link;
-            FB.ui({method: 'feed', link: link, name: name}, function(response) {
+            if (src.indexOf("http") == -1)
+                src = /*"http://uru.s3.amazonaws.com/spivak_29.jpg"*/window.location.origin + src;
 
+            console.log(src);
+//            src = 'http://fbrell.com/f8.jpg';
+
+            FB.ui({
+                method: 'feed',
+                link: link,
+                name: title,
+                picture: src,
+//                caption: text_preview,
+                description: text_preview
+            }, function(response) {
                 console.log(response);
                 callback();
             });
@@ -75,7 +88,7 @@ dust.filters['tags'] = function(text) {
     text = text.replace(/\[list\]/g,'<ul><li>').replace(/\[\/list\]/g,'</li></ul>');
     text = text.replace(/\[\*\]/g,'</li><li>').replace(/<ul><li>(.|\n)*?<\/li>/g,'<ul>');
     text = text.replace(/\[url(?:=([^\]]*))\]((?:.|\n)*)?\[\/url\]/,'<a href="$1" target="_blank">$2</a>')
-    text = text.replace(/\[url\]((?:.|\n)*)?\[\/url\]/,'<a href="$1" target="_blank">$1</a>')
+    text = text//eplace(/\[url\]((?:.|\n)*)?\[\/url\]/,'<a href="$1" target="_blank">$1</a>')
 
     return text;
 };
@@ -83,16 +96,13 @@ dust.filters['tags'] = function(text) {
 dust.filters['post'] = function(text) {
     text = dust.filters['tags'](text);
 
-//    text = text.replace(/\[img\]/g,'<div style="width:240px; height:133px;"><img src="').replace(/\[\/img\]/g,'"/></div>');
 
-    text = text.replace(/\[img\]/g,'cxcxxczcc').replace(/\[\/img\]/g,'cxzczcxzczxcc');
 
     text = text.replace(/\[quote="([^"]*)"\s*\]\n?((?:.|\n)*)?\n?\[\/quote\]\n?/g,
-        '<div class="post_quote"><p><a class="ref_link" href="javascript:void(0);" style="display: block; margin-bottom: 8px; text-decoration: underline;">' +
+        '<div class="post_quote"><a class="ref_lin padding-bottom: 3px;height: 16pxascript:void(0);">' +
             ' $1 כתב:' +
-            '</a>' +
-            '<strong>$2</strong>' + '</p></div><br><p><span class="actual_text">');
-    text = text.replace(/\n/g, '<br>') + '</span></p>';
+            '</a><' + '</div><span class="actual_text">');
+    text = text.replace(/\n/g, '<br>') + '</span>';
     return text;
 }
 
@@ -172,7 +182,7 @@ function fbs_click(ui) {
 
     ui.click( function() {
 
-        sendFacebookShare($(this).attr('rel'), $(this).data('name'), function(err) {
+        sendFacebookShare($(this).attr('rel'), $(this).data('title'), $(this).data('img_src'), $(this).data('text_preview'), function(err) {
             console.log(err);
         });
 //            var u = ;

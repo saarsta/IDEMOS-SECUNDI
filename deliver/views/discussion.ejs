@@ -47,6 +47,7 @@ var error_message = error_message || '';
                     </a>
 
                     <a class="btn-grey share" rel="/discussions/<%=discussion.id%>"
+                       data-img_src="<%=discussion.image_field_preview.url%>" data-text_preview="<%=discussion.text_field_preview%>" data-title="<%=discussion.title%> דיון בחזון"
                        data-name="<%=discussion.text_field_preview%>"
                        href="/facebookShare?link=/discussions/<%=discussion.id%>">
                         שתף
@@ -308,6 +309,8 @@ $(document).ready(function () {
     var new_post_ref_id = null;  //if not null =>the create new post is connected to anther post
     var my_discussion_grade = Number("<%= discussion.grade_obj ? discussion.grade_obj.value || 0 : 0 %>");
     var discussion_grade = Number("<%= discussion.grade%>");
+    var discussion_title = "<%= discussion.title%>"
+    var discussion_img_field_preview = "<%=discussion.image_field_preview.url%>"
 
     var postsNumber = 0;
     var is_creator = (my_id == creator_id);
@@ -971,6 +974,11 @@ $(document).ready(function () {
             if (err) {
                 console.log(err);
             } else {
+                $.each(data.objects, function (index, post) {
+                    post.title = discussion_title;
+                    post.image_field_preview = discussion_img_field_preview;
+                });
+
                 renderComments(data.objects);
                 postsNumber = data.meta.total_count;
                 setCommentNumber(postsNumber);
