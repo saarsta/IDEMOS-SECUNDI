@@ -607,9 +607,19 @@ $(document).ready(function () {
                              popupProvider.showOkPopup( {massage:"האסימונים ילקחו בקרוב"})
                             });
                         }
+                        //update user mandates
+                        userProxy = findUserProxy(proxyId);
+                        if(userProxy)  {
+                            $('.comment-one[data-creator_id='+proxyId+']').find('.proxy .num').html(userProxy.user_id.num_of_given_mandates);
+                        }
 
                     }
                     $.colorbox.close();
+
+
+
+
+                  //  $(self).parents('.comment-one').data("num-given-mandates", $(self).parents('.comment-one').data("num-given-mandates") + tokens);
 
     //                else {
     //                    $(self).parents('.comment-one').data("num-given-mandates", $(self).parents('.comment-one').data("num-given-mandates") + tokens);
