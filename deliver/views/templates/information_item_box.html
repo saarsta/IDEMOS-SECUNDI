@@ -12,7 +12,7 @@
         {?text_field_preview}<p>{text_field_preview|s}</p>{/text_field_preview}
     </div>
     <div class="btn-box">
-        <a  class="confirm share" rel="/information_items/{_id}" href="/facebookShare?link=/information_items/{_id}">שתף</a>
+        <a  class="confirm share" data-title="{title}" data-text_preview="{text_field_preview}" data-img_src="{image_field_preview.url}" rel="/information_items/{_id}" href="/facebookShare?link=/information_items/{_id}">שתף</a>
         <a item_id="{_id}" class="delete" href=""><span>הסר</span></a>
     </div>
 </div>
