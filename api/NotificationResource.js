@@ -399,6 +399,7 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                             +
                             notification.name;
 //                        notification.text_preview = posts_hash[notification.entity_id + ""].text;
+                        notification.text_preview = discussions_hash[notification.entity_id + ""].text_field_preview;
                     }
                     if(user_obj)
                          notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;

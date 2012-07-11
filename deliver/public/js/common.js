@@ -69,8 +69,8 @@ function sendFacebookShare(link, title, src, text_preview, callback) {
                 link: link,
                 name: title,
                 picture: src,
-//                caption: text_preview,
-                description: text_preview
+                caption: text_preview
+//                description: text_preview
             }, function(response) {
                 console.log(response);
                 callback();
