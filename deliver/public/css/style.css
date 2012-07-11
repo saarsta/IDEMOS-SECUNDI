@@ -1688,6 +1688,8 @@ body
     padding-top: 20px;
 }
 /*-------------------------------*/
+
+
 .popup
 {
     margin:13px 15px;
@@ -1700,6 +1702,25 @@ body
 {
     width: 390px;
 }
+.give-mandats-popup
+{
+    width:500px;
+}
+.give-mandats-popup .middle-popup
+{
+    height: 100px;
+
+}
+.give-mandats-popup .middle-popup div
+{
+    text-align: right;
+}
+.give-mandats-popup .radio-div
+{
+
+    margin-top: 10px;
+}
+
 .popup .top-popup
 {
     background:#3b63ef;
@@ -1812,6 +1833,13 @@ body
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
 }
+
+
+
+
+
+
+
 #user-search .search-top
 {
     background:#3b63ef;
