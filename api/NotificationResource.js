@@ -34,7 +34,13 @@ var NotificationCategoryResource = module.exports = resources.MongooseResource.e
                 name: null,
                 update_date:null,
                 link:null,
-                pic:null
+                pic:null,
+
+                //for the share part
+                img_src: null,
+                title: null,
+                text_preview: null
+
             }
         },
 
@@ -149,7 +155,7 @@ var NotificationCategoryResource = module.exports = resources.MongooseResource.e
                         models.Discussion.find()
                             .where('_id')
                             .in(discussion_ids)
-                            .select(['id', 'title', 'image_field_preview', 'image_field'])
+                            .select(['id', 'title', 'image_field_preview', 'image_field', 'text_field_preview'])
                             .exec(function (err, discussions) {
 
                                 var got_ids = _.pluck(discussions,'id');
@@ -221,11 +227,19 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
 //                    itr_cbk();
 //                    break;
                 case "comment_on_discussion_you_are_part_of":
+
                     var num_of_comments = notification.notificators.length;
                     if(discussion){
                         notification.link = "/discussions/" + notification.entity_id;
                         notification.pic = discussions_hash[notification.entity_id + ""].image_field_preview || discussions_hash[notification.entity_id + ""].image_field;
                         notification.name = discussions_hash[notification.entity_id + ""].title;
+
+                        //for fb share
+                        notification.img_src = notification.pic;
+                        notification.title = 'דיון בחזון '
+                        +
+                            notification.name;
+                        notification.text_preview = discussions_hash[notification.entity_id + ""].text_field_preview;
                     }
 
                     if (num_of_comments > 1) {
@@ -255,6 +269,12 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                         notification.link = "/discussions/" + notification.entity_id + "";
                         notification.pic = discussions_hash[notification.entity_id + ""].image_field_preview || discussions_hash[notification.entity_id + ""].image_field;
                         notification.name = discussions_hash[notification.entity_id + ""].title;
+
+                        notification.img_src = notification.pic;
+                        notification.title = 'דיון בחזון '
+                            +
+                            notification.name;
+                        notification.text_preview = discussions_hash[notification.entity_id + ""].text_field_preview;
                     }
                     if (num_of_comments > 1) {
                         notification.description_of_notificators = num_of_comments + " " + "אנשים";
@@ -279,6 +299,12 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                         notification.link = "/discussions/" + notification.entity_id + "";
                         notification.pic = discussions_hash[notification.entity_id + ""].image_field_preview || discussions_hash[notification.entity_id + ""].image_field;
                         notification.name = discussions_hash[notification.entity_id + ""].title;
+
+                        notification.img_src = notification.pic;
+                        notification.title = 'דיון בחזון '
+                            +
+                            notification.name;
+                        notification.text_preview = discussions_hash[notification.entity_id + ""].text_field_preview;
                     }
                     if (num_of_comments > 1) {
                         notification.description_of_notificators = num_of_comments + " " + "אנשים";
@@ -304,6 +330,12 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                         notification.link = "/discussions/" + notification.entity_id;
                         notification.pic = discussions_hash[notification.entity_id + ""].image_field_preview || discussions_hash[notification.entity_id + ""].image_field;
                         notification.name = discussions_hash[notification.entity_id + ""].title;
+
+                        notification.img_src = notification.pic;
+                        notification.title = 'דיון בחזון '
+                            +
+                            notification.name;
+                        notification.text_preview = discussions_hash[notification.entity_id + ""].text_field_preview;
                     }
                     if (num_of_comments > 1) {
                         notification.description_of_notificators = num_of_comments + " " + "אנשים";
@@ -330,6 +362,12 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                         notification.name = discussions_hash[notification.entity_id + ""].title;
                         notification.link = "/discussions/" + notification.entity_id;
                         notification.pic = discussions_hash[notification.entity_id + ""].image_field_preview || discussions_hash[notification.entity_id + ""].image_field;
+
+                        notification.img_src = notification.pic;
+                        notification.title = 'דיון בחזון '
+                            +
+                            notification.name;
+                        notification.text_preview = discussions_hash[notification.entity_id + ""].text_field_preview;
                     }
                     itr_cbk();
                     break;
@@ -341,6 +379,12 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                         notification.link = "/discussions/" + notification.entity_id;
                         notification.pic = discussions_hash[notification.entity_id + ""].image_field_preview || discussions_hash[notification.entity_id + ""].image_field;
                         notification.name = discussions_hash[notification.entity_id + ""].title;
+
+                        notification.img_src = notification.pic;
+                        notification.title = 'דיון בחזון '
+                            +
+                            notification.name;
+                        notification.text_preview = discussions_hash[notification.entity_id + ""].text_field_preview;
                     }
                     itr_cbk();
                     break;
@@ -349,6 +393,12 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                         notification.link = "/discussions/" + notification.entity_id + '#post_' + notification.notificators[0].sub_entity_id;
                         notification.pic = discussions_hash[notification.entity_id + ""].image_field_preview || discussions_hash[notification.entity_id + ""].image_field;
                         notification.name = discussions_hash[notification.entity_id + ""].title;
+
+                        notification.img_src = notification.pic;
+                        notification.title = 'תגובה מתוך דיון על החזון '
+                            +
+                            notification.name;
+//                        notification.text_preview = posts_hash[notification.entity_id + ""].text;
                     }
                     if(user_obj)
                          notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;
@@ -365,6 +415,12 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                         notification.link = "/information_items/" + notification.entity_id;
                         notification.pic = info_items_hash[notification.entity_id + ""].image_field_preview || info_items_hash[notification.entity_id + ""].image_field;
                         notification.name = discussions_hash[notification.entity_id + ""].title;
+
+                        notification.img_src = notification.pic;
+                        notification.title = 'דיון בחזון '
+                            +
+                            notification.name;
+                        notification.text_preview = discussions_hash[notification.entity_id + ""].text_field_preview;
                     }
                     itr_cbk();
                     break;
@@ -377,6 +433,8 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                         notification.pic = discussions_hash[notification.notificators[0].sub_entity_id + ""].image_field_preview
                             || discussions_hash[notification.notificators[0].sub_entity_id + ""].image_field;
                         notification.name = discussions_hash[notification.notificators[0].sub_entity_id + ""].title;
+
+
 
                     }
                     if(num_of_users_that_vote_my_post == 1){
