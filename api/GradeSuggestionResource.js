@@ -463,13 +463,29 @@ var calculateSuggestionGrade = GradeSuggestionResource.calculateSuggestionGrade 
                     function (approved_sugg, cbk) {
                         g_approved_sugg = approved_sugg;
                         change_length = approved_sugg.parts[0].end - approved_sugg.parts[0].start - 1;
-                        if (approved_sugg.parts[0].text.length != change_length) {
-                            models.Suggestion.find({discussion_id:discussion_id, is_approved:false}, cbk);
+
+
+                        //this is because a bug i have
+                        if(!approved_sugg.parts[0].text){
+                            approved_sugg.parts[0].text = "";
+                            approved_sugg.save(function(err, approved_sugg_){
+                                if (approved_sugg_.parts[0].text.length != change_length) {
+                                    models.Suggestion.find({discussion_id:discussion_id, is_approved:false}, cbk);
+                                }
+                                else {
+                                    cbk("no need for offseting", null);
+                                }
+                            })
+                        }else{
+                            if (approved_sugg.parts[0].text.length != change_length) {
+                                models.Suggestion.find({discussion_id:discussion_id, is_approved:false}, cbk);
+                            }
+                            else {
+                                cbk("no need for offseting", null);
+                            }
+
                         }
-                        else {
-                            cbk("no need for offseting", null);
-                        }
-                    },
+                     },
 
                     function (suggestions, cbk) {
                         async.forEach(suggestions, function (sugg, itr_cbk) {
