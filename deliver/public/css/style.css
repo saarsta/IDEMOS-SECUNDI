@@ -2235,10 +2235,31 @@ body
     color:#7F7F7E;
     font: normal 13px/17px Arial;
 }
+.extended .hidden_textarea {
+    width: 692px;
+}
+.extended #discussion_image {
+    display:none;
+}
 .discussion_content
 {
     height: 188px;
     overflow: hidden;
+}
+.extended .discussion_content {
+    height:400px;
+}
+#read_less {
+    display:none;
+}
+#read_less a {
+    position:inherit;
+}
+.extended #read_less{
+    display:block;
+}
+.extended #read_more {
+    display:none;
 }
 .inlinediv
 {
