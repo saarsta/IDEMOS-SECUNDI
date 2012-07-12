@@ -78,8 +78,8 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
                                     // update the post object votes count & popularity
 
                                     if (ballance < 0 && method == 'add') {
-                                        post_object.votes_against -= 1;
-                                        post_object.total_votes -= 1;
+                                        post_object.votes_against -= 1 * proxy_power;
+                                        post_object.total_votes -= 1 * proxy_power;
 
                                     } else {
                                         if (ballance > 0 && method == 'remove') {

@@ -262,7 +262,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                 g_sugg_obj = sugg_obj;
                 agrees = sugg_obj.agrees;
                 not_agrees = sugg_obj.not_agrees;
-                curr_tokens_amout = agrees = not_agrees;
+                curr_tokens_amout = agrees - not_agrees;
 
                 did_user_change_his_agree = object.does_support_the_suggestion != is_agree;
                 object.does_support_the_suggestion = is_agree;
@@ -275,10 +275,16 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                 async.parallel([
                     function (cbk1) {
                         if(did_user_change_his_agree){
-                            notifications.create_user_vote_or_grade_notification("user_gave_my_suggestion_tokens",
-                                sugg_obj._id, sugg_obj.creator_id, req.user._id || object.user_id, discussion_id, method, did_user_change_his_agree, true,function (err, result) {
-                                    cbk1(err, result);
-                                })
+                            if(sugg_obj.creator_id){
+                                notifications.create_user_vote_or_grade_notification("user_gave_my_suggestion_tokens",
+                                    sugg_obj._id, sugg_obj.creator_id, req.user._id, discussion_id, method, did_user_change_his_agree, true,function (err, result) {
+                                        cbk1(err, result);
+                                    })
+                            }else{
+                                console.log('this suggestion - id number ' +  sugg_obj.creator_id + 'doesnt have creator id!!!')
+                                cbk1(null, 0);
+                            }
+
                         }else{
                             cbk1(null, 0);
                         }
@@ -335,9 +341,6 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
             }
         ], function (err) {
             callback(err, {
-//                new_grade: new_grade,
-//                evaluate_counter: evaluate_counter,
-//                grade_id: g_grade._id || 0}
 
                     grade_id:grade_id,
                     new_grade:new_grade,
