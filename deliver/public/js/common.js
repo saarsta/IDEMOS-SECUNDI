@@ -57,9 +57,9 @@ function sendFacebookShare(link, title, src, text_preview, callback) {
             callback(err);
         else {
             text_preview = text_preview.replace(/(<([^>]+)>)/ig,"");
-            link =  window.location.origin + link_obj.link;
+            link =  window.location.protocol + '//' + window.location.hostname + link_obj.link;
             if (src.indexOf("http") == -1)
-                src = /*"http://uru.s3.amazonaws.com/spivak_29.jpg"*/window.location.origin + src;
+                src = /*"http://uru.s3.amazonaws.com/spivak_29.jpg"*/window.location.protocol + '//' + window.location.hostname + src;
 
             console.log(src);
 //            src = 'http://fbrell.com/f8.jpg';
