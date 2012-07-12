@@ -18,6 +18,7 @@ module.exports = function(app)
     admin.ensureUserExists('ishai','istheadmin');
 
     admin.registerMongooseModel("User",Models.User,null,{
+        form:require('./user'),
         list:['username','first_name','last_name'],
         filters:['email','first_name','last_name','facebook_id','gender','age','invitation_code','identity_provider']
     });
