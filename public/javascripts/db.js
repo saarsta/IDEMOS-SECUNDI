@@ -29,8 +29,9 @@ dust.renderArray = function(template,arr,callback,endCallback)
 var connectPopup = function(callback){
 
     //open popup window
+    popupProvider.showOkPopup({massage:"אנא התחבר למערכת"});
 
-    alert('please login');
+//    alert('please login');
 
     if(callback)
         callback();
