@@ -148,7 +148,7 @@ var connectPopup = function(callback){
 
     //open popup window
      //popupProvider.showLoginPopup();
-     alert('please login');
+    popupProvider.showOkPopup({massage:"אנא התחבר למערכת"});
 
     if(callback)
         callback();
