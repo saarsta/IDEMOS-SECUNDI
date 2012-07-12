@@ -162,6 +162,10 @@ module.exports = function(app)
                 list:['title']
     });
 
+    admin.registerMongooseModel('ImageUpload',Models.ImageUpload,null,{
+                list:['image.url']
+    });
+
     admin.registerMongooseModel('FBRequest',Models.FBRequest,null,{
         list_populate:['creator'],
         list:['link','creator.first_name','creator.last_name']

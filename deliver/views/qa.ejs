@@ -39,7 +39,7 @@
     $(document).ready(function () {
         db_functions.getQaItems(function (data) {
             $.each(data.objects, function (index, item) {
-                dust.render('about_text', item, function (err, out) {
+                dust.render('qa', item, function (err, out) {
                     $('.main-text').append(out);
                 });
             });

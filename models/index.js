@@ -281,13 +281,11 @@ var Schemas = exports.Schemas = {
         text_field:{type:mongoose_types.Html, required:true},
         img_field: {type:mongoose_types.File, required:true},
         is_hidden:{type:Boolean,'default':true}
-
     },
 
     Qa:{
         title: {type: String, required:true},
-        text_field:{type:mongoose_types.Html},
-        img_field: {type:mongoose_types.File},
+        text_field:{type:mongoose_types.Text},
         is_hidden:{type:Boolean,'default':true}
     }
 };

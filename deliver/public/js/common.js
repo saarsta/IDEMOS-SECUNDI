@@ -106,10 +106,12 @@ dust.filters['post'] = function(text) {
     return text;
 }
 
+//    / [img,width=233,height=212]
 dust.filters['qa'] = function(text) {
     text = dust.filters['tags'](text);
-//    text = text.replace(/\[img\]/g,'<div style="width:240px; height:133px;"><img src="').replace(/\[\/img\]/g,'"/></div>');
-    text = text.replace(/\[\*\]/g,'</li><li>').replace(/<ul><li>(.|\n)*?<\/li>/g,'<ul>');
+    text = text.replace(/\[img\s*(?:,\s*width=(\d+))?\s*(?:,\s*height=(\d+))?\](.*?)\[\/img\]/g,'<div class="auto-scale" style="width:$1px; height:$2px;"><img src="$3"></div>');
+    text = text.replace("undefined", 230);
+
     return text;
 }
 
