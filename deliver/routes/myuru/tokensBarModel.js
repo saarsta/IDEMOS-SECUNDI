@@ -19,14 +19,15 @@ var TokensBarModel =function (tokenPixels, numExtraTokens, tokens, proxies) {
             var proc;
             for (i=0; i< proxies.length;i++){
                 proc= proxies[i];
-                proxy.proxies.push(  {
-                    name:proc.details.first_name+' '+ proc.details.last_name,
-                    proxy:proc.number_of_tokens,
-                    _id: proc.details._id ,
-                    avatar:proc.details.avatar,
-                    score:proc.details.score
-
-                })
+                if(proc.details){
+                    proxy.proxies.push(  {
+                        name:proc.details.first_name+' '+ proc.details.last_name,
+                        proxy:proc.number_of_tokens,
+                        _id: proc.details._id ,
+                        avatar:proc.details.avatar,
+                        score:proc.details.score
+                    })
+                }
             }
             return proxy;
         };

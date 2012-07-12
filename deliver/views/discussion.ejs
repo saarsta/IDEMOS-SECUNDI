@@ -364,7 +364,7 @@ $(document).ready(function () {
 
                 if (!err) {
                     $("#amount").val(Math.round(data.new_grade * 100) / 100);
-                    $("#graders").text(Math.round(data.evaluate_counter));
+                    $("#graders").text(Math.round(/*data.evaluate_counter*/data.manual_counter));
                     $(".dark_bar").css('width', (my_discussion_grade * 10) + '%');
                     grade_id = data.grade_id;
                 }
