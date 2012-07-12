@@ -357,6 +357,15 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                 });
             }
         ], function (err) {
+            if(agrees < 0){
+                agrees = 0;
+                console.log("Error with suggestion grees")
+            }
+            if(not_agrees < 0)
+            {
+                not_agrees = 0;
+                console.log("Error with suggestion not_agrees")
+            }
             callback(err, {
 
                     grade_id:grade_id,
