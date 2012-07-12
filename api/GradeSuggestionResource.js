@@ -153,7 +153,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                 agrees = suggestion_obj.agrees + (Number(is_agree) * proxy_power);
                 not_agrees = suggestion_obj.not_agrees + (Number(!is_agree) * proxy_power);
 
-                curr_tokens_amout = agrees - not_agrees;
+                curr_tokens_amout = Math.round(agrees) - Math.round(not_agrees);
 
                 async.parallel([
                     function (cbk1) {
@@ -260,9 +260,13 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
             function (sugg_obj, cbk) {
                 var method;
                 g_sugg_obj = sugg_obj;
+
+
+
                 agrees = sugg_obj.agrees;
                 not_agrees = sugg_obj.not_agrees;
-                curr_tokens_amout = agrees - not_agrees;
+
+                curr_tokens_amout = Math.round(agrees) - Math.round(not_agrees);
 
                 did_user_change_his_agree = object.does_support_the_suggestion != is_agree;
                 object.does_support_the_suggestion = is_agree;
@@ -273,6 +277,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                         method = "remove"
                 }
                 async.parallel([
+
                     function (cbk1) {
                         if(did_user_change_his_agree){
                             if(sugg_obj.creator_id){
@@ -292,6 +297,18 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
 
                     function (cbk1) {
                         object.proxy_power = proxy_power;
+
+                        if(object.agrees < 0){
+                            object.agrees = 0;
+                            console.log("error - suggestion agrees < 0");
+                        }
+
+                        if(object.not_agrees < 0){
+                            object.not_agrees = 0;
+                            console.log("error - suggestion agrees < 0");
+
+                        }
+
                         base.call(self, req, object, cbk1);
                     }
                 ], function (err, args) {
@@ -311,13 +328,13 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                             if (is_agree) {
                                 agrees = g_sugg_obj.agrees + (1 * proxy_power);
                                 not_agrees = g_sugg_obj.not_agrees - (1 * previous_proxy_power);
-                                curr_tokens_amout = agrees - not_agrees;
+                                curr_tokens_amout = Math.round(agrees) - Math.round(not_agrees);
 
                             }
                             else {
                                 agrees = g_sugg_obj.agrees - (1 * previous_proxy_power);
                                 not_agrees = g_sugg_obj.not_agrees + (1 * proxy_power);
-                                curr_tokens_amout = agrees - not_agrees;
+                                curr_tokens_amout = Math.round(agrees) - Math.round(not_agrees);
                             }
 
                             //if there is an admin threshokd specified for the suggestion - it wins
