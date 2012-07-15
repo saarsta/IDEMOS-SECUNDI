@@ -16,12 +16,7 @@
 <div id="content" class="cf">
     <div class="services-box cf">
         <h2>
-            כאן תוכלו למצוא מחקרים, ניירות מידע, גרפים, וידאו ודו"חות
-            <br />
-            הנוגעים לסוגיות הרלוונטיות למשתמשי עורו ולדיונים שמתנהלים במערכת.
-            <br />
-            אתם מוזמנים להעלות לעמוד זה פרטי מידע חדשים.
-        </h2>
+            מאגר המידע: כאן תוכלו למצוא מחקרים, ניירות עמדה, קטעי וידאו ודוחות הנוגעים לדיונים שמתנהלים במערכת. אתם מוזמנים לשלוח אלינו פרטי מידע רלוונטיים נוספים        </h2>
         <div class="services-blue cf" id="subjects_list">
         </div>
         <div class="services-green">
@@ -55,6 +50,7 @@
 
 
     $(function(){
+        var is_logged = "<%= user_logged %>" == "true";
         current_section=0;
         db_functions.getAllSubjects(function(err,data)
         {

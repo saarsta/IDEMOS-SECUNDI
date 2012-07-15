@@ -1,0 +1,39 @@
+
+<link href="/css/loginpop.css" rel="stylesheet" type="text/css"/>
+<div class="popup login-popup"  >
+           <div>
+
+                <form id="register_form" action="/account/login" method="POST"  style="width: 123px">
+                   <h2>
+                       הרשם
+                   </h2>
+                   <input name="email" type="text" placeholder='דוא"ל'/>
+                    <input name="password" type="password" placeholder="ססמה" />
+                    <a class="forgot_password" href="/account/forgot_password">
+                        שכחת סיסמה?
+                    </a>
+                    <input type="submit" value="התחבר" />
+                </form>
+                <div class="spacer"></div>
+                <a class="facebook" href="/account/facebooklogin?next=<%=url%>"></a>
+
+            </div>
+         </div>
+
+ </div>
+
+<!--
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#register_form").validate({
+            rules:{
+                email:{required: true },
+                password:{required: true }
+            }
+//            messages:{
+//                email: "דואל    ",
+//                password: "סיסמה"
+//            }
+        });
+    });
+</script>-->

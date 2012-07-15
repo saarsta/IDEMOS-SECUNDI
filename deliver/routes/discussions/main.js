@@ -27,23 +27,24 @@ module.exports = function(req,res)
             models.Discussion.findById(req.params[0], cbk);
         }
     ],
-        function(err,results)
+        function(err, results)
         {
             if(err)
                 res.render('500.ejs',{error:err});
             else
             {
-                // populate 'is follower' , 'grade object' ...
-                resource.get_discussion(results[1],results[0],function(err,discussion)
+                if(!results[1])
+                    res.redirect('/discussions');
+                else
                 {
-                    console.log("get_discussion with: user:");
-                    console.log(results[0]);
-                    if(err)
-                        res.render('500.ejs',{error:err});
-                    else
+
+                    // populate 'is follower' , 'grade object' ...
+                    resource.get_discussion(results[1],results[0],function(err,discussion)
                     {
-                        if(!discussion)
-                            res.redirect('/discussions');
+                        var proxyJson= results[0] ?  JSON.stringify(results[0].proxy) : null;
+                        console.log(proxyJson)   ;
+                        if(err)
+                            res.render('500.ejs',{error:err});
                         else
                         {
                             res.setHeader("Expires", "0");
@@ -57,11 +58,13 @@ module.exports = function(req,res)
                                 avatar:req.session.avatar_url,
                                 tab:'discussions',
                                 discussion: discussion,
-                                url: req.url
+                                url: req.url,
+                                proxy:proxyJson,
+                                description: discussion.text_field_preview
                             });
                         }
-                    }
-                });
+                    });
+                }
             }
         });
 

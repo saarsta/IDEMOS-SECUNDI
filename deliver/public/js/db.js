@@ -10,10 +10,18 @@ var db_functions = {
             console.log(arguments[2]);
         };
         options.error =  function (xhr, ajaxOptions, thrownError) {
-            if(xhr.status == 401 && xhr.responseText == 'not authenticated'){
-                connectPopup(function(){
-                    onError(xhr,ajaxOptions,thrownError);
-                });
+            if(xhr.status == 401 && (xhr.responseText == 'not authenticated' || xhr.responseText == "Error: Unauthorized - there is not enought tokens" || xhr.responseText == "user must have a least 10 tokens to open create discussion")){
+                if (xhr.responseText == 'not authenticated'){
+                    connectPopup(function(){
+                        onError(xhr,ajaxOptions,thrownError);
+                    });
+                }else if (xhr.responseText == 'Error: Unauthorized - there is not enought tokens')
+                {
+
+                    alert("אין מספיק אסימונים בשביל לבצע פעולה זו");
+                }else if (xhr.responseText == "user must have a least 10 tokens to open create discussion")
+                    alert("צריך מינימום של 10 אסימונים בשביל ליצור דיון");
+
             }
             else
                 onError(xhr,ajaxOptions,thrownError);
@@ -46,6 +54,54 @@ var db_functions = {
             success: function (data) {
                 console.log(data);
 
+                callback(data);
+            }
+        });
+    },
+
+    getAboutUruTexts: function(callback){
+        db_functions.loggedInAjax({
+            url: '/api/about_uru_texts',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+                callback(data);
+            }
+        });
+    },
+
+    getAboutUruItems: function(callback){
+        db_functions.loggedInAjax({
+            url: '/api/about_uru_items',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+                callback(data);
+            }
+        });
+    },
+
+    getTeam: function(callback){
+        db_functions.loggedInAjax({
+            url: '/api/team',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+                callback(data);
+            }
+        });
+    },
+
+    getQaItems: function(callback){
+        db_functions.loggedInAjax({
+            url: '/api/qa',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
                 callback(data);
             }
         });
@@ -99,9 +155,9 @@ var db_functions = {
         });
     },
 
-    getNotifications: function(callback){
+    getNotifications: function(limit, callback){
         db_functions.loggedInAjax({
-            url: '/api/notifications?limit=40',
+            url: '/api/notifications?' + (limit? '&limit='+limit:''),
             type: "GET",
             async: true,
             success: function (data) {
@@ -196,6 +252,10 @@ var db_functions = {
             },
 
             error:function(err){
+                if(err.responseText == "vision can't be more than 800 words")
+                    alert("חזון הדיון צריך להיות 800 מילים לכל היותר");
+                else if (err.responseText == "you don't have the min amount of tokens to open discussion")
+                    popupProvider.showOkPopup( {massage:"מצטערים, אין לך מספיק אסימונים..."});
                 callback(err, null);
             }
         });
@@ -324,8 +384,6 @@ var db_functions = {
         });
 
     },
-
-
 
     addPostToDiscussion: function(discussion_id, post_content, refParentPostId, callback){
         db_functions.loggedInAjax({
@@ -462,7 +520,7 @@ var db_functions = {
         db_functions.loggedInAjax({
             url: '/api/user_proxies/' + user_id,
             type: "PUT",
-            data: {proxy_id: proxy_id, number_of_tokens: number_of_namdates},
+            data: {proxy_id: proxy_id, req_number_of_tokens: number_of_namdates},
             async: true,
             success: function (data) {
                 callback(null, data);
@@ -617,6 +675,19 @@ var db_functions = {
         });
     }   ,
 
+    getItemsByTagNameAndType: function(type,tag_name,page,callback)
+    {
+        this.loggedInAjax({
+            url: '/api/' + type + '?limit=3&offset=' + (page*3) + (tag_name ? '&tags=' + tag_name : ''),
+            type: "GET",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            }
+        });
+    },
+
+
     getDiscussionsByTagName: function(tag_name, callback){
         db_functions.loggedInAjax({
             url: '/api/discussions' + (tag_name ? '?tags=' + tag_name : ''),
@@ -678,10 +749,10 @@ var db_functions = {
         });
     },
 
-    getInfoItemsOfSubjectByKeywords: function(keywords, subject_id, callback){
+    getInfoItemsOfSubjectByKeywords: function(keywords, subject_id,sort_by, callback){
         var keywords_arr = $.trim(keywords).replace(/\s+/g,".%2B");
         db_functions.loggedInAjax({
-            url: '/api/information_items/?or=text_field__regex,text_field_preview__regex,title__regex&title__regex=' + keywords_arr + '&text_field__regex='+ keywords_arr + '&text_field_preview__regex='+ keywords_arr + '&subject_id=' + subject_id,
+            url: '/api/information_items/?or=text_field__regex,text_field_preview__regex,title__regex&title__regex=' + keywords_arr + '&text_field__regex='+ keywords_arr + '&text_field_preview__regex='+ keywords_arr + '&subject_id=' + subject_id+'&order_by='+sort_by,
             type: "GET",
             async: true,
             success: function (data) {

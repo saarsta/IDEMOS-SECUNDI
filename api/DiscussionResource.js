@@ -87,10 +87,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
         if (object) {
 
             object.is_follower = false;
-//            object.threshold = object.threshold_for_accepting_change_suggestions;
-//            if(object.admin_threshold_for_accepting_change_suggestions > 0)
-//                object.threshold = object.admin_threshold_for_accepting_change_suggestions;
-;
+
             if (user) {
                 if (_.find(user.discussions, function (user_discussion) {
                     return user_discussion.discussion_id + "" == object._id
@@ -163,7 +160,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
         var user = req.user;
         var created_discussion_id;
 
-        var min_tokens = /*common.getGamificationTokenPrice('create_discussion')*/ 10;
+        var min_tokens = common.getGamificationTokenPrice('min_tokens_to_create_dicussion') > 0 ? common.getGamificationTokenPrice('min_tokens_to_create_dicussion') : 10;
 //        var total_tokens = user.tokens + user.num_of_extra_tokens;
 
         var iterator = function (info_item, itr_cbk) {
@@ -181,8 +178,9 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
         models.InformationItem.find({users:req.user._id}, function (err, info_items) {
             if (!err) {
                 var count = info_items.length;
-                if (user.tokens < min_tokens && user.tokens < min_tokens - (Math.min(Math.floor(count / 2), 2))) {
-                    callback({message:"user must have a least 10 tokens to open create discussion", code:401}, null);
+                var user_cup = 9 + user.num_of_extra_tokens;
+                if (user_cup < min_tokens && user_cup < min_tokens - (Math.min(Math.floor(count / 2), 2))) {
+                    callback({message:"you don't have the min amount of tokens to open discussion", code:401}, null);
                 }
                 else {
                     //vision cant be more than 800 words
@@ -208,6 +206,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                                     join_date:Date.now()
                                 };
                                 fields.is_published = true; //TODO this is only for now
+                                fields.is_hidden = false;
                                 // create text_field_preview - 200 chars
                                 if (fields.text_field.length >= 200)
                                     fields.text_field_preview = fields.text_field.substr(0, 200);
@@ -240,7 +239,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
 
                                                                     //set gamification
                                                                     req.gamification_type = "discussion";
-                                                                    req.token_price = /*common.getGamificationTokenPrice('discussion')*/ 3;
+                                                                    req.token_price = common.getGamificationTokenPrice('create_discussion') > 0 ? common.getGamificationTokenPrice('create_discussion') : 3;
 
                                                                     //find all information items and set notifications for their owners
                                                                     notifications_for_the_info_items_relvant(obj._id, user_id, function (err, args) {
@@ -336,7 +335,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                     callback("this discussion is already published", null);
                 } else {
                     req.gamification_type = "discussion";
-                    req.token_price = common.getGamificationTokenPrice('discussion');
+                    req.token_price = common.getGamificationTokenPrice('create_discussion') > 0 ? common.getGamificationTokenPrice('create_discussion') : 3;
                     object.is_published = true;
 
                     object.save(function (err, disc_obj) {

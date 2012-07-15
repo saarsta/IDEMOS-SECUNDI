@@ -18,7 +18,7 @@ var resources = require('jest'),
 
 var VoteResource = module.exports = common.GamificationMongooseResource.extend({
     init:function () {
-        this._super(models.Vote, 'vote', common.getGamificationTokenPrice('vote'));
+        this._super(models.Vote, 'vote_on_post', common.getGamificationTokenPrice('vote_on_post'));
         this.allowed_methods = ['post'];
         //    this.authorization = new Authoriztion();
         this.authentication = new common.SessionAuthentication();
@@ -31,6 +31,10 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
             };
     },
 
+    dispatch: function(){
+        this.token_price = common.getGamificationTokenPrice('vote_on_post');
+        this._super.apply(this,arguments);
+    },
     //returns post_
     create_obj:function (req, fields, callback) {
         var self = this;
@@ -74,8 +78,8 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
                                     // update the post object votes count & popularity
 
                                     if (ballance < 0 && method == 'add') {
-                                        post_object.votes_against -= 1;
-                                        post_object.total_votes -= 1;
+                                        post_object.votes_against -= 1 * proxy_power;
+                                        post_object.total_votes -= 1 * proxy_power;
 
                                     } else {
                                         if (ballance > 0 && method == 'remove') {
@@ -109,7 +113,7 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
                                                 //set notification for post creator
                                                 if(!err){
                                                     notifications.create_user_vote_or_grade_notification("user_gave_my_post_tokens",
-                                                        discussion_id, post_object.creator_id, vote_object.user_id, post_object._id, method, false, function(err, result){
+                                                        post_object._id, post_object.creator_id, vote_object.user_id, discussion_id, method, false, false, function(err, result){
                                                             cbk(err, post_object);
                                                         })
                                                 }else{

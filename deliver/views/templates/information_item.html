@@ -1,21 +1,45 @@
  <div class="one cf" item_id="{_id}">
      <div class="main-text-top cf">
+
          <div class="right">
-             <h4><a href="/information_items/{_id}">{title}</a></h4>
-             {?created_by}<h5>
-             הועלה ע”י
-             {created_by.fist_name} {created_by.last_name}
-         </h5>
-             {/created_by}
-             {?text_field_preview}<p>{text_field_preview|s}</p>{/text_field_preview}
+             {?image_field_preview}
+                 <div style="width:141px; height:79px; float: right; margin-left:15px;" class="auto-scale">
+                     <img style="margin-left:0px;" src="{?image_field_preview.url}{image_field_preview.url}{:else}{image_field}{/image_field_preview.url}" alt="{title}" title="{tooltip_or_title}" />
+                 </div>
+                 <div class="oh">
+                     <h4><a href="/information_items/{_id}">{title}</a></h4>
+                     {?text_field_preview}
+                     <div class="text_field">{text_field_preview|s}
+                         <a href="/information_items/{_id}">
+                             קרא עוד..
+                         </a>
+                     </div>
+                     {/text_field_preview}
+                 </div>
+             {:else}
+                 <h4><a href="/information_items/{_id}">{title}</a></h4>
+                 {?created_by}
+                 <h5>
+                 <div class="hide">
+                     הועלה ע”י
+                 </div>
+                 {created_by.fist_name} {created_by.last_name}
+             </h5>
+                 {/created_by}
+                 {?text_field_preview}<div class="text_field">{text_field_preview|s}</div>{/text_field_preview}
+         {/image_field_preview}
          </div>
          <div class="left">
-             <a href="javascript:void(0);" id="add_button_{_id}" add_item_id="{_id}" class="grey-btn add_button"><span>הוסף</span></a>
-             <a href="/facebookShare?link=/information_items/{_id}" class="grey-btn">שתף</a>
-             <a href="javascript:void(0);" class="like-icon"></a>
+             <a href="javascript:void(0);" id="add_button_{_id}" add_item_id="{_id}" class="grey-btn-info add_button"><span>
+                 הוסף לסל המידע
+             </span></a>
+             <a class="share grey-btn-info" data-title="{title}" data-text_preview="{text_field_preview}" data-img_src="{image_field_preview.url}" rel="/information_items/{_id}" href="/facebookShare?link=/information_items/{_id}" >
+                 שתף
+             </a>
+             <a href="javascript:void(0);" class="like-icon hide"></a>
          </div>
      </div>
-     <div id="notices_{_id}"> </div>
+     <div id="notices_{_id}" > </div>
      <div class="tags-wrap">
          <div class="down">
              <span class="arrow"></span>
@@ -27,13 +51,24 @@
          </div>
          <div class="tags">
              {#tags}
-             <a href="">{.}</a>
+             <a href="/information_items/?tag_name={.|u}"
+             {@idx}
+             {@if cond="({.} > 2 )"}
+             style="display:none;"
+             {/if}
+             {/idx}
+             >{.}</a>{~n}
              {/tags}
-             <div class="more">
+             <div class="more hide">
                  <span></span>
                  <ul>
+                     <span></span>
+                     <ul>
+                     {@if cond="(0{tags|length} > 3 )"}
                      <li><a href="">הצג עוד תגיות</a></li>
+                     {/if}
                      <li><a href="">הוסף תגית</a></li>
+                     </ul>
                  </ul>
              </div>
              <div class="info">

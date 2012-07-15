@@ -1,4 +1,6 @@
 var TokensBarModel =function (tokenPixels, numExtraTokens, tokens, proxies) {
+       var HIGH_BAR_VALUE=15;
+       var USER_DAILY_TOKENS=9;
 
         function calcTotalProxy(proxies){
             var sum= 0;
@@ -17,28 +19,39 @@ var TokensBarModel =function (tokenPixels, numExtraTokens, tokens, proxies) {
             var proc;
             for (i=0; i< proxies.length;i++){
                 proc= proxies[i];
-                proxy.proxies.push(  {
-                    name:proc.details.first_name+' '+ proc.details.last_name,
-                    proxy:proc.number_of_tokens,
-                    _id: proc.details._id ,
-                    avatar:proc.details.avatar,
-                    score:proc.details.score
-
-                })
+                if(proc.details){
+                    proxy.proxies.push(  {
+                        name:proc.details.first_name+' '+ proc.details.last_name,
+                        proxy:proc.number_of_tokens,
+                        _id: proc.details._id ,
+                        avatar:proc.details.avatar,
+                        score:proc.details.score
+                    })
+                }
             }
             return proxy;
         };
-        this.proxy=createProxy(proxies)
+        var startOfDayTokens; //blue+green+darkGray
 
-       // this.proxies = proxies;
+        this.proxy = createProxy(proxies)
         this.totalProxy = calcTotalProxy(proxies)// blue;
-        var dailyTokens = 9 + numExtraTokens;
-        this.floorDailyTokens = Math.floor(dailyTokens);
-      //  this.floorDailyTokens=2;
+        startOfDayTokens=USER_DAILY_TOKENS+numExtraTokens;
+    this.tokensIUsed = startOfDayTokens-Math.floor(tokens) ; //dark gray
 
-        this.gupFromFull = 15 - this.floorDailyTokens; //light gray
-        this.floorTokens = Math.floor(tokens); //green
-        this.tokensIUsed = this.floorDailyTokens - this.floorTokens - this.totalProxy //dark gray
+    this.floorTokens = startOfDayTokens- this.tokensIUsed-this.totalProxy ;//green
+
+       this.gupFromFull =HIGH_BAR_VALUE - startOfDayTokens; //light gray
+
+    //    this.floorTokens =HIGH_BAR_VALUE- this.gupFromFull-     this.tokensIUsed-      this.totalProxy  //green
+
+
+        this.TokensSum=this.tokensIUsed+ this.floorTokens+ this.totalProxy;//all tokens
+    /*   var dailyTokens =tokens;
+  this.floorDailyTokens = Math.floor(dailyTokens);*/
+
+
+      //  this.floorTokens = Math.floor(tokens); //green
+
 
 
         //  var  availableTokens=this.dailyTokens-this.totalProxy-user.tokens;

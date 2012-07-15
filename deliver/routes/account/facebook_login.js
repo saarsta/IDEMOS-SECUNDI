@@ -3,6 +3,7 @@ var models = require('../../../models')
 
 
 module.exports = function (req, res) {
+//   facebook_login(req, res);
     function go() {
 
         req.authenticate("facebook", function (error, authenticated) {
@@ -18,8 +19,8 @@ module.exports = function (req, res) {
                 isUserInDataBase(user_fb_id, function (is_user_in_db) {
 
                     if (!is_user_in_db) {
-                        req.session['fb_next'] = "/account/code_after_fb_connect";
-                        next = req.session['fb_next'];
+//                        req.session['fb_next'] = "/account/code_after_fb_connect";
+//                        next = req.session['fb_next'];
                         user_detailes.invited_by = referred_by;
                         createNewUser(user_detailes, access_token, function (_id) {
                             req.session.user_id = _id;
@@ -29,22 +30,30 @@ module.exports = function (req, res) {
                                     console.log(err);
                                 } else {
                                     console.log('user _id to session is ok');
-                                    res.redirect(next || common.DEFAULT_LOGIN_REDIRECT);
+                                    redirectAfterLogin(req,res,next);
                                 }
                             });
                         });
                     } else {
-                        updateUesrAccessToken(user_detailes, access_token, function (_id) {
-                            req.session.auth.user._id = _id;
-                            req.session.save(function (err, object) {
-                                if (err != null) {
-                                    console.log(err);
-                                } else {
-                                    console.log('user _id to session is ok');
-                                    res.redirect(next || common.DEFAULT_LOGIN_REDIRECT);
-                                }
+                        updateUesrAccessToken(user_detailes, access_token, function (err,_id) {
+                            if(err){
+                                console.error(err);
+                                console.trace();
+                                res.send("error in registration", 500);
+                            }else{
+                                req.session.auth.user._id = _id;
+                                req.session.save(function (err, object) {
+                                    if (err != null) {
+                                        console.error(err);
+                                        console.trace();
+                                        res.send("error in registration", 500);
+                                    } else {
+                                        console.log('user _id to session is ok');
+                                        redirectAfterLogin(req,res,next);
+                                    }
 
-                            });
+                                });
+                            }
                         });
                     }
                 });
@@ -59,6 +68,13 @@ module.exports = function (req, res) {
     }
     else
         go();
+
+};
+
+function redirectAfterLogin(req,res,redirect_to) {
+    if(!redirect_to || /^\/account\/register/.test(redirect_to))
+        redirect_to = common.DEFAULT_LOGIN_REDIRECT;
+    res.redirect(redirect_to);
 };
 
 function isUserInDataBase(user_facebook_id, callback) {
@@ -128,9 +144,77 @@ function updateUesrAccessToken(data, access_token, callback) {
             if (err) {
                 return callback(err);
             } else {
-                callback(user.id);
+                callback(null,user.id);
             }
         });
 //        res.end();
     });
+}
+
+
+function facebook_login(req, res){
+    function go() {
+
+        req.authenticate("facebook", function (error, authenticated) {
+            var next = req.session['fb_next'];
+            var referred_by = req.session['referred_by'];
+            console.log(error);
+            if (authenticated) {
+
+                var user_detailes = req.getAuthDetails().user;
+                var access_token = req.session["access_token"];
+                var user_fb_id = req.getAuthDetails().user.id;
+
+                isUserInDataBase(user_fb_id, function (is_user_in_db) {
+
+                    if (!is_user_in_db) {
+//                        req.session['fb_next'] = "/account/code_after_fb_connect";
+//                        next = req.session['fb_next'];
+                        user_detailes.invited_by = referred_by;
+                        createNewUser(user_detailes, access_token, function (_id) {
+                            req.session.user_id = _id;
+//                            req.session.auth.user._id = _id; i can delete this
+                            req.session.save(function (err, object) {
+                                if (err != null) {
+                                    console.log(err);
+                                } else {
+                                    console.log('user _id to session is ok');
+                                    redirectAfterLogin(req,res,next);
+                                }
+                            });
+                        });
+                    } else {
+                        updateUesrAccessToken(user_detailes, access_token, function (err,_id) {
+                            if(err){
+                                console.error(err);
+                                console.trace();
+                                res.send("error in registration", 500);
+                            }else{
+                                req.session.auth.user._id = _id;
+                                req.session.save(function (err, object) {
+                                    if (err != null) {
+                                        console.error(err);
+                                        console.trace();
+                                        res.send("error in registration", 500);
+                                    } else {
+                                        console.log('user _id to session is ok');
+                                        redirectAfterLogin(req,res,next);
+                                    }
+
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
+
+    if (req.query.next) {
+        req.session['fb_next'] = req.query.next;
+
+        req.session.save(go);
+    }
+    else
+        go();
 }

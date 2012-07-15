@@ -12,10 +12,14 @@ var Authorization = resources.Authorization.extend({
                 if(req.user._id + "" == req.body.proxy_id + "")
                     callback({message:"Error: Unauthorized - can't be your own proxy!", code: 401}, null);
                 else
-                    if(req.body.number_of_tokens > object.tokens)
+                    if(req.body.req_number_of_tokens > object.tokens)
                         callback({message:"Error: Unauthorized - you don't have enougth tokens to give!", code: 401}, null);
                     else
+                    {
                         callback(null, object);
+
+                    }
+
             }
             else
                 callback({message:"Error: Unauthorized - can't set other people proxies!", code: 401}, null);
@@ -47,6 +51,7 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
             first_name: null,
             last_name: null,
             num_of_given_mandates: null,
+
             proxy: {
                 user_id:{
                     _id: null,
@@ -54,12 +59,22 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
                     avatar_url: null,
                     first_name: null,
                     last_name: null,
-                    number_of_tokens: null
-                }
+                    num_of_given_mandates: null
+                },
+                number_of_tokens: null,
+                number_of_tokens_to_get_back: null,
+
+                //this number is the number of mandates that i gave to the proxy minus the number of mandates that i want to get back
+                //even if the action of getting the mandates back didn't happen yet
+                calc_num_of_mandates: null
             },
             tokens: null,
             daily_tokens: null
-        }
+        };
+        this.update_fields = {
+
+        };
+
 //        this.default_query = function(query){
 //            return query.populate("followers.follower_id");
 //        };
@@ -68,7 +83,7 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
 
     run_query: function(req,query,callback)
     {
-        if(req.method == 'GET'){
+        if(req.method == 'GET' || 'PUT'){
             query.populate("proxy.user_id");
         };
         this._super(req,query,callback);
@@ -76,70 +91,137 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
 
     get_object: function(req, id, callback){
       this._super(req, id, function(err, obj){
-         obj.daily_tokens = 9 + obj.num_of_extra_tokens;
+          if(obj){
+                obj.daily_tokens = 9 + obj.num_of_extra_tokens;
+                _.each(obj.proxy, function(proxy){proxy.calc_num_of_mandates = proxy.number_of_tokens - proxy.number_of_tokens_to_get_back;})
+          }
          callback(err, obj);
       })
     },
 
     update_obj: function (req, object, callback) {
-        //proxy is a list of peopole for whom i gave my mandates, and it saved in my schema
+        //proxy is a list of people for whom i gave my mandates, and it saved in my schema
         var proxy_id = req.body.proxy_id;
-        var number_of_tokens = req.body.number_of_tokens;
-        var proxy = _.find(object.proxy, function(proxy_user){return proxy_user.user_id + "" == proxy_id + ""});
+        var number_of_tokens = req.body.req_number_of_tokens;
+        var proxy = _.find(object.proxy, function(proxy_user){
+            var id = proxy_user.user_id ? proxy_user.user_id._id + "" : -1;
+            return id == proxy_id + ""
+        });
 
         var self = this;
         var base = this._super;
 
-        if(proxy){
-            //edit proxy's mandates(tokens)
-            if (req.body.number_of_tokens > 0){
-                proxy.number_of_tokens += req.body.number_of_tokens;
-                //reduce tokens from my tokens
-                object.tokens -= req.body.number_of_tokens;
+        var is_new_proxy = false;
 
-
-
-                //set notification here
-
-
-
-            }else
-                //tokens will be removed once a day by a cron
-                proxy.number_of_tokens_to_get_back += req.body.number_of_tokens;
-        }else{
-            //edit proxy's mandates(tokens)
+        if(!proxy)
+        {
             proxy = {
                 user_id: proxy_id,
-                number_of_tokens: null,
-                number_of_tokens_to_get_back: null
+                number_of_tokens: 0,
+                number_of_tokens_to_get_back: 0
             };
 
-            if (req.body.number_of_tokens > 0){
-                proxy.number_of_tokens = req.body.number_of_tokens;
-                //reduce tokens from my tokens
-                object.tokens -= req.body.number_of_tokens;
-
-
-                //set notification here
-
-
-            }else
-            //tokens will be removed once a day by a cron
-                proxy.number_of_tokens_to_get_back = req.body.number_of_tokens;
-
-            object.proxy.push(proxy);
+            is_new_proxy = true;
         }
+
+        //edit proxy's mandates(tokens)
+        if (req.body.req_number_of_tokens > 0){
+
+            if(proxy.number_of_tokens_to_get_back){
+                //first of all reduce mandates from "number_of_tokens_to_get_back"
+                if(req.body.req_number_of_tokens <= proxy.number_of_tokens_to_get_back){
+                    proxy.number_of_tokens_to_get_back -= req.body.req_number_of_tokens;
+                    number_of_tokens = 0;
+                }else{
+                    number_of_tokens = req.body.req_number_of_tokens - proxy.number_of_tokens_to_get_back;
+                    proxy.number_of_tokens_to_get_back = 0;
+                }
+            }
+
+            proxy.number_of_tokens += Number(number_of_tokens);
+            //reduce tokens from my tokens
+            object.tokens -= number_of_tokens;
+
+
+            //set notification here
+
+
+        }else{
+            //tokens will be removed once a day by a cron
+            proxy.number_of_tokens_to_get_back = proxy.number_of_tokens_to_get_back || 0;
+            proxy.number_of_tokens_to_get_back += (Number(number_of_tokens) * -1);
+        }
+
+        if(is_new_proxy)
+            object.proxy.push(proxy);
+
+
+
+
+//        }else{
+//            //edit proxy's mandates(tokens)
+//            proxy = {
+//                user_id: proxy_id,
+//                number_of_tokens: null,
+//                number_of_tokens_to_get_back: null
+//            };
+//
+//            if (req.body.req_number_of_tokens > 0){
+//                proxy.number_of_tokens = req.body.req_number_of_tokens;
+//                //reduce tokens from my tokens
+//                object.tokens -= req.body.req_number_of_tokens;
+//
+//
+//                //set notification here
+//
+//
+//            }else
+//            //tokens will be removed once a day by a cron
+//                proxy.number_of_tokens_to_get_back = Number(req.body.number_of_tokens) * -1;
+//
+//            object.proxy.push(proxy);
+//        }
 
         if(proxy.number_of_tokens > 3)
             callback({message:"Error: Unauthorized - max mandate is 3!", code: 401}, null)
+        else if (proxy.number_of_tokens_to_get_back > proxy.number_of_tokens)
+            callback({message:"Error: Unauthorized - can't take more tokens then you gave", code: 401}, null)
         else{
             //save user object
 
+                        //why the guck is it pn user????
+                        object.number_of_tokens = 0;
+                        object.number_of_tokens_to_get_back = 0;
+
             base.call(self, req, object, function(err, user_obj){
-                if(!err && req.body.number_of_tokens > 0){
+                if(user_obj)
+                     _.each(user_obj.proxy, function(proxy){proxy.calc_num_of_mandates = proxy.number_of_tokens - proxy.number_of_tokens_to_get_back;})
+
+                if(!err && number_of_tokens > 0){
                     //update proxy-user new tokens
+
                     models.User.update({_id: proxy_id}, {$inc: {num_of_given_mandates: number_of_tokens}}, function(err, num){
-                        callback(err, user_obj);
+
+                        if(is_new_proxy){
+                            //if this is the a new proxy i need to populate it manualy
+                            models.User.findById(proxy_id, function(err, user){
+                                if(!err){
+                                    var user_id = {
+                                        _id: user._id,
+                                        facebook_id: user.facebook_id,
+                                        avatar_url: user.avatar_url,
+                                        first_name: user.first_name,
+                                        last_name: user.last_name,
+                                        num_of_given_mandates: user.num_of_given_mandates
+                                    }
+
+                                    proxy.user_id = user_id;
+                                }
+                                _.each(user_obj.proxy, function(curr_proxy){if(curr_proxy.user_id + "" == proxy_id){curr_proxy = proxy}});
+                                callback(err, user_obj);
+                            })
+                        }else
+                            callback(err, user_obj);
                     })
                 }else{
                     callback(err, user_obj);
@@ -155,7 +237,7 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
         //find specified proxy and delete it
         for(var i=0; i<object.proxy.length; i++)
         {
-            if(object.proxy[i].user_id + "" == req.body.proxy_id)
+            if(object.proxy[i].user_id._id + "" == req.body.proxy_id)
             {
                 flag = true;
                 num_of_tokens = object.proxy[i].number_of_tokens;
@@ -168,8 +250,8 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
                 models.User.update({_id: object._id}, {$inc: {toknes: num_of_tokens}}, function(err, num){
                     callback(err, user_obj);
                 });
-            }
-            callback(err, "didn't find proxy");
+            }else
+                callback({message: "didn't find proxy"});
         });
     }
 })

@@ -5,6 +5,7 @@
 var express = require('express'),
     mongoose = require('mongoose'),
     MongoStore  = require('connect-mongo'),
+    async = require('async'),
     auth = require("connect-auth");
 
 var app = module.exports = express.createServer();
@@ -26,7 +27,7 @@ app.configure('development', function(){
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
     require('./tools/compile_templates');
     require('./deliver/tools/compile_dust_templates');
-
+    require('./utils').setShowOnlyPublished(false);
 });
 
 
@@ -51,6 +52,7 @@ app.configure('staging', function(){
     });
     require('./deliver/tools/compile_dust_templates');
     require('./tools/compile_templates');
+    require('./utils').setShowOnlyPublished(false);
 });
 
 app.configure('production', function(){
@@ -74,6 +76,7 @@ app.configure('production', function(){
     });
     require('./deliver/tools/compile_dust_templates');
     require('./tools/compile_templates');
+    require('./utils').setShowOnlyPublished(true);
 });
 
 mongoose.connect(app.settings.DB_URL);
@@ -133,6 +136,27 @@ require('./deliver/routes/account/forgot_password').init(app);
 var cron = require('./cron');
 cron.run(app);
 
-app.listen(app.settings.port);
-console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+
+
+async.waterfall([
+        function(cbk) {
+            mongoose.model('FooterLink').load(cbk);
+        }
+    ],
+    function(err) {
+        if(err) {
+            console.error('init failed');
+            console.error(err);
+            console.trace();
+        }
+        else {
+            app.helpers({
+                'footer_links':function() { return mongoose.model('FooterLink').getFooterLinks(); }
+            });
+
+            app.listen(app.settings.port);
+            console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+        }
+    }
+);
 

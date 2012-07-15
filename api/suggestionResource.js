@@ -33,14 +33,8 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
         };
 
         this.fields = {
-            creator_id : {
-                id:null,
-                first_name:null,
-                last_name:null,
-                avatar_url:null,
-                facebook_id:null,
-                score: null
-            },
+            creator_id : common.user_public_fields,
+            mandates_curr_user_gave_creator: null,
             parts:null,
             popularity:null,
             tokens:null,
@@ -48,6 +42,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
             agrees:null,
             not_agrees: null,
             evaluate_counter:null,
+            manual_counter: null,
             grade:null,
             id:null,
             explanation: null,
@@ -69,6 +64,10 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
         var discussion_threshold;
 
         var iterator = function(suggestion, itr_cbk){
+
+            //set counter og graders manually
+            suggestion.manual_counter = Math.round(suggestion.agrees) +  Math.round(suggestion.not_agrees);
+
             var curr_grade_obj = {};
 //            suggestion.grade_obj = curr_grade_obj;
 
@@ -145,7 +144,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
     },
 
     create_obj:function (req, fields, callback) {
-        var user_id = req.session.user_id;
+        var user_id = req.user._id;
         var self = this;
         var suggestion_object = new self.model();
         var isNewFollower = false;

@@ -2,9 +2,7 @@
 
 <html>
 <head>
-    <script>
-        var facebookAppId = '<%= facebook_app_id %>';
-    </script>
+    <!-- <script src="http://cdn.jquerytools.org/1.2.7/full/jquery.tools.min.js"></script>-->
     <%- partial('partials/head.ejs') %>
     <%- partial('partials/facebook.ejs') %>
 
@@ -43,7 +41,6 @@
                 <h4><%=pageUser.first_name+' '+ pageUser.last_name%></h4>
                 <ul>
                     <li><%= pageUser.address || ""%></li>
-                    <li><%= pageUser.gender==='male'?'זכר':'נקבה' %></li>
                     <li><%= pageUser.םccupation || ""%></li>
                 </ul>
             </div>
@@ -60,58 +57,21 @@
             <div class="token-bar">
                 <span class="top-number">15</span>
                 <span class="bottom-number">0</span>
-             <!--   <div class="token-popup token-popup1">
-                    <div class="user-right">
-                        <div class="img-box">
-                            <img src="images/user-1.jpg" width="41" alt="" />
-                            <img class="wraper" src="/images/user-fillter-small-white.png" width="41" alt="" />
-                        </div>
-                    </div>
-                    <div class="user-left">
-                        <p>יונתן שפירא</p>
-                        <div class="proxy">
-                            <span>3</span>
-                        </div>
-                        <div class="respect">
-                            <span>20</span>
-                        </div>
-                    </div>
-                </div>-->
-    <!--    <%  var userProxy;
-                for(var j=0 ;j<tokensBarModel.proxy.proxies.length;j++){
-                userProxy=tokensBarModel.proxy.proxies[j]; %>
-                <div id="token-popup<%=userProxy._id %>" class="token-popup" >
-                    <div class="user-right">
-                        <div class="img-box">
-                            <div class="auto-scale"  style="width: 41px;height: 44px">
-                                 <img src="<%=userProxy.avatar %>" alt="" />
-                            </div>
-                            <img class="wraper" src="/images/user-fillter-small-white.png" width="41" alt="" />
-                        </div>
-                    </div>
-                    <div class="user-left">
-                       <p><%=userProxy.name %></p>
-                        <div class="proxy">
-                            <span><%=userProxy.proxy%></span>
-                        </div>
-                        <div class="respect">
-                            <span><%=userProxy.score%></span>
-                        </div>
-                    </div>
-                </div>
-              <%}%>-->
 
                 <div class="bars">
                     <div class="border"></div>
+
                     <div class="empty" style="height:<%=tokensBarModel.gupFromFullPixels()%>"></div>
                   <% if (tokensBarModel.tokensIUsed!==0){ %>
                         <div class="grey" style="height:<%=tokensBarModel.dailyTokensPixels()%>">
-                            <div class="info">מכסת אסימונים:<%=tokensBarModel.floorDailyTokens %> </div>
+                            <div class="info">מכסת אסימונים:<%=tokensBarModel.TokensSum %> </div>
                         </div>
                     <% } %>
+                    <% if (tokensBarModel.floorTokens!==0){ %>
                     <div class="green" style="height:<%=tokensBarModel.tokensPixels()%>">
                         <div class="info">אסימונים זמינים: <%=tokensBarModel.floorTokens %></div>
                     </div>
+                    <% } %>
                     <%  var userProxy; 
 						for(var j=0 ;j<tokensBarModel.proxy.proxies.length;j++){
 						userProxy=tokensBarModel.proxy.proxies[j]; %>
@@ -124,27 +84,30 @@
 									 מוקצים לנציג:
                                     <%=userProxy.proxy%>
 								</div>
-                                    <div id="token-popup<%=userProxy._id %>" class="token-popup" >
-                                        <div class="user-right">
-                                            <div class="img-box">
-                                                <div class="auto-scale"  style="width: 41px;height: 44px">
-                                                    <img src="<%=userProxy.avatar %>" alt="" />
-                                                </div>
-                                                <img class="wraper" src="/images/user-fillter-small-white.png" width="41" alt="" />
-                                            </div>
-                                        </div>
-                                        <div class="user-left">
-                                            <p><%=userProxy.name %></p>
-                                            <div class="proxy">
-                                                <span dir="ltr"><%=userProxy.proxy%></span>
-                                            </div>
-                                            <div class="respect">
-                                                <span dir="ltr"><%=userProxy.score%></span>
-                                            </div>
-                                        </div>
-                                    </div>
+
 							</div>
-					<%}%>
+                            <div id="token-popup<%=userProxy._id %>" class="token-popup tooltip" >
+                                <div class="user-right">
+                                   <a href="/myuru/<%=userProxy._id %>">
+                                        <div class="img-box">
+                                            <div class="auto-scale"  style="width: 41px;height: 44px">
+                                                <img src="<%=userProxy.avatar %>" alt="" />
+                                            </div>
+                                            <img class="wraper" src="/images/user-fillter-small-white.png" width="41" alt="" />
+                                        </div>
+                                   </a>
+                                </div>
+                                <div class="user-left">
+                                    <p><%=userProxy.name %></p>
+                                    <div class="proxy">
+                                        <span dir="ltr"><%=userProxy.proxy%></span>
+                                    </div>
+                                    <div class="respect">
+                                        <span dir="ltr"><%=userProxy.score%></span>
+                                    </div>
+                                </div>
+                            </div>
+                    <%}%>
                 </div>
             </div>
         </div>
@@ -175,7 +138,7 @@
     </div>
 </div>
 <div class="myuru-bottom cf">
-    <div class="right">
+    <div class="right" id="notifications">
         <h2>עדכונים</h2>
         <div id="renewal" class="renewal">
 
@@ -203,6 +166,8 @@
 
         //$(".search-result-box .tabs").tabs();
         var userId='<%=pageUser._id %>';
+
+
         function tabSelected(event, ui){
            function convertToTabModel(data,type){
                 var i,
@@ -267,7 +232,7 @@
             show:tabSelected
         });
 
-        db_functions.getNotifications(function (data) {
+        db_functions.getNotifications(40, function (data) {
             $.each(data.objects, function (index, notification) {
                 dust.render('notification', notification, function (err, html) {
                     $('#renewal').append(html);
@@ -357,6 +322,16 @@
             });
 
         })
+
+      //  $('.blue').tooltip();
+        $('.blue').tooltip({
+            // use div.tooltip as our tooltip
+            tip: '.tooltip',
+
+            // tweak the position
+          offset: [-278,-540]
+      //    top:{ offset: [-160, 600]}
+        });
 
 
     });
