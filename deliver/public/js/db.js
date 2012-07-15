@@ -155,16 +155,18 @@ var db_functions = {
         });
     },
 
-    getNotifications: function(limit, callback){
+    getNotifications: function(user_id, limit, callback){
         db_functions.loggedInAjax({
-            url: '/api/notifications?' + (limit? '&limit='+limit:''),
+            url: '/api/notifications?' + (user_id? '&user_id='+user_id:'') + (limit? '&limit='+limit:''),
             type: "GET",
             async: true,
+
             success: function (data) {
                 callback(data);
             }
         });
     },
+
     getAndRenderFooterTags:function()
     {
         db_functions.loggedInAjax({
@@ -253,7 +255,7 @@ var db_functions = {
 
             error:function(err){
                 if(err.responseText == "vision can't be more than 800 words")
-                    alert("חזון הדיון צריך להיות 800 מילים לכל היותר");
+                    popupProvider.showOkPopup("חזון הדיון צריך להיות 800 מילים לכל היותר");
                 else if (err.responseText == "you don't have the min amount of tokens to open discussion")
                     popupProvider.showOkPopup( {massage:"מצטערים, אין לך מספיק אסימונים..."});
                 callback(err, null);
@@ -462,6 +464,8 @@ var db_functions = {
             },
             error:function(err){
                 if(err.responseText != "not authenticated")
+                    if(err.responseText == "must grade discussion first")
+                        popupProvider.showOkPopup('אנא דרג קודם את החזון בראש העמוד.')
                     alert(err.responseText);
                 callback(err, null);
             }

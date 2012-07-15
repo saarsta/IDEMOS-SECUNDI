@@ -762,26 +762,14 @@ $(document).ready(function () {
         scrollTo("#post_" + ref_to_post_id);
     })
 
-    $('#suggestion_list').on('click', ".grey-btn", function (e) {
-//        var userName,
-//                text;
-//        var postDiv = $(this).parents('.one');
-//        e.preventDefault();
-//        $("textarea#discussion_comment").focus();
-//        userName = postDiv.data('creator_name');
-//        new_post_ref_id = postDiv.data('id');
-//        text = $('.text-left p:last-child', postDiv).text();
-//        text = userName + ' אמר:"' + text + '"\n';
-//        text = text + " ";
-//        $("textarea#discussion_comment").val(text).focus();
-//
-//
 
+    $('#suggestion_list').on('click', ".grey-btn", function (e) {
 
         var userName,
                 text;
 
         var postDiv = $(this).parents('.one');
+
         e.preventDefault();
         $("textarea#discussion_comment").focus();
         userName = postDiv.data('creator_name');
@@ -890,7 +878,10 @@ $(document).ready(function () {
                                 //already_graded
                             }
                             else
+                            {
                                 console.log(err);
+
+                            }
                         });
                     }
                 });

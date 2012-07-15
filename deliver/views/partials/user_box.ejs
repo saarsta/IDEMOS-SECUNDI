@@ -34,7 +34,7 @@
         <%}else{%>
         <form id="register_form" action="/account/login" method="POST">
             <input name="email" type="text" placeholder='דוא"ל'/>
-            <input name="password" type="password" placeholder="ססמה" />
+            <input name="password" type="password" placeholder="סיסמא" />
             <a class="forgot_password" href="/account/forgot_password">
                 שכחת סיסמה?
             </a>
@@ -48,6 +48,7 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+
         $("#register_form").validate({
             rules:{
                 email:{required: true },
