@@ -66,7 +66,7 @@ var actionLinkHandler = function(  data , callback ){
             var action = rData.action_link.split(":")[1];
             if ( config.actions[ action ] ){
 
-                config.userFinder( null , user_data , function( err , user ){
+                config.userFinder( user_data , function( err , user ){
                     if ( err ){
                         callback( err , false );
                     }
@@ -75,7 +75,7 @@ var actionLinkHandler = function(  data , callback ){
                             object : rData.objects[0].url,
                             user : user
                         }
-                        config.actions[ action ].action_link_cb( null , aData , function( err , suc ){
+                        config.actions[ action ].action_link_cb(  aData , function( err , suc ){
                             if ( err ){
                                 callback( err , false );
                             }

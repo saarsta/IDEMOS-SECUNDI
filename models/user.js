@@ -25,7 +25,7 @@ var User = module.exports = new Schema({
     facebook_id:String,
     access_token:String,
     first_name:{type:String, required:true, validate:MinLengthValidator(2)},
-    last_name:{type:String, required:true, validate:MinLengthValidator(2)},
+    last_name:{type:String, required:false},
     email:{type:String, required:true, match:/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/},
     gender:{type:String, "enum":['male', 'female']},
     age:{type:Number, min:0},
@@ -68,7 +68,8 @@ var User = module.exports = new Schema({
     num_of_extra_tokens: {type: mongoose_types.Integer, 'default': 0, max:6, min: 0},// i might change it to gamification.bonus.
     number_of_days_of_spending_all_tokens: {type: Number, 'default' : 0, editable: false},
     blog_popularity_counter: {type: Number, 'default': 0, editable: false},
-    avatar : mongoose_types.File
+    avatar : mongoose_types.File,
+    minisite_code : String
 }, {strict:true});
 
 User.methods.toString = function()

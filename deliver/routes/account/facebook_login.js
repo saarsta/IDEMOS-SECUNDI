@@ -77,10 +77,10 @@ function redirectAfterLogin(req,res,redirect_to) {
     res.redirect(redirect_to);
 };
 
-function isUserInDataBase(user_facebook_id, callback) {
+module.exports.isFacebookUserInDB = function isUserInDataBase(user_facebook_id, callback) {
 
     var user_model = models.User,
-        flag = false;
+        flag = false, user;
 
     user_model.find({facebook_id:user_facebook_id}, function (err, result) {
         if (err == null) {
@@ -88,6 +88,7 @@ function isUserInDataBase(user_facebook_id, callback) {
                 //var user_id = result[0]._id;
                 //console.log("isUserInDataBase returns true")
                 flag = true;
+                user = result[0];
             } else {
                 if (result.length == 0) { // its a new user
                     //console.log("isUserInDataBase returns false");
@@ -99,11 +100,11 @@ function isUserInDataBase(user_facebook_id, callback) {
             throw "Error reading db.User in isNewUser";
         }
 
-        callback(flag);
+        callback(flag,user);
     });
 }
 
-function createNewUser(data, access_token, callback) {
+module.exports.createNewFacebookUser = function createNewUser(data, access_token, callback) {
 
     var user = new models.User();
     user.username = data.username;
@@ -122,8 +123,9 @@ function createNewUser(data, access_token, callback) {
     user.save(function (err, object) {
         if (err != null) {
             console.log(err);
+            callback(null);
         } else {
-            callback(object.id);
+            callback(object.id,object);
             console.log("done creating new user - " + user.first_name + " " + user.last_name);
 //            res.write("done creating new user - " + user.first_name + " " + user.last_name);
         }
