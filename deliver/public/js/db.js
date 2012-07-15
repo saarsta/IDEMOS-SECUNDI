@@ -255,7 +255,7 @@ var db_functions = {
 
             error:function(err){
                 if(err.responseText == "vision can't be more than 800 words")
-                    popupProvider.showOkPopup("חזון הדיון צריך להיות 800 מילים לכל היותר");
+                    popupProvider.showOkPopup({massage:"חזון הדיון צריך להיות 800 מילים לכל היותר"});
                 else if (err.responseText == "you don't have the min amount of tokens to open discussion")
                     popupProvider.showOkPopup( {massage:"מצטערים, אין לך מספיק אסימונים..."});
                 callback(err, null);
@@ -465,8 +465,7 @@ var db_functions = {
             error:function(err){
                 if(err.responseText != "not authenticated")
                     if(err.responseText == "must grade discussion first")
-                        popupProvider.showOkPopup('אנא דרג קודם את החזון בראש העמוד.')
-                    alert(err.responseText);
+                        popupProvider.showOkPopup({massage:'אנא דרג קודם את החזון בראש העמוד.'})
                 callback(err, null);
             }
         });

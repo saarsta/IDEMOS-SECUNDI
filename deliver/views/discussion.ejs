@@ -842,6 +842,8 @@ $(document).ready(function () {
                 return suggestion.parts[0].text;
             };
 
+            var depress_event = false;
+
             dust.render('discussion_suggestion', suggestion, function (err, out) {
                 $('#suggestion_list').prepend(out);
                 image_autoscale($('#suggestion_list .auto-scale img'));
@@ -864,6 +866,8 @@ $(document).ready(function () {
                         }
                     },
                     change:function (event, ui) {
+                        if(depress_event)
+                            return;
                         var rating = ui.value;
                         db_functions.addSuggestionGrade(suggestion.id, discussion_id, rating, suggest_grade_id[suggestion.id], function (err, data) {
                             if (!err) {
@@ -879,8 +883,10 @@ $(document).ready(function () {
                             }
                             else
                             {
+                                depress_event = true;
+                                $(".suggest_slider_" + suggestion.id).slider("value", suggestion_grade_val || 0);
+                                depress_event = false;
                                 console.log(err);
-
                             }
                         });
                     }
