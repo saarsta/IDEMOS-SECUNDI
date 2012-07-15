@@ -357,26 +357,20 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                 });
             }
         ], function (err) {
-            if(agrees < 0){
-                agrees = 0;
-                console.log("Error with suggestion grees")
-            }
-            if(not_agrees < 0)
-            {
-                not_agrees = 0;
-                console.log("Error with suggestion not_agrees")
-            }
-            callback(err, {
 
-                    grade_id:grade_id,
-                    new_grade:new_grade,
-                    evaluate_counter:evaluate_counter,
-                    agrees:agrees,
-                    not_agrees:not_agrees,
+
+                callback(err, {
+
+                        grade_id:grade_id,
+                        new_grade:new_grade,
+                        evaluate_counter:evaluate_counter,
+                        agrees:agrees,
+                        not_agrees:not_agrees,
 //                wanted_amount_of_tokens: real_threshold,
-                    curr_amount_of_tokens:curr_tokens_amout
-                }
-            )
+                        curr_amount_of_tokens:curr_tokens_amout
+                    }
+                )
+            
         })
     }
 })
