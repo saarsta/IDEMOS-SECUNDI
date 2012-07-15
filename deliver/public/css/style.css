@@ -2556,7 +2556,7 @@ textarea.hidden_textarea::selection
 .write-comment .text-box .left textarea.four-col
 {
     height: 92px;
-    resize: none;
+    /*resize: none;*/
 }
 .write-comment .text-box .left textarea.two-col
 {
@@ -2667,6 +2667,11 @@ textarea.hidden_textarea::selection
     width: 28px;
     height: 28px;
 }
+
+.system-notice a {
+    color: white;
+}
+
 .comments-box .extra
 {
     width: 980px;
