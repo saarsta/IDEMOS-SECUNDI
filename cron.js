@@ -429,7 +429,8 @@ var once_an_hour_cron =   exports.once_an_hour_cron = {
         var iterator = function(user, itr_cbk){
             var cup = 9 + user.num_of_extra_tokens;
             if(user.tokens < cup){
-                models.User.update({_id: user._id}, {$inc:{tokens: 24/cup}}, itr_cbk);
+                var inc_tokens = Math.min(24/cup, cup - user.tokens);
+                models.User.update({_id: user._id}, {$inc:{tokens: inc_tokens}}, itr_cbk);
             }else{
                 itr_cbk
             }

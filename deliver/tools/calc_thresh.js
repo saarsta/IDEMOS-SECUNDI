@@ -21,7 +21,7 @@ var calculating_thresh = exports.calculating_thresh = function (num_voters , rat
     console.log(common.getThresholdCalcVariables('MAX_THRESH'));
     console.log(common.getThresholdCalcVariables('MAX_RED_RATIO'));
     console.log(common.getThresholdCalcVariables('MAX_RED_RATIO'));
-    var MIN_THRESH = common.getThresholdCalcVariables('MAX_NUM_VOTERS') || 2;
+    var MIN_THRESH = common.getThresholdCalcVariables('MIN_THRESH') || 2;
 
 // expected threshold for maximum rating and maximum number of voters
     var MAX_THRESH = common.getThresholdCalcVariables('MAX_THRESH') || 500;
