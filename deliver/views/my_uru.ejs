@@ -290,7 +290,7 @@
             show:tabSelected
         });
 
-        db_functions.getNotifications(null, 40, function (data) {
+        db_functions.getNotifications(userId, 40, function (data) {
             $.each(data.objects, function (index, notification) {
                 dust.render('notification', notification, function (err, html) {
                     $('#renewal').append(html);
@@ -329,6 +329,24 @@
 
         })
 
+
+        $('#discussions-tab').on('click','.join_button',function(e){
+
+
+
+            var item=  $(this).parents('[data-id]');
+            var item_id=   item.data('id');
+            var actionType=  $(this).data('action');
+
+            e.preventDefault();
+            db_functions.joinToDiscussionFollowers(item_id,actionType,function(err,data){
+
+                dust.render('myuru_tab_item', data, function(err, html){
+                    // $("#"+data._id).replaceWith(html);
+                    item.replaceWith(html);
+                })
+            })
+        });
 
 
       //  $('.blue').tooltip();
