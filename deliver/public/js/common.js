@@ -163,7 +163,7 @@ $(function(){
 
     var host = window.location.protocol + '//' + window.location.host;
 
-
+    $('input, textarea').placeholder();
 
     $('#failureForm').live('submit', function(e){
         e.preventDefault();
