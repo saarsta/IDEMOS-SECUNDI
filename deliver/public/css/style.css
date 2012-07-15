@@ -4708,7 +4708,6 @@ body.search-ative #header
 {
     width: auto;
     /* height: 325px;*/
-    height:400px;
 }
 #content .search-result-box .tabs-nav{
     padding-right: 255px;
@@ -4733,7 +4732,7 @@ body.search-ative #header
 #content .search-result-box .slides-one,
 #content .search-result-box .tab-slide
 {
-    height: 179px;
+    height: 184px;
 }
 #content .search-result-box .btn-box
 {
@@ -5273,11 +5272,13 @@ body.search-ative #header
 
 
 
+/*
 
 .ui-tabs
 {
     padding-top: 26px;
 }
+*/
 
 
 

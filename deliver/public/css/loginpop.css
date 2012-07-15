@@ -2,8 +2,11 @@
 .login-popup
 {
     background: #3b63ef;
-    height: 100%;
-    width:500px;
+
+    width:200px;
+    height:300px;
+
+
 
    /* border-radius: 2px;
     -moz-border-radius: 2px;
@@ -16,7 +19,9 @@
 }
 .login-popup> div
 {
-    padding: 20px
+    padding:40px;
+    float: right;
+
 }
 .login-popup  input[type=submit]
 {
@@ -45,8 +50,7 @@
     float: left;
 }
 
-.login-popup  h2,
-
+.login-popup h2
 {
     color:#fff;
     font-size: 18px;
@@ -54,8 +58,8 @@
     font-weight: normal;
     font-family: 'AdumaFOTMedium';
     padding-left: 25px;
-    display: none;
 }
+
 
 
 

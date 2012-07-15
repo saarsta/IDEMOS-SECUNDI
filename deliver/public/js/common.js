@@ -147,8 +147,8 @@ var scrollTo = function(selector, options){
 var connectPopup = function(callback){
 
     //open popup window
-     //popupProvider.showLoginPopup();
-    popupProvider.showOkPopup({massage:"אנא התחבר למערכת"});
+     popupProvider.showLoginPopup();
+   // popupProvider.showOkPopup({massage:"אנא התחבר למערכת"});
 
     if(callback)
         callback();
