@@ -6,6 +6,10 @@
     SHOW_ONLY_PUBLISHED = show_only_published;
  };
 
+ exports.getShowOnlyPublished = function() {
+     return SHOW_ONLY_PUBLISHED;
+ };
+
  var _mongoose_model = mongoose.model;
  mongoose.model = function(name,schema,collection)
  {
@@ -16,7 +20,10 @@
          if(model.schema.paths.is_hidden && SHOW_ONLY_PUBLISHED)
          {
              var query = arguments.length > 0 && typeof(arguments[0]) == 'object' ? arguments[0] : {};
-             query['is_hidden'] = {$ne:true};
+             if(typeof(query['is_hidden']) == 'undefined')
+                query['is_hidden'] =  {$ne:true};
+             else
+                 delete query['is_hidden'];
              if(arguments.length == 0)
                  arguments = [query];
              else if(typeof(arguments[0]) != 'object')
@@ -32,7 +39,10 @@
          if(model.schema.paths.is_hidden && SHOW_ONLY_PUBLISHED)
          {
              var query = arguments.length > 0 && typeof(arguments[0]) == 'object' ? arguments[0] : {};
-             query['is_hidden'] = {$ne:true};
+             if(typeof(query['is_hidden']) == 'undefined')
+                 query['is_hidden'] = {$ne:true};
+             else
+                 delete query['is_hidden'];
              if(arguments.length == 0)
                  arguments = [query];
              else if(typeof(arguments[0]) != 'object')
@@ -49,7 +59,10 @@
          if(model.schema.paths.is_hidden && SHOW_ONLY_PUBLISHED)
          {
              var query = arguments.length > 0 && typeof(arguments[0]) == 'object' ? arguments[0] : {};
-             query['is_hidden'] = {$ne:true};
+             if(typeof(query['is_hidden']) == 'undefined')
+                 query['is_hidden'] = {$ne:true};
+             else
+                 delete query['is_hidden'];
              if(arguments.length == 0)
                  arguments = [query];
              else if(typeof(arguments[0]) != 'object')

@@ -14,6 +14,26 @@ module.exports = function(app)
 
     var admin = mongoose_admin.createAdmin(app,{root:'admin'});
 
+    if(require('../utils').getShowOnlyPublished()) {
+        var _modelCounts = admin.modelCounts;
+        admin.modelCounts = function(collectionName,filters, onReady) {
+                filters = filters || {};
+                if(this.models[collectionName].model.schema.paths.is_hidden)
+                    filters['is_hidden'] = {$exists:true};
+                _modelCounts.call(this,collectionName,filters,onReady);
+        };
+
+        var _listModelDocuments = admin.listModelDocuments;
+        admin.listModelDocuments = function(collectionName, start, count,filters,sort, onReady) {
+            filters = filters || {};
+            if(this.models[collectionName].model.schema.paths.is_hidden)
+                filters['is_hidden'] = {$exists:true};
+
+            _listModelDocuments.call(this,collectionName, start, count,filters,sort, onReady);
+        };
+
+    }
+
     admin.ensureUserExists('Uruad','uruadmin!@#uruadmin');
     admin.ensureUserExists('ishai','istheadmin');
 
