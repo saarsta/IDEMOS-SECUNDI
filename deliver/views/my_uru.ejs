@@ -290,7 +290,7 @@
             show:tabSelected
         });
 
-        db_functions.getNotifications(40, function (data) {
+        db_functions.getNotifications(null, 40, function (data) {
             $.each(data.objects, function (index, notification) {
                 dust.render('notification', notification, function (err, html) {
                     $('#renewal').append(html);
