@@ -134,7 +134,7 @@ function createNewUser(data, access_token, callback) {
 function updateUesrAccessToken(data, access_token, callback) {
     var user_model = models.User;
 
-    user_model.findOne({facebook_id:data.id}, function (err, user) {
+    user_model.findOne({facebook_id: data.id}, function (err, user) {
         if (err) {
             return next(err);
         }
@@ -142,6 +142,7 @@ function updateUesrAccessToken(data, access_token, callback) {
 //            user.session_id = session_id;
         user.save(function (err) {
             if (err) {
+                console.log(user);
                 return callback(err);
             } else {
                 callback(null,user.id);
