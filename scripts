@@ -4,7 +4,7 @@ scripts
 fix users tokens
 db.users.find().forEach(function(obj){
     if (obj.tokens > obj.num_of_extra_tokens+ 9)
-    {   obj.tokens = obj.num_of_eaxtra_tokens+ 9;
+    {   obj.tokens = obj.num_of_extra_tokens+ 9;
         db.users.save(obj);
     }
 })

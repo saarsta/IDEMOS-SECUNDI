@@ -129,7 +129,7 @@
 
         if(user_logged) {
 
-            db_functions.getNotifications(5, function (data) {
+            db_functions.getNotifications(null, 5, function (data) {
                 dust.renderArray('notification', data.objects, null,function (err, html) {
                     $('.renewal').append(html).append('<a href="/myuru">' +
 '                        קרא עוד...' +
