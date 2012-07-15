@@ -180,6 +180,7 @@ $(function(){
         });
 
     });
+
     db_functions.getAndRenderFooterTags();
 
 
