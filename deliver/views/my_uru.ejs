@@ -20,7 +20,11 @@
 <div class="myuru-top">
     <div class="right">
         <h2>
+		<% if(!isHisUru){ %>
 הפרופיל שלי
+		<%} else {%>
+		  פרופיל משתמש 
+	      <%} %>
         </h2>
         <div class="white-box">
             <div class="user">
@@ -47,12 +51,23 @@
             <form action="">
                 <textarea id="biography" placeholder=" כאן אפשר לכתוב ביוגרפיה קצרה דברים שאתה אוהב, אג’נדה, דעות, ומה שתרצה על עצמך." cols="0" <%=biographyReadonly? 'readonly': '' %>
                 rows="0"><% if(pageUser.biography){%><%=pageUser.biography%> <% } else { %><% } %></textarea>
-                <input id="invite_friends_bt" type="submit" value="הזמן חברים" />
+                <% if(!isHisUru){ %>
+                  <input id="invite_friends_bt" type="submit" value="הזמן חברים" />
+                <%} else{ %>
+             <!--    <input id="send_message_bt" type="submit"    class="gray_and_soon"
+                        value="שלח הודעה" />-->
+                <%} %>
             </form>
         </div>
     </div>
     <div class="left">
-        <h2>האסימונים שלי</h2>
+       
+		<% if(!isHisUru){ %>
+			 <h2>
+האסימונים שלי
+			</h2>
+
+		
         <div class="white-box">
             <div class="token-bar">
                 <span class="top-number">15</span>
@@ -111,10 +126,47 @@
                 </div>
             </div>
         </div>
+
+        <%}else {  %>
+        <h2 style="visibility: hidden;">
+            spaser
+        </h2>
+        <div class="white-box deals-box" >
+
+
+          <!--  <div class="user-right side_menu">
+                <span class="arrow"></span>
+
+                <div class="left">
+                    &lt;!&ndash;id="add_or_remove_proxy"&ndash;&gt;
+                    <a id="add_or_remove_proxy" href="javascript:void(0);" disabled="disabled">
+                        תן מנדט
+                    </a>
+                    <a href="javascript:void(0);" class="follow_user gray_and_soon">
+                        עקוב
+                    </a>
+                    <a href="javascript:void(0);"  class="gray_and_soon">
+                        שלח הודעה
+                    </a>
+                </div>
+
+            </div>-->
+
+
+
+
+        </div>
+        <%} %>
     </div>
 </div>
 <div class="search-result-box">
-    <h2>פעילות שלי במערכת</h2>
+    <h2>
+	<% if(!isHisUru){ %>
+    פעילות שלי במערכת
+    <%} else {%>
+פעילות במערכת
+    <%} %>
+    </h2>
     <div class="tabs">
         <ul class="tabs-nav">
             <li><a href="#discussions-tab">דיונים</a></li>
@@ -146,7 +198,13 @@
         </div>
     </div>
     <div class="left">
-        <h2>אחרי מי אני עוקב</h2>
+      <h2>
+        <% if(!isHisUru){ %>
+ אחרי מי אני עוקב
+        <%} else {%>
+אחרי מי עוקב
+        <%} %>
+      </h2>
         <div id="users-list" class="users-list">
 
 
@@ -232,7 +290,7 @@
             show:tabSelected
         });
 
-        db_functions.getNotifications(null, 40, function (data) {
+        db_functions.getNotifications(userId, 40, function (data) {
             $.each(data.objects, function (index, notification) {
                 dust.render('notification', notification, function (err, html) {
                     $('#renewal').append(html);
@@ -241,58 +299,6 @@
         }) ;
 
 
-        /**************************************************************************/
-/*        var popupOpen=false;
-        $('.blue').hover(function(e){
-          if(!popupOpen){
-               var userID= $(this).data('userid');
-               var tokenbarPosition = $('.token-bar').offset();
-
-                var y= tokenbarPosition.top - window.mouseYPos  +130 ;
-                var x=  60;
-            $('#token-popup'+userID).css("display","block")
-                                       .css('bottom',y+'px')
-                                        .css('right',x+'px');
-            popupOpen=true;
-         }
-
-        },function(e){
-               var userID= $(this).data('userid');
-               $('#token-popup'+userID).css("display",'');
-               popupOpen=false;
-           })
-
-        $(document).mousemove(function(e){
-            window.mouseXPos = e.pageX;
-            window.mouseYPos = e.pageY;
-        });*/
-
-
-
-      /*  $('.blue').hover(function(e){
-
-            var userID= $(this).data('userid');
-            var x= e.pageX<370? 80:10;
-                var y= e.offsetY-50  ;//tokenbarPosition.top - window.mouseYPos  +130 ;
-
-                $('#token-popup'+userID).css("display","block")
-                        .css('bottom',y+'px')
-                   //    .css('right',x+'px');
-
-
-        },function(e){
-            var userID= $(this).data('userid');
-            $('#token-popup'+userID).css("display",'');
-          //  popupOpen=false;
-        })*/
-
-      /*  $(document).mousemove(function(e){
-            window.mouseXPos = e.pageX;
-            window.mouseYPos = e.pageY;
-        });*/
-
-
-        /**************************************************************************/
         db_functions.getOnWhomUserFollows(userId,function (e,data) {
 
                 dust.renderArray('myuru_follower_item', data.objects,null, function (err, html) {
@@ -323,15 +329,34 @@
 
         })
 
+
+        $('#discussions-tab').on('click','.join_button',function(e){
+
+
+
+            var item=  $(this).parents('[data-id]');
+            var item_id=   item.data('id');
+            var actionType=  $(this).data('action');
+
+            e.preventDefault();
+            db_functions.joinToDiscussionFollowers(item_id,actionType,function(err,data){
+
+                dust.render('myuru_tab_item', data, function(err, html){
+                    // $("#"+data._id).replaceWith(html);
+                    item.replaceWith(html);
+                })
+            })
+        });
+
+
       //  $('.blue').tooltip();
-        $('.blue').tooltip({
+       /* $('.blue').tooltip({
             // use div.tooltip as our tooltip
             tip: '.tooltip',
-
             // tweak the position
           offset: [-278,-540]
-      //    top:{ offset: [-160, 600]}
-        });
+
+        });*/
 
 
     });
