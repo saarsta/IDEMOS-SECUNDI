@@ -24,6 +24,8 @@ SignedRequest.secret = config.FB_SECRET;
  */
 var doAction = function(  data ,callback ){
         var post_url = "https://graph.facebook.com/me/"+config.FB_APP_NAME+":"+data.action + '?access_token=' + data.access_token;
+
+        console.log('posting to ', post_url);
         var qs = new Object();
         qs[data.object_name] = config.ROOT_PATH + data.object_url;
         var options = {
@@ -31,6 +33,8 @@ var doAction = function(  data ,callback ){
             form : qs, //Maybe wrong way to transfer the data... //TODO check it!.
             method: "POST"
         };
+
+    console.log('body is ', options);
     request( options , function (error, response, body) {
         if (error) {
                 if (callback) callback( error );
