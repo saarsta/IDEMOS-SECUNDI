@@ -38,9 +38,12 @@ var mongoose_resource = require('jest'),
     AboutUruTextResource = require('./AboutUruTextResource');
     AboutUruItemResource = require('./AboutUruItemResource');
     TeamResource = require('./TeamResource');
+
     QaResource = require('./QaResource');
     LoginResource = require('./LoginResource');
     FbConnectResource = require('./FbConnectResource');
+    OGActionResource = require('./og_action_resource');
+
 
 module.exports = function(app)
 {
@@ -86,4 +89,5 @@ module.exports = function(app)
     rest_api.register_resource('items_count_by_tag_name', new ItemsCountByTagNameResource());
     rest_api.register_resource('fb_request', new FBRequestResource());
     rest_api.register('image_upload',new ImageUploadResource());
+    rest_api.register('og_action', new OGActionResource());
 };

@@ -25,7 +25,7 @@ module.exports = function( req , res ){
         object_name : req.params['object_name'],
         fid : req.params['fid']
     };
-    doAction(null, data , function(err){
+    doAction(data , function(err){
         if (err) {
             res.end(JSON.stringify({status:500 , error: err}));
         }
@@ -34,5 +34,6 @@ module.exports = function( req , res ){
         }
 
     });
-    res.render('frontend/home.ejs',{});
-}
+    res.redirect('/');
+//    res.render('frontend/home.ejs',{});
+};

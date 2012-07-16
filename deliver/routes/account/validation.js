@@ -4,9 +4,9 @@ var models = require('../../../models'),
     mail = require('../../../lib/mail'),
     async = require('async');
 
-module.exports ={
-    get: function(req, res){
-        res.render('forgot_password.ejs',{
+module.exports = function(req, res){
+
+        res.render('validation_password.ejs',{
             url: req.url,
             tag_name: req.query.tag_name,
             layout: false,
@@ -16,54 +16,11 @@ module.exports ={
             title: "רישום",
             big_impressive_title: ""
         });
-    },
-
-    post: function(req, res){
-        var email = req.body.email;
-
-        //find user mail
-        async.waterfall([
-            function(cbk){
-                console.log("1");
-                models.User.findOne({email: email}, cbk);
-            },
-
-            function(user, cbk){
-                console.log("2");
-                console.log(user);
-                if(user)
-                  forgotPassword(user, cbk);
-                else
-                    cbk(null,0);
-            }
-        ], function(err, obj){
-
-            if(err)
-                res.send('something wrong', 500);
-            else
-                if(obj == 0)
-                    res.send('no such email', 500);
-                else
-                    res.send('validation email was sent to your e-mail address', 200);
-        })
-    }
-}
+};
 
 var crypto = require('crypto');
 
-//var sendgrid;
-//var system_email;
-//var root_path;
-//
-//module.exports.init = function(app)
-//{
-//    sendgrid = new SendGrid(app.settings.sendgrid_user, app.settings.sendgrid_key);
-//    system_email = app.settings.system_email;
-//    root_path = app.settings.root_path;
-//};
-
-
-var forgotPassword = function(user,callback)
+var validation = function(user,callback)
 {
 
     /**
@@ -86,10 +43,10 @@ var forgotPassword = function(user,callback)
             });
         },
         function(user,cbk) {
-            templates.renderTemplate('forgot',{user:user},cbk);
+            templates.renderTemplate('validation',{user:user},cbk);
         },
         function(body,cbk) {
-            mail.sendMail(user.email,body,'יצירת סיסמא חדשה לאתר עוּרו',cbk);
+            mail.sendMail(user.email,body,'אימות חשבון באתר עוּרו',cbk);
         }
     ],callback);
 //    crypto.randomBytes(6, function(ex, buf) {

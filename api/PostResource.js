@@ -7,7 +7,7 @@
  */
 
 var resources = require('jest'),
-    util = require('util'),
+    og_action = require('../og/og').doAction,
     models = require('../models'),
     common = require('./common'),
     async = require('async'),
@@ -124,8 +124,17 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
 
         console.log('debugging waterfall');
 
+        /**
+         * Waterfall:
+         * 1) set post object fields, send to authorization
+         * 2) save post object
+         * 3) send notifications
+         * 4) publish to facebook
+         * Final) return the object with the creator user object
+         */
         async.waterfall([
 
+            // 1) set post object fields, send to authorization
             function(cbk)
             {
                 console.log('debugging waterfall 1');
@@ -142,6 +151,7 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                 self.authorization.edit_object(req, post_object, cbk);
             },
 
+            //  2) save post object
             function(_post_object, cbk){
                 post_id = _post_object._id;
                 post_object = _post_object;
@@ -152,6 +162,8 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                     cbk(err,result);
                 });
             },
+
+            // 3) send notifications
             function (object,cbk) {
 //                discussion_id = object.discussion_id;
                 console.log('debugging waterfall 3');
@@ -207,6 +219,8 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                     },
 
                     //if this post create on discussion create, its free of tokens, otherwise put it on req
+                    // TODO remove this. Post on Discussion create should be one single resource and one single calls, creation of first post should be done from there -> this check won't be necessary
+
                     function(cbk2){
                         models.Post.count({discussion_id: post_object.discussion_id}, function(err, count){
                             if(!err){
@@ -219,8 +233,17 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                     }
                     ],
                     cbk);
+            },
+            // 4) publish to facebook
+            function(args,cbk) {
+                og_action({
+                    action: 'comment',
+                    object_name:'disscusion',
+                    object_url : '/discussions/' + discussion_id + '#post_' + post_id,
+                    fid : user.facebook_id
+                },cbk);
             }
-        ],function(err,result)
+        ],function(err)
         {
             var rsp = {};
             _.each(['text','popularity','creation_date','votes_for','votes_against', '_id'],function(field)

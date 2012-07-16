@@ -8,7 +8,7 @@
 
 
 var resources = require('jest'),
-    util = require('util'),
+    og_action = require('../og/og').doAction,
     models = require('../models'),
     async = require('async'),
     common = require('./common'),
@@ -18,37 +18,37 @@ var resources = require('jest'),
     Suggestion = require('./suggestionResource');
 
 //Authorization
-var Authoriztion = function() {};
-util.inherits(Authoriztion,resources.Authorization);
-
-Authoriztion.prototype.edit_object = function(req,object,callback){
+var Authoriztion = resources.Authorization.extend({
+    edit_object : function(req,object,callback){
     //check if user already grade this discussion
 
-    if(req.method == 'POST' || req.method == 'PUT'){
-        models.Discussion.count({"_id": object.discussion_id, "creator_id": req.user._id}, function(err, count){
-            if (err){
-                callback(err, null);
-            }else{
-                if (count > 0){
-                    callback({message:"cant grade your own discussion",code:401}, null);
+        if(req.method == 'POST' || req.method == 'PUT'){
+            models.Discussion.count({"_id": object.discussion_id, "creator_id": req.user._id}, function(err, count){
+                if (err){
+                    callback(err, null);
                 }else{
-                    if(req.method == 'PUT'){
-                        if(!(object.user_id + "" == req.user._id + ""))
-                            callback({message:"its not your garde!",code:401}, null);
-                        else
+                    if (count > 0){
+                        callback({message:"cant grade your own discussion",code:401}, null);
+                    }else{
+                        if(req.method == 'PUT'){
+                            if(!(object.user_id + "" == req.user._id + ""))
+                                callback({message:"its not your garde!",code:401}, null);
+                            else
+                                callback(null, object);
+                        }
+                        else{
+    //                        object.user_id = req.user._id;
                             callback(null, object);
-                    }
-                    else{
-//                        object.user_id = req.user._id;
-                        callback(null, object);
+                        }
                     }
                 }
-            }
-        })
-    }else{
-        callback(null, object);
+            })
+        }else{
+            callback(null, object);
+        }
     }
-};
+});
+
 
 var GradeResource = module.exports = common.GamificationMongooseResource.extend({
     init:function(){
@@ -84,6 +84,7 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
         var threshold;
         var admin_threshold;
         var discussion_thresh;
+        var discussion_obj;
         var proxy_power = req.user.num_of_given_mandates ? 1 + req.user.num_of_given_mandates * 1/9 : 1;
 
         fields.proxy_power = proxy_power;
@@ -93,13 +94,25 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
         self._super(req, fields, function(err, grade_object)
         {
             if(!err){
+                /**
+                 * Waterfall:
+                 * 1) find discussion
+                 * 2) calculate discussion grade
+                 * 3) find suggestion object
+                 * 4) calculate suggestion grades
+                 * 5) publish to facebook
+                 * Final) set gamification details, return object
+                 */
                 async.waterfall([
 
+                    // 1) find discussion
                     function(cbk){
                         models.Discussion.findById(grade_object.discussion_id, cbk);
                     },
 
-                    function(discussion_obj, cbk){
+                    // 2) calculate discussion grade
+                    function(_discussion_obj, cbk){
+                        discussion_obj = _discussion_obj;
                         //cant grade your own discussion
                         discussion_thresh = Number(discussion_obj.admin_threshold_for_accepting_change_suggestions) || discussion_obj.threshold_for_accepting_change_suggestions
                         if(discussion_obj.creator_id + "" == req.user._id + ""){
@@ -115,6 +128,7 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
                         }
                     },
 
+                    // 3) find suggestion object
                     //calculate all change suggestion all over again and check if they approved
                     function(threshold, cbk){
                         models.Suggestion.find({discussion_id: grade_object.discussion_id}, ["_id"], function(err, results)
@@ -123,6 +137,7 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
                         });
                     },
 
+                    // 4) calculate suggestion grades
                     function(suggestions, cbk){
 //                        var real_threshold = Number(admin_threshold) || threshold;
                         var real_threshold
@@ -139,17 +154,28 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
                                 }else
                                     itr_cbk(err, obj);
                             });}
-                        , function(err, args){
-                            cbk(err, args);
+                        , function(err){
+                            cbk(err);
                         });
+                    },
+                    // 5) publish to facebook
+                    function (cbk) {
+                        og_action({
+                            action: 'rank',
+                            object_name:'disscusion',
+                            object_url : '/discussions/' + discussion_obj.id,
+                            fid : req.user.facebook_id
+                        },cbk);
                     }
 
-                ], function(err, args){
+                ],
+                // Final) set gamification details, return object
+                function(err, args){
                     req.gamification_type = "grade_discussion";
                     req.token_price = common.getGamificationTokenPrice('grade_discussion') || 0;
 
                     callback(err, {new_grade: new_grade, evaluate_counter: counter, grade_id: grade_object._id || 0});
-                })
+                });
             }else{
                 callback(err, null);
             }
