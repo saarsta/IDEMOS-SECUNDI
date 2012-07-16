@@ -6,6 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 var config = require('./config');
+var save_response = require('./integration/save_response');
 var request = require('request');
 var SignedRequest = require('facebook-signed-request');
 SignedRequest.secret = config.FB_SECRET;
@@ -39,14 +40,18 @@ var doAction = function(  data ,callback ){
         if (error) {
                 if (callback) callback( error );
         }
-        else if (response.statusCode!=200){
+        else if (response.statusCode<200 || response.statusCode >= 300){
                 console.error("Failed to post action on FaceBook");
                 console.error(body);
                 if (callback) callback(null);
         }
         else{
-                console.log(body);
-                if (callback) callback(null);
+            console.log(body);
+            if(typeof(body) == 'string')
+                body = JSON.parse(body);
+            if(body.id)
+                save_response(body.id, data.user,data.object_url,callback);
+            else if (callback) callback(null,body);
         }
 
     })
