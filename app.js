@@ -105,6 +105,7 @@ app.configure(function(){
 
     app.use(auth({strategies: [
         account.SimpleAuthentication()
+        ,account.FbServerAuthentication()
         ,auth.Facebook({
             appId : fbId,
             appSecret: fbSecret,

@@ -5,25 +5,21 @@ var jest = require('jest')
     ,async = require('async')
     ,_ = require('underscore');
 
-var Login = module.exports =  jest.Resource.extend({
+var LoginResource = module.exports =  jest.Resource.extend({
 
         init:function () {
             this._super();
             this.allowed_methods = ['post'];
-//            this.authentication = new common.SessionAuthentication();
             this.update_fields = {
                 email:null,
                 password:null
             };
 
             this.fields = {
-                user_id:null,
+                _id:null,
                 first_name:null,
                 last_name:null
             };
-
-
-
         },
 
         create_obj: function(req,fields,callback) {
@@ -36,14 +32,11 @@ var Login = module.exports =  jest.Resource.extend({
                     if(!is_authenticated)
                         callback({message:'wrong email or password', code:404});
                     else {
-                        callback(null,{
-
-                        });
+                        var user = req.session.user;
+                        callback(null, user);
                     }
                 }
             });
         }
-
-
     }
 )

@@ -77,7 +77,7 @@ function redirectAfterLogin(req,res,redirect_to) {
     res.redirect(redirect_to);
 };
 
-function isUserInDataBase(user_facebook_id, callback) {
+var isUserInDataBase = exports.isUserInDataBase = function(user_facebook_id, callback) {
 
     var user_model = models.User,
         flag = false;
@@ -103,7 +103,7 @@ function isUserInDataBase(user_facebook_id, callback) {
     });
 }
 
-function createNewUser(data, access_token, callback) {
+var createNewUser = exports.createNewUser = function(data, access_token, callback) {
 
     var user = new models.User();
     user.username = data.username;
@@ -131,7 +131,7 @@ function createNewUser(data, access_token, callback) {
     });
 }
 
-function updateUesrAccessToken(data, access_token, callback) {
+var updateUesrAccessToken = exports.updateUesrAccessToken = function(data, access_token, callback) {
     var user_model = models.User;
 
     user_model.findOne({facebook_id: data.id}, function (err, user) {

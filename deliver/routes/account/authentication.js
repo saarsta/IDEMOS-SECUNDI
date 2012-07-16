@@ -1,6 +1,7 @@
 /**   Simple Authentication ************/
 var Basic = require("connect-auth").Basic
     ,common = require('./common')
+    ,async = require('async')
     ,Models = require('../../../models');
 
 var SimpleAuthentication = module.exports = function (options) {
@@ -53,3 +54,4 @@ var SimpleAuthentication = module.exports = function (options) {
     };
     return that;
 };
+

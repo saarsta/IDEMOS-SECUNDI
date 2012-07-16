@@ -5,9 +5,6 @@ module.exports =  function (req, res) {
     if (req.method == 'GET') {
         res.redirect('/account/register');
         return;
-//            res.render('login.ejs', {title:'Login',
-//                tab:'user',
-//                failed:false, exist_username:false, next:req.query.next});
     }
     else {
         if (req.method == 'POST') {
@@ -24,7 +21,7 @@ module.exports =  function (req, res) {
         else{
 
             //do something
-            console.log('error!')
+            console.error('error!')
         }
     }
 };

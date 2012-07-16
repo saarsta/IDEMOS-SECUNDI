@@ -87,6 +87,17 @@ var db_functions = {
         });
     },
 
+    getUserAfterFbConnect: function(fb_id, access_token, callback){
+        this.loggedInAjax({
+            url: '/api/fb_connect',
+            type: "POST",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            }
+        });
+    },
+
     getListItems : function(type,query,callback)
     {
         var querystring = type;

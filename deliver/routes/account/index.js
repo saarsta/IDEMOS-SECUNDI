@@ -11,9 +11,9 @@ var sys = require('util')
     ,middlewares = require('./middlewares');
 
 exports.SimpleAuthentication = require('./authentication');
+exports.FbServerAuthentication = require('./fb_auth');
 exports.referred_by_middleware = middlewares.referred_by_middleware;
 exports.auth_middleware = middlewares.auth_middleware;
-
 
 exports.routing = function(router)
 {
@@ -30,8 +30,6 @@ exports.routing = function(router)
     router.all('/reset_password', require('./reset_password'));
 
     router.all('/forgot_password', require('./forgot_password'));
-
-
 
 };
 
