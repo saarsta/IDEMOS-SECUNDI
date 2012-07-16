@@ -242,6 +242,8 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                     object.set(field, fields[field]);
                 }
 
+                req.gamification_type = "discussion";
+                req.token_price = common.getGamificationTokenPrice('create_discussion') > -1 ? common.getGamificationTokenPrice('create_discussion') : 3;
                 self.authorization.edit_object(req, object, cbk);
             },
 
@@ -280,8 +282,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
             // 7) set gamification details, create notifications
             function(cbk) {
                 //set gamification
-                req.gamification_type = "discussion";
-                req.token_price = common.getGamificationTokenPrice('create_discussion') > -1 ? common.getGamificationTokenPrice('create_discussion') : 3;
+
 
                 //find all information items and set notifications for their owners
                 notifications_for_the_info_items_relvant(object._id, user_id,function(err) {
@@ -299,7 +300,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                     access_token:user.access_token,
                     user:user
                 });
-		cbk();
+		        cbk();
             }
         ],
             // Final) return discussion object

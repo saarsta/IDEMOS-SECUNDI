@@ -70,7 +70,7 @@ var TokenAuthorization = exports.TokenAuthorization = jest.Authorization.extend(
 
         if (this.token_price || req.token_price)
         {
-            if(req.user.tokens >= this.token_price || req.token_price){
+            if(req.user.tokens >= (this.token_price || req.token_price)){
                  callback(null, object);
             }else{
                 callback({message:"Error: Unauthorized - there is not enought tokens",code:401}, null);
