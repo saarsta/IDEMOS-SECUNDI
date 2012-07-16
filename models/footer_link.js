@@ -13,6 +13,7 @@ var FooterLink = module.exports = new Schema({
     html:{type:types.Text,required:true},
     is_hidden:{type:Boolean,'default':true},
     is_on_top:{type:Boolean,'default':false},
+    is_on_footer:{type:Boolean},
     gui_order:{type:Number,'default':Number.MAX_VALUE,editable:false}
 });
 

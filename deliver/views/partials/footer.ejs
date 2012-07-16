@@ -38,12 +38,13 @@
                 var links =  footer_links();
                 var pages = ['about', 'team', 'founders', 'qa'];
                 links.forEach(function(menu){
+                if(menu.is_on_footer !== false) {
                 var page =  pages.indexOf(menu.tab) === -1 ? '/page/' : '/';
                 %>
                 <li><a href="<%= menu.link ? menu.link : page + menu.tab %>">
                     <%= menu.name %>
                 </a></li><%
-                })
+                }})
                 %>
 
 

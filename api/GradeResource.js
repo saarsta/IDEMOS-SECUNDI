@@ -162,10 +162,12 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
                     function (cbk) {
                         og_action({
                             action: 'rank',
-                            object_name:'disscusion',
+                            object_name:'discussion',
                             object_url : '/discussions/' + discussion_obj.id,
-                            fid : req.user.facebook_id
-                        },cbk);
+                            fid : req.user.facebook_id,
+                            user:req.user
+                        });
+                        cbk();
                     }
 
                 ],

@@ -238,10 +238,12 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
             function(args,cbk) {
                 og_action({
                     action: 'comment',
-                    object_name:'disscusion',
+                    object_name:'discussion',
                     object_url : '/discussions/' + discussion_id + '#post_' + post_id,
-                    fid : user.facebook_id
-                },cbk);
+                    fid : user.facebook_id,
+                    user:user
+                });
+                cbk();
             }
         ],function(err)
         {
