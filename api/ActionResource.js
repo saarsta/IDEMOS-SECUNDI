@@ -83,7 +83,7 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
             var action_object = new self.model();
             var user = req.user;
 
-            var min_tokens = /*common.getGamificationTokenPrice('create_action')*/ 10;
+            var min_tokens = common.getGamificationTokenPrice('create_action') > -1 ?  common.getGamificationTokenPrice('create_action') : 10;
 //            var total_tokens = user.tokens + user.num_of_extra_tokens;
 
 //            if(total_tokens <  min_tokens && total_tokens < min_tokens - (Math.min(Math.floor(user.gamification.tag_suggestion_approved/2), 2))){

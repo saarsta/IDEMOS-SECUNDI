@@ -172,7 +172,7 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
                 // Final) set gamification details, return object
                 function(err, args){
                     req.gamification_type = "grade_discussion";
-                    req.token_price = common.getGamificationTokenPrice('grade_discussion') || 0;
+                    req.token_price = common.getGamificationTokenPrice('create_action') > -1 ? common.getGamificationTokenPrice('create_action') : 0;
 
                     callback(err, {new_grade: new_grade, evaluate_counter: counter, grade_id: grade_object._id || 0});
                 });
