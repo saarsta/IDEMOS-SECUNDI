@@ -696,7 +696,7 @@ $(document).ready(function () {
                 if (err.responseText == 'Error: there is not enought tokens')
                     popupProvider.showOkPopup( {massage:     'אין לך מספיק טוקנים'});
                 if (err.responseText == 'user already voted for this post')
-                    popupProvider.showOkPopup( {massage:     'כבר הצבעת'});
+                    popupProvider.showOkPopup( {massage:     'באפשרותך לתת עד שלושה אסימונים לתגובה בדיון'});
                 if (err.responseText == 'soory, can\'t vote to your own post')
                     popupProvider.showOkPopup( {massage:     'מצטערים, לא ניתן להצביע לתגובה של עצמך'});
             }

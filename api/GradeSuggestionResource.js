@@ -199,7 +199,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
         ], function (err, obj) {
             if (!err) {
                 req.gamification_type = "grade_suggestion";
-                req.token_price = common.getGamificationTokenPrice('grade_suggestion') || 0;
+                req.token_price = common.getGamificationTokenPrice('grade_suggestion') > -1 ? common.getGamificationTokenPrice('grade_suggestion') : 0;
             }
             callback(err, {
                 grade_id:grade_id,

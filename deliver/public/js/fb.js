@@ -41,5 +41,20 @@ function sendFacebookShare(link, title, src, text_preview, callback) {
 }
 
 function facebookLogin(callback) {
-    FB.login();
-}
+    FB.login(function(response) {
+        console.log(response);
+        if (response.authResponse) {
+            console.log('Welcome!  Fetching your information.... ');
+
+            // send response.authResponse.accessToken
+            db_functions.getUserAfterFbConnect(response.authResponse.userID, response.authResponse.accessToken, function(err, user){
+                if(err)
+                    console.error(error)
+                else
+                    console.log(user);
+            });
+
+        } else {
+            console.log('User cancelled login or did not fully authorize.');
+        }
+    },{scope: 'email'});}

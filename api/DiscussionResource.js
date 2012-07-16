@@ -161,7 +161,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
         var created_discussion_id;
         var info_items;
 
-        var min_tokens = common.getGamificationTokenPrice('min_tokens_to_create_dicussion') > 0 ? common.getGamificationTokenPrice('min_tokens_to_create_dicussion') : 10;
+        var min_tokens = common.getGamificationTokenPrice('min_tokens_to_create_dicussion') > -1 ? common.getGamificationTokenPrice('min_tokens_to_create_dicussion') : 10;
 //        var total_tokens = user.tokens + user.num_of_extra_tokens;
 
         var iterator = function (info_item, itr_cbk) {
@@ -281,7 +281,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
             function(cbk) {
                 //set gamification
                 req.gamification_type = "discussion";
-                req.token_price = common.getGamificationTokenPrice('create_discussion') > 0 ? common.getGamificationTokenPrice('create_discussion') : 3;
+                req.token_price = common.getGamificationTokenPrice('create_discussion') > -1 ? common.getGamificationTokenPrice('create_discussion') : 3;
 
                 //find all information items and set notifications for their owners
                 notifications_for_the_info_items_relvant(object._id, user_id,function(err) {
@@ -476,7 +476,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                     callback("this discussion is already published", null);
                 } else {
                     req.gamification_type = "discussion";
-                    req.token_price = common.getGamificationTokenPrice('create_discussion') > 0 ? common.getGamificationTokenPrice('create_discussion') : 3;
+                    req.token_price = common.getGamificationTokenPrice('create_discussion') > -1 ? common.getGamificationTokenPrice('create_discussion') : 3;
                     object.is_published = true;
 
                     object.save(function (err, disc_obj) {

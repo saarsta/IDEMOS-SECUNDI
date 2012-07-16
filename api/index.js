@@ -38,7 +38,10 @@ var mongoose_resource = require('jest'),
     AboutUruTextResource = require('./AboutUruTextResource');
     AboutUruItemResource = require('./AboutUruItemResource');
     TeamResource = require('./TeamResource');
-    QaResource = require('./QaResource')
+
+    QaResource = require('./QaResource');
+    LoginResource = require('./LoginResource');
+    FbConnectResource = require('./FbConnectResource');
     OGActionResource = require('./og_action_resource');
 
 
@@ -81,9 +84,10 @@ module.exports = function(app)
     rest_api.register_resource('about_uru_items', new AboutUruItemResource());
     rest_api.register_resource('team', new TeamResource());
     rest_api.register_resource('qa', new QaResource());
+    rest_api.register_resource('login', new LoginResource());
+    rest_api.register_resource('fb_connect', new FbConnectResource());
     rest_api.register_resource('items_count_by_tag_name', new ItemsCountByTagNameResource());
     rest_api.register_resource('fb_request', new FBRequestResource());
     rest_api.register('image_upload',new ImageUploadResource());
-
     rest_api.register('og_action', new OGActionResource());
 };

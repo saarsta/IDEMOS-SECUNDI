@@ -77,7 +77,8 @@ function redirectAfterLogin(req,res,redirect_to) {
     res.redirect(redirect_to);
 };
 
-var isUserInDataBase = module.exports.isFacebookUserInDB = function (user_facebook_id, callback) {
+
+var isUserInDataBase = exports.isUserInDataBase = function(user_facebook_id, callback) {
 
     var user_model = models.User,
         flag = false, user;
@@ -103,6 +104,8 @@ var isUserInDataBase = module.exports.isFacebookUserInDB = function (user_facebo
         callback(flag,user);
     });
 }
+
+
 
 var createNewUser = module.exports.createNewFacebookUser = function (data, access_token, callback) {
 
@@ -133,7 +136,7 @@ var createNewUser = module.exports.createNewFacebookUser = function (data, acces
     });
 }
 
-function updateUesrAccessToken(data, access_token, callback) {
+var updateUesrAccessToken = exports.updateUesrAccessToken = function(data, access_token, callback) {
     var user_model = models.User;
 
     user_model.findOne({facebook_id: data.id}, function (err, user) {

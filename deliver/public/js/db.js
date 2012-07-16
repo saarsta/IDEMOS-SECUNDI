@@ -29,6 +29,19 @@ var db_functions = {
         $.ajax(options);
     },
 
+    getOrCreateUserByFBid: function(user_fb_id, access_token){
+        db_functions.loggedInAjax({
+            url: '/api/fb_connect',
+            type: "Post",
+            async: true,
+            success: function (data) {
+                console.log(data);
+
+                callback(data);
+            }
+        });
+    },
+
     registerUser: function(first_name, last_name, password, email, invitation, callback){
         db_functions.loggedInAjax({
             url: '/account/register',

@@ -54,13 +54,12 @@ dust.filters['tags'] = function(text) {
 
 dust.filters['post'] = function(text) {
     text = dust.filters['tags'](text);
-
-     text = text.replace(/\[quote="([^"]*)"\s*\]\n?((?:.|\n)*)?\n?\[\/quote\]\n?/g,
-        '<div class="post_quote"><a class="ref_link" href="javascript:void(0);">' +
+   text = text.replace(/\[quote="([^"]*)"\s*\]\n?((?:.|\n)*)?\n?\[\/quote\]\n?/g,
+        '<div class="post_quote" ><p style="font-style:italic" ><a class="ref_link" href="javascript:void(0);" style="display: block; margin-bottom: 8px; text-decoration: underline;">' +
             ' $1 כתב:' +
-            '</a><br><br>' +
-            '$2' + '</div><br><span class="actual_text">');
-    text = text.replace(/\n/g, '<br>') + '</span>';
+            '</a>' +
+            '$2' + '</p></div><br><p><span class="actual_text">');
+    text = text.replace(/\n/g, '<br>') + '</span></p>';
     return text;
 }
 

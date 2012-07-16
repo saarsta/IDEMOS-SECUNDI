@@ -32,7 +32,7 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
     },
 
     dispatch: function(){
-        this.token_price = common.getGamificationTokenPrice('vote_on_post');
+        this.token_price = common.getGamificationTokenPrice('vote_on_post') > -1 ? common.getGamificationTokenPrice('vote_on_post') : 0;
         this._super.apply(this,arguments);
     },
     //returns post_
