@@ -12,6 +12,7 @@
 module.exports.FB_SECRET = "<FB secret>";
 module.exports.FB_APP_NAME = "<App name as configured in FB's developers GUI>";
 module.exports.FB_ID = "<App ID as configured in FB's developers GUI>";
+module.exports.ROOT_PATH = "<This server root path include http>";
 
 
 /**
@@ -22,6 +23,7 @@ module.exports.load = function(app) {
     module.exports.FB_SECRET = app.settings.facebook_secret;
     module.exports.FB_ID = app.settings.facebook_app_id;
     module.exports.FB_APP_NAME = app.settings.facebook_app_name;
+    module.exports.ROOT_PATH = app.settings.root_path;
 };
 
 

@@ -22,21 +22,22 @@ SignedRequest.secret = config.FB_SECRET;
  * @param callback (optional) - the callback function for the action in the following
  * signature : function(err)
  */
-var doAction = function( err , data ,callback ){
-        var post_url = "https://graph.facebook.com/me/"+config.FB_APP_NAME+":"+data.action;
+var doAction = function(  data ,callback ){
+        var post_url = "https://graph.facebook.com/me/"+config.FB_APP_NAME+":"+data.action + '?access_token=' + data.access_token;
         var qs = new Object();
-        qs[data.object_name] = data.object_url;
+        qs[data.object_name] = config.ROOT_PATH + data.object_url;
         var options = {
             url : post_url,
             form : qs, //Maybe wrong way to transfer the data... //TODO check it!.
             method: "POST"
-        }
+        };
     request( options , function (error, response, body) {
         if (error) {
-                if (callback) callback( err );
+                if (callback) callback( error );
         }
         else if (response.statusCode!=200){
-                console.log("Failed to post action on FaceBook");
+                console.error("Failed to post action on FaceBook");
+                console.error(body);
                 if (callback) callback(null);
         }
         else{
@@ -80,9 +81,9 @@ var actionLinkHandler = function(  data , callback ){
                                 callback( err , false );
                             }
                             else{
-                                if ( suc ) doAction( null ,{
+                                if ( suc ) doAction({
                                     action: action,
-                                    object : rData.objects[0].url,
+                                    object_url : rData.objects[0].url,
                                     fid : rData.user_id
                                 }, null);
                                 callback( null , suc);
@@ -104,6 +105,6 @@ var actionLinkHandler = function(  data , callback ){
 /**
  * Exports
  */
-module.exports.getMetaDataSinppet = getMetaDataSinppet;
+module.exports.getMetaDataSinppet = '';//getMetaDataSinppet;
 module.exports.actionLinkHandler = actionLinkHandler;
 module.exports.doAction = doAction;

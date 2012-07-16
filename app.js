@@ -18,8 +18,13 @@ app.configure('development', function(){
     app.set('public_folder2', __dirname + '/public');
     app.set('port',80);
     app.set('facebook_app_id', '175023072601087');
-    app.set('facebook_app_name','uru');
+    app.set('facebook_app_name','uru_dev');
     app.set('facebook_secret', '5ef7a37e8a09eca5ee54f6ae56aa003f');
+
+//    app.set('facebook_app_id', '436675376363069');
+//    app.set('facebook_app_name','uru_staging');
+//    app.set('facebook_secret', '975fd0cb4702a7563eca70f11035501a');
+
     app.set('sendgrid_user','app2952775@heroku.com');
     app.set('sendgrid_key','a0oui08x');
     app.set('system_email','info@uru.org.il');

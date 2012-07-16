@@ -77,7 +77,7 @@ function redirectAfterLogin(req,res,redirect_to) {
     res.redirect(redirect_to);
 };
 
-module.exports.isFacebookUserInDB = function isUserInDataBase(user_facebook_id, callback) {
+var isUserInDataBase = module.exports.isFacebookUserInDB = function (user_facebook_id, callback) {
 
     var user_model = models.User,
         flag = false, user;
@@ -104,7 +104,7 @@ module.exports.isFacebookUserInDB = function isUserInDataBase(user_facebook_id, 
     });
 }
 
-module.exports.createNewFacebookUser = function createNewUser(data, access_token, callback) {
+var createNewUser = module.exports.createNewFacebookUser = function (data, access_token, callback) {
 
     var user = new models.User();
     user.username = data.username;
