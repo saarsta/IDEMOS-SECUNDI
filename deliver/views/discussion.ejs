@@ -3,11 +3,11 @@
 var error_message = error_message || '';
 %>
 <html>
-<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# uru_app: http://ogp.me/ns/fb/<%= settings.facebook_app_name %>#">
+<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# <%= settings.facebook_app_name %>: http://ogp.me/ns/fb/<%= settings.facebook_app_name %>#">
     <%- partial('partials/head.ejs') %>
     <script src="/resources/js/jquery-fieldselection.js" type="text/javascript"></script>
     <meta property="fb:app_id" content="<%= settings.facebook_app_id %>" />
-    <meta property="og:type"   content="uru_app:discussion" />
+    <meta property="og:type"   content="<%= settings.facebook_app_name %>:discussion" />
     <meta property="og:url"    content="<%= settings.root_path %>/discussions/<%= discussion.id %>" />
     <meta property="og:title"  content="<%=discussion.title%>" />
     <meta property="og:description"  content="<%=discussion.text_field%>" />
