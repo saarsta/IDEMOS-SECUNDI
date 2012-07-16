@@ -232,7 +232,6 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                     join_date:Date.now()
                 };
                 fields.is_published = true; //TODO this is only for now
-                fields.is_hidden = false;
                 // create text_field_preview - 200 chars
                 if (fields.text_field.length >= 200)
                     fields.text_field_preview = fields.text_field.substr(0, 200);
@@ -297,8 +296,10 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                     object_name:'discussion',
                     object_url : '/discussions/' + object.id,
                     fid : user.facebook_id,
-                    access_token:user.access_token
-                },cbk);
+                    access_token:user.access_token,
+                    user:user
+                });
+		cbk();
             }
         ],
             // Final) return discussion object
@@ -489,10 +490,10 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                                     object_name:'discussion',
                                     object_url : '/discussions/' + object.id,
                                     fid : user.facebook_id,
-                                    access_token:user.access_token
-                                },function(err) {
-                                    callback(err,object);
+                                    access_token:user.access_token,
+                                    user:user
                                 });
+                                callback(err,object);
                             }
                         })
                     });

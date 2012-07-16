@@ -15,7 +15,7 @@ module.exports = function(request_id, user,url,callback) {
     var fb_request = new models.FBRequest();
     fb_request.fb_request_ids = [request_id];
     fb_request.link = url;
-    fb_request.creator = user;
+    fb_request.creator = user._id;
 
     fb_request.save(callback);
 };

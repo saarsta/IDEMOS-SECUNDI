@@ -341,7 +341,16 @@ var Models = module.exports = {
 
     FooterLink : mongoose.model('FooterLink',require('./footer_link')),
 
-    Schemas:Schemas
+    Schemas:Schemas,
+    setDefaultPublish:function(is_publish) {
+        _.each(module.exports,function(model,name) {
+            if(typeof(model) == 'function' && model.schema) {
+                if(model.schema.path('is_hidden')) {
+                    model.schema.path('is_hidden').default(!is_publish);
+                }
+            }
+        })
+    }
 };
 
 
