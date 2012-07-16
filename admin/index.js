@@ -203,7 +203,7 @@ module.exports = function(app)
         list:['username']
     });
 
-    admin.registerMongooseModel('Footer_Link',mongoose.model('FooterLink'),null,{
+    admin.registerMongooseModel('FooterLink',mongoose.model('FooterLink'),null,{
         list:['tab','name'],
         order_by:['gui_order'],
         sortable:'gui_order'

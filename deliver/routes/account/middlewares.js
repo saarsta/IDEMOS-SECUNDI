@@ -77,14 +77,11 @@ exports.auth_middleware = function (req, res, next) {
                                         console.log('couldnt put user id' + err.message);
                                     next();
                                 });
-
-
                             })
-
                         }
                         else{
                             require('./logout')(req,res);
-                            next()
+
                         }
                     }
                 });
