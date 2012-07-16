@@ -81,34 +81,35 @@ var popupProvider={
     },
     showLoginPopup:function(popupConfig){
 
-        this.self = this;
-        var defaults = {
-            massage:''
-
-
-            ,onClosed :function(e){
-
-            }
-        };
-        popupConfig = $.extend(defaults,popupConfig);
-        this.popupConfig=popupConfig;
-        dust.render('popup_login', popupConfig, function(err,out) {
-            if (err) {
-                return;
-            }
-
-             $.colorbox({ html:out,
-                onComplete:function (e) {
-                  /*  $('.ok-button').click(popupConfig.onOkCilcked);
-                    $('.cancel-button').click(popupConfig.onCancelCilcked);
-                    $('.give-mandats-popup input').eq(realProxy).attr('checked', true);*/
-
-                },
-                onClosed:function (e) {
-                    popupConfig.onClosed(e);
-                }
-            });
-        });
+        popupProvider.showOkPopup({massage:"אנא התחבר למערכת"});
+//        this.self = this;
+//        var defaults = {
+//            massage:''
+//
+//
+//            ,onClosed :function(e){
+//
+//            }
+//        };
+//        popupConfig = $.extend(defaults,popupConfig);
+//        this.popupConfig=popupConfig;
+//        dust.render('popup_login', popupConfig, function(err,out) {
+//            if (err) {
+//                return;
+//            }
+//
+//             $.colorbox({ html:out,
+//                onComplete:function (e) {
+//                  /*  $('.ok-button').click(popupConfig.onOkCilcked);
+//                    $('.cancel-button').click(popupConfig.onCancelCilcked);
+//                    $('.give-mandats-popup input').eq(realProxy).attr('checked', true);*/
+//
+//                },
+//                onClosed:function (e) {
+//                    popupConfig.onClosed(e);
+//                }
+//            });
+//        });
 
     }
 
