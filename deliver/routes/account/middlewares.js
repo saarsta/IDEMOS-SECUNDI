@@ -81,7 +81,6 @@ exports.auth_middleware = function (req, res, next) {
                         }
                         else{
                             require('./logout')(req,res);
-
                         }
                     }
                 });
