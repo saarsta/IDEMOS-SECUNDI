@@ -19,5 +19,6 @@ var PostOrSuggestion = module.exports = {
     //this is for later when a user vote could be more than one vote
     tokens:{type:Number, 'default':0, index: true},
     popularity: {type:Number, 'default':0},
-    gamification: {high_number_of_tokens_bonus : {type: Boolean, 'default': false}}
+    gamification: {high_number_of_tokens_bonus : {type: Boolean, 'default': false}},
+    is_hidden:{type:Boolean,'default':true}
 };

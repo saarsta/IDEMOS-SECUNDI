@@ -1,4 +1,8 @@
 
+var mongoose = require('mongoose');
+
+mongoose.connect('mongodb://heroku_app2952775:nuulb7icv8aafrr7n592uie793@ds031107.mongolab.com:31107/heroku_app2952775');
+
 var
     app = require('../app'),
     models = require('../models'),
@@ -6,11 +10,9 @@ var
     templates = require('../lib/templates'),
     mail = require('../lib/mail'),
     crypto = require('crypto'),
-    mongoose = require('mongoose'),
     async = require('async');
 
 
-mongoose.connect('mongodb://heroku_app2952775:nuulb7icv8aafrr7n592uie793@ds031107.mongolab.com:31107/heroku_app2952775');
 
 app.set('root_path','http://www.uru.org.il');
 
