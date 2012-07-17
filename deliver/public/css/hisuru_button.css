@@ -1,0 +1,29 @@
+
+/*2894*/
+/*.comments-box .comment-one .user-right .left a*/
+.hisuru-commands a
+{
+    display: block;
+    background:#757d7e url(../images/search-submit.png) 0 0 repeat-x;
+    border: 1px solid #2e3030;
+    border-radius: 2px;
+    width: 85px;
+    height: 29px;
+    text-align: center;
+    color:#ffffff;
+    font: normal 18px/29px 'AdumaFOTRegular';
+    text-decoration: none;
+    margin: 0 auto 10px auto;
+
+}
+
+.hisuru-commands {
+    padding: 15px
+}
+
+.hisuru-commands .left {
+    padding: 20px 0 10px 0;
+    background: #eaeaea;
+    text-align: center;
+    width: 239px;
+}

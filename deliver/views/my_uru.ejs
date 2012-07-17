@@ -131,18 +131,17 @@
         <h2 style="visibility: hidden;">
             spaser
         </h2>
-        <div class="white-box deals-box" >
+        <div class="white-box">
 
+         <div class="hisuru-commands">
 
-          <!--  <div class="user-right side_menu">
-                <span class="arrow"></span>
 
                 <div class="left">
-                    &lt;!&ndash;id="add_or_remove_proxy"&ndash;&gt;
+
                     <a id="add_or_remove_proxy" href="javascript:void(0);" disabled="disabled">
                         תן מנדט
                     </a>
-                    <a href="javascript:void(0);" class="follow_user gray_and_soon">
+                    <a href="#" id="folowBT" class="follow_user gray_and_soon">
                         עקוב
                     </a>
                     <a href="javascript:void(0);"  class="gray_and_soon">
@@ -150,7 +149,7 @@
                     </a>
                 </div>
 
-            </div>-->
+            </div>
 
 
 
@@ -223,7 +222,11 @@
     $(function(){
 
         //$(".search-result-box .tabs").tabs();
+
         var userId='<%=pageUser._id %>';
+        var currentUserId='<%=user._id %>';
+        var proxy = JSON.parse('<%-proxy%>');
+
 
 
         function tabSelected(event, ui){
@@ -359,6 +362,37 @@
         });*/
 
 
+        $('#folowBT').click(function (e) {
+          //  var creator_id = $(this).parents('.comment-one,.one').data("creator_id");
+
+            var self = this;
+            db_functions.joinOrLeaveUserFollowers(userId, function (err, user) {
+                if (user.is_follower)
+                    $(self).text("עקוב");
+                else
+                    $(self).text("עזוב");
+
+
+            });
+        });
+
+
+        $('#add_or_remove_proxy').click(function (e) {
+
+           // var userData = $(this).parents('.discussion-item');
+            var proxyId = userId //userData.data('creator_id');
+            var userName = '<%=pageUser.first_name %>';
+            if(currentUserId===userId){ //cant give proxy to myself
+                return ;
+            }
+            e.preventDefault();
+            proxyCommon.addOrRemoveProxy(proxy,proxyId,userName,currentUserId,function(newProxy){
+                proxy=newProxy;
+
+            })
+
+
+         });
     });
 </script>
 
