@@ -248,9 +248,7 @@ var Schemas = exports.Schemas = {
         X_tokens_for_all_my_posts: {type: Number, 'default': 1000000},
         X_suggestions_for_a_discussion: {type: Number, 'default': 1000000},
         discussion_high_graded_by_min_of_X_people: {type: Number, 'default': 1000000},
-        spend_tokens_for_X_days_in_a_row: {type: Number, 'default': 1000000},
-        X_tokens_for_all_my_posts: {type: Number, 'default': 1000000}
-
+        spend_tokens_for_X_days_in_a_row: {type: Number, 'default': 1000000}
     },
 
     ThresholdCalcVariables: {
@@ -343,7 +341,16 @@ var Models = module.exports = {
 
     FooterLink : mongoose.model('FooterLink',require('./footer_link')),
 
-    Schemas:Schemas
+    Schemas:Schemas,
+    setDefaultPublish:function(is_publish) {
+        _.each(module.exports,function(model,name) {
+            if(typeof(model) == 'function' && model.schema) {
+                if(model.schema.path('is_hidden')) {
+                    model.schema.path('is_hidden').default(!is_publish);
+                }
+            }
+        })
+    }
 };
 
 

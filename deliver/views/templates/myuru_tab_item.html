@@ -1,0 +1,29 @@
+<div class="one" data-id="{_id}" >
+    {?image_field_preview.url}
+    <a href="../{type}/{_id}">
+        <div style="width:138px; height:88px;" class="auto-scale floatRight">
+            <img  class="floatRight"  src="{image_field_preview.url}" alt="{title}" title="{title}"/>
+        </div>
+    </a>
+    {/image_field_preview.url}
+    <!-- <img class="floatRight" src="images/sample-6.jpg" alt="" />-->
+    <div style="height: 92px">
+        <h4 style="overflow: hidden;height: 35px; font-size:15px;">{title}</h4>
+        <!-- <p>{subject_name}<br />{creation_date|date}</p>-->
+        <div>
+            <div style="overflow: hidden;height:20px">{subject_name}</div>
+            {creation_date|date}
+        </div>
+    </div>
+    <div class="btn-box">
+        {?is_follower}
+        <a class="join_button" data-action="leave" href="">הפסק לעקוב</a>
+        {:else}
+
+        <a  class="join_button" data-action="follower" href="">
+            עקוב
+        </a>
+        {/is_follower}
+
+    </div>
+</div>

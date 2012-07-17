@@ -12,7 +12,32 @@ exports.referred_by_middleware = function(req,res,next)
         });
     }
     else
-        next();
+    {
+        if('fb_action_ids' in req.query) {
+            models.FBRequest.findOne().where('fb_request_ids',req.query['fb_action_ids']).exec(function(err,obj) {
+                if(err) {
+                    console.error('couldn\'t failed getting link from obj');
+                    console.error(err);
+                    next();
+                }
+                else {
+                    if(obj && obj.creator) {
+                        req.session.referred_by = obj.creator + '';
+                        req.session.save(function() {
+                            next();
+                        });
+                    }
+                    else {
+                        console.error('couldn\'t find fb_request_id ');
+                        next();
+                    }
+                }
+
+            });
+        }
+        else
+            next();
+    }
 };
 
 exports.auth_middleware = function (req, res, next) {

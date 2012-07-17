@@ -11,6 +11,7 @@ module.exports = function (req, res) {
         isHisuru=false;
     }
 
+
     async.waterfall([
         function (cbk) {
             models.User.findById(userID, ["tokens", "num_of_extra_tokens", "proxy", "biography","first_name","last_name","facebook_id", "avatar","score"], function(err, user){
@@ -65,7 +66,9 @@ module.exports = function (req, res) {
                 user_logged:req.isAuthenticated(),
                 url:req.url,
                 tokensBarModel:tokensBarModel,
-                tab:''
+                tab:'',
+                isHisUru:isHisuru
+
             });
     })
 };

@@ -29,6 +29,19 @@ var db_functions = {
         $.ajax(options);
     },
 
+    getOrCreateUserByFBid: function(user_fb_id, access_token){
+        db_functions.loggedInAjax({
+            url: '/api/fb_connect',
+            type: "Post",
+            async: true,
+            success: function (data) {
+                console.log(data);
+
+                callback(data);
+            }
+        });
+    },
+
     registerUser: function(first_name, last_name, password, email, invitation, callback){
         db_functions.loggedInAjax({
             url: '/account/register',
@@ -155,16 +168,18 @@ var db_functions = {
         });
     },
 
-    getNotifications: function(limit, callback){
+    getNotifications: function(user_id, limit, callback){
         db_functions.loggedInAjax({
-            url: '/api/notifications?' + (limit? '&limit='+limit:''),
+            url: '/api/notifications?' + (user_id? '&user_id='+user_id:'') + (limit? '&limit='+limit:''),
             type: "GET",
             async: true,
+
             success: function (data) {
                 callback(data);
             }
         });
     },
+
     getAndRenderFooterTags:function()
     {
         db_functions.loggedInAjax({
@@ -253,7 +268,7 @@ var db_functions = {
 
             error:function(err){
                 if(err.responseText == "vision can't be more than 800 words")
-                    alert("חזון הדיון צריך להיות 800 מילים לכל היותר");
+                    popupProvider.showOkPopup({massage:"חזון הדיון צריך להיות 800 מילים לכל היותר"});
                 else if (err.responseText == "you don't have the min amount of tokens to open discussion")
                     popupProvider.showOkPopup( {massage:"מצטערים, אין לך מספיק אסימונים..."});
                 callback(err, null);
@@ -462,7 +477,8 @@ var db_functions = {
             },
             error:function(err){
                 if(err.responseText != "not authenticated")
-                    alert(err.responseText);
+                    if(err.responseText == "must grade discussion first")
+                        popupProvider.showOkPopup({massage:'אנא דרג קודם את החזון בראש העמוד.'})
                 callback(err, null);
             }
         });

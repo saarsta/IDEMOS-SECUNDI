@@ -6,6 +6,10 @@ module.exports = j_forms.forms.AdminForm.extend({
         this._super();
         if(this.fields['num_of_given_mandates'])
             this.fields['num_of_given_mandates'].widget.attrs['readonly'] = 'readonly';
+        if(this.fields['tokens'])
+            this.fields['tokens'].widget.attrs['readonly'] = 'readonly';
+        if(this.fields['num_of_extra_tokens'])
+            this.fields['num_of_extra_tokens'].widget.attrs['readonly'] = 'readonly';
     },
     actual_save : function(callback)
     {

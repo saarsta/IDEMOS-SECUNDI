@@ -1,8 +1,8 @@
 var resources = require('jest'),
-    util = require('util'),
     models = require('../models'),
     common = require('./common'),
     async = require('async'),
+    og_action = require('../og/og').doAction,
     _ = require('underscore'),
     notifications = require('./notifications');
 
@@ -159,8 +159,9 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
         var object = new self.model();
         var user = req.user;
         var created_discussion_id;
+        var info_items;
 
-        var min_tokens = common.getGamificationTokenPrice('min_tokens_to_create_dicussion') > 0 ? common.getGamificationTokenPrice('min_tokens_to_create_dicussion') : 10;
+        var min_tokens = common.getGamificationTokenPrice('min_tokens_to_create_dicussion') > -1 ? common.getGamificationTokenPrice('min_tokens_to_create_dicussion') : 10;
 //        var total_tokens = user.tokens + user.num_of_extra_tokens;
 
         var iterator = function (info_item, itr_cbk) {
@@ -173,14 +174,34 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                 }
             }
             info_item.save(itr_cbk());
-        }
+        };
 
-        models.InformationItem.find({users:req.user._id}, function (err, info_items) {
-            if (!err) {
+        /**
+         * Waterfall:
+         * 1) get user shopping cart information items
+         * 2) check if has enough tokens, get subject
+         * 3) set fields, send to authorization
+         * 4) save the discussion object
+         * 5) remove information items from user shopping cart
+         * 6) add discussion to user discussions (as a follower)
+         * 7) set gamification details, create notifications
+         * 8) publish to facebook
+         * Final) return discussion object (or error)
+         */
+        async.waterfall([
+
+            // 1) get user shopping cart information items
+            function(cbk) {
+                models.InformationItem.find({users:req.user._id},cbk);
+            },
+
+            // 2) check if has enough tokens, get subject
+            function(_info_items,cbk) {
+                info_items = _info_items;
                 var count = info_items.length;
                 var user_cup = 9 + user.num_of_extra_tokens;
                 if (user_cup < min_tokens && user_cup < min_tokens - (Math.min(Math.floor(count / 2), 2))) {
-                    callback({message:"you don't have the min amount of tokens to open discussion", code:401}, null);
+                    cbk({message:"you don't have the min amount of tokens to open discussion", code:401}, null);
                 }
                 else {
                     //vision cant be more than 800 words
@@ -189,89 +210,210 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
 
                     _.each(vision_splited_to_words, function (word) {
                         if (word != " " && word != "") words_counter++
-                    })
+                    });
                     if (words_counter >= 800) {
-                        callback({message:"vision can't be more than 800 words", code:401}, null);
+                        cbk({message:"vision can't be more than 800 words", code:401}, null);
                     } else {
 
                         //get subject_name
-                        models.Subject.findById(fields.subject_id, function (err, subject) {
-                            if (!err) {
-                                fields.subject_name = subject.name;
-                                fields.creator_id = user_id;
-                                fields.first_name = user.first_name;
-                                fields.last_name = user.last_name;
-                                fields.users = {
-                                    user_id:user_id,
-                                    join_date:Date.now()
-                                };
-                                fields.is_published = true; //TODO this is only for now
-                                fields.is_hidden = false;
-                                // create text_field_preview - 200 chars
-                                if (fields.text_field.length >= 200)
-                                    fields.text_field_preview = fields.text_field.substr(0, 200);
-                                else
-                                    fields.text_field_preview = fields.text_field;
-
-                                for (var field in fields) {
-                                    object.set(field, fields[field]);
-                                }
-
-                                self.authorization.edit_object(req, object, function (err, object) {
-                                    if (err) callback(err);
-                                    else {
-                                        //if success with creating new discussion - add discussion to user schema
-                                        object.save(function (err, obj) {
-                                            if (!err) {
-                                                created_discussion_id = obj._id;
-
-                                                //add info items to discussion shopping cart and delete it from user's shopping cart
-                                                async.forEach(info_items, iterator, function (err, result) {
-                                                    if (!err) {
-                                                        var user_discussion = {
-                                                            discussion_id:obj._id,
-                                                            join_date:Date.now()
-                                                        }
-
-                                                        if (object.is_published) {
-                                                            models.User.update({_id:user._id}, {$addToSet:{discussions:user_discussion}}, function (err, num) {
-                                                                if (!err) {
-
-                                                                    //set gamification
-                                                                    req.gamification_type = "discussion";
-                                                                    req.token_price = common.getGamificationTokenPrice('create_discussion') > 0 ? common.getGamificationTokenPrice('create_discussion') : 3;
-
-                                                                    //find all information items and set notifications for their owners
-                                                                    notifications_for_the_info_items_relvant(obj._id, user_id, function (err, args) {
-                                                                        callback(err, obj);
-                                                                    })
-                                                                } else
-                                                                    callback(err, obj);
-                                                            });
-                                                        } else {
-                                                            callback(err, obj);
-                                                        }
-                                                    } else {
-                                                        callback(err, object);
-                                                    }
-                                                })
-                                            } else {
-                                                callback(err, object);
-                                            }
-                                        });
-                                    }
-                                });
-                            }
-                            else {
-                                callback(err, null);
-                            }
-                        })
+                    models.Subject.findById(fields.subject_id, cbk);
                     }
                 }
-            } else {
-                callback(err, null);
+            },
+
+            // 3) set fields, send to authorization
+            function(subject,cbk) {
+                fields.subject_name = subject.name;
+                fields.creator_id = user_id;
+                fields.first_name = user.first_name;
+                fields.last_name = user.last_name;
+                fields.users = {
+                    user_id:user_id,
+                    join_date:Date.now()
+                };
+                fields.is_published = true; //TODO this is only for now
+                // create text_field_preview - 200 chars
+                if (fields.text_field.length >= 200)
+                    fields.text_field_preview = fields.text_field.substr(0, 200);
+                else
+                    fields.text_field_preview = fields.text_field;
+
+                for (var field in fields) {
+                    object.set(field, fields[field]);
+                }
+
+                req.gamification_type = "discussion";
+                req.token_price = common.getGamificationTokenPrice('create_discussion') > -1 ? common.getGamificationTokenPrice('create_discussion') : 3;
+                self.authorization.edit_object(req, object, cbk);
+            },
+
+            // 4) save the discussion object
+            function(object,cbk) {
+                object.save(function (err, object) {
+                    cbk(err,object)
+                });
+            },
+
+            // 5) remove information items from user shopping cart
+            function(obj,cbk) {
+                created_discussion_id = obj._id;
+
+                //add info items to discussion shopping cart and delete it from user's shopping cart
+                async.forEach(info_items, iterator, function (err) {
+                    cbk(err);
+                });
+            },
+
+            // 6) add discussion to user discussions (as a follower)
+            function(cbk) {
+                var user_discussion = {
+                    discussion_id:object._id,
+                    join_date:Date.now()
+                };
+
+                if (object.is_published)
+                    models.User.update({_id:user._id}, {$addToSet:{discussions:user_discussion}},function(err) {
+                        cbk(err);
+                    });
+                else
+                    callback(null,object);
+            },
+
+            // 7) set gamification details, create notifications
+            function(cbk) {
+                //set gamification
+
+
+                //find all information items and set notifications for their owners
+                notifications_for_the_info_items_relvant(object._id, user_id,function(err) {
+                    cbk(err);
+                });
+            },
+
+            // 8) publish to facebook
+            function(cbk) {
+                og_action({
+                    action: 'created',
+                    object_name:'discussion',
+                    object_url : '/discussions/' + object.id,
+                    fid : user.facebook_id,
+                    access_token:user.access_token,
+                    user:user
+                });
+		        cbk();
             }
-        })
+        ],
+            // Final) return discussion object
+            function(err) {
+            callback(err,object);
+        });
+
+//        models.InformationItem.find({users:req.user._id}, function (err, info_items) {
+//            if (!err) {
+//                var count = info_items.length;
+//                var user_cup = 9 + user.num_of_extra_tokens;
+//                if (user_cup < min_tokens && user_cup < min_tokens - (Math.min(Math.floor(count / 2), 2))) {
+//                    callback({message:"you don't have the min amount of tokens to open discussion", code:401}, null);
+//                }
+//                else {
+//                    //vision cant be more than 800 words
+//                    var vision_splited_to_words = fields.text_field.split(" ");
+//                    var words_counter = 0;
+//
+//                    _.each(vision_splited_to_words, function (word) {
+//                        if (word != " " && word != "") words_counter++
+//                    })
+//                    if (words_counter >= 800) {
+//                        callback({message:"vision can't be more than 800 words", code:401}, null);
+//                    } else {
+//
+//                        //get subject_name
+//                        models.Subject.findById(fields.subject_id, function (err, subject) {
+//                            if (!err) {
+//                                fields.subject_name = subject.name;
+//                                fields.creator_id = user_id;
+//                                fields.first_name = user.first_name;
+//                                fields.last_name = user.last_name;
+//                                fields.users = {
+//                                    user_id:user_id,
+//                                    join_date:Date.now()
+//                                };
+//                                fields.is_published = true; //TODO this is only for now
+//                                fields.is_hidden = false;
+//                                // create text_field_preview - 200 chars
+//                                if (fields.text_field.length >= 200)
+//                                    fields.text_field_preview = fields.text_field.substr(0, 200);
+//                                else
+//                                    fields.text_field_preview = fields.text_field;
+//
+//                                for (var field in fields) {
+//                                    object.set(field, fields[field]);
+//                                }
+//
+//                                self.authorization.edit_object(req, object, function (err, object) {
+//                                    if (err) callback(err);
+//                                    else {
+//                                        //if success with creating new discussion - add discussion to user schema
+//                                        object.save(function (err, obj) {
+//                                            if (!err) {
+//                                                created_discussion_id = obj._id;
+//
+//                                                //add info items to discussion shopping cart and delete it from user's shopping cart
+//                                                async.forEach(info_items, iterator, function (err, result) {
+//                                                    if (!err) {
+//                                                        var user_discussion = {
+//                                                            discussion_id:obj._id,
+//                                                            join_date:Date.now()
+//                                                        }
+//
+//                                                        if (object.is_published) {
+//                                                            models.User.update({_id:user._id}, {$addToSet:{discussions:user_discussion}}, function (err, num) {
+//                                                                if (!err) {
+//
+//                                                                    //set gamification
+//                                                                    req.gamification_type = "discussion";
+//                                                                    req.token_price = common.getGamificationTokenPrice('create_discussion') > 0 ? common.getGamificationTokenPrice('create_discussion') : 3;
+//
+//                                                                    //find all information items and set notifications for their owners
+//                                                                    notifications_for_the_info_items_relvant(obj._id, user_id, function (err, args) {
+//                                                                        og_action({
+//                                                                            action: 'create',
+//                                                                            object_name:'disscusion',
+//                                                                            object_url : '/discussions/' + object.id,
+//                                                                            fid : user.facebook_id
+//                                                                        },function(err) {
+//                                                                            callback(err,obj);
+//                                                                        });
+//
+//                                                                        callback(err, obj);
+//                                                                    })
+//                                                                } else
+//                                                                    callback(err, obj);
+//                                                            });
+//                                                        } else {
+//                                                            callback(err, obj);
+//                                                        }
+//                                                    } else {
+//                                                        callback(err, object);
+//                                                    }
+//                                                })
+//                                            } else {
+//                                                callback(err, object);
+//                                            }
+//                                        });
+//                                    }
+//                                });
+//                            }
+//                            else {
+//                                callback(err, null);
+//                            }
+//                        })
+//                    }
+//                }
+//            } else {
+//                callback(err, null);
+//            }
+//        })
     },
 
     update_obj:function (req, object, callback) {
@@ -335,12 +477,25 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                     callback("this discussion is already published", null);
                 } else {
                     req.gamification_type = "discussion";
-                    req.token_price = common.getGamificationTokenPrice('create_discussion') > 0 ? common.getGamificationTokenPrice('create_discussion') : 3;
+                    req.token_price = common.getGamificationTokenPrice('create_discussion') > -1 ? common.getGamificationTokenPrice('create_discussion') : 3;
                     object.is_published = true;
 
                     object.save(function (err, disc_obj) {
                         notifications_for_the_info_items_relvant(disc_obj._id, user._id, function (err, args) {
-                            callback(err, args);
+                            if(err)
+                                callback(err);
+                            else {
+                                // publish to facebook
+                                og_action({
+                                    action: 'created',
+                                    object_name:'discussion',
+                                    object_url : '/discussions/' + object.id,
+                                    fid : user.facebook_id,
+                                    access_token:user.access_token,
+                                    user:user
+                                });
+                                callback(err,object);
+                            }
                         })
                     });
                 }
@@ -413,4 +568,6 @@ function notifications_for_the_info_items_relvant(discussion_id, notificator_id,
         callback(err, arg);
     })
 }
+
+
 

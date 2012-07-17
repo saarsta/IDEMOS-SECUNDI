@@ -12,6 +12,21 @@
 module.exports.FB_SECRET = "<FB secret>";
 module.exports.FB_APP_NAME = "<App name as configured in FB's developers GUI>";
 module.exports.FB_ID = "<App ID as configured in FB's developers GUI>";
+module.exports.ROOT_PATH = "<This server root path include http>";
+
+
+/**
+ * Loads the configs from the app settings
+ * @param app
+ */
+module.exports.load = function(app) {
+    module.exports.FB_SECRET = app.settings.facebook_secret;
+    module.exports.FB_ID = app.settings.facebook_app_id;
+    module.exports.FB_APP_NAME = app.settings.facebook_app_name;
+    module.exports.ROOT_PATH = app.settings.root_path;
+};
+
+
 /**
  *  The function defined here will get a fid of an user that pressed on an
  *  action link in FB.
@@ -31,9 +46,7 @@ module.exports.FB_ID = "<App ID as configured in FB's developers GUI>";
  *                              }
  * @param callback - function( err , user )
  */
-module.exports.userFinder = function ( err , data , callback ){
-
-}
+module.exports.userFinder = require('./integration/user_finder');
 
 /**
  *  The supported actions will be defined here.
@@ -57,38 +70,24 @@ module.exports.userFinder = function ( err , data , callback ){
  */
 module.exports.actions = {
     "comment" : {
-        action_link_cb : function(err , data , callback){
-            callback(null , true);
-        }
+        action_link_cb : require('./integration/comment')
     }
     ,"create" : {
-        action_link_cb : function(err , data , callback){
-            callback(null , true);
-        }
+        action_link_cb : require('./integration/create')
     }
     ,"go" : {
-        action_link_cb : function(err , data , callback){
-            callback(null , true);
-        }
+        action_link_cb : require('./integration/go')
     }
     ,"rank" : {
-        action_link_cb : function(err , data , callback){
-            callback(null , true);
-        }
+        action_link_cb : require('./integration/rank')
     }
     ,"suggest" : {
-        action_link_cb : function(err , data , callback){
-            callback(null , true);
-        }
+        action_link_cb : require('./integration/suggest')
     }
     ,"support" : {
-        action_link_cb : function(err , data , callback){
-            callback(null , true);
-        }
+        action_link_cb : require('./integration/support')
     }
     ,"join" : {
-        action_link_cb : function(err , data , callback){
-            callback(null , true);
-        }
+        action_link_cb : require('./integration/join')
     }
 }
