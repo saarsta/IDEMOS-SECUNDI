@@ -23,7 +23,7 @@ module.exports ={
 
        if(user_id){
            models.User.findById(user_id, function(err, user){
-               if(!err){
+               if(!err && user){
                    if(user.validation_code ==  validation_code){
                        user.password = common.hash_password(password);
                        user.save(function(err, user){
@@ -50,7 +50,6 @@ module.exports ={
                }else{
                    res.send('something wrong', 500);
                }
-
            })
        } else{
            res.send('something wrong', 500);
