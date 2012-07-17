@@ -5,9 +5,9 @@ var TokensBarModel= require('./tokensBarModel')
 module.exports = function (req, res) {
 
     var isHisuru=req.params[0]? true: false;
-    var userID= isHisuru? req.params[0]: req.session.user._id;
+    var userID = isHisuru? req.params[0]: req.session.user._id;
     var user = req.session.user;
-    if(isHisuru&&  userID===req.session.user._id){
+    if(isHisuru &&  userID === req.session.user._id){
         isHisuru=false;
     }
 
@@ -44,7 +44,24 @@ module.exports = function (req, res) {
                     itr_cbk();
                 })
             }, function (err, ocj) {
-                cbk(err, user_obj);
+
+                //put proxy on curr user -- for his uru
+                if(userID != user._id){
+                    async.forEach(user.proxy, function (proxy_user, itr_cbk) {
+                        models.User.findById(proxy_user.user_id, ["_id", "first_name", "last_name", "facebook_id", "avatar","score"], function (err, curr_proxy_user) {
+                            if (!err && curr_proxy_user !== null) {
+                                curr_proxy_user.avatar = curr_proxy_user.avatar_url();
+                                proxy_user.details = curr_proxy_user;
+                            }
+                            if(curr_proxy_user == null)
+                                console.error("curr_proxy_user is null");
+                            itr_cbk();
+                        })
+                    }, function(err, ocj){
+                        cbk(err, user_obj);
+                    })
+                }else
+                    cbk(err, user_obj);
             })
         }
 
@@ -72,6 +89,7 @@ module.exports = function (req, res) {
                 user:user,//current user
                 pageUser:user_obj ,///  hisuru user
                 avatar:user_obj.avatar_url(),
+                curr_user_proxy: user ? user.proxy : null,
                 user_logged:req.isAuthenticated(),
                 url:req.url,
                 tokensBarModel:tokensBarModel,
