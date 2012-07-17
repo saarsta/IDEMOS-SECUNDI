@@ -28,7 +28,8 @@ var FbConnectResource = module.exports =  jest.Resource.extend({
                     callback(err)
                 else{
                     if(is_authenticated){
-                        var a = req;
+                        var user = req.session.user;
+                        callback(null, user);
                     }else{
                         callback({message: "error: not authenticated"});
                     }

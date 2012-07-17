@@ -126,6 +126,17 @@ var popupProvider={
 
                     });
 
+                    $("#fb_ajax_conncect").live('click', function(){
+                            facebookLogin(function(err, result){
+                                if(!err){
+                                    callback(err, result);
+                                    $.colorbox.close();
+                                }else{
+                                    callback(err, result);
+                                    $("#login_title").text(err);
+                                }
+                            })
+                    })
                 },
                 onClosed:function (e) {
                     popupConfig.onClosed(e);

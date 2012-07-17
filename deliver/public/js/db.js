@@ -18,11 +18,14 @@ var db_functions = {
                         else{
                             var success = options.success;
                             options.success = function(){
-                              success.apply(this, arguments);
-                              window.location.href = window.location.href;
-                            }
+                                success.apply(this, arguments);
+                                window.location.href = window.location.href;
+                            };
+                            options.error = function() {
+                                onError.apply(this,arguments);
+                                window.location.href = window.location.href;
+                            };
                             $.ajax(options);
-
                         }
                     });
                 }else if (xhr.responseText == 'Error: Unauthorized - there is not enought tokens')
@@ -54,6 +57,23 @@ var db_functions = {
                 callback(err, null);
             }
         });
+    },
+
+    getUserAfterFbConnect: function(fb_id, access_token, callback){
+            this.loggedInAjax({
+                url: '/api/fb_connect',
+                type: "POST",
+                async: true,
+                data: {fb_id: fb_id, access_token: access_token},
+
+                success: function (err, data) {
+                    callback(null, data);
+                },
+
+                error: function(err, data){
+                    callback(err, null);
+                }
+            });
     },
 
     getOrCreateUserByFBid: function(user_fb_id, access_token){

@@ -2,7 +2,8 @@ var Basic = require("connect-auth").Basic
     ,common = require('./common')
     ,async = require('async')
     ,Models = require('../../../models')
-    ,facebook_login = require('./facebook_login');
+    ,facebook_login = require('./facebook_login')
+    ,https = require('https');
 
 var FbServerAuthentication = module.exports = function (options) {
     options = options || {};
@@ -31,12 +32,16 @@ var FbServerAuthentication = module.exports = function (options) {
             function(user, cbk){
                 fb_user_details = user;
                 fb_user_details.invited_by = request.session['referred_by'];
-                facebook_login.isUserInDataBase(fb_id, cbk);
+                facebook_login.isUserInDataBase(fb_id, function(err, is_in_db){
+                    cbk(err, is_in_db);
+                });
             },
 
             function(is_user_in_db, cbk){
                 if(is_user_in_db)
-                    facebook_login.updateUesrAccessToken(fb_user_details, access_token, cbk);
+                    facebook_login.updateUesrAccessToken(fb_user_details, access_token, function(err, user_id){
+                        cbk(err, user_id);
+                    });
                 else
                     facebook_login.createNewUser(fb_user_details, access_token, cbk)
             },

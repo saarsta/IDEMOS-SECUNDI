@@ -7,18 +7,31 @@ module.exports = function (req, res) {
     var isHisuru=req.params[0]? true: false;
     var userID = isHisuru? req.params[0]: req.session.user._id;
     var user = req.session.user;
+    var curr_user;
+
     if(isHisuru &&  userID === req.session.user._id){
         isHisuru=false;
     }
+
 
 
     async.waterfall([
         function (cbk) {
             models.User.findById(userID, ["tokens", "num_of_extra_tokens", "proxy", "biography","first_name","last_name","facebook_id", "avatar","score"], function(err, user){
                 req.session.user.biography = user.biography;
+
                 cbk(err, user);
             })
         },
+
+//        switch this with the above
+//        models.User.findById(userID)
+//            .select(["tokens", "num_of_extra_tokens", "proxy", "biography","first_name","last_name","facebook_id", "avatar","score"])
+//            .populate("proxy.user_id")
+//            .exec(function(err, user){
+//                req.session.user.biography = user.biography;
+//                cbk(err, user);
+//            })
 
         function (user_obj, cbk) {
 
@@ -32,6 +45,8 @@ module.exports = function (req, res) {
             if(!user_obj.proxy){
                 user_obj.proxy = [];
             }
+
+
             async.forEach(user_obj.proxy, function (proxy_user, itr_cbk) {
                 models.User.findById(proxy_user.user_id, ["_id", "first_name", "last_name", "facebook_id", "avatar","score"], function (err, curr_proxy_user) {
                     if (!err && curr_proxy_user !== null) {
@@ -47,18 +62,25 @@ module.exports = function (req, res) {
 
                 //put proxy on curr user -- for his uru
                 if(userID != user._id){
-                    async.forEach(user.proxy, function (proxy_user, itr_cbk) {
-                        models.User.findById(proxy_user.user_id, ["_id", "first_name", "last_name", "facebook_id", "avatar","score"], function (err, curr_proxy_user) {
-                            if (!err && curr_proxy_user !== null) {
-                                curr_proxy_user.avatar = curr_proxy_user.avatar_url();
-                                proxy_user.details = curr_proxy_user;
-                            }
-                            if(curr_proxy_user == null)
-                                console.error("curr_proxy_user is null");
-                            itr_cbk();
-                        })
-                    }, function(err, ocj){
-                        cbk(err, user_obj);
+                    models.User.findById(user._id, function(err, user){
+                        if(err || !user)
+                            cbk(err, user_obj);
+                        else{
+                            curr_user = user;
+                            async.forEach(curr_user.proxy, function (proxy_user, itr_cbk) {
+                                models.User.findById(proxy_user.user_id, ["_id", "first_name", "last_name", "facebook_id", "avatar","score"], function (err, curr_proxy_user) {
+                                    if (!err && curr_proxy_user !== null) {
+                                        curr_proxy_user.avatar = curr_proxy_user.avatar_url();
+                                        proxy_user.details = curr_proxy_user;
+                                    }
+                                    if(curr_proxy_user == null)
+                                        console.error("curr_proxy_user is null");
+                                    itr_cbk();
+                                })
+                            }, function(err, ocj){
+                                cbk(err, user_obj);
+                            })
+                        }
                     })
                 }else
                     cbk(err, user_obj);
@@ -75,6 +97,7 @@ module.exports = function (req, res) {
         var proxy = user_obj.proxy;
         var tokensBarModel = new TokensBarModel(9, num_of_extra_tokens, tokens, proxy);
 
+        var proxyJson=isHisuru? JSON.stringify(user.proxy):  JSON.stringify(proxy);
         console.log(req.session.avatar_url);
         console.log(user_obj.avatar_url());
         console.log(user_obj);
@@ -89,12 +112,14 @@ module.exports = function (req, res) {
                 user:user,//current user
                 pageUser:user_obj ,///  hisuru user
                 avatar:user_obj.avatar_url(),
-                curr_user_proxy: user ? user.proxy : null,
+                curr_user_proxy: curr_user ? curr_user.proxy : null,
                 user_logged:req.isAuthenticated(),
                 url:req.url,
                 tokensBarModel:tokensBarModel,
                 tab:'',
-                isHisUru:isHisuru
+		        isHisUru:isHisuru,
+                proxy:proxyJson
+
             });
     })
 };

@@ -48,10 +48,7 @@ function facebookLogin(callback) {
 
             // send response.authResponse.accessToken
             db_functions.getUserAfterFbConnect(response.authResponse.userID, response.authResponse.accessToken, function(err, user){
-                if(err)
-                    console.error(error)
-                else
-                    console.log(user);
+               callback(err, user);
             });
 
         } else {
