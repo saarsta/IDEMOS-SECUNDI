@@ -23,7 +23,7 @@ var resources = require('jest'),
 
 var SuggestionResource = module.exports = common.GamificationMongooseResource.extend({
     init:function () {
-        this._super(models.Suggestion, 'suggestion', /*common.getGamificationTokenPrice('suggestion')*/2);
+        this._super(models.Suggestion, 'suggestion', common.getGamificationTokenPrice('suggestion_on_discussion') > -1 ? common.getGamificationTokenPrice('suggestion') : 0);
         this.allowed_methods = ['get', 'post', 'put'];
 //        this.authorization = new Authoriztion();
         this.authentication = new common.SessionAuthentication();

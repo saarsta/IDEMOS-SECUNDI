@@ -160,9 +160,7 @@ $(function(){
 
 
 
-    $("#fb_ajax_conncect").live('click', function(){
 
-    })
 
     var host = window.location.protocol + '//' + window.location.host;
 
