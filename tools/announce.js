@@ -12,7 +12,7 @@ var
 
 mongoose.connect('mongodb://heroku_app2952775:nuulb7icv8aafrr7n592uie793@ds031107.mongolab.com:31107/heroku_app2952775');
 
-app.set('root_path','http://uru-staging.herokuapp.com');
+app.set('root_path','http://www.uru.org.il');
 
 
 var announceToUser = function(user,callback)
@@ -109,6 +109,11 @@ readLines(filename,function(line)
     var email = cells[2].trim();
     var user_code = cells[3].trim();
     var referral_code = cells[4].trim();
+    if(referral_code == 'undefined')
+        referral_code = '';
+    if(referral_code == 'null')
+        referral_code = '';
+
     if(!email || !/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}/.test(email))
         return;
     callbacks++;
@@ -130,11 +135,15 @@ readLines(filename,function(line)
             if(isNew)
                 afterCreate(user);
             else
-                onFinish(err);
+                onFinish();
         });
     }
     function afterCreate(user) {
-        announceToUser(user,onFinish);
+        announceToUser(user,function(err){
+            if(err)
+                console.error(err);
+            onFinish();
+        });
     }
 
     models.User.findOne({email:email},function(err,user)

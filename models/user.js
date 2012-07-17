@@ -28,7 +28,7 @@ var User = module.exports = new Schema({
     access_token:String,
     first_name:{type:String, required:true, validate:MinLengthValidator(2)},
     last_name:{type:String, required:false},
-    email:{type:String, required:true, match:/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/},
+    email:{type:String, required:true},//, match:/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/},
     gender:{type:String, "enum":['male', 'female']},
     age:{type:Number, min:0},
     address: String,

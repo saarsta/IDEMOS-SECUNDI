@@ -936,6 +936,8 @@ body
 {
     width: 980px;
     margin: 0 auto;
+    height: 143px;
+    overflow:hidden;
 }
 #footer .one-col
 {
@@ -6134,3 +6136,10 @@ a.fraction-btn
 
 .placeholder { color: #aaa; }
 
+#footer .footer_line {
+    margin: 0 auto;
+    width: 600px;
+}
+#footer .footer_line a{
+    color:#BFBEBE;
+}
