@@ -105,11 +105,8 @@ var scrollTo = function(selector, options){
 var connectPopup = function(callback){
 
     //open popup window
-     popupProvider.showLoginPopup();
-   // popupProvider.showOkPopup({massage:"אנא התחבר למערכת"});
+     popupProvider.showLoginPopup({},callback);
 
-    if(callback)
-        callback();
 };
 
 
@@ -159,6 +156,13 @@ function fbs_click(ui) {
 // handle image loading stuff
 
 $(function(){
+
+
+
+
+    $("#fb_ajax_conncect").live('click', function(){
+
+    })
 
     var host = window.location.protocol + '//' + window.location.host;
 

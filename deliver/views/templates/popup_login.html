@@ -3,8 +3,8 @@
 <div class="popup login-popup"  >
            <div>
 
-                <form id="login_pop_form" action="/account/login" method="POST">
-                   <h2>
+                <form id="login_pop_form" action="javascript:void(0)" method="POST">
+                   <h2 id="login_title">
                        הרשם
                    </h2>
                    <input name="email" type="text" placeholder='דוא"ל'/>
@@ -12,28 +12,13 @@
                     <a class="forgot_password" href="/account/forgot_password">
                         שכחת סיסמה?
                     </a>
-                    <input type="submit" value="התחבר" />
+                    <input id="login_ajax" type="submit" value="התחבר" />
                 </form>
                 <div class="spacer"></div>
-                <a class="facebook" href="/account/facebooklogin?next=<%=url%>"></a>
+                <a id="fb_ajax_conncect" class="facebook" href="javascript:void(0)"></a>
 
             </div>
          </div>
 
  </div>
 
-<!--
-
-<script type="text/javascript">
-
-    $("#login_pop_form").validate(
-            {
-
-            rules:{
-                email:{required: true },
-                password:{required: true }
-            }
-
-        });
-</script>
--->

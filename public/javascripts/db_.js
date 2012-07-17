@@ -77,17 +77,14 @@ var db_functions = {
 
                            // loadListItems('discussions','discussion_list_item',subject,'');
 
-                        })
-
+                            })
                     });
-
-
                 });
             }
         });
     },
 
-    getUserAfterFbConnect: function(fb_id, access_token, callback){
+    fbConnect: function(fb_id, access_token, callback){
         this.loggedInAjax({
             url: '/api/fb_connect',
             type: "POST",
@@ -97,6 +94,8 @@ var db_functions = {
             }
         });
     },
+
+
 
     getListItems : function(type,query,callback)
     {

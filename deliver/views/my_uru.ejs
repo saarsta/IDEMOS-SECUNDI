@@ -142,7 +142,11 @@
                         תן מנדט
                     </a>
                     <a href="#" id="folowBT" class="follow_user gray_and_soon">
+                     <%if( pageUser.is_follower_of_user){ %>
                         עקוב
+                        <%}else {%>
+הפסק לעקוב
+                        <%}%>
                     </a>
                     <a href="javascript:void(0);"  class="gray_and_soon">
                         שלח הודעה
@@ -370,7 +374,7 @@
                 if (user.is_follower)
                     $(self).text("עקוב");
                 else
-                    $(self).text("עזוב");
+                    $(self).text("הפסק לעקוב");
 
 
             });
