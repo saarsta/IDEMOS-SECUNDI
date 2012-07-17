@@ -14,10 +14,12 @@ module.exports = function (req, res) {
     }
 
 
+
     async.waterfall([
         function (cbk) {
             models.User.findById(userID, ["tokens", "num_of_extra_tokens", "proxy", "biography","first_name","last_name","facebook_id", "avatar","score"], function(err, user){
                 req.session.user.biography = user.biography;
+
                 cbk(err, user);
             })
         },
@@ -95,6 +97,7 @@ module.exports = function (req, res) {
         var proxy = user_obj.proxy;
         var tokensBarModel = new TokensBarModel(9, num_of_extra_tokens, tokens, proxy);
 
+        var proxyJson=isHisuru? JSON.stringify(user.proxy):  JSON.stringify(proxy);
         console.log(req.session.avatar_url);
         console.log(user_obj.avatar_url());
         console.log(user_obj);
@@ -114,7 +117,9 @@ module.exports = function (req, res) {
                 url:req.url,
                 tokensBarModel:tokensBarModel,
                 tab:'',
-                isHisUru:isHisuru
+		        isHisUru:isHisuru,
+                proxy:proxyJson
+
             });
     })
 };

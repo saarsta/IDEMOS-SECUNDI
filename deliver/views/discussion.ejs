@@ -478,7 +478,21 @@ $(document).ready(function () {
 
 
     $('#suggestion_list').on('click', '#add_or_remove_proxy', function (e) {
+
+
+
+        var userData = $(this).parents('.discussion-item');
+        var proxyId = userData.data('creator_id');
+        var userName = userData.data('creator_name');
+      //  var userProxy = findUserProxy(proxyId);
+
         e.preventDefault();
+        proxyCommon.addOrRemoveProxy(proxy,proxyId,userName,my_id,function(newProxy){
+            proxy=newProxy;
+
+        })
+
+       /* e.preventDefault();
 
         function findUserProxy(userId) {
             for (var i in proxy) {
@@ -551,15 +565,105 @@ $(document).ready(function () {
             }
         };
         popupProvider.showGiveMandatPopup(config);
-        // $.colorbox.close();
+        // $.colorbox.close();*/
     });
 
 
 
 
     $('#comments').on('click', '#add_or_remove_proxy', function (e) {
-        e.preventDefault();
 
+        var userData = $(this).parents('.comment-one');
+        var proxyId = userData.data('creator_id');
+        var userName = userData.data('creator_name');
+        e.preventDefault();
+        proxyCommon.addOrRemoveProxy(proxy,proxyId,userName,my_id,function(newProxy){
+            proxy=newProxy;
+
+        })
+      //  e.preventDefault();
+       /* function findUserProxy(userId) {
+            for (var i in proxy) {
+                var userProxy = proxy[i];
+                if (userProxy.user_id === userId ) {
+                    return userProxy;
+                }
+                else if (userProxy.user_id&& userProxy.user_id._id === userId ) {
+                    return userProxy;
+                }
+
+            }
+            return null;
+        }*/
+
+
+     /*   var userProxy = findUserProxy(proxyId);
+        if (!userProxy) {
+            //you didn't give proxy to this user
+            userProxy = {number_of_tokens:0,
+                number_of_tokens_to_get_back:0,
+                user_id:proxyId
+            }
+
+
+        }*/
+
+     /*   var config = {
+            massage:
+                    'בחר את מספר המנדטים שאתה רוצה לתת ל- '
+                            + userName,
+            userProxy:userProxy,
+            onOkCilcked: function (e) {
+                e.preventDefault();
+                newAmount = $('.give-mandats-popup').find(':checked').val();
+                var changeProxy = newAmount - (userProxy.number_of_tokens - userProxy.number_of_tokens_to_get_back);
+                if (changeProxy == 0) {
+                    $.colorbox.close();
+                }
+
+                db_functions.addOrRemoveProxyMandate(my_id, proxyId, changeProxy, function (err, data) {
+                  //  var msg_params = err ? {massage:err.responseText} : {massage:"האסימונים ילקחו בקרוב"};
+                   if(data && data.proxy){
+                       proxy=data.proxy;
+                   }
+                    if(err){
+                        $(document).one('cbox_closed', function (e) {
+
+                            popupProvider.showOkPopup({massage:err.responseText});
+                        });
+                    }
+                    else{
+                        if (changeProxy < 0) {
+                            $(document).one('cbox_closed', function (e) {
+                             popupProvider.showOkPopup( {massage:"האסימונים ילקחו בקרוב"})
+                            });
+                        }
+                        //update user mandates
+                        userProxy = findUserProxy(proxyId);
+                        if(userProxy)  {
+                            $('.comment-one[data-creator_id='+proxyId+']').find('.proxy .num').html(userProxy.user_id.num_of_given_mandates);
+                        }
+
+                    }
+                    $.colorbox.close();
+
+
+
+
+                })
+            }
+        };
+        popupProvider.showGiveMandatPopup(config);
+            // $.colorbox.close();*/
+    });
+
+
+/*
+
+
+    $('#comments').on('click', '#add_or_remove_proxy', function (e) {
+        proxyCommon.addOrRemoveProxy(e,proxy)
+        e.preventDefault();
         function findUserProxy(userId) {
             for (var i in proxy) {
                 var userProxy = proxy[i];
@@ -602,10 +706,10 @@ $(document).ready(function () {
                 }
 
                 db_functions.addOrRemoveProxyMandate(my_id, proxyId, changeProxy, function (err, data) {
-                  //  var msg_params = err ? {massage:err.responseText} : {massage:"האסימונים ילקחו בקרוב"};
-                   if(data && data.proxy){
-                       proxy=data.proxy;
-                   }
+                    //  var msg_params = err ? {massage:err.responseText} : {massage:"האסימונים ילקחו בקרוב"};
+                    if(data && data.proxy){
+                        proxy=data.proxy;
+                    }
                     if(err){
                         $(document).one('cbox_closed', function (e) {
 
@@ -615,7 +719,7 @@ $(document).ready(function () {
                     else{
                         if (changeProxy < 0) {
                             $(document).one('cbox_closed', function (e) {
-                             popupProvider.showOkPopup( {massage:"האסימונים ילקחו בקרוב"})
+                                popupProvider.showOkPopup( {massage:"האסימונים ילקחו בקרוב"})
                             });
                         }
                         //update user mandates
@@ -630,25 +734,26 @@ $(document).ready(function () {
 
 
 
-                  //  $(self).parents('.comment-one').data("num-given-mandates", $(self).parents('.comment-one').data("num-given-mandates") + tokens);
+                    //  $(self).parents('.comment-one').data("num-given-mandates", $(self).parents('.comment-one').data("num-given-mandates") + tokens);
 
-    //                else {
-    //                    $(self).parents('.comment-one').data("num-given-mandates", $(self).parents('.comment-one').data("num-given-mandates") + tokens);
-    //                    $(self).parents('.comment-one').find(".proxy.num").value =  $(self).parents('.comment-one').find(".proxy.num").value + tokens;
-    //                    if (changeProxy < 0) {
+                    //                else {
+                    //                    $(self).parents('.comment-one').data("num-given-mandates", $(self).parents('.comment-one').data("num-given-mandates") + tokens);
+                    //                    $(self).parents('.comment-one').find(".proxy.num").value =  $(self).parents('.comment-one').find(".proxy.num").value + tokens;
+                    //                    if (changeProxy < 0) {
                     //alerXXt('האסימונים ילקחו בקרוב')  ;
-    //                        config.onClosed = function (e) {
-    //                            popupProvider.showOkPopup();
-    //                        }
-    //                    }
+                    //                        config.onClosed = function (e) {
+                    //                            popupProvider.showOkPopup();
+                    //                        }
+                    //                    }
                     //  callback(err, data);
-    //                }
+                    //                }
                 })
             }
         };
         popupProvider.showGiveMandatPopup(config);
-            // $.colorbox.close();
+        // $.colorbox.close();
     });
+*/
 
 
 
