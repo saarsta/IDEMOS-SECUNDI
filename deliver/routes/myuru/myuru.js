@@ -21,6 +21,14 @@ module.exports = function (req, res) {
         },
 
         function (user_obj, cbk) {
+
+            //this 5 lines is to know if the if the user is a follower of the "his uru" user
+            user_obj.is_follower_of_user = false;
+            if(req.session.user && (req.session.user._id + "" != userID + "")){
+                if(_.any(user_obj.followers, function(follower){return follower.follower_id + "" == userID + ""}))
+                    user_obj.is_follower_of_user = true;
+            }
+
             if(!user_obj.proxy){
                 user_obj.proxy = [];
             }
@@ -52,6 +60,7 @@ module.exports = function (req, res) {
 
         console.log(req.session.avatar_url);
         console.log(user_obj.avatar_url());
+        console.log(user_obj);
         res.render('my_uru.ejs',
             {
                 layout:false,
@@ -68,7 +77,6 @@ module.exports = function (req, res) {
                 tokensBarModel:tokensBarModel,
                 tab:'',
                 isHisUru:isHisuru
-
             });
     })
 };
