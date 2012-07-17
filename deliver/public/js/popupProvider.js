@@ -39,6 +39,7 @@ var popupProvider={
     showGiveMandatPopup:function(popupConfig){
 
         this.self = this;
+
         var defaults = {
             massage:''
 
@@ -79,7 +80,7 @@ var popupProvider={
         });
         return popup;
     },
-    showLoginPopup:function(popupConfig){
+    showLoginPopup:function(popupConfig,callback){
 
         this.self = this;
         var defaults = {
@@ -99,9 +100,31 @@ var popupProvider={
 
              $.colorbox({ html:out,
                 onComplete:function (e) {
-                  /*  $('.ok-button').click(popupConfig.onOkCilcked);
-                    $('.cancel-button').click(popupConfig.onCancelCilcked);
-                    $('.give-mandats-popup input').eq(realProxy).attr('checked', true);*/
+
+                    $('#login_pop_form').submit(function() {
+                        // get all the inputs into an array.
+                        var $inputs = $('#login_pop_form :input');
+
+                        // get an associative array of just the values.
+                        var values = {};
+                        $inputs.each(function() {
+                            values[this.name] = $(this).val();
+                        });
+
+
+                        db_functions.login(values["email"], values["password"], function(err, result){
+                            if(err){
+                                callback(err);
+                                $("#login_title").text("נסה שוב");
+                            }
+                            else{
+                                callback(err, result);
+                                $.colorbox.close();
+                            }
+
+                        });
+
+                    });
 
                 },
                 onClosed:function (e) {

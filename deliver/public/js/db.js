@@ -7,13 +7,23 @@ var db_functions = {
     {
         var onError = options.error || function()
         {
-            console.log(arguments[2]);
+            console.error(arguments[2]);
         };
         options.error =  function (xhr, ajaxOptions, thrownError) {
             if(xhr.status == 401 && (xhr.responseText == 'not authenticated' || xhr.responseText == "Error: Unauthorized - there is not enought tokens" || xhr.responseText == "user must have a least 10 tokens to open create discussion")){
                 if (xhr.responseText == 'not authenticated'){
-                    connectPopup(function(){
-                        onError(xhr,ajaxOptions,thrownError);
+                    connectPopup(function(err){
+                        if(err)
+                            onError(xhr,ajaxOptions,thrownError);
+                        else{
+                            var success = options.success;
+                            options.success = function(){
+                              success.apply(this, arguments);
+                              window.location.href = window.location.href;
+                            }
+                            $.ajax(options);
+
+                        }
                     });
                 }else if (xhr.responseText == 'Error: Unauthorized - there is not enought tokens')
                 {
@@ -27,6 +37,23 @@ var db_functions = {
                 onError(xhr,ajaxOptions,thrownError);
         };
         $.ajax(options);
+    },
+
+    login: function(email, password, callback){
+        this.loggedInAjax({
+            url: '/api/login',
+            type: "POST",
+            async: true,
+            data: {email: email, password: password},
+
+            success: function (err, data) {
+                callback(null, data);
+            },
+
+            error: function(err, data){
+                callback(err, null);
+            }
+        });
     },
 
     getOrCreateUserByFBid: function(user_fb_id, access_token){
@@ -52,7 +79,7 @@ var db_functions = {
 
                 callback(data);
             },
-            error:function(err, data)
+            error: function(err, data)
             {
                 callback(err);
             }
