@@ -61,6 +61,7 @@ var User = module.exports = new Schema({
     ],
 //    num_of_mandates_i_gave: {type: Number, 'default': 0},
     num_of_given_mandates: {type: Number, 'default': 0},
+    num_of_proxies_i_represent: {type: Number, 'default': 0},
     score:{type:Number, 'default':0},
 //    unseen_notifications: {type:Number, 'default':0},
     decoration_status:{type:String, "enum":['a', 'b', 'c'], editable: false},

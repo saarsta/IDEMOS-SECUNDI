@@ -41,6 +41,7 @@ module.exports = function(req,res)
                     // populate 'is follower' , 'grade object' ...
                     resource.get_discussion(results[1],results[0],function(err,discussion)
                     {
+
                         var proxyJson= results[0] ?  JSON.stringify(results[0].proxy) : null;
                         console.log(proxyJson)   ;
                         if(err)

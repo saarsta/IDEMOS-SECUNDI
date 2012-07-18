@@ -457,7 +457,8 @@ var daily_cron =  exports.daily_cron = {
         var proxies_ids_and_number_of_tokens_to_get_back = [
             {
                 proxy_id: null,
-                num_of_extra_tokens: null
+                num_of_extra_tokens: null,
+                number_of_people_i_dont_represent_no_more: null
             }
         ];
 
@@ -465,7 +466,7 @@ var daily_cron =  exports.daily_cron = {
             {
                 proxy_id: null,
                 notificator_id: null,
-                number_of_taken_tokens: null
+                number_of_taken_tokens: null,
             }
         ];
 
@@ -499,10 +500,17 @@ var daily_cron =  exports.daily_cron = {
                                 //create a list of proxies and sum the number of tokens to take from them
                                 var exist_proxy = _.find(proxies_ids_and_number_of_tokens_to_get_back, function(proxy){return proxy.proxy_id + "" == proxy.user_id + ""});
 
-                                if(exist_proxy)
+                                if(exist_proxy){
+                                    if(proxy.number_of_tokens_to_get_back == proxy.number_of_tokens)
+                                        exist_proxy.number_of_people_i_dont_represent_no_more += 1;
                                     exist_proxy.num_of_extra_tokens += proxy.number_of_tokens_to_get_back;
-                                else
-                                    proxies_ids_and_number_of_tokens_to_get_back.push({proxy_id: proxy.user_id, num_of_extra_tokens: proxy.number_of_tokens_to_get_back})
+                                }
+                                else{
+                                    proxies_ids_and_number_of_tokens_to_get_back.push({
+                                        proxy_id: proxy.user_id,
+                                        num_of_extra_tokens: proxy.number_of_tokens_to_get_back,
+                                        number_of_people_i_dont_represent_no_more: (proxy.number_of_tokens_to_get_back == proxy.number_of_tokens) ? 1 : 0})
+                                }
 
 //                                //reduce tokens from my tokens
 //                                user.num_of_mandates_i_gave -= proxy.number_of_tokens_to_get_back;
@@ -552,8 +560,11 @@ var daily_cron =  exports.daily_cron = {
                     //update proxies with their new amount off mandates
                     async.forEach(proxies_ids_and_number_of_tokens_to_get_back, function(proxy, itr_cbk){
 
-                        var num = proxy.num_of_extra_tokens * -1;
-                        models.User.update({_id: proxy.proxy_id}, {$inc: {num_of_given_mandates: num}}, function(err, num){
+                        models.User.update({_id: proxy.proxy_id},
+                            {$inc: {
+                                num_of_given_mandates:  proxy.num_of_extra_tokens * -1,
+                                num_of_proxies_i_represent: proxy.number_of_people_i_dont_represent_no_more * -1}
+                            }, function(err, num){
                             itr_cbk(err, num);
                         })
                     }, function(err, result){

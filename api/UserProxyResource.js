@@ -110,7 +110,6 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
 
         var self = this;
         var base = this._super;
-
         var is_new_proxy = false;
 
         if(!proxy)
@@ -138,6 +137,7 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
                 }
             }
 
+
             proxy.number_of_tokens += Number(number_of_tokens);
             //reduce tokens from my tokens
             object.tokens -= number_of_tokens;
@@ -154,33 +154,6 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
 
         if(is_new_proxy)
             object.proxy.push(proxy);
-
-
-
-
-//        }else{
-//            //edit proxy's mandates(tokens)
-//            proxy = {
-//                user_id: proxy_id,
-//                number_of_tokens: null,
-//                number_of_tokens_to_get_back: null
-//            };
-//
-//            if (req.body.req_number_of_tokens > 0){
-//                proxy.number_of_tokens = req.body.req_number_of_tokens;
-//                //reduce tokens from my tokens
-//                object.tokens -= req.body.req_number_of_tokens;
-//
-//
-//                //set notification here
-//
-//
-//            }else
-//            //tokens will be removed once a day by a cron
-//                proxy.number_of_tokens_to_get_back = Number(req.body.number_of_tokens) * -1;
-//
-//            object.proxy.push(proxy);
-//        }
 
         if(proxy.number_of_tokens > 3)
             callback({message:"Error: Unauthorized - max mandate is 3!", code: 401}, null)
@@ -199,8 +172,8 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
 
                 if(!err && number_of_tokens > 0){
                     //update proxy-user new tokens
-
-                    models.User.update({_id: proxy_id}, {$inc: {num_of_given_mandates: number_of_tokens}}, function(err, num){
+                    var inc = is_new_proxy ? 1 : 0;
+                    models.User.update({_id: proxy_id}, {$inc: {num_of_given_mandates: number_of_tokens, num_of_proxies_i_represent: is_new_proxy}}, function(err, num){
 
                         if(is_new_proxy){
                             //if this is the a new proxy i need to populate it manualy
