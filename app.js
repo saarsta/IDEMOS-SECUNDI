@@ -113,7 +113,7 @@ app.configure(function(){
     app.use(express.methodOverride());
     app.use(express.cookieParser());
     app.use(express.session({secret: confdb.secret,
-        maxAge: new Date(Date.now() + (3600*1000*24)),
+        maxAge: new Date(Date.now() + (3600 * 1000 * 24 * 4)),
         store: new MongoStore(confdb.db) }));
     app.use(account.referred_by_middleware);
 

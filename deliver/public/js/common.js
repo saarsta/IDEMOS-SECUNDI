@@ -157,10 +157,43 @@ function fbs_click(ui) {
 // handle image loading stuff
 
 $(function(){
+    $('user-box').live('tap', function(){
+        $(this).toggleClass('active');
+    })
+
+    $('#register_form').submit(function() {
+        // get all the inputs into an array.
+        var $inputs = $('#register_form :input');
+
+        // get an associative array of just the values.
+        var values = {};
+        $inputs.each(function() {
+            values[this.name] = $(this).val();
+        });
 
 
+        db_functions.login(values["email"], values["password"], function(err, result){
+            if(err){
+                $("#login_head").text("נסה שוב");
+            }
+            else{
+                window.location.href = window.location.href;
+            }
 
+        });
+        return false;
+    });
 
+    $("#fb_connect").live('click', function(){
+        facebookLogin(function(err, result){
+            if(!err){
+                window.location.href = window.location.href;
+            }else{
+                console.error(err);
+                $("#login_head").text("קרתה תקלה");
+            }
+        })
+    })
 
 
     var host = window.location.protocol + '//' + window.location.host;
