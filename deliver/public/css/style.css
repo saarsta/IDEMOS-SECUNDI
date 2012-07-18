@@ -929,14 +929,14 @@ body
 #footer
 {
     background:#3b63ef;
-    height: 162px;
+    height: 212px;
     padding-top: 15px;
 }
 #footer .extra
 {
     width: 980px;
     margin: 0 auto;
-    height: 143px;
+    height: 181px;
     overflow:hidden;
 }
 #footer .one-col
