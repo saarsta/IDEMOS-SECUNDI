@@ -92,9 +92,11 @@ var isUserInDataBase = module.exports.isUserInDataBase = function(user_facebook_
                 user = result[0];
             } else {
                 if (result.length == 0) { // its a new user
-                    //console.log("isUserInDataBase returns false");
+                    throw "Error: couldn't find user by fb id";
                 } else { // handle error here
-                    throw "Error: Too many users with same user_facebook_id";
+                    flag = true;
+                    user = result[0];
+                    console.error("Error: Too many users with same user_facebook_id");
                 }
             }
         } else {

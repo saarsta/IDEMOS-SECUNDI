@@ -13,81 +13,71 @@ module.exports = function (req, res) {
         isHisuru=false;
     }
 
+    /*
+        async
+        1
+            1.1 get details of my/his uru user
+            1.2 in case that we are on "his uru" situation and we are loged in -  get details of current user
+            1.3 if 1.2 situation, check if user is a follower of his uru
 
+        2  avner sets things for himself
+
+     */
 
     async.waterfall([
-        function (cbk) {
-            models.User.findById(userID, ["tokens", "num_of_extra_tokens", "proxy", "biography","first_name","last_name","facebook_id", "avatar","score"], function(err, user){
-                req.session.user.biography = user.biography;
+        //1
+        function(cbk){
+            async.parallel([
+                //1.1
+                function (cbk1) {
+                    //get details of my/his uru user
+                    models.User.findById(userID)
+                        //                    .select(["tokens", "num_of_extra_tokens", "proxy", "biography","first_name","last_name","facebook_id", "avatar","score"])
+                        .populate("proxy.user_id")
+                        .exec(function(err, user){
+                            req.session.user.biography = user.biography;
+                            cbk1(err, user);
+                        })
 
-                cbk(err, user);
-            })
-        },
-
-//        switch this with the above
-//        models.User.findById(userID)
-//            .select(["tokens", "num_of_extra_tokens", "proxy", "biography","first_name","last_name","facebook_id", "avatar","score"])
-//            .populate("proxy.user_id")
-//            .exec(function(err, user){
-//                req.session.user.biography = user.biography;
-//                cbk(err, user);
-//            })
-
-        function (user_obj, cbk) {
-
-            //this 5 lines is to know if the if the user is a follower of the "his uru" user
-            user_obj.is_follower_of_user = false;
-            if(req.session.user && (req.session.user._id + "" != userID + "")){
-                if(_.any(user_obj.followers, function(follower){return follower.follower_id + "" == userID + ""}))
-                    user_obj.is_follower_of_user = true;
-            }
-
-            if(!user_obj.proxy){
-                user_obj.proxy = [];
-            }
-
-
-            async.forEach(user_obj.proxy, function (proxy_user, itr_cbk) {
-                models.User.findById(proxy_user.user_id, ["_id", "first_name", "last_name", "facebook_id", "avatar","score"], function (err, curr_proxy_user) {
-                    if (!err && curr_proxy_user !== null) {
-                        curr_proxy_user.avatar = curr_proxy_user.avatar_url();
-                        proxy_user.details = curr_proxy_user;
-                    }
-                    if(curr_proxy_user == null)
-
-                        console.error("curr_proxy_user is null");
-                    itr_cbk();
-                })
-            }, function (err, ocj) {
-
-                //put proxy on curr user -- for his uru
-                if(userID != user._id){
-                    models.User.findById(user._id, function(err, user){
-                        if(err || !user)
-                            cbk(err, user_obj);
-                        else{
-                            curr_user = user;
-                            async.forEach(curr_user.proxy, function (proxy_user, itr_cbk) {
-                                models.User.findById(proxy_user.user_id, ["_id", "first_name", "last_name", "facebook_id", "avatar","score"], function (err, curr_proxy_user) {
-                                    if (!err && curr_proxy_user !== null) {
-                                        curr_proxy_user.avatar = curr_proxy_user.avatar_url();
-                                        proxy_user.details = curr_proxy_user;
-                                    }
-                                    if(curr_proxy_user == null)
-                                        console.error("curr_proxy_user is null");
-                                    itr_cbk();
-                                })
-                            }, function(err, ocj){
-                                cbk(err, user_obj);
+                },
+                //1.2
+                function(cbk1){
+                    //get details of the current user that watch "his uru"
+                    if(user && userID != user._id){
+                        models.User.findById(user._id)
+                            //                    .select(["tokens", "num_of_extra_tokens", "proxy", "biography","first_name","last_name","facebook_id", "avatar","score"])
+                            .populate("proxy.user_id")
+                            .exec(function(err, user){
+                                req.session.user.biography = user.biography;
+                                cbk1(err, user);
                             })
-                        }
-                    })
-                }else
-                    cbk(err, user_obj);
+                    }else{
+                        cbk1(null, null);
+                    }
+                }
+
+            ], function(err, args){
+                //1.3
+                var my_or_his_uru_user = args[0];
+
+                //put proxy populated details in proxy.details, so avner wont fill the change
+                _.each(my_or_his_uru_user.proxy, function(proxy){proxy.details = proxy.user_id});
+                curr_user = args[1];
+
+                if(curr_user){
+                    //put proxy populated details in proxy.details, so avner wont fill the change
+                    _.each(curr_user.proxy, function(proxy){proxy.details = proxy.user_id});
+                    //find if the user is a follower of the "his uru" user
+                    curr_user.is_follower_of_user = false;
+                    if(_.any(curr_user.followers, function(follower){return follower.follower_id + "" == userID + ""}))
+                        curr_user.is_follower_of_user = true;
+                    }
+                cbk(err, my_or_his_uru_user);
             })
         }
 
     ], function (err, user_obj) {
+        //2
         if(!user_obj.proxy)
             console.error("data curruption with user proxies");
         var proxy =  user_obj.proxy || [];
@@ -119,8 +109,55 @@ module.exports = function (req, res) {
                 tab:'',
 		        isHisUru:isHisuru,
                 proxy:proxyJson
-
             });
     })
 };
 
+
+
+//        function (user_obj, cbk) {
+//
+////            if(!user_obj.proxy){
+////                user_obj.proxy = [];
+////            }
+//
+//
+////            async.forEach(user_obj.proxy, function (proxy_user, itr_cbk) {
+////                models.User.findById(proxy_user.user_id, ["_id", "first_name", "last_name", "facebook_id", "avatar","score"], function (err, curr_proxy_user) {
+////                    if (!err && curr_proxy_user !== null) {
+////                        curr_proxy_user.avatar = curr_proxy_user.avatar_url();
+////                        proxy_user.details = curr_proxy_user;
+////                    }
+////                    if(curr_proxy_user == null)
+////
+////                        console.error("curr_proxy_user is null");
+////                    itr_cbk();
+////                })
+////            }, function (err, ocj) {
+////
+////                //put proxy on curr user -- for his uru
+////                if(userID != user._id){
+////                    models.User.findById(user._id, function(err, user){
+////                        if(err || !user)
+////                            cbk(err, user_obj);
+////                        else{
+////                            curr_user = user;
+////                            async.forEach(curr_user.proxy, function (proxy_user, itr_cbk) {
+////                                models.User.findById(proxy_user.user_id, ["_id", "first_name", "last_name", "facebook_id", "avatar","score"], function (err, curr_proxy_user) {
+////                                    if (!err && curr_proxy_user !== null) {
+////                                        curr_proxy_user.avatar = curr_proxy_user.avatar_url();
+////                                        proxy_user.details = curr_proxy_user;
+////                                    }
+////                                    if(curr_proxy_user == null)
+////                                        console.error("curr_proxy_user is null");
+////                                    itr_cbk();
+////                                })
+////                            }, function(err, ocj){
+////                                cbk(err, user_obj);
+////                            })
+////                        }
+////                    })
+////                }else
+////                    cbk(err, user_obj);
+////            })
+//        }
