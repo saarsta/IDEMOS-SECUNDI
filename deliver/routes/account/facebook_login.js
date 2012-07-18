@@ -94,7 +94,9 @@ var isUserInDataBase = exports.isUserInDataBase = function(user_facebook_id, cal
                 if (result.length == 0) { // its a new user
                     //console.log("isUserInDataBase returns false");
                 } else { // handle error here
-                    throw "Error: Too many users with same user_facebook_id";
+                    flag = true;
+                    user = result[0];
+                    console.error("Error: Too many users with same user_facebook_id");
                 }
             }
         } else {
