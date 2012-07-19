@@ -57,9 +57,17 @@ module.exports = {
                  else{
                         //send messaage: email is all ready in use
 
-                        res.render('account/register.ejs'/*, {title:'Login',
-                         tab:'users',
-                         failed:false, exist_username:true, next:req.query.next}*/);
+                    res.render('register.ejs',{
+                        url: req.url,
+                        tag_name:req.query.tag_name,
+                        layout: false,
+                        user_logged: req.isAuthenticated(),
+                        user: user /*req.session.auth.user*/,
+                        next: req.query.next,
+                        title: "רישום",
+                        big_impressive_title: "",
+                        error_message: "נסה שוב"
+                    });
                  }
             } else {
                 throw "Error reading db.User";

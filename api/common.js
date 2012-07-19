@@ -21,13 +21,14 @@ var user_public_fields = exports.user_public_fields = {
     last_name:null,
     avatar_url:null,
     score: null,
-    num_of_given_mandates: null
+    num_of_given_mandates: null,
+    num_of_proxies_i_represent: null
 };
 
 var SessionAuthentication = exports.SessionAuthentication = function () { };
 util.inherits(SessionAuthentication,jest.Authentication);
 
-SessionAuthentication.prototype.is_authenticated = function(req,callback){
+SessionAuthentication.prototype.is_authenticated = function(req, callback){
 
     var is_auth = req.isAuthenticated();
     if(is_auth)
@@ -36,7 +37,7 @@ SessionAuthentication.prototype.is_authenticated = function(req,callback){
         if(!user_id){
             callback({message: "no user id"}, null);
         }else{
-            models.User.findById(user_id,function(err,user)
+            models.User.findById(user_id, function(err,user)
             {
                 if(err)
                 {
@@ -45,7 +46,7 @@ SessionAuthentication.prototype.is_authenticated = function(req,callback){
                 else
                 {
                     req.user = user;
-                    callback(null,true);
+                    callback(null, true);
                 }
             });
         }
@@ -70,7 +71,7 @@ var TokenAuthorization = exports.TokenAuthorization = jest.Authorization.extend(
 
         if (this.token_price || req.token_price)
         {
-            if(req.user.tokens >= this.token_price || req.token_price){
+            if(req.user.tokens >= (this.token_price || req.token_price)){
                  callback(null, object);
             }else{
                 callback({message:"Error: Unauthorized - there is not enought tokens",code:401}, null);
@@ -144,7 +145,8 @@ function update_user_gamification(req, game_type, user, price, callback)
 //                    callback(err, args[1]);
 //                })
 
-                check_gamification_rewards(user, callback);
+//                check_gamification_rewards(user, callback);
+                callback(err, 0);//TODO change it
                 console.log('user gamification saved');
 
             }

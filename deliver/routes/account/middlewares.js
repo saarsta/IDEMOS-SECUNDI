@@ -12,7 +12,32 @@ exports.referred_by_middleware = function(req,res,next)
         });
     }
     else
-        next();
+    {
+        if('fb_action_ids' in req.query) {
+            models.FBRequest.findOne().where('fb_request_ids',req.query['fb_action_ids']).exec(function(err,obj) {
+                if(err) {
+                    console.error('couldn\'t failed getting link from obj');
+                    console.error(err);
+                    next();
+                }
+                else {
+                    if(obj && obj.creator) {
+                        req.session.referred_by = obj.creator + '';
+                        req.session.save(function() {
+                            next();
+                        });
+                    }
+                    else {
+                        console.error('couldn\'t find fb_request_id ');
+                        next();
+                    }
+                }
+
+            });
+        }
+        else
+            next();
+    }
 };
 
 exports.auth_middleware = function (req, res, next) {
@@ -32,20 +57,31 @@ exports.auth_middleware = function (req, res, next) {
         if(!req.session.user) {
                 models.User.findById(req.session.auth.user._id || req.session.user_id ,function(err,user){
                     if(err){
-                        console.log('couldn put user id' + err.message)
+                        console.log('couldn put user id' + err.message);
                         next();
                     }else{
                         if(user){
                             req.session.user_id = user._id;
                             req.session.avatar_url = user.avatar_url();
+
+                            models.Notification.count({user_id: user._id}, function(err, count){
+                                if(err){
+                                    console.error('error finding user notifications');
+                                    user.unseen_notifications = 0;
+                                }
+                                user.unseen_notifications = count;
+                                req.session.user = user;
+                                req.session.save(function(err)
+                                {
+                                    if(err)
+                                        console.log('couldnt put user id' + err.message);
+                                    next();
+                                });
+                            })
                         }
-                        req.session.user = user;
-                        req.session.save(function(err)
-                        {
-                            if(err)
-                                console.log('couldnt put user id' + err.message);
-                            next();
-                        });
+                        else{
+                            require('./logout')(req,res);
+                        }
                     }
                 });
         }

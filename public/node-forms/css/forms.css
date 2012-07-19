@@ -29,9 +29,10 @@ label.field {
 }
     label.field span.field_label {
         float: left;
-        width: 190px;
+        width: 357px;
         height: 25px;
         overflow: hidden;
+        font-size: 14px;
     }
         label.field span.error {
             float: right;

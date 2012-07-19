@@ -1,22 +1,27 @@
-<div class="user-box">
-    <span class="total-number">74</span>
+<%
+        var unseen_notifications = user_logged ? user.unseen_notifications || 0 : 0;
+%>
+
+<div class="user-box .user-box-hover">
+    <%if(unseen_notifications > 0){%><span class="total-number"> <%=unseen_notifications%></span><%}%>
 
     <%if(user_logged){%>
     <a href="/myuru">
         <span class="icon"></span>
     </a>
     <%}else{%> <span class="icon"></span><%}%>
-    <h2>
+    <h2 id="login_head">
         <%if(user_logged){%><%=user.first_name%><%}else{%>התחבר<%}%>
     </h2>
     <div class="hide-box">
         <%if(user_logged){%>
         <div class="user-login-box cf">
             <ul>
-                <li class="chip"><a href="/myuru">האסימונים שלי <span class="icon-menu"></span><span class="number"><%=user.tokens%></span></a></li>
+                <li class="chip"><a href="/myuru">האסימונים שלי <span class="icon-menu"></span><span class="number"><%=Math.floor(user.tokens)%></span></a></li>
                 <li class="respect"><a href="/myuru">מוניטין <span class="icon-menu"></span><span class="number"><%=user.score%></span></a></li>
-                <li class="settings"><a href="">הגדרות <span class="icon-menu"></span></a></li>
-                <li class="help"><a href="">עזרה <span class="icon-menu"></span></a></li>
+                <li class="notifications"><a href="/myuru#notifications" >עדכונים <span class="icon-menu"></span><span class="number"><%=unseen_notifications%></span></a></li>
+                <li class="settings hide"><a href="">הגדרות <span class="icon-menu"></span></a></li>
+                <li class="help hide"><a href="">עזרה <span class="icon-menu"></span></a></li>
             </ul>
             <div class="btn-box">
                 <!--<a href="">הצג</a>
@@ -27,22 +32,25 @@
             </div>
         </div>
         <%}else{%>
-        <form id="register_form" action="/account/login" method="POST">
+        <!--action="/account/login"-->
+        <form id="register_form" >
             <input name="email" type="text" placeholder='דוא"ל'/>
-            <input name="password" type="password" placeholder="ססמה" />
+            <input name="password" type="password" placeholder="סיסמא" />
             <a class="forgot_password" href="/account/forgot_password">
                 שכחת סיסמה?
             </a>
             <input type="submit" value="התחבר" />
         </form>
         <div class="spacer"></div>
-        <a class="facebook" href="/account/facebooklogin?next=<%=url%>"></a>
+        <!--href="/account/facebooklogin?next=<%=url%>"-->
+        <a id="fb_connect" class="facebook"></a>
         <%}%>
     </div>
 </div>
 
 <script type="text/javascript">
     $(document).ready(function () {
+
         $("#register_form").validate({
             rules:{
                 email:{required: true },

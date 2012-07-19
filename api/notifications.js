@@ -14,14 +14,19 @@ _ = require('underscore');
 
 exports.create_user_notification = function(notification_type, entity_id, user_id, notificatior_id, sub_entity, callback){
 
-    var single_notification_arr = ["been_quoted", "approved_info_item_i_created"];
+    var single_notification_arr = ["been_quoted", "approved_info_item_i_created", "approved_change_suggestion_you_created", "approved_change_suggestion_you_graded"];
+
     if(notificatior_id && _.indexOf(single_notification_arr, notification_type) == -1){
 
         async.waterfall([
 
             function(cbk){
                 notification_type = notification_type + "";
-                models.Notification.findOne({type: notification_type, user_id: user_id, seen: false}, cbk);
+                if(entity_id)
+                    models.Notification.findOne({type: notification_type, entity_id: entity_id, user_id: user_id, seen: false}, cbk);
+                else
+                    models.Notification.findOne({type: notification_type, user_id: user_id, seen: false}, cbk);
+
             },
 
             function(noti, cbk){
@@ -82,31 +87,52 @@ var create_new_notification = function(notification_type, entity_id, user_id, no
 }
 
 exports.create_user_vote_or_grade_notification = function(notification_type, entity_id, user_id, notificatior_id,
-                                                        sub_entity, vote_for_or_against, did_change_the_sugg_agreement,callback){
+                                                        sub_entity, vote_for_or_against, did_change_the_sugg_agreement, is_on_suggestion, callback){
 
     async.waterfall([
 
         function(cbk){
             notification_type = notification_type + "";
-            models.Notification.findOne({type: notification_type, user_id: user_id, seen: false}, cbk);
+            models.Notification.findOne({type: notification_type, entity_id: entity_id,user_id: user_id, seen: false}, cbk);
         },
 
         function(noti, cbk){
             if(noti){
+
+                //this tow lines tries to prevant a bug that i dont understand
+                if(!noti.user_id){
+                    console.log("user id wasnt in noti in create_user_vote_or_grade_notification!")
+                    noti.user_id = user_id;
+                }
                 var date = Date.now();
 
-                var notificator = _.find(noti.notificators,  function(notificator){return notificator.notificator_id + "" == notificatior_id + ""});
+                var notificator = _.find(noti.notificators, function(notificator){return notificator.notificator_id + "" == notificatior_id + ""});
                 if(notificator){
-                    if(did_change_the_sugg_agreement)
+                    if(did_change_the_sugg_agreement){
                         notificator.ballance += vote_for_or_against == "add" ? 2 : -2;
-                    else
+                        if(is_on_suggestion){
+                            notificator.votes_for +=  vote_for_or_against == "add" ? 1 : -1;
+                            notificator.votes_against += vote_for_or_against == "add" ? -1 : 1;
+                        }
+                    }
+                    else{
                         notificator.ballance += vote_for_or_against == "add" ? 1 : -1;
+                        if(is_on_suggestion){
+                            notificator.votes_for += vote_for_or_against == "add" ? 1 : 0;
+                            notificator.votes_against += vote_for_or_against == "add" ? 0 : 1;
+
+                        }
+                    }
                 }else{
                     var new_notificator = {
                         notificator_id: notificatior_id,
                         sub_entity_id: sub_entity,
-                        ballance: vote_for_or_against == "add" ? 1 : -1
+                        ballance: vote_for_or_against == "add" ? 1 : -1,
+                        votes_for : vote_for_or_against == "add" && is_on_suggestion ? 1 : 0,
+                        votes_against : vote_for_or_against == "add" && is_on_suggestion ? 0 : 1
                     }
+                    noti.entity_id = entity_id,
+
                     noti.notificators.push(new_notificator);
                 }
                 noti.update_date = date;
@@ -118,8 +144,13 @@ exports.create_user_vote_or_grade_notification = function(notification_type, ent
                 var notificator = {
                     notificator_id: notificatior_id,
                     sub_entity_id: sub_entity,
-                    ballance: vote_for_or_against == "add" ? 1 : -1
+                    ballance: vote_for_or_against == "add" ? 1 : -1,
+                    votes_for : vote_for_or_against == "add" && is_on_suggestion ? 1 : 0,
+                    votes_against : vote_for_or_against == "add" && is_on_suggestion ? 0 : 1
                 }
+
+                if (!user_id)
+                    console.log("user id wasnt in noti in create_user_vote_or_grade_notification!")
 
                 notification.user_id = user_id;
                 notification.notificators = notificator;
@@ -142,4 +173,8 @@ exports.update_user_notification = function (notification_type, obj_id,user, cal
 
 
 
+}
+
+function isSubEntityExist(notification, sub_entity){
+        return _.any(notification.notificators, function(noti){ return noti.sub_entity_id + "" == sub_entity + ""});
 }

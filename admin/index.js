@@ -14,10 +14,34 @@ module.exports = function(app)
 
     var admin = mongoose_admin.createAdmin(app,{root:'admin'});
 
+    if(require('../utils').getShowOnlyPublished()) {
+        var _modelCounts = admin.modelCounts;
+        admin.modelCounts = function(collectionName,filters, onReady) {
+                filters = filters || {};
+                if(this.models[collectionName].model.schema.paths.is_hidden)
+                    filters['is_hidden'] = {$exists:true};
+                _modelCounts.call(this,collectionName,filters,onReady);
+        };
+
+        var _listModelDocuments = admin.listModelDocuments;
+        admin.listModelDocuments = function(collectionName, start, count,filters,sort, onReady) {
+            filters = filters || {};
+            if(this.models[collectionName].model.schema.paths.is_hidden)
+                filters['is_hidden'] = {$exists:true};
+
+            _listModelDocuments.call(this,collectionName, start, count,filters,sort, onReady);
+        };
+
+    }
+
     admin.ensureUserExists('Uruad','uruadmin!@#uruadmin');
     admin.ensureUserExists('ishai','istheadmin');
 
-    admin.registerMongooseModel("User",Models.User,null,{list:['username','first_name','last_name']});
+    admin.registerMongooseModel("User",Models.User,null,{
+        form:require('./user'),
+        list:['username','first_name','last_name'],
+        filters:['email','first_name','last_name','facebook_id','gender','age','invitation_code','identity_provider']
+    });
     admin.registerMongooseModel("InformationItem",Models.InformationItem, null,{
         list:['title'],
         order_by:['gui_order'],
@@ -32,13 +56,15 @@ module.exports = function(app)
                     Models.InformationItem.update({_id:{$in:ids}},{$set:{is_approved:true}},{multi:true},callback);
                 }
             }
-        ]
+        ],
+        filters:['created_by','status','is_hidden','is_hot_object']
     });
     admin.registerMongooseModel("Subject",Models.Subject,null,{list:['name'],order_by:['gui_order'],sortable:'gui_order'});
     admin.registerMongooseModel("Discussion",Models.Discussion,null,{
         list:['title'],
         cloneable:true,
-        form:require('./discussion')
+        form:require('./discussion'),
+        filters:['created_by','is_published','is_hidden','is_hot_object','is_cycle']
 //            actions:[
 //                {
 //                    value:'approve',
@@ -56,14 +82,16 @@ module.exports = function(app)
     admin.registerMongooseModel("Cycle",Models.Cycle,null,{
         list:['title'],
         cloneable:true,
-        form : require('./cycle')
+        form : require('./cycle'),
+        filters:['created_by','is_hidden','is_hot_object']
     });
     admin.registerMongooseModel("Action",Models.Action,null,{list:['title'],cloneable:true});
     admin.registerMongooseModel('Locale',locale.Model, locale.Model.schema.tree,{list:['locale'],form:locale.LocaleForm});
     admin.registerMongooseModel('Post',Models.Post,null,{
         list:['text','username','discussion_id.title'],
         list_populate:['discussion_id'],
-        order_by:['-discussion_id','-creation_date']
+        order_by:['-creation_date'],
+        filters:['discussion_id','creator_id']
     });
     admin.registerMongooseModel('PostAction',Models.PostAction,null,{
         list:['text','username']
@@ -85,7 +113,8 @@ module.exports = function(app)
                     },callback);
                 }
             }
-        ]
+        ],
+        filters:['discussion_id','creator_id']
     });
     admin.registerMongooseModel('Vote',Models.Vote,null,{
         list:['post_id','user_id']
@@ -137,6 +166,27 @@ module.exports = function(app)
         list:['title']
     });
 
+    admin.registerMongooseModel('AboutUruText',Models.AboutUruText,null,{
+        list:['title']
+    });
+
+    admin.registerMongooseModel('AboutUruItem',Models.AboutUruItem,null,{
+        list:['text_field']
+    });
+
+    admin.registerMongooseModel('Team',Models.Team,null,{
+            list:['name'],
+            cloneable:true
+        });
+
+    admin.registerMongooseModel('Qa',Models.Qa,null,{
+                list:['title']
+    });
+
+    admin.registerMongooseModel('ImageUpload',Models.ImageUpload,null,{
+                list:['image.url']
+    });
+
     admin.registerMongooseModel('FBRequest',Models.FBRequest,null,{
         list_populate:['creator'],
         list:['link','creator.first_name','creator.last_name']
@@ -151,6 +201,12 @@ module.exports = function(app)
 
     admin.registerMongooseModel('Admin_Users',mongoose.model('_MongooseAdminUser'),null,{
         list:['username']
+    });
+
+    admin.registerMongooseModel('FooterLink',mongoose.model('FooterLink'),null,{
+        list:['tab','name'],
+        order_by:['gui_order'],
+        sortable:'gui_order'
     });
 
     admin.registerMongooseModel('Password Change Form',mongoose.model('_MongooseAdminUser'),null,{

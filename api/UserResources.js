@@ -10,9 +10,10 @@ var UserResource = module.exports =  mongoose_resource.MongooseResource.extend({
             id : null,
 //            username:null,
 //            facebook_id:null,
-            first_name:null,
-            last_name:null,
+            first_name: null,
+            last_name: null,
             biography: null,
+
 //            email:null,
             gender:null,
             age:null,

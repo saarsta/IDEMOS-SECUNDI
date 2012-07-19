@@ -4,95 +4,160 @@ var TokensBarModel= require('./tokensBarModel')
 
 module.exports = function (req, res) {
 
-    var userID= req.params;
+    var isHisuru=req.params[0]? true: false;
+    var userID = isHisuru? req.params[0]: req.session.user._id;
     var user = req.session.user;
+    var curr_user;
+
+    if(isHisuru &&  userID === req.session.user._id){
+        isHisuru=false;
+    }
+
+    /*
+        async
+        1
+            1.1 get details of my/his uru user
+            1.2 in case that we are on "his uru" situation and we are loged in -  get details of current user
+            1.3 if 1.2 situation, check if user is a follower of his uru
+
+        2  avner sets things for himself
+
+     */
 
     async.waterfall([
-        function (cbk) {
-            models.User.findById(req.session.user._id, ["tokens", "num_of_extra_tokens", "proxy", "biography"], function(err, user){
-                req.session.user.biography = user.biography;
-                cbk(err, user);
-            })
-        },
+        //1
+        function(cbk){
+            async.parallel([
+                //1.1
+                function (cbk1) {
+                    //get details of my/his uru user
+                    models.User.findById(userID)
+                        //                    .select(["tokens", "num_of_extra_tokens", "proxy", "biography","first_name","last_name","facebook_id", "avatar","score"])
+                        .populate("proxy.user_id")
+                        .exec(function(err, user){
+                            req.session.user.biography = user.biography;
+                            cbk1(err, user);
+                        })
 
-        function (user_obj, cbk) {
-            if(!user_obj.proxy){
-                user_obj.proxy = [];
-            }
-            async.forEach(user_obj.proxy, function (proxy_user, itr_cbk) {
-                models.User.findById(proxy_user.user_id, ["_id", "first_name", "last_name", "facebook_id", "avatar"], function (err, curr_proxy_user) {
-                    if (!err) {
-                        curr_proxy_user.avatar = curr_proxy_user.avatar_url();
-                        proxy_user.details = curr_proxy_user;
+                },
+                //1.2
+                function(cbk1){
+                    //get details of the current user that watch "his uru"
+                    if(user && userID != user._id){
+                        models.User.findById(user._id)
+                            //                    .select(["tokens", "num_of_extra_tokens", "proxy", "biography","first_name","last_name","facebook_id", "avatar","score"])
+                            .populate("proxy.user_id")
+                            .exec(function(err, user){
+                                req.session.user.biography = user.biography;
+                                cbk1(err, user);
+                            })
+                    }else{
+                        cbk1(null, null);
                     }
-                    itr_cbk();
-                })
-            }, function (err, ocj) {
-                cbk(err, user_obj);
+                }
+
+            ], function(err, args){
+                //1.3
+                var my_or_his_uru_user = args[0];
+
+                //put proxy populated details in proxy.details, so avner wont fill the change
+                _.each(my_or_his_uru_user.proxy, function(proxy){proxy.details = proxy.user_id});
+                curr_user = args[1];
+
+                if(curr_user){
+                    //put proxy populated details in proxy.details, so avner wont fill the change
+                    _.each(curr_user.proxy, function(proxy){proxy.details = proxy.user_id});
+                    //find if the user is a follower of the "his uru" user
+                    curr_user.is_follower_of_user = false;
+                    if(_.any(curr_user.followers, function(follower){return follower.follower_id + "" == userID + ""}))
+                        curr_user.is_follower_of_user = true;
+                    }
+                cbk(err, my_or_his_uru_user);
             })
         }
 
-
     ], function (err, user_obj) {
-        var proxy =  user_obj.proxy  ;
+        //2
+        if(!user_obj.proxy)
+            console.error("data curruption with user proxies");
+        var proxy =  user_obj.proxy || [];
+
         var num_of_extra_tokens = user_obj.num_of_extra_tokens;
-        var tokens =  user_obj.tokens+'';
+        var tokens =  user_obj.tokens;
         var proxy = user_obj.proxy;
-        //todo remove me
-     /*   proxy =[
-            {details:
-                {last_name:'aaa',_id:'1111',avatar:'http://graph.facebook.com/1010279474/picture/?type=large',first_name:'avi'},
-                number_of_tokens:2
-            },
-            {details:
-            {last_name:'man',_id:'1111',avatar:'http://graph.facebook.com/1010279474/picture/?type=large',first_name:'run'},
-                number_of_tokens:1
-            }
-        ]*/
         var tokensBarModel = new TokensBarModel(9, num_of_extra_tokens, tokens, proxy);
 
+        var proxyJson=isHisuru? JSON.stringify(user.proxy):  JSON.stringify(proxy);
+        console.log(req.session.avatar_url);
+        console.log(user_obj.avatar_url());
+        console.log(user_obj);
         res.render('my_uru.ejs',
             {
                 layout:false,
                 tag_name:req.query.tag_name,
-                biographyReadonly:false,
+                biographyReadonly:isHisuru,
                 title:"אורו שלי",
                 logged:req.isAuthenticated(),
                 big_impressive_title:"",
-                user:user,
-                pageUser:user,
-                avatar:req.session.avatar_url,
+                user:user,//current user
+                pageUser:user_obj ,///  hisuru user
+                avatar:user_obj.avatar_url(),
+                curr_user_proxy: curr_user ? curr_user.proxy : null,
                 user_logged:req.isAuthenticated(),
                 url:req.url,
-                facebook_app_id:req.app.settings.facebook_app_id,
                 tokensBarModel:tokensBarModel,
-                tab:''
+                tab:'',
+		        isHisUru:isHisuru,
+                proxy:proxyJson
             });
     })
 };
 
 
-/*
 
- var models = require('../../../models');
-
- module.exports = function(req,res)
- {
- res.render('my_uru.ejs',{
- */
-/*  title:'הדף שלי',
- user: req.session.user,
- logged:true,
- avatar:req.session.avatar_url,
- // body_class:'layout',
- big_impressive_title:"כותרת גדולה ומרשימה",
- extra_head:'',
- tag_name: req.query.tag_name,
- tab:'users',
- hide_block_user:false,
- extra_head:'<script src="/javascripts/myUru.js"></script>'*//*
-
-
- });
-
- };*/
+//        function (user_obj, cbk) {
+//
+////            if(!user_obj.proxy){
+////                user_obj.proxy = [];
+////            }
+//
+//
+////            async.forEach(user_obj.proxy, function (proxy_user, itr_cbk) {
+////                models.User.findById(proxy_user.user_id, ["_id", "first_name", "last_name", "facebook_id", "avatar","score"], function (err, curr_proxy_user) {
+////                    if (!err && curr_proxy_user !== null) {
+////                        curr_proxy_user.avatar = curr_proxy_user.avatar_url();
+////                        proxy_user.details = curr_proxy_user;
+////                    }
+////                    if(curr_proxy_user == null)
+////
+////                        console.error("curr_proxy_user is null");
+////                    itr_cbk();
+////                })
+////            }, function (err, ocj) {
+////
+////                //put proxy on curr user -- for his uru
+////                if(userID != user._id){
+////                    models.User.findById(user._id, function(err, user){
+////                        if(err || !user)
+////                            cbk(err, user_obj);
+////                        else{
+////                            curr_user = user;
+////                            async.forEach(curr_user.proxy, function (proxy_user, itr_cbk) {
+////                                models.User.findById(proxy_user.user_id, ["_id", "first_name", "last_name", "facebook_id", "avatar","score"], function (err, curr_proxy_user) {
+////                                    if (!err && curr_proxy_user !== null) {
+////                                        curr_proxy_user.avatar = curr_proxy_user.avatar_url();
+////                                        proxy_user.details = curr_proxy_user;
+////                                    }
+////                                    if(curr_proxy_user == null)
+////                                        console.error("curr_proxy_user is null");
+////                                    itr_cbk();
+////                                })
+////                            }, function(err, ocj){
+////                                cbk(err, user_obj);
+////                            })
+////                        }
+////                    })
+////                }else
+////                    cbk(err, user_obj);
+////            })
+//        }

@@ -1,18 +1,19 @@
 <div id="post_{_id}" class="comment-one {#isFirst} noBorder{:else}{/isFirst}"
-     data-id="{_id}" data-ref-id="{ref_to_post_id}"
+     data-id="{_id}" data-ref-id="{ref_to_post_id}" data-num-given-mandates="{mandates_curr_user_gave_creator}"
      data-creator_name="{creator_id.first_name} {creator_id.last_name}"
      data-creator_id="{creator_id.id}">
     <div class="user-right side_menu">
         <span class="arrow"></span>
 
-        <div class="left gray_and_soon">
-            <a id="add_or_remove_proxy" href="javascript:void(0);">
+        <div class="left">
+            <!--id="add_or_remove_proxy"-->
+            <a id="add_or_remove_proxy" href="javascript:void(0);" disabled="disabled">
                 תן מנדט
             </a>
-            <a href="javascript:void(0);" class="follow_user">
+            <a href="javascript:void(0);" class="follow_user gray_and_soon">
                 עקוב
             </a>
-            <a href="">
+            <a href="javascript:void(0);"  class="gray_and_soon">
                 שלח הודעה
             </a>
         </div>
@@ -32,7 +33,7 @@
 
             <div class="date" dir="ltr">{creator_id.username} {?creation_date}{creation_date|time}{/creation_date}</div>
             <div class="proxy">
-                <span>{creator_id.num_of_given_mandates}</span>
+                <span class="num">{creator_id.num_of_proxies_i_represent}</span>
             </div>
             <div class="respect">
                 <span class="score">{creator_id.score}</span>
@@ -65,7 +66,7 @@
         <a class="quote_button" href="javascript:void(0);">
             צטט
         </a>
-        <a class="share" rel="/discussions/{discussion_id}#post_{_id}" data-name="{text}" href="/facebookShare?link=/discussions/{discussion_id}#post_{_id}" target="_blank">
+        <a class="share" data-img_src="{image_field_preview}" data-text_preview="{text}" data-title="תגובה מתוך דיון על החזון {title}" rel="/discussions/{discussion_id}#post_{_id}" data-name="{text}" href="/facebookShare?link=/discussions/{discussion_id}#post_{_id}" target="_blank">
             שתף
         </a>
     </div>

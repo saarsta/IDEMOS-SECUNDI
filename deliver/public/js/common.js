@@ -38,30 +38,6 @@ var tags_replace = {
     's': 's'
 };
 
-function sendFacebookInvite(message,link,callback) {
-    FB.ui({method: 'apprequests', message: message}, function(response) {
-
-        var request_id = response.request;
-
-        db_functions.addFacebookRequest(link, request_id,callback);
-    });
-}
-
-function sendFacebookShare(link, name,callback) {
-    db_functions.addFacebookRequest(link, null,function(err,link_obj) {
-        if(err)
-            callback(err);
-        else {
-            link =  window.location.origin + link_obj.link;
-            FB.ui({method: 'feed', link: link, name: name}, function(response) {
-
-                console.log(response);
-                callback();
-            });
-        }
-    });
-
-}
 
 
 dust.filters['tags'] = function(text) {
@@ -71,22 +47,29 @@ dust.filters['tags'] = function(text) {
     text = text.replace(/\[list\]/g,'<ul><li>').replace(/\[\/list\]/g,'</li></ul>');
     text = text.replace(/\[\*\]/g,'</li><li>').replace(/<ul><li>(.|\n)*?<\/li>/g,'<ul>');
     text = text.replace(/\[url(?:=([^\]]*))\]((?:.|\n)*)?\[\/url\]/,'<a href="$1" target="_blank">$2</a>')
-    text = text.replace(/\[url\]((?:.|\n)*)?\[\/url\]/,'<a href="$1" target="_blank">$1</a>')
+    text = text.replace(/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig, "<a href='$1' target='_blank'>$1</a>");
+    text = text//eplace(/\[url\]((?:.|\n)*)?\[\/url\]/,'<a href="$1" target="_blank">$1</a>')
 
     return text;
 };
 
 dust.filters['post'] = function(text) {
     text = dust.filters['tags'](text);
-
-
-
-    text = text.replace(/\[quote="([^"]*)"\s*\]\n?((?:.|\n)*)?\n?\[\/quote\]\n?/g,
-        '<div class="post_quote"><a class="ref_link" href="javascript:void(0);">' +
+   text = text.replace(/\[quote="([^"]*)"\s*\]\n?((?:.|\n)*)?\n?\[\/quote\]\n?/g,
+        '<div class="post_quote" ><p style="font-style:italic" ><a class="ref_link" href="javascript:void(0);" style="display: block; margin-bottom: 8px; text-decoration: underline;">' +
             ' $1 כתב:' +
-            '</a><br>' +
-            '$2' + '</div>');
-    text = text.replace(/\n/g, '<br>');
+            '</a>' +
+            '$2' + '</p></div><br><p><span class="actual_text">');
+    text = text.replace(/\n/g, '<br>') + '</span></p>';
+    return text;
+}
+
+//    / [img,width=233,height=212]
+dust.filters['qa'] = function(text) {
+    text = dust.filters['tags'](text);
+    text = text.replace(/\[img\s*(?:,\s*width=(\d+))?\s*(?:,\s*height=(\d+))?\](.*?)\[\/img\]/g,'<div class="auto-scale" style="width:$1px; height:$2px;"><img src="$3"></div>');
+    text = text.replace("undefined", 230);
+
     return text;
 }
 
@@ -123,63 +106,99 @@ var scrollTo = function(selector, options){
 var connectPopup = function(callback){
 
     //open popup window
+     popupProvider.showLoginPopup({},callback);
 
-    alert('please login');
-
-    if(callback)
-        callback();
 };
 
 
+function initTooltip(ui){
+    ui.tooltip({
+        bodyHandler: function() {
+            return "" +
+                "בקרוב"
+        },
+        showURL: false
+    });
+    ui.attr('disabled','disabled');
+    ui.attr('href','javascript:void(0)');
+}
 
-// handle image loading stuff
+function initTooltipWithMessage(ui, message){
+    ui.tooltip({
+        bodyHandler: function() {
+            return "" +
+                message
+        },
+        showURL: false
+    });
+    ui.attr('disabled','disabled');
+    ui.attr('href','javascript:void(0)');
+}
 
-$(function(){
+function fbs_click(ui) {
 
-    var host = window.location.protocol + '//' + window.location.host;
+    ui.click( function() {
 
-    function fbs_click(ui) {
-
-        ui.click( function() {
-
-            sendFacebookShare($(this).attr('rel'), $(this).data('name'), function(err) {
-                console.log(err);
-            });
+        sendFacebookShare($(this).attr('rel'), $(this).data('title'), $(this).data('img_src'), $(this).data('text_preview'), function(err) {
+            console.log(err);
+        });
 //            var u = ;
 //            window.open(
 //                'http://www.facebook.com/sharer.php?u=' + encodeURIComponent(host + u),
 //                'sharer',
 //                'toolbar=0,status=0'
 //            );
-            return false;
-        });
-        ui.attr('href','javascript:void(0);');
-    }
+        return false;
+    });
+    ui.attr('href','javascript:void(0);');
+}
 
-    function initTooltip(ui){
-        ui.tooltip({
-            bodyHandler: function() {
-                return "" +
-                    "בקרוב"
-            },
-            showURL: false
-        });
-        ui.attr('disabled','disabled');
-        ui.attr('href','javascript:void(0)');
-    }
 
-    function initTooltipWithMessage(ui, message){
-        ui.tooltip({
-            bodyHandler: function() {
-                return "" +
-                    message
-            },
-            showURL: false
-        });
-        ui.attr('disabled','disabled');
-        ui.attr('href','javascript:void(0)');
-    }
+// handle image loading stuff
 
+$(function(){
+    $('user-box').live('tap', function(){
+        $(this).toggleClass('active');
+    })
+
+    $('#register_form').submit(function() {
+        // get all the inputs into an array.
+        var $inputs = $('#register_form :input');
+
+        // get an associative array of just the values.
+        var values = {};
+        $inputs.each(function() {
+            values[this.name] = $(this).val();
+        });
+
+
+        db_functions.login(values["email"], values["password"], function(err, result){
+            if(err){
+                $("#login_head").text("נסה שוב");
+            }
+            else{
+                window.location.href = window.location.href;
+            }
+
+        });
+        return false;
+    });
+
+    $("#fb_connect").live('click', function(){
+        facebookLogin(function(err, result){
+            if(!err){
+                window.location.href = window.location.href;
+            }else{
+                console.error(err);
+                $("#login_head").text("קרתה תקלה");
+            }
+        })
+    })
+
+
+    var host = window.location.protocol + '//' + window.location.host;
+
+    $('input, textarea').placeholder();
 
     $('#failureForm').live('submit', function(e){
         e.preventDefault();
@@ -196,6 +215,7 @@ $(function(){
         });
 
     });
+
     db_functions.getAndRenderFooterTags();
 
 
@@ -223,29 +243,25 @@ $(function(){
                 if(tooltip.length)
                     initTooltip(tooltip);
             }
-        }
-        inCallback = false;
-    };
-    var callback = function(event){
-        var target_element = event.srcElement || event.target;
-        if(target_element){
-            if($(target_element).is('.auto-scale'))
-                image_autoscale($('img',target_element));
-            else
-            {
-                var autoscale = $('.auto-scale',target_element);
-                if(autoscale.length)
-                    image_autoscale($('img',autoscale));
-            }
             if($(target_element).is('.share'))
                 fbs_click($(target_element));
             else
             {
-                var tooltip = $('.share',target_element);
+                var share = $('.share',target_element);
+                if(share.length)
+                    fbs_click(share);
+            }
+
+            if($(target_element).is('.action_comming_soon'))
+                initTooltipWithMessage($(target_element), "יעלה בקרוב");
+            else
+            {
+                var tooltip = $('.action_comming_soon',target_element);
                 if(tooltip.length)
-                    fbs_click(tooltip);
+                    initTooltipWithMessage(tooltip, "יעלה בקרוב");
             }
         }
+        inCallback = false;
     };
 
     if($.browser.msie && Number($.browser.version) == 8)

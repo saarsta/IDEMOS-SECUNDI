@@ -17,7 +17,7 @@
         </div>
         <div id="content" class="cf">   
             <h2>
-                ברוכים הבאים!
+הרשמה לעורו
             </h2>
             <form id="register_form" action="/account/register" class="login-form cf" method="POST">
                 <%if(error_message){%>
@@ -45,7 +45,7 @@
                     </div>
                     <div class="one">
                         <label>
-                            סיסמה:
+                            סיסמא:
                         </label>
                         <input id="password" name="password" type="password" class="text" type="text" value="" />
                     </div>
@@ -55,7 +55,7 @@
                         </label>
                         <input id="email" name="email" class="text" type="text" value="" />
                     </div>
-                    <div class="one">
+                    <div class="one hide">
                         <label>
                             קוד הזמנה:
                         </label>
@@ -86,7 +86,7 @@
             {
                 first_name:"נא להזין שם פרטי",
                 last_name:"נא להזין שם משפחה",
-                password: "נא להזין סיסמה",
+                password: "נא להזין סיסמא",
                 email: "נא להזין כתובת מייל"
             },
             highlight: function (element, errorClass) {

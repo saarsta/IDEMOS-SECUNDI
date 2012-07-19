@@ -30,6 +30,8 @@ module.exports = function(app) {
    // router.include('/hisuru',MyUru);
   //  router.include('/hisuru',HisUru);
 
+    router.include('/og', require('../../og'));
+
 
 
 };

@@ -153,7 +153,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                 agrees = suggestion_obj.agrees + (Number(is_agree) * proxy_power);
                 not_agrees = suggestion_obj.not_agrees + (Number(!is_agree) * proxy_power);
 
-                curr_tokens_amout = agrees - not_agrees;
+                curr_tokens_amout = Math.round(agrees) - Math.round(not_agrees);
 
                 async.parallel([
                     function (cbk1) {
@@ -180,15 +180,15 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                         }
                     },
                     //set notification for suggestion creator ("user agree/disagree your suggestion")
-                    function (cbk) {
+                    function (cbk1) {
                         var method;
-                        if (suggestion_obj.does_support_the_suggestion)
+                        if (is_agree)
                             method = "add";
                         else
                             method = "remove";
                         notifications.create_user_vote_or_grade_notification("user_gave_my_suggestion_tokens",
-                            discussion_id, suggestion_obj.creator_id, req.user._id, suggestion_obj._id, method, false, function (err, result) {
-                                cbk(err, result);
+                            suggestion_obj._id, suggestion_obj.creator_id, req.user._id, discussion_id, method, false, true, function (err, result) {
+                                cbk1(err, result);
                             })
                     }
                 ], function (err, args) {
@@ -199,14 +199,14 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
         ], function (err, obj) {
             if (!err) {
                 req.gamification_type = "grade_suggestion";
-                req.token_price = common.getGamificationTokenPrice('grade_suggestion') || 0;
+                req.token_price = common.getGamificationTokenPrice('grade_suggestion') > -1 ? common.getGamificationTokenPrice('grade_suggestion') : 0;
             }
             callback(err, {
                 grade_id:grade_id,
                 new_grade:new_grade,
                 evaluate_counter:counter,
 //                    already_graded: true,
-                agrees:agrees,
+                agrees: agrees,
                 not_agrees:not_agrees,
 //                    wanted_amount_of_tokens: real_threshold,
                 curr_amount_of_tokens:curr_tokens_amout
@@ -248,7 +248,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                     models.Suggestion.findById(object.suggestion_id, cbk);
                 }
                 else
-                    models.Grade.findOne({discussion_id:discussion_id, user_id:req.user._id}, function (err, grade_discussion) {
+                    models.Grade.findOne({discussion_id:discussion_id, user_id:req.user._id || object.user_id}, function (err, grade_discussion) {
                         if (!err) {
                             discussion_evaluation_grade = grade_discussion.evaluation_grade;
                             is_agree = object.evaluation_grade >= discussion_evaluation_grade;
@@ -260,8 +260,13 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
             function (sugg_obj, cbk) {
                 var method;
                 g_sugg_obj = sugg_obj;
+
+
+
                 agrees = sugg_obj.agrees;
                 not_agrees = sugg_obj.not_agrees;
+
+                curr_tokens_amout = Math.round(agrees) - Math.round(not_agrees);
 
                 did_user_change_his_agree = object.does_support_the_suggestion != is_agree;
                 object.does_support_the_suggestion = is_agree;
@@ -272,16 +277,39 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                         method = "remove"
                 }
                 async.parallel([
+
                     function (cbk1) {
-                        notifications.create_user_vote_or_grade_notification("user_gave_my_suggestion_tokens",
-                            discussion_id, sugg_obj.creator_id, req.user._id, sugg_obj._id, method, did_user_change_his_agree, function (err, result) {
-                                cbk1(err, result);
-                            })
+                        if(did_user_change_his_agree){
+                            if(sugg_obj.creator_id){
+                                notifications.create_user_vote_or_grade_notification("user_gave_my_suggestion_tokens",
+                                    sugg_obj._id, sugg_obj.creator_id, req.user._id, discussion_id, method, did_user_change_his_agree, true,function (err, result) {
+                                        cbk1(err, result);
+                                    })
+                            }else{
+                                console.log('this suggestion - id number ' +  sugg_obj.creator_id + 'doesnt have creator id!!!')
+                                cbk1(null, 0);
+                            }
+
+                        }else{
+                            cbk1(null, 0);
+                        }
                     },
 
                     function (cbk1) {
                         object.proxy_power = proxy_power;
-                        base.call(self, req, object, cbk);
+
+                        if(object.agrees < 0){
+                            object.agrees = 0;
+                            console.log("error - suggestion agrees < 0");
+                        }
+
+                        if(object.not_agrees < 0){
+                            object.not_agrees = 0;
+                            console.log("error - suggestion agrees < 0");
+
+                        }
+
+                        base.call(self, req, object, cbk1);
                     }
                 ], function (err, args) {
                     cbk(err, args[1]);
@@ -300,13 +328,13 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                             if (is_agree) {
                                 agrees = g_sugg_obj.agrees + (1 * proxy_power);
                                 not_agrees = g_sugg_obj.not_agrees - (1 * previous_proxy_power);
-                                curr_tokens_amout = agrees - not_agrees;
+                                curr_tokens_amout = Math.round(agrees) - Math.round(not_agrees);
 
                             }
                             else {
                                 agrees = g_sugg_obj.agrees - (1 * previous_proxy_power);
                                 not_agrees = g_sugg_obj.not_agrees + (1 * proxy_power);
-                                curr_tokens_amout = agrees - not_agrees;
+                                curr_tokens_amout = Math.round(agrees) - Math.round(not_agrees);
                             }
 
                             //if there is an admin threshokd specified for the suggestion - it wins
@@ -329,20 +357,20 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                 });
             }
         ], function (err) {
-            callback(err, {
-//                new_grade: new_grade,
-//                evaluate_counter: evaluate_counter,
-//                grade_id: g_grade._id || 0}
 
-                    grade_id:grade_id,
-                    new_grade:new_grade,
-                    evaluate_counter:evaluate_counter,
-                    agrees:agrees,
-                    not_agrees:not_agrees,
+
+                callback(err, {
+
+                        grade_id:grade_id,
+                        new_grade:new_grade,
+                        evaluate_counter:evaluate_counter,
+                        agrees:agrees,
+                        not_agrees:not_agrees,
 //                wanted_amount_of_tokens: real_threshold,
-                    curr_amount_of_tokens:curr_tokens_amout
-                }
-            )
+                        curr_amount_of_tokens:curr_tokens_amout
+                    }
+                )
+            
         })
     }
 })
@@ -455,17 +483,36 @@ var calculateSuggestionGrade = GradeSuggestionResource.calculateSuggestionGrade 
                     function (approved_sugg, cbk) {
                         g_approved_sugg = approved_sugg;
                         change_length = approved_sugg.parts[0].end - approved_sugg.parts[0].start - 1;
-                        if (approved_sugg.parts[0].text.length != change_length) {
-                            models.Suggestion.find({discussion_id:discussion_id, is_approved:false}, cbk);
+
+
+                        //this is because a bug i have
+                        if(!approved_sugg.parts[0].text){
+                            approved_sugg.parts[0].text = "";
+                            approved_sugg.save(function(err, approved_sugg_){
+                                if (approved_sugg_.parts[0].text.length != change_length) {
+                                    models.Suggestion.find({discussion_id:discussion_id, is_approved:false}, cbk);
+                                }
+                                else {
+                                    cbk("no need for offseting", null);
+                                }
+                            })
+                        }else{
+                            if (approved_sugg.parts[0].text.length != change_length) {
+                                models.Suggestion.find({discussion_id:discussion_id, is_approved:false}, cbk);
+                            }
+                            else {
+                                cbk("no need for offseting", null);
+                            }
+
                         }
-                        else {
-                            cbk("no need for offseting", null);
-                        }
-                    },
+                     },
 
                     function (suggestions, cbk) {
                         async.forEach(suggestions, function (sugg, itr_cbk) {
                             if (sugg._id != suggestion_id && sugg.parts[0].start < g_approved_sugg.parts[0].end - 1){
+                                if(sugg.threshold_for_accepting_the_suggestion > 500)
+                                    sugg.threshold_for_accepting_the_suggestion = 500;
+
                                 sugg.parts[0].start = g_approved_sugg.parts[0].text.length > change_length ? sugg.parts[0].start + change_length : sugg.parts[0].start - change_length;
                                 sugg.save(function(err, sugg){
                                     itr_cbk(err, sugg);

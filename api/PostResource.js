@@ -7,7 +7,7 @@
  */
 
 var resources = require('jest'),
-    util = require('util'),
+    og_action = require('../og/og').doAction,
     models = require('../models'),
     common = require('./common'),
     async = require('async'),
@@ -27,7 +27,7 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
         };
         this.fields = {
             creator_id : common.user_public_fields,
-                mandates_curr_user_gave_creator: null,
+            mandates_curr_user_gave_creator: null,
             text:null,
             popularity:null,
             tokens:null,
@@ -67,9 +67,13 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
 
                                     var flag = false;
 
-                                    var proxy = _.find(proxies, function(proxy){ return proxy.user_id + "" == post.creator_id + ""});
+                                    var proxy = _.find(proxies, function(proxy){
+                                        if(!post.creator_id)
+                                            return null;
+                                        else
+                                            return proxy.user_id + "" == post.creator_id._id + ""});
                                     if(proxy)
-                                        proxy.mandates_curr_user_gave_creator = proxy.number_of_tokens;
+                                        post.mandates_curr_user_gave_creator = proxy.number_of_tokens;
                                     if(post.creator_id)
                                         flag =  _.any(post.creator_id.followers, function(follower){return follower.follower_id + "" == user_id + ""});
                                     post.is_user_follower = flag;
@@ -120,8 +124,17 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
 
         console.log('debugging waterfall');
 
+        /**
+         * Waterfall:
+         * 1) set post object fields, send to authorization
+         * 2) save post object
+         * 3) send notifications
+         * 4) publish to facebook
+         * Final) return the object with the creator user object
+         */
         async.waterfall([
 
+            // 1) set post object fields, send to authorization
             function(cbk)
             {
                 console.log('debugging waterfall 1');
@@ -138,6 +151,7 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                 self.authorization.edit_object(req, post_object, cbk);
             },
 
+            //  2) save post object
             function(_post_object, cbk){
                 post_id = _post_object._id;
                 post_object = _post_object;
@@ -148,6 +162,8 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                     cbk(err,result);
                 });
             },
+
+            // 3) send notifications
             function (object,cbk) {
 //                discussion_id = object.discussion_id;
                 console.log('debugging waterfall 3');
@@ -184,11 +200,17 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                         console.log('debugging waterfall 3 3');
 
                         if(post_object.ref_to_post_id){
-                            models.Post.findById(post_object.ref_to_post_id, function(err, quoted_post){
+                            models.PostOrSuggestion.findById(post_object.ref_to_post_id, function(err, quoted_post){
                                 if(err)
                                     cbk2(err, null);
                                 else{
-                                    notifications.create_user_notification("been_quoted", discussion_id, quoted_post.creator_id, post_object.creator_id, post_object._id/*ref_to_post_id*/, cbk);
+                                    if(quoted_post)
+                                        notifications.create_user_notification("been_quoted", discussion_id, quoted_post.creator_id, post_object.creator_id, post_object._id/*ref_to_post_id*/, cbk2);
+                                    else
+                                    {
+                                        console.log("there is no post with post_object.ref_to_post_id id");
+                                        cbk2(err, 0);
+                                    }
                                 }
                             })
                         }else{
@@ -197,6 +219,8 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                     },
 
                     //if this post create on discussion create, its free of tokens, otherwise put it on req
+                    // TODO remove this. Post on Discussion create should be one single resource and one single calls, creation of first post should be done from there -> this check won't be necessary
+
                     function(cbk2){
                         models.Post.count({discussion_id: post_object.discussion_id}, function(err, count){
                             if(!err){
@@ -209,8 +233,19 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                     }
                     ],
                     cbk);
+            },
+            // 4) publish to facebook
+            function(args,cbk) {
+                og_action({
+                    action: 'comment',
+                    object_name:'discussion',
+                    object_url : '/discussions/' + discussion_id + '#post_' + post_id,
+                    fid : user.facebook_id,
+                    user:user
+                });
+                cbk();
             }
-        ],function(err,result)
+        ],function(err)
         {
             var rsp = {};
             _.each(['text','popularity','creation_date','votes_for','votes_against', '_id'],function(field)

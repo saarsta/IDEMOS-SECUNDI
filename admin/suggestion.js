@@ -2,6 +2,14 @@ var j_forms = require('j-forms');
     models = require('../models');
     async = require('async');
 module.exports = j_forms.forms.AdminForm.extend({
+    get_fields: function() {
+        this._super();
+        if(this.fields['agrees'])
+            this.fields['agrees'].widget.attrs['readonly'] = 'readonly';
+        if(this.fields['not_agrees'])
+            this.fields['not_agrees'].widget.attrs['readonly'] = 'readonly';
+    },
+
     render_ready:function(callback) {
         var self = this;
         this._super(function(err) {
@@ -15,9 +23,11 @@ module.exports = j_forms.forms.AdminForm.extend({
                 },
 
                 function(discussion_obj, cbk){
-                    self.discussion_thresh = Number(discussion_obj.admin_threshold_for_accepting_change_suggestions) || discussion_obj.threshold_for_accepting_change_suggestions;
-                    self.num_of_graders = discussion_obj.evaluate_counter;
-                    self.grade = discussion_obj.grade;
+                    if(discussion_obj){
+                        self.discussion_thresh = Number(discussion_obj.admin_threshold_for_accepting_change_suggestions) || discussion_obj.threshold_for_accepting_change_suggestions;
+                        self.num_of_graders = discussion_obj.evaluate_counter;
+                        self.grade = discussion_obj.grade;
+                    }
                     cbk();
                 }
             ], function(err, result){

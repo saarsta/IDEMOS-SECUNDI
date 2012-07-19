@@ -4,5 +4,6 @@ var mongoose = require("mongoose"),
 
 var ActionResource = module.exports =  {
     category: {type: ObjectId, ref: 'Category'},
-    name:String
+    name:String,
+    is_hidden:{type:Boolean,'default':true}
 };

@@ -6,7 +6,9 @@
         <span class="flag"></span>
     </div>
     <h4><a href="">{title}</a></h4>
-    <p> {text_field}</p>
+    <div class="item_text_preview">
+        {text_field|s}</p>
+    </div>
     <div class="tags">
         {#tags}
         <a href="/information_items?tag_name={.|u}"
@@ -17,7 +19,7 @@
         {/idx}
         >{.}</a>{~n}
         {/tags}
-        <div class="more">
+        <div class="more hide">
             <span></span>
             <ul>
                 {@if cond="(0{tags|length} > 4 )"}

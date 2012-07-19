@@ -7,18 +7,86 @@ var db_functions = {
     {
         var onError = options.error || function()
         {
-            console.log(arguments[2]);
+            console.error(arguments[2]);
         };
         options.error =  function (xhr, ajaxOptions, thrownError) {
-            if(xhr.status == 401 && xhr.responseText == 'not authenticated'){
-                connectPopup(function(){
-                    onError(xhr,ajaxOptions,thrownError);
-                });
+            if(xhr.status == 401 && (xhr.responseText == 'not authenticated' || xhr.responseText == "Error: Unauthorized - there is not enought tokens" || xhr.responseText == "user must have a least 10 tokens to open create discussion")){
+                if (xhr.responseText == 'not authenticated'){
+                    connectPopup(function(err){
+                        if(err)
+                            onError(xhr,ajaxOptions,thrownError);
+                        else{
+                            var success = options.success;
+                            options.success = function(){
+                                success.apply(this, arguments);
+                                window.location.href = window.location.href;
+                            };
+                            options.error = function() {
+                                onError.apply(this,arguments);
+                                window.location.href = window.location.href;
+                            };
+                            $.ajax(options);
+                        }
+                    });
+                }else if (xhr.responseText == 'Error: Unauthorized - there is not enought tokens')
+                {
+
+                    alert("אין מספיק אסימונים בשביל לבצע פעולה זו");
+                }else if (xhr.responseText == "user must have a least 10 tokens to open create discussion")
+                    alert("צריך מינימום של 10 אסימונים בשביל ליצור דיון");
+
             }
             else
                 onError(xhr,ajaxOptions,thrownError);
         };
         $.ajax(options);
+    },
+
+    login: function(email, password, callback){
+        this.loggedInAjax({
+            url: '/api/login',
+            type: "POST",
+            async: true,
+            data: {email: email, password: password},
+
+            success: function (err, data) {
+                callback(null, data);
+            },
+
+            error: function(err, data){
+                callback(err, null);
+            }
+        });
+    },
+
+    getUserAfterFbConnect: function(fb_id, access_token, callback){
+            this.loggedInAjax({
+                url: '/api/fb_connect',
+                type: "POST",
+                async: true,
+                data: {fb_id: fb_id, access_token: access_token},
+
+                success: function (err, data) {
+                    callback(null, data);
+                },
+
+                error: function(err, data){
+                    callback(err, null);
+                }
+            });
+    },
+
+    getOrCreateUserByFBid: function(user_fb_id, access_token){
+        db_functions.loggedInAjax({
+            url: '/api/fb_connect',
+            type: "Post",
+            async: true,
+            success: function (data) {
+                console.log(data);
+
+                callback(data);
+            }
+        });
     },
 
     registerUser: function(first_name, last_name, password, email, invitation, callback){
@@ -31,7 +99,7 @@ var db_functions = {
 
                 callback(data);
             },
-            error:function(err, data)
+            error: function(err, data)
             {
                 callback(err);
             }
@@ -46,6 +114,54 @@ var db_functions = {
             success: function (data) {
                 console.log(data);
 
+                callback(data);
+            }
+        });
+    },
+
+    getAboutUruTexts: function(callback){
+        db_functions.loggedInAjax({
+            url: '/api/about_uru_texts',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+                callback(data);
+            }
+        });
+    },
+
+    getAboutUruItems: function(callback){
+        db_functions.loggedInAjax({
+            url: '/api/about_uru_items',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+                callback(data);
+            }
+        });
+    },
+
+    getTeam: function(callback){
+        db_functions.loggedInAjax({
+            url: '/api/team',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+                callback(data);
+            }
+        });
+    },
+
+    getQaItems: function(callback){
+        db_functions.loggedInAjax({
+            url: '/api/qa',
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
                 callback(data);
             }
         });
@@ -99,16 +215,18 @@ var db_functions = {
         });
     },
 
-    getNotifications: function(callback){
+    getNotifications: function(user_id, limit, callback){
         db_functions.loggedInAjax({
-            url: '/api/notifications?limit=40',
+            url: '/api/notifications?' + (user_id? '&user_id='+user_id:'') + (limit? '&limit='+limit:''),
             type: "GET",
             async: true,
+
             success: function (data) {
                 callback(data);
             }
         });
     },
+
     getAndRenderFooterTags:function()
     {
         db_functions.loggedInAjax({
@@ -196,6 +314,10 @@ var db_functions = {
             },
 
             error:function(err){
+                if(err.responseText == "vision can't be more than 800 words")
+                    popupProvider.showOkPopup({massage:"חזון הדיון צריך להיות 800 מילים לכל היותר"});
+                else if (err.responseText == "you don't have the min amount of tokens to open discussion")
+                    popupProvider.showOkPopup( {massage:"מצטערים, אין לך מספיק אסימונים..."});
                 callback(err, null);
             }
         });
@@ -325,8 +447,6 @@ var db_functions = {
 
     },
 
-
-
     addPostToDiscussion: function(discussion_id, post_content, refParentPostId, callback){
         db_functions.loggedInAjax({
             url: '/api/posts/',
@@ -404,7 +524,8 @@ var db_functions = {
             },
             error:function(err){
                 if(err.responseText != "not authenticated")
-                    alert(err.responseText);
+                    if(err.responseText == "must grade discussion first")
+                        popupProvider.showOkPopup({massage:'אנא דרג קודם את החזון בראש העמוד.'})
                 callback(err, null);
             }
         });
@@ -462,7 +583,7 @@ var db_functions = {
         db_functions.loggedInAjax({
             url: '/api/user_proxies/' + user_id,
             type: "PUT",
-            data: {proxy_id: proxy_id, number_of_tokens: number_of_namdates},
+            data: {proxy_id: proxy_id, req_number_of_tokens: number_of_namdates},
             async: true,
             success: function (data) {
                 callback(null, data);
@@ -616,6 +737,19 @@ var db_functions = {
             }
         });
     }   ,
+
+    getItemsByTagNameAndType: function(type,tag_name,page,callback)
+    {
+        this.loggedInAjax({
+            url: '/api/' + type + '?limit=3&offset=' + (page*3) + (tag_name ? '&tags=' + tag_name : ''),
+            type: "GET",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            }
+        });
+    },
+
 
     getDiscussionsByTagName: function(tag_name, callback){
         db_functions.loggedInAjax({

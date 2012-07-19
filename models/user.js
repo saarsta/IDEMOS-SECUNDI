@@ -20,13 +20,15 @@ var RegexValidator = function (regex) {
 
 
 var User = module.exports = new Schema({
-//    username:String,
+
+    //this is for validation
+    is_activated: {type: Boolean, 'default': false},
     identity_provider:{type:String, "enum":['facebook', 'register']},
     facebook_id:String,
     access_token:String,
     first_name:{type:String, required:true, validate:MinLengthValidator(2)},
-    last_name:{type:String, required:true, validate:MinLengthValidator(2)},
-    email:{type:String, required:true, match:/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/},
+    last_name:{type:String, required:false},
+    email:{type:String, required:true},//, match:/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/},
     gender:{type:String, "enum":['male', 'female']},
     age:{type:Number, min:0},
     address: String,
@@ -54,19 +56,23 @@ var User = module.exports = new Schema({
     updates: Schema.Types.Mixed,
     //proxy - people i gave my tokens
     proxy: [
-        new Schema({user_id:{type:ObjectId, ref:'User'}, number_of_tokens: {type:Number, 'default': 0, min: 0, max: 3},
-            number_of_tokens_to_get_back: {type:Number, 'default': 0, min: 0, max: 3}})
+            new Schema({user_id:{type:ObjectId, ref:'User'}, number_of_tokens: {type:Number, 'default': 0, /*min: 0,*/ max: 3},
+            number_of_tokens_to_get_back: {type:Number, 'default': 0,/* min: 0,*/ max: 3}})
     ],
+//    num_of_mandates_i_gave: {type: Number, 'default': 0},
     num_of_given_mandates: {type: Number, 'default': 0},
+    num_of_proxies_i_represent: {type: Number, 'default': 0},
     score:{type:Number, 'default':0},
-    decoration_status:{type:String, "enum":['a', 'b', 'c']},
+//    unseen_notifications: {type:Number, 'default':0},
+    decoration_status:{type:String, "enum":['a', 'b', 'c'], editable: false},
     invited_by: {type: ObjectId, ref: 'User'},
-    has_been_invited : {type: Boolean, 'default': false},
+    has_been_invited : {type: Boolean, 'default': false, editable: false},
     tokens_achivements_to_user_who_invited_me: Schema.Types.Mixed,
     num_of_extra_tokens: {type: mongoose_types.Integer, 'default': 0, max:6, min: 0},// i might change it to gamification.bonus.
-    number_of_days_of_spending_all_tokens: {type: Number, 'default' : 0},
-    blog_popularity_counter: {type: Number, 'default': 0},
-    avatar : mongoose_types.File
+    number_of_days_of_spending_all_tokens: {type: Number, 'default' : 0, editable: false},
+    blog_popularity_counter: {type: Number, 'default': 0, editable: false},
+    avatar : mongoose_types.File,
+    minisite_code : String
 }, {strict:true});
 
 User.methods.toString = function()
@@ -79,6 +85,6 @@ User.methods.avatar_url = function()
     if(this.avatar && this.avatar.url)
         return this.avatar.url;
     else
-        return 'http://graph.facebook.com/' + this.facebook_id + '/picture/?type=large';
+        return this.facebook_id ? 'http://graph.facebook.com/' + this.facebook_id + '/picture/?type=large' : "/images/default_user_img.gif";
 };
 

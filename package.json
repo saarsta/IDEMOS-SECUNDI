@@ -9,7 +9,7 @@
         "connect-auth": "",
         "mongoose":"",
         "express-resource": "= 0.2.4",
-        "jest": ">= 0.0.99",
+        "jest": ">= 0.1.0",
         "connect-mongo":"= 0.1.7",
         "async": "",
 		"jade": "",
@@ -17,11 +17,13 @@
         "underscore": "",
         "i18n-mongoose":"",
         "j-forms":">= 0.0.58",
-        "admin-with-forms":">= 0.0.46",
+        "admin-with-forms":">= 0.0.50",
         "knox":"",
         "dustjs-linkedin":"",
         "sendgrid": "",
-        "sendgrid-nodejs": ""
+        "sendgrid-nodejs": "",
+        "facebook-signed-request" : "",
+        "request" : ""
   },
   "engines": { "node": "<= 0.7" }
 } 
