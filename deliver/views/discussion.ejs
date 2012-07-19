@@ -1043,7 +1043,7 @@ $(document).ready(function () {
         var i;
         for (i = 0; i < comments.length; i++) {
             comments[i].isFirst = (i === 0);
-
+            comments[i].isEven = ((i % 2)== 0);
         }
         dust.renderArray('discussion_comment', comments, null, function (err, out) {
             if (!err) {

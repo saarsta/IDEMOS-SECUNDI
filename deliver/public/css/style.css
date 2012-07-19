@@ -2733,8 +2733,8 @@ h2 small
 }
 .comments-box .text
 {
-    margin: 0 140px 0 183px;
-    padding-bottom: 60px;
+    margin: 0 160px 0 183px;
+    padding-bottom: 10px;
 }
 .comments-box .text p
 {
@@ -2756,7 +2756,7 @@ h2 small
 {
     position: absolute;
     left:0;
-    top: 13px;
+
 }
 .comments-box .nav-btns
 {
