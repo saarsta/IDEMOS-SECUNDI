@@ -39,16 +39,12 @@ var error_message = error_message || '';
                 </div>
 
 
-                <p style="text-align: left; position: relative; top: 25px; " id="read_more" onclick="$(this).parents('.text-box').addClass('extended');">
+                <p style="text-align: left; position: relative; top: 25px; " id="read_more">
                     <a href="javascript:void(0);">
                         קרא עוד
                     </a>
                 </p>
-                <p style="text-align: left; position: relative; top: 25px;" id="read_less" onclick="$(this).parents('.text-box').removeClass('extended');">
-                    <a href="javascript:void(0);">
-                        קרא פחות
-                    </a>
-                </p>
+
 
             </div>
             <div class="add-offer-bottom cf">
@@ -1183,6 +1179,12 @@ $(document).ready(function () {
         $(this).parents('.system-notice').fadeOut(800);
     });
 
+    $('#read_more').click(function () {
+
+        $(this).parents('.text-box').addClass('extended');
+        var h=  $(".hidden_textarea").get(0).scrollHeight;
+        $(".discussion_content").height(h);
+    });
 
 });
 </script>
