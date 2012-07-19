@@ -761,11 +761,20 @@ $(document).ready(function () {
              if (!err) {
 
 //                var votes_for = button.parent('div').find('.number');
+
+    /*
                  var votes_for = button.parents(".status").find(".yes").find(".number");
                  var votes_against = button.parents(".status").find(".no").find(".number");
 
                  votes_for.text(Math.round(post_obj.votes_for));
                  votes_against.text(Math.round(post_obj.votes_against));
+                 */
+                 var f = $(this);
+                 var g=  $(this).parents(".ratio");
+                  $(this).parents(".ratio").find(".count").text(Math.round(post_obj.votes_for-post_obj.votes_against ));
+
+
+
              }
              else {
                  if (err.responseText == 'Error: there is not enought tokens')
@@ -786,12 +795,7 @@ $(document).ready(function () {
         func.call(db_functions, post_id, actionType, function (err, post_obj) {
             if (!err) {
 
-//                var votes_for = button.parent('div').find('.number');
-                var votes_for = button.parents(".status").find(".yes").find(".number");
-                var votes_against = button.parents(".status").find(".no").find(".number");
-
-                votes_for.text(Math.round(post_obj.votes_for));
-                votes_against.text(Math.round(post_obj.votes_against));
+                   button.parents(".ratio").find(".count").text(Math.round(post_obj.votes_for-post_obj.votes_against ));
             }
             else {
                 if (err.responseText == 'Error: there is not enought tokens')
@@ -1044,6 +1048,7 @@ $(document).ready(function () {
         for (i = 0; i < comments.length; i++) {
             comments[i].isFirst = (i === 0);
             comments[i].isEven = ((i % 2)== 0);
+            comments[i].voting =      comments[i].votes_for - comments[i].votes_against;
         }
         dust.renderArray('discussion_comment', comments, null, function (err, out) {
             if (!err) {
