@@ -2238,11 +2238,11 @@ body
     overflow: hidden;
 }
 .extended .hidden_textarea {
- /*   width: 692px;  */
+    width: 692px;
     overflow: inherit;
 }
 .extended #discussion_image {
- /*   display:none;    */
+   display:none;
 }
 .discussion_content
 {
@@ -2703,7 +2703,7 @@ h2 small
 .comments-box .comment-one
 {
     position: relative;
-    min-height: 150px;
+
     padding: 20px 0 11px;
     border-top: 1px solid #d2d1d1;
 }
@@ -6217,11 +6217,16 @@ a.fraction-btn
 }
 .comments-box .ratio a.up
 {
-    background: url(../images/ratio-arrows.png) 0 0 no-repeat;
+    background: url(../images/ratio-arrows1.png) 0 0 no-repeat;
     width: 31px;
     height: 20px;
     display: block;
     margin: 0 auto 6px;
+}
+.comments-box .ratio a:hover.up  ,
+.comments-box .ratio a.up.marked
+{
+    background: url(../images/ratio-arrows.png) 0 0 no-repeat;
 }
 .comments-box .ratio a.down
 {
@@ -6230,6 +6235,11 @@ a.fraction-btn
     height: 20px;
     display: block;
     margin: 0 auto;
+}
+.comments-box .ratio a:hover.down,
+.comments-box .ratio a.down.marked
+{
+    background: url(../images/ratio-arrows1.png) 0 100% no-repeat;
 }
 .comments-box .ratio .count
 {
@@ -6242,6 +6252,7 @@ a.fraction-btn
     text-align: center;
     color:#fff;
     font: bold 15px/24px Arial;
+    direction: ltr;
 }
 .comments-box .comment-one-even
 {
