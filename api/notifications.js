@@ -7,8 +7,11 @@
  */
 
 var models = require('../models'),
-async = require('async'),
-_ = require('underscore');
+    async = require('async'),
+    notificationResource = require('./NotificationResource'),
+    templates = require('../lib/templates'),
+    mail = require('../lib/mail'),
+    _ = require('underscore');
 
 
 
@@ -72,7 +75,7 @@ var create_new_notification = function(notification_type, entity_id, user_id, no
     var notificator = {
         notificator_id: notificatior_id,
         sub_entity_id: sub_entity_id
-    }
+    };
 
     notification.user_id = user_id;
     notification.notificators = notificator;
@@ -83,8 +86,59 @@ var create_new_notification = function(notification_type, entity_id, user_id, no
 
     notification.save(function(err, obj){
         callback(err, obj);
+        if(!err && obj)
+            sendNotificationToUser(obj);
     });
-}
+};
+
+/***
+ * Send notification to user through mail or other external API
+ * @param notification
+ * Notification object
+ * @param callback
+ * function(err)
+ */
+var sendNotificationToUser = function(notification,callback) {
+    /**
+     * Waterfall:
+     * 1) Get user email
+     * 2) populate references by notification type
+     * 3) create text message
+     * 4) send message
+     */
+    var email;
+    async.waterfall([
+        // 1) Get user email
+        function(cbk) {
+            models.User.findById(notification.user_id,['email'],cbk);
+        },
+        // 2) populate references by notification type
+        function(user, cbk) {
+            email = user.email;
+            notificationResource.populateNotifications({objects:[notification]},cbk);
+        },
+        // 3) create text message
+        function(results,cbk) {
+            var notification = results.objects[0];
+            notification.entity_name = notification.name || '';
+            templates.renderTemplate('notifications/' + notification.type,notification,cbk);
+        },
+        // 4) send message
+        function(message,cbk) {
+            mail.sendMailFromTemplate(email,message,cbk);
+        }
+    ],function(err) {
+        if(err) {
+            console.error('failed sending notification to user');
+            console.error(err);
+            console.trace();
+        }
+        else
+            console.log('email ' + notification.type + ' sent to ' + email);
+    });
+};
+
+
 
 exports.create_user_vote_or_grade_notification = function(notification_type, entity_id, user_id, notificatior_id,
                                                         sub_entity, vote_for_or_against, did_change_the_sugg_agreement, is_on_suggestion, callback){
@@ -161,6 +215,8 @@ exports.create_user_vote_or_grade_notification = function(notification_type, ent
 
                 notification.save(function(err, obj){
                     cbk(err, obj);
+                    if(!err && obj)
+                        sendNotificationToUser(obj);
                 });
             }
         }
@@ -177,4 +233,16 @@ exports.update_user_notification = function (notification_type, obj_id,user, cal
 
 function isSubEntityExist(notification, sub_entity){
         return _.any(notification.notificators, function(noti){ return noti.sub_entity_id + "" == sub_entity + ""});
+}
+
+
+if(/notifications\.js/.test(process.argv[1])) {
+    var app = require('../app');
+
+    setTimeout(function() {
+        create_new_notification('comment_on_discussion_you_are_part_of',
+            '4fc5e851ed6e970100000311','4f7c53e9afe34d0100000006','4f45145968766b0100000002','4ffecd7c5600ec0100001757',function(err) {
+                console.log(err);
+            });
+    },1000);
 }
