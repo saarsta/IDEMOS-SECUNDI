@@ -184,7 +184,12 @@ module.exports = function(app)
     });
 
     admin.registerMongooseModel('ImageUpload',Models.ImageUpload,null,{
-                list:['image.url']
+        list:['image.url']
+    });
+
+    admin.registerMongooseModel('Notification',Models.Notification,null,{
+        list:['type'],
+        order_by:['-on_date']
     });
 
     admin.registerMongooseModel('FBRequest',Models.FBRequest,null,{

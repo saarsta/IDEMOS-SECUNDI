@@ -162,15 +162,15 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
         else{
             //save user object
 
-                        //why the guck is it pn user????
-                        object.number_of_tokens = 0;
-                        object.number_of_tokens_to_get_back = 0;
+                //why the guck is it pn user????
+                object.number_of_tokens = 0;
+                object.number_of_tokens_to_get_back = 0;
 
             base.call(self, req, object, function(err, user_obj){
                 if(user_obj)
                      _.each(user_obj.proxy, function(proxy){proxy.calc_num_of_mandates = proxy.number_of_tokens - proxy.number_of_tokens_to_get_back;})
 
-                if(!err && number_of_tokens > 0){
+                    if(!err && number_of_tokens > 0){
                     //update proxy-user new tokens
                     var inc = is_new_proxy ? 1 : 0;
                     models.User.update({_id: proxy_id}, {$inc: {num_of_given_mandates: number_of_tokens, num_of_proxies_i_represent: is_new_proxy}}, function(err, num){
@@ -190,7 +190,7 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
 
                                     proxy.user_id = user_id;
                                 }
-                                _.each(user_obj.proxy, function(curr_proxy){if(curr_proxy.user_id + "" == proxy_id){curr_proxy = proxy}});
+//                                _.each(user_obj.proxy, function(curr_proxy){if(curr_proxy.user_id + "" == proxy_id){curr_proxy.user_id = proxy}});
                                 callback(err, user_obj);
                             })
                         }else

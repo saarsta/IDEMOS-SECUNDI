@@ -13,8 +13,6 @@ var Post = {
     ref_to_post_id:{type:Schema.ObjectId,ref:'Post',onDelete:'setNull'}
 };
 
-
-
 var extension = utils.extend_model('Post', require('./post_or_suggestion'), Post, 'posts',function(schema) {
     schema.methods.toString = function(){
         return this.text;
