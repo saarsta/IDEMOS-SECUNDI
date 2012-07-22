@@ -95,9 +95,7 @@ var Schemas = exports.Schemas = {
     Vote:{
         user_id:{type:ObjectId, ref:'User', index:true, required:true},
         post_id:{type:ObjectId, ref:'Post', index:true, required:true, onDelete:'delete'},
-//        tokens:Number,
         ballance:{type:Number,'default':0},
-//        method:{type:String, "enum":['add', 'remove']},
         creation_date:{type:Date, 'default':Date.now}
     },
 

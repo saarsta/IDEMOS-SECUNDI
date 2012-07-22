@@ -27,6 +27,7 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
         };
         this.fields = {
             creator_id : common.user_public_fields,
+            voter_balance: null,
             mandates_curr_user_gave_creator: null,
             text:null,
             popularity:null,
@@ -55,16 +56,32 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
             if(req.user){
                 user_id = req.user._id;
 
-                        models.User.findById(user_id, function(err, user_obj){
+                        async.waterfall([
+                            function(cbk){
+                                models.User.findById(user_id, cbk);
+                            },
 
-                            if(err)
-                                callback(err);
-                            else{
+                            function(user_obj, cbk){
+
                                 var proxies = user_obj.proxy;
 
-                                _.each(results.objects, function(post){
+//                                _.each(results.objects, function(post){
+//                                    var flag = false;
+//
+//                                    var proxy = _.find(proxies, function(proxy){
+//                                        if(!post.creator_id)
+//                                            return null;
+//                                        else
+//                                            return proxy.user_id + "" == post.creator_id._id + ""});
+//                                    if(proxy)
+//                                        post.mandates_curr_user_gave_creator = proxy.number_of_tokens;
+//                                    if(post.creator_id)
+//                                        flag =  _.any(post.creator_id.followers, function(follower){return follower.follower_id + "" == user_id + ""});
+//                                    post.is_user_follower = flag;
+//                                })
 
-
+                                async.forEach(results.objects, function(post, itr_cbk){
+                                    //update each post creator if he is a follower or not
                                     var flag = false;
 
                                     var proxy = _.find(proxies, function(proxy){
@@ -77,10 +94,19 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                                     if(post.creator_id)
                                         flag =  _.any(post.creator_id.followers, function(follower){return follower.follower_id + "" == user_id + ""});
                                     post.is_user_follower = flag;
-                                })
-                                callback(err, results);
+
+                                    //update each post creator with his vote balance
+                                    models.Vote.findOne({user_id: user_id, post_id: post._id}, function(err, vote){
+                                        post.voter_balance = vote ? (vote.ballance || 0) : 0;
+                                        itr_cbk(err);
+                                    })
+                                }, function(err, obj){
+                                    cbk(err, results);
+                                });
                             }
-                        });
+                        ], function(err, results){
+                            callback(err, results);
+                        })
             }else{
                 _.each(results.objects, function(post){ post.is_user_follower = false; })
                 callback(err, results);
