@@ -27,7 +27,7 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
                 votes_for:null,
                 votes_against:null,
                 popularity:null,
-                tokes_spent_on_post:null,
+                voter_balance:null,
                 updated_user_tokens:null
             };
     },
@@ -100,7 +100,7 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
                                         }
                                     }
                                     post_object.popularity = calculate_popularity(post_object.votes_for, post_object.votes_for + post_object.votes_against);
-                                    post_object.tokes_spent_on_post =new_ballance      ;
+                                    post_object.voter_balance =new_ballance      ;
                                     vote_object.user_id = user_object._id;
                                     vote_object.post_id = post_id;
                                     vote_object.ballance = new_ballance;
