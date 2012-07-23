@@ -5,7 +5,6 @@
 
 
     <%- partial('partials/head.ejs') %>
-
     <%- partial('partials/facebook.ejs') %>
 
 
@@ -97,7 +96,7 @@
 
 
 
-                        <div class="blue"  title="sssss" data-userid="<%=userProxy._id%>" style="height:<%=tokensBarModel.convertToPixels(userProxy.proxy)%>">
+                        <div class="blue"  data-userid="<%=userProxy._id%>" style="height:<%=tokensBarModel.convertToPixels(userProxy.proxy)%>">
 							<%if(j===0){%>
                                 <div class="info" style="overflow: hidden">
                                     :מוקצים לנציגים
@@ -108,7 +107,8 @@
 							</div>
 
 
-                           <!-- <div id="token-popup<%=userProxy._id %>" class="token-popup tooltip">
+
+                            <!--<div id="token-popup<%=userProxy._id %>" class="token-popup tooltip">
                                 <div class="user-right">
                                    <a href="/myuru/<%=userProxy._id %>">
                                         <div class="img-box">
@@ -190,7 +190,7 @@
     </h2>
     <div class="tabs">
         <ul class="tabs-nav">
-            <li><a href="#discussions-tab">דיונים</a></li>
+            <li><a id="test_tooltip" href="#discussions-tab">דיונים</a></li>
             <li><a href="#cycles-tab">מעגלי תנופה</a></li>
             <li><a href="#actions-tab">פעולות</a></li>
             <li><a href="#articles-tab">בלוגים</a></li>
@@ -235,6 +235,32 @@
 </div>
 </div>
 <%- partial('partials/footer.ejs') %>
+
+<div class="tooltip">
+
+    <img src="/media/img/title/eye.png" alt="Flying screens"
+         style="float:left; margin:0 15px 20px 0" />
+
+    <table style="margin:0">
+        <tr>
+            <td class="label">File</td>
+            <td>flowplayer-3.2.9.zip</td>
+        </tr>
+        <tr>
+            <td class="label">Version</td>
+            <td>2012-03-29</td>
+        </tr>
+        <tr>
+            <td class="label">Size</td>
+            <td>112 kB</td>
+        </tr>
+        <tr>
+            <td class="label">OS</td>
+            <td>all</td>
+        </tr>
+    </table>
+
+    <a href="/release-notes">What's new in 3.2</a>
 </body>
 </html>
 <script type="text/javascript">
@@ -372,11 +398,11 @@
             })
         });
 
-
-        $('.blue').tooltip();
+        $('#test_tooltip').tooltip();
+        //$('.blue').tooltip();
       /*  $('.blue').tooltip({
             // use div.tooltip as our tooltip
-            tip: '.tooltip1',
+            tip: '.tooltip',
             // tweak the position
           offset: [-278,-540]
 
