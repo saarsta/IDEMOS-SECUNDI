@@ -231,7 +231,7 @@ var error_message = error_message || '';
             <div class="text-box cf"
             <%if(user_logged){%> data-creator_id="<%=user._id%>" <%}%> >
             <div class="left">
-                <textarea id="discussion_comment" class="four-col" cols="0" rows="0"></textarea>
+                <textarea id="discussion_comment" dir="rtl" class="four-col" cols="0" rows="0"></textarea>
             </div>
             <div class="user-right">
                 <div class="img-box" style="overflow: hidden;">
@@ -329,10 +329,9 @@ $(document).ready(function () {
 
     var onGiveProxy;
 
-    CKEDITOR.replace( 'discussion_comment',
-            {
-                height: 100
-            });
+    $( '#discussion_comment' ).ckeditor(            {
+        height: 100
+    });
 
     $("#proxy_form").dialog({
         autoOpen:false,
@@ -863,7 +862,7 @@ $(document).ready(function () {
                 + text_to_quote
                 + '\n'
                 + "[/quote]"
-                + '\n';
+                + '<br>';
 
         $("textarea#discussion_comment").val(text).focus();
     });
