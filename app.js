@@ -90,6 +90,7 @@ app.configure('production', function(){
     });
     require('./deliver/tools/compile_dust_templates');
     require('./tools/compile_templates');
+
 });
 
 mongoose.connect(app.settings.DB_URL);
@@ -148,6 +149,7 @@ app.configure(function(){
     app.use(account.auth_middleware);
     app.use(express.methodOverride());
     app.use(app.router);
+
 });
 
 //if(app.settings.env != 'production')
@@ -177,7 +179,7 @@ async.waterfall([
         }
         else {
             app.helpers({
-                footer_links:function() { return mongoose.model('FooterLink').getFooterLinks(); },
+                footer_links:function() { return mongoose.model('FooterLink').getFooterLinks(); }
             });
             app.dynamicHelpers({
                 tag_name: function(req,res) { return req.query.tag_name; },

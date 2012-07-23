@@ -92,7 +92,8 @@ var isUserInDataBase = module.exports.isUserInDataBase = function(user_facebook_
                 user = result[0];
             } else {
                 if (result.length == 0) { // its a new user
-                    throw "Error: couldn't find user by fb id";
+                    callback(null,false);
+                    return;
                 } else { // handle error here
                     flag = true;
                     user = result[0];
@@ -100,9 +101,8 @@ var isUserInDataBase = module.exports.isUserInDataBase = function(user_facebook_
                 }
             }
         } else {
-            throw "Error reading db.User in isNewUser";
+            callback(err);
         }
-
         callback(err, flag, user);
     });
 }
@@ -147,8 +147,8 @@ var updateUesrAccessToken = module.exports.updateUesrAccessToken = function(data
 //            user.session_id = session_id;
         user.save(function (err) {
             if (err) {
-                console.error(user);
-                return callback(err);
+                console.error(err);
+                callback(err);
             } else {
                 callback(null, user.id);
             }
