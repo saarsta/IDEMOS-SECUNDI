@@ -22,6 +22,8 @@ module.exports = function(app) {
 
     router.include('/information_items',InformationItems);
 
+    router.include('/blogs',require('./blogs'));
+
     // TODO remove this (only for backward comp)
     router.include('/meida', InformationItems);
 
