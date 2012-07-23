@@ -164,8 +164,6 @@ require('./deliver/routes')(app);
 var cron = require('./cron');
 cron.run(app);
 
-
-
 async.waterfall([
         function(cbk) {
             mongoose.model('FooterLink').load(cbk);

@@ -12,6 +12,7 @@ var resources = require('jest'),
     common = require('./common'),
     async = require('async'),
     _ = require('underscore'),
+    sanitizer = require('sanitizer'),
     notifications = require('./notifications');
 
 var PostResource = module.exports = common.GamificationMongooseResource.extend({
@@ -170,6 +171,8 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                 fields.avatar = user.avatar;
                 if(fields.ref_to_post_id == "null" || fields.ref_to_post_id == "undefined")
                     fields.ref_to_post_id = null;
+
+                fields.text = sanitizer.sanitize(fields.text);
 
                 for (var field in fields) {
                         post_object.set(field, fields[field]);
