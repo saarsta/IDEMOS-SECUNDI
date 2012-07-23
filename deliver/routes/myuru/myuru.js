@@ -39,8 +39,8 @@ module.exports = function (req, res) {
                             req.session.user.biography = user.biography;
                             cbk1(err, user);
                         })
-
                 },
+
                 //1.2
                 function(cbk1){
                     //get details of the current user that watch "his uru"
