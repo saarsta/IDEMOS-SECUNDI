@@ -36,8 +36,8 @@ module.exports = function(app) {
 
 
 
-    router.all(/.*/,function(req,res) {
-        res.render('404.ejs',{});
-    });
+//    router.all(/.*/,function(req,res) {
+//        res.render('404.ejs',{});
+//    });
 
 };

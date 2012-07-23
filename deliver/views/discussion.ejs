@@ -5,7 +5,10 @@ var error_message = error_message || '';
 <html>
 <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# <%= settings.facebook_app_name %>: http://ogp.me/ns/fb/<%= settings.facebook_app_name %>#">
     <%- partial('partials/head.ejs') %>
-    <script src="/resources/js/jquery-fieldselection.js" type="text/javascript"></script>
+    <script src="/js/jquery-fieldselection.js" type="text/javascript"></script>
+    <script src="/plugins/ckeditor/ckeditor.js"></script>
+    <script src="/plugins/ckeditor/adapters/jquery.js"></script>
+
     <meta property="fb:app_id" content="<%= settings.facebook_app_id %>" />
     <meta property="og:type"   content="<%= settings.facebook_app_name %>:discussion" />
     <meta property="og:url"    content="<%= settings.root_path %>/discussions/<%= discussion.id %>" />
@@ -326,6 +329,10 @@ $(document).ready(function () {
 
     var onGiveProxy;
 
+    CKEDITOR.replace( 'discussion_comment',
+            {
+                height: 100
+            });
 
     $("#proxy_form").dialog({
         autoOpen:false,
