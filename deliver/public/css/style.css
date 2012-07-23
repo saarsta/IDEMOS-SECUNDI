@@ -1170,7 +1170,6 @@ body
     z-index: 5;
 }
 
-
 #content .services-box h2
 {
     line-height: 32px;
@@ -1187,7 +1186,6 @@ body
 {
     display: block
 }
-
 
 .user-box:hover .total-number, .user-box.active .total-number
 {

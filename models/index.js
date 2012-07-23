@@ -16,11 +16,6 @@ var mongoose = require("mongoose"),
 
 mongoose_types.loadTypes(mongoose);
 
-
-
-
-
-
 var Schemas = exports.Schemas = {
 
     //this is for share your information cart
@@ -312,6 +307,7 @@ var Models = module.exports = {
 
     Subject:mongoose.model('Subject', require('./subject')),
     Post:require('./post'),
+    PostArticle:require('./post_article'),
     PostAction:utils.extend_model('PostAction', Schemas.PostOrSuggestion, Schemas.PostAction).model,
     Suggestion:require('./suggestion'),
     PostOrSuggestion:mongoose.model('PostOrSuggestion', new Schema(require('./post_or_suggestion'), {strict: true}), 'posts'),

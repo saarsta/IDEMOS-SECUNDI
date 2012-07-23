@@ -6,9 +6,9 @@
  * To change this template use File | Settings | File Templates.
  */
 
-var models = require('../models'),
+var models = require('../../models'),
     async = require('async'),
-    common = require('./common'),
+    common = require('../common.js'),
     _ = require('underscore');
 
 var ArticleResource = common.GamificationMongooseResource.extend({

@@ -1,10 +1,10 @@
 var resources = require('jest'),
     util = require('util'),
-    models = require('../models'),
+    models = require('../../models'),
     async = require('async'),
     _ = require('underscore'),
-    common = require('./common');
-    notifications = require('./notifications');
+    common = require('../common.js');
+    notifications = require('../notifications.js');
 
 
 var VoteArticlePostResource = module.exports = common.GamificationMongooseResource.extend({
@@ -13,11 +13,13 @@ var VoteArticlePostResource = module.exports = common.GamificationMongooseResour
         this.allowed_methods = ['post'];
         this.authentication = new common.SessionAuthentication();
         this.filtering = {discussion_id:null},
-            this.fields = {
-                votes_for:null,
-                votes_against:null,
-                popularity:null,
-                updated_user_tokens:null
-            };
+        this.fields = {
+            votes_for:null,
+            votes_against:null,
+            popularity:null,
+            updated_user_tokens:null
+        };
     }
+
+
 })

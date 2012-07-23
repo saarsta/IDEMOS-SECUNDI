@@ -138,11 +138,8 @@ var sendNotificationToUser = function(notification,callback) {
     });
 };
 
-
-
 exports.create_user_vote_or_grade_notification = function(notification_type, entity_id, user_id, notificatior_id,
                                                         sub_entity, vote_for_or_against, did_change_the_sugg_agreement, is_on_suggestion, callback){
-
     async.waterfall([
 
         function(cbk){

@@ -1,10 +1,10 @@
 var resources = require('jest'),
-    og_action = require('../og/og').doAction,
-    models = require('../models'),
-    common = require('./common'),
+    og_action = require('../../og/og.js').doAction,
+    models = require('../../models'),
+    common = require('../common.js'),
     async = require('async'),
     _ = require('underscore'),
-    notifications = require('./notifications');
+    notifications = require('../notifications.js');
 
 var PostArticleResource = module.exports = common.GamificationMongooseResource.extend({
     init:function () {
@@ -68,7 +68,6 @@ var PostArticleResource = module.exports = common.GamificationMongooseResource.e
 
                 base.call(self, req, fields, cbk);
             }
-
 
         ], function(err, post){
             post.creator_id = req.user;
