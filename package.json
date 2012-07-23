@@ -23,7 +23,8 @@
         "sendgrid": "",
         "sendgrid-nodejs": "",
         "facebook-signed-request" : "",
-        "request" : ""
+        "request" : "",
+        "sanitizer":""
   },
   "engines": { "node": "<= 0.7" }
 } 
