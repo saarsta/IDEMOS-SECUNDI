@@ -37,6 +37,7 @@
             </div>
         </div>
     </div>
+
     <div class="text">
         <p class="date">{creator_id.username} {?creation_date}{creation_date|time}{/creation_date}</p>
         <p>                 {text|s|post}           </p>
@@ -54,8 +55,13 @@
         </div>
     </div>
     <div class="ratio">
-        <a href="javascript:void(0);" class="up vote_for {?voter_balance}balance{voter_balance}{/voter_balance}"></a>
-        <div class="count">{voting|round}</div>
-        <a href="javascript:void(0);" class="down vote_against balance{}"></a>
+        <div class="ratio-spacer"></div>
+        <div class="ratio-content">
+            <a href="javascript:void(0);" class="up vote_for {?voter_balance}balance{voter_balance}{/voter_balance}"></a>
+            <div class="count">{voting|round}</div>
+            <a href="javascript:void(0);" class="down vote_against balance{}"></a>
+        </div>
+
     </div>
+
 </div>

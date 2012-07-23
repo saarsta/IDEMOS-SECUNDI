@@ -2703,7 +2703,7 @@ h2 small
 .comments-box .comment-one
 {
     position: relative;
-
+    min-height: 107px;
     padding: 20px 0 11px;
     border-top: 1px solid #d2d1d1;
 }
@@ -2715,10 +2715,10 @@ h2 small
 {
     position: absolute;
     right:0 ;
-    top: 20px;
+
     background:#ededed;
     border-left: 1px solid #d8dde0;
-    height: 141px;
+
     z-index: 10;
 }
 .comments-box .comment-one .user-right .arrow
@@ -6206,15 +6206,31 @@ a.fraction-btn
 }
 .comments-box .ratio
 {
+
+
+    top: 50%;
+    display: table-cell;
+    vertical-align: middle  ;
+
     position: absolute;
     left: 112px;
     top: 17px;
     width: 33px;
     padding: 6px 12px;
-    height: 80px;
+
     border-left: 1px solid #d8dde0;
     border-right: 1px solid #d8dde0;
+    bottom: 20px;
 }
+.comments-box .ratio .ratio-spacer
+ {
+     height:50%;
+ }
+.comments-box .ratio .ratio-content
+{
+    margin-top: -38px;
+}
+
 .comments-box .ratio a.up
 {
     background: url(../images/ratio-arrows1.png) 0 0 no-repeat;
@@ -6292,7 +6308,7 @@ a.fraction-btn
 }
 /*------ SMALL ---------*/
 .comments-box .comment-one  .user-right-small {
-    height: 105px;
+    bottom:20px;
     top: 17px;
 }
 .comments-box .comment-one .user-right-small .proxy
