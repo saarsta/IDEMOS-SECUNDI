@@ -7,7 +7,9 @@ var mongoose_resource = require('jest'),
     DiscussionResource = require('./DiscussionResource.js'),
     PostResource = require('./PostResource.js'),
     PostsActionResource = require('./PostsActionResource.js'),
+    PostArticleResource = require('./blogs/PostArticleResource')
     VoteResource = require('./VoteResource'),
+    VoteArticlePostResource = require('./blogs/VoteArticlePostResource'),
     VoteSuggestionResource = require('./VoteSuggestionResource'),
     GradeResource = require('./GradeResource'),
     GradeSuggestionResource = require('./GradeSuggestionResource'),
@@ -38,7 +40,6 @@ var mongoose_resource = require('jest'),
     AboutUruTextResource = require('./AboutUruTextResource');
     AboutUruItemResource = require('./AboutUruItemResource');
     TeamResource = require('./TeamResource');
-
     QaResource = require('./QaResource');
     LoginResource = require('./LoginResource');
     FbConnectResource = require('./FbConnectResource');
@@ -59,8 +60,10 @@ module.exports = function(app)
     rest_api.register_resource('subjects', new SubjectResource());
     rest_api.register_resource('discussions', new DiscussionResource());
     rest_api.register_resource('posts', new PostResource());
+    rest_api.register_resource('posts_of_article', new PostArticleResource());
     rest_api.register_resource('posts_of_action', new PostsActionResource());
     rest_api.register_resource('votes', new VoteResource());
+    rest_api.register_resource('votes_on_article_comment', new VoteArticlePostResource());
     rest_api.register_resource('votes_on_suggestion', new VoteSuggestionResource());
     rest_api.register_resource('grades', new GradeResource());
     rest_api.register_resource('grades_suggestion', new GradeSuggestionResource());

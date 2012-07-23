@@ -307,11 +307,12 @@ var Models = module.exports = {
 
     Subject:mongoose.model('Subject', require('./subject')),
     Post:require('./post'),
-    PostArticle:require('./post_article'),
+    PostArticle:mongoose.model('PostArticle',require('./post_article')),
     PostAction:utils.extend_model('PostAction', Schemas.PostOrSuggestion, Schemas.PostAction).model,
     Suggestion:require('./suggestion'),
     PostOrSuggestion:mongoose.model('PostOrSuggestion', new Schema(require('./post_or_suggestion'), {strict: true}), 'posts'),
     Vote:mongoose.model('Vote', new Schema(Schemas.Vote, {strict: true})),
+    VoteArticlePost:mongoose.model('VoteArticlePost', require('./vote_article_post')),
     VoteSuggestion:mongoose.model('VoteSuggestion', new Schema(Schemas.VoteSuggestion, {strict: true})),
     Like:mongoose.model('Like', new Schema(Schemas.Like, {strict: true})),
     Grade:mongoose.model('Grade', new Schema(Schemas.Grade, {strict: true})),

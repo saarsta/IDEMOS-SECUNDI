@@ -59,6 +59,53 @@ var db_functions = {
         });
     },
 
+    // --------------blogs-------------------//
+    getArticelsByUser: function(user_id, callback){
+        db_functions.loggedInAjax({
+            url: '/api/articles?user_id=' + user_id,
+            type: "GET",
+            async: true,
+            success: function (err, data) {
+                callback( data);
+            },
+            error: function(err, data){
+                callback(err, data);
+            }
+        });
+    },
+
+    addArticleComment: function(text, article_id){
+        db_functions.loggedInAjax({
+            url: '/api/posts_of_article',
+            type: "GET",
+            async: true,
+            data: {"text": text, "article_id": article_id},
+            success: function (err, data) {
+                callback( data);
+            },
+            error: function(err, data){
+                callback(err, data);
+            }
+        });
+    },
+
+    voteOnArticleComment: function(post_article_id, method){
+        db_functions.loggedInAjax({
+            url: '/api/votes_on_article_comment',
+            type: "POST",
+            async: true,
+            data: {"method": method, "post_article_id": post_article_id},
+            success: function (err, data) {
+                callback( data);
+            },
+            error: function(err, data){
+                callback(err, data);
+            }
+        });
+    },
+
+    ///////--------------------------------------/////////
+
     getUserAfterFbConnect: function(fb_id, access_token, callback){
             this.loggedInAjax({
                 url: '/api/fb_connect',
@@ -506,6 +553,7 @@ var db_functions = {
             }
         });
     },
+
     addSuggestionGrade: function(suggestion_id, discussion_id, grade, grade_id, callback){
         var url;
         var type;
@@ -577,7 +625,6 @@ var db_functions = {
             }
         });
     },
-
 
     addOrRemoveProxyMandate: function(user_id, proxy_id, number_of_namdates, callback){
         db_functions.loggedInAjax({
