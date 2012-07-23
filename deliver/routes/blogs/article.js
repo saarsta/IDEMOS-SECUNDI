@@ -1,6 +1,5 @@
 var models = require('../../../models');
 
-
 module.exports = function(req,res) {
     models.Article.findById(req.params[0])
         .exec(function(err,article) {
@@ -19,5 +18,4 @@ module.exports = function(req,res) {
                     });
             }
         });
-
 };

@@ -5,7 +5,10 @@ var error_message = error_message || '';
 <html>
 <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# <%= settings.facebook_app_name %>: http://ogp.me/ns/fb/<%= settings.facebook_app_name %>#">
     <%- partial('partials/head.ejs') %>
-    <script src="/resources/js/jquery-fieldselection.js" type="text/javascript"></script>
+    <script src="/js/jquery-fieldselection.js" type="text/javascript"></script>
+    <script src="/plugins/ckeditor/ckeditor.js"></script>
+    <script src="/plugins/ckeditor/adapters/jquery.js"></script>
+
     <meta property="fb:app_id" content="<%= settings.facebook_app_id %>" />
     <meta property="og:type"   content="<%= settings.facebook_app_name %>:discussion" />
     <meta property="og:url"    content="<%= settings.root_path %>/discussions/<%= discussion.id %>" />
@@ -228,7 +231,7 @@ var error_message = error_message || '';
             <div class="text-box cf"
             <%if(user_logged){%> data-creator_id="<%=user._id%>" <%}%> >
             <div class="left">
-                <textarea id="discussion_comment" class="four-col" cols="0" rows="0"></textarea>
+                <textarea id="discussion_comment" dir="rtl" class="four-col" cols="0" rows="0"></textarea>
             </div>
             <div class="user-right">
                 <div class="img-box" style="overflow: hidden;">
@@ -326,6 +329,9 @@ $(document).ready(function () {
 
     var onGiveProxy;
 
+    $( '#discussion_comment' ).ckeditor(            {
+        height: 100
+    });
 
     $("#proxy_form").dialog({
         autoOpen:false,
@@ -856,7 +862,7 @@ $(document).ready(function () {
                 + text_to_quote
                 + '\n'
                 + "[/quote]"
-                + '\n';
+                + '<br>';
 
         $("textarea#discussion_comment").val(text).focus();
     });

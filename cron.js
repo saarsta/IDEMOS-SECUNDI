@@ -15,12 +15,20 @@ exports.run = function(app)
     }, 60*60*1000);
 
     setInterval(function(){
+        console.log("cron updateTagAutoComplete runs");
         daily_cron.updateTagAutoComplete(function(err, result){
             console.log(err || result);
         })
+
+        console.log("cron updateBlogTagAutoComplete runs");
+        daily_cron.updateBlogTagAutoComplete(function(err, result){
+            console.log(err || result);
+        })
+
     }, 60 * 1000 * 24 * 60);
 
     setInterval(function(){
+        console.log("cron takeProxyMandatesBack runs");
         daily_cron.takeProxyMandatesBack(function(err, result){
         console.log(err || result);
         })
@@ -628,7 +636,6 @@ var daily_cron =  exports.daily_cron = {
     },
 
     updateTagAutoComplete: function(callback){
-
         var iterator = function(tag, itr_cbk){
             models.Tag.update({"tag": tag}, {"tag": tag, $inc: {popularity: 1}}, {upsert: true}, itr_cbk);
         }
@@ -664,7 +671,34 @@ var daily_cron =  exports.daily_cron = {
                     async.forEach(tags, iterator, callback(err, "finish set tag popularity.."));
                 }
             })
+        })
+    },
 
+    updateBlogTagAutoComplete: function(callback){
+        var iterator = function(tag, itr_cbk){
+            models.BlogTag.update({"tag": tag}, {"tag": tag, $inc: {popularity: 1}}, {upsert: true}, itr_cbk);
+        }
+
+        async.waterfall([
+            function(cbk){
+                models.Article.find({}, ['tags'], cbk);
+            }
+        ], function(err, articles){
+
+            var tags = [];
+
+            for(var i=0; i < articles.length; i++)
+                tags.push.apply(tags, articles[i].tags);
+
+            models.BlogTag.remove({}, function(err, result){
+                if(err){
+                    callback(err, null);
+                }else{
+                    async.forEach(tags, iterator, function(err, result){
+                        callback(err, "finish set blog-tag popularity..");
+                    });
+                }
+            })
         })
     }
 }
