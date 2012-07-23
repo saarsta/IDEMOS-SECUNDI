@@ -94,7 +94,7 @@ var db_functions = {
             url: '/api/votes_on_article_comment',
             type: "POST",
             async: true,
-            data: {"method": method, "post_article_id": post_article_id}
+            data: {"method": method, "post_article_id": post_article_id},
             success: function (err, data) {
                 callback( data);
             },
