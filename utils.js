@@ -21,7 +21,7 @@
          {
              var query = arguments.length > 0 && typeof(arguments[0]) == 'object' ? arguments[0] : {};
              if(typeof(query['is_hidden']) == 'undefined')
-                query['is_hidden'] =  {$ne:true};
+                query['is_hidden'] =  false;
              else
                  delete query['is_hidden'];
              if(arguments.length == 0)
@@ -40,7 +40,7 @@
          {
              var query = arguments.length > 0 && typeof(arguments[0]) == 'object' ? arguments[0] : {};
              if(typeof(query['is_hidden']) == 'undefined')
-                 query['is_hidden'] = {$ne:true};
+                 query['is_hidden'] = false;
              else
                  delete query['is_hidden'];
              if(arguments.length == 0)
@@ -60,7 +60,7 @@
          {
              var query = arguments.length > 0 && typeof(arguments[0]) == 'object' ? arguments[0] : {};
              if(typeof(query['is_hidden']) == 'undefined')
-                 query['is_hidden'] = {$ne:true};
+                 query['is_hidden'] = false;
              else
                  delete query['is_hidden'];
              if(arguments.length == 0)

@@ -1,5 +1,6 @@
 
-var Class = require('sji');
+var Class = require('sji')
+    ,_ = require('underscore');
 
 var Router = module.exports = Class.extend({
    init:function(app,path){
@@ -34,6 +35,21 @@ var Router = module.exports = Class.extend({
    {
        var path = args[0];
        args[0] = this.build_path(path);
+
+       if(this.app.settings.env == 'production') {
+           var handler = args[args.length-1];
+           args[args.length-1] = function(req,res) {
+               try{
+                   handler.apply(null,arguments);
+               }
+               catch(ex) {
+                   res.render('500.ejs',{error:ex});
+                   console.error(ex);
+                   console.trace();
+               }
+           };
+       }
+
        func.apply(this.app,args);
    },
    is_regex:function(path)

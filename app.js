@@ -109,9 +109,19 @@ app.configure(function(){
     require('./utils').setShowOnlyPublished(app.settings.show_only_published);
 
     app.set('view engine', 'jade');
+
+    app.use(express.static(app.settings.public_folder));
+    if(app.settings.public_folder2)
+        app.use(express.static(app.settings.public_folder2));
+    require('j-forms').serve_static(app,express);
+
+
     app.use(express.bodyParser());
     app.use(express.methodOverride());
     app.use(express.cookieParser());
+
+    app.set('view options', { layout: false });
+
     app.use(express.session({secret: confdb.secret,
         maxAge: new Date(Date.now() + (3600 * 1000 * 24 * 4)),
         store: new MongoStore(confdb.db) }));
@@ -138,20 +148,16 @@ app.configure(function(){
     app.use(account.auth_middleware);
     app.use(express.methodOverride());
     app.use(app.router);
-    app.use(express.static(app.settings.public_folder));
-    if(app.settings.public_folder2)
-        app.use(express.static(app.settings.public_folder2));
-    require('j-forms').serve_static(app,express);
 });
 
-require('./deliver/routes')(app);
 //if(app.settings.env != 'production')
-require('./routes')(app);
+//require('./routes')(app);
 require('./api')(app);
 require('./admin')(app);
 require('./og/config').load(app);
 require('./lib/templates').load(app);
 require('./lib/mail').load(app);
+require('./deliver/routes')(app);
 
 var cron = require('./cron');
 cron.run(app);
@@ -171,9 +177,16 @@ async.waterfall([
         }
         else {
             app.helpers({
-                'footer_links':function() { return mongoose.model('FooterLink').getFooterLinks(); }
+                footer_links:function() { return mongoose.model('FooterLink').getFooterLinks(); },
             });
-
+            app.dynamicHelpers({
+                tag_name: function(req,res) { return req.query.tag_name; },
+                logged: function(req,res) { return req.isAuthenticated(); },
+                user_logged:function(req,res) { return req.isAuthenticated(); },
+                user: function(req,res) { return req.session.user; },
+                avatar: function(req,res) { return req.session.avatar_url; },
+                url:function(req,res) { return req.url; }
+            });
             app.listen(app.settings.port);
             console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
         }

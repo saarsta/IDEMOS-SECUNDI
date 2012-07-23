@@ -22,6 +22,8 @@ module.exports = function(app) {
 
     router.include('/information_items',InformationItems);
 
+    router.include('/blogs',require('./blogs'));
+
     // TODO remove this (only for backward comp)
     router.include('/meida', InformationItems);
 
@@ -33,5 +35,9 @@ module.exports = function(app) {
     router.include('/og', require('../../og'));
 
 
+
+    router.all(/.*/,function(req,res) {
+        res.render('404.ejs',{});
+    });
 
 };
