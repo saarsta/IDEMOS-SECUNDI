@@ -1,6 +1,6 @@
 var models = require('../../../models');
 var async = require('async');
-var TokensBarModel= require('./tokensBarModel')
+var TokensBarModel= require('./tokensBarModel');
 
 module.exports = function (req, res) {
 
@@ -34,7 +34,7 @@ module.exports = function (req, res) {
                     //get details of my/his uru user
                     models.User.findById(pageUserID)
                         .select(["tokens", "num_of_extra_tokens","proxy" , "biography","first_name","last_name","facebook_id", "avatar","score"])
-                        .populate("proxy.user_id",['id','_id','first_name','last_name','avatar_url','facebook_id'])
+                        .populate("proxy.user_id",['id','_id','first_name','last_name','avatar','facebook_id'])
                         .exec(function(err, user){
                             req.session.user.biography = user.biography;
                             cbk1(err, user);
@@ -47,7 +47,7 @@ module.exports = function (req, res) {
                     if(sessionUser && pageUserID != sessionUser._id){
                         models.User.findById(sessionUser._id)
                             .select(["tokens", "num_of_extra_tokens", "proxy", "biography","first_name","last_name","facebook_id", "avatar","score"])
-                            .populate("proxy.user_id",['id','_id','first_name','last_name','avatar_url','facebook_id'])
+                            .populate("proxy.user_id",['id','_id','first_name','last_name','avatar','facebook_id'])
                             .exec(function(err, user){
                                 cbk1(err, user);
                             });
