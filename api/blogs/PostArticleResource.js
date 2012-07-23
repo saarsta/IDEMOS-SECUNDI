@@ -47,7 +47,8 @@ var PostArticleResource = module.exports = common.GamificationMongooseResource.e
 
     create_obj:function (req, fields, callback) {
 
-        var creator_id = req.user._id;
+        var user = req.user;
+        var user_id = user._id;
         var self = this;
         var base = this._super;
 
@@ -70,7 +71,8 @@ var PostArticleResource = module.exports = common.GamificationMongooseResource.e
             }
 
         ], function(err, post){
-            post.creator_id = req.user;
+            if(!err)
+              post.creator_id = req.user;
             callback(err, post);
         })
     }
