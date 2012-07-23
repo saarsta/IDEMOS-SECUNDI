@@ -109,6 +109,13 @@ app.configure(function(){
     require('./utils').setShowOnlyPublished(app.settings.show_only_published);
 
     app.set('view engine', 'jade');
+
+    app.use(express.static(app.settings.public_folder));
+    if(app.settings.public_folder2)
+        app.use(express.static(app.settings.public_folder2));
+    require('j-forms').serve_static(app,express);
+
+
     app.use(express.bodyParser());
     app.use(express.methodOverride());
     app.use(express.cookieParser());
@@ -141,20 +148,16 @@ app.configure(function(){
     app.use(account.auth_middleware);
     app.use(express.methodOverride());
     app.use(app.router);
-    app.use(express.static(app.settings.public_folder));
-    if(app.settings.public_folder2)
-        app.use(express.static(app.settings.public_folder2));
-    require('j-forms').serve_static(app,express);
 });
 
-require('./deliver/routes')(app);
 //if(app.settings.env != 'production')
-require('./routes')(app);
+//require('./routes')(app);
 require('./api')(app);
 require('./admin')(app);
 require('./og/config').load(app);
 require('./lib/templates').load(app);
 require('./lib/mail').load(app);
+require('./deliver/routes')(app);
 
 var cron = require('./cron');
 cron.run(app);
