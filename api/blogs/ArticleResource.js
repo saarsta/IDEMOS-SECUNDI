@@ -9,7 +9,8 @@
 var models = require('../../models'),
     async = require('async'),
     common = require('../common.js'),
-    _ = require('underscore');
+    _ = require('underscore'),
+    RSS = require('../../lib/ext_rss');
 
 var ArticleResource = common.GamificationMongooseResource.extend({
     init:function () {
@@ -23,41 +24,79 @@ var ArticleResource = common.GamificationMongooseResource.extend({
             tooltip_or_title:null,
             title:null,
             text: null,
-            tags: null,
             time: null,
+            tags:null,
             avatar:null,
             first_name:null,
-            last_name:null,
-            tags:null
+            last_name:null
         }
     },
 
-    dispatch: function(){
-        this.token_price = common.getGamificationTokenPrice('create_article') > -1 ? common.getGamificationTokenPrice('create_article') : 0;
-        this._super.apply(this,arguments);
+    run_query: function(req,query,callback)
+    {
+        query.populate('creator_id');
+        this._super(req,query,callback);
     },
 
-    get_objects: function(req, filters, sorts, limit, offset, callback){
-        this._super(req, filters, sorts, limit, offset, function(err, results){
+    deserialize: function(req,res,object,status) {
 
-            var iterator = function(article, itr_cbk){
-                models.User.findById(article.user_id, ["avatar", "facebook_id"], function(err, user_obj){
-                    if(err)
-                        itr_cbk(err);
-                    else
-                    {
-                        if(user_obj)
-                            article.avatar = user_obj.avatar_url();
-                        itr_cbk(err, user_obj);
-                    }
-                })
-            }
+        // Sends rss feed
+        if(req.query.rss && (status == 200 || !status)){
+                var feed = new RSS({
+                        title: 'עורו',
+                        description: 'בלוגים',
+                        feed_url: 'http://www.uru.org.il/blogs/' + object.results[0].creator_id._id,
+                        site_url: 'http://www.uru.org.il',
+//                        image_url: 'http://example.com/icon.png',
+                        author:  object.results[0].creator_id.first_name + " " + object.results[0].creator_id.last_name
+                });
 
-            async.forEach(results.objects,iterator, function(err, objects){
-                callback(err, results)
-            });
-        });
+                _.each(object.objects,function(article) {
+                    var rss_article = {};
+                    rss_article.title = article.title;
+                    rss_article.description = article.text;
+                    rss_article.url = 'http://www.uru.org.il/blogs/article/' + article._id;
+                    feed.item(rss_article);
+                });
+
+                var xml = feed.xml();
+
+                res.header('Content-Type','text/xml');
+                res.send(xml);
+
+        }else{
+            this._super(req, res, object, status);
+        }
+
     },
+
+
+//    dispatch: function(){
+//        this.token_price = common.getGamificationTokenPrice('create_article') > -1 ? common.getGamificationTokenPrice('create_article') : 0;
+//        this._super.apply(this,arguments);
+//    },
+
+//    get_objects: function(req, filters, sorts, limit, offset, callback){
+//        this._super(req, filters, sorts, limit, offset, function(err, results){
+//
+//            var iterator = function(article, itr_cbk){
+//                models.User.findById(article.user_id, ["avatar", "facebook_id"], function(err, user_obj){
+//                    if(err)
+//                        itr_cbk(err);
+//                    else
+//                    {
+//                        if(user_obj)
+//                            article.avatar = user_obj.avatar_url();
+//                        itr_cbk(err, user_obj);
+//                    }
+//                })
+//            }
+//
+//            async.forEach(results.objects,iterator, function(err, objects){
+//                callback(err, results)
+//            });
+//        });
+//    },
 
     create_obj:function (req, fields, callback) {
         var user_id = req.session.user_id;
