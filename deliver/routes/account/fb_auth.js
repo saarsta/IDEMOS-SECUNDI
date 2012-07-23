@@ -43,7 +43,7 @@ var FbServerAuthentication = module.exports = function (options) {
                         cbk(err, user_id);
                     });
                 else
-                    facebook_login.createNewUser(fb_user_details, access_token, cbk)
+                    facebook_login.createNewFacebookUser(fb_user_details, access_token, cbk)
             },
 
             function(user_id, cbk){

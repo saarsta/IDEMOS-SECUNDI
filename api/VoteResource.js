@@ -27,6 +27,7 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
                 votes_for:null,
                 votes_against:null,
                 popularity:null,
+                voter_balance:null,
                 updated_user_tokens:null
             };
     },
@@ -60,6 +61,7 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
                     var ballance_delta = method == 'add' ? 1 : -1;
                     var new_ballance = ballance + ballance_delta;
                     var limit = total_tokens > 15 ? 5 : ( total_tokens > 12 ? 4 : 3);
+                    //Math.abs(new_ballance)
                     if (Math.abs(new_ballance) > limit) {
                         //if(votes.length > 2 && !(votes.length == 3 && total_tokens > 12) || (votes.length == 4 && total_tokens > 15)){
                         callback({message:'user already voted for this post', code:401}, null);
@@ -98,7 +100,7 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
                                         }
                                     }
                                     post_object.popularity = calculate_popularity(post_object.votes_for, post_object.votes_for + post_object.votes_against);
-
+                                    post_object.voter_balance =new_ballance      ;
                                     vote_object.user_id = user_object._id;
                                     vote_object.post_id = post_id;
                                     vote_object.ballance = new_ballance;

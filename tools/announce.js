@@ -1,7 +1,7 @@
 
 var mongoose = require('mongoose');
 
-//mongoose.connect('mongodb://heroku_app2952775:nuulb7icv8aafrr7n592uie793@ds031107.mongolab.com:31107/heroku_app2952775');
+mongoose.connect('mongodb://heroku_app2952775:nuulb7icv8aafrr7n592uie793@ds031107.mongolab.com:31107/heroku_app2952775');
 
 var
     app = require('../app'),
@@ -31,9 +31,12 @@ var announceToUser = function(user,callback)
             crypto.randomBytes(6, cbk);
         },
         function(buf,cbk) {
+
             var validation = buf.toString('hex');
 
-            user.validation_code = validation;
+            if(!user.validation_code )
+                user.validation_code = validation;
+            console.log(user.validation_code);
             cbk();
         },
         function(cbk) {

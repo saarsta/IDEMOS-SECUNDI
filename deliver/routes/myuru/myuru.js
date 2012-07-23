@@ -5,11 +5,11 @@ var TokensBarModel= require('./tokensBarModel')
 module.exports = function (req, res) {
 
     var isHisuru=req.params[0]? true: false;
-    var userID = isHisuru? req.params[0]: req.session.user._id;
-    var user = req.session.user;
-    var curr_user;
+    var pageUserID = isHisuru? req.params[0]: req.session.user._id;
+    var sessionUser = req.session.user;
+    var curr_user_db;
 
-    if(isHisuru &&  userID === req.session.user._id){
+    if(isHisuru &&  pageUserID === req.session.user._id){
         isHisuru=false;
     }
 
@@ -23,6 +23,7 @@ module.exports = function (req, res) {
         2  avner sets things for himself
 
      */
+    // TODO get both users on same query
 
     async.waterfall([
         //1
@@ -31,9 +32,9 @@ module.exports = function (req, res) {
                 //1.1
                 function (cbk1) {
                     //get details of my/his uru user
-                    models.User.findById(userID)
-                        //                    .select(["tokens", "num_of_extra_tokens", "proxy", "biography","first_name","last_name","facebook_id", "avatar","score"])
-                        .populate("proxy.user_id")
+                    models.User.findById(pageUserID)
+                        .select(["tokens", "num_of_extra_tokens","proxy" , "biography","first_name","last_name","facebook_id", "avatar","score"])
+                        .populate("proxy.user_id",['id','_id','first_name','last_name','avatar_url','facebook_id'])
                         .exec(function(err, user){
                             req.session.user.biography = user.biography;
                             cbk1(err, user);
@@ -43,14 +44,13 @@ module.exports = function (req, res) {
                 //1.2
                 function(cbk1){
                     //get details of the current user that watch "his uru"
-                    if(user && userID != user._id){
-                        models.User.findById(user._id)
-                            //                    .select(["tokens", "num_of_extra_tokens", "proxy", "biography","first_name","last_name","facebook_id", "avatar","score"])
-                            .populate("proxy.user_id")
+                    if(sessionUser && pageUserID != sessionUser._id){
+                        models.User.findById(sessionUser._id)
+                            .select(["tokens", "num_of_extra_tokens", "proxy", "biography","first_name","last_name","facebook_id", "avatar","score"])
+                            .populate("proxy.user_id",['id','_id','first_name','last_name','avatar_url','facebook_id'])
                             .exec(function(err, user){
-                                req.session.user.biography = user.biography;
                                 cbk1(err, user);
-                            })
+                            });
                     }else{
                         cbk1(null, null);
                     }
@@ -62,15 +62,16 @@ module.exports = function (req, res) {
 
                 //put proxy populated details in proxy.details, so avner wont fill the change
                 _.each(my_or_his_uru_user.proxy, function(proxy){proxy.details = proxy.user_id});
-                curr_user = args[1];
+                curr_user_db = args[1];
 
-                if(curr_user){
+                if(curr_user_db){
                     //put proxy populated details in proxy.details, so avner wont fill the change
-                    _.each(curr_user.proxy, function(proxy){proxy.details = proxy.user_id});
+                    _.each(curr_user_db.proxy, function(proxy){proxy.details = proxy.user_id});
                     //find if the user is a follower of the "his uru" user
-                    curr_user.is_follower_of_user = false;
-                    if(_.any(curr_user.followers, function(follower){return follower.follower_id + "" == userID + ""}))
-                        curr_user.is_follower_of_user = true;
+                    curr_user_db.is_follower_of_user = false;
+                    if(_.any(curr_user_db.followers, function(follower){ return follower.follower_id + "" == pageUserID + ""})){
+                        curr_user_db.is_follower_of_user = true;
+                     }
                     }
                 cbk(err, my_or_his_uru_user);
             })
@@ -84,10 +85,11 @@ module.exports = function (req, res) {
 
         var num_of_extra_tokens = user_obj.num_of_extra_tokens;
         var tokens =  user_obj.tokens;
-        var proxy = user_obj.proxy;
+      //  var proxy = user_obj.proxy;
         var tokensBarModel = new TokensBarModel(9, num_of_extra_tokens, tokens, proxy);
 
-        var proxyJson=isHisuru? JSON.stringify(user.proxy):  JSON.stringify(proxy);
+        var proxyJson=isHisuru? JSON.stringify(sessionUser.proxy):  JSON.stringify(proxy);
+
         console.log(req.session.avatar_url);
         console.log(user_obj.avatar_url());
         console.log(user_obj);
@@ -99,10 +101,10 @@ module.exports = function (req, res) {
                 title:"אורו שלי",
                 logged:req.isAuthenticated(),
                 big_impressive_title:"",
-                user:user,//current user
+                user:sessionUser,//current user
                 pageUser:user_obj ,///  hisuru user
                 avatar:user_obj.avatar_url(),
-                curr_user_proxy: curr_user ? curr_user.proxy : null,
+                curr_user_proxy: curr_user_db ? curr_user_db.proxy : null,
                 user_logged:req.isAuthenticated(),
                 url:req.url,
                 tokensBarModel:tokensBarModel,
