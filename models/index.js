@@ -197,7 +197,9 @@ var Schemas = exports.Schemas = {
             "a_dicussion_created_with_info_item_that_you_created",
             "user_gave_my_post_tokens",
             "user_gave_my_suggestion_tokens"
-        ]},
+        ],
+        is_proxy_notification: {type: Boolean, 'default': false}
+        },
 
         entity_id: {type: ObjectId},
 
