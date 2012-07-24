@@ -9,11 +9,9 @@ CKEDITOR.editorConfig = function( config )
 	// config.language = 'fr';
 	// config.uiColor = '#AADC6E';
 	config.toolbar = [
-   ['Styles','Format','Font','FontSize'],
-   '/',
-   ['Bold','Italic','Underline','StrikeThrough','-','Outdent','Indent','-','Blockquote'],
-   '/',
-   ['NumberedList','BulletedList','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
-   ['Link','TextColor','BGColor']
+   ['Format','Bold','Italic','Underline','StrikeThrough','-',
+       'Outdent','Indent','-','NumberedList','BulletedList','-',
+       'JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-',
+       'Image','Link','TextColor','BGColor']
 	] ;
 };

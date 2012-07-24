@@ -329,9 +329,23 @@ $(document).ready(function () {
 
     var onGiveProxy;
 
+    var editor;
+
     $( '#discussion_comment' ).ckeditor(            {
-        height: 100
+        height: 100,
+        'line-height':10,
+        language:'he',
+        removePlugins : 'elementspath',
+        on :
+        {
+            instanceReady : function( ev )
+            {
+                editor = this;
+            }
+        }
     });
+
+
 
     $("#proxy_form").dialog({
         autoOpen:false,
@@ -852,19 +866,21 @@ $(document).ready(function () {
 
         var postDiv = $(this).parents('.comment-one');
         e.preventDefault();
-        $("textarea#discussion_comment").focus();
+       // $("textarea#discussion_comment").focus();
         userName = postDiv.data('creator_name');
         new_post_ref_id = postDiv.data('id');
 
         var text_to_quote = $('.actual_text', postDiv).length ? $('.actual_text', postDiv).text() : $('.post_text', postDiv).text();
 
-        text = "[quote=" + '"' + userName + '"' + " " + "]\n"
+        text = "[ציטוט=" + '"' + userName + '"' + " " + "]\n"
                 + text_to_quote
                 + '\n'
-                + "[/quote]"
-                + '<br>';
+                + "[/ציטוט]"
+                + '<p>&nbsp;</p>';
 
         $("textarea#discussion_comment").val(text).focus();
+
+        focusOnCommentBox();
     });
 
     $('#comments').on('click', ".post_quote a", function (e) {
@@ -893,6 +909,7 @@ $(document).ready(function () {
 
         e.preventDefault();
         $("textarea#discussion_comment").focus();
+        focusOnCommentBox();
         userName = postDiv.data('creator_name');
         new_post_ref_id = postDiv.data('id');
 
@@ -917,6 +934,7 @@ $(document).ready(function () {
                     + '\n';
         }
         $("textarea#discussion_comment").val(text).focus();
+        focusOnCommentBox();
     });
 
     $('#comments,#suggestion_list').on('click', ".follow_user", function (e) {
@@ -1201,7 +1219,27 @@ $(document).ready(function () {
         $(".discussion_content").height(h);
     });
 
+    function focusOnCommentBox(){
+        editor.focus();
+        editor.focusManager.focus();
+
+
+
+        setTimeout(function(){
+            var s =  CKEDITOR.instances.discussion_comment.getSelection();
+            var b = CKEDITOR.instances.discussion_comment.document.getBody();
+            s.selectElement(b);
+            var selected_ranges = s.getRanges();
+            selected_ranges[0].collapse(false);  //  false collapses the range to the end of the selected node, true before the node.
+            s.selectRanges(selected_ranges);
+        },100);
+
+    };
+
+
 });
+
+
 </script>
 </body>
 </html>
