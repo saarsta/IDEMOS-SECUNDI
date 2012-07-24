@@ -37,8 +37,8 @@ var Comment = new Schema({
 
 var Article = module.exports = new Schema({
     user_id:{type:ObjectId, ref:'User', index:true, required:true},
-    first_name: {type:String/*, editable:false*/},
-    last_name: {type:String/*, *//**//*editable:false*/},
+    first_name: {type:String, editable:false},
+    last_name: {type:String, editable:false},
     avatar : {type:String, editable:false},
     title : {type:String, required:true, required:true},
     tooltip:String,
