@@ -6746,3 +6746,8 @@ body.body-action .followers-box h2
     font-weight:bold;
 }
 
+
+.actual_text
+{
+    word-wrap: break-word;
+}
