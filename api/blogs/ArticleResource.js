@@ -13,19 +13,28 @@ var models = require('../../models'),
 
 var ArticleResource = common.GamificationMongooseResource.extend({
     init:function () {
-        this._super(models.Article, null, null);
+        this._super(models.Article, 0, null);
         this.authentication = new common.SessionAuthentication();
-        this.allowed_methods = ['get', 'post'];
-        this.filtering = {popularity_counter: null, tags: null};
-        this.update_fields = ["comments", "popolarity_counter", "title", "text", "tags"];
+        this.allowed_methods = ['get'/*, 'post'*/];
+        this.filtering = {popularity_counter: null, tags: null, user_id: null};
+//        this.update_fields = ["comments", "popolarity_counter", "title", "text", "tags"];
         this.fields = {
+            _id: null,
             tooltip_or_title:null,
             title:null,
+            text: null,
+            tags: null,
+            time: null,
             avatar:null,
             first_name:null,
             last_name:null,
             tags:null
         }
+    },
+
+    dispatch: function(){
+        this.token_price = common.getGamificationTokenPrice('create_article') > -1 ? common.getGamificationTokenPrice('create_article') : 0;
+        this._super.apply(this,arguments);
     },
 
     get_objects: function(req, filters, sorts, limit, offset, callback){

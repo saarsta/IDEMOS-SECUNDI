@@ -2,9 +2,11 @@
 
 <html>
 <head>
-    <!-- <script src="http://cdn.jquerytools.org/1.2.7/full/jquery.tools.min.js"></script>-->
+
+
     <%- partial('partials/head.ejs') %>
     <%- partial('partials/facebook.ejs') %>
+
 
 </head>
 <body>
@@ -91,34 +93,46 @@
 						for(var j=0 ;j<tokensBarModel.proxy.proxies.length;j++){
 						userProxy=tokensBarModel.proxy.proxies[j]; %>
 
-
-
-
                         <div class="blue"  data-userid="<%=userProxy._id%>" style="height:<%=tokensBarModel.convertToPixels(userProxy.proxy)%>">
-								<div class="info" style="overflow: hidden">
-									 מוקצים לנציג:
-                                    <%=userProxy.proxy%>
+							<%if(j===0){%>
+                                <div class="info" style="overflow: hidden">
+                                    :מוקצים לנציגים
+                                    <%=tokensBarModel.totalProxy%>
 								</div>
+                            <%}%>
 
 							</div>
-                            <div id="token-popup<%=userProxy._id %>" class="token-popup tooltip" >
+
+
+                            <div id="token-popup<%=userProxy._id %>"  class="token-popup tooltip">
                                 <div class="user-right">
                                    <a href="/myuru/<%=userProxy._id %>">
                                         <div class="img-box">
                                             <div class="auto-scale"  style="width: 41px;height: 44px">
-                                                <img src="<%=userProxy.avatar %>" alt="" />
+                                                <img src="<%=userProxy.avatar%>" alt="" />
                                             </div>
                                             <img class="wraper" src="/images/user-fillter-small-white.png" width="41" alt="" />
                                         </div>
                                    </a>
                                 </div>
-                                <div class="user-left">
-                                    <p><%=userProxy.name %></p>
-                                    <div class="proxy">
-                                        <span dir="ltr"><%=userProxy.proxy%></span>
+                                <div class="user-left" >
+                                    <p>
+                                        <span dir="ltr">1 </span>
+                                        <%=userProxy.name %>
+
+                                    </p>
+                                    <div  class="right1" style="float: right;">
+                                        <div class="proxy">
+                                            <span dir="ltr"><%=userProxy.proxy%></span>
+                                        </div>
+                                        <div class="respect">
+                                            <span dir="ltr"><%=userProxy.score%></span>
+                                        </div>
                                     </div>
-                                    <div class="respect">
-                                        <span dir="ltr"><%=userProxy.score%></span>
+                                    <div  class="hisuru-popup left1">
+                                        <a  href="javascript:void(0);" disabled="disabled" class="giveProxy">
+                                            תן מנדט
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -172,7 +186,7 @@
     </h2>
     <div class="tabs">
         <ul class="tabs-nav">
-            <li><a href="#discussions-tab">דיונים</a></li>
+            <li><a  href="#discussions-tab">דיונים</a></li>
             <li><a href="#cycles-tab">מעגלי תנופה</a></li>
             <li><a href="#actions-tab">פעולות</a></li>
             <li><a href="#articles-tab">בלוגים</a></li>
@@ -217,6 +231,8 @@
 </div>
 </div>
 <%- partial('partials/footer.ejs') %>
+
+
 </body>
 </html>
 <script type="text/javascript">
@@ -355,12 +371,14 @@
         });
 
 
-      //  $('.blue').tooltip();
+        $('.blue').tooltip();
        /* $('.blue').tooltip({
             // use div.tooltip as our tooltip
             tip: '.tooltip',
             // tweak the position
-          offset: [-278,-540]
+        //  offset: [-278,-700]
+            top:0,
+            left:0
 
         });*/
 

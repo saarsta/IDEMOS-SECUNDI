@@ -1,10 +1,3 @@
-/**
- * Created by JetBrains WebStorm.
- * User: saar
- * Date: 07/02/12
- * Time: 16:42
- * To change this template use File | Settings | File Templates.
- */
 
 var mongoose = require("mongoose"),
     Schema = mongoose.Schema,
@@ -217,8 +210,14 @@ var Schemas = exports.Schemas = {
         popularity:{type:Number,'default':0,select:false}
     },
 
+    BlogTag : {
+        tag:{type:String, unique:true},
+        popularity:{type:Number,'default':0,select:false}
+    },
+
     GamificationTokens: {
         create_discussion: {type: Number, 'default': 3},
+        create_article: {type: Number, 'default': 0},
         create_action: {type: Number, 'default': 0},
         post_on_discussion: {type: Number, 'default': 0},
         post_on_action: {type: Number, 'default': 0},
@@ -322,6 +321,7 @@ var Models = module.exports = {
     Category:mongoose.model('Category', new Schema(Schemas.Category, {strict: true})),
     ActionResource:mongoose.model('ActionResource', new Schema(require('./action_resource'), {strict: true})),
     Tag: mongoose.model('Tag', new Schema(Schemas.Tag, {strict: true})),
+    BlogTag: mongoose.model('BlogTag', new Schema(Schemas.BlogTag, {strict: true})),
     FBRequest: mongoose.model('FBRequest',require('./fb_request')),
     ResourceObligation: mongoose.model('ResourceObligation', new Schema(Schemas.ResourceObligation, {strict: true})),
     Notification: mongoose.model('Notification', new Schema(Schemas.Notification, {strict: true})),

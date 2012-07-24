@@ -115,7 +115,7 @@ var connectPopup = function(callback){
 
 
 function initTooltip(ui){
-    ui.tooltip({
+    ui.tooltipText({
         bodyHandler: function() {
             return "" +
                 "בקרוב"
@@ -127,7 +127,7 @@ function initTooltip(ui){
 }
 
 function initTooltipWithMessage(ui, message){
-    ui.tooltip({
+    ui.tooltipText({
         bodyHandler: function() {
             return "" +
                 message

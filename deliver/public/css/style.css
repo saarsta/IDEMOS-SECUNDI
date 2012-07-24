@@ -2240,7 +2240,7 @@ body
     overflow: inherit;
 }
 .extended #discussion_image {
-   display:none;
+    display:none;
 }
 .discussion_content
 {
@@ -2248,7 +2248,7 @@ body
     overflow: hidden;
 }
 .extended .discussion_content {
-  /*  height:400px;     */
+    /*  height:400px;     */
 
     overflow: inherit;
 }
@@ -2701,7 +2701,7 @@ h2 small
 .comments-box .comment-one
 {
     position: relative;
-    min-height:100px;
+    min-height: 107px;
     padding: 20px 0 11px;
     border-top: 1px solid #d2d1d1;
 }
@@ -2713,10 +2713,10 @@ h2 small
 {
     position: absolute;
     right:0 ;
-    top: 20px;
+
     background:#ededed;
     border-left: 1px solid #d8dde0;
-    height: 141px;
+
     z-index: 10;
 }
 .comments-box .comment-one .user-right .arrow
@@ -4554,6 +4554,9 @@ body.search-ative #header
     color:#949494;
     font: normal 12px/14px "AdumaFOTRegular";
 }
+
+/*****************************************************************************************************************************/
+
 .myuru-top .left .token-bar .token-popup
 {
     position: absolute;
@@ -4561,14 +4564,15 @@ body.search-ative #header
     /* right: 48px;*/
     display: none;
     z-index: 15;
-    width: 150px;
+    /* width: 150px;*/
+    width:220px;
     height: 83px;
-    background: url(../images/token-popup.png) no-repeat;
+    background: url(../images/token-popup240.png) no-repeat;
     padding: 16px 24px 0 13px;
 }
 .myuru-top .left .token-bar:hover .token-popup
 {
-    display: block;
+    /*display: block;*/
 }
 .myuru-top .left .token-bar .token-popup .user-right
 {
@@ -4578,6 +4582,7 @@ body.search-ative #header
     border-left: 1px solid #c5c5c5;
     height: 55px;
     margin-left: 7px;
+
 }
 .myuru-top .left .token-bar .token-popup .img-box
 {
@@ -4596,9 +4601,19 @@ body.search-ative #header
 .myuru-top .left .token-bar .token-popup .user-left
 {
     float: left;
-    width: 94px;
+    /* width: 94px;*/
+    width: 140px;
     padding-top: 5px;
 }
+.myuru-top .left .token-bar .token-popup .user-left .left1
+{
+    float: left;
+}
+.myuru-top .left .token-bar .token-popup .user-left .right1
+{
+    float: right;
+}
+
 .myuru-top .left .token-bar .token-popup .user-left p
 {
     color:#50504f;
@@ -4648,6 +4663,8 @@ body.search-ative #header
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
 }
+/*****************************************************************************************************************************/
+
 
 .myuru-top .left .token-bar .bars
 {
@@ -6140,21 +6157,9 @@ a.fraction-btn
 
 /*2894*/
 /*.comments-box .comment-one .user-right .left a => simler to line 2894*/
-.hisuru-commands a
-{
-    display: block;
-    background:#757d7e url(../images/search-submit.png) 0 0 repeat-x;
-    border: 1px solid #2e3030;
-    border-radius: 2px;
-    width: 85px;
-    height: 29px;
-    text-align: center;
-    color:#ffffff;
-    font: normal 18px/29px 'AdumaFOTRegular';
-    text-decoration: none;
-    margin: 0 auto 10px auto;
 
-}
+
+
 
 .hisuru-commands {
     padding: 15px
@@ -6200,19 +6205,35 @@ a.fraction-btn
     color:#ffffff;
     font: normal 18px/29px 'AdumaFOTRegular';
     text-decoration: none;
-    margin-bottom: 5px;  
+    margin-bottom: 5px;
 }
 .comments-box .ratio
 {
+
+
+    top: 50%;
+    display: table-cell;
+    vertical-align: middle  ;
+
     position: absolute;
     left: 112px;
     top: 17px;
     width: 33px;
     padding: 6px 12px;
-    height: 80px;
+
     border-left: 1px solid #d8dde0;
     border-right: 1px solid #d8dde0;
+    bottom: 20px;
 }
+.comments-box .ratio .ratio-spacer
+ {
+     height:50%;
+ }
+.comments-box .ratio .ratio-content
+{
+    margin-top: -38px;
+}
+
 .comments-box .ratio a.up
 {
     background: url(../images/ratio-arrows1.png) 0 0 no-repeat;
@@ -6280,17 +6301,17 @@ a.fraction-btn
 {
     background:#f6f6f6
 }
-.comments-box .comment-one-even .user-right-small 
+.comments-box .comment-one-even .user-right-small
 {
     background:#f6f6f6;
 }
-.comments-box .comment-one-even .user-right .transparent-img span 
+.comments-box .comment-one-even .user-right .transparent-img span
 {
     background: url(../images/user-fillter-small-cofee.png) no-repeat;
 }
 /*------ SMALL ---------*/
 .comments-box .comment-one  .user-right-small {
-    height: 105px;
+    bottom:20px;
     top: 17px;
 }
 .comments-box .comment-one .user-right-small .proxy
@@ -6323,7 +6344,7 @@ a.fraction-btn
 .comments-box .comment-one .user-right .img-box
 {
     width: 60px;
-    margin: -10px auto 5px; 
+    margin: -10px auto 5px;
     position: relative;
 }
 .comments-box .comment-one .user-right-small .img-box
@@ -6677,3 +6698,49 @@ body.body-action .followers-box h2
     width: 48px;
     direction: ltr;
 }
+
+
+
+.hisuru-commands a
+{
+    display: block;
+    background:#757d7e url(../images/search-submit.png) 0 0 repeat-x;
+    border: 1px solid #2e3030;
+    border-radius: 2px;
+    width: 85px;
+    height: 29px;
+    text-align: center;
+    color:#ffffff;
+    font: normal 18px/29px 'AdumaFOTRegular';
+    text-decoration: none;
+    margin: 0 auto 10px auto;
+
+}
+
+
+/* tooltip styling */
+.tooltip {
+
+
+    background:url(http://jquerytools.org/media/img/tooltip/black_arrow_big.png);
+    height:163px;
+    padding:40px 30px 10px 30px;
+    width:310px;
+    font-size:11px;
+    color:#fff;
+    top: 1;
+    left:1;
+}
+
+/* a .label element inside tooltip */
+.tooltip .label {
+    color:yellow;
+    width:35px;
+}
+
+.tooltip a {
+    color:#ad4;
+    font-size:11px;
+    font-weight:bold;
+}
+
