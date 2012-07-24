@@ -37,7 +37,6 @@ module.exports = function(req,res)
                     res.redirect('/discussions');
                 else
                 {
-
                     // populate 'is follower' , 'grade object' ...
                     resource.get_discussion(results[1],results[0],function(err,discussion)
                     {
@@ -61,7 +60,8 @@ module.exports = function(req,res)
                                 discussion: discussion,
                                 url: req.url,
                                 proxy:proxyJson,
-                                description: discussion.text_field_preview
+                                fb_description: discussion.text_field_preview,
+                                fb_title: discussion.title
                             });
                         }
                     });
