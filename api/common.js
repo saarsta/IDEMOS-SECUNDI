@@ -339,7 +339,7 @@ var uploadHandler = exports.uploadHandler = function(req,callback) {
 
         writeToFile(function(err,value) {
 
-            var file = path.join(__dirname,'..','devlier','public','cdn',value.path);
+            var file = path.join(__dirname,'..','deliver','public','cdn',value.path);
             stream = fs.createReadStream(file);
 
             knoxClient.putStream(stream, '/' + filename, function(err, res){
