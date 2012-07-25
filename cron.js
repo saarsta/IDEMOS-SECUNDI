@@ -474,7 +474,7 @@ var daily_cron =  exports.daily_cron = {
             {
                 proxy_id: null,
                 notificator_id: null,
-                number_of_taken_tokens: null,
+                number_of_taken_tokens: null
             }
         ];
 
