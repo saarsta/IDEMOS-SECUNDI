@@ -32,7 +32,7 @@
             <div class="user">
                 <div class="img-box" style="overflow:hidden;">
 				    <div style="width:112px; height:120px; float:right;" class="auto-scale">
-                        <img src="<%=avatar%>" alt="<%=pageUser.first_name+' '+ pageUser.last_name%>" />
+                        <img src="<%=pageUser.avatar_url()%>" alt="<%=pageUser.first_name+' '+ pageUser.last_name%>" />
                      </div>
                     <span></span>
                 </div>
@@ -104,7 +104,7 @@
 							</div>
 
 
-                            <div id="token-popup<%=userProxy._id %>"  class="token-popup tooltip">
+                            <div id="token-popup<%=userProxy._id %>"  class="token-popup tooltip" >
                                 <div class="user-right">
                                    <a href="/myuru/<%=userProxy._id %>">
                                         <div class="img-box">
@@ -371,17 +371,13 @@
         });
 
 
-        $('.blue').tooltip();
-       /* $('.blue').tooltip({
-            // use div.tooltip as our tooltip
-            tip: '.tooltip',
-            // tweak the position
-        //  offset: [-278,-700]
-            top:0,
-            left:0
 
-        });*/
-
+        $(".blue").tooltip({
+                            relative:true,
+                            opacity:1,
+                              position: "center left",
+                            offset:[0,10]
+                });
 
         $('#folowBT').click(function (e) {
           //  var creator_id = $(this).parents('.comment-one,.one').data("creator_id");

@@ -89,9 +89,10 @@ module.exports = function (req, res) {
         var tokensBarModel = new TokensBarModel(9, num_of_extra_tokens, tokens, proxy);
 
         var proxyJson=isHisuru? JSON.stringify(sessionUser.proxy):  JSON.stringify(proxy);
-
+      var av=user_obj.avatar_url();
         console.log(req.session.avatar_url);
         console.log(user_obj.avatar_url());
+        console.log(user_obj.avatar_url()+ '     ************************' );
         console.log(user_obj);
         res.render('my_uru.ejs',
             {
@@ -103,7 +104,7 @@ module.exports = function (req, res) {
                 big_impressive_title:"",
                 user:sessionUser,//current user
                 pageUser:user_obj ,///  hisuru user
-                avatar:user_obj.avatar_url(),
+             //   avatar:user_obj.avatar_url(),
                 curr_user_proxy: curr_user_db ? curr_user_db.proxy : null,
                 user_logged:req.isAuthenticated(),
                 url:req.url,
@@ -117,49 +118,3 @@ module.exports = function (req, res) {
 
 
 
-//        function (user_obj, cbk) {
-//
-////            if(!user_obj.proxy){
-////                user_obj.proxy = [];
-////            }
-//
-//
-////            async.forEach(user_obj.proxy, function (proxy_user, itr_cbk) {
-////                models.User.findById(proxy_user.user_id, ["_id", "first_name", "last_name", "facebook_id", "avatar","score"], function (err, curr_proxy_user) {
-////                    if (!err && curr_proxy_user !== null) {
-////                        curr_proxy_user.avatar = curr_proxy_user.avatar_url();
-////                        proxy_user.details = curr_proxy_user;
-////                    }
-////                    if(curr_proxy_user == null)
-////
-////                        console.error("curr_proxy_user is null");
-////                    itr_cbk();
-////                })
-////            }, function (err, ocj) {
-////
-////                //put proxy on curr user -- for his uru
-////                if(userID != user._id){
-////                    models.User.findById(user._id, function(err, user){
-////                        if(err || !user)
-////                            cbk(err, user_obj);
-////                        else{
-////                            curr_user = user;
-////                            async.forEach(curr_user.proxy, function (proxy_user, itr_cbk) {
-////                                models.User.findById(proxy_user.user_id, ["_id", "first_name", "last_name", "facebook_id", "avatar","score"], function (err, curr_proxy_user) {
-////                                    if (!err && curr_proxy_user !== null) {
-////                                        curr_proxy_user.avatar = curr_proxy_user.avatar_url();
-////                                        proxy_user.details = curr_proxy_user;
-////                                    }
-////                                    if(curr_proxy_user == null)
-////                                        console.error("curr_proxy_user is null");
-////                                    itr_cbk();
-////                                })
-////                            }, function(err, ocj){
-////                                cbk(err, user_obj);
-////                            })
-////                        }
-////                    })
-////                }else
-////                    cbk(err, user_obj);
-////            })
-//        }
