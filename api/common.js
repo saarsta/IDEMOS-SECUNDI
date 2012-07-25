@@ -11,7 +11,6 @@ var util = require('util');
 var jest = require('jest'),
     cron = require('../cron').cron,
     models = require('../models'),
-    knoxClient = require('j-forms').fields.getKnoxClient(),
     fs = require('fs'),
     path = require('path'),
     async = require('async');
@@ -306,6 +305,8 @@ var create_filename = function(filename)
 };
 
 var uploadHandler = exports.uploadHandler = function(req,callback) {
+    var knoxClient = require('j-forms').fields.getKnoxClient();
+
     var fName = req.header('x-file-name');
     var fType = req.header('x-file-type');
 
