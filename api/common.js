@@ -314,32 +314,9 @@ var uploadHandler = exports.uploadHandler = function(req,callback) {
         return;
     }
 
-    var stream = req.queueStream || req;
+    var filename = create_filename(fName);
 
-    if(knox&&knoxClient)
-    {
-
-        var filename = create_filename(fName);
-
-        knoxClient.putStream(stream, '/' + filename, function(err, res){
-            if(err)
-                callback(err);
-            else {
-                var value = {
-                    path:res.socket._httpMessage.url,
-                    url:res.socket._httpMessage.url
-                };
-                console.log(res);
-                console.log(res.socket._httpMessage.url);
-                req.user.avatar = value;
-                req.user.save(callback);
-            }
-        });
-        stream.resume();
-    }
-    else
-    {
-        var filename = create_filename(fName);
+    function writeToFile(callback){
         var os = fs.createWriteStream(path.join(__dirname,'..','deliver','public','cdn') + filename);
 
         stream.on('data',function(data) {
@@ -353,6 +330,32 @@ var uploadHandler = exports.uploadHandler = function(req,callback) {
         });
 
         stream.resume();
-
     }
-}
+
+    var stream = req.queueStream || req;
+
+    if(knox&&knoxClient)
+    {
+
+        writeToFile(function(err,value) {
+
+            var file = path.join('..','devlier','public','cdn',value.path);
+            stream = fs.createReadStream(file);
+
+            knoxClient.putStream(stream, '/' + filename, function(err, res){
+                if(err)
+                    callback(err);
+                else {
+                    fs.unlink(file);
+                    var value = {
+                        path:res.socket._httpMessage.url,
+                        url:res.socket._httpMessage.url
+                    };
+                    callback(null,value);
+                }
+            });
+        });
+    }
+    else
+        writeToFile(callback);
+};
