@@ -38,6 +38,34 @@ app.configure('development', function(){
 });
 
 
+app.configure('avner_env', function(){
+    app.set('views', __dirname + '/deliver/views');
+    app.set('old_views', __dirname + '/views');
+    app.set('public_folder', __dirname + '/deliver/public');
+    app.set('public_folder2', __dirname + '/public');
+    app.set('port',3000);
+    app.set('facebook_app_id', '175023072601087');
+    app.set('facebook_app_name','uru_dev');
+    app.set('facebook_secret', '5ef7a37e8a09eca5ee54f6ae56aa003f');
+
+    app.set('show_only_published',false);
+
+//    app.set('facebook_app_id', '436675376363069');
+//    app.set('facebook_app_name','uru_staging');
+//    app.set('facebook_secret', '975fd0cb4702a7563eca70f11035501a');
+
+    app.set('sendgrid_user','app2952775@heroku.com');
+    app.set('sendgrid_key','a0oui08x');
+    app.set('system_email','info@uru.org.il');
+    app.set('root_path', 'http://dev.empeeric.com');
+    app.set('DB_URL','mongodb://localhost/uru');
+    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+    require('./tools/compile_templates');
+    require('./deliver/tools/compile_dust_templates');
+});
+
+
+
 app.configure('staging', function(){
     app.set('views', __dirname + '/deliver/views');
     app.set('old_views', __dirname + '/views');

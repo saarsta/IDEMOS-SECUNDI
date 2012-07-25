@@ -89,9 +89,10 @@ module.exports = function (req, res) {
         var tokensBarModel = new TokensBarModel(9, num_of_extra_tokens, tokens, proxy);
 
         var proxyJson=isHisuru? JSON.stringify(sessionUser.proxy):  JSON.stringify(proxy);
-
+      var av=user_obj.avatar_url();
         console.log(req.session.avatar_url);
         console.log(user_obj.avatar_url());
+        console.log(user_obj.avatar_url()+ '     ************************' );
         console.log(user_obj);
         res.render('my_uru.ejs',
             {
@@ -103,7 +104,7 @@ module.exports = function (req, res) {
                 big_impressive_title:"",
                 user:sessionUser,//current user
                 pageUser:user_obj ,///  hisuru user
-                avatar:user_obj.avatar_url(),
+             //   avatar:user_obj.avatar_url(),
                 curr_user_proxy: curr_user_db ? curr_user_db.proxy : null,
                 user_logged:req.isAuthenticated(),
                 url:req.url,

@@ -4561,12 +4561,11 @@ body.search-ative #header
 .myuru-top .left .token-bar .token-popup
 {
     position: absolute;
-    /* bottom: -53px;*/
-    /* right: 48px;*/
+
     display: none;
     z-index: 15;
     /* width: 150px;*/
-    width:220px;
+    width:209px;
     height: 83px;
     background: url(../images/token-popup240.png) no-repeat;
     padding: 16px 24px 0 13px;
@@ -4664,6 +4663,14 @@ body.search-ative #header
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
 }
+.myuru-top .left .token-bar .token-popup .user-left  .given-mandat-from-me
+{
+    float: left;
+    background: transparent;
+    margin-left: 24px;
+    margin-top: 3px;
+}
+
 /*****************************************************************************************************************************/
 
 
@@ -6717,24 +6724,34 @@ body.body-action .followers-box h2
     text-decoration: none;
     margin: 0 auto 10px auto;
 
+
+}
+.hisuru-popup .giveProxy
+{
+    margin-left: 20px;
+    margin-top: 3px;
 }
 
 
 /* tooltip styling */
+/*
 .tooltip {
 
 
-    background:url(http://jquerytools.org/media/img/tooltip/black_arrow_big.png);
+    background:#808080;*/
+/* url(http://jquerytools.org/media/img/tooltip/black_arrow_big.png);*//*
+
     height:163px;
     padding:40px 30px 10px 30px;
     width:310px;
     font-size:11px;
     color:#fff;
-    top: 1;
-    left:1;
+
 }
 
-/* a .label element inside tooltip */
+*/
+/* a .label element inside tooltip *//*
+
 .tooltip .label {
     color:yellow;
     width:35px;
@@ -6745,6 +6762,9 @@ body.body-action .followers-box h2
     font-size:11px;
     font-weight:bold;
 }
+*/
+
+
 
 
 .actual_text
