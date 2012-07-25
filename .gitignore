@@ -14,5 +14,7 @@ pip-log.txt
 
 node_modules/*
 node_modules/*
+public/cdn/*
+*/public/cdn/*
 compiled_templates.js
 /public/js/compiled_templates.js
