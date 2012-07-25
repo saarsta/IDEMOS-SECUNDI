@@ -339,21 +339,29 @@ var uploadHandler = exports.uploadHandler = function(req,callback) {
 
         writeToFile(function(err,value) {
 
-            var file = path.join(__dirname,'..','deliver','public','cdn',value.path);
-            stream = fs.createReadStream(file);
+            if(err) {
+                callback(err);
+                return;
+            }
 
-            knoxClient.putStream(stream, '/' + filename, function(err, res){
-                if(err)
-                    callback(err);
-                else {
-                    fs.unlink(file);
-                    var value = {
-                        path:res.socket._httpMessage.url,
-                        url:res.socket._httpMessage.url
-                    };
-                    callback(null,value);
-                }
-            });
+            setTimeout(function() {
+
+                var file = path.join(__dirname,'..','deliver','public','cdn',value.path);
+                stream = fs.createReadStream(file);
+
+                knoxClient.putStream(stream, '/' + filename, function(err, res){
+                    if(err)
+                        callback(err);
+                    else {
+                        fs.unlink(file);
+                        var value = {
+                            path:res.socket._httpMessage.url,
+                            url:res.socket._httpMessage.url
+                        };
+                        callback(null,value);
+                    }
+                });
+            },200);
         });
     }
     else
