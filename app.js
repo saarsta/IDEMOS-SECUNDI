@@ -6,6 +6,7 @@ var express = require('express'),
     mongoose = require('mongoose'),
     MongoStore  = require('connect-mongo'),
     async = require('async'),
+    utils = require('./utils'),
     auth = require("connect-auth");
 
 var app = module.exports = express.createServer();
@@ -130,12 +131,12 @@ var account = require('./deliver/routes/account');
 
 // Configuration
 var confdb = {
-    db: require('./utils').split_db_url(app.settings.DB_URL),
+    db: utils.split_db_url(app.settings.DB_URL),
     secret: '076ed61d63ea10a12rea879l1ve433s9'
 };
 
 app.configure(function(){
-    require('./utils').setShowOnlyPublished(app.settings.show_only_published);
+    utils.setShowOnlyPublished(app.settings.show_only_published);
 
     app.set('view engine', 'jade');
 
@@ -144,6 +145,16 @@ app.configure(function(){
         app.use(express.static(app.settings.public_folder2));
     require('j-forms').serve_static(app,express);
 
+    // pause req stream in case we're uploading files
+    app.use(function(req,res,next) {
+        if(req.xhr && /api\/(avatar|image_upload)\/?$/.test(req.path)) {
+            req.queueStream = new utils.queueStream(req);
+            req.queueStream.pause();
+            req.pause();
+            console.log('request paused');
+        }
+        next();
+    });
 
     app.use(express.bodyParser());
     app.use(express.methodOverride());
@@ -167,7 +178,7 @@ app.configure(function(){
             appId : fbId,
             appSecret: fbSecret,
             callback: fbCallbackAddress,
-            scope: 'email',
+            scope: 'email,publish_actions',
             failedUri: '/noauth'
         })
     ],

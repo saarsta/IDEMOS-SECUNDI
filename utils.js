@@ -1,4 +1,5 @@
- var mongoose = require('mongoose');
+ var mongoose = require('mongoose')
+     ,events = require('events');
 
  var SHOW_ONLY_PUBLISHED = false;
 
@@ -195,7 +196,63 @@ exports.extend_model = function(name, base_schema, schema, collection,schemaFunc
     return {model:model, schema:schemaObj};
 };
 
-/*
+ /***
+  * Temporary stream that it's pause and resume works and  saved data in memory.
+  * Until the request stream of nodejs will be fixed
+  * @type {Function}
+  */
+ var queueStream = exports.queueStream = function (req) {
+     events.EventEmitter(this);
+     var self = this;
+     self.req = req;
+     var is_paused = false;
+     var is_destroyed = false;
+     var is_ended = false;
+     var queue = [];
+     self.pause = function () {
+         req.pause();
+         is_paused = true;
+     };
+     self.resume = function () {
+         req.resume();
+         is_paused = false;
+         if (!is_destroyed)
+             queue.forEach(function (data) {
+                 self.emit('data', data);
+             });
+         if (is_ended)
+             self.emit('end');
+     };
+
+     req.on('data', function (data) {
+         if (is_destroyed)
+             return;
+         if (is_paused) {
+             queue.push(data);
+         }
+         else {
+             self.emit('data', data);
+         }
+     });
+
+     req.on('end', function () {
+         if (is_destroyed)
+             return;
+         if (is_paused)
+             is_ended = true;
+         else
+             self.emit('end');
+     });
+
+     self.destroy = function () {
+         req.destroy();
+         is_destroyed = true;
+     };
+ };
+
+ require('util').inherits(queueStream, events.EventEmitter);
+
+ /*
  * Date Format 1.2.3
  * (c) 2007-2009 Steven Levithan <stevenlevithan.com>
  * MIT license

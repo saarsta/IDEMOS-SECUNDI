@@ -165,6 +165,7 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
                             object_name:'discussion',
                             object_url : '/discussions/' + discussion_obj.id,
                             fid : req.user.facebook_id,
+                            access_token:req.user.access_token,
                             user:req.user
                         });
                         cbk();

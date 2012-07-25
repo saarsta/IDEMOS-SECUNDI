@@ -30,11 +30,12 @@
         </h2>
         <div class="white-box">
             <div class="user">
-                <div class="img-box" style="overflow:hidden;">
+                <div class="img-box" style="overflow:hidden; position:relative;">
 				    <div style="width:112px; height:120px; float:right;" class="auto-scale">
                         <img src="<%=pageUser.avatar_url()%>" alt="<%=pageUser.first_name+' '+ pageUser.last_name%>" />
                      </div>
-                    <span></span>
+                    <!--div id="upload_image_placeholder" style="position:absolute; top:0px; left:0px;"></div-->
+                    <span id="upload_image_placeholder"></span>
                 </div>
                 <div class="proxy">
                     <span><%=tokensBarModel.totalProxy%></span> מנדטים
@@ -349,7 +350,7 @@
                 console.log(data);
             });
 
-        })
+        });
 
 
         $('#discussions-tab').on('click','.join_button',function(e){
@@ -410,6 +411,33 @@
 
 
          });
+
+
+        var uploader = new qq.FileUploader({
+            element: document.getElementById('upload_image_placeholder'),
+            action: '/api/avatar',
+            debug: false,
+            onProgress: function(id, fileName, loaded, total){console.log(loaded);console.log(total)},
+            onComplete: function(id, fileName, responseJSON){
+                $('.img-box img').attr('src',responseJSON.avatar.url);
+                $('.img-box img').autoscale();
+            },
+            template: '<span><div class="qq-uploader">' +
+                    '<div class="qq-upload-drop-area"><span>Drop files here to upload</span></div>' +
+                    '<div class="qq-upload-button"></div>' +
+                    '<ul class="qq-upload-list"></ul>' +
+                    '</div></span>',
+
+            // template for one item in file list
+//            fileTemplate: '<li>' +
+//                    '<span class="qq-upload-file"></span>' +
+//                    '<span class="qq-upload-spinner"></span>' +
+//                    '<span class="qq-upload-size"></span>' +
+//                    '<a class="qq-upload-cancel" href="#">Cancel</a>' +
+//                    '<span class="qq-upload-failed-text">Failed</span>' +
+//                    '</li>'
+
+        });
     });
 </script>
 
