@@ -105,7 +105,9 @@
 							</div>
 
 
-                            <div id="token-popup<%=userProxy._id %>"  class="token-popup tooltip" >
+                            <div id="token-popup<%=userProxy._id %>"   class="token-popup tooltip"
+                                 data-userid="<%=userProxy._id %>"   data-firstname="<%=userProxy.first_name%>"  >
+
                                 <div class="user-right">
                                    <a href="/myuru/<%=userProxy._id %>">
                                         <div class="img-box">
@@ -118,8 +120,12 @@
                                 </div>
                                 <div class="user-left" >
                                     <p>
-                                        <span dir="ltr">1 </span>
+                                      <!--  <div class="proxy given-mandat-from-me" >
+                                            <span dir="ltr"><%=userProxy.proxy%></span>
+                                        </div>-->
+                                       <div >
                                         <%=userProxy.name %>
+                                           </div>
 
                                     </p>
                                     <div  class="right1" style="float: right;">
@@ -127,11 +133,11 @@
                                             <span dir="ltr"><%=userProxy.proxy%></span>
                                         </div>
                                         <div class="respect">
-                                            <span dir="ltr"><%=userProxy.score%></span>
+                                            <span dir="ltr"><%=userProxy.score?userProxy.score: 0%></span>
                                         </div>
                                     </div>
                                     <div  class="hisuru-popup left1">
-                                        <a  href="javascript:void(0);" disabled="disabled" class="giveProxy">
+                                        <a  href="javascript:void(0);"  class="giveProxy">
                                             תן מנדט
                                         </a>
                                     </div>
@@ -153,10 +159,10 @@
 
                 <div class="left">
 
-                    <a id="add_or_remove_proxy" href="javascript:void(0);" disabled="disabled">
+                    <a id="add_or_remove_proxy" href="javascript:void(0);">
                         תן מנדט
                     </a>
-                    <a href="#" id="folowBT" class="follow_user gray_and_soon">
+                    <a href="#" id="folowBT" class="follow_user">
                      <%if( pageUser.is_follower_of_user){ %>
                         עקוב
                         <%}else {%>
@@ -400,10 +406,11 @@
            // var userData = $(this).parents('.discussion-item');
             var proxyId = userId //userData.data('creator_id');
             var userName = '<%=pageUser.first_name %>';
+            e.preventDefault();
             if(currentUserId===userId){ //cant give proxy to myself
                 return ;
             }
-            e.preventDefault();
+
             proxyCommon.addOrRemoveProxy(proxy,proxyId,userName,currentUserId,function(newProxy){
                 proxy=newProxy;
 
@@ -438,6 +445,25 @@
 //                    '</li>'
 
         });
+        $('.giveProxy').click(function (e) {
+
+           var popup=$(this).parents('.token-popup');
+            var proxyId = popup.data('userid');
+            var userName  = popup.data('firstname');
+            e.preventDefault();
+          /*  if(currentUserId===userId){ //cant give proxy to myself
+                return ;
+            }*/
+
+            proxyCommon.addOrRemoveProxy(proxy,proxyId,userName,currentUserId,function(newProxy){
+                proxy=newProxy;
+
+            })
+
+
+        });
+
+
     });
 </script>
 

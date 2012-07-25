@@ -1,18 +1,10 @@
 <div class="one cf">
     <div class="right-image">
-       <!-- <a href="/myuru/{user_id}">-->
-            <div class="img-box">
-                <img src="{?pic.url}{pic.url}{:else}{pic}{/pic.url}" alt=""/>
-                <img class="shadow" src="" alt=""/>
-            </div>
-      <!--  </a>-->
+        <div class="img-box">
+            <img src="{?pic.url}{pic.url}{:else}{pic}{/pic.url}" alt=""/>
+            <img class="shadow" src="" alt=""/>
+        </div>
     </div>
-    <!--<p>-->
-        <!--<strong>-->
-        <!--{description_of_notificators}-->
-        <!--</strong>-->
-         <!--<a href="{link}"> {message_of_notificators}</a>-->
-    <!--</p>-->
     <p>
         <strong>
             {description_of_notificators} {message_of_notificators}
@@ -21,4 +13,20 @@
     </p>
     <div class="date">{update_date|time}</div>
     <a class="btn share" data-img_src="{img_src.url}" data-text_preview="{text_preview}" data-title="{title}" rel="{link|uc}" href="/facebookShare?link={link|uc}">שתף</a>
+</div>
+
+<div class="one cf">
+    <a href="{link}">{?name}{name}{/name}
+        <div class="right-image">
+            <div class="img-box">
+                <img src="{?pic.url}{pic.url}{:else}{pic}{/pic.url}" alt=""/>
+                <img class="shadow" src="" alt=""/>
+            </div>
+        </div>
+        <p>
+            <span class="part_one"> {part_one} </span> <a href="{extra_link}">,{part_tow}</a><span class="part_three">{part_three}</span>
+        </p>
+        <div class="date">{update_date|time}</div>
+        <a class="btn share" data-img_src="{img_src.url}" data-text_preview="{text_preview}" data-title="{title}" rel="{link|uc}" href="/facebookShare?link={link|uc}">שתף</a>
+    </a>
 </div>

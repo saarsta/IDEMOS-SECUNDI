@@ -47,11 +47,11 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
         this.authentication = new common.SessionAuthentication();
         this.authorization = new Authorization();
         this.fields = {
+            ugly_proxy: null,
             _id: null,
             first_name: null,
             last_name: null,
             num_of_given_mandates: null,
-
             proxy: {
                 user_id:{
                     _id: null,
@@ -167,6 +167,8 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
                 object.number_of_tokens_to_get_back = 0;
 
             base.call(self, req, object, function(err, user_obj){
+                //i can't populate proxy if he was just created, thats ia why i have created ugly_proxy
+                user_obj.ugly_proxy = null;
                 if(user_obj)
                      _.each(user_obj.proxy, function(proxy){proxy.calc_num_of_mandates = proxy.number_of_tokens - proxy.number_of_tokens_to_get_back;})
 
@@ -189,6 +191,7 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
                                     }
 
                                     proxy.user_id = user_id;
+                                    user_obj.ugly_proxy =  user_id;
                                 }
 //                                _.each(user_obj.proxy, function(curr_proxy){if(curr_proxy.user_id + "" == proxy_id){curr_proxy.user_id = proxy}});
                                 callback(err, user_obj);

@@ -152,7 +152,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
     },
 
     create_obj:function (req, fields, callback) {
-        var user_id = req.session.user_id;
+        var user_id = req.session.user_id || req.session.user._id;
         var self = this;
         var object = new self.model();
         var user = req.user;
@@ -302,10 +302,18 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                     }
 
                 ], function(err){
-                    cbk(err);
+                    // find all users that im their proxy
+                    models.User.find({"proxy.user_id": user_id}, cbk)
+
+
+                    var slaves_users = [];
+
+                    async.forEach(slaves_users, function(slave, itr_cbk){
+                        notifications.create_user_notification("proxy_created_new_discussion", object._id, slave._id, user_id, null, function(err, result){
+                            itr_cbk(err);
+                        })
+                    }, cbk(err))
                 })
-
-
             },
 
             // 8) publish to facebook

@@ -33,7 +33,7 @@ module.exports = function (req, res) {
                 function (cbk1) {
                     //get details of my/his uru user
                     models.User.findById(pageUserID)
-                        .select(["tokens", "num_of_extra_tokens","proxy" , "biography","first_name","last_name","facebook_id", "avatar","score"])
+                        .select(["tokens", "num_of_extra_tokens","proxy" , "biography","first_name", "last_name", "facebook_id", "avatar", "score"])
                         .populate("proxy.user_id",['id','_id','first_name','last_name','avatar','facebook_id'])
                         .exec(function(err, user){
                             req.session.user.biography = user.biography;
@@ -46,7 +46,7 @@ module.exports = function (req, res) {
                     //get details of the current user that watch "his uru"
                     if(sessionUser && pageUserID != sessionUser._id){
                         models.User.findById(sessionUser._id)
-                            .select(["tokens", "num_of_extra_tokens", "proxy", "biography","first_name","last_name","facebook_id", "avatar","score"])
+                            .select(["tokens", "num_of_extra_tokens", "proxy", "biography","first_name","last_name","facebook_id", "avatar","score", "followers"])
                             .populate("proxy.user_id",['id','_id','first_name','last_name','avatar','facebook_id'])
                             .exec(function(err, user){
                                 cbk1(err, user);
@@ -115,6 +115,3 @@ module.exports = function (req, res) {
             });
     })
 };
-
-
-

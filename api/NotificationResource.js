@@ -401,6 +401,24 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                     }
                     itr_cbk();
                     break;
+                case "proxy_created_new_discussion":
+                    notification.message_of_notificators =
+                        "פריט מידע שעשית לו לייק תוייג בדיון - "
+
+                    ;
+                    if(discussion){
+                        notification.link = "/information_items/" + notification.entity_id;
+                        notification.pic = info_items_hash[notification.entity_id + ""].image_field_preview || info_items_hash[notification.entity_id + ""].image_field;
+                        notification.name = discussions_hash[notification.entity_id + ""].title;
+
+                        notification.img_src = notification.pic;
+                        notification.title = 'דיון בחזון '
+                            +
+                            notification.name;
+                        notification.text_preview = discussions_hash[notification.entity_id + ""].text_field_preview;
+                    }
+                    itr_cbk();
+                    break;
                 default:
                     itr_cbk({message: "there is no such notification type", code: 404});
             }

@@ -17,7 +17,14 @@ var models = require('../models'),
 
 exports.create_user_notification = function(notification_type, entity_id, user_id, notificatior_id, sub_entity, callback){
 
-    var single_notification_arr = ["been_quoted", "approved_info_item_i_created", "approved_change_suggestion_you_created", "approved_change_suggestion_you_graded"];
+    var single_notification_arr = [
+        "been_quoted",
+        "approved_info_item_i_created",
+        "approved_change_suggestion_you_created",
+        "approved_change_suggestion_you_graded",
+        "proxy_created_new_discussion",
+        "proxy_created_change_suggestion"
+    ];
 
     if(notificatior_id && _.indexOf(single_notification_arr, notification_type) == -1){
 

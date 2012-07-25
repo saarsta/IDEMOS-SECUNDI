@@ -190,6 +190,22 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                             suggestion_obj._id, suggestion_obj.creator_id, req.user._id, discussion_id, method, false, true, function (err, result) {
                                 cbk1(err, result);
                             })
+                    },
+
+                    //set notifications for all users of proxy
+                    function(cbk1){
+                        // find all users that im their proxy
+                        //models.User.find({user_id: {$in: proxy}})
+
+                        var slaves_users = [];
+
+                        async.forEach(slaves_users, function(slave, itr_cbk){
+                            notifications.create_user_notification("proxy_graded_change_suggestion", discussion_id, slave._id, user_id, suggestion_obj._id, function(err, result){
+                                itr_cbk(err);
+                            })
+                        }, function(err){
+                            cbk1(err);
+                        })
                     }
                 ], function (err, args) {
                     cbk(err, args);
@@ -249,11 +265,13 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                 }
                 else
                     models.Grade.findOne({discussion_id:discussion_id, user_id:req.user._id || object.user_id}, function (err, grade_discussion) {
-                        if (!err) {
+                        if (!err && grade_discussion) {
                             discussion_evaluation_grade = grade_discussion.evaluation_grade;
                             is_agree = object.evaluation_grade >= discussion_evaluation_grade;
+                            models.Suggestion.findById(object.suggestion_id, cbk);
+                        }else{
+                            cbk({message: "please grade the discussion", code: 401});
                         }
-                        models.Suggestion.findById(object.suggestion_id, cbk);
                     });
             },
 

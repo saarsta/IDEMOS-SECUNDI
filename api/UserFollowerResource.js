@@ -88,7 +88,7 @@ var UserFollowerResource = module.exports = common.GamificationMongooseResource.
 
     update_obj: function (req, object, callback) {
 
-            var follower_id = req.user._id;
+        var follower_id = req.user._id;
         var follower = _.find(object.followers, function(follower){return follower.follower_id + "" == follower_id + ""});
 
         if(follower){
