@@ -164,7 +164,7 @@ app.configure(function(){
     app.set('view options', { layout: false });
 
     app.use(express.session({secret: confdb.secret,
-        maxAge: new Date(Date.now() + (3600 * 1000 * 24 * 4)),
+        maxAge: new Date(Date.now() + (3600 * 1000 * 24)),
         store: new MongoStore(confdb.db) }));
     app.use(account.referred_by_middleware);
 

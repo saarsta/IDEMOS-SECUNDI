@@ -26,7 +26,7 @@
              else
                  delete query['is_hidden'];
              if(arguments.length == 0)
-                 arguments = [query];
+                 arguments.unshift(query);
              else if(typeof(arguments[0]) != 'object')
                  arguments.unshift(query);
              else
@@ -45,7 +45,7 @@
              else
                  delete query['is_hidden'];
              if(arguments.length == 0)
-                 arguments = [query];
+                 arguments.unshift(query);
              else if(typeof(arguments[0]) != 'object')
                  arguments.unshift(query);
              else
@@ -65,7 +65,7 @@
              else
                  delete query['is_hidden'];
              if(arguments.length == 0)
-                 arguments = [query];
+                 arguments.unshift(query);
              else if(typeof(arguments[0]) != 'object')
                  arguments.unshift(query);
              else
