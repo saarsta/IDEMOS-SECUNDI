@@ -1,0 +1,73 @@
+<div id="post_{_id}" class="comment-one {#isFirst} noBorder{:else}{/isFirst}"
+     data-id="{_id}" data-ref-id="{ref_to_post_id}" data-num-given-mandates="{mandates_curr_user_gave_creator}"
+     data-creator_name="{creator_id.first_name} {creator_id.last_name}"
+     data-creator_id="{creator_id.id}">
+    <div class="user-right side_menu">
+        <span class="arrow"></span>
+
+        <div class="left">
+            <!--id="add_or_remove_proxy"-->
+            <a id="add_or_remove_proxy" href="javascript:void(0);" disabled="disabled">
+                תן מנדט
+            </a>
+            <a href="javascript:void(0);" class="follow_user gray_and_soon">
+                עקוב
+            </a>
+            <a href="javascript:void(0);"  class="gray_and_soon">
+                שלח הודעה
+            </a>
+        </div>
+        <div class="right">
+            <a href="/myuru/{creator_id.id}">
+                <div class="img-box transparent-img">
+                <div style="width:60px; height:64px;" class="auto-scale">
+                    <img alt="{title}" title="{creator_id.first_name} {creator_id.last_name}"
+                         src="{creator_id.avatar_url}">
+                </div>
+                <span></span>
+            </div>
+            </a>
+            <h4>
+                {creator_id.first_name} {creator_id.last_name}
+            </h4>
+
+            <div class="date" dir="ltr">{creator_id.username} {?creation_date}{creation_date|time}{/creation_date}</div>
+            <div class="proxy">
+                <span class="num">{creator_id.num_of_proxies_i_represent}</span>
+            </div>
+            <div class="respect">
+                <span class="score">{creator_id.score}</span>
+            </div>
+        </div>
+    </div>
+    <div class="text">
+        <div class="post_text">
+            <p>
+                {text|s|post}
+            </p>
+        </div>
+        <div class="status">
+            <div class="yes">
+                <div class="green  vote_for">
+                    מסכים
+                </div>
+                <div class="number">{votes_for|round}</div>
+            </div>
+            <div class="no">
+                <div class="red vote_against">
+                    לא מסכים
+                </div>
+                <div class="number">{votes_against|round}</div>
+            </div>
+        </div>
+    </div>
+    <div class="like-btn"><img src="/images/like-btn.png" alt=""/></div>
+    <div class="nav-btns">
+        <a class="quote_button" href="javascript:void(0);">
+            צטט
+        </a>
+        <a class="share" data-img_src="{image_field_preview}" data-text_preview="{text}" data-title="תגובה מתוך דיון על החזון {title}" rel="/discussions/{discussion_id}#post_{_id}" data-name="{text}" href="/facebookShare?link=/discussions/{discussion_id}#post_{_id}" target="_blank">
+            שתף
+        </a>
+    </div>
+</div>

@@ -24,7 +24,8 @@ var TokensBarModel =function (tokenPixels, numExtraTokens, tokens, proxies) {
                         name:proc.details.first_name+' '+ proc.details.last_name,
                         proxy:proc.number_of_tokens,
                         _id: proc.details._id ,
-                        avatar:proc.details.avatar,
+                      //  avatar:proc.details.avatar,
+                        avatar:proc.user_id.avatar_url(),
                         score:proc.details.score
                     })
                 }

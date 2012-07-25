@@ -5,7 +5,10 @@ var error_message = error_message || '';
 <html>
 <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# <%= settings.facebook_app_name %>: http://ogp.me/ns/fb/<%= settings.facebook_app_name %>#">
     <%- partial('partials/head.ejs') %>
-    <script src="/resources/js/jquery-fieldselection.js" type="text/javascript"></script>
+    <script src="/js/jquery-fieldselection.js" type="text/javascript"></script>
+    <script src="/plugins/ckeditor/ckeditor.js"></script>
+    <script src="/plugins/ckeditor/adapters/jquery.js"></script>
+
     <meta property="fb:app_id" content="<%= settings.facebook_app_id %>" />
     <meta property="og:type"   content="<%= settings.facebook_app_name %>:discussion" />
     <meta property="og:url"    content="<%= settings.root_path %>/discussions/<%= discussion.id %>" />
@@ -39,16 +42,12 @@ var error_message = error_message || '';
                 </div>
 
 
-                <p style="text-align: left; position: relative; top: 25px; " id="read_more" onclick="$(this).parents('.text-box').addClass('extended');">
+                <p style="text-align: left; position: relative; top: 25px; " id="read_more">
                     <a href="javascript:void(0);">
                         קרא עוד
                     </a>
                 </p>
-                <p style="text-align: left; position: relative; top: 25px;" id="read_less" onclick="$(this).parents('.text-box').removeClass('extended');">
-                    <a href="javascript:void(0);">
-                        קרא פחות
-                    </a>
-                </p>
+
 
             </div>
             <div class="add-offer-bottom cf">
@@ -77,7 +76,7 @@ var error_message = error_message || '';
                     <% for (var c = 0; c
                     <discussion. tags.length
                     ; c++) { %>
-                    <a href="javascript:void(0);"> <%=discussion. tags[c] %></a>
+                    <a href="/discussions/?tag_name=<%=discussion.tags[c]%>"> <%=discussion. tags[c] %></a>
                     <% }%>
 
                     <div class="more">
@@ -232,7 +231,7 @@ var error_message = error_message || '';
             <div class="text-box cf"
             <%if(user_logged){%> data-creator_id="<%=user._id%>" <%}%> >
             <div class="left">
-                <textarea id="discussion_comment" class="four-col" cols="0" rows="0"></textarea>
+                <textarea id="discussion_comment" dir="rtl" class="four-col" cols="0" rows="0"></textarea>
             </div>
             <div class="user-right">
                 <div class="img-box" style="overflow: hidden;">
@@ -329,6 +328,23 @@ $(document).ready(function () {
     var vision = $('#discussion_content').text();
 
     var onGiveProxy;
+
+    var editor;
+
+    $( '#discussion_comment' ).ckeditor(            {
+        height: 100,
+        'line-height':10,
+        language:'he',
+        removePlugins : 'elementspath',
+        on :
+        {
+            instanceReady : function( ev )
+            {
+                editor = this;
+            }
+        }
+    });
+
 
 
     $("#proxy_form").dialog({
@@ -765,11 +781,20 @@ $(document).ready(function () {
              if (!err) {
 
 //                var votes_for = button.parent('div').find('.number');
+
+    /*
                  var votes_for = button.parents(".status").find(".yes").find(".number");
                  var votes_against = button.parents(".status").find(".no").find(".number");
 
                  votes_for.text(Math.round(post_obj.votes_for));
                  votes_against.text(Math.round(post_obj.votes_against));
+                 */
+                 var f = $(this);
+                 var g=  $(this).parents(".ratio");
+                  $(this).parents(".ratio").find(".count").text(Math.round(post_obj.votes_for-post_obj.votes_against ));
+
+
+
              }
              else {
                  if (err.responseText == 'Error: there is not enought tokens')
@@ -790,12 +815,11 @@ $(document).ready(function () {
         func.call(db_functions, post_id, actionType, function (err, post_obj) {
             if (!err) {
 
-//                var votes_for = button.parent('div').find('.number');
-                var votes_for = button.parents(".status").find(".yes").find(".number");
-                var votes_against = button.parents(".status").find(".no").find(".number");
-
-                votes_for.text(Math.round(post_obj.votes_for));
-                votes_against.text(Math.round(post_obj.votes_against));
+                   button.parents(".ratio").find(".count").text(Math.round(post_obj.votes_for-post_obj.votes_against ));
+                   var down_arrow = button.parents(".ratio").find(".down");
+                   var up_arrow =button.parents(".ratio").find(".up");
+                   down_arrow.removeClass("balance0").removeClass("balance1").removeClass("balance2").removeClass("balance3").removeClass("balance-1").removeClass("balance-2").removeClass("balance-3").addClass("balance"+post_obj.voter_balance);
+                   up_arrow.removeClass("balance0").removeClass("balance1").removeClass("balance2").removeClass("balance3").removeClass("balance-1").removeClass("balance-2").removeClass("balance-3").addClass("balance"+post_obj.voter_balance);
             }
             else {
                 if (err.responseText == 'Error: there is not enought tokens')
@@ -842,19 +866,21 @@ $(document).ready(function () {
 
         var postDiv = $(this).parents('.comment-one');
         e.preventDefault();
-        $("textarea#discussion_comment").focus();
+       // $("textarea#discussion_comment").focus();
         userName = postDiv.data('creator_name');
         new_post_ref_id = postDiv.data('id');
 
         var text_to_quote = $('.actual_text', postDiv).length ? $('.actual_text', postDiv).text() : $('.post_text', postDiv).text();
 
-        text = "[quote=" + '"' + userName + '"' + " " + "]\n"
+        text = "[ציטוט=" + '"' + userName + '"' + " " + "]\n"
                 + text_to_quote
                 + '\n'
-                + "[/quote]"
-                + '\n';
+                + "[/ציטוט]"
+                + '<p>&nbsp;</p>';
 
         $("textarea#discussion_comment").val(text).focus();
+
+        focusOnCommentBox();
     });
 
     $('#comments').on('click', ".post_quote a", function (e) {
@@ -883,6 +909,7 @@ $(document).ready(function () {
 
         e.preventDefault();
         $("textarea#discussion_comment").focus();
+        focusOnCommentBox();
         userName = postDiv.data('creator_name');
         new_post_ref_id = postDiv.data('id');
 
@@ -907,6 +934,7 @@ $(document).ready(function () {
                     + '\n';
         }
         $("textarea#discussion_comment").val(text).focus();
+        focusOnCommentBox();
     });
 
     $('#comments,#suggestion_list').on('click', ".follow_user", function (e) {
@@ -1047,7 +1075,8 @@ $(document).ready(function () {
         var i;
         for (i = 0; i < comments.length; i++) {
             comments[i].isFirst = (i === 0);
-
+            comments[i].isEven = ((i % 2)== 0);
+            comments[i].voting =      comments[i].votes_for - comments[i].votes_against;
         }
         dust.renderArray('discussion_comment', comments, null, function (err, out) {
             if (!err) {
@@ -1183,8 +1212,34 @@ $(document).ready(function () {
         $(this).parents('.system-notice').fadeOut(800);
     });
 
+    $('#read_more').click(function () {
+
+        $(this).parents('.text-box').addClass('extended');
+        var h=  $(".hidden_textarea").get(0).scrollHeight;
+        $(".discussion_content").height(h);
+    });
+
+    function focusOnCommentBox(){
+        editor.focus();
+        editor.focusManager.focus();
+
+
+
+        setTimeout(function(){
+            var s =  CKEDITOR.instances.discussion_comment.getSelection();
+            var b = CKEDITOR.instances.discussion_comment.document.getBody();
+            s.selectElement(b);
+            var selected_ranges = s.getRanges();
+            selected_ranges[0].collapse(false);  //  false collapses the range to the end of the selected node, true before the node.
+            s.selectRanges(selected_ranges);
+        },100);
+
+    };
+
 
 });
+
+
 </script>
 </body>
 </html>

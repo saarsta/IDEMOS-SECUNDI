@@ -54,144 +54,11 @@ var NotificationCategoryResource = module.exports = resources.MongooseResource.e
 
 
             this._super(req, filters, sorts, limit, offset, function (err, results) {
-                //formulate notifications
-                    var notificator_ids = _.chain(results.objects)
-                    .map(function (notification) {
-                        return notification.notificators.length ? notification.notificators[0].notificator_id : null;
-                    })
-                    .compact()
-                    .uniq()
-                    .value();
 
-                var post_or_suggestion_notification_types = [
-                    "user_gave_my_post_tokens",
-                    "user_gave_my_suggestion_tokens"
-                ];
-                var discussion_notification_types = [
-                    "comment_on_discussion_you_are_part_of",
-                    "change_suggestion_on_discussion_you_are_part_of",
-                    "comment_on_discussion_you_created",
-                    "change_suggestion_on_discussion_you_created",
-                    "approved_change_suggestion_you_created",
-                    "approved_change_suggestion_you_graded",
-                    "been_quoted",
-                    "a_dicussion_created_with_info_item_that_you_like",
-                    "a_dicussion_created_with_info_item_that_you_created"
-                ];
-
-                var discussion_ids = _.chain(results.objects)
-                    .map(function (notification) {
-                        return  _.indexOf(discussion_notification_types, notification.type) > -1
-                            ? notification.entity_id : null;
-                    })
-                    .compact()
-                    .uniq()
-                    .value();
-
-                var discussion_notification_types_as_sub_entity = [
-                    "user_gave_my_post_tokens",
-                    "user_gave_my_suggestion_tokens"
-                ];
-
-                var discussion_ids_as_sub_entity = _.chain(results.objects)
-                    .map(function (notification) {
-                        return  _.indexOf(discussion_notification_types_as_sub_entity, notification.type) > -1
-                            ? notification.notificators[0].sub_entity_id : null;
-                    })
-                    .compact()
-                    .uniq()
-                    .value();
-
-                discussion_ids_as_sub_entity = _.chain(discussion_ids_as_sub_entity)
-                    .compact()
-                    .uniq()
-                    .value();
-
-                discussion_ids = _.union(discussion_ids, discussion_ids_as_sub_entity);
-                discussion_ids = _.chain(discussion_ids).map(function(id) { return id + ''; })
-                    .compact()
-                    .uniq()
-                    .value();
-
-                var post_or_suggestion_ids = _.chain(results.objects)
-                    .map(function (notification) {
-                        return  _.indexOf(post_or_suggestion_notification_types, notification.type) > -1
-                            ? notification.entity_id : null;
-                    })
-                    .compact()
-                    .uniq()
-                    .value();
-
-                var info_item_notification_types = [
-                    "approved_info_item_i_created"
-//                    "approved_info_item_i_liked"
-                ];
-
-                var info_items_ids = _.chain(results.objects)
-                    .map(function (notification) {
-                        return  _.indexOf(info_item_notification_types, notification.type) > -1
-                            ? notification.entity_id : null;
-                    })
-                    .compact()
-                    .uniq()
-                    .value();
-
-                async.parallel([
-                    function(cbk){
-                        models.User.find({}, ['id', 'first_name', 'last_name', 'facebook_id', 'avatar'])
-                            .where('_id').in(notificator_ids).run(function (err, users) {
-                                if(!err){
-                                    var users_hash = {};
-
-                                    _.each(users, function (user) {
-                                        users_hash[user.id] = user;
-                                    });
-                                }
-                                cbk(err, users_hash);
-                            });
-                    },
-
-                    function(cbk){
-                        models.Discussion.find()
-                            .where('_id')
-                            .in(discussion_ids)
-                            .select(['id', 'title', 'image_field_preview', 'image_field', 'text_field_preview'])
-                            .exec(function (err, discussions) {
-
-                                var got_ids = _.pluck(discussions,'id');
-                                var not_found_ids = _.without(discussion_ids,got_ids);
-                                if(not_found_ids.length)
-                                   console.log(not_found_ids);
-                                if(!err){
-                                    var discussions_hash = {};
-
-                                    _.each(discussions, function (discussion) {
-                                        discussions_hash[discussion.id] = discussion;
-                                    });
-                                }
-                                    cbk(err, discussions_hash);
-                            });
-                    },
-
-                    function(cbk){
-                        models.InformationItem.find({}, ['id', 'image_field_preview', 'image_field'])
-                            .where('_id').in(info_items_ids).run(function (err, info_items) {
-
-                                if(!err){
-                                    var info_items_hash = {};
-
-                                    _.each(info_items, function (info_item) {
-                                        info_items_hash[info_item.id] = info_item;
-                                    });
-                                }
-                                cbk(err, info_items_hash);
-                            });
-                    }
-                ], function(err, args){
-                    async.forEach(results.objects, iterator(args[0], args[1], args[2]), function (err, obj) {
-                        callback(err, results);
-                    })
-                })
+                if(err)
+                    callback(err);
+                else
+                    populateNotifications(results,callback);
             });
         }
     });
@@ -240,6 +107,7 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                         +
                             notification.name;
                         notification.text_preview = discussions_hash[notification.entity_id + ""].text_field_preview;
+
                     }
 
                     if (num_of_comments > 1) {
@@ -538,6 +406,156 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
             }
         }
     };
+};
+
+var populateNotifications = module.exports.populateNotifications = function(results, callback) {
+    //formulate notifications
+    var notificator_ids = _.chain(results.objects)
+        .map(function (notification) {
+            return notification.notificators.length ? notification.notificators[0].notificator_id : null;
+        })
+        .compact()
+        .uniq()
+        .value();
+
+    var post_or_suggestion_notification_types = [
+        "user_gave_my_post_tokens",
+        "user_gave_my_suggestion_tokens"
+    ];
+    var discussion_notification_types = [
+        "comment_on_discussion_you_are_part_of",
+        "change_suggestion_on_discussion_you_are_part_of",
+        "comment_on_discussion_you_created",
+        "change_suggestion_on_discussion_you_created",
+        "approved_change_suggestion_you_created",
+        "approved_change_suggestion_you_graded",
+        "been_quoted",
+        "a_dicussion_created_with_info_item_that_you_like",
+        "a_dicussion_created_with_info_item_that_you_created"
+    ];
+
+    var discussion_ids = _.chain(results.objects)
+        .map(function (notification) {
+            return  _.indexOf(discussion_notification_types, notification.type) > -1
+                ? notification.entity_id : null;
+        })
+        .compact()
+        .uniq()
+        .value();
+
+    var discussion_notification_types_as_sub_entity = [
+        "user_gave_my_post_tokens",
+        "user_gave_my_suggestion_tokens"
+    ];
+
+    var discussion_ids_as_sub_entity = _.chain(results.objects)
+        .map(function (notification) {
+            return  _.indexOf(discussion_notification_types_as_sub_entity, notification.type) > -1
+                ? notification.notificators[0].sub_entity_id : null;
+        })
+        .compact()
+        .uniq()
+        .value();
+
+    discussion_ids_as_sub_entity = _.chain(discussion_ids_as_sub_entity)
+        .compact()
+        .uniq()
+        .value();
+
+    discussion_ids = _.union(discussion_ids, discussion_ids_as_sub_entity);
+    discussion_ids = _.chain(discussion_ids).map(function(id) { return id + ''; })
+        .compact()
+        .uniq()
+        .value();
+
+    var post_or_suggestion_ids = _.chain(results.objects)
+        .map(function (notification) {
+            return  _.indexOf(post_or_suggestion_notification_types, notification.type) > -1
+                ? notification.entity_id : null;
+        })
+        .compact()
+        .uniq()
+        .value();
+
+    var info_item_notification_types = [
+        "approved_info_item_i_created"
+//                    "approved_info_item_i_liked"
+    ];
+
+    var info_items_ids = _.chain(results.objects)
+        .map(function (notification) {
+            return  _.indexOf(info_item_notification_types, notification.type) > -1
+                ? notification.entity_id : null;
+        })
+        .compact()
+        .uniq()
+        .value();
+
+    async.parallel([
+        function(cbk){
+            if(notificator_ids.length)
+                models.User.find({}, ['id', 'first_name', 'last_name', 'facebook_id', 'avatar'])
+                    .where('_id').in(notificator_ids).run(function (err, users) {
+                        if(!err){
+                            var users_hash = {};
+
+                            _.each(users, function (user) {
+                                users_hash[user.id] = user;
+                            });
+                        }
+                        cbk(err, users_hash);
+                    });
+            else
+                cbk(null,{});
+        },
+
+        function(cbk){
+            if(discussion_ids.length)
+                models.Discussion.find()
+                    .where('_id')
+                    .in(discussion_ids)
+                    .select(['id', 'title', 'image_field_preview', 'image_field', 'text_field_preview'])
+                    .exec(function (err, discussions) {
+
+                        var got_ids = _.pluck(discussions,'id');
+                        var not_found_ids = _.without(discussion_ids,got_ids);
+                        if(not_found_ids.length)
+                            console.log(not_found_ids);
+                        if(!err){
+                            var discussions_hash = {};
+
+                            _.each(discussions, function (discussion) {
+                                discussions_hash[discussion.id] = discussion;
+                            });
+                        }
+                        cbk(err, discussions_hash);
+                    });
+            else
+                cbk(null,{});
+        },
+
+        function(cbk){
+            if(info_items_ids.length)
+                models.InformationItem.find({}, ['id', 'image_field_preview', 'image_field'])
+                    .where('_id').in(info_items_ids).run(function (err, info_items) {
+
+                        if(!err){
+                            var info_items_hash = {};
+
+                            _.each(info_items, function (info_item) {
+                                info_items_hash[info_item.id] = info_item;
+                            });
+                        }
+                        cbk(err, info_items_hash);
+                    });
+            else
+                cbk(null,{});
+        }
+    ], function(err, args){
+        async.forEach(results.objects, iterator(args[0], args[1], args[2]), function (err, obj) {
+            callback(err, results);
+        })
+    })
 };
 
 function getLatestNotificator(notificators_arr){

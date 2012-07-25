@@ -54,13 +54,16 @@ dust.filters['tags'] = function(text) {
 };
 
 dust.filters['post'] = function(text) {
+    var isHtml = text.indexOf('<p') == 0;
     text = dust.filters['tags'](text);
-   text = text.replace(/\[quote="([^"]*)"\s*\]\n?((?:.|\n)*)?\n?\[\/quote\]\n?/g,
+   text = text.replace(/\[(?:quote|ציטוט)=(?:"|&quot;)([^"&]*)(?:"|&quot;)\s*\]\n?((?:.|\n)*)?\n?\[\/(?:quote|ציטוט)\]\n?/g,
         '<div class="post_quote" ><p style="font-style:italic" ><a class="ref_link" href="javascript:void(0);" style="display: block; margin-bottom: 8px; text-decoration: underline;">' +
             ' $1 כתב:' +
             '</a>' +
-            '$2' + '</p></div><br><p><span class="actual_text">');
-    text = text.replace(/\n/g, '<br>') + '</span></p>';
+            '$2' + '</p></div><br><span class="actual_text">');
+    if(!isHtml)
+        text = text.replace(/\n/g,'<br>');
+    text = text + '</span></p>';
     return text;
 }
 
@@ -112,7 +115,7 @@ var connectPopup = function(callback){
 
 
 function initTooltip(ui){
-    ui.tooltip({
+    ui.tooltipText({
         bodyHandler: function() {
             return "" +
                 "בקרוב"
@@ -124,7 +127,7 @@ function initTooltip(ui){
 }
 
 function initTooltipWithMessage(ui, message){
-    ui.tooltip({
+    ui.tooltipText({
         bodyHandler: function() {
             return "" +
                 message
@@ -157,10 +160,43 @@ function fbs_click(ui) {
 // handle image loading stuff
 
 $(function(){
+    $('user-box').live('tap', function(){
+        $(this).toggleClass('active');
+    })
+
+    $('#register_form').submit(function() {
+        // get all the inputs into an array.
+        var $inputs = $('#register_form :input');
+
+        // get an associative array of just the values.
+        var values = {};
+        $inputs.each(function() {
+            values[this.name] = $(this).val();
+        });
 
 
+        db_functions.login(values["email"], values["password"], function(err, result){
+            if(err){
+                $("#login_head").text("נסה שוב");
+            }
+            else{
+                window.location.href = window.location.href;
+            }
 
+        });
+        return false;
+    });
 
+    $("#fb_connect").live('click', function(){
+        facebookLogin(function(err, result){
+            if(!err){
+                window.location.href = window.location.href;
+            }else{
+                console.error(err);
+                $("#login_head").text("קרתה תקלה");
+            }
+        })
+    })
 
 
     var host = window.location.protocol + '//' + window.location.host;

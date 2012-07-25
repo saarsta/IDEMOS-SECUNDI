@@ -1,4 +1,6 @@
 <%
+        var user_log =user_logged || false;
+        var user = user;
         var unseen_notifications = user_logged ? user.unseen_notifications || 0 : 0;
 %>
 
@@ -10,7 +12,7 @@
         <span class="icon"></span>
     </a>
     <%}else{%> <span class="icon"></span><%}%>
-    <h2>
+    <h2 id="login_head">
         <%if(user_logged){%><%=user.first_name%><%}else{%>התחבר<%}%>
     </h2>
     <div class="hide-box">
@@ -32,7 +34,8 @@
             </div>
         </div>
         <%}else{%>
-        <form id="register_form" action="/account/login" method="POST">
+        <!--action="/account/login"-->
+        <form id="register_form" >
             <input name="email" type="text" placeholder='דוא"ל'/>
             <input name="password" type="password" placeholder="סיסמא" />
             <a class="forgot_password" href="/account/forgot_password">
@@ -41,7 +44,8 @@
             <input type="submit" value="התחבר" />
         </form>
         <div class="spacer"></div>
-        <a class="facebook" href="/account/facebooklogin?next=<%=url%>"></a>
+        <!--href="/account/facebooklogin?next=<%=url%>"-->
+        <a id="fb_connect" class="facebook"></a>
         <%}%>
     </div>
 </div>

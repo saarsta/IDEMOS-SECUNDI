@@ -190,3 +190,21 @@ exes
 ]
 >
 -----------------------------------------------------------------------------------------------------
+
+//database stuff :
+
+> db.posts.count({})
+178
+> db.posts.count({is_hidden: {$exist: false}})
+0
+> db.posts.count({is_hidden: {$exist: true}})
+0
+> db.posts.count({is_hidden: null})
+172
+> db.posts.update({is_hidden: null}, {$set: {is_hidden: false}})
+> db.posts.count({is_hidden: null})
+171
+> db.posts.update({is_hidden: null}, {$set: {is_hidden: false}}, false, true)
+> db.posts.count({is_hidden: null})
+0
+>

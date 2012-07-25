@@ -1,10 +1,3 @@
-/**
- * Created by JetBrains WebStorm.
- * User: saar
- * Date: 07/02/12
- * Time: 16:42
- * To change this template use File | Settings | File Templates.
- */
 
 var mongoose = require("mongoose"),
     Schema = mongoose.Schema,
@@ -15,11 +8,6 @@ var mongoose = require("mongoose"),
     async = require('async');
 
 mongoose_types.loadTypes(mongoose);
-
-
-
-
-
 
 var Schemas = exports.Schemas = {
 
@@ -95,9 +83,7 @@ var Schemas = exports.Schemas = {
     Vote:{
         user_id:{type:ObjectId, ref:'User', index:true, required:true},
         post_id:{type:ObjectId, ref:'Post', index:true, required:true, onDelete:'delete'},
-//        tokens:Number,
         ballance:{type:Number,'default':0},
-//        method:{type:String, "enum":['add', 'remove']},
         creation_date:{type:Date, 'default':Date.now}
     },
 
@@ -211,7 +197,9 @@ var Schemas = exports.Schemas = {
             "a_dicussion_created_with_info_item_that_you_created",
             "user_gave_my_post_tokens",
             "user_gave_my_suggestion_tokens"
-        ]},
+        ],
+        is_proxy_notification: {type: Boolean, 'default': false}
+        },
 
         entity_id: {type: ObjectId},
 
@@ -224,8 +212,14 @@ var Schemas = exports.Schemas = {
         popularity:{type:Number,'default':0,select:false}
     },
 
+    BlogTag : {
+        tag:{type:String, unique:true},
+        popularity:{type:Number,'default':0,select:false}
+    },
+
     GamificationTokens: {
         create_discussion: {type: Number, 'default': 3},
+        create_article: {type: Number, 'default': 0},
         create_action: {type: Number, 'default': 0},
         post_on_discussion: {type: Number, 'default': 0},
         post_on_action: {type: Number, 'default': 0},
@@ -314,10 +308,12 @@ var Models = module.exports = {
 
     Subject:mongoose.model('Subject', require('./subject')),
     Post:require('./post'),
+    PostArticle:mongoose.model('PostArticle',require('./post_article')),
     PostAction:utils.extend_model('PostAction', Schemas.PostOrSuggestion, Schemas.PostAction).model,
     Suggestion:require('./suggestion'),
     PostOrSuggestion:mongoose.model('PostOrSuggestion', new Schema(require('./post_or_suggestion'), {strict: true}), 'posts'),
     Vote:mongoose.model('Vote', new Schema(Schemas.Vote, {strict: true})),
+    VoteArticlePost:mongoose.model('VoteArticlePost', require('./vote_article_post')),
     VoteSuggestion:mongoose.model('VoteSuggestion', new Schema(Schemas.VoteSuggestion, {strict: true})),
     Like:mongoose.model('Like', new Schema(Schemas.Like, {strict: true})),
     Grade:mongoose.model('Grade', new Schema(Schemas.Grade, {strict: true})),
@@ -327,6 +323,7 @@ var Models = module.exports = {
     Category:mongoose.model('Category', new Schema(Schemas.Category, {strict: true})),
     ActionResource:mongoose.model('ActionResource', new Schema(require('./action_resource'), {strict: true})),
     Tag: mongoose.model('Tag', new Schema(Schemas.Tag, {strict: true})),
+    BlogTag: mongoose.model('BlogTag', new Schema(Schemas.BlogTag, {strict: true})),
     FBRequest: mongoose.model('FBRequest',require('./fb_request')),
     ResourceObligation: mongoose.model('ResourceObligation', new Schema(Schemas.ResourceObligation, {strict: true})),
     Notification: mongoose.model('Notification', new Schema(Schemas.Notification, {strict: true})),

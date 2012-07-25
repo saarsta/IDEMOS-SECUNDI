@@ -186,6 +186,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
          * 6) add discussion to user discussions (as a follower)
          * 7) set gamification details, create notifications
          * 8) publish to facebook
+         *
          * Final) return discussion object (or error)
          */
         async.waterfall([
@@ -281,13 +282,27 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
 
             // 7) set gamification details, create notifications
             function(cbk) {
+
                 //set gamification
 
+                async.parallel([
+                    //find all information items and set notifications for their owners
+                    function(cbk1){
+                        notifications_for_the_info_items_relvant(object._id, user_id,function(err) {
+                            cbk1(err);
+                        });
+                    },
 
-                //find all information items and set notifications for their owners
-                notifications_for_the_info_items_relvant(object._id, user_id,function(err) {
+                    //set notification for users that i'm their proxy
+                    function(cbk1){
+                        cbk1(null);
+                    }
+
+                ], function(err){
                     cbk(err);
-                });
+                })
+
+
             },
 
             // 8) publish to facebook

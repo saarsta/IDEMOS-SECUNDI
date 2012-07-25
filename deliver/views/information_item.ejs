@@ -23,7 +23,7 @@
                     </a>
                     <a class="share" data-title="<%= item.title %>" data-text_preview="<%= item.text_field_preview %>" data-img_src="<%= item.image_field_preview.url %>" rel="/information_items/<%= item.id %>" href="/facebookShare?link=/information_items/<%= item.id %>" target="_blank">שתף</a>
                      <% if(!item.user_likes) { %>
-                        <a class="hide" href="javascript:void(0);" class="number" id="like_button">1+</a>
+                        <a href="javascript:void(0);" class="number" id="like_button">1+</a>
                      <% } %>
 
                 </div>
@@ -40,7 +40,7 @@
                             </ul>
                         </div>
                         <div class="tags">
-                            <% for(var i=0; i<item.tags.length; i++) { %> <a href=""><%= item.tags[i] %> </a><% } %>
+                            <% for(var i=0; i<item.tags.length; i++) { %> <a href="/information_items/?tag_name=<%= item.tags[i] %>"><%= item.tags[i] %> </a><% } %>
 
                             <div class="more">
                                 <span></span>
