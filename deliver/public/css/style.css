@@ -4663,6 +4663,14 @@ body.search-ative #header
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
 }
+.myuru-top .left .token-bar .token-popup .user-left  .given-mandat-from-me
+{
+    float: left;
+    background: transparent;
+    margin-left: 24px;
+    margin-top: 3px;
+}
+
 /*****************************************************************************************************************************/
 
 
@@ -6716,6 +6724,12 @@ body.body-action .followers-box h2
     text-decoration: none;
     margin: 0 auto 10px auto;
 
+
+}
+.hisuru-popup .giveProxy
+{
+    margin-left: 20px;
+    margin-top: 3px;
 }
 
 

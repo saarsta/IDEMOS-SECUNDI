@@ -26,7 +26,9 @@ var TokensBarModel =function (tokenPixels, numExtraTokens, tokens, proxies) {
                         _id: proc.details._id ,
                       //  avatar:proc.details.avatar,
                         avatar:proc.user_id.avatar_url(),
-                        score:proc.details.score
+                        score:proc.details.score,
+                        first_name:proc.details.first_name
+
                     })
                 }
             }
