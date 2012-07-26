@@ -363,12 +363,12 @@ var db_functions = {
         });
     },
 
-    createDiscussion: function(subject_id, vision, title, tags, callback){
+    createDiscussion: function(subject_id, vision, title, tags,image, callback){
         db_functions.loggedInAjax({
             url: '/api/discussions/',
             type: "POST",
             async: true,
-            data: {"subject_id": subject_id, "subject_name": subject_name, "text_field": vision, "title": title, "tags": tags, "is_published": true},
+            data: {"subject_id": subject_id, "subject_name": subject_name, "text_field": vision, "title": title, "tags": tags, "is_published": true,image_field:image},
             success: function (data) {
                 console.log(data);
                 callback(null, data);

@@ -1,22 +1,8 @@
 
 
 var jest = require('jest')
-    ,j_forms = require('j-forms')
     ,common = require('./common')
     ,models = require('../models');
-
-
-var ImageForm = j_forms.forms.MongooseForm.extend({
-     init:function(req,options) {
-         this._super(req,options,models.ImageUpload);
-     },
-
-    get_fields:function() {
-        this._super();
-        this.fields = { image: this.fields.image};
-    }
-
-});
 
 
 var ImageUploadResource = module.exports = jest.MongooseResource.extend({
@@ -35,18 +21,23 @@ var ImageUploadResource = module.exports = jest.MongooseResource.extend({
         };
     },
 
+    deserialize: function(req,res,object,status) {
+        if(status == 201)
+            status = 200;
+        res.send(object,status);
+    },
+
     create_obj : function(req,fields,callback) {
         fields.user = req.user._id;
-        var form = new ImageForm(req,{data:fields});
+        var self = this;
+        var base = this._super;
 
-        form.is_valid(function(err,is_valid) {
+        common.uploadHandler(req,function(err,value) {
             if(err)
                 callback(err);
-            else{
-                if(is_valid)
-                    form.save(callback);
-                else
-                    callback(form.errors);
+            else {
+                fields.image = value;
+                base.call(self,req,fields,callback);
             }
         });
     }

@@ -270,6 +270,7 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                     object_name:'discussion',
                     object_url : '/discussions/' + discussion_id + '#post_' + post_id,
                     fid : user.facebook_id,
+                    access_token:user.access_token,
                     user:user
                 });
                 cbk();

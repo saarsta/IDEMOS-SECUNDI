@@ -73,11 +73,9 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
         this.update_fields = {
             title:null,
             image_field:null,
-            image_field_preview:null,
             subject_id:null,
             subject_name:null,
             creation_date:null,
-            text_field_preview:null,
             text_field:null,
             tags:null
         };
@@ -160,6 +158,11 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
         var user = req.user;
         var created_discussion_id;
         var info_items;
+
+        if(fields.text_field)
+            fields.text_field_preivew = fields.text_field.substr(0,365);
+        if(fields.image_field)
+            fields.image_field_preview = fields.image_field;
 
         var min_tokens = common.getGamificationTokenPrice('min_tokens_to_create_dicussion') > -1 ? common.getGamificationTokenPrice('min_tokens_to_create_dicussion') : 10;
 //        var total_tokens = user.tokens + user.num_of_extra_tokens;

@@ -30,11 +30,12 @@
         </h2>
         <div class="white-box">
             <div class="user">
-                <div class="img-box" style="overflow:hidden;">
+                <div class="img-box" style="overflow:hidden; position:relative;">
 				    <div style="width:112px; height:120px; float:right;" class="auto-scale">
                         <img src="<%=pageUser.avatar_url()%>" alt="<%=pageUser.first_name+' '+ pageUser.last_name%>" />
                      </div>
-                    <span></span>
+                    <!--div id="upload_image_placeholder" style="position:absolute; top:0px; left:0px;"></div-->
+                    <span id="upload_image_placeholder"></span>
                 </div>
                 <div class="proxy">
                     <span><%=tokensBarModel.totalProxy%></span> מנדטים
@@ -70,8 +71,8 @@
 			</h2>
 
 		
-        <div class="white-box">
-            <div class="token-bar">
+        <div class="white-box" id="tokensbar_wopper">
+          <!--  <div class="token-bar">
                 <span class="top-number">15</span>
                 <span class="bottom-number">0</span>
 
@@ -119,9 +120,9 @@
                                 </div>
                                 <div class="user-left" >
                                     <p>
-                                      <!--  <div class="proxy given-mandat-from-me" >
+                                      &lt;!&ndash;  <div class="proxy given-mandat-from-me" >
                                             <span dir="ltr"><%=userProxy.proxy%></span>
-                                        </div>-->
+                                        </div>&ndash;&gt;
                                        <div >
                                         <%=userProxy.name %>
                                            </div>
@@ -144,7 +145,7 @@
                             </div>
                     <%}%>
                 </div>
-            </div>
+            </div>-->
         </div>
 
         <%}else {  %>
@@ -252,7 +253,7 @@
         var userId='<%=pageUser._id %>';
         var currentUserId='<%=user._id %>';
         var proxy = JSON.parse('<%-proxy%>');
-       // var proxy = <%- proxy %>;
+       var isHisUru=<%=isHisUru%>;
 
         function tabSelected(event, ui){
            function convertToTabModel(data,type){
@@ -355,7 +356,7 @@
                 console.log(data);
             });
 
-        })
+        });
 
 
         $('#discussions-tab').on('click','.join_button',function(e){
@@ -378,12 +379,7 @@
 
 
 
-        $(".blue").tooltip({
-                            relative:true,
-                            opacity:1,
-                              position: "center left",
-                            offset:[0,10]
-                });
+
 
         $('#folowBT').click(function (e) {
           //  var creator_id = $(this).parents('.comment-one,.one').data("creator_id");
@@ -418,25 +414,81 @@
 
          });
 
-        $('.giveProxy').click(function (e) {
 
-           var popup=$(this).parents('.token-popup');
-            var proxyId = popup.data('userid');
-            var userName  = popup.data('firstname');
-            e.preventDefault();
-          /*  if(currentUserId===userId){ //cant give proxy to myself
-                return ;
-            }*/
 
-            proxyCommon.addOrRemoveProxy(proxy,proxyId,userName,currentUserId,function(newProxy){
-                proxy=newProxy;
+        var uploader = new qq.FileUploader({
+            element: document.getElementById('upload_image_placeholder'),
+            action: '/api/avatar',
+            debug: false,
+            onProgress: function(id, fileName, loaded, total){console.log(loaded);console.log(total)},
+            onComplete: function(id, fileName, responseJSON){
+                $('.img-box img').attr('src',responseJSON.avatar.url);
+                $('.img-box img').autoscale();
+            },
+            template: '<span><div class="qq-uploader">' +
+                    '<div class="qq-upload-drop-area"><span>Drop files here to upload</span></div>' +
+                    '<div class="qq-upload-button"></div>' +
+                    '<ul class="qq-upload-list"></ul>' +
+                    '</div></span>'
 
-            })
-
+            // template for one item in file list
+//            fileTemplate: '<li>' +
+//                    '<span class="qq-upload-file"></span>' +
+//                    '<span class="qq-upload-spinner"></span>' +
+//                    '<span class="qq-upload-size"></span>' +
+//                    '<a class="qq-upload-cancel" href="#">Cancel</a>' +
+//                    '<span class="qq-upload-failed-text">Failed</span>' +
+//                    '</li>'
 
         });
 
 
-    });
+
+        if(!isHisUru){
+            //need them on the proxy
+            var num_of_extra_tokens =<%= pageUser.num_of_extra_tokens %>;
+            var tokens = <%= pageUser.tokens %>;
+
+            var tokensBarModel = new TokensBarModel(9, num_of_extra_tokens, tokens, proxy);
+            dust.render('tokens_bar',tokensBarModel,function(err,out)
+            {
+
+
+                var tokensBar= $('#tokensbar_wopper');
+                tokensBar.empty();
+                tokensBar.append(out);
+
+                $('.giveProxy').click(function (e) {
+
+                    var popup=$(this).parents('.token-popup');
+                    var proxyId = popup.data('userid');
+                    var userName  = popup.data('firstname');
+                    e.preventDefault();
+                    /*  if(currentUserId===userId){ //cant give proxy to myself
+                     return ;
+                     }*/
+
+                    proxyCommon.addOrRemoveProxy(proxy,proxyId,userName,currentUserId,function(newProxy){
+                        proxy=newProxy;
+
+                    })
+
+
+                });
+
+                $(".blue").tooltip({
+                    relative:true,
+                    opacity:1,
+                    position: "center left",
+                    offset:[0,10]
+                });
+
+            });
+    }
+});
+
+
+
+
 </script>
 
