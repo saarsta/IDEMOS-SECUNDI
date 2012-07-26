@@ -13,7 +13,9 @@ module.exports = function (req, res) {
                     title:"בלוגים",
                     isBlog:true,
                     articles:articles,
-                    tab:'articles'
+                    tab:'articles',
+                    user: req.session.user,
+                    user_logged: req.isAuthenticated()
                 });
         });
     };
