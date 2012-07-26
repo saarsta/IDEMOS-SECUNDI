@@ -298,21 +298,19 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
 
                     //set notification for users that i'm their proxy
                     function(cbk1){
-                        cbk1(null);
+                        models.User.find({"proxy.user_id": user_id}, function(err, slaves_users){
+                            async.forEach(slaves_users, function(slave, itr_cbk){
+                                notifications.create_user_notification("proxy_created_new_discussion", object._id, slave._id, user_id, null, function(err, result){
+                                    itr_cbk(err);
+                                })
+                            }, function(err){
+                                cbk1(err);
+                            })
+                        })
                     }
 
                 ], function(err){
-                    // find all users that im their proxy
-                    models.User.find({"proxy.user_id": user_id}, cbk)
-
-
-                    var slaves_users = [];
-
-                    async.forEach(slaves_users, function(slave, itr_cbk){
-                        notifications.create_user_notification("proxy_created_new_discussion", object._id, slave._id, user_id, null, function(err, result){
-                            itr_cbk(err);
-                        })
-                    }, cbk(err))
+                    cbk(err);
                 })
             },
 

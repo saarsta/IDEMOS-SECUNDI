@@ -35,6 +35,11 @@ var NotificationCategoryResource = module.exports = resources.MongooseResource.e
                 update_date:null,
                 link:null,
                 pic:null,
+                html_version: null,
+                part_one: null,
+                part_tow: null,
+                part_three: null,
+                extra_link: null,
 
                 //for the share part
                 img_src: null,
@@ -85,7 +90,6 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                 users_hash[notification.notificators[0].notificator_id] : null;
 
             var discussion = discussions_hash[notification.entity_id+''];
-
             switch (notification.type) {
                 case "approved_info_item_i_created":
                     notification.message_of_notificators =
@@ -414,21 +418,78 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                     itr_cbk();
                     break;
                 case "proxy_created_new_discussion":
-                    notification.message_of_notificators =
-                        "פריט מידע שעשית לו לייק תוייג בדיון - "
+                    notification.html_version = true;
 
-                    ;
+                    notification.part_one = "" +
+                        "נפתח דיון חדש על ידי "
                     if(discussion){
-                        notification.link = "/information_items/" + notification.entity_id;
-                        notification.pic = info_items_hash[notification.entity_id + ""].image_field_preview || info_items_hash[notification.entity_id + ""].image_field;
+                        notification.link = "/discussions/" + notification.entity_id;
+                        notification.pic = discussions_hash[notification.entity_id + ""].image_field_preview || discussions_hash[notification.entity_id + ""].image_field;
                         notification.name = discussions_hash[notification.entity_id + ""].title;
-
                         notification.img_src = notification.pic;
-                        notification.title = 'דיון בחזון '
-                            +
-                            notification.name;
-                        notification.text_preview = discussions_hash[notification.entity_id + ""].text_field_preview;
                     }
+                    if(user_obj){
+                        notification.part_tow = user_obj.first_name + " " + user_obj.last_name;
+                        notification.extra_link = "/myuru/" + user_obj._id;
+                    }
+
+                    notification.part_three =
+           ", המייצג/ת אותך בעורו"
+
+                    itr_cbk();
+                    break;
+                case "proxy_created_change_suggestion":
+                    notification.html_version = true;
+
+                    if(discussion){
+                        notification.link = "/discussions/" + notification.entity_id;
+                        notification.pic = discussions_hash[notification.entity_id + ""].image_field_preview || discussions_hash[notification.entity_id + ""].image_field;
+                        notification.name = discussions_hash[notification.entity_id + ""].title;
+                        notification.img_src = notification.pic;
+                    }
+
+                    notification.part_one = "" +
+                  "הועלתה הצעה לשינוי בדיון "
+                    +
+                        notification.name +
+                    " " +
+                        "על ידי";
+                    if(user_obj){
+                        notification.part_tow = user_obj.first_name + " " + user_obj.last_name;
+                        notification.extra_link = "/myuru/" + user_obj._id;
+                    }
+
+                    notification.part_three =
+           ", המייצג/ת אותך בעורו";
+
+                    itr_cbk();
+                    break;
+                case "proxy_graded_change_suggestion":
+                    notification.html_version = true;
+
+                    if(discussion){
+                        notification.link = "/discussions/" + notification.entity_id + "#post_" + notification.notificators[0].sub_entity_id;
+                        notification.pic = discussions_hash[notification.entity_id + ""].image_field_preview || discussions_hash[notification.entity_id + ""].image_field;
+                        notification.name = discussions_hash[notification.entity_id + ""].title;
+                        notification.img_src = notification.pic;
+                    }
+
+                    var is_agree = notification.notificators[0].ballance > 0 ? "נתמכה " : "נדחתה ";
+                    notification.part_one = "" +
+                  "הצעה לשינוי בדיון "
+                    +
+                        notification.name +
+                    " " +
+                        is_agree +
+                        "על ידי ";
+                    if(user_obj){
+                        notification.part_tow = user_obj.first_name + " " + user_obj.last_name;
+                        notification.extra_link = "/myuru/" + user_obj._id;
+                    }
+
+                    notification.part_three =
+           ", המייצג/ת אותך בעורו";
+
                     itr_cbk();
                     break;
                 default:
@@ -461,7 +522,9 @@ var populateNotifications = module.exports.populateNotifications = function(resu
         "approved_change_suggestion_you_graded",
         "been_quoted",
         "a_dicussion_created_with_info_item_that_you_like",
-        "a_dicussion_created_with_info_item_that_you_created"
+        "a_dicussion_created_with_info_item_that_you_created",
+        "proxy_created_new_discussion",
+        "proxy_graded_change_suggestion"
     ];
 
     var discussion_ids = _.chain(results.objects)
