@@ -72,7 +72,9 @@ var User = module.exports = new Schema({
     number_of_days_of_spending_all_tokens: {type: Number, 'default' : 0, editable: false},
     blog_popularity_counter: {type: Number, 'default': 0, editable: false},
     avatar : mongoose_types.File,
-    minisite_code : String
+    minisite_code : String,
+    blog_title: String,
+    blog_sub_titile: String
 }, {strict:true});
 
 User.methods.toString = function()

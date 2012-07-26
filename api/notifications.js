@@ -84,7 +84,7 @@ exports.create_user_proxy_vote_or_grade_notification = function(notification_typ
 
         function(cbk){
             notification_type = notification_type + "";
-
+            console.log("pre_check");
             models.Notification.findOne({type: notification_type, "notificators.sub_entity_id": sub_entity, user_id: user_id, seen: false}, cbk);
         },
 
@@ -97,6 +97,7 @@ exports.create_user_proxy_vote_or_grade_notification = function(notification_typ
                 })
             }
             else{
+                console.log("check1");
                 var notification = new models.Notification();
                 var notificator = {
                     notificator_id: notificatior_id,

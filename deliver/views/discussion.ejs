@@ -777,6 +777,7 @@ $(document).ready(function () {
          var post_id = $(this).parents('.comment-one').data("id");
          var button = $(this);
          var func = $(this).parents('#comments').length ? db_functions.voteForPost : db_functions.voteForSuggestion;
+
          func.call(db_functions, post_id, "add", function (err, post_obj) {
              if (!err) {
 
