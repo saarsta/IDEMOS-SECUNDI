@@ -52,6 +52,18 @@ var NotificationCategoryResource = module.exports = resources.MongooseResource.e
             if (user_id)
                 filters['user_id'] = user_id;
 
+            // save user last visit to now
+            if(req.user) {
+                req.user.last_visit = Date.now();
+                req.user.save(function(err) {
+                    if(err) {
+                        console.error('saving user last_visit failed',err);
+                    }
+                    else
+                        console.log('saved last visit for ' + req.user + ' ' + req.user.last_visit);
+                });
+            }
+
 
             this._super(req, filters, sorts, limit, offset, function (err, results) {
 

@@ -31,6 +31,7 @@ var User = module.exports = new Schema({
     email:{type:String, required:true},//, match:/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/},
     gender:{type:String, "enum":['male', 'female']},
     age:{type:Number, min:0},
+    last_visit:{type:Date,'default':Date.now},
     address: String,
     occupation: String,
     biography: String,
