@@ -41,27 +41,28 @@ exports.create_user_notification = function(notification_type, entity_id, user_i
             function(noti, cbk){
                 if(noti){
                     var date = Date.now();
+                    var last_update_date = noti.update_date;
 //                    it doesnt work !!!
 //                    models.Notification.update({id: noti._id}, {$addToSet: {notificators: notificatior_id}, $set:{update_date: Date.now()}}, function(err, num){
 //                        cbk(err, num);
 //                    });
 
                    if(_.any(noti.notificators,  function(notificator){return notificator.notificator_id + "" == notificatior_id + ""})) {
-                     cbk(null, 0);
+                       noti.update_date = date;
+                       noti.save();
+                       cbk(null, 0);
                    }else{
                        var new_notificator = {
                            notificator_id: notificatior_id,
                            sub_entity_id: sub_entity
                        }
                        noti.notificators.push(new_notificator);
-                       var last_update_date = noti.update_date;
                        noti.update_date = date;
                        noti.save(function(err, obj){
                            cbk(err, obj);
-                           if(!err && obj)
-                              sendNotificationToUser(obj,last_update_date);
                        });
                    }
+                   sendNotificationToUser(noti,last_update_date);
                 }else{
                     create_new_notification(notification_type, entity_id, user_id, notificatior_id, sub_entity, function(err, obj){
                         cbk(err, obj);
@@ -94,10 +95,13 @@ exports.create_user_proxy_vote_or_grade_notification = function(notification_typ
         function(noti, cbk){
             if(noti){
                 console.log("check");
+                var last_update_date = noti.update_date;
+                noti.update_date = Date.now();
                 noti.notificators[0].ballance = is_agree ? 1 : -1;
                 noti.save(function(err, obj){
                     cbk(err, obj);
-                })
+                    sendNotificationToUser(noti,last_update_date);
+                });
             }
             else{
                 console.log("check1");
@@ -117,6 +121,8 @@ exports.create_user_proxy_vote_or_grade_notification = function(notification_typ
 
                 notification.save(function(err, obj){
                     cbk(err, obj);
+                    if(!err && obj)
+                        sendNotificationToUser(obj);
                 });
 
             }

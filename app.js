@@ -36,6 +36,7 @@ app.configure('development', function(){
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
     require('./tools/compile_templates');
     require('./deliver/tools/compile_dust_templates');
+
 });
 
 
