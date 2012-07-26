@@ -36,14 +36,16 @@ var mongoose_resource = require('jest'),
     UserProxyResource = require('./UserProxyResource'),
     ItemsCountByTagNameResource = require('./ItemsCountByTagNameResource'),
     FBRequestResource = require('./FBRequestResource'),
-    ImageUploadResource = require('./ImageUploadResource');
-    AboutUruTextResource = require('./AboutUruTextResource');
-    AboutUruItemResource = require('./AboutUruItemResource');
-    TeamResource = require('./TeamResource');
-    QaResource = require('./QaResource');
-    LoginResource = require('./LoginResource');
-    FbConnectResource = require('./FbConnectResource');
+    ImageUploadResource = require('./ImageUploadResource'),
+    AboutUruTextResource = require('./AboutUruTextResource'),
+    AboutUruItemResource = require('./AboutUruItemResource'),
+    TeamResource = require('./TeamResource'),
+    QaResource = require('./QaResource'),
+    LoginResource = require('./LoginResource'),
+    FbConnectResource = require('./FbConnectResource'),
+    AvatarResource = require('./avatar_resource'),
     OGActionResource = require('./og_action_resource');
+
 
 
 module.exports = function(app)
@@ -93,4 +95,6 @@ module.exports = function(app)
     rest_api.register_resource('fb_request', new FBRequestResource());
     rest_api.register('image_upload',new ImageUploadResource());
     rest_api.register('og_action', new OGActionResource());
+
+    rest_api.register('avatar',new AvatarResource());
 };

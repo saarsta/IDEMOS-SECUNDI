@@ -194,7 +194,7 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
 
             // 3) send notifications
             function (object,cbk) {
-//                discussion_id = object.discussion_id;
+
                 console.log('debugging waterfall 3');
                 //if post created successfuly, add user to discussion
                 // + add discussion to user
@@ -214,7 +214,7 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                     function(cbk2){
                         console.log('debugging waterfall 3 2');
 
-                        models.Discussion.findById(object.discussion_id, /*["users", "creator_id"],*/ function(err, disc_obj){
+                        models.Discussion.findById(object.discussion_id, function(err, disc_obj){
                              if (err)
                                 cbk2(err, null);
                              else{
@@ -270,6 +270,7 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                     object_name:'discussion',
                     object_url : '/discussions/' + discussion_id + '#post_' + post_id,
                     fid : user.facebook_id,
+                    access_token:user.access_token,
                     user:user
                 });
                 cbk();

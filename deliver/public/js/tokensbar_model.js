@@ -18,6 +18,7 @@ var TokensBarModel =function (tokenPixels, numExtraTokens, tokens, proxies) {
             var i=0;
             var proc;
             for (i=0; i< proxies.length;i++){
+
                 proc= proxies[i];
                 if(proc.details){
                     proxy.proxies.push(  {
@@ -34,7 +35,7 @@ var TokensBarModel =function (tokenPixels, numExtraTokens, tokens, proxies) {
                     proxy.proxies.push(  {
                         name:proc.user_id.first_name+' '+ proc.user_id.last_name,
                         proxy:proc.number_of_tokens,
-                        _id: proc._id ,
+                        _id:proc. user_id._id ,
                         //  avatar:proc.details.avatar,
                         avatar: proc.user_id.avatar,
                         score:proc.user_id.score,

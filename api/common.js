@@ -11,7 +11,19 @@ var util = require('util');
 var jest = require('jest'),
     cron = require('../cron').cron,
     models = require('../models'),
+    fs = require('fs'),
+    path = require('path'),
     async = require('async');
+
+var knox;
+try
+{
+    knox = require('knox');
+}
+catch(e)
+{
+}
+
 
 var ACTION_PRICE = 2;
 
@@ -25,41 +37,40 @@ var user_public_fields = exports.user_public_fields = {
     num_of_proxies_i_represent: null
 };
 
-var SessionAuthentication = exports.SessionAuthentication = function () { };
-util.inherits(SessionAuthentication,jest.Authentication);
+var SessionAuthentication = exports.SessionAuthentication = jest.Authentication.extend({
+    is_authenticated : function(req, callback){
 
-SessionAuthentication.prototype.is_authenticated = function(req, callback){
-
-    var is_auth = req.isAuthenticated();
-    if(is_auth)
-    {
-        var user_id = req.session.user_id;
-        if(!user_id){
-            callback({message: "no user id"}, null);
-        }else{
-            models.User.findById(user_id, function(err,user)
-            {
-                if(err)
+        var is_auth = req.isAuthenticated();
+        if(is_auth)
+        {
+            var user_id = req.session.user_id;
+            if(!user_id){
+                callback({message: "no user id"}, null);
+            }else{
+                models.User.findById(user_id, function(err,user)
                 {
-                    callback(err);
-                }
-                else
-                {
-                    req.user = user;
-                    callback(null, true);
-                }
-            });
+                    if(err)
+                    {
+                        callback(err);
+                    }
+                    else
+                    {
+                        req.user = user;
+                        callback(null, true);
+                    }
+                });
+            }
         }
-    }
-    else
-    {
-        if(req.method != 'GET')
-            callback(null,false);
         else
-            callback(null,true);
-    }
+        {
+            if(req.method != 'GET')
+                callback(null,false);
+            else
+                callback(null,true);
+        }
 
-};
+    }
+});
 
 var TokenAuthorization = exports.TokenAuthorization = jest.Authorization.extend({
     init:function(token_price)
@@ -281,4 +292,79 @@ models.ThresholdCalcVariables.schema.pre('save',function(next)
 exports.getThresholdCalcVariables = function(type)
 {
     return threshold_calc_variables[type] || 0;
+};
+
+var create_filename = function(filename)
+{
+    var parts = filename.split('.');
+    var filename = parts.length > 1 ? parts.slice(0,parts.length-1).join('.') : parts[0];
+    filename = filename.replace(/\s\-/g,'_');
+    var ext = parts.length > 1 ? '.' + parts[parts.length-1] : '';
+    ext = ext.replace(/\s\-/g,'_');
+    return '/' + filename + '_' + (Date.now()%1000) + ext;
+};
+
+var uploadHandler = exports.uploadHandler = function(req,callback) {
+    var knoxClient = require('j-forms').fields.getKnoxClient();
+
+    var fName = req.header('x-file-name');
+    var fType = req.header('x-file-type');
+
+    if(!fName && !fType){
+        callback({code:404,message:'bad file upload'});
+        return;
+    }
+
+    var filename = create_filename(fName);
+
+    function writeToFile(callback){
+        var os = fs.createWriteStream(path.join(__dirname,'..','deliver','public','cdn') + filename);
+
+        stream.on('data',function(data) {
+            os.write(data);
+        });
+
+        stream.on('end',function() {
+            os.end();
+            var value = {path:filename,url:'/cdn/' + filename};
+            callback(null,value);
+        });
+
+        stream.resume();
+    }
+
+    var stream = req.queueStream || req;
+
+    if(knox&&knoxClient)
+    {
+
+        writeToFile(function(err,value) {
+
+            if(err) {
+                callback(err);
+                return;
+            }
+
+            setTimeout(function() {
+
+                var file = path.join(__dirname,'..','deliver','public','cdn',value.path);
+                stream = fs.createReadStream(file);
+
+                knoxClient.putStream(stream, '/' + filename, function(err, res){
+                    if(err)
+                        callback(err);
+                    else {
+                        fs.unlink(file);
+                        var value = {
+                            path:res.socket._httpMessage.url,
+                            url:res.socket._httpMessage.url
+                        };
+                        callback(null,value);
+                    }
+                });
+            },200);
+        });
+    }
+    else
+        writeToFile(callback);
 };
