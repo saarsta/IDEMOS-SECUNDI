@@ -90,7 +90,7 @@
                         תן מנדט
                     </a>
                     <a href="#" id="folowBT" class="follow_user">
-                     <%if( pageUser.is_follower_of_user){ %>
+                     <%if( !pageUser.is_follower_of_user){ %>
                         עקוב
                         <%}else {%>
 הפסק לעקוב
@@ -309,11 +309,10 @@
 
 
         $('#folowBT').click(function (e) {
-          //  var creator_id = $(this).parents('.comment-one,.one').data("creator_id");
-
+            e.preventDefault();
             var self = this;
             db_functions.joinOrLeaveUserFollowers(userId, function (err, user) {
-                if (user.is_follower)
+                if (!user.is_follower)
                     $(self).text("עקוב");
                 else
                     $(self).text("הפסק לעקוב");
@@ -334,7 +333,7 @@
             }
 
             proxyCommon.addOrRemoveProxy(proxy,proxyId,userName,currentUserId,function(newProxy){
-                proxy=newProxy;
+                proxy=newProxy.proxy;
 
             })
 
@@ -398,7 +397,7 @@
 
 
                             newProxy.calc_num_of_mandates= proxy.calc_num_of_mandates //take from server
-                            proxy=newProxy;
+                            proxy=newProxy.proxy;
                             proxy.calc_num_of_mandates
                             redrowToolBar(num_of_extra_tokens,tokens);
 

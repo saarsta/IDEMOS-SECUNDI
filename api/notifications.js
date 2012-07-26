@@ -14,7 +14,6 @@ var models = require('../models'),
     _ = require('underscore');
 
 
-
 exports.create_user_notification = function(notification_type, entity_id, user_id, notificatior_id, sub_entity, callback){
 
     var single_notification_arr = [
@@ -55,10 +54,13 @@ exports.create_user_notification = function(notification_type, entity_id, user_i
                            sub_entity_id: sub_entity
                        }
                        noti.notificators.push(new_notificator);
+                       var last_update_date = noti.update_date;
                        noti.update_date = date;
                        noti.save(function(err, obj){
                            cbk(err, obj);
-                       })
+                           if(!err && obj)
+                              sendNotificationToUser(obj,last_update_date);
+                       });
                    }
                 }else{
                     create_new_notification(notification_type, entity_id, user_id, notificatior_id, sub_entity, function(err, obj){
@@ -70,11 +72,59 @@ exports.create_user_notification = function(notification_type, entity_id, user_i
             callback(err, obj);
         })
     }else{
+
         create_new_notification(notification_type, entity_id, user_id, notificatior_id, sub_entity, function(err, obj){
             callback(err, obj);
         });
+
+
     }
-}
+};
+
+exports.create_user_proxy_vote_or_grade_notification = function(notification_type, entity_id, user_id, notificatior_id, sub_entity, is_agree, callback){
+
+    async.waterfall([
+
+        function(cbk){
+            notification_type = notification_type + "";
+            console.log("pre_check");
+            models.Notification.findOne({type: notification_type, "notificators.sub_entity_id": sub_entity, user_id: user_id, seen: false}, cbk);
+        },
+
+        function(noti, cbk){
+            if(noti){
+                console.log("check");
+                noti.notificators[0].ballance = is_agree ? 1 : -1;
+                noti.save(function(err, obj){
+                    cbk(err, obj);
+                })
+            }
+            else{
+                console.log("check1");
+                var notification = new models.Notification();
+                var notificator = {
+                    notificator_id: notificatior_id,
+                    sub_entity_id: sub_entity,
+                    ballance: is_agree ? 1 : -1
+                }
+
+                notification.user_id = user_id;
+                notification.notificators = notificator;
+                notification.type = notification_type;
+                notification.entity_id = entity_id;
+                notification.seen = false;
+                notification.update_date = new Date();
+
+                notification.save(function(err, obj){
+                    cbk(err, obj);
+                });
+
+            }
+        }
+    ], function(err, obj){
+        callback(err, obj);
+    })
+};
 
 var create_new_notification = function(notification_type, entity_id, user_id, notificatior_id, sub_entity_id, callback){
 
@@ -100,16 +150,19 @@ var create_new_notification = function(notification_type, entity_id, user_id, no
 
 /***
  * Send notification to user through mail or other external API
+ * Checks if user should receive notification according to settings
  * @param notification
  * Notification object
+ * @param last_update_date
+ * notification last update date, or null if the notification is new
  * @param callback
  * function(err)
  */
-var sendNotificationToUser = function(notification,callback) {
+var sendNotificationToUser = function(notification,last_update_date) {
     /**
      * Waterfall:
      * 1) Get user email
-     * 2) populate references by notification type
+     * 2) Checks if user should be notified, populate references by notification type
      * 3) create text message
      * 4) send message
      */
@@ -117,10 +170,21 @@ var sendNotificationToUser = function(notification,callback) {
     async.waterfall([
         // 1) Get user email
         function(cbk) {
-            models.User.findById(notification.user_id,['email'],cbk);
+            models.User.findById(notification.user_id._doc ? notification.user_id.id : notification.user_id,cbk);
         },
         // 2) populate references by notification type
         function(user, cbk) {
+            if(!user){
+                cbk("user not found");
+		return;
+            }
+            // if the user hasn't visited since the last notification was sent, dont send another one, cut's the waterfall
+            if(last_update_date && user.last_visit < last_update_date) {
+                console.log('user should not receive notification because he or she have not visited since');
+                cbk('break');
+                return;
+            }
+            // TODO check in account settings if sending mails is allowed
             email = user.email;
             notificationResource.populateNotifications({objects:[notification]},cbk);
         },
@@ -134,15 +198,19 @@ var sendNotificationToUser = function(notification,callback) {
         function(message,cbk) {
             mail.sendMailFromTemplate(email,message,cbk);
         }
-    ],function(err) {
-        if(err) {
-            console.error('failed sending notification to user');
-            console.error(err);
-            console.trace();
-        }
-        else
-            console.log('email ' + notification.type + ' sent to ' + email);
-    });
+    ],
+        // Final)
+        function(err) {
+            if(err) {
+                if(err != 'break') {
+                    console.error('failed sending notification to user');
+                    console.error(err);
+                    console.trace();
+                }
+            }
+            else
+                console.log('email ' + notification.type + ' sent to ' + email);
+        });
 };
 
 exports.create_user_vote_or_grade_notification = function(notification_type, entity_id, user_id, notificatior_id,
@@ -159,7 +227,7 @@ exports.create_user_vote_or_grade_notification = function(notification_type, ent
 
                 //this tow lines tries to prevant a bug that i dont understand
                 if(!noti.user_id){
-                    console.log("user id wasnt in noti in create_user_vote_or_grade_notification!")
+                    console.log("user id wasnt in noti in create_user_vote_or_grade_notification!");
                     noti.user_id = user_id;
                 }
                 var date = Date.now();
@@ -193,9 +261,12 @@ exports.create_user_vote_or_grade_notification = function(notification_type, ent
 
                     noti.notificators.push(new_notificator);
                 }
+                var last_update_date = noti.update_date;
                 noti.update_date = date;
                 noti.save(function(err, obj){
                         cbk(err, obj);
+                    if(!err && obj)
+                        sendNotificationToUser(obj,last_update_date);
                 })
             }else{
                 var notification = new models.Notification();
@@ -243,10 +314,31 @@ function isSubEntityExist(notification, sub_entity){
 if(/notifications\.js/.test(process.argv[1])) {
     var app = require('../app');
 
+    console.log('testing');
+
     setTimeout(function() {
         create_new_notification('comment_on_discussion_you_are_part_of',
             '4fc5e851ed6e970100000311','4f7c53e9afe34d0100000006','4f45145968766b0100000002','4ffecd7c5600ec0100001757',function(err) {
                 console.log(err);
             });
+
+        models.Notification.find({})
+            .sort('update_date',-1)
+            .populate('user_id')
+            .limit(1)
+            .exec(function(err,nots) {
+                if(!nots[0].user_id.last_visit) {
+                    nots[0].user_id.last_visit = Date.now();
+                    nots[0].user_id.save();
+                }
+
+                var first_update_date = new Date(Number(nots[0].user_id.last_visit || Date.now()) - 60000);
+                var second_update_date = new Date(Number(first_update_date) + 1600000);
+
+                sendNotificationToUser(nots[0],first_update_date);
+
+                sendNotificationToUser(nots[0],second_update_date);
+            });
+
     },1000);
 }
