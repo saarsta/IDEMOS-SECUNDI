@@ -64,6 +64,10 @@ var TokensBarModel =function (tokenPixels, numExtraTokens, tokens, proxies) {
 
     self.TokensSum=self.tokensIUsed+ self.floorTokens+ self.totalProxy;//all tokens
 
+    self.haveProxy=self.totalProxy !=0;
+    self.haveTokensIUsed=self.tokensIUsed!=0;
+    self.haveFloorTokens= self.floorTokens>=0;
+
 
     self.convertToPixels = function (num) {
             return (num * tokenPixels) + 'px';

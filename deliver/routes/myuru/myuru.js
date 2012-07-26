@@ -5,9 +5,11 @@ var TokensBarModel= require('./tokensBarModel');
 module.exports = function (req, res) {
 
     var isHisuru=req.params[0]? true: false;
-    var pageUserID = isHisuru? req.params[0]: req.session.user._id;
     var sessionUser = req.session.user;
+    var pageUserID = isHisuru? req.params[0]:sessionUser._id;
+
     var curr_user_db;
+
 
     if(isHisuru &&  pageUserID === req.session.user._id){
         isHisuru=false;
@@ -46,38 +48,37 @@ module.exports = function (req, res) {
                 //1.2
                 function(cbk1){
                     //get details of the current user that watch "his uru"
-                    if(sessionUser && pageUserID != sessionUser._id){
+                   /* if(sessionUser && pageUserID != sessionUser._id){*/
                         models.User.findById(sessionUser._id).select(["tokens", "num_of_extra_tokens", "proxy", "biography","first_name","last_name","facebook_id", "avatar","score", "followers"])
                             .populate("proxy.user_id",['id','_id','first_name','last_name','avatar','facebook_id','num_of_given_mandates'])
 
                             .exec(function(err, user){
                                 cbk1(err, user);
                             });
-                    }else{
+                   /* }else{
                         cbk1(null, null);
-                    }
+                    }*/
                 }
 
             ], function(err, args){
                 //1.3
-                var my_or_his_uru_user = args[0];
+                var session_user =args[0];
+                //put proxy populated details in proxy.details, so avner wont fill the change
+                _.each(session_user.proxy, function(proxy){proxy.details = proxy.user_id});
+             //   curr_user_db = args[1];
+                 curr_user_db = args[1]| args[0];
 
                 //put proxy populated details in proxy.details, so avner wont fill the change
-                _.each(my_or_his_uru_user.proxy, function(proxy){proxy.details = proxy.user_id});
-                curr_user_db = args[1];
+                _.each(curr_user_db.proxy, function(proxy){proxy.details = proxy.user_id});
+                //find if the user is a follower of the "his uru" user
+                curr_user_db.is_follower_of_user = false;
+                if(_.any(curr_user_db.followers, function(follower){ return follower.follower_id + "" == pageUserID  + ""})){
+                    curr_user_db.is_follower_of_user = true;
+                 }
 
-                if(curr_user_db){
-                    //put proxy populated details in proxy.details, so avner wont fill the change
-                    _.each(curr_user_db.proxy, function(proxy){proxy.details = proxy.user_id});
-                    //find if the user is a follower of the "his uru" user
-                    curr_user_db.is_follower_of_user = false;
-                    if(_.any(curr_user_db.followers, function(follower){ return follower.follower_id + "" == pageUserID + ""})){
-                        curr_user_db.is_follower_of_user = true;
-                     }
-                    }
-                cbk(err, my_or_his_uru_user);
+                cbk(err, session_user);
             })
-        }
+        } 
 
     ], function (err, user_obj) {
         //2
@@ -85,19 +86,23 @@ module.exports = function (req, res) {
             console.error("data curruption with user proxies");
         var proxy =  user_obj.proxy || [];
 
+
         var num_of_extra_tokens = user_obj.num_of_extra_tokens;
         var tokens =  user_obj.tokens;
 
         var tokensBarModel = new TokensBarModel(9, num_of_extra_tokens, tokens, proxy);
-        var proxyToSerializ=proxyJson=isHisuru? sessionUser.proxy:  proxy;
-        for(var i=0 ;i<proxyToSerializ.length;i++){
-           if( proxyToSerializ[i].user_id && !isHisuru){
-            proxyToSerializ[i].user_id.avatar=   proxyToSerializ[i].user_id.avatar_url();
-           }
+        var proxyToSerializ=isHisuru? sessionUser.proxy : proxy;
+        if(!isHisuru){
+            for(var i=0 ;i<proxyToSerializ.length;i++){
+               if( proxyToSerializ[i].user_id ){
+                proxyToSerializ[i].user_id.avatar=   proxyToSerializ[i].user_id.avatar_url();
+               }
+            }
+
         }
         var proxyJson= JSON.stringify(proxyToSerializ);
 
-      var av=user_obj.avatar_url();
+
 
         res.render('my_uru.ejs',
             {

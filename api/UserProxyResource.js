@@ -168,10 +168,11 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
 
             base.call(self, req, object, function(err, user_obj){
                 //i can't populate proxy if he was just created, thats ia why i have created ugly_proxy
-                user_obj.ugly_proxy = null;
-                if(user_obj)
-                     _.each(user_obj.proxy, function(proxy){proxy.calc_num_of_mandates = proxy.number_of_tokens - proxy.number_of_tokens_to_get_back;})
 
+                if(user_obj){
+                    user_obj.ugly_proxy = null;
+                     _.each(user_obj.proxy, function(proxy){proxy.calc_num_of_mandates = proxy.number_of_tokens - proxy.number_of_tokens_to_get_back;})
+                }
                     if(!err && number_of_tokens > 0){
                     //update proxy-user new tokens
                     var inc = is_new_proxy ? 1 : 0;

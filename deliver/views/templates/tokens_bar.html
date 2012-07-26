@@ -6,21 +6,21 @@
 
        <div class="empty" style="height:{gupFromFullPixels}"></div>
 
-    {#tokensIUsed}
+    {?haveTokensIUsed}
         <div class="grey" style="height:{dailyTokensPixels}">
           <div class="info">מכסת אסימונים:{TokensSum} </div>
         </div>
-       {/tokensIUsed}
+     {/haveTokensIUsed}
 
 
-    
-     {#floorTokens}
+   {?haveFloorTokens}
 	 <div class="green" style="height:{tokensPixels}">
            <div class="info">
 		   אסימונים זמינים:{floorTokens}
 		   </div>
        </div>
-	   {/floorTokens}
+	{/haveFloorTokens}
+ {?haveProxy}
      <div class="proxy-woper">
        <div class="info" style="overflow: hidden">
            מוקצים לנציגים:{totalProxy}
@@ -31,60 +31,6 @@
         {>user_proxy_item/}
 	 {/.proxy.proxies}
      </div>
-       <!--
-<%  var userProxy;
-for(var j=0 ;j<tokensBarModel.proxy.proxies.length;j++){
-userProxy=tokensBarModel.proxy.proxies[j]; %>
+ {/haveProxy}
 
-<div class="blue"  data-userid="<%=userProxy._id%>" style="height:<%=tokensBarModel.convertToPixels(userProxy.proxy)%>">
-<%if(j===0){%>
-<div class="info" style="overflow: hidden">
-   :מוקצים לנציגים
-   <%=tokensBarModel.totalProxy%>
-</div>
-<%}%>
-
-</div>
-
-
-<div id="token-popup<%=userProxy._id %>"   class="token-popup tooltip"
-data-userid="<%=userProxy._id %>"   data-firstname="<%=userProxy.first_name%>"  >
-
-<div class="user-right">
-   <a href="/myuru/<%=userProxy._id %>">
-       <div class="img-box">
-           <div class="auto-scale"  style="width: 41px;height: 44px">
-               <img src="<%=userProxy.avatar%>" alt="" />
-           </div>
-           <img class="wraper" src="/images/user-fillter-small-white.png" width="41" alt="" />
-       </div>
-   </a>
-</div>
-<div class="user-left" >
-   <p>
-       &lt;!&ndash;  <div class="proxy given-mandat-from-me" >
-                        <span dir="ltr"><%=userProxy.proxy%></span>
-                    </div>&ndash;&gt;
-                <div >
-                    <%=userProxy.name %>
-                </div>
-
-                </p>
-                <div  class="right1" style="float: right;">
-                    <div class="proxy">
-                        <span dir="ltr"><%=userProxy.proxy%></span>
-                    </div>
-                    <div class="respect">
-                        <span dir="ltr"><%=userProxy.score?userProxy.score: 0%></span>
-                    </div>
-                </div>
-                <div  class="hisuru-popup left1">
-                    <a  href="javascript:void(0);"  class="giveProxy">
-                        תן מנדט
-                    </a>
-                </div>
-            </div>
-        </div>
-        <%}%>
-    </div>-->
 </div>
