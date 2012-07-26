@@ -20,13 +20,18 @@
 		   אסימונים זמינים:{floorTokens}
 		   </div>
        </div>
-	   {/floorTokens} 
-  
+	   {/floorTokens}
+     <div class="proxy-woper">
+       <div class="info" style="overflow: hidden">
+           מוקצים לנציגים:{totalProxy}
+
+       </div>
      {#.proxy.proxies}
 
         {>user_proxy_item/}
 	 {/.proxy.proxies}
-  <!--
+     </div>
+       <!--
 <%  var userProxy;
 for(var j=0 ;j<tokensBarModel.proxy.proxies.length;j++){
 userProxy=tokensBarModel.proxy.proxies[j]; %>
