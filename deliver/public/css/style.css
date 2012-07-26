@@ -4558,6 +4558,11 @@ body.search-ative #header
     font: normal 12px/14px "AdumaFOTRegular";
 }
 
+.myuru-top .left .token-bar .proxy-woper
+{
+    position: relative;
+}
+
 /*****************************************************************************************************************************/
 
 .myuru-top .left .token-bar .token-popup
@@ -4700,7 +4705,7 @@ body.search-ative #header
 {
     background: url(../images/token-info-geen.png) 100% 50% no-repeat;
 }
-.myuru-top .left .token-bar .bars .blue .info
+.myuru-top .left .token-bar .bars .proxy-woper .info
 {
     background: url(../images/token-info-blue.png) 100% 50% no-repeat;
 }

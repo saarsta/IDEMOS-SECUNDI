@@ -1,0 +1,36 @@
+<div class="token-bar">
+    <span class="top-number">15</span>
+    <span class="bottom-number">0</span>
+   <div class="bars">
+        <div class="border"></div>
+
+       <div class="empty" style="height:{gupFromFullPixels}"></div>
+
+    {?haveTokensIUsed}
+        <div class="grey" style="height:{dailyTokensPixels}">
+          <div class="info">מכסת אסימונים:{TokensSum} </div>
+        </div>
+     {/haveTokensIUsed}
+
+
+   {?haveFloorTokens}
+	 <div class="green" style="height:{tokensPixels}">
+           <div class="info">
+		   אסימונים זמינים:{floorTokens}
+		   </div>
+       </div>
+	{/haveFloorTokens}
+ {?haveProxy}
+     <div class="proxy-woper">
+       <div class="info" style="overflow: hidden">
+           מוקצים לנציגים:{totalProxy}
+
+       </div>
+     {#.proxy.proxies}
+
+        {>user_proxy_item/}
+	 {/.proxy.proxies}
+     </div>
+ {/haveProxy}
+
+</div>

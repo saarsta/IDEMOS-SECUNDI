@@ -71,81 +71,8 @@
 			</h2>
 
 		
-        <div class="white-box">
-            <div class="token-bar">
-                <span class="top-number">15</span>
-                <span class="bottom-number">0</span>
+        <div class="white-box" id="tokensbar_wopper">
 
-                <div class="bars">
-                    <div class="border"></div>
-
-                    <div class="empty" style="height:<%=tokensBarModel.gupFromFullPixels()%>"></div>
-                  <% if (tokensBarModel.tokensIUsed!==0){ %>
-                        <div class="grey" style="height:<%=tokensBarModel.dailyTokensPixels()%>">
-                            <div class="info">מכסת אסימונים:<%=tokensBarModel.TokensSum %> </div>
-                        </div>
-                    <% } %>
-                    <% if (tokensBarModel.floorTokens!==0){ %>
-                    <div class="green" style="height:<%=tokensBarModel.tokensPixels()%>">
-                        <div class="info">אסימונים זמינים: <%=tokensBarModel.floorTokens %></div>
-                    </div>
-                    <% } %>
-                    <%  var userProxy; 
-						for(var j=0 ;j<tokensBarModel.proxy.proxies.length;j++){
-						userProxy=tokensBarModel.proxy.proxies[j]; %>
-
-                        <div class="blue"  data-userid="<%=userProxy._id%>" style="height:<%=tokensBarModel.convertToPixels(userProxy.proxy)%>">
-							<%if(j===0){%>
-                                <div class="info" style="overflow: hidden">
-                                    :מוקצים לנציגים
-                                    <%=tokensBarModel.totalProxy%>
-								</div>
-                            <%}%>
-
-							</div>
-
-
-                            <div id="token-popup<%=userProxy._id %>"   class="token-popup tooltip"
-                                 data-userid="<%=userProxy._id %>"   data-firstname="<%=userProxy.first_name%>"  >
-
-                                <div class="user-right">
-                                   <a href="/myuru/<%=userProxy._id %>">
-                                        <div class="img-box">
-                                            <div class="auto-scale"  style="width: 41px;height: 44px">
-                                                <img src="<%=userProxy.avatar%>" alt="" />
-                                            </div>
-                                            <img class="wraper" src="/images/user-fillter-small-white.png" width="41" alt="" />
-                                        </div>
-                                   </a>
-                                </div>
-                                <div class="user-left" >
-                                    <p>
-                                      <!--  <div class="proxy given-mandat-from-me" >
-                                            <span dir="ltr"><%=userProxy.proxy%></span>
-                                        </div>-->
-                                       <div >
-                                        <%=userProxy.name %>
-                                           </div>
-
-                                    </p>
-                                    <div  class="right1" style="float: right;">
-                                        <div class="proxy">
-                                            <span dir="ltr"><%=userProxy.proxy%></span>
-                                        </div>
-                                        <div class="respect">
-                                            <span dir="ltr"><%=userProxy.score?userProxy.score: 0%></span>
-                                        </div>
-                                    </div>
-                                    <div  class="hisuru-popup left1">
-                                        <a  href="javascript:void(0);"  class="giveProxy">
-                                            תן מנדט
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                    <%}%>
-                </div>
-            </div>
         </div>
 
         <%}else {  %>
@@ -163,7 +90,7 @@
                         תן מנדט
                     </a>
                     <a href="#" id="folowBT" class="follow_user">
-                     <%if( pageUser.is_follower_of_user){ %>
+                     <%if( !pageUser.is_follower_of_user){ %>
                         עקוב
                         <%}else {%>
 הפסק לעקוב
@@ -253,7 +180,7 @@
         var userId='<%=pageUser._id %>';
         var currentUserId='<%=user._id %>';
         var proxy = JSON.parse('<%-proxy%>');
-       // var proxy = <%- proxy %>;
+       var isHisUru=<%=isHisUru%>;
 
         function tabSelected(event, ui){
            function convertToTabModel(data,type){
@@ -379,19 +306,13 @@
 
 
 
-        $(".blue").tooltip({
-                            relative:true,
-                            opacity:1,
-                              position: "center left",
-                            offset:[0,10]
-                });
+
 
         $('#folowBT').click(function (e) {
-          //  var creator_id = $(this).parents('.comment-one,.one').data("creator_id");
-
+            e.preventDefault();
             var self = this;
             db_functions.joinOrLeaveUserFollowers(userId, function (err, user) {
-                if (user.is_follower)
+                if (!user.is_follower)
                     $(self).text("עקוב");
                 else
                     $(self).text("הפסק לעקוב");
@@ -412,12 +333,13 @@
             }
 
             proxyCommon.addOrRemoveProxy(proxy,proxyId,userName,currentUserId,function(newProxy){
-                proxy=newProxy;
+                proxy=newProxy.proxy;
 
             })
 
 
          });
+
 
 
         var uploader = new qq.FileUploader({
@@ -433,7 +355,7 @@
                     '<div class="qq-upload-drop-area"><span>Drop files here to upload</span></div>' +
                     '<div class="qq-upload-button"></div>' +
                     '<ul class="qq-upload-list"></ul>' +
-                    '</div></span>',
+                    '</div></span>'
 
             // template for one item in file list
 //            fileTemplate: '<li>' +
@@ -445,25 +367,68 @@
 //                    '</li>'
 
         });
-        $('.giveProxy').click(function (e) {
-
-           var popup=$(this).parents('.token-popup');
-            var proxyId = popup.data('userid');
-            var userName  = popup.data('firstname');
-            e.preventDefault();
-          /*  if(currentUserId===userId){ //cant give proxy to myself
-                return ;
-            }*/
-
-            proxyCommon.addOrRemoveProxy(proxy,proxyId,userName,currentUserId,function(newProxy){
-                proxy=newProxy;
-
-            })
 
 
-        });
+        function  redrowToolBar(num_of_extra_tokens,tokens){
 
 
-    });
+            var tokensBarModel = new TokensBarModel(9, num_of_extra_tokens, tokens, proxy);
+            dust.render('tokens_bar',tokensBarModel,function(err,out)
+            {
+                if(err){
+
+                    console.error(err);
+                }else{
+                    var tokensBar= $('#tokensbar_wopper');
+                    tokensBar.empty();
+                    tokensBar.append(out);
+
+                    $('.giveProxy').click(function (e) {
+
+                        var popup=$(this).parents('.token-popup');
+                        var proxyId = popup.data('userid');
+                        var userName  = popup.data('firstname');
+                        e.preventDefault();
+                        /*  if(currentUserId===userId){ //cant give proxy to myself
+                         return ;
+                         }*/
+
+                        proxyCommon.addOrRemoveProxy(proxy,proxyId,userName,currentUserId,function(newProxy){
+
+
+                            newProxy.calc_num_of_mandates= proxy.calc_num_of_mandates //take from server
+                            proxy=newProxy.proxy;
+                            proxy.calc_num_of_mandates
+                            redrowToolBar(num_of_extra_tokens,tokens);
+
+
+                        })
+
+
+                    });
+
+                    $(".blue").tooltip({
+                        relative:true,
+                        opacity:1,
+                        position: "center left",
+                        offset:[0,10]
+                    });
+                }
+            });
+
+        }
+        if(!isHisUru){
+            //need them on the proxy
+            var num_of_extra_tokens =<%= pageUser.num_of_extra_tokens %>;
+            var tokens = <%= pageUser.tokens %>;
+            redrowToolBar(num_of_extra_tokens,tokens);
+
+
+    }
+});
+
+
+
+
 </script>
 

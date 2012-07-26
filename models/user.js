@@ -31,6 +31,7 @@ var User = module.exports = new Schema({
     email:{type:String, required:true},//, match:/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/},
     gender:{type:String, "enum":['male', 'female']},
     age:{type:Number, min:0},
+    last_visit:{type:Date,'default':Date.now},
     address: String,
     occupation: String,
     biography: String,
@@ -61,6 +62,7 @@ var User = module.exports = new Schema({
     ],
 //    num_of_mandates_i_gave: {type: Number, 'default': 0},
     num_of_given_mandates: {type: Number, 'default': 0},
+    //bookmark
     num_of_proxies_i_represent: {type: Number, 'default': 0},
     score:{type:Number, 'default':0},
 //    unseen_notifications: {type:Number, 'default':0},
@@ -72,7 +74,9 @@ var User = module.exports = new Schema({
     number_of_days_of_spending_all_tokens: {type: Number, 'default' : 0, editable: false},
     blog_popularity_counter: {type: Number, 'default': 0, editable: false},
     avatar : mongoose_types.File,
-    minisite_code : String
+    minisite_code : String,
+    blog_title: String,
+    blog_sub_titile: String
 }, {strict:true});
 
 User.methods.toString = function()

@@ -35,7 +35,8 @@ var PostArticleResource = module.exports = common.GamificationMongooseResource.e
             _id:null,
             ref_to_post_id: null,
             discussion_id:null,
-            is_user_follower: null
+            is_user_follower: null,
+            balance: null
         };
     },
 
@@ -43,6 +44,36 @@ var PostArticleResource = module.exports = common.GamificationMongooseResource.e
     {
         query.populate('creator_id');
         this._super(req,query,callback);
+    },
+
+    get_objects:function (req, filters, sorts, limit, offset, callback) {
+
+        this._super(req, filters, sorts, limit, offset, function(err, result){
+            //put voting balance on each post
+            if(req.user){
+                async.waterfall([
+                    //find user vote for each post
+                    function(cbk){
+                        async.forEach(result.objects, function(post, itr_cbk){
+                            models.VoteArticlePost.findOne({post_article_id: post._id, user_id: req.user._id}, function(err, vote){
+                                if(!err){
+                                   post.balance = vote ? vote.balance : 0;
+                                }
+                                itr_cbk(err, vote);
+                            })
+                        }, function(err, obj){
+                            cbk(err, obj);
+                        })
+                    }
+                ], function(err){
+                    callback(err,result);
+                })
+            }else{
+                //put voting balance 0 on each post
+                _.each(result.objects, function(post){post.balance = 0});
+                callback(err, result);
+            }
+        })
     },
 
     create_obj:function (req, fields, callback) {

@@ -227,20 +227,18 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
 
                     //set notifications for users that i represent (proxy)
                     function(cbk2){
-                        // find all users that im their proxy
-                        //models.User.find({user_id: {$in: proxy}})
-
-                        var slaves_users = [];
-
-                        async.forEach(slaves_users, function(slave, itr_cbk){
-                            notifications.create_user_notification("proxy_created_change_suggestion", discussion_id, slave._id, user_id, suggestion_obj._id, function(err, result){
-                                itr_cbk(err);
+                        models.User.find({"proxy.user_id": user_id}, function(err, slaves_users){
+                            async.forEach(slaves_users, function(slave, itr_cbk){
+                                notifications.create_user_notification("proxy_created_change_suggestion", discussion_id, slave._id, user_id, suggestion_obj._id, function(err, result){
+                                    itr_cbk(err);
+                                })
+                            }, function(err){
+                                cbk2(err);
                             })
-                        }, function(err){
-                            cbk2(err);
                         })
+
                     }
-                ], function(err,results)
+                ], function(err)
                 {
                     cbk(err, suggestion_obj);
                 });

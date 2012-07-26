@@ -74,12 +74,26 @@ var db_functions = {
         });
     },
 
-    addArticleComment: function(text, article_id){
+    addArticleComment: function(text, article_id, callback){
         db_functions.loggedInAjax({
             url: '/api/posts_of_article',
-            type: "GET",
+            type: "POST",
             async: true,
             data: {"text": text, "article_id": article_id},
+            success: function (err, data) {
+                callback( data);
+            },
+            error: function(err, data){
+                callback(err, data);
+            }
+        });
+    },
+
+    getArticleComments: function(article_id, callback){
+        db_functions.loggedInAjax({
+            url: '/api/posts_of_article/?article_id=' + article_id,
+            type: "GET",
+            async: true,
             success: function (err, data) {
                 callback( data);
             },

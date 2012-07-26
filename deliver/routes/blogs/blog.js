@@ -2,6 +2,7 @@ var models = require('../../../models');
 
 module.exports = function (req, res) {
 
+    console.log(req.params[0]);
     models.Article.find({user_id: req.params[0]})
         .exec(function(err,articles) {
             if(err) {
@@ -12,7 +13,9 @@ module.exports = function (req, res) {
                     title:"בלוגים",
                     isBlog:true,
                     articles:articles,
-                    tab:'articles'
+                    tab:'articles',
+                    user: req.session.user,
+                    user_logged: req.isAuthenticated()
                 });
         });
-};
+    };
