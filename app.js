@@ -92,6 +92,9 @@ app.configure('staging', function(){
     });
     require('./deliver/tools/compile_dust_templates');
     require('./tools/compile_templates');
+
+    app.set('send_mails',true);
+
 });
 
 app.configure('production', function(){
@@ -119,6 +122,8 @@ app.configure('production', function(){
     });
     require('./deliver/tools/compile_dust_templates');
     require('./tools/compile_templates');
+
+    app.set('send_mails',true);
 
 });
 
@@ -198,7 +203,8 @@ require('./api')(app);
 require('./admin')(app);
 require('./og/config').load(app);
 require('./lib/templates').load(app);
-require('./lib/mail').load(app);
+if(app.settings.send_mails)
+    require('./lib/mail').load(app);
 require('./deliver/routes')(app);
 
 var cron = require('./cron');
