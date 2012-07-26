@@ -17,60 +17,63 @@
      var _find = model.find;
      model.find = function()
      {
+         var args = Array.prototype.slice.call(arguments);
          if(model.schema.paths.is_hidden && SHOW_ONLY_PUBLISHED)
          {
-             var query = arguments.length > 0 && typeof(arguments[0]) == 'object' ? arguments[0] : {};
+             var query = args.length > 0 && typeof(args[0]) == 'object' ? args[0] : {};
              if(typeof(query['is_hidden']) == 'undefined')
                 query['is_hidden'] =  false;
              else
                  delete query['is_hidden'];
-             if(arguments.length == 0)
-                 arguments = [query];
-             else if(typeof(arguments[0]) != 'object')
-                 arguments.unshift(query);
+             if(args.length == 0)
+                 args.unshift(query);
+             else if(typeof(args[0]) != 'object')
+                 args.unshift(query);
              else
-                 arguments[0] = query;
+                 args[0] = query;
          }
-         return _find.apply(this,arguments);
+         return _find.apply(this,args);
      };
      var _findOne = model.findOne;
      model.findOne = function()
      {
+         var args = Array.prototype.slice.call(arguments);
          if(model.schema.paths.is_hidden && SHOW_ONLY_PUBLISHED)
          {
-             var query = arguments.length > 0 && typeof(arguments[0]) == 'object' ? arguments[0] : {};
+             var query = args.length > 0 && typeof(args[0]) == 'object' ? args[0] : {};
              if(typeof(query['is_hidden']) == 'undefined')
                  query['is_hidden'] = false;
              else
                  delete query['is_hidden'];
-             if(arguments.length == 0)
-                 arguments = [query];
-             else if(typeof(arguments[0]) != 'object')
-                 arguments.unshift(query);
+             if(args.length == 0)
+                 args.unshift(query);
+             else if(typeof(args[0]) != 'object')
+                 args.unshift(query);
              else
-                 arguments[0] = query;
+                 args[0] = query;
          }
-         return _findOne.apply(this,arguments);
+         return _findOne.apply(this,args);
      };
 
      var _count = model.count;
      model.count = function()
      {
+         var args = Array.prototype.slice.call(arguments);
          if(model.schema.paths.is_hidden && SHOW_ONLY_PUBLISHED)
          {
-             var query = arguments.length > 0 && typeof(arguments[0]) == 'object' ? arguments[0] : {};
+             var query = args.length > 0 && typeof(args[0]) == 'object' ? args[0] : {};
              if(typeof(query['is_hidden']) == 'undefined')
                  query['is_hidden'] = false;
              else
                  delete query['is_hidden'];
-             if(arguments.length == 0)
-                 arguments = [query];
-             else if(typeof(arguments[0]) != 'object')
-                 arguments.unshift(query);
+             if(args.length == 0)
+                 args.unshift(query);
+             else if(typeof(args[0]) != 'object')
+                 args.unshift(query);
              else
-                 arguments[0] = query;
+                 args[0] = query;
          }
-         return _count.apply(this,arguments);
+         return _count.apply(this,args);
      };
      return model;
  };
