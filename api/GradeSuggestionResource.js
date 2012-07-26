@@ -194,17 +194,14 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
 
                     //set notifications for all users of proxy
                     function(cbk1){
-                        // find all users that im their proxy
-                        //models.User.find({user_id: {$in: proxy}})
-
-                        var slaves_users = [];
-
-                        async.forEach(slaves_users, function(slave, itr_cbk){
-                            notifications.create_user_notification("proxy_graded_change_suggestion", discussion_id, slave._id, user_id, suggestion_obj._id, function(err, result){
-                                itr_cbk(err);
+                        models.User.find({"proxy.user_id": req.user._id}, function(err, slaves_users){
+                            async.forEach(slaves_users, function(slave, itr_cbk){
+                                notifications.create_user_proxy_vote_or_grade_notification("proxy_graded_change_suggestion", discussion_id, slave._id, req.user._id, suggestion_obj._id, is_agree,function(err){
+                                    itr_cbk(err);
+                                })
+                            }, function(err){
+                                cbk1(err);
                             })
-                        }, function(err){
-                            cbk1(err);
                         })
                     }
                 ], function (err, args) {
@@ -328,6 +325,23 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                         }
 
                         base.call(self, req, object, cbk1);
+                    },
+
+                    //set notifications for all users of proxy
+                    function(cbk1){
+                        if (did_user_change_his_agree) {
+                            models.User.find({"proxy.user_id": req.user._id}, function(err, slaves_users){
+                                async.forEach(slaves_users, function(slave, itr_cbk){
+                                    notifications.create_user_proxy_vote_or_grade_notification("proxy_graded_change_suggestion", discussion_id, slave._id, req.user._id, sugg_obj._id, is_agree,function(err){
+                                        itr_cbk(err);
+                                    })
+                                }, function(err){
+                                    cbk1(err);
+                                })
+                            })
+                        }else{
+                            cbk1(null, null);
+                        }
                     }
                 ], function (err, args) {
                     cbk(err, args[1]);

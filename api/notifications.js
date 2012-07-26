@@ -14,7 +14,6 @@ var models = require('../models'),
     _ = require('underscore');
 
 
-
 exports.create_user_notification = function(notification_type, entity_id, user_id, notificatior_id, sub_entity, callback){
 
     var single_notification_arr = [
@@ -70,10 +69,57 @@ exports.create_user_notification = function(notification_type, entity_id, user_i
             callback(err, obj);
         })
     }else{
+
         create_new_notification(notification_type, entity_id, user_id, notificatior_id, sub_entity, function(err, obj){
             callback(err, obj);
         });
+
+
     }
+},
+
+exports.create_user_proxy_vote_or_grade_notification = function(notification_type, entity_id, user_id, notificatior_id, sub_entity, is_agree, callback){
+
+    async.waterfall([
+
+        function(cbk){
+            notification_type = notification_type + "";
+
+            models.Notification.findOne({type: notification_type, "notificators.sub_entity_id": sub_entity, user_id: user_id, seen: false}, cbk);
+        },
+
+        function(noti, cbk){
+            if(noti){
+                console.log("check");
+                noti.notificators[0].ballance = is_agree ? 1 : -1;
+                noti.save(function(err, obj){
+                    cbk(err, obj);
+                })
+            }
+            else{
+                var notification = new models.Notification();
+                var notificator = {
+                    notificator_id: notificatior_id,
+                    sub_entity_id: sub_entity,
+                    ballance: is_agree ? 1 : -1
+                }
+
+                notification.user_id = user_id;
+                notification.notificators = notificator;
+                notification.type = notification_type;
+                notification.entity_id = entity_id;
+                notification.seen = false;
+                notification.update_date = new Date();
+
+                notification.save(function(err, obj){
+                    cbk(err, obj);
+                });
+
+            }
+        }
+    ], function(err, obj){
+        callback(err, obj);
+    })
 }
 
 var create_new_notification = function(notification_type, entity_id, user_id, notificatior_id, sub_entity_id, callback){
@@ -98,13 +144,6 @@ var create_new_notification = function(notification_type, entity_id, user_id, no
     });
 };
 
-/***
- * Send notification to user through mail or other external API
- * @param notification
- * Notification object
- * @param callback
- * function(err)
- */
 var sendNotificationToUser = function(notification,callback) {
     /**
      * Waterfall:
@@ -121,6 +160,9 @@ var sendNotificationToUser = function(notification,callback) {
         },
         // 2) populate references by notification type
         function(user, cbk) {
+            if(!user){
+                cbk("user not found");
+            }
             email = user.email;
             notificationResource.populateNotifications({objects:[notification]},cbk);
         },
@@ -159,7 +201,7 @@ exports.create_user_vote_or_grade_notification = function(notification_type, ent
 
                 //this tow lines tries to prevant a bug that i dont understand
                 if(!noti.user_id){
-                    console.log("user id wasnt in noti in create_user_vote_or_grade_notification!")
+                    console.log("user id wasnt in noti in create_user_vote_or_grade_notification!");
                     noti.user_id = user_id;
                 }
                 var date = Date.now();

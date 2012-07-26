@@ -1,6 +1,7 @@
 var models = require('../../../models');
 
 module.exports = function(req,res) {
+    console.log(req.params[0]);
     models.Article.findById(req.params[0])
         .exec(function(err,article) {
             if(err) {
