@@ -3,7 +3,7 @@ var mongoose = require("mongoose"),
     Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId,
     mongoose_types = require('j-forms').types,
-    utils = require('./../utils'),
+    utils = require('../utils'),
     _ = require('underscore'),
     async = require('async');
 
