@@ -228,6 +228,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
     },
 
     update_obj:function (req, object, callback) {
+        console.log('in update grade suggestion');
         var self = this;
         var base = this._super;
         var g_grade;

@@ -34,8 +34,8 @@ module.exports = function (req, res) {
                     //get details of my/his uru user
                     models.User.findById(pageUserID)
 
-                        .select(["tokens", "num_of_extra_tokens","proxy" , "biography","first_name", "last_name", "facebook_id", "avatar", "score"])
-                        .populate("proxy.user_id",['id','_id','first_name','last_name','avatar','facebook_id','num_of_given_mandates'])
+                        .select(["tokens", "num_of_extra_tokens","proxy" , "biography","first_name", "last_name", "facebook_id", "avatar", "score", "followers"])
+                        .populate("proxy.user_id",['id','_id','first_name','last_name','avatar','facebook_id','num_of_given_mandates', "followers"])
 
                         .exec(function(err, user){
                             req.session.user.biography = user.biography;
@@ -68,13 +68,20 @@ module.exports = function (req, res) {
 
                 if(curr_user_db){
                     //put proxy populated details in proxy.details, so avner wont fill the change
-                    _.each(curr_user_db.proxy, function(proxy){proxy.details = proxy.user_id});
+                    // and see if i follow him or not
+                    _.each(curr_user_db.proxy, function(proxy){
+                        proxy.details = proxy.user_id;
+                    });
+
                     //find if the user is a follower of the "his uru" user
-                    curr_user_db.is_follower_of_user = false;
-                    if(_.any(curr_user_db.followers, function(follower){ return follower.follower_id + "" == pageUserID + ""})){
-                        curr_user_db.is_follower_of_user = true;
-                     }
+                    my_or_his_uru_user.is_follower_of_user = false;
+                    if(isHisuru){
+                        if(_.any(my_or_his_uru_user.followers, function(follower){ return follower.follower_id + "" == curr_user_db._id + ""})){
+                            my_or_his_uru_user.is_follower_of_user = true;
+                        }
                     }
+                    }
+
                 cbk(err, my_or_his_uru_user);
             })
         }

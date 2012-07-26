@@ -163,7 +163,7 @@
                         תן מנדט
                     </a>
                     <a href="#" id="folowBT" class="follow_user">
-                     <%if( pageUser.is_follower_of_user){ %>
+                     <%if( !pageUser.is_follower_of_user){ %>
                         עקוב
                         <%}else {%>
 הפסק לעקוב
@@ -386,7 +386,7 @@
 
             var self = this;
             db_functions.joinOrLeaveUserFollowers(userId, function (err, user) {
-                if (user.is_follower)
+                if (!user.is_follower)
                     $(self).text("עקוב");
                 else
                     $(self).text("הפסק לעקוב");
