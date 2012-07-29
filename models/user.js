@@ -76,7 +76,10 @@ var User = module.exports = new Schema({
     avatar : mongoose_types.File,
     minisite_code : String,
     blog_title: String,
-    blog_sub_titile: String
+    blog_sub_titile: String,
+    blog_text_1: String,
+    blog_text_2: String,
+    blog_text_3: String
 }, {strict:true});
 
 User.methods.toString = function()

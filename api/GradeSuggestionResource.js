@@ -196,7 +196,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                     function(cbk1){
                         models.User.find({"proxy.user_id": req.user._id}, function(err, slaves_users){
                             async.forEach(slaves_users, function(slave, itr_cbk){
-                                notifications.create_user_proxy_vote_or_grade_notification("proxy_graded_change_suggestion", discussion_id, slave._id, req.user._id, suggestion_obj._id, is_agree,function(err){
+                                notifications.create_user_proxy_vote_or_grade_notification("proxy_graded_change_suggestion", suggestion_obj._id, slave._id, req.user._id, discussion_id, is_agree, null, function(err){
                                     itr_cbk(err);
                                 })
                             }, function(err){
@@ -333,7 +333,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                         if (did_user_change_his_agree) {
                             models.User.find({"proxy.user_id": req.user._id}, function(err, slaves_users){
                                 async.forEach(slaves_users, function(slave, itr_cbk){
-                                    notifications.create_user_proxy_vote_or_grade_notification("proxy_graded_change_suggestion", discussion_id, slave._id, req.user._id, sugg_obj._id, is_agree,function(err){
+                                    notifications.create_user_proxy_vote_or_grade_notification("proxy_graded_change_suggestion",  sugg_obj._id, slave._id, req.user._id, discussion_id, is_agree, null, function(err){
                                         itr_cbk(err);
                                     })
                                 }, function(err){

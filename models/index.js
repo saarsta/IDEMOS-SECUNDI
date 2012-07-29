@@ -174,7 +174,7 @@ var Schemas = exports.Schemas = {
              notificator_id: {type:ObjectId, ref:'User'},
              sub_entity_id:  {type: ObjectId},
 
-            //only for votes notifications
+            //only for votes and grade notifications
              ballance: Number,
              votes_for: {type: Number, 'default': 0},
              votes_against: {type: Number, 'default' : 0}
@@ -196,10 +196,13 @@ var Schemas = exports.Schemas = {
             "a_dicussion_created_with_info_item_that_you_like",
             "a_dicussion_created_with_info_item_that_you_created",
             "user_gave_my_post_tokens",
+            "user_gave_my_post_bad_tokens",
             "user_gave_my_suggestion_tokens",
             "proxy_created_new_discussion",
+            "proxy_graded_discussion",
             "proxy_created_change_suggestion",
-            "proxy_graded_change_suggestion"
+            "proxy_graded_change_suggestion",
+            "proxy_vote_to_post"
         ]
 //        is_proxy_notification: {type: Boolean, 'default': false}
         },
@@ -216,6 +219,7 @@ var Schemas = exports.Schemas = {
     },
 
     BlogTag : {
+        user_id:{type: Schema.ObjectId, ref: 'User'},
         tag:{type:String, unique:true},
         popularity:{type:Number,'default':0,select:false}
     },

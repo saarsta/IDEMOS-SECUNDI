@@ -209,7 +209,11 @@ if(app.settings.send_mails)
 require('./deliver/routes')(app);
 
 var cron = require('./cron');
-cron.run(app);
+cron.daily_cron.updateBlogTagAutoComplete(function(err, results){
+    console.log(err, result);
+})
+//cron.run(app);
+
 
 async.waterfall([
         function(cbk) {

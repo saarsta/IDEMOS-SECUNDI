@@ -73,43 +73,52 @@ exports.create_user_notification = function(notification_type, entity_id, user_i
             callback(err, obj);
         })
     }else{
-
         create_new_notification(notification_type, entity_id, user_id, notificatior_id, sub_entity, function(err, obj){
             callback(err, obj);
         });
-
-
     }
 };
 
-exports.create_user_proxy_vote_or_grade_notification = function(notification_type, entity_id, user_id, notificatior_id, sub_entity, is_agree, callback){
+exports.create_user_proxy_vote_or_grade_notification = function(notification_type, entity_id, user_id, notificatior_id, sub_entity, is_agree, grade_or_balance, callback){
 
     async.waterfall([
 
         function(cbk){
             notification_type = notification_type + "";
-            console.log("pre_check");
-            models.Notification.findOne({type: notification_type, "notificators.sub_entity_id": sub_entity, user_id: user_id, seen: false}, cbk);
+            models.Notification.findOne({type: notification_type, "entity_id": entity_id, user_id: user_id, seen: false}, cbk);
         },
 
         function(noti, cbk){
             if(noti){
-                console.log("check");
+
+                if(notification_type == "proxy_graded_change_suggestion")
+                    noti.notificators[0].ballance = is_agree ? 1 : -1;
+                else
+                    noti.notificators[0].ballance = grade_or_balance;
+
+
+                
                 var last_update_date = noti.update_date;
                 noti.update_date = Date.now();
                 noti.notificators[0].ballance = is_agree ? 1 : -1;
+
                 noti.save(function(err, obj){
                     cbk(err, obj);
                     sendNotificationToUser(noti,last_update_date);
                 });
             }
             else{
-                console.log("check1");
                 var notification = new models.Notification();
+                var balance;
+                if(notification_type == "proxy_graded_change_suggestion")
+                    balance = is_agree ? 1 : -1;
+                else
+                    balance = grade_or_balance;
+
                 var notificator = {
                     notificator_id: notificatior_id,
                     sub_entity_id: sub_entity,
-                    ballance: is_agree ? 1 : -1
+                    ballance: balance
                 }
 
                 notification.user_id = user_id;
@@ -251,6 +260,7 @@ exports.create_user_vote_or_grade_notification = function(notification_type, ent
                     }
                     else{
                         notificator.ballance += vote_for_or_against == "add" ? 1 : -1;
+
                         if(is_on_suggestion){
                             notificator.votes_for += vote_for_or_against == "add" ? 1 : 0;
                             notificator.votes_against += vote_for_or_against == "add" ? 0 : 1;
@@ -265,17 +275,25 @@ exports.create_user_vote_or_grade_notification = function(notification_type, ent
                         votes_for : vote_for_or_against == "add" && is_on_suggestion ? 1 : 0,
                         votes_against : vote_for_or_against == "add" && is_on_suggestion ? 0 : 1
                     }
-                    noti.entity_id = entity_id,
+                    noti.entity_id = entity_id;
 
                     noti.notificators.push(new_notificator);
                 }
-                var last_update_date = noti.update_date;
-                noti.update_date = date;
-                noti.save(function(err, obj){
+
+                //when user votes to post and get to balance 0, i delete this notification
+                if((notification_type == "user_gave_my_post_tokens" || notification_type == "user_gave_my_post_bad_tokens") && notificator.ballance == 0){
+                    noti.remove(function(err, result){
+                        cbk(err, result);
+                    })
+                }else{
+                    var last_update_date = noti.update_date;
+                    noti.update_date = date;
+                    noti.save(function(err, obj){
                         cbk(err, obj);
-                    if(!err && obj)
-                        sendNotificationToUser(obj,last_update_date);
-                })
+                        if(!err && obj)
+                            sendNotificationToUser(obj, last_update_date);
+                    })
+                }
             }else{
                 var notification = new models.Notification();
                 var notificator = {
