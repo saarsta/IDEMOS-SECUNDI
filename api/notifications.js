@@ -198,6 +198,8 @@ var sendNotificationToUser = function(notification,last_update_date) {
         function(results,cbk) {
             var notification = results.objects[0];
             notification.entity_name = notification.name || '';
+            notification.description_of_notificators = notification.description_of_notificators || '';
+            notification.message_of_notificators = notification.message_of_notificators || '';
             templates.renderTemplate('notifications/' + notification.type,notification,cbk);
         },
         // 4) send message
