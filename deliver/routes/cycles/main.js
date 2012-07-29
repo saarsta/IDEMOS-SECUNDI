@@ -14,5 +14,7 @@ module.exports = function(req, res){
         avatar:req.session.avatar_url,
         cycle_id: req.params.id,
         tab:'cycles',
-        discussion_id: req.query.discussion_id, subject_name: req.query.subject_name});
+        discussion_id: req.query.discussion_id,
+        subject_name: req.query.subject_name
+    });
 };

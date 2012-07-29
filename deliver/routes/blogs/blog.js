@@ -9,6 +9,8 @@ module.exports = function (req, res) {
                 throw err;
             }
             else
+            {
+
                 res.render('blog.ejs', {
                     title:"בלוגים",
                     isBlog:true,
@@ -17,5 +19,6 @@ module.exports = function (req, res) {
                     user: req.session.user,
                     user_logged: req.isAuthenticated()
                 });
+            }
         });
     };
