@@ -675,31 +675,57 @@ var daily_cron =  exports.daily_cron = {
     },
 
     updateBlogTagAutoComplete: function(callback){
-        var iterator = function(tag, itr_cbk){
-            models.BlogTag.update({"tag": tag}, {"tag": tag, $inc: {popularity: 1}}, {upsert: true}, itr_cbk);
-        }
 
         async.waterfall([
+
             function(cbk){
-                models.Article.find({}, ['tags'], cbk);
-            }
-        ], function(err, articles){
+                models.BlogTag.remove({}, function (err, results){ cbk(err, results)});
+            },
 
-            var tags = [];
+            function(results, cbk){
+                models.Article.collection.group(
 
-            for(var i=0; i < articles.length; i++)
-                tags.push.apply(tags, articles[i].tags);
+                    {user_id: true},
+                    {},
+                    {},
+                        function(doc, out) {
+                            var tags = doc.tags;
+                            for(var i=0; i<tags.length; i++) {
+                                out[tags[i]] = (out[tags[i]] || 0) + 1;
+                            }
+                        }.toString()
+                    ,
+                    function(err, results){
 
-            models.BlogTag.remove({}, function(err, result){
-                if(err){
-                    callback(err, null);
-                }else{
-                    async.forEach(tags, iterator, function(err, result){
-                        callback(err, "finish set blog-tag popularity..");
+                        cbk(err, results);
                     });
-                }
-            })
-        })
+            },
+
+            function(results, cbk){
+                async.forEach(results, function(blog_tags, itr_cbk){
+                    var user_id = blog_tags.user_id;
+                    delete blog_tags['user_id'];
+
+                    var funcs = _.map(blog_tags,function(popularity,tag) {
+                        return function(cbk) {
+                            var blog_tag = new models.BlogTag();
+                            blog_tag.tag = tag;
+                            blog_tag.popularity = popularity;
+                            blog_tag.user_id = user_id;
+                            blog_tag.save(cbk);
+                        }
+                    });
+                    async.parallel(funcs,itr_cbk);
+
+                }, cbk);
+            }
+
+        ], function(err, arg){
+            if(err)
+                console.error(err);
+            else
+                console.log("Cron - BlogTags completed successfuly");
+       })
     }
 }
 

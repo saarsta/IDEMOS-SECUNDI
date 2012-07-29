@@ -34,7 +34,6 @@ var Comment = new Schema({
     replies: {type:[Reply], editable:false}
 });
 
-
 var Article = module.exports = new Schema({
     user_id:{type:ObjectId, ref:'User', index:true, required:true},
     first_name: {type:String, editable:false},

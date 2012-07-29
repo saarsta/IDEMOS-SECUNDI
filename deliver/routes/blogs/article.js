@@ -17,7 +17,8 @@ module.exports = function(req,res) {
                         articles:[article],
                         tab:'articles',
                         user: req.session.user,
-                        user_logged: req.isAuthenticated()
+                        user_logged: req.isAuthenticated(),
+                        tags: article.tags
                     });
             }
         });

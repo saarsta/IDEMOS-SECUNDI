@@ -48,7 +48,6 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
 
                 if (err)
                     callback(err, null);
-
                 else {
                     if (!vote_object)
                         vote_object = new self.model();
@@ -100,7 +99,7 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
                                         }
                                     }
                                     post_object.popularity = calculate_popularity(post_object.votes_for, post_object.votes_for + post_object.votes_against);
-                                    post_object.voter_balance =new_ballance      ;
+                                    post_object.voter_balance = new_ballance      ;
                                     vote_object.user_id = user_object._id;
                                     vote_object.post_id = post_id;
                                     vote_object.ballance = new_ballance;
@@ -114,16 +113,41 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
 
                                                 //set notification for post creator
                                                 if(!err){
-                                                    notifications.create_user_vote_or_grade_notification("user_gave_my_post_tokens",
-                                                        post_object._id, post_object.creator_id, vote_object.user_id, discussion_id, method, false, false, function(err, result){
-                                                            cbk(err, post_object);
-                                                        })
+                                                    if(new_ballance > 0 || (new_ballance == 0 && method == 'remove')){
+                                                        notifications.create_user_vote_or_grade_notification("user_gave_my_post_tokens",
+                                                            post_object._id, post_object.creator_id, vote_object.user_id, discussion_id, method, false, false, function(err, result){
+                                                                cbk(err, post_object);
+                                                            })
+                                                    }else{
+                                                        notifications.create_user_vote_or_grade_notification("user_gave_my_post_bad_tokens",
+                                                            post_object._id, post_object.creator_id, vote_object.user_id, discussion_id, method, false, false, function(err, result){
+                                                                cbk(err, post_object);
+                                                            })
+                                                    }
+
                                                 }else{
                                                     cbk(err, post_object);
                                                 }
 
                                             });
-                                        }],
+                                        },
+
+                                        //set notifications for all my slaves
+                                        function(cbk){
+                                            models.User.find({"proxy.user_id": req.user._id}, function(err, slaves_users){
+                                                async.forEach(slaves_users, function(slave, itr_cbk){
+                                                    notifications.create_user_proxy_vote_or_grade_notification(
+                                                        "proxy_vote_to_post", post_object._id, slave._id, req.user._id,
+                                                        discussion_id,  null, vote_object.ballance,
+                                                        function(err, results){
+                                                            itr_cbk(err);
+                                                        })
+                                                }, function(err){
+                                                    cbk(err);
+                                                })
+                                            })
+                                        }
+                                        ],
                                         function (err, args) {
                                             callback(err, args[1])
                                         });

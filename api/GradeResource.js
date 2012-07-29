@@ -14,8 +14,9 @@ var resources = require('jest'),
     common = require('./common'),
     GradeSuggestion = require('./GradeSuggestionResource'),
     _ = require('underscore');
-    calc_thresh = require('../deliver/tools/calc_thresh');
-    Suggestion = require('./suggestionResource');
+    calc_thresh = require('../deliver/tools/calc_thresh'),
+    Suggestion = require('./suggestionResource'),
+    notifications = require('./notifications');
 
 //Authorization
 var Authoriztion = resources.Authorization.extend({
@@ -97,7 +98,9 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
                 /**
                  * Waterfall:
                  * 1) find discussion
-                 * 2) calculate discussion grade
+                 * 2)
+                 *    2.1) set notifications for all users of proxy
+                 *    2.2) calculate discussion grade
                  * 3) find suggestion object
                  * 4) calculate suggestion grades
                  * 5) publish to facebook
@@ -110,22 +113,47 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
                         models.Discussion.findById(grade_object.discussion_id, cbk);
                     },
 
-                    // 2) calculate discussion grade
+
+                    // 2) calculate discussion grade + set notifications for all users of proxy
                     function(_discussion_obj, cbk){
                         discussion_obj = _discussion_obj;
-                        //cant grade your own discussion
-                        discussion_thresh = Number(discussion_obj.admin_threshold_for_accepting_change_suggestions) || discussion_obj.threshold_for_accepting_change_suggestions
-                        if(discussion_obj.creator_id + "" == req.user._id + ""){
-                            cbk({message:"cant grade your own discussion",code:401}, null);
-                        }else{
-                            admin_threshold = discussion_obj.admin_threshold_for_accepting_change_suggestions;
-                            calculateDiscussionGrade(grade_object.discussion_id, function(err, _new_grade, evaluate_counter, _threshold){
-                                new_grade = _new_grade;
-                                counter = evaluate_counter;
-                                threshold = _threshold
-                                cbk(err, threshold);
-                            });
-                        }
+
+                        async.parallel([
+                            //2.1 set notifications for all users of proxy
+                            function(cbk1){
+                                models.User.find({"proxy.user_id": req.user._id}, function(err, slaves_users){
+                                    async.forEach(slaves_users, function(slave, itr_cbk){
+                                        notifications.create_user_proxy_vote_or_grade_notification(
+                                            "proxy_graded_discussion", _discussion_obj._id, slave._id, req.user._id,
+                                            null, null, fields.evaluation_grade,
+                                        function(err, results){
+                                            itr_cbk(err);
+                                        })
+                                    }, function(err){
+                                        cbk1(err);
+                                    })
+                                })
+                            },
+
+                            // 2.2 calculate discussion grade
+                            function(cbk1){
+                                //cant grade your own discussion
+                                discussion_thresh = Number(discussion_obj.admin_threshold_for_accepting_change_suggestions) || discussion_obj.threshold_for_accepting_change_suggestions
+                                if(discussion_obj.creator_id + "" == req.user._id + ""){
+                                    cbk1({message:"cant grade your own discussion",code:401}, null);
+                                }else{
+                                    admin_threshold = discussion_obj.admin_threshold_for_accepting_change_suggestions;
+                                    calculateDiscussionGrade(grade_object.discussion_id, function(err, _new_grade, evaluate_counter, _threshold){
+                                        new_grade = _new_grade;
+                                        counter = evaluate_counter;
+                                        threshold = _threshold
+                                        cbk1(err, threshold);
+                                    });
+                                }
+                            }
+                        ],function(err, args){
+                            cbk(err, args[1]);
+                        })
                     },
 
                     // 3) find suggestion object
@@ -170,7 +198,6 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
                         });
                         cbk();
                     }
-
                 ],
                 // Final) set gamification details, return object
                 function(err, args){
@@ -227,14 +254,42 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
                     function(obj, cbk){
                         models.Discussion.findById(object.discussion_id, cbk);
                     },
-                    //maybe do something with suggestion grade
-                    //calculate all change suggestion all over again
+
                     function(discussion_obj,cbk){
-                        discussion_thresh = Number(discussion_obj.admin_threshold_for_accepting_change_suggestions) || discussion_obj.threshold_for_accepting_change_suggestions;
-                        models.Suggestion.find({discussion_id: grade_object.discussion_id}, ["_id"], function(err, results)
-                        {
-                            cbk(err, results);
-                        });
+
+                        async.parallel([
+
+                            //set notifications for all users of proxy
+                            function(cbk1){
+                                models.User.find({"proxy.user_id": req.user._id}, function(err, slaves_users){
+                                    async.forEach(slaves_users, function(slave, itr_cbk){
+                                        notifications.create_user_proxy_vote_or_grade_notification("proxy_graded_discussion",
+                                            discussion_obj._id, slave._id, req.user._id,
+                                            null, null, g_grade.evaluation_grade,
+                                            function(err){
+                                            itr_cbk(err);
+                                        })
+                                    }, function(err){
+                                        cbk1(err);
+                                    })
+                                })
+                            },
+
+                            //calculate all change suggestion all over again
+                            function(cbk1){
+                                discussion_thresh = Number(discussion_obj.admin_threshold_for_accepting_change_suggestions) || discussion_obj.threshold_for_accepting_change_suggestions;
+                                models.Suggestion.find({discussion_id: grade_object.discussion_id}, ["_id"], function(err, results)
+                                {
+                                    cbk1(err, results);
+                                });
+                            }
+
+                        ],
+                            function(err, args){
+                                    cbk(err, args[1]);
+                            }
+                        )
+
                     },
 
                     function(suggestions, cbk){
