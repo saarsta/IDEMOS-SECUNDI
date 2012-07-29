@@ -389,7 +389,9 @@ module.exports.approveSuggestion = function(id,callback)
 
         */
 
-            var str = vision.slice(0, parts[0].start) + parts[0].text + vision.slice(parts[0].end, vision.length + 1);
+            vision = vision.replace(/\r/g,'');
+
+            var str = vision.substr(0, Number(parts[0].start)) + parts[0].text + vision.substr(Number(parts[0].end));
             discussion_object.vision_text_history.push(discussion_object.text_field);
             discussion_object.text_field = str;
 
