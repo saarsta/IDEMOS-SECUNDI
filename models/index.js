@@ -219,6 +219,7 @@ var Schemas = exports.Schemas = {
     },
 
     BlogTag : {
+        user_id:{type: Schema.ObjectId, ref: 'User'},
         tag:{type:String, unique:true},
         popularity:{type:Number,'default':0,select:false}
     },

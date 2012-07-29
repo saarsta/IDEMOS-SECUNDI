@@ -139,6 +139,9 @@ module.exports = function(app)
     admin.registerMongooseModel('Article',Models.Article,null,{
         list:['title']
     });
+    admin.registerMongooseModel('PostArticle',Models.PostArticle,null,{
+        list:['article_id', 'text']
+    });
     admin.registerMongooseModel('Tag',Models.Tag,null,{
         list:['tag']
     });
