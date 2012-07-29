@@ -16,6 +16,7 @@ module.exports = function(req,res) {
                         isBlog:false,
                         articles:[article],
                         tab:'articles',
+                        blogger: req.params[0],
                         user: req.session.user,
                         user_logged: req.isAuthenticated(),
                         tags: article.tags
