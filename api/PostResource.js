@@ -172,7 +172,8 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                 if(fields.ref_to_post_id == "null" || fields.ref_to_post_id == "undefined")
                     fields.ref_to_post_id = null;
 
-                fields.text = sanitizer.sanitize(fields.text);
+                // TODO add better sanitizer
+             //   fields.text = sanitizer.sanitize(fields.text);
 
                 for (var field in fields) {
                         post_object.set(field, fields[field]);

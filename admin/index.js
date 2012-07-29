@@ -64,6 +64,7 @@ module.exports = function(app)
         list:['title'],
         cloneable:true,
         form:require('./discussion'),
+        order_by:['-creation_date'],
         filters:['created_by','is_published','is_hidden','is_hot_object','is_cycle']
 //            actions:[
 //                {

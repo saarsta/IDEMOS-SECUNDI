@@ -48,9 +48,24 @@ var proxyCommon={
 
                 db_functions.addOrRemoveProxyMandate(my_id, proxyId, changeProxy, function (err, data) {
                     //  var msg_params = err ? {massage:err.responseText} : {massage:"האסימונים ילקחו בקרוב"};
+                    var fixMeProxy;
                     if(data && data.proxy){
-                        proxy=data.proxy;
-                        onProxyChangedCallback(proxy)
+                        if(data.ugly_proxy){//fix the proxy object
+                           for(var i=0;i<data.proxy.length;i++){
+                               fixMeProxy=data.proxy[i].user_id;
+                               if(typeof (fixMeProxy._id)==="undefined"){ //need to fix me
+                                   fixMeProxy._id=data.ugly_proxy._id;
+                                   fixMeProxy.facebook_id=data.ugly_proxy.facebook_id;
+                                   fixMeProxy.first_name=data.ugly_proxy.first_name;
+                                   fixMeProxy.last_name=data.ugly_proxy.last_name;
+                                   fixMeProxy.num_of_given_mandates=data.ugly_proxy.num_of_given_mandates;
+                                   break;
+
+                              }
+                           }
+                        }
+
+                        onProxyChangedCallback(data)
                     }
                     if(err){
                         $(document).one('cbox_closed', function (e) {

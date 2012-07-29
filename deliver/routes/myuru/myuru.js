@@ -14,13 +14,13 @@ module.exports = function (req, res) {
     }
 
     /*
-        async
-        1
-            1.1 get details of my/his uru user
-            1.2 in case that we are on "his uru" situation and we are loged in -  get details of current user
-            1.3 if 1.2 situation, check if user is a follower of his uru
+     async
+     1
+     1.1 get details of my/his uru user
+     1.2 in case that we are on "his uru" situation and we are loged in -  get details of current user
+     1.3 if 1.2 situation, check if user is a follower of his uru
 
-        2  avner sets things for himself
+     2  avner sets things for himself
 
      */
     // TODO get both users on same query
@@ -80,7 +80,7 @@ module.exports = function (req, res) {
                             my_or_his_uru_user.is_follower_of_user = true;
                         }
                     }
-                    }
+                }
 
                 cbk(err, my_or_his_uru_user);
             })
@@ -98,13 +98,13 @@ module.exports = function (req, res) {
         var tokensBarModel = new TokensBarModel(9, num_of_extra_tokens, tokens, proxy);
         var proxyToSerializ=proxyJson=isHisuru? sessionUser.proxy:  proxy;
         for(var i=0 ;i<proxyToSerializ.length;i++){
-           if( proxyToSerializ[i].user_id && !isHisuru){
-            proxyToSerializ[i].user_id.avatar=   proxyToSerializ[i].user_id.avatar_url();
-           }
+            if( proxyToSerializ[i].user_id && !isHisuru){
+                proxyToSerializ[i].user_id.avatar=   proxyToSerializ[i].user_id.avatar_url();
+            }
         }
         var proxyJson= JSON.stringify(proxyToSerializ);
 
-      var av=user_obj.avatar_url();
+        var av=user_obj.avatar_url();
 
         res.render('my_uru.ejs',
             {
@@ -116,13 +116,13 @@ module.exports = function (req, res) {
                 big_impressive_title:"",
                 user:sessionUser,//current user
                 pageUser:user_obj ,///  hisuru user
-             //   avatar:user_obj.avatar_url(),
+                //   avatar:user_obj.avatar_url(),
                 curr_user_proxy: curr_user_db ? curr_user_db.proxy : null,
                 user_logged:req.isAuthenticated(),
                 url:req.url,
                 tokensBarModel:tokensBarModel,
                 tab:'',
-		        isHisUru:isHisuru,
+                isHisUru:isHisuru,
                 proxy:proxyJson
             });
     })
