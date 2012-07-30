@@ -6790,6 +6790,10 @@ body.body-action .followers-box h2
     font: bold 22px/25px Arial;
     margin-bottom: 7px;
 }
+.one-post a
+{
+   text-decoration: none;
+}
 .one-post .date-post
 {
     border-top: 1px solid #ebebeb;
