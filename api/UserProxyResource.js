@@ -59,7 +59,9 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
                     avatar_url: null,
                     first_name: null,
                     last_name: null,
-                    num_of_given_mandates: null
+                    num_of_given_mandates: null,
+                    score: null,
+                    num_of_proxies_i_represent: null
                 },
                 number_of_tokens: null,
                 number_of_tokens_to_get_back: null,
@@ -188,7 +190,9 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
                                         avatar_url: user.avatar_url,
                                         first_name: user.first_name,
                                         last_name: user.last_name,
-                                        num_of_given_mandates: user.num_of_given_mandates
+                                        num_of_given_mandates: user.num_of_given_mandates,
+                                        score: user.score,
+                                        num_of_proxies_i_represent: user.num_of_proxies_i_represent
                                     }
 
                                     proxy.user_id = user_id;

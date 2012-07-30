@@ -247,7 +247,7 @@ var error_message = error_message || '';
                 <div class="date"><%=(new Date()).format('dd.mm.yy') %></div>
                 <% if(user_logged){ %>
                 <div class="proxy">
-                    <span>3</span>
+                    <span><%=user.num_of_proxies_i_represent%> </span>
                 </div>
                 <div class="respect">
                     <span class="score"><%=user.score%></span>
