@@ -4,6 +4,7 @@
 
  exports.setShowOnlyPublished = function(show_only_published) {
     SHOW_ONLY_PUBLISHED = show_only_published;
+    console.log('show only',SHOW_ONLY_PUBLISHED);
  };
 
  exports.getShowOnlyPublished = function() {
@@ -13,7 +14,6 @@
  var _mongoose_model = mongoose.model;
  mongoose.model = function(name,schema,collection)
  {
-    console.log('show only',SHOW_ONLY_PUBLISHED);
     var model = _mongoose_model.apply(mongoose,arguments);
      var _find = model.find;
      model.find = function()
@@ -42,8 +42,8 @@
          if(model.schema.paths.is_hidden && SHOW_ONLY_PUBLISHED)
          {
              var query = args.length > 0 && typeof(args[0]) == 'object' ? args[0] : {};
-             if(typeof(query['is_hidden']) == 'undefined')
-                 query['is_hidden'] = false;
+             if(query['is_hidden'] != 'any')
+                query['is_hidden'] =  false;
              else
                  delete query['is_hidden'];
              if(args.length == 0)
@@ -63,8 +63,8 @@
          if(model.schema.paths.is_hidden && SHOW_ONLY_PUBLISHED)
          {
              var query = args.length > 0 && typeof(args[0]) == 'object' ? args[0] : {};
-             if(typeof(query['is_hidden']) == 'undefined')
-                 query['is_hidden'] = false;
+             if(query['is_hidden'] != 'any')
+                query['is_hidden'] =  false;
              else
                  delete query['is_hidden'];
              if(args.length == 0)
