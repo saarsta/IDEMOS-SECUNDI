@@ -46,11 +46,12 @@
         <a class="quote_button" href="javascript:void(0);">
             צטט
         </a>
-        <a class="share" data-img_src="{image_field_preview}" data-text_preview="{text}" data-title="תגובה מתוך דיון על החזון {title}" rel="/discussions/{discussion_id}#post_{_id}" data-name="{text}" href="/facebookShare?link=/discussions/{discussion_id}#post_{_id}" target="_blank">
+        <a class="share" data-img_src="{image_field_preview}" data-text_preview="{text|comment}" data-title="תגובה מתוך דיון על החזון {title}" rel="/discussions/{discussion_id}#post_{_id}"
+           data-text_preview="{text|comment}"  href="/facebookShare?link=/discussions/{discussion_id}#post_{_id}" target="_blank">
             שתף
         </a>
         <div class="like-btn fb-like"
-             data-href="http://www.uru.org.il/discussions/{discussion_id}#post_{_id}"
+             data-href="http://www.uru.org.il/discussions/{discussion_id}/post/{_id}"
              data-send="false" data-layout="button_count" data-width="450" data-show-faces="false">
         </div>
     </div>

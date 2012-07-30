@@ -56,7 +56,7 @@ dust.filters['tags'] = function(text) {
 dust.filters['post'] = function(text) {
     var isHtml = text.indexOf('<p') == 0;
     text = dust.filters['tags'](text);
-   text = text.replace(/\[(?:quote|ציטוט)=(?:"|&quot;)([^"&]*)(?:"|&quot;)\s*\]\n?((?:.|\n)*)?\n?\[\/(?:quote|ציטוט)\]\n?/g,
+    text = text.replace(/\[(?:quote|ציטוט)=(?:"|&quot;)([^"&]*)(?:"|&quot;)\s*\]\n?((?:.|\n)*)?\n?\[\/(?:quote|ציטוט)\]\n?/g,
         '<div class="post_quote" ><p style="font-style:italic" ><a class="ref_link" href="javascript:void(0);" style="display: block; margin-bottom: 8px; text-decoration: underline;">' +
             ' $1 כתב:' +
             '</a>' +
@@ -67,14 +67,21 @@ dust.filters['post'] = function(text) {
     return text;
 }
 
-//    / [img,width=233,height=212]
+
 dust.filters['qa'] = function(text) {
     text = dust.filters['tags'](text);
     text = text.replace(/\[img\s*(?:,\s*width=(\d+))?\s*(?:,\s*height=(\d+))?\](.*?)\[\/img\]/g,'<div class="auto-scale" style="width:$1px; height:$2px;"><img src="$3"></div>');
     text = text.replace("undefined", 230);
 
     return text;
-}
+};
+
+// cleans quotes, leaves quoted text
+dust.filters['comment'] = function(text) {
+    text = dust.filters['tags'](text);
+    text = text.replace(/\[(?:quote|ציטוט)=(?:"|&quot;)([^"&]*)(?:"|&quot;)\s*\]\n?((?:.|\n)*)?\n?\[\/(?:quote|ציטוט)\]\n?/g,'');
+    return text;
+};
 
 dust.renderArray = function(template,arr,callback,endCallback)
 {

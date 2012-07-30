@@ -10,6 +10,7 @@ var save_response = require('./integration/save_response');
 var request = require('request');
 var SignedRequest = require('facebook-signed-request');
 SignedRequest.secret = config.FB_SECRET;
+
 /**
  * Perform an action of a given object in facebook open graph.
  * @param err - Error variable

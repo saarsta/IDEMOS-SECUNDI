@@ -103,7 +103,8 @@ var db_functions = {
         });
     },
 
-    voteOnArticleComment: function(post_article_id, method){
+    //method - "add" or "remove"
+    voteOnArticleComment: function(post_article_id, method, callback){
         db_functions.loggedInAjax({
             url: '/api/votes_on_article_comment',
             type: "POST",
