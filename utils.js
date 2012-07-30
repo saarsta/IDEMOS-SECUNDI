@@ -20,6 +20,7 @@
      if(this.schema.paths.is_hidden && SHOW_ONLY_PUBLISHED)
      {
          var query = args.length > 0 && typeof(args[0]) == 'object' ? args[0] : {};
+		 console.log('in admin',query['is_hidden']);
          if(query['is_hidden'] != -1)
             query['is_hidden'] =  false;
          else
