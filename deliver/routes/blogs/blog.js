@@ -4,6 +4,7 @@ module.exports = function (req, res) {
 
     console.log(req.params[0]);
     models.Article.find({user_id: req.params[0]})
+        .populate('user_id')
         .exec(function(err,articles) {
             if(err) {
                 throw err;
@@ -11,7 +12,7 @@ module.exports = function (req, res) {
             else{
                 models.BlogTag.find({user_id: req.params[0]}, ['tag'])
                     .sort('popularity','descending')
-                    .run(function(err, tags){
+                    .exec(function(err, tags){
                         if (err)
                             throw err;
                         else{
@@ -20,7 +21,7 @@ module.exports = function (req, res) {
                                 isBlog:true,
                                 articles:articles,
                                 tab:'articles',
-                                blogger: req.params[0],
+                                blogger: articles[0].user_id,
                                 user: req.session.user,
                                 user_logged: req.isAuthenticated(),
                                 tags: tags

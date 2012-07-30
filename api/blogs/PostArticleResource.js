@@ -102,8 +102,12 @@ var PostArticleResource = module.exports = common.GamificationMongooseResource.e
             }
 
         ], function(err, post){
-            if(!err)
-              post.creator_id = req.user;
+            if(!err){
+                post = JSON.parse(JSON.stringify(post));
+                post.creator_id = req.user;
+            }
+
+
             callback(err, post);
         })
     }
