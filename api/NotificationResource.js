@@ -41,6 +41,7 @@ var NotificationCategoryResource = module.exports = resources.MongooseResource.e
                 part_tow: null,
                 part_three: null,
                 extra_link: null,
+                link_to_first_comment_user_didnt_see: null,
 
                 //for the share part
                 img_src: null,
@@ -99,8 +100,10 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
 "פריט מידע שיצרת התקבל למערכת"
                     ;
                     notification.link = "/information_items/" + notification.entity_id;
-                    notification.pic = info_items_hash[notification.notificators[0].sub_entity_id].image_field_preview
+                    notification.pic = info_items_hash[notification.entity_id].image_field_preview
                         || info_items_hash[notification.notificators[0].sub_entity_id].image_field;
+
+                    notification.title=info_items_hash[notification.entity_id].title;
                     itr_cbk();
                     break;
 //                case "approved_info_item_i_liked":
@@ -126,6 +129,9 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                         +
                             notification.name;
                         notification.text_preview = discussion.text_field_preview;
+
+                        //find the first comment user didnt see
+                     //   notification.link_to_first_comment_user_didnt_see = "/discussion/" + discussion._id + "#post_" +  notification.notificators[0].sub_entity_id;
 
                     }
 
@@ -770,7 +776,7 @@ var populateNotifications = module.exports.populateNotifications = function(resu
 
         function(cbk){
             if(info_items_ids.length)
-                models.InformationItem.find({}, ['id', 'image_field_preview', 'image_field'])
+                models.InformationItem.find({}, ['id', 'image_field_preview', 'image_field', 'title'])
                     .where('_id').in(info_items_ids).run(function (err, info_items) {
 
                         if(!err){
