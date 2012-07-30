@@ -346,30 +346,70 @@ if(/notifications\.js/.test(process.argv[1])) {
     var app = require('../app');
 
     console.log('testing');
+    //function(notification_type, entity_id, user_id, notificatior_id, sub_entity_id, callback){
 
     setTimeout(function() {
         create_new_notification('comment_on_discussion_you_are_part_of',
-            '4fc5e851ed6e970100000311','4f7c53e9afe34d0100000006','4f45145968766b0100000002','4ffecd7c5600ec0100001757',function(err) {
+           // '4fc5e851ed6e970100000311','4f7c53e9afe34d0100000006','4f45145968766b0100000002','4ffecd7c5600ec0100001757',function(err) {
+            '4fe6db00f9e35fd00800146b','4ff1b29aabf64e440f00013a','4f45145968766b0100000002','4ffecd7c5600ec0100001757',function(err) {
+
                 console.log(err);
             });
 
-        models.Notification.find({})
-            .sort('update_date',-1)
-            .populate('user_id')
-            .limit(1)
-            .exec(function(err,nots) {
-                if(!nots[0].user_id.last_visit) {
-                    nots[0].user_id.last_visit = Date.now();
-                    nots[0].user_id.save();
-                }
+//        models.Notification.find({})
+//            .sort('update_date',-1)
+//            .populate('user_id')
+//            .limit(1)
+//            .exec(function(err,nots) {
+//                if(!nots[0].user_id.last_visit) {
+//                    nots[0].user_id.last_visit = Date.now();
+//                    nots[0].user_id.save();
+//                }
+//
+//                var first_update_date = new Date(Number(nots[0].user_id.last_visit || Date.now()) - 60000);
+//                var second_update_date = new Date(Number(first_update_date) + 1600000);
+//
+//                sendNotificationToUser(nots[0],first_update_date);
+//
+//                sendNotificationToUser(nots[0],second_update_date);
+//            });
 
-                var first_update_date = new Date(Number(nots[0].user_id.last_visit || Date.now()) - 60000);
-                var second_update_date = new Date(Number(first_update_date) + 1600000);
+    },1000);
+}
 
-                sendNotificationToUser(nots[0],first_update_date);
 
-                sendNotificationToUser(nots[0],second_update_date);
+//approved_info_item_i_created
+if(/notifications\.js/.test(process.argv[1])) {
+    var app = require('../app');
+
+    console.log('testing');
+    //function(notification_type, entity_id, user_id, notificatior_id, sub_entity_id, callback){
+
+    setTimeout(function() {
+        create_new_notification('comment_on_discussion_you_are_part_of',
+            // '4fc5e851ed6e970100000311','4f7c53e9afe34d0100000006','4f45145968766b0100000002','4ffecd7c5600ec0100001757',function(err) {
+            '4fe6db00f9e35fd00800146b','4ff1b29aabf64e440f00013a','4f45145968766b0100000002','4ffecd7c5600ec0100001757',function(err) {
+
+                console.log(err);
             });
+
+//        models.Notification.find({})
+//            .sort('update_date',-1)
+//            .populate('user_id')
+//            .limit(1)
+//            .exec(function(err,nots) {
+//                if(!nots[0].user_id.last_visit) {
+//                    nots[0].user_id.last_visit = Date.now();
+//                    nots[0].user_id.save();
+//                }
+//
+//                var first_update_date = new Date(Number(nots[0].user_id.last_visit || Date.now()) - 60000);
+//                var second_update_date = new Date(Number(first_update_date) + 1600000);
+//
+//                sendNotificationToUser(nots[0],first_update_date);
+//
+//                sendNotificationToUser(nots[0],second_update_date);
+//            });
 
     },1000);
 }
