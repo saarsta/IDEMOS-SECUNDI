@@ -70,7 +70,7 @@ var User = module.exports = new Schema({
     invited_by: {type: ObjectId, ref: 'User'},
     has_been_invited : {type: Boolean, 'default': false, editable: false},
     tokens_achivements_to_user_who_invited_me: Schema.Types.Mixed,
-    num_of_extra_tokens: {type: mongoose_types.Integer, 'default': 0, max:6, min: 0},// i might change it to gamification.bonus.
+    num_of_extra_tokens: {type: mongoose_types.Integer, 'default': 0, max:6, min: 0},
     number_of_days_of_spending_all_tokens: {type: Number, 'default' : 0, editable: false},
     blog_popularity_counter: {type: Number, 'default': 0, editable: false},
     avatar : mongoose_types.File,

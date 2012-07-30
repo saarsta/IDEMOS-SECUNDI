@@ -198,68 +198,68 @@ var error_message = error_message || '';
 <% } %>
 
 
-    <div class="comments-box">
-        <div class="extra cf">
+<div class="comments-box">
+    <div class="extra cf">
 
-            <select class="left-select" id="sorting_select">
-                <option value="-creation_date">
-                    תאריך
-                </option>
-                <!-- <option id="first_name">
-                    מיין לפי יוזר
-                </option>-->
-                <option value="-total_votes">
-                    שנויים במחלוקת
-                </option>
-                <option value="-popularity">
-                    פוסטים הכי טובים
-                </option>
-            </select>
+        <select class="left-select" id="sorting_select">
+            <option value="-creation_date">
+                תאריך
+            </option>
+            <!-- <option id="first_name">
+                מיין לפי יוזר
+            </option>-->
+            <option value="-total_votes">
+                שנויים במחלוקת
+            </option>
+            <option value="-popularity">
+                פוסטים הכי טובים
+            </option>
+        </select>
 
-            <h2>
-                תגובות
-                <small id="comments_number"></small>
-            </h2>
-            <div id="comments">
+        <h2>
+            תגובות
+            <small id="comments_number"></small>
+        </h2>
+        <div id="comments">
 
-            </div>
-            <div class="write-comment">
-                <h3>
-                    כתיבת תגובה
-                </h3>
-
-                <div class="text-box cf"
-                <%if(user_logged){%> data-creator_id="<%=user._id%>" <%}%> >
-                <div class="left">
-                    <textarea id="discussion_comment" dir="rtl" class="four-col" cols="0" rows="0"></textarea>
-                </div>
-                <div class="user-right">
-                    <div class="img-box" style="overflow: hidden;">
-                        <div style="width:70px; height:70px;" class='auto-scale'>
-                            <% if(user_logged) { %>
-                            <img src="<%=avatar%>" alt="אני"/>
-                            <% } %>
-                        </div>
-                        <span></span>
-                    </div>
-                    <h4>אני</h4>
-
-                    <div class="date"><%=(new Date()).format('dd.mm.yy') %></div>
-                    <% if(user_logged){ %>
-                    <div class="proxy">
-                        <span>3</span>
-                    </div>
-                    <div class="respect">
-                        <span class="score"><%=user.score%></span>
-                    </div>
-                    <% } %>
-                </div>
-            </div>
-            <a id="submit_post" class="green-btn" href="javascript:void(0);">
-                פרסם
-            </a>
         </div>
+        <div class="write-comment">
+            <h3>
+                כתיבת תגובה
+            </h3>
+
+            <div class="text-box cf"
+            <%if(user_logged){%> data-creator_id="<%=user._id%>" <%}%> >
+            <div class="left">
+                <textarea id="discussion_comment" dir="rtl" class="four-col" cols="0" rows="0"></textarea>
+            </div>
+            <div class="user-right">
+                <div class="img-box" style="overflow: hidden;">
+                    <div style="width:70px; height:70px;" class='auto-scale'>
+                        <% if(user_logged) { %>
+                        <img src="<%=avatar%>" alt="אני"/>
+                        <% } %>
+                    </div>
+                    <span></span>
+                </div>
+                <h4>אני</h4>
+
+                <div class="date"><%=(new Date()).format('dd.mm.yy') %></div>
+                <% if(user_logged){ %>
+                <div class="proxy">
+                    <span><%=user.num_of_proxies_i_represent%> </span>
+                </div>
+                <div class="respect">
+                    <span class="score"><%=user.score%></span>
+                </div>
+                <% } %>
+            </div>
+        </div>
+        <a id="submit_post" class="green-btn" href="javascript:void(0);">
+            פרסם
+        </a>
     </div>
+</div>
 </div>
 <!--<div class="add-offer">
 <div class="text-box">

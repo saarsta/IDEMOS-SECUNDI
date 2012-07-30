@@ -6,21 +6,7 @@ var common = require('./common');
 var UserResource = module.exports =  mongoose_resource.MongooseResource.extend({
     init: function() {
         this._super(Model.User, null);
-        this.fields = {
-            id : null,
-//            username:null,
-//            facebook_id:null,
-            first_name: null,
-            last_name: null,
-            biography: null,
-
-//            email:null,
-            gender:null,
-            age:null,
-//        discussions:null
-//        avatar: null,
-            avatar_url:null
-        };
+        this.fields = common.user_public_fields;
         this.update_fields = {
 //            first_name:null,
 //            last_name:null,

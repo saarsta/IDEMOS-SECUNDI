@@ -1,6 +1,6 @@
 {?html_version}
     <div class="one cf">
-        <a href="{link}">
+        <div class="link_to_resource" data-link="{link}">
             <div class="right-image">
                 <div class="img-box">
                     <img src="{?pic.url}{pic.url}{:else}{pic}{/pic.url}" alt=""/>
@@ -9,13 +9,13 @@
             </div>
             <p>
                 <span class="part_one">{part_one} </span>
-                <!--<a href="{extra_link}">-->
+                <a href="{extra_link}">
                     {part_tow}
-                <!--</a>-->
+                </a>
                 <span class="part_three">{part_three}</span>
             </p>
             <div class="date">{update_date|time}</div>
-        </a>
+        </div>
         <a class="btn share" data-img_src="{img_src.url}" data-text_preview="{text_preview}" data-title="{title}" rel="{link|uc}" href="/facebookShare?link={link|uc}">שתף</a>
     </div>
 {:else}

@@ -38,7 +38,7 @@
                     <span id="upload_image_placeholder"></span>
                 </div>
                 <div class="proxy">
-                    <span><%=tokensBarModel.totalProxy%></span> מנדטים
+                    <span><%=pageUser.num_of_proxies_i_represent%></span> מנדטים
                 </div>
                 <div class="respect">
                     <span><%=pageUser.score%></span> מוניטין
@@ -179,8 +179,9 @@
 
         var userId='<%=pageUser._id %>';
         var currentUserId='<%=user._id %>';
-        var proxy = JSON.parse('<%-proxy%>');
-       var isHisUru=<%=isHisUru%>;
+       // var proxy = JSON.parse('<%-proxy%>');
+        var proxy = <%-proxy%>;
+         var isHisUru=<%=isHisUru%>;
 
         function tabSelected(event, ui){
            function convertToTabModel(data,type){

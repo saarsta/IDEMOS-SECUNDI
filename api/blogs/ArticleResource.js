@@ -26,29 +26,35 @@ var ArticleResource = common.GamificationMongooseResource.extend({
             text: null,
             time: null,
             tags:null,
-            avatar:null,
-            first_name:null,
-            last_name:null
+            user_id:{
+                avatar:null,
+                first_name:null,
+                last_name:null,
+                avatar_url:null,
+                id:null,
+                score:null
+            }
+
         }
     },
 
     run_query: function(req,query,callback)
     {
-        query.populate('creator_id');
+        query.populate('user_id');
         this._super(req,query,callback);
     },
 
     deserialize: function(req,res,object,status) {
 
         // Sends rss feed
-        if(req.query.rss && (status == 200 || !status)){
+        if(req.query.rss && req.query.user_id && (status == 200 || !status)){
                 var feed = new RSS({
                         title: 'עורו',
                         description: 'בלוגים',
-                        feed_url: 'http://www.uru.org.il/blogs/' + object.results[0].creator_id._id,
+                        feed_url: 'http://www.uru.org.il/blogs/' + object.objects[0].user_id.id,
                         site_url: 'http://www.uru.org.il',
 //                        image_url: 'http://example.com/icon.png',
-                        author:  object.results[0].creator_id.first_name + " " + object.results[0].creator_id.last_name
+                        author:  object.objects[0].user_id.first_name + " " + object.objects[0].user_id.last_name
                 });
 
                 _.each(object.objects,function(article) {
