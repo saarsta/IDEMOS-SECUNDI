@@ -167,6 +167,12 @@ function fbs_click(ui) {
 // handle image loading stuff
 
 $(function(){
+    $('.link_to_resource').live('click', function(){
+        debugger
+        var link = $(this).data('link');
+        window.location.replace(link);
+    })
+
     $('user-box').live('tap', function(){
         $(this).toggleClass('active');
     })
