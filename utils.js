@@ -13,7 +13,8 @@
  var _mongoose_model = mongoose.model;
  mongoose.model = function(name,schema,collection)
  {
-     var model = _mongoose_model.apply(mongoose,arguments);
+    console.log('show only',SHOW_ONLY_PUBLISHED);
+    var model = _mongoose_model.apply(mongoose,arguments);
      var _find = model.find;
      model.find = function()
      {
@@ -21,7 +22,7 @@
          if(model.schema.paths.is_hidden && SHOW_ONLY_PUBLISHED)
          {
              var query = args.length > 0 && typeof(args[0]) == 'object' ? args[0] : {};
-             if(typeof(query['is_hidden']) == 'undefined')
+             if(query['is_hidden'] != 'any')
                 query['is_hidden'] =  false;
              else
                  delete query['is_hidden'];
