@@ -22,7 +22,7 @@
          if(model.schema.paths.is_hidden && SHOW_ONLY_PUBLISHED)
          {
              var query = args.length > 0 && typeof(args[0]) == 'object' ? args[0] : {};
-             if(query['is_hidden'] != 'any')
+             if(query['is_hidden'] != -1)
                 query['is_hidden'] =  false;
              else
                  delete query['is_hidden'];
@@ -42,7 +42,7 @@
          if(model.schema.paths.is_hidden && SHOW_ONLY_PUBLISHED)
          {
              var query = args.length > 0 && typeof(args[0]) == 'object' ? args[0] : {};
-             if(query['is_hidden'] != 'any')
+             if(query['is_hidden'] != -1)
                 query['is_hidden'] =  false;
              else
                  delete query['is_hidden'];
@@ -63,7 +63,7 @@
          if(model.schema.paths.is_hidden && SHOW_ONLY_PUBLISHED)
          {
              var query = args.length > 0 && typeof(args[0]) == 'object' ? args[0] : {};
-             if(query['is_hidden'] != 'any')
+             if(query['is_hidden'] != -1)
                 query['is_hidden'] =  false;
              else
                  delete query['is_hidden'];

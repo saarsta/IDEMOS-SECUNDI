@@ -19,7 +19,7 @@ module.exports = function(app)
         admin.modelCounts = function(collectionName,filters, onReady) {
                 filters = filters || {};
                 if(this.models[collectionName].model.schema.paths.is_hidden)
-                    filters['is_hidden'] = 'any';
+                    filters['is_hidden'] = -1;
                 _modelCounts.call(this,collectionName,filters,onReady);
         };
 
@@ -27,7 +27,7 @@ module.exports = function(app)
         admin.listModelDocuments = function(collectionName, start, count,filters,sort, onReady) {
             filters = filters || {};
             if(this.models[collectionName].model.schema.paths.is_hidden)
-                filters['is_hidden'] = 'any';
+                filters['is_hidden'] = -1;
 
             _listModelDocuments.call(this,collectionName, start, count,filters,sort, onReady);
         };
