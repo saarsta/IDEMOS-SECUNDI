@@ -1,83 +1,78 @@
- var mongoose = require('mongoose');
+ var mongoose = require('mongoose')
+     ,events = require('events');
 
  var SHOW_ONLY_PUBLISHED = false;
 
  exports.setShowOnlyPublished = function(show_only_published) {
     SHOW_ONLY_PUBLISHED = show_only_published;
-    console.log('show only',SHOW_ONLY_PUBLISHED);
  };
 
  exports.getShowOnlyPublished = function() {
      return SHOW_ONLY_PUBLISHED;
  };
 
- var _mongoose_model = mongoose.model;
- mongoose.model = function(name,schema,collection)
- {
-    var model = _mongoose_model.apply(mongoose,arguments);
-     var _find = model.find;
-     model.find = function()
-     {
-         var args = Array.prototype.slice.call(arguments);
-         if(model.schema.paths.is_hidden && SHOW_ONLY_PUBLISHED)
-         {
-             var query = args.length > 0 && typeof(args[0]) == 'object' ? args[0] : {};
-		     console.log('in admin', query['is_hidden']);
-             if(query['is_hidden'] != -1)
-                query['is_hidden'] =  false;
-             else
-                 delete query['is_hidden'];
-             if(args.length == 0)
-                 args.unshift(query);
-             else if(typeof(args[0]) != 'object')
-                 args.unshift(query);
-             else
-                 args[0] = query;
-         }
-         return _find.apply(this,args);
-     };
-     var _findOne = model.findOne;
-     model.findOne = function()
-     {
-         var args = Array.prototype.slice.call(arguments);
-         if(model.schema.paths.is_hidden && SHOW_ONLY_PUBLISHED)
-         {
-             var query = args.length > 0 && typeof(args[0]) == 'object' ? args[0] : {};
-             if(query['is_hidden'] != -1)
-                query['is_hidden'] =  false;
-             else
-                 delete query['is_hidden'];
-             if(args.length == 0)
-                 args.unshift(query);
-             else if(typeof(args[0]) != 'object')
-                 args.unshift(query);
-             else
-                 args[0] = query;
-         }
-         return _findOne.apply(this,args);
-     };
 
-     var _count = model.count;
-     model.count = function()
+ var model = mongoose.Model;
+ var _find = model.find;
+ model.find = function()
+ {
+     var args = Array.prototype.slice.call(arguments);
+     if(this.schema.paths.is_hidden && SHOW_ONLY_PUBLISHED)
      {
-         var args = Array.prototype.slice.call(arguments);
-         if(model.schema.paths.is_hidden && SHOW_ONLY_PUBLISHED)
-         {
-             var query = args.length > 0 && typeof(args[0]) == 'object' ? args[0] : {};
-             if(query['is_hidden'] != -1)
-                query['is_hidden'] =  false;
-             else
-                 delete query['is_hidden'];
-             if(args.length == 0)
-                 args.unshift(query);
-             else if(typeof(args[0]) != 'object')
-                 args.unshift(query);
-             else
-                 args[0] = query;
-         }
-         return _count.apply(this,args);
-     };
-     return model;
+         var query = args.length > 0 && typeof(args[0]) == 'object' ? args[0] : {};
+         if(query['is_hidden'] != -1)
+            query['is_hidden'] =  false;
+         else
+             delete query['is_hidden'];
+         if(args.length == 0)
+             args.unshift(query);
+         else if(typeof(args[0]) != 'object')
+             args.unshift(query);
+         else
+             args[0] = query;
+     }
+     return _find.apply(this,args);
+ };
+ var _findOne = model.findOne;
+ model.findOne = function()
+ {
+     var args = Array.prototype.slice.call(arguments);
+     if(this.schema.paths.is_hidden && SHOW_ONLY_PUBLISHED)
+     {
+         var query = args.length > 0 && typeof(args[0]) == 'object' ? args[0] : {};
+         if(query['is_hidden'] != -1)
+             query['is_hidden'] =  false;
+         else
+             delete query['is_hidden'];
+         if(args.length == 0)
+             args.unshift(query);
+         else if(typeof(args[0]) != 'object')
+             args.unshift(query);
+         else
+             args[0] = query;
+     }
+     return _findOne.apply(this,args);
+ };
+
+ var _count = model.count;
+ model.count = function()
+ {
+     var args = Array.prototype.slice.call(arguments);
+     if(this.schema.paths.is_hidden && SHOW_ONLY_PUBLISHED)
+     {
+         var query = args.length > 0 && typeof(args[0]) == 'object' ? args[0] : {};
+         if(query['is_hidden'] != -1)
+             query['is_hidden'] =  false;
+         else
+             delete query['is_hidden'];
+         if(args.length == 0)
+             args.unshift(query);
+         else if(typeof(args[0]) != 'object')
+             args.unshift(query);
+         else
+             args[0] = query;
+     }
+     return _count.apply(this,args);
  };
 
 
@@ -200,7 +195,63 @@ exports.extend_model = function(name, base_schema, schema, collection,schemaFunc
     return {model:model, schema:schemaObj};
 };
 
-/*
+ /***
+  * Temporary stream that it's pause and resume works and  saved data in memory.
+  * Until the request stream of nodejs will be fixed
+  * @type {Function}
+  */
+ var queueStream = exports.queueStream = function (req) {
+     events.EventEmitter(this);
+     var self = this;
+     self.req = req;
+     var is_paused = false;
+     var is_destroyed = false;
+     var is_ended = false;
+     var queue = [];
+     self.pause = function () {
+         req.pause();
+         is_paused = true;
+     };
+     self.resume = function () {
+         req.resume();
+         is_paused = false;
+         if (!is_destroyed)
+             queue.forEach(function (data) {
+                 self.emit('data', data);
+             });
+         if (is_ended)
+             self.emit('end');
+     };
+
+     req.on('data', function (data) {
+         if (is_destroyed)
+             return;
+         if (is_paused) {
+             queue.push(data);
+         }
+         else {
+             self.emit('data', data);
+         }
+     });
+
+     req.on('end', function () {
+         if (is_destroyed)
+             return;
+         if (is_paused)
+             is_ended = true;
+         else
+             self.emit('end');
+     });
+
+     self.destroy = function () {
+         req.destroy();
+         is_destroyed = true;
+     };
+ };
+
+ require('util').inherits(queueStream, events.EventEmitter);
+
+ /*
  * Date Format 1.2.3
  * (c) 2007-2009 Steven Levithan <stevenlevithan.com>
  * MIT license
