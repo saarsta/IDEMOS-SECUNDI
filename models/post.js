@@ -6,7 +6,7 @@ var mongoose = require("mongoose"),
     utils = require('../utils');
 
 var Post = {
-    text:String,
+    text:{type:mongoose_types.Html},
     votes_for: {type: Number, 'default': 0},
     votes_against: {type: Number, 'default': 0},
     is_comment_on_vision:{type:Boolean, 'default':false},
