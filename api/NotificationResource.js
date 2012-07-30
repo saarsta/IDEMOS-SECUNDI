@@ -312,50 +312,6 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                     }
                     itr_cbk();
                     break;
-//                case "user_gave_my_post_tokens":
-//                    var num_of_users_that_vote_my_post = notification.notificators.length;
-//                    if(notification && notification.notificators[0] && discussions_hash[notification.notificators[0].sub_entity_id + ""]){
-//                        var latest_notificator = getLatestNotificator(notification.notificators);
-//                        notification.link = "/discussions/" + notification.notificators[0].sub_entity_id;
-//                        notification.link += latest_notificator ? "#post_" + notification.entity_id : "";
-//                        notification.pic = discussions_hash[notification.notificators[0].sub_entity_id + ""].image_field_preview
-//                            || discussions_hash[notification.notificators[0].sub_entity_id + ""].image_field;
-//                        notification.name = discussions_hash[notification.notificators[0].sub_entity_id + ""].title;
-//                    }
-//
-//                    if(num_of_users_that_vote_my_post == 1){
-//
-//                        if(user_obj){
-//                            notification.pic = user_obj.avatar_url();
-//                            notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;
-//                        }
-//                        notification.message_of_notificators =
-//                            "נתן לך"
-//                                + " "
-//                        + notification.notificators[0].ballance
-//+ " "
-//                        + "אסימונים "
-//                        + " "
-//                        + "על פוסט/ים שכתבת"
-//;
-//                    }else{
-//                        var token_sum = _.reduce(notification.notificators, function(sum, notificator){return sum + Number(notificator.ballance)}, 0);
-//
-//                        notification.description_of_notificators = num_of_users_that_vote_my_post +
-//                            " " +
-//                             "חברי עורו"
-//                            ;
-//                        notification.message_of_notificators =
-//                            "נתנו לך"
-//
-//                             + " " + token_sum + " " +
-//                                "אסימונים"
-//                        + " "
-//                        + "על פוסט/ים שכתבת בדיון - "
-//                        ;
-//                    }
-//                    itr_cbk();
-//                    break;
                 case "user_gave_my_suggestion_tokens":
                     var num_of_users_that_vote_my_sugg = notification.notificators.length;
 

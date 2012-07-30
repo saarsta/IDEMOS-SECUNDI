@@ -24,11 +24,19 @@ module.exports = function(app) {
 
     router.include('/blogs',require('./blogs'));
 
+    router.include('/cycles', require('./cycles'));
+
+    router.include('/actions', require('./actions'));
+
+    router.include('./pending_actions',require('./pending_actions'));
+
     // TODO remove this (only for backward comp)
     router.include('/meida', InformationItems);
 
     router.include('/discussions',Discussions);
+
     router.include('/myuru',MyUru);
+
    // router.include('/hisuru',MyUru);
   //  router.include('/hisuru',HisUru);
 

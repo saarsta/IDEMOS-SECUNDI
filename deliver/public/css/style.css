@@ -1204,10 +1204,10 @@ body
 {
     color:#50504f;
     font: normal 13px/17px ARial;
-   /* height: 54px;
+    height: 54px;
     overflow: hidden;
     margin-bottom: 10px;
-    */
+    
 }
 #content .services-box h2 span
 {
@@ -7583,3 +7583,10 @@ body.body-action .followers-box h2
     font: normal 13px/20px ARial;
     margin: 0;
 }
+
+.link_to_resource
+{
+    cursor: pointer;
+}
+
+A:hover {text-decoration: underline; color: red;}

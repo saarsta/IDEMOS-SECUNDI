@@ -14,7 +14,7 @@ var TokensBarModel =function (tokenPixels, numExtraTokens, tokens, proxies) {
         }
 
         function createProxy(proxies){
-            var proxy={ proxies:[]}
+            var proxy = { proxies:[]}
             var i=0;
             var proc;
             for (i=0; i< proxies.length;i++){
