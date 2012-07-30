@@ -341,7 +341,7 @@ function isSubEntityExist(notification, sub_entity){
         return _.any(notification.notificators, function(noti){ return noti.sub_entity_id + "" == sub_entity + ""});
 }
 
-
+/*
 if(/notifications\.js/.test(process.argv[1])) {
     var app = require('../app');
 
@@ -375,7 +375,7 @@ if(/notifications\.js/.test(process.argv[1])) {
 //            });
 
     },1000);
-}
+}*/
 
 
 //approved_info_item_i_created
@@ -386,7 +386,7 @@ if(/notifications\.js/.test(process.argv[1])) {
     //function(notification_type, entity_id, user_id, notificatior_id, sub_entity_id, callback){
 
     setTimeout(function() {
-        create_new_notification('comment_on_discussion_you_are_part_of',
+        create_new_notification('approved_info_item_i_created',
             // '4fc5e851ed6e970100000311','4f7c53e9afe34d0100000006','4f45145968766b0100000002','4ffecd7c5600ec0100001757',function(err) {
             '4fe6db00f9e35fd00800146b','4ff1b29aabf64e440f00013a','4f45145968766b0100000002','4ffecd7c5600ec0100001757',function(err) {
 
