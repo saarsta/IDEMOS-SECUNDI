@@ -4609,8 +4609,16 @@ body.search-ative #header
 {
     float: left;
     /* width: 94px;*/
-    width: 140px;
+    width: 153px;
     padding-top: 5px;
+}
+
+.myuru-top .left .token-bar .token-popup .user-left .user-name
+{
+    overflow: hidden;
+    height: 20px;
+    width: 83px;
+    margin-bottom: 5px
 }
 .myuru-top .left .token-bar .token-popup .user-left .left1
 {
