@@ -11,72 +11,68 @@
      return SHOW_ONLY_PUBLISHED;
  };
 
- var _mongoose_model = mongoose.model;
- mongoose.model = function(name,schema,collection)
- {
-     var model = _mongoose_model.apply(mongoose,arguments);
-     var _find = model.find;
-     model.find = function()
-     {
-         var args = Array.prototype.slice.call(arguments);
-         if(model.schema.paths.is_hidden && SHOW_ONLY_PUBLISHED)
-         {
-             var query = args.length > 0 && typeof(args[0]) == 'object' ? args[0] : {};
-             if(typeof(query['is_hidden']) == 'undefined')
-                query['is_hidden'] =  false;
-             else
-                 delete query['is_hidden'];
-             if(args.length == 0)
-                 args.unshift(query);
-             else if(typeof(args[0]) != 'object')
-                 args.unshift(query);
-             else
-                 args[0] = query;
-         }
-         return _find.apply(this,args);
-     };
-     var _findOne = model.findOne;
-     model.findOne = function()
-     {
-         var args = Array.prototype.slice.call(arguments);
-         if(model.schema.paths.is_hidden && SHOW_ONLY_PUBLISHED)
-         {
-             var query = args.length > 0 && typeof(args[0]) == 'object' ? args[0] : {};
-             if(typeof(query['is_hidden']) == 'undefined')
-                 query['is_hidden'] = false;
-//             else
-//                 delete query['is_hidden'];
-             if(args.length == 0)
-                 args.unshift(query);
-             else if(typeof(args[0]) != 'object')
-                 args.unshift(query);
-             else
-                 args[0] = query;
-         }
-         return _findOne.apply(this,args);
-     };
 
-     var _count = model.count;
-     model.count = function()
+ var model = mongoose.Model;
+ var _find = model.find;
+ model.find = function()
+ {
+     var args = Array.prototype.slice.call(arguments);
+     if(this.schema.paths.is_hidden && SHOW_ONLY_PUBLISHED)
      {
-         var args = Array.prototype.slice.call(arguments);
-         if(model.schema.paths.is_hidden && SHOW_ONLY_PUBLISHED)
-         {
-             var query = args.length > 0 && typeof(args[0]) == 'object' ? args[0] : {};
-             if(typeof(query['is_hidden']) == 'undefined')
-                 query['is_hidden'] = false;
-//             else
-//                 delete query['is_hidden'];
-             if(args.length == 0)
-                 args.unshift(query);
-             else if(typeof(args[0]) != 'object')
-                 args.unshift(query);
-             else
-                 args[0] = query;
-         }
-         return _count.apply(this,args);
-     };
-     return model;
+         var query = args.length > 0 && typeof(args[0]) == 'object' ? args[0] : {};
+         if(query['is_hidden'] != -1)
+            query['is_hidden'] =  false;
+         else
+             delete query['is_hidden'];
+         if(args.length == 0)
+             args.unshift(query);
+         else if(typeof(args[0]) != 'object')
+             args.unshift(query);
+         else
+             args[0] = query;
+     }
+     return _find.apply(this,args);
+ };
+ var _findOne = model.findOne;
+ model.findOne = function()
+ {
+     var args = Array.prototype.slice.call(arguments);
+     if(this.schema.paths.is_hidden && SHOW_ONLY_PUBLISHED)
+     {
+         var query = args.length > 0 && typeof(args[0]) == 'object' ? args[0] : {};
+         if(query['is_hidden'] != -1)
+             query['is_hidden'] =  false;
+         else
+             delete query['is_hidden'];
+         if(args.length == 0)
+             args.unshift(query);
+         else if(typeof(args[0]) != 'object')
+             args.unshift(query);
+         else
+             args[0] = query;
+     }
+     return _findOne.apply(this,args);
+ };
+
+ var _count = model.count;
+ model.count = function()
+ {
+     var args = Array.prototype.slice.call(arguments);
+     if(this.schema.paths.is_hidden && SHOW_ONLY_PUBLISHED)
+     {
+         var query = args.length > 0 && typeof(args[0]) == 'object' ? args[0] : {};
+         if(query['is_hidden'] != -1)
+             query['is_hidden'] =  false;
+         else
+             delete query['is_hidden'];
+         if(args.length == 0)
+             args.unshift(query);
+         else if(typeof(args[0]) != 'object')
+             args.unshift(query);
+         else
+             args[0] = query;
+     }
+     return _count.apply(this,args);
  };
 
 
