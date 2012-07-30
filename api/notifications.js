@@ -96,16 +96,20 @@ exports.create_user_proxy_vote_or_grade_notification = function(notification_typ
                 else
                     noti.notificators[0].ballance = grade_or_balance;
 
-
-                
                 var last_update_date = noti.update_date;
                 noti.update_date = Date.now();
-                noti.notificators[0].ballance = is_agree ? 1 : -1;
 
-                noti.save(function(err, obj){
-                    cbk(err, obj);
-                    sendNotificationToUser(noti,last_update_date);
-                });
+                if(notification_type == "proxy_vote_to_post" && noti.notificators[0].ballance == 0){
+                    noti.remove(function(err, obj){
+                        cbk(err, obj);
+                    })
+                }else{
+                    noti.save(function(err, obj){
+                        cbk(err, obj);
+                        sendNotificationToUser(noti,last_update_date);
+                    });
+                }
+
             }
             else{
                 var notification = new models.Notification();
@@ -281,7 +285,8 @@ exports.create_user_vote_or_grade_notification = function(notification_type, ent
                 }
 
                 //when user votes to post and get to balance 0, i delete this notification
-                if((notification_type == "user_gave_my_post_tokens" || notification_type == "user_gave_my_post_bad_tokens") && notificator.ballance == 0){
+                if((notification_type == "user_gave_my_post_tokens" || notification_type == "user_gave_my_post_bad_tokens")
+                    && (notificator ? notificator.ballance == 0 : false)){
                     noti.remove(function(err, result){
                         cbk(err, result);
                     })
