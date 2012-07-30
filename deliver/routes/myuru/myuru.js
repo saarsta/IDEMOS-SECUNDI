@@ -35,7 +35,7 @@ module.exports = function (req, res) {
                     models.User.findById(pageUserID)
 
                         .select(["tokens", "num_of_extra_tokens","proxy" , "biography","first_name", "last_name", "facebook_id", "avatar", "score", "followers",'num_of_proxies_i_represent'])
-                        .populate("proxy.user_id",['id','_id','first_name','last_name','avatar','facebook_id','num_of_given_mandates', "followers",'score','num_of_proxies_i_represent'])
+                        .populate("proxy.user_id"/*,['id','_id','first_name','last_name','avatar','facebook_id','num_of_given_mandates', "followers",'score','num_of_proxies_i_represent']*/)
 
                         .exec(function(err, user){
                             req.session.user.biography = user.biography;
@@ -48,7 +48,7 @@ module.exports = function (req, res) {
                     //get details of the current user that watch "his uru"
                     if(sessionUser && pageUserID != sessionUser._id){
                         models.User.findById(sessionUser._id).select(["tokens", "num_of_extra_tokens", "proxy", "biography","first_name","last_name","facebook_id", "avatar","score", "followers",'num_of_proxies_i_represent'])
-                            .populate("proxy.user_id",['id','_id','first_name','last_name','avatar','facebook_id','num_of_given_mandates','score','num_of_proxies_i_represent'])
+                            .populate("proxy.user_id"/*,['_id','first_name','last_name','avatar','facebook_id','num_of_given_mandates','score','num_of_proxies_i_represent']*/)
 
                             .exec(function(err, user){
                                 cbk1(err, user);
