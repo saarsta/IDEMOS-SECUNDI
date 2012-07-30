@@ -1,4 +1,9 @@
-<div class="one cf">
+
+<div id="post_{_id}" class="one cf {#isFirst} noBorder{:else}{/isFirst} {#isEven} comment-one-even{:else}{/isEven}"
+     data-id="{_id}" data-ref-id="{ref_to_post_id}" data-num-given-mandates="{mandates_curr_user_gave_creator}"
+     data-creator_name="{creator_id.first_name} {creator_id.last_name}"
+     data-creator_id="{creator_id.id}">
+
     <div class="user-right">
         <span class="arrow"></span>
         <div class="left">

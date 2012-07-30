@@ -110,8 +110,8 @@ var db_functions = {
             type: "POST",
             async: true,
             data: {"method": method, "post_article_id": post_article_id},
-            success: function (err, data) {
-                callback( data);
+            success: function (data, err) {
+                callback( err,data);
             },
             error: function(err, data){
                 callback(err, data);

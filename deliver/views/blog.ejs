@@ -61,16 +61,16 @@
                     <div class="profile-info cf">
                        <% if (blogger.avatar_url) { %>
                        <div class="img-box">
-                            <img src="<%=blogger.avatar_url %> " alt="" />
+                            <img width="120" height="112" src="<%=blogger.avatar_url() %> " alt="" />
                             <span></span>
                         </div>
                         <% } %>
                         <div class="left">
                             <h4><%=blogger.first_name %></h4>
 
-                        <% if (blogger.blog_text_1) { %>        <p><%=blogger.blog_text_1 %></p>      <% } %>
-                        <% if (blogger.blog_text_2) { %>        <p><%=blogger.blog_text_2 %></p>      <% } %>
-                        <% if (blogger.blog_text_3) { %>        <p><%=blogger.blog_text_3 %></p>      <% } %>
+                         <p><% if (blogger.blog_text_1) { %>       <%=blogger.blog_text_1 %>      <% } %>&nbsp;</p>
+                         <p><% if (blogger.blog_text_2) { %>       <%=blogger.blog_text_2 %>     <% } %>&nbsp;</p>
+                        <p><% if (blogger.blog_text_3) { %>        <%=blogger.blog_text_3 %>      <% } %>&nbsp;</p>
                         </div>
                         <div class="badges cf">
                             <div class="proxy">
@@ -212,35 +212,33 @@ function getComments(article_id) {
         })
     });
 
-      $('#comments').on('click', '.vote_for', function () {
-          vote.apply($(this),['add']);
 
+     $('.vote_for').live("click", function(event){
+        vote.apply($(this),['add']);
       });
-
-      $('#comments').on('click', ".vote_against", function () {
+      $('.vote_against').live('click', function (e) {
           vote.apply($(this),['remove']);
 
       });
       function vote(actionType){
-              var post_id = $(this).parents('.comment-one').data("id");
+              var post_id = $(this).parents('.one').data("id");
               var button = $(this);
               var func = $(this).parents('#comments').length ? db_functions.voteForPost : db_functions.voteForSuggestion;
-              func.call(db_functions, post_id, actionType,
-              db_functions.voteOnArticleComment(   post_id,function (err, post_obj)
+              db_functions.voteOnArticleComment(   post_id,actionType,function (err, post_obj)
               {
-                  if (!err) {
+                  if (err==="success") {
 
                          button.parents(".ratio").find(".count").text(Math.round(post_obj.votes_for-post_obj.votes_against ));
                          var down_arrow = button.parents(".ratio").find(".down");
                          var up_arrow =button.parents(".ratio").find(".up");
-                         down_arrow.removeClass("balance0").removeClass("balance1").removeClass("balance2").removeClass("balance3").removeClass("balance-1").removeClass("balance-2").removeClass("balance-3").addClass("balance"+post_obj.voter_balance);
-                         up_arrow.removeClass("balance0").removeClass("balance1").removeClass("balance2").removeClass("balance3").removeClass("balance-1").removeClass("balance-2").removeClass("balance-3").addClass("balance"+post_obj.voter_balance);
+                         down_arrow.removeClass("balance0").removeClass("balance1").removeClass("balance2").removeClass("balance3").removeClass("balance-1").removeClass("balance-2").removeClass("balance-3").addClass("balance"+post_obj.balance);
+                         up_arrow.removeClass("balance0").removeClass("balance1").removeClass("balance2").removeClass("balance3").removeClass("balance-1").removeClass("balance-2").removeClass("balance-3").addClass("balance"+post_obj.balance);
                   }
                   else {
                       if (err.responseText == 'Error: there is not enought tokens')
                           popupProvider.showOkPopup( {massage:     'אין לך מספיק טוקנים'});
                       if (err.responseText == 'user already voted for this post')
-                          popupProvider.showOkPopup( {massage:     'באפשרותך לתת עד שלושה אסימונים לתגובה בדיון'});
+                          popupProvider.showOkPopup( {massage:     'באפשרותך לתת עד אסימון אחד לתגובה בדיון'});
                       if (err.responseText == 'soory, can\'t vote to your own post')
                           popupProvider.showOkPopup( {massage:     'מצטערים, לא ניתן להצביע לתגובה של עצמך'});
                   }
