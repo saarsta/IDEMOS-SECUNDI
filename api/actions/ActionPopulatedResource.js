@@ -5,7 +5,7 @@
  * Time: 14:29
  * To change this template use File | Settings | File Templates.
  */
-var action = require('actions/ActionResource.js'),
+var action = require('./ActionResource.js'),
     models = require('../../models'),
     _= require('underscore');
 

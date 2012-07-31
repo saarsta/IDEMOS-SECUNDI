@@ -223,6 +223,7 @@ var error_message = error_message || '';
         <div id="comments">
 
         </div>
+        <a href="javascript:void(0)" class="more_comments" style="display:none;">הראה עוד</a>
         <div class="write-comment">
             <h3>
                 כתיבת תגובה
@@ -1082,7 +1083,6 @@ $(document).ready(function () {
         dust.renderArray('discussion_comment', comments, null, function (err, out) {
             if (!err) {
                 var comments = $("#comments");
-                comments.empty();
                 comments.append(out);
                 var hash = window.location.hash;
                 if (hash) {
@@ -1113,23 +1113,40 @@ $(document).ready(function () {
 
     function loadPosts() {
         var selectedOption = $("#sorting_select").val();
-        db_functions.getSortedPostByDiscussion(discussion_id, selectedOption, function (err, data) {
+        db_functions.getSortedPostByDiscussion(discussion_id, selectedOption,current_offset, function (err, data) {
             if (err) {
                 console.log(err);
             } else {
+                current_offset += data.objects.length;
+
                 $.each(data.objects, function (index, post) {
                     post.title = discussion_title;
                     post.image_field_preview = discussion_img_field_preview;
                 });
 
                 renderComments(data.objects);
+
+                if(data.meta.total_count > current_offset )
+                    $('.more_comments').show();
+                else
+                    $('.more_comments').hide();
                 postsNumber = data.meta.total_count;
                 setCommentNumber(postsNumber);
             }
         })
     }
 
-    $('#sorting_select').change(loadPosts);
+    var current_offset = 0;
+
+    $('.more_comments').click(function() {
+        loadPosts();
+    });
+
+    $('#sorting_select').change(function() {
+        $("#comments").empty();
+        current_offset = 0;
+        loadPosts();
+    });
 
     loadPosts();
 

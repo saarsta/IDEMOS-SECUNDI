@@ -525,9 +525,9 @@ var db_functions = {
         });
     },
 
-    getSortedPostByDiscussion: function(discussion_id, sort_by, callback){
+    getSortedPostByDiscussion: function(discussion_id, sort_by,offset, callback){
         db_functions.loggedInAjax({
-            url: '/api/posts?discussion_id=' + discussion_id + "&order_by=" + sort_by,
+            url: '/api/posts?discussion_id=' + discussion_id + "&order_by=" + sort_by + '&offset=' + offset,
             type: "GET",
             async: true,
             success: function (data) {
