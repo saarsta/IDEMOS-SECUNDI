@@ -138,7 +138,7 @@ module.exports = function(app)
         list:['name']
     });
     admin.registerMongooseModel('Article',Models.Article,null,{
-        list:['title']
+        list:['title', 'getLink']
     });
     admin.registerMongooseModel('PostArticle',Models.PostArticle,null,{
         list:['article_id', 'text']

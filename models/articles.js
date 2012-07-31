@@ -50,6 +50,10 @@ var Article = module.exports = new Schema({
     is_hidden:{type:Boolean,'default':true}
 } ,{strict: true});
 
+Article.methods.getLink = function() {
+    return "http://uru.org.il/blogs/article/" +this.id;
+};
+
 Article.pre('save',function(next)
 {
     var self = this;
