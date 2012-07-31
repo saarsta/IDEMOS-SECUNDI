@@ -365,50 +365,71 @@ module.exports.approveSuggestion = function(id,callback)
         },
 
         function(discussion_object, cbk){
-            var vision = discussion_object.text_field;
-            var new_string = "";
-            var curr_position = 0;
-            var parts = suggestion_object.parts;
 
+            async.parallel([
 
+                //set latest discussionHistory with discussion grade
+                function(cbk1){
+                    models.DiscussionHistory.find({dicussion_id: discussion_object._id})
+                        .sort('date', 'descending')
+                        .limit(1)
+                        .exec(function(err, histories){
+                            if(histories.length){
+                                histories[0].grade = discussion_object.grade;
+                                histories[0].save(cbk1);
+                            }
+                            else
+                                cbk1();
+                        })
+                },
 
-        /*  for now!!!
+                function(cbk1){
+                    var vision = discussion_object.text_field;
+                    var new_string = "";
+                    var curr_position = 0;
+                    var parts = suggestion_object.parts;
 
-                        //changing the vision and save changes that have been so i can reverse it in change_vision
-                        for (var i = 0; i < parts.length; i++) {
-                            //                changed_text = vision.slice(parts[i].start, parseInt(parts[i].end) + 1);
-                            new_string += vision.slice(curr_position, parts[i].start);
-                            new_string += parts[i].text;
-                            curr_position = parseInt(parts[i].end) + 1;
-                            //                vision_changes_array.push({start: parts[i].start, end: parts[i].end, text : changed_text});
+                    vision = vision.replace(/\r/g,'');
 
-                            //                discussion_object.vision_changes.push({start: parts[i].start, end: parts[i].end, text : changed_text});
-                        }
-                        new_string += vision.slice(curr_position);
-            //            discussion_object.vision_changes.push(vision_changes_array);
+                    var str = vision.substr(0, Number(parts[0].start)) + parts[0].text + vision.substr(Number(parts[0].end));
+                    discussion_object.vision_text_history.push(discussion_object.text_field);
+                    discussion_object.text_field = str;
 
-        */
+                    //suggestion grade is the new discussion grade
+                    models.Discussion.update({_id:discussion_object._id},
+                        {
+                            $set:{text_field: str, grade: suggestion_grade}
+                        },
+                        function(err, counter){
+                            cbk1(err, discussion_object);
+                        });
+                }
 
-            vision = vision.replace(/\r/g,'');
-
-            var str = vision.substr(0, Number(parts[0].start)) + parts[0].text + vision.substr(Number(parts[0].end));
-            discussion_object.vision_text_history.push(discussion_object.text_field);
-            discussion_object.text_field = str;
-
-            //suggestion grade is the new discussion grade
-            models.Discussion.update({_id:discussion_object._id},
-            {
-//                $addToSet: {vision_text_history: discussion_object.text_field},
-                $set:{text_field: str, grade: suggestion_grade}
-            },
-                function(err, counter){
-                cbk(err, discussion_object);
-            });
+            ], function(err, args){
+                cbk(err, args[1]);
+            })
         },
 
         function(disc_obj, cbk){
-            suggestion_object.is_approved = true;
-            suggestion_object.save(cbk);
+            async.parallel([
+                // after discussion was changed, create new DiscussionHistory
+                function(cbk1){
+                    var discussion_history = new models.DiscussionHistory();
+
+                    discussion_history.discussion_id = disc_obj._id;
+                    discussion_history.date = Date.now();
+                    discussion_history.text_field = disc_obj.text_field;
+
+                    discussion_history.save(cbk1);
+                },
+
+                function(cbk1){
+                    suggestion_object.is_approved = true;
+                    suggestion_object.save(cbk1);
+                }
+            ], function(err, args){
+                cbk(err, args[1]);
+            })
         },
 
         function(sug_obj, num, cbk){

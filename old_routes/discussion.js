@@ -1,6 +1,6 @@
 var models = require('../models'),
     async = require('async'),
-    DiscussionResource = require('../api/DiscussionResource');
+    DiscussionResource = require('../api/discussions/DiscussionResource.js');
 
 module.exports = function(router)
 {

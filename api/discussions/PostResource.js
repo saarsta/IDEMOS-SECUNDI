@@ -7,13 +7,13 @@
  */
 
 var resources = require('jest'),
-    og_action = require('../og/og').doAction,
-    models = require('../models'),
-    common = require('./common'),
+    og_action = require('../../og/og.js').doAction,
+    models = require('../../models'),
+    common = require('../common.js'),
     async = require('async'),
     _ = require('underscore'),
     sanitizer = require('sanitizer'),
-    notifications = require('./notifications');
+    notifications = require('../notifications.js');
 
 var PostResource = module.exports = common.GamificationMongooseResource.extend({
     init:function () {

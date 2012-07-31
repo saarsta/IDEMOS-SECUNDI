@@ -7,10 +7,10 @@
  */
 
 
-var common = require('./common'),
+var common = require('../common.js'),
     util  = require('util'),
     jest = require('jest'),
-    models = require('../models'),
+    models = require('../../models'),
     async = require('async'),
 
     ACTION_SUGGESTION_PRICE = 2;

@@ -163,7 +163,6 @@ var Schemas = exports.Schemas = {
     PostAction:{
         action_id:{type:Schema.ObjectId, ref:'Action', index:true, required:true},
         text:String,
-//        is_comment_on_vision:{type:Boolean, 'default':false},
         ref_to_post_id:{type:Schema.ObjectId, ref:'Post', index:true}
     },
 
@@ -236,6 +235,8 @@ var Schemas = exports.Schemas = {
         grade_suggestion: {type: Number, 'default': 0},
         grade_action: {type: Number, 'default': 0},
         vote_on_post: {type: Number, 'default': 0},
+        vote_on_article_post: {type: Number, 'default': 0},
+        vote_on_action_post: {type: Number, 'default': 0},
         like_info_item: {type: Number, 'default': 0},
         join_to_action: {type: Number, 'default': 0},
         ceate_kilkul: {type: Number, 'default': 0},
@@ -286,6 +287,13 @@ var Schemas = exports.Schemas = {
         title: {type: String, required:true},
         text_field:{type:mongoose_types.Text},
         is_hidden:{type:Boolean,'default':true}
+    },
+
+    DiscussionHistory: {
+        discussion_id: {type: ObjectId, ref: 'Discussion'},
+        date: {type: Date, 'default': Date.now},
+        text_field: String,
+        grade: Number
     }
 };
 
@@ -312,6 +320,7 @@ var Models = module.exports = {
     SuccessStory:mongoose.model('SuccessStory', Schemas.SuccessStory),
     Update: mongoose.model('Update', Schemas.Update),
     Kilkul:mongoose.model('Kilkul', new Schema(Schemas.Kilkul, {strict: true})),
+    DiscussionHistory:mongoose.model('DiscussionHistory', new Schema(Schemas.DiscussionHistory, {strict: true})),
 
     Subject:mongoose.model('Subject', require('./subject')),
     Post:require('./post'),
@@ -321,6 +330,7 @@ var Models = module.exports = {
     PostOrSuggestion:mongoose.model('PostOrSuggestion', new Schema(require('./post_or_suggestion'), {strict: true}), 'posts'),
     Vote:mongoose.model('Vote', new Schema(Schemas.Vote, {strict: true})),
     VoteArticlePost:mongoose.model('VoteArticlePost', require('./vote_article_post')),
+    VoteActionPost:mongoose.model('VoteActionPost', require('./vote_action_post')),
     VoteSuggestion:mongoose.model('VoteSuggestion', new Schema(Schemas.VoteSuggestion, {strict: true})),
     Like:mongoose.model('Like', new Schema(Schemas.Like, {strict: true})),
     Grade:mongoose.model('Grade', new Schema(Schemas.Grade, {strict: true})),

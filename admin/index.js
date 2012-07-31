@@ -3,7 +3,7 @@ var j_forms = require('j-forms'),
     mongoose = require('mongoose'),
     Models = require('../models'),
     async = require('async'),
-    DiscussionResource = require('../api/DiscussionResource'),
+    DiscussionResource = require('../api/discussions/DiscussionResource.js'),
     SuggestionResource = require('../api/suggestionResource'),
     locale = require('../locale');
 

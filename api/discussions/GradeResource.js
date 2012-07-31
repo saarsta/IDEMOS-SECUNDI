@@ -8,15 +8,15 @@
 
 
 var resources = require('jest'),
-    og_action = require('../og/og').doAction,
-    models = require('../models'),
+    og_action = require('../../og/og.js').doAction,
+    models = require('../../models'),
     async = require('async'),
-    common = require('./common'),
-    GradeSuggestion = require('./GradeSuggestionResource'),
+    common = require('../common.js'),
+    GradeSuggestion = require('../GradeSuggestionResource.js'),
     _ = require('underscore');
-    calc_thresh = require('../deliver/tools/calc_thresh'),
-    Suggestion = require('./suggestionResource'),
-    notifications = require('./notifications');
+    calc_thresh = require('../../deliver/tools/calc_thresh.js'),
+    Suggestion = require('../suggestionResource.js'),
+    notifications = require('../notifications.js');
 
 //Authorization
 var Authoriztion = resources.Authorization.extend({

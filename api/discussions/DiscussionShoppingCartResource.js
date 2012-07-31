@@ -8,8 +8,8 @@
 
 var resources = require('jest'),
     util = require('util'),
-    models = require('../models'),
-    common = require('./common');
+    models = require('../../models'),
+    common = require('../common.js');
 
 
 

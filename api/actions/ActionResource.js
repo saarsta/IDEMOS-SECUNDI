@@ -8,9 +8,9 @@
 
 
 var resources = require('jest'),
-    models = require('../models'),
+    models = require('../../models'),
     async = require('async'),
-    common = require('./common'),
+    common = require('../common.js'),
     _ = require('underscore');
 
 var ActionResource = module.exports = common.GamificationMongooseResource.extend(

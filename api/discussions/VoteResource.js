@@ -8,11 +8,11 @@
 
 var resources = require('jest'),
     util = require('util'),
-    models = require('../models'),
+    models = require('../../models'),
     async = require('async'),
     _ = require('underscore'),
-    common = require('./common');
-    notifications = require('./notifications');
+    common = require('../common.js');
+    notifications = require('../notifications.js');
 
 //  jstat = require('./jstat');
 

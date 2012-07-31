@@ -44,6 +44,7 @@ var User = module.exports = new Schema({
     cycles:[
         new Schema({cycle_id:{type:ObjectId, ref:'Cycle'}, join_date: {type:Date, 'default':Date.now}})
     ],
+    // i dont know what this fields is, this is not "going users", it might be duplication of "people that conected somehow to the action" for efficiency
     actions:[
         new Schema( {action_id:{type:ObjectId, ref:'Action'}, join_date: {type:Date, 'default':Date.now}})
     ],
@@ -79,7 +80,10 @@ var User = module.exports = new Schema({
     blog_sub_titile: String,
     blog_text_1: String,
     blog_text_2: String,
-    blog_text_3: String
+    blog_text_3: String,
+    is_opinion_shaper: {type: Boolean, 'default': false},
+    opinion_text: String
+
 }, {strict:true});
 
 User.methods.toString = function()

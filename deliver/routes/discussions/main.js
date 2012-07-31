@@ -1,6 +1,6 @@
 
 var models = require('../../../models')
-    ,DiscussionResource = require('../../../api/DiscussionResource')
+    ,DiscussionResource = require('../../../api/discussions/DiscussionResource.js')
     ,async = require('async');
 
 module.exports = function(req,res)

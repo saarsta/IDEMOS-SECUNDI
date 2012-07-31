@@ -1,10 +1,10 @@
 var resources = require('jest'),
-    models = require('../models'),
-    common = require('./common'),
+    models = require('../../models'),
+    common = require('../common.js'),
     async = require('async'),
-    og_action = require('../og/og').doAction,
+    og_action = require('../../og/og.js').doAction,
     _ = require('underscore'),
-    notifications = require('./notifications');
+    notifications = require('../notifications.js');
 
 //Authorization
 var Authorization = common.TokenAuthorization.extend({
@@ -188,6 +188,9 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
          * 5) remove information items from user shopping cart
          * 6) add discussion to user discussions (as a follower)
          * 7) set gamification details, create notifications
+         *      7.1) find all information items and set notifications for their owners
+         *      7.2) set notification for users that i'm their proxy
+         *      7.3) create new DiscussionHistory schema for this Discussion
          * 8) publish to facebook
          *
          * Final) return discussion object (or error)
@@ -284,14 +287,14 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
             },
 
             // 7) set gamification details, create notifications
-            function(cbk) {
+            function(cbk, dics) {
 
                 //set gamification
 
                 async.parallel([
                     //find all information items and set notifications for their owners
                     function(cbk1){
-                        notifications_for_the_info_items_relvant(object._id, user_id,function(err) {
+                        notifications_for_the_info_items_relvant(dics._id, user_id,function(err) {
                             cbk1(err);
                         });
                     },
@@ -300,13 +303,24 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                     function(cbk1){
                         models.User.find({"proxy.user_id": user_id}, function(err, slaves_users){
                             async.forEach(slaves_users, function(slave, itr_cbk){
-                                notifications.create_user_notification("proxy_created_new_discussion", object._id, slave._id, user_id, null, function(err, result){
+                                notifications.create_user_notification("proxy_created_new_discussion", dics._id, slave._id, user_id, null, function(err, result){
                                     itr_cbk(err);
                                 })
                             }, function(err){
                                 cbk1(err);
                             })
                         })
+                    },
+
+                    // create new DiscussionHistory schema for this Discussion
+                    function(cbk1){
+                        var discussion_history = new models.DiscussionHistory();
+
+                        discussion_history.discussion_id = dics._id;
+                        discussion_history.date = Date.now();
+                        discussion_history.text_field = dics.text_field;
+
+                        discussion_history.save(cbk1);
                     }
 
                 ], function(err){
@@ -331,113 +345,6 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
             function(err) {
             callback(err,object);
         });
-
-//        models.InformationItem.find({users:req.user._id}, function (err, info_items) {
-//            if (!err) {
-//                var count = info_items.length;
-//                var user_cup = 9 + user.num_of_extra_tokens;
-//                if (user_cup < min_tokens && user_cup < min_tokens - (Math.min(Math.floor(count / 2), 2))) {
-//                    callback({message:"you don't have the min amount of tokens to open discussion", code:401}, null);
-//                }
-//                else {
-//                    //vision cant be more than 800 words
-//                    var vision_splited_to_words = fields.text_field.split(" ");
-//                    var words_counter = 0;
-//
-//                    _.each(vision_splited_to_words, function (word) {
-//                        if (word != " " && word != "") words_counter++
-//                    })
-//                    if (words_counter >= 800) {
-//                        callback({message:"vision can't be more than 800 words", code:401}, null);
-//                    } else {
-//
-//                        //get subject_name
-//                        models.Subject.findById(fields.subject_id, function (err, subject) {
-//                            if (!err) {
-//                                fields.subject_name = subject.name;
-//                                fields.creator_id = user_id;
-//                                fields.first_name = user.first_name;
-//                                fields.last_name = user.last_name;
-//                                fields.users = {
-//                                    user_id:user_id,
-//                                    join_date:Date.now()
-//                                };
-//                                fields.is_published = true; //TODO this is only for now
-//                                fields.is_hidden = false;
-//                                // create text_field_preview - 200 chars
-//                                if (fields.text_field.length >= 200)
-//                                    fields.text_field_preview = fields.text_field.substr(0, 200);
-//                                else
-//                                    fields.text_field_preview = fields.text_field;
-//
-//                                for (var field in fields) {
-//                                    object.set(field, fields[field]);
-//                                }
-//
-//                                self.authorization.edit_object(req, object, function (err, object) {
-//                                    if (err) callback(err);
-//                                    else {
-//                                        //if success with creating new discussion - add discussion to user schema
-//                                        object.save(function (err, obj) {
-//                                            if (!err) {
-//                                                created_discussion_id = obj._id;
-//
-//                                                //add info items to discussion shopping cart and delete it from user's shopping cart
-//                                                async.forEach(info_items, iterator, function (err, result) {
-//                                                    if (!err) {
-//                                                        var user_discussion = {
-//                                                            discussion_id:obj._id,
-//                                                            join_date:Date.now()
-//                                                        }
-//
-//                                                        if (object.is_published) {
-//                                                            models.User.update({_id:user._id}, {$addToSet:{discussions:user_discussion}}, function (err, num) {
-//                                                                if (!err) {
-//
-//                                                                    //set gamification
-//                                                                    req.gamification_type = "discussion";
-//                                                                    req.token_price = common.getGamificationTokenPrice('create_discussion') > 0 ? common.getGamificationTokenPrice('create_discussion') : 3;
-//
-//                                                                    //find all information items and set notifications for their owners
-//                                                                    notifications_for_the_info_items_relvant(obj._id, user_id, function (err, args) {
-//                                                                        og_action({
-//                                                                            action: 'create',
-//                                                                            object_name:'disscusion',
-//                                                                            object_url : '/discussions/' + object.id,
-//                                                                            fid : user.facebook_id
-//                                                                        },function(err) {
-//                                                                            callback(err,obj);
-//                                                                        });
-//
-//                                                                        callback(err, obj);
-//                                                                    })
-//                                                                } else
-//                                                                    callback(err, obj);
-//                                                            });
-//                                                        } else {
-//                                                            callback(err, obj);
-//                                                        }
-//                                                    } else {
-//                                                        callback(err, object);
-//                                                    }
-//                                                })
-//                                            } else {
-//                                                callback(err, object);
-//                                            }
-//                                        });
-//                                    }
-//                                });
-//                            }
-//                            else {
-//                                callback(err, null);
-//                            }
-//                        })
-//                    }
-//                }
-//            } else {
-//                callback(err, null);
-//            }
-//        })
     },
 
     update_obj:function (req, object, callback) {

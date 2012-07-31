@@ -2,25 +2,26 @@ var mongoose_resource = require('jest'),
     UserResource = require('./UserResources.js'),
     InformationItemResource = require('./InformationItemResource.js'),
     ShoppingCartResource = require('./ShoppingCartResource'),
-    DiscussionShoppingCartResource = require('./DiscussionShoppingCartResource'),
+    DiscussionShoppingCartResource = require('./discussions/DiscussionShoppingCartResource.js'),
     SubjectResource = require('./SubjectResource'),
-    DiscussionResource = require('./DiscussionResource.js'),
-    PostResource = require('./PostResource.js'),
-    PostsActionResource = require('./PostsActionResource.js'),
+    DiscussionResource = require('./discussions/DiscussionResource.js'),
+    PostResource = require('./discussions/PostResource.js'),
+    DiscussionHistoryResource = require('./discussions/DiscussionHistoryResource.js'),
+    PostsActionResource = require('actions/PostsActionResource.js'),
     PostArticleResource = require('./blogs/PostArticleResource')
-    VoteResource = require('./VoteResource'),
+    VoteResource = require('discussions/VoteResource.js'),
     VoteArticlePostResource = require('./blogs/VoteArticlePostResource'),
     VoteSuggestionResource = require('./VoteSuggestionResource'),
-    GradeResource = require('./GradeResource'),
+    GradeResource = require('./discussions/GradeResource.js'),
     GradeSuggestionResource = require('./GradeSuggestionResource'),
     GradeActionResource = require('./GradeActionResource'),
     LikeResource = require('./LikeResource'),
     JoinResource = require('./JoinResource'),
     CategoryResource = require('./CategoryResource'),
     SuggestionResource = require('./suggestionResource.js'),
-    ActionResourceResource = require('./ActionResourceResource'),
-    ActionResource = require('./ActionResource'),
-    ActionPopulatedResource = require('./ActionPopulatedResource'),
+    ActionResourceResource = require('actions/ActionResourceResource.js'),
+    ActionResource = require('actions/ActionResource.js'),
+    ActionPopulatedResource = require('actions/ActionPopulatedResource.js'),
     CycleResource = require('./CycleResource'),
     article_resources = require('./blogs/ArticleResource.js'),
     ArticleResource = article_resources.ArticleResource,
@@ -62,6 +63,7 @@ module.exports = function(app)
     rest_api.register_resource('subjects', new SubjectResource());
     rest_api.register_resource('discussions', new DiscussionResource());
     rest_api.register_resource('posts', new PostResource());
+    rest_api.register_resource('discussions_history', new DiscussionHistoryResource());
     rest_api.register_resource('posts_of_article', new PostArticleResource());
     rest_api.register_resource('posts_of_action', new PostsActionResource());
     rest_api.register_resource('votes', new VoteResource());

@@ -852,6 +852,36 @@ var db_functions = {
         });
     },
 
+    getCycleUpdates: function(cycle_id, callback){
+        db_functions.loggedInAjax({
+            url: '/api/updates/?cycles=' + cycle_id,
+            type: "GET",
+            async: true,
+            success: function (err, data) {
+                callback(err, data);
+            },
+            error: function(err, data){
+                callback(err, data);
+            }
+        });
+    },
+    //---------------------------------------------------//
+
+    getDiscussionHistory: function(discussion_id, callback){
+        db_functions.loggedInAjax({
+            url: '/api/discussions_history/?discussion_id=' + discussion_id,
+            type: "GET",
+            async: true,
+            success: function (err, data) {
+                callback(null, data);
+            },
+
+            error: function(err, data){
+                callback(err, data);
+            }
+        });
+    },
+
     getActionsByTagName: function(tag_name, callback){
         db_functions.loggedInAjax({
             url: '/api/actions' + (tag_name ? '?tags=' + tag_name : ''),
