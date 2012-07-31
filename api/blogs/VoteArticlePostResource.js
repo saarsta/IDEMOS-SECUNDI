@@ -20,7 +20,8 @@ var VoteArticlePostResource = module.exports = common.GamificationMongooseResour
             votes_against:null,
             total_votes: null,
             popularity:null,
-            updated_user_tokens:null
+            updated_user_tokens:null,
+            balance: null
         };
     },
 
@@ -34,7 +35,7 @@ var VoteArticlePostResource = module.exports = common.GamificationMongooseResour
         var limit = 2;
 
         /*
-        *  1. check if vote is user has already voted for this post
+        *  1. check if user has already voted for this post
         *  2.1 check if vote balance in in limit bounds
         *  2.2 if this is a new vote, we create it
         *  3. find PostArticle
@@ -104,6 +105,8 @@ var VoteArticlePostResource = module.exports = common.GamificationMongooseResour
             }
         //final - return updated postArticle
         ], function(err, updated_post){
+             if(updated_post)
+                 updated_post.balance = new_balance;
             callback(err, updated_post);
         })
     }

@@ -168,7 +168,6 @@ function fbs_click(ui) {
 
 $(function(){
     $('.link_to_resource').live('click', function(){
-        debugger
         var link = $(this).data('link');
         window.location.replace(link);
     })

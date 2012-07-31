@@ -119,6 +119,17 @@ var db_functions = {
         });
     },
 
+    getPopularArticles: function(limit_number,callback){
+        db_functions.loggedInAjax({
+            url: '/api/articles?order_by=-popularity_counter&limit=' + limit_number,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                //    console.log(data);
+                callback( data);
+            }
+        });
+    },
     ///////--------------------------------------/////////
 
     getUserAfterFbConnect: function(fb_id, access_token, callback){
@@ -229,18 +240,7 @@ var db_functions = {
         });
     },
 
-    //blogs
-    getPopularArticles: function(limit_number,callback){
-        db_functions.loggedInAjax({
-            url: '/api/articles?order_by=-popularity_counter&limit=' + limit_number,
-            type: "GET",
-            async: true,
-            success: function (data) {
-                //    console.log(data);
-                callback( data);
-            }
-        });
-    },
+
 
     getPopularHeadlines: function(limit_number,callback){
         db_functions.loggedInAjax({
@@ -825,6 +825,7 @@ var db_functions = {
         });
     },
 
+    //---------------------cycles-----------------------//
     getCyclesByTagName: function(tag_name, callback){
         db_functions.loggedInAjax({
             url: '/api/cycles' + (tag_name ? '?tags=' + tag_name : ''),
@@ -836,6 +837,21 @@ var db_functions = {
             }
         });
     },
+
+    getCyclesById: function(cycle_id, callback){
+        db_functions.loggedInAjax({
+            url: '/api/cycles/' + cycle_id,
+            type: "GET",
+            async: true,
+            success: function (err, data) {
+                callback(err, data);
+            },
+            error: function(err, data){
+                callback(err, data);
+            }
+        });
+    },
+
     getActionsByTagName: function(tag_name, callback){
         db_functions.loggedInAjax({
             url: '/api/actions' + (tag_name ? '?tags=' + tag_name : ''),

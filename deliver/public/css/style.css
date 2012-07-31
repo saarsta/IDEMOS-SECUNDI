@@ -7589,4 +7589,11 @@ body.body-action .followers-box h2
     cursor: pointer;
 }
 
-A:hover {text-decoration: underline; color: red;}
+.inline_link
+{
+    text-decoration: none;
+}
+.inline_link:hover
+{
+    text-decoration: underline;
+}

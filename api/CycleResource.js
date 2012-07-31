@@ -30,8 +30,9 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
                 in:true
             }
         };
+
         this.default_query = function(query){
-            return query.populate("discussions");
+            return query.populate("discussions", [""]);
         };
         this.fields = {
             _id:null,
