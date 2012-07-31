@@ -80,8 +80,8 @@ var db_functions = {
             type: "POST",
             async: true,
             data: {"text": text, "article_id": article_id},
-            success: function (err, data) {
-                callback( data);
+            success: function (data, err) {
+                callback( err, data);
             },
             error: function(err, data){
                 callback(err, data);
@@ -94,8 +94,8 @@ var db_functions = {
             url: '/api/posts_of_article/?article_id=' + article_id,
             type: "GET",
             async: true,
-            success: function (err, data) {
-                callback( data);
+            success: function (data,err ) {
+                callback(err, data);
             },
             error: function(err, data){
                 callback(err, data);
@@ -110,8 +110,8 @@ var db_functions = {
             type: "POST",
             async: true,
             data: {"method": method, "post_article_id": post_article_id},
-            success: function (err, data) {
-                callback( data);
+            success: function (data, err) {
+                callback( err,data);
             },
             error: function(err, data){
                 callback(err, data);

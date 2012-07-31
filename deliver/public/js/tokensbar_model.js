@@ -40,7 +40,8 @@ var TokensBarModel =function (tokenPixels, numExtraTokens, tokens, proxies) {
                         avatar: proc.user_id.avatar_url|| proc.user_id.avatar,
                         score:proc.user_id.score,
                         first_name:proc.user_id.first_name,
-                        height: (proc.number_of_tokens * tokenPixels) + 'px'
+                        height: (proc.number_of_tokens * tokenPixels) + 'px',
+                        num_of_proxies_i_represent:proc.user_id.num_of_proxies_i_represent
 
 
                     })

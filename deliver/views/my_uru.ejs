@@ -179,8 +179,9 @@
 
         var userId='<%=pageUser._id %>';
         var currentUserId='<%=user._id %>';
-        var proxy = JSON.parse('<%-proxy%>');
-       var isHisUru=<%=isHisUru%>;
+       // var proxy = JSON.parse('<%-proxy%>');
+        var proxy = <%-proxy%>;
+         var isHisUru=<%=isHisUru%>;
 
         function tabSelected(event, ui){
            function convertToTabModel(data,type){
