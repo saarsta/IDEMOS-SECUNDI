@@ -1,4 +1,4 @@
 cd ..
-mongorestore -d uru dump/uru
+mongorestore --drop -d uru dump/uru
 
 pause
