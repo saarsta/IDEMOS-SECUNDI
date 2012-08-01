@@ -2739,6 +2739,7 @@ h2 small
 .comments-box .text div.post_text
 {
     color:#50504f;
+    overflow: hidden;
     font: normal 13px/18px Arial;
 }
 .comments-box .text div.post_text a
@@ -7600,4 +7601,15 @@ body.body-action .followers-box h2
 .inline_link:hover
 {
     text-decoration: underline;
+}
+#upload_processing {
+    background-color: gray;
+    height: 9px;
+    margin: 3px 0 3px 0;
+}
+#upload_processing div {
+    width: 0%;
+    background-color: blue;
+    height: 100%;
+    float: left;
 }
