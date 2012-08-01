@@ -16,12 +16,11 @@ function sendFacebookShare(link, title, src, text_preview, callback) {
         if(err)
             callback(err);
         else {
-            text_preview = text_preview.replace(/(<([^>]+)>)/ig,"");
+            text_preview = text_preview.replace(/(<([^>]+?)>)/ig,"");
             link =  window.location.protocol + '//' + window.location.hostname + link_obj.link;
             if (src.indexOf("http") == -1)
                 src = /*"http://uru.s3.amazonaws.com/spivak_29.jpg"*/window.location.protocol + '//' + window.location.hostname + src;
 
-            console.log(src);
 //            src = 'http://fbrell.com/f8.jpg';
 
             FB.ui({
@@ -29,8 +28,8 @@ function sendFacebookShare(link, title, src, text_preview, callback) {
                 link: link,
                 name: title,
                 picture: src,
-                caption: text_preview
-//                description: text_preview
+                caption: text_preview,
+                description: ' '
             }, function(response) {
                 console.log(response);
                 callback();
