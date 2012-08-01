@@ -445,7 +445,7 @@ module.exports.approveSuggestion = function(id,callback)
                 //set notifications for creator
                 function(par_cbk){
                     notifications.create_user_notification("approved_change_suggestion_you_created",
-                            discussion_id, sug_obj.creator_id, null, null, function(err, obj){
+                            discussion_id, sug_obj.creator_id, null, sug_obj._id, function(err, obj){
                             par_cbk(err, obj);
                         });
                 },
