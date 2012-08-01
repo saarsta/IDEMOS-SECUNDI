@@ -159,9 +159,13 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                     break;
                 case "change_suggestion_on_discussion_you_are_part_of":
                     var num_of_comments = notification.notificators.length;
-                    notification.suggestions_link='/discussions/" + discussion._id + ""' + notification.notificators[0].sub_entity_id;
                     if(discussion){
                         notification.link = "/discussions/" + discussion._id + "";
+                        //todo: this link don't work =>BUGBUG
+                        // notification.suggestions_link='/discussions/" + discussion._id + ""' + notification.notificators[0].sub_entity_id;
+                        notification.suggestions_link=notification.link; //hot fix remove me
+
+
                         notification.pic = discussion.image_field_preview || discussion.image_field;
                         notification.name = discussion.title;
 
@@ -265,7 +269,8 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                             notification.name;
                         notification.text_preview = discussion.text_field_preview;
 
-                        notification.old_text= discussion.vision_text_history[discussion.vision_text_history.length - 1];
+
+                        notification.old_text= discussion.vision_text_history==undefined?'': discussion.vision_text_history[discussion.vision_text_history.length - 1];
                         notification.new_text= discussion.text_field;
                     }
                     itr_cbk();
@@ -286,7 +291,8 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                             notification.name;
                         notification.text_preview = discussion.text_field_preview;
 
-                        notification.old_text= discussion.vision_text_history[discussion.vision_text_history.length - 1];
+
+                        notification.old_text= discussion.vision_text_history==undefined?'': discussion.vision_text_history[discussion.vision_text_history.length - 1];
                         notification.new_text= discussion.text_field;
                     }
                     itr_cbk();
