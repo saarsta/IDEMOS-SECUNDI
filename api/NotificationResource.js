@@ -42,6 +42,7 @@ var NotificationCategoryResource = module.exports = resources.MongooseResource.e
                 part_three: null,
                 extra_link: null,
                 link_to_first_comment_user_didnt_see: null,
+                discussion_link: null,
 
                 //for the share part
                 img_src: null,
@@ -158,7 +159,7 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                     break;
                 case "change_suggestion_on_discussion_you_are_part_of":
                     var num_of_comments = notification.notificators.length;
-                    notification.suggestions_link='bugbug';
+                    notification.suggestions_link='/discussions/" + discussion._id + ""' + notification.notificators[0].sub_entity_id;
                     if(discussion){
                         notification.link = "/discussions/" + discussion._id + "";
                         notification.pic = discussion.image_field_preview || discussion.image_field;
@@ -252,12 +253,10 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                     notification.message_of_notificators =
                         "התקבלה הצעה לשינוי שהעלת בדיון - "
                     ;
-                    notification.old_text='bugbug';
-                    notification.new_text='bugbug';
 
                     if(discussion){
                         notification.name = discussion.title;
-                        notification.link = "/discussions/" + notification.entity_id;
+                        notification.link = "/discussions/" + discussion._id;
                         notification.pic = discussion.image_field_preview || discussion.image_field;
 
                         notification.img_src = notification.pic;
@@ -265,6 +264,9 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                             +
                             notification.name;
                         notification.text_preview = discussion.text_field_preview;
+
+                        notification.old_text= discussion.vision_text_history[discussion.vision_text_history.length - 1];
+                        notification.new_text= discussion.text_field;
                     }
                     itr_cbk();
                     break;
@@ -273,10 +275,8 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                         "התקבלה הצעה לשינוי שדירגת בדיון - "
                     ;
 
-                    notification.old_text='bugbug';
-                    notification.new_text='bugbug';
                     if(discussion){
-                        notification.link = "/discussions/" + notification.entity_id;
+                        notification.link = "/discussions/" + discussion._id;
                         notification.pic = discussion.image_field_preview || discussion.image_field;
                         notification.name = discussion.title;
 
@@ -285,12 +285,15 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                             +
                             notification.name;
                         notification.text_preview = discussion.text_field_preview;
+
+                        notification.old_text= discussion.vision_text_history[discussion.vision_text_history.length - 1];
+                        notification.new_text= discussion.text_field;
                     }
                     itr_cbk();
                     break;
                 case "been_quoted":
                     if(discussion){
-                        notification.link = "/discussions/" + notification.entity_id + '#post_' + notification.notificators[0].sub_entity_id;
+                        notification.link = "/discussions/" + discussion._id + '#post_' + notification.notificators[0].sub_entity_id;
                         notification.pic = discussion.image_field_preview || discussion.image_field;
                         notification.name = discussion.title;
 
@@ -300,6 +303,9 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                             notification.name;
 //                        notification.text_preview = posts_hash[notification.entity_id + ""].text;
                         notification.text_preview = discussion.text_field_preview;
+
+                        notification.quote_link= notification.link;
+                        notification.discussion_link = "/discussions/" + discussion._id;
                     }
                     if(user_obj){
                          notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;
@@ -307,11 +313,12 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                     notification.message_of_notificators =
                       "ציטט אותך בדיון - "
                     ;
+
+
+//                    notification.user_quote= bugbug text.replace(/\[(?:quote|ציטוט)=(?:"|&quot;)([^"&]*)(?:"|&quot;)\s*\]\n?((?:.|\n)*)?\n?\[\/(?:quote|ציטוט)\]\n?/g,;
+                    notification.user_quote = "";
+
                     itr_cbk()
-                    notification.user_quote= 'BUGBUG';
-                    notification.quote_link= 'BUGBUG';
-
-
                     break;
                 case "a_dicussion_created_with_info_item_that_you_like":
                     notification.message_of_notificators =
