@@ -774,7 +774,7 @@ $(document).ready(function () {
 
 
 
-     function vote(actionType){
+  /*   function vote(actionType){
          var post_id = $(this).parents('.comment-one').data("id");
          var button = $(this);
          var func = $(this).parents('#comments').length ? db_functions.voteForPost : db_functions.voteForSuggestion;
@@ -782,15 +782,6 @@ $(document).ready(function () {
          func.call(db_functions, post_id, "add", function (err, post_obj) {
              if (!err) {
 
-//                var votes_for = button.parent('div').find('.number');
-
-    /*
-                 var votes_for = button.parents(".status").find(".yes").find(".number");
-                 var votes_against = button.parents(".status").find(".no").find(".number");
-
-                 votes_for.text(Math.round(post_obj.votes_for));
-                 votes_against.text(Math.round(post_obj.votes_against));
-                 */
                  var f = $(this);
                  var g=  $(this).parents(".ratio");
                   $(this).parents(".ratio").find(".count").text(Math.round(post_obj.votes_for-post_obj.votes_against ));
@@ -807,7 +798,7 @@ $(document).ready(function () {
                      alert('soory, can\'t vote to your own post');
              }
          })
-     }
+     }*/
 
 
     function vote(actionType){
