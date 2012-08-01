@@ -10,8 +10,7 @@ var resources = require('jest'),
     util = require('util'),
     models = require('../../models'),
     common = require('../common.js'),
-    async = require('async'),
-    POST_PRICE = 1;
+    async = require('async');
 
 var PostActionResource = module.exports = common.GamificationMongooseResource.extend({
     init:function () {
@@ -25,54 +24,60 @@ var PostActionResource = module.exports = common.GamificationMongooseResource.ex
         };
     },
 
+    run_query: function(req,query,callback)
+    {
+        query.populate('creator_id');
+        this._super(req,query,callback);
+    },
+
+
     get_objects: function (req, filters, sorts, limit, offset, callback) {
-        //TODO - maybe imrove it
-//        this._super(req, filters, sorts, limit, offset, function(err, results){
-//            var user_id;
-//            if(req.user){
-//                user_id = req.user._id;
-//
-//                async.waterfall([
-//                    function(cbk){
-//                        models.User.findById(user_id, cbk);
-//                    },
-//
-//                    function(user_obj, cbk){
-//
-//                        var proxies = user_obj.proxy;
-//
-//                        async.forEach(results.objects, function(post, itr_cbk){
-//                            //update each post creator if he is a follower or not
-//                            var flag = false;
-//
-//                            var proxy = _.find(proxies, function(proxy){
-//                                if(!post.creator_id)
-//                                    return null;
-//                                else
-//                                    return proxy.user_id + "" == post.creator_id._id + ""});
-//                            if(proxy)
-//                                post.mandates_curr_user_gave_creator = proxy.number_of_tokens;
-//                            if(post.creator_id)
-//                                flag =  _.any(post.creator_id.followers, function(follower){return follower.follower_id + "" == user_id + ""});
-//                            post.is_user_follower = flag;
-//
-//                            //update each post creator with his vote balance
-//                            models.Vote.findOne({user_id: user_id, post_id: post._id}, function(err, vote){
-//                                post.voter_balance = vote ? (vote.ballance || 0) : 0;
-//                                itr_cbk(err);
-//                            })
-//                        }, function(err, obj){
-//                            cbk(err, results);
-//                        });
-//                    }
-//                ], function(err, results){
-//                    callback(err, results);
-//                })
-//            }else{
-//                _.each(results.objects, function(post){ post.is_user_follower = false; })
-//                callback(err, results);
-//            }
-//        });
+        this._super(req, filters, sorts, limit, offset, function(err, results){
+            var user_id;
+            if(req.user){
+                user_id = req.user._id;
+
+                async.waterfall([
+                    function(cbk){
+                        models.User.findById(user_id, cbk);
+                    },
+
+                    function(user_obj, cbk){
+
+                        var proxies = user_obj.proxy;
+
+                        async.forEach(results.objects, function(post, itr_cbk){
+                            //update each post creator if he is a follower or not
+                            var flag = false;
+
+                            var proxy = _.find(proxies, function(proxy){
+                                if(!post.creator_id)
+                                    return null;
+                                else
+                                    return proxy.user_id + "" == post.creator_id._id + ""});
+                            if(proxy)
+                                post.mandates_curr_user_gave_creator = proxy.number_of_tokens;
+                            if(post.creator_id)
+                                flag =  _.any(post.creator_id.followers, function(follower){return follower.follower_id + "" == user_id + ""});
+                            post.is_user_follower = flag;
+
+                            //update each post creator with his vote balance
+                            models.VoteActionPost.findOne({user_id: user_id, post_action_id: post._id}, function(err, vote){
+                                post.voter_balance = vote ? (vote.balance || 0) : 0;
+                                itr_cbk(err);
+                            })
+                        }, function(err, obj){
+                            cbk(err, results);
+                        });
+                    }
+                ], function(err, results){
+                    callback(err, results);
+                })
+            }else{
+                _.each(results.objects, function(post){ post.is_user_follower = false; })
+                callback(err, results);
+            }
+        });
     },
 
     create_obj:function (req, fields, callback) {
@@ -104,7 +109,7 @@ var PostActionResource = module.exports = common.GamificationMongooseResource.ex
                     //2.1 if post created successfuly, add user to action to "people that connected somehow to action"
                     function(cbk2)
                     {
-                        //TODO - is that right
+                        // here i can use "$$addToSet" cause this is a new action, so this is the first user
                         models.Action.update({_id:object.action_id}, {$addToSet: {users: user_id}}, cbk2);
 
                     },

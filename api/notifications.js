@@ -384,9 +384,10 @@ if(/notifications\.js/.test(process.argv[1])) {
 
     console.log('testing');
     //function(notification_type, entity_id, user_id, notificatior_id, sub_entity_id, callback){
-
+    //4f90064e360b9b01000000ac --info item
+    //4fcdf7180a381201000005b3 --disc
     setTimeout(function() {
-        create_new_notification('comment_on_discussion_you_are_part_of',
+        create_new_notification('a_dicussion_created_with_info_item_that_you_created',
             '4fcdf7180a381201000005b3','4ff1b29aabf64e440f00013a','4f45145968766b0100000002','4ffecd7c5600ec0100001757',function(err) {
 
                 console.log(err);

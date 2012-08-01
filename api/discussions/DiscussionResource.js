@@ -287,14 +287,14 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
             },
 
             // 7) set gamification details, create notifications
-            function(cbk, dics) {
+            function(cbk, arg) {
 
                 //set gamification
 
                 async.parallel([
                     //find all information items and set notifications for their owners
                     function(cbk1){
-                        notifications_for_the_info_items_relvant(dics._id, user_id,function(err) {
+                        notifications_for_the_info_items_relvant(object._id, user_id,function(err) {
                             cbk1(err);
                         });
                     },
@@ -303,7 +303,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                     function(cbk1){
                         models.User.find({"proxy.user_id": user_id}, function(err, slaves_users){
                             async.forEach(slaves_users, function(slave, itr_cbk){
-                                notifications.create_user_notification("proxy_created_new_discussion", dics._id, slave._id, user_id, null, function(err, result){
+                                notifications.create_user_notification("proxy_created_new_discussion", object._id, slave._id, user_id, null, function(err, result){
                                     itr_cbk(err);
                                 })
                             }, function(err){
@@ -316,9 +316,9 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                     function(cbk1){
                         var discussion_history = new models.DiscussionHistory();
 
-                        discussion_history.discussion_id = dics._id;
+                        discussion_history.discussion_id = object._id;
                         discussion_history.date = Date.now();
-                        discussion_history.text_field = dics.text_field;
+                        discussion_history.text_field = object.text_field;
 
                         discussion_history.save(cbk1);
                     }
