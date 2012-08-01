@@ -2739,6 +2739,7 @@ h2 small
 .comments-box .text div.post_text
 {
     color:#50504f;
+    overflow: hidden;
     font: normal 13px/18px Arial;
 }
 .comments-box .text div.post_text a
