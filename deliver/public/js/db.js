@@ -130,6 +130,21 @@ var db_functions = {
             }
         });
     },
+
+    getArticlesByKeywords: function(keywords, sort_by, callback){
+        var keywords_arr = $.trim(keywords).replace(/\s+/g,".%2B");
+        db_functions.loggedInAjax({
+            url: '/api/articles/?or=text__regex,,title__regex&title__regex=' + keywords_arr + '&title__regex='+ keywords_arr + '&text___regex='+ keywords_arr + '&order_by='+sort_by,
+            type: "GET",
+            async: true,
+            success: function (err, data) {
+                callback(null, data)
+            },
+            error:function(err, data){
+                callback(err, null);
+            }
+        });
+    },
     ///////--------------------------------------/////////
 
     getUserAfterFbConnect: function(fb_id, access_token, callback){
