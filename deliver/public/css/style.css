@@ -6280,6 +6280,7 @@ a.fraction-btn
 {
     background: url(../images/arrows.png) -2px -55px no-repeat;
 }
+
 .comments-box .ratio a.down.balance-2
 {
     background: url(../images/arrows.png) -44px -55px no-repeat;
@@ -6296,6 +6297,7 @@ a.fraction-btn
 {
     background: url(../images/arrows.png) -302px 0px no-repeat;
 }
+
 .comments-box .ratio a.up.balance2
 {
     background: url(../images/arrows.png) -258px 0px no-repeat;
@@ -7033,11 +7035,16 @@ body.body-action .followers-box h2
 }
 .post-comment .ratio a.up
 {
-    background: url(../images/ratio-arrows.png) 0 0 no-repeat;
+    background: url(../images/ratio-arrows1.png) 0 0 no-repeat;
     width: 31px;
     height: 20px;
     display: block;
     margin: 0 auto 6px;
+}
+.post-comment .ratio a:hover.up,
+.post-comment .ratio .balance-positive
+{
+    background: url(../images/arrows.png) -258px 0px no-repeat!important;
 }
 .post-comment .ratio a.down
 {
@@ -7047,6 +7054,13 @@ body.body-action .followers-box h2
     display: block;
     margin: 0 auto;
 }
+.post-comment .ratio a:hover.down,
+.post-comment .ratio .balance-negative
+{
+    background: url(../images/arrows.png) -44px -55px no-repeat!important;
+}
+
+
 .post-comment .ratio .count
 {
     height: 24px;

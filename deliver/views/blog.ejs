@@ -185,6 +185,8 @@ function getComments(article_id) {
                     //    comments[i].isFirst = (i === 0);
                     //    comments[i].isEven = ((i % 2)== 0);
                         comments[i].voting =      comments[i].votes_for - comments[i].votes_against;
+                        comments[i].isBalancePositive =( comments[i].balance>0);
+                        comments[i].isBalanceNegative =( comments[i].balance<0);
                 }
                 dust.renderArray('article_comment', comments, null, function (err, out) {
 
@@ -231,8 +233,16 @@ function getComments(article_id) {
                          button.parents(".ratio").find(".count").text(Math.round(post_obj.votes_for-post_obj.votes_against ));
                          var down_arrow = button.parents(".ratio").find(".down");
                          var up_arrow =button.parents(".ratio").find(".up");
-                         down_arrow.removeClass("balance0").removeClass("balance1").removeClass("balance2").removeClass("balance3").removeClass("balance-1").removeClass("balance-2").removeClass("balance-3").addClass("balance"+post_obj.balance);
-                         up_arrow.removeClass("balance0").removeClass("balance1").removeClass("balance2").removeClass("balance3").removeClass("balance-1").removeClass("balance-2").removeClass("balance-3").addClass("balance"+post_obj.balance);
+                          down_arrow.removeClass("balance-negative");
+                          up_arrow.removeClass("balance-positive");
+                          if(post_obj.balance>0){
+                              up_arrow.addClass("balance-positive");
+                          }
+                          if(post_obj.balance<0){
+                              down_arrow.addClass("balance-negative");
+                          }
+
+
                   }
                   else {
                       if (err.responseText == 'Error: there is not enought tokens')
