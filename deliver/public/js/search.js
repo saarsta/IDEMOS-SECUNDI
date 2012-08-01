@@ -1,14 +1,28 @@
+
+
+
 $(document).ready(function () {
 
 
     var search_term = "";
-    var sections = ['information_items', 'discussions', 'cycles', 'actions', 'blogs'];
+    var sections = ['information_items', 'discussions', 'cycles', 'actions', 'articles'];
     var selected_tab = null;
 
-    $('#search_form').submit(function () {
+    $('.search-input').live("submit",function () {
         var current_section = typeof(window.current_section) == 'undefined' || window.current_section == null ? -1 : window.current_section;
         if (current_section >= 0) {
-            search_term = $("#search_term").val();
+            search_term = $(this).find(".search_term").val();
+            displaySearchResults();
+            return false;
+        }
+        else
+            return true;
+    });
+
+    $('.tag-search').live("click",function () {
+        var current_section = typeof(window.current_section) == 'undefined' || window.current_section == null ? -1 : window.current_section;
+        if (current_section >= 0) {
+            search_term = $(this).text();
             displaySearchResults();
             return false;
         }
@@ -133,6 +147,7 @@ $(document).ready(function () {
 
             });
         });
+        window.location.hash="search";
     }
 
     function hideSearchResults() {
@@ -211,8 +226,8 @@ $(document).ready(function () {
 
     }
 
-    search_term = $("#search_term").val()
-    if (search_term)
-        displaySearchResults();
+        search_term = $("#search_term").val()
+        if (search_term)
+            displaySearchResults();
 
 });
