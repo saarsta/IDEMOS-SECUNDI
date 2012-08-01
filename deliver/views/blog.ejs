@@ -34,7 +34,7 @@
                                     <div class="tags">
                                         <a class="like-btn" href=""><img src="images/like-btn.png" alt="" /></a>
                                      <% for (var c = 0; c <articles[i].tags.length; c++) { %>
-                                           <a href="#"> <%=articles[i].tags[c] %></a>
+                                           <a class="tag-search" href="javascript:void(0);"><%=articles[i].tags[c] %></a>
                                      <% }%>
 
                                     </div>
@@ -94,17 +94,17 @@
                     </div>
                 </div>
                 <div class="left-search">
-                    <form action="#">
+                    <form class="search-input"  action="#">
                         <label>חיפוש</label>
-                        <input type="text" value="" />
-                        <input type="submit" value="שפח" />
+                        <input class="search_term" type="text" value="" />
+                        <input type="submit" value="חפש" />
                     </form>
                 </div>
                 <div class="left-tags">
                     <h3>תגיות</h3>
                     <div class="tags">
                         <% for (var i = 0; i < tags.length && i < 8 ; i++) { %>
-                               <a href=""><%= tags[i].tag %></a>
+                               <a class="tag-search" href="javascript:void(0);"><%= tags[i].tag %></a>
                         <% }%>
 
 
@@ -161,7 +161,7 @@
 
 <script type="text/javascript">
 
-var current_section=3;
+var current_section=4;
 var bloggerId='<%=blogger ? blogger._id:'' %>';
 var currentUserId='<%=user ? user._id:'' %>';
 var isBlog=<%=isBlog %>;
@@ -225,7 +225,7 @@ function getComments(article_id) {
       function vote(actionType){
               var post_id = $(this).parents('.one').data("id");
               var button = $(this);
-              var func = $(this).parents('#comments').length ? db_functions.voteForPost : db_functions.voteForSuggestion;
+             // var func = $(this).parents('#comments').length ? db_functions.voteForPost : db_functions.voteForSuggestion;
               db_functions.voteOnArticleComment(   post_id,actionType,function (err, post_obj)
               {
                   if (err==="success") {
@@ -254,6 +254,8 @@ function getComments(article_id) {
                   }
               })
       }
+
+
 
  </script>
 </body>
