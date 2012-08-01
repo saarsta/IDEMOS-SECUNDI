@@ -131,7 +131,7 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                         notification.text_preview = discussion.text_field_preview;
 
                         //find the first comment user didnt see
-                     //   notification.link_to_first_comment_user_didnt_see = "/discussion/" + discussion._id + "#post_" +  notification.notificators[0].sub_entity_id;
+                       notification.link_to_first_comment_user_didnt_see = "/discussions/" + discussion._id + "#post_" +  notification.notificators[0].sub_entity_id;
 
                     }
 
@@ -158,6 +158,7 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                     break;
                 case "change_suggestion_on_discussion_you_are_part_of":
                     var num_of_comments = notification.notificators.length;
+                    notification.suggestions_link='bugbug';
                     if(discussion){
                         notification.link = "/discussions/" + discussion._id + "";
                         notification.pic = discussion.image_field_preview || discussion.image_field;
@@ -251,6 +252,9 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                     notification.message_of_notificators =
                         "התקבלה הצעה לשינוי שהעלת בדיון - "
                     ;
+                    notification.old_text='bugbug';
+                    notification.new_text='bugbug';
+
                     if(discussion){
                         notification.name = discussion.title;
                         notification.link = "/discussions/" + notification.entity_id;
@@ -268,6 +272,9 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                     notification.message_of_notificators =
                         "התקבלה הצעה לשינוי שדירגת בדיון - "
                     ;
+
+                    notification.old_text='bugbug';
+                    notification.new_text='bugbug';
                     if(discussion){
                         notification.link = "/discussions/" + notification.entity_id;
                         notification.pic = discussion.image_field_preview || discussion.image_field;
@@ -294,12 +301,17 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
 //                        notification.text_preview = posts_hash[notification.entity_id + ""].text;
                         notification.text_preview = discussion.text_field_preview;
                     }
-                    if(user_obj)
+                    if(user_obj){
                          notification.description_of_notificators = user_obj.first_name + " " + user_obj.last_name;
+                    }
                     notification.message_of_notificators =
                       "ציטט אותך בדיון - "
                     ;
                     itr_cbk()
+                    notification.user_quote= 'BUGBUG';
+                    notification.quote_link= 'BUGBUG';
+
+
                     break;
                 case "a_dicussion_created_with_info_item_that_you_like":
                     notification.message_of_notificators =
@@ -307,7 +319,8 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                     ;
                     if(discussion){
                         notification.link = "/information_items/" + notification.entity_id;
-                        notification.pic = info_items_hash[notification.entity_id + ""].image_field_preview || info_items_hash[notification.entity_id + ""].image_field;
+                      //  notification.pic = info_items_hash[notification.entity_id + ""].image_field_preview || info_items_hash[notification.entity_id + ""].image_field;
+                        notification.pic = discussion.image_field_preview || discussion.image_field;
                         notification.name = discussion.title;
 
                         notification.img_src = notification.pic;
