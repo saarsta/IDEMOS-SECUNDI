@@ -31,6 +31,7 @@
                             <div style="width:296px; height:152px; overflow:hidden;" class="auto-scale">
                                 <img id="discussion_image" >
                             </div>
+                            <div id="upload_processing" style="display:none;"><div>&nbsp;</div></div>
                             <div id="uplod_image_button" style="position:absolute; top:0px; left:0px; width:296px; height:152px;"></div>
                         </div>
                         <div class="floatLeft">
@@ -218,11 +219,21 @@
             element: document.getElementById('uplod_image_button'),
             action: '/api/image_upload',
             debug: false,
-            onProgress: function(id, fileName, loaded, total){console.log(loaded);console.log(total)},
+            onProgress: function(id, fileName, loaded, total){
+                $('#upload_processing').show();
+                $('#upload_processing div').css('width',loaded/total + '%');
+                console.log(loaded);
+            },
             onComplete: function(id, fileName, responseJSON){
                     discussion_image = responseJSON.image;
                     $('#discussion_image').attr('src',discussion_image.url);
+
                     $('#discussion_image').autoscale();
+                    $('#upload_processing div').css('width','100%');
+                    setTimeout(function(){
+                        $('#upload_processing').hide();
+                    },1000);
+
                 },
                 // template for one item in file list
                   fileTemplate: '<li>' +

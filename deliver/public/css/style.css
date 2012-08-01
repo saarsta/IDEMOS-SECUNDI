@@ -7602,3 +7602,14 @@ body.body-action .followers-box h2
 {
     text-decoration: underline;
 }
+#upload_processing {
+    background-color: gray;
+    height: 9px;
+    margin: 3px 0 3px 0;
+}
+#upload_processing div {
+    width: 0%;
+    background-color: blue;
+    height: 100%;
+    float: left;
+}
