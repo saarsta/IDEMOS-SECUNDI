@@ -169,7 +169,7 @@ function fbs_click(ui) {
 $(function(){
 
     $('#election_menu').live('click', function(){
-        window.location.replace('www.uru.il/elections');
+        window.location.replace('www.uru.org.il/elections');
     })
 
     $('.link_to_resource').live('click', function(){

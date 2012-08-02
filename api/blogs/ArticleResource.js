@@ -47,7 +47,7 @@ var ArticleResource = common.GamificationMongooseResource.extend({
     deserialize: function(req,res,object,status) {
 
         // Sends rss feed
-        if(req.query.rss && req.query.user_id && (status == 200 || !status)){
+        if(req.query.rss && req.query.user_id && (status == 200 || !status) && object.objects[0]){
                 var feed = new RSS({
                         title: 'עורו',
                         description: 'בלוגים',

@@ -27,8 +27,20 @@
                             <div class="date-post">
                                 <%= articles[i].time.format('dd/mm/yy') %>
                             </div>
-                            <img class="floatRight" src="images/post-1.jpg" alt="" />
-                            <%- articles[i].text %>
+
+                           <div class="text-box cf">
+                               <div id="discussion_image" style="width: 212px;height: 164px; overflow:hidden;" class='auto-scale floatRight'>
+                                   <img src="<%=articles[i].image_field ? articles[i].image_field.url ||'' : '' %>" alt=""/>
+                               </div>
+                               <div class="discussion_content discussion content">
+                                   <textarea class="hidden_textarea"><%-articles[i].text%></textarea>
+                               </div>
+
+                               <!--<div class="discussion_content discussion content">-->
+                               <!--<textarea id="discussion_content" class="hidden_textarea"><%- articles[i].text %></textarea>-->
+                           <!--</div>-->
+                            </div>
+
                             <div class="bottom cf">
                                 <div class="right">
                                     <div class="tags">
@@ -89,8 +101,12 @@
                     </div>
 
                     <div class="btns-box cf">
-                        <a class="floatLeft" href="">RSS</a>
-                        <a href="" class="floatRight">דואר</a>
+                        <% if (blogger) { %>
+                            <a class="floatLeft" href="/api/articles/?user_id=<%=blogger._id%>&rss=true ">RSS</a>
+                        <% } else {%>
+                            <a class="floatLeft" href="javascript:void(0);">RSS</a>
+                        <% } %>
+                        <a href="javascript:void(0);" class="floatRight gray_and_soon">דואר</a>
                     </div>
                 </div>
                 <div class="left-search">
