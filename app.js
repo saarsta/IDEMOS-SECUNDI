@@ -235,7 +235,8 @@ async.waterfall([
         }
         else {
             app.helpers({
-                footer_links:function() { return mongoose.model('FooterLink').getFooterLinks(); }
+                footer_links:function() { return mongoose.model('FooterLink').getFooterLinks(); },
+                cleanHtml:function(html) { return html.replace(/<[^>]*?>/g,'');}
             });
             app.dynamicHelpers({
                 tag_name: function(req,res) { return req.query.tag_name; },

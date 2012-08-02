@@ -10,7 +10,7 @@
 </h1>
 <img src="<%= meta.image %>" />
 <div>
-    <%- meta.description %>
+    <%= cleanHtml(meta.description) %>
 </div>
 </body>
 </html>
