@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 
 <html>
-<head>
+<head  prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# <%= settings.facebook_app_name %>: http://ogp.me/ns/fb/<%= settings.facebook_app_name %>#">
     <%- partial('partials/head.ejs') %>
     <script src="/resources/js/jquery-fieldselection.js" type="text/javascript"></script>
+    <%- partial('fb_bot/meta.ejs') %>
 </head>
 <body>
 <%- partial('partials/body_top.ejs') %>

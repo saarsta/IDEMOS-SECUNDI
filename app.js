@@ -155,7 +155,7 @@ app.configure(function(){
 
     app.use(function(req,res,next) {
         var agent = req.header('User-Agent');
-        if(/facebook/.test(agent)) {
+        if(/facebook/.test(agent) || req.query['debug_fb_bot']) {
             require('./deliver/routes/fb_bot')(req,res,next);
         }
         else
@@ -235,14 +235,15 @@ async.waterfall([
         }
         else {
             app.helpers({
-                footer_links:function() { return mongoose.model('FooterLink').getFooterLinks(); }
+                footer_links:function() { return mongoose.model('FooterLink').getFooterLinks(); },
+                cleanHtml:function(html) { return html.replace(/<[^>]*?>/g,'').replace(/\[[^\]]*?]/g,'');}
             });
             app.dynamicHelpers({
                 tag_name: function(req,res) { return req.query.tag_name; },
-                logged: function(req,res) { return req.isAuthenticated(); },
-                user_logged:function(req,res) { return req.isAuthenticated(); },
-                user: function(req,res) { return req.session.user; },
-                avatar: function(req,res) { return req.session.avatar_url; },
+                logged: function(req,res) { return req.isAuthenticated && req.isAuthenticated(); },
+                user_logged:function(req,res) { return  req.isAuthenticated && req.isAuthenticated(); },
+                user: function(req,res) { return req.session && req.session.user; },
+                avatar: function(req,res) { return req.session && req.session.avatar_url; },
                 url:function(req,res) { return req.url; }
             });
             app.listen(app.settings.port);

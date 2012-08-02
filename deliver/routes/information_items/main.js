@@ -12,7 +12,7 @@ module.exports = function(req,res)
         else
         {
             if(!item)
-                res.redirect('/information_items');
+                res.render('404.ejs');
             else
             {
                 if(req.isAuthenticated())
@@ -45,6 +45,14 @@ function render_information_item_page(req,res,item) {
         auth_user: req.session.auth.user,
         tab:'information_items',
         avatar_url: req.session.avatar_url,
+        meta:{
+            type:'information_items',
+            title:item.title,
+            description:item.text_field_preview || item.text_field,
+            image: (item.image_field_preview && item.image_field_preview.url) || (item.image_field && item.image_field.url),
+            link:'/information_items/' + item.id,
+            id:item.id
+        },
         description: item.text_field_preview
     });
 }
