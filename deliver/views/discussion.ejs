@@ -1123,6 +1123,8 @@ $(document).ready(function () {
                     $('.more_comments').hide();
                 postsNumber = data.meta.total_count;
                 setCommentNumber(postsNumber);
+
+                FB.XFBML.parse();
             }
         })
     }
