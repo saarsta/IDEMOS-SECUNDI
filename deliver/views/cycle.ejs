@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <%- partial('partials/head.ejs') %>
+    <script src="/resources/js/jquery-fieldselection.js" type="text/javascript"></script>
+</head>
+<body>
+<%- partial('partials/body_top.ejs') %>
+<div id="wrap">
+        <div id="header">
+            <%-partial('partials/menu.ejs')%>
+            <%-partial('partials/user_box.ejs')%>
+            <%-partial('partials/failures.ejs')%>
+            <%-partial('partials/tag_search.ejs') %>
+        </div>
+
+
+        <div id="content" class="cf">
+            <div class="right-add-offer">
+                <div class="add-offer add-offer-small">
+                    <h2><span class="arrow"> ןוידה אשונ</span> םידופיקה תא ליצהל םיבייח</h2>
+                    <div class="text-box cf">
+                        <img class="floatRight" src="images/news-4.jpg" alt="" />
+                        <h3>תופסת חדשה לתרבות יום א’ בביה”ס: סיורים מודרכים בחברון</h3>
+                        <p>שר החינוך גדעון סער סורר סערה היום כאשר התגלו
+                        נתונים מטרידים על מצב העוני בישראל, בדו”ח של
+                        הלשכה המרכזית לסטטיסטיקה שפורסם השבוע
+                        שר החינוך גדעון סער סורר סערה היום כאשר התגלו
+                        נתונים מטרידים על מצב העוני בישראל, בדו”ח של
+                        הלשכה המרכזית לסטטיסטיקה שפורסם ... <a href="">קרא עוד</a></p>
+                    </div>
+                    <div class="add-offer-bottom cf">
+                        <div class="right">
+                            <div class="tags">
+                                <div class="info">
+                                    <span class="talks">33</span>
+                                    <span class="watched">151</span>
+                                </div>
+                                <a href="">הלטבא</a>
+                                <a href="">הלכלכ</a>
+                                <a href="">ינוע</a>
+                            </div>
+                        </div>
+                        <a class="fraction-btn" href="">שתף</a>
+                    </div>
+                </div>
+                <div class="popular-comments cf">
+                    <div class="top">
+                        <a href=""><span></span> תגובות פופולריות מדיון אחר</a>
+                    </div>
+                    <div class="hide-box">
+                        <div class="one cf">
+                            <div class="user-right">
+                                <span class="arrow"></span>
+                                <div class="left">
+                                    <a href="">טדנמ ןת</a>
+                                    <a href="">בוקע</a>
+                                    <a href="">העדוה חלש</a>
+                                </div>
+                                <div class="right">
+                                    <div class="img-box">
+                                        <img width="60" src="images/user-1.jpg" alt="">
+                                        <span></span>
+                                    </div>
+                                    <h4>רומשאר זעוב</h4>
+                                    <div class="date">13.3.12</div>
+                                    <div class="proxy">
+                                        <span>3</span>
+                                    </div>
+                                    <div class="respect">
+                                        <span>20</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text">
+                                <p>לכתוב ביוגרפיה קצרה דברים שאתה אוהב, אג’נדה, דעות, ומה שתרצה על עצמך. כאן אפשר
+                                לכתוב ביוגרפיה קצרה כאן אפשר לכתוב ביוגרפיה קצרה דברים שאתה אוהב, אג’נדה, דעות, ומה
+                                שתרצה על עצמך. בנוסף, אפשר לכתוב ביוגרפיה קצרה לכתוב ביוגרפיה קצרה דברים שאתה
+                                אוהב, אג’נדה, דעות, ומה שתרצה על עצמך. כאן אפשר לכתוב ביוגרפיה קצרה כאן אפשר לכתוב
+                                ביוגרפיה קצרה דברים שאתה אוהב, אג’נדה, דעות, ומה שתרצה על עצמך. בנוסף, ביוגרפיה
+                                קצרה דברים שאתה אוהב. </p>
+                            </div>
+                            <div class="ratio">
+                                <a class="up" href=""></a>
+                                <div class="count">252</div>
+                                <a class="down" href=""></a>
+                            </div>
+                        </div>
+                        <div class="one cf">
+                            <div class="user-right">
+                                <span class="arrow"></span>
+                                <div class="left">
+                                    <a href="">טדנמ ןת</a>
+                                    <a href="">בוקע</a>
+                                    <a href="">העדוה חלש</a>
+                                </div>
+                                <div class="right">
+                                    <div class="img-box">
+                                        <img width="60" src="images/user-1.jpg" alt="">
+                                        <span></span>
+                                    </div>
+                                    <h4>רומשאר זעוב</h4>
+                                    <div class="date">13.3.12</div>
+                                    <div class="proxy">
+                                        <span>3</span>
+                                    </div>
+                                    <div class="respect">
+                                        <span>20</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text">
+                                <p>לכתוב ביוגרפיה קצרה דברים שאתה אוהב, אג’נדה, דעות, ומה שתרצה על עצמך. כאן אפשר
+                                לכתוב ביוגרפיה קצרה כאן אפשר לכתוב ביוגרפיה קצרה דברים שאתה אוהב, אג’נדה, דעות, ומה
+                                שתרצה על עצמך. בנוסף, אפשר לכתוב ביוגרפיה קצרה לכתוב ביוגרפיה קצרה דברים שאתה
+                                אוהב, אג’נדה, דעות, ומה שתרצה על עצמך. כאן אפשר לכתוב ביוגרפיה קצרה כאן אפשר לכתוב
+                                ביוגרפיה קצרה דברים שאתה אוהב, אג’נדה, דעות, ומה שתרצה על עצמך. בנוסף, ביוגרפיה
+                                קצרה דברים שאתה אוהב. </p>
+                            </div>
+                            <div class="ratio">
+                                <a class="up" href=""></a>
+                                <div class="count">252</div>
+                                <a class="down" href=""></a>
+                            </div>
+                        </div>
+                        <div class="bottom cf">
+                            <a href="">מעבר לדיון הבא</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-left">
+                <h3><span>עדימה תלגע</span></h3>
+                <div class="diagram-box cf">
+                    <img src="images/diagram-three.png" alt="" />
+                    <div class="percent">
+                        <span>43%</span>
+                        ועיבצי
+                    </div>
+                    <div class="percent">
+                        <span>57%</span>
+                        םיעדוי אל
+                    </div>
+                </div>
+                <div class="comment-slide">
+                    <a href="" id="prev" ></a>
+                    <a href="" id="next" ></a>
+                    <div class="slide-c">
+                        <div class="one">
+                            הקיטסיטטסל תיזכרמה הכשלה לש ח”ודב  ח”ודב םינותנ ולגתה עובשה םסרופש הכשלה לש
+                        </div>
+                        <div class="one">
+                              ח”ודב םינותנ ולגתה עובשה םסרופש הכשלה לש
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="blue-bar">
+        <div class="extra">
+            <a class="green-btn" href="">עקוב אחרי מעגל התנופה</a>
+            <p>מספר העוקבים אחרי מעגל תנופה זה: <strong>12,876</strong></p>
+        </div>
+    </div>
+    <div class="followers-box">
+        <div class="extra">
+            <h2><span>טיימליין</span> 2012</h2>
+            <div class="followers-diagram">
+                <div style="left: 0px" class="event event-prev">
+                    <div class="icon prev-icon">
+                        <span class="i"></span>
+                    </div>
+                    <span class="number">
+                        2.2
+                    </span>
+                    <span class="text">
+                        יצירת דיון
+                    </span>
+                </div>
+                <div style="left: 600px" class="event event-plus">
+                    <div class="icon plus-icon">
+                        <span class="i"></span>
+                    </div>
+                    <span class="number">
+                        2.2
+                    </span>
+                    <span class="text">
+                        יצירת דיון
+                    </span>
+                </div>
+                <div style="left: 750px" class="event event-triangle">
+                    <div class="icon triangle-icon">
+                        <span class="i"></span>
+                    </div>
+                    <span class="number">
+                        8.3
+                    </span>
+                    <span class="text">
+                        היום
+                    </span>
+                </div>
+                <div style="left: 150px" class="event">
+                    <div class="icon green-icon">
+                        <span class="i"></span>
+                        <div class="popup-event type-one">
+                            <div class="popup-text">
+                                <h4>הפגנה למען הקיפודים</h4>
+                                <p>אחד העם 19</p>
+                                <p>תל אביב</p><br />
+                                <p>20:00</p>
+                                <a class="join-btn" href="">הצטרף</a>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="number">
+                        4.4
+                    </span>
+                    <span class="text">
+                        דיון פתוח
+                    </span>
+                </div>
+                <div style="left: 300px" class="event">
+                    <div class="icon blue-icon">
+                        <span class="i"></span>
+                        <div class="popup-event type-two">
+                            <div class="popup-text">
+                                <img src="images/sample-7.jpg" width="112" class="floatRight" alt="" />
+                                <h5>אירוע חשוב מאוד</h5>
+                                <p>הרצאה יוצאת מן הכלל מפי פרופ’ כהן אחד העם 91, תל אביב</p>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="number">
+                        4.4
+                    </span>
+                    <span class="text">
+                        דיון פתוח
+                    </span>
+                </div>
+                <div style="left: 450px" class="event">
+                    <div class="icon grey-icon">
+                        <span class="i"></span>
+                        <div class="popup-event type-three">
+                            <div class="popup-text">
+                                <h3>פברואר</h3>
+                                <ul class="">
+                                    <li><strong>2.2</strong> - יצירת דיון</li>
+                                    <li><strong>8.2</strong> - הפגנה</li>
+                                    <li><strong>2.2</strong> - דיון</li>
+                                    <li><strong>2.2</strong> - יצירת דיון</li>
+                                    <li><strong>8.2</strong> - הפגנה</li>
+                                    <li><strong>2.2</strong> - דיון</li>
+                                    <li><strong>2.2</strong> - יצירת דיון</li>
+                                    <li><strong>8.2</strong> - הפגנה</li>
+                                    <li><strong>2.2</strong> - דיון</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="number">
+                        4.4
+                    </span>
+                    <span class="text">
+                        דיון פתוח
+                    </span>
+                </div>
+                <div style="left: 100%" class="event event-next">
+                    <div class="icon next-icon">
+                        <span class="i"></span>
+                    </div>
+                    <span class="number">
+                        15.4
+                    </span>
+                    <span class="text">
+                        תאריך יעד
+                    </span>
+                </div>
+            </div>
+            <div class="btn-box">
+                <a href="">+ הצע פעולה חדשה</a>
+            </div>
+        </div>
+    </div>
+    <div class="comments-box">
+        <div class="extra cf">
+            <div class="updates-box cf">
+                <div class="right">
+                    <h2>עדכונים</h2>
+                    <div class="updates">
+                        <div class="one">
+                            <div class="right-image">
+                                <img src="images/sample-7.jpg" alt="" />
+                            </div>
+                            <h4>םידומילה תנש תארקל םירומב רוסחמ</h4>
+                            <p>רשאכ םויה הרעס ררוע רעס ןועדג תוברתהו ךוניחה רש
+                            לש ח”ודב ,לארשיב ינועה בצמ לע םידירטמ םינותנ ולגתה
+                            ילואש יאדכו הרעס ררוע רעס ןועדג תוברתהו ךוניחה רש
+                            עובשה הקיטסיטטסל תיזכרמה הכשלה ... <a href="">קרא עוד</a></p>
+                            <a class="btn" href="">ףתש</a>
+                        </div>
+                        <div class="one">
+                            <div class="right-image">
+                                <img src="images/sample-7.jpg" alt="" />
+                            </div>
+                            <h4>םידומילה תנש תארקל םירומב רוסחמ</h4>
+                            <p>רשאכ םויה הרעס ררוע רעס ןועדג תוברתהו ךוניחה רש
+                            לש ח”ודב ,לארשיב ינועה בצמ לע םידירטמ םינותנ ולגתה
+                            ילואש יאדכו הרעס ררוע רעס ןועדג תוברתהו ךוניחה רש
+                            עובשה הקיטסיטטסל תיזכרמה הכשלה ... <a href="">קרא עוד</a></p>
+                            <a class="btn" href="">ףתש</a>
+                        </div>
+                        <div class="one">
+                            <h4>םידומילה תנש לע םייאמ םירומה תורדתסה ןיב ימינפ קבאמ
+                            התיבש לע םירוביד עקרב ,תיחכונה</h4>
+                            <h5>הועלה ע”י מרב סימנטוב</h5>
+                            <p> בצמ לע םידירטמ םינותנ ולגתה עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה לש ח”ודב
+                            תוירוה דח תוהמא לש ןבצמ תודוא םישק תינותנ םהיניב ,לארשיב ינועה ... <a href="">קרא עוד</a></p>
+                            <a class="btn" href="">ףתש</a>
+                        </div>
+                        <div class="one">
+                            <h4>םידומילה תנש לע םייאמ םירומה תורדתסה ןיב ימינפ קבאמ</h4>
+                            <h5>הועלה ע”י מרב סימנטוב</h5>
+                            <p> בצמ לע םידירטמ םינותנ ולגתה עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה לש ח”ודב
+                            תוירוה דח תוהמא לש ןבצמ תודוא םישק תינותנ םהיניב ,לארשיב ינועה ... <a href="">קרא עוד</a></p>
+                            <a class="btn" href="">ףתש</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="left">
+                    <h2>פעולות הממתינות לאישור</h2>
+                    <div class="anticipation-box">
+                        <div class="one">
+                            <h4>כאן תבוא כותרת של פעולה</h4>
+                            <p>הרצאה מפי פרופ’ תקציר וכמה מילים
+                            פרופ’ תקציר וכמה מילים שאפשר לספר ...</p>
+                            <div class="date">20.3.2012 | 50 משתתפים</div>
+                            <div class="tags cf">
+                                <div class="info">
+                                    <span class="talks">33</span>
+                                    <span class="watched">151</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="one">
+                            <h4>כאן תבוא כותרת של פעולה</h4>
+                            <p>הרצאה מפי פרופ’ תקציר וכמה מילים
+                            פרופ’ תקציר וכמה מילים שאפשר לספר ...</p>
+                            <div class="date">20.3.2012 | 50 משתתפים</div>
+                            <div class="tags cf">
+                                <div class="info">
+                                    <span class="talks">33</span>
+                                    <span class="watched">151</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="one">
+                            <h4>כאן תבוא כותרת של פעולה</h4>
+                            <p>הרצאה מפי פרופ’ תקציר וכמה מילים
+                            פרופ’ תקציר וכמה מילים שאפשר לספר ...</p>
+                            <div class="date">20.3.2012 | 50 משתתפים</div>
+                            <div class="tags cf">
+                                <div class="info">
+                                    <span class="talks">33</span>
+                                    <span class="watched">151</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="one">
+                            <h4>כאן תבוא כותרת של פעולה</h4>
+                            <p>הרצאה מפי פרופ’ תקציר וכמה מילים
+                            פרופ’ תקציר וכמה מילים שאפשר לספר ...</p>
+                            <div class="date">20.3.2012 | 50 משתתפים</div>
+                            <div class="tags cf">
+                                <div class="info">
+                                    <span class="talks">33</span>
+                                    <span class="watched">151</span>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="" class="btn">הראה לי את כולן</a>
+                    </div>
+                </div>
+            </div>
+            <div class="blog-box cf">
+                <h2>להק תעד יליבומ</h2>
+                <div class="one">
+                    <div class="img-box">
+                        <img alt="" src="images/user-1.jpg">
+                        <span class="fillter"></span>
+                    </div>
+                    <h4><a href="">יבקעי לאומש</a></h4>
+                    <p> זכרמה הכשלה לש ח”ודב
+                    ינועה בצמ לע םידירטמ םינותנ
+                     ... ץראה זכרמ ירוזאב</p>
+                    <div class="badges">
+                        <div class="proxy">
+                            <span>3</span>
+                        </div>
+                        <div class="respect">
+                            <span>20</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="one">
+                    <div class="img-box">
+                        <img alt="" src="images/user-2.jpg">
+                        <span class="fillter"></span>
+                    </div>
+                    <h4><a href="">יבקעי לאומש</a></h4>
+                    <p> זכרמה הכשלה לש ח”ודב
+                    ינועה בצמ לע םידירטמ םינותנ
+                     ... ץראה זכרמ ירוזאב</p>
+                    <div class="badges">
+                        <div class="proxy">
+                            <span>3</span>
+                        </div>
+                        <div class="respect">
+                            <span>20</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="one last">
+                    <div class="img-box">
+                        <img alt="" src="images/user-3.jpg">
+                        <span class="fillter"></span>
+                    </div>
+                    <h4><a href="">יבקעי לאומש</a></h4>
+                    <p> זכרמה הכשלה לש ח”ודב
+                    ינועה בצמ לע םידירטמ םינותנ
+                     ... ץראה זכרמ ירוזאב</p>
+                    <div class="badges">
+                        <div class="proxy">
+                            <span>3</span>
+                        </div>
+                        <div class="respect">
+                            <span>20</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="followers-ppl cf">
+                <h2>םיבקוע</h2>
+                <div class="one">
+                    <div class="img-box">
+                        <img src="images/user-1.jpg" width="60" alt="" />
+                        <span></span>
+                    </div>
+                    <div class="name">
+                        רומאשר זעב
+                    </div>
+                    <div class="date">
+                        13.03.2012
+                    </div>
+                </div>
+                <div class="one">
+                    <div class="img-box">
+                        <img src="images/user-1.jpg" width="60" alt="" />
+                        <span></span>
+                    </div>
+                    <div class="name">
+                        רומאשר זעב
+                    </div>
+                    <div class="date">
+                        13.03.2012
+                    </div>
+                </div>
+                <div class="one">
+                    <div class="img-box">
+                        <img src="images/user-1.jpg" width="60" alt="" />
+                        <span></span>
+                    </div>
+                    <div class="name">
+                        רומאשר זעב
+                    </div>
+                    <div class="date">
+                        13.03.2012
+                    </div>
+                </div>
+                <div class="one">
+                    <div class="img-box">
+                        <img src="images/user-1.jpg" width="60" alt="" />
+                        <span></span>
+                    </div>
+                    <div class="name">
+                        רומאשר זעב
+                    </div>
+                    <div class="date">
+                        13.03.2012
+                    </div>
+                </div>
+                <div class="one">
+                    <div class="img-box">
+                        <img src="images/user-1.jpg" width="60" alt="" />
+                        <span></span>
+                    </div>
+                    <div class="name">
+                        רומאשר זעב
+                    </div>
+                    <div class="date">
+                        13.03.2012
+                    </div>
+                </div>
+                <div class="one">
+                    <div class="img-box">
+                        <img src="images/user-1.jpg" width="60" alt="" />
+                        <span></span>
+                    </div>
+                    <div class="name">
+                        רומאשר זעב
+                    </div>
+                    <div class="date">
+                        13.03.2012
+                    </div>
+                </div>
+                <div class="one">
+                    <div class="img-box">
+                        <img src="images/user-1.jpg" width="60" alt="" />
+                        <span></span>
+                    </div>
+                    <div class="name">
+                        רומאשר זעב
+                    </div>
+                    <div class="date">
+                        13.03.2012
+                    </div>
+                </div>
+                <div class="one">
+                    <div class="img-box">
+                        <img src="images/user-1.jpg" width="60" alt="" />
+                        <span></span>
+                    </div>
+                    <div class="name">
+                        רומאשר זעב
+                    </div>
+                    <div class="date">
+                        13.03.2012
+                    </div>
+                </div>
+                <div class="one">
+                    <div class="img-box">
+                        <img src="images/user-1.jpg" width="60" alt="" />
+                        <span></span>
+                    </div>
+                    <div class="name">
+                        רומאשר זעב
+                    </div>
+                    <div class="date">
+                        13.03.2012
+                    </div>
+                </div>
+                <div class="one">
+                    <div class="img-box">
+                        <img src="images/user-1.jpg" width="60" alt="" />
+                        <span></span>
+                    </div>
+                    <div class="name">
+                        רומאשר זעב
+                    </div>
+                    <div class="date">
+                        13.03.2012
+                    </div>
+                </div>
+                <div class="one">
+                    <div class="img-box">
+                        <img src="images/user-1.jpg" width="60" alt="" />
+                        <span></span>
+                    </div>
+                    <div class="name">
+                        רומאשר זעב
+                    </div>
+                    <div class="date">
+                        13.03.2012
+                    </div>
+                </div>
+                <div class="one">
+                    <div class="img-box">
+                        <img src="images/user-1.jpg" width="60" alt="" />
+                        <span></span>
+                    </div>
+                    <div class="name">
+                        רומאשר זעב
+                    </div>
+                    <div class="date">
+                        13.03.2012
+                    </div>
+                </div>
+                <div class="one">
+                    <div class="img-box">
+                        <img src="images/user-1.jpg" width="60" alt="" />
+                        <span></span>
+                    </div>
+                    <div class="name">
+                        רומאשר זעב
+                    </div>
+                    <div class="date">
+                        13.03.2012
+                    </div>
+                </div>
+                <div class="one">
+                    <div class="img-box">
+                        <img src="images/user-1.jpg" width="60" alt="" />
+                        <span></span>
+                    </div>
+                    <div class="name">
+                        רומאשר זעב
+                    </div>
+                    <div class="date">
+                        13.03.2012
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<%- partial('partials/footer.ejs') %>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+            $(".inline").colorbox({ inline: true, width: "730" });
+            $('.slide-c')
+            .after('<div id="nav2">')
+            .cycle({
+                fx: 'turnDown',
+                speed: 'fast',
+                timeout: 0,
+                pager: '#nav2',
+                next: '#next',
+                prev: '#prev'
+            });
+            $('.popular-comments .user-right').hover(function () {
+                $(this).toggleClass('hover');
+            });
+            $('.comments-box .comment-one .user-right').hover(function () {
+                $(this).toggleClass('hover');
+            });
+            $('.popular-comments .top a').click(function () {
+                $(this).parents('.popular-comments').find('.hide-box').slideToggle();
+                $(this).parents('.popular-comments').toggleClass('hover');
+                return false;
+            });
+
+    });
+</script>
+</body>
+</html>
