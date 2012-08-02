@@ -187,6 +187,10 @@ module.exports = function(app)
                 list:['title']
     });
 
+    admin.registerMongooseModel('Elections',Models.Elections,null,{
+                list:['title']
+    });
+
     admin.registerMongooseModel('ImageUpload',Models.ImageUpload,null,{
         list:['image.url']
     });

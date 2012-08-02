@@ -12,19 +12,38 @@ module.exports = function(req,res) {
                 if(!article)
                     res.render('404.ejs',{});
                 else{
-
-                        res.render('blog.ejs', {
-                            title:"בלוגים",
-                            isBlog:false,
-                            articles:[article],
-                            tab:'articles',
-                            blogger: article.user_id,
-                            user: req.session.user,
-                            user_logged: req.isAuthenticated(),
-                            tags: article.tags
-                        });
+                    models.BlogTag.find({user_id: article.user_id}, ['tag'])
+                        .sort('popularity','descending')
+                        .exec(function(err, tags){
+                            if (err)
+                                throw err;
+                            else{
+                                res.render('blog.ejs', {
+                                    title: "בלוגים",
+                                    isBlog: false,
+                                    articles: [article],
+                                    tab: 'articles',
+                                    blogger: article.user_id,
+                                    user: req.session.user,
+                                    user_logged: req.isAuthenticated(),
+                                    tags: tags
+                                });
+                            }
+                        })
+//
+//                        res.render('blog.ejs', {
+//                            title:"בלוגים",
+//                            isBlog:false,
+//                            articles:[article],
+//                            tab:'articles',
+//                            blogger: article.user_id,
+//                            user: req.session.user,
+//                            user_logged: req.isAuthenticated(),
+//                            tags: article.tags
+//                        });
                 }
 
             }
         });
 };
+
