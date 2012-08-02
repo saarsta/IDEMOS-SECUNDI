@@ -7644,6 +7644,23 @@ body.body-action .followers-box h2
     color: #990000 !important;
 
 }
+
+.menu-elections-item {
+    position:relative;
+    width: 50px;
+    height: 22px;
+}
+
+.menu-elections {
+    position: absolute;
+    display: block;
+    line-height: 27px;
+    background: #3B63EF;
+    color: #FFDE00 !important;
+    padding: 5px 5px 2px 5px;
+    top: -5px;
+}
+
 #close_to_footer
 {
     height: 196px;
