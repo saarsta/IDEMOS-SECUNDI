@@ -260,7 +260,7 @@ function getComments(article_id) {
        db_functions.getUserArticlesByKeywords(bloggerId, searchTerm, null, function(err, data){
 
         /*
-              dust.renderArray('article_comment', comments, null, function (err, out) {
+              dust.renderArray('article', comments, null, function (err, out) {
 
                   $("#"+article_id+" .post-comment").append(out);
               });
