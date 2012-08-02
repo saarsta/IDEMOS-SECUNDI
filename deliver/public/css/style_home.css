@@ -7667,22 +7667,13 @@ div.middleages {
     position:relative;
     margin-right:auto;
     margin-left: auto;
-    font-size: 18px;
-    line-height: 26px;
-    color: white;
-    font-family: 'AdumaFOTRegular';
 
 
 }
 div.right-wing {
-    width: 300px;
-    float:right;
-    margin-top:35px;
-    padding-top: 45px;
-    font-size: 18px;
-    line-height: 26px;
-    color: white;
-    font-family: 'AdumaFOTRegular';
+width: 300px;
+float:right;
+margin-top:35px;
 }
 div.right-wing p {
 
@@ -7694,29 +7685,19 @@ width: 275px;
 }
 
 div.middle-wing {
-    width: 350px;
-    padding:0 30px;
-    margin-top:35px;
-    float:right;
-    text-align:center;
-    padding-top: 45px;
-    font-size: 18px;
-    line-height: 26px;
-    color: white;
-    font-family: 'AdumaFOTRegular';
+width: 350px;
+padding:0 30px;
+margin-top:35px;
+float:right;
+text-align:center;
 }
 
 
 div.chicken-wing {
-    width: 265px;
-    float:right;
-    margin-top:10px;
-    text-align:center;
-    padding-top: 45px;
-    font-size: 18px;
-    line-height: 26px;
-    color: white;
-    font-family: 'AdumaFOTRegular';
+width: 265px;
+float:right;
+margin-top:10px;
+text-align:center;
 }
 
 
