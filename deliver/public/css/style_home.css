@@ -7647,10 +7647,21 @@ body.body-action .followers-box h2
 #close_to_footer
 {
     height: 196px;
-background: #50504f url(../images/red-somthing.png) no-repeat;
-background-position:center top; 
+background: #50504f;
+background-position:center top;
 
 }
+
+
+div.button_ellection {
+    position: absolute;
+    left: -34px;
+    bottom: -71px;
+    width: 364px;
+    height: 64px;
+    background: url(../images/red-somthing.png) no-repeat;
+}
+
 div.middleages {
 width: 980px;
 position:relative;
@@ -7730,6 +7741,7 @@ margin:0 auto;
 	
 div.video-box {
 width:30%;
+    height: 204px!important;
 top:81px;
 position:relative;
 margin:0 auto;
@@ -7740,6 +7752,10 @@ margin-bottom:20px;
 
 ul.social-z li {
 display:inline;
+}
+
+#election_menu:hover{
+    cursor: pointer
 }
 
 /*--------------------*/

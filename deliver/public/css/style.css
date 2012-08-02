@@ -7632,3 +7632,8 @@ body.body-action .followers-box h2
     color: #990000 !important;
 
 }
+
+
+#election_menu:hover{
+    cursor: pointer
+}

@@ -167,6 +167,11 @@ function fbs_click(ui) {
 // handle image loading stuff
 
 $(function(){
+
+    $('#election_menu').live('click', function(){
+        window.location.replace('www.uru.il/elections');
+    })
+
     $('.link_to_resource').live('click', function(){
         var link = $(this).data('link');
         window.location.replace(link);
