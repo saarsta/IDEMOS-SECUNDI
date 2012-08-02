@@ -289,6 +289,12 @@ var Schemas = exports.Schemas = {
         is_hidden:{type:Boolean,'default':true}
     },
 
+    Elections:{
+        title: {type: String, required:true},
+        text_field:{type:mongoose_types.Text},
+        is_hidden:{type:Boolean,'default':true}
+    },
+
     DiscussionHistory: {
         discussion_id: {type: ObjectId, ref: 'Discussion'},
         date: {type: Date, 'default': Date.now},
@@ -348,6 +354,7 @@ var Models = module.exports = {
     AboutUruItem: mongoose.model('AboutUruItem', new Schema(Schemas.AboutUruItem, {strict: true})),
     Team: mongoose.model('Team', new Schema(Schemas.Team, {strict: true})),
     Qa: mongoose.model('Qa', new Schema(Schemas.Qa, {strict: true})),
+    Elections: mongoose.model('Elections', new Schema(Schemas.Elections, {strict: true})),
     GamificationTokens: utils.config_model('GamificationTokens', Schemas.GamificationTokens),
     ThresholdCalcVariables: utils.config_model('ThresholdCalcVariables', Schemas.ThresholdCalcVariables),
 
