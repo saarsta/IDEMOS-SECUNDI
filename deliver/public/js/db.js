@@ -255,6 +255,21 @@ var db_functions = {
         });
     },
 
+    getElectionItems: function(callback){
+        db_functions.loggedInAjax({
+            url: '/api/elections',
+            type: "GET",
+            async: true,
+            success: function (err , data) {
+                callback(err, data);
+            },
+
+            error: function(err, data){
+                callback(err, data);
+            }
+        });
+    },
+
 
 
     getPopularHeadlines: function(limit_number,callback){
