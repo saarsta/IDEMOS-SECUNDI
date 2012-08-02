@@ -29,8 +29,11 @@ module.exports = function(req, res){
         function(cycle, cbk){
             if(!cycle)
                 cbk('no cycle');
-            g_cycle = cycle;
-            models.User.find({"cycles.cycle_id": cycle._id}, ["_id", "cycles"], cbk);
+            else{
+                cycle.subject = cycle.subject[0];
+                g_cycle = cycle;
+                models.User.find({"cycles.cycle_id": cycle._id}, ["_id", "cycles"], cbk);
+            }
         },
 
         //3.1 for each follower find join date by finding the specific cycle in the list
