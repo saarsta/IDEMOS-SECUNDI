@@ -25,10 +25,6 @@ app.configure('development', function(){
 
     app.set('show_only_published',false);
 
-//    app.set('facebook_app_id', '436675376363069');
-//    app.set('facebook_app_name','uru_staging');
-//    app.set('facebook_secret', '975fd0cb4702a7563eca70f11035501a');
-
     app.set('sendgrid_user','app2952775@heroku.com');
     app.set('sendgrid_key','a0oui08x');
     app.set('system_email','info@uru.org.il');
@@ -156,6 +152,15 @@ app.configure(function(){
     if(app.settings.public_folder2)
         app.use(express.static(app.settings.public_folder2));
     require('j-forms').serve_static(app,express);
+
+    app.use(function(req,res,next) {
+        var agent = req.header('User-Agent');
+        if(/facebook/.test(agent)) {
+            require('./deliver/routes/fb_bot')(req,res,next);
+        }
+        else
+            next()
+    });
 
     // pause req stream in case we're uploading files
     app.use(function(req,res,next) {
