@@ -7702,12 +7702,11 @@ text-align:center;
 
 
 div.chicken-wing p, div.middle-wing p,div.right-wing p {
-
-    font-size: 20px;
-	padding-top:45px;
+    font-size: 18px;
+    padding-top: 45px;
     line-height: 26px;
-	color:#fff;
-    font-family: 'AdumaFOTLight';
+    color: white;
+    font-family: 'AdumaFOTRegular';
 }
 
 div.greenbutton-container {
