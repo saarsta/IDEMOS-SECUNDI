@@ -187,7 +187,11 @@ module.exports = function(app)
                 list:['title']
     });
 
-    admin.registerMongooseModel('Elections',Models.Elections,null,{
+    admin.registerMongooseModel('ElectionsText',Models.ElectionsText,null,{
+                list:['title']
+    });
+
+    admin.registerMongooseModel('ElectionsItem',Models.ElectionsItem,null,{
                 list:['title']
     });
 

@@ -255,9 +255,24 @@ var db_functions = {
         });
     },
 
-    getElectionItems: function(callback){
+    getElectionsItems: function(callback){
         db_functions.loggedInAjax({
-            url: '/api/elections',
+            url: '/api/elections_items',
+            type: "GET",
+            async: true,
+            success: function (err , data) {
+                callback(err, data);
+            },
+
+            error: function(err, data){
+                callback(err, data);
+            }
+        });
+    },
+
+    getElectionsTexts: function(callback){
+        db_functions.loggedInAjax({
+            url: '/api/elections_texts',
             type: "GET",
             async: true,
             success: function (err , data) {
@@ -554,6 +569,21 @@ var db_functions = {
     },
 
     getSortedPostByDiscussion: function(discussion_id, sort_by,offset, callback){
+        db_functions.loggedInAjax({
+            url: '/api/posts?discussion_id=' + discussion_id + "&order_by=" + sort_by + '&offset=' + offset,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log("posts are" + " " + data);
+                callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },
+
+    getPopularPostByCycle: function(discussion_id, sort_by,offset, callback){
         db_functions.loggedInAjax({
             url: '/api/posts?discussion_id=' + discussion_id + "&order_by=" + sort_by + '&offset=' + offset,
             type: "GET",

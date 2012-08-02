@@ -289,9 +289,16 @@ var Schemas = exports.Schemas = {
         is_hidden:{type:Boolean,'default':true}
     },
 
-    Elections:{
+    ElectionsText:{
         title: {type: String, required:true},
         text_field:{type:mongoose_types.Text},
+        is_hidden:{type:Boolean,'default':true}
+    },
+
+    ElectionsItem: {
+        img_field: { type:mongoose_types.File, required:true},
+        img_text: String,
+        text_field: String,
         is_hidden:{type:Boolean,'default':true}
     },
 
@@ -354,7 +361,8 @@ var Models = module.exports = {
     AboutUruItem: mongoose.model('AboutUruItem', new Schema(Schemas.AboutUruItem, {strict: true})),
     Team: mongoose.model('Team', new Schema(Schemas.Team, {strict: true})),
     Qa: mongoose.model('Qa', new Schema(Schemas.Qa, {strict: true})),
-    Elections: mongoose.model('Elections', new Schema(Schemas.Elections, {strict: true})),
+    ElectionsText: mongoose.model('ElectionsText', new Schema(Schemas.ElectionsText, {strict: true})),
+    ElectionsItem: mongoose.model('ElectionsItem', new Schema(Schemas.ElectionsItem, {strict: true})),
     GamificationTokens: utils.config_model('GamificationTokens', Schemas.GamificationTokens),
     ThresholdCalcVariables: utils.config_model('ThresholdCalcVariables', Schemas.ThresholdCalcVariables),
 
