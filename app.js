@@ -239,10 +239,10 @@ async.waterfall([
             });
             app.dynamicHelpers({
                 tag_name: function(req,res) { return req.query.tag_name; },
-                logged: function(req,res) { return req.isAuthenticated(); },
-                user_logged:function(req,res) { return req.isAuthenticated(); },
-                user: function(req,res) { return req.session.user; },
-                avatar: function(req,res) { return req.session.avatar_url; },
+                logged: function(req,res) { return req.isAuthenticated && req.isAuthenticated(); },
+                user_logged:function(req,res) { return  req.isAuthenticated && req.isAuthenticated(); },
+                user: function(req,res) { return req.session && req.session.user; },
+                avatar: function(req,res) { return req.session && req.session.avatar_url; },
                 url:function(req,res) { return req.url; }
             });
             app.listen(app.settings.port);

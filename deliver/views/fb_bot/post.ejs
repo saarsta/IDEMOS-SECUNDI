@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+
+<html>
+<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# <%= settings.facebook_app_name %>: http://ogp.me/ns/fb/<%= settings.facebook_app_name %>#">
+     <%- partial('fb_bot/meta.ejs') %>
+</head>
+<body>
+<h1>
+    <%= meta.title %>
+</h1>
+<img src="<%= meta.image %>" />
+<div>
+    <%= meta.description %>
+</div>
+</body>
+</html>
