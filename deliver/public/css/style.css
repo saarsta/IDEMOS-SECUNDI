@@ -2254,6 +2254,13 @@ body
     overflow: inherit;
 }
 
+#read_more
+{
+    text-align: left;
+    position: relative;
+    top: 25px;
+}
+
 .extended #read_more {
     display:none;
 }
@@ -7634,6 +7641,13 @@ body.body-action .followers-box h2
 }
 
 
+
 #election_menu:hover{
     cursor: pointer
+}
+
+.highlight
+{
+    background-color: yellow;
+
 }

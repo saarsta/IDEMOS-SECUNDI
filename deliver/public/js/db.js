@@ -137,8 +137,8 @@ var db_functions = {
             url: '/api/articles/?user_id=' + user_id + '&or=text__regex,,title__regex&title__regex=' + keywords_arr + '&title__regex='+ keywords_arr + '&text__regex='+ keywords_arr + '&order_by='+sort_by,
             type: "GET",
             async: true,
-            success: function (err, data) {
-                callback(null, data)
+            success: function (data, err) {
+                callback(err, data)
             },
             error:function(err, data){
                 callback(err, null);
