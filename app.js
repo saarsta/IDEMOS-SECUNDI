@@ -155,7 +155,7 @@ app.configure(function(){
 
     app.use(function(req,res,next) {
         var agent = req.header('User-Agent');
-        if(/facebook/.test(agent)) {
+        if(/facebook/.test(agent) || req.query['debug_fb_bot']) {
             require('./deliver/routes/fb_bot')(req,res,next);
         }
         else
