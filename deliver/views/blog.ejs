@@ -15,7 +15,7 @@
             <%-partial('partials/tag_search.ejs') %>
         </div>
         <div id="content" class="cf">
-            <h2><a class="arrow" href="">כותרת הבלוג</a> כותרת משנה כותרת משנה</h2>
+            <h2><a class="arrow" href=""><%= blogger.blog_title %></a> <%= blogger.blog_sub_titile %></h2>
             <div class="rightCol">
                 <% for (var i = 0; i < articles.length && i < 8 ; i++) { %>
                         <div class="one-post" item_id="<%= articles[i].id %>" id="<%= articles[i].id %>">
@@ -61,7 +61,7 @@
                     <div class="profile-info cf">
                        <% if (blogger.avatar_url) { %>
                        <div class="img-box">
-                            <img width="120" height="112" src="<%=blogger.avatar_url() %> " alt="" />
+                            <img width="112" height="120" src="<%=blogger.avatar_url() %> " alt="" />
                             <span></span>
                         </div>
                         <% } %>
@@ -94,7 +94,7 @@
                     </div>
                 </div>
                 <div class="left-search">
-                    <form class="search-input"  action="#">
+                    <form class="bolg-search"  action="#">
                         <label>חיפוש</label>
                         <input class="search_term" type="text" value="" />
                         <input type="submit" value="חפש" />
@@ -103,7 +103,7 @@
                 <div class="left-tags">
                     <h3>תגיות</h3>
                     <div class="tags">
-                        <% for (var i = 0; i < tags.length && i < 8 ; i++) { %>
+                        <% for (var i = 0; i < tags.length ; i++) { %>
                                <a class="tag-search" href="javascript:void(0);"><%= tags[i].tag %></a>
                         <% }%>
 
@@ -255,7 +255,21 @@ function getComments(article_id) {
               })
       }
 
+    $('.bolg-search').live("submit",function () {
+       searchTerm = $(this).find(".search_term").val();
+       db_functions.getUserArticlesByKeywords(bloggerId, searchTerm, null, function(err, data){
 
+        /*
+              dust.renderArray('article_comment', comments, null, function (err, out) {
+
+                  $("#"+article_id+" .post-comment").append(out);
+              });
+          */
+
+       });
+        return false;
+
+    });
 
  </script>
 </body>
