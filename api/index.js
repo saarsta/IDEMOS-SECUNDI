@@ -42,6 +42,7 @@ var mongoose_resource = require('jest'),
     AboutUruItemResource = require('./AboutUruItemResource'),
     TeamResource = require('./TeamResource'),
     QaResource = require('./QaResource'),
+    ElectionsResource = require('./ElectionsResource'),
     LoginResource = require('./LoginResource'),
     FbConnectResource = require('./FbConnectResource'),
     AvatarResource = require('./avatar_resource'),
@@ -91,6 +92,7 @@ module.exports = function(app)
     rest_api.register_resource('about_uru_items', new AboutUruItemResource());
     rest_api.register_resource('team', new TeamResource());
     rest_api.register_resource('qa', new QaResource());
+    rest_api.register_resource('elections', new ElectionsResource());
     rest_api.register_resource('login', new LoginResource());
     rest_api.register_resource('fb_connect', new FbConnectResource());
     rest_api.register_resource('items_count_by_tag_name', new ItemsCountByTagNameResource());

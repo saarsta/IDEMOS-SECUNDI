@@ -134,7 +134,7 @@ var db_functions = {
     getUserArticlesByKeywords: function(user_id, keywords, sort_by, callback){
         var keywords_arr = $.trim(keywords).replace(/\s+/g,".%2B");
         db_functions.loggedInAjax({
-            url: '/api/articles/?user_id=' + user_id + '&or=text__regex,,title__regex&title__regex=' + keywords_arr + '&title__regex='+ keywords_arr + '&text___regex='+ keywords_arr + '&order_by='+sort_by,
+            url: '/api/articles/?user_id=' + user_id + '&or=text__regex,,title__regex&title__regex=' + keywords_arr + '&title__regex='+ keywords_arr + '&text__regex='+ keywords_arr + '&order_by='+sort_by,
             type: "GET",
             async: true,
             success: function (err, data) {
@@ -255,7 +255,20 @@ var db_functions = {
         });
     },
 
+    getElectionItems: function(callback){
+        db_functions.loggedInAjax({
+            url: '/api/elections',
+            type: "GET",
+            async: true,
+            success: function (err , data) {
+                callback(err, data);
+            },
 
+            error: function(err, data){
+                callback(err, data);
+            }
+        });
+    },
 
     getPopularHeadlines: function(limit_number,callback){
         db_functions.loggedInAjax({
