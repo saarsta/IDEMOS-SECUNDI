@@ -19,16 +19,22 @@
         <div id="content" class="cf">
             <div class="right-add-offer">
                 <div class="add-offer add-offer-small">
-                    <h2><span class="arrow"> ןוידה אשונ</span> םידופיקה תא ליצהל םיבייח</h2>
+                    <h2><span class="arrow"> <%= cycle.subject_name %></span> <%= cycle.title %></h2>
                     <div class="text-box cf">
-                        <img class="floatRight" src="images/news-4.jpg" alt="" />
+                    <% if (cycle.image_field) { %>
+                        <img class="floatRight" src="<%= cycle.image_field.url %>" alt="" />
+                    <% } %>
                         <h3>תופסת חדשה לתרבות יום א’ בביה”ס: סיורים מודרכים בחברון</h3>
-                        <p>שר החינוך גדעון סער סורר סערה היום כאשר התגלו
-                        נתונים מטרידים על מצב העוני בישראל, בדו”ח של
-                        הלשכה המרכזית לסטטיסטיקה שפורסם השבוע
-                        שר החינוך גדעון סער סורר סערה היום כאשר התגלו
-                        נתונים מטרידים על מצב העוני בישראל, בדו”ח של
-                        הלשכה המרכזית לסטטיסטיקה שפורסם ... <a href="">קרא עוד</a></p>
+                        <p> <%- cycle.text_field %>
+                        </p>
+
+                                 <p id="read_more">
+                                            <a href="javascript:void(0);">
+                                                קרא עוד
+                                            </a>
+                                        </p>
+
+
                     </div>
                     <div class="add-offer-bottom cf">
                         <div class="right">
@@ -37,9 +43,10 @@
                                     <span class="talks">33</span>
                                     <span class="watched">151</span>
                                 </div>
-                                <a href="">הלטבא</a>
-                                <a href="">הלכלכ</a>
-                                <a href="">ינוע</a>
+
+                                <% for (var c = 0; c<cycle.tags.length; c++) { %>
+                                      <a href="?tag_name=<%=cycle.tags[c]%>"> <%=cycle.tags[c] %></a>
+                                <% }%>
                             </div>
                         </div>
                         <a class="fraction-btn" href="">שתף</a>

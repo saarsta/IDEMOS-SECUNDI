@@ -2254,6 +2254,13 @@ body
     overflow: inherit;
 }
 
+#read_more
+{
+    text-align: left;
+    position: relative;
+    top: 25px;
+}
+
 .extended #read_more {
     display:none;
 }
@@ -7631,4 +7638,9 @@ body.body-action .followers-box h2
 .elections{
     color: #990000 !important;
 
+}
+
+.highlight
+{
+    background-color: yellow;
 }

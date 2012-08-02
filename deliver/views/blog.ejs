@@ -16,9 +16,9 @@
         </div>
         <div id="content" class="cf">
             <h2><a class="arrow" href=""><%= blogger.blog_title %></a> <%= blogger.blog_sub_titile %></h2>
-            <div class="rightCol">
+            <div class="rightCol" id="articles" >
                 <% for (var i = 0; i < articles.length && i < 8 ; i++) { %>
-                        <div class="one-post" item_id="<%= articles[i].id %>" id="<%= articles[i].id %>">
+                       <div class="one-post" item_id="<%= articles[i].id %>" id="<%= articles[i].id %>">
                          <a href="/blogs/article/<%= articles[i].id %>">
                             <h3>
                                 <%= articles[i].title %>
@@ -28,7 +28,7 @@
                                 <%= articles[i].time.format('dd/mm/yy') %>
                             </div>
                             <img class="floatRight" src="images/post-1.jpg" alt="" />
-                            <%= articles[i].text %>
+                            <%- articles[i].text %>
                             <div class="bottom cf">
                                 <div class="right">
                                     <div class="tags">
@@ -258,16 +258,19 @@ function getComments(article_id) {
     $('.bolg-search').live("submit",function () {
        searchTerm = $(this).find(".search_term").val();
        db_functions.getUserArticlesByKeywords(bloggerId, searchTerm, null, function(err, data){
+           $.each(data.objects, function (index,item) {
+                 item.text=item.text.replace(searchTerm,'<span class="highlight">'+searchTerm+'</span>' )
+          });
+          $("#articles").empty()
+          dust.renderArray('blog_article', data.objects, null, function (err, out) {
 
-        /*
-              dust.renderArray('article', comments, null, function (err, out) {
-
-                  $("#"+article_id+" .post-comment").append(out);
-              });
-          */
-
+              $("#articles").append(out);
+               $.each(data.objects, function (index,item) {
+                            getComments  (item._id)  ;
+                  });
+          });
        });
-        return false;
+       return false;
 
     });
 
