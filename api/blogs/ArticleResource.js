@@ -38,6 +38,7 @@ var ArticleResource = common.GamificationMongooseResource.extend({
         }
     },
 
+
     run_query: function(req,query,callback)
     {
         query.populate('user_id');
@@ -73,7 +74,6 @@ var ArticleResource = common.GamificationMongooseResource.extend({
         }else{
             this._super(req, res, object, status);
         }
-
     },
 
 

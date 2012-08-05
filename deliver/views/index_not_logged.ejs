@@ -42,7 +42,7 @@
             <div class="button_ellection"></div>
         </div>
         <script type="text/javascript">
-            $(".video-box").on('click', function(){
+            $(".video-box").one('click', function(){
                 $('.youtube_img').remove();
                 $(this).append(
                         '<iframe width="364" height="204" src="http://www.youtube.com/embed/qN98KZE0W10?rel=0&autoplay=1" frameborder="0" allowfullscreen></iframe>'

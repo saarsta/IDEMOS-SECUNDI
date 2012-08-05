@@ -2005,20 +2005,24 @@ body
     background: #fdfdfd;
     margin-bottom: 3px;
 }
+
 .add-offer h2
 {
     padding: 0 8px;
 }
+
 .add-offer h2 .arrow
 {
     padding-left: 13px;
     margin-left: 6px;
     background: url(../images/arrow-left.png) 0 50% no-repeat;
+
 }
 .add-offer .floatRight
 {
     margin-left: 19px;
 }
+
 .add-offer .text-box
 {
     padding-bottom: 19px;
@@ -6845,7 +6849,7 @@ body.body-action .followers-box h2
     border-top: 1px solid #ebebeb;
     border-bottom: 1px solid #ebebeb;
 }
-.one-post .bottom a.like-btn
+.one-post .bottom .like-btn
 {
     float: left;
     padding:0;
@@ -7649,5 +7653,12 @@ body.body-action .followers-box h2
 .highlight
 {
     background-color: yellow;
+}
 
+.no_underline{
+    text-decoration: none;
+    cursor: default;
+    padding-left: 13px;
+    margin-left: 6px;
+    background: url(../images/arrow-left.png) 0 50% no-repeat;
 }

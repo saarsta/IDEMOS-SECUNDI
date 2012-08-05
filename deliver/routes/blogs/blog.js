@@ -1,5 +1,5 @@
 var models = require('../../../models');
-
+    _ = require('underscore');
 module.exports = function (req, res) {
 
     console.log(req.params[0]);
@@ -10,6 +10,10 @@ module.exports = function (req, res) {
                 throw err;
             }
             else{
+
+                _.each(articles, function(article){
+                    article.text = (article.text).replace(/(<([^>]+?)>)/ig,"");
+                })
                 models.BlogTag.find({user_id: req.params[0]}, ['tag'])
                     .sort('popularity','descending')
                     .exec(function(err, tags){

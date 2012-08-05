@@ -72,7 +72,7 @@
         var user_logged = "<%= user_logged %>" == 'true';
 
 
-        $(".video-box").on('click', function(){
+        $(".video-box").one('click', function(){
             $('.video_img').remove();
             $(this).append(
                     '<object width="560" height="315">' +
