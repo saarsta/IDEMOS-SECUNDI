@@ -21,7 +21,25 @@ module.exports = function(req, res){
         //1. find cycle by id
         function(cbk){
             models.Cycle.findById(req.params[0])
-            .select(['_id', 'subject', 'title', 'discussions'])
+            .select([
+                '_id',
+                'subject',
+                'subject_name',
+                'title',
+                'text_field',
+                'image_field',
+                'discussions',
+                'opinion_shapers'
+            ])
+            .populate('opinion_shapers', [
+                '_id',
+                'first_name',
+                'last_name',
+                'avatar_url',
+                'score',
+                'num_of_proxies_i_represent',
+                'opinion_text'
+            ])
             .exec(cbk);
         },
 
@@ -30,7 +48,8 @@ module.exports = function(req, res){
             if(!cycle)
                 cbk('no cycle');
             else{
-                cycle.subject = cycle.subject[0];
+                if (cycle.subject)
+                     cycle.subject = cycle.subject[0];
                 g_cycle = cycle;
                 models.User.find({"cycles.cycle_id": cycle._id}, ["_id", "cycles"], cbk);
             }
@@ -60,20 +79,6 @@ module.exports = function(req, res){
             //3.2 sort followers - fb friends, proxies, followed by me, others
 
             cbk(null, null);
-        },
-
-        //4. find opinion shapers
-        function(obj, cbk){
-            models.User.find({is_opinion_shaper: true}, [
-                '_id',
-                'first_name',
-                'last_name',
-                'avatar_url',
-                'score',
-                'num_of_proxies_i_represent',
-                'opinion_text'
-            ]
-            , cbk)
         }
        //final - render the cycle page
     ], function(err, opinion_shapers){

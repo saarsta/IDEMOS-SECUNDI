@@ -9,8 +9,8 @@
 
 var jest = require('jest'),
     util = require('util'),
-    models = require('../models'),
-    common = require('./common'),
+    models = require('../../models'),
+    common = require('../common.js'),
     async = require('async'),
     _ = require('underscore');
 

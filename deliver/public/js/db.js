@@ -923,6 +923,38 @@ var db_functions = {
             }
         });
     },
+
+    getCycleShoppingCart: function(cycle_id, callback){
+        db_functions.loggedInAjax({
+            url: '/api/cycles_shopping_cart?cycle_id=' + cycle_id,
+            type: "GET",
+            async: true,
+            success: function (err, data) {
+                callback(null, data);
+            },
+
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },
+
+    getCyclePosts: function(cycle_id, callback){
+        db_functions.loggedInAjax({
+            url: '/api/cycle_posts?cycle_id=' + cycle_id,
+            type: "GET",
+            async: true,
+            success: function (err, data) {
+                callback(null, data);
+            },
+
+            error:function(err){
+                callback(err);
+            }
+        });
+    },
+
+
     //---------------------------------------------------//
 
     getDiscussionHistory: function(discussion_id, callback){

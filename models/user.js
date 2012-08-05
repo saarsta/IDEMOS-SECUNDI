@@ -81,7 +81,6 @@ var User = module.exports = new Schema({
     blog_text_1: String,
     blog_text_2: String,
     blog_text_3: String,
-    is_opinion_shaper: {type: Boolean, 'default': false},
     opinion_text: String
 
 }, {strict:true});

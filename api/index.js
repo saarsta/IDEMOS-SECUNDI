@@ -3,6 +3,9 @@ var mongoose_resource = require('jest'),
     InformationItemResource = require('./InformationItemResource.js'),
     ShoppingCartResource = require('./ShoppingCartResource'),
     DiscussionShoppingCartResource = require('./discussions/DiscussionShoppingCartResource.js'),
+    CycleResource = require('./cycles/CycleResource.js'),
+    CyclePostResource = require('./cycles/CyclePostResource.js'),
+    CycleShoppingCartResource = require('./cycles/CycleShoppingCartResource.js'),
     SubjectResource = require('./SubjectResource'),
     DiscussionResource = require('./discussions/DiscussionResource.js'),
     PostResource = require('./discussions/PostResource.js'),
@@ -22,7 +25,6 @@ var mongoose_resource = require('jest'),
     ActionResourceResource = require('./actions/ActionResourceResource.js'),
     ActionResource = require('./actions/ActionResource.js'),
     ActionPopulatedResource = require('./actions/ActionPopulatedResource.js'),
-    CycleResource = require('./CycleResource'),
     article_resources = require('./blogs/ArticleResource.js'),
     ArticleResource = article_resources.ArticleResource,
     TagResource = require('./TagResource'),
@@ -62,6 +64,7 @@ module.exports = function(app)
     rest_api.register_resource('kilkuls',new KilkulResource());
     rest_api.register_resource('shopping_cart',new ShoppingCartResource());
     rest_api.register_resource('discussions_shopping_cart',new DiscussionShoppingCartResource());
+    rest_api.register_resource('cycles_shopping_cart',new CycleShoppingCartResource());
     rest_api.register_resource('subjects', new SubjectResource());
     rest_api.register_resource('discussions', new DiscussionResource());
     rest_api.register_resource('posts', new PostResource());
@@ -82,6 +85,7 @@ module.exports = function(app)
     rest_api.register_resource('actions', new ActionResource());
     rest_api.register_resource('actions_populated', new ActionPopulatedResource());
     rest_api.register_resource('cycles', new CycleResource());
+    rest_api.register_resource('cycle_posts', new CyclePostResource());
     rest_api.register_resource('articles', new ArticleResource());
     rest_api.register_resource('tags', new TagResource());
     rest_api.register_resource('article_update', new ArticleCommentResource());
