@@ -34,6 +34,7 @@
                                 <%= articles[i].time.format('dd/mm/yy') %>
                             </div>
 
+
                            <div class="text-box cf">
                                <div id="discussion_image" style="width: 212px;height: 164px; overflow:hidden;" class='auto-scale floatRight'>
                                    <!--<img src="<%=articles[i].image_field ? articles[i].image_field.url ||'' : '' %>" alt=""/>-->
@@ -47,6 +48,11 @@
                                <!--<textarea id="discussion_content" class="hidden_textarea"><%- articles[i].text %></textarea>-->
                            <!--</div>-->
                             </div>
+
+                             <!--   <img src="<%=articles[i].image_field ? articles[i].image_field.url ||'' : '' %>" alt=""/>     -->
+                             <img class="floatRight" src="http://uru.s3.amazonaws.com/wind_755.jpg" alt="" />
+                                <p><%-articles[i].text%></p>
+
 
                             <div class="bottom cf">
                                 <div class="right">

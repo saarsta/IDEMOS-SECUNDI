@@ -28,9 +28,21 @@ module.exports = function(req, res){
             if(!action)
                 res.render('404.ejs');
             else {
+
+               //TODO: get real  discussion
+               var discussion ={};
+                discussion.title=
+                    'חייבים להציל את הקיפודים';
+
+                action.location=
+                    'התעשייה 12, תל אביב';
+
+
                 res.render('action.ejs',{
                     action:action,
-                    tab:'actions'
+                    tab:'actions',
+                    discussion:discussion
+
                 });
             }
         }
