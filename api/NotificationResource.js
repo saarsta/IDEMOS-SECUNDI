@@ -133,7 +133,7 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
 
                         //find the first comment user didnt see
                        notification.link_to_first_comment_user_didnt_see = "/discussions/" + discussion._id + "#post_" +  notification.notificators[0].sub_entity_id;
-
+                       console.log( notification.link_to_first_comment_user_didnt_see);
                     }
 
                     if (num_of_comments > 1) {
@@ -162,8 +162,9 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                     if(discussion){
                         notification.link = "/discussions/" + discussion._id + "";
                         //todo: this link don't work =>BUGBUG
-                        // notification.suggestions_link='/discussions/" + discussion._id + ""' + notification.notificators[0].sub_entity_id;
-                        notification.suggestions_link=notification.link; //hot fix remove me
+                       //  notification.suggestions_link='/discussions/' + discussion._id + ' + notification.notificators[0].sub_entity_id;
+                        notification.suggestions_link = "/discussions/" + discussion._id + "#post_" +  notification.notificators[0].sub_entity_id;
+                      //  notification.suggestions_link=notification.link; //hot fix remove me
 
 
                         notification.pic = discussion.image_field_preview || discussion.image_field;
@@ -310,7 +311,7 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
 //                        notification.text_preview = posts_hash[notification.entity_id + ""].text;
                         notification.text_preview = discussion.text_field_preview;
 
-                        notification.quote_link= notification.link;
+                        notification.quote_link  = "/discussions/" + discussion._id + '#post_' + notification.notificators[0].sub_entity_id;
                         notification.discussion_link = "/discussions/" + discussion._id;
                     }
                     if(user_obj){
@@ -321,8 +322,8 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                     ;
 
 
-//                    notification.user_quote= bugbug text.replace(/\[(?:quote|ציטוט)=(?:"|&quot;)([^"&]*)(?:"|&quot;)\s*\]\n?((?:.|\n)*)?\n?\[\/(?:quote|ציטוט)\]\n?/g,;
-                    notification.user_quote = "";
+                // notification.user_quote=  text.replace(/\[(?:quote|ציטוט)=(?:"|&quot;)([^"&]*)(?:"|&quot;)\s*\]\n?((?:.|\n)*)?\n?\[\/(?:quote|ציטוט)\]\n?/g,'');
+                   notification.user_quote = "";
 
                     itr_cbk()
                     break;
@@ -331,7 +332,7 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                         "פריט מידע שעשית לו לייק תוייג בדיון - "
                     ;
                     if(discussion){
-                        notification.link = "/information_items/" + notification.entity_id;
+                        notification.link = "/discussions/" + notification.entity_id;
                       //  notification.pic = info_items_hash[notification.entity_id + ""].image_field_preview || info_items_hash[notification.entity_id + ""].image_field;
                         notification.pic = discussion.image_field_preview || discussion.image_field;
                         notification.name = discussion.title;

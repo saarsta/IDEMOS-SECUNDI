@@ -66,8 +66,9 @@ function getSortedPostsByNumberOfDiscussions(discussions, callback)
                 if(posts)
                     posts[0].discussion_name = discussions[0].title;
                 callback(err, posts);
-                break;
+                    break;
             })
+
         case 2:
 
             async.parallel([
