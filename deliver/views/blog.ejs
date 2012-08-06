@@ -32,8 +32,14 @@
                             <div class="date-post">
                                 <%= articles[i].time.format('dd/mm/yy') %>
                             </div>
-                             <!--   <img src="<%=articles[i].image_field ? articles[i].image_field.url ||'' : '' %>" alt=""/>     -->
-                             <img class="floatRight" src="http://uru.s3.amazonaws.com/wind_755.jpg" alt="" />
+                             <div class="img-box floatRight" style="overflow: hidden;">
+                                <div style="width:170px; height:130px;" class='auto-scale'>
+                                    <!--   <img src="<%=articles[i].image_field ? articles[i].image_field.url ||'' : '' %>" alt=""/>     -->
+                                   <img class="floatRight" src="http://uru.s3.amazonaws.com/wind_755.jpg" alt="" />    <br>
+                                </div>
+                                <span></span>
+                            </div>
+
                                 <p><%-articles[i].text%></p>
 
                             <div class="bottom cf">
