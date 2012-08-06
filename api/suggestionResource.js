@@ -396,17 +396,20 @@ module.exports.approveSuggestion = function(id,callback)
                     discussion_object.text_field = str;
 
                     //suggestion grade is the new discussion grade
-                    models.Discussion.update({_id:discussion_object._id},
-                        {
-                            $set:{text_field: str, grade: suggestion_grade}
-                        },
-                        function(err, counter){
-                            cbk1(err, discussion_object);
-                        });
+//                    models.Discussion.update({_id:discussion_object._id},
+//                        {
+//                            $set:{text_field: str, grade: suggestion_grade},
+//                            $addToSet: {vision_text_history: discussion_object.vision_text}
+//                        },
+//
+//                        function(err, counter){
+//                            cbk1(err, discussion_object);
+//                        });
+                    discussion_object.save(cbk1);
                 }
 
             ], function(err, args){
-                cbk(err, args[1]);
+                cbk(err, args[1][0]);
             })
         },
 
@@ -428,11 +431,11 @@ module.exports.approveSuggestion = function(id,callback)
                     suggestion_object.save(cbk1);
                 }
             ], function(err, args){
-                cbk(err, args[1]);
+                cbk(err, args[1][0]);
             })
         },
 
-        function(sug_obj, num, cbk){
+        function(sug_obj, cbk){
             suggestion_creator = sug_obj.creator_id;
             async.parallel([
                 //set gamification
