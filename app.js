@@ -35,8 +35,9 @@ app.configure('development', function(){
     require('./deliver/tools/compile_dust_templates');
 
 
+
     // TODO REMOVE THIS BEFORE COMMIT
-     app.set('send_mails',true);
+  //   app.set('send_mails',true);
 
 
 

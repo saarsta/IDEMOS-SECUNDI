@@ -15,11 +15,23 @@
                 <p></p>
 
                 <p>תודה על הרשמתך וברוך הבא לאתר עורו. אנא לחץ
-                    <a href="<%= settings.root_path %>/account/validation?code=<%= user.validation_code %>&id=<%= user.id %>">
+                    <a href="<%= settings.root_path %>/account/activation?code=<%= user.validation_code %>&id=<%= user.id %>&next=<%= encodeURIComponent(next || '') %>">
                         כאן
                     </a>
  לאישור
                     הרשמתך לאתר.</p>
+
+                <p>
+                    סיסמת הכניסה שלך למערכת היא
+                </p>
+                <p><%= temp_password %></p>
+
+                <p>
+                    אפשר להחליף אותה ולבחור סיסמה אישית
+                    <a href="<%= settings.root_path %>/account/reset_password?code=<%= user.validation_code %>&id=<%= user.id %>&next=<%= encodeURIComponent(next || '') %>">
+                        כאן
+                    </a>
+                </p>
 
                 <p>לאחר האישור תוכל להשתתף באופן פעיל במערכת.</p>
 

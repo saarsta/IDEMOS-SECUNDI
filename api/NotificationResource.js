@@ -801,7 +801,7 @@ var populateNotifications = module.exports.populateNotifications = function(resu
                 models.Discussion.find()
                     .where('_id')
                     .in(discussion_ids)
-                    .select(['id', 'title', 'image_field_preview', 'image_field', 'text_field_preview'])
+                    .select(['id', 'title', 'image_field_preview', 'image_field', 'text_field_preview','vision_text_history','text_field'])
                     .exec(function (err, discussions) {
 
                         var got_ids = _.pluck(discussions,'id');

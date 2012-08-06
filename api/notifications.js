@@ -389,10 +389,12 @@ if(/notifications\.js/.test(process.argv[1])) {
 
     //a_dicussion_created_with_info_item_that_you_created
   //  sub //4fce400ccdd0570100000216
+
+    //501fcef1e6ae520017000662 --הצעה לשינוי שהתקבלה
     setTimeout(function() {
 
-        create_new_notification('comment_on_discussion_you_are_part_of',
-            '4fcdf7180a381201000005b3','4ff1b29aabf64e440f00013a','4f45145968766b0100000002','4fce400ccdd0570100000216',function(err) {
+        create_new_notification('approved_change_suggestion_you_graded',
+            '4fcdf7180a381201000005b3','4ff1b29aabf64e440f00013a','4f45145968766b0100000002','501fcef1e6ae520017000662',function(err) {
 
 
                 console.log(err);

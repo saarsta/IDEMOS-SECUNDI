@@ -31,6 +31,8 @@ exports.routing = function(router)
 
     router.all('/forgot_password', require('./forgot_password'));
 
+    router.all('/activation', require('./activation'));
+
 };
 
 

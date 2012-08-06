@@ -156,7 +156,16 @@ var error_message = error_message || '';
 	</h2>
     <div class="text-box cf">
         <h3><span class="arrow"><%=discussion.title%></span> <a href=""><%=action.title%></a></h3>
-        <img class="floatRight" src="images/sample-2.jpg" alt="" />
+       
+			 <!--<div id="discussion_image" style="width: 292px;height: 164px; overflow:hidden;" class='auto-scale floatRight'>
+                    <img src="<%= discussion.image_field ? discussion.image_field.url ||'' : '' %>" alt=""/>
+                </div> -->
+				
+				<div id="discussion_image" style="width: 212px;height: 164px; overflow:hidden;" class='auto-scale floatRight'>
+                    <img src="http://uru.s3.amazonaws.com/582gas-offshore.jpg" alt=""/>
+					 <!--  images/sample-2.jpg" -->
+
+                </div>
         <div class="add-offer-info">
             תאריך: <strong>24.09.2012</strong>  |  שעה: <strong>15:00-18:00</strong>
         </div>
