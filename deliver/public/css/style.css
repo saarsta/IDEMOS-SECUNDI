@@ -651,7 +651,17 @@ body
     color:#50504f;
     text-decoration: none;
 }
-/* end */
+
+/*end*/
+
+.news-list .one p
+{
+    color:#50504f;
+    font: normal 13px/17px ARial;
+    height: 34px;
+    overflow: hidden;
+    margin-bottom: 30px;
+}
 .tags
 {
     padding: 12px 0 3px;
@@ -754,6 +764,30 @@ body
 {
     padding-right: 20px;
     background: url(../images/watched-icon.png) 100% 50% no-repeat;
+}
+.tags .info a.interesting
+{
+    float: left;
+    background: none;
+    margin-left: 10px;
+    font-weight: bold;
+    padding:0 23px 0 0;
+    position: relative;
+    color:#2fd43b;
+}
+.tags .info .interesting .icon
+{
+    position: absolute;
+    background: url(../images/interesting-star.png) 0 0 no-repeat;
+    right: 0;
+    top: -3px;
+    width: 20px;
+    height: 20px
+}
+.tags .info .interesting:hover .icon,
+.tags .info .interesting.active .icon
+{
+    background-position: 0 100%;
 }
 /*---------------------*/
 .succes-box
@@ -2011,6 +2045,11 @@ body
     padding: 0 8px;
 }
 
+.add-offer-inner h2
+{
+    background:#ededed;
+}
+
 .add-offer h2 .arrow
 {
     padding-left: 13px;
@@ -2029,6 +2068,65 @@ body
     border-bottom: 1px solid #d4d9dc;
     margin:0 8px;
 }
+#content .add-offer-inner .text-box h3
+{
+    font: 26px/41px 'AdumaFOTRegular';
+    padding:0;
+    margin: 0;
+}
+#content .add-offer-inner .text-box h3 a
+{
+    text-decoration: none;
+}
+#content .add-offer-inner .text-box h3 .arrow
+{
+    padding-left: 13px;
+    margin-left: 6px;
+    background: url(../images/arrow-left.png) 0 50% no-repeat;
+}
+.add-offer-info
+{
+    overflow: hidden;
+    font: normal 16px/29px Arial;
+    color:#50504f;
+    border-bottom: 1px solid #ececec;
+}
+.m-2
+{
+    margin-bottom: 10px;
+}
+.add-offer-users
+{
+    overflow: hidden;
+    border-top: 1px solid #ebebeb;
+    padding: 5px 0 10px;
+    color:#535352;
+    font: bold 13px/15px Arial;
+    margin-top: 10px;
+}
+
+.add-offer .add-offer-btn-box
+{
+    border-top: 1px solid #e2e3e4;
+    padding: 23px 0 26px;
+}
+.add-offer .add-offer-btn-box a
+{
+    background:#2fd43b url(../images/green-btn-border.png) 0 0 repeat-x;
+    border: 1px solid #2eab35;
+    width: 306px;
+    display: block;
+    height: 35px;
+    text-align: center;
+    font: normal 22px/35px 'AdumaFOTRegular';
+    color:#ffffff;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    text-decoration: none;
+    margin: 0 auto;
+}
+
 .add-offer .text-box p
 {
     color:#7f7f7e;
@@ -2371,6 +2469,8 @@ textarea.hidden_textarea::selection
     font: normal 15px/17px 'AdumaFOTRegular';
     text-align: center;
     text-decoration: none;
+    top: 0;
+    margin-bottom:0;
 }
 .add-offer .text-box .edit-text .popup-window a.grey-btn
 {
@@ -2386,6 +2486,8 @@ textarea.hidden_textarea::selection
     font: normal 15px/17px 'AdumaFOTRegular';
     text-align: center;
     text-decoration: none;
+    top: 0;
+    margin-bottom:0;
 }
 
 /*-----------------------*/
@@ -2747,6 +2849,16 @@ h2 small
     padding-bottom: 10px;
 }
 /* p changed to div.post_text by ishai */
+.comments-box-inner .text
+{
+    margin-right: 160px;
+}
+.comments-box-inner .comment-one
+{
+    min-height: 106px;
+    padding: 17px 0;
+}
+
 .comments-box .text div.post_text
 {
     color:#50504f;
@@ -2764,6 +2876,67 @@ h2 small
 {
     color:#b7b6b6;
     font-style: italic;
+}
+.comments-box .btn-box
+{
+    position: absolute;
+    left: 11px;
+    top: 17px;
+    width: 87px;
+    text-align: left;
+}
+.comments-box .btn-box a
+{
+    display: block;
+    background:#757d7e url(../images/search-submit.png) 0 0 repeat-x;
+    border: 1px solid #2e3030;
+    border-radius: 2px;
+    width: 85px;
+    height: 29px;
+    text-align: center;
+    color:#ffffff;
+    font: normal 18px/29px 'AdumaFOTRegular';
+    text-decoration: none;
+    margin-bottom: 5px;  
+}
+.comments-box .ratio
+{
+    position: absolute;
+    left: 112px;
+    top: 17px;
+    width: 33px;
+    padding: 6px 12px;
+    height: 80px;
+    border-left: 1px solid #d8dde0;
+    border-right: 1px solid #d8dde0;
+}
+.comments-box .ratio a.up
+{
+    background: url(../images/ratio-arrows.png) 0 0 no-repeat;
+    width: 31px;
+    height: 20px;
+    display: block;
+    margin: 0 auto 6px;
+}
+.comments-box .ratio a.down
+{
+    background: url(../images/ratio-arrows.png) 0 100% no-repeat;
+    width: 31px;
+    height: 20px;
+    display: block;
+    margin: 0 auto;
+}
+.comments-box .ratio .count
+{
+    height: 24px;
+    background: #3d64f0;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    margin-bottom: 6px;
+    text-align: center;
+    color:#fff;
+    font: bold 15px/24px Arial;
 }
 .comments-box .like-btn
 {
@@ -7661,4 +7834,258 @@ body.body-action .followers-box h2
     padding-left: 13px;
     margin-left: 6px;
     background: url(../images/arrow-left.png) 0 50% no-repeat;
+}
+
+*------------------------------*/
+.add-event 
+{
+    border-bottom: 1px solid #d4d9dc;
+    padding-bottom: 15px;
+    margin-bottom: 17px;
+}
+
+.add-event .add-picture
+{
+    float: right;
+    width: 272px;
+    border: 9px solid #ffffff;
+}
+.add-event .add-picture a
+{
+    display: block;
+    text-align: center;
+    height: 147px;
+    background:#f5f5f5;
+    text-decoration: none;
+    color:#b7b6b6;
+    font-size: 18px;
+    line-height: 147px;
+    font-family: 'AdumaFOTMedium';
+}
+.add-event .add-picture a span
+{
+    padding-right: 26px;
+    background: url(../images/img-icon.png) 100% 50% no-repeat;
+}
+.add-event .event-text
+{
+    float: left;
+    width: 671px;
+}
+.add-event .event-text .one-line
+{
+    padding: 17px 0 15px 0;
+    border-top: 1px solid #d4d9dc;
+}
+.add-event .event-text .one-line:first-child
+{
+    padding-top: 0;
+    border: none;
+}
+.add-event .event-text label
+{
+    float: right;
+    color:#50504f;
+    font-size: 18px;
+    line-height: 29px;
+    font-family: 'AdumaFOTMedium';
+    padding-left: 10px;
+}
+.add-event .input
+{
+    border: 1px solid #bfc0c0;
+    border-radius: 2px;
+    background:#fff;
+    padding: 6px 7px;
+    float: right;
+}
+.add-event .input input
+{
+    width: 100%;
+    padding:0;
+    height: 17px;
+    color:#b7b6b6;
+    font: normal 13px/17px Arial;
+    background:#fff;
+    border: 0px solid transparent;
+    display: block;
+}
+.add-event select
+{
+    float: right;
+    color:#b7b6b6;
+    font: normal 13px/20px Arial;
+    margin-top: 6px;
+}
+
+.add-event .title .input
+{
+    width: 527px;
+}
+.add-event .title label
+{
+    padding-right: 23px;
+    background: url(../images/title-icon.png) 100% 50% no-repeat;
+}
+.add-event .type
+{
+    float: right;
+    width: 305px;
+}
+.add-event .type label
+{
+    padding-right: 23px;
+    background: url(../images/flag-icon.png) 100% 50% no-repeat;
+}
+.add-event .type select
+{
+    width: 233px;
+}
+.add-event .place
+{
+    float: left;
+    width: 354px;
+}
+.add-event .place label
+{
+    padding-right: 17px;
+    background: url(../images/map-icon.png) 100% 50% no-repeat;
+}
+.add-event .place .input
+{
+    width: 156px;
+    margin-left: 7px;
+}
+.add-event .place input[type=submit]
+{
+    float: right;
+    width: 110px;
+    cursor: pointer;
+    height: 29px;
+    color:#fff;
+    background:#b7b6b6 url(../images/search-submit.png) 0 0 repeat-x;
+    font: normal 20px/29px "AdumaFOTRegular";    
+    border: 1px solid #8f8f8f;
+    text-align: center;
+    border-radius: 2px;
+}
+.add-event .date 
+{
+    padding-left: 12px;
+    width: 166px;
+    float: right;
+}
+.add-event .date label
+{
+    padding-right: 23px;
+    background: url(../images/calendar-icon.png) 100% 50% no-repeat;
+}
+.add-event .date .input
+{
+    background-image: url(../images/date-icon.png);
+    background-position: 4px 10px;
+    background-repeat: no-repeat;
+    width: 76px;
+}
+.add-event .date .input input
+{
+    background: none;
+}
+.add-event .time label:first-child
+{
+    padding-right: 21px;
+    background: url(../images/clock-icon.png) 100% 50% no-repeat;
+}
+.add-event .time .input
+{
+    width: 34px;
+    margin-left: 10px;
+}
+.add-event .user-number
+{
+    float: left;
+}
+.add-event .user-number .input
+{
+    width: 34px;
+}
+.add-event .user-number label
+{
+    padding-right: 22px;
+    background: url(../images/proxy-icon.png) 100% 50% no-repeat;
+}
+.add-event .resources
+{
+    float: right;
+    width: 390px;
+}
+.add-event .resources label
+{
+    padding-right: 22px;
+    background: url(../images/case-icon.png) 100% 50% no-repeat;
+}
+.add-event .resources select
+{
+    width: 250px;
+}
+.add-event .additional-resources
+{
+    float: left;
+    width: 244px;
+    border: 1px solid #bfc0c0;
+    border-radius: 2px;
+    background:#fff;
+    padding: 6px 13px 6px 7px;
+}
+.add-event .additional-resources input[type=text]
+{
+    float: right;
+    padding:0;
+    height: 17px;
+    color:#b7b6b6;
+    font: normal 13px/17px Arial;
+    background:#fff;
+    border: 0px solid transparent;
+    width: 195px;
+}
+.add-event .additional-resources input[type=submit]
+{
+    float: left;
+    background: #b7b6b6;
+    border-radius: 3px;
+    width: 37px;
+    height: 17px;
+    color:#ffffff;
+    font: normal 11px/17px Arial;
+    cursor: pointer;
+    border: none;
+}
+.add-event .checkboxes
+{
+    padding-right: 140px;
+}
+.add-event .event-text .checkboxes label
+{
+    color:#50504f;
+    font: normal 13px/15px Arial;
+}
+.add-event .event-text .checkboxes input
+{
+    float: left;
+}
+.tags-box-event
+{
+    border-top: 1px solid #d4d9dc;
+    border-bottom: 1px solid #d4d9dc;
+    margin-bottom: 36px;
+}
+.tags-box-event label.first
+{
+    float: right;
+    color:#50504f;
+    font-size: 18px;
+    line-height: 20px;
+    font-family: 'AdumaFOTMedium';
+    padding-left: 12px;
+    margin: -2px 0;
 }
