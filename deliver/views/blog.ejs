@@ -20,7 +20,8 @@
             <%-partial('partials/tag_search.ejs') %>
         </div>
         <div id="content" class="cf">
-            <h2><a class="arrow no_underline" href="javascrpit:void(0)"><%= blogger.blog_title %></a> <%= blogger.blog_sub_titile %></h2>
+            <h2><a class="arrow no_underline" href="javascrpit:void(0)"><%= blogger.blog_title || ""%></a> <%= blogger.blog_sub_titile || ""%></h2>
+
             <div class="rightCol" id="articles" >
                 <% for (var i = 0; i < articles.length && i < 8 ; i++) { %>
                        <div class="one-post" item_id="<%= articles[i].id %>" id="<%= articles[i].id %>">
@@ -35,7 +36,8 @@
 
                            <div class="text-box cf">
                                <div id="discussion_image" style="width: 212px;height: 164px; overflow:hidden;" class='auto-scale floatRight'>
-                                   <img src="<%=articles[i].image_field ? articles[i].image_field.url ||'' : '' %>" alt=""/>
+                                   <!--<img src="<%=articles[i].image_field ? articles[i].image_field.url ||'' : '' %>" alt=""/>-->
+                                   <img src="http://uru.s3.amazonaws.com/wind_755.jpg" alt=""/>
                                </div>
                                <div class="discussion_content discussion content">
                                    <textarea class="hidden_textarea"><%-articles[i].text%></textarea>

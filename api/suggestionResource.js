@@ -6,14 +6,6 @@
  * To change this template use File | Settings | File Templates.
  */
 
-/**
- * Created by JetBrains WebStorm.
- * User: saar
- * Date: 23/02/12
- * Time: 12:03
- * To change this template use File | Settings | File Templates.
- */
-
 var resources = require('jest'),
     util = require('util'),
     models = require('../models'),
@@ -484,7 +476,6 @@ var calculate_sugg_threshold = function(factor, discussion_threshold){
     var log_base_75_of_x =
         Math.log(factor) / Math.log(75);
     var result = Math.pow(log_base_75_of_x, common.getThresholdCalcVariables("SCALE_PARAM")) * discussion_threshold;
-
 
     return Math.round(result);
 
