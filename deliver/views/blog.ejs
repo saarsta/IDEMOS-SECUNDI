@@ -34,25 +34,12 @@
                                 <%= articles[i].time.format('dd/mm/yy') %>
                             </div>
 
+                           <div id="blog_image" style="width: 212px;height: 164px; overflow:hidden;" class='auto-scale floatRight'>
+                               <!--<img src="<%=articles[i].image_field ? articles[i].image_field.url ||'' : '' %>" alt=""/>-->
+                             <img src="http://uru.s3.amazonaws.com/wind_755.jpg" alt="" />
+                           </div>
 
-                           <div class="text-box cf">
-                               <div id="discussion_image" style="width: 212px;height: 164px; overflow:hidden;" class='auto-scale floatRight'>
-                                   <!--<img src="<%=articles[i].image_field ? articles[i].image_field.url ||'' : '' %>" alt=""/>-->
-                                   <img src="http://uru.s3.amazonaws.com/wind_755.jpg" alt=""/>
-                               </div>
-                               <div class="discussion_content discussion content">
-                                   <textarea class="hidden_textarea"><%-articles[i].text%></textarea>
-                               </div>
-
-                               <!--<div class="discussion_content discussion content">-->
-                               <!--<textarea id="discussion_content" class="hidden_textarea"><%- articles[i].text %></textarea>-->
-                           <!--</div>-->
-                            </div>
-
-                             <!--   <img src="<%=articles[i].image_field ? articles[i].image_field.url ||'' : '' %>" alt=""/>     -->
-                             <img class="floatRight" src="http://uru.s3.amazonaws.com/wind_755.jpg" alt="" />
-                                <p><%-articles[i].text%></p>
-
+                            <p><%-articles[i].text%></p>
 
                             <div class="bottom cf">
                                 <div class="right">
