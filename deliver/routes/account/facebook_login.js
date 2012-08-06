@@ -5,7 +5,7 @@ var models = require('../../../models')
 module.exports = function (req, res) {
 
     if(req.query['error']) {
-        res.render('500.ejs');
+        res.redirect('/account/register');
         return;
     }
 //   facebook_login(req, res);
