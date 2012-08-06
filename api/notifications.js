@@ -390,8 +390,10 @@ if(/notifications\.js/.test(process.argv[1])) {
     //a_dicussion_created_with_info_item_that_you_created
   //  sub //4fce400ccdd0570100000216
     setTimeout(function() {
+
         create_new_notification('comment_on_discussion_you_are_part_of',
             '4fcdf7180a381201000005b3','4ff1b29aabf64e440f00013a','4f45145968766b0100000002','4fce400ccdd0570100000216',function(err) {
+
 
                 console.log(err);
             });

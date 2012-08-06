@@ -235,7 +235,7 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                                     cbk2(err, null);
                                 else{
                                     if(quoted_post)
-                                        notifications.create_user_notification("been_quoted", discussion_id, quoted_post.creator_id, post_object.creator_id, post_object._id/*ref_to_post_id*/, cbk2);
+                                        notifications.create_user_notification("been_quoted", post_object._id/*ref_to_post_id*/, quoted_post.creator_id, post_object.creator_id, discussion_id, cbk2);
                                     else
                                     {
                                         console.log("there is no post with post_object.ref_to_post_id id");

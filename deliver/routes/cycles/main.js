@@ -24,11 +24,13 @@ module.exports = function(req, res){
             .select([
                 '_id',
                 'subject',
-                'subject_name',
+                'main_subject',
                 'title',
+                'discussion_title',
                 'text_field',
                 'image_field',
                 'discussions',
+                'tags',
                 'opinion_shapers'
             ])
             .populate('opinion_shapers', [
@@ -40,6 +42,7 @@ module.exports = function(req, res){
                 'num_of_proxies_i_represent',
                 'opinion_text'
             ])
+            .populate('main_subject', ['name'])
             .exec(cbk);
         },
 
@@ -85,6 +88,7 @@ module.exports = function(req, res){
         if(err)
             res.render('500.ejs',{error:err});
         else {
+                g_cycle.subject_name = g_cycle.main_subject.name;
                 res.render('cycle.ejs',{
                     cycle: g_cycle,
                     tab:'cycles'
