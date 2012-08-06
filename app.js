@@ -34,7 +34,9 @@ app.configure('development', function(){
     require('./tools/compile_templates');
     require('./deliver/tools/compile_dust_templates');
 
-    // app.set('send_mails',true);
+
+    // TODO remove this
+     app.set('send_mails',true);
 
 
 });
