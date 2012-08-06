@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<%
+var error_message = error_message || '';
+%>
+<html>
+<head>
+    <%- partial('partials/head.ejs') %>
+</head>
+<body>
+<%- partial('partials/body_top.ejs') %>
+<div id="wrap">
+    <div id="header">
+        <%-partial('partials/menu.ejs')%>
+        <%-partial('partials/user_box.ejs')%>
+        <%-partial('partials/failures.ejs')%>
+        <%-partial('partials/tag_search.ejs') %>
+    </div>
+    <div id="content" class="cf">
+        <h2>
+            הרשמה לעורו
+        </h2>
+        <form id="activation_form" class="login-form cf" method="POST">
+            <%if(sent){%>
+                <p>
+על מנת להשלים את הליך הרישום, לחץ על הקישור שנשלח לכתובת הדואר שלך
+                </p>
+            <% } else if (error=="unknown") { %>
+            <span class="err_msg">
+                הכתובת אינה נמצאת במערכת
+            </span>
+            <% } else { %>
+                <span class="err_msg">הלינק לא נכון או מיושן, לחץ שלח שוב על מנת לשלוח מייל נוסף</span>
+            <% } %>
+            <div class="areas">
+            <div class="one">
+                <label>
+                    דוא”ל:
+                </label>
+                <input id="email" name="email" class="text" type="text" value="<%= email || '' %>" />
+            </div>
+            </div>
+            <input type="submit" value="שלח שוב"/>
+        </form>
+    </div>
+</div>
+<%- partial('partials/footer.ejs') %>
+</body>
+</html>
+
+
+<script type="text/javascript">
+    $(function(){
+        $('#register_form').validate({
+            errorElement: "p",
+
+            rules:{
+                first_name:{required: true },
+                last_name:{required: true },
+                password:{required: true },
+                email:{required: true}
+            },
+            message:
+            {
+                first_name:"נא להזין שם פרטי",
+                last_name:"נא להזין שם משפחה",
+                password: "נא להזין סיסמא",
+                email: "נא להזין כתובת מייל"
+            },
+            highlight: function (element, errorClass) {
+                $(element).addClass('error').removeClass('valid');
+            },
+            unhighlight: function (element, errorClass) {
+                $(element).removeClass('error').addClass('valid');
+            }
+//            submitHandler: function(form) {
+//                first_name = $("#first_name").val();
+//                last_name = $("#last_name").val();
+//                password = $("#password").val();
+//            }
+        })
+    })
+</script>

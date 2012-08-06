@@ -13,8 +13,9 @@ var Cycle = module.exports = new Schema({
         name: {type:String, editable:false}
     }
     ],
-    subject_name: {type:String, required:true},
+    main_subject: {type:ObjectId, ref:'Subject', required:true},
     title: {type:String, required:true},
+    discussion_title: {type:String, required:true},
     tooltip:String,
     text_field:{type:mongoose_types.Html},
     text_field_preview:{type:mongoose_types.Html},

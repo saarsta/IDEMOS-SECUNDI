@@ -86,7 +86,7 @@ var NotificationCategoryResource = module.exports = resources.MongooseResource.e
     });
 
 
-var iterator = function (users_hash, discussions_hash, info_items_hash) {
+var iterator = function (users_hash, discussions_hash, posts_hash, info_items_hash) {
     return function (notification, itr_cbk) {
         {
             var description_of_notificators;
@@ -95,6 +95,8 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                 users_hash[notification.notificators[0].notificator_id] : null;
 
             var discussion = discussions_hash[notification.entity_id + ''] || discussions_hash[notification.notificators[0].sub_entity_id + ''];
+            var post = posts_hash[notification.entity_id + ''] || posts_hash[notification.notificators[0].sub_entity_id + ''];
+
             switch (notification.type) {
                 case "approved_info_item_i_created":
                     notification.message_of_notificators =
@@ -270,7 +272,7 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                         notification.text_preview = discussion.text_field_preview;
 
 
-                        notification.old_text= discussion.vision_text_history==undefined?'': discussion.vision_text_history[discussion.vision_text_history.length - 1];
+                        notification.old_text= discussion.vision_text_history == undefined?'': discussion.vision_text_history[discussion.vision_text_history.length - 1];
                         notification.new_text= discussion.text_field;
                     }
                     itr_cbk();
@@ -299,7 +301,8 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                     break;
                 case "been_quoted":
                     if(discussion){
-                        notification.link = "/discussions/" + discussion._id + '#post_' + notification.notificators[0].sub_entity_id;
+                        var post_id = post ? post._id : ""
+                        notification.link = "/discussions/" + discussion._id + '#post_' + post_id;
                         notification.pic = discussion.image_field_preview || discussion.image_field;
                         notification.name = discussion.title;
 
@@ -320,9 +323,11 @@ var iterator = function (users_hash, discussions_hash, info_items_hash) {
                       "ציטט אותך בדיון - "
                     ;
 
+                    if(post){
+                        notification.user_quote = (post.text).replace(/\[(?:quote|ציטוט)=(?:"|&quot;)([^"&]*)(?:"|&quot;)\s*\]\n?((?:.|\n)*)?\n?\[\/(?:quote|ציטוט)\]\n?/g, "");
+                        notification.user_quote = notification.user_quote.replace(/(<([^>]+?)>)/ig,"");
 
-//                    notification.user_quote= bugbug text.replace(/\[(?:quote|ציטוט)=(?:"|&quot;)([^"&]*)(?:"|&quot;)\s*\]\n?((?:.|\n)*)?\n?\[\/(?:quote|ציטוט)\]\n?/g,;
-                    notification.user_quote = "";
+                    }
 
                     itr_cbk()
                     break;
@@ -681,8 +686,13 @@ var populateNotifications = module.exports.populateNotifications = function(resu
 
     var post_or_suggestion_notification_types = [
         "user_gave_my_post_tokens",
-        "user_gave_my_suggestion_tokens"
+        "user_gave_my_suggestion_tokens",
     ];
+
+    var post_notification_types = [
+        "been_quoted"
+    ];
+
     var discussion_notification_types = [
         "comment_on_discussion_you_are_part_of",
         "change_suggestion_on_discussion_you_are_part_of",
@@ -737,6 +747,15 @@ var populateNotifications = module.exports.populateNotifications = function(resu
     var post_or_suggestion_ids = _.chain(results.objects)
         .map(function (notification) {
             return  _.indexOf(post_or_suggestion_notification_types, notification.type) > -1
+                ? notification.entity_id : null;
+        })
+        .compact()
+        .uniq()
+        .value();
+
+    var post_ids = _.chain(results.objects)
+        .map(function (notification) {
+            return  _.indexOf(post_notification_types, notification.type) > -1
                 ? notification.entity_id : null;
         })
         .compact()
@@ -801,6 +820,24 @@ var populateNotifications = module.exports.populateNotifications = function(resu
         },
 
         function(cbk){
+            if(post_ids.length)
+                models.Post.find({}, ['id', 'text'])
+                    .where('_id').in(post_ids).run(function (err, posts_items) {
+
+                        if(!err){
+                            var post_items_hash = {};
+
+                            _.each(posts_items, function (post_item) {
+                                post_items_hash[post_item.id] = post_item;
+                            });
+                        }
+                        cbk(err, post_items_hash);
+                    });
+            else
+                cbk(null,{});
+        },
+
+        function(cbk){
             if(info_items_ids.length)
                 models.InformationItem.find({}, ['id', 'image_field_preview', 'image_field', 'title'])
                     .where('_id').in(info_items_ids).run(function (err, info_items) {
@@ -818,7 +855,7 @@ var populateNotifications = module.exports.populateNotifications = function(resu
                 cbk(null,{});
         }
     ], function(err, args){
-        async.forEach(results.objects, iterator(args[0], args[1], args[2]), function (err, obj) {
+        async.forEach(results.objects, iterator(args[0], args[1], args[2], args[3]), function (err, obj) {
             callback(err, results);
         })
     })
