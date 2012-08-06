@@ -44,7 +44,7 @@
                                     <span class="watched">151</span>
                                 </div>
 
-                                <% for (var c = 0; c<cycle.tags.length; c++) { %>
+                                <% if (cycle.tags) for (var c = 0; c<cycle.tags.length; c++) { %>
                                       <a href="?tag_name=<%=cycle.tags[c]%>"> <%=cycle.tags[c] %></a>
                                 <% }%>
                             </div>

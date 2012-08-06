@@ -66,10 +66,9 @@ function getSortedPostsByNumberOfDiscussions(discussions, callback)
                 if(posts)
                     posts[0].discussion_name = discussions[0].title;
                 callback(err, posts);
-                break;
-            })
+            }) ;
+            break;
         case 2:
-
             async.parallel([
                 function(cbk){
                     models.Post.find({discussion_id: discussions[0]._id})
@@ -99,9 +98,9 @@ function getSortedPostsByNumberOfDiscussions(discussions, callback)
                     posts = _.union.apply(_,args);
 
                 callback(err, posts);
-                break;
-            })
 
+            })
+            break;
         case 3:
 
             async.parallel([
@@ -144,8 +143,9 @@ function getSortedPostsByNumberOfDiscussions(discussions, callback)
                     posts = _.union.apply(_,args);
 
                 callback(err, posts);
-                break;
+
             })
+            break;
         default:
             callback({message: "demasiado discusiones en eso ciculo", code: 404});
     }
