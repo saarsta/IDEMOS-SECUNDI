@@ -3,6 +3,11 @@ var models = require('../../../models')
 
 
 module.exports = function (req, res) {
+
+    if(req.query['error']) {
+        res.redirect('/account/register');
+        return;
+    }
 //   facebook_login(req, res);
     function go() {
 
@@ -10,7 +15,7 @@ module.exports = function (req, res) {
             var next = req.session['fb_next'];
             var referred_by = req.session['referred_by'];
             console.log(error);
-            if (authenticated) {
+            if (!error && authenticated) {
 
                 var user_detailes = req.getAuthDetails().user;
                 var access_token = req.session["access_token"];
@@ -57,6 +62,9 @@ module.exports = function (req, res) {
                         });
                     }
                 });
+            }
+            else {
+                console.log('can\'t authenticate with facebook');
             }
         });
     }
