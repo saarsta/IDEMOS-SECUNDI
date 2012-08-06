@@ -71,6 +71,7 @@ function getSortedPostsByNumberOfDiscussions(discussions, callback)
 
             break;
 
+
         case 2:
 
             async.parallel([

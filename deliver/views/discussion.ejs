@@ -15,6 +15,7 @@ var error_message = error_message || '';
     <meta property="og:title"  content="<%=discussion.title%>" />
     <meta property="og:description"  content="<%=discussion.text_field%>" />
     <meta property="og:image"  content="<%= discussion.image_field && discussion.image_field.url ? discussion.image_field.url : 'http://site.e-dologic.co.il/philip_morris/Xls_script/uru_mailing/logo.jpg' %>" />
+
 </head>
 <body>
 <%- partial('partials/body_top.ejs') %>
