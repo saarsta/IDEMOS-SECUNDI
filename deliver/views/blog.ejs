@@ -20,7 +20,7 @@
             <%-partial('partials/tag_search.ejs') %>
         </div>
         <div id="content" class="cf">
-            <h2><a class="arrow no_underline" href="javascrpit:void(0)"><%= blogger.blog_title %></a> <%= blogger.blog_sub_titile %></h2>
+            <h2><a class="arrow no_underline" href="javascrpit:void(0)"><%= blogger.blog_title || ""%> </a> <%= blogger.blog_sub_titile || ""%></h2>
             <div class="rightCol" id="articles" >
                 <% for (var i = 0; i < articles.length && i < 8 ; i++) { %>
                        <div class="one-post" item_id="<%= articles[i].id %>" id="<%= articles[i].id %>">
@@ -33,9 +33,10 @@
                                 <%= articles[i].time.format('dd/mm/yy') %>
                             </div>
                              <div class="img-box floatRight" style="overflow: hidden;">
-                                <div style="width:170px; height:130px;" class='auto-scale'>
-                                    <!--   <img src="<%=articles[i].image_field ? articles[i].image_field.url ||'' : '' %>" alt=""/>     -->
-                                   <img class="floatRight" src="http://uru.s3.amazonaws.com/wind_755.jpg" alt="" />    <br>
+                                <div style="width:253px; height:168px;" class='auto-scale'>
+                                       <img src="<%=articles[i].image_field ? articles[i].image_field.url ||'' : '' %>" alt=""/>
+                          <!--         <img class="floatRight" src="http://uru.s3.amazonaws.com/wind_755.jpg" alt="" />   -->
+                                    <br>
                                 </div>
                                 <span></span>
                             </div>
