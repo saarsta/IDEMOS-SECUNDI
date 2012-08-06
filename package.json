@@ -16,7 +16,7 @@
         "sji": "",
         "underscore": "",
         "i18n-mongoose":"",
-        "j-forms":">= 0.0.64",
+        "j-forms":">= 0.0.66",
         "admin-with-forms":">= 0.0.50",
         "knox":"",
         "dustjs-linkedin":"",
