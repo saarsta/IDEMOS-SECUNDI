@@ -917,21 +917,7 @@ var db_functions = {
             async: true,
             success: function (err, data) {
 
-                data.objects = _.map(data.objects/*followers*/, function(follower){
-                    var curr_cycle =  _.find(follower.cycles, function(cycle){
-                        return cycle.cycle_id + "" == cycle_id;
-                    });
 
-                    return {
-                        follower: {
-                            _id: follower._id,
-                            first_name: follower.first_name,
-                            last_name: follower.last_name,
-                            avatar_url: follower.avatar_url()
-                        },
-                        join_date: curr_cycle.join_date
-                    }
-                })
 
                 callback(err, data);
             },
@@ -977,6 +963,21 @@ var db_functions = {
             type: "GET",
             async: true,
             success: function (data) {
+                data.objects = _.map(data.objects/*followers*/, function(follower){
+                    var curr_cycle =  _.find(follower.cycles, function(cycle){
+                        return cycle.cycle_id + "" == cycle_id;
+                    });
+
+                    return {
+                        follower: {
+                            _id: follower._id,
+                            first_name: follower.first_name,
+                            last_name: follower.last_name,
+                            avatar_url: follower.avatar_url()
+                        },
+                        join_date: curr_cycle.join_date
+                    }
+                })
                 callback(null, data);
             },
 
