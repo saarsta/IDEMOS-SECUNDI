@@ -33,8 +33,8 @@
                                 <%= articles[i].time.format('dd/mm/yy') %>
                             </div>
                              <div class="img-box floatRight" style="overflow: hidden;">
-                                <div style="width:253px; height:168px;" class='auto-scale'>
-                                       <img src="<%=articles[i].image_field ? articles[i].image_field.url ||'' : '' %>" alt=""/>
+                                <div style="width:253px; height:168px; overflow:hidden; " class='auto-scale' >
+                                       <img style="padding-left:7px;" src="<%=articles[i].image_field ? articles[i].image_field.url ||'' : '' %>" alt=""/>
                           <!--         <img class="floatRight" src="http://uru.s3.amazonaws.com/wind_755.jpg" alt="" />   -->
                                     <br>
                                 </div>
