@@ -11,9 +11,10 @@ module.exports = function (req, res) {
             }
             else{
 
-                _.each(articles, function(article){
-                    article.text = (article.text).replace(/(<([^>]+?)>)/ig,"");
-                })
+//                _.each(articles, function(article){
+//                    console.log(article.text)/* = (article.text).replace(/(<([^>]+?)>)/ig,"")*/;
+//                })
+
                 models.BlogTag.find({user_id: req.params[0]}, ['tag'])
                     .sort('popularity','descending')
                     .exec(function(err, tags){
