@@ -16,7 +16,8 @@ module.exports = function(req, res){
                     'going_users',
                     'location',
                     'execution_date',
-                    'required_participants'
+                    'required_participants',
+                    'cycle_id'
                  ])
                 .populate('going_users.user_id', ['_id', 'first_name', 'last_name', 'avatar_url', 'num_of_proxies_i_represent', 'score'])
                 .exec(cbk);
@@ -31,10 +32,10 @@ module.exports = function(req, res){
 
                //TODO: get real  discussion
                var discussion ={};
-                discussion.title=
+                discussion.title =
                     'חייבים להציל את הקיפודים';
 
-                action.location=
+                action.location =
                     'התעשייה 12, תל אביב';
 
 
