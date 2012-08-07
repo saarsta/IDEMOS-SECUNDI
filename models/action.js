@@ -13,7 +13,9 @@ var Action = module.exports = new Schema({
     text_field_preview:{type:mongoose_types.Html},
     image_field: mongoose_types.File,
     image_field_preview: mongoose_types.File,
-    type: String, //only admin can change this
+    type: {type:String, "enum":[
+        'הצעה לפעולת שטח', 'בלה בלה'
+    ]}, //only admin can change this
     description:String,
     creator_id:{type:ObjectId, ref:'User', index:true, required:true},
     first_name: {type: String, editable:false},

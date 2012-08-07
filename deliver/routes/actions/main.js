@@ -9,6 +9,7 @@ module.exports = function(req, res){
             models.Action.findById(req.params[0])
                 .select([
                     '_id',
+                    'type',
                     'title',
                     'text_field',
                     'image_field',
