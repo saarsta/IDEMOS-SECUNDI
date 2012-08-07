@@ -35,7 +35,6 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                 image_field_preview: null,
                 description: null,
                 creator_id: null,
-                creator_id: null,
                 action_resources: null,
                 tags: null,
                 creation_date: null,
@@ -43,7 +42,8 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                 required_participants: null,
                 grade: null,
                 evaluate_counter: null,
-                is_follower: null,
+//                is_follower: null,
+                is_going: null,
                 updated_user_tokens: null,
                 join_id: null
             }
@@ -60,19 +60,23 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
 
             this._super(req, filters, sorts, limit, offset, function(err, response){
 
-                _.each(response.objects, function(object){
-                    object.is_follower = false;
-                    if(req.user){
-                        var user_id = req.user._id;
-                        if(_.any(object.going_users, function(user){ user.user_id = user_id;})){
-                            object.is_follower = true;
-                            models.Join.findOne({action_id: object._id, user_id: user_id}, function(err, join){
-                                if(!err)
-                                    object.join_id = join._id;
-                            })
-                        }
-                    }
-                });
+
+                // TODO i need to fix it for my uru
+//                _.each(response.objects, function(object){
+//                    object.is_going = false;
+//                    if(req.user){
+//                        var user_id = req.user._id;
+//                        if(_.any(object.going_users, function(user){ user.user_id = user_id;})){
+//                            object.is_going = true;
+//                            models.Join.findOne({action_id: object._id, user_id: user_id}, function(err, join){
+//                                if(!err)
+//                                    object.join_id = join._id;
+//                            })
+//                        }
+//                    }
+//                });
+
+
                 callback(err, response);
             });
         },

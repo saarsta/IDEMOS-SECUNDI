@@ -582,6 +582,7 @@ var db_functions = {
         });
     },
 
+
     getPopularPostByCycle: function(discussion_id, sort_by,offset, callback){
         db_functions.loggedInAjax({
             url: '/api/posts?discussion_id=' + discussion_id + "&order_by=" + sort_by + '&offset=' + offset,
@@ -915,6 +916,23 @@ var db_functions = {
             type: "GET",
             async: true,
             success: function (err, data) {
+
+                data.objects = _.map(data.objects/*followers*/, function(follower){
+                    var curr_cycle =  _.find(follower.cycles, function(cycle){
+                        return cycle.cycle_id + "" == cycle_id;
+                    });
+
+                    return {
+                        follower: {
+                            _id: follower._id,
+                            first_name: follower.first_name,
+                            last_name: follower.last_name,
+                            avatar_url: follower.avatar_url()
+                        },
+                        join_date: curr_cycle.join_date
+                    }
+                })
+
                 callback(err, data);
             },
             error: function(err, data){
@@ -953,6 +971,100 @@ var db_functions = {
         });
     },
 
+    getCylceFollowers: function(cycle_id, callback){
+        db_functions.loggedInAjax({
+            url: '/api/users?cycles.cycle_id=' + cycle_id,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            },
+
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },
+
+    //---------------------------------------------------//
+
+
+    //----------------------actions----------------------//
+
+    getActionsByTagName: function(tag_name, callback){
+        db_functions.loggedInAjax({
+            url: '/api/actions' + (tag_name ? '?tags=' + tag_name : ''),
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log(data);
+                callback(null, data);
+            }
+        });
+    },
+
+    joinOrLeaveAction: function(callback){
+        db_functions.loggedInAjax({
+            url: '/api/join/',
+            type: "POST",
+
+            async: true,
+            success: function (err, data) {
+                callback(null, data);
+            },
+
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },
+
+    getPostByAction: function(action_id, callback){
+        db_functions.loggedInAjax({
+            url: '/api/posts_of_action?action_id=' + action_id,
+            type: "GET",
+            async: true,
+            success: function (err, data) {
+                console.log(err, data);
+                callback(null, data);
+            },
+            error:function(err){
+                callback(err);
+            }
+        });
+    },
+
+    getActionShoppingCart: function(action_id, callback){
+        db_functions.loggedInAjax({
+            url: '/api/actions_shopping_cart?action_id=' + action_id,
+            type: "GET",
+            async: true,
+            success: function (err, data) {
+                callback(null, data);
+            },
+
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },
+
+    addPostToAction: function(action_id, post_content, refParentPostId, callback){
+        db_functions.loggedInAjax({
+            url: '/api/posts_of_action/',
+            type: "POST",
+            async: true,
+            data: {"action_id": action_id, "text": post_content, "ref_to_post_id": refParentPostId},
+            success: function (err, data) {
+                console.log(err, data);
+                callback(null, data);
+            },
+            error:function(err){
+                callback(err);
+            }
+        });
+    },
+
 
     //---------------------------------------------------//
 
@@ -971,17 +1083,7 @@ var db_functions = {
         });
     },
 
-    getActionsByTagName: function(tag_name, callback){
-        db_functions.loggedInAjax({
-            url: '/api/actions' + (tag_name ? '?tags=' + tag_name : ''),
-            type: "GET",
-            async: true,
-            success: function (data) {
-                console.log(data);
-                callback(null, data);
-            }
-        });
-    },
+
 
     getInfoItemsByTagName: function(tag_name, callback){
         db_functions.loggedInAjax({

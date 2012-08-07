@@ -32,10 +32,12 @@ var Action = module.exports = new Schema({
     execution_date:{type:Date, 'default':Date.now},//change default
     creation_date:{type:Date, 'default':Date.now},
     required_participants:{type:Number, 'default':0},
+
     //users that are going to be in the action
     going_users: [
         new Schema({user_id: {type:ObjectId, ref:'User'}, join_date: {type: Date, 'default': Date.now}})
-    ],
+    ],//i don't use it for now
+
     num_of_going: {type: Number, 'default': 0, editable:false},
     tokens:{type:Number, 'default':0},
     is_approved:{type:Boolean, 'default':false},
