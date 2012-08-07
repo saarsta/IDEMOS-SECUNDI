@@ -17,14 +17,14 @@ var SimpleAuthentication = module.exports = function (options) {
             if (err == null) {
 
                 if (result == null) {     //user is not registered
-                    failureCallback();
+                    failureCallback('אימייל לא קיים');
                 } else {
                     if (common.check_password(result.password, password)) {
                         request.session.user_id = result._id;
                         request.session.user = result;
                         successCallback(result.id);
                     } else {
-                        failureCallback();
+                        failureCallback('סיסמא שגויה');
                     }
                 }
             } else {

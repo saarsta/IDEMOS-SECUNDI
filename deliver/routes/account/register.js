@@ -1,4 +1,4 @@
-var Models = require('../../../models')
+var models = require('../../../models')
     ,sendActivationMail = require('./activation').sendActivationMail
     ,async = require('async')
     , common = require('./common');
@@ -6,41 +6,50 @@ var Models = require('../../../models')
 
 module.exports = {
     post:function (req, res) {
+        var next = req.body.next || req.query.next || '';
         var data = req.body;
-        var user = new Models.User(data);
-        user.email = (user.email || '').toLowerCase().trim();
+        var user = new models.User();
+        user.email = (data.email || '').toLowerCase().trim();
+        user.first_name = data.first_name;
+        user.last_name = data.last_name;
         user.identity_provider = "register";
         if (req.session.referred_by) {
             user.invited_by = req.session.referred_by;
         }
 
-        var user_model = Models.User;
-
         /***
          * Waterfall:
          * 1) get user by email
-         * 2) send activation mail
-         * 3) authenticate to log user in
+         * 2) save user
+         * 3) send activation mail
+         * 4) authenticate to log user in
          * Final) Render response
          */
         async.waterfall([
             // 1) get user by email
             function(cbk) {
-                user_model.count({email: user.email},cbk);
+                models.User.count({email:new RegExp(user.email,'i')},cbk);
             },
 
-            // 2) send activation mail
+            // 2) save user
             function(result,cbk) {
                 if (!result) {
-                    sendActivationMail(user, req.query.next,cbk);
+                    user.save(function(err) {
+                        cbk(err);
+                    });
                 }
                 else
                     cbk('already_exists');
             },
-            // 3) authenticate to log user in
+
+            // 3) send activation mail
             function(cbk) {
+                sendActivationMail(user, next,cbk);
+            },
+            // 4) authenticate to log user in
+            function(temp_password,cbk) {
                 req.body['email'] = user.email;
-                req.body['password'] = user.password;
+                req.body['password'] = temp_password;
                 req.authenticate('simple',function(err,is_authenticated) {
                     cbk(err,is_authenticated);
                 });
@@ -57,7 +66,7 @@ module.exports = {
                     error_message: err.message || err
                 });
             else
-                res.redirect('/account/activation?next=' + req.query.next);
+                res.redirect('/?is_new=register&next=' + next);
         });
     },
 

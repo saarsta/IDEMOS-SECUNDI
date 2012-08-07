@@ -8089,3 +8089,8 @@ body.body-action .followers-box h2
     padding-left: 12px;
     margin: -2px 0;
 }
+.err_msg {
+    font: bold 16px/32px Arial;
+    margin-bottom: 13px;
+    color: #E60000;
+}

@@ -70,13 +70,13 @@ var proxyCommon={
                     if(err){
                         $(document).one('cbox_closed', function (e) {
 
-                            popupProvider.showOkPopup({massage:err.responseText});
+                            popupProvider.showOkPopup({message:err.responseText});
                         });
                     }
                     else{
                         if (changeProxy < 0) {
                             $(document).one('cbox_closed', function (e) {
-                                popupProvider.showOkPopup( {massage:"האסימונים יעמדו לרשותך שוב בסוף היום"})
+                                popupProvider.showOkPopup( {message:"האסימונים יעמדו לרשותך שוב בסוף היום"})
                             });
                         }
 

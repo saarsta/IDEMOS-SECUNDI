@@ -14,7 +14,7 @@ var popupProvider={
     showOkPopup:function(popupConfig){
         var defaults = {
         okButtonText:'סגור'
-        ,massage:''
+        ,message:''
         ,onOkCilcked:function(e){
             e.preventDefault();
             $.colorbox.close();
@@ -41,7 +41,7 @@ var popupProvider={
         this.self = this;
 
         var defaults = {
-            massage:''
+            message:''
 
             ,onCancelCilcked:function(e){
                 e.preventDefault();
@@ -84,7 +84,7 @@ var popupProvider={
 
         this.self = this;
         var defaults = {
-            massage:''
+            message:''
 
 
             ,onClosed :function(e){

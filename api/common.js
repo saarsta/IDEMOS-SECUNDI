@@ -56,7 +56,12 @@ var SessionAuthentication = exports.SessionAuthentication = jest.Authentication.
                     else
                     {
                         req.user = user;
-                        callback(null, true);
+                        var is_activated = user.is_activated;
+                        if(is_activated || req.method == 'GET')
+                            callback(null, true);
+                        else {
+                            callback({code:401,message:'not_activated'});
+                        }
                     }
                 });
             }

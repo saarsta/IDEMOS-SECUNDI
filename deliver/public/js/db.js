@@ -10,32 +10,31 @@ var db_functions = {
             console.error(arguments[2]);
         };
         options.error =  function (xhr, ajaxOptions, thrownError) {
-            if(xhr.status == 401 && (xhr.responseText == 'not authenticated' || xhr.responseText == "Error: Unauthorized - there is not enought tokens" || xhr.responseText == "user must have a least 10 tokens to open create discussion")){
-                if (xhr.responseText == 'not authenticated'){
-                    connectPopup(function(err){
-                        if(err)
-                            onError(xhr,ajaxOptions,thrownError);
-                        else{
-                            var success = options.success;
-                            options.success = function(){
-                                success.apply(this, arguments);
-                                window.location.href = window.location.href;
-                            };
-                            options.error = function() {
-                                onError.apply(this,arguments);
-                                window.location.href = window.location.href;
-                            };
-                            $.ajax(options);
-                        }
-                    });
-                }else if (xhr.responseText == 'Error: Unauthorized - there is not enought tokens')
-                {
+            if (xhr.responseText == 'not authenticated'){
+                connectPopup(function(err){
+                    if(err)
+                        onError(xhr,ajaxOptions,thrownError);
+                    else{
+                        var success = options.success;
+                        options.success = function(){
+                            success.apply(this, arguments);
+                            window.location.href = window.location.href;
+                        };
+                        options.error = function() {
+                            onError.apply(this,arguments);
+                            window.location.href = window.location.href;
+                        };
+                        $.ajax(options);
+                    }
+                });
+            } else if(xhr.responseText == 'not_activated') {
+                notActivatedPopup();
+            }else if (xhr.responseText == 'Error: Unauthorized - there is not enought tokens')
+            {
 
-                    alert("אין מספיק אסימונים בשביל לבצע פעולה זו");
-                }else if (xhr.responseText == "user must have a least 10 tokens to open create discussion")
-                    alert("צריך מינימום של 10 אסימונים בשביל ליצור דיון");
-
-            }
+                alert("אין מספיק אסימונים בשביל לבצע פעולה זו");
+            }else if (xhr.responseText == "user must have a least 10 tokens to open create discussion")
+                alert("צריך מינימום של 10 אסימונים בשביל ליצור דיון");
             else
                 onError(xhr,ajaxOptions,thrownError);
         };
@@ -154,11 +153,11 @@ var db_functions = {
                 async: true,
                 data: {fb_id: fb_id, access_token: access_token},
 
-                success: function (err, data) {
+                success: function (data) {
                     callback(null, data);
                 },
 
-                error: function(err, data){
+                error: function(err){
                     callback(err, null);
                 }
             });
@@ -420,9 +419,9 @@ var db_functions = {
 
             error:function(err){
                 if(err.responseText == "vision can't be more than 800 words")
-                    popupProvider.showOkPopup({massage:"חזון הדיון צריך להיות 800 מילים לכל היותר"});
+                    popupProvider.showOkPopup({message:"חזון הדיון צריך להיות 800 מילים לכל היותר"});
                 else if (err.responseText == "you don't have the min amount of tokens to open discussion")
-                    popupProvider.showOkPopup( {massage:"מצטערים, אין לך מספיק אסימונים..."});
+                    popupProvider.showOkPopup( {message:"מצטערים, אין לך מספיק אסימונים..."});
                 callback(err, null);
             }
         });
@@ -646,7 +645,7 @@ var db_functions = {
             error:function(err){
                 if(err.responseText != "not authenticated")
                     if(err.responseText == "must grade discussion first")
-                        popupProvider.showOkPopup({massage:'אנא דרג קודם את החזון בראש העמוד.'})
+                        popupProvider.showOkPopup({message:'אנא דרג קודם את החזון בראש העמוד.'})
                 callback(err, null);
             }
         });

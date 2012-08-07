@@ -19,17 +19,17 @@
             <h2>
 הרשמה לעורו
             </h2>
-            <form id="register_form" action="/account/register" class="login-form cf" method="POST">
+            <form id="register_form_full" action="/account/register" class="login-form cf" method="POST">
+                <div class="err_msg">
                 <%if(error_message == 'already_exists'){%>
-                    <span class="err_msg">
                         כתובת האימייל שנקלטה מופיעה כבר במערכת. אם שכחת את סיסמתך
                         <a href="/account/forgot_password">
                             לחץ כאן
                         </a>
-                    </span>
                 <% } else { %>
-                    <span class="err_msg"><%=error_message%></span>
+                    <%=error_message%>
                 <%}%>
+                </div>
                 <div class="areas">
                     <div class="title">
                         <a href="/account/facebooklogin"><img src="/images/facebook-btn.png" alt="" /></a>
@@ -82,21 +82,35 @@
 
 <script type="text/javascript">
     $(function(){
-        $('#register_form').validate({
+        $('#register_form_full').validate({
             errorElement: "p",
 
             rules:{
-                first_name:{required: true },
-                last_name:{required: true },
-                password:{required: true },
-                email:{required: true}
+                first_name:{
+                    required: true,
+                    minlength:2
+                },
+                last_name:{
+                    required: true,
+                    minlength:2
+                },
+                email:{
+                    required: true,
+                    EMAIL:true
+                }
             },
-            message:
-            {
-                first_name:"נא להזין שם פרטי",
-                last_name:"נא להזין שם משפחה",
-                password: "נא להזין סיסמא",
-                email: "נא להזין כתובת מייל"
+            messages:{
+                first_name:{
+                    required:"נא להזין שם פרטי",
+                    minlength:'שם פרטי חייב להיות לפחות 2 אותיות'
+                },
+                last_name:{
+                    required:'נא להזין שם משפחה',
+                    minlength:'שם משפחה חייב להיות לפחות 2 אותיות'
+                },
+                email:{
+                    required:'נא להזין כתובת מייל',
+                }
             },
             highlight: function (element, errorClass) {
                 $(element).addClass('error').removeClass('valid');

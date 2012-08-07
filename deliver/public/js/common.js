@@ -120,6 +120,15 @@ var connectPopup = function(callback){
 
 };
 
+var notActivatedPopup = function() {
+    popupProvider.showOkPopup({
+        message:'ההרשמה לאתר לא הושלמה, על מנת להמשיך לחץ על הלינק שנשלח לתיבת הדואר שלך.' +
+            '<br />' +
+            'לשליחה חוזרת לחץ ' +
+            '<a href="/account/activation">כאן</a>'
+    });
+};
+
 
 function initTooltip(ui){
     ui.tooltipText({
@@ -168,6 +177,25 @@ function fbs_click(ui) {
 
 $(function(){
 
+    var is_new = /is_new=([^&#]+)/.exec(window.location.href);
+    if(is_new) {
+        if(is_new[1] == 'register')
+            popupProvider.showOkPopup({
+                message:'הרשמתך התקבלה בהצלחה. כדי להפעיל את חשבון המשתמש שלך, אנא פתח את מייל המערכת שנשלח לכתובת ' +
+                    'שנרשמת איתה.'
+            });
+        if(is_new[1] == 'facebook')
+            popupProvider.showOkPopup({
+                message:'הרשמתך התקבלה בהצלחה. ברוך הבא לעורו!'
+            });
+        if(is_new[1] == 'activated')
+            popupProvider.showOkPopup({
+                message:'הרשמתך התקבלה בהצלחה. ברוך הבא לעורו!'
+            });
+
+    }
+
+
     $('#election_menu').live('click', function(){
         window.location.replace('www.uru.org.il/elections');
     })
@@ -194,7 +222,7 @@ $(function(){
 
         db_functions.login(values["email"], values["password"], function(err, result){
             if(err){
-                $("#login_head").text("נסה שוב");
+                $("#login_head").text(err.responseText || "נסה שוב");
             }
             else{
                 window.location.href = window.location.href;
@@ -207,7 +235,14 @@ $(function(){
     $("#fb_connect").live('click', function(){
         facebookLogin(function(err, result){
             if(!err){
-                window.location.href = window.location.href;
+                if(result.is_new) {
+                    if(window.location.href.indexOf('?') > -1)
+                        window.location.href = window.location.href + '&is_new=facebook';
+                    else
+                        window.location.href = window.location.href + '?is_new=facebook';
+                }
+                else
+                    window.location.href = window.location.href;
             }else{
                 console.error(err);
                 $("#login_head").text("קרתה תקלה");

@@ -45,7 +45,7 @@
         </form>
         <div class="spacer"></div>
         <!--href="/account/facebooklogin?next=<%=url%>"-->
-        <a id="fb_connect" class="facebook"></a>
+        <a id="fb_connect" class="facebook" style="cursor:pointer;"></a>
         <%}%>
     </div>
 </div>
@@ -55,13 +55,17 @@
 
         $("#register_form").validate({
             rules:{
-                email:{required: true },
+                email:{required: true, EMAIL:true },
                 password:{required: true }
+            },
+            messages:{
+                email: 'הכנס דוא"ל',
+                password: 'הכנס סיסמא'
             }
-//            messages:{
-//                email: "דואל    ",
-//                password: "סיסמה"
-//            }
         });
+
+        $.validator.addMethod("EMAIL", function(value, element) {
+            return this.optional(element) || /^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z.]{2,5}$/i.test(value);
+        },'בתובת מייל שגויה');
     });
 </script>
