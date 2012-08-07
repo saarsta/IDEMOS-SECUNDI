@@ -6,9 +6,6 @@ var mongoose = require("mongoose"),
     mongoose_types = require('j-forms').types,
     utils = require('./../utils');
 
-
-
-
 var Action = module.exports = new Schema({
     title:{type:String, required:true},
     tooltip:String,

@@ -35,7 +35,7 @@ var Comment = new Schema({
 });
 
 var Article = module.exports = new Schema({
-    user_id:{type:ObjectId, ref:'User', index:true, required:true},
+    user_id:{type:ObjectId, ref:'User', index:true, required:true, limit: 1000},
     first_name: {type:String, editable:false},
     last_name: {type:String, editable:false},
     avatar : {type:String, editable:false},
