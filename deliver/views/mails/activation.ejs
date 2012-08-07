@@ -21,11 +21,12 @@
  לאישור
                     הרשמתך לאתר.</p>
 
+                <p>לאחר האישור תוכל להשתתף באופן פעיל במערכת.</p>
+
                 <p>
                     סיסמת הכניסה שלך למערכת היא
+                    <%= temp_password %>
                 </p>
-                <p><%= temp_password %></p>
-
                 <p>
                     אפשר להחליף אותה ולבחור סיסמה אישית
                     <a href="<%= settings.root_path %>/account/reset_password?code=<%= user.validation_code %>&id=<%= user.id %>&next=<%= encodeURIComponent(next || '') %>">
@@ -33,7 +34,6 @@
                     </a>
                 </p>
 
-                <p>לאחר האישור תוכל להשתתף באופן פעיל במערכת.</p>
 
                 <p>&nbsp;תודה,</p>
 
