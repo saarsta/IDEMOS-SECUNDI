@@ -177,7 +177,6 @@ var Schemas = exports.Schemas = {
              ballance: Number,
              votes_for: {type: Number, 'default': 0},
              votes_against: {type: Number, 'default' : 0}
-
         }
         )],
         type: {type:String, "enum": [

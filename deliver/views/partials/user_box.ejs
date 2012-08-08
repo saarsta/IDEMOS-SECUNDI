@@ -39,13 +39,13 @@
             <input name="email" type="text" placeholder='דוא"ל'/>
             <input name="password" type="password" placeholder="סיסמא" />
             <a class="forgot_password" href="/account/forgot_password">
-                שכחת סיסמה?
+                שכחת סיסמא?
             </a>
             <input type="submit" value="התחבר" />
         </form>
         <div class="spacer"></div>
         <!--href="/account/facebooklogin?next=<%=url%>"-->
-        <a id="fb_connect" class="facebook"></a>
+        <a id="fb_connect" class="facebook" style="cursor:pointer;"></a>
         <%}%>
     </div>
 </div>
@@ -55,13 +55,18 @@
 
         $("#register_form").validate({
             rules:{
-                email:{required: true },
+                email:{required: true, EMAIL:true },
                 password:{required: true }
+            },
+            messages:{
+                email: 'הכנס דוא"ל',
+                password: 'הכנס סיסמא'
             }
-//            messages:{
-//                email: "דואל    ",
-//                password: "סיסמה"
-//            }
         });
+
+        $.validator.addMethod("EMAIL", function(value, element) {
+            return this.optional(element) || /^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z.]{2,5}$/i.test(value);
+        },'בתובת מייל שגויה');
     });
+    var mail = "<%= (user && user.email) || '' %>";
 </script>

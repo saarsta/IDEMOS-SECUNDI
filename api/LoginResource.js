@@ -30,7 +30,7 @@ var LoginResource = module.exports =  jest.Resource.extend({
                     callback(err);
                 else {
                     if(!is_authenticated)
-                        callback({message:"Error: Unauthorized - there is not dsadsaaddasenought tokens",code:401}, null);
+                        callback({message:"",code:401}, null);
                     else {
                         var user = req.session.user;
                         callback(null, user);

@@ -35,7 +35,7 @@ module.exports = function (req, res) {
                                     console.log(err);
                                 } else {
                                     console.log('user _id to session is ok');
-                                    redirectAfterLogin(req,res,next);
+                                    redirectAfterLogin(req,res,next,true);
                                 }
                             });
                         });
@@ -79,9 +79,15 @@ module.exports = function (req, res) {
 
 };
 
-function redirectAfterLogin(req,res,redirect_to) {
+function redirectAfterLogin(req,res,redirect_to,is_new) {
     if(!redirect_to || /^\/account\/register/.test(redirect_to))
         redirect_to = common.DEFAULT_LOGIN_REDIRECT;
+    if(is_new) {
+        if(redirect_to.indexOf('?') > -1)
+            redirect_to += '&is_new=facebook';
+        else
+            redirect_to += '?is_new=facebook';
+    }
     res.redirect(redirect_to);
 };
 
@@ -117,31 +123,46 @@ var isUserInDataBase = module.exports.isUserInDataBase = function(user_facebook_
 
 var createNewUser = module.exports.createNewFacebookUser = function (data, access_token, callback) {
 
-    var user = new models.User();
-    user.username = data.username;
-    user.identity_provider = "facebook";
-    user.first_name = data.first_name;
-    user.last_name = data.last_name;
-    user.email = data.email;
-    if (data.hometown) {
-        user.address = data.hometown.name;
-    }
-    user.gender = data.gender;
-    user.facebook_id = data.id;
-    if(data.invited_by)
-        user.invited_by = data.invited_by;
-    user.access_token = access_token;
-    user.save(function (err, object) {
-        if (err != null) {
-            console.log(err);
-            callback(null);
-        } else {
-            callback(object.id,object);
-            console.log("done creating new user - " + user.first_name + " " + user.last_name);
-//            res.write("done creating new user - " + user.first_name + " " + user.last_name);
+    var email = (data.email || '').trim().toLowerCase();
+
+    models.User.findOne({email:new RegExp(email,'i')},function(err,user) {
+       if(err) {
+           console.error('get user failed',err);
+           callback(null);
+           return;
+       }
+
+       if(!user) {
+           user = new models.User();
+       }
+
+        user.is_activated = true;
+        user.username = user.username || data.username;
+        user.identity_provider = "facebook";
+        user.first_name = user.first_name || data.first_name;
+        user.last_name = user.last_name || data.last_name;
+        user.email = email;
+        if (data.hometown) {
+            user.address = data.hometown.name;
         }
-//        res.end();
+        user.gender = user.gender || data.gender;
+        user.facebook_id = data.id;
+        if(data.invited_by)
+            user.invited_by = user.invited_by || data.invited_by;
+        user.access_token = access_token;
+        user.save(function (err, object) {
+            if (err != null) {
+                console.log(err);
+                callback(null);
+            } else {
+                callback(object.id,object);
+                console.log("done creating new user - " + user.first_name + " " + user.last_name);
+            }
+        });
+
     });
+
+    var user = new models.User();
 }
 
 var updateUesrAccessToken = module.exports.updateUesrAccessToken = function(data, access_token, callback) {
@@ -152,6 +173,7 @@ var updateUesrAccessToken = module.exports.updateUesrAccessToken = function(data
             return next(err);
         }
         user.access_token = access_token;
+        user.is_activated = true;
 //            user.session_id = session_id;
         user.save(function (err) {
             if (err) {
@@ -193,7 +215,7 @@ function facebook_login(req, res){
                                     console.log(err);
                                 } else {
                                     console.log('user _id to session is ok');
-                                    redirectAfterLogin(req,res,next);
+                                    redirectAfterLogin(req,res,next, true);
                                 }
                             });
                         });

@@ -47,7 +47,18 @@ exports.create_user_notification = function(notification_type, entity_id, user_i
 //                        cbk(err, num);
 //                    });
 
-                   if(_.any(noti.notificators,  function(notificator){return notificator.notificator_id + "" == notificatior_id + ""})) {
+                    //TODO change it later to sometihng prettier
+                    if((notification_type == 'comment_on_discussion_you_are_part_of' || notification_type == "comment_on_discussion_you_created") &&
+                        _.any(noti.notificators,  function(notificator){return notificator.notificator_id + "" == notificatior_id + ""})) {
+                        var new_notificator = {
+                            notificator_id: notificatior_id,
+                            sub_entity_id: sub_entity
+                        }
+                        noti.notificators.push(new_notificator);
+                        noti.update_date = date;
+                        noti.save();
+                        cbk(null, 0);
+                    }else if(_.any(noti.notificators,  function(notificator){return notificator.notificator_id + "" == notificatior_id + ""})) {
                        noti.update_date = date;
                        noti.save();
                        cbk(null, 0);
@@ -393,7 +404,7 @@ if(/notifications\.js/.test(process.argv[1])) {
     //501fcef1e6ae520017000662 --הצעה לשינוי שהתקבלה
     setTimeout(function() {
 
-        create_new_notification('approved_change_suggestion_you_graded',
+        create_new_notification('comment_on_discussion_you_created',
             '4fcdf7180a381201000005b3','4ff1b29aabf64e440f00013a','4f45145968766b0100000002','501fcef1e6ae520017000662',function(err) {
 
 

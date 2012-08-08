@@ -11,7 +11,7 @@ module.exports = {
         var user_id = req.query.id;
         var code = req.query.code;
         var next = req.query.next;
-        var email = req.user && req.user.email;
+        var email = req.session.user && req.session.user.email;
 
         async.waterfall([
             function(cbk) {
@@ -48,7 +48,9 @@ module.exports = {
                     email:email || ''
                 });
             else {
-                res.redirect(next || common.DEFAULT_LOGIN_REDIRECT);
+                var redirect_to = '/'; //next || common.DEFAULT_LOGIN_REDIRECT;
+                redirect_to = redirect_to.indexOf('?') > -1 ? redirect_to + '&is_new=activated' : redirect_to + '?is_new=activated';
+                res.redirect(redirect_to);
             }
         });
 
@@ -136,6 +138,6 @@ var sendActivationMail = module.exports.sendActivationMail = function(user,next,
             mail.sendMail(user.email,body,'אימות חשבון באתר עוּרו',cbk);
         }
     ],function(err) {
-        callback(err);
+        callback(err,temp_password);
     });
 };

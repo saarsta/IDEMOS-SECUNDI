@@ -44,7 +44,7 @@ module.exports = function(req, res){
             ])
             .populate('main_subject', ['name'])
             .exec(cbk);
-        },
+        }/*,
 
         //2. find cycle followers
         function(cycle, cbk){
@@ -53,6 +53,7 @@ module.exports = function(req, res){
             else{
                 if (cycle.subject)
                      cycle.subject = cycle.subject[0];
+                _.each(cycle.opinion_shapers, function(opinion_shaper){ opinion_shaper.avata_url = opinion_shaper.avatar_url()});
                 g_cycle = cycle;
                 models.User.find({"cycles.cycle_id": cycle._id}, ["_id", "cycles"], cbk);
             }
@@ -82,13 +83,16 @@ module.exports = function(req, res){
             //3.2 sort followers - fb friends, proxies, followed by me, others
 
             cbk(null, null);
-        }
+        }*/
+
+
        //final - render the cycle page
-    ], function(err, opinion_shapers){
+    ], function(err, cycle){
         if(err)
             res.render('500.ejs',{error:err});
         else {
-                g_cycle.subject_name = g_cycle.main_subject.name;
+
+                cycle.subject_name = cycle.main_subject.name;
                 res.render('cycle.ejs',{
                     cycle: g_cycle,
                     tab:'cycles'

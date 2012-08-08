@@ -6,6 +6,7 @@ var mongoose_resource = require('jest'),
     CycleResource = require('./cycles/CycleResource.js'),
    // CyclePostResource = require('./cycles/CyclePostResource.js'),
     CycleShoppingCartResource = require('./cycles/CycleShoppingCartResource.js'),
+    ActionShoppingCartResource = require('./actions/ActionShoppingCartResource.js'),
     SubjectResource = require('./SubjectResource'),
     DiscussionResource = require('./discussions/DiscussionResource.js'),
     PostResource = require('./discussions/PostResource.js'),
@@ -19,7 +20,7 @@ var mongoose_resource = require('jest'),
     GradeSuggestionResource = require('./GradeSuggestionResource'),
     GradeActionResource = require('./GradeActionResource'),
     LikeResource = require('./LikeResource'),
-    JoinResource = require('./JoinResource'),
+    JoinResource = require('./actions/JoinResource.js'),
     CategoryResource = require('./CategoryResource'),
     SuggestionResource = require('./suggestionResource.js'),
     ActionResourceResource = require('./actions/ActionResourceResource.js'),
@@ -65,6 +66,7 @@ module.exports = function(app)
     rest_api.register_resource('shopping_cart',new ShoppingCartResource());
     rest_api.register_resource('discussions_shopping_cart',new DiscussionShoppingCartResource());
     rest_api.register_resource('cycles_shopping_cart',new CycleShoppingCartResource());
+    rest_api.register_resource('actions_shopping_cart',new ActionShoppingCartResource());
     rest_api.register_resource('subjects', new SubjectResource());
     rest_api.register_resource('discussions', new DiscussionResource());
     rest_api.register_resource('posts', new PostResource());

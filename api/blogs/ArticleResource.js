@@ -34,7 +34,6 @@ var ArticleResource = common.GamificationMongooseResource.extend({
                 id:null,
                 score:null
             }
-
         }
     },
 

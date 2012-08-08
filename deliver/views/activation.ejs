@@ -24,6 +24,9 @@ var error_message = error_message || '';
                 <p>
 על מנת להשלים את הליך הרישום, לחץ על הקישור שנשלח לכתובת הדואר שלך
                 </p>
+            <p>
+                לשליחה חוזרת לחץ 'שלח שוב'
+            </p>
             <% } else if (error=="unknown") { %>
             <span class="err_msg">
                 הכתובת אינה נמצאת במערכת
@@ -36,7 +39,7 @@ var error_message = error_message || '';
                 <label>
                     דוא”ל:
                 </label>
-                <input id="email" name="email" class="text" type="text" value="<%= email || '' %>" />
+                <input id="email" name="email" class="text" type="text" value="<%= email || '' %>" readonly />
             </div>
             </div>
             <input type="submit" value="שלח שוב"/>

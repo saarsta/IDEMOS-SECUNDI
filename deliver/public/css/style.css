@@ -2141,6 +2141,16 @@ body
     top: -15px;
     display: inline-block;
 }
+
+.add-offer .text-box .blue-title
+{
+    color:#3b63ef;
+    margin-bottom: -15px;
+    position: relative;
+
+    display: inline-block;
+}
+
 .add-offer .text-box a.less-text
 {
     display: none;
@@ -2172,6 +2182,17 @@ body
     width: 112px;
     padding-top: 7px;
 }
+.add-offer .add-offer-bottom .row-btn-box
+{
+    width: 260px!important;
+}
+
+.add-offer .add-offer-bottom .row-btn-box a
+{
+    float: left;
+    margin-right: 5px;
+}
+
 .add-offer .add-offer-bottom .btn-box .btn-green
 {
     background:#2fd43b url(../images/green-btn-border.png) 0 0 repeat-x;
@@ -7256,6 +7277,7 @@ body.body-action .followers-box h2
     text-align: center;
     color:#fff;
     font: bold 15px/24px Arial;
+    direction: ltr;
 }
 .nav-post
 {
@@ -7817,6 +7839,21 @@ body.body-action .followers-box h2
 
 }
 
+.menu-elections-item {
+    position:relative;
+    width: 50px;
+    height: 22px;
+}
+
+.menu-elections {
+    position: absolute;
+    display: block;
+    line-height: 27px;
+    background: #3B63EF;
+    color: #FFDE00 !important;
+    padding: 5px 5px 2px 5px;
+    top: -5px;
+}
 
 
 #election_menu:hover{
@@ -8089,3 +8126,14 @@ body.body-action .followers-box h2
     padding-left: 12px;
     margin: -2px 0;
 }
+.err_msg {
+    font: bold 16px/32px Arial;
+    margin-bottom: 13px;
+    color: #E60000;
+}
+
+#activation_form p{
+    font: bold 16px/32px Arial;
+    color: #50504F;
+}
+

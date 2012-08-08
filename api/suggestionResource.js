@@ -151,11 +151,11 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                 itr_cbk(null, 0);
             else{
                 if (discussion_creator_id == user_schema.user_id){
-                    notifications.create_user_notification("change_suggestion_on_discussion_you_created", discussion_id, user_schema.user_id, user_id, null, function(err, results){
+                    notifications.create_user_notification("change_suggestion_on_discussion_you_created", discussion_id, user_schema.user_id, user_id, suggestion_object._id, function(err, results){
                         itr_cbk(err, results);
                     });
                 }else{
-                    notifications.create_user_notification("change_suggestion_on_discussion_you_are_part_of", discussion_id, user_schema.user_id, user_id, null, function(err, results){
+                    notifications.create_user_notification("change_suggestion_on_discussion_you_are_part_of", discussion_id, user_schema.user_id, user_id, suggestion_object._id, function(err, results){
                         itr_cbk(err, results);
                     });
                 }
