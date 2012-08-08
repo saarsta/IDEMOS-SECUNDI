@@ -10,10 +10,10 @@ var Authorization = resources.Authorization.extend({
         if(req.user){
             if (object._id + "" == req.user._id + ""){
                 if(req.user._id + "" == req.body.proxy_id + "")
-                    callback({message:"Error: Unauthorized - can't be your own proxy!", code: 401}, null);
+                    callback({message:"אינך יכול/ה לתת מנדטים לעצמך", code: 401}, null);
                 else
                     if(req.body.req_number_of_tokens > object.tokens)
-                        callback({message:"Error: Unauthorized - you don't have enougth tokens to give!", code: 401}, null);
+                        callback({message:"אין לך מספיק אסימונים", code: 401}, null);
                     else
                     {
                         callback(null, object);
@@ -22,9 +22,9 @@ var Authorization = resources.Authorization.extend({
 
             }
             else
-                callback({message:"Error: Unauthorized - can't set other people proxies!", code: 401}, null);
+                callback({message:"קרתה תקלה", code: 401}, null);
         }else{
-            callback({message: "Error: User Is Not Authenticated", code: 401}, null);
+            callback({message: "קרתה תקלה", code: 401}, null);
         }
     },
 
@@ -35,7 +35,7 @@ var Authorization = resources.Authorization.extend({
             query.where('_id', user_id);
             callback(null, query);
         }else{
-            callback({message: "Error: User Is Not Authenticated", code: 401}, null);
+            callback({message: "קרתה תקלה", code: 401}, null);
         }
     }
 });
@@ -158,9 +158,9 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
             object.proxy.push(proxy);
 
         if(proxy.number_of_tokens > 3)
-            callback({message:"Error: Unauthorized - max mandate is 3!", code: 401}, null)
+            callback({message:"אי אפשר לתת יותר משלושה מנדטים", code: 401}, null)
         else if (proxy.number_of_tokens_to_get_back > proxy.number_of_tokens)
-            callback({message:"Error: Unauthorized - can't take more tokens then you gave", code: 401}, null)
+            callback({message:"קרתה תקלה", code: 401}, null)
         else{
             //save user object
 
@@ -232,7 +232,7 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
                     callback(err, user_obj);
                 });
             }else
-                callback({message: "didn't find proxy"});
+                callback({message: "קרתה תקלה"});
         });
     }
 })
