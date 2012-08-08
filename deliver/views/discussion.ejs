@@ -1125,7 +1125,8 @@ $(document).ready(function () {
                 postsNumber = data.meta.total_count;
                 setCommentNumber(postsNumber);
 
-                FB.XFBML.parse();
+                if(typeof(FB) != 'undefined')
+                    FB.XFBML.parse();
             }
         })
     }

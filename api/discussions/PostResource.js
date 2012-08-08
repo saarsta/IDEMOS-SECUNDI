@@ -43,6 +43,7 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
             is_user_follower: null
         };
 //    this.validation = new resources.Validation();=
+        this.default_limit = 3;
     },
 
     run_query: function(req,query,callback)
