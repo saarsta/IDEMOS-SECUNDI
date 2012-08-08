@@ -929,8 +929,8 @@ var db_functions = {
             url: '/api/cycles_shopping_cart?cycle_id=' + cycle_id,
             type: "GET",
             async: true,
-            success: function (err, data) {
-                callback(null, data);
+            success: function (data, err) {
+                callback(err, data);
             },
 
             error:function(err){
