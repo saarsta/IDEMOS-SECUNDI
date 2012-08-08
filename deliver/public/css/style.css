@@ -8094,3 +8094,7 @@ body.body-action .followers-box h2
     margin-bottom: 13px;
     color: #E60000;
 }
+#activation_form p{
+    font: bold 16px/32px Arial;
+    color: #50504F;
+}
