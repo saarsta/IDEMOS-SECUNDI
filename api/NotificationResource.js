@@ -122,7 +122,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, info_items_ha
 
                     var num_of_comments = notification.notificators.length;
                     if(discussion){
-                        notification.link = "/discussions/" + discussion._id + "";
+                        notification.link = "/discussions/" + discussion._id + "" + "#post_" +  notification.notificators[0].sub_entity_id;
                         notification.pic = discussion.image_field_preview || discussion.image_field;
                         notification.name = discussion.title;
 
