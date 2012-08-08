@@ -393,7 +393,7 @@ if(/notifications\.js/.test(process.argv[1])) {
     //501fcef1e6ae520017000662 --הצעה לשינוי שהתקבלה
     setTimeout(function() {
 
-        create_new_notification('approved_change_suggestion_you_graded',
+        create_new_notification('comment_on_discussion_you_created',
             '4fcdf7180a381201000005b3','4ff1b29aabf64e440f00013a','4f45145968766b0100000002','501fcef1e6ae520017000662',function(err) {
 
 

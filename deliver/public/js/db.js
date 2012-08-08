@@ -1040,12 +1040,12 @@ var db_functions = {
             url: '/api/actions_shopping_cart?action_id=' + action_id,
             type: "GET",
             async: true,
-            success: function (err, data) {
-                callback(null, data);
+            success: function (data) {
+                callback(null,data);
             },
 
             error:function(err){
-                callback(err, null);
+                callback(err);
             }
         });
     },

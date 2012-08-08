@@ -26,6 +26,8 @@ module.exports = function(req, res){
                     'execution_date',
                     'required_participants',
                     'cycle_id'
+
+
                  ])
                 .exec(cbk);
         },
@@ -50,7 +52,19 @@ module.exports = function(req, res){
                 res.render('404.ejs');
             else {
 
-               var is_going = false;
+
+
+
+
+               // TODO: add to action
+                action.location=
+                    'התעשייה 12, תל אביב';
+                action.from_date=action.execution_date;
+                action.to_date=action.execution_date;
+
+
+
+                var is_going = false;
                // is user going to action?
                if(req.user){
                    var user_id = req.user._id;
@@ -58,10 +72,14 @@ module.exports = function(req, res){
                }
                action.is_going = is_going;
 
-                res.render('action.ejs',{
+                var ejsFileName=true?'action_approved.ejs':'action_append.ejs';
+                res.render(ejsFileName,{
                     action: action,
                     tab: 'actions',
                     going_users: going_users
+
+                   // pageType:'beforeJoin' //waitAction,beforeJoin
+
                 });
             }
         }

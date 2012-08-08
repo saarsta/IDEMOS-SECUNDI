@@ -148,17 +148,14 @@ var error_message = error_message || '';
     </div>
 </div>
 <div class="add-offer add-offer-inner">
-    <h2>
-	<span class="arrow">
-		נושא הדיון
-		</span> 
-		<%=discussion.title%>
+   <h2>
+  
 	</h2>
     <div class="text-box cf">
-        <h3><span class="arrow"><%=discussion.title%></span> <a href=""><%=action.title%></a></h3>
+         <h3><span class="arrow"><%=action.type%></span> <span class="blue-title"><%=action.title%></span></h3>
        
 			 <!--<div id="discussion_image" style="width: 292px;height: 164px; overflow:hidden;" class='auto-scale floatRight'>
-                    <img src="<%= discussion.image_field ? discussion.image_field.url ||'' : '' %>" alt=""/>
+                    <img src="<%= action.image_field ? action.image_field.url ||'' : '' %>" alt=""/>
                 </div> -->
 				
 				<div id="discussion_image" style="width: 212px;height: 164px; overflow:hidden;" class='auto-scale floatRight'>
@@ -167,103 +164,56 @@ var error_message = error_message || '';
 
                 </div>
         <div class="add-offer-info">
-            תאריך: <strong>24.09.2012</strong>  |  שעה: <strong>15:00-18:00</strong>
+            תאריך: 
+			<strong><%=action.from_date.format('dd.mm.yyyy') %></strong> 
+			|  שעה: 
+			<strong><%=action.from_date.format('HH:MM') %>-<%=action.to_date.format('HH:MM') %></strong>
         </div>
         <div class="add-offer-info m-2">
             מיקום: 
 			<strong><%=action.location%></strong>
         </div>
         <p><%-action.text_field%></p>
-        <div class="hide-text">
-            <p> ןגהל ,הידופיק תא הביל לא לארשי תנידמ לע ןכל .תואלקחלו יגולויבה ןווגמל בושח םמויקו לארשי לש ףונהמ דרפנ יתלב קלח םה םידופיקה
-                .המורדבו ץראה ןופצב ,לארשי לש הירפירפה ירוזאב .ועגפנש םידופיקה תויסולכוא תא םקשלו םהלש היחמה בחרמ לעו םהילע
-                תובקעב םידופיקה לש םייעבטה היחמה ירוזא תא וסרהש ,ןיינבהו רפעה ינלבק אוה םבצמב םשאש ירקיעה םרוגה .תיב ירסח םידופיק יפלא
-                .תואלקחלו יגולויבה ןווגמל בושח םמויקו לארשי לש ףונהמ דרפנ יתלב קלח םה םידופיקה .תונורחאה םינשה לש היינבהו חותיפה תפונת</p>
-            <p> הירפירפה ירוזאב .ועגפנש םידופיקה תויסולכוא תא םקשלו םהלש היחמה בחרמ לעו םהילע ןגהל ,הידופיק תא הביל לא לארשי תנידמ לע ןכל
-                .רפעה ינלבק אוה םבצמב םשאש ירקיעה םרוגה .תיב ירסח םידופיק יפלא םיבבותסמ ,המורדבו ץראה ןופצב ,לארשי לש
-                לש היינבהו חותיפה תפונת תובקעב םידופיקה לש םייעבטה היחמה ירוזא תא וסרהש ,ןיינבהו רפעה ינלבק אוה םבצמב םשאש ירקיעה םרוגה
-                .תונורחאה םינשה<br />
-                רפעה ינלבק אוה םבצמב םשאש ירקיעה םרוגה .תיב ירסח םידופיק יפלא םיבבותסמ ,המורדבו ץראה ןופצב ,לארשי לש הירפירפה ירוזאב
-                .תונורחאה םינשה לש היינבהו חותיפה תפונת תובקעב םידופיקה לש םייעבטה היחמה ירוזא תא וסרהש ,ןיינבהו</p></div>
-        <a class="more-text" href="">דוע ארק</a>
-        <a class="less-text" href="">דוע ארק</a>
+
+        <a class="more-text" href="">קרא עוד</a>
+        <a class="less-text" href="">קרא עוד</a>
         <div class="add-offer-users">
             כמות משתתפים רצויה:
 			<%=action.required_participants%>
         </div>
     </div>
+
     <div class="add-offer-bottom cf">
-        <div class="btn-box">
-            <a class="btn-green" href="">בגה</a>
-            <a class="btn-grey" href="">ףתש</a>
-            <div class="btns-grey">
-                <a href="">יונישל העצה</a>
-                <a href="">הירוטסיה</a>
-            </div>
+        <div class="btn-box row-btn-box">
+            <a class="btn-grey" href="">
+			הגב
+			</a>
+            <a class="btn-grey"  href="">
+			שתף
+			</a>
+           
         </div>
         <div class="tags">
-            <a href="">הלטבא</a>
-            <a href="">הלכלכ</a>
-            <a href="">ינוע</a>
-            <div class="more">
+            <% for (var c = 0; c<action.tags.length ; c++) { %>
+                    <a href="/discussions/?tag_name=<%=action.tags[c]%>"> <%=action.tags[c] %></a>
+           <% }%>
+          <!--  <div class="more">
                 <span></span>
                 <ul>
-                    <li><a href="">תויגת דוע גצה</a></li>
-                    <li><a href="">תיגת ףסוה</a></li>
+                    <li><a href="">הצג עוד תגיות</a></li>
+                    <li><a href="">הוסף תגית</a></li>
                 </ul>
-            </div>
-        </div>
-        <div class="slide-box">
-            <div class="summary">
-                <input type="text" id="amount" value="6.20" />
-                <span>123 מדרגים</span>
-            </div>
-            <div class="slider slider-one">
-            </div>
-            <div class="slider-numbers">
-                <span>1</span>
-                <span>2</span>
-                <span>3</span>
-                <span>4</span>
-                <span>5</span>
-                <span>6</span>
-                <span>7</span>
-                <span>8</span>
-                <span>9</span>
-                <span>10</span>
-            </div>
+            </div>-->
         </div>
     </div>
     <div class="add-offer-btn-box">
-        <a href="">אם זה קורה, אני שם</a>
+        <a href="">הצטרף</a>
     </div>
 </div>
-<div class="card-left">
-    <h3><span>עדימה תלגע</span></h3>
-    <div class="diagram-box cf">
-        <img src="images/diagram-three.png" alt="" />
-        <div class="percent">
-            <span>43%</span>
-            ועיבצי
-        </div>
-        <div class="percent">
-            <span>57%</span>
-            םיעדוי אל
-        </div>
-    </div>
-    <div class="comment-slide">
-        <a href="" id="prev" ></a>
-        <a href="" id="next" ></a>
-        <div class="slide-c">
-            <div class="one">
-                הקיטסיטטסל תיזכרמה הכשלה לש ח”ודב  ח”ודב םינותנ ולגתה עובשה םסרופש הכשלה לש
-            </div>
-            <div class="one">
-                ח”ודב םינותנ ולגתה עובשה םסרופש הכשלה לש
-            </div>
-        </div>
-    </div>
-</div>
+
+ <%-partial('partials/action_shopping_cart.ejs')%>
+
+
 <div class="members-box cf">
 <h2>משתתפים <small>(21)</small></h2>
 <div class="one-members">
@@ -481,85 +431,7 @@ var error_message = error_message || '';
     <a href="">תועצה דוע</a>
 </div>
 </div>
-<div class="deals-box">
-    <h2>יונישל תועצה <small>(7)</small></h2>
-    <div class="one">
-        <div class="top-box top-box-small">
-            <div class="user-right user-right-small">
-                <span class="arrow"></span>
-                <div class="left">
-                    <a href="">טדנמ ןת</a>
-                    <a href="">בוקע</a>
-                    <a href="">העדוה חלש</a>
-                </div>
-                <div class="right">
-                    <div class="img-box">
-                        <img width="60" src="images/user-2.jpg" alt="">
-                        <span></span>
-                    </div>
-                    <h4>רומשאר זעוב</h4>
-                    <div class="proxy">
-                        <span>3</span>
-                    </div>
-                    <div class="respect">
-                        <span>20</span>
-                    </div>
-                </div>
-            </div>
-            <div class="text-left">
-                <h4>רובין כתב: באזורי הפריפריה של ישראל, בצפון הארץ ובדרומה, מסתובבים אלפי קיפודים חסרי בית. הגורם העיקרי שאשם במצבם הוא קבלני
-                    העפר והבניין, שהרסו את אזורי המחיה הטבעיים של הקיפודים בעקבות תנופת הפיתוח והבנייה של השנים האחרונות.</h4>
-                <p>ההצעה לשינוי: נפנה להתאחדות הקבלנים בתקווה שיבינו את חשיבות הנושא ויחד איתם נקבע את שלומם של כל קיפודי הפריפריה.
-                    נימוק: על מדינת ישראל לאמץ אל ליבה את קיפודיה, להגן עליהם ועל מרחב המחיה שלהם ולשקם את אוכלוסיות הקיפודים שנפגעו.</p>
-            </div>
-            <a class="grey-btn" href="">בגה</a>
-        </div>
-        <div class="bottom-box cf">
-            <div class="status">
-                <div class="yes">
-                    <div class="green">םיכסמ<small>(2)</small></div>
-                    <div class="number">9</div>
-                </div>
-                <div class="no">
-                    <div class="red">םיכסמ אל</div>
-                    <div class="number">14</div>
-                </div>
-            </div>
-            <div class="status">
-                <div class="yes">
-                    <div class="white"> םינקוט תומכ תיחכונ</div>
-                    <div class="number">1,775</div>
-                </div>
-                <div class="no">
-                    <div class="white"> םינקוט תומכ היוצר</div>
-                    <div class="number">1,850</div>
-                </div>
-            </div>
-            <div class="slide-box">
-                <div class="summary">
-                    <input type="text" value="8.20" id="amount3" />
-                    <span>123 מדרגים</span>
-                </div>
-                <div class="slider slider-three"></div>
-                <div class="slider-numbers">
-                    <span>1</span>
-                    <span>2</span>
-                    <span>3</span>
-                    <span>4</span>
-                    <span>5</span>
-                    <span>6</span>
-                    <span>7</span>
-                    <span>8</span>
-                    <span>9</span>
-                    <span>10</span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="more-deals">
-        <a href="">תועצה דוע</a>
-    </div>
-</div>
+
 </div>
 </div>
 <div class="system-notice">
@@ -796,5 +668,14 @@ var error_message = error_message || '';
         </div>
     </div>
 </div>
+ <script type="text/javascript">
+	var action_id='<%=action._id%>';
+     $(document).ready(function () {
+         
+		  
+		  
+       
+     });
+ </script>
 </body>
 </html>
