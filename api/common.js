@@ -56,6 +56,16 @@ var SessionAuthentication = exports.SessionAuthentication = jest.Authentication.
                     else
                     {
                         req.user = user;
+                        // save user last visit
+                        // to avoid many updates to the db, don't save if the difference is less than 2 minutes
+                        if( !user.last_visit || (new Date() - user.last_visit  > 1000*60*2))
+                            models.User.update({_id:user._id},{$set:{last_visit: new Date()}},function(err) {
+                                if(err) {
+                                    console.error('failed setting last visit',err);
+                                }
+                                else
+                                    console.log('saved last visit');
+                            });
                         var is_activated = user.is_activated;
                         if(is_activated || req.method == 'GET')
                             callback(null, true);

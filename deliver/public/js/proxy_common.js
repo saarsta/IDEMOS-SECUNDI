@@ -69,8 +69,8 @@ var proxyCommon={
                     }
                     if(err){
                         $(document).one('cbox_closed', function (e) {
-
-                            popupProvider.showOkPopup({message:err.responseText});
+                            var message = /[a-zA-Z]/.test(err.responseText) ? 'קרתה תקלה' : err.responseText;
+                            popupProvider.showOkPopup({message:message});
                         });
                     }
                     else{

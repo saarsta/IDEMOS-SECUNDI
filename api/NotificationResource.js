@@ -60,17 +60,6 @@ var NotificationCategoryResource = module.exports = resources.MongooseResource.e
             if (user_id)
                 filters['user_id'] = user_id;
 
-            // save user last visit to now
-            if(req.user) {
-                req.user.last_visit = Date.now();
-                req.user.save(function(err) {
-                    if(err) {
-                        console.error('saving user last_visit failed',err);
-                    }
-                    else
-                        console.log('saved last visit for ' + req.user + ' ' + req.user.last_visit);
-                });
-            }
 
 
             this._super(req, filters, sorts, limit, offset, function (err, results) {
@@ -122,7 +111,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, info_items_ha
 
                     var num_of_comments = notification.notificators.length;
                     if(discussion){
-                        notification.link = "/discussions/" + discussion._id + "";
+                        notification.link = "/discussions/" + discussion._id + "" + "#post_" +  notification.notificators[0].sub_entity_id;
                         notification.pic = discussion.image_field_preview || discussion.image_field;
                         notification.name = discussion.title;
 

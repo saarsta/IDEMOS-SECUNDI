@@ -7,6 +7,8 @@
     <meta property="og:title"  content="<%=articles[0].title%>" />
     <meta property="og:description"  content="<%=articles[0].text%>" />
     <meta property="og:image"  content="<%= articles[0].image_field && articles[0].image_field.url ? articles[0].image_field.url : 'http://site.e-dologic.co.il/philip_morris/Xls_script/uru_mailing/logo.jpg' %>" />
+    <meta name="description" content="<%=articles[0].text%>" />
+    <meta name="title" content="<%=articles[0].title%>" />
 
     <script src="/resources/js/jquery-fieldselection.js" type="text/javascript"></script>
 </head>
@@ -51,7 +53,7 @@
                                         <% if (!isBlog) { %>
                                              data-href="http://www.uru.org.il/blogs/article/<%= articles[i]._id %>"
                                         <% }else{%>
-                                            data-href="http://www.uru.org.il/blogs/<%= articles[i].user_id %>"
+                                            data-href="http://www.uru.org.il/blogs/<%= articles[0].user_id %>"
                                         <% }%>
                                              data-send="false" data-layout="button_count" data-width="90" data-show-faces="false">
                                         </div>
@@ -277,8 +279,8 @@ function getComments(article_id) {
                   else {
                       if (err.responseText == 'Error: there is not enought tokens')
                           popupProvider.showOkPopup( {message:     'אין לך מספיק טוקנים'});
-                      if (err.responseText == 'user already voted for this post')
-                          popupProvider.showOkPopup( {message:     'באפשרותך לתת עד אסימון אחד לתגובה בדיון'});
+//                      if (err.responseText == 'user already voted for this post')
+//                          popupProvider.showOkPopup( {message:     'באפשרותך לתת עד אסימון אחד לתגובה בדיון'});
                       if (err.responseText == 'soory, can\'t vote to your own post')
                           popupProvider.showOkPopup( {message:     'מצטערים, לא ניתן להצביע לתגובה של עצמך'});
                   }

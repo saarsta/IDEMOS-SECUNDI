@@ -354,7 +354,9 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                 return discussion.discussion_id + '' == object._id + '';
             });
             if (!disc) {
+
                 async.parallel([
+                    //add user to followers in users.discussions
                     function (cbk2) {
                         var user_discussion = {
                             discussion_id:object._id,
@@ -363,8 +365,22 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                         models.User.update({_id:user._id}, {$addToSet:{discussions:user_discussion}}, cbk2);
                     },
 
+                    //increase discussion followers and add user to "people that connected somhow to discussion" if its a new user..
                     function (cbk2) {
-                        models.Discussion.update({_id:object._id}, {$inc:{followers_count:1}, $addToSet:{users:user._id}}, cbk2);
+                        var connected_somehow_user = _.find(object.users, function (user) {
+                            return user.user_id + '' == user._id + '';
+                        });
+                        if (!connected_somehow_user) {
+                            //if new user that "connected somehow to the discussion" so add to set it
+                            var discussion_user = {
+                                user_id: user._id,
+                                join_date:Date.now()
+                            }
+                            models.Discussion.update({_id:object._id}, {$inc:{followers_count:1}, $addToSet:{users: discussion_user}}, cbk2);
+                        }else{
+                            //only increase num of followers
+                            models.Discussion.update({_id:object._id}, {$inc:{followers_count:1}}, cbk2);
+                        }
                     }
                 ], function () {
                     object.followers_count++;
