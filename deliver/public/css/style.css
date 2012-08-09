@@ -2141,6 +2141,16 @@ body
     top: -15px;
     display: inline-block;
 }
+
+.add-offer .text-box .blue-title
+{
+    color:#3b63ef;
+    margin-bottom: -15px;
+    position: relative;
+
+    display: inline-block;
+}
+
 .add-offer .text-box a.less-text
 {
     display: none;
@@ -2172,6 +2182,17 @@ body
     width: 112px;
     padding-top: 7px;
 }
+.add-offer .add-offer-bottom .row-btn-box
+{
+    width: 260px!important;
+}
+
+.add-offer .add-offer-bottom .row-btn-box a
+{
+    float: left;
+    margin-right: 5px;
+}
+
 .add-offer .add-offer-bottom .btn-box .btn-green
 {
     background:#2fd43b url(../images/green-btn-border.png) 0 0 repeat-x;
@@ -6319,7 +6340,7 @@ a.fraction-btn
 .followers-ppl .one
 {
     float: right;
-    padding: 0 0 30px 73px;
+    padding: 0 0 10px 73px;
     width: 65px;
     text-align: center;
 }
@@ -6344,6 +6365,7 @@ a.fraction-btn
     font: bold 13px/15px ARial;
     padding-bottom: 5px;
     letter-spacing: -0.4px;
+    min-height: 45px;
 }
 .followers-ppl .one .date
 {

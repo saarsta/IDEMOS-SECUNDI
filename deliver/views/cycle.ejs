@@ -22,20 +22,18 @@
                     <h2><span class="arrow"> <%= cycle.subject_name %></span> <%= cycle.title %></h2>
                     <div class="text-box cf">
                     <% if (cycle.image_field) { %>
-                        <img class="floatRight" src="<%= cycle.image_field.url %>" alt="" />
+
+                      <div class="img-box floatRight" style="overflow: hidden;">
+                                <div style="width:260px; height:190px;" class='auto-scale'>
+                                      <img src="<%=cycle.image_field.url %>" alt=""/>
+
+                                </div>
+                                <span></span>
+                            </div>
                     <% } %>
-                        <h3>תופסת חדשה לתרבות יום א’ בביה”ס: סיורים מודרכים בחברון</h3>
-                        <p> <%- cycle.text_field %>
-                        </p>
-
-                                 <p id="read_more">
-                                            <a href="javascript:void(0);">
-                                                קרא עוד
-                                            </a>
-                                        </p>
-
-
-                    </div>
+                        <h3><%- cycle.discussion_title %></h3>
+                        <p> <%- cycle.text_field %>   </p>
+                        <p id="read_more"> <a href="javascript:void(0);"> קרא עוד </a> </p> </div>
                     <div class="add-offer-bottom cf">
                         <div class="right">
                             <div class="tags">
@@ -54,113 +52,19 @@
                 </div>
                 <div class="popular-comments cf">
                     <div class="top">
-                        <a href=""><span></span> תגובות פופולריות מדיון אחר</a>
+                        <a href=""><span></span>  תגובות פופולריות</a>
                     </div>
                     <div class="hide-box">
-                        <div class="one cf">
-                            <div class="user-right">
-                                <span class="arrow"></span>
-                                <div class="left">
-                                    <a href="">טדנמ ןת</a>
-                                    <a href="">בוקע</a>
-                                    <a href="">העדוה חלש</a>
-                                </div>
-                                <div class="right">
-                                    <div class="img-box">
-                                        <img width="60" src="images/user-1.jpg" alt="">
-                                        <span></span>
-                                    </div>
-                                    <h4>רומשאר זעוב</h4>
-                                    <div class="date">13.3.12</div>
-                                    <div class="proxy">
-                                        <span>3</span>
-                                    </div>
-                                    <div class="respect">
-                                        <span>20</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="text">
-                                <p>לכתוב ביוגרפיה קצרה דברים שאתה אוהב, אג’נדה, דעות, ומה שתרצה על עצמך. כאן אפשר
-                                לכתוב ביוגרפיה קצרה כאן אפשר לכתוב ביוגרפיה קצרה דברים שאתה אוהב, אג’נדה, דעות, ומה
-                                שתרצה על עצמך. בנוסף, אפשר לכתוב ביוגרפיה קצרה לכתוב ביוגרפיה קצרה דברים שאתה
-                                אוהב, אג’נדה, דעות, ומה שתרצה על עצמך. כאן אפשר לכתוב ביוגרפיה קצרה כאן אפשר לכתוב
-                                ביוגרפיה קצרה דברים שאתה אוהב, אג’נדה, דעות, ומה שתרצה על עצמך. בנוסף, ביוגרפיה
-                                קצרה דברים שאתה אוהב. </p>
-                            </div>
-                            <div class="ratio">
-                                <a class="up" href=""></a>
-                                <div class="count">252</div>
-                                <a class="down" href=""></a>
-                            </div>
-                        </div>
-                        <div class="one cf">
-                            <div class="user-right">
-                                <span class="arrow"></span>
-                                <div class="left">
-                                    <a href="">טדנמ ןת</a>
-                                    <a href="">בוקע</a>
-                                    <a href="">העדוה חלש</a>
-                                </div>
-                                <div class="right">
-                                    <div class="img-box">
-                                        <img width="60" src="images/user-1.jpg" alt="">
-                                        <span></span>
-                                    </div>
-                                    <h4>רומשאר זעוב</h4>
-                                    <div class="date">13.3.12</div>
-                                    <div class="proxy">
-                                        <span>3</span>
-                                    </div>
-                                    <div class="respect">
-                                        <span>20</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="text">
-                                <p>לכתוב ביוגרפיה קצרה דברים שאתה אוהב, אג’נדה, דעות, ומה שתרצה על עצמך. כאן אפשר
-                                לכתוב ביוגרפיה קצרה כאן אפשר לכתוב ביוגרפיה קצרה דברים שאתה אוהב, אג’נדה, דעות, ומה
-                                שתרצה על עצמך. בנוסף, אפשר לכתוב ביוגרפיה קצרה לכתוב ביוגרפיה קצרה דברים שאתה
-                                אוהב, אג’נדה, דעות, ומה שתרצה על עצמך. כאן אפשר לכתוב ביוגרפיה קצרה כאן אפשר לכתוב
-                                ביוגרפיה קצרה דברים שאתה אוהב, אג’נדה, דעות, ומה שתרצה על עצמך. בנוסף, ביוגרפיה
-                                קצרה דברים שאתה אוהב. </p>
-                            </div>
-                            <div class="ratio">
-                                <a class="up" href=""></a>
-                                <div class="count">252</div>
-                                <a class="down" href=""></a>
-                            </div>
-                        </div>
-                        <div class="bottom cf">
-                            <a href="">מעבר לדיון הבא</a>
-                        </div>
+
                     </div>
                 </div>
             </div>
             <div class="card-left">
-                <h3><span>עדימה תלגע</span></h3>
-                <div class="diagram-box cf">
-                    <img src="images/diagram-three.png" alt="" />
-                    <div class="percent">
-                        <span>43%</span>
-                        ועיבצי
-                    </div>
-                    <div class="percent">
-                        <span>57%</span>
-                        םיעדוי אל
-                    </div>
-                </div>
+                <h3><span>עגלת המידע</span></h3>
                 <div class="comment-slide">
                     <a href="" id="prev" ></a>
                     <a href="" id="next" ></a>
-                    <div class="slide-c">
-                        <div class="one">
-                            הקיטסיטטסל תיזכרמה הכשלה לש ח”ודב  ח”ודב םינותנ ולגתה עובשה םסרופש הכשלה לש
-                        </div>
-                        <div class="one">
-                              ח”ודב םינותנ ולגתה עובשה םסרופש הכשלה לש
-                        </div>
-                    </div>
+                    <div class="slide-c"></div>
                 </div>
             </div>
         </div>
@@ -296,43 +200,6 @@
                 <div class="right">
                     <h2>עדכונים</h2>
                     <div class="updates">
-                        <div class="one">
-                            <div class="right-image">
-                                <img src="images/sample-7.jpg" alt="" />
-                            </div>
-                            <h4>םידומילה תנש תארקל םירומב רוסחמ</h4>
-                            <p>רשאכ םויה הרעס ררוע רעס ןועדג תוברתהו ךוניחה רש
-                            לש ח”ודב ,לארשיב ינועה בצמ לע םידירטמ םינותנ ולגתה
-                            ילואש יאדכו הרעס ררוע רעס ןועדג תוברתהו ךוניחה רש
-                            עובשה הקיטסיטטסל תיזכרמה הכשלה ... <a href="">קרא עוד</a></p>
-                            <a class="btn" href="">ףתש</a>
-                        </div>
-                        <div class="one">
-                            <div class="right-image">
-                                <img src="images/sample-7.jpg" alt="" />
-                            </div>
-                            <h4>םידומילה תנש תארקל םירומב רוסחמ</h4>
-                            <p>רשאכ םויה הרעס ררוע רעס ןועדג תוברתהו ךוניחה רש
-                            לש ח”ודב ,לארשיב ינועה בצמ לע םידירטמ םינותנ ולגתה
-                            ילואש יאדכו הרעס ררוע רעס ןועדג תוברתהו ךוניחה רש
-                            עובשה הקיטסיטטסל תיזכרמה הכשלה ... <a href="">קרא עוד</a></p>
-                            <a class="btn" href="">ףתש</a>
-                        </div>
-                        <div class="one">
-                            <h4>םידומילה תנש לע םייאמ םירומה תורדתסה ןיב ימינפ קבאמ
-                            התיבש לע םירוביד עקרב ,תיחכונה</h4>
-                            <h5>הועלה ע”י מרב סימנטוב</h5>
-                            <p> בצמ לע םידירטמ םינותנ ולגתה עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה לש ח”ודב
-                            תוירוה דח תוהמא לש ןבצמ תודוא םישק תינותנ םהיניב ,לארשיב ינועה ... <a href="">קרא עוד</a></p>
-                            <a class="btn" href="">ףתש</a>
-                        </div>
-                        <div class="one">
-                            <h4>םידומילה תנש לע םייאמ םירומה תורדתסה ןיב ימינפ קבאמ</h4>
-                            <h5>הועלה ע”י מרב סימנטוב</h5>
-                            <p> בצמ לע םידירטמ םינותנ ולגתה עובשה םסרופש הקיטסיטטסל תיזכרמה הכשלה לש ח”ודב
-                            תוירוה דח תוהמא לש ןבצמ תודוא םישק תינותנ םהיניב ,לארשיב ינועה ... <a href="">קרא עוד</a></p>
-                            <a class="btn" href="">ףתש</a>
-                        </div>
                     </div>
                 </div>
                 <div class="left">
@@ -391,232 +258,39 @@
                 </div>
             </div>
             <div class="blog-box cf">
-                <h2>להק תעד יליבומ</h2>
-                <div class="one">
-                    <div class="img-box">
-                        <img alt="" src="images/user-1.jpg">
-                        <span class="fillter"></span>
-                    </div>
-                    <h4><a href="">יבקעי לאומש</a></h4>
-                    <p> זכרמה הכשלה לש ח”ודב
-                    ינועה בצמ לע םידירטמ םינותנ
-                     ... ץראה זכרמ ירוזאב</p>
-                    <div class="badges">
-                        <div class="proxy">
-                            <span>3</span>
-                        </div>
-                        <div class="respect">
-                            <span>20</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="one">
-                    <div class="img-box">
-                        <img alt="" src="images/user-2.jpg">
-                        <span class="fillter"></span>
-                    </div>
-                    <h4><a href="">יבקעי לאומש</a></h4>
-                    <p> זכרמה הכשלה לש ח”ודב
-                    ינועה בצמ לע םידירטמ םינותנ
-                     ... ץראה זכרמ ירוזאב</p>
-                    <div class="badges">
-                        <div class="proxy">
-                            <span>3</span>
-                        </div>
-                        <div class="respect">
-                            <span>20</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="one last">
-                    <div class="img-box">
-                        <img alt="" src="images/user-3.jpg">
-                        <span class="fillter"></span>
-                    </div>
-                    <h4><a href="">יבקעי לאומש</a></h4>
-                    <p> זכרמה הכשלה לש ח”ודב
-                    ינועה בצמ לע םידירטמ םינותנ
-                     ... ץראה זכרמ ירוזאב</p>
-                    <div class="badges">
-                        <div class="proxy">
-                            <span>3</span>
-                        </div>
-                        <div class="respect">
-                            <span>20</span>
-                        </div>
-                    </div>
-                </div>
+                <h2>מובילי דעת קהל</h2>
+
+
+                     <% if (cycle.opinion_shapers) for (var c = 0; c<cycle.opinion_shapers.length && c<3 ; c++) { %>
+                             <div class="one <% if (c==2) {%>last<% }%> ">
+                                                 <div class="img-box">
+                                                     <img width="112" height="120" alt="" src="http://profile.ak.fbcdn.net/hprofile-ak-snc4/49136_745621901_4865704_n.jpg">
+                                                     <span class="fillter"></span>
+                                                 </div>
+                                                 <h4><a href=""><%=cycle.opinion_shapers[c].first_name %> <%=cycle.opinion_shapers[c].last_name %></a></h4>
+                                                 <p> בדו”ח של הלשכה המרכז
+                                                     נתונים מטרידים על מצב העוני
+                                                     באזורי מרכז הארץ ...                                                  </p>
+                                                 <div class="badges">
+                                                     <div class="proxy">
+                                                         <span>3</span>
+                                                     </div>
+                                                     <div class="respect">
+                                                         <span><%=cycle.opinion_shapers[c].score %></span>
+                                                     </div>
+                                                 </div>
+                                             </div>
+                     <% }%>
+
+
+
+
             </div>
-            <div class="followers-ppl cf">
-                <h2>םיבקוע</h2>
-                <div class="one">
-                    <div class="img-box">
-                        <img src="images/user-1.jpg" width="60" alt="" />
-                        <span></span>
-                    </div>
-                    <div class="name">
-                        רומאשר זעב
-                    </div>
-                    <div class="date">
-                        13.03.2012
-                    </div>
-                </div>
-                <div class="one">
-                    <div class="img-box">
-                        <img src="images/user-1.jpg" width="60" alt="" />
-                        <span></span>
-                    </div>
-                    <div class="name">
-                        רומאשר זעב
-                    </div>
-                    <div class="date">
-                        13.03.2012
-                    </div>
-                </div>
-                <div class="one">
-                    <div class="img-box">
-                        <img src="images/user-1.jpg" width="60" alt="" />
-                        <span></span>
-                    </div>
-                    <div class="name">
-                        רומאשר זעב
-                    </div>
-                    <div class="date">
-                        13.03.2012
-                    </div>
-                </div>
-                <div class="one">
-                    <div class="img-box">
-                        <img src="images/user-1.jpg" width="60" alt="" />
-                        <span></span>
-                    </div>
-                    <div class="name">
-                        רומאשר זעב
-                    </div>
-                    <div class="date">
-                        13.03.2012
-                    </div>
-                </div>
-                <div class="one">
-                    <div class="img-box">
-                        <img src="images/user-1.jpg" width="60" alt="" />
-                        <span></span>
-                    </div>
-                    <div class="name">
-                        רומאשר זעב
-                    </div>
-                    <div class="date">
-                        13.03.2012
-                    </div>
-                </div>
-                <div class="one">
-                    <div class="img-box">
-                        <img src="images/user-1.jpg" width="60" alt="" />
-                        <span></span>
-                    </div>
-                    <div class="name">
-                        רומאשר זעב
-                    </div>
-                    <div class="date">
-                        13.03.2012
-                    </div>
-                </div>
-                <div class="one">
-                    <div class="img-box">
-                        <img src="images/user-1.jpg" width="60" alt="" />
-                        <span></span>
-                    </div>
-                    <div class="name">
-                        רומאשר זעב
-                    </div>
-                    <div class="date">
-                        13.03.2012
-                    </div>
-                </div>
-                <div class="one">
-                    <div class="img-box">
-                        <img src="images/user-1.jpg" width="60" alt="" />
-                        <span></span>
-                    </div>
-                    <div class="name">
-                        רומאשר זעב
-                    </div>
-                    <div class="date">
-                        13.03.2012
-                    </div>
-                </div>
-                <div class="one">
-                    <div class="img-box">
-                        <img src="images/user-1.jpg" width="60" alt="" />
-                        <span></span>
-                    </div>
-                    <div class="name">
-                        רומאשר זעב
-                    </div>
-                    <div class="date">
-                        13.03.2012
-                    </div>
-                </div>
-                <div class="one">
-                    <div class="img-box">
-                        <img src="images/user-1.jpg" width="60" alt="" />
-                        <span></span>
-                    </div>
-                    <div class="name">
-                        רומאשר זעב
-                    </div>
-                    <div class="date">
-                        13.03.2012
-                    </div>
-                </div>
-                <div class="one">
-                    <div class="img-box">
-                        <img src="images/user-1.jpg" width="60" alt="" />
-                        <span></span>
-                    </div>
-                    <div class="name">
-                        רומאשר זעב
-                    </div>
-                    <div class="date">
-                        13.03.2012
-                    </div>
-                </div>
-                <div class="one">
-                    <div class="img-box">
-                        <img src="images/user-1.jpg" width="60" alt="" />
-                        <span></span>
-                    </div>
-                    <div class="name">
-                        רומאשר זעב
-                    </div>
-                    <div class="date">
-                        13.03.2012
-                    </div>
-                </div>
-                <div class="one">
-                    <div class="img-box">
-                        <img src="images/user-1.jpg" width="60" alt="" />
-                        <span></span>
-                    </div>
-                    <div class="name">
-                        רומאשר זעב
-                    </div>
-                    <div class="date">
-                        13.03.2012
-                    </div>
-                </div>
-                <div class="one">
-                    <div class="img-box">
-                        <img src="images/user-1.jpg" width="60" alt="" />
-                        <span></span>
-                    </div>
-                    <div class="name">
-                        רומאשר זעב
-                    </div>
-                    <div class="date">
-                        13.03.2012
-                    </div>
-                </div>
+            <div class="followers-ppl cf" id="followers">
+                <h2>עוקבים</h2>
+
+
+
             </div>
         </div>
     </div>
@@ -626,18 +300,9 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-
+            var cycle_id = "<%=cycle.id%>";
             $(".inline").colorbox({ inline: true, width: "730" });
-            $('.slide-c')
-            .after('<div id="nav2">')
-            .cycle({
-                fx: 'turnDown',
-                speed: 'fast',
-                timeout: 0,
-                pager: '#nav2',
-                next: '#next',
-                prev: '#prev'
-            });
+
             $('.popular-comments .user-right').hover(function () {
                 $(this).toggleClass('hover');
             });
@@ -650,7 +315,72 @@
                 return false;
             });
 
-    });
+
+            db_functions.getCycleShoppingCart(cycle_id, function (err, data) {
+
+                    $.each(data.objects, function (index, item) {
+                        dust.render('discussion_information_item', item, function (err, out) {
+                            $('.slide-c').append(out);
+                        });
+
+
+                    });
+
+                    $('.slide-c')
+                       .after('<div id="nav2">')
+                       .cycle({
+                           fx: 'turnDown',
+                           speed: 'fast',
+                           timeout: 0,
+                           pager: '#nav2',
+                           next: '#next',
+                           prev: '#prev'
+                       });
+                    if (data.objects.length < 2) {
+                        $("#prev").hide();
+                        $("#next").hide();
+                    }
+
+            });
+
+            db_functions.getCycleUpdates(cycle_id, function (err, data) {
+                        dust.renderArray('cycle_update', data.objects, function (err, out) {
+                            $('.updates').append(out);
+                        });
+           });
+            db_functions.getCyclePosts(cycle_id, function (err, data) {
+                   dust.renderArray('cycle_post', data.objects, function (err, out) {
+                       $('.hide-box').append(out);
+                   });
+            });
+
+
+
+            getFollowers();
+           // Detect that we are at bottom of page, and call autoloading function
+           	var killScroll = false;
+           	$(window).scroll(function(){
+           		if  ($(window).scrollTop()+100 >= ($(document).height() - ($(window).height()))){
+           			if (killScroll == false) { // - Keeps the loader from fetching more than once.
+           				//killScroll = true; // - Set killScroll to true, to make sure we do not trigger this code again before it's done running.
+                         getFollowers();
+           			}
+           		}
+           	});
+            function   getFollowers()
+            {
+                 db_functions.getCylceFollowers(cycle_id, function (err, data) {
+                    dust.renderArray('cycle_follower', data.objects, function (err, out) {
+                        $('#followers').append(out);
+                        if(data.length==0) {
+                            killScroll = true;
+                        }
+                    });
+                });
+            }
+
+
+});
 </script>
 </body>
 </html>
