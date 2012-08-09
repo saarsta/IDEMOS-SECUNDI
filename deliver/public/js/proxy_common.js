@@ -8,7 +8,6 @@
 
 var proxyCommon={
     addOrRemoveProxy: function (proxy,proxyId,userName,my_id,onProxyChangedCallback) {
-
         function findUserProxy(userId) {
             for (var i in proxy) {
                 var userProxy = proxy[i];
@@ -28,7 +27,7 @@ var proxyCommon={
             //you didn't give proxy to this user
             userProxy = {number_of_tokens:0,
                 number_of_tokens_to_get_back:0,
-                user_id:proxyId
+                user_id: proxyId
             }
         }
 

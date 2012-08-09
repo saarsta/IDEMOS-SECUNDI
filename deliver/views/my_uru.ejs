@@ -123,7 +123,7 @@
             <li><a  href="#discussions-tab">דיונים</a></li>
             <li><a href="#cycles-tab">מעגלי תנופה</a></li>
             <li><a href="#actions-tab">פעולות</a></li>
-            <li><a href="#articles-tab">בלוגים</a></li>
+            <li><a href="#articles-tab">בלוג</a></li>
         </ul>
         <div id="discussions-tab">
 
@@ -182,7 +182,6 @@
        // var proxy = JSON.parse('<%-proxy%>');
         var proxy = <%-proxy%>;
          var isHisUru=<%=isHisUru%>;
-
         function tabSelected(event, ui){
            function convertToTabModel(data,type){
                 var i,
@@ -208,10 +207,16 @@
            }
            var tabDivId=   ui.panel.id;
            var type=tabDivId.substr(0, tabDivId.indexOf('-'));
+
             db_functions.getAllItemsByUser(type,userId,function(error,data){
+                if(type == "articles")
+                    type = "blogs/article";
                 var  tabDataModel =convertToTabModel(data,type) ;
                 dust.render('myuru_tab',tabDataModel,function(err,out)
                 {
+                    if(type == "blogs/article")
+                        type = "articles";
+
                     var seletedTab= $('#'+type+'-tab');
 
                     // seletedTab.remove();
@@ -230,16 +235,8 @@
                                 next: '.next-1',
                                 prev: '.prev-1'
                             });
-
-
-
                 });
             });
-
-
-
-
-
         }
 
         $( ".tabs" ).tabs({
@@ -334,7 +331,7 @@
             }
 
             proxyCommon.addOrRemoveProxy(proxy,proxyId,userName,currentUserId,function(newProxy){
-                proxy=newProxy.proxy;
+                proxy = newProxy.proxy;
 
             })
 
@@ -372,10 +369,12 @@
 
         function  redrowToolBar(num_of_extra_tokens,tokens){
 
-
             var tokensBarModel = new TokensBarModel(9, num_of_extra_tokens, tokens, proxy);
+            var a = 8;
+
             dust.render('tokens_bar',tokensBarModel,function(err,out)
             {
+
                 if(err){
 
                     console.error(err);

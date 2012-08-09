@@ -39,7 +39,7 @@
     </div>
 
     <div class="text">
-        <p class="date">{creator_id.username} {?creation_date}{creation_date|time}{/creation_date}</p>
+        <a style="text-decoration: none" href="/discussions/{discussion_id}#post_{_id}" class="date">{creator_id.username} {?creation_date}{creation_date|time}{/creation_date}</a>
         <div class="post_text">                 {text|s|post}           </div>
     </div>
     <div class="btn-box">

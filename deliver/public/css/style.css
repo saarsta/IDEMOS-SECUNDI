@@ -2898,6 +2898,14 @@ h2 small
     color:#b7b6b6;
     font-style: italic;
 }
+
+.comments-box .text .date:hover
+{
+    color:#b7b6b6;
+    font-style: italic;
+    text-decoration: underline !important;
+}
+
 .comments-box .btn-box
 {
     position: absolute;
