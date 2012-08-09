@@ -91,12 +91,12 @@ module.exports = function(req, res){
         if(err)
             res.render('500.ejs',{error:err});
         else {
-
-            g_cycle.subject_name = g_cycle.main_subject.name;
-                res.render('cycle.ejs',{
-                    cycle: g_cycle,
-                    tab:'cycles'
-                });
+            if(g_cycle && g_cycle.subject_name)
+                g_cycle.subject_name = g_cycle.main_subject.name;
+            res.render('cycle.ejs',{
+                cycle: g_cycle,
+                tab:'cycles'
+            });
         }
     })
 };

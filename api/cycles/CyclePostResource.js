@@ -11,22 +11,23 @@ var CyclePostResource = module.exports = jest.Resource.extend({
         this.authentication = new common.SessionAuthentication();
         this.filtering = {};
         this.sorting = {};
-        this.fields = {
-            _id: null,
-            title: null,
-            tooltip_or_title:null,
-            type: null,
-            text_field_preview: null,
-            image_field_preview: null,
-            tags: null
-        }
+//        this.fields = {
+//            _id: null,
+//            title: null,
+//            tooltip_or_title:null,
+//            type: null,
+//            text_field_preview: null,
+//            image_field_preview: null,
+//            tags: null
+//        }
     },
 
     get_objects:function(req, filters, sorts, limit, offset, callback)
     {
+        var user_id = req.user ? req.user._id : null;
         async.waterfall([
             function(cbk){
-                models.Cycle.findById(req.body.cycle_id)
+                models.Cycle.findById(req.query.cycle_id)
                 .select(['discussions'])
                 .populate('discussions', ['title'])
                 .exec(cbk);
@@ -38,12 +39,20 @@ var CyclePostResource = module.exports = jest.Resource.extend({
                 }else{
 
                     getSortedPostsByNumberOfDiscussions(cycle.discussions, function(err, posts){
-                        cbk(err, posts);
+                        if(err)
+                            cbk(err);
+                        else{
+                            var json_posts = JSON.parse(JSON.stringify(posts));
+                            putIsFollowerAndVoteBallanceOnEachPost(user_id, json_posts, function(err, json_posts){
+                                cbk(err, json_posts);
+                            })
+                        }
                     })
                 }
             }
         ], function(err, posts){
-            callback(err, {meta:{total_count: posts.length}, objects: posts});
+
+            callback(err, {meta:{total_count: posts ? posts.length : 0}, objects: posts});
         })
     }
 });
@@ -61,12 +70,28 @@ function getSortedPostsByNumberOfDiscussions(discussions, callback)
         case 1:
             models.Post.find({discussion_id: discussions[0]._id})
             .sort('popularity', 'descending')
+            .select([
+                '_id',
+                'creator_id',
+                'total_votes',
+                'votes_for',
+                'votes_against',
+                'discussion_id',
+                'text'
+                ])
+            .populate('creator_id', [
+                '_id',
+                'first_name',
+                'last_name',
+                'avatar_url',
+                'score',
+                'num_of_proxies_i_represent'
+                ])
             .limit(3)
             .exec(function(err, posts){
                 if(posts)
                     posts[0].discussion_name = discussions[0].title;
                 callback(err, posts);
-
             })
 
             break;
@@ -78,6 +103,23 @@ function getSortedPostsByNumberOfDiscussions(discussions, callback)
                 function(cbk){
                     models.Post.find({discussion_id: discussions[0]._id})
                         .sort('popularity', 'descending')
+                        .select([
+                        '_id',
+                        'creator_id',
+                        'total_votes',
+                        'votes_for',
+                        'votes_against',
+                        'discussion_id',
+                        'text'
+                    ])
+                        .populate('creator_id', [
+                        '_id',
+                        'first_name',
+                        'last_name',
+                        'avatar_url',
+                        'score',
+                        'num_of_proxies_i_represent'
+                    ])
                         .limit(2)
                         .exec(function(err, posts){
                             if(posts)
@@ -89,6 +131,23 @@ function getSortedPostsByNumberOfDiscussions(discussions, callback)
                 function(cbk){
                     models.Post.find({discussion_id: discussions[1]._id})
                         .sort('popularity', 'descending')
+                        .select([
+                        '_id',
+                        'creator_id',
+                        'total_votes',
+                        'votes_for',
+                        'votes_against',
+                        'discussion_id',
+                        'text'
+                    ])
+                        .populate('creator_id', [
+                        '_id',
+                        'first_name',
+                        'last_name',
+                        'avatar_url',
+                        'score',
+                        'num_of_proxies_i_represent'
+                    ])
                         .limit(1)
                         .exec(function(err, posts){
                             if(posts)
@@ -111,6 +170,23 @@ function getSortedPostsByNumberOfDiscussions(discussions, callback)
                 function(cbk){
                     models.Post.find({discussion_id: discussions[0]._id})
                         .sort('popularity', 'descending')
+                        .select([
+                        '_id',
+                        'creator_id',
+                        'total_votes',
+                        'votes_for',
+                        'votes_against',
+                        'discussion_id',
+                        'text'
+                    ])
+                        .populate('creator_id', [
+                        '_id',
+                        'first_name',
+                        'last_name',
+                        'avatar_url',
+                        'score',
+                        'num_of_proxies_i_represent'
+                    ])
                         .limit(1)
                         .exec(function(err, posts){
                             if(posts)
@@ -122,6 +198,23 @@ function getSortedPostsByNumberOfDiscussions(discussions, callback)
                 function(cbk){
                     models.Post.find({discussion_id: discussions[1]._id})
                         .sort('popularity', 'descending')
+                        .select([
+                        '_id',
+                        'creator_id',
+                        'total_votes',
+                        'votes_for',
+                        'votes_against',
+                        'discussion_id',
+                        'text'
+                    ])
+                        .populate('creator_id', [
+                        '_id',
+                        'first_name',
+                        'last_name',
+                        'avatar_url',
+                        'score',
+                        'num_of_proxies_i_represent'
+                    ])
                         .limit(1)
                         .exec(function(err, posts){
                             if(posts)
@@ -133,6 +226,23 @@ function getSortedPostsByNumberOfDiscussions(discussions, callback)
                 function(cbk){
                     models.Post.find({discussion_id: discussions[2]._id})
                         .sort('popularity', 'descending')
+                        .select([
+                        '_id',
+                        'creator_id',
+                        'total_votes',
+                        'votes_for',
+                        'votes_against',
+                        'discussion_id',
+                        'text'
+                    ])
+                        .populate('creator_id', [
+                        '_id',
+                        'first_name',
+                        'last_name',
+                        'avatar_url',
+                        'score',
+                        'num_of_proxies_i_represent'
+                    ])
                         .limit(1)
                         .exec(function(err, posts){
                             if(posts)
@@ -141,7 +251,7 @@ function getSortedPostsByNumberOfDiscussions(discussions, callback)
                         })
                 }
             ], function(err, args){
-                var posts
+                var posts;
 
                 if(args)
                     posts = _.union.apply(_,args);
@@ -153,3 +263,49 @@ function getSortedPostsByNumberOfDiscussions(discussions, callback)
             callback({message: "demasiado discusiones en eso ciculo", code: 404});
     }
 }
+
+function putIsFollowerAndVoteBallanceOnEachPost(user_id, posts, callback){
+
+        if(user_id){
+            async.waterfall([
+                function(cbk){
+                    models.User.findById(user_id, cbk);
+                },
+
+                function(user_obj, cbk){
+
+                    var proxies = user_obj.proxy;
+
+                    async.forEach(posts, function(post, itr_cbk){
+                        //update each post creator if he is a follower or not
+                        var flag = false;
+
+                        var proxy = _.find(proxies, function(proxy){
+                            if(!post.creator_id)
+                                return null;
+                            else
+                                return proxy.user_id + "" == post.creator_id._id + ""});
+                        if(proxy)
+                            post.mandates_curr_user_gave_creator = proxy.number_of_tokens;
+                        if(post.creator_id)
+                            flag =  _.any(post.creator_id.followers, function(follower){return follower.follower_id + "" == user_id + ""});
+                        post.is_user_follower = flag;
+
+                        //update each post creator with his vote balance
+                        models.Vote.findOne({user_id: user_id, post_id: post._id}, function(err, vote){
+                            post.voter_balance = vote ? (vote.ballance || 0) : 0;
+                            itr_cbk(err);
+                        })
+                    }, function(err, obj){
+                        cbk(err, posts);
+                    });
+                }
+            ], function(err, results){
+                callback(err, posts);
+            })
+        }else{
+            _.each(posts, function(post){ post.is_user_follower = false; })
+            callback(null, posts);
+        }
+
+    }

@@ -1,6 +1,6 @@
 
 var models = require('../../../models'),
-    async = require('aync');
+    async = require('async');
 
 module.exports = function(req, res){
 

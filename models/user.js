@@ -17,8 +17,6 @@ var RegexValidator = function (regex) {
     }, 'Value is not at the correct pattern'];
 };
 
-
-
 var User = module.exports = new Schema({
 
     //this is for validation

@@ -954,20 +954,26 @@ var db_functions = {
         });
     },
 
-    getCylceFollowers: function(cycle_id, callback){
+    getCylceFollowers: function(cycle_id, page, callback){
         db_functions.loggedInAjax({
-            url: '/api/users?cycles.cycle_id=' + cycle_id,
+            url: '/api/users?cycles.cycle_id=' + cycle_id + '&limit=3&offset=' + (page*14),
             type: "GET",
             async: true,
             success: function (data) {
                 data.objects = $.map(data.objects/*followers*/, function(follower){
-                    var curr_cycle =  $.find(follower.cycles, function(cycle){
-                        return cycle.cycle_id + "" == cycle_id;
-                    });
+                    var curr_cycle;
+                    for(var i=0; i < follower.cycles.length; i++){
+                        if (follower.cycles[i].cycle_id == cycle_id)
+                            curr_cycle = follower.cycles[i];
+
+                    }
+//                    var curr_cycle =  $.find(follower.cycles, function(cycle){
+//                        return cycle.cycle_id == cycle_id;
+//                    });
 
                     return {
 
-                            _id: follower._id,
+                            _id: follower.id,
                             first_name: follower.first_name,
                             last_name: follower.last_name,
                             avatar_url: follower.avatar_url,
@@ -976,6 +982,7 @@ var db_functions = {
 
                     }
                 })
+                debugger
                 callback(null, data);
             },
 
