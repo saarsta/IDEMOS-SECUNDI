@@ -1020,6 +1020,23 @@ var db_functions = {
         });
     },
 
+    getActionGoing: function(action_id, callback){
+        db_functions.loggedInAjax({
+            url: '/api/join/?action_id=' + action_id,
+            type: "GET",
+
+            async: true,
+            success: function (err, data) {
+                callback(null, data);
+            },
+
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },
+
+
     getPostByAction: function(action_id, callback){
         db_functions.loggedInAjax({
             url: '/api/posts_of_action?action_id=' + action_id,

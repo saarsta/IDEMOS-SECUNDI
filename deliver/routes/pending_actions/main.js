@@ -1,9 +1,29 @@
 
-var models = require('../../../models');
+var models = require('../../../models'),
+    async = require('aync');
 
 module.exports = function(req, res){
 
-    models.Action.findById(req.params[0],function(err,action) {
+    async.parallel([
+        function(cbk){
+            models.Action.findById(req.params[0])
+                .select([
+                '_id',
+                'type',
+                'title',
+                'text_field',
+                'image_field',
+                'tags',
+                'location',
+                'execution_date',
+                'required_participants',
+                'cycle_id'
+            ])
+            .populate('cycle_id', ['_id','title'])
+            .exec(cbk);
+        }
+    ], function(err, args){
+
         if(err)
             res.render('500.ejs',{error:err});
         else {

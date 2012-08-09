@@ -30,6 +30,31 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
         }
     },
 
+    run_query: function(req,query,callback)
+    {
+        query.populate('user_id', ['_id', 'first_name', 'last_name', 'avatar_url', 'score', 'num_of_proxies_i_represent']);
+        this._super(req,query,callback);
+    },
+
+    //in the callback i want to put only the users
+    get_objects: function (req, filters, sorts, limit, offset, callback) {
+          this._super(req, filters, sorts, limit, offset, function(err, result){
+              result.objects = _.map(result.objects, function(map_join_to_user){
+
+                  return {
+                      map_join_to_user: {
+                          _id : map_join_to_user.user_id._id,
+                          first_name : map_join_to_user.user_id.first_name,
+                          last_name : map_join_to_user.user_id.last_name,
+                          avatar_url : map_join_to_user.user_id.avatar_url,
+                          score : map_join_to_user.user_id.score,
+                          num_of_proxies_i_represent : map_join_to_user.user_id.num_of_proxies_i_represent,
+                    }
+                 }
+              })
+          })
+    },
+
     create_obj: function(req,fields,callback){
         var self = this;
         var action_id = req.body.action_id;
