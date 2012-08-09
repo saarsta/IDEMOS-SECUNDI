@@ -6340,7 +6340,7 @@ a.fraction-btn
 .followers-ppl .one
 {
     float: right;
-    padding: 0 0 30px 73px;
+    padding: 0 0 10px 73px;
     width: 65px;
     text-align: center;
 }
@@ -6365,6 +6365,7 @@ a.fraction-btn
     font: bold 13px/15px ARial;
     padding-bottom: 5px;
     letter-spacing: -0.4px;
+    min-height: 45px;
 }
 .followers-ppl .one .date
 {
