@@ -18,3 +18,5 @@ public/cdn/*
 */public/cdn/*
 compiled_templates.js
 /public/js/compiled_templates.js
+/dump/
+/data/
