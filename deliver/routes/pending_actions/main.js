@@ -27,15 +27,15 @@ module.exports = function(req, res){
         if(err)
             res.render('500.ejs',{error:err});
         else {
-            if(!action)
+            var pending_action = args[0];
+            if(!pending_action)
                 res.render('404.ejs');
             else {
                 res.render('pending_action.ejs',{
-                    action:action,
+                    action: pending_action,
                     tab:'actions'
                 });
             }
         }
     });
-
 };

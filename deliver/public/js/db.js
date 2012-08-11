@@ -982,7 +982,6 @@ var db_functions = {
 
                     }
                 })
-                debugger
                 callback(null, data);
             },
 
