@@ -59,8 +59,9 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
             num_of_approved_change_suggestions:null,
             is_cycle:null,
             tags:null,
-            followers_count:null,
-            evaluate_counter:null,
+            followers_count: null,
+            participants_count: null,
+            evaluate_counter: null,
             _id:null,
             is_follower:null,
             grade:null,
@@ -137,6 +138,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                 user_discussions = req.user.discussions;
 
             _.each(results.objects, function (discussion) {
+                discussion.participants_count = discussion.users.length;
                 discussion.is_follower = false;
                 if (user_discussions) {
                     if (_.find(user_discussions, function (user_discussion) {
