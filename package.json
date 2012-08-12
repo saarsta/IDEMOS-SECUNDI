@@ -5,11 +5,11 @@
   , "dependencies": {
         "connect":"",
         "express": "",
-        "ejs": ">= 0.0.1",
+        "ejs": "",
         "connect-auth": "",
         "mongoose":"",
         "express-resource": "",
-        "jest": ">= 0.1.0",
+        "jest": "https://github.com/Empeeric/jest.git",
         "connect-mongo":"",
         "async": "",
 		"jade": "",
