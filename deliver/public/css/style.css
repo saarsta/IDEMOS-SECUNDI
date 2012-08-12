@@ -4038,6 +4038,21 @@ h2 small
     font: bold 16px/30px ARial;
     margin: 0;
 }
+
+.one-box .right .text h4 a
+{
+    color:#50504f;
+    font: bold 16px/30px ARial;
+    margin: 0;
+    text-decoration: none;
+}
+.one-box .right .text h4 a:hover
+{
+    color:#50504f;
+    font: bold 16px/30px ARial;
+    margin: 0;
+    text-decoration: underline;
+}
 .one-box .right .text p
 {
     color:#50504f;

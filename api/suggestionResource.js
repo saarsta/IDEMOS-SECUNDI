@@ -201,7 +201,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                     //add user to praticipants
                     function (cbk2) {
                         models.Discussion.update({_id:suggestion_object.discussion_id, "users.user_id": {$ne: user_id}},
-                            {$addToSet: {users: {user_id: user_id, join_date: Date.now}}},
+                            {$addToSet: {users: {user_id: user_id, join_date: Date.now()}}},
                         cbk2);
                     },
 
