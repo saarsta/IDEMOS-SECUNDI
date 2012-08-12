@@ -81,7 +81,7 @@ module.exports = function (req, res) {
                         }
                     }
                 }
-
+ 
                 cbk(err, my_or_his_uru_user);
             })
         }
