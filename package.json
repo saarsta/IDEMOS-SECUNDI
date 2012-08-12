@@ -5,7 +5,7 @@
   , "dependencies": {
         "connect":"",
         "express": "",
-        "ejs": "git://github.com/visionmedia/ejs.git",
+        "ejs": "",
         "connect-auth": "",
         "mongoose":"",
         "express-resource": "",
@@ -23,7 +23,6 @@
         "sendgrid": "",
         "facebook-signed-request" : "",
         "request" : "",
-        "sanitizer":"",
         "xml": "",
         "logging": ""
 
