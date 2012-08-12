@@ -3,14 +3,14 @@
   , "version": "0.0.1"
   , "private": true
   , "dependencies": {
-        "connect":"= 1.8.6",
-        "express": "= 2.5.5",
+        "connect":"",
+        "express": "",
         "ejs": ">= 0.0.1",
         "connect-auth": "",
         "mongoose":"",
-        "express-resource": "= 0.2.4",
+        "express-resource": "",
         "jest": ">= 0.1.0",
-        "connect-mongo":"= 0.1.7",
+        "connect-mongo":"",
         "async": "",
 		"jade": "",
         "sji": "",
