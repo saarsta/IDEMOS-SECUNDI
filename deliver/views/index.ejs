@@ -117,6 +117,7 @@
         db_functions.getPopularArticles(3, function (data) {
             $.each(data.objects, function (index, article) {
                 article.is_last = index == data.objects.length - 1;
+                debugger
                 dust.render('article', article, function (err, html) {
                     $('div.blog-box').append(html);
                 });
