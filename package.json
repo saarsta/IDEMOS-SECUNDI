@@ -5,7 +5,7 @@
   , "dependencies": {
         "connect":"",
         "express": "",
-        "ejs": "",
+        "ejs": "git://github.com/visionmedia/ejs.git",
         "connect-auth": "",
         "mongoose":"",
         "express-resource": "",
