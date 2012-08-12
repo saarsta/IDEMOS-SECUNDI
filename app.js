@@ -23,6 +23,11 @@ app.configure('development', function(){
     app.set('facebook_app_name','uru_dev');
     app.set('facebook_secret', '5ef7a37e8a09eca5ee54f6ae56aa003f');
 
+//    app.set('facebook_app_id', '436675376363069');
+//    app.set('facebook_app_name','uru_staging');
+//    app.set('facebook_secret', '975fd0cb4702a7563eca70f11035501a');
+
+
     app.set('show_only_published',false);
 
     app.set('sendgrid_user','app2952775@heroku.com');
@@ -74,6 +79,7 @@ app.configure('staging', function(){
     app.set('public_folder', __dirname + '/deliver/public');
     app.set('public_folder2', __dirname + '/public');
     app.set("port", process.env.PORT);
+
     app.set('facebook_app_id', '436675376363069');
     app.set('facebook_app_name','uru_staging');
     app.set('facebook_secret', '975fd0cb4702a7563eca70f11035501a');

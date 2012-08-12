@@ -48,7 +48,7 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                 join_id: null
             }
             this.default_query = function(query){
-                return query.sort('execution_date','descending');
+                return query.sort({execution_date:'descending'});
             }
         },
 
