@@ -11,7 +11,7 @@ var DiscussionHistoryResource = module.exports =  jest.MongooseResource.extend({
         this.filtering = {discussion_id: null};
         this.authentication = new common.SessionAuthentication();
         this.default_query = function (query) {
-            return query.where.sort({date: 'descending'});
+            return query.where.sort('date', 'descending');
         };
         this.fields = {
             discussion_id: null,

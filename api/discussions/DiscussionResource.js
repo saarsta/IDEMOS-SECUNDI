@@ -41,7 +41,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
         };
         this.authorization = new Authorization();
         this.default_query = function (query) {
-            return query.sort({creation_date:'descending'});
+            return query.sort('creation_date', 'descending');
         },
         this.fields = {
             title:null,

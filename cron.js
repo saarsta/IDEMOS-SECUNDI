@@ -200,7 +200,7 @@ var Cron = exports.Cron = {
             function (cbk) {
                 models.PostOrSuggestion.find().where("gamification.high_number_of_tokens_bonus", false)
                     .where("votes_for").gt(number)
-                    .exec(cbk);
+                    .run(cbk);
             },
 
             function (posts, cbk) {
@@ -225,7 +225,7 @@ var Cron = exports.Cron = {
 
         async.waterfall([
             function (cbk) {
-                models.User.find({path:{$ne:true}},'_id').limit(10000).exec(cbk);
+                models.User.find({path:{$ne:true}},'_id').limit(10000).run(cbk);
             },
 
             function (users, cbk) {
@@ -384,8 +384,7 @@ var Cron = exports.Cron = {
 
         async.waterfall([
             function(cbk){
-                models.Discussion.find({evaluate_counter: {$gt: num_of_max_graders}, "gamification.has_rewarded_creator_for_high_grading_of_min_graders" : false}).sort({grade_sum: -1}).limit(num_of_top_graded)
-                    .exec(cbk);
+                models.Discussion.find({evaluate_counter: {$gt: num_of_max_graders}, "gamification.has_rewarded_creator_for_high_grading_of_min_graders" : false}).sort({grade_sum: -1}).limit(num_of_top_graded).run(cbk);
             },
 
             function(discussions, cbk){
@@ -419,9 +418,9 @@ var Cron = exports.Cron = {
                                                //TODO why the fuck this query doesnt work????????
 //                                            .find({"created_by.did_user_created_this_item": true})
 
-                                             .sort({'like_counter': -1})
+                                             .sort('like_counter', -1)
                                              .limit(num_of_top_liked)
-                                               .exec(cbk);
+                                               .run(cbk);
             },
 
             function(info_items, cbk){

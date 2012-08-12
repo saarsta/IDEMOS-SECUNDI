@@ -21,7 +21,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
         this.authentication = new common.SessionAuthentication();
         this.filtering = {discussion_id:null, is_approved:null};
         this.default_query = function (query) {
-            return query.sort({'creation_date':'descending'}).populate('creator_id');
+            return query.sort('creation_date', 'descending').populate('creator_id');
         };
 
         this.fields = {
@@ -363,7 +363,7 @@ module.exports.approveSuggestion = function(id,callback)
                 //set latest discussionHistory with discussion grade
                 function(cbk1){
                     models.DiscussionHistory.find({dicussion_id: discussion_object._id})
-                        .sort({'date':'descending'})
+                        .sort('date', 'descending')
                         .limit(1)
                         .exec(function(err, histories){
                             if(histories.length){

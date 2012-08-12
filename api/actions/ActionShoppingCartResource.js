@@ -22,7 +22,7 @@ var ActionShoppingCartResource = module.exports = common.GamificationMongooseRes
         this.authorization = new Authorization();
         this.default_query = function(query)
         {
-            return query.where('is_visible',true).sort({creation_date:'descending'});
+            return query.where('is_visible',true).sort('creation_date','descending');
         };
     }
 });

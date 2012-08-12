@@ -339,23 +339,24 @@
          });
 
 
+        if(!isHisUru){
+            var uploader = new qq.FileUploader({
+                element: document.getElementById('upload_image_placeholder'),
+                action: '/api/avatar',
+                debug: false,
+                onProgress: function(id, fileName, loaded, total){
+                    console.log(loaded);console.log(total)},
+                onComplete: function(id, fileName, responseJSON){
+                    $('.img-box img').attr('src',responseJSON.avatar.url);
+                    $('.img-box img').autoscale();
+                },
+                template: '<span><div class="qq-uploader">' +
+                        '<div class="qq-upload-drop-area"><span>Drop files here to upload</span></div>' +
+                        '<div class="qq-upload-button"></div>' +
+                        '<ul class="qq-upload-list"></ul>' +
+                        '</div></span>'
 
-        var uploader = new qq.FileUploader({
-            element: document.getElementById('upload_image_placeholder'),
-            action: '/api/avatar',
-            debug: false,
-            onProgress: function(id, fileName, loaded, total){console.log(loaded);console.log(total)},
-            onComplete: function(id, fileName, responseJSON){
-                $('.img-box img').attr('src',responseJSON.avatar.url);
-                $('.img-box img').autoscale();
-            },
-            template: '<span><div class="qq-uploader">' +
-                    '<div class="qq-upload-drop-area"><span>Drop files here to upload</span></div>' +
-                    '<div class="qq-upload-button"></div>' +
-                    '<ul class="qq-upload-list"></ul>' +
-                    '</div></span>'
-
-            // template for one item in file list
+                // template for one item in file list
 //            fileTemplate: '<li>' +
 //                    '<span class="qq-upload-file"></span>' +
 //                    '<span class="qq-upload-spinner"></span>' +
@@ -364,7 +365,8 @@
 //                    '<span class="qq-upload-failed-text">Failed</span>' +
 //                    '</li>'
 
-        });
+            });
+        }
 
 
         function  redrowToolBar(num_of_extra_tokens,tokens){
