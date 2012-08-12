@@ -318,9 +318,9 @@ module.exports.approveSuggestion = function(id,callback)
 
         async.parallel([
             function(cbk1){
-                if(suggestion_creator != sugg_grade.user_id){
+                if(suggestion_creator != sugg_grade.user_id + ""){
                     notifications.create_user_notification("approved_change_suggestion_you_graded",
-                        discussion_id, suggestion_creator, null, null, cbk1);
+                        discussion_id, sugg_grade.user_id + "", null, null, cbk1);
                 }else{
                     cbk1(null, 0);
                 }
@@ -454,7 +454,7 @@ module.exports.approveSuggestion = function(id,callback)
 
                     async.waterfall([
                         function(wtr_cbk){
-                            models.GradeSuggestion.find({_id: sug_obj._id}, wtr_cbk);
+                            models.GradeSuggestion.find({suggestion_id: sug_obj._id}, wtr_cbk);
                         },
 
                         function(sugg_grades, wtr_cbk){
