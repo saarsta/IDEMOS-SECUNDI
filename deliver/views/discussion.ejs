@@ -940,7 +940,6 @@ $(document).ready(function () {
             part.text += " ";
         var explanation = $("#discussion_explanation").val();
         db_functions.addSuggestionToDiscussion(discussion_id, [part], explanation, function (err, data) {
-            debugger
             if (!err) {
                 $('#write-comment').hide();
                 /*

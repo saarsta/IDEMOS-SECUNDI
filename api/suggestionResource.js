@@ -381,6 +381,9 @@ module.exports.approveSuggestion = function(id,callback)
                     var curr_position = 0;
                     var parts = suggestion_object.parts;
 
+                    //this is to fix null text in vision when the suggestion is to delete text - (261 Bug הצעה ריקה לשינוי עולה בתור null)
+                    if(parts[0].text == null)
+                        parts[0].text = "";
                     vision = vision.replace(/\r/g,'');
 
                     var str = vision.substr(0, Number(parts[0].start)) + parts[0].text + vision.substr(Number(parts[0].end));

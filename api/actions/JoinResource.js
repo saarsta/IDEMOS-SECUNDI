@@ -65,7 +65,9 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
         async.waterfall([
 
             function(cbk){
-                models.Join.findOne({user_id: user_id, action_id: action_id}, cbk);
+                models.Join.findOne({user_id: user_id, action_id: action_id}, function(err, args){
+                    cbk(err, args);
+                });
             },
 
             function(join_obj, cbk){
@@ -88,7 +90,6 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
                             req.gamification_type = "leave_action";
                             callback(err, {is_going: false});
                         }
-
                     })
                 }else{
                     models.Action.findById(action_id, cbk);
