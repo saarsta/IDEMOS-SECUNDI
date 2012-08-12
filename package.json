@@ -9,7 +9,7 @@
         "connect-auth": "",
         "mongoose":"",
         "express-resource": "",
-        "jest": "https://github.com/Empeeric/jest.git",
+        "jest": "git://github.com:Empeeric/jest.git",
         "connect-mongo":"",
         "async": "",
 		"jade": "",
