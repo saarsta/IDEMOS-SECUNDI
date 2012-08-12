@@ -27,6 +27,7 @@ var HeadlineResource = module.exports = common.GamificationMongooseResource.exte
                 type: null,
                 text_field: null,
                 image_field: null,
+                link: null,
                 tags: null,
                 cycles: null,
                 actions: null,
