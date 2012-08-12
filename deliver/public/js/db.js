@@ -146,12 +146,12 @@ var db_functions = {
     },
     ///////--------------------------------------/////////
 
-    getUserAfterFbConnect: function(fb_id, access_token, callback){
+    getUserAfterFbConnect: function(access_token, callback){
             this.loggedInAjax({
                 url: '/api/fb_connect',
                 type: "POST",
                 async: true,
-                data: {fb_id: fb_id, access_token: access_token},
+                data: {access_token: access_token},
 
                 success: function (data) {
                     callback(null, data);

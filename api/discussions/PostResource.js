@@ -12,7 +12,7 @@ var resources = require('jest'),
     common = require('../common.js'),
     async = require('async'),
     _ = require('underscore'),
-    sanitizer = require('sanitizer'),
+ //   sanitizer = require('sanitizer'),
     notifications = require('../notifications.js');
 
 var PostResource = module.exports = common.GamificationMongooseResource.extend({
@@ -24,7 +24,7 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
         this.authentication = new common.SessionAuthentication();
         this.filtering = {discussion_id:null};
         this.default_query = function (query) {
-            return query.sort('creation_date', 'ascending');
+            return query.sort({creation_date:'ascending'});
         };
         this.fields = {
             creator_id : common.user_public_fields,
@@ -43,7 +43,7 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
             is_user_follower: null
         };
 //    this.validation = new resources.Validation();=
-        this.default_limit = 3;
+        this.default_limit = 50;
     },
 
     run_query: function(req,query,callback)
@@ -270,7 +270,7 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                 og_action({
                     action: 'comment',
                     object_name:'discussion',
-                    object_url : '/discussions/' + discussion_id + '?hash_post_' + post_id,
+                    object_url : '/discussions/' + discussion_id + '/post/' + post_id,
                     fid : user.facebook_id,
                     access_token:user.access_token,
                     user:user
