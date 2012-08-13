@@ -269,7 +269,8 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                 og_action({
                     action: 'comment',
                     object_name:'discussion',
-                    object_url : '/discussions/' + discussion_id + '/post/' + post_id,
+                    object_url : '/discussions/' + discussion_id,
+                    callback_url:'/discussions/' + discussion_id + '/posts/' + post_id,
                     fid : user.facebook_id,
                     access_token:user.access_token,
                     user:user
