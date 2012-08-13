@@ -37,7 +37,7 @@
     <div id="peoplearea">
 
         <div class="video-box">
-            <img class="youtube_img" width="364" height="204" src="/images/URU_hp_vid_img.png"/>
+            <img class="youtube_img" width="364" height="204" src="/images/elections/youtube.png"/>
 
             <div class="button_ellection"></div>
         </div>
@@ -82,29 +82,26 @@
     </div>
     <div class="greenbutton-container">
         <div class="greenbutton">
-            <a href="/account/register"><img src="/images/greenbotton.png" alt="תנועת עורו - המצטרף עכשיו"/></a>
+            <a href="#main-thing"><img src="/images/elections/greenbotton.png" alt="תנועת עורו - המצטרף עכשיו"/></a>
 
-		<span>
-		<a href="/elections">
-            <img src="/images/read-more.png"/>
-        </a>
-
-		</span>
+		<!--span>
+			<a href="/elections">
+				<img src="/images/read-more.png"/>
+			</a>
+		</span-->
 
         </div>
     </div>
 </div>
 
-
+<%-partial('partials/election_form.ejs')%>
 
 <div id="footer">
-
-
     <div class="extra cf">
-	<div class="one-co0">
-            <h4>אודות עורו</h4>
+		<div class="one-co0">
+			<h4>אודות עורו</h4>
 			<img class="video_img" width="248" height="159" src="images/video-small.png"/>
-        </div>
+		</div>
 
 <script type="text/javascript">
 $(".one-co0").on('click', function(){

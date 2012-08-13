@@ -1,0 +1,106 @@
+<div id="main-thing">
+	<div class="main-thing-in">
+		<div class="what"></div>
+
+		<ul id="display-inline-block-example">
+			<li class="uru1">
+				<div class="intext-top"><p><strong>חינוך טוב יותר</strong><br>תוגדל ההשקעה בתגמול והכשרת מורים ובכיתות קטנות</p></div><div class="intext-top-b"><p id="select" class="checkBox"></p></div>
+				<div class="intext-bottom"><p><strong>שיוויון הזדמנויות לכל ילד</strong><br>סל תלמיד אחיד וחובת לימוד ליבה לכל</p></div><div class="intext-bottom-b"><p id="select" class="checkBox"></p></div>
+			</li>
+			<li class="uru2">
+				<div class="intext-top"><p><strong>חיזוק דעת הרוב</strong><br>יועלה אחוז החסימה בבחירות הכלליות לכנסת</p></div><div class="intext-top-b"><p id="select" class="checkBox"></p></div>
+				<div class="intext-bottom"><p><strong>יוגבל גודל הממשל</strong><br>עד 18 שעים ו-6 סגני שרים, לחיסכון תקציבי וחיזוק הכנסת</p></div><div class="intext-bottom-b"><p id="select" class="checkBox"></p></div>
+			</li>
+			<li class="uru3">
+				<div class="intext-top"><p><strong>הפחתת יוקר המחיה</strong><br>יופחתו עמלות וריביות הבנקים ללקוחות ועסקים קטנים</p></div><div class="intext-top-b"><p id="select" class="checkBox"></p></div>
+				<div class="intext-bottom"><p><strong>הוזלת הדיור</strong><br>אישור בנייה לפרוייקטים גדולים יותנה בהקצאה לדיור בר-השגה</p></div><div class="intext-bottom-b"><p id="select" class="checkBox"></p></div>
+			</li>
+			<li class="uru4">
+				<div class="intext-top"><p><strong>גיוס לכל</strong><br>תיקבע חובה אחידה של שירות צבאי או אזרחי בגיל 18 לכלל האזרחים</p></div><div class="intext-top-b"><p id="select" class="checkBox"></p></div>
+				<div class="intext-bottom"><p><strong>תגמול הולם</strong><br>יינתן תגמול גבוהה יותר למשרתים ויוגבלו הקצבות לפטורים משירות</p></div><div class="intext-bottom-b"><p id="select" class="checkBox"></p></div>
+			</li>
+			<li class="uru5">
+				<div class="intext-top"><p><strong>שיפור תנאים</strong><br>יאכפו חוקי העבודה על כלל העובדים, לרבות עובדי קבלן וזרים</p></div><div class="intext-top-b"><p id="select" class="checkBox"></p></div>
+				<div class="intext-bottom"><p><strong>בריאות נגישה</strong><br>יועלה משמעותית מספר מיטות האשפוז והסגל בבתי החולים</p></div><div class="intext-bottom-b"><p id="select" class="checkBox"></p></div>
+			</li>
+			<li class="uru6">
+				<div class="intext-top"><p><strong>אנרגיה ממקורות מתחדשים</strong><br>יוסרו חסמים בירוקרטיים מעכבים ויוקודם השימוש</p></div><div class="intext-top-b"><p id="select" class="checkBox"></p></div>
+				<div class="intext-bottom"><p><strong>משאבי טבע לכל</strong><br>תוקם קרן ניהול הכנסות מדינה מגז ונפט לטובת הדורות הבאים</p></div><div class="intext-bottom-b"><p id="select" class="checkBox"></p></div>
+			</li>
+			<li class="uru7">
+				<div class="intext-top"><p><strong>מאבק בעבריינות</strong><br>תוחמר האכיפה ומדיניות הענישה על עבירות גוף ורכוש</p></div><div class="intext-top-b"><p id="select" class="checkBox"></p></div>
+				<div class="intext-bottom"><p><strong>יותר שוטרים ברחוב</strong><br>יועלו משמעותית מספר השוטרים, תגמולם והכשרתם</p></div><div class="intext-bottom-b"><p id="select" class="checkBox"></p></div>
+			</li>
+			<li class="uru8">
+				<div class="intext-top"><p><strong>העלה הצעה משלך</strong> (אופציונלי):</p><div class="intext-top-last"><p id="select" class="checkBox"></p></div></div>
+
+				<div class="select-z">
+					<select id="styledSelect" class="blueText">
+					<option value="yourMom"></option>
+						<option value="yourMom">נושא 1</option>
+						<option value="myMom">נושא 2</option>
+						<option value="myMom">נושא 3</option>
+					</select>
+				</div>
+
+				<textarea class="placeholder" id="textarea" cols="48" rows="3">הכניסו תיאור</textarea>
+
+				<div class="intext-bottom"></div>
+			</li>
+		</ul>
+	</div>
+	<div class="down-text">
+		<p>
+			המצביעים מצטרפים לעורו ומוזמנים להשתתף בדיונים המתנהלים באתר סביב ההצעות.
+		</p>
+	</div>
+</div>
+
+<div class="vote-container<%if(!user_logged){%>-non-reg<%}%>">
+	<div class="reg-container">
+		<div class="rightone">
+			<p>התחברו לעורו באמצעות</p>
+			<a href="#"><img src="/images/elections/connectwith.png" alt="התחבר לעורו"></a>
+		</div>
+		<div class="leftone">
+			<form>
+				<label id="id1"><input onfocus="this.value=''" class="design2" size="22" value="שם + שם משפחה" name="textfield" type="text"></label>
+				<label><input onfocus="this.value=''" class="design2" size="22" value="כתובת מייל" name="textfield" type="text"></label>
+			</form>
+		</div>
+	</div>
+	<div class="inarea">
+		<a href="#"><img src="/images/elections/vote-now.png" alt="שלח הצבעה-תנועת עורו"></a>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(function() {
+	$('#display-inline-block-example').on('click', '.checkBox,.checkBoxClear', function() {
+		var $this = $(this);
+
+		if ($this.hasClass('checkBox') && $('#display-inline-block-example .checkBoxClear').length === 5) {
+			popupProvider.showOkPopup({message: 'באפשרותך לבחור עד 5 הצעות.'});
+		} else {
+			$this.toggleClass('checkBox checkBoxClear');
+		}
+	});
+
+	$('#textarea').on('focus blur', function(e) {
+		var $this = $(this);
+
+		switch (e.type) {
+		case 'focus':
+			if ($this.hasClass('placeholder')) {
+				$this.data('placeholder', $this.val()).removeClass('placeholder').val('');
+			}
+			break;
+		case 'blur':
+			if ($this.val().replace(/^\s+$/, '') === '') {
+				$this.addClass('placeholder').val($this.data('placeholder'));
+			}
+			break;
+		}
+	});
+});
+</script>
