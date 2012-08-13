@@ -2,16 +2,16 @@
 
 <html>
 <head>
-    <%- partial('partials/head.ejs') %>
+    <% include partials/head.ejs %>
 </head>
 <body
 <%if(!user_logged){%>class="big-head"<%}%>>
-<%- partial('partials/body_top.ejs') %>
+<% include partials/body_top.ejs %>
 <div id="wrap">
     <div id="header">
-        <%-partial('partials/menu.ejs')%>
-        <%-partial('partials/user_box.ejs')%>
-        <%-partial('partials/failures.ejs')%>
+        <% include partials/menu.ejs %>
+        <% include partials/user_box.ejs %>
+        <% include partials/failures.ejs %>
         <%if(!user_logged){%>
         <div class="main-video">
             <div class="video-box">
@@ -23,7 +23,7 @@
             <a class="btn" href="/account/register">הצטרפו והתחילו להשפיע!</a>
         </div>
         <%}%>
-        <%- partial('partials/tag_search.ejs') %>
+        <% include partials/tag_search.ejs %>
     </div>
     <div id="content" class="cf">
         <div class="right-col">
@@ -61,7 +61,7 @@
         </div>
     </div>
 </div>
-<%- partial('partials/footer.ejs') %>
+<% include partials/footer.ejs %>
 </body>
 </html>
 
