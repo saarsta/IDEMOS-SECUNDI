@@ -3,14 +3,14 @@
   , "version": "0.0.1"
   , "private": true
   , "dependencies": {
-        "connect":"= 1.8.6",
-        "express": "= 2.5.5",
-        "ejs": ">= 0.0.1",
+        "connect":"",
+        "express": "",
+        "ejs": "",
         "connect-auth": "",
-        "mongoose":"< 3.0",
-        "express-resource": "= 0.2.4",
-        "jest": ">= 0.1.0",
-        "connect-mongo":"= 0.1.7",
+        "mongoose":"",
+        "express-resource": "",
+        "jest": ">= 0.1.22",
+        "connect-mongo":"",
         "async": "",
 		"jade": "",
         "sji": "",
@@ -21,10 +21,8 @@
         "knox":"< 0.1.0",
         "dustjs-linkedin":"",
         "sendgrid": "",
-        "sendgrid-nodejs": "",
         "facebook-signed-request" : "",
         "request" : "",
-        "sanitizer":"",
         "xml": "",
         "logging": ""
 

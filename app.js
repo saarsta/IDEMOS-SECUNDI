@@ -4,12 +4,12 @@
  */
 var express = require('express'),
     mongoose = require('mongoose'),
-    MongoStore  = require('connect-mongo'),
+    MongoStore  = require('connect-mongo')(express),
     async = require('async'),
     utils = require('./utils'),
     auth = require("connect-auth");
 
-var app = module.exports = express.createServer();
+var app = module.exports = express();
 
 
 app.configure('development', function(){
@@ -129,7 +129,8 @@ app.configure('production', function(){
 });
 
 
-mongoose.connect(app.settings.DB_URL);
+if(!mongoose.connection.host)
+    mongoose.connect(app.settings.DB_URL);
 
 var models = require('./models');
 models.setDefaultPublish(app.settings.show_only_published);
@@ -205,6 +206,26 @@ app.configure(function(){
     app.use(express.methodOverride());
     app.use(app.router);
 
+    app.locals({
+        footer_links:function() { return mongoose.model('FooterLink').getFooterLinks(); },
+        cleanHtml:function(html) { return html.replace(/<[^>]*?>/g,'').replace(/\[[^\]]*?]/g,'');}
+    });
+
+
+    app.use( function(req,res,next) {
+        _.extend(res.locals,{
+            tag_name: function(req,res) { return req.query.tag_name; },
+            logged: function(req,res) { return req.isAuthenticated && req.isAuthenticated(); },
+            user_logged:function(req,res) { return  req.isAuthenticated && req.isAuthenticated(); },
+            user: function(req,res) { return req.session && req.session.user; },
+            avatar: function(req,res) { return req.session && req.session.avatar_url; },
+            url:function(req,res) { return req.url; }
+        });
+
+        next();
+    });
+
+
 });
 
 //if(app.settings.env != 'production')
@@ -233,20 +254,8 @@ async.waterfall([
             console.trace();
         }
         else {
-            app.helpers({
-                footer_links:function() { return mongoose.model('FooterLink').getFooterLinks(); },
-                cleanHtml:function(html) { return html.replace(/<[^>]*?>/g,'').replace(/\[[^\]]*?]/g,'');}
-            });
-            app.dynamicHelpers({
-                tag_name: function(req,res) { return req.query.tag_name; },
-                logged: function(req,res) { return req.isAuthenticated && req.isAuthenticated(); },
-                user_logged:function(req,res) { return  req.isAuthenticated && req.isAuthenticated(); },
-                user: function(req,res) { return req.session && req.session.user; },
-                avatar: function(req,res) { return req.session && req.session.avatar_url; },
-                url:function(req,res) { return req.url; }
-            });
             app.listen(app.settings.port);
-            console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+            console.log("Express server listening on port %d in %s mode", app.settings.PORT, app.settings.env);
         }
     }
 );

@@ -69,24 +69,24 @@ function getSortedPostsByNumberOfDiscussions(discussions, callback)
             break;
         case 1:
             models.Post.find({discussion_id: discussions[0]._id})
-            .sort('popularity', 'descending')
-            .select([
-                '_id',
-                'creator_id',
-                'total_votes',
-                'votes_for',
-                'votes_against',
-                'discussion_id',
-                'text'
-                ])
-            .populate('creator_id', [
-                '_id',
-                'first_name',
-                'last_name',
-                'avatar_url',
-                'score',
-                'num_of_proxies_i_represent'
-                ])
+            .sort({popularity:'descending'})
+            .select({
+                    '_id':1,
+                'creator_id':1,
+                'total_votes':1,
+                'votes_for':1,
+                'votes_against':1,
+                'discussion_id':1,
+                'text':1
+                })
+            .populate('creator_id', {
+                '_id':1,
+                'first_name':1,
+                'last_name':1,
+                'avatar_url':1,
+                'score':1,
+                'num_of_proxies_i_represent':1
+                })
             .limit(3)
             .exec(function(err, posts){
                 if(posts)
@@ -102,24 +102,24 @@ function getSortedPostsByNumberOfDiscussions(discussions, callback)
             async.parallel([
                 function(cbk){
                     models.Post.find({discussion_id: discussions[0]._id})
-                        .sort('popularity', 'descending')
-                        .select([
-                        '_id',
-                        'creator_id',
-                        'total_votes',
-                        'votes_for',
-                        'votes_against',
-                        'discussion_id',
-                        'text'
-                    ])
-                        .populate('creator_id', [
-                        '_id',
-                        'first_name',
-                        'last_name',
-                        'avatar_url',
-                        'score',
-                        'num_of_proxies_i_represent'
-                    ])
+                        .sort({popularity:'descending'})
+                        .select({
+                        '_id':1,
+                        'creator_id':1,
+                        'total_votes':1,
+                        'votes_for':1,
+                        'votes_against':1,
+                        'discussion_id':1,
+                        'text':1
+                        })
+                        .populate('creator_id', {
+                        '_id':1,
+                        'first_name':1,
+                        'last_name':1,
+                        'avatar_url':1,
+                        'score':1,
+                        'num_of_proxies_i_represent':1
+                        })
                         .limit(2)
                         .exec(function(err, posts){
                             if(posts)
@@ -130,24 +130,24 @@ function getSortedPostsByNumberOfDiscussions(discussions, callback)
 
                 function(cbk){
                     models.Post.find({discussion_id: discussions[1]._id})
-                        .sort('popularity', 'descending')
-                        .select([
-                        '_id',
-                        'creator_id',
-                        'total_votes',
-                        'votes_for',
-                        'votes_against',
-                        'discussion_id',
-                        'text'
-                    ])
-                        .populate('creator_id', [
-                        '_id',
-                        'first_name',
-                        'last_name',
-                        'avatar_url',
-                        'score',
-                        'num_of_proxies_i_represent'
-                    ])
+                        .sort({'popularity': 'descending'})
+                        .select({
+                        '_id':1,
+                        'creator_id':1,
+                        'total_votes':1,
+                        'votes_for':1,
+                        'votes_against':1,
+                        'discussion_id':1,
+                        'text':1
+                        })
+                        .populate('creator_id', {
+                        '_id':1,
+                        'first_name':1,
+                        'last_name':1,
+                        'avatar_url':1,
+                        'score':1,
+                        'num_of_proxies_i_represent':1
+                        })
                         .limit(1)
                         .exec(function(err, posts){
                             if(posts)
@@ -169,24 +169,24 @@ function getSortedPostsByNumberOfDiscussions(discussions, callback)
             async.parallel([
                 function(cbk){
                     models.Post.find({discussion_id: discussions[0]._id})
-                        .sort('popularity', 'descending')
-                        .select([
-                        '_id',
-                        'creator_id',
-                        'total_votes',
-                        'votes_for',
-                        'votes_against',
-                        'discussion_id',
-                        'text'
-                    ])
-                        .populate('creator_id', [
-                        '_id',
-                        'first_name',
-                        'last_name',
-                        'avatar_url',
-                        'score',
-                        'num_of_proxies_i_represent'
-                    ])
+                        .sort({popularity: 'descending'})
+                        .select({
+                        '_id':1,
+                        'creator_id':1,
+                        'total_votes':1,
+                        'votes_for':1,
+                        'votes_against':1,
+                        'discussion_id':1,
+                        'text':1
+                        })
+                        .populate('creator_id', {
+                        '_id':1,
+                        'first_name':1,
+                        'last_name':1,
+                        'avatar_url':1,
+                        'score':1,
+                        'num_of_proxies_i_represent':1
+                        })
                         .limit(1)
                         .exec(function(err, posts){
                             if(posts)
@@ -197,24 +197,24 @@ function getSortedPostsByNumberOfDiscussions(discussions, callback)
 
                 function(cbk){
                     models.Post.find({discussion_id: discussions[1]._id})
-                        .sort('popularity', 'descending')
-                        .select([
-                        '_id',
-                        'creator_id',
-                        'total_votes',
-                        'votes_for',
-                        'votes_against',
-                        'discussion_id',
-                        'text'
-                    ])
-                        .populate('creator_id', [
-                        '_id',
-                        'first_name',
-                        'last_name',
-                        'avatar_url',
-                        'score',
-                        'num_of_proxies_i_represent'
-                    ])
+                        .sort({popularity: 'descending'})
+                        .select({
+                        '_id':1,
+                        'creator_id':1,
+                        'total_votes':1,
+                        'votes_for':1,
+                        'votes_against':1,
+                        'discussion_id':1,
+                        'text':1
+                        })
+                        .populate('creator_id', {
+                        '_id':1,
+                        'first_name':1,
+                        'last_name':1,
+                        'avatar_url':1,
+                        'score':1,
+                        'num_of_proxies_i_represent':1
+                        })
                         .limit(1)
                         .exec(function(err, posts){
                             if(posts)
@@ -225,24 +225,24 @@ function getSortedPostsByNumberOfDiscussions(discussions, callback)
 
                 function(cbk){
                     models.Post.find({discussion_id: discussions[2]._id})
-                        .sort('popularity', 'descending')
-                        .select([
-                        '_id',
-                        'creator_id',
-                        'total_votes',
-                        'votes_for',
-                        'votes_against',
-                        'discussion_id',
-                        'text'
-                    ])
-                        .populate('creator_id', [
-                        '_id',
-                        'first_name',
-                        'last_name',
-                        'avatar_url',
-                        'score',
-                        'num_of_proxies_i_represent'
-                    ])
+                        .sort({popularity: 'descending'})
+                        .select({
+                        '_id':1,
+                        'creator_id':1,
+                        'total_votes':1,
+                        'votes_for':1,
+                        'votes_against':1,
+                        'discussion_id':1,
+                        'text':1
+                        })
+                        .populate('creator_id', {
+                        '_id':1,
+                        'first_name':1,
+                        'last_name':1,
+                        'avatar_url':1,
+                        'score':1,
+                        'num_of_proxies_i_represent':1
+                        })
                         .limit(1)
                         .exec(function(err, posts){
                             if(posts)

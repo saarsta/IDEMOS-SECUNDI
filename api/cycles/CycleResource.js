@@ -103,7 +103,7 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
             if(object){
                 object.is_follower = false;
                 object.discussion = object.discussions[0]; //for now we have only one discussion for cycle
-                models.User.find({"cycles.cycle_id": id}, ["_id", "username", "email", "first_name", "avatar", "facebook_id", "cycles"], function(err, objs){
+                models.User.find({"cycles.cycle_id": id}, {"_id":1, "username":1, "email":1, "first_name":1, "avatar":1, "facebook_id":1, "cycles":1}, function(err, objs){
                     var followers_users = [];
                     if(!err){
                         object.followers_users = _.map(objs, function(user){

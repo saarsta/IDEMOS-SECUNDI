@@ -20,7 +20,7 @@ var mongoose_resource = require('jest'),
     GradeSuggestionResource = require('./GradeSuggestionResource'),
     GradeActionResource = require('./GradeActionResource'),
     LikeResource = require('./LikeResource'),
-    JoinResource = require('./actions/JoinResource.js'),
+    JoinResource = require('./actions/JoinResource'),
     CategoryResource = require('./CategoryResource'),
     SuggestionResource = require('./suggestionResource.js'),
     ActionResourceResource = require('./actions/ActionResourceResource.js'),
@@ -80,7 +80,7 @@ module.exports = function(app)
     rest_api.register_resource('grades_suggestion', new GradeSuggestionResource());
     rest_api.register_resource('grades_action', new GradeActionResource());
     rest_api.register_resource('likes', new LikeResource());
-    rest_api.register_resource('joins', new JoinResource());
+    rest_api.register_resource('join', new JoinResource());
     rest_api.register_resource('suggestions', new SuggestionResource());
     rest_api.register_resource('categories', new CategoryResource());
     rest_api.register_resource('action_resources', new ActionResourceResource());
@@ -107,6 +107,5 @@ module.exports = function(app)
     rest_api.register_resource('fb_request', new FBRequestResource());
     rest_api.register('image_upload',new ImageUploadResource());
     rest_api.register('og_action', new OGActionResource());
-
     rest_api.register('avatar',new AvatarResource());
 };

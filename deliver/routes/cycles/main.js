@@ -55,7 +55,7 @@ module.exports = function(req, res){
                      cycle.subject = cycle.subject[0];
                 _.each(cycle.opinion_shapers, function(opinion_shaper){ opinion_shaper.avata_url = opinion_shaper.avatar_url()});
                 g_cycle = cycle;
-                models.User.find({"cycles.cycle_id": cycle._id}, ["_id", "cycles"], cbk);
+                models.User.find({"cycles.cycle_id": cycle._id}, {"_id":1, "cycles":1}, cbk);
             }
         },
 

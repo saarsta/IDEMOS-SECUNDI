@@ -15,7 +15,7 @@ module.exports = function (req, res) {
 //                    console.log(article.text)/* = (article.text).replace(/(<([^>]+?)>)/ig,"")*/;
 //                })
 
-                models.BlogTag.find({user_id: req.params[0]}, ['tag'])
+                models.BlogTag.find({user_id: req.params[0]}, {'tag':1})
                     .sort('popularity','descending')
                     .exec(function(err, tags){
                         if (err)

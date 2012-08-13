@@ -278,7 +278,7 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
                             //calculate all change suggestion all over again
                             function(cbk1){
                                 discussion_thresh = Number(discussion_obj.admin_threshold_for_accepting_change_suggestions) || discussion_obj.threshold_for_accepting_change_suggestions;
-                                models.Suggestion.find({discussion_id: grade_object.discussion_id}, ["_id"], function(err, results)
+                                models.Suggestion.find({discussion_id: grade_object.discussion_id}, {"_id":1}, function(err, results)
                                 {
                                     cbk1(err, results);
                                 });
@@ -312,7 +312,7 @@ function calculateDiscussionGrade(discussion_id, callback){
     var threshold;
     async.waterfall([
         function(cbk){
-            models.Grade.find({discussion_id: discussion_id}, ["evaluation_grade", "proxy_power"], cbk);
+            models.Grade.find({discussion_id: discussion_id}, {"evaluation_grade":1, "proxy_power":1}, cbk);
         },
 
         function(grades, cbk){
