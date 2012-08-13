@@ -583,6 +583,7 @@ var db_functions = {
     },
 
 
+
     getPopularPostByCycle: function(discussion_id, sort_by,offset, callback){
         db_functions.loggedInAjax({
             url: '/api/posts?discussion_id=' + discussion_id + "&order_by=" + sort_by + '&offset=' + offset,
@@ -1052,6 +1053,21 @@ var db_functions = {
             },
             error:function(err){
                 callback(err);
+            }
+        });
+    },
+
+    getSortedPostByAction: function(action_id, sort_by,offset, callback){
+        db_functions.loggedInAjax({
+            url: '/api/posts_of_action?action_id=' + action_id + "&order_by=" + sort_by + '&offset=' + offset,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log("posts are" + " " + data);
+                callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
             }
         });
     },
