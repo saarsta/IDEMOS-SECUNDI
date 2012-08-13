@@ -146,12 +146,12 @@ var db_functions = {
     },
     ///////--------------------------------------/////////
 
-    getUserAfterFbConnect: function(fb_id, access_token, callback){
+    getUserAfterFbConnect: function(access_token, callback){
             this.loggedInAjax({
                 url: '/api/fb_connect',
                 type: "POST",
                 async: true,
-                data: {fb_id: fb_id, access_token: access_token},
+                data: {access_token: access_token},
 
                 success: function (data) {
                     callback(null, data);
@@ -915,10 +915,7 @@ var db_functions = {
             url: '/api/updates/?cycles=' + cycle_id,
             type: "GET",
             async: true,
-            success: function (err, data) {
-
-
-
+            success: function (data,err ) {
                 callback(err, data);
             },
             error: function(err, data){
@@ -932,8 +929,8 @@ var db_functions = {
             url: '/api/cycles_shopping_cart?cycle_id=' + cycle_id,
             type: "GET",
             async: true,
-            success: function (err, data) {
-                callback(null, data);
+            success: function (data, err) {
+                callback(err, data);
             },
 
             error:function(err){
@@ -957,25 +954,32 @@ var db_functions = {
         });
     },
 
-    getCylceFollowers: function(cycle_id, callback){
+    getCylceFollowers: function(cycle_id, page, callback){
         db_functions.loggedInAjax({
-            url: '/api/users?cycles.cycle_id=' + cycle_id,
+            url: '/api/users?cycles.cycle_id=' + cycle_id + '&limit=3&offset=' + (page*14),
             type: "GET",
             async: true,
             success: function (data) {
-                data.objects = _.map(data.objects/*followers*/, function(follower){
-                    var curr_cycle =  _.find(follower.cycles, function(cycle){
-                        return cycle.cycle_id + "" == cycle_id;
-                    });
+                data.objects = $.map(data.objects/*followers*/, function(follower){
+                    var curr_cycle;
+                    for(var i=0; i < follower.cycles.length; i++){
+                        if (follower.cycles[i].cycle_id == cycle_id)
+                            curr_cycle = follower.cycles[i];
+
+                    }
+//                    var curr_cycle =  $.find(follower.cycles, function(cycle){
+//                        return cycle.cycle_id == cycle_id;
+//                    });
 
                     return {
-                        follower: {
-                            _id: follower._id,
+
+                            _id: follower.id,
                             first_name: follower.first_name,
                             last_name: follower.last_name,
-                            avatar_url: follower.avatar_url()
-                        },
-                        join_date: curr_cycle.join_date
+                            avatar_url: follower.avatar_url,
+                            join_date: curr_cycle.join_date
+
+
                     }
                 })
                 callback(null, data);
@@ -1019,6 +1023,23 @@ var db_functions = {
             }
         });
     },
+
+    getActionGoing: function(action_id, callback){
+        db_functions.loggedInAjax({
+            url: '/api/join/?action_id=' + action_id,
+            type: "GET",
+
+            async: true,
+            success: function (err, data) {
+                callback(null, data);
+            },
+
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },
+
 
     getPostByAction: function(action_id, callback){
         db_functions.loggedInAjax({

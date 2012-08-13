@@ -21,7 +21,9 @@ var ArticleResource = common.GamificationMongooseResource.extend({
 //        this.update_fields = ["comments", "popolarity_counter", "title", "text", "tags"];
         this.fields = {
             _id: null,
+            image_field: null,
             tooltip_or_title:null,
+            image_field_preview: null,
             title:null,
             text: null,
             time: null,

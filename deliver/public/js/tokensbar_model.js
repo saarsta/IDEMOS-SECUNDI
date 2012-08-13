@@ -2,6 +2,7 @@ var TokensBarModel =function (tokenPixels, numExtraTokens, tokens, proxies) {
        var HIGH_BAR_VALUE=15;
        var USER_DAILY_TOKENS=9;
       var self= this;
+
         function calcTotalProxy(proxies){
             var sum= 0;
             var proc,i;
@@ -32,7 +33,10 @@ var TokensBarModel =function (tokenPixels, numExtraTokens, tokens, proxies) {
 
                     })
                 }else{
+                    if(!proc.user_id)
+                        proc.user_id = {};
                     proxy.proxies.push(  {
+
                         name:proc.user_id.first_name+' '+ proc.user_id.last_name,
                         proxy:proc.number_of_tokens,
                         _id:proc. user_id._id ,

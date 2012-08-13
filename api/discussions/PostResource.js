@@ -43,7 +43,7 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
             is_user_follower: null
         };
 //    this.validation = new resources.Validation();=
-        this.default_limit = 3;
+        this.default_limit = 50;
     },
 
     run_query: function(req,query,callback)
@@ -209,7 +209,7 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
 
                         //add user that connected somehow to discussion
                         models.Discussion.update({_id:object.discussion_id, "users.user_id": {$ne: user_id}},
-                            {$addToSet: {users: {user_id: user_id, join_date: Date.now}}}, cbk2);
+                            {$addToSet: {users: {user_id: user_id, join_date: Date.now()}}}, cbk2);
                     },
 
                     //add notification for the dicussion's connected people or creator

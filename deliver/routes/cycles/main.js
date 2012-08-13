@@ -87,16 +87,16 @@ module.exports = function(req, res){
 
 
        //final - render the cycle page
-    ], function(err, cycle){
+    ], function(err, g_cycle){
         if(err)
             res.render('500.ejs',{error:err});
         else {
-
-                cycle.subject_name = cycle.main_subject.name;
-                res.render('cycle.ejs',{
-                    cycle: g_cycle,
-                    tab:'cycles'
-                });
+            if(g_cycle && g_cycle.subject_name)
+                g_cycle.subject_name = g_cycle.main_subject.name;
+            res.render('cycle.ejs',{
+                cycle: g_cycle,
+                tab:'cycles'
+            });
         }
     })
 };

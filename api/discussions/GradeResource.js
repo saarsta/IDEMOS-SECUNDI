@@ -159,7 +159,7 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
                     // 3) find suggestion object
                     //calculate all change suggestion all over again and check if they approved
                     function(threshold, cbk){
-                        models.Suggestion.find({discussion_id: grade_object.discussion_id}, ["_id"], function(err, results)
+                        models.Suggestion.find({discussion_id: grade_object.discussion_id}, {"_id":1}, function(err, results)
                         {
                             cbk(err, results);
                         });

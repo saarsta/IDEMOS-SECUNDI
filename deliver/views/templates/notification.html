@@ -20,20 +20,22 @@
     </div>
 {:else}
     <div class="one cf">
-        <div class="right-image">
-            <div class="img-box">
-                <img src="{?pic.url}{pic.url}{:else}{pic}{/pic.url}" alt=""/>
-                <img class="shadow" src="" alt=""/>
+        <div class="link_to_resource" data-link="{link}">
+            <div class="right-image">
+                <div class="img-box">
+                    <img src="{?pic.url}{pic.url}{:else}{pic}{/pic.url}" alt=""/>
+                    <img class="shadow" src="" alt=""/>
+                </div>
             </div>
+            <p>
+                <strong>
+                    {description_of_notificators} {message_of_notificators}
+                </strong>
+               {?name}{name}{/name}
+            </p>
+            <div class="date">{update_date|time}</div>
         </div>
-        <p>
-            <strong>
-                {description_of_notificators} {message_of_notificators}
-            </strong>
-            <a href="{link}">{?name}{name}{/name}</a>
-        </p>
-        <div class="date">{update_date|time}</div>
-        <a class="btn share" data-img_src="{img_src.url}" data-text_preview="{text_preview}" data-title="{title}" rel="{link|uc}" href="/facebookShare?link={link|uc}">שתף</a>
+            <a class="btn share" data-img_src="{img_src.url}" data-text_preview="{text_preview}" data-title="{title}" rel="{link|uc}" href="/facebookShare?link={link|uc}">שתף</a>
     </div>
 {/html_version}
 
