@@ -2,16 +2,16 @@
 
 <html>
 <head>
-    <%- partial('partials/head.ejs') %>
+    <% include partials/head.ejs %>
 </head>
 <body>
-<%- partial('partials/body_top.ejs') %>
+<% include partials/body_top.ejs %>
 <div id="wrap">
 <div id="header">
-    <%-partial('partials/menu.ejs')%>
-    <%-partial('partials/user_box.ejs')%>
-    <%-partial('partials/failures.ejs')%>
-    <%- partial('partials/tag_search.ejs') %>
+    <% include partials/menu.ejs %>
+    <% include partials/user_box.ejs %>
+    <% include partials/failures.ejs %>
+    <% include partials/tag_search.ejs %>
 </div>
 <div id="content" class="cf">
     <div class="services-box cf">
@@ -22,7 +22,7 @@
         <div class="services-green">
             <span class="empty"></span>
             <a href="javascript:void(0)" class="service-8 gray_and_soon"><span class="text">הוסף פריט מידע</span><span class="icon"></span></a>
-            <a href="javascript:void(0)" class="service-9"><span class="text">
+            <a href="javascript:void(0)" class="service-9 gray_and_soon"><span class="text">
                 לעגלת המידע
             </span><span class="icon"></span></a>
             <a href="" id="uru_subject_button" class="service-10"><span class="text">
@@ -41,7 +41,7 @@
     </div>
 </div>
 </div>
-<%- partial('partials/footer.ejs') %>
+<% include partials/footer.ejs %>
 </body>
 </html>
 <script type="text/javascript">

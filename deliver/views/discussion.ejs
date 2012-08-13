@@ -4,7 +4,7 @@ var error_message = error_message || '';
 %>
 <html>
 <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# <%= settings.facebook_app_name %>: http://ogp.me/ns/fb/<%= settings.facebook_app_name %>#">
-    <%- partial('partials/head.ejs') %>
+    <% include partials/head.ejs %>
     <script src="/js/jquery-fieldselection.js" type="text/javascript"></script>
     <script src="/plugins/ckeditor/ckeditor.js"></script>
     <script src="/plugins/ckeditor/adapters/jquery.js"></script>
@@ -18,13 +18,13 @@ var error_message = error_message || '';
 
 </head>
 <body>
-<%- partial('partials/body_top.ejs') %>
+<% include partials/body_top.ejs %>
 <div id="wrap">
     <div id="header">
-        <%-partial('partials/menu.ejs')%>
-        <%-partial('partials/user_box.ejs')%>
-        <%-partial('partials/failures.ejs')%>
-        <%-partial('partials/tag_search.ejs') %>
+        <% include partials/menu.ejs %>
+        <% include partials/user_box.ejs %>
+        <% include partials/failures.ejs %>
+        <% include partials/tag_search.ejs %>
     </div>
     <div id="content" class="cf">
         <div class="add-offer">
@@ -238,9 +238,7 @@ var error_message = error_message || '';
             <div class="user-right">
                 <div class="img-box" style="overflow: hidden;">
                     <div style="width:70px; height:70px;" class='auto-scale'>
-                        <% if(user_logged) { %>
                         <img src="<%=avatar%>" alt="אני"/>
-                        <% } %>
                     </div>
                     <span></span>
                 </div>
@@ -294,7 +292,7 @@ var error_message = error_message || '';
 -->
 
 
-<%- partial('partials/footer.ejs') %>
+<% include partials/footer.ejs %>
 <script type="text/javascript">
 var current_section = 1;
 

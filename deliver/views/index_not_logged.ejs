@@ -2,15 +2,15 @@
 
 <html>
 <head>
-    <%- partial('partials/head_home.ejs') %>
+    <% include partials/head_home.ejs %>
 </head>
 <body>
 
 <div id="wrap">
     <div id="header">
-        <%-partial('partials/menu.ejs')%>
-        <%-partial('partials/user_box.ejs')%>
-        <%-partial('partials/failures.ejs')%>
+        <% include partials/menu.ejs%>
+        <% include partials/user_box.ejs%>
+        <% include partials/failures.ejs%>
     </div>
 </div>
 

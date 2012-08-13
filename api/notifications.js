@@ -368,7 +368,7 @@ if(/notifications\.js/.test(process.argv[1])) {
             });
 
 //        models.Notification.find({})
-//            .sort('update_date',-1)
+//            .sort({'update_date':-1})
 //            .populate('user_id')
 //            .limit(1)
 //            .exec(function(err,nots) {
@@ -412,7 +412,7 @@ if(/notifications\.js/.test(process.argv[1])) {
             });
 
 //        models.Notification.find({})
-//            .sort('update_date',-1)
+//            .sort({'update_date':-1})
 //            .populate('user_id')
 //            .limit(1)
 //            .exec(function(err,nots) {

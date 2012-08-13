@@ -25,6 +25,7 @@ SignedRequest.secret = config.FB_SECRET;
  * signature : function(err)
  */
 var doAction = function(  data ,callback ){
+    var callback_url = data.callback_url || data.object_url;
         var post_url = "https://graph.facebook.com/me/"+config.FB_APP_NAME+":"+data.action + '?access_token=' + data.access_token;
 
         console.log('posting to ', post_url);
@@ -51,7 +52,7 @@ var doAction = function(  data ,callback ){
             if(typeof(body) == 'string')
                 body = JSON.parse(body);
             if(body.id)
-                save_response(body.id, data.user,data.object_url,callback);
+                save_response(body.id, data.user,callback_url,callback);
             else if (callback) callback(null,body);
         }
 

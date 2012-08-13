@@ -318,7 +318,7 @@ body
     margin-bottom: 10px;
     display: block;
 }
-.user-box .hide-box input[type=password]
+.user-box .hide-box input[type=password],.user-box .hide-box input[type=email]
 {
     height: 15px;
     border: 1px solid #d8d8d8;

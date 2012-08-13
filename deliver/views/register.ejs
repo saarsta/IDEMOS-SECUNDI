@@ -4,16 +4,16 @@
 %>
 <html>
 <head>
-    <%- partial('partials/head.ejs') %>
+    <% include partials/head.ejs %>
 </head>
 <body>
-<%- partial('partials/body_top.ejs') %>
+<% include partials/body_top.ejs %>
 <div id="wrap">
         <div id="header">
-            <%-partial('partials/menu.ejs')%>
-            <%-partial('partials/user_box.ejs')%>
-            <%-partial('partials/failures.ejs')%>
-            <%-partial('partials/tag_search.ejs') %>
+            <% include partials/menu.ejs %>
+            <% include partials/user_box.ejs %>
+            <% include partials/failures.ejs %>
+            <% include partials/tag_search.ejs %>
         </div>
         <div id="content" class="cf">   
             <h2>
@@ -60,7 +60,7 @@
                         <label>
                             דוא”ל:
                         </label>
-                        <input id="email" name="email" class="text" type="text" value="<%= body.email || '' %>" />
+                        <input id="email" name="email" class="text" type="email" value="<%= body.email || '' %>" />
                     </div>
                     <div class="one hide">
                         <label>
@@ -75,7 +75,7 @@
             </form>
         </div>
     </div>
-    <%- partial('partials/footer.ejs') %>
+    <% include partials/footer.ejs %>
 </body>
 </html>
 
@@ -96,7 +96,6 @@
                 },
                 email:{
                     required: true,
-                    EMAIL:true
                 }
             },
             messages:{
@@ -110,6 +109,7 @@
                 },
                 email:{
                     required:'נא להזין כתובת מייל',
+                    email:'כתובת מייל שגויה'
                 }
             },
             highlight: function (element, errorClass) {
@@ -118,11 +118,6 @@
             unhighlight: function (element, errorClass) {
                 $(element).removeClass('error').addClass('valid');
             }
-//            submitHandler: function(form) {
-//                first_name = $("#first_name").val();
-//                last_name = $("#last_name").val();
-//                password = $("#password").val();
-//            }
         })
     })
 </script>

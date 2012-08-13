@@ -21,7 +21,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
         this.authentication = new common.SessionAuthentication();
         this.filtering = {discussion_id:null, is_approved:null};
         this.default_query = function (query) {
-            return query.sort('creation_date', 'descending').populate('creator_id');
+            return query.sort({'creation_date':'descending'}).populate('creator_id');
         };
 
         this.fields = {
@@ -71,7 +71,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
             else
                 suggestion.wanted_amount_of_tokens = Number(suggestion.threshold_for_accepting_the_suggestion) || calculate_sugg_threshold(suggestion.getCharCount(), discussion_threshold);
             if(req.user){
-                models.GradeSuggestion.findOne({user_id: req.user._id, suggestion_id: suggestion._id}, ["_id", "evaluation_grade", "does_support_the_suggestion"], function(err, grade_sugg_obj){
+                models.GradeSuggestion.findOne({user_id: req.user._id, suggestion_id: suggestion._id}, {"_id":1, "evaluation_grade":1, "does_support_the_suggestion":1}, function(err, grade_sugg_obj){
                     if(!err && grade_sugg_obj){
                         curr_grade_obj = {
                             _id: grade_sugg_obj._id,
@@ -363,7 +363,7 @@ module.exports.approveSuggestion = function(id,callback)
                 //set latest discussionHistory with discussion grade
                 function(cbk1){
                     models.DiscussionHistory.find({dicussion_id: discussion_object._id})
-                        .sort('date', 'descending')
+                        .sort({'date':'descending'})
                         .limit(1)
                         .exec(function(err, histories){
                             if(histories.length){

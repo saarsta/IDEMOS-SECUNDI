@@ -1,22 +1,20 @@
 <%
-        var user_log = user_logged || false;
-        var user = user;
-        var unseen_notifications = user_logged ? user.unseen_notifications || 0 : 0;
+        var unseen_notifications = user_logged && user ? user.unseen_notifications || 0 : 0;
 %>
 
 <div class="user-box .user-box-hover">
     <%if(unseen_notifications > 0){%><span class="total-number"> <%=unseen_notifications%></span><%}%>
 
-    <%if(user_logged){%>
+    <%if(user_logged && user){%>
     <a href="/myuru">
         <span class="icon"></span>
     </a>
     <%}else{%> <span class="icon"></span><%}%>
     <h2 id="login_head">
-        <%if(user_logged){%><%=user.first_name%><%}else{%>התחבר<%}%>
+        <%if(user_logged && user){%><%=user.first_name%><%}else{%>התחבר<%}%>
     </h2>
     <div class="hide-box">
-        <%if(user_logged){%>
+        <%if(user_logged && user){%>
         <div class="user-login-box cf">
             <ul>
                 <li class="chip"><a href="/myuru">האסימונים שלי <span class="icon-menu"></span><span class="number"><%=Math.floor(user.tokens)%></span></a></li>
@@ -36,7 +34,7 @@
         <%}else{%>
         <!--action="/account/login"-->
         <form id="register_form" >
-            <input name="email" type="text" placeholder='דוא"ל'/>
+            <input name="email" type="email" placeholder='דוא"ל'/>
             <input name="password" type="password" placeholder="סיסמא" />
             <a class="forgot_password" href="/account/forgot_password">
                 שכחת סיסמא?
@@ -55,7 +53,7 @@
 
         $("#register_form").validate({
             rules:{
-                email:{required: true, EMAIL:true },
+                email:{required: true},
                 password:{required: true }
             },
             messages:{
@@ -63,10 +61,6 @@
                 password: 'הכנס סיסמא'
             }
         });
-
-        $.validator.addMethod("EMAIL", function(value, element) {
-            return this.optional(element) || /^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z.]{2,5}$/i.test(value);
-        },'בתובת מייל שגויה');
     });
     var mail = "<%= (user && user.email) || '' %>";
 </script>

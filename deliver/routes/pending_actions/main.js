@@ -7,19 +7,19 @@ module.exports = function(req, res){
     async.parallel([
         function(cbk){
             models.Action.findById(req.params[0])
-                .select([
-                '_id',
-                'type',
-                'title',
-                'text_field',
-                'image_field',
-                'tags',
-                'location',
-                'execution_date',
-                'required_participants',
-                'cycle_id'
-            ])
-            .populate('cycle_id', ['_id','title'])
+                .select({
+                '_id':1,
+                'type':1,
+                'title':1,
+                'text_field':1,
+                'image_field':1,
+                'tags':1,
+                'location':1,
+                'execution_date':1,
+                'required_participants':1,
+                'cycle_id':1
+                })
+            .populate('cycle_id', {'_id':1,'title':1})
             .exec(cbk);
         }
     ], function(err, args){

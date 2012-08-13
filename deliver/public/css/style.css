@@ -318,7 +318,7 @@ body
     margin-bottom: 10px;
     display: block;
 }
-.user-box .hide-box input[type=password]
+.user-box .hide-box input[type=password],.user-box .hide-box input[type=email]
 {
     height: 15px;
     border: 1px solid #d8d8d8;
@@ -7327,6 +7327,13 @@ body.body-action .followers-box h2
     padding: 0;
 }
 .profile-box .profile-info .img-box
+{
+    float: right;
+    margin-left: 18px;
+    position: relative;
+}
+
+.profile-box .profile-info a .img-box
 {
     float: right;
     margin-left: 18px;

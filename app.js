@@ -4,12 +4,12 @@
  */
 var express = require('express'),
     mongoose = require('mongoose'),
-    MongoStore  = require('connect-mongo'),
+    MongoStore  = require('connect-mongo')(express),
     async = require('async'),
     utils = require('./utils'),
     auth = require("connect-auth");
 
-var app = module.exports = express.createServer();
+var app = module.exports = express();
 
 
 app.configure('development', function(){
@@ -35,7 +35,7 @@ app.configure('development', function(){
     require('./deliver/tools/compile_dust_templates');
 
     // TODO REMOVE THIS BEFORE COMMIT
-//    app.set('send_mails',true);
+    app.set('send_mails',true);
 
 });
 
@@ -129,7 +129,8 @@ app.configure('production', function(){
 });
 
 
-mongoose.connect(app.settings.DB_URL);
+if(!mongoose.connection.host)
+    mongoose.connect(app.settings.DB_URL);
 
 var models = require('./models');
 models.setDefaultPublish(app.settings.show_only_published);
@@ -202,8 +203,31 @@ app.configure(function(){
     logoutHandler: require("connect-auth/lib/events").redirectOnLogout("/")}));
 
     app.use(account.auth_middleware);
+
+    app.use( function(req,res,next) {
+        res.locals({
+            tag_name: req.query.tag_name,
+            logged: req.isAuthenticated && req.isAuthenticated(),
+            user_logged: req.isAuthenticated && req.isAuthenticated(),
+            user: req.session && req.session.user,
+            avatar: (req.session && req.session.avatar_url) || "/images/default_user_img.gif",
+            url: req.url
+        });
+
+        next();
+    });
+
     app.use(express.methodOverride());
     app.use(app.router);
+
+    app.locals({
+        footer_links:function() { return mongoose.model('FooterLink').getFooterLinks(); },
+        cleanHtml:function(html) { return html.replace(/<[^>]*?>/g,'').replace(/\[[^\]]*?]/g,'');}
+    });
+
+
+
+
 
 });
 
@@ -233,20 +257,8 @@ async.waterfall([
             console.trace();
         }
         else {
-            app.helpers({
-                footer_links:function() { return mongoose.model('FooterLink').getFooterLinks(); },
-                cleanHtml:function(html) { return html.replace(/<[^>]*?>/g,'').replace(/\[[^\]]*?]/g,'');}
-            });
-            app.dynamicHelpers({
-                tag_name: function(req,res) { return req.query.tag_name; },
-                logged: function(req,res) { return req.isAuthenticated && req.isAuthenticated(); },
-                user_logged:function(req,res) { return  req.isAuthenticated && req.isAuthenticated(); },
-                user: function(req,res) { return req.session && req.session.user; },
-                avatar: function(req,res) { return req.session && req.session.avatar_url; },
-                url:function(req,res) { return req.url; }
-            });
             app.listen(app.settings.port);
-            console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+            console.log("Express server listening on port %d in %s mode", app.settings.port, app.settings.env);
         }
     }
 );

@@ -20,7 +20,7 @@ var FooterLink = module.exports = new Schema({
 var links = [];
 
 FooterLink.statics.load = function(callback) {
-    this.find({}).sort('gui_order',1).exec(function(err,docs) {
+    this.find({}).sort({'gui_order':1}).exec(function(err,docs) {
         if(docs)
             links = docs;
         if(callback)

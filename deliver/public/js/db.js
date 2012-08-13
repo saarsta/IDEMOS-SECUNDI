@@ -583,6 +583,7 @@ var db_functions = {
     },
 
 
+
     getPopularPostByCycle: function(discussion_id, sort_by,offset, callback){
         db_functions.loggedInAjax({
             url: '/api/posts?discussion_id=' + discussion_id + "&order_by=" + sort_by + '&offset=' + offset,
@@ -1008,11 +1009,11 @@ var db_functions = {
         });
     },
 
-    joinOrLeaveAction: function(callback){
+    joinOrLeaveAction: function(action_id,callback){
         db_functions.loggedInAjax({
             url: '/api/join/',
             type: "POST",
-
+            data:{action_id:action_id},
             async: true,
             success: function (err, data) {
                 callback(null, data);
@@ -1030,7 +1031,7 @@ var db_functions = {
             type: "GET",
 
             async: true,
-            success: function (err, data) {
+            success: function (data) {
                 callback(null, data);
             },
 
@@ -1052,6 +1053,21 @@ var db_functions = {
             },
             error:function(err){
                 callback(err);
+            }
+        });
+    },
+
+    getSortedPostByAction: function(action_id, sort_by,offset, callback){
+        db_functions.loggedInAjax({
+            url: '/api/posts_of_action?action_id=' + action_id + "&order_by=" + sort_by + '&offset=' + offset,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log("posts are" + " " + data);
+                callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
             }
         });
     },
