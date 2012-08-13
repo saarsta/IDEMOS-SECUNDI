@@ -36,7 +36,7 @@
         <%}else{%>
         <!--action="/account/login"-->
         <form id="register_form" >
-            <input name="email" type="text" placeholder='דוא"ל'/>
+            <input name="email" type="email" placeholder='דוא"ל'/>
             <input name="password" type="password" placeholder="סיסמא" />
             <a class="forgot_password" href="/account/forgot_password">
                 שכחת סיסמא?
@@ -55,7 +55,7 @@
 
         $("#register_form").validate({
             rules:{
-                email:{required: true, EMAIL:true },
+                email:{required: true},
                 password:{required: true }
             },
             messages:{
@@ -63,10 +63,6 @@
                 password: 'הכנס סיסמא'
             }
         });
-
-        $.validator.addMethod("EMAIL", function(value, element) {
-            return this.optional(element) || /^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z.]{2,5}$/i.test(value);
-        },'בתובת מייל שגויה');
     });
     var mail = "<%= (user && user.email) || '' %>";
 </script>

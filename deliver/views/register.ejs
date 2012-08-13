@@ -60,7 +60,7 @@
                         <label>
                             דוא”ל:
                         </label>
-                        <input id="email" name="email" class="text" type="text" value="<%= body.email || '' %>" />
+                        <input id="email" name="email" class="text" type="email" value="<%= body.email || '' %>" />
                     </div>
                     <div class="one hide">
                         <label>
@@ -96,7 +96,6 @@
                 },
                 email:{
                     required: true,
-                    EMAIL:true
                 }
             },
             messages:{
@@ -110,6 +109,7 @@
                 },
                 email:{
                     required:'נא להזין כתובת מייל',
+                    email:'כתובת מייל שגויה'
                 }
             },
             highlight: function (element, errorClass) {
@@ -118,11 +118,6 @@
             unhighlight: function (element, errorClass) {
                 $(element).removeClass('error').addClass('valid');
             }
-//            submitHandler: function(form) {
-//                first_name = $("#first_name").val();
-//                last_name = $("#last_name").val();
-//                password = $("#password").val();
-//            }
         })
     })
 </script>
