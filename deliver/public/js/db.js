@@ -1009,11 +1009,11 @@ var db_functions = {
         });
     },
 
-    joinOrLeaveAction: function(callback){
+    joinOrLeaveAction: function(action_id,callback){
         db_functions.loggedInAjax({
             url: '/api/join/',
             type: "POST",
-
+            data:{action_id:action_id},
             async: true,
             success: function (err, data) {
                 callback(null, data);

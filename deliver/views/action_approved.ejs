@@ -311,7 +311,7 @@ var error_message = error_message || '';
 
      $('.add-offer-btn-box').click(function(e){
          e.preventDefault();
-         db_functions.joinOrLeaveAction(function(err,data){
+         db_functions.joinOrLeaveAction(action_id,function(err,data){
              if(err){
                  console.log(err) ;
              }
