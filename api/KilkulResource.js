@@ -11,7 +11,7 @@ var KilkulResource = module.exports = common.GamificationMongooseResource.extend
             this.authentication = new common.SessionAuthentication();
 //            this.filtering = {};
             this.default_query = function (query) {
-                return query.where('is_visible', true).sort({'creation_date': 'descending'});
+                return query.where('is_visible', true).sort('creation_date', 'descending');
             };
         },
 

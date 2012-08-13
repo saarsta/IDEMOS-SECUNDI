@@ -8,7 +8,6 @@ var jest = require('jest')
     ,path = require('path')
     ,models = require('../models');
 
-
 var AvatarResource = module.exports = jest.Resource.extend({
     init:function() {
         this._super();

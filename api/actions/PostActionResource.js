@@ -20,7 +20,7 @@ var PostActionResource = module.exports = common.GamificationMongooseResource.ex
         this.authentication = new common.SessionAuthentication();
         this.filtering = {action_id:null};
         this.default_query = function (query) {
-            return query.sort({creation_date: 'descending'});
+            return query.sort('creation_date', 'descending');
         };
     },
 

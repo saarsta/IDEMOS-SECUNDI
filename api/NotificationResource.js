@@ -13,7 +13,7 @@ var NotificationCategoryResource = module.exports = resources.MongooseResource.e
             this.authentication = new common.SessionAuthentication();
             this.update_fields = {name:null};
             this.default_query = function (query) {
-                return query.sort({'update_date': 'descending'});
+                return query.sort('update_date', 'descending');
             };
             this.fields = {
                 _id:null,
@@ -770,14 +770,8 @@ var populateNotifications = module.exports.populateNotifications = function(resu
     async.parallel([
         function(cbk){
             if(notificator_ids.length)
-                models.User.find({}, {
-                        'id':1,
-                        'first_name':1,
-                        'last_name':1,
-                        'facebook_id':1,
-                        'avatar':1})
-                    .where('_id').in(notificator_ids)
-                    .exec(function (err, users) {
+                models.User.find({}, ['id', 'first_name', 'last_name', 'facebook_id', 'avatar'])
+                    .where('_id').in(notificator_ids).run(function (err, users) {
                         if(!err){
                             var users_hash = {};
 
@@ -796,10 +790,7 @@ var populateNotifications = module.exports.populateNotifications = function(resu
                 models.Discussion.find()
                     .where('_id')
                     .in(discussion_ids)
-                    .select({
-                    'id':1,
-                    'title':1,
-                        'image_field_preview':1, 'image_field':1, 'text_field_preview':1,'vision_text_history':1,'text_field':1})
+                    .select(['id', 'title', 'image_field_preview', 'image_field', 'text_field_preview','vision_text_history','text_field'])
                     .exec(function (err, discussions) {
 
                         var got_ids = _.pluck(discussions,'id');
@@ -821,9 +812,8 @@ var populateNotifications = module.exports.populateNotifications = function(resu
 
         function(cbk){
             if(post_ids.length)
-                models.Post.find({},{'id':1, 'text':1})
-                    .where('_id').in(post_ids)
-                    .exec(function (err, posts_items) {
+                models.Post.find({}, ['id', 'text'])
+                    .where('_id').in(post_ids).run(function (err, posts_items) {
 
                         if(!err){
                             var post_items_hash = {};
@@ -840,11 +830,8 @@ var populateNotifications = module.exports.populateNotifications = function(resu
 
         function(cbk){
             if(info_items_ids.length)
-                models.InformationItem.find({},
-                    {'id':1,
-                        'image_field_preview':1, 'image_field':1, 'title':1})
-                    .where('_id').in(info_items_ids)
-                    .exec(function (err, info_items) {
+                models.InformationItem.find({}, ['id', 'image_field_preview', 'image_field', 'title'])
+                    .where('_id').in(info_items_ids).run(function (err, info_items) {
 
                         if(!err){
                             var info_items_hash = {};

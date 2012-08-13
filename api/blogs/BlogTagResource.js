@@ -27,7 +27,7 @@ var TagResource = module.exports = jest.MongooseResource.extend({
         };
 
         this.default_query = function (query) {
-            return query.sort({popularity: 'descending',tag:1});
+            return query.sort('popularity', 'descending').sort('tag',1);
         };
     }
 });

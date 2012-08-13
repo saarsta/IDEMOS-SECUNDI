@@ -6,8 +6,7 @@ module.exports = function(req,res)
 {
     var item_id = req.params[0];
 
-    models.InformationItem.findById(item_id).populate('subject_id')
-        .exec(function(err,item){
+    models.InformationItem.findById(item_id).populate('subject_id').run(function(err,item){
         if(err)
             res.render('500.ejs',{err:err});
         else
