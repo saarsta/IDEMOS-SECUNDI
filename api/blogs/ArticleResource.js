@@ -87,7 +87,7 @@ var ArticleResource = common.GamificationMongooseResource.extend({
 //        this._super(req, filters, sorts, limit, offset, function(err, results){
 //
 //            var iterator = function(article, itr_cbk){
-//                models.User.findById(article.user_id, ["avatar", "facebook_id"], function(err, user_obj){
+//                models.User.findById(article.user_id, {"avatar":1, "facebook_id":1}, function(err, user_obj){
 //                    if(err)
 //                        itr_cbk(err);
 //                    else

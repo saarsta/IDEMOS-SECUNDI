@@ -13,7 +13,7 @@ module.exports = function(req,res) {
                     res.render('404.ejs',{});
                 else{
 //                    article.text = (article.text).replace(/(<([^>]+?)>)/ig,"");
-                    models.BlogTag.find({user_id: article.user_id}, ['tag'])
+                    models.BlogTag.find({user_id: article.user_id}, {'tag':1})
                         .sort('popularity','descending')
                         .exec(function(err, tags){
                             if (err)

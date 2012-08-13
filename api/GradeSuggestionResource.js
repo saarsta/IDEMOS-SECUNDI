@@ -427,7 +427,7 @@ var calculateSuggestionGrade = GradeSuggestionResource.calculateSuggestionGrade 
 
             //get all grades for the suggestion,
             function (cbk) {
-                models.GradeSuggestion.find({suggestion_id:suggestion_id}, ["user_id", "evaluation_grade", "proxy_power"], function (err, sug_grades) {
+                models.GradeSuggestion.find({suggestion_id:suggestion_id}, {"user_id":1, "evaluation_grade":1, "proxy_power":1}, function (err, sug_grades) {
                     cbk(err, sug_grades);
                 });
             },
