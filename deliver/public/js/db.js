@@ -1031,7 +1031,7 @@ var db_functions = {
             type: "GET",
 
             async: true,
-            success: function (err, data) {
+            success: function (data) {
                 callback(null, data);
             },
 

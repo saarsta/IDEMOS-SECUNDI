@@ -293,7 +293,8 @@ var error_message = error_message || '';
     </div>
 </div>
 
-<%- partial('partials/footer.ejs') %>
+
+<% include partials/footer.ejs %>
 
  <script type="text/javascript">
 
@@ -441,6 +442,10 @@ var error_message = error_message || '';
 
 
      db_functions.getActionGoing(action_id,function(err,data){
+     
+         dust.renderArray('action_participant_user',data.objects,null, function (err, out){
+            $('#participant').append(out);
+         })
 
      })
        
