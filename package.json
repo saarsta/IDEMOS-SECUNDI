@@ -17,7 +17,7 @@
         "underscore": "",
         "i18n-mongoose":"",
         "j-forms":">= 0.0.66",
-        "admin-with-forms":">= 0.0.50",
+        "admin-with-forms":">= 0.0.56",
         "knox":"< 0.1.0",
         "dustjs-linkedin":"",
         "sendgrid": "",
