@@ -21,28 +21,28 @@ module.exports = function(req, res){
         //1. find cycle by id
         function(cbk){
             models.Cycle.findById(req.params[0])
-            .select([
-                '_id',
-                'subject',
-                'main_subject',
-                'title',
-                'discussion_title',
-                'text_field',
-                'image_field',
-                'discussions',
-                'tags',
-                'opinion_shapers'
-            ])
-            .populate('opinion_shapers', [
-                '_id',
-                'first_name',
-                'last_name',
-                'avatar_url',
-                'score',
-                'num_of_proxies_i_represent',
-                'opinion_text'
-            ])
-            .populate('main_subject', ['name'])
+            .select({
+                '_id':1,
+                'subject':1,
+                'main_subject':1,
+                'title':1,
+                'discussion_title':1,
+                'text_field':1,
+                'image_field':1,
+                'discussions':1,
+                'tags':1,
+                'opinion_shapers':1
+            })
+            .populate('opinion_shapers', {
+                '_id':1,
+                'first_name':1,
+                'last_name':1,
+                'avatar_url':1,
+                'score':1,
+                'num_of_proxies_i_represent':1,
+                'opinion_text':1
+                })
+            .populate('main_subject', {'name':1})
             .exec(cbk);
         }/*,
 
