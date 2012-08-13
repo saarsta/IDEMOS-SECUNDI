@@ -7332,6 +7332,13 @@ body.body-action .followers-box h2
     margin-left: 18px;
     position: relative;
 }
+
+.profile-box .profile-info a .img-box
+{
+    float: right;
+    margin-left: 18px;
+    position: relative;
+}
 .profile-box .profile-info .img-box span
 {
     position: absolute;
