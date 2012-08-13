@@ -87,11 +87,14 @@
             <div class="leftCol leftCol-width noPadding">
                 <div class="profile-box">
                     <div class="profile-info cf">
-                       <% if (blogger.avatar_url) { %>
-                       <div class="img-box">
-                            <img width="112" height="120" src="<%=blogger.avatar_url() %> " alt="" />
-                            <span></span>
-                        </div>
+                        <%if (blogger.avatar_url) { %>
+                        <a href="/myuru/<%=blogger._id%>">
+                           <div class="img-box">
+                                <img width="112" height="120" src="<%=blogger.avatar_url() %> " alt="" />
+                                <span></span>
+                            </div>
+                        </a>
+
                         <% } %>
                         <div class="left">
                             <h4><%=blogger.first_name %></h4>
