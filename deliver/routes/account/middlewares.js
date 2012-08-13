@@ -1,4 +1,5 @@
 var models = require('../../../models')
+    ,url = require('url')
     ,common = require('./common');
 
 exports.referred_by_middleware = function(req,res,next)
@@ -22,6 +23,14 @@ exports.referred_by_middleware = function(req,res,next)
                 }
                 else {
                     if(obj && obj.creator) {
+                        var link = obj.link;
+
+                        var parsed_link = url.parse(link);
+                        if(parsed_link.path != req.path) {
+                            res.redirect(link);
+                            return;
+                        }
+
                         req.session.referred_by = obj.creator + '';
                         req.session.save(function() {
                             next();

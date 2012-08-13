@@ -258,7 +258,7 @@ async.waterfall([
         }
         else {
             app.listen(app.settings.port);
-            console.log("Express server listening on port %d in %s mode", app.settings.PORT, app.settings.env);
+            console.log("Express server listening on port %d in %s mode", app.settings.port, app.settings.env);
         }
     }
 );
