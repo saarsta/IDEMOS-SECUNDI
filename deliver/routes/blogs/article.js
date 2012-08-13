@@ -14,7 +14,7 @@ module.exports = function(req,res) {
                 else{
 //                    article.text = (article.text).replace(/(<([^>]+?)>)/ig,"");
                     models.BlogTag.find({user_id: article.user_id}, {'tag':1})
-                        .sort('popularity','descending')
+                        .sort({'popularity': 1 ,'descending': 1})
                         .exec(function(err, tags){
                             if (err)
                                 throw err;

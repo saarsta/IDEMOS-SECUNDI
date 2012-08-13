@@ -203,6 +203,20 @@ app.configure(function(){
     logoutHandler: require("connect-auth/lib/events").redirectOnLogout("/")}));
 
     app.use(account.auth_middleware);
+
+    app.use( function(req,res,next) {
+        res.locals({
+            tag_name: req.query.tag_name,
+            logged: req.isAuthenticated && req.isAuthenticated(),
+            user_logged: req.isAuthenticated && req.isAuthenticated(),
+            user: req.session && req.session.user,
+            avatar: req.session && req.session.avatar_url,
+            url: req.url
+        });
+
+        next();
+    });
+
     app.use(express.methodOverride());
     app.use(app.router);
 
@@ -212,18 +226,7 @@ app.configure(function(){
     });
 
 
-    app.use( function(req,res,next) {
-        _.extend(res.locals,{
-            tag_name: function(req,res) { return req.query.tag_name; },
-            logged: function(req,res) { return req.isAuthenticated && req.isAuthenticated(); },
-            user_logged:function(req,res) { return  req.isAuthenticated && req.isAuthenticated(); },
-            user: function(req,res) { return req.session && req.session.user; },
-            avatar: function(req,res) { return req.session && req.session.avatar_url; },
-            url:function(req,res) { return req.url; }
-        });
 
-        next();
-    });
 
 
 });
