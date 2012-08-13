@@ -135,7 +135,8 @@ app.configure('production', function(){
 });
 
 
-mongoose.connect(app.settings.DB_URL);
+if(!mongoose.connection.host)
+    mongoose.connect(app.settings.DB_URL);
 
 var models = require('./models');
 models.setDefaultPublish(app.settings.show_only_published);

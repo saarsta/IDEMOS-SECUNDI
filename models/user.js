@@ -79,7 +79,8 @@ var User = module.exports = new Schema({
     blog_text_1: String,
     blog_text_2: String,
     blog_text_3: String,
-    opinion_text: String
+    opinion_text: String,
+    sent_mail:{type:Date}
 
 }, {strict:true});
 
