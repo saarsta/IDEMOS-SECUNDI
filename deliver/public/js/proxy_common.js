@@ -32,7 +32,7 @@ var proxyCommon={
         }
 
         var config = {
-            massage:
+            message:
                 'בחר את מספר המנדטים שאתה רוצה לתת ל- '
                     + userName,
             userProxy:userProxy,
