@@ -7886,6 +7886,9 @@ body.body-action .followers-box h2
     top: -5px;
 }
 
+a.menu-elections:hover {
+    color: #fff!important;
+}
 
 #election_menu:hover{
     cursor: pointer
