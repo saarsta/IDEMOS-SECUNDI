@@ -4,19 +4,19 @@
 <head>
 
 
-    <%- partial('partials/head.ejs') %>
-    <%- partial('partials/facebook.ejs') %>
+    <% include partials/head.ejs %>
+    <% include partials/facebook.ejs %>
 
 
 </head>
 <body>
-<%- partial('partials/body_top.ejs') %>
+<% include partials/body_top.ejs %>
 <div id="wrap">
 <div id="header">
-    <%-partial('partials/menu.ejs')%>
-    <%-partial('partials/user_box.ejs')%>
-    <%-partial('partials/failures.ejs')%>
-    <%- partial('partials/tag_search.ejs') %>
+    <% include partials/menu.ejs %>
+    <% include partials/user_box.ejs %>
+    <% include partials/failures.ejs %>
+    <% include partials/tag_search.ejs %>
 </div>
 <div id="content" class="cf">
 <div class="myuru-top">
@@ -123,7 +123,7 @@
             <li><a  href="#discussions-tab">דיונים</a></li>
             <li><a href="#cycles-tab">מעגלי תנופה</a></li>
             <li><a href="#actions-tab">פעולות</a></li>
-            <li><a href="#articles-tab">בלוגים</a></li>
+            <li><a href="#articles-tab">בלוג</a></li>
         </ul>
         <div id="discussions-tab">
 
@@ -164,7 +164,7 @@
 </div>
 </div>
 </div>
-<%- partial('partials/footer.ejs') %>
+<% include partials/footer.ejs %>
 
 
 </body>
@@ -178,11 +178,10 @@
         //$(".search-result-box .tabs").tabs();
 
         var userId='<%=pageUser._id %>';
-        var currentUserId='<%=user._id %>';
+        var currentUserId='<%= user_logged ? user._id : ""%>';
        // var proxy = JSON.parse('<%-proxy%>');
         var proxy = <%-proxy%>;
          var isHisUru=<%=isHisUru%>;
-
         function tabSelected(event, ui){
            function convertToTabModel(data,type){
                 var i,
@@ -208,10 +207,16 @@
            }
            var tabDivId=   ui.panel.id;
            var type=tabDivId.substr(0, tabDivId.indexOf('-'));
+
             db_functions.getAllItemsByUser(type,userId,function(error,data){
+                if(type == "articles")
+                    type = "blogs/article";
                 var  tabDataModel =convertToTabModel(data,type) ;
                 dust.render('myuru_tab',tabDataModel,function(err,out)
                 {
+                    if(type == "blogs/article")
+                        type = "articles";
+
                     var seletedTab= $('#'+type+'-tab');
 
                     // seletedTab.remove();
@@ -230,16 +235,8 @@
                                 next: '.next-1',
                                 prev: '.prev-1'
                             });
-
-
-
                 });
             });
-
-
-
-
-
         }
 
         $( ".tabs" ).tabs({
@@ -322,43 +319,46 @@
             });
         });
 
-
         $('#add_or_remove_proxy').click(function (e) {
 
-           // var userData = $(this).parents('.discussion-item');
-            var proxyId = userId //userData.data('creator_id');
-            var userName = '<%=pageUser.first_name %>';
-            e.preventDefault();
-            if(currentUserId===userId){ //cant give proxy to myself
-                return ;
+            if(!currentUserId){
+                //TODO ishai how do i do it?
+                popupProvider.showLoginPopup({},callback);
+            }else{
+                // var userData = $(this).parents('.discussion-item');
+                var proxyId = userId //userData.data('creator_id');
+                var userName = '<%=pageUser.first_name %>';
+                e.preventDefault();
+                if(currentUserId===userId){ //cant give proxy to myself
+                    return ;
+                }
+
+                proxyCommon.addOrRemoveProxy(proxy,proxyId,userName,currentUserId,function(newProxy){
+                    proxy = newProxy.proxy;
+
+                })
             }
-
-            proxyCommon.addOrRemoveProxy(proxy,proxyId,userName,currentUserId,function(newProxy){
-                proxy=newProxy.proxy;
-
-            })
-
-
          });
 
 
+        if(!isHisUru){
+            var uploader = new qq.FileUploader({
+                element: document.getElementById('upload_image_placeholder'),
+                action: '/api/avatar',
+                debug: false,
+                onProgress: function(id, fileName, loaded, total){
+                    console.log(loaded);console.log(total)},
+                onComplete: function(id, fileName, responseJSON){
+                    $('.img-box img').attr('src',responseJSON.avatar.url);
+                    $('.img-box img').autoscale();
+                },
+                template: '<span><div class="qq-uploader">' +
+                        '<div class="qq-upload-drop-area"><span>Drop files here to upload</span></div>' +
+                        '<div class="qq-upload-button"></div>' +
+                        '<ul class="qq-upload-list"></ul>' +
+                        '</div></span>'
 
-        var uploader = new qq.FileUploader({
-            element: document.getElementById('upload_image_placeholder'),
-            action: '/api/avatar',
-            debug: false,
-            onProgress: function(id, fileName, loaded, total){console.log(loaded);console.log(total)},
-            onComplete: function(id, fileName, responseJSON){
-                $('.img-box img').attr('src',responseJSON.avatar.url);
-                $('.img-box img').autoscale();
-            },
-            template: '<span><div class="qq-uploader">' +
-                    '<div class="qq-upload-drop-area"><span>Drop files here to upload</span></div>' +
-                    '<div class="qq-upload-button"></div>' +
-                    '<ul class="qq-upload-list"></ul>' +
-                    '</div></span>'
-
-            // template for one item in file list
+                // template for one item in file list
 //            fileTemplate: '<li>' +
 //                    '<span class="qq-upload-file"></span>' +
 //                    '<span class="qq-upload-spinner"></span>' +
@@ -367,15 +367,18 @@
 //                    '<span class="qq-upload-failed-text">Failed</span>' +
 //                    '</li>'
 
-        });
+            });
+        }
 
 
         function  redrowToolBar(num_of_extra_tokens,tokens){
 
-
             var tokensBarModel = new TokensBarModel(9, num_of_extra_tokens, tokens, proxy);
+            var a = 8;
+
             dust.render('tokens_bar',tokensBarModel,function(err,out)
             {
+
                 if(err){
 
                     console.error(err);

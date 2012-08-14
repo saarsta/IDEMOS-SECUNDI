@@ -21,7 +21,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
         this.authentication = new common.SessionAuthentication();
         this.filtering = {discussion_id:null, is_approved:null};
         this.default_query = function (query) {
-            return query.sort('creation_date', 'descending').populate('creator_id');
+            return query.sort({'creation_date':'descending'}).populate('creator_id');
         };
 
         this.fields = {
@@ -71,7 +71,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
             else
                 suggestion.wanted_amount_of_tokens = Number(suggestion.threshold_for_accepting_the_suggestion) || calculate_sugg_threshold(suggestion.getCharCount(), discussion_threshold);
             if(req.user){
-                models.GradeSuggestion.findOne({user_id: req.user._id, suggestion_id: suggestion._id}, ["_id", "evaluation_grade", "does_support_the_suggestion"], function(err, grade_sugg_obj){
+                models.GradeSuggestion.findOne({user_id: req.user._id, suggestion_id: suggestion._id}, {"_id":1, "evaluation_grade":1, "does_support_the_suggestion":1}, function(err, grade_sugg_obj){
                     if(!err && grade_sugg_obj){
                         curr_grade_obj = {
                             _id: grade_sugg_obj._id,
@@ -201,7 +201,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                     //add user to praticipants
                     function (cbk2) {
                         models.Discussion.update({_id:suggestion_object.discussion_id, "users.user_id": {$ne: user_id}},
-                            {$addToSet: {users: {user_id: user_id, join_date: Date.now}}},
+                            {$addToSet: {users: {user_id: user_id, join_date: Date.now()}}},
                         cbk2);
                     },
 
@@ -318,9 +318,9 @@ module.exports.approveSuggestion = function(id,callback)
 
         async.parallel([
             function(cbk1){
-                if(suggestion_creator != sugg_grade.user_id){
+                if(suggestion_creator != sugg_grade.user_id + ""){
                     notifications.create_user_notification("approved_change_suggestion_you_graded",
-                        discussion_id, suggestion_creator, null, null, cbk1);
+                        discussion_id, sugg_grade.user_id + "", null, null, cbk1);
                 }else{
                     cbk1(null, 0);
                 }
@@ -363,7 +363,7 @@ module.exports.approveSuggestion = function(id,callback)
                 //set latest discussionHistory with discussion grade
                 function(cbk1){
                     models.DiscussionHistory.find({dicussion_id: discussion_object._id})
-                        .sort('date', 'descending')
+                        .sort({'date':'descending'})
                         .limit(1)
                         .exec(function(err, histories){
                             if(histories.length){
@@ -381,6 +381,9 @@ module.exports.approveSuggestion = function(id,callback)
                     var curr_position = 0;
                     var parts = suggestion_object.parts;
 
+                    //this is to fix null text in vision when the suggestion is to delete text - (261 Bug הצעה ריקה לשינוי עולה בתור null)
+                    if(parts[0].text == null)
+                        parts[0].text = "";
                     vision = vision.replace(/\r/g,'');
 
                     var str = vision.substr(0, Number(parts[0].start)) + parts[0].text + vision.substr(Number(parts[0].end));
@@ -451,7 +454,7 @@ module.exports.approveSuggestion = function(id,callback)
 
                     async.waterfall([
                         function(wtr_cbk){
-                            models.GradeSuggestion.find({_id: sug_obj._id}, wtr_cbk);
+                            models.GradeSuggestion.find({suggestion_id: sug_obj._id}, wtr_cbk);
                         },
 
                         function(sugg_grades, wtr_cbk){

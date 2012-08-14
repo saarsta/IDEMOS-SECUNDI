@@ -2,15 +2,15 @@
 
 <html>
 <head>
-    <%- partial('partials/head_home.ejs') %>
+    <% include partials/head_home.ejs %>
 </head>
 <body>
 
 <div id="wrap">
     <div id="header">
-        <%-partial('partials/menu.ejs')%>
-        <%-partial('partials/user_box.ejs')%>
-        <%-partial('partials/failures.ejs')%>
+        <% include partials/menu.ejs%>
+        <% include partials/user_box.ejs%>
+        <% include partials/failures.ejs%>
     </div>
 </div>
 
@@ -42,6 +42,15 @@
             <div class="button_ellection"></div>
         </div>
         <script type="text/javascript">
+            $(".video-box img.youtube_img").hover(
+                function(){
+                    $(this).attr('src', $(this).attr('src').replace('.png', '') + '_over' + '.png')
+                },
+                function(){
+                    $(this).attr('src', $(this).attr('src').replace('_over.png', '') + '.png')
+                }
+            );
+
             $(".video-box").one('click', function(){
                 $('.youtube_img').remove();
                 $(this).append(
@@ -55,9 +64,6 @@
                 );
             });
         </script>
-
-
-
     </div>
 </div>
 <div id="close_to_footer">
@@ -82,8 +88,9 @@
     </div>
     <div class="greenbutton-container">
         <div class="greenbutton">
-            <a href="/account/register"><img src="/images/greenbotton.png" alt="תנועת עורו - המצטרף עכשיו"/></a>
-
+            <a href="/account/register" id="join_btn">
+                תנועת עורו - המצטרף עכשיו
+            </a>
 		<span>
 		<a href="/elections">
             <img src="/images/read-more.png"/>
@@ -102,7 +109,7 @@
 
     <div class="extra cf">
 	<div class="one-co0">
-            <h4>מה זה עורו?</h4>
+            <h4>אודות עורו</h4>
 			<img class="video_img" width="248" height="159" src="images/video-small.png"/>
         </div>
 
@@ -241,6 +248,17 @@ $(".one-co0").on('click', function(){
                 });
             });
         });
+
+//        $("#join_btn")
+//                .mouseover(function() {
+//                    var src = $(this).attr("src").match(/[^\.]+/) + "greenbotton_over.png";
+//                    $(this).attr("src", src);
+//                })
+//                .mouseout(function() {
+//                    var src = $(this).attr("src").replace("greenbotton_over.png", "greenbotton.png");
+//                    $(this).attr("src", src);
+//                });
+
     });
 
 </script>

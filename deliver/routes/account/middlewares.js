@@ -1,4 +1,5 @@
 var models = require('../../../models')
+    ,url = require('url')
     ,common = require('./common');
 
 exports.referred_by_middleware = function(req,res,next)
@@ -22,6 +23,14 @@ exports.referred_by_middleware = function(req,res,next)
                 }
                 else {
                     if(obj && obj.creator) {
+                        var link = obj.link;
+
+                        var parsed_link = url.parse(link);
+                        if(parsed_link.path != req.path) {
+                            res.redirect(link);
+                            return;
+                        }
+
                         req.session.referred_by = obj.creator + '';
                         req.session.save(function() {
                             next();
@@ -54,7 +63,7 @@ exports.auth_middleware = function (req, res, next) {
 
     if (req.isAuthenticated())
     {
-        if(!req.session.user) {
+        if(!req.session.user || !req.session.avatar_url) {
                 models.User.findById(req.session.auth.user._id || req.session.user_id ,function(err,user){
                     if(err){
                         console.log('couldn put user id' + err.message);

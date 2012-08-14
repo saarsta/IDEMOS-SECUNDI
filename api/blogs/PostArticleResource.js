@@ -15,7 +15,7 @@ var PostArticleResource = module.exports = common.GamificationMongooseResource.e
         this.authentication = new common.SessionAuthentication();
         this.filtering = {article_id:null};
         this.default_query = function (query) {
-            return query.sort('creation_date', 'ascending');
+            return query.sort({creation_date: 'ascending'});
         };
         this.update_fields = {
             article_id: null,

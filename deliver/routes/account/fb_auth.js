@@ -1,100 +1,79 @@
 var Basic = require("connect-auth").Basic
-    ,common = require('./common')
     ,async = require('async')
-    ,Models = require('../../../models')
     ,facebook_login = require('./facebook_login')
-    ,https = require('https');
+    ,http = require('request');
 
-var FbServerAuthentication = module.exports = function (options) {
+
+module.exports = function (options) {
     options = options || {};
     var that = Basic(options);
-    var my = {};
-
     that.name = options.name || "fb_server";
 
-    that.authenticate = function (request, response, callback) {
+    that.authenticate = function authenticate(request, response, callback) {
         var self = this;
         var access_token = request.body.access_token;
-        var fb_id = request.body.fb_id;
-        var fb_user_details;
-        var g_user_id;
 
-        // check if user is in data base
-        // if so, update access token
+        // check if user is in database
+        // if so, update access_token
         // if not, go get user details from facebook and create user in DB
         // finally, self.success(user)
-
         async.waterfall([
+            // get facebook fresh data
             function(cbk){
-                getFBUserDetails(access_token, cbk);
+                http({
+                        url:'https://graph.facebook.com/me',
+                        qs:{access_token:access_token},
+                        json:true,
+                        timeout:5000
+                    },
+                    function (error, response, body) {
+                        if (error || response.statusCode != 200) {
+                            console.log(error);
+                            console.log('getFBUserDetails error: ' + (response && response.statusCode));
+                            console.log(body);
+                            cbk('error from facebook');
+                            return;
+                        }
+                        cbk(null, body);
+                    }
+                );
             },
 
+            // check if user is in db
             function(user, cbk){
-                fb_user_details = user;
-                fb_user_details.invited_by = request.session['referred_by'];
-                facebook_login.isUserInDataBase(fb_id, function(err, is_in_db){
-                    cbk(err, is_in_db);
-                });
+                self.fb_user_details = user;
+                facebook_login.isUserInDataBase(self.fb_user_details.id, cbk);
             },
 
+            // upsert user data and token
             function(is_user_in_db, cbk){
-                if(is_user_in_db)
-                    facebook_login.updateUesrAccessToken(fb_user_details, access_token, function(err, user_id){
-                        cbk(err, user_id);
-                    });
-                else {
+                if(!is_user_in_db){
+                    self.fb_user_details.invited_by = request.session['referred_by'];
                     request.session.is_new_user = true;
-                    facebook_login.createNewFacebookUser(fb_user_details, access_token, function(user_id,user) {
-                        if(user_id)
-                            cbk(null,user_id);
-                        else
-                            cbk('create user failed');
+                    facebook_login.createNewFacebookUser(self.fb_user_details, access_token, function(maybe_db_user_id) {
+                        var maybe_error = (maybe_db_user_id) ? null : 'create user failed';
+                        cbk(maybe_error, maybe_db_user_id);
                     });
+                    return;
                 }
+                facebook_login.updateUesrAccessToken(self.fb_user_details, access_token, cbk);
             },
 
+            // save user_id on session
             function(user_id, cbk){
-                g_user_id = user_id;
                 request.session.user_id = user_id;
                 request.session.save(cbk);
             }
 
-        ], function(err, result){
-            if(err)
+        ],
+        // main callback
+        function(err){
+            if(err) {
                 self.fail(callback);
-            else
-                self.success(g_user_id, callback);
+                return;
+            }
+            self.success(request.session.user_id, callback);
         })
     };
-
     return that;
-};
-
-var getFBUserDetails = function(token, callback) {
-    var request  = https.request({
-            host: 'graph.facebook.com',
-            path:'/me/?access_token=' + token,
-            method:"GET"
-        },
-
-        function(res) {
-            var lines = [];
-            res.on('data',function(d)
-            {
-                lines.push(d);
-            });
-
-            res.on('end',function(err)
-            {
-                if(res.statusCode != 200) {
-                    callback('error from facebook');
-                } else {
-                    var complete = lines.join('');
-                    var json = JSON.parse(complete);
-                    callback(null,json);
-                }
-            });
-        });
-
-    request.end();
 };

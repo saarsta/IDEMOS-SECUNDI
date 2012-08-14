@@ -4,7 +4,7 @@ var mongoose_resource = require('jest'),
     ShoppingCartResource = require('./ShoppingCartResource'),
     DiscussionShoppingCartResource = require('./discussions/DiscussionShoppingCartResource.js'),
     CycleResource = require('./cycles/CycleResource.js'),
-   // CyclePostResource = require('./cycles/CyclePostResource.js'),
+    CyclePostResource = require('./cycles/CyclePostResource.js'),
     CycleShoppingCartResource = require('./cycles/CycleShoppingCartResource.js'),
     ActionShoppingCartResource = require('./actions/ActionShoppingCartResource.js'),
     SubjectResource = require('./SubjectResource'),
@@ -20,7 +20,7 @@ var mongoose_resource = require('jest'),
     GradeSuggestionResource = require('./GradeSuggestionResource'),
     GradeActionResource = require('./GradeActionResource'),
     LikeResource = require('./LikeResource'),
-    JoinResource = require('./actions/JoinResource.js'),
+    JoinResource = require('./actions/JoinResource'),
     CategoryResource = require('./CategoryResource'),
     SuggestionResource = require('./suggestionResource.js'),
     ActionResourceResource = require('./actions/ActionResourceResource.js'),
@@ -80,14 +80,14 @@ module.exports = function(app)
     rest_api.register_resource('grades_suggestion', new GradeSuggestionResource());
     rest_api.register_resource('grades_action', new GradeActionResource());
     rest_api.register_resource('likes', new LikeResource());
-    rest_api.register_resource('joins', new JoinResource());
+    rest_api.register_resource('join', new JoinResource());
     rest_api.register_resource('suggestions', new SuggestionResource());
     rest_api.register_resource('categories', new CategoryResource());
     rest_api.register_resource('action_resources', new ActionResourceResource());
     rest_api.register_resource('actions', new ActionResource());
     rest_api.register_resource('actions_populated', new ActionPopulatedResource());
     rest_api.register_resource('cycles', new CycleResource());
-   // rest_api.register_resource('cycle_posts', new CyclePostResource());
+    rest_api.register_resource('cycle_posts', new CyclePostResource());
     rest_api.register_resource('articles', new ArticleResource());
     rest_api.register_resource('tags', new TagResource());
     rest_api.register_resource('article_update', new ArticleCommentResource());
@@ -107,6 +107,5 @@ module.exports = function(app)
     rest_api.register_resource('fb_request', new FBRequestResource());
     rest_api.register('image_upload',new ImageUploadResource());
     rest_api.register('og_action', new OGActionResource());
-
     rest_api.register('avatar',new AvatarResource());
 };

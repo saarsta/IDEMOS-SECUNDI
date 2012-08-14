@@ -6,9 +6,9 @@ exports.LOGIN_PATH = '/account/login';
 
 exports.DONT_NEED_LOGIN_PAGES = [/^\/images/,/^\/static/, /^\/css/, /stylesheets\/style.css/, /favicon.ico/, /account\/login/, /^\/account\/logout/, /account\/register/,
     /facebookconnect.html/, /account\/afterSuccessFbConnect/, /account\/facebooklogin/,
-    /api\/subjects/, /^\/admin/, /^\/api\//, ];//regex
+    /api\/subjects/, /^\/admin/, /^\/api\//];//regex
 
-exports.REDIRECT_FOR_LOGIN_PAGES = [/^\/discussions\/new/,/^\/myuru/];
+exports.REDIRECT_FOR_LOGIN_PAGES = [/^\/discussions\/new/,/^\/myuru$/];
 
 var hash_password = exports.hash_password = function(password)
 {

@@ -318,7 +318,7 @@ body
     margin-bottom: 10px;
     display: block;
 }
-.user-box .hide-box input[type=password]
+.user-box .hide-box input[type=password],.user-box .hide-box input[type=email]
 {
     height: 15px;
     border: 1px solid #d8d8d8;
@@ -2898,6 +2898,14 @@ h2 small
     color:#b7b6b6;
     font-style: italic;
 }
+
+.comments-box .text .date:hover
+{
+    color:#b7b6b6;
+    font-style: italic;
+    text-decoration: underline !important;
+}
+
 .comments-box .btn-box
 {
     position: absolute;
@@ -4029,6 +4037,21 @@ h2 small
     color:#50504f;
     font: bold 16px/30px ARial;
     margin: 0;
+}
+
+.one-box .right .text h4 a
+{
+    color:#50504f;
+    font: bold 16px/30px ARial;
+    margin: 0;
+    text-decoration: none;
+}
+.one-box .right .text h4 a:hover
+{
+    color:#50504f;
+    font: bold 16px/30px ARial;
+    margin: 0;
+    text-decoration: underline;
 }
 .one-box .right .text p
 {
@@ -7314,6 +7337,13 @@ body.body-action .followers-box h2
     margin-left: 18px;
     position: relative;
 }
+
+.profile-box .profile-info a .img-box
+{
+    float: right;
+    margin-left: 18px;
+    position: relative;
+}
 .profile-box .profile-info .img-box span
 {
     position: absolute;
@@ -7861,6 +7891,9 @@ body.body-action .followers-box h2
     top: -5px;
 }
 
+a.menu-elections:hover {
+    color: #fff!important;
+}
 
 #election_menu:hover{
     cursor: pointer
@@ -8143,3 +8176,15 @@ body.body-action .followers-box h2
     color: #50504F;
 }
 
+.one-box .bottom-plus .left a {
+    background: #2FD43B url(../images/green-btn-border.png) 0 0 repeat-x;
+    border-color: #2EAB35;
+    margin: 0;
+}
+
+.no_underline_cursor_when_hover{
+    text-decoration: none;
+}
+.no_underline_cursor_when_hover: hover{
+    cursor: pointer;
+}

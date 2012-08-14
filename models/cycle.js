@@ -32,7 +32,7 @@ var Cycle = module.exports = new Schema({
     is_hot_object: {type:Boolean,'default':false},
     followers_count: {type: Number, 'default':0, editable:false},
     num_of_comments: {type: Number, 'default':0, editable:false},
-    upcoming_action: {type: ObjectId, ref: 'Action', index: true, editable:false},
+    upcoming_action: {type: ObjectId, ref: 'Action', index: true},
     num_upcoming_actions: {type: Number, 'default':0, editable:false},
     //users that conected somehow to the cycle for my uru
     users:{type:[

@@ -9,9 +9,14 @@ module.exports = function (req, res) {
     var sessionUser = req.session.user;
     var curr_user_db;
 
-    if(isHisuru &&  pageUserID === req.session.user._id){
-        isHisuru=false;
+    if(!(isHisuru && !req.session.user)){
+        if(isHisuru &&  pageUserID === req.session.user._id){
+            isHisuru=false;
+        }
     }
+
+
+
 
     /*
      async
@@ -33,12 +38,24 @@ module.exports = function (req, res) {
                 function (cbk1) {
                     //get details of my/his uru user
                     models.User.findById(pageUserID)
-
-                        .select(["tokens", "num_of_extra_tokens","proxy" , "biography","first_name", "last_name", "facebook_id", "avatar", "score", "followers",'num_of_proxies_i_represent'])
+                        .select({
+                            "tokens":1,
+                            "num_of_extra_tokens":1,
+                            "proxy":1 ,
+                            "biography":1,
+                            "first_name":1,
+                            "last_name":1,
+                            "facebook_id":1,
+                            "avatar":1,
+                            "score":1,
+                            "followers":1,
+                            'num_of_proxies_i_represent':1
+                        })
                         .populate("proxy.user_id"/*,['id','_id','first_name','last_name','avatar','facebook_id','num_of_given_mandates', "followers",'score','num_of_proxies_i_represent']*/)
 
                         .exec(function(err, user){
-                            req.session.user.biography = user.biography;
+                            if(req.session.user)
+                                req.session.user.biography = user.biography;
                             cbk1(err, user);
                         })
                 },
@@ -47,7 +64,23 @@ module.exports = function (req, res) {
                 function(cbk1){
                     //get details of the current user that watch "his uru"
                     if(sessionUser && pageUserID != sessionUser._id){
-                        models.User.findById(sessionUser._id).select(["tokens", "num_of_extra_tokens", "proxy", "biography","first_name","last_name","facebook_id", "avatar","score", "followers",'num_of_proxies_i_represent'])
+
+                        models.User.findById(sessionUser._id).select({"tokens": 1, "num_of_extra_tokens": 1, "proxy": 1, "biography": 1,"first_name": 1 ,"last_name": 1,"facebook_id": 1, "avatar": 1,"score": 1, "followers": 1,'num_of_proxies_i_represent': 1})
+
+                        models.User.findById(sessionUser._id).select({
+                            "tokens":1,
+                            "num_of_extra_tokens":1,
+                            "proxy":1,
+                            "biography":1,
+                            "first_name":1,
+                            "last_name":1,
+                            "facebook_id":1,
+                            "avatar":1,
+                            "score":1,
+                            "followers":1,
+                            'num_of_proxies_i_represent':1
+                        })
+
                             .populate("proxy.user_id"/*,['_id','first_name','last_name','avatar','facebook_id','num_of_given_mandates','score','num_of_proxies_i_represent']*/)
 
                             .exec(function(err, user){
@@ -96,7 +129,7 @@ module.exports = function (req, res) {
         var tokens =  user_obj.tokens;
 
         var tokensBarModel = new TokensBarModel(9, num_of_extra_tokens, tokens, proxy);
-        var proxyToSerializ=proxyJson=isHisuru? sessionUser.proxy:  proxy;
+        var proxyToSerializ=proxyJson= isHisuru && req.session.user ? sessionUser.proxy:  proxy;
         for(var i=0 ;i<proxyToSerializ.length;i++){
             if( proxyToSerializ[i].user_id && !isHisuru){
                 proxyToSerializ[i].user_id.avatar=   proxyToSerializ[i].user_id.avatar_url();
@@ -114,7 +147,7 @@ module.exports = function (req, res) {
                 title:"אורו שלי",
                 logged:req.isAuthenticated(),
                 big_impressive_title:"",
-                user:sessionUser,//current user
+                user: sessionUser,//current user
                 pageUser:user_obj ,///  hisuru user
                 //   avatar:user_obj.avatar_url(),
                 curr_user_proxy: curr_user_db ? curr_user_db.proxy : null,

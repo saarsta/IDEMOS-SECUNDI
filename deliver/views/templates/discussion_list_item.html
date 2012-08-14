@@ -6,7 +6,7 @@
         </div>
         </a>
         <div class="text">
-            <h4>{title}</h4>
+            <h4><a href="/discussions/{_id}"> {title} </a></h4>
             <p>{text_field_preview|s}</p>
         </div>
         <div class="bottom cf">
@@ -18,7 +18,7 @@
                     <strong>תאריך פתיחה:</strong> {creation_date|time}
                 </div>
                 <div>
-                    <strong>מספר משתתפים:</strong> {followers_count}
+                    <strong>מספר משתתפים:</strong> {participants_count}
                 </div>
             </div>
         </div>
@@ -27,7 +27,7 @@
 		 {?is_follower}
 			<a class="join_button"  data-action="leave"  href="#">עזוב</a>
         {:else}
-			<a class="join_button" data-action="follower"leave href="#">הצטרף</a>
+			<a class="join_button" data-action="follower" href="#">הצטרף</a>
         {/is_follower}
         <a class="share" data-img_src="{image_field_preview.url}" data-text_preview="{text_field_preview}" data-title="דיון בחזון {title}" rel="/discussions/{_id}" href="/facebookShare?link=/discussions/{_id}"><span>שתף</span></a>
     </div>

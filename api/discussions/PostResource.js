@@ -12,7 +12,6 @@ var resources = require('jest'),
     common = require('../common.js'),
     async = require('async'),
     _ = require('underscore'),
-    sanitizer = require('sanitizer'),
     notifications = require('../notifications.js');
 
 var PostResource = module.exports = common.GamificationMongooseResource.extend({
@@ -24,7 +23,7 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
         this.authentication = new common.SessionAuthentication();
         this.filtering = {discussion_id:null};
         this.default_query = function (query) {
-            return query.sort('creation_date', 'ascending');
+            return query.sort({creation_date:'ascending'});
         };
         this.fields = {
             creator_id : common.user_public_fields,
@@ -43,7 +42,7 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
             is_user_follower: null
         };
 //    this.validation = new resources.Validation();=
-        this.default_limit = 3;
+        this.default_limit = 50;
     },
 
     run_query: function(req,query,callback)
@@ -209,7 +208,7 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
 
                         //add user that connected somehow to discussion
                         models.Discussion.update({_id:object.discussion_id, "users.user_id": {$ne: user_id}},
-                            {$addToSet: {users: {user_id: user_id, join_date: Date.now}}}, cbk2);
+                            {$addToSet: {users: {user_id: user_id, join_date: Date.now()}}}, cbk2);
                     },
 
                     //add notification for the dicussion's connected people or creator
@@ -270,7 +269,8 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                 og_action({
                     action: 'comment',
                     object_name:'discussion',
-                    object_url : '/discussions/' + discussion_id + '?hash_post_' + post_id,
+                    object_url : '/discussions/' + discussion_id,
+                    callback_url:'/discussions/' + discussion_id + '/posts/' + post_id,
                     fid : user.facebook_id,
                     access_token:user.access_token,
                     user:user

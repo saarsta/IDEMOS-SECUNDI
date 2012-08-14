@@ -32,6 +32,7 @@ var Action = module.exports = new Schema({
     execution_date:{type:Date, 'default':Date.now},//change default
     creation_date:{type:Date, 'default':Date.now},
     required_participants:{type:Number, 'default':0},
+    admin_text: {type: String, 'default': "עזרו לזה לקרות!"},
 
     //users that are going to be in the action
     going_users: [

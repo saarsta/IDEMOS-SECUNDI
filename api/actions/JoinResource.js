@@ -23,11 +23,51 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
         this.authentication = new common.SessionAuthentication();
         this.filtering = {discussion_id: null};
         this.fields = {
-            action_id: null,
-//            is_follower: null,
-            is_going: null,
-            join_id: null
-        }
+            map_join_to_user: {
+                _id : null,
+                first_name : null,
+                last_name : null,
+                avatar_url : null,
+                score : null,
+                num_of_proxies_i_represent : null
+            },
+            num_of_going: null,
+            is_going: null
+        };
+    },
+
+//    get_object:function (req, id, callback) {
+//        this._super(req, id, callback);
+//    },
+
+    run_query: function(req,query,callback)
+    {
+        query.populate('user_id', {'_id':1, 'first_name':1, 'last_name':1, 'avatar_url':1, 'score':1, 'num_of_proxies_i_represent':1});
+        this._super(req,query,callback);
+    },
+
+    //in the callback i want to put only the users
+    get_objects: function (req, filters, sorts, limit, offset, callback) {
+
+          this._super(req, filters, sorts, limit, offset, function(err, result){
+              if(result.objects.length){
+                  result.objects = _.map(result.objects, function(map_join_to_user){
+                      return {
+                          map_join_to_user: {
+                              _id : map_join_to_user.user_id._id,
+                              first_name : map_join_to_user.user_id.first_name,
+                              last_name : map_join_to_user.user_id.last_name,
+                              avatar_url : map_join_to_user.user_id.avatar_url,
+                              score : map_join_to_user.user_id.score,
+                              num_of_proxies_i_represent : map_join_to_user.user_id.num_of_proxies_i_represent,
+                          }
+                      }
+                   });
+                  callback(err, result);
+              }else{
+                  callback(err, result);
+              }
+        });
     },
 
     create_obj: function(req,fields,callback){
@@ -40,7 +80,9 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
         async.waterfall([
 
             function(cbk){
-                models.Join.findOne({user_id: user_id, action_id: action_id}, cbk);
+                models.Join.findOne({user_id: user_id, action_id: action_id}, function(err, args){
+                    cbk(err, args);
+                });
             },
 
             function(join_obj, cbk){
@@ -48,7 +90,7 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
                     async.parallel([
                         //reduce action.num_of_going
                         function(cbk1){
-                            models.Action.update({id: action_id}, {$inc: {num_of_going: - 1}}, cbk);
+                            models.Action.update({id: action_id}, {$inc: {num_of_going: - 1}}, cbk1);
                         },
 
                         function(cbk1){
@@ -63,7 +105,6 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
                             req.gamification_type = "leave_action";
                             callback(err, {is_going: false});
                         }
-
                     })
                 }else{
                     models.Action.findById(action_id, cbk);
@@ -71,18 +112,21 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
             },
 
             function(action, cbk){
-                g_action_obj = action;
-                var join_object = new self.model();
-                fields.user_id = user_id;
-                fields.action_creator_id = action.creator_id;
+                if(!action){
+                   cbk("no such action_id");
+                }else{
+                    g_action_obj = action;
+                    var join_object = new self.model();
+                    fields.user_id = user_id;
+                    fields.action_creator_id = action.creator_id;
 
-                for(var field in fields)
-                {
-                    join_object.set(field,fields[field]);
+                    for(var field in fields)
+                    {
+                        join_object.set(field,fields[field]);
+                    }
+
+                    self.authorization.edit_object(req, join_object, cbk);
                 }
-
-                self.authorization.edit_object(req, join_object, cbk);
-
             },
 
             function(join_obj, cbk){

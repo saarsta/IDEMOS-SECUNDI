@@ -146,12 +146,12 @@ var db_functions = {
     },
     ///////--------------------------------------/////////
 
-    getUserAfterFbConnect: function(fb_id, access_token, callback){
+    getUserAfterFbConnect: function(access_token, callback){
             this.loggedInAjax({
                 url: '/api/fb_connect',
                 type: "POST",
                 async: true,
-                data: {fb_id: fb_id, access_token: access_token},
+                data: {access_token: access_token},
 
                 success: function (data) {
                     callback(null, data);
@@ -583,6 +583,7 @@ var db_functions = {
     },
 
 
+
     getPopularPostByCycle: function(discussion_id, sort_by,offset, callback){
         db_functions.loggedInAjax({
             url: '/api/posts?discussion_id=' + discussion_id + "&order_by=" + sort_by + '&offset=' + offset,
@@ -810,6 +811,7 @@ var db_functions = {
             }
         });
     },
+
     getAllItemsByUser: function(api_resource,userID, callback){
         var userIdParam;
         if(!userID){
@@ -954,20 +956,26 @@ var db_functions = {
         });
     },
 
-    getCylceFollowers: function(cycle_id, callback){
+    getCylceFollowers: function(cycle_id, page, callback){
         db_functions.loggedInAjax({
-            url: '/api/users?cycles.cycle_id=' + cycle_id,
+            url: '/api/users?cycles.cycle_id=' + cycle_id + '&limit=3&offset=' + (page*14),
             type: "GET",
             async: true,
             success: function (data) {
                 data.objects = $.map(data.objects/*followers*/, function(follower){
-                    var curr_cycle =  $.find(follower.cycles, function(cycle){
-                        return cycle.cycle_id + "" == cycle_id;
-                    });
+                    var curr_cycle;
+                    for(var i=0; i < follower.cycles.length; i++){
+                        if (follower.cycles[i].cycle_id == cycle_id)
+                            curr_cycle = follower.cycles[i];
+
+                    }
+//                    var curr_cycle =  $.find(follower.cycles, function(cycle){
+//                        return cycle.cycle_id == cycle_id;
+//                    });
 
                     return {
 
-                            _id: follower._id,
+                            _id: follower.id,
                             first_name: follower.first_name,
                             last_name: follower.last_name,
                             avatar_url: follower.avatar_url,
@@ -981,6 +989,19 @@ var db_functions = {
 
             error:function(err){
                 callback(err, null);
+            }
+        });
+    },
+
+    //actionType = follow or leave
+    joinToCycleFollowers: function(cycle_id,actionType, callback){
+        db_functions.loggedInAjax({
+            url: '/api/cycles/'+ cycle_id + '/?put='+actionType,
+            data: {"follower": true},
+            type: "PUT",
+            async: true,
+            success: function (data) {
+                callback(null, data);
             }
         });
     },
@@ -1002,11 +1023,11 @@ var db_functions = {
         });
     },
 
-    joinOrLeaveAction: function(callback){
+    joinOrLeaveAction: function(action_id,callback){
         db_functions.loggedInAjax({
             url: '/api/join/',
             type: "POST",
-
+            data:{action_id:action_id},
             async: true,
             success: function (err, data) {
                 callback(null, data);
@@ -1017,6 +1038,23 @@ var db_functions = {
             }
         });
     },
+
+    getActionGoing: function(action_id, callback){
+        db_functions.loggedInAjax({
+            url: '/api/join/?action_id=' + action_id,
+            type: "GET",
+
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            },
+
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },
+
 
     getPostByAction: function(action_id, callback){
         db_functions.loggedInAjax({
@@ -1029,6 +1067,21 @@ var db_functions = {
             },
             error:function(err){
                 callback(err);
+            }
+        });
+    },
+
+    getSortedPostByAction: function(action_id, sort_by,offset, callback){
+        db_functions.loggedInAjax({
+            url: '/api/posts_of_action?action_id=' + action_id + "&order_by=" + sort_by + '&offset=' + offset,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                console.log("posts are" + " " + data);
+                callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
             }
         });
     },

@@ -36,21 +36,20 @@
                 <br />
                 <%- subject.description %>
             </h2>
-            <a  id="new_discussion_bt"  class="green-btn" href="/discussions/new/<%= subject.id %>">צור דיון חדש</a>
         </div>
         <select id="sorting_select" class="left-select">
             <option data-sortby="creation_date" >
-						תאריך
-						</option>
+                תאריך
+            </option>
             <option data-sortby="-grade">
-						דירוג
-						</option>
+                דירוג
+            </option>
             <option data-sortby="-followers_count">
-						עוקבים
-						</option>
+                עוקבים
+            </option>
         </select>
-        <h2>כל הדיונים במערכת</h2>
-        <div id="discussions_list">
+        <h2>כל מעגלי התנופה במערכת</h2>
+        <div id="cycles_list">
 
         </div>
     </div>
@@ -64,7 +63,7 @@
         current_section=1;
         var selectedTag='<%=tag_name? tag_name:'' %>';
         var selectedSubject = '<%= subject.id %>';
-        function createDiscussionsQuery(){
+        function createCyclesQuery(){
             var sortby=  $('#sorting_select').find(':selected').data('sortby');
             var query='order_by='+sortby;
 //            if(selectedTag){
@@ -76,28 +75,26 @@
             return query;
         }
 
-        function loadDiscussionsListToPage(){
-            var query=createDiscussionsQuery();
-            listCommon.reloadList('discussions_list','discussions','discussion_list_item',query);
-
+        function loadCyclesListToPage(){
+            var query= createCyclesQuery();
+            listCommon.reloadList('cycles_list','cycles','cycle_list_item',query);
         }
 
-        $('#discussions_list').on('click','.join_button',function(e){
+        $('#cycles_list').on('click','.join_button',function(e){
 
-            var item=  $(this).parents('[data-id]');
-            var item_id=   item.data('id');
+            var item =  $(this).parents('[data-id]');
+            var item_id =   item.data('id');
             var actionType=  $(this).data('action');
             e.preventDefault();
-            db_functions.joinToDiscussionFollowers(item_id,actionType,function(err,data){
-                dust.render('discussion_list_item', data, function(err, html){
-                   // $("#"+data._id).replaceWith(html);
+            db_functions.joinToCycleFollowers(item_id, actionType,function(err,data){
+                dust.render('cycle_list_item', data, function(err, html){
                     item.replaceWith(html);
-            })
+                })
             })
         });
 
-        $('#sorting_select').change(loadDiscussionsListToPage);
-        loadDiscussionsListToPage();
+        $('#sorting_select').change(loadCyclesListToPage);
+        loadCyclesListToPage();
     })  ;
 
 </script>

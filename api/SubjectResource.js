@@ -17,7 +17,7 @@ var SubjectResource = module.exports = resources.MongooseResource.extend({
         this.filtering = {tags:null};
         this.max_limit = 8;
         this.default_query = function(query){
-            return query.sort('is_uru',-1).sort('gui_order',1);
+            return query.sort({'is_uru':-1,gui_order:1});
         };
     },
     get_objects:function(req,filters,sorts,limit,offset,callback) {

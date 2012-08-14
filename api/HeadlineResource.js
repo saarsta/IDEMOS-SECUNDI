@@ -18,7 +18,7 @@ var HeadlineResource = module.exports = common.GamificationMongooseResource.exte
             this.authentication = new common.SessionAuthentication();
 //            this.filtering = {};
             this.default_query = function (query) {
-                return query.where('is_visible', true).sort('creation_date', 'descending');
+                return query.where('is_visible', true).sort({'creation_date': 'descending'});
             };
             this.fields = {
                 _id: null,
@@ -27,6 +27,7 @@ var HeadlineResource = module.exports = common.GamificationMongooseResource.exte
                 type: null,
                 text_field: null,
                 image_field: null,
+                link: null,
                 tags: null,
                 cycles: null,
                 actions: null,

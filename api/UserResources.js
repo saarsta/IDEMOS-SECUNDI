@@ -2,11 +2,12 @@ var Model= require("../models");
 var mongoose_resource = require('jest');
 var util = require('util');
 var common = require('./common');
+var _ = require('underscore');
 
 var UserResource = module.exports =  mongoose_resource.MongooseResource.extend({
     init: function() {
         this._super(Model.User, null);
-        this.fields = common.user_public_fields;
+        this.fields = _.extend(common.user_public_fields, {cycles : null});
         this.update_fields = {
 //            first_name:null,
 //            last_name:null,
@@ -20,7 +21,12 @@ var UserResource = module.exports =  mongoose_resource.MongooseResource.extend({
         this.filtering = {'followers.follower_id': {
             exact:true,
             in:true
-        }}
+        },
+            'cycles.cycle_id': {
+                exact:true,
+                in:true
+            }
+        }
     },
 
     //update user biography

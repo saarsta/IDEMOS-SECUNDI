@@ -7,18 +7,18 @@
            -->
 <html>
 <head>
-    <%- partial('partials/head.ejs') %>
-    <%- partial('partials/facebook.ejs') %>
+    <% include partials/head.ejs %>
+    <% include partials/facebook.ejs %>
 </head>
 <body>
-<%- partial('partials/body_top.ejs') %>
+<% include partials/body_top.ejs %>
 <div id="wrap">
         <div id="header">
-              <%-partial('partials/menu.ejs')%>
-               <%-partial('partials/user_box.ejs')%>
-               <%-partial('partials/failures.ejs')%>
+              <% include partials/menu.ejs %>
+               <% include partials/user_box.ejs %>
+               <% include partials/failures.ejs %>
 
-               <%- partial('partials/tag_search.ejs') %>
+               <% include partials/tag_search.ejs %>
         </div>
         <div id="content" class="cf">
             <div class="discussion-main">
@@ -208,7 +208,7 @@
    </div>
 
 
-    <%- partial('partials/footer.ejs') %>
+    <% include partials/footer.ejs %>
 <script type="text/javascript">
     var current_section=1;
     $(document).ready(function () {
@@ -280,7 +280,7 @@
                          if (err){
 
                          }else{
-                             creator_id= data.creator_id;
+                             creator_id = data.creator_id;
                              created_discussion_id = data._id;
                              if ($.trim(first_post) != ""){
                                  db_functions.addPostToDiscussion(created_discussion_id, first_post,null, function(err, data){
