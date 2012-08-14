@@ -278,11 +278,11 @@ div.icons {
 }
 
 div.icons img {
-	margin:3px;
-
+	margin: 3px;
 }
 
 #screen {
+	display: none;
 	position: fixed;
 	top: 0;
 	left: 0;

@@ -36,10 +36,14 @@
 
 				<div class="select-z">
 					<select id="styledSelect" class="blueText">
-					<option value="yourMom"></option>
-						<option value="yourMom">נושא 1</option>
-						<option value="myMom">נושא 2</option>
-						<option value="myMom">נושא 3</option>
+						<option value="0"></option>
+						<option value="1">חינוך</option>
+						<option value="2">משק וכלכלה</option>
+						<option value="3">צעסוקה ובטחון חברתי</option>
+						<option value="4">ביטחון אישי</option>
+						<option value="5">ממשל ודמוקרטיה</option>
+						<option value="6">שוויון בזכויות וחובות</option>
+						<option value="7">סביבה, אנרגיה וקיימות</option>
 					</select>
 				</div>
 
@@ -88,6 +92,8 @@
 
 <script type="text/javascript">
 $(function() {
+	var user_logged = <%=user_logged%>;
+
 	$('#display-inline-block-example').on('click', '.checkBox,.checkBoxClear', function() {
 		var $this = $(this);
 
@@ -116,10 +122,22 @@ $(function() {
 	});
 
 	$('#send-vote').on('click', function() {
-		var $select = $('.intext-top-last p.checkBoxClear');
+		if ($('.intext-top-last p.checkBoxClear').length > 0 && $('#styledSelect').val() === '0') {
+			popupProvider.showOkPopup({message: 'עליך לבחור נושא מהרשימה.'});
+			return false;
+		}
 
-		if ($select.length > 0) {
+		if (user_logged === false) {
+			db_functions.login(values["email"], values["password"], function(error, result){
+				if (error){
+					$("#login_head").text(error.responseText || "נסה שוב");
+				}
+				else{
+					window.location.href = window.location.href;
+				}
 
+			});
+			return false;
 		}
 
 		return false;
