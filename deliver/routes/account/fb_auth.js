@@ -42,7 +42,7 @@ module.exports = function (options) {
             // check if user is in db
             function(user, cbk){
                 self.fb_user_details = user;
-                facebook_login.isUserInDataBase(self.fb_user_details.id, cbk);
+                facebook_login.isUserInDataBase(self.fb_user_details.id, function(err, obj){cbk(err, obj)});
             },
 
             // upsert user data and token
@@ -56,7 +56,9 @@ module.exports = function (options) {
                     });
                     return;
                 }
-                facebook_login.updateUesrAccessToken(self.fb_user_details, access_token, cbk);
+                facebook_login.updateUesrAccessToken(self.fb_user_details, access_token, function(err, obj){
+                    cbk(err, obj);
+                });
             },
 
             // save user_id on session
