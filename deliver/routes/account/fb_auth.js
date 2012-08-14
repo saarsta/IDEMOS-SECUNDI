@@ -29,7 +29,7 @@ module.exports = function (options) {
                     function (error, response, body) {
                         if (error || response.statusCode != 200) {
                             console.log(error);
-                            console.log('getFBUserDetails error: '+ response.statusCode);
+                            console.log('getFBUserDetails error: ' + (response && response.statusCode));
                             console.log(body);
                             cbk('error from facebook');
                             return;
@@ -46,12 +46,12 @@ module.exports = function (options) {
             },
 
             // upsert user data and token
-            function(is_user_in_db, _db_user, cbk){
+            function(is_user_in_db, cbk){
                 if(!is_user_in_db){
                     self.fb_user_details.invited_by = request.session['referred_by'];
                     request.session.is_new_user = true;
                     facebook_login.createNewFacebookUser(self.fb_user_details, access_token, function(maybe_db_user_id) {
-                        var maybe_error = (!maybe_db_user_id) ? null : 'create user failed';
+                        var maybe_error = (maybe_db_user_id) ? null : 'create user failed';
                         cbk(maybe_error, maybe_db_user_id);
                     });
                     return;
