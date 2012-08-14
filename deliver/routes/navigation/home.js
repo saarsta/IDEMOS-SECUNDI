@@ -1,6 +1,8 @@
 module.exports = function(req, res){
 
-    if(req.isAuthenticated())
+
+	console.log('test ido')
+    if(req.isAuthenticated() && false)
     {
         res.render('index.ejs', {
             layout: false,
@@ -10,7 +12,7 @@ module.exports = function(req, res){
             avatar_url: req.session.avatar_url
         });
     }else{
-        res.render('index_not_logged.ejs', {
+		res.render('index_not_logged.ejs', {
             layout: false,
             url: req.url,
             user_logged: req.isAuthenticated(),

@@ -196,7 +196,7 @@ body
     display: none;
 }
 
-.user-box:hover h2,user-box.active,
+.user-box:hover h2,
 .tikunim-box:hover h2,
 .tikunim-box.hover h2
 
@@ -1187,7 +1187,7 @@ body
     margin-bottom: 35px;
     padding-top: 12px;
 }
-.user-box:hover h2, .user-box.active .h2
+.user-box:hover h2, .user-box.active h2
 {
     display: block;
 }
