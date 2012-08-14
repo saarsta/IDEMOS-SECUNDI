@@ -178,7 +178,7 @@
         //$(".search-result-box .tabs").tabs();
 
         var userId='<%=pageUser._id %>';
-        var currentUserId='<%=user._id %>';
+        var currentUserId='<%= user_logged ? user._id : ""%>';
        // var proxy = JSON.parse('<%-proxy%>');
         var proxy = <%-proxy%>;
          var isHisUru=<%=isHisUru%>;
@@ -319,23 +319,25 @@
             });
         });
 
-
         $('#add_or_remove_proxy').click(function (e) {
 
-           // var userData = $(this).parents('.discussion-item');
-            var proxyId = userId //userData.data('creator_id');
-            var userName = '<%=pageUser.first_name %>';
-            e.preventDefault();
-            if(currentUserId===userId){ //cant give proxy to myself
-                return ;
+            if(!currentUserId){
+                //TODO ishai how do i do it?
+                popupProvider.showLoginPopup({},callback);
+            }else{
+                // var userData = $(this).parents('.discussion-item');
+                var proxyId = userId //userData.data('creator_id');
+                var userName = '<%=pageUser.first_name %>';
+                e.preventDefault();
+                if(currentUserId===userId){ //cant give proxy to myself
+                    return ;
+                }
+
+                proxyCommon.addOrRemoveProxy(proxy,proxyId,userName,currentUserId,function(newProxy){
+                    proxy = newProxy.proxy;
+
+                })
             }
-
-            proxyCommon.addOrRemoveProxy(proxy,proxyId,userName,currentUserId,function(newProxy){
-                proxy = newProxy.proxy;
-
-            })
-
-
          });
 
 

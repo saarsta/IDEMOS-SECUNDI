@@ -8,7 +8,6 @@ module.exports = function(req,res)
         {
             layout: false,
             tag_name:req.query.tag_name,
-
             title:"דיונים",
             logged: req.isAuthenticated(),
             big_impressive_title: "",

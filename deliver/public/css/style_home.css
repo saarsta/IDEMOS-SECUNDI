@@ -5347,7 +5347,11 @@ body.search-ative #header
 .video_img:hover{
     cursor: pointer
 }
+
+
+
 .youtube_img:hover{
+
     cursor: pointer
 }
 
@@ -7660,12 +7664,15 @@ body.body-action .followers-box h2
     top: -5px;
 }
 
+a.menu-elections:hover {
+    color: #fff!important;
+}
+
 #close_to_footer
 {
-    height: 196px;
-background: #50504f;
-background-position:center top;
-
+    height: 192px;
+    background: #50504f;
+    background-position:center top;
 }
 
 
@@ -7732,14 +7739,23 @@ div.greenbutton-container {
 div.greenbutton {
     height: 12px;
 	width: 300px;
-margin:0 auto;
+    margin:0 auto;
+}
 
-
+#join_btn {
+    clear: both;
+    position: relative;
+    display: block;
+    width: 323px; height: 120px;
+    background: url(../images/greenbotton.png) no-repeat;
+    font-size: 0;
+}
+#join_btn:hover {
+    background-image: url(../images/greenbotton_over.png);
 }
 div.greenbutton span img {
-	margin-right:115px;
+    margin-right: 115px;
 }
-
 
 #peoplearea-container {
      margin-bottom: -10px!important;

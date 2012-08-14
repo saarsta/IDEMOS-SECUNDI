@@ -28,8 +28,8 @@ var CyclePostResource = module.exports = jest.Resource.extend({
         async.waterfall([
             function(cbk){
                 models.Cycle.findById(req.query.cycle_id)
-                .select(['discussions'])
-                .populate('discussions', ['title'])
+                .select({'discussions': 1})
+                .populate('discussions', {'title': 1})
                 .exec(cbk);
             },
 
@@ -266,7 +266,7 @@ function getSortedPostsByNumberOfDiscussions(discussions, callback)
 
 function putIsFollowerAndVoteBallanceOnEachPost(user_id, posts, callback){
 
-        if(user_id){
+        if(user_id && posts){
             async.waterfall([
                 function(cbk){
                     models.User.findById(user_id, cbk);
@@ -307,5 +307,4 @@ function putIsFollowerAndVoteBallanceOnEachPost(user_id, posts, callback){
             _.each(posts, function(post){ post.is_user_follower = false; })
             callback(null, posts);
         }
-
     }
