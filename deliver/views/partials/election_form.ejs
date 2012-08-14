@@ -129,10 +129,9 @@ $(function() {
 
 		if (user_logged === false) {
 			db_functions.login(values["email"], values["password"], function(error, result){
-				if (error){
+				if (error) {
 					$("#login_head").text(error.responseText || "נסה שוב");
-				}
-				else{
+				} else {
 					window.location.href = window.location.href;
 				}
 
