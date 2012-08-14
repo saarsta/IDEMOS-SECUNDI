@@ -93,7 +93,45 @@
 <script type="text/javascript">
 $(function() {
 	var user_is_new	= false,
-		user_logged	= <%=user_logged%>;
+		user_logged	= <%=user_logged%>,
+		mapGuide = {
+			0:	'entry.6.group',
+			1:	'entry.7.group',
+			2:	'entry.13.group',
+			3:	'entry.11.group',
+			4:	'entry.25.group',
+			5:	'entry.23.group',
+			6:	'entry.9.group',
+			7:	'entry.31.group',
+			8:	'entry.21.group',
+			9:	'entry.19.group',
+			10:	'entry.33.group',
+			11:	'entry.35.group',
+			12:	'entry.17.group',
+			13:	'entry.15.group',
+		};
+
+	function getVoteData() {
+		var data = {};
+
+		if (user_is_new === 'facebook') {
+			data['entry.41.group'] = 'כן';
+		} else if (user_is_new === 'uru') {
+			data['entry.42.group'] = 'כן';
+		}
+
+		$('.checkBox,.checkBoxClear').map(function(index) {
+			if ($(this).hasClass('checkBoxClear')) {
+				if (index === 14) {
+					data['entry.37.single'] = $('#styledSelect').val() + ' - ' + $('#textarea').val();
+				} else {
+					data[mapGuide[index]] = 'כן';
+				}
+			}
+		});
+
+		return data;
+	}
 
 	function shareScreen() {
 		$('#box-share,#screen').show();
@@ -134,15 +172,21 @@ $(function() {
 	});
 
 	$('#send-vote').on('click', function() {
-		if ($('.intext-top-last p.checkBoxClear').length > 0 && $('#styledSelect').val() === '0') {
-			popupProvider.showOkPopup({message: 'עליך לבחור נושא מהרשימה.'});
-			return false;
+		if ($('.intext-top-last p.checkBoxClear').length > 0) {
+			if ($('#styledSelect').val() === '0') {
+				popupProvider.showOkPopup({message: 'עליך לבחור נושא מהרשימה.'});
+				return false;
+			} else if ($('#textarea').hasClass('placeholder')) {
+				popupProvider.showOkPopup({message: 'עליך לתת תיאור להצעתך.'});
+				return false;
+			}
 		}
 
 		if (user_logged === false) {
 			var $input		= $('#user-signup :input'),
 				fullname	= $input.eq(0).val(),
 				email		= $input.eq(1).val();
+			user_is_new = 'uru';
 			/* register user - sendVote() if ok */
 			return false;
 		}
