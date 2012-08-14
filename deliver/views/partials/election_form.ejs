@@ -164,6 +164,10 @@ $(function() {
         var data = getVoteData();
         $.post('/elections/vote', data, function(ret_data){
             shareScreen();
+        }).fail(function() {
+            popupProvider.showOkPopup({message: 'הצבעה לא נרשמה. האם הצבעת כבר בעבר?', onOkCilcked:function() {
+                window.location.href = window.location.href;
+            }});
         });
     }
 
@@ -182,12 +186,11 @@ $(function() {
 
 		if (user_logged === false) {
 			var $input		= $('#user-signup :input'),
-				name_parts	= $input.eq(0).val().split(' '),
+				full_name	= $input.eq(0).val(),
 				email		= $input.eq(1).val();
-            var first_time = name_parts.shift();
-            var last_name = name_parts.join(' ');
-			var user_is_new = 'uru';
-			/* register user - sendVote() if ok */
+            $.post('/account/register', {full_name:full_name, email:email}, sendVote).fail(function() {
+                popupProvider.showOkPopup({message: 'ההרשמה לא הצליחה, אנא בידוקו את כתובת המייל'});
+            });
 			return false;
 		}
 

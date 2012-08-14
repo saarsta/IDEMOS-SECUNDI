@@ -10,8 +10,14 @@ module.exports = {
         var data = req.body;
         var user = new models.User();
         user.email = (data.email || '').toLowerCase().trim();
-        user.first_name = data.first_name;
-        user.last_name = data.last_name;
+        if (data['full_name']) {
+            var name_parts = data['full_name'].split(' ');
+            user.first_name = name_parts.shift();
+            user.last_name = name_parts.join(' ');
+        } else {
+            user.first_name = data.first_name;
+            user.last_name = data.last_name;
+        }
         user.identity_provider = "register";
         if (req.session.referred_by) {
             user.invited_by = req.session.referred_by;
