@@ -811,6 +811,7 @@ var db_functions = {
             }
         });
     },
+
     getAllItemsByUser: function(api_resource,userID, callback){
         var userIdParam;
         if(!userID){
@@ -988,6 +989,19 @@ var db_functions = {
 
             error:function(err){
                 callback(err, null);
+            }
+        });
+    },
+
+    //actionType = follow or leave
+    joinToCycleFollowers: function(cycle_id,actionType, callback){
+        db_functions.loggedInAjax({
+            url: '/api/cycles/'+ cycle_id + '/?put='+actionType,
+            data: {"follower": true},
+            type: "PUT",
+            async: true,
+            success: function (data) {
+                callback(null, data);
             }
         });
     },

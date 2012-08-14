@@ -1,0 +1,62 @@
+<div class="one-box maag-one-box cf" data-id="{_id}">
+    <div class="right">
+        <a href="/cycles/{_id}">
+            <div style="width:141px; height:79px; float:right;" class="auto-scale">
+                <img class="floatRight" src="{image_field_preview.url}" alt="{tooltip_or_title}" title="{tooltip_or_title}" />
+            </div>
+        </a>
+
+        <div class="text">
+            <h4>{title}</h4>
+            <p>{text_field_preview|s}</p>
+        </div>
+        <div class="bottom cf">
+            <div class="ratio">
+            </div>
+            <div class="info">
+                <div class="first">
+                    <strong>
+    תאריך פתיחה:
+                    </strong> {creation_date|date}
+                </div>
+                <div>
+                    <strong>
+מספר משתתפים:
+                    </strong> {participants_count}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="left">
+        {?is_follower}
+        <a class="join_button"  data-action="leave"  href="#">עזוב</a>
+        {:else}
+        <a class="join_button" data-action="follower" href="#">הצטרף</a>
+        {/is_follower}
+        <a class="share" data-img_src="{image_field_preview.url}" data-text_preview="{text_field_preview}" data-title="{title}" rel="/cycles/{_id}" href="/facebookShare?link=/cycles/{_id}"><span>שתף</span></a>
+    </div>
+    <div class="bottom-plus cf">
+        <div class="right">
+            <div class="bottom cf">
+                <div class="info-more">
+                    הפעולה הקרובה
+                </div>
+                <div class="info">
+                        <div class="first">
+                            <span class="status status-green"></span>
+                            <strong> <a class="no_underline_cursor_when_hover" href="/action/{?upcoming_action}{upcoming_action._id}{/upcoming_action}">{?upcoming_action}{upcoming_action.title}{/upcoming_action}</a></strong> | <strong>תאריך ושעה:</strong> {?upcoming_action}{upcoming_action.execution_date|time}{/upcoming_action}
+                        </div>
+                    <div>
+                        <strong>
+                            מספר משתתפים:
+                        </strong> {?upcoming_action}{upcoming_action.num_of_going}{/upcoming_action}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="left">
+            <a class="share" data-img_src="{?upcoming_action}{upcoming_action.image_field_preview.url}{/upcoming_action}" data-text_preview="{?upcoming_action}{upcoming_action.text_field_preview}{/upcoming_action}" data-title="{?upcoming_action}{upcoming_action.title}{/upcoming_action}" rel="/actions/{_id}" href="/facebookShare?link=/actions/{_id}"><span>שתף</span></a>
+
+        </div>
+    </div>
+</div>

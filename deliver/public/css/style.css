@@ -8168,3 +8168,15 @@ body.body-action .followers-box h2
     color: #50504F;
 }
 
+.one-box .bottom-plus .left a {
+    background: #2FD43B url(../images/green-btn-border.png) 0 0 repeat-x;
+    border-color: #2EAB35;
+    margin: 0;
+}
+
+.no_underline_cursor_when_hover{
+    text-decoration: none;
+}
+.no_underline_cursor_when_hover: hover{
+    cursor: pointer;
+}
