@@ -174,7 +174,6 @@ var updateUesrAccessToken = module.exports.updateUesrAccessToken = function(data
         }
         user.access_token = access_token;
         user.is_activated = true;
-//            user.session_id = session_id;
         user.save(function (err) {
             if (err) {
                 console.error(err);
@@ -183,7 +182,6 @@ var updateUesrAccessToken = module.exports.updateUesrAccessToken = function(data
                 callback(null, user.id);
             }
         });
-//        res.end();
     });
 }
 

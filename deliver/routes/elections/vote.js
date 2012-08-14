@@ -1,8 +1,28 @@
 var request = require('request');
 var qs = require('querystring');
+var models = require('../../../models');
+
+
+function updateUserHasVoted(user_id, callback) {
+    models.User.findOne({_id: user_id}, function(err, user) {
+        if (err) {
+            return callback(err);
+        }
+        user.has_voted = true;
+        user.save(function (err) {
+            if (err) {
+                console.error(err);
+                callback(err);
+            } else {
+                callback(null, user.id);
+            }
+        });
+    });
+}
+
 
 module.exports = function(req, res) {
-    if (res.session.user.has_voted)
+    if (req.session.user.has_voted)
         res.json(403 , "has_voted");
 
     // Two lines of google voodoo
@@ -22,9 +42,12 @@ module.exports = function(req, res) {
         method: 'POST',
         body: vote_data
     };
-    var post_req = request.post(post_opts, function(err, resp, body) {
-        res.session.user.has_voted = true;
-        res.session.user.save(function(err) {
+    request.post(post_opts, function(err, resp, body) {
+        if (err) {
+            console.error(err);
+            res.json("ok");
+        }
+        updateUserHasVoted(req.session.user._id, function(err) {
             if(err) {
                 console.error(err);
             }
