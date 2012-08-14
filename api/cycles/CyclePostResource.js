@@ -28,8 +28,8 @@ var CyclePostResource = module.exports = jest.Resource.extend({
         async.waterfall([
             function(cbk){
                 models.Cycle.findById(req.query.cycle_id)
-                .select(['discussions'])
-                .populate('discussions', ['title'])
+                .select({'discussions': 1})
+                .populate('discussions', {'title': 1})
                 .exec(cbk);
             },
 
