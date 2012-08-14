@@ -70,9 +70,21 @@
 		</div>
 	</div>
 	<div class="inarea">
-		<a href="#"><img src="/images/elections/vote-now.png" alt="שלח הצבעה-תנועת עורו"></a>
+		<a href="#" id="send-vote"><img src="/images/elections/vote-now.png" alt="שלח הצבעה-תנועת עורו"></a>
 	</div>
 </div>
+
+<div id="box" class="share">
+	<div id="close"><img src="/images/elections/close.png" alt="עורו" /></div>
+	<div class="icons">
+		<a href="#" target="_blank"><img class "icon" src="/images/elections/face.png" alt="עורו" /></a>
+		<a href="#" target="_blank"><img class "icon" src="/images/elections/tweet.png" alt="עורו" /></a>
+		<a href="#" target="_blank"><img class "icon" src="/images/elections/google.png" alt="עורו" /></a>
+		<a href="#" target="_blank"><img class "icon" src="/images/elections/enva.png" alt="עורו" /></a>
+	</div>
+</div>
+
+<div id="screen"></div>
 
 <script type="text/javascript">
 $(function() {
@@ -101,6 +113,23 @@ $(function() {
 			}
 			break;
 		}
+	});
+
+	$('#send-vote').on('click', function() {
+		var $select = $('.intext-top-last p.checkBoxClear');
+
+		if ($select.length > 0) {
+
+		}
+
+		return false;
+	});
+
+    $('#button').on('click', function(){
+		$('#box.share,#screen').show();
+		$('#screen,#close').one('click', function() {
+			$('#box.share,#screen').hide();
+		}).show();
 	});
 });
 </script>

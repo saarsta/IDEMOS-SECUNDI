@@ -109,7 +109,11 @@ select#styledSelect.blueText {
 	-webkit-padding-start: 2px;
 	-webkit-user-select: none;
 }
-
+/*
+select#styledSelect.blueText option {
+	background-color: #fff;
+}
+*/
 #textarea {
 	position: relative;
 	right: 148px;
@@ -251,9 +255,41 @@ label#id1 {
 	background-color: #fff;
 }
 
-#screen {
+#box.share {
+	width: 594px;
+	height: 235px;
+	margin: -115px 0 0 -315px;
+	background: #fff url(../images/elections/box-bg.png) no-repeat 0 0;
+}
+
+#close img {
 	position: absolute;
+	top: -15px;
+	left: -15px;
+	width: 30px;
+	height: 30px;
+	cursor: pointer;
+}
+
+div.icons {
+	position: absolute;
+	left: 200px;
+	bottom: 15px;
+}
+
+div.icons img {
+	margin:3px;
+
+}
+
+#screen {
+	position: fixed;
 	top: 0;
 	left: 0;
+	width: 100%;
+	height: 100%;
 	background-color: #000;
+
+	filter: alpha(opacity=70);
+	opacity: 0.7;
 }
