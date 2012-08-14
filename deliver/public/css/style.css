@@ -5419,7 +5419,11 @@ body.search-ative #header
     width: 642px;
     margin-bottom: 20px;
 }
-
+.cycle-content
+{
+    height: 250px;
+    overflow: hidden;
+}
 #search_form
 {
     position: relative;
@@ -6184,6 +6188,7 @@ a.fraction-btn
     border-top: 1px solid #eaeaea;
     padding: 25px 0 23px 160px;
     position: relative;
+    min-height: 80px;
 }
 .updates-box .right .updates .one:first-child
 {
