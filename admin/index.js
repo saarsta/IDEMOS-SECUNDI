@@ -14,6 +14,8 @@ module.exports = function(app)
 
     var admin = mongoose_admin.createAdmin(app,{root:'admin'});
 
+    mongoose_admin.loadApi(app);
+
     if(require('../utils').getShowOnlyPublished()) {
         var _modelCounts = admin.modelCounts;
         admin.modelCounts = function(collectionName,filters, onReady) {

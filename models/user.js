@@ -2,6 +2,7 @@ var mongoose = require("mongoose"),
     Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId,
     mongoose_types = require('j-forms').types,
+    common = require('./common'),
     utils = require('./../utils');
 
 
@@ -56,7 +57,7 @@ var User = module.exports = new Schema({
     updates: Schema.Types.Mixed,
     //proxy - people i gave my tokens
     proxy: [
-        new Schema({user_id:{type:ObjectId, ref:'User'}, number_of_tokens: {type:Number, 'default': 0, /*min: 0,*/ max: 3},
+        new Schema({user_id:{type:ObjectId, ref:'User',query:common.FIND_USER_QUERY}, number_of_tokens: {type:Number, 'default': 0, /*min: 0,*/ max: 3},
         number_of_tokens_to_get_back: {type:Number, 'default': 0,/* min: 0,*/ max: 3}})
     ],
 //    num_of_mandates_i_gave: {type: Number, 'default': 0},
@@ -66,7 +67,7 @@ var User = module.exports = new Schema({
     score:{type:Number, 'default':0},
 //    unseen_notifications: {type:Number, 'default':0},
     decoration_status:{type:String, "enum":['a', 'b', 'c'], editable: false},
-    invited_by: {type: ObjectId, ref: 'User'},
+    invited_by: {type: ObjectId, ref: 'User', query:common.FIND_USER_QUERY},
     has_been_invited : {type: Boolean, 'default': false, editable: false},
     tokens_achivements_to_user_who_invited_me: Schema.Types.Mixed,
     num_of_extra_tokens: {type: mongoose_types.Integer, 'default': 0, max:6, min: 0},

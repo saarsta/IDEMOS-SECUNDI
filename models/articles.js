@@ -3,6 +3,7 @@ var mongoose = require("mongoose"),
     Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId,
     mongoose_types = require('j-forms').types,
+    common = require('./common'),
     utils = require('./../utils');
 
 
@@ -35,7 +36,7 @@ var Comment = new Schema({
 });
 
 var Article = module.exports = new Schema({
-    user_id:{type:ObjectId, ref:'User', index:true, required:true, limit: 1000},
+    user_id:{type:ObjectId, ref:'User', index:true, required:true, limit: 1000, query:common.FIND_USER_QUERY},
     first_name: {type:String, editable:false},
     last_name: {type:String, editable:false},
     avatar : {type:String, editable:false},
