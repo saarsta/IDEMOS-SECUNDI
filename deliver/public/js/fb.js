@@ -46,9 +46,6 @@ function facebookLogin(callback) {
     FB.getLoginStatus(function(response) {
         if (response.status === 'connected') {
             db_functions.getUserAfterFbConnect(response.authResponse.accessToken, callback);
-        } else if (response.status === 'not_authorized') {
-            console.log('User cancelled login or did not fully authorize.');
-            callback('User cancelled login or did not fully authorize.');
         } else {
             fb_auth_and_persist(callback);
         }
