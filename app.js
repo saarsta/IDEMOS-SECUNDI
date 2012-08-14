@@ -35,7 +35,7 @@ app.configure('development', function(){
     require('./deliver/tools/compile_dust_templates');
 
     // TODO REMOVE THIS BEFORE COMMIT
-//    app.set('send_mails',true);
+    app.set('send_mails',true);
 
 });
 
@@ -210,7 +210,7 @@ app.configure(function(){
             logged: req.isAuthenticated && req.isAuthenticated(),
             user_logged: req.isAuthenticated && req.isAuthenticated(),
             user: req.session && req.session.user,
-            avatar: req.session && req.session.avatar_url,
+            avatar: (req.session && req.session.avatar_url) || "/images/default_user_img.gif",
             url: req.url
         });
 

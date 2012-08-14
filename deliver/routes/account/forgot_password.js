@@ -38,8 +38,11 @@ module.exports ={
             }
         ], function(err, obj){
 
-            if(err)
-                res.send('something wrong', 500);
+            if(err) {
+                console.error('error sending forgot password mail to ' + email,err);
+                console.trace();
+                res.render('500.ejs',{error:err});
+            }
             else
                 if(obj == 0)
                     res.send('no such email', 500);

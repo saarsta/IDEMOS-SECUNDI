@@ -49,16 +49,11 @@ module.exports = function(req,res)
                         {
                             res.setHeader("Expires", "0");
                             res.render('discussion.ejs',{
-                                layout: false,
                                 title:"דיון",
-                                user_logged: req.isAuthenticated(),
                                 discussion_id: req.params[0],
                                 subject_id: req.query.subject_id,
-                                user: req.session.user,
-                                avatar:req.session.avatar_url,
                                 tab:'discussions',
                                 discussion: discussion,
-                                url: req.url,
                                 proxy:proxyJson,
                                 fb_description: discussion.text_field_preview,
                                 fb_title: discussion.title

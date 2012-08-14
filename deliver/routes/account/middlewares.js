@@ -63,7 +63,7 @@ exports.auth_middleware = function (req, res, next) {
 
     if (req.isAuthenticated())
     {
-        if(!req.session.user) {
+        if(!req.session.user || !req.session.avatar_url) {
                 models.User.findById(req.session.auth.user._id || req.session.user_id ,function(err,user){
                     if(err){
                         console.log('couldn put user id' + err.message);
