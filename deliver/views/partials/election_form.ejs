@@ -64,10 +64,10 @@
 	<div class="reg-container">
 		<div class="rightone">
 			<p>התחברו לעורו באמצעות</p>
-			<a href="#"><img src="/images/elections/connectwith.png" alt="התחבר לעורו"></a>
+			<a href="#" id="facebook-connect"><img src="/images/elections/connectwith.png" alt="התחבר לעורו"></a>
 		</div>
 		<div class="leftone">
-			<form>
+			<form id="user-signup">
 				<label id="id1"><input onfocus="this.value=''" class="design2" size="22" value="שם + שם משפחה" name="textfield" type="text"></label>
 				<label><input onfocus="this.value=''" class="design2" size="22" value="כתובת מייל" name="textfield" type="text"></label>
 			</form>
@@ -78,13 +78,13 @@
 	</div>
 </div>
 
-<div id="box" class="share">
+<div id="box-share">
 	<div id="close"><img src="/images/elections/close.png" alt="עורו" /></div>
 	<div class="icons">
-		<a href="#" target="_blank"><img class "icon" src="/images/elections/face.png" alt="עורו" /></a>
-		<a href="#" target="_blank"><img class "icon" src="/images/elections/tweet.png" alt="עורו" /></a>
-		<a href="#" target="_blank"><img class "icon" src="/images/elections/google.png" alt="עורו" /></a>
-		<a href="#" target="_blank"><img class "icon" src="/images/elections/enva.png" alt="עורו" /></a>
+		<a href="mailto:?subject=%D7%92%D7%9D%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%A8%D7%92%D7%99%D7%A9%20%D7%90%D7%96%D7%A8%D7%97%20%D7%9C%D7%90%20%D7%9E%D7%99%D7%95%D7%A6%D7%92%20%E2%80%93%20%D7%90%D7%96%20%D7%91%D7%97%D7%A8%D7%AA%D7%99%20%D7%91%D7%A0%D7%95%D7%A9%D7%90%D7%99%D7%9D%20%D7%94%D7%97%D7%A9%D7%95%D7%91%D7%99%D7%9D%20%D7%9C%D7%99%20%D7%91%D7%90%D7%9E%D7%AA!&body=%D7%91%D7%97%D7%99%D7%A8%D7%95%D7%AA%20%D7%91%D7%A2%D7%95%D7%A8%D7%95%3A%20http%3A%2F%2Fwww.uru.org.il%2F" target="_blank"><img class "icon" src="/images/elections/enva.png" alt="עורו" /></a>
+		<a href="#" id="share-google"><img class "icon" src="/images/elections/google.png" alt="עורו" /></a>
+		<a href="#" id="share-twitter"><img class "icon" src="/images/elections/tweet.png" alt="עורו" /></a>
+		<a href="#" id="share-facebook"><img class "icon" src="/images/elections/face.png" alt="עורו" /></a>
 	</div>
 </div>
 
@@ -92,7 +92,19 @@
 
 <script type="text/javascript">
 $(function() {
-	var user_logged = <%=user_logged%>;
+	var user_is_new	= false,
+		user_logged	= <%=user_logged%>;
+
+	function shareScreen() {
+		$('#box-share,#screen').show();
+		$('#screen,#close').one('click', function() {
+			var expireDate = new Date();
+            expireDate.setDate(expireDate.getDate() + 90);
+            document.cookie = 'election-vote-sent=true;expires=' + expireDate.toUTCString() + ';path=/';
+			window.location.reload();
+			$('#box-share,#screen').hide();
+		}).show();
+	}
 
 	$('#display-inline-block-example').on('click', '.checkBox,.checkBoxClear', function() {
 		var $this = $(this);
@@ -128,25 +140,54 @@ $(function() {
 		}
 
 		if (user_logged === false) {
-			db_functions.login(values["email"], values["password"], function(error, result){
-				if (error) {
-					$("#login_head").text(error.responseText || "נסה שוב");
-				} else {
-					window.location.href = window.location.href;
-				}
-
-			});
+			var $input		= $('#user-signup :input'),
+				fullname	= $input.eq(0).val(),
+				email		= $input.eq(1).val();
+			/* register user - sendVote() if ok */
 			return false;
 		}
+
+		sendVote();
 
 		return false;
 	});
 
-    $('#button').on('click', function(){
-		$('#box.share,#screen').show();
-		$('#screen,#close').one('click', function() {
-			$('#box.share,#screen').hide();
-		}).show();
+	$("#facebook-connect").on('click', function(){
+		facebookLogin(function(error, result) {
+			if (!error) {
+				if(result.is_new) {
+					user_is_new = 'facebook';
+				}
+				user_logged = true;
+				popupProvider.showOkPopup({message: 'חוברת למערכת בהצלחה.'});
+				$('.vote-container-non-reg').addClass('vote-container').removeClass('vote-container-non-reg');
+			} else {
+				console.error(error);
+				popupProvider.showOkPopup({message: 'הנסיון להתחבר באמצעות פייסבוק כשל.'});
+			}
+		});
+		return false;
 	});
+
+	$('#share-facebook').on('click', function() {
+	    window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent('http://www.uru.org.il'),
+	    	'share-facebook', 'status=0,scrollbars=0,location=0,height=320,width=660,resizable=1');
+		return false;
+	});
+
+	$('#share-twitter').on('click', function() {
+	    window.open('https://twitter.com/share?url=' + encodeURIComponent('http://www.uru.org.il') + '&text=' +
+	    	encodeURIComponent('גם אני מרגיש חלק מהרוב הלא מיוצג, שמתי בצד הבדלים של שמאל-ימין מדיני ובחרתי בנושאים שחשוב לי לשנות. מרגישים כמוני? הצטרפו והצביעו!') +
+	    	'&via=URUisrael', 'share-twitter', 'status=0,scrollbars=0,location=0,height=320,width=660,resizable=1');
+		return false;
+	});
+
+	$('#share-google').on('click', function() {
+	    window.open('https://plusone.google.com/_/+1/confirm?hl=en&url=' + encodeURIComponent('http://www.uru.org.il'),
+	    	'share-google', 'status=0,scrollbars=0,location=0,height=320,width=660,resizable=1');
+		return false;
+	});
+
+	$('#user-signup').on('submit', function(){return false;});
 });
 </script>

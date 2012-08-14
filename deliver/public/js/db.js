@@ -1149,21 +1149,21 @@ var db_functions = {
         });
     },
 
-    getInfoItemsOfSubjectByKeywords: function(keywords, subject_id,sort_by, callback){
-        var keywords_arr = $.trim(keywords).replace(/\s+/g,".%2B");
-        db_functions.loggedInAjax({
-            url: '/api/information_items/?or=text_field__regex,text_field_preview__regex,title__regex&title__regex=' + keywords_arr + '&text_field__regex='+ keywords_arr + '&text_field_preview__regex='+ keywords_arr + '&subject_id=' + subject_id+'&order_by='+sort_by,
-            type: "GET",
-            async: true,
-            success: function (data) {
-                console.log(data);
-                callback(null, data)
-            },
-            error:function(err){
-                callback(err, null);
-            }
-        });
-    }
+	getInfoItemsOfSubjectByKeywords: function(keywords, subject_id,sort_by, callback){
+		var keywords_arr = $.trim(keywords).replace(/\s+/g,".%2B");
+		db_functions.loggedInAjax({
+			url: '/api/information_items/?or=text_field__regex,text_field_preview__regex,title__regex&title__regex=' + keywords_arr + '&text_field__regex='+ keywords_arr + '&text_field_preview__regex='+ keywords_arr + '&subject_id=' + subject_id+'&order_by='+sort_by,
+			type: "GET",
+			async: true,
+			success: function (data) {
+				console.log(data);
+				callback(null, data)
+			},
+			error:function(err){
+				callback(err, null);
+			}
+		});
+	}
 };
 
 

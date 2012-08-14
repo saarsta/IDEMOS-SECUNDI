@@ -241,24 +241,17 @@ label#id1 {
 	margin-left: 7px;
 }
 
-#box {
+#box-share {
 	display: none;
-	position: absolute;
+	position: fixed;
 	z-index: 20;
 	top: 50%;
 	left: 50%;
-	width: 150px;
-	height: 150px;
-	margin: -75px 0 0 -75px;
-	text-align: center;
-	border: 5px dotted red;
-	background-color: #fff;
-}
-
-#box.share {
 	width: 594px;
 	height: 235px;
 	margin: -115px 0 0 -315px;
+	text-align: center;
+	border: 0;
 	background: #fff url(../images/elections/box-bg.png) no-repeat 0 0;
 }
 

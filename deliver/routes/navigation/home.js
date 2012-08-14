@@ -1,6 +1,8 @@
 module.exports = function(req, res){
 
-    if(false && req.isAuthenticated())
+
+	console.log('test ido')
+    if(req.isAuthenticated() && false)
     {
         res.render('index.ejs', {
             layout: false,
