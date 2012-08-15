@@ -24,7 +24,7 @@ module.exports = function(req, res){
             res.render('500.ejs',{error:err});
         else {
             res.render('update.ejs',{
-                cycle: update
+                update: update
             });
         }
     })
