@@ -36,7 +36,7 @@
 
 				<div class="select-z">
 					<select id="styledSelect" class="blueText">
-						<option value="0"></option>
+						<option value="0">בחר נושא</option>
 						<option value="1">חינוך</option>
 						<option value="2">משק וכלכלה</option>
 						<option value="3">תעסוקה ובטחון חברתי</option>
@@ -194,6 +194,7 @@ $(function() {
         var data = getVoteData();
         $.post('/elections/vote', data, function(ret_data){
             shareScreen();
+
         }).fail(function(e) {
             setTimeout(function(){
                 popupProvider.showOkPopup({message: 'הצבעה לא נרשמה. האם הצבעת כבר בעבר?'/*, onOkCilcked:function() {
@@ -235,6 +236,7 @@ $(function() {
             var $input		= $('#user-signup :input'),
 				full_name	= $input.eq(0).val(),
 				email		= $input.eq(1).val();
+
             $.post('/account/register', {full_name:full_name, email:email}, sendVote).fail(function(e) {
                 if(e.statusText == "Conflict"){
                     popupProvider.showLoginPopup({}, function(err, result){
