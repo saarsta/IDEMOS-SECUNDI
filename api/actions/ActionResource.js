@@ -45,7 +45,8 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
 //                is_follower: null,
                 is_going: null,
                 updated_user_tokens: null,
-                join_id: null
+                join_id: null,
+                num_of_going: null
             }
             this.default_query = function(query){
                 return query.sort({execution_date:'descending'});

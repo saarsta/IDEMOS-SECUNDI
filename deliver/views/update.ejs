@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+
+<html>
+<head  prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# <%= settings.facebook_app_name %>: http://ogp.me/ns/fb/<%= settings.facebook_app_name %>#">
+    <% include partials/head.ejs %>
+    <script src="/resources/js/jquery-fieldselection.js" type="text/javascript"></script>
+    <% include fb_bot/meta.ejs %>
+</head>
+<body>
+<% include partials/body_top.ejs %>
+<div id="wrap">
+        <div id="header">
+            <% include partials/menu.ejs %>
+            <% include partials/user_box.ejs %>
+            <% include partials/failures.ejs %>
+            <% include partials/tag_search.ejs %>
+        </div>
+
+        <div id="content" class="cf">
+            <div class="rightCol">
+                <div class="nav-btn">
+
+                    <a class="share" data-title="<%= update.title %>" data-text_preview="<%= update.text_field %>" data-img_src="<%= update.image_field.url %>" rel="/updates/<%= update.id %>" href="/facebookShare?link=/updates/<%= update.id %>" target="_blank">שתף</a>
+
+
+                </div>
+                <h2>עעדכון ממעגל התנופה> שם מעדל התנופה</h2>
+                <div class="text cf">
+                    <h3><%=update.title%></h3>
+
+                    <div class="imb-box cf">
+                        <a href="">
+                            <img src="<%=update.image_field.url%>" alt="<%=update.title%>" />
+                        </a>
+                    </div>
+                    <p><%- update.text_field %></p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<% include partials/footer.ejs %>
+
+<script type="text/javascript">
+
+ $(document).ready(function () {
+
+ });
+
+ </script>
+</body>
+</html>

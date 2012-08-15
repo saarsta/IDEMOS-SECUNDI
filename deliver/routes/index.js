@@ -26,6 +26,8 @@ module.exports = function(app) {
 
     router.include('/cycles', require('./cycles'));
 
+    router.include('/updates', require('./updates'));
+
     router.include('/actions', require('./actions'));
 
     router.include('./pending_actions',require('./pending_actions'));
