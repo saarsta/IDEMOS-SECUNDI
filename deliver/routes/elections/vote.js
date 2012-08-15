@@ -47,13 +47,14 @@ module.exports = function(req, res) {
             console.error(err);
             res.json("ok");
         }
-        else
+        else {
             updateUserHasVoted(req.session.user._id, function(err) {
                 if(err) {
                     console.error(err);
                 }
                 res.json("ok");
             });
+        }
     });
 };
 
