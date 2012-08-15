@@ -47,7 +47,7 @@ Cycle.pre("save", function(next){
     var self = this;
 
     var iterator = function(subject, itr_cbk){
-        mongoose.find('Subject').findById(subject.id, function(err, result){
+        mongoose.model('Subject').findById(subject.id, function(err, result){
             if(err){
                 itr_cbk(err, null);
             }else{
