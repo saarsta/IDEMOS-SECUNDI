@@ -50,11 +50,16 @@ var SessionAuthentication = exports.SessionAuthentication = jest.Authentication.
                 models.User.findById(user_id, function(err,user)
                 {
                     if(err)
-                    {
                         callback(err);
-                    }
                     else
                     {
+                        if(!user) {
+                            if(req.method != 'GET')
+                                callback(null,false);
+                            else
+                                callback(null,true);
+                            return;
+                        }
                         req.user = user;
                         // save user last visit
                         // to avoid many updates to the db, don't save if the difference is less than 2 minutes

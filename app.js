@@ -231,6 +231,10 @@ app.configure(function(){
 
 });
 
+process.on('uncaughtException', function(err) {
+    console.error(err);
+});
+
 //if(app.settings.env != 'production')
 //require('./routes')(app);
 require('./api')(app);
