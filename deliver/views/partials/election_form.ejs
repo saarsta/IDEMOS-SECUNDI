@@ -68,8 +68,8 @@
 		</div>
 		<div class="leftone">
 			<form id="user-signup">
-				<label id="id1"><input onfocus="this.value=''" class="design2" size="22" value="שם + שם משפחה" name="textfield" type="text"></label>
-				<label><input onfocus="this.value=''" class="design2" size="22" value="כתובת מייל" name="textfield" type="text"></label>
+				<label id="id1"><input class="placeholder design2" size="22" value="שם + שם משפחה" name="textfield" type="text"></label>
+				<label><input class="placeholder design2" size="22" value="כתובת מייל" name="textfield" type="email"></label>
 			</form>
 		</div>
 	</div>
@@ -143,7 +143,7 @@ $(function() {
 		}
 	});
 
-	$('#textarea').on('focus blur', function(e) {
+	$('#textarea, .design2').on('focus blur', function(e) {
 		var $this = $(this);
 
 		switch (e.type) {
@@ -185,7 +185,12 @@ $(function() {
 		}
 
 		if (user_logged === false) {
-			var $input		= $('#user-signup :input'),
+            if ($('input.placeholder').length > 0) {
+                popupProvider.showOkPopup({message: 'אנא התחבר למערכת או הירשם כדי להצביע.'});
+                return false;
+            }
+
+            var $input		= $('#user-signup :input'),
 				full_name	= $input.eq(0).val(),
 				email		= $input.eq(1).val();
             $.post('/account/register', {full_name:full_name, email:email}, sendVote).fail(function() {
