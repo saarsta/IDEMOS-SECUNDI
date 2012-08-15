@@ -32,6 +32,7 @@ module.exports = function(req, res) {
     // e-mail
     req.body['entry.40.single'] = req.session.user ? req.session.user.email : "";
 
+
     var vote_data = qs.stringify(req.body);
 	var post_opts = {
         uri: 'https://docs.google.com/spreadsheet/formResponse?formkey=dDI5dUg1TFMzUENKc09lSXp5aTh2alE6MQ&ifq',
@@ -47,6 +48,7 @@ module.exports = function(req, res) {
             res.json("ok");
         }
         else {
+
             updateUserHasVoted(req.session.user._id, function(err) {
                 if(err) {
                     console.error(err);
