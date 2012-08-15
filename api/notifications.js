@@ -206,7 +206,7 @@ var sendNotificationToUser = function(notification,last_update_date) {
         function(user, cbk) {
             if(!user){
                 cbk("user not found");
-		return;
+		        return;
             }
             // if the user hasn't visited since the last notification was sent, dont send another one, cut's the waterfall
             if(last_update_date && user.last_visit < last_update_date) {
