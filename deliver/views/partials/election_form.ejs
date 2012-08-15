@@ -68,8 +68,8 @@
 		</div>
 		<div class="leftone">
 			<form id="user-signup">
-				<label id="id1"><input class="placeholder design2" size="22" value="שם + שם משפחה" name="textfield" type="text"></label>
-				<label><input class="placeholder design2" size="22" value="כתובת מייל" name="textfield" type="email"></label>
+				<label id="id1"><input id="full_name" class="placeholder design2" size="22" value="שם + שם משפחה" name="textfield" type="text"></label>
+				<label><input id="email" class="placeholder design2" size="22" value="כתובת מייל" name="textfield" type="email"></label>
 			</form>
 		</div>
 	</div>
@@ -93,6 +93,7 @@
 <script type="text/javascript">
 $(function() {
     var user_logged = <%=user_logged%>;
+
     var user_is_new	= false,
 		mapGuide = {
 			0:	'entry.6.group',
@@ -110,6 +111,35 @@ $(function() {
 			12:	'entry.17.group',
 			13:	'entry.15.group'
 		};
+
+    $('#user-signup').validate({
+        errorElement: "p",
+
+        rules:{
+            full_name:{
+                required: true,
+                two_parts: true
+            },
+            email:{
+                required: true
+            }
+        },
+        messages:{
+            full_name: {
+                required:"נא להזין שם פרטי ומשפחה"
+            },
+            email:{
+                required:'נא להזין כתובת מייל',
+                email:'כתובת מייל שגויה'
+            }
+        },
+        highlight: function (element, errorClass) {
+            $(element).addClass('error').removeClass('valid');
+        },
+        unhighlight: function (element, errorClass) {
+            $(element).removeClass('error').addClass('valid');
+        }
+    })
 
 	function getVoteData() {
 		var data = {};
@@ -164,16 +194,27 @@ $(function() {
         var data = getVoteData();
         $.post('/elections/vote', data, function(ret_data){
             shareScreen();
-        }).fail(function() {
-            popupProvider.showOkPopup({message: 'אפשר להצביע רק פעם אחת.', onOkCilcked:function() {
-                window.location.href = window.location.href;
-            }});
+
+        }).fail(function(e) {
+            setTimeout(function(){
+                popupProvider.showOkPopup({message: 'הצבעה לא נרשמה. האם הצבעת כבר בעבר?'/*, onOkCilcked:function() {
+                    window.location.href = window.location.href;
+                }*/});
+            },300);
+
         });
     }
+
+
 
 	$('#send-vote').on('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
+
+        if($('#display-inline-block-example .checkBoxClear').length === 0){
+            popupProvider.showOkPopup({message: 'עליך לבחור הצעה'});
+            return false;
+        }
 		if ($('.intext-top-last p.checkBoxClear').length > 0) {
 			if ($('#styledSelect').val() === '0') {
 				popupProvider.showOkPopup({message: 'עליך לבחור נושא מהרשימה.'});
@@ -184,7 +225,8 @@ $(function() {
 			}
 		}
 
-		if (user_logged === false) {
+
+        if (user_logged === false) {
             if ($('input.placeholder').length > 0) {
                 popupProvider.showOkPopup({message: 'אנא התחבר למערכת או הירשם כדי להצביע.'});
                 return false;
@@ -193,13 +235,28 @@ $(function() {
             var $input		= $('#user-signup :input'),
 				full_name	= $input.eq(0).val(),
 				email		= $input.eq(1).val();
-            $.post('/account/register', {full_name:full_name, email:email}, sendVote).fail(function() {
-                popupProvider.showOkPopup({message: 'ההרשמה לא הצליחה, אנא בידקו את כתובת המייל שהוזנה'});
+
+            $.post('/account/register', {full_name:full_name, email:email}, sendVote).fail(function(e) {
+                if(e.statusText == "Conflict"){
+                    popupProvider.showLoginPopup({}, function(err, result){
+                        if(!err){
+                            sendVote();
+                        }else{
+                            setTimeout(function(){
+                                popupProvider.showOkPopup({message: err.responseText});
+                            },300);
+
+                        }
+
+                    });
+
+                }else
+                    popupProvider.showOkPopup({message: 'ההרשמה לא הצליחה, אנא בידוקו את כתובת המייל'});
             });
 			return false;
 		}
 
-		sendVote();
+        sendVote();
 
 		return false;
 	});
