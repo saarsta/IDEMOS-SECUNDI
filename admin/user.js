@@ -1,7 +1,8 @@
 
-var j_forms = require('j-forms');
+var j_forms = require('j-forms')
+    ,AdminForm = require('admin-with-forms').AdminForm;;
 
-module.exports = j_forms.forms.AdminForm.extend({
+module.exports = AdminForm.extend({
     get_fields: function() {
         this._super();
         if(this.fields['num_of_given_mandates'])

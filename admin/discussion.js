@@ -3,8 +3,9 @@ var j_forms = require('j-forms');
 var async = require('async');
 var models = require('../models');
 var notifications = require('../api/notifications')
+    ,AdminForm = require('admin-with-forms').AdminForm;
 
-module.exports = j_forms.forms.AdminForm.extend({
+module.exports = AdminForm.extend({
     get_fields: function() {
         this._super();
         if(this.fields['threshold_for_accepting_change_suggestions'])

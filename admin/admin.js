@@ -2,10 +2,11 @@
 var j_forms = require('j-forms')
     ,_ = require('underscore')
     ,crypt = require('admin-with-forms').crypt
+    ,AdminForm = require('admin-with-forms').AdminForm
     ,mongoose = require('mongoose');
 
 
-module.exports = j_forms.forms.AdminForm.extend({
+module.exports = AdminForm.extend({
     init:function(request,options)
     {
         this._super(request,options,mongoose.model('_MongooseAdminUser'));

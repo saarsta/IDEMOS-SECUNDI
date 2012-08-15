@@ -1,7 +1,9 @@
 var j_forms = require('j-forms');
-    models = require('../models');
+var models = require('../models')
+    ,AdminForm = require('admin-with-forms').AdminForm;
+
     async = require('async');
-module.exports = j_forms.forms.AdminForm.extend({
+module.exports = AdminForm.extend({
     get_fields: function() {
         this._super();
         if(this.fields['agrees'])

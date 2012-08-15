@@ -39,23 +39,10 @@
                     </div>
                     <div class="one">
                         <label>
-                            שם:
+                            שם מלא:
                         </label>
-
-                        <input id="first_name" name="first_name" class="text" type="text" value="<%= body.first_name || '' %>" />
+                        <input id="full_name" name="full_name" class="text" type="text" value="<%= body.first_name || '' %>" />
                     </div>
-                    <div class="one">
-                        <label>
-                            שם משפחה:
-                        </label>
-                        <input id="last_name" name="last_name" class="text" type="text" value="<%= body.last_name || '' %>" />
-                    </div>
-                    <!--div class="one">
-                        <label>
-                            סיסמא:
-                        </label>
-                        <input id="password" name="password" type="password" class="text" type="text" value="" />
-                    </div-->
                     <div class="one">
                         <label>
                             דוא”ל:
@@ -82,30 +69,23 @@
 
 <script type="text/javascript">
     $(function(){
+        $.validator.addMethod("two_parts", function(value) {return ~value.indexOf(' ');}, 'יש להירשם בשם מלא');
+
         $('#register_form_full').validate({
             errorElement: "p",
 
             rules:{
-                first_name:{
+                full_name:{
                     required: true,
-                    minlength:2
-                },
-                last_name:{
-                    required: true,
-                    minlength:2
+                    two_parts: true
                 },
                 email:{
-                    required: true,
+                    required: true
                 }
             },
             messages:{
-                first_name:{
-                    required:"נא להזין שם פרטי",
-                    minlength:'שם פרטי חייב להיות לפחות 2 אותיות'
-                },
-                last_name:{
-                    required:'נא להזין שם משפחה',
-                    minlength:'שם משפחה חייב להיות לפחות 2 אותיות'
+                full_name: {
+                    required:"נא להזין שם פרטי ומשפחה"
                 },
                 email:{
                     required:'נא להזין כתובת מייל',
