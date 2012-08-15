@@ -20,9 +20,8 @@ function updateUserHasVoted(user_id, callback) {
     });
 }
 
-
 module.exports = function(req, res) {
-    if (req.session.user.has_voted)
+    if (req.session.user && req.session.user.has_voted)
         res.json(403 , "has_voted");
 
     // Two lines of google voodoo
@@ -31,7 +30,7 @@ module.exports = function(req, res) {
     // Record the user's IP
     req.body['entry.39.single'] = ('x-forwarded-for' in req.headers) ? req.headers['x-forwarded-for'] : req.connection.remoteAddress;
     // e-mail
-    req.body['entry.40.single'] = req.session.user.email;
+    req.body['entry.40.single'] = req.session.user ? req.session.user.email : "";
 
     var vote_data = qs.stringify(req.body);
 	var post_opts = {
