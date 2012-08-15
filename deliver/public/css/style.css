@@ -6240,11 +6240,9 @@ a.fraction-btn
     font: normal 13px/17px Arial;
     letter-spacing: -0.25px;
     margin: 0;
+
 }
-.updates-box .right .updates .one a
-{
-    float:right;
-}
+
 .updates-box .right .updates .one a.btn
 {
     position: absolute;

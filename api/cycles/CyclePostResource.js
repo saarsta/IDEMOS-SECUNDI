@@ -305,6 +305,6 @@ function putIsFollowerAndVoteBallanceOnEachPost(user_id, posts, callback){
             })
         }else{
             _.each(posts, function(post){ post.is_user_follower = false; })
-            callback(null, posts);
+             callback(null, posts);
         }
     }
