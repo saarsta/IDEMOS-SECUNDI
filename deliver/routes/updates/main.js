@@ -11,7 +11,6 @@ module.exports = function(req, res){
                     '_id':1,
                     'title':1,
                     'tooltip':1,
-                    'title':1,
                     'text_field':1,
                     'image_field':1,
                     'tags':1,

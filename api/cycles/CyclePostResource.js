@@ -42,7 +42,9 @@ var CyclePostResource = module.exports = jest.Resource.extend({
                         if(err)
                             cbk(err);
                         else{
+                            _.each(posts, function(post){post.creator_id._doc.avatar_url = post.creator_id.avatar_url()});
                             var json_posts = JSON.parse(JSON.stringify(posts));
+
                             putIsFollowerAndVoteBallanceOnEachPost(user_id, json_posts, function(err, json_posts){
                                 cbk(err, json_posts);
                             })
@@ -83,6 +85,8 @@ function getSortedPostsByNumberOfDiscussions(discussions, callback)
                 '_id':1,
                 'first_name':1,
                 'last_name':1,
+                'avatar': 1,
+                'facbook_id': 1,
                 'avatar_url':1,
                 'score':1,
                 'num_of_proxies_i_represent':1
@@ -90,7 +94,8 @@ function getSortedPostsByNumberOfDiscussions(discussions, callback)
             .limit(3)
             .exec(function(err, posts){
                 if(posts.length)
-                    posts[0].discussion_name = discussions[0].title;
+                    posts[0]._doc.discussion_title = discussions[0].title;
+
                 callback(err, posts);
             })
 
@@ -123,7 +128,7 @@ function getSortedPostsByNumberOfDiscussions(discussions, callback)
                         .limit(2)
                         .exec(function(err, posts){
                             if(posts.length)
-                                posts[0].discussion_name = discussions[0].title;
+                                posts[0]._doc.discussion_title = discussions[0].title;
                             cbk(err, posts);
                         })
                 },
@@ -151,7 +156,7 @@ function getSortedPostsByNumberOfDiscussions(discussions, callback)
                         .limit(1)
                         .exec(function(err, posts){
                             if(posts.length)
-                                posts[0].discussion_name = discussions[1].title;
+                                posts[0]._doc.discussion_title = discussions[1].title;
                             cbk(err, posts);
                         })
                 }
@@ -183,6 +188,8 @@ function getSortedPostsByNumberOfDiscussions(discussions, callback)
                         '_id':1,
                         'first_name':1,
                         'last_name':1,
+                            'avatar': 1,
+                            'facebook_id': 1,
                         'avatar_url':1,
                         'score':1,
                         'num_of_proxies_i_represent':1
@@ -190,7 +197,7 @@ function getSortedPostsByNumberOfDiscussions(discussions, callback)
                         .limit(1)
                         .exec(function(err, posts){
                             if(posts.length)
-                                posts[0].discuusion_title = discussions[0].title;
+                                posts[0]._doc.discuusion_title = discussions[0].title;
                             cbk(err, posts);
                         })
                 },
@@ -211,7 +218,8 @@ function getSortedPostsByNumberOfDiscussions(discussions, callback)
                         '_id':1,
                         'first_name':1,
                         'last_name':1,
-                        'avatar_url':1,
+                        'avatar': 1,
+                        'facebook_id': 1,
                         'score':1,
                         'num_of_proxies_i_represent':1
                         })
@@ -239,7 +247,8 @@ function getSortedPostsByNumberOfDiscussions(discussions, callback)
                         '_id':1,
                         'first_name':1,
                         'last_name':1,
-                        'avatar_url':1,
+                        'avatar': 1,
+                        'facebook_id': 1,
                         'score':1,
                         'num_of_proxies_i_represent':1
                         })
@@ -255,7 +264,6 @@ function getSortedPostsByNumberOfDiscussions(discussions, callback)
 
                 if(args)
                     posts = _.union.apply(_,args);
-
                 callback(err, posts);
             })
             break;
