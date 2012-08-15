@@ -36,7 +36,7 @@
 
 				<div class="select-z">
 					<select id="styledSelect" class="blueText">
-						<option value="0"></option>
+						<option value="0">בחר נושא</option>
 						<option value="1">חינוך</option>
 						<option value="2">משק וכלכלה</option>
 						<option value="3">תעסוקה ובטחון חברתי</option>
@@ -165,7 +165,7 @@ $(function() {
         $.post('/elections/vote', data, function(ret_data){
             shareScreen();
         }).fail(function() {
-            popupProvider.showOkPopup({message: 'הצבעה לא נרשמה. האם הצבעת כבר בעבר?', onOkCilcked:function() {
+            popupProvider.showOkPopup({message: 'אפשר להצביע רק פעם אחת.', onOkCilcked:function() {
                 window.location.href = window.location.href;
             }});
         });
@@ -194,7 +194,7 @@ $(function() {
 				full_name	= $input.eq(0).val(),
 				email		= $input.eq(1).val();
             $.post('/account/register', {full_name:full_name, email:email}, sendVote).fail(function() {
-                popupProvider.showOkPopup({message: 'ההרשמה לא הצליחה, אנא בידוקו את כתובת המייל'});
+                popupProvider.showOkPopup({message: 'ההרשמה לא הצליחה, אנא בידקו את כתובת המייל שהוזנה'});
             });
 			return false;
 		}
