@@ -3,18 +3,26 @@ var qs = require('querystring');
 var models = require('../../../models');
 
 
-function updateUserHasVoted(user_id, callback) {
+function updateUserHasVoted(req, user_id, callback) {
     models.User.findOne({_id: user_id}, function(err, user) {
         if (err) {
             return callback(err);
         }
         user.has_voted = true;
-        user.save(function (err) {
+        user.save(function (err, user) {
             if (err) {
                 console.error(err);
                 callback(err);
             } else {
-                callback(null, user.id);
+                req.session.user = user;
+                req.session.save(function(err){
+                    if (err) {
+                        console.error(err);
+                        callback(err);
+                    } else {
+                        callback(null, user.id);
+                    }
+                })
             }
         });
     });
@@ -49,7 +57,7 @@ module.exports = function(req, res) {
             }
             else {
 
-                updateUserHasVoted(req.session.user._id, function(err) {
+                updateUserHasVoted(req, req.session.user._id, function(err) {
                     if(err) {
                         console.error(err);
                     }

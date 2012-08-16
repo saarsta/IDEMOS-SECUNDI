@@ -1,6 +1,6 @@
 module.exports = function(req, res){
 
-    if(req.isAuthenticated())
+    if(req.isAuthenticated() && req.session.user.has_voted)
     {
         res.render('index.ejs', {
             layout: false,
