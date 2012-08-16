@@ -57,7 +57,7 @@ var Schemas = exports.Schemas = {
         image_field: mongoose_types.File,
 //        image_field_preview: mongoose_types.File,
         tags:{type:[String], index:true},
-        cycles:{type:[ObjectId], ref:'Cycle', index:true},
+        cycle:{type:ObjectId, ref:'Cycle', index:true},
 //        actions: {type: [ObjectId], ref:'Action', index:true},
         is_visible:{type:Boolean, 'default':true},
         creation_date:{type:Date, 'default':Date.now,editable:false},
