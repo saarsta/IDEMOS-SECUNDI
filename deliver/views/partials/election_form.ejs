@@ -68,8 +68,8 @@
 		</div>
 		<div class="leftone">
 			<form id="user-signup">
-				<label id="id1"><input id="full_name" class="placeholder design2" size="22" value="שם + שם משפחה" name="textfield" type="text"></label>
-				<label><input id="email" class="placeholder design2" size="22" value="כתובת מייל" name="textfield" type="email"></label>
+				<label id="id1"><input id="full_name" class="placeholder design2" size="22" value="שם + שם משפחה" name="full_name" type="text"></label>
+				<label><input id="email" class="placeholder design2" size="22" value="כתובת מייל" name="email" type="email"></label>
 			</form>
 		</div>
 	</div>
@@ -89,7 +89,7 @@
 </div>
 
 <div id="screen"></div>
-
+<style>p.error {color: magenta;font:normal 14px/18px Arial}</style>
 <script type="text/javascript">
 $(function() {
     var user_logged = <%=user_logged%>;
@@ -130,7 +130,7 @@ $(function() {
             },
             email:{
                 required:'נא להזין כתובת מייל',
-                email:'כתובת מייל שגויה'
+                email:'ההרשמה לא הצליחה, אנא בידקו את כתובת המייל שהוזנה'
             }
         },
         highlight: function (element, errorClass) {
@@ -252,7 +252,7 @@ $(function() {
 //                    });
 //
 //                }else
-                    popupProvider.showOkPopup({message: 'ההרשמה לא הצליחה, אנא בידוקו את כתובת המייל'});
+                    popupProvider.showOkPopup({message: 'ההרשמה לא הצליחה, אנא בידקו את כתובת המייל שהוזנה'});
             });
 			return false;
 		}
