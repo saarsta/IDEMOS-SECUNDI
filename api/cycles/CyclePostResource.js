@@ -29,7 +29,7 @@ var CyclePostResource = module.exports = jest.Resource.extend({
             function(cbk){
                 models.Cycle.findById(req.query.cycle_id)
                 .select({'discussions': 1})
-                .populate('discussions', {'title': 1})
+                .populate('discussions.discussion', {'title': 1})
                 .exec(cbk);
             },
 
@@ -37,8 +37,9 @@ var CyclePostResource = module.exports = jest.Resource.extend({
                 if(!cycle){
                     cbk(null, null);
                 }else{
+                    var discussions = _.map(cycle.discussions, function(discussion){return discussion.discussion});
 
-                    getSortedPostsByNumberOfDiscussions(cycle.discussions, function(err, posts){
+                    getSortedPostsByNumberOfDiscussions(discussions, function(err, posts){
                         if(err)
                             cbk(err);
                         else{
@@ -62,6 +63,7 @@ var CyclePostResource = module.exports = jest.Resource.extend({
 
 function getSortedPostsByNumberOfDiscussions(discussions, callback)
 {
+
     switch (discussions.length){
         case null:
             callback(null, null);
