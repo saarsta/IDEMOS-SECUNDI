@@ -914,7 +914,7 @@ var db_functions = {
 
     getCycleUpdates: function(cycle_id, callback){
         db_functions.loggedInAjax({
-            url: '/api/updates/?cycles=' + cycle_id,
+            url: '/api/updates/?cycle=' + cycle_id,
             type: "GET",
             async: true,
             success: function (data,err ) {
