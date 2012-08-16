@@ -15,6 +15,7 @@ var popupProvider={
         var defaults = {
         okButtonText:'סגור'
         ,message:''
+        ,callback: $.noop
         ,onOkCilcked:function(e){
             e.preventDefault();
             $.colorbox.close();
@@ -28,6 +29,9 @@ var popupProvider={
                  $.colorbox({ html:out,
                      onComplete:function(e){
                        $('.ok-button').click(popupConfig.onOkCilcked);
+                     },
+                     onClosed:function(){
+                         popupConfig.callback();
                      }
                  });
                
@@ -85,8 +89,6 @@ var popupProvider={
         this.self = this;
         var defaults = {
             message:''
-
-
             ,onClosed :function(e){
 
             }

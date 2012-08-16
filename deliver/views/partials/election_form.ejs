@@ -198,27 +198,36 @@ $(function() {
 
         }).fail(function(e) {
             setTimeout(function(){
-                popupProvider.showOkPopup({message: 'אפשר להצביע רק פעם אחת.'/*, onOkCilcked:function() {
-                    window.location.href = window.location.href;
-                }*/});
+                popupProvider.showOkPopup({message: 'אפשר להצביע רק פעם אחת.'});
             },300);
-
         });
     }
 
 
-
-	$('#send-vote').on('click', function(e) {
+	$('#send-vote,#send_vote_1').on('click', function(e) {
         e.preventDefault();
-        e.stopPropagation();
 
         if($('#display-inline-block-example .checkBoxClear').length === 0){
-            popupProvider.showOkPopup({message: 'עליך לבחור הצעה'});
+            popupProvider.showOkPopup(
+                {
+                    message: 'עליך לבחור הצעה',
+                    callback: function(){
+                        location.hash = "#main-thing";
+                    }
+                }
+            );
+
             return false;
         }
+
 		if ($('.intext-top-last p.checkBoxClear').length > 0) {
 			if ($('#styledSelect').val() === '0') {
-				popupProvider.showOkPopup({message: 'עליך לבחור נושא מהרשימה.'});
+				popupProvider.showOkPopup({
+                    message: 'עליך לבחור נושא מהרשימה.',
+                    callback: function(){
+                        location.hash = "#main-thing";
+                }});
+
 				return false;
 			} else if ($('#textarea').hasClass('placeholder')) {
 				popupProvider.showOkPopup({message: 'עליך לתת תיאור להצעתך.'});
@@ -227,35 +236,21 @@ $(function() {
 		}
 
 
-        if (user_logged === false) {
-            if ($('input.placeholder').length > 0) {
-                popupProvider.showOkPopup({message: 'אנא התחבר למערכת או הירשם כדי להצביע.'});
-                return false;
-            }
-
-            var $input		= $('#user-signup :input'),
-				full_name	= $input.eq(0).val(),
-				email		= $input.eq(1).val();
-
-            $.post('/account/register', {full_name:full_name, email:email}, sendVote).fail(function(e) {
-//                if(e.statusText == "Conflict"){
-//                    popupProvider.showLoginPopup({}, function(err, result){
-//                        if(!err){
-//                            sendVote();
-//                        }else{
-//                            setTimeout(function(){
-//                                popupProvider.showOkPopup({message: err.responseText});
-//                            },300);
+//        if (user_logged === false) {
+//            if ($('input.placeholder').length > 0) {
+//                popupProvider.showOkPopup({message: 'אנא התחבר למערכת או הירשם כדי להצביע.'});
+//                return false;
+//            }
 //
-//                        }
+//            var $input		= $('#user-signup :input'),
+//				full_name	= $input.eq(0).val(),
+//				email		= $input.eq(1).val();
 //
-//                    });
-//
-//                }else
-                    popupProvider.showOkPopup({message: 'ההרשמה לא הצליחה, אנא בידקו את כתובת המייל שהוזנה'});
-            });
-			return false;
-		}
+//            $.post('/account/register', {full_name:full_name, email:email}, sendVote).fail(function(e) {
+//                    popupProvider.showOkPopup({message: 'ההרשמה לא הצליחה, אנא בידקו את כתובת המייל שהוזנה'});
+//            });
+//			return false;
+//		}
 
         sendVote();
 
