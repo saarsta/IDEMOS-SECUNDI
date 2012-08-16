@@ -36,7 +36,7 @@
 
 				<div class="select-z">
 					<select id="styledSelect" class="blueText">
-						<option value="0"></option>
+						<option value="0">בחר נושא</option>
 						<option value="1">חינוך</option>
 						<option value="2">משק וכלכלה</option>
 						<option value="3">תעסוקה ובטחון חברתי</option>
@@ -68,8 +68,8 @@
 		</div>
 		<div class="leftone">
 			<form id="user-signup">
-				<label id="id1"><input class="placeholder design2" size="22" value="שם + שם משפחה" name="textfield" type="text"></label>
-				<label><input class="placeholder design2" size="22" value="כתובת מייל" name="textfield" type="email"></label>
+				<label id="id1"><input id="full_name" class="placeholder design2" size="22" value="שם + שם משפחה" name="full_name" type="text"></label>
+				<label><input id="email" class="placeholder design2" size="22" value="כתובת מייל" name="email" type="email"></label>
 			</form>
 		</div>
 	</div>
@@ -81,7 +81,7 @@
 <div id="box-share">
 	<div id="close"><img src="/images/elections/close.png" alt="עורו" /></div>
 	<div class="icons">
-		<a href="mailto:?subject=%D7%92%D7%9D%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%A8%D7%92%D7%99%D7%A9%20%D7%90%D7%96%D7%A8%D7%97%20%D7%9C%D7%90%20%D7%9E%D7%99%D7%95%D7%A6%D7%92%20%E2%80%93%20%D7%90%D7%96%20%D7%91%D7%97%D7%A8%D7%AA%D7%99%20%D7%91%D7%A0%D7%95%D7%A9%D7%90%D7%99%D7%9D%20%D7%94%D7%97%D7%A9%D7%95%D7%91%D7%99%D7%9D%20%D7%9C%D7%99%20%D7%91%D7%90%D7%9E%D7%AA!&body=%D7%91%D7%97%D7%99%D7%A8%D7%95%D7%AA%20%D7%91%D7%A2%D7%95%D7%A8%D7%95%3A%20http%3A%2F%2Fwww.uru.org.il%2F" target="_blank"><img class="icon" src="/images/elections/enva.png" alt="עורו" /></a>
+		<a href="mailto:?subject=%D7%92%D7%9D%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%A8%D7%92%D7%99%D7%A9%20%D7%90%D7%96%D7%A8%D7%97%20%D7%9C%D7%90%20%D7%9E%D7%99%D7%95%D7%A6%D7%92%20%E2%80%93%20%D7%90%D7%96%20%D7%91%D7%97%D7%A8%D7%AA%D7%99%20%D7%91%D7%A0%D7%95%D7%A9%D7%90%D7%99%D7%9D%20%D7%94%D7%97%D7%A9%D7%95%D7%91%D7%99%D7%9D%20%D7%9C%D7%99%20%D7%91%D7%90%D7%9E%D7%AA!&body= מרגישים כמוני שאחרי הבחירות הפוליטיקאים לא סופרים אותנו? במקום להרים ידיים, הצטרפתי ל עורו כדי שנוכל להתאגד, לקחת אחריות על חיינו ולקבוע סדר יום אזרחי חדש" target="_blank"><img class="icon" src="/images/elections/enva.png" alt="עורו" /></a>
 		<a href="#" id="share-google"><img class="icon" src="/images/elections/google.png" alt="עורו" /></a>
 		<a href="#" id="share-twitter"><img class="icon" src="/images/elections/tweet.png" alt="עורו" /></a>
 		<a href="#" id="share-facebook"><img class="icon" src="/images/elections/face.png" alt="עורו" /></a>
@@ -89,10 +89,11 @@
 </div>
 
 <div id="screen"></div>
-
+<style>p.error {color: magenta;font:normal 14px/18px Arial}</style>
 <script type="text/javascript">
 $(function() {
     var user_logged = <%=user_logged%>;
+
     var user_is_new	= false,
 		mapGuide = {
 			0:	'entry.6.group',
@@ -110,6 +111,35 @@ $(function() {
 			12:	'entry.17.group',
 			13:	'entry.15.group'
 		};
+
+    $('#user-signup').validate({
+        errorElement: "p",
+
+        rules:{
+            full_name:{
+                required: true,
+                two_parts: true
+            },
+            email:{
+                required: true
+            }
+        },
+        messages:{
+            full_name: {
+                required:"נא להזין שם פרטי ומשפחה"
+            },
+            email:{
+                required:'נא להזין כתובת מייל',
+                email:'ההרשמה לא הצליחה, אנא בידקו את כתובת המייל שהוזנה'
+            }
+        },
+        highlight: function (element, errorClass) {
+            $(element).addClass('error').removeClass('valid');
+        },
+        unhighlight: function (element, errorClass) {
+            $(element).removeClass('error').addClass('valid');
+        }
+    })
 
 	function getVoteData() {
 		var data = {};
@@ -143,6 +173,7 @@ $(function() {
 		}
 	});
 
+
 	$('#textarea, .design2').on('focus blur', function(e) {
 		var $this = $(this);
 
@@ -164,16 +195,27 @@ $(function() {
         var data = getVoteData();
         $.post('/elections/vote', data, function(ret_data){
             shareScreen();
-        }).fail(function() {
-            popupProvider.showOkPopup({message: 'הצבעה לא נרשמה. האם הצבעת כבר בעבר?', onOkCilcked:function() {
-                window.location.href = window.location.href;
-            }});
+
+        }).fail(function(e) {
+            setTimeout(function(){
+                popupProvider.showOkPopup({message: 'אפשר להצביע רק פעם אחת.'/*, onOkCilcked:function() {
+                    window.location.href = window.location.href;
+                }*/});
+            },300);
+
         });
     }
+
+
 
 	$('#send-vote').on('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
+
+        if($('#display-inline-block-example .checkBoxClear').length === 0){
+            popupProvider.showOkPopup({message: 'עליך לבחור הצעה'});
+            return false;
+        }
 		if ($('.intext-top-last p.checkBoxClear').length > 0) {
 			if ($('#styledSelect').val() === '0') {
 				popupProvider.showOkPopup({message: 'עליך לבחור נושא מהרשימה.'});
@@ -184,7 +226,8 @@ $(function() {
 			}
 		}
 
-		if (user_logged === false) {
+
+        if (user_logged === false) {
             if ($('input.placeholder').length > 0) {
                 popupProvider.showOkPopup({message: 'אנא התחבר למערכת או הירשם כדי להצביע.'});
                 return false;
@@ -193,13 +236,28 @@ $(function() {
             var $input		= $('#user-signup :input'),
 				full_name	= $input.eq(0).val(),
 				email		= $input.eq(1).val();
-            $.post('/account/register', {full_name:full_name, email:email}, sendVote).fail(function() {
-                popupProvider.showOkPopup({message: 'ההרשמה לא הצליחה, אנא בידוקו את כתובת המייל'});
+
+            $.post('/account/register', {full_name:full_name, email:email}, sendVote).fail(function(e) {
+//                if(e.statusText == "Conflict"){
+//                    popupProvider.showLoginPopup({}, function(err, result){
+//                        if(!err){
+//                            sendVote();
+//                        }else{
+//                            setTimeout(function(){
+//                                popupProvider.showOkPopup({message: err.responseText});
+//                            },300);
+//
+//                        }
+//
+//                    });
+//
+//                }else
+                    popupProvider.showOkPopup({message: 'ההרשמה לא הצליחה, אנא בידקו את כתובת המייל שהוזנה'});
             });
 			return false;
 		}
 
-		sendVote();
+        sendVote();
 
 		return false;
 	});

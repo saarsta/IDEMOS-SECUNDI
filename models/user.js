@@ -99,3 +99,16 @@ User.methods.avatar_url = function()
         return this.facebook_id ? 'http://graph.facebook.com/' + this.facebook_id + '/picture/?type=large' : "/images/default_user_img.gif";
 };
 
+//User.methods.toString = function()
+//{
+//    return this.first_name + ' ' + this.last_name;
+//};
+//
+//User.methods.avatar_url = function()
+//{
+//    return this.avatar;
+////    if(this.avatar && this.avatar.url)
+////        return this.avatar.url;
+////    else
+////        return this.facebook_id ? 'http://graph.facebook.com/' + this.facebook_id + '/picture/?type=large' : "/images/default_user_img.gif";
+//};

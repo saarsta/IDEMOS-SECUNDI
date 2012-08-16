@@ -34,18 +34,23 @@ module.exports = {
         async.waterfall([
             // 1) get user by email
             function(cbk) {
-                models.User.count({email:new RegExp(user.email,'i')},cbk);
+                models.User.findOne({email:new RegExp(user.email,'i')},cbk);
             },
 
             // 2) save user
-            function(result,cbk) {
-                if (!result) {
+            function(user_obj,cbk) {
+                if (!user_obj) {
                     user.save(function(err) {
+                        req.session.user = user;
                         cbk(err);
                     });
                 }
-                else
-                    cbk('already_exists');
+                else{
+                    req.session.user = user_obj;
+                    req.session.save(function(err, results){
+                        cbk(err || 'already_exists');
+                    })
+                }
             },
 
             // 3) send activation mail
@@ -68,7 +73,7 @@ module.exports = {
                     user: user,
                     next: req.query.next,
                     title: "רישום",
-                    body:req.body || {},
+                    body: req.body || {},
                     error_message: err.message || err
                 });
             else

@@ -150,6 +150,27 @@ body
 {
     background: #3b63ef;
     border-radius: 2px;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
     padding: 7px 10px 8px;
@@ -196,7 +217,7 @@ body
     display: none;
 }
 
-.user-box:hover h2,
+.user-box:hover h2,user-box.active,
 .tikunim-box:hover h2,
 .tikunim-box.hover h2
 
@@ -318,7 +339,7 @@ body
     margin-bottom: 10px;
     display: block;
 }
-.user-box .hide-box input[type=password],.user-box .hide-box input[type=email]
+.user-box .hide-box input[type=password]
 {
     height: 15px;
     border: 1px solid #d8d8d8;
@@ -352,6 +373,8 @@ body
 {
     background:#3c63ef url(../images/submit-btn.png) 0 100% repeat-x;
 }
+
+
 
 .user-box .user-login-box
 {
@@ -508,7 +531,7 @@ body
     float: right;
     color:#fff;
     margin-left: 25px;
-    font: normal 20px/31px 'AdumaFOTRegular';
+    font: normal 18px/37px 'AdumaFOTRegular';
 }
 .search-box input[type=text]
 {
@@ -518,14 +541,18 @@ body
     -webkit-border-radius: 2px;
     background:#3b63ef;
     height: 25px;
-    width: 640px;
+    width: 652px;
     margin-left: 25px;
     padding: 3px 10px 2px;
     color:#fff;
-    font: normal 20px/24px 'AdumaFOTRegular';
+    font: bold 15px/30px Arial;
     float: right;
 }
-
+.big-head .search-box input[type=text]
+{
+    border: 1px solid #9db1f7;
+    width:648px;
+}
 
 .search-box input[type=submit]
 {
@@ -538,7 +565,7 @@ body
     width: 110px;
     height: 31px;
     color:#ffffff;
-    font: normal 22px/31px 'AdumaFOTRegular';
+    font: normal 18px/33px 'AdumaFOTRegular';
     padding:0;
     cursor: pointer;
 }
@@ -577,7 +604,7 @@ body
 .main-video p
 {
     color:#fff;
-    font: normal 28px/30px 'AdumaFOTRegular';
+    font: normal 25px/30px 'AdumaFOTRegular';
     margin-bottom: 35px;
 }
 .main-video a.btn
@@ -588,7 +615,7 @@ body
     text-align: center;
     color:#fff;
     padding-top: 5px;
-    font: normal 50px/80px 'AdumaFOTRegular';
+    font: normal 43px/80px 'AdumaFOTRegular';
     overflow: hidden;
     display: block;
     text-decoration: none;
@@ -605,7 +632,7 @@ body
 {
     border-top: 6px solid #d6dbde;
     color:#50504f;
-    font: normal 30px/49px 'AdumaFOTRegular';
+    font: normal 24px/49px 'AdumaFOTMedium';
     margin:0;
 }
 #content .right-col
@@ -635,11 +662,13 @@ body
     padding: 8px;
     margin: 0 0 28px 28px;
     background:#fff;
+    height:315px;
+    position:relative;
 }
 /* changed by ishai */
 .news-list .one h4
 {
-    padding: 12px 0 10px;
+    padding: 12px 0 7px;
     margin:0;
     color:#50504f;
     font: bold 16px/19px Arial;
@@ -671,6 +700,9 @@ body
 {
     border-top: 1px solid #ebebeb;
     height: 16px;
+    position:absolute;
+    bottom:8px;
+    width:292px;
 }
 .tags a
 {
@@ -757,6 +789,7 @@ body
 .tags .info span.talks
 {
     padding-right: 16px;
+
     background: url(../images/talks-icon.png) 100% 50% no-repeat;
     margin-right: 8px;
 }
@@ -953,7 +986,7 @@ body
     color:#50504f;
     text-decoration: none;
 }
-.blog-box .one p
+.blog-box .one a
 {
     color:#50504f;
     font: normal 13px/16px Arial;
@@ -1025,6 +1058,7 @@ body
     margin-bottom: 20px;
 }
 .renewal>a
+
 {
     float:left;
 }
@@ -1051,7 +1085,7 @@ body
     width: 110px;
     height: 29px;
     color:#ffffff;
-    font: normal 22px/29px 'AdumaFOTRegular';
+    font: normal 18px/32px 'AdumaFOTRegular';
     padding:0;
     cursor: pointer;
     text-align: center;
@@ -1209,9 +1243,9 @@ body
     line-height: 32px;
     text-align: center;
     margin-bottom: 35px;
-    padding-top: 12px;
+    padding-top: 20px;
 }
-.user-box:hover h2, .user-box.active h2
+.user-box:hover h2, .user-box.active .h2
 {
     display: block;
 }
@@ -1249,7 +1283,7 @@ body
 }
 .services-box
 {
-    padding-bottom: 45px;
+    padding-bottom: 30px;
     position: relative;
 }
 .services-green
@@ -1443,6 +1477,7 @@ body
     height: 15px;
 }
 .discussion-main .tags-box .tags-list span
+
 {
     float: right;
     margin-left: 3px;
@@ -1452,6 +1487,7 @@ body
     font: normal 11px/15px Arial;
     border-radius: 3px;
 }
+
 .discussion-main .bottom
 {
     text-align: center;
@@ -1486,14 +1522,14 @@ body
     border-radius: 2px;
     color:#fff;
     width: 304px;
-    font: normal 22px/35px "AdumaFOTRegular";
+    font: normal 18px/37px "AdumaFOTRegular";
     cursor: pointer;
 }
 .discussion-main .bottom label
 {
     display: inline-block;
     color:#50504f;
-    font: normal 13px/15px Aial;
+    font: normal 13px/15px Arial;
 }
 .discussion-main .bottom label input
 {
@@ -1522,15 +1558,15 @@ body
     float: right;
     padding-left: 37px;
     margin: 0 0 0 13px;
-    font: normal 30px/32px "AdumaFOTRegular";
-    background: url(../images/basket-icon.png) 0 50% no-repeat;
+    font: normal 23px/32px "AdumaFOTMedium";
+    background: url(../images/basket-icon.png) 0 25% no-repeat;
 }
 #card .card-top p
 {
     color:#ffffff;
     float: right;
     margin: 0;
-    font: normal 22px/32px "AdumaFOTMedium";
+    font: normal 23px/32px "AdumaFOTMedium";
 }
 #card .card-top a.btn
 {
@@ -1538,7 +1574,7 @@ body
     color:#fff;
     background:#757d7e url(../images/search-submit.png) 0 0 repeat-x;
     height: 29px;
-    font: normal 22px/29px "AdumaFOTRegular";
+    font: normal 18px/32px "AdumaFOTRegular";
     border: 1px solid #2e3030;
     text-align: center;
     border-radius: 2px;
@@ -1777,7 +1813,7 @@ body
     color:#fff;
     background:#757d7e url(../images/search-submit.png) 0 0 repeat-x;
     height: 29px;
-    font: normal 22px/29px "AdumaFOTRegular";
+    font: normal 18px/32px "AdumaFOTRegular";
     border: 1px solid #2e3030;
     text-align: center;
     border-radius: 2px;
@@ -1835,6 +1871,7 @@ body
 .popup .middle-popup textarea
 {
     display: block;
+
     height: 114px;
     border: 1px solid #e1e1e1;
     width: 626px;
@@ -2039,7 +2076,6 @@ body
     background: #fdfdfd;
     margin-bottom: 3px;
 }
-
 .add-offer h2
 {
     padding: 0 8px;
@@ -2052,17 +2088,16 @@ body
 
 .update h2 .arrow,
 .add-offer h2 .arrow
-{
-    padding-left: 7px;
-    margin-left: 6px;
-    background: url(../images/arrow-left.png) 0 50% no-repeat;
 
+{
+    padding-left: 8px;
+    margin-left: 8px;
+    background: url(../images/arrow-left.png) 0 40% no-repeat;
 }
 .add-offer .floatRight
 {
     margin-left: 19px;
 }
-
 .add-offer .text-box
 {
     padding-bottom: 19px;
@@ -2202,7 +2237,7 @@ body
     width: 110px;
     height: 29px;
     text-align: center;
-    font: normal 22px/29px 'AdumaFOTRegular';
+    font: normal 18px/32px 'AdumaFOTRegular';
     color:#ffffff;
     border-radius: 2px;
     -moz-border-radius: 2px;
@@ -2218,7 +2253,7 @@ body
     width: 110px;
     height: 29px;
     text-align: center;
-    font: normal 22px/29px 'AdumaFOTRegular';
+    font: normal 18px/32px 'AdumaFOTRegular';
     color:#ffffff;
     border-radius: 2px;
     -moz-border-radius: 2px;
@@ -2241,7 +2276,7 @@ body
     width: 110px;
     height: 29px;
     text-align: center;
-    font: normal 22px/29px 'AdumaFOTRegular';
+    font: normal 18px/32px 'AdumaFOTRegular';
     color:#ffffff;
     border-radius: 2px;
     -moz-border-radius: 2px;
@@ -2522,13 +2557,13 @@ textarea.hidden_textarea::selection
 .card-left h3
 {
     color:#50504f;
-    font: normal 25px/40px 'AdumaFOTMedium';
+    font: normal 23px/50px 'AdumaFOTMedium';
     margin-bottom: 10px;
 }
 .card-left h3 span
 {
-    padding-left: 32px;
-    background: url(../images/basket-icon.png) 0 50% no-repeat;
+    padding-left: 38px;
+    background: url(../images/basket-icon.png) 0 25% no-repeat;
 }
 .card-left .diagram-box
 {
@@ -2608,8 +2643,8 @@ textarea.hidden_textarea::selection
 .write-comment h3
 {
     margin-right: 100px;
-    color:#757d7e;
-    font: normal 25px/44px 'AdumaFOTMedium';
+    color:#50504F;
+    font: normal 22px/44px 'AdumaFOTMedium';
     border-top: 6px solid #d6dbde;
 }
 .write-comment .text-box
@@ -2765,7 +2800,7 @@ textarea.hidden_textarea::selection
     background:#2fd43b url(../images/green-btn-border.png) 0 0 repeat-x;
     height: 29px;
     color:#ffffff;
-    font: normal 22px/29px 'AdumaFOTRegular';
+    font: normal 18px/32px 'AdumaFOTRegular';
     width: 110px;
     border: 1px solid #2eab35;
     border-radius: 2px;
@@ -2813,7 +2848,7 @@ textarea.hidden_textarea::selection
 {
     float: left;
     width: 278px;
-    margin-top: 13px;
+    margin-top: 20px;
     color:#b7b6b6;
     font: normal 12px/15px Arial;
 }
@@ -2825,12 +2860,12 @@ textarea.hidden_textarea::selection
 {
     border-top: 6px solid #d6dbde;
     color:#50504f;
-    font: normal 30px/48px 'AdumaFOTMedium';
+    font: normal 24px/48px 'AdumaFOTMedium';
     margin-bottom: 10px;
 }
 h2 small
 {
-    font-size: 18px;
+    font-size: 15px;
     line-height: 22px;
     font-family: 'AdumaFOTLight';
 }
@@ -2987,6 +3022,7 @@ h2 small
     border: 1px solid #2e3030;
     border-radius: 2px;
     width: 85px;
+
     height: 29px;
     text-align: center;
     color:#ffffff;
@@ -3181,6 +3217,7 @@ h2 small
     box-shadow: 0 0 8px rgba(0,0,0,0.3);
     padding: 11px 12px 11px 13px;
 }
+
 .popup-window .arrow
 {
     background: url(../images/popup-window-arrow.png) no-repeat;
@@ -3297,7 +3334,7 @@ h2 small
     height: 29px;
     text-align: center;
     color:#ffffff;
-    font: normal 18px/29px 'AdumaFOTRegular';
+    font: normal 18px/32px 'AdumaFOTRegular';
     text-decoration: none;
     margin-bottom: 9px;
 }
@@ -3551,11 +3588,12 @@ h2 small
     width: 644px;
 }
 .rightCol h2 a
+
 {
     color:#3b63ef;
     padding-left: 14px;
     margin-left: 6px;
-    background: url(../images/arrow-left.png) 0 50% no-repeat;
+    background: url(../images/arrow-left.png) 0 38% no-repeat;
     text-decoration: none;
 }
 .rightCol h2 a.last_breadcrum
@@ -3583,7 +3621,7 @@ h2 small
     width: 110px;
     height: 29px;
     text-align: center;
-    font: normal 22px/29px 'AdumaFOTRegular';
+    font: normal 18px/32px 'AdumaFOTRegular';
     color:#ffffff;
     float: left;
     border-radius: 2px;
@@ -3594,7 +3632,7 @@ h2 small
 }
 .rightCol .nav-btn .number
 {
-    font: normal 20px/29px 'AdumaFOTRegular';
+    font: normal 20px/32px 'AdumaFOTRegular';
     border: 1px solid #d4d5d6;
     width: 33px;
     height: 29px;
@@ -3757,8 +3795,9 @@ h2 small
     width: 110px;
     height: 29px;
     text-align: center;
-    font: normal 22px/29px 'AdumaFOTRegular';
+    font: normal 18px/32px 'AdumaFOTRegular';
     color:#ffffff;
+
     border-radius: 2px;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
@@ -3780,7 +3819,7 @@ h2 small
     border: 1px solid #2eab35;
     height: 29px;
     text-align: center;
-    font: normal 22px/29px 'AdumaFOTRegular';
+    font: normal 18px/32px 'AdumaFOTRegular';
     color:#ffffff;
     border-radius: 2px;
     -moz-border-radius: 2px;
@@ -3850,7 +3889,7 @@ h2 small
     color:#fff;
     background:#757d7e url(../images/search-submit.png) 0 0 repeat-x;
     height: 29px;
-    font: normal 22px/29px "AdumaFOTRegular";
+    font: normal 18px/32px "AdumaFOTRegular";
     border: 1px solid #2e3030;
     text-align: center;
     border-radius: 2px;
@@ -3865,7 +3904,7 @@ h2 small
     color:#fff;
     background:#b7b6b6 url(../images/search-submit.png) 0 0 repeat-x;
     height: 29px;
-    font: normal 22px/29px "AdumaFOTRegular";
+    font: normal 18px/32px "AdumaFOTRegular";
     border: 1px solid #8f8f8f;
     text-align: center;
     border-radius: 2px;
@@ -3876,9 +3915,9 @@ h2 small
 }
 .leftCol .card-products-left .one .btn-box a.delete span
 {
-    padding-right: 17px;
+    padding-right: 14px;
     margin-right: -17px;
-    background: url(../images/close-icon.png) 100% 50% no-repeat;
+    background: url(../images/close-icon.png) 100% 40% no-repeat;
 }
 .leftCol .card-products-left .one .diagram
 {
@@ -3957,12 +3996,12 @@ h2 small
     background:#2fd43b url(../images/green-btn-border.png) 0 0 repeat-x;
     display: block;
     border: 1px solid #2eab35;
-    height: 29px;
+    height: 35px;
     text-align: center;
     width: 306px;
     margin: 0 auto;
     clear: both;
-    font: normal 22px/29px 'AdumaFOTRegular';
+    font: normal 18px/40px 'AdumaFOTRegular';
     color:#ffffff;
     border-radius: 2px;
     -moz-border-radius: 2px;
@@ -4011,7 +4050,7 @@ h2 small
     width: 110px;
     height: 29px;
     color:#ffffff;
-    font: normal 22px/29px 'AdumaFOTRegular';
+    font: normal 18px/33px 'AdumaFOTRegular';
     padding:0;
     margin-bottom: 8px;
     text-align: center;
@@ -4022,7 +4061,11 @@ h2 small
 {
     padding-right: 16px;
     margin-right: -16px;
-    background: url(../images/prev-arrow.png) 100% 50% no-repeat;
+    background: url(../images/prev-arrow.png) 80% 40% no-repeat;
+}
+.one-box .left a.share span
+{
+    padding-right: 25px;
 }
 .one-box .right img.floatRight
 {
@@ -4032,6 +4075,7 @@ h2 small
 .one-box .right .text
 {
     overflow: hidden;
+    height:80px;
 }
 .one-box .right .text h4
 {
@@ -4067,18 +4111,19 @@ h2 small
     clear: both;
     color:#50504f;
     font: normal 13px/22px Arial;
+    margin-top:15px;
 }
 .one-box .right .bottom .ratio
 {
     float: right;
-    width: 141px;
-    text-align: center;
+    width: 127px;
+    text-align: right;
     font-weight: bold;
-    padding-left: 20px;
+    padding-right:15px;
 }
 .one-box .right .bottom .ratio span
 {
-    font: normal 20px/22px 'AdumaFOTMedium';
+    font: normal 16px/22px 'AdumaFOTMedium';
     color:#3b63ef;
 }
 .one-box .right .bottom .info
@@ -4102,7 +4147,7 @@ h2 small
 /*---------------------------*/
 body.search-ative
 {
-    background: url(../images/search-active-bg.png) 0 0 repeat-x;
+    background: #ebebeb url(../images/search-active-bg.png) 0 0 repeat-x;
 }
 body.search-ative #header
 {
@@ -4129,6 +4174,7 @@ body.search-ative #header
 .search-result-box .tabs-nav
 {
     padding-bottom: 38px;
+
     border-bottom: 1px solid #848383;
     height: 19px;
     margin-bottom: 33px;
@@ -4137,9 +4183,10 @@ body.search-ative #header
 .search-result-box .tabs-nav li
 {
     float: right;
+
     padding:0 35px;
     border-right: 1px solid #848383;
-    font: normal 19px/19px 'AdumaFOTRegular';
+    font: normal 18px/18px 'AdumaFOTRegular';
 }
 .search-result-box .tabs-nav li:first-child
 {
@@ -4219,10 +4266,11 @@ body.search-ative #header
 }
 .search-result-box .slides-one .one .floatRight
 {
-    margin: 2px 0 5px 13px;
+    margin: 2px 0 100% 13px;
 }
 .search-result-box .slide-wrap
 {
+    font-family:Arial;
     position: relative;
     border-bottom: 1px solid #848383;
     text-align: center;
@@ -4340,6 +4388,7 @@ body.search-ative #header
 .upload-popup .upload-top textarea
 {
     color:#50504f;
+
     font: normal 12px/16px ARial;
     padding: 7px 8px 7px 22px;
     height: 55px;
@@ -4547,10 +4596,11 @@ body.search-ative #header
 }
 .login-form .input
 {
+
 }
 .login-form  input.text
 {
-    color:#50504f;
+    color:#a0a09f;
     font: normal 15px/18px Arial;
     border: none;
     background:#fff;
@@ -4599,7 +4649,7 @@ body.search-ative #header
     color:#fff;
     width: 112px;
     float: left;
-    font: normal 22px/31px "AdumaFOTRegular";
+    font: normal 18px/32px "AdumaFOTRegular";
     cursor: pointer;
 }
 /*------------------------*/
@@ -4645,8 +4695,8 @@ body.search-ative #header
 .myuru-top .right .user .proxy
 {
     padding: 6px 9px 0 0;
-    color:#b7b6b6;
-    font: normal 12px/14px "AdumaFOTRegular";
+    color:#b7b7b6;
+    font: bold 13px/13px Arial;
     position: relative;
     background: url(../images/proxy-icon.png) 41px 7px no-repeat;
 }
@@ -4668,8 +4718,8 @@ body.search-ative #header
 .myuru-top .right .user .respect
 {
     padding: 6px 9px 0 0;
-    color:#b7b6b6;
-    font: normal 12px/14px "AdumaFOTRegular";
+    color:#b7b7b6;
+    font: bold 13px/13px Arial;
     position: relative;
     background: url(../images/respect-icon.png) 43px 6px no-repeat;
 }
@@ -4699,7 +4749,7 @@ body.search-ative #header
 }
 .myuru-top .right .user-links h4
 {
-    color:#50504f;
+    color:#7f7f7e;
     font: bold 17px/20px Arial;
     margin-bottom: 12px;
 }
@@ -4739,9 +4789,10 @@ body.search-ative #header
     height: 37px;
     border: 1px solid #2eab35;
     border-radius: 2px;
+
     color:#fff;
     width: 337px;
-    font: normal 22px/35px "AdumaFOTRegular";
+    font: normal 18px/37px "AdumaFOTRegular";
     cursor: pointer;
 }
 .myuru-top .left
@@ -4919,8 +4970,10 @@ body.search-ative #header
 /*****************************************************************************************************************************/
 
 
+
 .myuru-top .left .token-bar .bars
 {
+
     background: url(../images/token-bar-default.png) 0 100% repeat-y;
     position: relative;
     height: 134px;
@@ -5339,6 +5392,7 @@ body.search-ative #header
 .bottom-plus
 {
     padding-top: 10px;
+
 }
 .one-box .bottom-plus .right .bottom
 {
@@ -5467,6 +5521,7 @@ body.search-ative #header
 }
 #search_suggest  li
 {
+    font:bold 14px/20px Arial;
     padding: 4px 10px;
     color:   #7f868c;
     cursor: pointer;
@@ -5493,7 +5548,7 @@ body.search-ative #header
 .search-box input:focus
 {
     background:#b9c9fd;
-    color: #000;
+    color: #505052;
 }
 
 #uplod_image_placeholder
@@ -5715,6 +5770,7 @@ a.fraction-btn
     border-left: none;
     border-top: 6px solid transparent;
     border-bottom: 6px solid transparent;
+
 }
 .popular-comments .user-right h4
 {
@@ -5722,6 +5778,7 @@ a.fraction-btn
     font: bold 13px/17px Arial;
     margin:0;
 }
+
 .popular-comments .user-right .date
 {
     font: italic 11px/17px Arial;
@@ -5729,6 +5786,7 @@ a.fraction-btn
     padding-bottom: 6px;
 }
 .popular-comments .user-right .proxy
+
 {
     padding-right: 20px;
     margin-bottom: 6px;
@@ -5736,6 +5794,7 @@ a.fraction-btn
     background: url(../images/proxy-icon.png) 100% 50% no-repeat;
 }
 .popular-comments .user-right .proxy span
+
 {
     display: block;
     color:#ffffff;
@@ -6089,6 +6148,7 @@ a.fraction-btn
 }
 .followers-diagram .event .type-one .popup-text h4
 {
+
     color:#3c63ef;
     font-size: 20px;
     line-height: 22px;
@@ -6241,9 +6301,7 @@ a.fraction-btn
     font: normal 13px/17px Arial;
     letter-spacing: -0.25px;
     margin: 0;
-
 }
-
 .updates-box .right .updates .one a.btn
 {
     position: absolute;
@@ -6371,7 +6429,7 @@ a.fraction-btn
 .followers-ppl .one
 {
     float: right;
-    padding: 0 0 10px 73px;
+    padding: 0 0 30px 73px;
     width: 65px;
     text-align: center;
 }
@@ -6462,7 +6520,7 @@ a.fraction-btn
     height: 29px;
     text-align: center;
     color:#ffffff;
-    font: normal 18px/29px 'AdumaFOTRegular';
+    font: normal 18px/32px 'AdumaFOTRegular';
     text-decoration: none;
     margin-bottom: 5px;
 }
@@ -6517,7 +6575,6 @@ a.fraction-btn
 {
     background: url(../images/arrows.png) -2px -55px no-repeat;
 }
-
 .comments-box .ratio a.down.balance-2
 {
     background: url(../images/arrows.png) -44px -55px no-repeat;
@@ -6534,7 +6591,6 @@ a.fraction-btn
 {
     background: url(../images/arrows.png) -302px 0px no-repeat;
 }
-
 .comments-box .ratio a.up.balance2
 {
     background: url(../images/arrows.png) -258px 0px no-repeat;
@@ -6703,12 +6759,14 @@ a.fraction-btn
 }
 .members-box .one-members .members-popup h4
 {
+
     text-align: center;
     color:#50504f;
     font: normal 13px/15px Arial;
     margin: 0 0 7px;
 }
 .members-box .one-members .members-popup .proxy
+
 {
     padding-right: 20px;
     margin-bottom: 6px;
@@ -6896,10 +6954,12 @@ body.body-action .followers-box h2
     margin-bottom: 30px;
     color:#3b63ef;
     font-size: 28px;
+
     line-height: 35px;
     font-family: 'AdumaFOTMedium';
 }
 .general-text .qa-box .one
+
 {
     float: right;
     width: 308px;
@@ -6973,7 +7033,7 @@ body.body-action .followers-box h2
     height: 29px;
     text-align: center;
     color:#ffffff;
-    font: normal 18px/29px 'AdumaFOTRegular';
+    font: normal 18px/32px 'AdumaFOTRegular';
     text-decoration: none;
     margin: 0 auto 10px auto;
 
@@ -7136,6 +7196,7 @@ body.body-action .followers-box h2
     margin: 0;
 }
 
+
 .post-comment .user-right
 {
     position: absolute;
@@ -7147,6 +7208,7 @@ body.body-action .followers-box h2
     z-index: 10;
 }
 .post-comment .user-right .arrow
+
 {
     position: absolute;
     top: 70px;
@@ -7272,7 +7334,7 @@ body.body-action .followers-box h2
 }
 .post-comment .ratio a.up
 {
-    background: url(../images/ratio-arrows1.png) 0 0 no-repeat;
+    background: url(../images/ratio-arrows.png) 0 0 no-repeat;
     width: 31px;
     height: 20px;
     display: block;
@@ -7352,6 +7414,7 @@ body.body-action .followers-box h2
     position: absolute;
     left: 0;
     top: 0;
+
     width: 112px;
     height: 120px;
     background: url(../images/user-fillter-white-big-empty.png) no-repeat;
@@ -7363,6 +7426,7 @@ body.body-action .followers-box h2
     margin: 0;
     color:#50504f
 }
+
 .profile-box .profile-info .left
 {
     overflow: hidden;
@@ -7371,6 +7435,7 @@ body.body-action .followers-box h2
 {
     border-top: 1px solid #ececec;
     font: bold 13px/25px Arial;
+
     margin: 0;
     color:#50504f;
 }
@@ -7541,6 +7606,7 @@ body.body-action .followers-box h2
     margin-bottom: 12px;
 }
 .left-tags .tags
+
 {
     padding: 10px;
     border: 1px solid #d6dbde;
@@ -7564,6 +7630,7 @@ body.body-action .followers-box h2
     height: 64px;
     position: relative;
     margin: 0 40px 34px 40px;
+
 }
 .members-box .one-members .img-box
 {
@@ -7734,6 +7801,7 @@ body.body-action .followers-box h2
 }
 .map .map-popup h4
 {
+
     color:#50504f;
     font: bold 13px/15px Arial;
     margin: 0;
@@ -7750,6 +7818,7 @@ body.body-action .followers-box h2
     background: url(../images/delete-app.png) no-repeat;
     position: absolute;
     left: -8px;
+
     top: -8px;
 }
 .add-offer .add-offer-bottom-more .tags
