@@ -23,7 +23,7 @@ var Cycle = module.exports = new Schema({
     image_field_preview: mongoose_types.File,
     tags:[String],
     discussions:[
-        {type:ObjectId, ref:'Discussion'}
+        {discussion: {type:ObjectId, ref:'Discussion'}, is_main: {type: Boolean, 'default': false}}
     ],
     document: String,
     shopping_cart: [

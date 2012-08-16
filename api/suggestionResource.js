@@ -386,7 +386,14 @@ module.exports.approveSuggestion = function(id,callback)
                         parts[0].text = "";
                     vision = vision.replace(/\r/g,'');
 
+                    console.log("before");
+                    console.log(vision);
+
                     var str = vision.substr(0, Number(parts[0].start)) + parts[0].text + vision.substr(Number(parts[0].end));
+
+                    console.log("after");
+                    console.log(str);
+
                     discussion_object.vision_text_history.push(discussion_object.text_field);
                     discussion_object.text_field = str;
 
@@ -474,6 +481,15 @@ module.exports.approveSuggestion = function(id,callback)
         callback(err, arg);
     });
 }
+
+//function encode_utf8( s ){
+//    return unescape( encodeURIComponent( s ) );
+//}( '\u4e0a\u6d77' )
+//
+//function decode_utf8( s )
+//{
+//    return decodeURIComponent( escape( s ) );
+//}
 
 var calculate_sugg_threshold = function(factor, discussion_threshold){
     var log_base_75_of_x =
