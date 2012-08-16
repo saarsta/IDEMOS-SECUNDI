@@ -1,40 +1,52 @@
 <div class="one cf">
-    <div class="user-right">
+    <div class="user-right user-right-small side_menu">
         <span class="arrow"></span>
         <div class="left">
-            <a href="">טדנמ ןת</a>
-            <a href="">בוקע</a>
-            <a href="">העדוה חלש</a>
+            <a id="add_or_remove_proxy" href="javascript:void(0);" disabled="disabled">
+                תן מנדט
+            </a>
+            <a href="javascript:void(0);" class="follow_user gray_and_soon">
+                עקוב
+            </a>
+            <a href="javascript:void(0);"  class="gray_and_soon">
+                שלח הודעה
+            </a>
         </div>
         <div class="right">
-            <div class="img-box" style="overflow: hidden;">
-                <div style="width:60px;; overflow:hidden; " class='auto-scale' >
-                    <img  src="http://profile.ak.fbcdn.net/hprofile-ak-snc4/49136_745621901_4865704_n.jpg" alt=""/>
+
+            <a href="/myuru/{creator_id.id}">
+                <div class="img-box transparent-img">
+                    <div style="width:60px; height:64px;" class="auto-scale">
+                        <img alt="{title}" title="{creator_id.first_name} {creator_id.last_name}"
+                             src="{?creator_id}{creator_id.avatar_url}{:else}/images/default_user_img.gif{/creator_id}">
+                    </div>
+                    <span></span>
                 </div>
-                <span></span>
-            </div>
-            <h4>רומשאר זעוב</h4>
-            <div class="date">13.3.12</div>
+            </a>
+
+            <h4>  {creator_id.first_name} {creator_id.last_name}</h4>
             <div class="proxy">
-                <span>3</span>
+                <span>{creator_id.num_of_proxies_i_represent}</span>
             </div>
             <div class="respect">
-                <span>20</span>
+                <span>{creator_id.score}</span>
             </div>
         </div>
     </div>
+
     <div class="text">
-        <p>לכתוב ביוגרפיה קצרה דברים שאתה אוהב, אג’נדה, דעות, ומה שתרצה על עצמך. כאן אפשר
-            לכתוב ביוגרפיה קצרה כאן אפשר לכתוב ביוגרפיה קצרה דברים שאתה אוהב, אג’נדה, דעות, ומה
-            שתרצה על עצמך. בנוסף, אפשר לכתוב ביוגרפיה קצרה לכתוב ביוגרפיה קצרה דברים שאתה
-            אוהב, אג’נדה, דעות, ומה שתרצה על עצמך. כאן אפשר לכתוב ביוגרפיה קצרה כאן אפשר לכתוב
-            ביוגרפיה קצרה דברים שאתה אוהב, אג’נדה, דעות, ומה שתרצה על עצמך. בנוסף, ביוגרפיה
-            קצרה דברים שאתה אוהב. </p>
-        <a href="">מעבר לדיון </a>
+        <p>{text}</p>
+        <div class="bottom">
+        <a href="/discussions/{discussion_id}">מעבר לדיון </a>
+        </div>
     </div>
     <div class="ratio">
-        <a class="up" href=""></a>
-        <div class="count">252</div>
-        <a class="down" href=""></a>
+        <div class="ratio-spacer"></div>
+        <div class="ratio-content">
+            <a href="javascript:void(0);" class="up vote_for {?voter_balance}balance{voter_balance}{/voter_balance}"></a>
+            <div class="count">{voting|round}</div>
+            <a href="javascript:void(0);" class="down vote_against {?voter_balance}balance{voter_balance}{/voter_balance}"></a>
+        </div>
+
     </div>
 </div>

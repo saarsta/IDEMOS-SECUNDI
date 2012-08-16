@@ -19,7 +19,7 @@
         <div id="content" class="cf">
             <div class="right-add-offer">
                 <div id="cycle" class="add-offer add-offer-small">
-                    <h2><span class="arrow"> <%= cycle.subject.name %></span> <%= cycle.title %></h2>
+                    <h2><span class="arrow"> <%= cycle.subject_name %></span> <%= cycle.title %></h2>
                     <div class="text-box cf">
                     <div class="cycle-content">
                     <% if (cycle.image_field) { %>
@@ -366,6 +366,12 @@
            });
 
             db_functions.getCyclePosts(cycle_id, function (err, data) {
+
+                    for (i = 0; i < data.objects.length; i++) {
+                        data.objects[i].isFirst = (i === 0);
+                        data.objects[i].isEven = ((i % 2)== 0);
+                        data.objects[i].voting =      data.objects[i].votes_for - data.objects[i].votes_against;
+                    }
                    dust.renderArray('cycle_post', data.objects, function (err, out) {
                        $('.hide-box').append(out);
                    });
@@ -406,6 +412,55 @@
                 $(".cycle-content").height("auto");
                  $(this).hide();
             });
+
+            $('.hide-box').on('mouseenter', ".side_menu",
+                        function (e) {
+                            $(this).addClass('hover');
+                            $('.left', this).show().css({width:0}).animate({'width':87});
+
+                        }).on('mouseleave', ".side_menu", function (e) {
+                            var side = $(this);
+                            side.removeClass('hover');
+                            $('.left', this).animate({'width':0}, function () {
+                                $(this).hide();
+                            });
+             });
+
+
+              $('#comments').on('click', '.vote_for', function () {
+                     vote.apply($(this),['add']);
+
+             });
+
+             $('#comments').on('click', ".vote_against", function () {
+                 vote.apply($(this),['remove']);
+
+             });
+
+
+        function vote(actionType){
+            var post_id = $(this).parents('.comment-one').data("id");
+            var button = $(this);
+            var func = $(this).parents('#comments').length ? db_functions.voteForPost : db_functions.voteForSuggestion;
+            func.call(db_functions, post_id, actionType, function (err, post_obj) {
+                if (!err) {
+
+                       button.parents(".ratio").find(".count").text(Math.round(post_obj.votes_for-post_obj.votes_against ));
+                       var down_arrow = button.parents(".ratio").find(".down");
+                       var up_arrow =button.parents(".ratio").find(".up");
+                       down_arrow.removeClass("balance0").removeClass("balance1").removeClass("balance2").removeClass("balance3").removeClass("balance-1").removeClass("balance-2").removeClass("balance-3").addClass("balance"+post_obj.voter_balance);
+                       up_arrow.removeClass("balance0").removeClass("balance1").removeClass("balance2").removeClass("balance3").removeClass("balance-1").removeClass("balance-2").removeClass("balance-3").addClass("balance"+post_obj.voter_balance);
+                }
+                else {
+                    if (err.responseText == 'Error: there is not enought tokens')
+                        popupProvider.showOkPopup( {message:     'אין לך מספיק אסימונים'});
+                    if (err.responseText == 'user already voted for this post')
+                        popupProvider.showOkPopup( {message:     'באפשרותך לתת עד שלושה אסימונים לתגובה בדיון'});
+                    if (err.responseText == 'soory, can\'t vote to your own post')
+                        popupProvider.showOkPopup( {message:     'מצטערים, לא ניתן להצביע לתגובה של עצמך'});
+                }
+            })
+        }
 
 
 });

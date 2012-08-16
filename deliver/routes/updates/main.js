@@ -32,7 +32,8 @@ module.exports = function(req, res){
                     description:update.text_field,
                     image: (update.image_field_preview && item.image_field.url),
                     link:'/updates/' + update.id,
-                    id:update.id
+                    id:update.id,
+
                 }
             });
         }

@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html>
 <head  prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# <%= settings.facebook_app_name %>: http://ogp.me/ns/fb/<%= settings.facebook_app_name %>#">
     <% include partials/head.ejs %>
@@ -17,14 +16,20 @@
         </div>
 
         <div id="content" class="cf">
-            <div class="rightCol">
+            <div class="rightCol update">
                 <div class="nav-btn">
 
                     <a class="share" data-title="<%= update.title %>" data-text_preview="<%= update.text_field %>" data-img_src="<%= update.image_field.url %>" rel="/updates/<%= update.id %>" href="/facebookShare?link=/updates/<%= update.id %>" target="_blank">שתף</a>
 
 
                 </div>
-                <h2>עעדכון ממעגל התנופה> שם מעדל התנופה</h2>
+
+                <h2>
+                <span class="arrow">
+עדכון ממעגל התנופה
+              </span>
+
+               </h2>
                 <div class="text cf">
                     <h3><%=update.title%></h3>
 

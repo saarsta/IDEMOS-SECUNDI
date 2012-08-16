@@ -1275,7 +1275,7 @@ body
     height: 54px;
     overflow: hidden;
     margin-bottom: 10px;
-
+    
 }
 #content .services-box h2 span
 {
@@ -2086,6 +2086,7 @@ body
     background:#ededed;
 }
 
+.update h2 .arrow,
 .add-offer h2 .arrow
 
 {
@@ -2961,7 +2962,7 @@ h2 small
     color:#ffffff;
     font: normal 18px/29px 'AdumaFOTRegular';
     text-decoration: none;
-    margin-bottom: 5px;
+    margin-bottom: 5px;  
 }
 .comments-box .ratio
 {
@@ -5739,7 +5740,7 @@ a.fraction-btn
     float: right;
     width: 382px;
     margin-right: 115px;
-    height: 132px;
+ /*   height: 132px;  */
     padding: 10px 0 0 17px;
     border-left: 1px solid #d8dde0;
 }
@@ -6542,9 +6543,9 @@ a.fraction-btn
     bottom: 20px;
 }
 .comments-box .ratio .ratio-spacer
-{
-    height:50%;
-}
+ {
+     height:50%;
+ }
 .comments-box .ratio .ratio-content
 {
     margin-top: -38px;
@@ -6627,7 +6628,7 @@ a.fraction-btn
 }
 /*------ SMALL ---------*/
 .comments-box .comment-one  .user-right-small {
-    /*  bottom:20px;            */
+  /*  bottom:20px;            */
     top: 17px;
 }
 .comments-box .comment-one .user-right-small .proxy
@@ -7099,7 +7100,7 @@ body.body-action .followers-box h2
 }
 .one-post a
 {
-    text-decoration: none;
+   text-decoration: none;
 }
 .one-post .date-post
 {
@@ -7984,7 +7985,7 @@ a.menu-elections:hover {
 }
 
 *------------------------------*/
-.add-event
+.add-event 
 {
     border-bottom: 1px solid #d4d9dc;
     padding-bottom: 15px;
@@ -8111,12 +8112,12 @@ a.menu-elections:hover {
     height: 29px;
     color:#fff;
     background:#b7b6b6 url(../images/search-submit.png) 0 0 repeat-x;
-    font: normal 20px/29px "AdumaFOTRegular";
+    font: normal 20px/29px "AdumaFOTRegular";    
     border: 1px solid #8f8f8f;
     text-align: center;
     border-radius: 2px;
 }
-.add-event .date
+.add-event .date 
 {
     padding-left: 12px;
     width: 166px;

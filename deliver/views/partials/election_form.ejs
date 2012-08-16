@@ -68,8 +68,8 @@
 		</div>
 		<div class="leftone">
 			<form id="user-signup">
-				<label id="id1"><input id="full_name" class="placeholder design2" size="22" value="שם + שם משפחה" name="textfield" type="text"></label>
-				<label><input id="email" class="placeholder design2" size="22" value="כתובת מייל" name="textfield" type="email"></label>
+				<label id="id1"><input id="full_name" class="placeholder design2" size="22" value="שם + שם משפחה" name="full_name" type="text"></label>
+				<label><input id="email" class="placeholder design2" size="22" value="כתובת מייל" name="email" type="email"></label>
 			</form>
 		</div>
 	</div>
@@ -81,7 +81,7 @@
 <div id="box-share">
 	<div id="close"><img src="/images/elections/close.png" alt="עורו" /></div>
 	<div class="icons">
-		<a href="mailto:?subject=%D7%92%D7%9D%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%A8%D7%92%D7%99%D7%A9%20%D7%90%D7%96%D7%A8%D7%97%20%D7%9C%D7%90%20%D7%9E%D7%99%D7%95%D7%A6%D7%92%20%E2%80%93%20%D7%90%D7%96%20%D7%91%D7%97%D7%A8%D7%AA%D7%99%20%D7%91%D7%A0%D7%95%D7%A9%D7%90%D7%99%D7%9D%20%D7%94%D7%97%D7%A9%D7%95%D7%91%D7%99%D7%9D%20%D7%9C%D7%99%20%D7%91%D7%90%D7%9E%D7%AA!&body= מרגישים כמוני שאחרי הבחירות הפוליטיקאים לא סופרים אותנו? במקום להרים ידיים, הצטרפתי ל עורו כדי שנוכל להתאגד, לקחת אחריות על חיינו ולקבוע סדר יום אזרחי חדש" target="_blank"><img class="icon" src="/images/elections/enva.png" alt="עורו" /></a>
+		<a href="mailto:?subject=%D7%92%D7%9D%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%A8%D7%92%D7%99%D7%A9%20%D7%90%D7%96%D7%A8%D7%97%20%D7%9C%D7%90%20%D7%9E%D7%99%D7%95%D7%A6%D7%92%20%E2%80%93%20%D7%90%D7%96%20%D7%91%D7%97%D7%A8%D7%AA%D7%99%20%D7%91%D7%A0%D7%95%D7%A9%D7%90%D7%99%D7%9D%20%D7%94%D7%97%D7%A9%D7%95%D7%91%D7%99%D7%9D%20%D7%9C%D7%99%20%D7%91%D7%90%D7%9E%D7%AA!&body=מרגישים כמוני שהפוליטיקאים לא סופרים אותנו? במקום להתייאש, הצטרפתי לעורו כדי שנוכל להתאגד ולקחת אחריות על חיינו. בתור התחלה, הצבעתי בבחירות של עורו" target="_blank"><img class="icon" src="/images/elections/enva.png" alt="עורו" /></a>
 		<a href="#" id="share-google"><img class="icon" src="/images/elections/google.png" alt="עורו" /></a>
 		<a href="#" id="share-twitter"><img class="icon" src="/images/elections/tweet.png" alt="עורו" /></a>
 		<a href="#" id="share-facebook"><img class="icon" src="/images/elections/face.png" alt="עורו" /></a>
@@ -89,7 +89,7 @@
 </div>
 
 <div id="screen"></div>
-
+<style>p.error {color: magenta;font:normal 14px/18px Arial}</style>
 <script type="text/javascript">
 $(function() {
     var user_logged = <%=user_logged%>;
@@ -130,7 +130,7 @@ $(function() {
             },
             email:{
                 required:'נא להזין כתובת מייל',
-                email:'כתובת מייל שגויה'
+                email:'ההרשמה לא הצליחה, אנא בידקו את כתובת המייל שהוזנה'
             }
         },
         highlight: function (element, errorClass) {
@@ -198,7 +198,7 @@ $(function() {
 
         }).fail(function(e) {
             setTimeout(function(){
-                popupProvider.showOkPopup({message: 'הצבעה לא נרשמה. האם הצבעת כבר בעבר?'/*, onOkCilcked:function() {
+                popupProvider.showOkPopup({message: 'אפשר להצביע רק פעם אחת.'/*, onOkCilcked:function() {
                     window.location.href = window.location.href;
                 }*/});
             },300);
@@ -252,7 +252,7 @@ $(function() {
 //                    });
 //
 //                }else
-                    popupProvider.showOkPopup({message: 'ההרשמה לא הצליחה, אנא בידוקו את כתובת המייל'});
+                    popupProvider.showOkPopup({message: 'ההרשמה לא הצליחה, אנא בידקו את כתובת המייל שהוזנה'});
             });
 			return false;
 		}
