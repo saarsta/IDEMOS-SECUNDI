@@ -46,8 +46,10 @@ module.exports = {
                     });
                 }
                 else{
-                    res.statusCode = 409;
-                    cbk('already_exists');
+                    req.session.user = user_obj;
+                    req.session.save(function(err, results){
+                        cbk(err || 'already_exists');
+                    })
                 }
             },
 

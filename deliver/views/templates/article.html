@@ -1,12 +1,16 @@
 <div class="one{#.is_last} last{/.is_last}">
-    <div class="img-box">
-        <div style="width:112px; height:120px;" class='auto-scale'>
-        <img src="{avatar}" alt="{title}"/>
+    <a href="/myuru/{?user_id}{user_id._id}{/user_id}">
+        <div class="img-box">
+
+            <div style="width:112px; height:120px;" class='auto-scale'>
+                <img src="{?user_id}{user_id.avatar_url}{/user_id}" alt="{title}"/>
+            </div>
+            <span class="fillter"></span>
         </div>
-        <span class="fillter"></span>
-    </div>
+    </a>
+
     <h4><a href="">{.first_name} {.last_name}</a></h4>
-    <p>{.title}</p>
+    <a class="no_underline_cursor_when_hover" href="/blogs/article/{_id}">{.title}</a>
     <div class="tags">
           {#tags}
 			<a href="/information_items?tag_name={.|u}"

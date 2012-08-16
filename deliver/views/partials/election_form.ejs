@@ -238,20 +238,20 @@ $(function() {
 				email		= $input.eq(1).val();
 
             $.post('/account/register', {full_name:full_name, email:email}, sendVote).fail(function(e) {
-                if(e.statusText == "Conflict"){
-                    popupProvider.showLoginPopup({}, function(err, result){
-                        if(!err){
-                            sendVote();
-                        }else{
-                            setTimeout(function(){
-                                popupProvider.showOkPopup({message: err.responseText});
-                            },300);
-
-                        }
-
-                    });
-
-                }else
+//                if(e.statusText == "Conflict"){
+//                    popupProvider.showLoginPopup({}, function(err, result){
+//                        if(!err){
+//                            sendVote();
+//                        }else{
+//                            setTimeout(function(){
+//                                popupProvider.showOkPopup({message: err.responseText});
+//                            },300);
+//
+//                        }
+//
+//                    });
+//
+//                }else
                     popupProvider.showOkPopup({message: 'ההרשמה לא הצליחה, אנא בידוקו את כתובת המייל'});
             });
 			return false;
