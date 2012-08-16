@@ -946,8 +946,8 @@ var db_functions = {
             url: '/api/cycle_posts?cycle_id=' + cycle_id,
             type: "GET",
             async: true,
-            success: function (err, data) {
-                callback(null, data);
+            success: function (data,err ) {
+                callback(err, data);
             },
 
             error:function(err){
@@ -1022,6 +1022,17 @@ var db_functions = {
             }
         });
     },
+
+    getPendingActionsBycicle: function(cycle_id, callback){
+            db_functions.loggedInAjax({
+                    url: '/api/actions/?cycle_id=' + cycle_id + '&is_approved=false',
+                type: "GET",
+                async: true,
+                success: function (data) {
+                    callback(data);
+                }
+            });
+        },
 
     joinOrLeaveAction: function(action_id,callback){
         db_functions.loggedInAjax({

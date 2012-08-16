@@ -24,7 +24,16 @@ module.exports = function(req, res){
             res.render('500.ejs',{error:err});
         else {
             res.render('update.ejs',{
-                update: update
+                update: update,
+                meta:{
+                    type:'updates',
+                    title:update.title,
+                    description:update.text_field,
+                    image: (update.image_field_preview && item.image_field.url),
+                    link:'/updates/' + update.id,
+                    id:update.id,
+
+                }
             });
         }
     })

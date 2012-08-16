@@ -2050,9 +2050,10 @@ body
     background:#ededed;
 }
 
+.update h2 .arrow,
 .add-offer h2 .arrow
 {
-    padding-left: 13px;
+    padding-left: 7px;
     margin-left: 6px;
     background: url(../images/arrow-left.png) 0 50% no-repeat;
 
@@ -5684,7 +5685,7 @@ a.fraction-btn
     float: right;
     width: 382px;
     margin-right: 115px;
-    height: 132px;
+ /*   height: 132px;  */
     padding: 10px 0 0 17px;
     border-left: 1px solid #d8dde0;
 }
