@@ -1,4 +1,7 @@
-<div class="one cf">
+<div id="post_{_id}" class="one cf {#isFirst} noBorder{:else}{/isFirst} {#isEven} comment-one-even{:else}{/isEven}"
+         data-id="{_id}" data-ref-id="{ref_to_post_id}" data-num-given-mandates="{mandates_curr_user_gave_creator}"
+         data-creator_name="{creator_id.first_name} {creator_id.last_name}"
+         data-creator_id="{creator_id.id}">
     <div class="user-right user-right-small side_menu">
         <span class="arrow"></span>
         <div class="left">
@@ -35,9 +38,10 @@
     </div>
 
     <div class="text">
-        <p>{text}</p>
+        {?discussion_title}<h3>{discussion_title}</h3>  {/discussion_title}
+        <p>{text|s|post}</p>
         <div class="bottom">
-        <a href="/discussions/{discussion_id}">מעבר לדיון </a>
+        {?discussion_title}<a href="/discussions/{discussion_id}">מעבר לדיון </a>      {/discussion_title}
         </div>
     </div>
     <div class="ratio">
