@@ -39,11 +39,12 @@
                     <div class="add-offer-bottom cf">
                         <div class="right">
                             <div class="tags">
+                            <!--
                                 <div class="info">
                                     <span class="talks">33</span>
                                     <span class="watched">151</span>
                                 </div>
-
+                                -->
                                 <% if (cycle.tags) for (var c = 0; c<cycle.tags.length; c++) { %>
                                       <a href="?tag_name=<%=cycle.tags[c]%>"> <%=cycle.tags[c] %></a>
                                 <% }%>
@@ -208,54 +209,7 @@
                 <div class="left">
                     <h2>פעולות הממתינות לאישור</h2>
                     <div class="anticipation-box">
-                        <div class="one">
-                            <h4>כאן תבוא כותרת של פעולה</h4>
-                            <p>הרצאה מפי פרופ’ תקציר וכמה מילים
-                            פרופ’ תקציר וכמה מילים שאפשר לספר ...</p>
-                            <div class="date">20.3.2012 | 50 משתתפים</div>
-                            <div class="tags cf">
-                                <div class="info">
-                                    <span class="talks">33</span>
-                                    <span class="watched">151</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="one">
-                            <h4>כאן תבוא כותרת של פעולה</h4>
-                            <p>הרצאה מפי פרופ’ תקציר וכמה מילים
-                            פרופ’ תקציר וכמה מילים שאפשר לספר ...</p>
-                            <div class="date">20.3.2012 | 50 משתתפים</div>
-                            <div class="tags cf">
-                                <div class="info">
-                                    <span class="talks">33</span>
-                                    <span class="watched">151</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="one">
-                            <h4>כאן תבוא כותרת של פעולה</h4>
-                            <p>הרצאה מפי פרופ’ תקציר וכמה מילים
-                            פרופ’ תקציר וכמה מילים שאפשר לספר ...</p>
-                            <div class="date">20.3.2012 | 50 משתתפים</div>
-                            <div class="tags cf">
-                                <div class="info">
-                                    <span class="talks">33</span>
-                                    <span class="watched">151</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="one">
-                            <h4>כאן תבוא כותרת של פעולה</h4>
-                            <p>הרצאה מפי פרופ’ תקציר וכמה מילים
-                            פרופ’ תקציר וכמה מילים שאפשר לספר ...</p>
-                            <div class="date">20.3.2012 | 50 משתתפים</div>
-                            <div class="tags cf">
-                                <div class="info">
-                                    <span class="talks">33</span>
-                                    <span class="watched">151</span>
-                                </div>
-                            </div>
-                        </div>
+
                         <a href="" class="btn">הראה לי את כולן</a>
                     </div>
                 </div>
@@ -279,12 +233,10 @@
 
 
                                                  <h4><a href=""><%=cycle.opinion_shapers[c].first_name %> <%=cycle.opinion_shapers[c].last_name %></a></h4>
-                                                 <p> בדו”ח של הלשכה המרכז
-                                                     נתונים מטרידים על מצב העוני
-                                                     באזורי מרכז הארץ ...                                                  </p>
+                                                <p><% if (cycle.opinion_shapers[c].opinion_text) {%>  <%=cycle.opinion_shapers[c].opinion_text %>  <% } %></p>
                                                  <div class="badges">
                                                      <div class="proxy">
-                                                         <span>3</span>
+                                                         <span><%=cycle.opinion_shapers[c].num_of_proxies_i_represent %></span>
                                                      </div>
                                                      <div class="respect">
                                                          <span><%=cycle.opinion_shapers[c].score %></span>
@@ -365,17 +317,14 @@
                         });
            });
 
-            db_functions.getCyclePosts(cycle_id, function (err, data) {
+            db_functions.getPendingActionsByCycle(cycle_id, function ( data,err) {
 
-                    for (i = 0; i < data.objects.length; i++) {
-                        data.objects[i].isFirst = (i === 0);
-                        data.objects[i].isEven = ((i % 2)== 0);
-                        data.objects[i].voting =      data.objects[i].votes_for - data.objects[i].votes_against;
-                    }
-                   dust.renderArray('cycle_post', data.objects, function (err, out) {
-                       $('.hide-box').append(out);
-                   });
-            });
+                    dust.renderArray('cycle_pending_action', data.objects, function (err, out) {
+                        $('.anticipation-box').prepend(out);
+
+                    });
+           });
+
 
 
 
@@ -426,23 +375,34 @@
                             });
              });
 
+             db_functions.getCyclePosts(cycle_id, function (err, data) {
 
-              $('#comments').on('click', '.vote_for', function () {
+                               for (i = 0; i < data.objects.length; i++) {
+                                   data.objects[i].isFirst = (i === 0);
+
+                                   data.objects[i].isEven = ((i % 2)== 0);
+                                   data.objects[i].voting =      data.objects[i].votes_for - data.objects[i].votes_against;
+                               }
+                              dust.renderArray('cycle_post', data.objects, function (err, out) {
+                                  $('.hide-box').append(out);
+                              });
+                       });
+              $('.hide-box').on('click', '.vote_for', function () {
                      vote.apply($(this),['add']);
 
              });
 
-             $('#comments').on('click', ".vote_against", function () {
+             $('.hide-box').on('click', ".vote_against", function () {
                  vote.apply($(this),['remove']);
 
              });
 
 
         function vote(actionType){
-            var post_id = $(this).parents('.comment-one').data("id");
+            var post_id = $(this).parents('.one').data("id");
             var button = $(this);
-            var func = $(this).parents('#comments').length ? db_functions.voteForPost : db_functions.voteForSuggestion;
-            func.call(db_functions, post_id, actionType, function (err, post_obj) {
+
+            db_functions.voteForPost(post_id, actionType, function (err, post_obj) {
                 if (!err) {
 
                        button.parents(".ratio").find(".count").text(Math.round(post_obj.votes_for-post_obj.votes_against ));

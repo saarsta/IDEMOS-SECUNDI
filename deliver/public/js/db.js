@@ -1024,12 +1024,12 @@ var db_functions = {
         });
     },
 
-    getPendingActionsBycicle: function(cycle_id, callback){
+    getPendingActionsByCycle: function(cycle_id, callback){
             db_functions.loggedInAjax({
                     url: '/api/actions/?cycle_id=' + cycle_id + '&is_approved=false',
                 type: "GET",
                 async: true,
-                success: function (data) {
+                success: function (data,err) {
                     callback(data);
                 }
             });

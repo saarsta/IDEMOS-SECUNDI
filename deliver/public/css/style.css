@@ -5729,12 +5729,21 @@ a.fraction-btn
     background-position: 0 100%;
 }
 .popular-comments .one
+ {
+     position: relative;
+     margin: 0 28px 13px;
+     border-bottom: 1px solid #ebebeb;
+     padding-bottom: 16px;
+ }
+
+.popular-comments .one
 {
     position: relative;
     margin: 0 28px 13px;
     border-bottom: 1px solid #ebebeb;
     padding-bottom: 16px;
 }
+
 .popular-comments .one .text
 {
     float: right;
@@ -5749,6 +5758,13 @@ a.fraction-btn
     color:#505050;
     font: normal 11px/17px Arial;
     margin: 0;
+}
+
+.popular-comments .one .text h3
+{
+    color:#505050;
+    font: normal 17px Arial;
+    margin-bottom: 3px;
 }
 
 .popular-comments .user-right
@@ -5883,40 +5899,7 @@ a.fraction-btn
 {
     left: -9px;
 }
-.popular-comments .ratio
-{
-    float: left;
-    width: 33px;
-    padding: 35px 0 0 9px;
-}
-.popular-comments .ratio a.up
-{
-    background: url(../images/ratio-arrows.png) 0 0 no-repeat;
-    width: 31px;
-    height: 20px;
-    display: block;
-    margin: 0 auto 6px;
-}
-.popular-comments .ratio a.down
-{
-    background: url(../images/ratio-arrows.png) 0 100% no-repeat;
-    width: 31px;
-    height: 20px;
-    display: block;
-    margin: 0 auto;
-}
-.popular-comments .ratio .count
-{
-    height: 24px;
-    background: #3d64f0;
-    border-radius: 3px;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    margin-bottom: 6px;
-    text-align: center;
-    color:#fff;
-    font: bold 15px/24px Arial;
-}
+
 .popular-comments .bottom
 {
     padding: 12px 28px 30px;
@@ -6542,6 +6525,15 @@ a.fraction-btn
     border-right: 1px solid #d8dde0;
     bottom: 20px;
 }
+
+.popular-comments .ratio
+{
+    float: left;
+    width: 33px;
+    padding: 35px 0 0 9px;
+}
+
+
 .comments-box .ratio .ratio-spacer
  {
      height:50%;
@@ -6551,6 +6543,7 @@ a.fraction-btn
     margin-top: -38px;
 }
 
+.popular-comments .ratio a.up  ,
 .comments-box .ratio a.up
 {
     background: url(../images/ratio-arrows1.png) 0 0 no-repeat;
@@ -6560,6 +6553,7 @@ a.fraction-btn
     margin: 0 auto 6px;
 }
 
+.popular-comments .ratio a.down ,
 .comments-box .ratio a.down
 {
     background: url(../images/ratio-arrows.png) 0 100% no-repeat;
@@ -6569,38 +6563,45 @@ a.fraction-btn
     margin: 0 auto;
 }
 
-
+.popular-comments .ratio a:hover.down,
 .comments-box .ratio a:hover.down,
+.popular-comments .ratio a.down.balance-3,
 .comments-box .ratio a.down.balance-3
 {
     background: url(../images/arrows.png) -2px -55px no-repeat;
 }
+.popular-comments .ratio a.down.balance-2,
 .comments-box .ratio a.down.balance-2
 {
     background: url(../images/arrows.png) -44px -55px no-repeat;
 }
+
+.popular-comments .ratio a.down.balance-1,
 .comments-box .ratio a.down.balance-1
 {
     background: url(../images/arrows.png) -86px -55px no-repeat;
 }
 
-
-
+.popular-comments .ratio a:hover.up   ,
+.popular-comments .ratio a.up.balance3,
 .comments-box .ratio a:hover.up   ,
 .comments-box .ratio a.up.balance3
 {
     background: url(../images/arrows.png) -302px 0px no-repeat;
 }
+.popular-comments .ratio a.up.balance2,
 .comments-box .ratio a.up.balance2
 {
     background: url(../images/arrows.png) -258px 0px no-repeat;
 }
+
+.popular-comments .ratio a.up.balance1,
 .comments-box .ratio a.up.balance1
 {
     background: url(../images/arrows.png) -214px 0px no-repeat;
 }
 
-
+.popular-comments .ratio .count,
 .comments-box .ratio .count
 {
     height: 24px;
@@ -6614,6 +6615,20 @@ a.fraction-btn
     font: bold 15px/24px Arial;
     direction: ltr;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .comments-box .comment-one-even
 {
     background:#f6f6f6
