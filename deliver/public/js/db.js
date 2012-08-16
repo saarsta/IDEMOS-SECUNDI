@@ -946,13 +946,9 @@ var db_functions = {
             url: '/api/cycle_posts?cycle_id=' + cycle_id,
             type: "GET",
             async: true,
-<<<<<<< HEAD
+
             success: function (data,err ) {
                 callback(err, data);
-=======
-            success: function (data) {
-                callback(data);
->>>>>>> 25aa92fbd60c2afe193cf9b0dea9a779dab215c2
             },
 
             error:function(err){
