@@ -7792,3 +7792,19 @@ display:inline;
 }
 
 /*--------------------*/
+.register_link{
+    border: 1px solid #0F1E54;
+    background: #263A81 url(../images/submit-btn.png) 0 0 repeat-x;
+    height: 28px;
+    color: white;
+    font-size: 18px;
+    line-height: 28px;
+    padding: 0;
+    cursor: pointer;
+    width: 100%;
+    font-family: 'AdumaFOTMedium';
+    margin-top: 36px;
+    display: block;
+    text-decoration: none;
+    text-align: center;
+}
