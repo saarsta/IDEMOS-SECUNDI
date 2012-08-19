@@ -166,6 +166,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
         fields.first_name = user.first_name;
         fields.last_name = user.last_name;
 
+
         for (var field in fields) {
             suggestion_object.set(field, fields[field]);
         }
@@ -190,6 +191,13 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                 suggestion_object.save(function(err,data){
                     if(data){
                         discussion_id = data.discussion_id;
+                        data.creator_id.id = user.id;
+                        data.creator_id.first_name = user.first_name;
+                        data.creator_id.last_name = user.last_name;
+                        data.creator_id.avatar_url = user.avatar_url();
+                        data.creator_id.score = user.score;
+                        data.creator_id.num_of_given_mandates = user.num_of_given_mandates;
+                        data.creator_id.num_of_proxies_i_represent = user.num_of_proxies_i_represent;
                         suggestion_obj.wanted_amount_of_tokens = suggestion_obj.threshold_for_accepting_the_suggestion;
                     }
                     cbk(err,data);
