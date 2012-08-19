@@ -196,6 +196,10 @@ $(function(){
             popupProvider.showOkPopup({
                 message:'הרשמתך התקבלה בהצלחה. ברוך הבא לעורו!'            +   pixel
             });
+        if(is_new[1] == 'reset')
+            popupProvider.showOkPopup({
+                message:'הסיסמא שונתה בהצלחה.'
+            });
 
     }
 
