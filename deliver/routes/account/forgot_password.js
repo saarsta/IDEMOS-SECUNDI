@@ -7,14 +7,11 @@ var models = require('../../../models'),
 module.exports ={
     get: function(req, res){
         res.render('forgot_password.ejs',{
-            url: req.url,
-            tag_name: req.query.tag_name,
-            layout: false,
-            user_logged: req.isAuthenticated(),
-            user: req.session.user,
             next: req.query.next,
-            title: "רישום",
-            big_impressive_title: ""
+            email:'',
+            found:false,
+            method:'get',
+            title: "רישום"
         });
     },
 
@@ -24,13 +21,10 @@ module.exports ={
         //find user mail
         async.waterfall([
             function(cbk){
-                console.log("1");
                 models.User.findOne({email: email}, cbk);
             },
 
             function(user, cbk){
-                console.log("2");
-                console.log(user);
                 if(user)
                   forgotPassword(user, cbk);
                 else
@@ -45,10 +39,22 @@ module.exports ={
             }
             else
                 if(obj == 0)
-                    res.send('no such email', 500);
+                    res.render('forgot_password.ejs',{
+                        next: req.query.next,
+                        found:false,
+                        email:email,
+                        method:'post',
+                        title: "רישום"
+                    });
                 else
-                    res.send('validation email was sent to your e-mail address', 200);
-        })
+                    res.render('forgot_password.ejs',{
+                        next: req.query.next,
+                        email:email,
+                        method:'post',
+                        found:true,
+                        title: "רישום"
+                    });
+        });
     }
 }
 

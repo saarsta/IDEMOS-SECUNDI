@@ -44,7 +44,7 @@ module.exports = function(app) {
 
     router.include('/og', require('../../og'));
 
-    router.post('/elections/vote', require('./elections/vote'));
+    router.post('/elections/vote',require('./elections/vote'));
 
 
 

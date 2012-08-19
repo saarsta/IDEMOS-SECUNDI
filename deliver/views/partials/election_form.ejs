@@ -138,6 +138,10 @@ $(function() {
         },
         unhighlight: function (element, errorClass) {
             $(element).removeClass('error').addClass('valid');
+        },
+
+        invalidHandler: function(form, validator) {
+            var errors = validator.numberOfInvalids();
         }
     })
 
@@ -207,6 +211,19 @@ $(function() {
 	$('#send-vote,#send_vote_1').on('click', function(e) {
         e.preventDefault();
 
+        if($('#user-signup').validate().errorList.length > 0){
+            popupProvider.showOkPopup(
+                    {
+                        message: 'עליך למלא פרטים '/*,
+                        callback: function(){
+                            location.hash = "#main-thing";
+                        }*/
+                    }
+            );
+
+            return false;
+        }
+
         if($('#display-inline-block-example .checkBoxClear').length === 0){
             popupProvider.showOkPopup(
                 {
@@ -235,23 +252,22 @@ $(function() {
 			}
 		}
 
+        var place_holder_balance = $.browser.msie ? 2 : 0;
+        if (user_logged === false) {
+                if ($('input.placeholder').length > place_holder_balance) {
+                popupProvider.showOkPopup({message: 'אנא התחבר למערכת או הירשם כדי להצביע.'});
+                return false;
+            }
 
-//        if (user_logged === false) {
-//            if ($('input.placeholder').length > 0) {
-//                popupProvider.showOkPopup({message: 'אנא התחבר למערכת או הירשם כדי להצביע.'});
-//                return false;
-//            }
-//
-//            var $input		= $('#user-signup :input'),
-//				full_name	= $input.eq(0).val(),
-//				email		= $input.eq(1).val();
-//
-//            $.post('/account/register', {full_name:full_name, email:email}, sendVote).fail(function(e) {
-//                    popupProvider.showOkPopup({message: 'ההרשמה לא הצליחה, אנא בידקו את כתובת המייל שהוזנה'});
-//            });
-//			return false;
-//		}
+            var $input		= $('#user-signup :input'),
+				full_name	= $input.eq(0).val(),
+				email		= $input.eq(1).val();
 
+            $.post('/api/register', {full_name:full_name, email:email}, sendVote).fail(function(e) {
+                    popupProvider.showOkPopup({message: 'ההרשמה לא הצליחה, אנא בידקו את כתובת המייל שהוזנה'});
+            });
+			return false;
+		}
         sendVote();
 
 		return false;

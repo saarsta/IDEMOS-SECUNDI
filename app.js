@@ -261,8 +261,12 @@ async.waterfall([
             console.trace();
         }
         else {
-            app.listen(app.settings.port);
-            console.log("Express server listening on port %d in %s mode", app.settings.port, app.settings.env);
+            var server = app.listen(app.settings.port);
+            server.on('error', function(err) {
+                console.error('********* Server Is NOT Working !!!! ***************',err);
+            });
+            console.log("Express server listening on port %d in %s mode", server.address().port, app.settings.env);
+
         }
     }
 );
