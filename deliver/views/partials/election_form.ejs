@@ -138,6 +138,10 @@ $(function() {
         },
         unhighlight: function (element, errorClass) {
             $(element).removeClass('error').addClass('valid');
+        },
+
+        invalidHandler: function(form, validator) {
+            var errors = validator.numberOfInvalids();
         }
     })
 
@@ -193,7 +197,6 @@ $(function() {
 
     function sendVote() {
         var data = getVoteData();
-        debugger
         $.post('/elections/vote', data, function(ret_data){
             shareScreen();
 
@@ -207,6 +210,19 @@ $(function() {
 
 	$('#send-vote,#send_vote_1').on('click', function(e) {
         e.preventDefault();
+
+        if($('#user-signup').validate().errorList.length > 0){
+            popupProvider.showOkPopup(
+                    {
+                        message: 'עליך למלא פרטים '/*,
+                        callback: function(){
+                            location.hash = "#main-thing";
+                        }*/
+                    }
+            );
+
+            return false;
+        }
 
         if($('#display-inline-block-example .checkBoxClear').length === 0){
             popupProvider.showOkPopup(
