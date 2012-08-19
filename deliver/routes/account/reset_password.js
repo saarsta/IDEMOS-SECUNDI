@@ -34,26 +34,34 @@ module.exports ={
                                req.authenticate('simple', function (err, is_authenticated) {
                                    if (is_authenticated) {
                                        var next = req.query.next || common.DEFAULT_LOGIN_REDIRECT;
+                                       if(next.indexOf('?') > -1)
+                                          next += '&is_new=reset';
+                                       else
+                                           next += '?is_new=reset';
                                        res.redirect(next);
                                    }
                                    else {
-                                       res.send('error', 500);
+                                       res.render('500.ejs', {error:err});
                                    }
                                });
                            }else{
-                               res.send('error', 500);
+                               console.error('cant save',err);
+                               res.render('500.ejs', {error:err});
                            }
                        })
 
                    }else{
-                       res.send('something wrong', 500);
+                       console.error('bad link');
+                       res.render('500.ejs', {error:'לינק שגוי או מיושן, שלח מייל מחדש'});
                    }
                }else{
-                   res.send('something wrong', 500);
+                   console.error('no user',err);
+                   res.render('500.ejs', {error:err});
                }
            })
        } else{
-           res.send('something wrong', 500);
+           console.error('bad link');
+           res.render('500.ejs', {error:'לינק שגוי'});
        }
     }
 }

@@ -18,6 +18,9 @@ var ArticleResource = common.GamificationMongooseResource.extend({
         this.authentication = new common.SessionAuthentication();
         this.allowed_methods = ['get'/*, 'post'*/];
         this.filtering = {popularity_counter: null, tags: null, user_id: null, text: null, title: null};
+        this.default_query = function( query) {
+            return query.sort({'popularity_counter':-1});
+        };
 //        this.update_fields = ["comments", "popolarity_counter", "title", "text", "tags"];
         this.fields = {
             _id: null,
@@ -28,6 +31,7 @@ var ArticleResource = common.GamificationMongooseResource.extend({
             text: null,
             time: null,
             tags:null,
+            popularity_counter:null,
             user_id:{
                 avatar:null,
                 first_name:null,
