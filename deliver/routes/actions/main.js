@@ -12,7 +12,8 @@ module.exports = function(req, res){
     *
     *
     * */
-    async.parallel([
+
+     async.parallel([
         function(cbk){
             models.Action.findById(req.params[0])
                 .select({
@@ -28,18 +29,22 @@ module.exports = function(req, res){
                     'cycle_id':1
                 })
                 .exec(cbk);
-        }/*,
+        },
 
-        function(cbk){
-            models.Join.find({action_id: req.params[0]})
-                .populate('user_id', ['_id', 'first_name', 'last_name', 'avatar_url', 'num_of_proxies_i_represent', 'score'])
-                .exec(cbk);
-        }*/
+        // get the user object
+        function(cbk) {
+            if(req.session.user)
+                models.User.findById(req.session.user._id, cbk);
+            else
+            {
+                cbk(null, null);
+            }
+        }
     ], function(err, args){
 
 
         var action = args[0];
-//        var going_users = args[1];
+        var proxyJson=  args[1] ?  JSON.stringify(args[1].proxy) : null;
         if(err)
             res.render('500.ejs',{error:err});
         else {
@@ -65,9 +70,8 @@ module.exports = function(req, res){
                 var ejsFileName=true?'action_approved.ejs':'action_append.ejs';
                 res.render(ejsFileName,{
                     action: action,
-                    tab: 'actions'
-                   // pageType:'beforeJoin' //waitAction,beforeJoin
-
+                    tab: 'actions',
+                    proxy:proxyJson
                 });
             }
         }

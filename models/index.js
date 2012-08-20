@@ -161,11 +161,7 @@ var Schemas = exports.Schemas = {
         ]
     },
 
-    PostAction:{
-        action_id:{type:Schema.ObjectId, ref:'Action', index:true, required:true},
-        text:String,
-        ref_to_post_id:{type:Schema.ObjectId, ref:'Post', index:true}
-    },
+
 
     Notification: {
         user_id:{type:ObjectId, ref:'User', index:true, required:true},
@@ -338,7 +334,7 @@ var Models = module.exports = {
     Subject:mongoose.model('Subject', require('./subject')),
     Post:require('./post'),
     PostArticle:mongoose.model('PostArticle',require('./post_article')),
-    PostAction:utils.extend_model('PostAction', Schemas.PostOrSuggestion, Schemas.PostAction).model,
+    PostAction:require('./post_action'),
     Suggestion:require('./suggestion'),
     PostOrSuggestion:mongoose.model('PostOrSuggestion', new Schema(require('./post_or_suggestion'), {strict: true}), 'posts'),
     Vote:mongoose.model('Vote', new Schema(Schemas.Vote, {strict: true})),

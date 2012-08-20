@@ -1,20 +1,24 @@
+
+
 var mongoose = require("mongoose"),
     Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId,
     async = require('async'),
+    _ = require('underscore'),
     mongoose_types = require('j-forms').types,
     utils = require('../utils');
 
-var Post = {
-    discussion_id:{type:Schema.ObjectId, ref:'Discussion', index:true, required:true, onDelete:'delete'},
-    text:{type:mongoose_types.Html},
+
+
+var PostAction = {
+    action_id:{type:Schema.ObjectId, ref:'Action', index:true, required:true},
+    text:String,
     votes_for: {type: Number, 'default': 0},
     votes_against: {type: Number, 'default': 0},
-    is_comment_on_vision:{type:Boolean, 'default':false},
-    ref_to_post_id:{type:Schema.ObjectId,ref:'Post',onDelete:'setNull'}
-};
+    ref_to_post_id:{type:Schema.ObjectId, ref:'Post', index:true}
+}
 
-var extension = utils.extend_model('Post', require('./post_or_suggestion'), Post, 'posts',function(schema) {
+var extension = utils.extend_model('PostAction', require('./post_or_suggestion'), PostAction, null, function(schema) {
     schema.methods.toString = function(){
         return this.text;
     };
