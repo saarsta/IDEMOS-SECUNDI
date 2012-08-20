@@ -7,7 +7,7 @@
     <meta property="og:title"  content="<%=articles[0].title%>" />
     <meta property="og:description"  content="<%=articles[0].text%>" />
     <meta property="og:image"  content="<%= articles[0].image_field && articles[0].image_field.url ? articles[0].image_field.url : 'http://site.e-dologic.co.il/philip_morris/Xls_script/uru_mailing/logo.jpg' %>" />
-    <meta name="description" content="<%=cleanHtaml(articles[0].text)%>" />
+    <meta name="description" content="<%=cleanHtml(articles[0].text)%>" />
     <meta name="title" content="<%=articles[0].title%>" />
 
     <script src="/resources/js/jquery-fieldselection.js" type="text/javascript"></script>
