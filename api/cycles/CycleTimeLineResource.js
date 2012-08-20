@@ -1,8 +1,8 @@
 
 
 var jest = require('jest')
-    ,models = require('../models')
-    ,common = require('./common')
+    ,models = require('../../models')
+    ,common = require('../common')
     ,async = require('async')
     ,_ = require('underscore');
 
@@ -35,39 +35,53 @@ var CycleTimelineResource = module.exports = jest.Resource.extend({
         var cycle_id = req.body.cycle_id;
         async.parallel([
             function(cbk){
-                models.Cycle.findById(cycle_id, function(err, obj){
+                models.Cycle.findById(cycle_id, function(err, cycle){
                     if(!err){
-//                        _.each(obj, function(obj){
-//                            obj.type = "cycle";
-//                        })
-                    }
-
-                    cbk(err, objs);
-                });
-            },
-
-            function(cbk){
-                models.Updates.findOne({cycle_id: cycle_id}, function(err, obj){
-                    if(!err){
-//                        _.each(objs, function(obj){
-//                            obj.type = "information_item";
-//                        })
-                    }
-
-                    cbk(err, objs);
-                });
-            },
-            function(cbk){
-                models.Action.find({cycle_id: cycle_id, is_approved: true}, function(err, objs){
-                    if(!err){
-                        _.each(objs, function(obj){
-                            obj.type = "Action";
+                        var objs = [];
+                        _.each(cycle.admin_updates, function(admin_update){
+                            var obj = {
+                                type: "admin_update",
+                                text: admin_update.info,
+                                date: admin_update.date
+                            }
+                           objs.push(obj);
                         })
+
+                        if(cycle.due_date){
+                            var obj = {
+                                type: "due_date",
+                                date: cycle.due_date
+                            }
+                            objs.push(obj);
+                        }
                     }
 
                     cbk(err, objs);
                 });
             }
+//
+//            function(cbk){
+//                models.Updates.findOne({cycle_id: cycle_id}, function(err, obj){
+//                    if(!err){
+////                        _.each(objs, function(obj){
+////                            obj.type = "information_item";
+////                        })
+//                    }
+//
+//                    cbk(err, objs);
+//                });
+//            },
+//            function(cbk){
+//                models.Action.find({cycle_id: cycle_id, is_approved: true}, function(err, objs){
+//                    if(!err){
+//                        _.each(objs, function(obj){
+//                            obj.type = "Action";
+//                        })
+//                    }
+//
+//                    cbk(err, objs);
+//                });
+//            }
         ], function(err, args){
 
             arr = _.union.apply(_,args);
