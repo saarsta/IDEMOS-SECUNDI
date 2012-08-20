@@ -52,7 +52,8 @@ module.exports = function(req, res){
                 action.from_date=action.execution_date;
                 action.to_date=action.execution_date;
 
-
+                var proxyJson= results[0] ?  JSON.stringify(results[0].proxy) : null;
+                console.log(proxyJson)   ;
 
                 var is_going = false;
                // is user going to action?
@@ -65,7 +66,8 @@ module.exports = function(req, res){
                 var ejsFileName=true?'action_approved.ejs':'action_append.ejs';
                 res.render(ejsFileName,{
                     action: action,
-                    tab: 'actions'
+                    tab: 'actions',
+                    proxy:proxyJson
                    // pageType:'beforeJoin' //waitAction,beforeJoin
 
                 });

@@ -310,6 +310,16 @@ var error_message = error_message || '';
      var action_title = "<%= action.title%>"
      var discussion_img_field_preview = "<%= action.image_field ? action.image_field.url ||'' : '' %>";
 
+     <%
+     if (user_logged) { %>
+         var proxy = JSON.parse('<%-proxy%>');
+     <%
+     } else { %>
+         var proxy = [];
+     <%
+     }
+     %>
+
 
 
      $('.add-offer-btn-box').click(function(e){
@@ -437,17 +447,49 @@ var error_message = error_message || '';
               })
           }
 
-          $('.more_comments').click(function() {
-              loadPosts();
-          });
 
-          $('#sorting_select').change(function() {
-              $("#comments").empty();
-              current_offset = 0;
-              loadPosts();
-          });
 
+
+     $('#comments,#suggestion_list').on('mouseenter', ".side_menu", function (e) {
+         $(this).addClass('hover');
+         $('.left', this).show().css({width:0}).animate({'width':87});
+            }).on('mouseleave', ".side_menu", function (e) {
+         var side = $(this);
+         side.removeClass('hover');
+         $('.left', this).animate({'width':0}, function () {
+             $(this).hide();
+         });
+     });
+
+
+     $('#comments').on('click', '#add_or_remove_proxy', function (e) {
+         var userData = $(this).parents('.comment-one');
+         var proxyId = userData.data('creator_id');
+         var userName = userData.data('creator_name');
+         e.preventDefault();
+         proxyCommon.addOrRemoveProxy(proxy,proxyId,userName,my_id,function(newProxy){
+             proxy=newProxy.proxy;
+
+         })
+
+
+     });
+
+
+
+
+
+      $('.more_comments').click(function() {
           loadPosts();
+      });
+
+      $('#sorting_select').change(function() {
+          $("#comments").empty();
+          current_offset = 0;
+          loadPosts();
+      });
+
+      loadPosts();
 
 
      db_functions.getActionGoing(action_id,function(err,data){
