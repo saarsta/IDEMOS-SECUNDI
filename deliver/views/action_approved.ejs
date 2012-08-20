@@ -161,7 +161,7 @@ var error_message = error_message || '';
                 </div> -->
 				
 				<div id="discussion_image" style="width: 212px;height: 164px; overflow:hidden;" class='auto-scale floatRight'>
-                    <img src="http://uru.s3.amazonaws.com/582gas-offshore.jpg" alt=""/>
+                    <img src="<%= action.image_field ? action.image_field.url ||'' : '' %>" alt=""/>
 					 <!--  images/sample-2.jpg" -->
 
                 </div>
@@ -216,25 +216,27 @@ var error_message = error_message || '';
  <% include partials/action_shopping_cart.ejs %>
 
 
-<div class="members-box cf">
-<h2>משתתפים <small>(21)</small></h2>
+<div class="members-box members-box-action-approved cf ">
+<h2>משתתפים
+    <small id="going_number"></small></h2>
 	<div  id="participant">
 	</div>
 
 <br clear="all" />
-<div class="more-deals">
+<div class="more-deals" >
     <a href="">עוד הצעות</a>
 </div>
 </div>
 
 </div>
 </div>
+<!--
 <div class="system-notice">
     <div class="extra">
         <a class="close" href=""></a>
         <strong>:תכרעמ תעדוה</strong> תורקל הזל ומרגו וביגה ,ופתש .הפונת לגעמ תויהל דתעתמ הז ןויד
     </div>
-</div>
+</div>-->
 <div class="comments-box comments-box-inner">
     <div class="extra cf">
         <select class="left-select">
@@ -306,7 +308,18 @@ var error_message = error_message || '';
 
      var new_post_ref_id = null;  //if not null =>the create new post is connected to anther post
      var action_title = "<%= action.title%>"
-     vardiscussion_img_field_preview = "<%= action.image_field ? action.image_field.url ||'' : '' %>";
+     var discussion_img_field_preview = "<%= action.image_field ? action.image_field.url ||'' : '' %>";
+     var my_id = "<%=user_logged ? user._id : ''%>";
+
+     <%
+     if (user_logged) { %>
+         var proxy = JSON.parse('<%-proxy%>');
+     <%
+     } else { %>
+         var proxy = [];
+     <%
+     }
+     %>
 
 
 
@@ -339,15 +352,26 @@ var error_message = error_message || '';
          $('#comments_number')[0].innerHTML = '(' + number + ')';
      }
 
+     function setGoingNumber(number) {
 
-      //TODO: fix
+         $('#going_number')[0].innerHTML = '(' + number + ')';
+     }
+     function setUserScore(userID, score) {
+         $('[ data-creator_id=' + userID + ']').find('.score').empty().append(score);
+     }
+
+
+
+
+
       $("#submit_post").on('click', function (e) {
             e.preventDefault();
             db_functions.addPostToAction(action_id, $("textarea#discussion_comment").val(), new_post_ref_id, function (err, post) {
                 // $("#user_tokens").text(post.updated_user_tokens);
                 if (!err) {
-                    if (my_id)
+                    if (my_id){
                         setUserScore(my_id, post.creator_id.score);
+                    }
                     dust.render('discussion_comment', post, function (err, out) {
                         $("#comments").append(out);
                         $("textarea#discussion_comment").val('');
@@ -428,24 +452,146 @@ var error_message = error_message || '';
               })
           }
 
-          $('.more_comments').click(function() {
-              loadPosts();
-          });
 
-          $('#sorting_select').change(function() {
-              $("#comments").empty();
-              current_offset = 0;
-              loadPosts();
-          });
 
+
+
+
+
+
+      $('.more_comments').click(function() {
           loadPosts();
+      });
+
+      $('#sorting_select').change(function() {
+          $("#comments").empty();
+          current_offset = 0;
+          loadPosts();
+      });
+
+
+     /**********************************posts   *********************************************************/
+
+
+     $('#comments').on('click', ".quote_button", function (e) {
+         var userName,
+                 text;
+
+         var postDiv = $(this).parents('.comment-one');
+         e.preventDefault();
+         // $("textarea#discussion_comment").focus();
+         userName = postDiv.data('creator_name');
+         new_post_ref_id = postDiv.data('id');
+
+         var text_to_quote = $('.actual_text', postDiv).length ? $('.actual_text', postDiv).text() : $('.post_text', postDiv).text();
+
+         text = "[ציטוט=" + '"' + userName + '"' + " " + "]\n"
+                 + text_to_quote
+                 + '\n'
+                 + "[/ציטוט]"
+                 + '<p>&nbsp;</p>';
+
+         $("textarea#discussion_comment").val(text).focus();
+
+         focusOnCommentBox();
+     });
+
+     function vote(actionType){
+         var post_id = $(this).parents('.comment-one').data("id");
+         var button = $(this);
+         //TODO:replace db_functions.voteForPost
+         var func = $(this).parents('#comments').length ? db_functions.voteForActionPost: db_functions.voteForSuggestion;
+         func.call(db_functions, post_id, actionType, function (err, post_obj) {
+             if (!err) {
+
+                 button.parents(".ratio").find(".count").text(Math.round(post_obj.votes_for-post_obj.votes_against ));
+                 var down_arrow = button.parents(".ratio").find(".down");
+                 var up_arrow =button.parents(".ratio").find(".up");
+                 down_arrow.removeClass("balance0").removeClass("balance1").removeClass("balance2").removeClass("balance3").removeClass("balance-1").removeClass("balance-2").removeClass("balance-3").addClass("balance"+post_obj.voter_balance);
+                 up_arrow.removeClass("balance0").removeClass("balance1").removeClass("balance2").removeClass("balance3").removeClass("balance-1").removeClass("balance-2").removeClass("balance-3").addClass("balance"+post_obj.voter_balance);
+             }
+             else {
+                 if (err.responseText == 'Error: there is not enought tokens')
+                     popupProvider.showOkPopup( {message:     'אין לך מספיק אסימונים'});
+                 if (err.responseText == 'user already voted for this post')
+                     popupProvider.showOkPopup( {message:     'באפשרותך לתת עד שלושה אסימונים לתגובה בדיון'});
+                 if (err.responseText == 'soory, can\'t vote to your own post')
+                     popupProvider.showOkPopup( {message:     'מצטערים, לא ניתן להצביע לתגובה של עצמך'});
+             }
+         })
+     }
+
+     $('#comments').on('click', '.vote_for', function () {
+         vote.apply($(this),['add']);
+
+     });
+
+     $('#comments').on('click', ".vote_against", function () {
+         vote.apply($(this),['remove']);
+
+     });
+
+
+
+     $('#comments,#suggestion_list').on('mouseenter', ".side_menu", function (e) {
+         $(this).addClass('hover');
+         $('.left', this).show().css({width:0}).animate({'width':87});
+     }).on('mouseleave', ".side_menu", function (e) {
+                 var side = $(this);
+                 side.removeClass('hover');
+                 $('.left', this).animate({'width':0}, function () {
+                     $(this).hide();
+                 });
+             });
+
+
+     $('#comments').on('click', '#add_or_remove_proxy', function (e) {
+         var userData = $(this).parents('.comment-one');
+         var proxyId = userData.data('creator_id');
+         var userName = userData.data('creator_name');
+         e.preventDefault();
+         proxyCommon.addOrRemoveProxy(proxy,proxyId,userName,my_id,function(newProxy){
+             proxy=newProxy.proxy;
+
+         })
+
+
+     });
+
+
+
+     /*********************************************************************************************************/
+
+
+      loadPosts();
 
 
      db_functions.getActionGoing(action_id,function(err,data){
-     
-         dust.renderArray('action_participant_user',data.objects,null, function (err, out){
+        for(var i=0; i<0;i++ ){
+            data.objects.push( data.objects[0]);
+        }
+       //  data.meta.total_count=15;
+         dust.renderArray('action_participant_user',data.objects ,null, function (err, out){
             $('#participant').append(out);
+
          })
+         if (data.meta.total_count > 14) {
+             $(".more-deals").show();
+             $(".more-deals a").on('click', function (e) {
+
+                 /*db_functions.getSuggestionByDiscussion(discussion_id, null, 1, function (err, data) {
+                     $.each(data.objects, function (index, suggestion) {
+                         render_suggestion(suggestion);
+                     });*/
+              });
+
+             } else{
+             $(".more-deals").hide();
+         }
+
+
+
+         setGoingNumber(data.meta.total_count);
 
      })
        

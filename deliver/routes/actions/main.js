@@ -56,9 +56,6 @@ module.exports = function(req, res){
                     'התעשייה 12, תל אביב';
                 action.from_date=action.execution_date;
                 action.to_date=action.execution_date;
-
-
-
                 var is_going = false;
                // is user going to action?
                if(req.user){
@@ -72,6 +69,10 @@ module.exports = function(req, res){
                     action: action,
                     tab: 'actions',
                     proxy:proxyJson
+
+                   // pageType:'beforeJoin' //waitAction,beforeJoin
+
+
                 });
             }
         }

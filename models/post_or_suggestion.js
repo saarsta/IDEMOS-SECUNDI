@@ -13,7 +13,7 @@ var PostOrSuggestion = module.exports = {
 //        username:{type:String,editable:false},
 //        avatar : {type:mongoose_types.File, editable:false},
     total_votes: {type: Number, 'default': 0},
-    creation_date:{type:Date, 'default':Date.now,editable:false},
+    creation_date:{type:Date, 'default':Date.now},
     //for now there is no such thing as "tokens",
     //this is for later when a user vote could be more than one vote
     tokens:{type:Number, 'default':0, index: true},

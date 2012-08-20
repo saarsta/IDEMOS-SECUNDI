@@ -39,7 +39,7 @@ var Action = module.exports = new Schema({
         new Schema({user_id: {type:ObjectId, ref:'User'}, join_date: {type: Date, 'default': Date.now}})
     ],//i don't use it for now
 
-    num_of_going: {type: Number, 'default': 0, editable:false},
+    num_of_going: {type: Number, 'default': 0},
     tokens:{type:Number, 'default':0},
     is_approved:{type:Boolean, 'default':false},
     is_hot_object: {type:Boolean,'default':false},

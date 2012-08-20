@@ -7640,6 +7640,11 @@ body.body-action .followers-box h2
     padding-top: 35px;
     padding-bottom: 65px;
 }
+
+.members-box-action-approved
+{
+    padding-bottom: 0px;@import ;
+}
 .members-box .one-members
 {
     float: right;

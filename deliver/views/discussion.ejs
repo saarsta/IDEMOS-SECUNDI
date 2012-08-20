@@ -181,7 +181,7 @@ var error_message = error_message || '';
                 <small id="suggestion_number"></small>
             </h2>
             <div id="suggestion_list"></div>
-            <div class="more-deals">
+            <div class="more-deals" >
                 <a href="">עוד הצעות</a>
             </div>
         </div>
@@ -588,7 +588,6 @@ $(document).ready(function () {
     $('#comments').on('click', ".quote_button", function (e) {
         var userName,
                 text;
-
         var postDiv = $(this).parents('.comment-one');
         e.preventDefault();
        // $("textarea#discussion_comment").focus();
@@ -798,6 +797,7 @@ $(document).ready(function () {
 
 
     function renderComments(comments) {
+
         var i;
         for (i = 0; i < comments.length; i++) {
             comments[i].isFirst = (i === 0);
