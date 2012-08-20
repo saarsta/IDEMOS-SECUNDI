@@ -500,7 +500,7 @@ var error_message = error_message || '';
          var post_id = $(this).parents('.comment-one').data("id");
          var button = $(this);
          //TODO:replace db_functions.voteForPost
-         var func = $(this).parents('#comments').length ? db_functions.voteForPost: db_functions.voteForSuggestion;
+         var func = $(this).parents('#comments').length ? db_functions.voteForActionPost: db_functions.voteForSuggestion;
          func.call(db_functions, post_id, actionType, function (err, post_obj) {
              if (!err) {
 
