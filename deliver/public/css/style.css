@@ -7180,7 +7180,7 @@ body.body-action .followers-box h2
 .post-comment
 {
     margin: 0 -36px 0 -38px;
-    padding: 9px 36px 0 38px;
+    padding: 25px 36px 0 38px;
     background: url(../images/deals-box-border.png) 0 0 repeat-x;
 }
 .post-comment h3
@@ -7202,9 +7202,9 @@ body.body-action .followers-box h2
     float: right;
     width: 382px;
     margin-right: 115px;
-    height: 132px;
     padding: 10px 0 0 17px;
     border-left: 1px solid #d8dde0;
+    min-height: 138px;
 }
 .post-comment .one .text p
 {
@@ -7351,7 +7351,7 @@ body.body-action .followers-box h2
 }
 .post-comment .ratio a.up
 {
-    background: url(../images/ratio-arrows.png) 0 0 no-repeat;
+    background: url(../images/arrows.png) -2px 0 no-repeat;
     width: 31px;
     height: 20px;
     display: block;
