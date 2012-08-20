@@ -1007,6 +1007,17 @@ var db_functions = {
         });
     },
 
+    getCycleTimeline: function(cycle_id, callback){
+        db_functions.loggedInAjax({
+            url: '/api/cycle_timeline?cycle_id=' + cycle_id,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            }
+        });
+    },
+
     //---------------------------------------------------//
 
 
