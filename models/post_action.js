@@ -13,6 +13,8 @@ var mongoose = require("mongoose"),
 var PostAction = {
     action_id:{type:Schema.ObjectId, ref:'Action', index:true, required:true},
     text:String,
+    votes_for: {type: Number, 'default': 0},
+    votes_against: {type: Number, 'default': 0},
     ref_to_post_id:{type:Schema.ObjectId, ref:'Post', index:true}
 }
 
