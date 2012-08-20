@@ -26,7 +26,7 @@ var Cycle = module.exports = new Schema({
     discussions:[
         {discussion: {type:ObjectId, ref:'Discussion'}, is_main: {type: Boolean, 'default': false}}
     ],
-    admin_updates: {info: {type: String}, date: {type: Date}},
+    admin_updates: [{info: {type: String}, date: {type: Date}}],
     document: String,
     shopping_cart: [
         {type:ObjectId, ref:'InformationItem'}

@@ -126,6 +126,10 @@ app.configure('production', function(){
 
     app.set('send_mails',true);
 
+    process.on('uncaughtException', function(err) {
+        console.error(err);
+    });
+
 });
 
 
@@ -231,9 +235,6 @@ app.configure(function(){
 
 });
 
-process.on('uncaughtException', function(err) {
-    console.error(err);
-});
 
 //if(app.settings.env != 'production')
 //require('./routes')(app);

@@ -6,6 +6,7 @@ var mongoose_resource = require('jest'),
     CycleResource = require('./cycles/CycleResource.js'),
     CyclePostResource = require('./cycles/CyclePostResource.js'),
     CycleShoppingCartResource = require('./cycles/CycleShoppingCartResource.js'),
+    CycleTimelineResource = require('./cycles/CycleTimelineResource.js'),
     ActionShoppingCartResource = require('./actions/ActionShoppingCartResource.js'),
     SubjectResource = require('./SubjectResource'),
     DiscussionResource = require('./discussions/DiscussionResource.js'),
@@ -93,6 +94,7 @@ module.exports = function(app)
     rest_api.register_resource('actions_populated', new ActionPopulatedResource());
     rest_api.register_resource('cycles', new CycleResource());
     rest_api.register_resource('cycle_posts', new CyclePostResource());
+    rest_api.register_resource('cycle_timeline', new CycleTimelineResource());
     rest_api.register_resource('articles', new ArticleResource());
     rest_api.register_resource('tags', new TagResource());
     rest_api.register_resource('article_update', new ArticleCommentResource());

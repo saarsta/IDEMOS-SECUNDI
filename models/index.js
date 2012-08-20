@@ -51,6 +51,7 @@ var Schemas = exports.Schemas = {
     //cycle updates
     Update:new Schema({
         title: {type: String, required: true},
+
         tooltip:String,
         text_field:{type:mongoose_types.Text},
 //        text_field_preview:{type:mongoose_types.Html},
@@ -61,6 +62,7 @@ var Schemas = exports.Schemas = {
 //        actions: {type: [ObjectId], ref:'Action', index:true},
         is_visible:{type:Boolean, 'default':true},
         creation_date:{type:Date, 'default':Date.now,editable:false},
+
         gui_order:{type:Number,'default':9999999,editable:false},
         is_hidden:{type:Boolean,'default':true}
     }, {strict: true}),

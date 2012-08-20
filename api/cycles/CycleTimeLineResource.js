@@ -17,80 +17,93 @@ var CycleTimelineResource = module.exports = jest.Resource.extend({
         this.authentication = new common.SessionAuthentication();
         this.filtering = {};
         this.sorting = {};
-        this.fields = {
-            _id: null,
-            title: null,
-            tooltip_or_title:null,
-            type: null,
-            text_field_preview: null,
-            image_field_preview: null,
-            tags: null
-        }
     },
 
 
     get_objects:function(req,filters,sorts,limit,offset,callback)
     {
         var arr = [];
-        var cycle_id = req.body.cycle_id;
+        var cycle_id = req.query.cycle_id;
         async.parallel([
             function(cbk){
-                models.Cycle.findById(cycle_id, function(err, cycle){
+                    models.Cycle.findById(cycle_id, function(err, cycle){
                     if(!err){
                         var objs = [];
-                        _.each(cycle.admin_updates, function(admin_update){
-                            var obj = {
-                                type: "admin_update",
-                                text: admin_update.info,
-                                date: admin_update.date
-                            }
-                           objs.push(obj);
-                        })
+                        if(cycle){
+                            _.each(cycle.admin_updates, function(admin_update){
+                                if(admin_update){
+                                    var obj = {
+                                        type: "admin_update",
+                                        text: admin_update.info,
+                                        date: admin_update.date
+                                    }
+                                    objs.push(obj);
+                                }
 
-                        if(cycle.due_date){
-                            var obj = {
-                                type: "due_date",
-                                date: cycle.due_date
+                            })
+
+                            if(cycle.due_date){
+                                var obj = {
+                                    type: "due_date",
+                                    date: cycle.due_date
+                                }
+                                objs.push(obj);
                             }
+
+                            var obj = {
+                                type: "cycle_creation",
+                                date: cycle.creation_date
+                            }
+
                             objs.push(obj);
+
+                            var discussion = _.find(cycle.discussions, function(discussion){ return discussion.is_main == true});
+
+                            models.Discussion.findById(discussion.discussion, function(err, discussion_obj){
+                                if(!err && discussion){
+
+                                    discussion_obj.type = "discussion";
+                                    discussion_obj.date = discussion_obj.creation_date;
+                                    objs.push(discussion_obj);
+                                }
+
+                                cbk(err, objs);
+                            });
                         }
+                    }else
+                        cbk(err, objs);
+                });
+            },
+
+            function(cbk){
+                models.Update.findOne({cycle_id: cycle_id}, function(err, updates){
+                    if(!err){
+                        _.each(updates, function(update){
+                            update.type = "cycle_update";
+                            update.date = update.creation_date;
+                        })
                     }
 
-                    cbk(err, objs);
+                    cbk(err, updates);
+                });
+            },
+            function(cbk){
+                models.Action.find({cycle_id: cycle_id, is_approved: true}, function(err, actions){
+                    if(!err){
+                        _.each(actions, function(action){
+                            action.type = "action";
+                            action.date = action.execution_date;
+                        })
+                    }
+
+                    cbk(err, actions);
                 });
             }
-//
-//            function(cbk){
-//                models.Updates.findOne({cycle_id: cycle_id}, function(err, obj){
-//                    if(!err){
-////                        _.each(objs, function(obj){
-////                            obj.type = "information_item";
-////                        })
-//                    }
-//
-//                    cbk(err, objs);
-//                });
-//            },
-//            function(cbk){
-//                models.Action.find({cycle_id: cycle_id, is_approved: true}, function(err, objs){
-//                    if(!err){
-//                        _.each(objs, function(obj){
-//                            obj.type = "Action";
-//                        })
-//                    }
-//
-//                    cbk(err, objs);
-//                });
-//            }
+
         ], function(err, args){
 
             arr = _.union.apply(_,args);
-//            if(req.user){
-//                arr = arr.splice(0, 2);
-//            }else{
-            arr = arr.splice(0, 4);
-//            }
-
+            console.log(arr);
             callback(null,{meta:{total_count: arr.length}, objects: arr});
         });
     }
