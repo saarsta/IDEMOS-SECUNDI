@@ -1041,12 +1041,12 @@ var db_functions = {
             type: "POST",
             data:{action_id:action_id},
             async: true,
-            success: function (err, data) {
+            success: function (data) {
                 callback(null, data);
             },
 
             error:function(err){
-                callback(err, null);
+                callback(err);
             }
         });
     },

@@ -161,7 +161,7 @@ var error_message = error_message || '';
                 </div> -->
 				
 				<div id="discussion_image" style="width: 212px;height: 164px; overflow:hidden;" class='auto-scale floatRight'>
-                    <img src="http://uru.s3.amazonaws.com/582gas-offshore.jpg" alt=""/>
+                    <img src="<%= action.image_field ? action.image_field.url ||'' : '' %>" alt=""/>
 					 <!--  images/sample-2.jpg" -->
 
                 </div>
@@ -216,25 +216,27 @@ var error_message = error_message || '';
  <% include partials/action_shopping_cart.ejs %>
 
 
-<div class="members-box cf">
-<h2>משתתפים <small>(21)</small></h2>
+<div class="members-box members-box-action-approved cf ">
+<h2>משתתפים
+    <small id="going_number"></small></h2>
 	<div  id="participant">
 	</div>
 
 <br clear="all" />
-<div class="more-deals">
+<div class="more-deals" >
     <a href="">עוד הצעות</a>
 </div>
 </div>
 
 </div>
 </div>
+<!--
 <div class="system-notice">
     <div class="extra">
         <a class="close" href=""></a>
         <strong>:תכרעמ תעדוה</strong> תורקל הזל ומרגו וביגה ,ופתש .הפונת לגעמ תויהל דתעתמ הז ןויד
     </div>
-</div>
+</div>-->
 <div class="comments-box comments-box-inner">
     <div class="extra cf">
         <select class="left-select">
@@ -306,7 +308,7 @@ var error_message = error_message || '';
 
      var new_post_ref_id = null;  //if not null =>the create new post is connected to anther post
      var action_title = "<%= action.title%>"
-     vardiscussion_img_field_preview = "<%= action.image_field ? action.image_field.url ||'' : '' %>";
+     var discussion_img_field_preview = "<%= action.image_field ? action.image_field.url ||'' : '' %>";
 
 
 
@@ -338,6 +340,13 @@ var error_message = error_message || '';
 
          $('#comments_number')[0].innerHTML = '(' + number + ')';
      }
+
+     function setGoingNumber(number) {
+
+         $('#going_number')[0].innerHTML = '(' + number + ')';
+     }
+
+
 
 
       //TODO: fix
@@ -442,10 +451,31 @@ var error_message = error_message || '';
 
 
      db_functions.getActionGoing(action_id,function(err,data){
-     
-         dust.renderArray('action_participant_user',data.objects,null, function (err, out){
+        for(var i=0; i<0;i++ ){
+            data.objects.push( data.objects[0]);
+        }
+       //  data.meta.total_count=15;
+         dust.renderArray('action_participant_user',data.objects ,null, function (err, out){
             $('#participant').append(out);
+
          })
+         if (data.meta.total_count > 14) {
+             $(".more-deals").show();
+             $(".more-deals a").on('click', function (e) {
+
+                 /*db_functions.getSuggestionByDiscussion(discussion_id, null, 1, function (err, data) {
+                     $.each(data.objects, function (index, suggestion) {
+                         render_suggestion(suggestion);
+                     });*/
+              });
+
+             } else{
+             $(".more-deals").hide();
+         }
+
+
+
+         setGoingNumber(data.meta.total_count);
 
      })
        
