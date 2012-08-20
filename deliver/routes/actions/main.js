@@ -12,7 +12,8 @@ module.exports = function(req, res){
     *
     *
     * */
-    async.parallel([
+
+     async.parallel([
         function(cbk){
             models.Action.findById(req.params[0])
                 .select({
@@ -71,8 +72,6 @@ module.exports = function(req, res){
                     action: action,
                     tab: 'actions',
                     proxy:proxyJson
-                   // pageType:'beforeJoin' //waitAction,beforeJoin
-
                 });
             }
         }
