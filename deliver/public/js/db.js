@@ -1128,6 +1128,20 @@ var db_functions = {
         });
     },
 
+    voteForActionPost: function(post_id, method, callback){
+        db_functions.loggedInAjax({
+            url: '/api/votes_on_action_post/',
+            type: "POST",
+            async: true,
+            data: {"post_id": post_id, "method": method},
+            success: function (data) {
+                callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },
 
     //---------------------------------------------------//
 

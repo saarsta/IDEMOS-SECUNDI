@@ -7,7 +7,7 @@ var mongoose = require("mongoose"),
 
 var Cycle = module.exports = new Schema({
     creation_date: {type:Date, 'default':Date.now},
-    due_date : {type:Date, 'default':function(){ return Date.now() + 1000*3600*24*30;  }},
+    due_date : {type:Date/*, 'default':function(){ return Date.now() + 1000*3600*24*30;  }*/},
     subject:[{
         id:{type:ObjectId, ref:'Subject', index:true, required:true},
         name: {type:String, editable:false}
@@ -19,6 +19,7 @@ var Cycle = module.exports = new Schema({
     tooltip:String,
     text_field:{type:mongoose_types.Html},
     text_field_preview:{type:mongoose_types.Html},
+    image_field: mongoose_types.File,
     image_field: mongoose_types.File,
     image_field_preview: mongoose_types.File,
     tags:[String],
