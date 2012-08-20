@@ -72,6 +72,14 @@
                                  <% }%>
                             </div>
                             <div class="post-comment">
+                                <div class="fb-comments"
+                                <% if (!isBlog) { %>
+                                data-href="http://www.uru.org.il/blogs/article/<%= articles[i]._id %>"
+                                <% }else{%>
+                                data-href="http://www.uru.org.il/blogs/<%= articles[0].user_id %>"
+                                <% }%>
+                                     data-num-posts="3" data-width="570"></div>
+
                                 <h3>תגובות</h3>
                             </div>
 
