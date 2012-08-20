@@ -12,7 +12,8 @@ module.exports = function(req, res){
     *
     *
     * */
-    async.parallel([
+
+     async.parallel([
         function(cbk){
             models.Action.findById(req.params[0])
                 .select({
@@ -28,18 +29,22 @@ module.exports = function(req, res){
                     'cycle_id':1
                 })
                 .exec(cbk);
-        }/*,
+        },
 
-        function(cbk){
-            models.Join.find({action_id: req.params[0]})
-                .populate('user_id', ['_id', 'first_name', 'last_name', 'avatar_url', 'num_of_proxies_i_represent', 'score'])
-                .exec(cbk);
-        }*/
+        // get the user object
+        function(cbk) {
+            if(req.session.user)
+                models.User.findById(req.session.user._id, cbk);
+            else
+            {
+                cbk(null, null);
+            }
+        }
     ], function(err, args){
 
 
         var action = args[0];
-//        var going_users = args[1];
+        var proxyJson=  args[1] ?  JSON.stringify(args[1].proxy) : null;
         if(err)
             res.render('500.ejs',{error:err});
         else {
@@ -51,10 +56,6 @@ module.exports = function(req, res){
                     'התעשייה 12, תל אביב';
                 action.from_date=action.execution_date;
                 action.to_date=action.execution_date;
-
-                var proxyJson= results[0] ?  JSON.stringify(results[0].proxy) : null;
-                console.log(proxyJson)   ;
-
                 var is_going = false;
                // is user going to action?
                if(req.user){
@@ -68,7 +69,9 @@ module.exports = function(req, res){
                     action: action,
                     tab: 'actions',
                     proxy:proxyJson
+
                    // pageType:'beforeJoin' //waitAction,beforeJoin
+
 
                 });
             }
