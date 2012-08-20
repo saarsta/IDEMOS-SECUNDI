@@ -97,7 +97,10 @@ module.exports = function(app)
         filters:['discussion_id','creator_id']
     });
     admin.registerMongooseModel('PostAction',Models.PostAction,null,{
-        list:['text','username']
+        list:['text','username','discussion_id.title'],
+        list_populate:['discussion_id'],
+        order_by:['-creation_date'],
+        filters:['discussion_id','creator_id']
     });
     admin.registerMongooseModel('Suggestion',Models.Suggestion,null,{
         list:['parts.0.text', 'discussion_id.title'],

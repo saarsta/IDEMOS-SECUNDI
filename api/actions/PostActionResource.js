@@ -22,11 +22,27 @@ var PostActionResource = module.exports = common.GamificationMongooseResource.ex
         this.default_query = function (query) {
             return query.sort({creation_date: 'descending'});
         };
+        this.fields = {
+            creator_id : common.user_public_fields,
+            voter_balance: null,
+            mandates_curr_user_gave_creator: null,
+            text:null,
+            popularity:null,
+            tokens:null,
+            creation_date: null,
+            total_votes:null,
+            votes_against:null,
+            votes_for:null,
+            _id:null,
+            ref_to_post_id: null,
+            discussion_id:null,
+            is_user_follower: null
+        };
     },
 
     run_query: function(req,query,callback)
     {
-        query.populate('creator_id');
+        query.populate('creator_id', {"_id": 1, "first_name": 1, "last_name" : 1, "score": 1, "num_of_proxies_i_represent": 1});
         this._super(req,query,callback);
     },
 
@@ -87,6 +103,8 @@ var PostActionResource = module.exports = common.GamificationMongooseResource.ex
         var base = this._super;
         var post_object = new self.model();
         var user = req.user;
+        if(fields.ref_to_post_id == "null" || fields.ref_to_post_id == "undefined")
+            fields.ref_to_post_id = null;
 
         async.waterfall([
 

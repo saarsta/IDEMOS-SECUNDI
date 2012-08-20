@@ -7,7 +7,6 @@ var mongoose = require("mongoose"),
 
 
 var PostOrSuggestion = module.exports = {
-    discussion_id:{type:Schema.ObjectId, ref:'Discussion', index:true, required:true, onDelete:'delete'},
     creator_id:{type:Schema.ObjectId, ref:'User'},
     first_name:{type:String,editable:false},
     last_name:{type:String, editable:false },
