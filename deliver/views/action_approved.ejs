@@ -356,18 +356,22 @@ var error_message = error_message || '';
 
          $('#going_number')[0].innerHTML = '(' + number + ')';
      }
+     function setUserScore(userID, score) {
+         $('[ data-creator_id=' + userID + ']').find('.score').empty().append(score);
+     }
 
 
 
 
-      //TODO: fix
+
       $("#submit_post").on('click', function (e) {
             e.preventDefault();
             db_functions.addPostToAction(action_id, $("textarea#discussion_comment").val(), new_post_ref_id, function (err, post) {
                 // $("#user_tokens").text(post.updated_user_tokens);
                 if (!err) {
-                    if (my_id)
+                    if (my_id){
                         setUserScore(my_id, post.creator_id.score);
+                    }
                     dust.render('discussion_comment', post, function (err, out) {
                         $("#comments").append(out);
                         $("textarea#discussion_comment").val('');
@@ -495,7 +499,8 @@ var error_message = error_message || '';
      function vote(actionType){
          var post_id = $(this).parents('.comment-one').data("id");
          var button = $(this);
-         var func = $(this).parents('#comments').length ? db_functions.voteForPost : db_functions.voteForSuggestion;
+         //TODO:replace db_functions.voteForPost
+         var func = $(this).parents('#comments').length ? db_functions.voteForPost: db_functions.voteForSuggestion;
          func.call(db_functions, post_id, actionType, function (err, post_obj) {
              if (!err) {
 

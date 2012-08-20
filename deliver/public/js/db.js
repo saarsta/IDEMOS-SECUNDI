@@ -1118,8 +1118,8 @@ var db_functions = {
             type: "POST",
             async: true,
             data: {"action_id": action_id, "text": post_content, "ref_to_post_id": refParentPostId},
-            success: function (err, data) {
-                console.log(err, data);
+            success: function ( data) {
+                console.log( data);
                 callback(null, data);
             },
             error:function(err){
