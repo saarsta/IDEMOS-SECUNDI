@@ -135,7 +135,7 @@ var error_message = error_message || '';
 
             <div class="text-box cf">
                 <div class="left">
-                    <p id='discussion_content_txt'><strong>:רובין כתב</strong>
+                    <p id='discussion_content_txt'><strong></strong>
 
                     </p>
                     <label>
@@ -149,9 +149,9 @@ var error_message = error_message || '';
                 </div>
                 <div class="user-right">
                     <div class="img-box" style="overflow: hidden;">
-                        <div style="width:70px; height:70px;" class='auto-scale'>
+                        <div   style="width:70px; height:70px;" class='auto-scale'>
                             <% if(user_logged) { %>
-                            <img src="<%=avatar%>" alt="אני"/>
+                            <img id="reload-img" src="<%=avatar%>" alt="אני"  style="width:70px; height:70px"/>
                             <% } %>
                         </div>
                         <span></span>
@@ -488,6 +488,7 @@ $(document).ready(function () {
         $('#discussion_content_txt').text('"' + range.text + '"');
         $('#write-comment').show();
         $('textarea#discussion_suggest').focus();
+        $('#reload-img').attr('src', $('#reload-img').attr('src'));
         $(".popup-window").hide();
     });
 
