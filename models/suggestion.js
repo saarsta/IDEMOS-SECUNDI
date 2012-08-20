@@ -9,6 +9,7 @@ var mongoose = require("mongoose"),
 
 
 var Suggestion = {
+    discussion_id:{type:Schema.ObjectId, ref:'Discussion', index:true, required:true, onDelete:'delete'},
     parts:[
         {start:Number, end:Number, text:String}
     ],

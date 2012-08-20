@@ -42,7 +42,6 @@ var error_message = error_message || '';
                     <textarea id="discussion_content" class="hidden_textarea"><%=discussion.text_field%></textarea>
                 </div>
 
-
                 <p  id="read_more">
                     <a href="javascript:void(0);">
                         קרא עוד
@@ -80,7 +79,7 @@ var error_message = error_message || '';
                     <a href="/discussions/?tag_name=<%=discussion.tags[c]%>"> <%=discussion. tags[c] %></a>
                     <% }%>
 
-                    <div class="more">
+   <!--                 <div class="more">
                         <span></span>
                         <ul>
                             <li><a href="">
@@ -90,7 +89,8 @@ var error_message = error_message || '';
                                 הוסף תגית
                             </a></li>
                         </ul>
-                    </div>
+                    </div> -->
+
                 </div>
                 <div class="slide-box">
                     <div class="summary">
@@ -135,7 +135,7 @@ var error_message = error_message || '';
 
             <div class="text-box cf">
                 <div class="left">
-                    <p id='discussion_content_txt'><strong>:רובין כתב</strong>
+                    <p id='discussion_content_txt'><strong></strong>
 
                     </p>
                     <label>
@@ -149,9 +149,9 @@ var error_message = error_message || '';
                 </div>
                 <div class="user-right">
                     <div class="img-box" style="overflow: hidden;">
-                        <div style="width:70px; height:70px;" class='auto-scale'>
+                        <div   style="width:70px; height:70px;" class='auto-scale'>
                             <% if(user_logged) { %>
-                            <img src="<%=avatar%>" alt="אני"/>
+                            <img id="reload-img" src="<%=avatar%>" alt="אני"  style="width:70px; height:70px"/>
                             <% } %>
                         </div>
                         <span></span>
@@ -286,10 +286,7 @@ var error_message = error_message || '';
         </select>
     </fieldset>
 </form>
-<!--</span>
-</div>
-</div>
--->
+
 
 
 <% include partials/footer.ejs %>
@@ -488,6 +485,7 @@ $(document).ready(function () {
         $('#discussion_content_txt').text('"' + range.text + '"');
         $('#write-comment').show();
         $('textarea#discussion_suggest').focus();
+        $('#reload-img').attr('src', $('#reload-img').attr('src'));
         $(".popup-window").hide();
     });
 
