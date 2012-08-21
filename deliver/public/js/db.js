@@ -393,6 +393,8 @@ var db_functions = {
             }
         });
     },
+
+
     removeInfoItemFromShoppingCart: function(info_item_id, callback){
         db_functions.loggedInAjax({
             url: '/api/shopping_cart/' + info_item_id,

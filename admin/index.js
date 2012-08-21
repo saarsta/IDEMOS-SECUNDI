@@ -82,6 +82,11 @@ module.exports = function(app)
 //                }
 //            ]
     });
+    admin.registerMongooseModel("DiscussionHistory",Models.DiscussionHistory,null,{
+        list:['discussion_id', 'date'],
+        cloneable:true,
+        filters:['discussion_id']
+    });
     admin.registerMongooseModel("Cycle",Models.Cycle,null,{
         list:['title'],
         cloneable:true,
