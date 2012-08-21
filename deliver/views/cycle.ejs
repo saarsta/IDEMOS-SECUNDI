@@ -213,15 +213,19 @@
             db_functions.getCycleTimeline(cycle_id, function (err, data) {
 
                      // var one_day=1000*60*60*24,
-                      var   start_date =   new Date(data.objects[0].date),
-                            end_date =     new Date(data.objects[data.objects.length-1].date);
-                      var timeline_span = (start_date.getTime()-end_date.getTime());
+                 //     var   start_date =   new Date(data.objects[0].date),
+                 //           end_date =     new Date(data.objects[data.objects.length-1].date);
+                //      var timeline_span = (start_date.getTime()-end_date.getTime());
 
-
+                     var i=0,
+                         count =   data.objects.length-1   ;
 
                      $.each(data.objects, function (index, item) {
-                          item_date=   new Date(item.date);
-                          item.offset  = Math.floor(((start_date.getTime()-item_date.getTime())*100)/timeline_span );
+                 //         item_date=   new Date(item.date);
+                 //         item.offset  = Math.floor(((start_date.getTime()-item_date.getTime())*100)/timeline_span );
+
+                          item.offset  =     (i*100)/count;
+
                           switch(item.type)
                           {
                               case 'due_date':
@@ -234,14 +238,19 @@
                                case 'discussion':
                                     dust.render('cycle_timeline_discussion', item, timelineAppend);
                                     break;
-                              case 'discussion':
+                              case 'action':
                                     dust.render('cycle_timeline_action', item, timelineAppend);
                                     break;
-
-
+                              case 'cycle_update':
+                                    dust.render('cycle_timeline_update', item, timelineAppend);
+                                    break;
+                              case 'today':
+                                    dust.render('cycle_timeline_today', item, timelineAppend);
+                                    break;
                               default:
                                console.log("unknow timleline type : "+  item.type);
                           }
+                          i++;
 
                      });
              });
