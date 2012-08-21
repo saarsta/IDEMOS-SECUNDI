@@ -34,7 +34,8 @@ var user_public_fields = exports.user_public_fields = {
     avatar_url:null,
     score: null,
     num_of_given_mandates: null,
-    num_of_proxies_i_represent: null
+    num_of_proxies_i_represent: null,
+    has_voted: null
 };
 
 var SessionAuthentication = exports.SessionAuthentication = jest.Authentication.extend({

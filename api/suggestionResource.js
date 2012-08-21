@@ -341,6 +341,8 @@ module.exports.approveSuggestion = function(id,callback)
                         cbk1(err, num);
                     });
             }
+
+
         ], function(err, args){
             itr_cbk(err, args);
         })
@@ -394,13 +396,8 @@ module.exports.approveSuggestion = function(id,callback)
                         parts[0].text = "";
                     vision = vision.replace(/\r/g,'');
 
-                    console.log("before");
-                    console.log(vision);
 
                     var str = vision.substr(0, Number(parts[0].start)) + parts[0].text + vision.substr(Number(parts[0].end));
-
-                    console.log("after");
-                    console.log(str);
 
                     discussion_object.vision_text_history.push(discussion_object.text_field);
                     discussion_object.text_field = str;
@@ -439,8 +436,18 @@ module.exports.approveSuggestion = function(id,callback)
                 function(cbk1){
                     suggestion_object.is_approved = true;
                     suggestion_object.save(cbk1);
+                },
+
+                function(cbk1){
+                    models.Suggestion.find({discussion_id: disc_obj, is_approved: false}, cbk1);
                 }
+
+
             ], function(err, args){
+
+                //update indexes of all other suggestions
+                var suggestions = args[2];
+                var index_balance = (suggestion_object.parts[0].end - suggestion_object.parts[0].start) - suggestion_object.parts[0].text.length;
                 cbk(err, args[1][0]);
             })
         },
@@ -490,14 +497,6 @@ module.exports.approveSuggestion = function(id,callback)
     });
 }
 
-//function encode_utf8( s ){
-//    return unescape( encodeURIComponent( s ) );
-//}( '\u4e0a\u6d77' )
-//
-//function decode_utf8( s )
-//{
-//    return decodeURIComponent( escape( s ) );
-//}
 
 var calculate_sugg_threshold = function(factor, discussion_threshold){
     var log_base_75_of_x =
