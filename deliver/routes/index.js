@@ -48,7 +48,7 @@ module.exports = function(app) {
 
     //router.get('/elections/fbimage',require('./elections/fbimage'));
 
-    router.all(/\/elections\/fbimage\/([0-9a-f]+)\/?$/,require('./elections/fbimage'));
+    router.all('/elections/fbimage/:id', require('./elections/fbimage'));
 
 //    router.all(/.*/,function(req,res) {
 //        res.render('404.ejs',{});
