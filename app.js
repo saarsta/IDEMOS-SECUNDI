@@ -127,7 +127,7 @@ app.configure('production', function(){
     app.set('send_mails',true);
 
     process.on('uncaughtException', function(err) {
-        console.error(err);
+        console.trace(err);
     });
 
 });
