@@ -89,8 +89,11 @@ var CycleTimelineResource = module.exports = jest.Resource.extend({
                     cbk(err, updates);
                 });
             },
+
             function(cbk){
-                models.Action.find({cycle_id: cycle_id, is_approved: true}, function(err, actions){
+                models.Action.find({cycle_id: cycle_id, is_approved: true})
+                    .select({'_id': 1, 'title': 1, 'text_field_preivew': 1, 'image_field_preview': 1, 'execution_date': 1})
+                    .exec(function(err, actions){
                     if(!err){
                         actions = JSON.parse(JSON.stringify(actions));
                         _.each(actions, function(action){
@@ -106,7 +109,6 @@ var CycleTimelineResource = module.exports = jest.Resource.extend({
         ], function(err, args){
 
             arr = _.union.apply(_,args);
-            console.log(arr);
             callback(null,{meta:{total_count: arr.length}, objects: arr});
         });
     }
