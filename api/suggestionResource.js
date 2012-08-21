@@ -448,6 +448,16 @@ module.exports.approveSuggestion = function(id,callback)
                 //update indexes of all other suggestions
                 var suggestions = args[2];
                 var index_balance = (suggestion_object.parts[0].end - suggestion_object.parts[0].start) - suggestion_object.parts[0].text.length;
+
+                if(index_balance != 0){
+                    async.forEach(suggestions, function(suggestion, itr_cbk){
+
+                        if(suggestions.part[0].start > suggestion_object.part[0].end){
+                            suggestions.part[0].start += index_balance;
+                            suggestions.part[0].end += index_balance;
+                        }
+                    })
+                }
                 cbk(err, args[1][0]);
             })
         },

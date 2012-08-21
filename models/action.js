@@ -29,7 +29,8 @@ var Action = module.exports = new Schema({
     users:[
         new Schema({user_id:{type:ObjectId, ref:'User'}, join_date: {type:Date, 'default':Date.now}})
     ],
-    execution_date:{type:Date, 'default':Date.now},//change default
+    execution_date:{date: {type:Date}, duration: {type: Number}},//change default
+
     creation_date:{type:Date, 'default':Date.now},
     required_participants:{type:Number, 'default':0},
     admin_text: {type: String, 'default': "עזרו לזה לקרות!"},
