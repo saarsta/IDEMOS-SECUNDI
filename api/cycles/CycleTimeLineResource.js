@@ -59,9 +59,11 @@ var CycleTimelineResource = module.exports = jest.Resource.extend({
 
                             var discussion = _.find(cycle.discussions, function(discussion){ return discussion.is_main == true});
 
-                            models.Discussion.findById(discussion.discussion, function(err, discussion_obj){
-                                if(!err && discussion){
-
+                            models.Discussion.findById(discussion.discussion)
+                                .select({'_id': 1, 'title': 1, 'text_field_preivew': 1, 'image_field_preview': 1, 'creation_date': 1})
+                                .exec(function(err, discussion_obj){
+                                if(!err && discussion_obj){
+                                    discussion_obj = JSON.parse(JSON.stringify(discussion_obj));
                                     discussion_obj.type = "discussion";
                                     discussion_obj.date = discussion_obj.creation_date;
                                     objs.push(discussion_obj);
@@ -76,7 +78,7 @@ var CycleTimelineResource = module.exports = jest.Resource.extend({
             },
 
             function(cbk){
-                models.Update.findOne({cycle_id: cycle_id}, function(err, updates){
+                models.Update.find({cycle_id: cycle_id}, function(err, updates){
                     if(!err){
                         _.each(updates, function(update){
                             update.type = "cycle_update";
@@ -87,9 +89,13 @@ var CycleTimelineResource = module.exports = jest.Resource.extend({
                     cbk(err, updates);
                 });
             },
+
             function(cbk){
-                models.Action.find({cycle_id: cycle_id, is_approved: true}, function(err, actions){
+                models.Action.find({cycle_id: cycle_id, is_approved: true})
+                    .select({'_id': 1, 'title': 1, 'text_field_preivew': 1, 'image_field_preview': 1, 'execution_date': 1})
+                    .exec(function(err, actions){
                     if(!err){
+                        actions = JSON.parse(JSON.stringify(actions));
                         _.each(actions, function(action){
                             action.type = "action";
                             action.date = action.execution_date;
@@ -103,7 +109,6 @@ var CycleTimelineResource = module.exports = jest.Resource.extend({
         ], function(err, args){
 
             arr = _.union.apply(_,args);
-            console.log(arr);
             callback(null,{meta:{total_count: arr.length}, objects: arr});
         });
     }
