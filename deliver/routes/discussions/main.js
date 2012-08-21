@@ -57,6 +57,7 @@ module.exports = function(req,res)
                                 proxy:proxyJson,
                                 fb_description: discussion.text_field_preview,
                                 fb_title: discussion.title
+
                             });
                         }
                     });

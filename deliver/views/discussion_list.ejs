@@ -28,6 +28,25 @@
 
     </div>
     <div id="content" class="cf">
+
+<%  if(user.has_voted) { %>
+
+        <div id="elected-dicussions">
+        <span class="title1">
+                                                            אנו שמחים שבחרת להצביע ולקחת חלק בשינוי שהתנועה שואפת להוביל.
+                                                     </span>
+                                                     <br>
+                                                     <span class="title2">
+                                                           אלו הדיונים המתנהלים באתר סביב ההצעות לשינוי שבחרת ותחת הנושאים המובילים שלך.
+                                                           <br>
+                                                           נשמח לראותך משתתפת בדיון
+                                                     </span>
+        </div>
+
+         <% for (var c = 0; c<user.has_voted.length; c++) { %>
+                                             <%=user.has_voted[c] %>
+                                        <% }%>
+        <% } %>
         <div id="subjects" class="services-box services-box-all cf">
             <div id="subjectsLevel1_blue" class="services-blue services-blue-two cf">
 
