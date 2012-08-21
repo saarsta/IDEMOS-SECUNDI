@@ -78,13 +78,18 @@ var CycleTimelineResource = module.exports = jest.Resource.extend({
             },
 
             function(cbk){
-                models.Update.find({cycle_id: cycle_id}, function(err, updates){
-                    if(!err){
-                        _.each(updates, function(update){
-                            update.type = "cycle_update";
-                            update.date = update.creation_date;
-                        })
-                    }
+                models.Update.find({cycle: cycle_id})
+                    .select({'_id': 1, 'title': 1, 'text_field': 1, 'image_field': 1, 'creation_date': 1})
+                    .exec(function(err, updates){
+
+                        updates = JSON.parse(JSON.stringify(updates));
+
+                        if(!err){
+                            _.each(updates, function(update){
+                                update.type = "cycle_update";
+                                update.date = update.creation_date;
+                            })
+                        }
 
                     cbk(err, updates);
                 });
@@ -109,6 +114,10 @@ var CycleTimelineResource = module.exports = jest.Resource.extend({
         ], function(err, args){
 
             arr = _.union.apply(_,args);
+            _.each(arr, function(item){ item.date = new Date(item.date)})
+            arr = _.sortBy(arr, function(item){ console.log(item.date); return Math.min(item.date);  });
+
+
             callback(null,{meta:{total_count: arr.length}, objects: arr});
         });
     }
