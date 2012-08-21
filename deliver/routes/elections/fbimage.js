@@ -2,9 +2,7 @@ var request = require('request');
 var qs = require('querystring');
 var models = require('../../../models');
 
-
 module.exports = function(req, res) {
-
 
    res.render('fbimage.ejs',
     {

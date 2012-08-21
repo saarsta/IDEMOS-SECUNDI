@@ -317,6 +317,17 @@
                         });
            });
 
+
+            db_functions.getCycleTimelined(cycle_id, function (err, data) {
+
+
+                dust.renderArray('cycle_update', data.objects, function (err, out) {
+                    $('.updates').append(out);
+
+                });
+             });
+
+
             db_functions.getPendingActionsByCycle(cycle_id, function ( data,err) {
 
                     dust.renderArray('cycle_pending_action', data.objects, function (err, out) {
