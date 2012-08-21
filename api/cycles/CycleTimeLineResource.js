@@ -6,8 +6,6 @@ var jest = require('jest')
     ,async = require('async')
     ,_ = require('underscore');
 
-
-
 var CycleTimelineResource = module.exports = jest.Resource.extend({
     init:function(){
         this._super();
