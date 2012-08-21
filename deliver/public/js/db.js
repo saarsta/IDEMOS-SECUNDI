@@ -962,7 +962,7 @@ var db_functions = {
             url: '/api/users?cycles.cycle_id=' + cycle_id + '&limit=3&offset=' + (page*14),
             type: "GET",
             async: true,
-            success: function (data) {
+            success: function (data,err) {
                 data.objects = $.map(data.objects/*followers*/, function(follower){
                     var curr_cycle;
                     for(var i=0; i < follower.cycles.length; i++){
@@ -985,7 +985,7 @@ var db_functions = {
 
                     }
                 })
-                callback(null, data);
+                callback( data);
             },
 
             error:function(err){

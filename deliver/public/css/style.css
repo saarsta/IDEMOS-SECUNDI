@@ -6211,6 +6211,14 @@ a.fraction-btn
 {
     border: none;
 }
+
+
+.followers-diagram .creation  a  {
+    padding: 4px;
+
+}
+
+
 .followers-box .btn-box
 {
     border-top: 1px solid #b7b6b6;
