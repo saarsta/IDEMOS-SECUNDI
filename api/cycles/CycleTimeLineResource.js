@@ -39,7 +39,6 @@ var CycleTimelineResource = module.exports = jest.Resource.extend({
                                     }
                                     objs.push(obj);
                                 }
-
                             })
 
                             if(cycle.due_date){
@@ -53,6 +52,13 @@ var CycleTimelineResource = module.exports = jest.Resource.extend({
                             var obj = {
                                 type: "cycle_creation",
                                 date: cycle.creation_date
+                            }
+
+                            objs.push(obj);
+
+                            var obj = {
+                                type: "today",
+                                date: Date.now()
                             }
 
                             objs.push(obj);
@@ -97,13 +103,14 @@ var CycleTimelineResource = module.exports = jest.Resource.extend({
 
             function(cbk){
                 models.Action.find({cycle_id: cycle_id, is_approved: true})
-                    .select({'_id': 1, 'title': 1, 'text_field_preivew': 1, 'image_field_preview': 1, 'execution_date': 1})
+                    .select({'_id': 1, 'title': 1, 'text_field_preivew': 1, 'image_field_preview': 1, 'num_of_going': 1, 'location': 1, 'execution_date': 1})
                     .exec(function(err, actions){
                     if(!err){
                         actions = JSON.parse(JSON.stringify(actions));
                         _.each(actions, function(action){
                             action.type = "action";
-                            action.date = action.execution_date;
+                            action.date = action.execution_date.date;
+                            action.duration = action.execution_date.duration;
                         })
                     }
 
@@ -115,7 +122,7 @@ var CycleTimelineResource = module.exports = jest.Resource.extend({
 
             arr = _.union.apply(_,args);
             _.each(arr, function(item){ item.date = new Date(item.date)})
-            arr = _.sortBy(arr, function(item){ console.log(item.date); return Math.min(item.date);  });
+            arr = _.sortBy(arr, function(item){ return Math.min(item.date);  });
 
 
             callback(null,{meta:{total_count: arr.length}, objects: arr});
