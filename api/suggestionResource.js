@@ -455,13 +455,13 @@ module.exports.approveSuggestion = function(id,callback)
                         console.log(suggestion._id);
                         if(suggestion.parts[0].start > suggestion_object.parts[0].end){
                             console.log("start");
-                            console.log(suggestion.parts[0].start += index_balance);
-                            console.log("end");
-                            console.log(suggestion.parts[0].end += index_balance);
+
 
                             suggestion.parts[0].start += index_balance;
                             suggestion.parts[0].end += index_balance;
-
+                            console.log(suggestion.parts[0].start);
+                            console.log("end");
+                            console.log(suggestion.parts[0].end);
                             suggestion.save(function(err, result){itr_cbk(err, result)})
                         }
                     });
