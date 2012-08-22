@@ -57,9 +57,9 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
                               _id : map_join_to_user.user_id._id,
                               first_name : map_join_to_user.user_id.first_name,
                               last_name : map_join_to_user.user_id.last_name,
-                              avatar_url : map_join_to_user.user_id.avatar_url,
+                              avatar_url : map_join_to_user.user_id.avatar_url(),
                               score : map_join_to_user.user_id.score,
-                              num_of_proxies_i_represent : map_join_to_user.user_id.num_of_proxies_i_represent,
+                              num_of_proxies_i_represent : map_join_to_user.user_id.num_of_proxies_i_represent
                           }
                       }
                    });
