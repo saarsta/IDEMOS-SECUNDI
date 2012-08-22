@@ -81,7 +81,7 @@ module.exports = function(req, res) {
             if (err){
                 res.statusCode = 500;
             }
-            res.json(err || "ok")
+            res.json(err || user._id)
         }
     );
 };
