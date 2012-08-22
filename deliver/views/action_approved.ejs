@@ -78,8 +78,12 @@ var error_message = error_message || '';
                             <p>תל אביב</p><br>
                             <p>20:00</p>
                             <a href="" class="join-btn">
+                            <% if(!action.is_going) { %>
 							הצטרף
-							</a>
+                            <% } else{ %>
+                                עזוב
+                               <% } %>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -369,8 +373,9 @@ var error_message = error_message || '';
             db_functions.addPostToAction(action_id, $("textarea#discussion_comment").val(), new_post_ref_id, function (err, post) {
                 // $("#user_tokens").text(post.updated_user_tokens);
                 if (!err) {
-                    if (my_id){
-                        setUserScore(my_id, post.creator_id.score);
+                    if (my_id && post.creator_id){
+
+                        setUserScore(my_id, post.creator_id);
                     }
                     dust.render('discussion_comment', post, function (err, out) {
                         $("#comments").append(out);

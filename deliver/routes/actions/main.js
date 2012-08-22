@@ -54,8 +54,9 @@ module.exports = function(req, res){
             else {
                 action.location=
                     'התעשייה 12, תל אביב';
-                action.from_date=action.execution_date;
-                action.to_date=action.execution_date;
+                action.from_date= action.execution_date.date;
+               // action.to_date= action.from_date.addHours(action.execution_date.duration);
+                action.to_date= new Date(action.execution_date.date.getTime() + action.execution_date.duration*1000*3600);
                 var is_going = false;
                // is user going to action?
                if(req.user){
