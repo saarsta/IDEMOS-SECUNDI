@@ -8307,3 +8307,22 @@ a.menu-elections:hover {
     text-align: center;
 
 }
+
+#elected-dicussions {
+
+    border-top: 6px solid #D6DBDE;
+    padding-top: 35px;
+    padding-bottom: 30px;
+    text-align: center;
+
+    color: #50504F;
+    font: 24px 'AdumaFOTMedium';
+}
+#elected-dicussions .title1{
+
+    color: #3B63EF;
+}
+
+
+
+

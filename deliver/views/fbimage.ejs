@@ -12,12 +12,12 @@
      {
 
          position:absolute;
-         left:0;
-         background: #eee;
-         width: 678px;
 
-         font-family: georgia, serif;
-         font-size: 22px;
+         background: #eee;
+   /*      width: 678px;      */
+         width:100%;
+         font-family: Arial;
+         font-size: 38px;
          text-align: right;
      }
 
@@ -26,7 +26,8 @@
          list-style: none;
          padding: 0;
          margin: 0 auto;
-         width: 664px;
+      /*   width: 664px;   */
+        width:96%;
      }
 
      ul#navlist li
@@ -35,14 +36,31 @@
          margin: 10px 0;
          padding: 0;
          display: block;
-         padding:  0.46em 2.9em 0.5em 0.5em;
+         padding:  0.3em 3.4em 0.5em 0.5em;
          border-width: 2px;
          border-color: #ffe #aaab9c #ccc #fff;
          border-style: solid;
          color: #000;
          text-decoration: none;
-         background: url("../../images/elections/v1.png") no-repeat  600px 15px #FFFFFF;
+         position:relative;
+         background: #FFFFFF;
 
+
+       /*
+         height: 24px;
+         overflow: hidden;
+         text-overflow: ellipsis;
+         white-space: nowrap;
+         */
+     }
+     .checkbox
+     {
+        position:absolute;
+        background: url("../../images/elections/v1.png") no-repeat  top left #FFFFFF;
+        top:25px;
+        right: 50px;
+        height:20px;
+        width:20px;
      }
 
 
@@ -52,9 +70,10 @@
 <body>
 
    <div id="navcontainer">
+
    <ul id="navlist">
      <% for (var i = 0; i < items.length && i < 8 ; i++) { %>
-               <li><b><%=items[0].title%>:</b> <%=items[0].text %></li>
+               <li> <div class="checkbox"> </div> <b><%=items[i].title%>:</b> <%=items[i].text %> </li>
      <% } %>
 
    </ul>
