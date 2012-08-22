@@ -86,11 +86,10 @@
 		<a href="#" id="share-twitter"><img class="icon" src="/images/elections/tweet.png" alt="עורו" /></a>
 		<a id="share-facebook"
 		    class="share"
-           rel="/discussions/"
-           data-img_src="http://api.url2png.com/v3/P503113E58ED4A/92a33c45ebf443d2d412fa08b72a3824/600x600/http%3A%2F%2Furu-staging.herokuapp.com%2Felections%2Ffbimage%2F<%if(user_logged){%><%= user._id %><%}%>&fullpage=true&force=true"
-           data-text_preview="מרגישים כמוני שהפוליטיקאים לא סופרים אותנו? במקום להתייאש, הצטרפתי לעורו כדי שנוכל להתאגד ולקחת אחריות על חיינו. בתור התחלה, הצבעתי בבחירות של עורו"
-           data-title="%D7%92%D7%9D%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%A8%D7%92%D7%99%D7%A9%20%D7%90%D7%96%D7%A8%D7%97%20%D7%9C%D7%90%20%D7%9E%D7%99%D7%95%D7%A6%D7%92%20%E2%80%93%20%D7%90%D7%96%20%D7%91%D7%97%D7%A8%D7%AA%D7%99%20%D7%91%D7%A0%D7%95%D7%A9%D7%90%D7%99%D7%9D%20%D7%94%D7%97%D7%A9%D7%95%D7%91%D7%99%D7%9D%20%D7%9C%D7%99%20%D7%91%D7%90%D7%9E%D7%AA!"
-           href="/facebookShare?link=/discussions/"  data-name="בחירות" ><img class="icon" src="/images/elections/face.png" alt="עורו" /></a>
+           rel="http://www.uru.org.il/"
+           data-title="גם אני מרגיש חלק מהרוב הלא מיוצג, שמתי בצד הבדלים של שמאל-ימין מדיני ובחרתי בנושאים שחשוב לי לשנות. מרגישים כמוני? הצטרפו והצביעו!"
+           href="/facebookShare?link=/discussions/"
+           data-name="עורו" ><img class="icon" src="/images/elections/face.png" alt="עורו" /></a>
 	</div>
 </div>
 
@@ -205,6 +204,7 @@ $(function() {
     function sendVote() {
         var data = getVoteData();
         $.post('/elections/vote', data, function(ret_data){
+            $("share-facebook").attr('data-img_src','http://api.url2png.com/v3/P503113E58ED4A/92a33c45ebf443d2d412fa08b72a3824/600x600/http%3A%2F%2Furu-staging.herokuapp.com%2Felections%2Ffbimage%2F'+ret_data+'?fullpage=true&force=true') ;
             shareScreen();
 
         }).fail(function(e) {
