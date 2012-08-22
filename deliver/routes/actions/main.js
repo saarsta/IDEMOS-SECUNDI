@@ -65,6 +65,7 @@ module.exports = function(req, res){
                }
                action.is_going = is_going;
 
+
                 var ejsFileName=true?'action_approved.ejs':'action_append.ejs';
                 res.render(ejsFileName,{
                     action: action,

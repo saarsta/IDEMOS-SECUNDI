@@ -78,11 +78,9 @@ var error_message = error_message || '';
                             <p>תל אביב</p><br>
                             <p>20:00</p>
                             <a href="" class="join-btn">
-                            <% if(!action.is_going) { %>
+
 							הצטרף
-                            <% } else{ %>
-                                עזוב
-                               <% } %>
+
                             </a>
                         </div>
                     </div>
@@ -213,7 +211,13 @@ var error_message = error_message || '';
         </div>
     </div>
     <div class="add-offer-btn-box">
-        <a href="#" >הצטרף</a>
+        <a href="#" >
+            <% if(!action.is_going) { %>
+            הצטרף
+            <% } else{ %>
+            עזוב
+            <% } %>
+            </a>
     </div>
 </div>
 
@@ -570,17 +574,18 @@ var error_message = error_message || '';
 
       loadPosts();
 
-
-     db_functions.getActionGoing(action_id,function(err,data){
-        for(var i=0; i<0;i++ ){
+    //  functions
+     db_functions.getActionGoing(action_id,1,function(err,data){
+       /* for(var i=0; i<10;i++ ){
             data.objects.push( data.objects[0]);
         }
-       //  data.meta.total_count=15;
+          data.meta.total_count= 16;*/
+         var  userInBrowserCount=data.objects.length;
          dust.renderArray('action_participant_user',data.objects ,null, function (err, out){
             $('#participant').append(out);
 
          })
-         if (data.meta.total_count > 14) {
+         if (data.meta.total_count >userInBrowserCount ) {
              $(".more-deals").show();
              $(".more-deals a").on('click', function (e) {
 
