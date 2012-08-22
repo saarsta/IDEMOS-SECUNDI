@@ -439,7 +439,7 @@ var db_functions = {
                 callback(null, data);
             },
             error:function(err){
-                callback(err, null);
+                callback(err);
             }
         });
     },
@@ -1095,9 +1095,10 @@ var db_functions = {
     },*/
 
 
-     getActionGoing: function(action_id,offset, callback){
+     getActionGoing: function(action_id,offset,paging, callback){
          db_functions.loggedInAjax({
-             url: '/api/join/?action_id=' + action_id + '&offset=' + offset+'&paging=14',
+           //limit=3&offset=' + (page*3)
+             url: '/api/join/?action_id=' + action_id + '&offset=' + (paging*offset)+'&limit='+paging,
              type: "GET",
 
              async: true,

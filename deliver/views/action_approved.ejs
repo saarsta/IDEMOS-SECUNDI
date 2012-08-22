@@ -331,17 +331,6 @@ var error_message = error_message || '';
 
 
 
-     $('.add-offer-btn-box').click(function(e){
-         e.preventDefault();
-         db_functions.joinOrLeaveAction(action_id,function(err,data){
-             if(err){
-                 console.log(err) ;
-             }
-             else{
-                 //update bt
-             }
-         })
-     });
 
      // just focus
      $("#action_comment_reply_button").on('click', function (e) {
@@ -572,38 +561,95 @@ var error_message = error_message || '';
      /*********************************************************************************************************/
 
 
-      loadPosts();
+/*
 
-    //  functions
      db_functions.getActionGoing(action_id,0,function(err,data){
-       /* for(var i=0; i<10;i++ ){
-            data.objects.push( data.objects[0]);
-        }
-          data.meta.total_count= 16;*/
+
          var  userInBrowserCount=data.objects.length;
          dust.renderArray('action_participant_user',data.objects ,null, function (err, out){
             $('#participant').append(out);
+	    */
 
+
+     var goingModel=(function(){
+
+         var goingUsers;
+         var  userInBrowserCount=0
+         var paging= 14;
+         var model ={
+
+             loadMoreUsers:function(){
+                 var currentOffset=userInBrowserCount /paging;
+                 this.loadGoingUsers(currentOffset );
+             },
+             loadGoingUsers:function(offcet,numOfPaging){
+                var self=this;
+                 numOfPaging= numOfPaging||  1;
+
+
+                db_functions.getActionGoing(action_id,offcet,paging*numOfPaging,function(err,data){
+
+
+                  userInBrowserCount=userInBrowserCount+data.objects.length;
+                  goingUsers=data.meta.total_count;
+                 dust.renderArray('action_participant_user',data.objects ,null, function (err, out){
+                    $('#participant').append(out);
+                 })
+                 if (goingUsers >userInBrowserCount ) {
+                     $(".more-deals").show();
+
+
+                     } else{
+                     $(".more-deals").hide();
+                 }
+
+
+
+                 setGoingNumber(goingUsers);
+
+             })}
+        }
+         $(".more-deals a").on('click',function(e){
+             e.preventDefault();
+             model.loadMoreUsers();
          })
-         if (data.meta.total_count >userInBrowserCount ) {
-             $(".more-deals").show();
-             $(".more-deals a").on('click', function (e) {
 
-                 /*db_functions.getSuggestionByDiscussion(discussion_id, null, 1, function (err, data) {
-                     $.each(data.objects, function (index, suggestion) {
-                         render_suggestion(suggestion);
-                     });*/
-              });
+         function setJoinBT(isGoing){
+             var text= isGoing?
+                     'עזוב'
+                     :
+                     'הצטרף' ;
+             $(".add-offer-btn-box a").html(text);
+              // it's assmoes that me is the first user;
+             if(isGoing){ //add the user to first plase;
+                 goingUsers++;
+             }else{
+               //  $('#participant').children().first().remove();
+                 goingUsers--;
+             }
+             setGoingNumber(goingUsers);
 
-             } else{
-             $(".more-deals").hide();
          }
 
 
+         $('.add-offer-btn-box').click(function(e){
+             e.preventDefault();
+             db_functions.joinOrLeaveAction(action_id,function(err,data){
+                 if(err){
+                     console.log(err) ;
+                 }
+                 else{
+                     setJoinBT(data.is_going);
+                 }
+             })
+         });
 
-         setGoingNumber(data.meta.total_count);
+         return model;
+     })();
 
-     })
+
+     goingModel.loadGoingUsers(0,2);
+     loadPosts();
        
  });
  </script>

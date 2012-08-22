@@ -952,6 +952,8 @@ $(document).ready(function () {
                 $(".deals-box").show();
             } else {
                 var err = err;
+                if(err.responseText == "a suggestion with this indexes already exist")
+                    popupProvider.showOkPopup({message:"הטקסט סומן כבר בהצעה לשינוי קיימת"});
             }
         });
 
