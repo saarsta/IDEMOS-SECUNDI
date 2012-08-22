@@ -561,6 +561,17 @@ var error_message = error_message || '';
      /*********************************************************************************************************/
 
 
+/*
+
+     db_functions.getActionGoing(action_id,0,function(err,data){
+       /* for(var i=0; i<10;i++ ){
+            data.objects.push( data.objects[0]);
+        }
+          data.meta.total_count= 16;*/
+         var  userInBrowserCount=data.objects.length;
+         dust.renderArray('action_participant_user',data.objects ,null, function (err, out){
+            $('#participant').append(out);
+	    */
 
 
      var goingModel=(function(){

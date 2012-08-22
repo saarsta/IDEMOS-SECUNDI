@@ -451,11 +451,17 @@ module.exports.approveSuggestion = function(id,callback)
 
                 if(index_balance != 0){
                     async.forEach(suggestions, function(suggestion, itr_cbk){
-
+                        console.log("suugstion_id:");
+                        console.log(suggestion._id);
                         if(suggestion.parts[0].start > suggestion_object.parts[0].end){
+                            console.log("start");
+
+
                             suggestion.parts[0].start += index_balance;
                             suggestion.parts[0].end += index_balance;
-
+                            console.log(suggestion.parts[0].start);
+                            console.log("end");
+                            console.log(suggestion.parts[0].end);
                             suggestion.save(function(err, result){itr_cbk(err, result)})
                         }
                     });

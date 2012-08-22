@@ -46,6 +46,8 @@
          background: #FFFFFF;
 
 
+
+
        /*
          height: 24px;
          overflow: hidden;
@@ -55,12 +57,21 @@
      }
      .checkbox
      {
-        position:absolute;
-        background: url("../../images/elections/v1.png") no-repeat  top left #FFFFFF;
-        top:25px;
-        right: 50px;
-        height:20px;
-        width:20px;
+
+
+            background-attachment: scroll;
+            background-clip: border-box;
+            background-color: #FFFFFF;
+            background-image: url("../../images/elections/v1.png");
+            background-origin: padding-box;
+            background-position: left top;
+            background-repeat: no-repeat;
+            background-size: 40px 40px;
+            height: 50px;
+            position: absolute;
+            right: 40px;
+            top: 17px;
+            width: 50px;
      }
 
 
@@ -73,7 +84,7 @@
 
    <ul id="navlist">
      <% for (var i = 0; i < items.length && i < 8 ; i++) { %>
-               <li> <div class="checkbox"> </div> <b><%=items[i].title%>:</b> <%=items[i].text_field_preview %> </li>
+               <li> <div class="checkbox"> </div> <b><%=items[i].title%>:</b> <%=items[i].text %> </li>
      <% } %>
 
    </ul>

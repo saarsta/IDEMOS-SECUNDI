@@ -15,12 +15,5 @@ var UserChosenDiscussionsResource = module.exports =  jest.Resource.extend({
         };
     },
 
-    get_objects:function(req, filters, sorts, limit, offset, callback){
-        var data = {}
-            data.user_id = req.query.user_id;
-        if(data.user_id)
-            getUserChosenDiscussions(req, data, callback);
-        else
-            callback
-    }
+    get_object:getUserChosenDiscussions
 });

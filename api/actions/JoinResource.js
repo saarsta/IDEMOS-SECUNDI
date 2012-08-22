@@ -42,7 +42,7 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
 
     run_query: function(req,query,callback)
     {
-        query.populate('user_id', {'_id':1, 'first_name':1, 'last_name':1, 'avatar_url':1, 'score':1, 'num_of_proxies_i_represent':1});
+        query.populate('user_id', {'_id':1, 'first_name':1, 'last_name':1, 'facebook_id':1, 'avatar_url':1, 'score':1, 'num_of_proxies_i_represent':1});
         this._super(req,query,callback);
     },
 
@@ -57,9 +57,9 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
                               _id : map_join_to_user.user_id._id,
                               first_name : map_join_to_user.user_id.first_name,
                               last_name : map_join_to_user.user_id.last_name,
-                              avatar_url : map_join_to_user.user_id.avatar_url,
+                              avatar_url : map_join_to_user.user_id.avatar_url(),
                               score : map_join_to_user.user_id.score,
-                              num_of_proxies_i_represent : map_join_to_user.user_id.num_of_proxies_i_represent,
+                              num_of_proxies_i_represent : map_join_to_user.user_id.num_of_proxies_i_represent
                           }
                       }
                    });
