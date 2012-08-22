@@ -56,7 +56,9 @@ module.exports = function(req,res)
                                 discussion: discussion,
                                 proxy:proxyJson,
                                 fb_description: discussion.text_field_preview,
-                                fb_title: discussion.title
+                                fb_title: discussion.title,
+                                fb_image:discussion.image_field && discussion.image_field.url
+
                             });
                         }
                     });
