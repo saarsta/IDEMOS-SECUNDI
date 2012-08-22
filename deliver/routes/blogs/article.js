@@ -25,12 +25,13 @@ module.exports = function(req,res) {
                                     articles: [article],
                                     tab: 'articles',
                                     blogger: article.user_id,
-                                    user: req.session.user,
-                                    user_logged: req.isAuthenticated(),
+                                    fb_description:article.text_field_preview || '',
+                                    fb_title:article.title || '',
+                                    fb_image:article.image_field && article.image_field.url,
                                     tags: tags
                                 });
                             }
-                        })
+                        });
 //
 //                        res.render('blog.ejs', {
 //                            title:"בלוגים",

@@ -45,6 +45,7 @@ var Article = module.exports = new Schema({
     image_field_preview: { type:mongoose_types.File},
     tooltip:String,
     text : {type:mongoose_types.Html, required:true},
+    text_field_preview:String,
     tags: [String],
     view_counter: {type: Number, 'default': '0'},
     time: {type: Date, 'default': Date.now, editable:false},
@@ -60,6 +61,7 @@ Article.methods.getLink = function() {
 Article.pre('save',function(next)
 {
     var self = this;
+    self.text_field_preview = (self.text || '').replace(/<[^>]*?>/g,'').replace(/\[[^\]]*?]/g,'').slice(0,255);
     if(!this.first_name && !this.last_name && this.user_id)
     {
         mongoose.model('User').findById(this.user_id,function(err,user)
