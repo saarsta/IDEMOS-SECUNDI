@@ -27,8 +27,9 @@ module.exports = function (req, res) {
                                 articles:articles,
                                 tab:'articles',
                                 blogger: articles[0].user_id,
-                                user: req.session.user,
-                                user_logged: req.isAuthenticated(),
+                                fb_description:articles[0].text_field_preview || '',
+                                fb_title:articles[0].title || '',
+                                fb_image:articles[0].image_field && articles[0].image_field.url,
                                 tags: tags
                             });
                         }

@@ -254,7 +254,11 @@ app.configure(function(){
 
     app.locals({
         footer_links:function() { return mongoose.model('FooterLink').getFooterLinks(); },
-        cleanHtml:function(html) { return html.replace(/<[^>]*?>/g,'').replace(/\[[^\]]*?]/g,'');}
+        cleanHtml:function(html) { return (html || '').replace(/<[^>]*?>/g,'').replace(/\[[^\]]*?]/g,'');},
+        fb_description:'גם אני מרגיש חלק מהרוב הלא מיוצג, שמתי בצד הבדלים של שמאל-ימין מדיני ובחרתי בנושאים שחשוב לי לשנות. מרגישים כמוני? הצטרפו והצביעו!',
+        fb_title:'עורו הבית של הרוב',
+        fb_image:'http://site.e-dologic.co.il/philip_morris/Xls_script/uru_mailing/logo.jpg'
+
     });
 
 
