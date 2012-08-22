@@ -20,6 +20,8 @@ module.exports = function(app) {
 
     router.all('/facebookShare',require('./account/facebook_share'));
 
+    router.all('/elections_only',require('./navigation/elections_only'));
+
     router.include('/information_items',InformationItems);
 
     router.include('/blogs',require('./blogs'));
@@ -48,7 +50,7 @@ module.exports = function(app) {
 
     //router.get('/elections/fbimage',require('./elections/fbimage'));
 
-    router.all(/\/elections\/fbimage\/([0-9a-f]+)\/?$/,require('./elections/fbimage'));
+    router.all('/elections/fbimage/:id', require('./elections/fbimage'));
 
 //    router.all(/.*/,function(req,res) {
 //        res.render('404.ejs',{});

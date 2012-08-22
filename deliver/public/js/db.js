@@ -393,6 +393,8 @@ var db_functions = {
             }
         });
     },
+
+
     removeInfoItemFromShoppingCart: function(info_item_id, callback){
         db_functions.loggedInAjax({
             url: '/api/shopping_cart/' + info_item_id,
@@ -962,7 +964,7 @@ var db_functions = {
             url: '/api/users?cycles.cycle_id=' + cycle_id + '&limit=3&offset=' + (page*14),
             type: "GET",
             async: true,
-            success: function (data) {
+            success: function (data,err) {
                 data.objects = $.map(data.objects/*followers*/, function(follower){
                     var curr_cycle;
                     for(var i=0; i < follower.cycles.length; i++){
@@ -985,7 +987,7 @@ var db_functions = {
 
                     }
                 })
-                callback(null, data);
+                callback( data);
             },
 
             error:function(err){
@@ -1062,7 +1064,7 @@ var db_functions = {
         });
     },
 
-    getActionGoing: function(action_id, callback){
+    /*getActionGoing: function(action_id, callback){
         db_functions.loggedInAjax({
             url: '/api/join/?action_id=' + action_id,
             type: "GET",
@@ -1076,7 +1078,39 @@ var db_functions = {
                 callback(err, null);
             }
         });
-    },
+    },*/
+
+   /* getSortedPostByAction: function(action_id, sort_by,offset, callback){
+        db_functions.loggedInAjax({
+            url: '/api/posts_of_action?action_id=' + action_id + "&order_by=" + sort_by + '&offset=' + offset,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },*/
+
+
+     getActionGoing: function(action_id,offset,paging, callback){
+         db_functions.loggedInAjax({
+           //limit=3&offset=' + (page*3)
+             url: '/api/join/?action_id=' + action_id + '&offset=' + (paging*offset)+'&limit='+paging,
+             type: "GET",
+
+             async: true,
+             success: function (data) {
+             callback(null, data);
+         },
+
+         error:function(err){
+         callback(err, null);
+         }
+         });
+     },
 
 
     getPostByAction: function(action_id, callback){
@@ -1144,7 +1178,7 @@ var db_functions = {
             url: '/api/votes_on_action_post/',
             type: "POST",
             async: true,
-            data: {"post_id": post_id, "method": method},
+            data: {"post_action_id": post_id, "method": method},
             success: function (data) {
                 callback(null, data);
             },

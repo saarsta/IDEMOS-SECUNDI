@@ -84,7 +84,13 @@
 		<a href="mailto:?subject=%D7%92%D7%9D%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%A8%D7%92%D7%99%D7%A9%20%D7%90%D7%96%D7%A8%D7%97%20%D7%9C%D7%90%20%D7%9E%D7%99%D7%95%D7%A6%D7%92%20%E2%80%93%20%D7%90%D7%96%20%D7%91%D7%97%D7%A8%D7%AA%D7%99%20%D7%91%D7%A0%D7%95%D7%A9%D7%90%D7%99%D7%9D%20%D7%94%D7%97%D7%A9%D7%95%D7%91%D7%99%D7%9D%20%D7%9C%D7%99%20%D7%91%D7%90%D7%9E%D7%AA!&body=מרגישים כמוני שהפוליטיקאים לא סופרים אותנו? במקום להתייאש, הצטרפתי לעורו כדי שנוכל להתאגד ולקחת אחריות על חיינו. בתור התחלה, הצבעתי בבחירות של עורו" target="_blank"><img class="icon" src="/images/elections/enva.png" alt="עורו" /></a>
 		<a href="#" id="share-google"><img class="icon" src="/images/elections/google.png" alt="עורו" /></a>
 		<a href="#" id="share-twitter"><img class="icon" src="/images/elections/tweet.png" alt="עורו" /></a>
-		<a href="#" id="share-facebook"><img class="icon" src="/images/elections/face.png" alt="עורו" /></a>
+		<a id="share-facebook"
+		    class="share"
+           rel="http://www.uru.org.il/"
+           data-text_preview="http://www.uru.org.il/"
+           data-title="גם אני מרגיש חלק מהרוב הלא מיוצג, שמתי בצד הבדלים של שמאל-ימין מדיני ובחרתי בנושאים שחשוב לי לשנות. מרגישים כמוני? הצטרפו והצביעו!"
+           href="/facebookShare?link=http://www.uru.org.il/"
+           data-name="עורו" ><img class="icon" src="/images/elections/face.png" alt="עורו" /></a>
 	</div>
 </div>
 
@@ -199,6 +205,8 @@ $(function() {
     function sendVote() {
         var data = getVoteData();
         $.post('/elections/vote', data, function(ret_data){
+            var url= 'http://api.url2png.com/v3/P503113E58ED4A/92a33c45ebf443d2d412fa08b72a3824/600x600/http%3A%2F%2Furu-staging.herokuapp.com%2Felections%2Ffbimage%2F'+ret_data+'?fullpage=true&force=true';
+            $("#share-facebook").attr('data-img_src',url);
             shareScreen();
 
         }).fail(function(e) {
@@ -290,13 +298,13 @@ $(function() {
 		});
 		return false;
 	});
-
+   /*
 	$('#share-facebook').on('click', function() {
 	    window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent('http://www.uru.org.il'),
 	    	'share-facebook', 'status=0,scrollbars=0,location=0,height=320,width=660,resizable=1');
 		return false;
 	});
-
+     */
 	$('#share-twitter').on('click', function() {
 	    window.open('https://twitter.com/share?url=' + encodeURIComponent('http://www.uru.org.il') + '&text=' +
 	    	encodeURIComponent('גם אני מרגיש חלק מהרוב הלא מיוצג, שמתי בצד הבדלים של שמאל-ימין מדיני ובחרתי בנושאים שחשוב לי לשנות. מרגישים כמוני? הצטרפו והצביעו!') +

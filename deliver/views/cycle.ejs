@@ -83,115 +83,7 @@
         <div class="extra">
             <h2><span>טיימליין</span> 2012</h2>
             <div class="followers-diagram">
-                <div style="left: 0px" class="event event-prev">
-                    <div class="icon prev-icon">
-                        <span class="i"></span>
-                    </div>
-                    <span class="number">
-                        2.2
-                    </span>
-                    <span class="text">
-                        יצירת דיון
-                    </span>
-                </div>
-                <div style="left: 600px" class="event event-plus">
-                    <div class="icon plus-icon">
-                        <span class="i"></span>
-                    </div>
-                    <span class="number">
-                        2.2
-                    </span>
-                    <span class="text">
-                        יצירת דיון
-                    </span>
-                </div>
-                <div style="left: 750px" class="event event-triangle">
-                    <div class="icon triangle-icon">
-                        <span class="i"></span>
-                    </div>
-                    <span class="number">
-                        8.3
-                    </span>
-                    <span class="text">
-                        היום
-                    </span>
-                </div>
-                <div style="left: 150px" class="event">
-                    <div class="icon green-icon">
-                        <span class="i"></span>
-                        <div class="popup-event type-one">
-                            <div class="popup-text">
-                                <h4>הפגנה למען הקיפודים</h4>
-                                <p>אחד העם 19</p>
-                                <p>תל אביב</p><br />
-                                <p>20:00</p>
-                                <a class="join-btn" href="">הצטרף</a>
-                            </div>
-                        </div>
-                    </div>
-                    <span class="number">
-                        4.4
-                    </span>
-                    <span class="text">
-                        דיון פתוח
-                    </span>
-                </div>
-                <div style="left: 300px" class="event">
-                    <div class="icon blue-icon">
-                        <span class="i"></span>
-                        <div class="popup-event type-two">
-                            <div class="popup-text">
-                                <img src="images/sample-7.jpg" width="112" class="floatRight" alt="" />
-                                <h5>אירוע חשוב מאוד</h5>
-                                <p>הרצאה יוצאת מן הכלל מפי פרופ’ כהן אחד העם 91, תל אביב</p>
-                            </div>
-                        </div>
-                    </div>
-                    <span class="number">
-                        4.4
-                    </span>
-                    <span class="text">
-                        דיון פתוח
-                    </span>
-                </div>
-                <div style="left: 450px" class="event">
-                    <div class="icon grey-icon">
-                        <span class="i"></span>
-                        <div class="popup-event type-three">
-                            <div class="popup-text">
-                                <h3>פברואר</h3>
-                                <ul class="">
-                                    <li><strong>2.2</strong> - יצירת דיון</li>
-                                    <li><strong>8.2</strong> - הפגנה</li>
-                                    <li><strong>2.2</strong> - דיון</li>
-                                    <li><strong>2.2</strong> - יצירת דיון</li>
-                                    <li><strong>8.2</strong> - הפגנה</li>
-                                    <li><strong>2.2</strong> - דיון</li>
-                                    <li><strong>2.2</strong> - יצירת דיון</li>
-                                    <li><strong>8.2</strong> - הפגנה</li>
-                                    <li><strong>2.2</strong> - דיון</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <span class="number">
-                        4.4
-                    </span>
-                    <span class="text">
-                        דיון פתוח
-                    </span>
-                </div>
-                <div style="left: 100%" class="event event-next">
-                    <div class="icon next-icon">
-                        <span class="i"></span>
-                    </div>
-                    <span class="number">
-                        15.4
-                    </span>
-                    <span class="text">
-                        תאריך יעד
-                    </span>
-                </div>
+
             </div>
             <div class="btn-box">
                 <a href="">+ הצע פעולה חדשה</a>
@@ -279,7 +171,7 @@
             });
 
 
-            db_functions.getCycleShoppingCart(cycle_id, function (err, data) {
+            db_functions.getCycleShoppingCart(cycle_id, function ( err,data) {
 
                     $.each(data.objects, function (index, item) {
                         dust.render('discussion_information_item', item, function (err, out) {
@@ -317,6 +209,57 @@
                         });
            });
 
+
+            db_functions.getCycleTimeline(cycle_id, function (err, data) {
+
+                     // var one_day=1000*60*60*24,
+                 //     var   start_date =   new Date(data.objects[0].date),
+                 //           end_date =     new Date(data.objects[data.objects.length-1].date);
+                //      var timeline_span = (start_date.getTime()-end_date.getTime());
+
+                     var i=0,
+                         count =   data.objects.length-1   ;
+
+                     $.each(data.objects, function (index, item) {
+                 //         item_date=   new Date(item.date);
+                 //         item.offset  = Math.floor(((start_date.getTime()-item_date.getTime())*100)/timeline_span );
+
+                          item.offset  =     (i*100)/count;
+
+                          switch(item.type)
+                          {
+                              case 'due_date':
+
+                                    dust.render('cycle_timeline_due_date', item, timelineAppend);
+                                    break;
+                              case 'cycle_creation':
+                                    dust.render('cycle_timeline_creation', item, timelineAppend);
+                                    break;
+                               case 'discussion':
+                                    dust.render('cycle_timeline_discussion', item, timelineAppend);
+                                    break;
+                              case 'action':
+                                    dust.render('cycle_timeline_action', item, timelineAppend);
+                                    break;
+                              case 'cycle_update':
+                                    dust.render('cycle_timeline_update', item, timelineAppend);
+                                    break;
+                              case 'today':
+                                    dust.render('cycle_timeline_today', item, timelineAppend);
+                                    break;
+                              default:
+                               console.log("unknow timleline type : "+  item.type);
+                          }
+                          i++;
+
+                     });
+             });
+
+             function timelineAppend  (err, out) {
+                 $('.followers-diagram').append(out);
+             };
+
+
             db_functions.getPendingActionsByCycle(cycle_id, function ( data,err) {
 
                     dust.renderArray('cycle_pending_action', data.objects, function (err, out) {
@@ -336,7 +279,7 @@
             function   getFollowers()
             {
 
-                 db_functions.getCylceFollowers(cycle_id, followersPage,function (err, data) {
+                 db_functions.getCylceFollowers(cycle_id, followersPage,function ( data) {
                     followersPage++;
                    if(data.meta.total_count<14) {
                          killScroll = true;
@@ -375,7 +318,7 @@
                             });
              });
 
-             db_functions.getCyclePosts(cycle_id, function (err, data) {
+             db_functions.getCyclePosts(cycle_id, function (err,data) {
 
                                for (i = 0; i < data.objects.length; i++) {
                                    data.objects[i].isFirst = (i === 0);

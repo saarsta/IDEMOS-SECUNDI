@@ -698,8 +698,16 @@ $(document).ready(function () {
         if (suggestion.parts && suggestion.parts.length) {
             var original = $('#discussion_content').val();
             suggestion.original_part = function () {
+                console.log("original");
+                console.log(original);
+                console.log("from");
+                console.log(suggestion.parts[0].start);
+                console.log("to");
+                console.log(suggestion.parts[0].end);
+                console.log("sub_str");
                 var from = suggestion.parts[0].start;
                 var end = suggestion.parts[0].end;
+                console.log(original.substr(from, end - from));
                 return original.substr(from, end - from);
             };
             suggestion.alternative_part = function () {

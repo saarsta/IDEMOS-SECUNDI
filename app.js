@@ -71,7 +71,7 @@ app.configure('production', function(){
     app.set('send_mails',true);
 
     process.on('uncaughtException', function(err) {
-        console.error(err);
+        console.trace(err);
     });
 
 });
@@ -79,6 +79,26 @@ app.configure('production', function(){
 
 if(!mongoose.connection.host)
     mongoose.connect(app.settings.DB_URL);
+
+mongoose.connection.on('error',function(err) {
+    console.error('db connection error: ',err);
+});
+
+mongoose.connection.on('disconnected',function(err){
+    console.error('DB disconnected',err);
+    var reconnect = function(){
+        mongoose.connect(app.settings.DB_URL,function(err) {
+            if(err)
+                console.error(err);
+            else {
+                session_middleware = express.session({secret: confdb.secret,
+                    maxAge: new Date(Date.now() + (3600 * 1000 * 24)),
+                    store: new MongoStore(confdb.db) });
+            }
+        });
+    };
+    setTimeout(reconnect,200);
+});
 
 var models = require('./models');
 models.setDefaultPublish(app.settings.show_only_published);
@@ -88,8 +108,11 @@ var account = require('./deliver/routes/account');
 // Configuration
 var confdb = {
     db: utils.split_db_url(app.settings.DB_URL),
-    secret: '076ed61d63ea10a12rea879l1ve433s9'
+    secret: '076ed61d63ea10a12rea879l1ve433s9',
+    auto_reconnect:true
 };
+
+var session_middleware;
 
 app.configure(function(){
     utils.setShowOnlyPublished(app.settings.show_only_published);
@@ -127,9 +150,14 @@ app.configure(function(){
 
     app.set('view options', { layout: false });
 
-    app.use(express.session({secret: confdb.secret,
+    session_middleware = express.session({secret: confdb.secret,
         maxAge: new Date(Date.now() + (3600 * 1000 * 24)),
-        store: new MongoStore(confdb.db) }));
+        store: new MongoStore(confdb.db) });
+
+    app.use(function(req,res,next) {
+        session_middleware(req,res,next);
+    });
+
     app.use(account.referred_by_middleware);
 
     var fbId = app.settings.facebook_app_id,

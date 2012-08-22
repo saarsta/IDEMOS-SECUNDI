@@ -1,9 +1,7 @@
-
-
 var models = require('../../../models');
 
-module.exports = function(req,res)
-{
+
+module.exports = function(req,res) {
     res.render('discussion_list.ejs',
         {
             layout: false,
@@ -11,7 +9,8 @@ module.exports = function(req,res)
             title:"דיונים",
             logged: req.isAuthenticated(),
             big_impressive_title: "",
-            user: req.session.user,
+            user_id: req.session.user && req.session.user._id,
+            has_voted: Boolean(req.session.user && req.session.user.has_voted.length),
             avatar:req.session.avatar_url,
             user_logged: req.isAuthenticated(),
             url:req.url,

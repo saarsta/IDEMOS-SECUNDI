@@ -6211,6 +6211,14 @@ a.fraction-btn
 {
     border: none;
 }
+
+
+.followers-diagram .creation  a  {
+    padding: 4px;
+
+}
+
+
 .followers-box .btn-box
 {
     border-top: 1px solid #b7b6b6;
@@ -8306,3 +8314,22 @@ a.menu-elections:hover {
     text-align: center;
 
 }
+
+#elected-dicussions {
+
+    border-top: 6px solid #D6DBDE;
+    padding-top: 35px;
+    padding-bottom: 30px;
+    text-align: center;
+
+    color: #50504F;
+    font: 24px 'AdumaFOTMedium';
+}
+#elected-dicussions .title1{
+
+    color: #3B63EF;
+}
+
+
+
+

@@ -12,12 +12,12 @@
      {
 
          position:absolute;
-         left:0;
-         background: #eee;
-         width: 800px;
 
-         font-family: georgia, serif;
-         font-size: 22px;
+         background: #eee;
+   /*      width: 678px;      */
+         width:100%;
+         font-family: Arial;
+         font-size: 38px;
          text-align: right;
      }
 
@@ -26,7 +26,8 @@
          list-style: none;
          padding: 0;
          margin: 0 auto;
-         width: 780px;
+      /*   width: 664px;   */
+        width:96%;
      }
 
      ul#navlist li
@@ -35,14 +36,42 @@
          margin: 10px 0;
          padding: 0;
          display: block;
-         padding:  0.5em 2.5em 0.5em 0.5em;
+         padding:  0.3em 3.4em 0.5em 0.5em;
          border-width: 2px;
          border-color: #ffe #aaab9c #ccc #fff;
          border-style: solid;
          color: #000;
          text-decoration: none;
-          background: url("../../images/elections/v.png") no-repeat  right top #FFFFFF;
+         position:relative;
+         background: #FFFFFF;
 
+
+
+
+       /*
+         height: 24px;
+         overflow: hidden;
+         text-overflow: ellipsis;
+         white-space: nowrap;
+         */
+     }
+     .checkbox
+     {
+
+
+            background-attachment: scroll;
+            background-clip: border-box;
+            background-color: #FFFFFF;
+            background-image: url("../../images/elections/v1.png");
+            background-origin: padding-box;
+            background-position: left top;
+            background-repeat: no-repeat;
+            background-size: 40px 40px;
+            height: 50px;
+            position: absolute;
+            right: 40px;
+            top: 17px;
+            width: 50px;
      }
 
 
@@ -52,9 +81,10 @@
 <body>
 
    <div id="navcontainer">
+
    <ul id="navlist">
      <% for (var i = 0; i < items.length && i < 8 ; i++) { %>
-               <li><b><%=items[0].title%>:</b> <%=items[0].text %></li>
+               <li> <div class="checkbox"> </div> <b><%=items[i].title%>:</b> <%=items[i].text %> </li>
      <% } %>
 
    </ul>

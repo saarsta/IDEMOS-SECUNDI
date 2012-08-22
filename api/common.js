@@ -28,10 +28,10 @@ catch(e)
 var ACTION_PRICE = 2;
 
 var user_public_fields = exports.user_public_fields = {
-    id:null,
-    first_name:null,
-    last_name:null,
-    avatar_url:null,
+    id: null,
+    first_name: null,
+    last_name: null,
+    avatar_url: null,
     score: null,
     num_of_given_mandates: null,
     num_of_proxies_i_represent: null,

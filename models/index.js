@@ -303,7 +303,7 @@ var Schemas = exports.Schemas = {
     DiscussionHistory: {
         discussion_id: {type: ObjectId, ref: 'Discussion'},
         date: {type: Date, 'default': Date.now},
-        text_field: String,
+        text_field: {type:mongoose_types.Text},
         grade: Number
     }
 };

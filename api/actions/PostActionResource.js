@@ -42,7 +42,7 @@ var PostActionResource = module.exports = common.GamificationMongooseResource.ex
 
     run_query: function(req,query,callback)
     {
-        query.populate('creator_id', {"_id": 1, "first_name": 1, "last_name" : 1, "score": 1, "num_of_proxies_i_represent": 1});
+        query.populate('creator_id', {"_id": 1, "first_name": 1, "last_name" : 1, "score": 1, "facebook_id": 1,"num_of_proxies_i_represent": 1});
         this._super(req,query,callback);
     },
 
@@ -149,6 +149,11 @@ var PostActionResource = module.exports = common.GamificationMongooseResource.ex
             }
         ],function(err,result)
         {
+            post_object.is_user_follower = false;
+            //update each post creator with his vote balance
+            post_object.voter_balance = 0;
+            post_object = JSON.parse(JSON.stringify(post_object));
+            post_object.creator_id = req.user;
             callback(err, post_object);
         });
     }

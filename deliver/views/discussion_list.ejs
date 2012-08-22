@@ -28,6 +28,25 @@
 
     </div>
     <div id="content" class="cf">
+
+<% if (has_voted) { %>
+
+    <div id="elected_dicussions">
+        <span class="title1">
+                                                            אנו שמחים שבחרת להצביע ולקחת חלק בשינוי שהתנועה שואפת להוביל.
+        </span>
+        <br>
+        <span class="title2">
+                                                           אלו הדיונים המתנהלים באתר סביב ההצעות לשינוי שבחרת ותחת הנושאים המובילים שלך.
+           <br>
+                                                           נשמח לראותך משתתפת בדיון
+        </span>
+    </div>
+
+    <div id="elected_discussions_list" class="services-blue services-blue-two cf">
+    </div>
+
+<% } %>
         <div id="subjects" class="services-box services-box-all cf">
             <div id="subjectsLevel1_blue" class="services-blue services-blue-two cf">
 
@@ -67,24 +86,28 @@
 
     $(function(){
 
-        current_section=1;
-        var selectedTag='<%=tag_name? tag_name:'' %>';
+        var current_section = 1;
+        var selectedTag = '<%=tag_name ? tag_name : '' %>';
+        var user_id = '<%=user_id%>';
+        var has_voted = <%=has_voted%>;
         var selectedSubject;
-        db_functions.getAllSubjects(function(err,data)  {
-            $.each(data.objects,function(index,disc) {
+
+        db_functions.getAllSubjects(function(err,data) {
+            $.each(data.objects, function(index,disc) {
                 disc.type = 'discussions';
             });
             var uru_subject = data.objects[0];
-            var level1subjects=data.objects.slice(1,6);
-            var level2subjects=data.objects.slice(6,8);
+            var level1subjects = data.objects.slice(1,6);
+            var level2subjects = data.objects.slice(6,8);
 
-            $('.services-green .subjectItem').data('subject_id',uru_subject._id).attr('href','/discussions/subject/' + uru_subject._id);
+            $('.services-green .subjectItem').data('subject_id', uru_subject._id).attr('href', '/discussions/subject/' + uru_subject._id);
 
             $.each(level1subjects,function(index,subject){
                 dust.render('subject',subject,function(err,out) {
                     $('#subjectsLevel1_blue').append(out);
                 })
             });
+
             $.each(level2subjects,function(index,subject){
                 dust.render('subject',subject,function(err,out) {
                     $('#subjectsLevel2_blue').append(out);
@@ -92,21 +115,41 @@
             });
 
         });
+        if (has_voted) db_functions.loggedInAjax({
+            url: '/api/user_chosen_discussions/' + user_id,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                $.each(data, function(index,obj) {
+                    obj.word_count = function() {
+                        return Math.min($.trim(obj.name).split(/\s+/).length,3);
+                    };
+                    obj.type = 'discussions';
+                    dust.render('subject', obj, function(err, out) {
+                        $('#elected_discussions_list').append(out);
+                    })
+                });
+            },
+            error:function(data)
+            {
+                alert(data);
+            }
+        });
 
         function createDiscussionsQuery(){
-            var sortby=  $('#sorting_select').val();
+            var sortby = $('#sorting_select').val();
             var query='order_by='+sortby;
 //            if(selectedTag){
 //                query =query+'&tags='+selectedTag;
 //            }
             if(selectedSubject){
-                query =query+'&subject_id='+selectedSubject;
+                query = query+'&subject_id='+selectedSubject;
             }
             return query;
         }
 
         function loadDiscussionsListToPage(){
-            var query=createDiscussionsQuery();
+            var query = createDiscussionsQuery();
             listCommon.reloadList('discussions_list','discussions','discussion_list_item',query);
 
         }
@@ -149,16 +192,16 @@
             e.preventDefault();
             if(selectedSubject){
                 window.location='discussions/new/'+selectedSubject ;
-            }else{
-                var config={
+            } else {
+                var config = {
                    message:'בחר נושא בבקשה'
 				  ,okButtonText:'סגור'
-                }
+                };
                 popupProvider.showOkPopup(config);
 
             }
 
         })
-    })  ;
+    });
 
 </script>

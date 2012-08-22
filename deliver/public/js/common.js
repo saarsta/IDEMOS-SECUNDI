@@ -7,6 +7,7 @@ if(!console) {
 dust.filters['time'] = function(a){
     console.log(a);
     var date = $.datepicker.formatDate('dd.mm.yy', new Date(Date.parse(a)));
+    var date_short = $.datepicker.formatDate('d.m', new Date(Date.parse(a)));
     var hours = (new Date(Date.parse(a))).getHours();
     var minutes = (new Date(Date.parse(a))).getMinutes();
     if(minutes < 10)
@@ -22,6 +23,10 @@ dust.filters['round'] = function(num){
 
 dust.filters['date'] = function(a){
     return $.datepicker.formatDate('dd.mm.yy', new Date(Date.parse(a)));
+};
+
+dust.filters['date_short'] = function(a){
+    return $.datepicker.formatDate('d.m', new Date(Date.parse(a)));
 };
 
 dust.filters['length'] = function(arr) {
