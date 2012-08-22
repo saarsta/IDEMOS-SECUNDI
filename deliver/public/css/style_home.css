@@ -7226,7 +7226,7 @@ body.body-action .followers-box h2
 {
     padding-top: 16px;
 }
-.profile-box .btns-box a
+.profile-box .btns-box a, .profile-box .btns-box input
 {
     display: block;
     background:#757d7e url(../images/search-submit.png) 0 0 repeat-x;
