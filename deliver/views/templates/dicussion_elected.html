@@ -1,16 +1,32 @@
+<div class="elected_item">
+    <a href="/discussions/{_id}">
+        <div style="width:178px; height:92px;" class="auto-scale">
+            <img class="floatRight" src="{image_field_preview.url}" alt="{tooltip_or_title}" title="{tooltip_or_title}" />
+        </div>
+    </a>
+    <a  href="/discussions/{_id}">{title}</a>
 
-<div id="elected_dicussions">
-        <span class="title1">
-                                                            אנו שמחים שבחרת להצביע ולקחת חלק בשינוי שהתנועה שואפת להוביל.
-        </span>
-    <br>
-        <span class="title2">
-                                                           אלו הדיונים המתנהלים באתר סביב ההצעות לשינוי שבחרת ותחת הנושאים המובילים שלך.
-           <br>
-                                                           נשמח לראותך משתתפת בדיון
-        </span>
+
+        <div class="tags">
+
+
+
+            {#tags}
+            <a href="/information_items?tag_name={.|u}"
+            {@idx}
+            {@if cond="({.} > 1 )"}
+            style="display:none;"
+            {/if}
+            {/idx}
+            >{.}</a>{~n}
+            {/tags}
+
+            <div class="info">
+                <span class="talks">33</span>
+                <span class="watched">151</span>
+            </div>
+        </div>
+
+
+
 </div>
-
-<div id="elected_discussions_list" class="services-blue services-blue-two cf">
-</div>
-
