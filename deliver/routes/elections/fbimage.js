@@ -5,29 +5,25 @@ var async = require("async");
 
 
 module.exports = function(req, res) {
-
-    var data = {};
-    data.user_id = req.params.id;
-
-    getUserChosenDiscussions(req, data, function(err, items){
+    getUserChosenDiscussions(req, req.params.id, function(err, items){
         if (err) {
             res.send(500, err);
             return;
         }
-
         res.render('fbimage.ejs', {
             layout: false,
-            url:req.url,
-            items:items
+            url: req.url,
+            items: items.map(function(dis) { return {title: dis.title, text: dis.text_field_preview}; })
         });
     })
 };
 
-var getUserChosenDiscussions = module.exports.getUserChosenDiscussions = function(req, data, callback) {
+
+var getUserChosenDiscussions = module.exports.getUserChosenDiscussions = function(req, user_id, callback) {
     async.waterfall([
         // get the user by id
         function (cb) {
-            models.User.findById(data.user_id, cb)
+            models.User.findById(user_id, cb)
         },
         // get assosiated discussions
         function (user, cb)
@@ -36,10 +32,7 @@ var getUserChosenDiscussions = module.exports.getUserChosenDiscussions = functio
             var disc_ids = user.has_voted.filter(function(val) {return val.length > 20;});
             models.Discussion.find({_id: {'$in': disc_ids}}, cb)
         }
-    ], function(err, discussions){
-        if(!err)
-
-        callback(err, discussions);
-    });
-}
+    ], callback
+    );
+};
 
