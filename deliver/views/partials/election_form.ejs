@@ -204,7 +204,8 @@ $(function() {
     function sendVote() {
         var data = getVoteData();
         $.post('/elections/vote', data, function(ret_data){
-            $("share-facebook").attr('data-img_src','http://api.url2png.com/v3/P503113E58ED4A/92a33c45ebf443d2d412fa08b72a3824/600x600/http%3A%2F%2Furu-staging.herokuapp.com%2Felections%2Ffbimage%2F'+ret_data+'?fullpage=true&force=true') ;
+            var url= 'http://api.url2png.com/v3/P503113E58ED4A/92a33c45ebf443d2d412fa08b72a3824/600x600/http%3A%2F%2Furu-staging.herokuapp.com%2Felections%2Ffbimage%2F'+ret_data+'?fullpage=true&force=true';
+            $("#share-facebook").attr('data-img_src',url);
             shareScreen();
 
         }).fail(function(e) {
