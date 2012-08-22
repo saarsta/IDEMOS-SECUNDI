@@ -1064,7 +1064,7 @@ var db_functions = {
         });
     },
 
-    getActionGoing: function(action_id, callback){
+    /*getActionGoing: function(action_id, callback){
         db_functions.loggedInAjax({
             url: '/api/join/?action_id=' + action_id,
             type: "GET",
@@ -1078,7 +1078,38 @@ var db_functions = {
                 callback(err, null);
             }
         });
-    },
+    },*/
+
+   /* getSortedPostByAction: function(action_id, sort_by,offset, callback){
+        db_functions.loggedInAjax({
+            url: '/api/posts_of_action?action_id=' + action_id + "&order_by=" + sort_by + '&offset=' + offset,
+            type: "GET",
+            async: true,
+            success: function (data) {
+                callback(null, data);
+            },
+            error:function(err){
+                callback(err, null);
+            }
+        });
+    },*/
+
+
+     getActionGoing: function(action_id,offset, callback){
+         db_functions.loggedInAjax({
+             url: '/api/join/?action_id=' + action_id + '&offset=' + offset+'&paging=14',
+             type: "GET",
+
+             async: true,
+             success: function (data) {
+             callback(null, data);
+         },
+
+         error:function(err){
+         callback(err, null);
+         }
+         });
+     },
 
 
     getPostByAction: function(action_id, callback){
@@ -1146,7 +1177,7 @@ var db_functions = {
             url: '/api/votes_on_action_post/',
             type: "POST",
             async: true,
-            data: {"post_id": post_id, "method": method},
+            data: {"post_action_id": post_id, "method": method},
             success: function (data) {
                 callback(null, data);
             },
