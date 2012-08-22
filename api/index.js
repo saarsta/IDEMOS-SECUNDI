@@ -49,6 +49,7 @@ var mongoose_resource = require('jest'),
     QaResource = require('./QaResource'),
     ElectionsTextResource = require('./ElectionsTextResource'),
     ElectionsItemResource = require('./ElectionsItemResource'),
+    UserChosenDiscussionsResource = require('./elections/user_chosen_discussions_resource.js'),
 
 
     RegisterResource = require('./register_resource'),
@@ -108,6 +109,8 @@ module.exports = function(app)
     rest_api.register_resource('qa', new QaResource());
     rest_api.register_resource('elections_items', new ElectionsItemResource());
     rest_api.register_resource('elections_texts', new ElectionsTextResource());
+    rest_api.register_resource('user_chosen_discussions', new UserChosenDiscussionsResource());
+
 
 
     rest_api.register_resource('login', new LoginResource());
