@@ -20,6 +20,8 @@ module.exports = function(app) {
 
     router.all('/facebookShare',require('./account/facebook_share'));
 
+    router.all('/elections_only',require('./navigation/elections_only'));
+
     router.include('/information_items',InformationItems);
 
     router.include('/blogs',require('./blogs'));
