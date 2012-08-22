@@ -43,10 +43,10 @@
                                                      </span>
         </div>
 
-         <% for (var c = 0; c<user.has_voted.length; c++) { %>
-                                             <%=user.has_voted[c] %>
-                                        <% }%>
-        <% } %>
+         <% for (var c = 0; c < user.has_voted.length; c++) { %>
+             <%=user.has_voted[c] %>
+        <% }%>
+<% } %>
         <div id="subjects" class="services-box services-box-all cf">
             <div id="subjectsLevel1_blue" class="services-blue services-blue-two cf">
 
@@ -168,16 +168,16 @@
             e.preventDefault();
             if(selectedSubject){
                 window.location='discussions/new/'+selectedSubject ;
-            }else{
-                var config={
+            } else {
+                var config = {
                    message:'בחר נושא בבקשה'
 				  ,okButtonText:'סגור'
-                }
+                };
                 popupProvider.showOkPopup(config);
 
             }
 
         })
-    })  ;
+    });
 
 </script>
