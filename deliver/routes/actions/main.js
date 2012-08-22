@@ -63,22 +63,23 @@ module.exports = function (req, res) {
             else {
                 action.location =
                     'התעשייה 12, תל אביב';
-                action.from_date = action.execution_date;
-                action.to_date = action.execution_date;
-                var is_going = false;
-                // is user going to action?
-                if (req.user) {
-                    var user_id = req.user._id;
-                    is_going = _.any(going_users, function (going_user) {
-                        going_user._id + "" == user_id
-                    })
-                }
-                action.is_going = is_going;
 
-                var ejsFileName = true ? 'action_approved.ejs' : 'action_append.ejs';
-                res.render(ejsFileName, {
-                    action:action,
-                    tab:'actions',
+                action.from_date= action.execution_date.date;
+               // action.to_date= action.from_date.addHours(action.execution_date.duration);
+                action.to_date= new Date(action.execution_date.date.getTime() + action.execution_date.duration*1000*3600);
+                var is_going = false;
+               // is user going to action?
+               if(req.user){
+                   var user_id = req.user._id;
+                   is_going = _.any(going_users, function(going_user){ going_user._id + "" == user_id})
+               }
+               action.is_going = is_going;
+
+
+                var ejsFileName=true?'action_approved.ejs':'action_append.ejs';
+                res.render(ejsFileName,{
+                    action: action,
+                    tab: 'actions',
                     proxy:proxyJson
 
                     // pageType:'beforeJoin' //waitAction,beforeJoin
