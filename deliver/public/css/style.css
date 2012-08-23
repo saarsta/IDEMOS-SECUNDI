@@ -7545,6 +7545,13 @@ body.body-action .followers-box h2
 {
     padding-top: 16px;
 }
+.profile-box .btns-box input
+{
+    width: 95%;
+    display: block;
+    margin-bottom: 12px;
+    padding: 6px;
+}
 .profile-box .btns-box a
 {
     display: block;
@@ -8308,6 +8315,10 @@ a.menu-elections:hover {
 
 }
 
+#subjects
+{
+    clear: both;
+}
 #elected-dicussions {
 
     border-top: 6px solid #D6DBDE;
@@ -8322,13 +8333,18 @@ a.menu-elections:hover {
 
 #elected_discussions_list
 {
-
+    display: inline-block;
+    margin-top: 20px;
 }
 #elected-dicussions .title1{
 
     color: #3B63EF;
 }
 
+.elected_discussions_list
+{
+    margin: 0 auto;
+}
 .elected_item
 {
     background-color: #fff;
@@ -8336,8 +8352,10 @@ a.menu-elections:hover {
     height: 263px;
     width: 179px;
     padding: 7px;
-    margin:0 auto 20px   ;
+    margin:0 10px   ;
     position: relative;
+    float:right    ;
+    text-align: right;
 }
 .elected_item  auto-scale
 {
@@ -8346,7 +8364,7 @@ a.menu-elections:hover {
 .elected_item  a
 {
     color: #50504F;
-    font: bold 17px/23px ARial;
+    font: bold 16px Arial;
     margin: 0;
     text-decoration: none;
 
@@ -8366,8 +8384,9 @@ a.menu-elections:hover {
     color: #FFFFFF;
     display: inline-block;
     font: 11px/14px Arial;
-    padding: 0 6px;
     text-decoration: none;
+    float: right;
+    margin: 0 0 0 3px;
 }
 .elected_item .tags .info {
     float: right;
