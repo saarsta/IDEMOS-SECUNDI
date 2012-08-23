@@ -8318,11 +8318,61 @@ a.menu-elections:hover {
     color: #50504F;
     font: 24px 'AdumaFOTMedium';
 }
+
+
+#elected_discussions_list
+{
+
+}
 #elected-dicussions .title1{
 
     color: #3B63EF;
 }
 
+.elected_item
+{
+    background-color: #fff;
+    width: 100px;
+    height: 263px;
+    width: 179px;
+    padding: 7px;
+    margin:0 auto 20px   ;
+    position: relative;
+}
+.elected_item  auto-scale
+{
+    margin-bottom: 10px;
+}
+.elected_item  a
+{
+    color: #50504F;
+    font: bold 17px/23px ARial;
+    margin: 0;
+    text-decoration: none;
+
+}
+.elected_item .tags
+{
+
+    border-top: 1px solid #EBEBEB;
+    bottom: 10px;
+    position: absolute;
+    width: 179px;
+}
+
+.elected_item .tags a {
+    background: none repeat scroll 0 0 #B7B6B6;
+    border-radius: 2px 2px 2px 2px;
+    color: #FFFFFF;
+    display: inline-block;
+    font: 11px/14px Arial;
+    padding: 0 6px;
+    text-decoration: none;
+}
+.elected_item .tags .info {
+    float: right;
+    margin-top: 10px;clear: both;
+}
 
 
 
