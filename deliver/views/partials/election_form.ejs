@@ -269,7 +269,7 @@ $(function() {
                     var msg =  'ההרשמה לא הצליחה, אנא בידקו את כתובת המייל שהוזנה';
                     if (e.responseText === 'already_exists')
                     {
-                        msg =  'ההרשמה לא הצליחה, כתובת המייל קיימת במערכת';
+                        msg = 'כתובת המייל שהזנת כבר קיימת במערכת. אנא הירשם במייל אחר';
                         popupProvider.showOkPopup({message:msg});
                     }
                     else
