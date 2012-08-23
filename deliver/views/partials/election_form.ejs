@@ -93,7 +93,7 @@
 <script type="text/javascript">
 $(function() {
     var user_logged = <%=user_logged%>;
-
+    var fbshareUrl;
     var user_is_new	= false,
 		mapGuide = {
 			0:	'entry.6.group',
@@ -199,11 +199,12 @@ $(function() {
     function sendVote() {
         var data = getVoteData();
         $.post('/elections/vote', data, function(ret_data){
+            fbshareUrl='http://api.url2png.com/v3/P503113E58ED4A/92a33c45ebf443d2d412fa08b72a3824/600x600/http://uru-staging.herokuapp.com/elections/fbimage/'+ret_data+'?fullpage=true';
             shareScreen();
 
         }).fail(function(e) {
             setTimeout(function(){
-                popupProvider.showOkPopup({message: 'כבר נקלטה הצבעה מחשבון זה.'});
+                popupProvider.showOkPopup({message: 'אפשר להצביע רק פעם אחת.'});
             },300);
         });
     }
@@ -268,7 +269,8 @@ $(function() {
                     var msg =  'ההרשמה לא הצליחה, אנא בידקו את כתובת המייל שהוזנה';
                     if (e.responseText === 'already_exists')
                     {
-                        sendVote();
+                        msg = 'כתובת המייל שהזנת כבר קיימת במערכת. אנא הירשם במייל אחר';
+                        popupProvider.showOkPopup({message:msg});
                     }
                     else
                     {
@@ -299,11 +301,20 @@ $(function() {
 		return false;
 	});
 
+
 	$('#share-facebook').on('click', function() {
-	    window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent('http://www.uru.org.il'),
-	    	'share-facebook', 'status=0,scrollbars=0,location=0,height=320,width=660,resizable=1');
-		return false;
-	});
+        var obj = {
+            method: 'feed',
+            link: 'http://uru-staging.herokuapp.com/',
+            picture:fbshareUrl ,
+            //picture: 'http://api.url2png.com/v3/P503113E58ED4A/92a33c45ebf443d2d412fa08b72a3824/600x600/http://uru-staging.herokuapp.com/elections/fbimage/50070e1be67ae6020001cf23?fullpage=true',
+            name: 'Facebook Dialogs 3',
+            caption: 'Reference Documentation 3',
+            description: 'Using Dialogs to interact with users. 3'
+        };
+
+        FB.ui(obj);
+    });
 
 	$('#share-twitter').on('click', function() {
 	    window.open('https://twitter.com/share?url=' + encodeURIComponent('http://www.uru.org.il') + '&text=' +
