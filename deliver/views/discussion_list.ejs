@@ -31,20 +31,20 @@
 
 <% if (has_voted) { %>
 
-    <div id="elected_dicussions">
+<div id="elected-dicussions">
         <span class="title1">
                                                             אנו שמחים שבחרת להצביע ולקחת חלק בשינוי שהתנועה שואפת להוביל.
         </span>
-        <br>
+    <br>
         <span class="title2">
                                                            אלו הדיונים המתנהלים באתר סביב ההצעות לשינוי שבחרת ותחת הנושאים המובילים שלך.
            <br>
                                                            נשמח לראותך משתתפת בדיון
         </span>
-    </div>
+</div>
 
-    <div id="elected_discussions_list" class="services-blue services-blue-two cf">
-    </div>
+<div id="elected_discussions_list">
+</div>
 
 <% } %>
         <div id="subjects" class="services-box services-box-all cf">
@@ -125,7 +125,7 @@
                         return Math.min($.trim(obj.name).split(/\s+/).length,3);
                     };
                     obj.type = 'discussions';
-                    dust.render('subject', obj, function(err, out) {
+                    dust.render('dicussion_elected', obj, function(err, out) {
                         $('#elected_discussions_list').append(out);
                     })
                 });

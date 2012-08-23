@@ -439,7 +439,7 @@ var db_functions = {
                 callback(null, data);
             },
             error:function(err){
-                callback(err, null);
+                callback(err);
             }
         });
     },

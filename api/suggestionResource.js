@@ -25,40 +25,40 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
         };
 
         this.fields = {
-            creator_id : common.user_public_fields,
-            mandates_curr_user_gave_creator: null,
+            creator_id:common.user_public_fields,
+            mandates_curr_user_gave_creator:null,
             parts:null,
             popularity:null,
             tokens:null,
             creation_date:null,
             agrees:null,
-            not_agrees: null,
+            not_agrees:null,
             evaluate_counter:null,
-            manual_counter: null,
+            manual_counter:null,
             grade:null,
             id:null,
-            explanation: null,
+            explanation:null,
             updated_user_tokens:null,
-            grade_obj: {
-                _id: null,
-                evalueation_grade: null,
-                does_support_the_suggestion: null
+            grade_obj:{
+                _id:null,
+                evalueation_grade:null,
+                does_support_the_suggestion:null
             },
-            wanted_amount_of_tokens: null,
-            curr_amount_of_tokens: null
+            wanted_amount_of_tokens:null,
+            curr_amount_of_tokens:null
         };
     },
 
-    get_objects: function (req, filters, sorts, limit, offset, callback) {
+    get_objects:function (req, filters, sorts, limit, offset, callback) {
 
         var self = this;
         var discussion_id = req.query.discussion_id;
         var discussion_threshold;
 
-        var iterator = function(suggestion, itr_cbk){
+        var iterator = function (suggestion, itr_cbk) {
 
             //set counter og graders manually
-            suggestion.manual_counter = Math.round(suggestion.agrees) +  Math.round(suggestion.not_agrees);
+            suggestion.manual_counter = Math.round(suggestion.agrees) + Math.round(suggestion.not_agrees);
 
             var curr_grade_obj = {};
 //            suggestion.grade_obj = curr_grade_obj;
@@ -66,72 +66,72 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
             suggestion.curr_amount_of_tokens = suggestion.agrees - suggestion.not_agrees;
 
             //wanted amount of tokens is either what admin has entered to the specific suggestion, or the discussion threshold...
-            if(suggestion.admin_threshold_for_accepting_the_suggestion > 0)
+            if (suggestion.admin_threshold_for_accepting_the_suggestion > 0)
                 suggestion.wanted_amount_of_tokens = suggestion.admin_threshold_for_accepting_the_suggestion;
             else
                 suggestion.wanted_amount_of_tokens = Number(suggestion.threshold_for_accepting_the_suggestion) || calculate_sugg_threshold(suggestion.getCharCount(), discussion_threshold);
-            if(req.user){
-                models.GradeSuggestion.findOne({user_id: req.user._id, suggestion_id: suggestion._id}, {"_id":1, "evaluation_grade":1, "does_support_the_suggestion":1}, function(err, grade_sugg_obj){
-                    if(!err && grade_sugg_obj){
+            if (req.user) {
+                models.GradeSuggestion.findOne({user_id:req.user._id, suggestion_id:suggestion._id}, {"_id":1, "evaluation_grade":1, "does_support_the_suggestion":1}, function (err, grade_sugg_obj) {
+                    if (!err && grade_sugg_obj) {
                         curr_grade_obj = {
-                            _id: grade_sugg_obj._id,
-                            evalueation_grade: grade_sugg_obj.evaluation_grade,
-                            does_support_the_suggestion: grade_sugg_obj.does_support_the_suggestion
+                            _id:grade_sugg_obj._id,
+                            evalueation_grade:grade_sugg_obj.evaluation_grade,
+                            does_support_the_suggestion:grade_sugg_obj.does_support_the_suggestion
                         }
                         suggestion.grade_obj = curr_grade_obj;
                         itr_cbk(err, suggestion);
-                    }else{
+                    } else {
                         //check if user is the creator - if so return in grade object the
-                        if(!err){
-                            models.Discussion.findById(discussion_id, function(err, discussion){
-                                if(!err)
-                                    if(req.user._id + "" == discussion.creator_id + ""){
+                        if (!err) {
+                            models.Discussion.findById(discussion_id, function (err, discussion) {
+                                if (!err)
+                                    if (req.user._id + "" == discussion.creator_id + "") {
 //                                        suggestion.grade_obj = {};
 //                                        suggestion.grade_obj["evalueation_grade"] = discussion.grade;
                                     }
                                 itr_cbk(err, suggestion);
                             })
-                        }else{
+                        } else {
                             itr_cbk(err, suggestion);
                         }
                     }
                 });
             }
-            else{
+            else {
                 itr_cbk(null, suggestion);
             }
         }
 
-        self._super(req, filters, sorts, limit, offset, function(err, results){
+        self._super(req, filters, sorts, limit, offset, function (err, results) {
 
-            if(err)
+            if (err)
                 callback(err, null);
             else
-                //arrange objects only if the request is from discussion page
-                if(!discussion_id)
+            //arrange objects only if the request is from discussion page
+            if (!discussion_id)
+                callback(err, results);
+            else
+            //for each object add grade_obj that reflects the user's grade for the suggestion,
+            //if the user is the disvcussion creator - grade_obj contains the discussion evaluate grade
+            //if the user is ofline grade_obj is {}
+
+                async.waterfall([
+                    function (cbk) {
+                        models.Discussion.findById(discussion_id, cbk);
+                    },
+
+                    function (discussion_obj, cbk) {
+                        discussion_threshold = discussion_obj.threshold_for_accepting_change_suggestions;
+                        if (discussion_obj.admin_threshold_for_accepting_change_suggestions > 0)
+                            discussion_threshold = discussion_obj.admin_threshold_for_accepting_change_suggestions;
+
+                        async.forEach(results.objects, iterator, function (err, objs) {
+                            cbk(err, results);
+                        });
+                    }
+                ], function (err, results) {
                     callback(err, results);
-                else
-                    //for each object add grade_obj that reflects the user's grade for the suggestion,
-                    //if the user is the disvcussion creator - grade_obj contains the discussion evaluate grade
-                    //if the user is ofline grade_obj is {}
-
-                    async.waterfall([
-                        function(cbk){
-                            models.Discussion.findById(discussion_id, cbk);
-                        },
-
-                        function(discussion_obj, cbk){
-                            discussion_threshold = discussion_obj.threshold_for_accepting_change_suggestions;
-                            if(discussion_obj.admin_threshold_for_accepting_change_suggestions > 0)
-                                discussion_threshold = discussion_obj.admin_threshold_for_accepting_change_suggestions;
-
-                            async.forEach(results.objects, iterator, function(err, objs){
-                                cbk(err, results);
-                            });
-                        }
-                    ], function(err, results){
-                        callback(err, results);
-                    })
+                })
         });
     },
 
@@ -146,16 +146,16 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
         var num_of_words;
 
 
-        var iterator = function(user_schema, itr_cbk){
+        var iterator = function (user_schema, itr_cbk) {
             if (user_schema.user_id == user_id || !user_schema.user_id)
                 itr_cbk(null, 0);
-            else{
-                if (discussion_creator_id == user_schema.user_id){
-                    notifications.create_user_notification("change_suggestion_on_discussion_you_created", discussion_id, user_schema.user_id, user_id, suggestion_object._id, function(err, results){
+            else {
+                if (discussion_creator_id == user_schema.user_id) {
+                    notifications.create_user_notification("change_suggestion_on_discussion_you_created", discussion_id, user_schema.user_id, user_id, suggestion_object._id, function (err, results) {
                         itr_cbk(err, results);
                     });
-                }else{
-                    notifications.create_user_notification("change_suggestion_on_discussion_you_are_part_of", discussion_id, user_schema.user_id, user_id, suggestion_object._id, function(err, results){
+                } else {
+                    notifications.create_user_notification("change_suggestion_on_discussion_you_are_part_of", discussion_id, user_schema.user_id, user_id, suggestion_object._id, function (err, results) {
                         itr_cbk(err, results);
                     });
                 }
@@ -173,11 +173,28 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
 
         //calculate threshold for the suggestion.. for this i need to get discussion threshold first
         async.waterfall([
+            //first, check if there is a suggestion with the same indexes
             function (cbk) {
-                var discussion_thresh;
-                models.Discussion.findById(fields.discussion_id, cbk);
+                models.Suggestion.find({discussion_id:fields.discussion_id, is_approved: false}, cbk);
             },
 
+            function (suggestions, cbk) {
+                var err;
+                var sug;
+                var discussion_thresh;
+
+                _.each(suggestions, function (suggestion) {
+                    if ((suggestion.parts[0].start >= fields.parts[0].start && suggestion.parts[0].start <= fields.parts[0].end)
+                        || (suggestion.parts[0].end >= fields.parts[0].start && suggestion.parts[0].end <= fields.parts[0].end)) {
+                        err = true;
+                        sug = suggestion._id;
+                    }
+                })
+                if (err)
+                    cbk({message: "a suggestion with this indexes already exist"});
+                else
+                    models.Discussion.findById(fields.discussion_id, cbk);
+            },
 
             function (discussion_obj, cbk) {
 
@@ -188,8 +205,8 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
             },
 
             function (suggestion_obj, cbk) {
-                suggestion_object.save(function(err,data){
-                    if(data){
+                suggestion_object.save(function (err, data) {
+                    if (data) {
                         discussion_id = data.discussion_id;
                         data.creator_id.id = user.id;
                         data.creator_id.first_name = user.first_name;
@@ -200,7 +217,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                         data.creator_id.num_of_proxies_i_represent = user.num_of_proxies_i_represent;
                         suggestion_obj.wanted_amount_of_tokens = suggestion_obj.threshold_for_accepting_the_suggestion;
                     }
-                    cbk(err,data);
+                    cbk(err, data);
                 });
             },
 
@@ -208,17 +225,17 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                 async.parallel([
                     //add user to praticipants
                     function (cbk2) {
-                        models.Discussion.update({_id:suggestion_object.discussion_id, "users.user_id": {$ne: user_id}},
-                            {$addToSet: {users: {user_id: user_id, join_date: Date.now()}}},
-                        cbk2);
+                        models.Discussion.update({_id:suggestion_object.discussion_id, "users.user_id":{$ne:user_id}},
+                            {$addToSet:{users:{user_id:user_id, join_date:Date.now()}}},
+                            cbk2);
                     },
 
                     //add notification for the dicussion's participants or creator
-                    function(cbk2){
-                        models.Discussion.findById(suggestion_object.discussion_id, /*["users", "creator_id"],*/ function(err, disc_obj){
+                    function (cbk2) {
+                        models.Discussion.findById(suggestion_object.discussion_id, /*["users", "creator_id"],*/ function (err, disc_obj) {
                             if (err)
                                 cbk2(err, null);
-                            else{
+                            else {
                                 discussion_creator_id = disc_obj.creator_id;
                                 async.forEach(disc_obj.users, iterator, cbk2);
                             }
@@ -226,25 +243,24 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                     },
 
                     //set notifications for users that i represent (proxy)
-                    function(cbk2){
-                        models.User.find({"proxy.user_id": user_id}, function(err, slaves_users){
-                            async.forEach(slaves_users, function(slave, itr_cbk){
-                                notifications.create_user_notification("proxy_created_change_suggestion", suggestion_obj._id, slave._id, user_id, discussion_id, function(err, result){
+                    function (cbk2) {
+                        models.User.find({"proxy.user_id":user_id}, function (err, slaves_users) {
+                            async.forEach(slaves_users, function (slave, itr_cbk) {
+                                notifications.create_user_notification("proxy_created_change_suggestion", suggestion_obj._id, slave._id, user_id, discussion_id, function (err, result) {
                                     itr_cbk(err);
                                 })
-                            }, function(err){
+                            }, function (err) {
                                 cbk2(err);
                             })
                         })
 
                     }
-                ], function(err)
-                {
+                ], function (err) {
                     cbk(err, suggestion_obj);
                 });
             }
         ], function (err, result) {
-            if(err){
+            if (err) {
                 console.error(err);
                 console.trace();
             }
@@ -259,17 +275,17 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
         var g_discussion_obj;
         var vision_changes;
         if (suggestion_object.is_approved) {
-            callback({message:"this suggestion is already published", code: 401}, null);
+            callback({message:"this suggestion is already published", code:401}, null);
         } else {
 
             async.waterfall([
 
-                function(cbk){
+                function (cbk) {
                     var vision_changes_array = [];
                     models.Discussion.findOne({_id:discussion_id}, cbk);
                 },
 
-                function(discussion_object, cbk){
+                function (discussion_object, cbk) {
                     var vision = discussion_object.text_field;
                     var new_string = "";
                     var curr_position = 0;
@@ -290,27 +306,26 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
 
                     discussion_object.vision_text_history.push(discussion_object.text_field);
                     discussion_object.text_field = new_string;
-                    models.Discussion.update({_id:discussion_id}, {$addToSet: {vision_text_history: discussion_object.vision_text}, $set:{vision_text: new_string}}, function(err, counter){
+                    models.Discussion.update({_id:discussion_id}, {$addToSet:{vision_text_history:discussion_object.vision_text}, $set:{vision_text:new_string}}, function (err, counter) {
                         cbk(err, discussion_object);
                     });
 
 //                    discussion_object.save(cbk);
                 },
 
-                function(disc_obj, cbk){
+                function (disc_obj, cbk) {
                     g_discussion_obj = disc_obj;
                     suggestion_object.is_approved = true;
                     suggestion_object.save(cbk);
                 }
-            ], function(err, suggestion){
+            ], function (err, suggestion) {
                 callback(err, g_discussion_obj);
             })
         }
     }
 });
 
-module.exports.approveSuggestion = function(id,callback)
-{
+module.exports.approveSuggestion = function (id, callback) {
     //if suggestion approved we change the discussion vision
     // + save the ealier version of vison as parts in vison_changes
 
@@ -322,43 +337,42 @@ module.exports.approveSuggestion = function(id,callback)
 
     //set notifications
     //update discussion grade
-    var iterator = function(sugg_grade, itr_cbk){
+    var iterator = function (sugg_grade, itr_cbk) {
 
         async.parallel([
-            function(cbk1){
-                if(suggestion_creator != sugg_grade.user_id + ""){
+            function (cbk1) {
+                if (suggestion_creator != sugg_grade.user_id + "") {
                     notifications.create_user_notification("approved_change_suggestion_you_graded",
                         discussion_id, sugg_grade.user_id + "", null, null, cbk1);
-                }else{
+                } else {
                     cbk1(null, 0);
                 }
             },
             //update discussion grade with the suggestion grade
-            function(cbk1){
-                models.Grade.update({user_id: sugg_grade.user_id, discussion_id: discussion_id},
-                    {$set: {evaluation_grade: sugg_grade.evaluation_grade}},
-                    function(err, num){
+            function (cbk1) {
+                models.Grade.update({user_id:sugg_grade.user_id, discussion_id:discussion_id},
+                    {$set:{evaluation_grade:sugg_grade.evaluation_grade}},
+                    function (err, num) {
                         cbk1(err, num);
                     });
             }
 
 
-        ], function(err, args){
+        ], function (err, args) {
             itr_cbk(err, args);
         })
     }
 
     async.waterfall([
-        function(cbk)
-        {
+        function (cbk) {
             models.Suggestion.findById(id, cbk);
         },
 
-        function(_suggestion_object,cbk){
+        function (_suggestion_object, cbk) {
             suggestion_object = _suggestion_object;
             suggestion_grade = suggestion_object.grade;
             if (suggestion_object.is_approved) {
-                callback({message:"this suggestion is already published", code: 401}, null);
+                callback({message:"this suggestion is already published", code:401}, null);
             } else {
                 discussion_id = suggestion_object.discussion_id;
                 var vision_changes_array = [];
@@ -366,17 +380,17 @@ module.exports.approveSuggestion = function(id,callback)
             }
         },
 
-        function(discussion_object, cbk){
+        function (discussion_object, cbk) {
 
             async.parallel([
 
                 //set latest discussionHistory with discussion grade
-                function(cbk1){
-                    models.DiscussionHistory.find({dicussion_id: discussion_object._id})
+                function (cbk1) {
+                    models.DiscussionHistory.find({dicussion_id:discussion_object._id})
                         .sort({'date':'descending'})
                         .limit(1)
-                        .exec(function(err, histories){
-                            if(histories.length){
+                        .exec(function (err, histories) {
+                            if (histories.length) {
                                 histories[0].grade = discussion_object.grade;
                                 histories[0].save(cbk1);
                             }
@@ -385,16 +399,16 @@ module.exports.approveSuggestion = function(id,callback)
                         })
                 },
 
-                function(cbk1){
+                function (cbk1) {
                     var vision = discussion_object.text_field;
                     var new_string = "";
                     var curr_position = 0;
                     var parts = suggestion_object.parts;
 
                     //this is to fix null text in vision when the suggestion is to delete text - (261 Bug הצעה ריקה לשינוי עולה בתור null)
-                    if(parts[0].text == null)
+                    if (parts[0].text == null)
                         parts[0].text = "";
-                    vision = vision.replace(/\r/g,'');
+                    vision = vision.replace(/\r/g, '');
 
 
                     var str = vision.substr(0, Number(parts[0].start)) + parts[0].text + vision.substr(Number(parts[0].end));
@@ -415,15 +429,15 @@ module.exports.approveSuggestion = function(id,callback)
                     discussion_object.save(cbk1);
                 }
 
-            ], function(err, args){
+            ], function (err, args) {
                 cbk(err, args[1][0]);
             })
         },
 
-        function(disc_obj, cbk){
+        function (disc_obj, cbk) {
             async.parallel([
                 // after discussion was changed, create new DiscussionHistory
-                function(cbk1){
+                function (cbk1) {
                     var discussion_history = new models.DiscussionHistory();
 
                     discussion_history.discussion_id = disc_obj._id;
@@ -433,90 +447,95 @@ module.exports.approveSuggestion = function(id,callback)
                     discussion_history.save(cbk1);
                 },
 
-                function(cbk1){
+                function (cbk1) {
                     suggestion_object.is_approved = true;
                     suggestion_object.save(cbk1);
                 },
 
-                function(cbk1){
-                    models.Suggestion.find({discussion_id: disc_obj, is_approved: false}, cbk1);
+                function (cbk1) {
+                    models.Suggestion.find({discussion_id:disc_obj, is_approved:false}, cbk1);
                 }
 
 
-            ], function(err, args){
+            ], function (err, args) {
 
                 //update indexes of all other suggestions
                 var suggestions = args[2];
-                var index_balance =  suggestion_object.parts[0].text.length - (suggestion_object.parts[0].end - suggestion_object.parts[0].start);
+                var index_balance = suggestion_object.parts[0].text.length - (suggestion_object.parts[0].end - suggestion_object.parts[0].start);
 
-                if(index_balance != 0){
-                    async.forEach(suggestions, function(suggestion, itr_cbk){
+                console.log("index_balance");
+                console.log(index_balance);
+                if (index_balance != 0) {
+                    async.forEach(suggestions, function (suggestion, itr_cbk) {
                         console.log("suugstion_id:");
                         console.log(suggestion._id);
-                        if(suggestion.parts[0].start > suggestion_object.parts[0].end){
+                        if (suggestion.parts[0].start > suggestion_object.parts[0].end) {
                             console.log("start");
-
 
                             suggestion.parts[0].start += index_balance;
                             suggestion.parts[0].end += index_balance;
                             console.log(suggestion.parts[0].start);
                             console.log("end");
                             console.log(suggestion.parts[0].end);
-                            suggestion.save(function(err, result){itr_cbk(err, result)})
-                        }
-                    });
+                            suggestion.save(function (err, result) {
+                                itr_cbk(err, result)
+                            })
+                        }else
+                            itr_cbk();
+                    }, cbk(err, args[1][0]));
                 }
-                cbk(err, args[1][0]);
+                else
+                    cbk(err, args[1][0]);
             })
         },
 
-        function(sug_obj, cbk){
+        function (sug_obj, cbk) {
             suggestion_creator = sug_obj.creator_id;
             async.parallel([
                 //set gamification
-                function(par_cbk){
-                    models.User.update({_id: sug_obj.creator_id}, {$inc: {"gamification.approved_suggestion": 1}}, function(err, obj){
+                function (par_cbk) {
+                    models.User.update({_id:sug_obj.creator_id}, {$inc:{"gamification.approved_suggestion":1}}, function (err, obj) {
                         par_cbk(err, obj);
                     });
                 },
 
                 //set notifications for creator
-                function(par_cbk){
+                function (par_cbk) {
                     notifications.create_user_notification("approved_change_suggestion_you_created",
-                            discussion_id, sug_obj.creator_id, null, sug_obj._id, function(err, obj){
+                        discussion_id, sug_obj.creator_id, null, sug_obj._id, function (err, obj) {
                             par_cbk(err, obj);
                         });
                 },
 
                 //set notifications for graders
                 //for each suggestion grade - copy it to discussion grade
-                function(par_cbk){
+                function (par_cbk) {
 
                     async.waterfall([
-                        function(wtr_cbk){
-                            models.GradeSuggestion.find({suggestion_id: sug_obj._id}, wtr_cbk);
+                        function (wtr_cbk) {
+                            models.GradeSuggestion.find({suggestion_id:sug_obj._id}, wtr_cbk);
                         },
 
-                        function(sugg_grades, wtr_cbk){
-                            async.forEach(sugg_grades, iterator, function(err, result){
+                        function (sugg_grades, wtr_cbk) {
+                            async.forEach(sugg_grades, iterator, function (err, result) {
                                 wtr_cbk(err || null, result || 0);
                             });
                         }
-                    ], function(err, args){
+                    ], function (err, args) {
                         par_cbk(err, args);
                     });
                 }
-            ], function(err, args){
+            ], function (err, args) {
                 cbk(err, 8);
             })
         }
-    ], function(err, arg){
+    ], function (err, arg) {
         callback(err, arg);
     });
 }
 
 
-var calculate_sugg_threshold = function(factor, discussion_threshold){
+var calculate_sugg_threshold = function (factor, discussion_threshold) {
     var log_base_75_of_x =
         Math.log(factor) / Math.log(75);
     var result = Math.pow(log_base_75_of_x, common.getThresholdCalcVariables("SCALE_PARAM")) * discussion_threshold;

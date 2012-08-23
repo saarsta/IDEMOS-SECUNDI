@@ -12,9 +12,6 @@ var error_message = error_message || '';
     <meta property="fb:app_id" content="<%= settings.facebook_app_id %>" />
     <meta property="og:type"   content="<%= settings.facebook_app_name %>:discussion" />
     <meta property="og:url"    content="<%= settings.root_path %>/discussions/<%= discussion.id %>" />
-    <meta property="og:title"  content="<%=discussion.title%>" />
-    <meta property="og:description"  content="<%=discussion.text_field%>" />
-    <meta property="og:image"  content="<%= discussion.image_field && discussion.image_field.url ? discussion.image_field.url : 'http://site.e-dologic.co.il/philip_morris/Xls_script/uru_mailing/logo.jpg' %>" />
 
 </head>
 <body>
@@ -952,6 +949,8 @@ $(document).ready(function () {
                 $(".deals-box").show();
             } else {
                 var err = err;
+                if(err.responseText == "a suggestion with this indexes already exist")
+                    popupProvider.showOkPopup({message:"הטקסט סומן כבר בהצעה לשינוי קיימת"});
             }
         });
 
