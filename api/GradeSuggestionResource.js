@@ -322,7 +322,6 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                         if(object.not_agrees < 0){
                             object.not_agrees = 0;
                             console.log("error - suggestion agrees < 0");
-
                         }
 
                         base.call(self, req, object, cbk1);
@@ -403,7 +402,6 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                         curr_amount_of_tokens:curr_tokens_amout
                     }
                 )
-            
         })
     }
 })

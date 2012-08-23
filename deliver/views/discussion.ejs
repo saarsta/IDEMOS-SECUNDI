@@ -445,10 +445,16 @@ $(document).ready(function () {
             .on('mouseup',
             function (e) {
                 mouseUp = e;
+                var err = false;
+                var range = $(this).find('textarea').getSelection();
+
+//                console.log(e);
+
 
                 left = Math.ceil((mouseDown.clientX + mouseUp.clientX) / 2 - ($(".popup-window").width() / 2));
                 top = Math.min(mouseDown.clientY, mouseUp.clientY) - $(".popup-window").height() - 40 + $(window).scrollTop();
-                console.log(e);
+
+
 
             }).on('keydown',
             function (e) {
@@ -468,10 +474,22 @@ $(document).ready(function () {
 
     $("#discussion_content").select(function () {
         range = $(this).getSelection();
-        $(".popup-window")
-                .css({ top:top + 20, left:left, opacity:0 })
-                .show()
-                .animate({ top:'-=20px', opacity:1 }, 100, 'linear');
+        flag = false;
+        db_functions.getSuggestionByDiscussion(discussion_id, null, null, function(err, suggestions){
+            $.each(suggestions.objects, function (index, suggestion) {
+                if ((suggestion.parts[0].start >= range.start && suggestion.parts[0].start <= range.end)
+                        || (suggestion.parts[0].end >= range.start && suggestion.parts[0].end <= range.end)) {
+                    flag = true;
+                }
+            })
+            if(flag)
+                popupProvider.showOkPopup({message:"הטקסט סומן כבר בהצעה לשינוי קיימת"});
+            else
+                $(".popup-window")
+                    .css({ top:top + 20, left:left, opacity:0 })
+                    .show()
+                    .animate({ top:'-=20px', opacity:1 }, 100, 'linear');
+        });
 
         console.log(range);
     });
