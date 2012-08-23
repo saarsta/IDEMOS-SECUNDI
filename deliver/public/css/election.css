@@ -47,7 +47,7 @@ li.uru8 {background-image: url(../images/elections/uru8.png);}
 }
 .checkBoxClear {background-position: 0 -20px;}
 
-div.intext-top {
+div.intext, div.intext {
     position: relative;
 	margin-top: 17px;
 	margin-right: 149px;
@@ -63,28 +63,12 @@ div.intext-checkbox {
     right: -28px;
 }
 
-div.intext-bottom {
-    position: relative;
-    margin-top: 7px;
-	margin-right: 149px;
-	width: 323px;
-	font-size: 12px;
-	font-family: arial;
-}
-
-div.intext-top-last {
-	position: relative;
-	top: -22px;
-	right: -30px;
-}
-
 select#styledSelect.blueText {
-	position: relative;
-	top: -34px;
-	right: 296px;
-	width: 165px;
+    display: inline-block;
+    float: left;
+    margin-top: -7px;
+	width: 155px;
 	height: 29px;
-	margin: 0;
 	padding: 2px 0;
 	color: #979795;
 	font-size: 14px;
@@ -106,9 +90,9 @@ select#styledSelect.blueText option {
 }
 */
 #textarea {
-	position: relative;
-	right: 148px;
-	bottom: 25px;
+    margin-top: 7px;
+	margin-right: 148px;
+	margin-bottom: 25px;
 	width: 309px;
 	height: 52px;
 	color: #50504f;
