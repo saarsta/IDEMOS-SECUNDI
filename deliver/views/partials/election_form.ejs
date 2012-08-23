@@ -203,7 +203,7 @@ $(function() {
 
         }).fail(function(e) {
             setTimeout(function(){
-                popupProvider.showOkPopup({message: 'אפשר להצביע רק פעם אחת.'});
+                popupProvider.showOkPopup({message: 'כבר נקלטה הצבעה מחשבון זה.'});
             },300);
         });
     }
@@ -268,8 +268,7 @@ $(function() {
                     var msg =  'ההרשמה לא הצליחה, אנא בידקו את כתובת המייל שהוזנה';
                     if (e.responseText === 'already_exists')
                     {
-                        msg =  'ההרשמה לא הצליחה, כתובת המייל קיימת במערכת';
-                        popupProvider.showOkPopup({message:msg});
+                        sendVote();
                     }
                     else
                     {
