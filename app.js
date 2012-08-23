@@ -255,8 +255,8 @@ app.configure(function(){
     app.locals({
         footer_links:function() { return mongoose.model('FooterLink').getFooterLinks(); },
         cleanHtml:function(html) { return (html || '').replace(/<[^>]*?>/g,'').replace(/\[[^\]]*?]/g,'');},
-        fb_description:'גם אני מרגיש חלק מהרוב הלא מיוצג, שמתי בצד הבדלים של שמאל-ימין מדיני ובחרתי בנושאים שחשוב לי לשנות. מרגישים כמוני? הצטרפו והצביעו!',
-        fb_title:'עורו הבית של הרוב',
+        fb_description:"עורו היא תנועה חברתית לייצוג הרוב בישראל. אנו מאמינים שבעידן שבו אנו חיים, כולנו מסוגלים וזכאים להשתתף בקבלת ההחלטות. לכן, עורו מנהלת פלטפורמה לדיון ציבורי, יסודי ואפקטיבי שיוביל שינוי בסדר היום. אצלנו, האג'נדה מוכתבת מלמטה.",
+        fb_title:'עורו - הבית של הרוב',
         fb_image:'http://site.e-dologic.co.il/philip_morris/Xls_script/uru_mailing/logo.jpg'
 
     });
