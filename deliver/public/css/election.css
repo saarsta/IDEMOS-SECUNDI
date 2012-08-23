@@ -39,12 +39,8 @@ li.uru8 {background-image: url(../images/elections/uru8.png);}
 
 
 .checkBox, .checkBoxClear {
-	position:relative;
-	top: 1px;
-	right: 2px;
 	width: 20px;
 	height: 21px;
-	margin: 4px;
 	padding: 0;
 	background: url(../images/elections/v.png) no-repeat 0 0;
 	cursor: pointer;
@@ -52,33 +48,28 @@ li.uru8 {background-image: url(../images/elections/uru8.png);}
 .checkBoxClear {background-position: 0 -20px;}
 
 div.intext-top {
-	position: relative;
-	top: 17px;
-	right: 149px;
+    position: relative;
+	margin-top: 17px;
+	margin-right: 149px;
 	width: 323px;
 	font-size: 12px;
 	font-family: arial;
 }
 
-div.intext-top-b {
-	position: relative;
-	top: -12px;
-	right: 115px;
+div.intext-checkbox {
+    display: inline-block;
+    position: absolute;
+    top: 3px;
+    right: -28px;
 }
 
 div.intext-bottom {
-	position: relative;
-	top: 7px;
-	right: 149px;
+    position: relative;
+    margin-top: 7px;
+	margin-right: 149px;
 	width: 323px;
 	font-size: 12px;
 	font-family: arial;
-}
-
-div.intext-bottom-b {
-	position: relative;
-	top: -22px;
-	right: 115px;
 }
 
 div.intext-top-last {
