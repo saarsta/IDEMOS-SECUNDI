@@ -6,7 +6,6 @@
 			<li class="uru1">
 				<div class="intext"><p><strong>חינוך טוב יותר</strong><br>תוגדל ההשקעה בתגמול והכשרת מורים ובכיתות קטנות</p><div class="intext-checkbox"><p id="select" class="checkBox"></p></div></div>
 				<div class="intext"><p><strong>שיוויון הזדמנויות לכל ילד</strong><br>סל תלמיד אחיד וחובת לימוד ליבה לכל</p><div class="intext-checkbox"><p id="select" class="checkBox"></p></div></div>
-				<div class="intext"><p><strong>שיוויון הזדמנויות לכל ילד</strong><br>סל תלמיד אחיד וחובת לימוד ליבה לכל</p><div class="intext-checkbox"><p id="select" class="checkBox"></p></div></div>
 			</li>
 			<li class="uru2">
 				<div class="intext"><p><strong>חיזוק דעת הרוב</strong><br>יועלה אחוז החסימה בבחירות הכלליות לכנסת</p><div class="intext-checkbox"><p id="select" class="checkBox"></p></div></div>
@@ -240,7 +239,7 @@ $(function() {
             return false;
         }
 
-		if ($('.intext-last p.checkBoxClear').length > 0) {
+		if ($('.intext-checkbox p.checkBoxClear').length > 0) {
 			if ($('#styledSelect').val() === '0') {
 				popupProvider.showOkPopup({
                     message: 'עליך לבחור נושא מהרשימה.',
