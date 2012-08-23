@@ -48,7 +48,7 @@
                         </select>
 
                     </p>
-                    <div class="intext-checkbox"><p id="select" class="checkBox"></p></div>
+                    <div class="intext-checkbox intext-last-checkbox"><p id="select" class="checkBox"></p></div>
                 </div>
 
 				<textarea class="placeholder" id="textarea" cols="48" rows="3">הכניסו תיאור</textarea>
@@ -239,7 +239,7 @@ $(function() {
             return false;
         }
 
-		if ($('.intext-checkbox p.checkBoxClear').length > 0) {
+		if ($('.intext-last-checkbox p.checkBoxClear').length > 0) {
 			if ($('#styledSelect').val() === '0') {
 				popupProvider.showOkPopup({
                     message: 'עליך לבחור נושא מהרשימה.',
