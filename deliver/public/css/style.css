@@ -8329,6 +8329,10 @@ a.menu-elections:hover {
     color: #3B63EF;
 }
 
+.elected_discussions_list
+{
+    margin: 0 auto;
+}
 .elected_item
 {
     background-color: #fff;
@@ -8336,8 +8340,9 @@ a.menu-elections:hover {
     height: 263px;
     width: 179px;
     padding: 7px;
-    margin:0 auto 20px   ;
+    margin:0 10px   ;
     position: relative;
+    float:right
 }
 .elected_item  auto-scale
 {
