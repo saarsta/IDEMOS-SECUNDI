@@ -481,7 +481,7 @@ module.exports.approveSuggestion = function (id, callback) {
                                 itr_cbk(err, result)
                             })
                         }else
-                            itr_cbk
+                            itr_cbk();
                     }, cbk(err, args[1][0]));
                 }
                 else
