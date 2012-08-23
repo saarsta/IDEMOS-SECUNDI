@@ -223,13 +223,11 @@ $(function() {
 	$('#send-vote,#send_vote_1').on('click', function(e) {
         e.preventDefault();
 
-        if($('#user-signup').validate().errorList.length > 0){
+        var validationErrors = $('#user-signup').validate().errorList;
+        if(validationErrors.length > 0){
             popupProvider.showOkPopup(
                     {
-                        message: 'עליך למלא פרטים '/*,
-                        callback: function(){
-                            location.hash = "#main-thing";
-                        }*/
+                        message: validationErrors[0].message
                     }
             );
 
@@ -264,16 +262,22 @@ $(function() {
 			}
 		}
 
-        var place_holder_balance = $.browser.msie ? 2 : 0;
         if (user_logged === false) {
-                if ($('input.placeholder').length > place_holder_balance) {
+            var $input		= $('#user-signup :input'),
+				full_name	= $input.eq(0).val_if_not_placeholder(),
+				email		= $input.eq(1).val_if_not_placeholder();
+
+            if (!full_name && !email) {
                 popupProvider.showOkPopup({message: 'אנא התחבר למערכת או הירשם כדי להצביע.'});
+                return false;
+            } else if (!full_name) {
+                popupProvider.showOkPopup({message: 'יש למלא שם מלא.'});
+                return false;
+            } else if (!email) {
+                popupProvider.showOkPopup({message: 'יש למלא מייל.'});
                 return false;
             }
 
-            var $input		= $('#user-signup :input'),
-				full_name	= $input.eq(0).val(),
-				email		= $input.eq(1).val();
 
             $.post('/api/register', {full_name:full_name, email:email}, sendVote).fail(function(e) {
                     popupProvider.showOkPopup({message: 'ההרשמה לא הצליחה, אנא בידקו את כתובת המייל שהוזנה'});
@@ -322,5 +326,10 @@ $(function() {
 	});
 
 	$('#user-signup').on('submit', function(){return false;});
+
+    $.fn.val_if_not_placeholder = function () {
+        return this.hasClass('placeholder') ? '' : this.val();
+    };
+
 });
 </script>
