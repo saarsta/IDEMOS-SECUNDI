@@ -7545,6 +7545,13 @@ body.body-action .followers-box h2
 {
     padding-top: 16px;
 }
+.profile-box .btns-box input
+{
+    width: 95%;
+    display: block;
+    margin-bottom: 12px;
+    padding: 6px;
+}
 .profile-box .btns-box a
 {
     display: block;
