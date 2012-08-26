@@ -878,7 +878,7 @@ body
 {
     background:#fff;
     padding: 8px;
-    margin-bottom: 28px;
+    margin-bottom: 14px;
 }
 .left-col .one-news h4
 {
@@ -7152,7 +7152,8 @@ body.body-action .followers-box h2
 .one-post .bottom .right
 {
     float: right;
-    width: 401px;
+    width: 460px;
+    position:relative;
 }
 .one-post .bottom .tags
 {
@@ -7166,7 +7167,7 @@ body.body-action .followers-box h2
     padding:0;
     background: none;
     border: none;
-    margin-top: -3px;
+    margin-top: 10px;
 }
 .one-post .bottom a.btn-grey
 {
@@ -8395,3 +8396,12 @@ a.menu-elections:hover {
 
 
 
+.fb_edge_widget_with_comment span.fb_edge_comment_widget iframe.fb_ltr {
+    display: none !important;
+}
+#fb_button{ overflow:hidden; }
+
+.fb_like_box {
+    margin-bottom: 14px;
+    background-color: white;
+}
