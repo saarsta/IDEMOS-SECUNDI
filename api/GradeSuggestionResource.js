@@ -322,7 +322,6 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                         if(object.not_agrees < 0){
                             object.not_agrees = 0;
                             console.log("error - suggestion agrees < 0");
-
                         }
 
                         base.call(self, req, object, cbk1);
@@ -403,7 +402,6 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                         curr_amount_of_tokens:curr_tokens_amout
                     }
                 )
-            
         })
     }
 })
@@ -507,59 +505,8 @@ var calculateSuggestionGrade = GradeSuggestionResource.calculateSuggestionGrade 
                 callback(err);
             else {
                 async.waterfall([
-                    //set all other suggestion index offset
 
                     function (cbk) {
-                        models.Suggestion.findById(suggestion_id, cbk);
-                    },
-
-                    function (approved_sugg, cbk) {
-                        g_approved_sugg = approved_sugg;
-                        change_length = approved_sugg.parts[0].end - approved_sugg.parts[0].start - 1;
-
-
-                        //this is because a bug i have
-                        if(!approved_sugg.parts[0].text){
-                            approved_sugg.parts[0].text = "";
-                            approved_sugg.save(function(err, approved_sugg_){
-                                if (approved_sugg_.parts[0].text.length != change_length) {
-                                    models.Suggestion.find({discussion_id:discussion_id, is_approved:false}, cbk);
-                                }
-                                else {
-                                    cbk("no need for offseting", null);
-                                }
-                            })
-                        }else{
-                            if (approved_sugg.parts[0].text.length != change_length) {
-                                models.Suggestion.find({discussion_id:discussion_id, is_approved:false}, cbk);
-                            }
-                            else {
-                                cbk("no need for offseting", null);
-                            }
-
-                        }
-                     },
-
-                    function (suggestions, cbk) {
-                        async.forEach(suggestions, function (sugg, itr_cbk) {
-                            if (sugg._id != suggestion_id && sugg.parts[0].start < g_approved_sugg.parts[0].end - 1){
-                                if(sugg.threshold_for_accepting_the_suggestion > 500)
-                                    sugg.threshold_for_accepting_the_suggestion = 500;
-
-                                sugg.parts[0].start = g_approved_sugg.parts[0].text.length > change_length ? sugg.parts[0].start + change_length : sugg.parts[0].start - change_length;
-                                sugg.save(function(err, sugg){
-                                    itr_cbk(err, sugg);
-                                });
-                            }
-                            else {
-                                itr_cbk();
-                            }
-                        }, function(err, obj){
-                            cbk(err, obj);
-                        });
-                    },
-
-                    function (obj, cbk) {
                         if (discussion_thresh) {
                             //set suggestion threshold
                             async.waterfall([
@@ -582,8 +529,6 @@ var calculateSuggestionGrade = GradeSuggestionResource.calculateSuggestionGrade 
                         }
                     }
                 ], function (err, obj) {
-                    if (err == "no need for offseting")
-                        err = null;
                     callback(err, new_grade, suggestios_grade_counter);
                 })
             }

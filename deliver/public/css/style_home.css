@@ -7226,7 +7226,7 @@ body.body-action .followers-box h2
 {
     padding-top: 16px;
 }
-.profile-box .btns-box a
+.profile-box .btns-box a, .profile-box .btns-box input
 {
     display: block;
     background:#757d7e url(../images/search-submit.png) 0 0 repeat-x;
@@ -7670,7 +7670,6 @@ a.menu-elections:hover {
 
 #close_to_footer
 {
-    height: 192px;
     background: #50504f;
     background-position:center top;
 }
@@ -7733,13 +7732,23 @@ div.chicken-wing p, div.middle-wing p,div.right-wing p {
 }
 
 div.greenbutton-container {
-    height: 302px;
-
+    position: relative;
+    background: #EDEDED;
 }
+
 div.greenbutton {
-    height: 12px;
+    position: relative;
 	width: 300px;
     margin:0 auto;
+}
+
+div.greenbutton-grey-background {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    left: 0px;
+    height: 59px;
+    background: #50504F;
 }
 
 #join_btn {

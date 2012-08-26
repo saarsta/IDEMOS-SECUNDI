@@ -15,7 +15,8 @@ ul#display-inline-block-example {
 ul#display-inline-block-example li {
 	display: inline-block;
 	width: 475px;
-	height: 113px;
+	min-height: 108px;
+    padding-bottom: 5px;
 	margin: 0 10px 12px 0;
 	vertical-align: top;
 
@@ -28,6 +29,11 @@ ul#display-inline-block-example li {
 	zoom: 1;
 	*display: inline;
 }
+
+ul#display-inline-block-example li p {
+    font-size: 95%;
+}
+
 li.uru1 {background-image: url(../images/elections/edu.png);}
 li.uru3 {background-image: url(../images/elections/uru2.png);}
 li.uru5 {background-image: url(../images/elections/uru3.png);}
@@ -38,62 +44,40 @@ li.uru6 {background-image: url(../images/elections/uru7.png);}
 li.uru8 {background-image: url(../images/elections/uru8.png);}
 
 
-.checkBox, .checkBoxClear {
-	position:relative;
-	top: 1px;
-	right: 2px;
+.checkBox {
 	width: 20px;
 	height: 21px;
-	margin: 4px;
 	padding: 0;
 	background: url(../images/elections/v.png) no-repeat 0 0;
 	cursor: pointer;
+    -webkit-appearance: none;
 }
-.checkBoxClear {background-position: 0 -20px;}
+.checkBox:checked {
+    background-position: 0 -20px;
+}
 
-div.intext-top {
-	position: relative;
-	top: 17px;
-	right: 149px;
+div.intext, div.intext {
+    position: relative;
+	margin-top: 17px;
+	margin-right: 149px;
 	width: 323px;
 	font-size: 12px;
 	font-family: arial;
 }
 
-div.intext-top-b {
-	position: relative;
-	top: -12px;
-	right: 115px;
-}
-
-div.intext-bottom {
-	position: relative;
-	top: 7px;
-	right: 149px;
-	width: 323px;
-	font-size: 12px;
-	font-family: arial;
-}
-
-div.intext-bottom-b {
-	position: relative;
-	top: -22px;
-	right: 115px;
-}
-
-div.intext-top-last {
-	position: relative;
-	top: -22px;
-	right: -30px;
+div.intext-checkbox {
+    display: inline-block;
+    position: absolute;
+    top: 3px;
+    right: -28px;
 }
 
 select#styledSelect.blueText {
-	position: relative;
-	top: -34px;
-	right: 296px;
-	width: 165px;
+    display: inline-block;
+    float: left;
+    margin-top: -7px;
+	width: 155px;
 	height: 29px;
-	margin: 0;
 	padding: 2px 0;
 	color: #979795;
 	font-size: 14px;
@@ -115,9 +99,8 @@ select#styledSelect.blueText option {
 }
 */
 #textarea {
-	position: relative;
-	right: 148px;
-	bottom: 25px;
+    margin-top: 7px;
+	margin-right: 148px;
 	width: 309px;
 	height: 52px;
 	color: #50504f;
@@ -129,10 +112,9 @@ select#styledSelect.blueText option {
 
 div.what {
 	width: 847px;
-	height: 15px;
-	margin: 0 70px -36px 0;
-	padding-top: 185px;
-	background: url(../images/elections/text.png) no-repeat right center;
+    height: 98px;
+	margin: 0 auto;
+	background: url(../images/elections/text.png) no-repeat center top;
 }
 
 div.vote-container {

@@ -463,6 +463,8 @@ module.exports.approveSuggestion = function (id, callback) {
                 var suggestions = args[2];
                 var index_balance = suggestion_object.parts[0].text.length - (suggestion_object.parts[0].end - suggestion_object.parts[0].start);
 
+                console.log("index_balance");
+                console.log(index_balance);
                 if (index_balance != 0) {
                     async.forEach(suggestions, function (suggestion, itr_cbk) {
                         console.log("suugstion_id:");
@@ -478,10 +480,12 @@ module.exports.approveSuggestion = function (id, callback) {
                             suggestion.save(function (err, result) {
                                 itr_cbk(err, result)
                             })
-                        }
-                    });
+                        }else
+                            itr_cbk();
+                    }, cbk(err, args[1][0]));
                 }
-                cbk(err, args[1][0]);
+                else
+                    cbk(err, args[1][0]);
             })
         },
 

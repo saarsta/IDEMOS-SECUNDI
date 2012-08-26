@@ -9,120 +9,64 @@ var express = require('express'),
     utils = require('./utils'),
     auth = require("connect-auth");
 
+require('./tools/compile_templates');
+require('./deliver/tools/compile_dust_templates');
+
 var app = module.exports = express();
 
+app.set('views', __dirname + '/deliver/views');
+app.set('old_views', __dirname + '/views');
+app.set('public_folder', __dirname + '/deliver/public');
+app.set('public_folder2', __dirname + '/public');
+
+app.set('port', process.env.PORT || 80);
+
+app.set('facebook_app_id', process.env.FACEBOOK_APPID || '175023072601087');
+app.set('facebook_app_name',process.env.FACEBOOK_APPNAME || 'uru_dev');
+app.set('facebook_secret', process.env.FACEBOOK_SECRET || '5ef7a37e8a09eca5ee54f6ae56aa003f');
+
+app.set('show_only_published', process.env.SHOW_ONLY_PUBLISHED == '1');
+
+app.set('sendgrid_user',process.env.SENDGRID_USER || 'app2952775@heroku.com');
+app.set('sendgrid_key',process.env.SENDGRID_KEY || 'a0oui08x');
+
+app.set('system_email', process.env.SYSTEM_EMAIL || 'info@uru.org.il');
+app.set('root_path', process.env.ROOT_PATH || 'http://dev.empeeric.com');
+app.set('DB_URL',process.env.MONGOLAB_URI || 'mongodb://localhost/uru');
 
 app.configure('development', function(){
-    app.set('views', __dirname + '/deliver/views');
-    app.set('old_views', __dirname + '/views');
-    app.set('public_folder', __dirname + '/deliver/public');
-    app.set('public_folder2', __dirname + '/public');
-    app.set('port',80);
-
-    app.set('facebook_app_id', '175023072601087');
-    app.set('facebook_app_name','uru_dev');
-    app.set('facebook_secret', '5ef7a37e8a09eca5ee54f6ae56aa003f');
-
-    app.set('show_only_published',false);
-
-    app.set('sendgrid_user','app2952775@heroku.com');
-    app.set('sendgrid_key','a0oui08x');
-    app.set('system_email','info@uru.org.il');
-    app.set('root_path', 'http://dev.empeeric.com');
-    app.set('DB_URL','mongodb://localhost/uru');
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-    require('./tools/compile_templates');
-    require('./deliver/tools/compile_dust_templates');
 
     // TODO REMOVE THIS BEFORE COMMIT
     // app.set('send_mails',true);
-
 });
 
 
 app.configure('avner_env', function(){
-    app.set('views', __dirname + '/deliver/views');
-    app.set('old_views', __dirname + '/views');
-    app.set('public_folder', __dirname + '/deliver/public');
-    app.set('public_folder2', __dirname + '/public');
-    app.set('port',3000);
-    app.set('facebook_app_id', '175023072601087');
-    app.set('facebook_app_name','uru_dev');
-    app.set('facebook_secret', '5ef7a37e8a09eca5ee54f6ae56aa003f');
-
-    app.set('show_only_published',false);
-
-//    app.set('facebook_app_id', '436675376363069');
-//    app.set('facebook_app_name','uru_staging');
-//    app.set('facebook_secret', '975fd0cb4702a7563eca70f11035501a');
-
-    app.set('sendgrid_user','app2952775@heroku.com');
-    app.set('sendgrid_key','a0oui08x');
-    app.set('system_email','info@uru.org.il');
-    app.set('root_path', 'http://dev.empeeric.com');
-    app.set('DB_URL','mongodb://localhost/uru');
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-    require('./tools/compile_templates');
-    require('./deliver/tools/compile_dust_templates');
 });
 
 
 
 app.configure('staging', function(){
-    app.set('views', __dirname + '/deliver/views');
-    app.set('old_views', __dirname + '/views');
-    app.set('public_folder', __dirname + '/deliver/public');
-    app.set('public_folder2', __dirname + '/public');
-    app.set("port", process.env.PORT);
-    app.set('facebook_app_id', '436675376363069');
-    app.set('facebook_app_name','uru_staging');
-    app.set('facebook_secret', '975fd0cb4702a7563eca70f11035501a');
-
-    app.set('show_only_published',false);
-
-    app.set('sendgrid_user',process.env.SENDGRID_USERNAME || 'app2952775@heroku.com');
-    app.set('sendgrid_key',process.env.SENDGRID_PASSWORD || 'a0oui08x');
-    app.set('system_email','info@uru.org.il');
-    app.set('root_path', 'http://uru-staging.herokuapp.com');
-    app.set('DB_URL',process.env.MONGOLAB_URI);
     app.use(express.errorHandler());
     require('j-forms').setAmazonCredentials({
         key: 'AKIAJM4EPWE637IGDTQA',
         secret: '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',
         bucket: 'uru'
     });
-    require('./deliver/tools/compile_dust_templates');
-    require('./tools/compile_templates');
 
     app.set('send_mails',true);
 
 });
 
 app.configure('production', function(){
-    app.set('views', __dirname + '/deliver/views');
-    app.set('old_views', __dirname + '/views');
-    app.set('public_folder', __dirname + '/deliver/public');
-    app.set('public_folder2', __dirname + '/public');
-    app.set("port", process.env.PORT);
-    app.set('facebook_app_id', '375874372423704');
-    app.set('facebook_app_name','uru_heroku');
-    app.set('facebook_secret', 'b079bf2df2f7055e3ac3db17d4d2becb');
-
-    app.set('show_only_published',true);
-
-    app.set('sendgrid_user',process.env.SENDGRID_USERNAME || 'app2952775@heroku.com');
-    app.set('sendgrid_key',process.env.SENDGRID_PASSWORD || 'a0oui08x');
-    app.set('system_email','info@uru.org.il');
-    app.set('root_path', 'http://www.uru.org.il');
-    app.set('DB_URL',process.env.MONGOLAB_URI);
     app.use(express.errorHandler());
     require('j-forms').setAmazonCredentials({
         key: 'AKIAJM4EPWE637IGDTQA',
         secret: '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',
         bucket: 'uru'
     });
-    require('./deliver/tools/compile_dust_templates');
-    require('./tools/compile_templates');
 
     app.set('send_mails',true);
 

@@ -23,14 +23,17 @@ var getUserChosenDiscussions = module.exports.getUserChosenDiscussions = functio
     async.waterfall([
         // get the user by id
         function (cb) {
-            models.User.findById(user_id, cb)
+            var conditions = (user_id.length == 24) ? {_id: user_id} : {facebook_id:user_id};
+            models.User.findOne(conditions, cb)
         },
         // get assosiated discussions
         function (user, cb)
         {
             // we might have some placeholders in this list
             var disc_ids = user.has_voted.filter(function(val) {return val.length > 20;});
-            models.Discussion.find({_id: {'$in': disc_ids}}, cb)
+            models.Discussion.find({_id: {'$in': disc_ids}}, function(err, result){
+                cb(err, result)
+            })
         }
     ], callback
     );
