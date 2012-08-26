@@ -33,6 +33,9 @@ app.set('sendgrid_key',process.env.SENDGRID_KEY || 'a0oui08x');
 app.set('system_email', process.env.SYSTEM_EMAIL || 'info@uru.org.il');
 app.set('root_path', process.env.ROOT_PATH || 'http://dev.empeeric.com');
 app.set('DB_URL',process.env.MONGOLAB_URI || 'mongodb://localhost/uru');
+app.set('url2png_api_key', process.env.url2png_api_key || 'P503113E58ED4A')
+app.set('url2png_api_secret', process.env.url2png_api_key || 'SF1BFA95A57BE4')
+
 
 app.configure('development', function(){
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
