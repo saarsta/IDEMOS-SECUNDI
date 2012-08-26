@@ -15,7 +15,8 @@ ul#display-inline-block-example {
 ul#display-inline-block-example li {
 	display: inline-block;
 	width: 475px;
-	height: 113px;
+	min-height: 108px;
+    padding-bottom: 5px;
 	margin: 0 10px 12px 0;
 	vertical-align: top;
 
@@ -28,6 +29,11 @@ ul#display-inline-block-example li {
 	zoom: 1;
 	*display: inline;
 }
+
+ul#display-inline-block-example li p {
+    font-size: 95%;
+}
+
 li.uru1 {background-image: url(../images/elections/edu.png);}
 li.uru3 {background-image: url(../images/elections/uru2.png);}
 li.uru5 {background-image: url(../images/elections/uru3.png);}
@@ -95,7 +101,6 @@ select#styledSelect.blueText option {
 #textarea {
     margin-top: 7px;
 	margin-right: 148px;
-	margin-bottom: 25px;
 	width: 309px;
 	height: 52px;
 	color: #50504f;
