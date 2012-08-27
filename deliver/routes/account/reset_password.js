@@ -4,21 +4,15 @@ var models = require('../../../models')
 module.exports ={
     get: function(req, res){
         res.render('reset_password.ejs',{
-            url: req.url,
-            tag_name: req.query.tag_name,
-            layout: false,
-            user_logged: req.isAuthenticated(),
-            user: req.session.user,
             next: req.query.next,
-            title: "רישום",
-            big_impressive_title: ""
+            title: "רישום"
         });
     },
 
     post: function(req, res){
 
        var user_id = req.query.id;
-       var validation_code = req.query.validation;
+       var validation_code = req.query.code;
        var password= req.body.new_password;
 
        if(user_id){

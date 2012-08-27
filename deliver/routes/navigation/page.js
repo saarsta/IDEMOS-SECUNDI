@@ -12,6 +12,4 @@ module.exports = function(req,res) {
         avatar_url: req.session.avatar_url,
         page:models.FooterLink.getFooterLink(req.params.link)
     });
-
-
 };
