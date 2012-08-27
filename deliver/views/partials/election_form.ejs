@@ -307,14 +307,9 @@ $(function() {
 	$('#share-facebook').on('click', function() {
         facebookLogin(function(error) {
             $.post('/elections/fbimage/' + FB.getUserID(), function(data) {
-                var message = 'גם אני מרגיש חלק מהרוב הלא מיוצג, שמתי בצד הבדלים של שמאל-ימין מדיני ובחרתי בנושאים שחשוב לי לשנות. מרגישים כמוני? הצטרפו והצביעו!\nhttp://www.uru.org.il';
-                $('.checkBox:checked').each(function () {
-                    var element = $(this).closest('.intext').find('strong');
-                    message += '\n' + element.text();
-                });
                 var obj = {
                     url : data.target_url,
-                    message: message
+                    message: 'גם אני מרגיש חלק מהרוב הלא מיוצג, שמתי בצד הבדלים של שמאל-ימין מדיני ובחרתי בנושאים שחשוב לי לשנות. מרגישים כמוני? הצטרפו והצביעו!\nhttp://www.uru.org.il'
                 };
                 FB.api('/me/photos', 'post', obj , function(response) {
                     if (!response || response.error) {
