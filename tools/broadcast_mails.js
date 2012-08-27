@@ -11,12 +11,24 @@ var app = require('../app'),
     async = require('async');
 
 
+
+var MAILTEMPLATE = 'elections2';
+
+var IS_TEST = true;
+var SEND_TO = ['ishai@empeeric.com'
+    ,'saarsta@gmail.com'
+    ,'konfortydor@gmail.com'
+];
+
+var LIMIT = 5000;
+
 setTimeout(function(){
 
 app.set('root_path','http://www.uru.org.il');
-app.set('send_mails',true);
 
-templates.renderTemplate('elections',{},function(err,body) {
+require('../lib/mail').load(app);
+
+    templates.renderTemplate(MAILTEMPLATE,{},function(err,body) {
 
     var skipped = 0;
     var sent = 0;
@@ -26,13 +38,18 @@ templates.renderTemplate('elections',{},function(err,body) {
         return;
     }
 
-    var stream = models.User.find({})
+
+    var query = IS_TEST ? {email:{$in:SEND_TO}} : {};
+    var limit = IS_TEST ? 3 : LIMIT;
+
+    var stream = models.User.find(query)
         .select({email:1, sent_mail:1})
-        .limit(3000)
+        .limit(limit)
         .stream();
 
     stream.on('data',function(user) {
-        if(user.sent_mail && user.sent_mail > new Date(Date.now() - 1000*60*60*5)){
+        console.log(user.email);
+        if(!IS_TEST && user.sent_mail && user.sent_mail > new Date(Date.now() - 1000*60*60*5)){
             console.log('skipped');
             skipped++;
             return;
