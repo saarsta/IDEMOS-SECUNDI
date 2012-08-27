@@ -85,6 +85,7 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
         create_obj:function (req, fields, callback) {
             var user_id = req.session.user_id;
             var self = this;
+            var base = self.super();
             var action_object = new self.model();
             var user = req.user;
 
@@ -96,59 +97,62 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
 //            }
 //            else
 //            {
-            fields.creator_id = user_id;
-            fields.first_name = user.first_name;
-            fields.last_name = user.last_name;
-            fields.users = user_id;
-            for (var field in fields) {
-                action_object.set(field, fields[field]);
-            }
-            self.authorization.edit_object(req, action_object, function (err, action_obj) {
-                if (err) callback(err);
-                else {
-                    var cycle_id = action_obj._doc.cycle_id;
-                    action_obj.save(function (err, action) {
-                        if (!err) {
-                            async.parallel([
-                                function (cbk) {
-                                    req.gamification_type = "action";
-                                    //user.tokens -= ACTION_PRICE;
-                                    // add discussion_id and action_id to the lists in user
-                                    models.User.update({_id:user_id}, {$addToSet:{/*cycles: cycle_id, */actions:action._doc._id}}, cbk)
-                                },
 
-                                function (cbk) {
-                                    models.Cycle.findById(cycle_id, cbk);
-                                }
-
-                            ], function (err, arg) {
-                                var cycle_obj = arg[1];
-
-                                if (cycle_obj.upcoming_action) {
-                                    async.waterfall([
-                                        function (cbk) {
-                                            models.Action.findById(cycle_obj.upcoming_action, cbk);
-                                        },
-
-                                        function (action2, cbk) {
-                                            if (action2.execution_date > action.execution_date) {
-                                                cycle_obj.upcoming_action = action._id;
-                                                cycle_obj.save(cbk);
-                                            }
-                                        }
-                                    ], callback(err, action))
-                                } else {
-                                    cycle_obj.upcoming_action = action._id;
-                                    cycle_obj.save(callback(err, action));
-                                }
-                            })
-
-                        } else {
-                            callback(err, null);
-                        }
-                    });
-                }
-            });
+//            async.waterfall([
+//                function(cbk){
+//                    fields.creator_id = user_id;
+//                    fields.first_name = user.first_name;
+//                    fields.last_name = user.last_name;
+//                    fields.users = user_id;
+//                    for (var field in fields) {
+//                        action_object.set(field, fields[field]);
+//                    }
+//
+//                    base.call(self, req, fields, cbk);
+//                },
+//
+//                function(action_obj, cbk){
+//                    var cycle_id = action_obj.cycle_id;
+//
+//                    async.parallel([
+//                        function (cbk1) {
+//                            req.gamification_type = "action";
+//
+//                            // add discussion_id and action_id to the lists in user
+//                            var new_action = {
+//                                action_id: action_obj._id,
+//                                join_date: Date.now()
+//                            }
+//                            models.User.update({_id:user_id}, {$addToSet:{actions: new_action}}, cbk1)
+//                        },
+//
+//                        function (cbk1) {
+//                            models.Cycle.findById(cycle_id, cbk1);
+//                        }
+//                    ], cbk(err, args[1]);
+//                },
+//
+//                function()
+//            ])
+//
+//
+//                        if (!err) {
+//
+//                            ], function (err, arg) {
+//                                var cycle_obj = arg[1];
+//
+//                                 else {
+//                                    cycle_obj.upcoming_action = action._id;
+//                                    cycle_obj.save(callback(err, action));
+//                                }
+//                            })
+//
+//                        } else {
+//                            callback(err, null);
+//                        }
+//                    });
+//                }
+//            });
         }
     });
 
