@@ -156,6 +156,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
             var cycle_id = "<%=cycle.id%>";
+
             $(".inline").colorbox({ inline: true, width: "730" });
 
             $('.popular-comments .user-right').hover(function () {
@@ -164,6 +165,8 @@
             $('.comments-box .comment-one .user-right').hover(function () {
                 $(this).toggleClass('hover');
             });
+
+            $('.hide-box').hide();
             $('.popular-comments .top a').click(function () {
                 $(this).parents('.popular-comments').find('.hide-box').slideToggle();
                 $(this).parents('.popular-comments').toggleClass('hover');
