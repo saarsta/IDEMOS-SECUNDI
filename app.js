@@ -38,7 +38,7 @@ app.configure('development', function(){
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 
     // TODO REMOVE THIS BEFORE COMMIT
-    app.set('send_mails',true);
+//    app.set('send_mails',true);
 });
 
 
