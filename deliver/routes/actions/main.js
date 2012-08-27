@@ -25,8 +25,10 @@ module.exports = function (req, res) {
                     'location':1,
                     'execution_date':1,
                     'required_participants':1,
-                    'cycle_id':1
+                    'cycle_id':1,
+                    'action_resources':1
                 })
+                .populate('action_resources.resource')
                 .exec(cbk);
         },
 

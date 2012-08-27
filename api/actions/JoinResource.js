@@ -21,7 +21,7 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
         this._super(models.Join,'join_action', /*common.getGamificationTokenPrice('join_action')*/ 0);
         this.allowed_methods = ['get','post'];
         this.authentication = new common.SessionAuthentication();
-        this.filtering = {discussion_id: null};
+        this.filtering = {discussion_id: null, action_id: null};
         this.fields = {
             map_join_to_user: {
                 _id : null,
