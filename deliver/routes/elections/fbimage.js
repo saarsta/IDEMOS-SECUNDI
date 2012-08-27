@@ -11,6 +11,7 @@ module.exports = function(req, res) {
         var users_fbimage_url = 'http://www.uru.org.il' + req.path;
         var md5 = createHash('md5');
         md5.update(req.app.settings.url2png_api_secret);
+        md5.update('+');
         md5.update(users_fbimage_url);
         var security_hash = md5.digest('hex');
         var target_url = util.format('http://api.url2png.com/v3/%s/%s/%s/%s',

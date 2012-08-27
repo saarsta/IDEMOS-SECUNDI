@@ -25,8 +25,10 @@ module.exports = function (req, res) {
                     'location':1,
                     'execution_date':1,
                     'required_participants':1,
-                    'cycle_id':1
+                    'cycle_id':1,
+                    'action_resources':1
                 })
+                .populate('action_resources.resource')
                 .exec(cbk);
         },
 
@@ -41,7 +43,7 @@ module.exports = function (req, res) {
 
         function (cbk) {
             models.Join.find({action_id: req.params[0]})
-                .select({_id:1})
+                .select({_id:1, user_id:1})
                 .exec(cbk);
         }
     ], function (err, args) {
@@ -69,9 +71,9 @@ module.exports = function (req, res) {
                 action.to_date= new Date(action.execution_date.date.getTime() + action.execution_date.duration*1000*3600);
                 var is_going = false;
                // is user going to action?
-               if(req.user){
-                   var user_id = req.user._id;
-                   is_going = _.any(going_users, function(going_user){ going_user._id + "" == user_id})
+               if(req.session.user){
+                   var user_id = req.session.user._id;
+                   is_going = _.any(going_users, function(going_user){ return going_user.user_id + "" == user_id + ""})
                }
                action.is_going = is_going;
 
