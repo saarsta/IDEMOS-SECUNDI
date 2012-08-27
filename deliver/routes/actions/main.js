@@ -63,15 +63,7 @@ module.exports = function (req, res) {
             if (!action)
                 res.render('404.ejs');
             else {
-                action = JSON.parse(JSON.stringify(action));
-                action.action_resources = _.map(action.action_resources, function(resource){
-                    return  {action_resource : {
-                        name: resource.resource.name,
-                        id: resource.resource._id,
-                        amount: resource.amount,
-                        left: resource.left_to_bring
-                    }}
-                });
+
                 action.location =
                     'התעשייה 12, תל אביב';
 
