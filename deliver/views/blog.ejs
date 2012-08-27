@@ -44,14 +44,6 @@
                                 <div class="right">
                                     <div class="tags">
 
-                                        <div class="like-btn fb-like"
-                                        <% if (!isBlog) { %>
-                                             data-href="http://www.uru.org.il/blogs/article/<%= articles[i]._id %>"
-                                        <% }else{%>
-                                            data-href="http://www.uru.org.il/blogs/<%= articles[0].user_id %>"
-                                        <% }%>
-                                             data-send="false" data-layout="button_count" data-width="90" data-show-faces="false">
-                                        </div>
 
                                      <% for (var c = 0; c <articles[i].tags.length; c++) { %>
                                            <a class="tag-search" href="javascript:void(0);"><%=articles[i].tags[c] %></a>
@@ -61,11 +53,23 @@
 
 
                                     </div>
+
                                 </div>
-                                 <% if (!isBlog) { %>
+
+                           <% if (!isBlog) { %>
                                     <a href="#write-comment" class="btn-grey" href="">הגב</a>
                                  <% }%>
+
+                                <div class="like-btn fb-like"
+                                <% if (!isBlog) { %>
+                                data-href="http://www.uru.org.il/blogs/article/<%= articles[i]._id %>"
+                                <% }else{%>
+                                data-href="http://www.uru.org.il/blogs/<%= articles[0].user_id %>"
+                                <% }%>
+                                data-send="false" data-width="450" data-show-faces="false">
                             </div>
+
+                       </div>
                             <div class="post-comment">
                                 <div class="fb-comments"
                                 <% if (!isBlog) { %>
