@@ -63,6 +63,7 @@ module.exports = function (req, res) {
             if (!action)
                 res.render('404.ejs');
             else {
+
                 action.location =
                     'התעשייה 12, תל אביב';
 
@@ -78,7 +79,7 @@ module.exports = function (req, res) {
                action.is_going = is_going;
 
 
-                var ejsFileName=true?'action_approved.ejs':'action_append.ejs';
+                var ejsFileName = true ? 'action_approved.ejs' : 'action_append.ejs';
                 res.render(ejsFileName,{
                     action: action,
                     tab: 'actions',
