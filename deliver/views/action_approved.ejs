@@ -6,10 +6,14 @@ var error_message = error_message || '';
 <html>
 <head>
 <!--<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# <%= settings.facebook_app_name %>: http://ogp.me/ns/fb/<%= settings.facebook_app_name %>#">-->
-    <% include partials/head.ejs %>
+
+
+   <% include partials/head.ejs %>
+
     <script src="/js/jquery-fieldselection.js" type="text/javascript"></script>
     <script src="/plugins/ckeditor/ckeditor.js"></script>
     <script src="/plugins/ckeditor/adapters/jquery.js"></script>
+    <script src="http://maps-api-ssl.google.com/maps/api/js?v=3&sensor=false&language=he"  type="text/javascript"></script>
 
   <!--  <meta property="fb:app_id" content="<XXX%= settings.facebook_app_id %>" />
     <meta property="og:type"   content="<XXX%= settings.facebook_app_name %>:discussion" />
@@ -176,10 +180,13 @@ var error_message = error_message || '';
             מיקום: 
 			<strong><%=action.location?action.location.address:''%></strong>
         </div>
-        <p><%-action.text_field%></p>
+           <div style="overflow: hidden;height: 51px">
+            <p><%-action.text_field%></p>
+           </div>
+
 
         <a class="more-text" href="">קרא עוד</a>
-        <a class="less-text" href="">קרא עוד</a>
+       <!-- <a class="less-text" href="">קרא עוד</a>-->
         <div class="add-offer-users">
             כמות משתתפים רצויה:
 			<%=action.required_participants%>
@@ -207,11 +214,18 @@ var error_message = error_message || '';
                 </div>
                 <div class="detail-resourse">
                     <span class="icon"></span>
-                    משאבים נדרשים: <span class="check">אוטובוס</span> <span class="check">דלק</span> <span class="check">מלגזה</span>
+                    משאבים נדרשים:
+					<% for (var i=0;i < action.action_resources.length;i++){%>
+                         <span class="check"><%=action.action_resources[i].resource.name %></span>
+                    <% } %>
+					
                 </div>
                 <div class="detail-ratio">
                     <span class="icon"></span>
-                    כמות משתתפים רצויה:  <strong class="green">200</strong>  |  כמות משתתפים נוכחית:  <strong class="red">21</strong>
+                    כמות משתתפים רצויה:  
+					<strong class="green"><%=action.required_participants %></strong>
+					|  כמות משתתפים נוכחית:  
+					<strong class="red going_red"></strong>
                 </div>
                 <div class="detail-address">
                     <span class="icon"></span>
@@ -219,33 +233,22 @@ var error_message = error_message || '';
 				<strong><%=action.location?action.location.address:''%></strong>
                 </div>
             </div>
-            <p>באזורי הפריפריה של ישראל, בצפון הארץ ובדרומה, מסתובבים אלפי קיפודים חסרי בית. הגורם העיקרי שאשם במצבם הוא קבלני העפר
-                והבניין, שהרסו את אזורי המחיה הטבעיים של הקיפודים בעקבות תנופת הפיתוח והבנייה של השנים האחרונות.
-                הקיפודים הם חלק בלתי נפרד מהנוף של ישראל, וקיומם חשוב למגוון הביולוגי ולחקלאות. לכן על מדינת ישראל לאמץ אל ליבה את קיפודיה,
-                להגן עליהם ועל מרחב המחיה שלהם ולשקם את אוכלוסיות הקיפודים שנפגעו.</p>
-            <p>אנחנו מכירים בחשיבות
-                ו מכירים בחשיבות פיתוח הפריפריה בישראל, ואין לנו רצון להקשות על הקבלנים בעבודתם החשובה באמצעות בירוקרטיה נוספת.
-                לכן המהלך להגנת הקיפודים צריך להיעשות קודם כל באמצעות פנייה להתאחדות הקבלנים בתקווה שיבינו את חשיבות הנושא ויחד איתם
-                נקבע כללי התנהלות שיבטיחו את שלומם של כל קיפודי הפריפריה.</p>
-            <p>אין מספיק מודעות בציבור למצוקת הק
-                ו מכירים בחשיבות פיתוח הפריפריה בישראל, ואין לנו רצון להקשות על הקבלנים בעבודתם החשובה באמצעות בירוקרטיה נוספת.
-                לכן המהלך להגנת הקיפודים צריך להיעשות קודם כל באמצעות פנייה להתאחדות הקבלנים בתקווה שיבינו את חשיבות הנושא ויחד איתם
-                נקבע כללי התנהלות שיבטיחו את שלומם של כל קיפודי הפריפריה.</p>
-            <p>אין מספיק מודעות בציבור למצוקת הקפיתוח הפריפריה בישראל, ואין לנו רצון להקשות על הקבלנים בעבודתם החשובה באמצעות בירוקרטיה נוספת.
-                לכן המהלך להגנת הקיפודים צריך להיעשות קודם כל באמצעות פנייה להתאחדות הקבלנים בתקווה שיבינו את חשיבות הנושא ויחד איתם
-                נקבע כללי התנהלות שיבטיחו את שלומם של כל קיפודי הפריפריה.</p>
-            <p>אין מספיק מודעות בציבור למצוקת הקיפודים. דוכן הסברה שיופעל פעם בשבוע במקומות מרכזיים יוכל לשנות את המצב ולקדם את הקמפיין.
-                הצטרפו למאבק ויחד נוכל לשנות את התמונה. גם קיפודים הם בני אדם!<br />
-                <a id="readLess" href="">קרא פחות</a></p>
+			 <p><%-action.text_field%></p>
+					
+                <a id="readLess" class="read_less" href="">
+				קרא פחות
+				</a></p>
         </div>
-        <div class="map">
-            <img src="../images/map.jpg" alt="" />
-            <div class="map-popup">
-                <a class="close" href=""></a>
-                <h4>התעשייה 12, תל אביב</h4>
-                <p><a href="">צפה במפה</a> | <a href="">קבל מסלול נסיעה</a></p>
+
+            <div id="map" class="map" style="width:691px ;height:125px ">
+                <!--<img src="../images/map.jpg" alt="" />
+                <div class="map-popup">
+                    <a class="close" href=""></a>
+                    <h4>התעשייה 12, תל אביב</h4>
+                    <p><a href="">צפה במפה</a> | <a href="">קבל מסלול נסיעה</a></p>
+                </div>-->
             </div>
-        </div>
+
 
     </div>
 
@@ -257,10 +260,13 @@ var error_message = error_message || '';
             <a class="btn-grey" href="#" id="action_comment_reply_button">
 			הגב
 			</a>
-            <a class="btn-grey"  href="">
-			שתף
-			</a>
-           
+
+            <a class="btn-grey share" rel="/actions/<%=action._id%>"
+               data-img_src="<%= action.image_field ? action.image_field.url ||'' : '' %>" data-text_preview="<%=action.text_field_preview%>" data-title="<%=action.title%>"
+               data-name="<%=action.text_field_preview%>"
+               href="/facebookShare?link=/actions/<%=action._id%>">
+                שתף
+            </a>
         </div>
         <div class="tags">
             <% for (var c = 0; c<action.tags.length ; c++) { %>
@@ -368,7 +374,6 @@ var error_message = error_message || '';
     </div>
 </div>
 
-
 <% include partials/footer.ejs %>
 
  <script type="text/javascript">
@@ -417,10 +422,12 @@ var error_message = error_message || '';
      function setGoingNumber(number) {
 
          $('#going_number')[0].innerHTML = '(' + number + ')';
+         $('.going_red').html(number);
      }
      function setUserScore(userID, score) {
          $('[ data-creator_id=' + userID + ']').find('.score').empty().append(score);
      }
+
 
 
 
@@ -441,6 +448,7 @@ var error_message = error_message || '';
                         new_post_ref_id = null;
                         postsNumber++;
                         setCommentNumber(postsNumber);
+
                     });
                 }
             })
@@ -522,7 +530,8 @@ var error_message = error_message || '';
 
 
 
-      $('.more_comments').click(function() {
+
+     $('.more_comments').click(function() {
           loadPosts();
       });
 
@@ -726,6 +735,7 @@ var error_message = error_message || '';
          e.preventDefault();
          $('#minInfo').hide();
          $('#fullInfo').show();
+         init_map('map', new google.maps.LatLng(-34.397, 150.644));
          /*   var h=  $(".hidden_textarea").get(0).scrollHeight;
           $(".discussion_content").height(h);*/
      });
@@ -738,9 +748,38 @@ var error_message = error_message || '';
 
 
 
+
      //start from index 0 loding 2 rows 14*7
      goingModel.loadGoingUsers(0,2);
      loadPosts();
+
+
+     function init_map( id , center){
+         var myOptions = {
+             zoom: 11,
+             center: center,
+             mapTypeId: google.maps.MapTypeId.ROADMAP
+         };
+         var map = new google.maps.Map(document.getElementById( id ), myOptions);
+       //  maps[ id ] = map;
+         return map;
+     }
+
+//     var maps = new Array();
+ //   init_map('map', new google.maps.LatLng(-34.397, 150.644));
+/*
+     function initialize() {
+         var mapOptions = {
+             center: new google.maps.LatLng(-34.397, 150.644),
+             zoom: 8,
+             mapTypeId: google.maps.MapTypeId.ROADMAP
+         };
+         var map = new google.maps.Map(document.getElementById("map"),
+                 mapOptions);
+     }*/
+
+
+   //  initialize();
        
  });
  </script>

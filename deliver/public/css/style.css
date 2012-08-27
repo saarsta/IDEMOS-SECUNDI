@@ -878,7 +878,7 @@ body
 {
     background:#fff;
     padding: 8px;
-    margin-bottom: 28px;
+    margin-bottom: 14px;
 }
 .left-col .one-news h4
 {
@@ -2178,6 +2178,11 @@ body
     position: relative;
     top: -15px;
     display: inline-block;
+}
+/*.add-offer .text-box .read_less,*/
+.add-offer .text-box .more-text
+{
+    top:0px !important;
 }
 
 .add-offer .text-box .blue-title
@@ -6903,7 +6908,7 @@ body.body-action .followers-box h2
 .detail-resourse span.check
 {
     padding-right: 21px;
-    background: url(../images/check-icon.png) 100% 50% no-repeat;
+    background: url(../images/check-icon.png) no-repeat right center;
     margin-right: 10px;
 }
 .map
@@ -7152,13 +7157,15 @@ body.body-action .followers-box h2
 .one-post .bottom .right
 {
     float: right;
-    width: 401px;
+    width: 460px;
+    position:relative;
 }
 .one-post .bottom .tags
 {
     padding: 9px 0 12px;
     border-top: 1px solid #ebebeb;
     border-bottom: 1px solid #ebebeb;
+    min-height: 12px;
 }
 .one-post .bottom .like-btn
 {
@@ -7166,7 +7173,7 @@ body.body-action .followers-box h2
     padding:0;
     background: none;
     border: none;
-    margin-top: -3px;
+    margin-top: 10px;
 }
 .one-post .bottom a.btn-grey
 {
@@ -7814,12 +7821,12 @@ body.body-action .followers-box h2
     top: 8px;
     right: 9px;
 }
-.detail-resourse span.check
-{
-    padding-right: 21px;
-    background: url(../images/check-icon.png) 100% 50% no-repeat;
-    margin-right: 10px;
-}
+/*.detail-resourse span.check*/
+/*{*/
+    /*padding-right: 21px;*/
+    /*background: url(../images/check-icon.png) 100% 50% no-repeat;*/
+    /*margin-right: 10px;*/
+/*}*/
 .map
 {
     position: relative;
@@ -8395,3 +8402,12 @@ a.menu-elections:hover {
 
 
 
+.fb_edge_widget_with_comment span.fb_edge_comment_widget iframe.fb_ltr {
+    display: none !important;
+}
+#fb_button{ overflow:hidden; }
+
+.fb_like_box {
+    margin-bottom: 14px;
+    background-color: white;
+}

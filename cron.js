@@ -707,7 +707,7 @@ var daily_cron =  exports.daily_cron = {
                     var user_id = blog_tags.user_id;
                     delete blog_tags['user_id'];
 
-                    var funcs = _.map(blog_tags,function(popularity,tag) {
+                    var funcs = _.map(blog_tags,function(popularity, tag) {
                         return function(cbk) {
                             var blog_tag = new models.BlogTag();
                             blog_tag.tag = tag;
