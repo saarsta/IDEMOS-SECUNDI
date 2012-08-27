@@ -100,7 +100,7 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
                         }
                     ], function(err, args){
                         if(err)
-                            callback(err)
+                            callback(err);
                         else{
                             req.gamification_type = "leave_action";
                             callback(err, {is_going: false});
@@ -143,42 +143,13 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
             }
         ],function(err, obj){
             if(!err){
-//                g_action_obj.num_of_going++;
-//                g_action_obj.join_id = join_id;
-//                g_action_obj.is_follower = true;
                 g_action_obj.num_of_going++;
                 g_action_obj.is_going = true;
+                g_action_obj = JSON.parse(JSON.stringify(g_action_obj));
+                g_action_obj.map_join_to_user = req.user;
                 req.gamification_type = "join_action";
             }
             callback(err, g_action_obj);
         });
     }
-
-//    delete_obj:function (req, object, callback) {
-//        var self = this;
-//        var base = this._super;
-//        var g_action;
-//        async.waterfall([
-//            function(cbk){
-//                models.Action.findById(object.action_id, cbk);
-//            },
-//
-//            function(action_obj, cbk){
-//                var obj = _.find(action_obj.going_users, function(going_user){
-//                    return going_user.user_id == object.user_id;
-//                })
-//
-//                action_obj.going_users.splice(_.indexOf(action_obj.going_users, obj));
-//                action_obj.save(function(err, obj){
-//                    action_obj.is_follower = false;
-//                    g_action = action_obj;
-//                    cbk(err, obj);
-//                });
-//            }
-//        ], function(err, obj){
-//            base.call(self, req, object, function(err, obj){
-//                callback(err, g_action);
-//            }/*(err, g_action)*/);
-//        })
-//    }
 });
