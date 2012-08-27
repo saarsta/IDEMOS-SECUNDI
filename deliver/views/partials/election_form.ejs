@@ -313,7 +313,7 @@ $(function() {
                     message += '\n' + element.text();
                 });
                 var obj = {
-                    url : 'test_url',
+                    url : data.target_url,
                     message: message
                 };
                 FB.api('/me/photos', 'post', obj , function(response) {
