@@ -90,7 +90,7 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
                     async.parallel([
                         //reduce action.num_of_going
                         function(cbk1){
-                            models.Action.update({id: action_id}, {$inc: {num_of_going: - 1}}, cbk1);
+                            models.Action.update({id: action_id}, {$inc: {num_of_going: -1}}, cbk1);
                         },
 
                         function(cbk1){
@@ -144,9 +144,9 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
         ],function(err, obj){
             if(!err){
                 g_action_obj.num_of_going++;
-                g_action_obj.is_going = true;
                 g_action_obj = JSON.parse(JSON.stringify(g_action_obj));
                 g_action_obj.map_join_to_user = req.user;
+                g_action_obj.is_going = true;
                 req.gamification_type = "join_action";
             }
             callback(err, g_action_obj);
