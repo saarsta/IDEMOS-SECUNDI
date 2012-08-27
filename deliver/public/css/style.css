@@ -150,27 +150,6 @@ body
 {
     background: #3b63ef;
     border-radius: 2px;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
     padding: 7px 10px 8px;
@@ -7160,6 +7139,7 @@ body.body-action .followers-box h2
     padding: 9px 0 12px;
     border-top: 1px solid #ebebeb;
     border-bottom: 1px solid #ebebeb;
+    min-height: 12px;
 }
 .one-post .bottom .like-btn
 {

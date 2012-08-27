@@ -192,10 +192,13 @@ var error_message = error_message || '';
             <a class="btn-grey" href="#" id="action_comment_reply_button">
 			הגב
 			</a>
-            <a class="btn-grey"  href="">
-			שתף
-			</a>
-           
+
+            <a class="btn-grey share" rel="/actions/<%=action._id%>"
+               data-img_src="<%= action.image_field ? action.image_field.url ||'' : '' %>" data-text_preview="<%=action.text_field_preview%>" data-title="<%=action.title%>"
+               data-name="<%=action.text_field_preview%>"
+               href="/facebookShare?link=/actions/<%=action._id%>">
+                שתף
+            </a>
         </div>
         <div class="tags">
             <% for (var c = 0; c<action.tags.length ; c++) { %>
