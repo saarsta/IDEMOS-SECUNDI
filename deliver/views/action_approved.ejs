@@ -155,12 +155,11 @@ var error_message = error_message || '';
    <h2>
   
 	</h2>
-    <div class="text-box cf">
-         <h3><span class="arrow"><%=action.type%></span> <span class="blue-title"><%=action.title%></span></h3>
-       
-			 <!--<div id="discussion_image" style="width: 292px;height: 164px; overflow:hidden;" class='auto-scale floatRight'>
-                    <img src="<%= action.image_field ? action.image_field.url ||'' : '' %>" alt=""/>
-                </div> -->
+
+    <div id="minInfo" class="text-box cf" >
+        <h3><span class="arrow"><%=action.type%></span> <span class="blue-title"><%=action.title%></span></h3>
+
+
 				
 				<div id="discussion_image" style="width: 212px;height: 164px; overflow:hidden;" class='auto-scale floatRight'>
                     <img src="<%= action.image_field ? action.image_field.url ||'' : '' %>" alt=""/>
@@ -186,6 +185,72 @@ var error_message = error_message || '';
 			<%=action.required_participants%>
         </div>
     </div>
+
+
+    <div id="fullInfo" class="add-offer text-box cf" style="display: none">
+      <!--  <h2><span class="arrow">פעולת שטח</span> <a href="">מפגינים מול ביתו של שר התשתיות</a></h2>-->
+        <h3><span class="arrow"><%=action.type%></span> <span class="blue-title"><%=action.title%></span></h3>
+        <div class="text-box cf">
+            <div id="discussion_image" style="width: 139px;height: 135px; overflow:hidden;" class='auto-scale floatRight'>
+                <img src="<%= action.image_field ? action.image_field.url ||'' : '' %>" alt=""/>
+                <!--  images/sample-2.jpg" -->
+
+            </div>
+            <!--<img class="floatRight" src="../images/sample-8.jpg" alt="" />-->
+            <div class="details">
+                <div class="detail-date">
+                    <span class="icon"></span>
+                    תאריך:
+						<strong><%=action.from_date.format('dd.mm.yyyy') %></strong> 
+					|  שעה: 
+					<strong><%=action.from_date.format('HH:MM') %>-<%=action.to_date.format('HH:MM') %></strong>
+                </div>
+                <div class="detail-resourse">
+                    <span class="icon"></span>
+                    משאבים נדרשים: <span class="check">אוטובוס</span> <span class="check">דלק</span> <span class="check">מלגזה</span>
+                </div>
+                <div class="detail-ratio">
+                    <span class="icon"></span>
+                    כמות משתתפים רצויה:  <strong class="green">200</strong>  |  כמות משתתפים נוכחית:  <strong class="red">21</strong>
+                </div>
+                <div class="detail-address">
+                    <span class="icon"></span>
+                    מיקום: 
+				<strong><%=action.location?action.location.address:''%></strong>
+                </div>
+            </div>
+            <p>באזורי הפריפריה של ישראל, בצפון הארץ ובדרומה, מסתובבים אלפי קיפודים חסרי בית. הגורם העיקרי שאשם במצבם הוא קבלני העפר
+                והבניין, שהרסו את אזורי המחיה הטבעיים של הקיפודים בעקבות תנופת הפיתוח והבנייה של השנים האחרונות.
+                הקיפודים הם חלק בלתי נפרד מהנוף של ישראל, וקיומם חשוב למגוון הביולוגי ולחקלאות. לכן על מדינת ישראל לאמץ אל ליבה את קיפודיה,
+                להגן עליהם ועל מרחב המחיה שלהם ולשקם את אוכלוסיות הקיפודים שנפגעו.</p>
+            <p>אנחנו מכירים בחשיבות
+                ו מכירים בחשיבות פיתוח הפריפריה בישראל, ואין לנו רצון להקשות על הקבלנים בעבודתם החשובה באמצעות בירוקרטיה נוספת.
+                לכן המהלך להגנת הקיפודים צריך להיעשות קודם כל באמצעות פנייה להתאחדות הקבלנים בתקווה שיבינו את חשיבות הנושא ויחד איתם
+                נקבע כללי התנהלות שיבטיחו את שלומם של כל קיפודי הפריפריה.</p>
+            <p>אין מספיק מודעות בציבור למצוקת הק
+                ו מכירים בחשיבות פיתוח הפריפריה בישראל, ואין לנו רצון להקשות על הקבלנים בעבודתם החשובה באמצעות בירוקרטיה נוספת.
+                לכן המהלך להגנת הקיפודים צריך להיעשות קודם כל באמצעות פנייה להתאחדות הקבלנים בתקווה שיבינו את חשיבות הנושא ויחד איתם
+                נקבע כללי התנהלות שיבטיחו את שלומם של כל קיפודי הפריפריה.</p>
+            <p>אין מספיק מודעות בציבור למצוקת הקפיתוח הפריפריה בישראל, ואין לנו רצון להקשות על הקבלנים בעבודתם החשובה באמצעות בירוקרטיה נוספת.
+                לכן המהלך להגנת הקיפודים צריך להיעשות קודם כל באמצעות פנייה להתאחדות הקבלנים בתקווה שיבינו את חשיבות הנושא ויחד איתם
+                נקבע כללי התנהלות שיבטיחו את שלומם של כל קיפודי הפריפריה.</p>
+            <p>אין מספיק מודעות בציבור למצוקת הקיפודים. דוכן הסברה שיופעל פעם בשבוע במקומות מרכזיים יוכל לשנות את המצב ולקדם את הקמפיין.
+                הצטרפו למאבק ויחד נוכל לשנות את התמונה. גם קיפודים הם בני אדם!<br />
+                <a id="readLess" href="">קרא פחות</a></p>
+        </div>
+        <div class="map">
+            <img src="../images/map.jpg" alt="" />
+            <div class="map-popup">
+                <a class="close" href=""></a>
+                <h4>התעשייה 12, תל אביב</h4>
+                <p><a href="">צפה במפה</a> | <a href="">קבל מסלול נסיעה</a></p>
+            </div>
+        </div>
+
+    </div>
+
+
+
 
     <div class="add-offer-bottom cf">
         <div class="btn-box row-btn-box">
@@ -656,6 +721,22 @@ var error_message = error_message || '';
 
          return model;
      })();
+
+     $('.more-text').click(function (e) {
+         e.preventDefault();
+         $('#minInfo').hide();
+         $('#fullInfo').show();
+         /*   var h=  $(".hidden_textarea").get(0).scrollHeight;
+          $(".discussion_content").height(h);*/
+     });
+
+     $('#readLess').click(function (e) {
+         e.preventDefault();
+         $('#minInfo').show();
+         $('#fullInfo').hide();
+     });
+
+
 
      //start from index 0 loding 2 rows 14*7
      goingModel.loadGoingUsers(0,2);
