@@ -2,14 +2,18 @@
         var unseen_notifications = user_logged && user ? user.unseen_notifications || 0 : 0;
 %>
 
-<div class="user-box .user-box-hover">
+<div class="user-box">
     <%if(unseen_notifications > 0){%><span class="total-number"> <%=unseen_notifications%></span><%}%>
 
     <%if(user_logged && user){%>
     <a href="/myuru">
         <span class="icon"></span>
     </a>
-    <%}else{%> <span class="icon"></span><%}%>
+    <%}else{%>
+    <label for="user_box_email">
+        <span class="icon"></span>
+    </label>
+    <%}%>
     <h2 id="login_head">
         <%if(user_logged && user){%><%=user.first_name%><%}else{%>התחבר<%}%>
     </h2>
@@ -34,7 +38,7 @@
         <%}else{%>
         <!--action="/account/login"-->
         <form id="register_form" >
-            <input name="email" type="email" placeholder='דוא"ל'/>
+            <input id="user_box_email" name="email" type="email" placeholder='דוא"ל'/>
             <input name="password" type="password" placeholder="סיסמא" />
             <a class="forgot_password" href="/account/forgot_password">
                 שכחת סיסמא?
@@ -61,6 +65,14 @@
                 email: 'הכנס דוא"ל',
                 password: 'הכנס סיסמא'
             }
+        });
+
+        var userBox = $('.user-box');
+        userBox.focusin(function () {
+            userBox.addClass('active');
+        });
+        userBox.focusout(function () {
+            userBox.removeClass('active');
         });
     });
     var mail = "<%= (user && user.email) || '' %>";

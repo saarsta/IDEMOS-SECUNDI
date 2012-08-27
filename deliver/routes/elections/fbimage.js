@@ -5,21 +5,27 @@ var async = require("async");
 var createHash = require('crypto').createHash;
 var util = require('util');
 
+var url2png = function (req, url, viewport, fullpage, thumbnail_max_width) {
+    var apikey = req.app.settings.url2png_api_key,
+        secret = req.app.settings.url2png_api_secret,
+        target = util.format('%s&viewport=%s&fullpage=%s&thumbnail_max_width=%s',
+            encodeURIComponent(url),
+            viewport,
+            fullpage ? 'true' : 'false',
+            thumbnail_max_width
+        ),
+        token = createHash('md5').update(target + secret).digest('hex');
+
+    return util.format('http://beta.url2png.com/v6/%s/%s/png/?%s',
+        apikey,
+        token,
+        target
+    );
+};
 
 module.exports = function(req, res) {
     if (req.method =='POST') {
-        var users_fbimage_url = 'http://www.uru.org.il' + req.path;
-        var md5 = createHash('md5');
-        md5.update(req.app.settings.url2png_api_secret);
-        md5.update('+');
-        md5.update(users_fbimage_url);
-        var security_hash = md5.digest('hex');
-        var target_url = util.format('http://api.url2png.com/v3/%s/%s/%s/%s',
-            req.app.settings.url2png_api_key,
-            security_hash,
-            '500x500',
-            users_fbimage_url
-        );
+        var target_url = url2png(req, 'http://www.uru.org.il' + req.path, '750x750', true, 500);
         res.send({target_url: target_url});
         return;
     }
@@ -32,7 +38,10 @@ module.exports = function(req, res) {
         res.render('fbimage.ejs', {
             layout: false,
             url: req.url,
-            items: items.map(function(dis) { return {title: dis.title, text: dis.text_field_preview}; })
+            items: items.map(function(dis) {
+                var textParts = dis.title.split(':', 2);
+                return {title: textParts[0], text: textParts[1]};
+            })
         });
     })
 };
