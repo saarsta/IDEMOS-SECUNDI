@@ -67,14 +67,14 @@ module.exports = function(req, res) {
             var discussion_ids = Object.keys(req.body).map(discussion_google_to_objid).filter(function(x){return x});
             models.User.findByIdAndUpdate(user._id, {has_voted: discussion_ids}, cbk);
         },
-        // delete user from session if needed
+        // delete user from session to trigger reload of the user object or logout
         function(cbk) {
-            if(!req.session.delete) {
-                cbk();
-                return;
+            if(req.session.delete) {
+                req.logout(cbk)
+            } else {
+                delete req.session.user;
+                req.session.save(cbk);
             }
-            delete req.session.user;
-            req.session.save(cbk);
         }],
         // respond
         function(err) {
