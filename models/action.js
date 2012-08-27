@@ -16,8 +16,8 @@ var Action = module.exports = new Schema({
     type: {type:String, "enum":[
         'הצעה לפעולת שטח', 'בלה בלה'
     ]}, //only admin can change this
-    description:String,
-    creator_id:{type:ObjectId, ref:'User', index:true, required:true},
+    description: String,
+    creator_id: {type:ObjectId, ref:'User', index:true, required:true},
     first_name: {type: String, editable:false},
     last_name: {type: String, editable:false},
     cycle_id:{type:ObjectId, ref:'Cycle', index:true, required:true},
@@ -29,7 +29,7 @@ var Action = module.exports = new Schema({
     users:[
         new Schema({user_id:{type:ObjectId, ref:'User'}, join_date: {type:Date, 'default':Date.now}})
     ],
-    execution_date:{date: {type:Date}, duration: {type: Number}},//change default
+        execution_date:{date: {type:Date}, duration: {type: Number}},//change default
 
     creation_date:{type:Date, 'default':Date.now},
     required_participants:{type:Number, 'default':0},
