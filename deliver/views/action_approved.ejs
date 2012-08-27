@@ -616,8 +616,7 @@ var error_message = error_message || '';
 
          function setJoinBT(data){
              var isGoing=data.is_going;
-             debugger;
-             var user = data.user;
+             var user = data.map_join_to_user;
              var text= isGoing?
                      'עזוב'
                      :
@@ -633,7 +632,9 @@ var error_message = error_message || '';
 
              }else{
                //  $('#participant').children().first().remove();
+                 $('#participant').find('[data-user_id="'+my_id +'"]').remove();
                  goingUsers--;
+
              }
              setGoingNumber(goingUsers);
 
