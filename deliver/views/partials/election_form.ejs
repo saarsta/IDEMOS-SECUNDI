@@ -173,7 +173,7 @@ $(function() {
 		var $this = $(this),
             checked = $this.is(':checked');
 
-		if (!checked && $('.checkBox:checked').length === 5) {
+		if (checked && $('.checkBox:checked').length === 5) {
 			popupProvider.showOkPopup({message: 'באפשרותך לבחור עד 5 הצעות.'});
             event.preventDefault();
 		}
@@ -212,14 +212,16 @@ $(function() {
 	$('#send-vote,#send_vote_1').on('click', function(e) {
         e.preventDefault();
 
+        if ($('.checkBox:checked').length > 5) {
+            popupProvider.showOkPopup({message: 'באפשרותך לבחור עד 5 הצעות.'});
+            return false;
+        }
+
         var validationErrors = $('#user-signup').validate().errorList;
         if(validationErrors.length > 0){
-            popupProvider.showOkPopup(
-                    {
-                        message: validationErrors[0].message
-                    }
-            );
-
+            popupProvider.showOkPopup({
+                message: validationErrors[0].message
+            });
             return false;
         }
 
