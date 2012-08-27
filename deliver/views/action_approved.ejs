@@ -593,7 +593,7 @@ var error_message = error_message || '';
                   userInBrowserCount=userInBrowserCount+data.objects.length;
                   goingUsers=data.meta.total_count;
                  dust.renderArray('action_participant_user',data.objects ,null, function (err, out){
-                    $('#participant').prepend(out);
+                    $('#participant').append(out);
                  })
                  if (goingUsers >userInBrowserCount ) {
                      $(".more-deals").show();
@@ -616,6 +616,7 @@ var error_message = error_message || '';
 
          function setJoinBT(data){
              var isGoing=data.is_going;
+             debugger;
              var user = data.user;
              var text= isGoing?
                      'עזוב'
@@ -626,7 +627,7 @@ var error_message = error_message || '';
              if(isGoing){ //add the user to first plase;
                  goingUsers++;
                  dust.render('action_participant_user',user,function(err, out){
-                     $('#participant').append(out);
+                     $('#participant').prepend(out);
                  });
 
 
