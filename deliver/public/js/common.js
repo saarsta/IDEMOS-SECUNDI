@@ -218,10 +218,6 @@ $(function(){
         window.location.replace(link);
     })
 
-    $('user-box').live('tap', function(){
-        $(this).toggleClass('active');
-    })
-
     $('#register_form').submit(function() {
         // get all the inputs into an array.
         var $inputs = $('#register_form :input');
