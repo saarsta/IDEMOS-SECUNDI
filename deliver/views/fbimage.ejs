@@ -3,93 +3,59 @@
 <html>
 <head>
     <style>
-    body{
-        margin:0;
-        padding:0;
-        direction: rtl;
-    }
-     #navcontainer
-     {
+        body {
+            margin: 0px auto;
+            padding: 0;
+            direction: rtl;
+            width: 750px;
+        }
 
-         position:absolute;
+        #navcontainer {
+            width: 100%;
+            font-family: Arial;
+            font-size: 20pt;
+            text-align: right;
+            padding-top: 457px;
+            background: #EDEDED url('/images/fbimage-top.png') no-repeat top center;
+        }
 
-         background: #eee;
-   /*      width: 678px;      */
-         width:100%;
-         font-family: Arial;
-         font-size: 38px;
-         text-align: right;
-         padding-top: 457px;
-         background:  #dedede url('/images/fbimage-top.png') no-repeat top center;
-     }
+        ul#navlist {
+            list-style: none;
+            padding: 0;
+            margin: 0 auto;
+            width: 96%;
 
-     ul#navlist
-     {
-         list-style: none;
-         padding: 0;
-         margin: 0 auto;
-      /*   width: 664px;   */
-        width:96%;
-     }
+            border: 1px solid transparent; /* this prevents ul and li margins from collapsing into each other */
+        }
 
-     ul#navlist li
-     {
-         display: block;
-         margin: 10px 0;
-         padding: 0;
-         display: block;
-         padding:  0.3em 3.4em 0.5em 0.5em;
-         border-width: 2px;
-         border-color: #ffe #aaab9c #ccc #fff;
-         border-style: solid;
-         color: #000;
-         text-decoration: none;
-         position:relative;
-         background: #FFFFFF;
+        ul#navlist li {
+            display: block;
+            margin: 10px 0;
+            padding: 0.3em 3.0em 0.5em 0.5em;
+            background: #ffffff;
+        }
 
-
-
-
-       /*
-         height: 24px;
-         overflow: hidden;
-         text-overflow: ellipsis;
-         white-space: nowrap;
-         */
-     }
-     .checkbox
-     {
-
-
-            background-attachment: scroll;
-            background-clip: border-box;
-            background-color: #FFFFFF;
-            background-image: url("../../images/elections/v1.png");
-            background-origin: padding-box;
-            background-position: left top;
-            background-repeat: no-repeat;
-            background-size: 40px 40px;
-            height: 50px;
-            position: absolute;
-            right: 40px;
-            top: 17px;
-            width: 50px;
-     }
-
-
+        .checkbox {
+            display: inline-block;
+            background: url("../../images/elections/v1.png") no-repeat top right;
+            background-size: 40px 40px;;
+            padding-right: 50px;
+            min-height: 40px;
+        }
     </style>
-
 </head>
 <body>
 
-   <div id="navcontainer">
-
-   <ul id="navlist">
-     <% for (var i = 0; i < items.length && i < 8 ; i++) { %>
-               <li> <div class="checkbox"> </div> <b><%=items[i].title%>:</b> <%=items[i].text %> </li>
-     <% } %>
-
-   </ul>
-   </div>
+<div id="navcontainer">
+    <ul id="navlist">
+        <% for (var i = 0; i < items.length && i < 8 ; i++) { %>
+        <li>
+            <span class="checkbox">
+                <b><%=items[i].title%>:</b> <%=items[i].text %>
+            </span>
+        </li>
+        <% } %>
+    </ul>
+</div>
 </body>
 </html>

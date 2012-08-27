@@ -38,7 +38,10 @@ module.exports = function(req, res) {
         res.render('fbimage.ejs', {
             layout: false,
             url: req.url,
-            items: items.map(function(dis) { return {title: dis.title, text: dis.text_field_preview}; })
+            items: items.map(function(dis) {
+                var textParts = dis.title.split(':', 2);
+                return {title: textParts[0], text: textParts[1]};
+            })
         });
     })
 };
