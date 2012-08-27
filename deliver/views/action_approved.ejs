@@ -175,7 +175,7 @@ var error_message = error_message || '';
         </div>
         <div class="add-offer-info m-2">
             מיקום: 
-			<strong><%=action.location%></strong>
+			<strong><%=action.location?action.location.address:''%></strong>
         </div>
         <p><%-action.text_field%></p>
 
@@ -615,7 +615,7 @@ var error_message = error_message || '';
          })
 
          function setJoinBT(data){
-             var isGoing=data.is_going;
+             var isGoing=(data.map_join_to_user !==undefined);
              var user = data.map_join_to_user;
              var text= isGoing?
                      'עזוב'
@@ -625,7 +625,7 @@ var error_message = error_message || '';
               // it's assmoes that me is the first user;
              if(isGoing){ //add the user to first plase;
                  goingUsers++;
-                 dust.render('action_participant_user',user,function(err, out){
+                 dust.render('action_participant_user',data,function(err, out){
                      $('#participant').prepend(out);
                  });
 
