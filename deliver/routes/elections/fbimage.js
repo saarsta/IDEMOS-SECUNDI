@@ -8,7 +8,7 @@ var util = require('util');
 var url2png = function (req, url, viewport, fullpage, thumbnail_max_width) {
     var apikey = req.app.settings.url2png_api_key,
         secret = req.app.settings.url2png_api_secret,
-        target = util.format('url=%s&viewport=%s&fullpage=%s&thumbnail_max_width=%s',
+        target = util.format('url=%s&viewport=%s&fullpage=%s&thumbnail_max_width=%s&force=true',
             encodeURIComponent(url),
             viewport,
             fullpage ? 'true' : 'false',
