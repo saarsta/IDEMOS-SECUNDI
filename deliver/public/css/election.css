@@ -148,7 +148,7 @@ div.down-text p {
 
 div.vote-container-non-reg {
 	height: 120px;
-	background: #50504f url(../images/elections/o.png) no-repeat center;
+	background: #50504f;
 }
 
 div.vote-container-non-reg div.inarea {
@@ -175,7 +175,7 @@ div.down-text-non-reg p {
 }
 
 div.reg-container {
-	width: 900px;
+	width: 790px;
 	margin: 0 auto;
 }
 
@@ -186,7 +186,6 @@ div.vote-container div.reg-container {
 div.reg-container .rightone {
 	float: right;
 	width: 290px;
-	margin-right: 110px;
 }
 
 div.reg-container .rightone p {
@@ -202,10 +201,17 @@ div.reg-container .rightone img {
 	margin: 25px 5px 0 0;
 }
 
+div.reg-container .middleone {
+    background: url(../images/elections/o.png) no-repeat center;
+    float: right;
+    width: 87px;
+    height: 120px;
+}
+
 div.reg-container .leftone {
 	float: right;
 	width: 400px;
-	margin: 25px 100px 0 0;
+	margin: 25px 13px 0 0;
 }
 
 .design2{
@@ -215,12 +221,6 @@ div.reg-container .leftone {
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	border-radius: 4px;
-}
-
-label#id1 {
-	float: right;
-	display: block;
-	margin-left: 7px;
 }
 
 #box-share {
