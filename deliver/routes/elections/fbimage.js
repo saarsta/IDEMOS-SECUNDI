@@ -24,7 +24,7 @@ var url2png = function (req, url, viewport, fullpage, thumbnail_max_width) {
 
 module.exports = function(req, res) {
     if (req.method =='POST') {
-        var target_url = url2png(req, 'http://uru-staging.herokuapp.com' + req.path, '750x750', true, 750);
+        var target_url = url2png(req, 'http://uru-staging.herokuapp.com' + req.path, '830x830', true, 830);
         res.send({target_url: target_url});
         return;
     }
