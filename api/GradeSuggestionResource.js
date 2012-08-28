@@ -91,6 +91,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
         var real_threshold;
         var grade_id;
         var proxy_power = req.user.num_of_given_mandates ? 1 + req.user.num_of_given_mandates * 1 / 9 : 1;
+        var discussion_obj;
 
         async.waterfall([
 
@@ -108,6 +109,8 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                         if (err || !obj)
                             cbk(err || {code:404, message:"the is no such discussion"}, null);
                         else {
+                            discussion_obj = obj;
+
                             //if the creator of the discussion grade the suggestion without grdein the discussion - its ok
                             // otherwise unauthorise
                             if (req.user._id + "" != obj.creator_id + "")
@@ -203,6 +206,16 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                                 cbk1(err);
                             })
                         })
+                    },
+
+                    //add user to be part of the discussion
+                    function(cbk1){
+                        if (! _.any(discussion_obj.users, function(user){ return user.user_id + "" == req.user.id})){
+                            var new_user = {user_id: req.user._id, join_date: Date.now()};
+                            models.Discussion.update({_id: discussion_obj._id}, {$addToSet:{users: new_user}}, function(err, num){cbk1(err, num)});
+                        }else{
+                            cbk1(null, null);
+                        }
                     }
                 ], function (err, args) {
                     cbk(err, args);

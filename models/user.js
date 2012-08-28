@@ -22,6 +22,7 @@ var User = module.exports = new Schema({
 
     //this is for validation
     is_activated: {type: Boolean, 'default': false},
+    is_suspended: {type: Boolean, 'default': false},
     identity_provider:{type:String, "enum":['facebook', 'register']},
     facebook_id:String,
     access_token:String,

@@ -23,7 +23,14 @@ var db_functions = {
                     }
                 });
             } else if (xhr.responseText == 'not_activated') {
-                notActivatedPopup();
+                var message = 'ההרשמה לאתר לא הושלמה, על מנת להמשיך לחץ על הלינק שנשלח לתיבת הדואר שלך.' +
+                    '<br />' +
+                    'לשליחה חוזרת לחץ ' +
+                '<a href="/account/activation">כאן</a>'
+                notActivatedPopup(message);
+            } else if (xhr.responseText == 'suspended') {
+                var message = "הושעת מהמערכת עקב החלטת מוביל תחום. אם ברצונך לקבל פרטים נוספים או לערער על ההחלטה, אנא שלח מייל לmovilim@uru.org.il.";
+                notActivatedPopup(message);
             } else if (xhr.responseText == 'Error: Unauthorized - there is not enought tokens') {
 
                 alert("אין מספיק אסימונים בשביל לבצע פעולה זו");
@@ -955,9 +962,6 @@ var db_functions = {
                             curr_cycle = follower.cycles[i];
 
                     }
-//                    var curr_cycle =  $.find(follower.cycles, function(cycle){
-//                        return cycle.cycle_id == cycle_id;
-//                    });
 
                     return {
 
