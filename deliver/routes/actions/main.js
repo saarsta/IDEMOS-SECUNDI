@@ -64,8 +64,6 @@ module.exports = function (req, res) {
                 res.render('404.ejs');
             else {
 
-                action.location =
-                    'התעשייה 12, תל אביב';
 
                 action.from_date= action.execution_date.date;
                // action.to_date= action.from_date.addHours(action.execution_date.duration);

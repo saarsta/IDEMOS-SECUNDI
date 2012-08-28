@@ -8,14 +8,13 @@ var util = require('util');
 var url2png = function (req, url, viewport, fullpage, thumbnail_max_width) {
     var apikey = req.app.settings.url2png_api_key,
         secret = req.app.settings.url2png_api_secret,
-        target = util.format('%s&viewport=%s&fullpage=%s&thumbnail_max_width=%s',
+        target = util.format('url=%s&viewport=%s&fullpage=%s&thumbnail_max_width=%s&force=true',
             encodeURIComponent(url),
             viewport,
             fullpage ? 'true' : 'false',
             thumbnail_max_width
         ),
         token = createHash('md5').update(target + secret).digest('hex');
-
     return util.format('http://beta.url2png.com/v6/%s/%s/png/?%s',
         apikey,
         token,
@@ -25,7 +24,7 @@ var url2png = function (req, url, viewport, fullpage, thumbnail_max_width) {
 
 module.exports = function(req, res) {
     if (req.method =='POST') {
-        var target_url = url2png(req, 'http://www.uru.org.il' + req.path, '750x750', true, 500);
+        var target_url = url2png(req, 'http://uru-staging.herokuapp.com' + req.path, '830x830', true, 830);
         res.send({target_url: target_url});
         return;
     }

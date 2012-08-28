@@ -6,10 +6,14 @@ var error_message = error_message || '';
 <html>
 <head>
 <!--<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# <%= settings.facebook_app_name %>: http://ogp.me/ns/fb/<%= settings.facebook_app_name %>#">-->
-    <% include partials/head.ejs %>
+
+
+   <% include partials/head.ejs %>
+
     <script src="/js/jquery-fieldselection.js" type="text/javascript"></script>
     <script src="/plugins/ckeditor/ckeditor.js"></script>
     <script src="/plugins/ckeditor/adapters/jquery.js"></script>
+    <script src="http://maps-api-ssl.google.com/maps/api/js?v=3&sensor=false&language=he"  type="text/javascript"></script>
 
   <!--  <meta property="fb:app_id" content="<XXX%= settings.facebook_app_id %>" />
     <meta property="og:type"   content="<XXX%= settings.facebook_app_name %>:discussion" />
@@ -155,12 +159,11 @@ var error_message = error_message || '';
    <h2>
   
 	</h2>
-    <div class="text-box cf">
-         <h3><span class="arrow"><%=action.type%></span> <span class="blue-title"><%=action.title%></span></h3>
-       
-			 <!--<div id="discussion_image" style="width: 292px;height: 164px; overflow:hidden;" class='auto-scale floatRight'>
-                    <img src="<%= action.image_field ? action.image_field.url ||'' : '' %>" alt=""/>
-                </div> -->
+
+    <div id="minInfo" class="text-box cf" >
+        <h3><span class="arrow"><%=action.type%></span> <span class="blue-title"><%=action.title%></span></h3>
+
+
 				
 				<div id="discussion_image" style="width: 212px;height: 164px; overflow:hidden;" class='auto-scale floatRight'>
                     <img src="<%= action.image_field ? action.image_field.url ||'' : '' %>" alt=""/>
@@ -175,17 +178,82 @@ var error_message = error_message || '';
         </div>
         <div class="add-offer-info m-2">
             מיקום: 
-			<strong><%=action.location%></strong>
+			<strong><%=action.location?action.location.address:''%></strong>
         </div>
-        <p><%-action.text_field%></p>
+           <div style="overflow: hidden;height: 51px">
+            <p><%-action.text_field%></p>
+           </div>
+
 
         <a class="more-text" href="">קרא עוד</a>
-        <a class="less-text" href="">קרא עוד</a>
+       <!-- <a class="less-text" href="">קרא עוד</a>-->
         <div class="add-offer-users">
             כמות משתתפים רצויה:
 			<%=action.required_participants%>
         </div>
     </div>
+
+
+    <div id="fullInfo" class="add-offer text-box cf" style="display: none">
+      <!--  <h2><span class="arrow">פעולת שטח</span> <a href="">מפגינים מול ביתו של שר התשתיות</a></h2>-->
+        <h3><span class="arrow"><%=action.type%></span> <span class="blue-title"><%=action.title%></span></h3>
+        <div class="text-box cf">
+            <div id="discussion_image" style="width: 139px;height: 135px; overflow:hidden;" class='auto-scale floatRight'>
+                <img src="<%= action.image_field ? action.image_field.url ||'' : '' %>" alt=""/>
+                <!--  images/sample-2.jpg" -->
+
+            </div>
+            <!--<img class="floatRight" src="../images/sample-8.jpg" alt="" />-->
+            <div class="details">
+                <div class="detail-date">
+                    <span class="icon"></span>
+                    תאריך:
+						<strong><%=action.from_date.format('dd.mm.yyyy') %></strong> 
+					|  שעה: 
+					<strong><%=action.from_date.format('HH:MM') %>-<%=action.to_date.format('HH:MM') %></strong>
+                </div>
+                <div class="detail-resourse">
+                    <span class="icon"></span>
+                    משאבים נדרשים:
+					<% for (var i=0;i < action.action_resources.length;i++){%>
+                         <span class="check"><%=action.action_resources[i].resource.name %></span>
+                    <% } %>
+					
+                </div>
+                <div class="detail-ratio">
+                    <span class="icon"></span>
+                    כמות משתתפים רצויה:  
+					<strong class="green"><%=action.required_participants %></strong>
+					|  כמות משתתפים נוכחית:  
+					<strong class="red going_red"></strong>
+                </div>
+                <div class="detail-address">
+                    <span class="icon"></span>
+                    מיקום: 
+				<strong><%=action.location?action.location.address:''%></strong>
+                </div>
+            </div>
+			 <p><%-action.text_field%></p>
+					
+                <a id="readLess" class="read_less" href="">
+				קרא פחות
+				</a></p>
+        </div>
+
+            <div id="map" class="map" style="width:691px ;height:125px ">
+                <!--<img src="../images/map.jpg" alt="" />
+                <div class="map-popup">
+                    <a class="close" href=""></a>
+                    <h4>התעשייה 12, תל אביב</h4>
+                    <p><a href="">צפה במפה</a> | <a href="">קבל מסלול נסיעה</a></p>
+                </div>-->
+            </div>
+
+
+    </div>
+
+
+
 
     <div class="add-offer-bottom cf">
         <div class="btn-box row-btn-box">
@@ -306,7 +374,6 @@ var error_message = error_message || '';
     </div>
 </div>
 
-
 <% include partials/footer.ejs %>
 
  <script type="text/javascript">
@@ -355,10 +422,12 @@ var error_message = error_message || '';
      function setGoingNumber(number) {
 
          $('#going_number')[0].innerHTML = '(' + number + ')';
+         $('.going_red').html(number);
      }
      function setUserScore(userID, score) {
          $('[ data-creator_id=' + userID + ']').find('.score').empty().append(score);
      }
+
 
 
 
@@ -379,6 +448,7 @@ var error_message = error_message || '';
                         new_post_ref_id = null;
                         postsNumber++;
                         setCommentNumber(postsNumber);
+
                     });
                 }
             })
@@ -460,7 +530,8 @@ var error_message = error_message || '';
 
 
 
-      $('.more_comments').click(function() {
+
+     $('.more_comments').click(function() {
           loadPosts();
       });
 
@@ -617,7 +688,9 @@ var error_message = error_message || '';
              model.loadMoreUsers();
          })
 
-         function setJoinBT(isGoing){
+         function setJoinBT(data){
+             var isGoing=(data.map_join_to_user !==undefined);
+             var user = data.map_join_to_user;
              var text= isGoing?
                      'עזוב'
                      :
@@ -626,9 +699,16 @@ var error_message = error_message || '';
               // it's assmoes that me is the first user;
              if(isGoing){ //add the user to first plase;
                  goingUsers++;
+                 dust.render('action_participant_user',data,function(err, out){
+                     $('#participant').prepend(out);
+                 });
+
+
              }else{
                //  $('#participant').children().first().remove();
+                 $('#participant').find('[data-user_id="'+my_id +'"]').remove();
                  goingUsers--;
+
              }
              setGoingNumber(goingUsers);
 
@@ -642,7 +722,8 @@ var error_message = error_message || '';
                      console.log(err) ;
                  }
                  else{
-                     setJoinBT(data.is_going);
+                     setJoinBT(data);
+
                  }
              })
          });
@@ -650,9 +731,55 @@ var error_message = error_message || '';
          return model;
      })();
 
+     $('.more-text').click(function (e) {
+         e.preventDefault();
+         $('#minInfo').hide();
+         $('#fullInfo').show();
+         init_map('map', new google.maps.LatLng(-34.397, 150.644));
+         /*   var h=  $(".hidden_textarea").get(0).scrollHeight;
+          $(".discussion_content").height(h);*/
+     });
 
+     $('#readLess').click(function (e) {
+         e.preventDefault();
+         $('#minInfo').show();
+         $('#fullInfo').hide();
+     });
+
+
+
+
+     //start from index 0 loding 2 rows 14*7
      goingModel.loadGoingUsers(0,2);
      loadPosts();
+
+
+     function init_map( id , center){
+         var myOptions = {
+             zoom: 11,
+             center: center,
+             mapTypeId: google.maps.MapTypeId.ROADMAP
+         };
+         var map = new google.maps.Map(document.getElementById( id ), myOptions);
+       //  maps[ id ] = map;
+         return map;
+     }
+
+//     var maps = new Array();
+ //   init_map('map', new google.maps.LatLng(-34.397, 150.644));
+/*
+     function initialize() {
+         var mapOptions = {
+             center: new google.maps.LatLng(-34.397, 150.644),
+             zoom: 8,
+             mapTypeId: google.maps.MapTypeId.ROADMAP
+         };
+         var map = new google.maps.Map(document.getElementById("map"),
+                 mapOptions);
+     }*/
+
+
+   //  initialize();
        
  });
  </script>
