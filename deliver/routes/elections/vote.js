@@ -8,20 +8,21 @@ var discussion_google_to_objid = function(value, idx, collection) {
     return discussion_google_to_objid.mapping[value];
 };
 discussion_google_to_objid.mapping = {
-    'entry.6.group':  '6',
+    'entry.6.group':  '6', // חינוך טוב יותר
     'entry.7.group':  '502cefe6abfc52020000002a',
     'entry.25.group': '502117271aff910200000c14',
-    'entry.23.group': '23',
-    'entry.21.group': '21',
+    'entry.23.group': '23', // הוזלת הדיור
+    'entry.21.group': '21', // שיפור תנאים
     'entry.19.group': '5022def369668c0200020d1e',
-    'entry.17.group': '17',
-    'entry.15.group': '15',
+    'entry.17.group': '17', // מאבק בעבריינות
+    'entry.15.group': '15', // יותר שוטרים ברחוב
     'entry.13.group': '5023af9b61a325020000efbe',
     'entry.11.group': '501e69e17555f60200001f2e',
     'entry.9.group':  '502a91a90893a502000000ce',
     'entry.31.group': '5030eaf0e840450200000412',
     'entry.33.group': '4ff436ba47d7fa010000071f',
-    'entry.35.group': '4fcdf7180a381201000005b3'
+    'entry.35.group': '4fcdf7180a381201000005b3',
+    'entry.37.single': '37' // העלה הצעה משלך
 };
 
 
