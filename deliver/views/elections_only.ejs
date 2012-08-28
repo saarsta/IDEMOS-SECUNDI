@@ -4,15 +4,20 @@
 <head>
     <% include partials/head_home.ejs %>
     <style>
+        body {
+            width: 795px;
+            margin: 0px auto;
+            background: none;
+        }
         ul#display-inline-block-example {
             width: 475px;
             margin: 0 auto;
         }
         div.what {
             width: 665px;
-            margin: 0 auto -36px auto;
+            padding: 0;
+            margin: 0;
             background-position: -125px 10px;
-            padding-top: 120px;
         }
         ul#display-inline-block-example li {
             display: block;
@@ -23,6 +28,16 @@
         div.main-thing-in {
             width: 665px;
             margin: 0;
+        }
+        div.reg-container {
+            width: 590px;
+            margin: 0 auto;
+        }
+        div.reg-container .leftone {
+            width: 200px;
+        }
+        .user-signup input {
+            display:block;
         }
     </style>
 </head>

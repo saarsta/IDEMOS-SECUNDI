@@ -3616,20 +3616,29 @@ h2 small
     text-decoration: none;
     margin-right: 7px;
 }
-.rightCol .nav-btn .number
+.rightCol .nav-btn .interesting
 {
-    font: normal 20px/32px 'AdumaFOTRegular';
-    border: 1px solid #d4d5d6;
-    width: 33px;
-    height: 29px;
+    background: url("../images/interesting.png") no-repeat scroll 0 -24px transparent;
+    border: medium none;
+    border-radius: 2px 2px 2px 2px;
+    color: #50504F;
     float: left;
-    background:#fcfcf1;
-    border-radius: 2px;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
+    font: 20px/32px 'AdumaFOTRegular';
+    height: 20px;
+    margin-top: 6px;
     text-align: center;
-    color:#50504f;
+    width: 33px;
 }
+.rightCol .nav-btn .interesting.on
+{
+    background-position: 0 0 ;
+}
+.rightCol .nav-btn .intersting:hover
+{
+    background-position: 0 0 ;
+}
+
+
 .rightCol .text
 {
     background:#fff;
