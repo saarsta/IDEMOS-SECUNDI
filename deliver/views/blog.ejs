@@ -138,7 +138,7 @@
                         </a>
                     </div>
 
-                    <a class="subscribe" data-not-follow-text="" data-follow-text="הרשם לבלוג" data-put-url="/api/follow_blog/<%=user._id%>" href="javascript:void()" title="עקוב אחרי הבלוג באמצעות הפיד באתר עורו">
+                    <a class="subscribe" data-not-follow-text="הפסק לעקוב" data-follow-text="הרשם לבלוג" data-put-url="/api/follow_blog/<%=user._id%>" href="javascript:void()" title="עקוב אחרי הבלוג באמצעות הפיד באתר עורו">
                         <% if (articles[0].is_blog_follower) { %>     הרשם לבלוג      <% } else {%> הפסק לעקוב <% } %>
                     </a>
 
@@ -342,7 +342,6 @@ function getComments(article_id) {
             url: button.data('put-url'),
             data: {blog_id: bloggerId, mail: $('.email-registration input').val()},
             success: function (result) {
-
                 button.text(result.is_follower ? button.data('not-follow-text') : button.data('follow-text'));
             }
         });
