@@ -180,7 +180,7 @@ var error_message = error_message || '';
             מיקום: 
 			<strong><%=action.location?action.location.address:''%></strong>
         </div>
-           <div style="overflow: hidden;height: 51px">
+           <div class="action-text-overflow" >
             <p><%-action.text_field%></p>
            </div>
 
@@ -194,7 +194,7 @@ var error_message = error_message || '';
     </div>
 
 
-    <div id="fullInfo" class="add-offer text-box cf" style="display: none">
+    <div id="fullInfo" class="add-offer text-box cf fullInfo" style="display: none">
       <!--  <h2><span class="arrow">פעולת שטח</span> <a href="">מפגינים מול ביתו של שר התשתיות</a></h2>-->
         <h3><span class="arrow"><%=action.type%></span> <span class="blue-title"><%=action.title%></span></h3>
         <div class="text-box cf">
@@ -375,19 +375,18 @@ var error_message = error_message || '';
 </div>
 
 <% include partials/footer.ejs %>
+<% include partials/action_common.ejs %>
 
  <script type="text/javascript">
 
-
-
-
  var action_id='<%=action._id%>';
+ var my_id = "<%=user_logged ? user._id : ''%>";
  $(document).ready(function () {
 
      var new_post_ref_id = null;  //if not null =>the create new post is connected to anther post
      var action_title = "<%= action.title%>"
      var discussion_img_field_preview = "<%= action.image_field ? action.image_field.url ||'' : '' %>";
-     var my_id = "<%=user_logged ? user._id : ''%>";
+
 
      <%
      if (user_logged) { %>
@@ -419,11 +418,11 @@ var error_message = error_message || '';
          $('#comments_number')[0].innerHTML = '(' + number + ')';
      }
 
-     function setGoingNumber(number) {
+    /* function setGoingNumber(number) {
 
          $('#going_number')[0].innerHTML = '(' + number + ')';
          $('.going_red').html(number);
-     }
+     }*/
      function setUserScore(userID, score) {
          $('[ data-creator_id=' + userID + ']').find('.score').empty().append(score);
      }
@@ -645,7 +644,7 @@ var error_message = error_message || '';
 	    */
 
 
-     var goingModel=(function(){
+   /*  var goingModel=(function(){
 
          var goingUsers;
          var  userInBrowserCount=0
@@ -729,59 +728,14 @@ var error_message = error_message || '';
          });
 
          return model;
-     })();
-
-     $('.more-text').click(function (e) {
-         e.preventDefault();
-         $('#minInfo').hide();
-         $('#fullInfo').show();
-         init_map('map', new google.maps.LatLng(-34.397, 150.644));
-         /*   var h=  $(".hidden_textarea").get(0).scrollHeight;
-          $(".discussion_content").height(h);*/
-     });
-
-     $('#readLess').click(function (e) {
-         e.preventDefault();
-         $('#minInfo').show();
-         $('#fullInfo').hide();
-     });
-
-
+     })();*/
 
 
      //start from index 0 loding 2 rows 14*7
-     goingModel.loadGoingUsers(0,2);
+     window.uru.goingModel.loadGoingUsers(0,2);
      loadPosts();
-
-
-     function init_map( id , center){
-         var myOptions = {
-             zoom: 11,
-             center: center,
-             mapTypeId: google.maps.MapTypeId.ROADMAP
-         };
-         var map = new google.maps.Map(document.getElementById( id ), myOptions);
-       //  maps[ id ] = map;
-         return map;
-     }
-
-//     var maps = new Array();
- //   init_map('map', new google.maps.LatLng(-34.397, 150.644));
-/*
-     function initialize() {
-         var mapOptions = {
-             center: new google.maps.LatLng(-34.397, 150.644),
-             zoom: 8,
-             mapTypeId: google.maps.MapTypeId.ROADMAP
-         };
-         var map = new google.maps.Map(document.getElementById("map"),
-                 mapOptions);
-     }*/
-
-
-   //  initialize();
-       
  });
  </script>
+
 </body>
 </html>
