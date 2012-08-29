@@ -32,17 +32,6 @@ module.exports = function(req,res) {
                                 });
                             }
                         });
-//
-//                        res.render('blog.ejs', {
-//                            title:"בלוגים",
-//                            isBlog:false,
-//                            articles:[article],
-//                            tab:'articles',
-//                            blogger: article.user_id,
-//                            user: req.session.user,
-//                            user_logged: req.isAuthenticated(),
-//                            tags: article.tags
-//                        });
                 }
 
             }

@@ -79,7 +79,7 @@ var User = module.exports = new Schema({
     blog_title: String,
     blog_sub_titile: String,
     blog_text_1: String,
-    blog_text_2: String,
+    blog_text_2: {type:mongoose_types.Text},
     blog_text_3: String,
     opinion_text: String,
     sent_mail: {type:Date},
