@@ -132,10 +132,15 @@
                     <!--</div>-->
  		<div class="email-registration btns-box cf">
                         <input type="text" class="floatLeft"></input>
-                        <a class="floatLeft" href="javascript:void(0)">הרשמה במייל</a>
+                        <a class="floatLeft" data-not-follow-text="הפסק לעקוב" data-follow-text="הרשמה במייל" data-put-url="/api/follow_blog_by_mail/<%=user._id%>" href="javascript:void(0)">
+                            <% if (articles[0].is_blog_follower_by_mail) { %>    הרשמה במייל      <% } else {%> ביטול הרשמה <% } %>
+
+                        </a>
                     </div>
 
-                    <a class="subscribe" href="javascript:void()" title="עקוב אחרי הבלוג באמצעות הפיד באתר עורו">הרשם לבלוג</a>
+                    <a class="subscribe" data-not-follow-text="" data-follow-text="הרשם לבלוג" data-put-url="/api/follow_blog/<%=user._id%>" href="javascript:void()" title="עקוב אחרי הבלוג באמצעות הפיד באתר עורו">
+                        <% if (articles[0].is_blog_follower) { %>     הרשם לבלוג      <% } else {%> הפסק לעקוב <% } %>
+                    </a>
 
                     <div class="btns-box cf">
                         <% if (blogger) { %>
@@ -327,21 +332,19 @@ function getComments(article_id) {
 
     });
 
-    $('a.subscribe').click(function () {
-        var button = $('a.subscribe');
-
-        // TODO: Use $.post and real data instead of this fakepost...
-        var fakeresult = button.text() == 'הרשם לבלוג' ? 'subscribed' : 'unsubscribed',
-            fakepost = function(url, data, callback) {
-                setTimeout(function () {
-                    callback(fakeresult);
-                }, 700);
-            };
+    $('a.subscribe, .email-registration a').click(function () {
+        var button = $(this);
 
         button.text('...');
 
-        fakepost('/subscribe', { url: location.href }, function (result) {
-            button.text(result == 'subscribed' ? 'הפסק לעקוב' : 'הרשם לבלוג');
+        $.ajax({
+            type: 'PUT',
+            url: button.data('put-url'),
+            data: {blog_id: bloggerId, mail: $('.email-registration input').val()},
+            success: function (result) {
+
+                button.text(result.is_follower ? button.data('not-follow-text') : button.data('follow-text'));
+            }
         });
     });
 
