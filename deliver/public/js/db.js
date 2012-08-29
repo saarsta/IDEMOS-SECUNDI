@@ -795,7 +795,7 @@ var db_functions = {
                 break;
         }
         db_functions.loggedInAjax({
-            url:'/api/' + querystring,
+            url:'/api/' + querystring + '?limit=0',
             data:query,
             type:"GET",
             async:true,
