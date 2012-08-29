@@ -31,7 +31,10 @@ var HotObjectResource = module.exports = jest.Resource.extend({
             type: null,
             text_field_preview: null,
             image_field_preview: null,
-            tags: null
+            tags: null,
+            is_info_item: null,
+            post_count: null,
+            view_counter: null
         }
     },
     get_objects:function(req,filters,sorts,limit,offset,callback)
@@ -56,6 +59,7 @@ var HotObjectResource = module.exports = jest.Resource.extend({
                     if(!err){
                         _.each(objs, function(obj){
                             obj.type = "information_item";
+                            obj.is_info_item = true;
                         })
                     }
 
@@ -65,12 +69,21 @@ var HotObjectResource = module.exports = jest.Resource.extend({
             function(cbk){
                 models.Discussion.find({is_hot_object: true}, function(err, objs){
                     if(!err){
-                        _.each(objs, function(obj){
-                            obj.type = "discussion";
+                        async.forEach(objs, function(obj, itr_cbk){
+                            models.Post.count({discussion_id: obj._id}, function(err, count){
+                                if(err){
+                                   itr_cbk(err);
+                                }else{
+                                    obj.post_count = count;
+                                    obj.type = "discussion";
+                                    itr_cbk(err, obj);
+                                }
+                            })
+                        }, function(err, result){
+                            cbk(err, objs)
                         })
-                    }
-
-                    cbk(err, objs);
+                    }else
+                        cbk(err, objs);
                 });
             }
         ], function(err, args){
