@@ -44,6 +44,10 @@ var User = module.exports = new Schema({
     cycles:[
         new Schema({cycle_id:{type:ObjectId, ref:'Cycle'}, join_date: {type:Date, 'default':Date.now}})
     ],
+    //followers
+    blogs:[
+        new Schema({blog_id:{type:ObjectId, ref:'User'}, join_date: {type:Date, 'default':Date.now}})
+    ],
     // i dont know what this fields is, this is not "going users", it might be duplication of "people that conected somehow to the action" for efficiency
     actions:[
         new Schema( {action_id:{type:ObjectId, ref:'Action'}, join_date: {type:Date, 'default':Date.now}})
