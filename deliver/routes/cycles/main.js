@@ -90,6 +90,9 @@ module.exports = function(req, res){
     ], function(err, g_cycle){
         if(err)
             res.render('500.ejs',{error:err});
+        else if (!g_cycle){
+                res.redirect('/cycles');
+        }
         else {
             if(g_cycle && g_cycle.main_subject)
                 g_cycle.subject_name = g_cycle.main_subject.name;

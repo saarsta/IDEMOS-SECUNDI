@@ -32,7 +32,7 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
         };
 
         this.default_query = function(query){
-            return query.populate("discussions");
+            return query.populate("discussions.discussion");
         };
         this.fields = {
             _id:null,
@@ -136,6 +136,7 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
             var user_id = req.query.user_id || req.user._id;
             filters['users.user_id'] = user_id;
         }
+
 
         this._super(req, filters, sorts, limit, offset, function(err, results){
             var user_cycles;

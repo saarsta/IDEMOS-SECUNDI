@@ -29,7 +29,7 @@ var CyclePostResource = module.exports = jest.Resource.extend({
             function(cbk){
                 models.Cycle.findById(req.query.cycle_id)
                 .select({'discussions': 1})
-                .populate('discussions.discussion', {'title': 1})
+                .populate('discussions.discussion', {'_id': 1,'title': 1})
                 .exec(cbk);
             },
 
