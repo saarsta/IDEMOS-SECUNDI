@@ -63,7 +63,8 @@ var CyclePostResource = module.exports = jest.Resource.extend({
 
 function getSortedPostsByNumberOfDiscussions(discussions, callback)
 {
-
+    console.log('discussion');
+    console.log(discussions);
     switch (discussions.length){
         case null:
             callback(null, null);
