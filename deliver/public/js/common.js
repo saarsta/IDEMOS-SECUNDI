@@ -125,12 +125,9 @@ var connectPopup = function(callback){
 
 };
 
-var notActivatedPopup = function() {
+var notActivatedPopup = function(msg) {
     popupProvider.showOkPopup({
-        message:'ההרשמה לאתר לא הושלמה, על מנת להמשיך לחץ על הלינק שנשלח לתיבת הדואר שלך.' +
-            '<br />' +
-            'לשליחה חוזרת לחץ ' +
-            '<a href="/account/activation">כאן</a>'
+        message: msg
     });
 };
 

@@ -41,6 +41,7 @@ var Discussion = module.exports = new Schema({
     followers:[
         new Schema({user_id:{type:ObjectId, ref:'User'}, join_date: {type:Date, 'default':Date.now}})
     ],
+    view_counter: {type:Number, 'default':0},
     followers_count:{type:Number, 'default':0, editable:false},
     is_visible:{type:Boolean, 'default':true},
     is_published:{type:Boolean, 'default':false},

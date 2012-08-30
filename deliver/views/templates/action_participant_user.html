@@ -1,0 +1,23 @@
+<div class="one-members" data-user_id="{map_join_to_user._id}">
+    <a href="/myuru/{map_join_to_user._id}">
+        <div class="img-box">
+           <a href="/myuru/{map_join_to_user._id}">
+            <div  style="width:60px; height:60px;" class='auto-scale'>
+                <img width="60" src="{map_join_to_user.avatar}" alt="" />
+            </div>
+
+            <span></span>
+        </div>
+    </a>
+    <div class="members-popup">
+        <h4>
+		 {map_join_to_user.first_name} {map_join_to_user.last_name}
+		</h4>
+        <div class="proxy">
+            <span>{map_join_to_user.num_of_proxies_i_represent}</span>
+        </div>
+        <div class="respect">
+            <span>{map_join_to_user.score}</span>
+        </div>
+    </div>
+</div>

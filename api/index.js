@@ -16,6 +16,8 @@ var mongoose_resource = require('jest'),
     PostArticleResource = require('./blogs/PostArticleResource')
     VoteResource = require('./discussions/VoteResource.js'),
     VoteArticlePostResource = require('./blogs/VoteArticlePostResource'),
+    follow_blog_resource = require('./blogs/follow_blog_resource'),
+    follow_blog_by_mail_resource = require('./blogs/follow_blog_by_mail_resource'),
     VoteSuggestionResource = require('./VoteSuggestionResource'),
     VoteActionPostResource = require('./actions/VoteActionPostResource'),
     GradeResource = require('./discussions/GradeResource.js'),
@@ -81,6 +83,8 @@ module.exports = function(app)
     rest_api.register_resource('posts_of_action', new PostsActionResource());
     rest_api.register_resource('votes', new VoteResource());
     rest_api.register_resource('votes_on_article_comment', new VoteArticlePostResource());
+    rest_api.register_resource('follow_blog', new follow_blog_resource());
+    rest_api.register_resource('follow_blog_by_mail', new follow_blog_by_mail_resource());
     rest_api.register_resource('votes_on_suggestion', new VoteSuggestionResource());
     rest_api.register_resource('votes_on_action_post', new VoteActionPostResource());
     rest_api.register_resource('grades', new GradeResource());

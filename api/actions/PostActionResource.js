@@ -120,6 +120,7 @@ var PostActionResource = module.exports = common.GamificationMongooseResource.ex
             //2.1 if post created successfuly, add user to action to "people that connected somehow to action"
             //2.2 add action to user ?(duplication of "people that connected somehow to action")
             function (object,cbk) {
+                post_object = object;
                 var action_id = object.action_id;
                 // if post created successfuly, add user to action
                 // + add action to user
@@ -149,10 +150,10 @@ var PostActionResource = module.exports = common.GamificationMongooseResource.ex
             }
         ],function(err,result)
         {
-            post_object.is_user_follower = false;
             //update each post creator with his vote balance
-            post_object.voter_balance = 0;
             post_object = JSON.parse(JSON.stringify(post_object));
+            post_object.voter_balance = 0;
+            post_object.is_user_follower = false;
             post_object.creator_id = req.user;
             callback(err, post_object);
         });

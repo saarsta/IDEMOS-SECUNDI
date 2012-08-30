@@ -22,6 +22,7 @@ var User = module.exports = new Schema({
 
     //this is for validation
     is_activated: {type: Boolean, 'default': false},
+    is_suspended: {type: Boolean, 'default': false},
     identity_provider:{type:String, "enum":['facebook', 'register']},
     facebook_id:String,
     access_token:String,
@@ -42,6 +43,14 @@ var User = module.exports = new Schema({
     //followers
     cycles:[
         new Schema({cycle_id:{type:ObjectId, ref:'Cycle'}, join_date: {type:Date, 'default':Date.now}})
+    ],
+    //followers (site notifications)
+    blogs:[
+        new Schema({blog_id:{type:ObjectId, ref:'User'}, join_date: {type:Date, 'default':Date.now}})
+    ],
+    //followers (mail notifications)
+    blogs_email:[
+        new Schema({blog_id:{type:ObjectId, ref:'User'}, mail: String, join_date: {type:Date, 'default':Date.now}})
     ],
     // i dont know what this fields is, this is not "going users", it might be duplication of "people that conected somehow to the action" for efficiency
     actions:[
@@ -78,7 +87,7 @@ var User = module.exports = new Schema({
     blog_title: String,
     blog_sub_titile: String,
     blog_text_1: String,
-    blog_text_2: String,
+    blog_text_2: {type:mongoose_types.Text},
     blog_text_3: String,
     opinion_text: String,
     sent_mail: {type:Date},
