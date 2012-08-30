@@ -24,7 +24,8 @@ var url2png = function (req, url, viewport, fullpage, thumbnail_max_width) {
 
 module.exports = function(req, res) {
     if (req.method =='POST') {
-        var target_url = url2png(req, 'http://uru-staging.herokuapp.com' + req.path, '830x830', true, 830);
+        var path = 'http://uru-staging.herokuapp.com/elections/fbimage/' + req.session.user.id;
+        var target_url = url2png(req, path, '830x830', true, 830);
         res.send({target_url: target_url});
         return;
     }
@@ -61,7 +62,7 @@ var getUserChosenDiscussions = module.exports.getUserChosenDiscussions = functio
             var disc_ids = user.has_voted.filter(function(val) {return val.length > 20;});
             var stored_disc = user.has_voted.filter(function(val) {return val.title;});
             models.Discussion.find({_id: {'$in': disc_ids}}, function(err, result){
-                cb(err, result + stored_disc)
+                cb(err, result.concat(stored_disc))
             })
         }
     ], callback
