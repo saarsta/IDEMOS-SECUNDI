@@ -5752,7 +5752,10 @@ a.fraction-btn
 {
     color:#505050;
     font: normal 11px/17px Arial;
+
     margin: 0;
+    word-wrap: break-word;
+
 }
 
 .popular-comments .one .text h3
@@ -6148,7 +6151,7 @@ a.fraction-btn
     font: normal 18px/29px 'AdumaFOTRegular';
     text-decoration: none;
 }
-.followers-diagram .event .popup-text p
+.followers-diagram .event .popup-text
 {
     color:#50504f;
     font: normal 11px/17px Arial;
@@ -6159,6 +6162,9 @@ a.fraction-btn
     padding: 9px;
     position: relative;
     text-align: right;
+    height: 95px;
+    overflow: hidden;
+
 }
 .followers-diagram .event .type-two .popup-text h5
 {
@@ -6168,7 +6174,7 @@ a.fraction-btn
 }
 .followers-diagram .event .type-two .popup-text .floatRight
 {
-    margin: 0 0 9px 9px;
+    margin: 0 0 7px 9px;
 }
 .followers-diagram .event .type-two .popup-text p
 {

@@ -246,11 +246,14 @@
                                     break;
                               case 'today':
                                     dust.render('cycle_timeline_today', item, timelineAppend);
+                              case 'admin_update':
+                                    dust.render('cycle_timeline_admin_update', item, timelineAppend);
                                     break;
                               default:
                                console.log("unknow timleline type : "+  item.type);
                           }
                           i++;
+
 
                      });
              });
@@ -258,8 +261,9 @@
              function timelineAppend  (err, out) {
                  $('.followers-diagram').append(out);
              };
-
-
+             $('.popup-text').live("show", function(){ alert("Goodbye!"); });
+             // $('.popup-text').ellipsis();
+             //.popup-event
             db_functions.getPendingActionsByCycle(cycle_id, function ( data,err) {
 
                     dust.renderArray('cycle_pending_action', data.objects, function (err, out) {
