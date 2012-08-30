@@ -64,19 +64,22 @@ var CycleTimelineResource = module.exports = jest.Resource.extend({
                             objs.push(obj);
 
                             var discussion = _.find(cycle.discussions, function(discussion){ return discussion.is_main == true});
+                            if(discussion){
+                                models.Discussion.findById(discussion.discussion)
+                                    .select({'_id': 1, 'title': 1, 'text_field_preivew': 1, 'image_field_preview': 1, 'creation_date': 1})
+                                    .exec(function(err, discussion_obj){
+                                        if(!err && discussion_obj){
+                                            discussion_obj = JSON.parse(JSON.stringify(discussion_obj));
+                                            discussion_obj.type = "discussion";
+                                            discussion_obj.date = discussion_obj.creation_date;
+                                            objs.push(discussion_obj);
+                                        }
 
-                            models.Discussion.findById(discussion.discussion)
-                                .select({'_id': 1, 'title': 1, 'text_field_preivew': 1, 'image_field_preview': 1, 'creation_date': 1})
-                                .exec(function(err, discussion_obj){
-                                if(!err && discussion_obj){
-                                    discussion_obj = JSON.parse(JSON.stringify(discussion_obj));
-                                    discussion_obj.type = "discussion";
-                                    discussion_obj.date = discussion_obj.creation_date;
-                                    objs.push(discussion_obj);
-                                }
+                                        cbk(err, objs);
+                                    });
+                            }else
+                                cbk(null, {});
 
-                                cbk(err, objs);
-                            });
                         }
                     }else
                         cbk(err, objs);

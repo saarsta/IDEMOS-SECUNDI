@@ -5350,15 +5350,15 @@ body.search-ative #header
 
 
 
-.youtube_img:hover{
-
-    cursor: pointer
+.youtube_img {
+    width: 364px;
+    height: 204px;
+    background: url('/images/elections/youtube.png') no-repeat center center;
 }
 
-
-
-
-
+.youtube_img:hover{
+    background-image: url('/images/elections/youtube_hover.png');
+}
 
 /******************************************************************************/
 
@@ -7742,6 +7742,16 @@ div.greenbutton {
     margin:0 auto;
 }
 
+div.greenbutton a {
+    display: inline-block;
+    width: 323px;
+    height: 120px;
+    background: url('/images/greenbutton.png') no-repeat center center;
+}
+div.greenbutton a:hover {
+    background-image: url('/images/greenbutton_hover.png');
+}
+
 div.greenbutton-grey-background {
     position: absolute;
     top: 0px;
@@ -7756,11 +7766,11 @@ div.greenbutton-grey-background {
     position: relative;
     display: block;
     width: 323px; height: 120px;
-    background: url(../images/greenbotton.png) no-repeat;
+    background: url(/images/greenbutton.png) no-repeat;
     font-size: 0;
 }
 #join_btn:hover {
-    background-image: url(../images/greenbotton_over.png);
+    background-image: url(/images/greenbutton_gover.png);
 }
 div.greenbutton span img {
     margin-right: 115px;

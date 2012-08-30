@@ -37,20 +37,11 @@
     <div id="peoplearea">
 
         <div class="video-box">
-            <img class="youtube_img" width="364" height="204" src="/images/elections/youtube.png"/>
+            <div class="youtube_img"></div>
 
             <div class="button_ellection"></div>
         </div>
         <script type="text/javascript">
-            $(".video-box img.youtube_img").hover(
-                function(){
-                    $(this).attr('src', $(this).attr('src').replace('.png', '') + '_over' + '.png')
-                },
-                function(){
-                    $(this).attr('src', $(this).attr('src').replace('_over.png', '') + '.png')
-                }
-            );
-
             $(".video-box").one('click', function(){
                 $('.youtube_img').remove();
                 $(this).append(
@@ -90,7 +81,7 @@
     <div class="greenbutton-container">
         <div class="greenbutton-grey-background"></div>
         <div class="greenbutton" id="send_vote_1">
-            <a href="javascript:;"><img src="/images/elections/greenbotton.png" alt="תנועת עורו - הצטרפו עכשיו"/></a>
+            <a href="javascript:;" alt="תנועת עורו - הצטרפו עכשיו"></a>
 
 		<!--span>
 			<a href="/elections">
@@ -249,11 +240,11 @@ $(".one-co0").on('click', function(){
 
 //        $("#join_btn")
 //                .mouseover(function() {
-//                    var src = $(this).attr("src").match(/[^\.]+/) + "greenbotton_over.png";
+//                    var src = $(this).attr("src").match(/[^\.]+/) + "greenbutton_hover.png";
 //                    $(this).attr("src", src);
 //                })
 //                .mouseout(function() {
-//                    var src = $(this).attr("src").replace("greenbotton_over.png", "greenbotton.png");
+//                    var src = $(this).attr("src").replace("greenbutton_hover.png", "greenbutton.png");
 //                    $(this).attr("src", src);
 //                });
 

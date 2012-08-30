@@ -9,15 +9,10 @@ var UserResource = module.exports =  mongoose_resource.MongooseResource.extend({
         this._super(Model.User, null);
         this.fields = _.extend(common.user_public_fields, {cycles : null});
         this.update_fields = {
-//            first_name:null,
-//            last_name:null,
-//            gender:null,
-//            age:null
             biography: null
         }
         this.allowed_methods = ['get','post','put','delete'];
         this.authentication = new common.SessionAuthentication();
-//        this.authorization = new Authoriztion();
         this.filtering = {'followers.follower_id': {
             exact:true,
             in:true

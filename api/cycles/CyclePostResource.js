@@ -29,7 +29,7 @@ var CyclePostResource = module.exports = jest.Resource.extend({
             function(cbk){
                 models.Cycle.findById(req.query.cycle_id)
                 .select({'discussions': 1})
-                .populate('discussions.discussion', {'title': 1})
+                .populate('discussions.discussion', {'_id': 1,'title': 1})
                 .exec(cbk);
             },
 
@@ -63,54 +63,23 @@ var CyclePostResource = module.exports = jest.Resource.extend({
 
 function getSortedPostsByNumberOfDiscussions(discussions, callback)
 {
-
-    switch (discussions.length){
-        case null:
-            callback(null, null);
-            break;
-        case 0:
-            callback(null, null);
-            break;
-        case 1:
-            models.Post.find({discussion_id: discussions[0]._id})
-            .sort({popularity:'descending'})
-            .select({
-                    '_id':1,
-                'creator_id':1,
-                'total_votes':1,
-                'votes_for':1,
-                'votes_against':1,
-                'discussion_id':1,
-                'text':1
-                })
-            .populate('creator_id', {
-                '_id':1,
-                'first_name':1,
-                'last_name':1,
-                'avatar': 1,
-                'facbook_id': 1,
-                'avatar_url':1,
-                'score':1,
-                'num_of_proxies_i_represent':1
-                })
-            .limit(3)
-            .exec(function(err, posts){
-                if(posts.length)
-                    posts[0]._doc.discussion_title = discussions[0].title;
-
-                callback(err, posts);
-            })
-
-            break;
-
-
-        case 2:
-
-            async.parallel([
-                function(cbk){
-                    models.Post.find({discussion_id: discussions[0]._id})
-                        .sort({popularity:'descending'})
-                        .select({
+    console.log('discussion');
+    console.log(discussions);
+    if (!discussions){
+        console.error('cycle has no discussions!!!')
+        callback(null, null);
+    }else{
+        switch (discussions.length){
+            case null:
+                callback(null, null);
+                break;
+            case 0:
+                callback(null, null);
+                break;
+            case 1:
+                models.Post.find({discussion_id: discussions[0]._id})
+                    .sort({popularity:'descending'})
+                    .select({
                         '_id':1,
                         'creator_id':1,
                         'total_votes':1,
@@ -118,160 +87,198 @@ function getSortedPostsByNumberOfDiscussions(discussions, callback)
                         'votes_against':1,
                         'discussion_id':1,
                         'text':1
-                        })
-                        .populate('creator_id', {
-                        '_id':1,
-                        'first_name':1,
-                        'last_name':1,
-                        'avatar_url':1,
-                        'score':1,
-                        'num_of_proxies_i_represent':1
-                        })
-                        .limit(2)
-                        .exec(function(err, posts){
-                            if(posts.length)
-                                posts[0]._doc.discussion_title = discussions[0].title;
-                            cbk(err, posts);
-                        })
-                },
-
-                function(cbk){
-                    models.Post.find({discussion_id: discussions[1]._id})
-                        .sort({'popularity': 'descending'})
-                        .select({
-                        '_id':1,
-                        'creator_id':1,
-                        'total_votes':1,
-                        'votes_for':1,
-                        'votes_against':1,
-                        'discussion_id':1,
-                        'text':1
-                        })
-                        .populate('creator_id', {
-                        '_id':1,
-                        'first_name':1,
-                        'last_name':1,
-                        'avatar_url':1,
-                        'score':1,
-                        'num_of_proxies_i_represent':1
-                        })
-                        .limit(1)
-                        .exec(function(err, posts){
-                            if(posts.length)
-                                posts[0]._doc.discussion_title = discussions[1].title;
-                            cbk(err, posts);
-                        })
-                }
-            ], function(err, args){
-                var posts
-
-                if(args)
-                    posts = _.union.apply(_,args);
-
-                callback(err, posts);
-            })
-            break;
-        case 3:
-
-            async.parallel([
-                function(cbk){
-                    models.Post.find({discussion_id: discussions[0]._id})
-                        .sort({popularity: 'descending'})
-                        .select({
-                        '_id':1,
-                        'creator_id':1,
-                        'total_votes':1,
-                        'votes_for':1,
-                        'votes_against':1,
-                        'discussion_id':1,
-                        'text':1
-                        })
-                        .populate('creator_id', {
-                        '_id':1,
-                        'first_name':1,
-                        'last_name':1,
-                            'avatar': 1,
-                            'facebook_id': 1,
-                        'avatar_url':1,
-                        'score':1,
-                        'num_of_proxies_i_represent':1
-                        })
-                        .limit(1)
-                        .exec(function(err, posts){
-                            if(posts.length)
-                                posts[0]._doc.discuusion_title = discussions[0].title;
-                            cbk(err, posts);
-                        })
-                },
-
-                function(cbk){
-                    models.Post.find({discussion_id: discussions[1]._id})
-                        .sort({popularity: 'descending'})
-                        .select({
-                        '_id':1,
-                        'creator_id':1,
-                        'total_votes':1,
-                        'votes_for':1,
-                        'votes_against':1,
-                        'discussion_id':1,
-                        'text':1
-                        })
-                        .populate('creator_id', {
+                    })
+                    .populate('creator_id', {
                         '_id':1,
                         'first_name':1,
                         'last_name':1,
                         'avatar': 1,
-                        'facebook_id': 1,
+                        'facbook_id': 1,
+                        'avatar_url':1,
                         'score':1,
                         'num_of_proxies_i_represent':1
-                        })
-                        .limit(1)
-                        .exec(function(err, posts){
-                            if(posts.length)
-                                posts[0].discuusion_title = discussions[1].title;
-                            cbk(err, posts);
-                        })
-                },
+                    })
+                    .limit(3)
+                    .exec(function(err, posts){
+                        if(posts.length)
+                            posts[0]._doc.discussion_title = discussions[0].title;
 
-                function(cbk){
-                    models.Post.find({discussion_id: discussions[2]._id})
-                        .sort({popularity: 'descending'})
-                        .select({
-                        '_id':1,
-                        'creator_id':1,
-                        'total_votes':1,
-                        'votes_for':1,
-                        'votes_against':1,
-                        'discussion_id':1,
-                        'text':1
-                        })
-                        .populate('creator_id', {
-                        '_id':1,
-                        'first_name':1,
-                        'last_name':1,
-                        'avatar': 1,
-                        'facebook_id': 1,
-                        'score':1,
-                        'num_of_proxies_i_represent':1
-                        })
-                        .limit(1)
-                        .exec(function(err, posts){
-                            if(posts.length)
-                                posts[0].discuusion_title = discussions[2].title;
-                            cbk(err, posts);
-                        })
-                }
-            ], function(err, args){
-                var posts;
+                        callback(err, posts);
+                    })
 
-                if(args)
-                    posts = _.union.apply(_,args);
-                callback(err, posts);
-            })
-            break;
-        default:
-            callback({message: "demasiado discusiones en eso ciculo", code: 404});
+                break;
+
+
+            case 2:
+
+                async.parallel([
+                    function(cbk){
+                        models.Post.find({discussion_id: discussions[0]._id})
+                            .sort({popularity:'descending'})
+                            .select({
+                                '_id':1,
+                                'creator_id':1,
+                                'total_votes':1,
+                                'votes_for':1,
+                                'votes_against':1,
+                                'discussion_id':1,
+                                'text':1
+                            })
+                            .populate('creator_id', {
+                                '_id':1,
+                                'first_name':1,
+                                'last_name':1,
+                                'avatar_url':1,
+                                'score':1,
+                                'num_of_proxies_i_represent':1
+                            })
+                            .limit(2)
+                            .exec(function(err, posts){
+                                if(posts.length)
+                                    posts[0]._doc.discussion_title = discussions[0].title;
+                                cbk(err, posts);
+                            })
+                    },
+
+                    function(cbk){
+                        models.Post.find({discussion_id: discussions[1]._id})
+                            .sort({'popularity': 'descending'})
+                            .select({
+                                '_id':1,
+                                'creator_id':1,
+                                'total_votes':1,
+                                'votes_for':1,
+                                'votes_against':1,
+                                'discussion_id':1,
+                                'text':1
+                            })
+                            .populate('creator_id', {
+                                '_id':1,
+                                'first_name':1,
+                                'last_name':1,
+                                'avatar_url':1,
+                                'score':1,
+                                'num_of_proxies_i_represent':1
+                            })
+                            .limit(1)
+                            .exec(function(err, posts){
+                                if(posts.length)
+                                    posts[0]._doc.discussion_title = discussions[1].title;
+                                cbk(err, posts);
+                            })
+                    }
+                ], function(err, args){
+                    var posts
+
+                    if(args)
+                        posts = _.union.apply(_,args);
+
+                    callback(err, posts);
+                })
+                break;
+            case 3:
+
+                async.parallel([
+                    function(cbk){
+                        models.Post.find({discussion_id: discussions[0]._id})
+                            .sort({popularity: 'descending'})
+                            .select({
+                                '_id':1,
+                                'creator_id':1,
+                                'total_votes':1,
+                                'votes_for':1,
+                                'votes_against':1,
+                                'discussion_id':1,
+                                'text':1
+                            })
+                            .populate('creator_id', {
+                                '_id':1,
+                                'first_name':1,
+                                'last_name':1,
+                                'avatar': 1,
+                                'facebook_id': 1,
+                                'avatar_url':1,
+                                'score':1,
+                                'num_of_proxies_i_represent':1
+                            })
+                            .limit(1)
+                            .exec(function(err, posts){
+                                if(posts.length)
+                                    posts[0]._doc.discuusion_title = discussions[0].title;
+                                cbk(err, posts);
+                            })
+                    },
+
+                    function(cbk){
+                        models.Post.find({discussion_id: discussions[1]._id})
+                            .sort({popularity: 'descending'})
+                            .select({
+                                '_id':1,
+                                'creator_id':1,
+                                'total_votes':1,
+                                'votes_for':1,
+                                'votes_against':1,
+                                'discussion_id':1,
+                                'text':1
+                            })
+                            .populate('creator_id', {
+                                '_id':1,
+                                'first_name':1,
+                                'last_name':1,
+                                'avatar': 1,
+                                'facebook_id': 1,
+                                'score':1,
+                                'num_of_proxies_i_represent':1
+                            })
+                            .limit(1)
+                            .exec(function(err, posts){
+                                if(posts.length)
+                                    posts[0].discuusion_title = discussions[1].title;
+                                cbk(err, posts);
+                            })
+                    },
+
+                    function(cbk){
+                        models.Post.find({discussion_id: discussions[2]._id})
+                            .sort({popularity: 'descending'})
+                            .select({
+                                '_id':1,
+                                'creator_id':1,
+                                'total_votes':1,
+                                'votes_for':1,
+                                'votes_against':1,
+                                'discussion_id':1,
+                                'text':1
+                            })
+                            .populate('creator_id', {
+                                '_id':1,
+                                'first_name':1,
+                                'last_name':1,
+                                'avatar': 1,
+                                'facebook_id': 1,
+                                'score':1,
+                                'num_of_proxies_i_represent':1
+                            })
+                            .limit(1)
+                            .exec(function(err, posts){
+                                if(posts.length)
+                                    posts[0].discuusion_title = discussions[2].title;
+                                cbk(err, posts);
+                            })
+                    }
+                ], function(err, args){
+                    var posts;
+
+                    if(args)
+                        posts = _.union.apply(_,args);
+                    callback(err, posts);
+                })
+                break;
+            default:
+                callback({message: "demasiado discusiones en eso ciculo", code: 404});
+        }
     }
+
 }
 
 function putIsFollowerAndVoteBallanceOnEachPost(user_id, posts, callback){

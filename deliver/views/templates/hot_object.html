@@ -10,8 +10,12 @@
     </div>
     <div class="tags">
         <div class="info">
-            <span class="talks">33</span>
+            {?is_info_item}
+            {:else}
+                <span class="talks">{post_count}</span>
+            {/is_info_item}
             <span class="watched">{view_counter}</span>
+
         </div>
         {#tags}
         <a href="/{type}s/?tag_name={.|u}"

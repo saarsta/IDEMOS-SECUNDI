@@ -147,7 +147,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
 
 
         var iterator = function (user_schema, itr_cbk) {
-            if (user_schema.user_id == user_id || !user_schema.user_id)
+            if (user_schema.user_id == user_id.id || !user_schema.user_id)
                 itr_cbk(null, 0);
             else {
                 if (discussion_creator_id == user_schema.user_id) {
@@ -175,7 +175,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
         async.waterfall([
             //first, check if there is a suggestion with the same indexes
             function (cbk) {
-                models.Suggestion.find({discussion_id:fields.discussion_id, is_approved: false}, cbk);
+                models.Suggestion.find({discussion_id:fields.discussion_id, is_approved:false}, cbk);
             },
 
             function (suggestions, cbk) {
@@ -191,7 +191,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                     }
                 })
                 if (err)
-                    cbk({message: "a suggestion with this indexes already exist"});
+                    cbk({message:"a suggestion with this indexes already exist"});
                 else
                     models.Discussion.findById(fields.discussion_id, cbk);
             },
@@ -223,21 +223,26 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
 
             function (suggestion_obj, cbk) {
                 async.parallel([
-                    //add user to praticipants
-                    function (cbk2) {
-                        models.Discussion.update({_id:suggestion_object.discussion_id, "users.user_id":{$ne:user_id}},
-                            {$addToSet:{users:{user_id:user_id, join_date:Date.now()}}},
-                            cbk2);
-                    },
-
                     //add notification for the dicussion's participants or creator
+                    //add user to praticipants
+
                     function (cbk2) {
                         models.Discussion.findById(suggestion_object.discussion_id, /*["users", "creator_id"],*/ function (err, disc_obj) {
                             if (err)
                                 cbk2(err, null);
                             else {
-                                discussion_creator_id = disc_obj.creator_id;
-                                async.forEach(disc_obj.users, iterator, cbk2);
+                                if (!_.any(disc_obj.users, function (user) {
+                                    return user.user_id + "" == req.user.id
+                                })) {
+                                    var new_user = {user_id:req.user._id, join_date:Date.now()};
+                                    models.Discussion.update({_id:disc_obj._id}, {$addToSet:{users:new_user}}, function (err, num) {
+                                        discussion_creator_id = disc_obj.creator_id;
+                                        async.forEach(disc_obj.users, iterator, cbk2);
+                                    });
+                                } else {
+                                    discussion_creator_id = disc_obj.creator_id;
+                                    async.forEach(disc_obj.users, iterator, cbk2);
+                                }
                             }
                         })
                     },
@@ -480,7 +485,7 @@ module.exports.approveSuggestion = function (id, callback) {
                             suggestion.save(function (err, result) {
                                 itr_cbk(err, result)
                             })
-                        }else
+                        } else
                             itr_cbk();
                     }, cbk(err, args[1][0]));
                 }

@@ -2108,6 +2108,12 @@ body
     color:#50504f;
     border-bottom: 1px solid #ececec;
 }
+.text-box .action-text-overflow
+{
+    overflow: hidden;
+    /*height: 51px*/
+    height:  74px;
+}
 .m-2
 {
     margin-bottom: 10px;
@@ -2162,6 +2168,10 @@ body
 .add-offer .text-box .more-text
 {
     top:0px !important;
+}
+.add-offer .fullInfo
+{
+   width:690px !important;
 }
 
 .add-offer .text-box .blue-title

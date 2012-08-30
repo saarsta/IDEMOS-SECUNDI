@@ -73,10 +73,12 @@ var SessionAuthentication = exports.SessionAuthentication = jest.Authentication.
                                     console.log('saved last visit');
                             });
                         var is_activated = user.is_activated;
-                        if(is_activated || req.method == 'GET')
+                        var is_suspended = user.is_suspended;
+
+                        if (req.method == 'GET' || (is_activated && !is_suspended))
                             callback(null, true);
                         else {
-                            callback({code:401,message:'not_activated'});
+                            callback({code:401, message: is_suspended ? 'suspended' : 'not_activated'});
                         }
                     }
                 });
