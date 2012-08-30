@@ -57,9 +57,11 @@ var getUserChosenDiscussions = module.exports.getUserChosenDiscussions = functio
         function (user, cb)
         {
             // we might have some placeholders in this list
+
             var disc_ids = user.has_voted.filter(function(val) {return val.length > 20;});
+            var stored_disc = user.has_voted.filter(function(val) {return val.title;});
             models.Discussion.find({_id: {'$in': disc_ids}}, function(err, result){
-                cb(err, result)
+                cb(err, result + stored_disc)
             })
         }
     ], callback

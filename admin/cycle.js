@@ -6,6 +6,13 @@ var notifications = require('../api/notifications')
     ,AdminForm = require('admin-with-forms').AdminForm;
 
 module.exports = AdminForm.extend({
+    get_fields: function() {
+        this._super();
+        if(this.fields['discussions'])
+            this.fields['discussions'].validators.push(function(arr) {
+                return arr.length ? true : 'You must select at least one discussion';
+            });
+    },
     actual_save : function(callback)
     {
         var self = this;

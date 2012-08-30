@@ -239,6 +239,19 @@ $(function() {
             return false;
         }
 
+        if($('#display-inline-block-example .checkBox:checked').length > 0){
+            popupProvider.showOkPopup(
+                {
+                    message: 'יש לבחור עד 5 הצעות',
+                    callback: function(){
+                        location.hash = "#main-thing";
+                    }
+                }
+            );
+
+            return false;
+        }
+
 		if ($('.intext-last-checkbox p.checkBox:checked').length > 0) {
 			if ($('#styledSelect').val() === '0') {
 				popupProvider.showOkPopup({

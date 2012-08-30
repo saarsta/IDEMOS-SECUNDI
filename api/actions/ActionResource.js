@@ -25,31 +25,31 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                 }
             };
             this.authentication = new common.SessionAuthentication();
-            this.fields = {
-                _id:null,
-                title:null,
-                tooltip_or_title:null,
-                text_field:null,
-                text_field_preview:null,
-                image_field:null,
-                image_field_preview:null,
-                description:null,
-                creator_id:null,
-                action_resources:null,
-                tags:null,
-                creation_date:null,
-                execution_date:null,
-                required_participants:null,
-                grade:null,
-                evaluate_counter:null,
-//                is_follower: null,
-                is_going:null,
-                updated_user_tokens:null,
-                join_id:null,
-                num_of_going:null
-            }
+//            this.fields = {
+//                _id:null,
+//                title:null,
+//                tooltip_or_title:null,
+//                text_field:null,
+//                text_field_preview:null,
+//                image_field:null,
+//                image_field_preview:null,
+//                description:null,
+//                creator_id:null,
+//                action_resources:null,
+//                tags:null,
+//                creation_date:null,
+//                execution_date:null,
+//                required_participants:null,
+//                grade:null,
+//                evaluate_counter:null,
+////                is_follower: null,
+//                is_going:null,
+//                updated_user_tokens:null,
+//                join_id:null,
+//                num_of_going:null
+//            }
             this.default_query = function (query) {
-                return query.sort({execution_date:'descending'});
+                return query.sort({"execution_date.date":'descending'});
             }
         },
 
@@ -85,9 +85,10 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
         create_obj:function (req, fields, callback) {
             var user_id = req.session.user_id;
             var self = this;
-            var base = self.super();
+            var base = self._super;
             var action_object = new self.model();
             var user = req.user;
+            var g_action;
 
             var min_tokens = common.getGamificationTokenPrice('create_action') > -1 ? common.getGamificationTokenPrice('create_action') : 10;
 //            var total_tokens = user.tokens + user.num_of_extra_tokens;
@@ -98,61 +99,71 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
 //            else
 //            {
 
-//            async.waterfall([
-//                function(cbk){
-//                    fields.creator_id = user_id;
-//                    fields.first_name = user.first_name;
-//                    fields.last_name = user.last_name;
-//                    fields.users = user_id;
-//                    for (var field in fields) {
-//                        action_object.set(field, fields[field]);
-//                    }
-//
-//                    base.call(self, req, fields, cbk);
-//                },
-//
-//                function(action_obj, cbk){
-//                    var cycle_id = action_obj.cycle_id;
-//
-//                    async.parallel([
-//                        function (cbk1) {
-//                            req.gamification_type = "action";
-//
-//                            // add discussion_id and action_id to the lists in user
-//                            var new_action = {
-//                                action_id: action_obj._id,
-//                                join_date: Date.now()
-//                            }
-//                            models.User.update({_id:user_id}, {$addToSet:{actions: new_action}}, cbk1)
-//                        },
-//
-//                        function (cbk1) {
-//                            models.Cycle.findById(cycle_id, cbk1);
-//                        }
-//                    ], cbk(err, args[1]);
-//                },
-//
-//                function()
-//            ])
-//
-//
-//                        if (!err) {
-//
-//                            ], function (err, arg) {
-//                                var cycle_obj = arg[1];
-//
-//                                 else {
-//                                    cycle_obj.upcoming_action = action._id;
-//                                    cycle_obj.save(callback(err, action));
-//                                }
-//                            })
-//
-//                        } else {
-//                            callback(err, null);
-//                        }
-//                    });
-//                }
-//            });
+            async.waterfall([
+                function(cbk){
+                    fields.creator_id = user_id;
+                    fields.first_name = user.first_name;
+                    fields.last_name = user.last_name;
+                    fields.users = {user_id: user_id, join_date: Date.now()};
+                    for (var field in fields) {
+                        action_object.set(field, fields[field]);
+                    }
+
+                    base.call(self, req, fields, cbk);
+                },
+
+                function(action_obj, cbk){
+                    g_action = action_obj;
+                    var cycle_id = action_obj.cycle_id;
+
+                    async.parallel([
+                        function (cbk1) {
+                            req.gamification_type = "action";
+
+                            // add discussion_id and action_id to the lists in user
+                            var new_action = {
+                                action_id: action_obj._id,
+                                join_date: Date.now()
+                            }
+                            models.User.update({_id:user_id}, {$addToSet:{actions: new_action}}, cbk1)
+                        },
+
+                        function (cbk1) {
+                            models.Cycle.findById(cycle_id, cbk1);
+                        }
+                    ], function(err, args){
+                        cbk(err, args[1]);
+                    })
+                },
+
+                function(cycle, cbk){
+                    if (cycle.upcoming_action) {
+                        async.waterfall([
+                            function (cbk1) {
+                                models.Action.findById(cycle.upcoming_action, cbk1);
+                            },
+
+                            function (upcoming_action, cbk1) {
+
+                                if (upcoming_action.execution_date.date > g_action.execution_date.date) {
+                                    cycle.upcoming_action = g_action._id;
+                                    cycle.save(cbk1);
+                                }else{
+                                    cbk1(null, null);
+                                }
+                            }
+                        ], function(err, action){
+                            cbk(err, action)})
+                    } else {
+                        cycle.upcoming_action = g_action._id;
+                        cycle.save(function(err, cycle){
+                            cbk(err, g_action)
+                        });
+                    }
+                }
+            ], function(err, action){
+                callback(err, action);
+            })
         }
     });
 

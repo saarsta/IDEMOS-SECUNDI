@@ -25,6 +25,10 @@ module.exports = function(req,res)
         // get the discussion object
         function(cbk)  {
             models.Discussion.findById(req.params[0], cbk);
+        },
+
+        function(cbk){
+            models.Discussion.update({ _id: req.params[0]}, {$inc: {view_counter: 1}}, cbk);
         }
     ],
         function(err, results)

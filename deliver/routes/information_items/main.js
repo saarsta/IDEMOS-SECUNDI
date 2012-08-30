@@ -1,38 +1,48 @@
 
 var models = require('../../../models')
+    ,async = require('async')
     ,InformationItemResource = require('../../../api/InformationItemResource');
+
 
 module.exports = function(req,res)
 {
     var item_id = req.params[0];
 
-    models.InformationItem.findById(item_id).populate('subject_id')
-        .exec(function(err,item){
-        if(err)
-            res.render('500.ejs',{err:err});
-        else
-        {
-            if(!item)
-                res.render('404.ejs');
-            else
-            {
-                if(req.isAuthenticated())
-                {
-                    var resource = new InformationItemResource();
-                    resource.add_user_likes(req.session.user._id,item,function(err,item){
-                        console.log(item.user_like);
-                        if(err)
-                            res.render('500.ejs',{err:err});
-                        else
-                            render_information_item_page(req,res,item);
-                    });
-                }
-                else
-                    render_information_item_page(req,res,item);
-            }
-        }
-    })
+    async.parallel([
 
+        function(cbk){
+            models.InformationItem.findById(item_id).populate('subject_id')
+                .exec(function(err,item){
+                    if(err)
+                        res.render('500.ejs',{err:err});
+                    else
+                    {
+                        if(!item)
+                            res.render('404.ejs');
+                        else
+                        {
+                            if(req.isAuthenticated())
+                            {
+                                var resource = new InformationItemResource();
+                                resource.add_user_likes(req.session.user._id,item,function(err,item){
+                                    console.log(item.user_like);
+                                    if(err)
+                                        res.render('500.ejs',{err:err});
+                                    else
+                                        render_information_item_page(req,res,item);
+                                });
+                            }
+                            else
+                                render_information_item_page(req,res,item);
+                        }
+                    }
+                })
+        },
+
+        function(cbk){
+            models.InformationItem.update({_id: item_id}, {$inc: {view_counter: 1}}, cbk);
+        }
+    ])
 };
 
 function render_information_item_page(req,res,item) {
