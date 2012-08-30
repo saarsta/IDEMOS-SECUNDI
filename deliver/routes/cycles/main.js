@@ -17,7 +17,7 @@ module.exports = function(req, res){
 
     var g_cycle;
 
-    async.waterfall([
+    async.parallel([
         //1. find cycle by id
         function(cbk){
             models.Cycle.findById(req.params[0])
@@ -37,6 +37,8 @@ module.exports = function(req, res){
                 '_id':1,
                 'first_name':1,
                 'last_name':1,
+                'avatar': 1,
+                'facebook_id':1,
                 'avatar_url':1,
                 'score':1,
                 'num_of_proxies_i_represent':1,
@@ -44,62 +46,48 @@ module.exports = function(req, res){
                 })
             .populate('main_subject', {'name':1})
             .exec(cbk);
-        }/*,
-
-        //2. find cycle followers
-        function(cycle, cbk){
-            if(!cycle)
-                cbk('no cycle');
-            else{
-                if (cycle.subject)
-                     cycle.subject = cycle.subject[0];
-                _.each(cycle.opinion_shapers, function(opinion_shaper){ opinion_shaper.avata_url = opinion_shaper.avatar_url()});
-                g_cycle = cycle;
-                models.User.find({"cycles.cycle_id": cycle._id}, {"_id":1, "cycles":1}, cbk);
-            }
         },
 
-        //3.1 for each follower find join date by finding the specific cycle in the list
-        //3.2 sort followers - fb friends, proxies, followed by me, others
-        function(followers, cbk){
-            //3.1 for each follower find join date by finding the specific cycle in the list
-            g_cycle.cycle_followers = _.map(followers, function(follower){
-                var curr_cycle =  _.find(follower.cycles, function(cycle){
-                    return cycle.cycle_id + "" == g_cycle._id + "";
-                });
-
-                return {
-                    follower: {
-                        _id: follower._id,
-                        first_name: follower.first_name,
-                        last_name: follower.last_name,
-                        avatar_url: follower.avatar_url()
-                    },
-                    join_date: curr_cycle.join_date
-                }
-            })
-
-            //TODO -
-            //3.2 sort followers - fb friends, proxies, followed by me, others
-
-            cbk(null, null);
-        }*/
-
-
+        //find cycle followers
+        function(cbk){
+                models.User.find({"cycles.cycle_id": req.params[0]}, cbk);
+        }
        //final - render the cycle page
-    ], function(err, g_cycle){
+    ], function(err, args){
+
         if(err)
             res.render('500.ejs',{error:err});
-        else if (!g_cycle){
+        else if (!args[0]){
                 res.redirect('/cycles');
         }
         else {
-            if(g_cycle && g_cycle.main_subject)
-                g_cycle.subject_name = g_cycle.main_subject.name;
-            res.render('cycle.ejs',{
-                cycle: g_cycle,
-                tab:'cycles'
-            });
+
+
+            g_cycle = args[0];
+            var users = args[1] || [];
+
+            _.each(g_cycle.opinion_shapers, function(user){user.avatar = user.avatar_url()});
+            if(g_cycle.followers_count != users.length){
+                //fix follower count
+                models.Cycle.update({_id: args[0]._id}, {$set: {followers_count: users.length}}, function(err, result){
+                    g_cycle.followers_count = users.length;
+                    if(g_cycle && g_cycle.main_subject)
+                        g_cycle.subject_name = g_cycle.main_subject.name;
+                    g_cycle.is_user_follower_of_cycle = _.any(users, function(user){return user._id + "" == req.session.user ? req.user.id : 0});
+                    res.render('cycle.ejs',{
+                        cycle: g_cycle,
+                        tab:'cycles'
+                    });
+                })
+            }else{
+                if(g_cycle && g_cycle.main_subject)
+                    g_cycle.subject_name = g_cycle.main_subject.name;
+                g_cycle.is_user_follower_of_cycle = _.any(users, function(user){return user._id + "" == req.session.user ? req.user.id : 0});
+                res.render('cycle.ejs',{
+                    cycle: g_cycle,
+                    tab:'cycles'
+                });
+            }
         }
     })
 };

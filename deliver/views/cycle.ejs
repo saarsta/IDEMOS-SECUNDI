@@ -75,8 +75,8 @@
     </div>
     <div class="blue-bar">
         <div class="extra">
-            <a class="green-btn" href="">עקוב אחרי מעגל התנופה</a>
-            <p>מספר העוקבים אחרי מעגל תנופה זה: <strong>12,876</strong></p>
+            <a class="green-btn" href="javascript:void(0)"><%= cycle.is_user_follower_of_cycle ? "עקוב אחרי מעגל התנופה" : "הפסק לעקוב " %> </a>
+            <p id="followers_count" >מספר העוקבים אחרי מעגל תנופה זה: <strong><%= cycle.followers_count %></strong></p>
         </div>
     </div>
     <div class="followers-box">
@@ -113,11 +113,9 @@
                      <% if (cycle.opinion_shapers) for (var c = 0; c<cycle.opinion_shapers.length && c<3 ; c++) { %>
                              <div class="one <% if (c==2) {%>last<% }%> ">
 
-
-
                               <div class="img-box" style="overflow: hidden;">
                                  <div style="width:112px;height:120px; overflow:hidden; " class='auto-scale' >
-                                     <img  src="http://profile.ak.fbcdn.net/hprofile-ak-snc4/49136_745621901_4865704_n.jpg" alt=""/>
+                                     <img  src="<%=cycle.opinion_shapers[c].avatar %>" alt=""/>
                                      <span class="fillter"></span>
                                  </div>
                                  <span></span>
@@ -156,6 +154,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
             var cycle_id = "<%=cycle.id%>";
+            var user = "<%=cycle.id%>";
 
             $(".inline").colorbox({ inline: true, width: "730" });
 
@@ -173,7 +172,15 @@
                 return false;
             });
 
+            $('.green-btn').click(function(){
+                var button = $(this);
+                button.text('...');
 
+                db_functions.joinToCycleFollowers(cycle_id, function(err, result){
+                    button.text(result.is_follower ? "הפסק לעקוב" : "עקוב אחרי המעגל");
+                    $('#followers_count strong').text(result.followers_count);
+                })
+            });
             db_functions.getCycleShoppingCart(cycle_id, function ( err,data) {
 
                     $.each(data.objects, function (index, item) {

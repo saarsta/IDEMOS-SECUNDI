@@ -983,11 +983,9 @@ var db_functions = {
         });
     },
 
-    //actionType = follow or leave
-    joinToCycleFollowers:function (cycle_id, actionType, callback) {
+    joinToCycleFollowers:function (cycle_id, callback) {
         db_functions.loggedInAjax({
-            url:'/api/cycles/' + cycle_id + '/?put=' + actionType,
-            data:{"follower":true},
+            url:'/api/cycles/' + cycle_id,
             type:"PUT",
             async:true,
             success:function (data) {

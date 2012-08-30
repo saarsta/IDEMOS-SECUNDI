@@ -165,7 +165,12 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
         var cycle_id = object._id;
         object.is_follower = false;
 
-        if(req.query.put == "follower"){
+
+
+
+        var wants_to_leave = _.any(user.cycles, function(cycle){ return cycle.cycle_id + "" == cycle_id + ""});
+
+        if(!wants_to_leave){
             if (!(_.any(user.cycles, function(cycle){ return cycle.cycle_id == cycle_id + ""}))){
                 async.parallel([
                     function(cbk2){
@@ -192,7 +197,7 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
                 callback({message:"user is already a follower", code:401}, null);
             }
         }else{
-            if(req.query.put == "leave"){
+            if(wants_to_leave){
 
                 var flag = false;
                 for (var i = 0; i < user.cycles.length; i++){
