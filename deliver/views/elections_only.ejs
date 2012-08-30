@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html>
 <head>
     <% include partials/head_home.ejs %>
@@ -31,24 +32,12 @@
             /* prevent margin collapse */
             border: 1px solid transparent;
         }
-        <% if (show_facebook_login) { %>
-        .user-signup input {
-            display:block;
-        }
         div.reg-container .leftone {
             width: 200px;
         }
-        <% } else { %>
-        div.reg-container .rightone, div.reg-container .middleone {
-            display: none;
+        .user-signup input {
+            display:block;
         }
-        div.reg-container .leftone {
-            float: none;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        <% } %>
     </style>
 </head>
 <body>
