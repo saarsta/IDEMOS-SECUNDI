@@ -120,6 +120,7 @@ var PostActionResource = module.exports = common.GamificationMongooseResource.ex
             //2.1 if post created successfuly, add user to action to "people that connected somehow to action"
             //2.2 add action to user ?(duplication of "people that connected somehow to action")
             function (object,cbk) {
+                post_object = object;
                 var action_id = object.action_id;
                 // if post created successfuly, add user to action
                 // + add action to user

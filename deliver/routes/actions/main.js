@@ -26,7 +26,9 @@ module.exports = function (req, res) {
                     'execution_date':1,
                     'required_participants':1,
                     'cycle_id':1,
-                    'action_resources':1
+                    'action_resources':1,
+                    'is_approved':1,
+                    'admin_text':1
                 })
                 .populate('action_resources.resource')
                 .exec(cbk);
@@ -75,9 +77,16 @@ module.exports = function (req, res) {
                    is_going = _.any(going_users, function(going_user){ return going_user.user_id + "" == user_id + ""})
                }
                action.is_going = is_going;
+                //todo: get from DB
+                action.cycle={title:'SAAR I need title and Id of cycle',
+                    id:'aaaaaa'
+
+                };
 
 
-                var ejsFileName = true ? 'action_approved.ejs' : 'action_append.ejs';
+               // action.admin_text='Saar FIX ME';
+
+                var ejsFileName = action.is_approved ? 'action_approved.ejs' : 'action_append.ejs';
                 res.render(ejsFileName,{
                     action: action,
                     tab: 'actions',

@@ -1,0 +1,173 @@
+<script type="text/javascript" >
+    $(function(){
+
+        window.uru= window.uru||{};
+
+        var map =(function(){
+            var map;
+            return{
+                init_map:function ( id , center){
+                    var myOptions = {
+                        zoom: 11,
+                        center: center,
+                        mapTypeId: google.maps.MapTypeId.ROADMAP,
+                        panControl: false,
+                        zoomControl: false,
+                        scaleControl: false,
+                        mapTypeControl: false,
+
+                        streetViewControl: false
+                    };
+                    map = new google.maps.Map(document.getElementById( id ), myOptions);
+                    //  maps[ id ] = map;
+                    return map;
+                }
+                ,addPlaceMark:function (point,tooltip){
+
+                    var marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(point.lat,point.lng),
+                        title:tooltip
+                    });
+                    marker.setMap(map);
+                    return marker;
+                }
+            };
+        })();
+
+        var goingModel=(function(){
+
+            var goingUsers;
+            var  userInBrowserCount=0
+            var paging= 14;
+            var model ={
+
+                loadMoreUsers:function(){
+                    var currentOffset=userInBrowserCount /paging;
+                    this.loadGoingUsers(currentOffset );
+                },
+                loadGoingUsers:function(offcet,numOfPaging){
+                    var self=this;
+                    numOfPaging= numOfPaging||  1;
+
+
+                    db_functions.getActionGoing(action_id,offcet,paging*numOfPaging,function(err,data){
+
+
+                        userInBrowserCount=userInBrowserCount+data.objects.length;
+                        goingUsers=data.meta.total_count;
+                        dust.renderArray('action_participant_user',data.objects ,null, function (err, out){
+                            $('#participant').append(out);
+                        })
+                        if (goingUsers >userInBrowserCount ) {
+                            $(".more-deals").show();
+
+
+                        } else{
+                            $(".more-deals").hide();
+                        }
+
+
+
+                        setGoingNumber(goingUsers);
+
+                    })}
+            }
+            $(".more-deals a").on('click',function(e){
+                e.preventDefault();
+                model.loadMoreUsers();
+            })
+            function setGoingNumber(number) {
+
+                $('#going_number')[0].innerHTML = '(' + number + ')';
+                $('.going_red').html(number);
+            }
+
+            function setJoinBT(data){
+                var isGoing=(data.map_join_to_user !==undefined);
+                var user = data.map_join_to_user;
+                var text= isGoing?
+                        'עזוב'
+                        :
+                        'הצטרף' ;
+                $(".add-offer-btn-box a").html(text);
+                // it's assmoes that me is the first user;
+                if(isGoing){ //add the user to first plase;
+                    goingUsers++;
+                    dust.render('action_participant_user',data,function(err, out){
+                        $('#participant').prepend(out);
+                    });
+
+
+                }else{
+                    //  $('#participant').children().first().remove();
+                    $('#participant').find('[data-user_id="'+my_id +'"]').remove();
+                    goingUsers--;
+
+                }
+                setGoingNumber(goingUsers);
+
+            }
+
+
+            $('.add-offer-btn-box').click(function(e){
+                e.preventDefault();
+                db_functions.joinOrLeaveAction(action_id,function(err,data){
+                    if(err){
+                        console.log(err) ;
+                    }
+                    else{
+                        setJoinBT(data);
+
+                    }
+                })
+            });
+
+            return model;
+        })();
+        window.uru.goingModel=goingModel;
+
+
+        $('.more-text').click(function (e) {
+        e.preventDefault();
+        <% if(action.location){ %>
+        var location={};
+        location.address='<%=action.location.address%>';
+        location.geometry={};
+        location.geometry.lng=<%=action.location.geometry.lng%>;
+        location.geometry.lat=<%=action.location.geometry.lat%>;
+
+        <% }else{ %>
+        var location =null;
+        <% } %>
+
+        $('#minInfo').hide();
+        $('#fullInfo').show();
+        if(location){
+        var address=location.address;
+        var coordinate={};
+        coordinate.lng=location.geometry.lng ;
+        coordinate.lat=location.geometry.lat ;
+
+
+        //  init_map('map', new google.maps.LatLng(coordinate.lan, coordinate.lng));
+
+        map.init_map('map', new google.maps.LatLng(coordinate.lat,coordinate.lng));
+        map.addPlaceMark(coordinate,address);
+        }
+
+
+
+
+        });/**/
+
+        $('#readLess').click(function (e) {
+        e.preventDefault();
+        $('#minInfo').show();
+        $('#fullInfo').hide();
+        });
+
+        //start from index 0 loding 2 rows 14*7
+       // goingModel.loadGoingUsers(0,2);
+
+    })
+</script>
