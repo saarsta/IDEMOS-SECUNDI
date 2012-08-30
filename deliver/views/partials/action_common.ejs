@@ -37,7 +37,7 @@
         var goingModel=(function(){
 
             var goingUsers;
-            var  userInBrowserCount=0
+            var userInBrowserCount=0
             var paging= 14;
             var model ={
 
@@ -52,7 +52,7 @@
 
                     db_functions.getActionGoing(action_id,offcet,paging*numOfPaging,function(err,data){
 
-
+                        debugger
                         userInBrowserCount=userInBrowserCount+data.objects.length;
                         goingUsers=data.meta.total_count;
                         dust.renderArray('action_participant_user',data.objects ,null, function (err, out){

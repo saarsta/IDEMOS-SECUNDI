@@ -150,10 +150,10 @@ var PostActionResource = module.exports = common.GamificationMongooseResource.ex
             }
         ],function(err,result)
         {
-            post_object.is_user_follower = false;
             //update each post creator with his vote balance
-            post_object.voter_balance = 0;
             post_object = JSON.parse(JSON.stringify(post_object));
+            post_object.voter_balance = 0;
+            post_object.is_user_follower = false;
             post_object.creator_id = req.user;
             callback(err, post_object);
         });

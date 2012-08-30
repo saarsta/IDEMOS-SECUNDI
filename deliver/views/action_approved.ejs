@@ -441,6 +441,7 @@ var error_message = error_message || '';
 
                         setUserScore(my_id, post.creator_id);
                     }
+                    post.voting =      post.votes_for - post.votes_against;
                     dust.render('discussion_comment', post, function (err, out) {
                         $("#comments").append(out);
                         $("textarea#discussion_comment").val('');
