@@ -24,6 +24,8 @@ ul#display-inline-block-example li {
 	background-repeat: no-repeat;
 	background-position: right center;
 
+    /* Prevent margin collapse */
+    border: 1px solid transparent;
 
 	/* For IE 7 */
 	zoom: 1;
@@ -221,6 +223,7 @@ div.reg-container .leftone {
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	border-radius: 4px;
+    width: 186px;
 }
 
 #box-share {
