@@ -8,3 +8,9 @@ db.users.find().forEach(function(obj){
         db.users.save(obj);
     }
 })
+
+db.discusisons.find().forEach(function(obj){
+    db.grades.find({"discussion_id": obj._id}).forEach(function(grade_obj){
+        db.users.find({"_id": grade_obj.user_id}).
+    }
+})
