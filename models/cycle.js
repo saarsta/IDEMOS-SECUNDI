@@ -22,9 +22,9 @@ var Cycle = module.exports = new Schema({
     image_field: mongoose_types.File,
     image_field_preview: mongoose_types.File,
     tags:[String],
-    discussions:{type: [
-        {discussion: {type:ObjectId, ref:'Discussion', is_main: {type: Boolean, 'default': false}}}
-    ], validate:[function(val) { return val && val.length; },'you must select one']},
+    discussions:[
+        {discussion: {type:ObjectId, ref:'Discussion'}, is_main: {type: Boolean, 'default': false}}
+    ],
     admin_updates: [{info: {type: String}, date: {type: Date}}],
     document: String,
     shopping_cart: [
