@@ -5,8 +5,8 @@
     <% include partials/head_home.ejs %>
     <style>
         body {
-            width: 795px;
-            margin: 0px auto;
+            width: 793px;
+            margin: 0 auto;
             background: none;
         }
         ul#display-inline-block-example {
@@ -28,6 +28,9 @@
         div.reg-container {
             width: 590px;
             margin: 0 auto;
+
+            /* prevent margin collapse */
+            border: 1px solid transparent;
         }
         div.reg-container .leftone {
             width: 200px;
@@ -131,7 +134,10 @@
         <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home">Internet Explorer 9</a>
     </p>
 </center>
-<img src='http://pulse.adparlor.com/action.php?cid=2255&eid=182' />
+<script>$(document).on('voted', function(e) {
+    $('<img src="http://pulse.adparlor.com/action.php?cid=2255&eid=182" />');
+});
+</script>
 </body>
 </html>
 
