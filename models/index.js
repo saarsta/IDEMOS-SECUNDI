@@ -61,7 +61,7 @@ var Schemas = exports.Schemas = {
         cycle:{type:ObjectId, ref:'Cycle', index:true},
 //        actions: {type: [ObjectId], ref:'Action', index:true},
         is_visible:{type:Boolean, 'default':true},
-        creation_date:{type:Date, 'default':Date.now,editable:false},
+        creation_date:{type:Date, 'default':Date.now},
 
         gui_order:{type:Number,'default':9999999,editable:false},
         is_hidden:{type:Boolean,'default':true}
