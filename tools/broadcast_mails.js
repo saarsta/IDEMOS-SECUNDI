@@ -12,15 +12,36 @@ var app = require('../app'),
 
 
 
-var MAILTEMPLATE = 'elections2';
+var MAILTEMPLATE = 'movie';
 
 var IS_TEST = true;
+var BLACK_LIST = ['arad.aki@gmail.com',
+    'urian@013.net',
+    'luci.fer.female@gmail.com',
+    'tsela@yagur.com',
+    'savtaesther@gmail.com',
+    'beeri.korin@gmail.com',
+    'srahav@gmail.com',
+    'kate.volkova@gmail.com',
+    'sanity@gmail.com',
+    'yakov.brakha@gmail.com',
+    'mayoliat@yahoo.com',
+    'genisny@gmail.com',
+    'yaffeis@gmail.com',
+    'balisegev@gmail.com',
+    'mr.avichay@gmail.com',
+    'silviur@walla.com',
+    'livnieli69@gmail.com',
+    'orna.amos@gmail.com',
+    'wmikel@walla.com',
+    'atzivon@gmail.com'];
+
 var SEND_TO = ['ishai@empeeric.com'
     ,'saarsta@gmail.com'
     ,'konfortydor@gmail.com'
 ];
 
-var LIMIT = 5000;
+var LIMIT = 8000;
 
 setTimeout(function(){
 
@@ -39,7 +60,7 @@ require('../lib/mail').load(app);
     }
 
 
-    var query = IS_TEST ? {email:{$in:SEND_TO}} : {};
+    var query = IS_TEST ? {email:{$in:SEND_TO}} : {email:{$nin:BLACK_LIST}};
     var limit = IS_TEST ? 3 : LIMIT;
 
     var stream = models.User.find(query)
@@ -48,7 +69,13 @@ require('../lib/mail').load(app);
         .stream();
 
     stream.on('data',function(user) {
-        console.log(user.email);
+        if(_.any(BLACK_LIST,function(email) {
+            return email.toLowerCase().trim() == (user.email || '').toLowerCase().trim();
+        })) {
+            console.log('found black list email');
+            skipped++;
+            return;
+        }
         if(!IS_TEST && user.sent_mail && user.sent_mail > new Date(Date.now() - 1000*60*60*5)){
             console.log('skipped');
             skipped++;

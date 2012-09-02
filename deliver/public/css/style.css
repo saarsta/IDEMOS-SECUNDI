@@ -3643,7 +3643,7 @@ h2 small
 {
     background-position: 0 0 ;
 }
-.rightCol .nav-btn .intersting:hover
+.rightCol .nav-btn .interesting:hover
 {
     background-position: 0 0 ;
 }
@@ -5762,7 +5762,10 @@ a.fraction-btn
 {
     color:#505050;
     font: normal 11px/17px Arial;
+
     margin: 0;
+    word-wrap: break-word;
+
 }
 
 .popular-comments .one .text h3
@@ -6010,6 +6013,11 @@ a.fraction-btn
     height: 22px;
     margin-bottom: 14px;
 }
+.followers-diagram .event .icon.multi
+{
+  position: absolute;
+}
+
 .followers-diagram .event .icon span.i
 {
     height: 16px;
@@ -6019,6 +6027,29 @@ a.fraction-btn
     cursor: pointer;
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
+}
+.followers-diagram .event .icon span.i.left
+ {
+     position: absolute;
+     left:-6px;
+     top:0;
+ }
+.followers-diagram .event .icon span.i.right
+{
+    position: absolute;
+    right:-8px;
+    top:0;
+}
+.followers-diagram .event .icon span.i.center
+{
+    position: absolute;
+
+    top:0;
+}
+.followers-diagram .event.past-cluster   .text
+{
+    margin-top: 57px;
+    color: #3C63EF;
 }
 .followers-diagram .event .green-icon span.i
 {
@@ -6033,6 +6064,11 @@ a.fraction-btn
 .followers-diagram .event .grey-icon span.i
 {
     background:#b2b7b1;
+    border: 3px solid #50504f;
+}
+.followers-diagram .event .white-icon span.i
+{
+    background:#fff;
     border: 3px solid #50504f;
 }
 .followers-diagram .event .prev-icon span.i
@@ -6158,7 +6194,7 @@ a.fraction-btn
     font: normal 18px/29px 'AdumaFOTRegular';
     text-decoration: none;
 }
-.followers-diagram .event .popup-text p
+.followers-diagram .event .popup-text
 {
     color:#50504f;
     font: normal 11px/17px Arial;
@@ -6169,6 +6205,9 @@ a.fraction-btn
     padding: 9px;
     position: relative;
     text-align: right;
+    height: 95px;
+    overflow: hidden;
+
 }
 .followers-diagram .event .type-two .popup-text h5
 {
@@ -6178,7 +6217,7 @@ a.fraction-btn
 }
 .followers-diagram .event .type-two .popup-text .floatRight
 {
-    margin: 0 0 9px 9px;
+    margin: 0 0 7px 9px;
 }
 .followers-diagram .event .type-two .popup-text p
 {

@@ -23,7 +23,7 @@
                         הוסף לסל המידע
                     </a>
                     <a class="share" data-title="<%= item.title %>" data-text_preview="<%= item.text_field_preview %>" data-img_src="<%= item.image_field_preview.url %>" rel="/information_items/<%= item.id %>" href="/facebookShare?link=/information_items/<%= item.id %>" target="_blank">שתף</a>
-                      <a href="javascript:void(0);" class="interesting <% if(!item.user_likes) { %>on<% } %>" id="like_button"></a>
+                      <a href="javascript:void(0);" class="interesting <% if(item.user_likes) { %>on<% } %>" id="like_button"></a>
 
 
                 </div>

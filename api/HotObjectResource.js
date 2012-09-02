@@ -89,11 +89,8 @@ var HotObjectResource = module.exports = jest.Resource.extend({
         ], function(err, args){
 
             arr = _.union.apply(_, args);
-//            if(req.user){
-//                arr = arr.splice(0, 2);
-//            }else{
-                arr = arr.splice(0, 4);
-//            }
+
+            arr = arr.splice(0, 4);
 
             callback(null,{meta:{total_count: arr.length}, objects: arr});
         });

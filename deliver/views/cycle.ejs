@@ -221,16 +221,68 @@
 
 
             db_functions.getCycleTimeline(cycle_id, function (err, data) {
+                     var type_names={
+                         past:'',
+                         cycle_creation :'יצירת מעגל תנופה',
+                         due_date :'תאריך יעד',
+                         discussion:'יצירת דיון',
+                         action  :'פעולה',
+                         cycle_update  :'עדכון',
+                         today  :'היום',
+                         admin_update :'עדכון מערכת'
+                             },
 
-                     // var one_day=1000*60*60*24,
-                 //     var   start_date =   new Date(data.objects[0].date),
-                 //           end_date =     new Date(data.objects[data.objects.length-1].date);
-                //      var timeline_span = (start_date.getTime()-end_date.getTime());
+                             nodes= data.objects.slice(0);
+                            i=0,
+                            pre_discussion_items = {type:'past',month:'לפני יצירת הדיון',items:[]},
+                            past_months={};
 
-                     var i=0,
-                         count =   data.objects.length-1   ;
+                      //remove all past items from list and move them into past object
+                       var pre_discussion=true;
+                      $.each(data.objects, function (index, item) {
 
-                     $.each(data.objects, function (index, item) {
+                            item.type_print =  type_names[item.type];
+                            if(item.type=='today')  {
+                              return false;
+                            }
+                            if(item.type=='discussion')  {
+                                pre_discussion=false;
+                                return true;
+                            }
+                            if (pre_discussion)
+                            {
+
+                                pre_discussion_items.items.push(item) ;
+                                nodes.shift();
+                            }
+                            else
+                            {
+                                var item_date=   new Date(item.date)
+                                var ind=item_date.format('mmyy');
+                                if(!past_months[ind]) {
+                                    past_months[ind]=  {type:'past',month:item_date.format('mmmm yy'),items:[]}
+                                }
+                                past_months[ind].items.push(item);
+                                nodes.splice(1,1);
+                            }
+
+                      } );
+                     i=1;
+                     $.each(past_months, function (index, item) {
+                        nodes.splice(i,0,item);
+                         i++;
+                     });
+                     if (pre_discussion_items.items.length>0)
+                     {
+                         nodes.splice(1,0,pre_discussion_items);
+                     }
+
+
+
+
+                     var count =   nodes.length-1;
+                     i=0;
+                     $.each(nodes, function (index, item) {
                  //         item_date=   new Date(item.date);
                  //         item.offset  = Math.floor(((start_date.getTime()-item_date.getTime())*100)/timeline_span );
 
@@ -238,8 +290,10 @@
 
                           switch(item.type)
                           {
+                              case 'past':
+                                    dust.render('cycle_timeline_past_cluster', item, timelineAppend);
+                                    break;
                               case 'due_date':
-
                                     dust.render('cycle_timeline_due_date', item, timelineAppend);
                                     break;
                               case 'cycle_creation':
@@ -257,10 +311,14 @@
                               case 'today':
                                     dust.render('cycle_timeline_today', item, timelineAppend);
                                     break;
+                              case 'admin_update':
+                                    dust.render('cycle_timeline_admin_update', item, timelineAppend);
+                                    break;
                               default:
                                console.log("unknow timleline type : "+  item.type);
                           }
                           i++;
+
 
                      });
              });
@@ -268,8 +326,9 @@
              function timelineAppend  (err, out) {
                  $('.followers-diagram').append(out);
              };
-
-
+             $('.popup-text').live("show", function(){ alert("Goodbye!"); });
+             // $('.popup-text').ellipsis();
+             //.popup-event
             db_functions.getPendingActionsByCycle(cycle_id, function ( data,err) {
 
                     dust.renderArray('cycle_pending_action', data.objects, function (err, out) {
@@ -330,16 +389,17 @@
 
              db_functions.getCyclePosts(cycle_id, function (err,data) {
 
-                               for (i = 0; i < data.objects.length; i++) {
-                                   data.objects[i].isFirst = (i === 0);
+                   for (i = 0; i < data.objects.length; i++) {
+                       data.objects[i].isFirst = (i === 0);
 
-                                   data.objects[i].isEven = ((i % 2)== 0);
-                                   data.objects[i].voting =      data.objects[i].votes_for - data.objects[i].votes_against;
-                               }
-                              dust.renderArray('cycle_post', data.objects, function (err, out) {
-                                  $('.hide-box').append(out);
-                              });
-                       });
+                       data.objects[i].isEven = ((i % 2)== 0);
+                       data.objects[i].voting =      data.objects[i].votes_for - data.objects[i].votes_against;
+                   }
+                  dust.renderArray('cycle_post', data.objects, function (err, out) {
+                      $('.hide-box').append(out);
+                  });
+              });
+
               $('.hide-box').on('click', '.vote_for', function () {
                      vote.apply($(this),['add']);
 

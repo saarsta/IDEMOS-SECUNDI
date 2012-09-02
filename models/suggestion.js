@@ -11,7 +11,7 @@ var mongoose = require("mongoose"),
 var Suggestion = {
     discussion_id:{type:Schema.ObjectId, ref:'Discussion', index:true, required:true, onDelete:'delete'},
     parts:[
-        {start:Number, end:Number, text:String}
+        {start:Number, end:Number, text:Schema.Types.Text}
     ],
     explanation: {type:mongoose_types.Text},
     is_approved:{type:Boolean, 'default':false},

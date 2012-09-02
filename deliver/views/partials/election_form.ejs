@@ -201,11 +201,12 @@ $(function() {
     function sendVote() {
         var data = getVoteData();
         $.post('/elections/vote', data, function(ret_data){
+            $(document).trigger('voted');
             shareScreen();
         }).fail(function(e) {
             setTimeout(function(){
                 popupProvider.showOkPopup({message: 'כבר נקלטה הצבעה מחשבון זה.'});
-            },300);
+            },10);
         });
     }
 

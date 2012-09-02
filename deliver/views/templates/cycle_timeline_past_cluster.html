@@ -1,0 +1,21 @@
+<div style="left: {offset}%" class="event past-cluster">
+    <div class="icon white-icon multi">
+        <span class="i right"></span>
+        <span class="i left"></span>
+        <span class="i center"></span>
+        <div class="popup-event type-three">
+            <div class="popup-text">
+                <h3>{month}</h3>
+                <ul class="">
+                    {#items}
+                    <li><strong>  {date|date_short}</strong> {type_print}</li>
+                    {/items}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+        <span class="text">
+                {month}
+        </span>
+</div>

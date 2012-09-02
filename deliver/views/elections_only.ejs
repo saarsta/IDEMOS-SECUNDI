@@ -1,11 +1,12 @@
 <!DOCTYPE html>
+
 <html>
 <head>
     <% include partials/head_home.ejs %>
     <style>
         body {
-            width: 795px;
-            margin: 0px auto;
+            width: 793px;
+            margin: 0 auto;
             background: none;
         }
         ul#display-inline-block-example {
@@ -31,24 +32,12 @@
             /* prevent margin collapse */
             border: 1px solid transparent;
         }
-        <% if (show_facebook_login) { %>
-        .user-signup input {
-            display:block;
-        }
         div.reg-container .leftone {
             width: 200px;
         }
-        <% } else { %>
-        div.reg-container .rightone, div.reg-container .middleone {
-            display: none;
+        .user-signup input {
+            display:block;
         }
-        div.reg-container .leftone {
-            float: none;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        <% } %>
     </style>
 </head>
 <body>
@@ -145,7 +134,10 @@
         <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home">Internet Explorer 9</a>
     </p>
 </center>
-<img src='http://pulse.adparlor.com/action.php?cid=2255&eid=182' />
+<script>$(document).on('voted', function(e) {
+    $('<img src="http://pulse.adparlor.com/action.php?cid=2255&eid=182" />');
+});
+</script>
 </body>
 </html>
 

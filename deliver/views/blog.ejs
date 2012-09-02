@@ -124,23 +124,37 @@
                             </div>
                         </div>
                      </div>
-                    <% if (blogger.biography) { %>        <p><%=blogger.biography %></p>      <% } %>
+
 
                     <!--<div class="links">-->
                         <!--<p><a href="">www.mywebsite.com</a></p>-->
                         <!--<p><a href="">www.facebook.com/myname</a></p>-->
                     <!--</div>-->
  		<div class="email-registration btns-box cf">
+                 <form id="email-signup">
+                            <input type="text" class="floatLeft"></input>
+                            <a class="floatLeft" type="email" data-not-follow-text="הפסק לעקוב" data-follow-text="הרשמה במייל" data-put-url="/api/follow_blog_by_mail/<%=user._id%>" href="javascript:void(0)">
+                                <% if (articles[0].is_blog_follower_by_mail) { %>    ביטול הרשמה      <% } else {%> הרשמה במייל <% } %>
+                            </a>
+                 </form>
+        </div>
+
+                    <% if (blogger.biography) { %>
+                    <p><%=blogger.biography %></p>
+                    <% } %>
+
+                    <% if (user) { %>
+         	    	<div class="email-registration btns-box cf">
                         <input type="text" class="floatLeft"></input>
                         <a class="floatLeft" data-not-follow-text="הפסק לעקוב" data-follow-text="הרשמה במייל" data-put-url="/api/follow_blog_by_mail/<%=user._id%>" href="javascript:void(0)">
                             <% if (articles[0].is_blog_follower_by_mail) { %>    הרשמה במייל      <% } else {%> ביטול הרשמה <% } %>
-
                         </a>
                     </div>
 
                     <a class="subscribe" data-not-follow-text="הפסק לעקוב" data-follow-text="הרשם לבלוג" data-put-url="/api/follow_blog/<%=user._id%>" href="javascript:void()" title="עקוב אחרי הבלוג באמצעות הפיד באתר עורו">
-                        <% if (articles[0].is_blog_follower) { %>     הרשם לבלוג      <% } else {%> הפסק לעקוב <% } %>
+                        <% if (articles[0].is_blog_follower) { %>     הפסק לעקוב      <% } else {%> הרשם לבלוג <% } %>
                     </a>
+                    <% } %>
 
                     <div class="btns-box cf">
                         <% if (blogger) { %>
@@ -305,8 +319,6 @@ function getComments(article_id) {
                   else {
                       if (err.responseText == 'Error: there is not enought tokens')
                           popupProvider.showOkPopup( {message:     'אין לך מספיק אסימונים'});
-//                      if (err.responseText == 'user already voted for this post')
-//                          popupProvider.showOkPopup( {message:     'באפשרותך לתת עד אסימון אחד לתגובה בדיון'});
                       if (err.responseText == 'soory, can\'t vote to your own post')
                           popupProvider.showOkPopup( {message:     'מצטערים, לא ניתן להצביע לתגובה של עצמך'});
                   }
@@ -332,8 +344,38 @@ function getComments(article_id) {
 
     });
 
+    $('#email-signup').validate({
+        errorElement: "p",
+
+        rules:{
+            email:{
+                required: true
+            }
+        },
+        messages:{
+            email:{
+                required:'נא להזין כתובת מייל',
+                email:'ההרשמה לא הצליחה, אנא בידקו את כתובת המייל שהוזנה'
+            }
+        },
+        highlight: function (element, errorClass) {
+            $(element).addClass('error').removeClass('valid');
+        },
+        unhighlight: function (element, errorClass) {
+            $(element).removeClass('error').addClass('valid');
+        },
+
+        invalidHandler: function(form, validator) {
+            var errors = validator.numberOfInvalids();
+        }
+    })
+
     $('a.subscribe, .email-registration a').click(function () {
         var button = $(this);
+
+        if(button.data('registration-type').val() == 'email'){
+            
+        }
 
         button.text('...');
 

@@ -15,8 +15,8 @@ module.exports = function(req,res) {
                 else{
                     async.parallel([
                         function(cbk){
-                            if(req.user)
-                                 models.User.findById(req.user._id, cbk);
+                            if(req.session.user)
+                                 models.User.findById(req.session.user._id, cbk);
                             else
                                 cbk(null, null);
 
@@ -37,7 +37,7 @@ module.exports = function(req,res) {
 
                                 if(user){
                                     article.is_blog_follower = _.any(user.blogs, function(blog){return blog.blog_id + "" == article.user_id.id});
-                                    article.is_blog_follower_by_mail = _.any(user.blogs, function(blog){return blog.blog_id + "" == article.user_id.id});
+                                    article.is_blog_follower_by_mail = _.any(user.blogs_email, function(blog){return blog.blog_id + "" == article.user_id.id});
                                 }
 
                                 res.render('blog.ejs', {
