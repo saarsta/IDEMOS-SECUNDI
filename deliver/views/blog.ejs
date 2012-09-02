@@ -373,8 +373,8 @@ function getComments(article_id) {
     $('a.subscribe, .email-registration a').click(function () {
         var button = $(this);
 
-        if(button.data('registration-type').val() == 'email'){
-            
+        if(button.find('type').val() == 'email'){
+            $('#email-signup').submit();
         }
 
         button.text('...');
