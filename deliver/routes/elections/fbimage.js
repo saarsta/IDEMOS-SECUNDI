@@ -32,8 +32,7 @@ module.exports = function(req, res) {
 
     getUserChosenDiscussions(req, req.params.id, function(err, items){
         if (err) {
-            res.send(500, err);
-            return;
+            items = [];
         }
         res.render('fbimage.ejs', {
             layout: false,

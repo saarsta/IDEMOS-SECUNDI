@@ -308,7 +308,7 @@ $(function() {
 	});
 
 
-	$('#share-facebook').on('click', function() {
+	$('#share-facebook').one('click', function() {
         facebookLogin(function(error) {
             $.post('/elections/fbimage/' + FB.getUserID(), function(data) {
                 var obj = {
