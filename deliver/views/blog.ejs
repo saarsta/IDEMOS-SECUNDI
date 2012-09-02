@@ -124,7 +124,7 @@
                             </div>
                         </div>
                      </div>
-                    <% if (blogger.biography) { %>        <p><%=blogger.biography %></p>      <% } %>
+
 
                     <!--<div class="links">-->
                         <!--<p><a href="">www.mywebsite.com</a></p>-->
@@ -138,9 +138,23 @@
                             </a>
                  </form>
         </div>
+
+                    <% if (blogger.biography) { %>
+                    <p><%=blogger.biography %></p>
+                    <% } %>
+
+                    <% if (user) { %>
+         	    	<div class="email-registration btns-box cf">
+                        <input type="text" class="floatLeft"></input>
+                        <a class="floatLeft" data-not-follow-text="הפסק לעקוב" data-follow-text="הרשמה במייל" data-put-url="/api/follow_blog_by_mail/<%=user._id%>" href="javascript:void(0)">
+                            <% if (articles[0].is_blog_follower_by_mail) { %>    הרשמה במייל      <% } else {%> ביטול הרשמה <% } %>
+                        </a>
+                    </div>
+
                     <a class="subscribe" data-not-follow-text="הפסק לעקוב" data-follow-text="הרשם לבלוג" data-put-url="/api/follow_blog/<%=user._id%>" href="javascript:void()" title="עקוב אחרי הבלוג באמצעות הפיד באתר עורו">
                         <% if (articles[0].is_blog_follower) { %>     הפסק לעקוב      <% } else {%> הרשם לבלוג <% } %>
                     </a>
+                    <% } %>
 
                     <div class="btns-box cf">
                         <% if (blogger) { %>

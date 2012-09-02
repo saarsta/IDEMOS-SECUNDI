@@ -4,6 +4,11 @@ var models = require('../models')
 
     async = require('async');
 module.exports = AdminForm.extend({
+    init:function(request,options,model) {
+        this._super(request,options,model);
+        this.static['js'].push('/js/admin.js');
+        this.static['css'].push('/css/admin.css');
+    },
     get_fields: function() {
         this._super();
         if(this.fields['agrees'])
@@ -29,6 +34,7 @@ module.exports = AdminForm.extend({
                         self.discussion_thresh = Number(discussion_obj.admin_threshold_for_accepting_change_suggestions) || discussion_obj.threshold_for_accepting_change_suggestions;
                         self.num_of_graders = discussion_obj.evaluate_counter;
                         self.grade = discussion_obj.grade;
+                        self.discussion_vision_text = discussion_obj.text_field;
                     }
                     cbk();
                 }
@@ -50,5 +56,7 @@ module.exports = AdminForm.extend({
                     "<p>suggestion threshold= " + self.instance.threshold_for_accepting_the_suggestion + "</p>" +
                     "<p>discussion threshold = " + self.discussion_thresh + "</p>"
         );
+        var str = {text:self.discussion_vision_text};
+        res.write('<script>   var discussion_vision_text = ' + JSON.stringify(str) + '.text; </script>')
     }
 });
