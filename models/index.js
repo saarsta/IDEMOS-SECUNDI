@@ -207,7 +207,9 @@ var Schemas = exports.Schemas = {
         entity_id: {type: ObjectId},
 
         seen: {type:Boolean, 'default':false},
-        update_date: {type: Date, 'default': Date.now}
+        update_date: {type: Date, 'default': Date.now},
+        url:String,
+        visited:{type:Boolean,'default':true}
     },
 
     Tag : {
