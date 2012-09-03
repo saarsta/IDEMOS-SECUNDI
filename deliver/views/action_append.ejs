@@ -178,8 +178,10 @@ var error_message = error_message || '';
             מיקום:
             <strong><%=action.location?action.location.address:''%></strong>
         </div>
-        <div class="action-text-overflow">
-        <p><%-action.text_field%></p>
+        <div class="discussion_content action-text-overflow">
+      <!--    <p><%-action.text_field%></p>-->
+            <textarea id="discussion_content" class="hidden_textarea"><%=action.text_field%></textarea>
+
          </div>
 
         <a class="more-text" href="">קרא עוד</a>
@@ -255,8 +257,15 @@ var error_message = error_message || '';
 	
     <div class="add-offer-bottom cf">
         <div class="btn-box">
-            <a class="btn-green" href="">הגב</a>
-            <a class="btn-grey" href="">שתף</a>
+            <a class="btn-green" href="#" id="action_comment_reply_button">הגב</a>
+        <!--    <a class="btn-grey" href="">שתף</a>-->
+
+            <a class="btn-grey share" rel="/actions/<%=action._id%>"
+               data-img_src="<%= action.image_field ? action.image_field.url ||'' : '' %>" data-text_preview="<%=action.text_field_preview%>" data-title="<%=action.title%>"
+               data-name="<%=action.text_field_preview%>"
+               href="/facebookShare?link=/actions/<%=action._id%>">
+                שתף
+            </a>
             <div class="btns-grey">
                 <a href="">הצעה לשינוי</a>
                 <a href="">היסטוריה</a>
@@ -296,11 +305,72 @@ var error_message = error_message || '';
         </div>
     </div>
     <div class="add-offer-btn-box">
-        <a href="">אם זה קורה, אני שם</a>
+       <!-- <a href="">אם זה קורה, אני שם</a>-->
+        <a href="#" >
+        <% if(!action.is_going) { %>
+אם זה קורה, אני שם
+        <% } else{ %>
+        עזוב
+        <% } %>
+            </a>
+
     </div>
 </div>
 
 <% include partials/action_shopping_cart.ejs %>
+
+<div id='write-comment' class="write-comment" style="display: none;" >
+    <h3>
+        הצעה לשינוי
+    </h3>
+
+    <div class="text-box cf">
+        <div class="left">
+            <p id='discussion_content_txt'><strong></strong>
+
+            </p>
+            <label>
+                ההצעה לשינוי שלי:
+            </label>
+            <textarea id='discussion_suggest' class="five-col" cols="0" rows="0"></textarea>
+            <label>
+                טיעונים, הצדקות ונימוקים:
+            </label>
+            <textarea id="discussion_explanation" class="two-col" cols="0" rows="0"></textarea>
+        </div>
+        <div class="user-right">
+            <div class="img-box" style="overflow: hidden;">
+                <div   style="width:70px; height:70px;" class='auto-scale'>
+                    <% if(user_logged) { %>
+                    <img id="reload-img" src="<%=avatar%>" alt="אני"  style="width:70px; height:70px"/>
+                    <% } %>
+                </div>
+                <span></span>
+            </div>
+            <h4>אני</h4>
+
+            <div class="date"><%=(new Date()).format('dd.mm.yy') %></div>
+            <% if(user_logged){ %>
+            <div class="proxy">
+                <span>3</span>
+            </div>
+            <div class="respect">
+                <span>20</span>
+            </div>
+            <% } %>
+        </div>
+    </div>
+    <a class="grey-btn" id="cancelWriteCommentBT" href="javascript:void(0);"><span>
+מתחרט
+            </span></a>
+    <a id="send_suggestion" class="green-btn" href="javascript:void(0);">
+        הצע
+    </a>
+</div>
+
+
+
+
 
 <div class="members-box members-box-action-approved cf ">
     <h2>משתתפים
@@ -404,9 +474,10 @@ var error_message = error_message || '';
 <div class="system-notice">
     <div class="extra">
         <a class="close" href=""></a>
-        <strong>:תכרעמ תעדוה</strong> תורקל הזל ומרגו וביגה ,ופתש .הפונת לגעמ תויהל דתעתמ הז ןויד
+        <%- action.system_message %>
     </div>
 </div>
+
 <div class="comments-box comments-box-inner">
     <div class="extra cf">
         <select class="left-select">
@@ -422,7 +493,7 @@ var error_message = error_message || '';
         </select>
         <h2>
             תגובות
-            <small>(4)</small></h2>
+            <small id="comments_number"></small></h2>
         <div id="comments">
 
         </div>
@@ -464,16 +535,143 @@ var error_message = error_message || '';
         </a>
     </div>
 </div>
+ <span class="popup-window">
+         <span class="arrow"></span>
+         <a class="close" href="javascript:void(0);"></a>
+        	 <a id="pop_post_bt" class="green-btn" href="javascript:void(0);">הגב</a>
+             <a id="pop_suggest_bt" class="grey-btn suggest" href="javascript:void(0);">
+                 הצע הצעה לשינוי
+             </a>
+     </span>
 
 <% include partials/action_common.ejs %>
 <% include partials/footer.ejs %>
 
  <script type="text/javascript">
-	var action_id='<%=action._id%>';
+     var action_id='<%=action._id%>';
+     var my_id = "<%=user_logged ? user._id : ''%>";
      $(function(){
 
+         $('.system-notice .close').click(function (e) {
+             e.preventDefault();
+             $(this).parents('.system-notice').fadeOut(800);
+         });
+
+         (function propselModule(){
+             var mouseDown, mouseUp, top, left;
+             $('.discussion_content').on('mousedown', function (e) {
+                 mouseDown = e;
+                 console.log(e);
+             })
+                     .on('mouseup',
+                     function (e) {
+                         mouseUp = e;
+                         var err = false;
+                         var range = $(this).find('textarea').getSelection();
+
+//                console.log(e);
+
+
+                         left = Math.ceil((mouseDown.clientX + mouseUp.clientX) / 2 - ($(".popup-window").width() / 2));
+                         top = Math.min(mouseDown.clientY, mouseUp.clientY) - $(".popup-window").height() - 40 + $(window).scrollTop();
+
+
+
+                     }).on('keydown',
+                     function (e) {
+                         console.log(e.keyCode == 27);
+                         if (!(e.shiftKey && (e.keyCode <= 40 && e.keyCode >= 37) || (e.ctrlKey && e.keyCode == 65))) e.preventDefault();
+                     }).on('dragstart', function (e) {
+                         e.preventDefault();
+                     });
+
+             $('.popup-window .close').on('click', function () {
+                 $('.popup-window').hide();
+             });
+
+             $('.popup-window').on('focus', function (e) {
+                 e.preventDefault();
+             });
+             $("#discussion_content").select(function () {
+                 range = $(this).getSelection();
+                 flag = false;
+                 /* db_functions.getSuggestionByDiscussion(action_id, null, null, function(err, suggestions){
+                     $.each(suggestions.objects, function (index, suggestion) {
+                         if ((suggestion.parts[0].start >= range.start && suggestion.parts[0].start <= range.end)
+                                 || (suggestion.parts[0].end >= range.start && suggestion.parts[0].end <= range.end)) {
+                             flag = true;
+                         }
+                     })*/
+                     if(flag)
+                         popupProvider.showOkPopup({message:"הטקסט סומן כבר בהצעה לשינוי קיימת"});
+                     else
+                         $(".popup-window")
+                                 .css({ top:top + 20, left:left, opacity:0 })
+                                 .show()
+                                 .animate({ top:'-=20px', opacity:1 }, 100, 'linear');
+                // });
+
+                 console.log(range);
+             });
+
+             $('#pop_suggest_bt').on("click", function (e) {
+                 e.preventDefault();
+                 $('#discussion_content_txt').text('"' + range.text + '"');
+                 $('#write-comment').show();
+                 $('textarea#discussion_suggest').focus();
+                 $('#reload-img').attr('src', $('#reload-img').attr('src'));
+                 $(".popup-window").hide();
+             });
+             $('#pop_post_bt').on("click", function (e) {
+                 e.preventDefault();
+                 new_post_ref_id = null;
+                 $(".popup-window").hide();
+                 $("textarea#discussion_comment").val('"' + range.text + '"').focus();
+
+
+             });
+
+             $('#suggest_button').click(function () {
+                 $('#suggest_div').show();
+             });
+
+             $('#close_suggest').click(function () {
+                 $('#suggest_div').hide();
+                 $("textarea#discussion_suggest").val('');
+             });
+
+             $('#send_suggestion').click(function () {
+                 var part = {start:range.start, end:range.end, text:$("textarea#discussion_suggest").val()};
+                 //arrange spaces
+                 if (vision[part.end - 1] == " " && part.text[part.text.length - 1] != " ")
+
+                     part.text += " ";
+                 var explanation = $("#discussion_explanation").val();
+                 db_functions.addSuggestionToDiscussion(discussion_id, [part], explanation, function (err, data) {
+                     if (!err) {
+                         $('#write-comment').hide();
+                         render_suggestion(data)
+                         $(".deals-box").show();
+                     } else {
+                         var err = err;
+                         if(err.responseText == "a suggestion with this indexes already exist")
+                             popupProvider.showOkPopup({message:"הטקסט סומן כבר בהצעה לשינוי קיימת"});
+                     }
+                 });
+             });
+
+             $("#cancelWriteCommentBT").live("click", function () {
+                 $('#write-comment').hide();
+             });
+
+
+         } )();
+
+         var goingModel= new  window.uru.GoingModel({
+             joinString:'אם זה קורה, אני שם'
+         });
          //start from index 0 loding 1 rows 7 items
-         window.uru.goingModel.loadGoingUsers(0,1);
+         goingModel.loadGoingUsers(0,1);
         // loadPosts();
      });
 

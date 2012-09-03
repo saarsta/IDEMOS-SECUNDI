@@ -82,6 +82,7 @@ module.exports = function (req, res) {
                     id:'aaaaaa'
 
                 };
+                action.system_message='SAAR I need system_message';
 
 
                // action.admin_text='Saar FIX ME';
