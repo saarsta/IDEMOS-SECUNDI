@@ -605,7 +605,7 @@ body
 /*----------------------------*/
 #content
 {
-    padding-bottom: 80px;
+    padding-bottom: 65px;
     position: relative;
     clear: both;
 }
@@ -5724,14 +5724,14 @@ a.fraction-btn
 {
     width: 7px;
     height: 5px;
-    background: url(../images/popular-comment-arrows.png) 0 0 no-repeat;
+    background: url(../images/popular-comment-arrows.png) 0 100% no-repeat;
     position: absolute;
     left: 14px;
     top: 11px;
 }
 .popular-comments.hover .top a span
 {
-    background-position: 0 100%;
+    background-position: 0 0;
 }
 .popular-comments .one
  {
@@ -8064,6 +8064,10 @@ a.menu-elections:hover {
     padding-left: 13px;
     margin-left: 6px;
     background: url(../images/arrow-left.png) 0 50% no-repeat;
+}
+
+.no_underline:hover{
+    cursor: pointer;
 }
 
 *------------------------------*/
