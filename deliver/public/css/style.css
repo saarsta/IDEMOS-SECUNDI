@@ -6043,7 +6043,6 @@ a.fraction-btn
 .followers-diagram .event .icon span.i.center
 {
     position: absolute;
-
     top:0;
 }
 .followers-diagram .event.past-cluster   .text
@@ -6056,6 +6055,11 @@ a.fraction-btn
     background:#2fd43b;
     border: 3px solid #25962d;
 }
+.followers-diagram .event .green-icon .popup-event
+{
+  cursor: pointer;
+}
+
 .followers-diagram .event .blue-icon span.i
 {
     background:#3c63ef;
@@ -6205,7 +6209,7 @@ a.fraction-btn
     padding: 9px;
     position: relative;
     text-align: right;
-    height: 95px;
+    height: 115px;
     overflow: hidden;
 
 }
