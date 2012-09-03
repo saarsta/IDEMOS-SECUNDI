@@ -50,5 +50,7 @@ var Action = module.exports = new Schema({
     grade:{type:Number, 'default':0},
     evaluate_counter:{type:Number, 'default':0, editable:false},
     grade_sum:{type:Number, 'default':0, editable:false},
+    threshold_for_accepting_change_suggestions: {type: Number, min: 0, max: 501, 'default': 2},
+    admin_threshold_for_accepting_change_suggestions: {type: Number, max: 500, 'default': 0},
     is_hidden:{type:Boolean,'default':true}
 }, {strict: true});

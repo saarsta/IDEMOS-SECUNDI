@@ -5,8 +5,6 @@ var common = require('../common.js'),
     models = require('../../models'),
     async = require('async'),
 
-    ACTION_SUGGESTION_PRICE = 2;
-
 ActionSuggestionResource = module.exports = common.GamificationMongooseResource.extend({
 
     init:function () {
@@ -24,7 +22,7 @@ ActionSuggestionResource = module.exports = common.GamificationMongooseResource.
         var user = req.user;
         var user_id = user.id;
         var suggestion_object = new self.model();
-        
+
 
 //        var user_id = req.session.user_id;
 //        var g_user = null;

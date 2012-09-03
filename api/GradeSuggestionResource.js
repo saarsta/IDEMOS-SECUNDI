@@ -190,7 +190,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                         else
                             method = "remove";
                         notifications.create_user_vote_or_grade_notification("user_gave_my_suggestion_tokens",
-                            suggestion_obj._id, suggestion_obj.creator_id, req.user._id, discussion_id, method, false, true, function (err, result) {
+                            suggestion_obj._id, suggestion_obj.creator_id, req.user._id, discussion_id, method, false, true,function (err, result) {
                                 cbk1(err, result);
                             })
                     },

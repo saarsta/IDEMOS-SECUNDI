@@ -1168,6 +1168,35 @@ var db_functions = {
             }
         });
     },
+
+    addActionGrade:function (action_id, grade, grade_id, callback) {
+        var url = '/api/action_grades/';
+        var type = "POST";
+
+//        grade_id ? url = '/api/grades/' + grade_id : url = '/api/grades/';
+//        grade_id ? type = "PUT" : type = "POST";
+
+        if (grade_id && grade_id !== "undefined" && grade_id !== "0") {
+            url = '/api/action_grades/' + grade_id;
+            type = "PUT";
+        }
+
+        db_functions.loggedInAjax({
+            url:url,
+            type:type,
+            async:true,
+            data:{"action_id":action_id, "evaluation_grade":grade},
+            success:function (data) {
+
+                callback(null, data);
+            },
+            error:function (err) {
+                if (err.responseText != "not authenticated")
+                    alert(err.responseText);
+                callback(err, null);
+            }
+        });
+    },
     //---------------------------------------------------//
 
     getDiscussionHistory:function (discussion_id, callback) {
