@@ -1154,6 +1154,20 @@ var db_functions = {
         });
     },
 
+    addSuggestionToAction:function (action_id, parts, explanation, callback) {
+        db_functions.loggedInAjax({
+            url:'/api/action_suggestions/',
+            type:"POST",
+            async:true,
+            data:{"action_id":action_id, "parts":parts, "explanation":explanation},
+            success:function (data) {
+                callback(null, data);
+            },
+            error:function (err) {
+                callback(err);
+            }
+        });
+    },
     //---------------------------------------------------//
 
     getDiscussionHistory:function (discussion_id, callback) {

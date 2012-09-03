@@ -67,6 +67,13 @@ var Schemas = exports.Schemas = {
         is_hidden:{type:Boolean,'default':true}
     }, {strict: true}),
 
+    //cycle opinion_shapers
+    OpinionShaper: new Schema({
+        user_id:{type:ObjectId, ref:'User', required:true},
+        cycle_id: {type: ObjectId, ref: 'Cycle', required:true},
+        text: String
+    }, {strict: true}),
+
     Kilkul:{
         user:{type:ObjectId, ref:'User'},
         user_name: {type: String, editable:false},
@@ -142,16 +149,16 @@ var Schemas = exports.Schemas = {
         is_hidden:{type:Boolean,'default':true}
     },
 
-    ActionSuggestion: {
-        creator_id: {type:Schema.ObjectId, ref:'User', index:true, required:true},
-        cycle_id: {type: ObjectId, ref: 'Cycle'},
-        first_name: String,
-        last_name: String,
-        creation_date:{type:Date, 'default':Date.now},
-        action_ref: {type: ObjectId, ref:'Action', required: true},
-        change: {},
-        is_approved: {type: Boolean, 'default': false}
-    },
+//    ActionSuggestion: {
+//        creator_id: {type:Schema.ObjectId, ref:'User', index:true, required:true},
+//        cycle_id: {type: ObjectId, ref: 'Cycle'},
+//        first_name: String,
+//        last_name: String,
+//        creation_date:{type:Date, 'default':Date.now},
+//        action_ref: {type: ObjectId, ref:'Action', required: true},
+//        change: {},
+//        is_approved: {type: Boolean, 'default': false}
+//    },
 
     ResourceObligation: {
         user_id: {type:Schema.ObjectId, ref:'User', index:true, required:true},
@@ -332,6 +339,7 @@ var Models = module.exports = {
 
     SuccessStory:mongoose.model('SuccessStory', Schemas.SuccessStory),
     Update: mongoose.model('Update', Schemas.Update),
+    OpinionShaper: mongoose.model('OpinionShaper', Schemas.OpinionShaper),
     Kilkul:mongoose.model('Kilkul', new Schema(Schemas.Kilkul, {strict: true})),
     DiscussionHistory:mongoose.model('DiscussionHistory', new Schema(Schemas.DiscussionHistory, {strict: true})),
 
@@ -340,6 +348,7 @@ var Models = module.exports = {
     PostArticle:mongoose.model('PostArticle',require('./post_article')),
     PostAction:require('./post_action'),
     Suggestion:require('./suggestion'),
+    ActionSuggestion:require('./action_suggestion'),
     PostOrSuggestion:mongoose.model('PostOrSuggestion', new Schema(require('./post_or_suggestion'), {strict: true}), 'posts'),
     Vote:mongoose.model('Vote', new Schema(Schemas.Vote, {strict: true})),
     VoteArticlePost:mongoose.model('VoteArticlePost', require('./vote_article_post')),

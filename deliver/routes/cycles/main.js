@@ -30,8 +30,7 @@ module.exports = function(req, res){
                 'text_field':1,
                 'image_field':1,
                 'discussions':1,
-                'tags':1,
-                'opinion_shapers':1
+                'tags':1
             })
             .populate('opinion_shapers', {
                 '_id':1,
@@ -51,6 +50,29 @@ module.exports = function(req, res){
         //find cycle followers
         function(cbk){
                 models.User.find({"cycles.cycle_id": req.params[0]}, cbk);
+        },
+
+        //get cycle opinion shapers
+        function(cbk){
+            models.OpinionShaper.find({cycle_id: req.params[0]})
+                .limit(3)
+                .populate('user_id', {
+                    '_id':1,
+                    'first_name':1,
+                    'last_name':1,
+                    'avatar': 1,
+                    'facebook_id':1,
+                    'avatar_url':1,
+                    'score':1,
+                    'num_of_proxies_i_represent':1
+                })
+                .exec(function(err, results){
+                    _.each(results, function(obj){obj.user_id.avatar = obj.user_id.avatar_url()});
+                    results = JSON.parse(JSON.stringify(results));
+                    _.each(results, function(obj){ obj.user_id.opinion_text = obj.text});
+                    cbk(err, results);
+                })
+
         }
        //final - render the cycle page
     ], function(err, args){
@@ -64,9 +86,9 @@ module.exports = function(req, res){
 
 
             g_cycle = args[0];
+            g_cycle.opinion_shapers = _.map(args[2], function(opinion_shaper){return opinion_shaper.user_id});
             var users = args[1] || [];
 
-            _.each(g_cycle.opinion_shapers, function(user){user.avatar = user.avatar_url()});
             if(g_cycle.followers_count != users.length){
                 //fix follower count
                 models.Cycle.update({_id: args[0]._id}, {$set: {followers_count: users.length}}, function(err, result){

@@ -39,7 +39,7 @@ var Cycle = module.exports = new Schema({
     users:{type:[
         new Schema({user_id:{type:ObjectId, ref:'User'}, join_date: {type:Date, 'default':Date.now}})
     ], editable:false},
-    opinion_shapers: [{type: ObjectId, ref: 'User'}],
+//    opinion_shapers: [{type: ObjectId, ref: 'User'}],
     is_hidden:{type:Boolean,'default':true}
 }, {strict: true});
 

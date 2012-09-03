@@ -89,7 +89,7 @@ var User = module.exports = new Schema({
     blog_text_1: String,
     blog_text_2: {type:mongoose_types.Text},
     blog_text_3: String,
-    opinion_text: String,
+//    opinion_text: String,
     sent_mail: {type:Date},
     has_voted: [String]
 
