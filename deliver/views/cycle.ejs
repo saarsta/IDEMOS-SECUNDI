@@ -326,9 +326,7 @@
              function timelineAppend  (err, out) {
                  $('.followers-diagram').append(out);
              };
-             $('.popup-text').live("show", function(){ alert("Goodbye!"); });
-             // $('.popup-text').ellipsis();
-             //.popup-event
+
             db_functions.getPendingActionsByCycle(cycle_id, function ( data,err) {
 
                     dust.renderArray('cycle_pending_action', data.objects, function (err, out) {
@@ -435,6 +433,19 @@
             })
         }
 
+        $('.followers-diagram .event .icon').live("hover", function(){
+           console.log('elip');
+            $(this).find('.popup-text').ellipsis();
+        });
+        $('.followers-diagram .event .green-icon .popup-event').live('click',function(){
+            window.location.href = '/updates/'+$(this).attr('item-id');
+        });
+        //
+        //.popup-event
+        //$('.popup-text').live("hover", function(){
+         //   alert("Goodbye!"); });
+        // $('.popup-text').ellipsis();
+        //.popup-event
 
 });
 </script>
