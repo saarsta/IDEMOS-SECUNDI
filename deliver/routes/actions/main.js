@@ -28,9 +28,11 @@ module.exports = function (req, res) {
                     'cycle_id':1,
                     'action_resources':1,
                     'is_approved':1,
-                    'admin_text':1
+                    'admin_text':1,
+                    'system_message': 1
                 })
                 .populate('action_resources.resource')
+                .populate('cycle_id', {'_id': 1, 'title': 1})
                 .exec(cbk);
         },
 

@@ -77,7 +77,7 @@ $(document).ready(function () {
                         //  {
                     });
                 }
-            }
+            };
 
 
             $(".search-result-box .tabs").tabs("destroy");
@@ -169,7 +169,7 @@ $(document).ready(function () {
         window.location.replace("/actions/" + $(this).attr("item_id"));
     });
     $(".tab-slide-blogs .slides-one .one").live('click', function () {
-        window.location.replace("/blogs/" + $(this).attr("item_id"));
+        window.location.replace("/blogs" + $(this).attr("item_id"));
     });
     $(".tab-slide-cycles .slides-one .one").live('click', function () {
         window.location.replace("/cycles/" + $(this).attr("item_id"));
