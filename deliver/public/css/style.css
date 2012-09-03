@@ -605,7 +605,7 @@ body
 /*----------------------------*/
 #content
 {
-    padding-bottom: 80px;
+    padding-bottom: 65px;
     position: relative;
     clear: both;
 }
@@ -5724,14 +5724,14 @@ a.fraction-btn
 {
     width: 7px;
     height: 5px;
-    background: url(../images/popular-comment-arrows.png) 0 0 no-repeat;
+    background: url(../images/popular-comment-arrows.png) 0 100% no-repeat;
     position: absolute;
     left: 14px;
     top: 11px;
 }
 .popular-comments.hover .top a span
 {
-    background-position: 0 100%;
+    background-position: 0 0;
 }
 .popular-comments .one
  {
@@ -6043,7 +6043,6 @@ a.fraction-btn
 .followers-diagram .event .icon span.i.center
 {
     position: absolute;
-
     top:0;
 }
 .followers-diagram .event.past-cluster   .text
@@ -6056,6 +6055,11 @@ a.fraction-btn
     background:#2fd43b;
     border: 3px solid #25962d;
 }
+.followers-diagram .event .green-icon .popup-event
+{
+  cursor: pointer;
+}
+
 .followers-diagram .event .blue-icon span.i
 {
     background:#3c63ef;
@@ -6205,7 +6209,7 @@ a.fraction-btn
     padding: 9px;
     position: relative;
     text-align: right;
-    height: 95px;
+    height: 115px;
     overflow: hidden;
 
 }
@@ -8064,6 +8068,10 @@ a.menu-elections:hover {
     padding-left: 13px;
     margin-left: 6px;
     background: url(../images/arrow-left.png) 0 50% no-repeat;
+}
+
+.no_underline:hover{
+    cursor: pointer;
 }
 
 *------------------------------*/
