@@ -177,7 +177,7 @@
                 button.text('...');
 
                 db_functions.joinToCycleFollowers(cycle_id, function(err, result){
-                    button.text(result.is_follower ? "הפסק לעקוב" : "עקוב אחרי המעגל");
+                    button.text(result.is_follower ? "הפסק לעקוב" : "עקוב אחרי מעגל התנופה");
                     $('#followers_count strong').text(result.followers_count);
                 })
             });
