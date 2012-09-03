@@ -193,6 +193,15 @@ var sendNotificationToUser = function(bgv, last_update_date) {
      */
     var email;
     async.waterfall([
+        // TODO finish this
+        function(cbk){
+            if(!notification.visited) {
+                console.log('user should not receive notification because he or she have not visited since');
+                cbk('break');
+                return;
+            }
+            cbk();
+        },
         // 1) Get user email
         function(cbk) {
             models.User.findById(notification.user_id._doc ? notification.user_id.id : notification.user_id,cbk);
@@ -203,12 +212,12 @@ var sendNotificationToUser = function(bgv, last_update_date) {
                 cbk("user not found");
 		        return;
             }
-            // if the user hasn't visited since the last notification was sent, dont send another one, cut's the waterfall
-            if(last_update_date && user.last_visit < last_update_date) {
-                console.log('user should not receive notification because he or she have not visited since');
-                cbk('break');
-                return;
-            }
+//            // if the user hasn't visited since the last notification was sent, dont send another one, cut's the waterfall
+//            if(last_update_date && user.last_visit < last_update_date) {
+//                console.log('user should not receive notification because he or she have not visited since');
+//                cbk('break');
+//                return;
+//            }
             // TODO check in account settings if sending mails is allowed
             email = user.email;
             notificationResource.populateNotifications({objects:[notification]},cbk);
@@ -235,8 +244,17 @@ var sendNotificationToUser = function(bgv, last_update_date) {
                     console.trace();
                 }
             }
-            else
+            else {
                 console.log('email ' + notification.type + ' sent to ' + email);
+                // TODO finish this
+                notification.visited = false;
+                notification.save(function(err){
+                    if(err) {
+                        console.error('saving notification flag failed');
+                    }
+                });
+
+            }
         });
 };
 
@@ -341,6 +359,15 @@ exports.update_user_notification = function (notification_type, obj_id,user, cal
 
 
 }
+
+// TODO finish this
+exports.updateVisited = function(user,url) {
+    models.Notification.update({user_id:user._id,url:url},{$set:{visited:true}},{multi:true},function(err) {
+        if(err) {
+            console.error('failed setting notification visited to true',err);
+        }
+    })
+};
 
 function isSubEntityExist(notification, sub_entity){
         return _.any(notification.notificators, function(noti){ return noti.sub_entity_id + "" == sub_entity + ""});
