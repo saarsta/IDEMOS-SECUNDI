@@ -46,7 +46,7 @@
 
 
                                      <% for (var c = 0; c <articles[i].tags.length; c++) { %>
-                                           <a class="tag-search" href="javascript:void(0);"><%=articles[i].tags[c] %></a>
+                                           <a class="tag-search" href="/blogs/article/?tag_name=<%= articles[i].tags[c]%>""><%=articles[i].tags[c] %></a>
                                      <% }%>
 
                                         <!--<a class="like-btn gray_and_soon" href=""><img src="images/like-btn.png" alt="" /></a>-->
