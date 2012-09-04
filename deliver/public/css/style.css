@@ -5999,6 +5999,7 @@ a.fraction-btn
     border-bottom: 5px solid #50504f;
     margin-bottom: 75px;
     position: relative;
+    opacity: 0.3;
 }
 .followers-diagram .event
 {
