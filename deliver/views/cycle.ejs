@@ -58,7 +58,7 @@
                     <div class="top">
                         <a href=""><span></span>  תגובות פופולריות</a>
                     </div>
-                    <div class="hide-box">
+                    <div id="comments" class="hide-box">
 
                     </div>
                 </div>
@@ -90,7 +90,7 @@
             </div>
         </div>
     </div>
-    <div class="comments-box">
+    <div  class="comments-box">
         <div class="extra cf">
             <div class="updates-box cf">
                 <div class="right">
@@ -153,8 +153,34 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+             var my_id = "<%=user_logged ? user._id : ''%>";
             var cycle_id = "<%=cycle.id%>";
             var user = "<%=cycle.id%>";
+
+
+        <%
+        if (user_logged&&proxy) { %>
+            var proxy = JSON.parse('<%-proxy%>');
+        <%
+        } else { %>
+            var proxy = [];
+        <%
+        }
+        %>
+
+
+        $('#comments').on('click', '#add_or_remove_proxy', function (e) {
+            var userData = $(this).parents('.comment-one');
+            var proxyId = userData.data('creator_id');
+            var userName = userData.data('creator_name');
+            e.preventDefault();
+            proxyCommon.addOrRemoveProxy(proxy,proxyId,userName,my_id,function(newProxy){
+                proxy=newProxy.proxy;
+
+            })
+
+
+        });
 
             $(".inline").colorbox({ inline: true, width: "730" });
 

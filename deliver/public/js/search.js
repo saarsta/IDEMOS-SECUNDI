@@ -77,7 +77,7 @@ $(document).ready(function () {
                         //  {
                     });
                 }
-            }
+            };
 
 
             $(".search-result-box .tabs").tabs("destroy");

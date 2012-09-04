@@ -80,10 +80,11 @@ module.exports = function (req, res) {
                }
                action.is_going = is_going;
                 //todo: get from DB
-                action.cycle={title:'SAAR I need title and Id of cycle',
+              /*  action.cycle={title:'SAAR I need title and Id of cycle',
                     id:'aaaaaa'
 
-                };
+                };*/
+              /*  action.system_message='SAAR I need system_message';*/
 
 
                // action.admin_text='Saar FIX ME';
