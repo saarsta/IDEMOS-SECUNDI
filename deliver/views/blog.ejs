@@ -77,7 +77,8 @@
                                 <% }else{%>
                                 data-href="http://www.uru.org.il/blogs/<%= articles[0].user_id %>"
                                 <% }%>
-                                     data-num-posts="3" data-width="570"></div>
+                                     data-num-posts="3" data-width="570">
+                            </div>
 
                                 <h3>תגובות</h3>
                             </div>
@@ -117,7 +118,8 @@
                         </div>
                         <div class="badges cf">
                             <div class="proxy">
-                                <span><%=blogger.num_of_proxies_i_represent %></span> מנדטים
+                                <span><%=blogger.num_of_proxies_i_represent %> </span>
+                                מנדטים
                             </div>
                             <div class="respect">
                                 <span><%=blogger.score %></span> מוניטין
@@ -138,7 +140,7 @@
                     <% if (user) { %>
          	    	<div class="email-registration btns-box cf">
                          <form id="email-signup" name="email-signup">
-                             <input type="email" name="email" class="floatLeft" placeholder="הרשם לעדכונים בדואר"></input>
+                             <input type="email" name="email" class="floatLeft" placeholder="הרשם לעדכונים בדואר"> </input>
                              <a class="floatRight" data-registration-type="email" data-not-follow-text="בטל רישום" data-follow-text="הרשמה במייל" data-put-url="/api/follow_blog_by_mail/<%=user._id%>" href="javascript:void(0)">
                                  <% if (articles[0].is_blog_follower_by_mail) { %>    בטל רישום     <% } else {%> הרשמה במייל <% } %>
                              </a>
@@ -178,8 +180,6 @@
                         <% for (var i = 0; i < tags.length ; i++) { %>
                                <a class="tag-search" href="javascript:void(0);"><%= tags[i].tag %></a>
                         <% }%>
-
-
                     </div>
                 </div>
             </div>
@@ -225,10 +225,10 @@
                 פרסם
             </a>
         </div>
-    </div>
+</div>
         <% } %>
 </div>
-
+</div>
 <% include partials/footer.ejs %>
 
 <script type="text/javascript">
@@ -240,9 +240,8 @@ var isBlog=<%=isBlog %>;
 <% if (!isBlog) { %>
 var single_article_id  ='<%=articles[0]._id %>';
 <% } %>
+
 $(document).ready(function () {
-
-
     $.each($(".one-post"), function (index,item) {
               getComments  (item.id)  ;
     });
