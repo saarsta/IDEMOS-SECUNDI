@@ -204,10 +204,19 @@ div.reg-container .rightone img {
 }
 
 div.reg-container .middleone {
-    background: url(../images/elections/o.png) no-repeat center;
+    position: relative;
     float: right;
     width: 87px;
+    height: 1px;
+    overflow: visible;
+}
+div.reg-container .middleone_image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
     height: 120px;
+    background: url(../images/elections/o.png) no-repeat center;
 }
 
 div.reg-container .leftone {

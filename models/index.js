@@ -327,7 +327,6 @@ var Schemas = exports.Schemas = {
     }
 };
 
-
 var schemas_with_tooltip = [require('./discussion'),require('./articles'),require('./cycle'),require('./information_item'),require('./action'),Schemas.Headline,Schemas.Update];
 
 _.each(schemas_with_tooltip,function(schema,index){
@@ -335,7 +334,6 @@ _.each(schemas_with_tooltip,function(schema,index){
         return this.tooltip || this.title;
     };
 });
-
 
 var Models = module.exports = {
     User:mongoose.model("User",require('./user')),
@@ -402,4 +400,4 @@ var Models = module.exports = {
     }
 };
 
-
+mongoose.connection.collections.notifications.ensureIndex({ entity_id: 1, user_id: 1, type: 1 }, { unique: true, dropDups: true });

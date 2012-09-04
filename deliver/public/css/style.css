@@ -982,10 +982,11 @@ body
 }
 #footer .extra
 {
-    width: 980px;
+    width: 970px;
     margin: 0 auto;
     height: 181px;
     overflow:hidden;
+    padding-left: 10px;
 }
 #footer .one-col
 {
