@@ -23,11 +23,13 @@ var mongoose_resource = require('jest'),
     VoteActionPostResource = require('./actions/VoteActionPostResource'),
     GradeResource = require('./discussions/GradeResource.js'),
     GradeSuggestionResource = require('./GradeSuggestionResource'),
-    GradeActionResource = require('./GradeActionResource'),
+    GradeActionSuggestionResource = require('./actions/grade_action_suggestion_resource'),
+    GradeActionResource = require('./actions/GradeActionResource'),
     LikeResource = require('./LikeResource'),
     JoinResource = require('./actions/JoinResource'),
     CategoryResource = require('./CategoryResource'),
     SuggestionResource = require('./suggestionResource.js'),
+    ActionSuggestionResource = require('./actions/ActionSuggestionResource.js'),
     ActionResourceResource = require('./actions/ActionResourceResource.js'),
     ActionResource = require('./actions/ActionResource.js'),
     ActionPopulatedResource = require('./actions/ActionPopulatedResource.js'),
@@ -90,7 +92,9 @@ module.exports = function(app)
     rest_api.register_resource('votes_on_action_post', new VoteActionPostResource());
     rest_api.register_resource('grades', new GradeResource());
     rest_api.register_resource('grades_suggestion', new GradeSuggestionResource());
-    rest_api.register_resource('grades_action', new GradeActionResource());
+    rest_api.register_resource('action_suggestion_grades', new GradeActionSuggestionResource());
+    rest_api.register_resource('action_grades', new GradeActionResource());
+    rest_api.register_resource('action_suggestions', new ActionSuggestionResource());
     rest_api.register_resource('likes', new LikeResource());
     rest_api.register_resource('join', new JoinResource());
     rest_api.register_resource('suggestions', new SuggestionResource());

@@ -1194,6 +1194,46 @@ var db_functions = {
             }
         });
     },
+
+    addActionSuggestionGrade:function (suggestion_id, action_id, grade, grade_id, callback) {
+        var url;
+        var type;
+
+        grade_id ? url = '/api/action_suggestion_grades/' + grade_id : url = '/api/action_suggestion_grades/';
+        grade_id ? type = "PUT" : type = "POST";
+
+        db_functions.loggedInAjax({
+            url:url,
+            type:type,
+            async:true,
+            data:{"suggestion_id":suggestion_id, "action_id":action_id, "evaluation_grade":grade},
+            success:function (data) {
+
+                callback(null, data);
+            },
+            error:function (err) {
+                if (err.responseText != "not authenticated")
+                    if (err.responseText == "must grade discussion first")
+                        popupProvider.showOkPopup({message:'אנא דרג קודם את החזון בראש העמוד.'})
+                callback(err, null);
+            }
+        });
+    },
+
+    getSuggestionByAction:function (action_id, limit, offset, callback) {
+        db_functions.loggedInAjax({
+            url:'/api/action_suggestions?action_id=' + action_id + "&is_approved=false" + (limit ? '&limit=' + limit : '') + (offset ? '&offset=' + offset : ''),
+            type:"GET",
+            async:true,
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function (err) {
+                callback(err, null);
+            }
+        });
+    },
     //---------------------------------------------------//
 
     getDiscussionHistory:function (discussion_id, callback) {

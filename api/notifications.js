@@ -14,7 +14,7 @@ var models = require('../models'),
     _ = require('underscore');
 
 
-exports.create_user_notification = function(notification_type, entity_id, user_id, notificatior_id, sub_entity, url, callback){
+exports.create_user_notification = function(notification_type, entity_id, user_id, notificatior_id, sub_entity, callback){
 
     var single_notification_arr = [
         "been_quoted",
@@ -151,7 +151,9 @@ exports.create_user_proxy_vote_or_grade_notification = function(notification_typ
     })
 };
 
-var create_new_notification = function(notification_type, entity_id, user_id, notificatior_id, sub_entity_id, url, callback){
+var create_new_notification = function(notification_type, entity_id, user_id, notificatior_id, sub_entity_id, callback){
+
+
 
     var notification = new models.Notification();
     var notificator = {
@@ -163,7 +165,8 @@ var create_new_notification = function(notification_type, entity_id, user_id, no
     notification.notificators = notificator;
     notification.type = notification_type;
     notification.entity_id = entity_id;
-    notification.url = url;
+    //TODO
+//    notification.url = url;
     notification.seen = false;
     notification.update_date = new Date();
 
@@ -260,7 +263,7 @@ var sendNotificationToUser = function(notification, last_update_date) {
 };
 
 exports.create_user_vote_or_grade_notification = function(notification_type, entity_id, user_id, notificatior_id,
-                                                        sub_entity, vote_for_or_against, did_change_the_sugg_agreement, is_on_suggestion, url, callback){
+                                                        sub_entity, vote_for_or_against, did_change_the_sugg_agreement, is_on_suggestion, callback){
     async.waterfall([
 
         function(cbk){
@@ -340,7 +343,8 @@ exports.create_user_vote_or_grade_notification = function(notification_type, ent
                 notification.notificators = notificator;
                 notification.type = notification_type;
                 notification.entity_id = entity_id;
-                notification.url = url;
+                //TODO
+//                notification.url = url;
                 notification.seen = false;
                 notification.update_date = new Date();
 

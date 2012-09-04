@@ -91,8 +91,15 @@ var GradeActionSuggestionResource = module.exports = common.GamificationMongoose
 
         async.waterfall([
 
+
+            //find action
+            function(cbk){
+                models.Action.findById(action_id, cbk);
+            },
+
             //user can grade suggestion only if he grade the action
-            function (cbk) {
+            function (action, cbk) {
+                action_obj = action;
                 models.GradeAction.findOne({user_id:req.user._id, action_id:fields.action_id}, cbk);
             },
 

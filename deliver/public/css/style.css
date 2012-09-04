@@ -2398,12 +2398,12 @@ body
 .extended #discussion_image {
     display:none;
 }
-.discussion_content
+.discussion_content, .action_content
 {
     height: 188px;
     overflow: hidden;
 }
-.extended .discussion_content {
+.extended .discussion_content, .action_content {
     /*  height:400px;     */
 
     overflow: inherit;

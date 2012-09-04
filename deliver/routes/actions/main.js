@@ -19,6 +19,7 @@ module.exports = function (req, res) {
             models.Action.findById(req.params[0])
                 .select({
                     '_id':1,
+                    'creator_id': 1,
                     'type':1,
                     'title':1,
                     'text_field':1,
@@ -29,6 +30,8 @@ module.exports = function (req, res) {
                     'required_participants':1,
                     'cycle_id':1,
                     'action_resources':1,
+                    'grade': 1,
+                    'evaluate_counter': 1,
                     'is_approved':1,
                     'admin_text':1,
                     'system_message': 1

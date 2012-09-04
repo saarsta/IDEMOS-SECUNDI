@@ -14,27 +14,28 @@ var resources = require('jest'),
 var Authoriztion = function() {};
 util.inherits(Authoriztion,resources.Authorization);
 
-Authoriztion.prototype.edit_object = function(req,object,callback){
-    //check if user already grade this action
-    var flag = false;
-    models.GradeAction.find({"action_id": object.action_id}, function(err, objects){
-        if (err){
-            callback(err, null);
-        }else{
-            for (var i = 0; i < objects.length; i++){
-                if(req.session.user_id == objects[i].user_id){
-                    flag = true;
-                    break;
-                }
-            }
-            if (flag){
-                callback({message:"user already grade this action",code:401}, null);
-            }else{
-                callback(null, object);
-            }
-        }
-    })
-};
+//Authoriztion.prototype.edit_object = function(req,object,callback){
+//    //check if user already grade this action
+//    var flag = false;
+//
+//    models.GradeAction.find({"action_id": object.action_id}, function(err, objects){
+//        if (err){
+//            callback(err, null);
+//        }else{
+//            for (var i = 0; i < objects.length; i++){
+//                if(req.session.user_id == objects[i].user_id){
+//                    flag = true;
+//                    break;
+//                }
+//            }
+//            if (flag){
+//                callback({message:"user already grade this action",code:401}, null);
+//            }else{
+//                callback(null, object);
+//            }
+//        }
+//    })
+//};
 
 var GradeActionResource = module.exports = common.GamificationMongooseResource.extend({
     init:function(){
@@ -202,13 +203,15 @@ var GradeActionResource = module.exports = common.GamificationMongooseResource.e
                         calculateActionGrade(object.action_id, function(err, _new_grade, _evaluate_counter){
                             new_grade = _new_grade;
                             evaluate_counter = _evaluate_counter;
-                            cbk(err);
+                            cbk(err, 0);
                         });
                     },
 
                     //get action threshold so i can update every suggestion threshold
                     function(obj, cbk){
-                        models.Action.findById(object.action_id, cbk);
+                        models.Action.findById(object.action_id, function(err, result){
+                            cbk(err, result)
+                        });
                     },
 
                     function(action_obj,cbk){
