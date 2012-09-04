@@ -95,8 +95,14 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
 
         async.waterfall([
 
+            //find discussion
+            function(cbk){
+                models.Discussion.findById(discussion_id, cbk);
+            },
+
             //user can grade suggestion only if he grade the discussion
-            function (cbk) {
+            function (disc_obj, cbk) {
+                discussion_obj = disc_obj;
                 models.Grade.findOne({user_id:req.user._id, discussion_id:fields.discussion_id}, cbk);
             },
 
@@ -105,31 +111,25 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                 //if not - check if the creator of the discussion is the user that is trying to grade
                 // (if so - instead of the user discussion_grade we take the evaluated discussion.grade)
                 if (!grade_discussion) {
-                    models.Discussion.findById(discussion_id, function (err, obj) {
-                        if (err || !obj)
-                            cbk(err || {code:404, message:"the is no such discussion"}, null);
+
+                        //if the creator of the discussion grade the suggestion without grdein the discussion - its ok
+                        // otherwise unauthorise
+                        if (req.user._id + "" != discussion_obj.creator_id + "")
+                            cbk({code:401, message:"must grade discussion first"}, null);
                         else {
-                            discussion_obj = obj;
+                            discussion_evaluation_grade = discussion_obj.grade;
+                            is_agree = fields.evaluation_grade >= discussion_evaluation_grade;
 
-                            //if the creator of the discussion grade the suggestion without grdein the discussion - its ok
-                            // otherwise unauthorise
-                            if (req.user._id + "" != obj.creator_id + "")
-                                cbk({code:401, message:"must grade discussion first"}, null);
-                            else {
-                                discussion_evaluation_grade = obj.grade;
-                                is_agree = fields.evaluation_grade >= discussion_evaluation_grade;
+                            //check if suggestion is approved (al haderech)
 
-                                //check if suggestion is approved (al haderech)
-
-                                //i think there is no need for that, threshold is in suggestion
+                            //i think there is no need for that, threshold is in suggestion
 //                                real_threshold = Number(obj.admin_threshold_for_accepting_change_suggestions) || obj.threshold_for_accepting_change_suggestions;
 
-                                fields.does_support_the_suggestion = is_agree;
-                                fields.proxy_power = proxy_power;
-                                base.call(self, req, fields, cbk);
-                            }
+                            fields.does_support_the_suggestion = is_agree;
+                            fields.proxy_power = proxy_power;
+                            base.call(self, req, fields, cbk);
                         }
-                    })
+
                 }
                 else {
                     discussion_evaluation_grade = grade_discussion.evaluation_grade;
