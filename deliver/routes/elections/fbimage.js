@@ -6,8 +6,8 @@ var createHash = require('crypto').createHash;
 var util = require('util');
 
 var url2png = function (req, url, viewport, fullpage, thumbnail_max_width) {
-    var apikey = req.app.settings.url2png_api_key,
-        secret = req.app.settings.url2png_api_secret,
+    var apikey = req.app.settings['url2png_api_key'],
+        secret = req.app.settings['url2png_api_secret'],
         target = util.format('url=%s&viewport=%s&fullpage=%s&thumbnail_max_width=%s&force=true',
             encodeURIComponent(url),
             viewport,
@@ -25,7 +25,7 @@ var url2png = function (req, url, viewport, fullpage, thumbnail_max_width) {
 module.exports = function(req, res) {
     if (req.method =='POST') {
         var path = 'http://uru-staging.herokuapp.com/elections/fbimage/' + req.session.user.id;
-        var target_url = url2png(req, path, '830x830', true, 830);
+        var target_url = url2png(req, path, '750x750', true, 750);
         res.send({target_url: target_url});
         return;
     }
@@ -39,7 +39,7 @@ module.exports = function(req, res) {
             url: req.url,
             items: items.map(function(dis) {
                 var textParts = dis.title.split(':', 2);
-                return {title: textParts[0], text: textParts[1]};
+                return {title: textParts[0], text: textParts[1] || ''};
             })
         });
     })
@@ -53,18 +53,24 @@ var getUserChosenDiscussions = module.exports.getUserChosenDiscussions = functio
             var conditions = (user_id.length == 24) ? {_id: user_id} : {facebook_id:user_id};
             models.User.findOne(conditions, cb)
         },
+
         // get assosiated discussions
         function (user, cb)
         {
+            user = user || {has_voted:[]};
             // we might have some placeholders in this list
-
-            var disc_ids = user.has_voted.filter(function(val) {return val.length > 20;});
-            var stored_disc = user.has_voted.filter(function(val) {return val.title;});
+            var disc_ids = user.has_voted.filter(function(val) {return val.length == 24;});
+            var stored_disc = user.has_voted.filter(function(val) {return val.length != 24;}).map(function(obj) {return {title:obj};});
             models.Discussion.find({_id: {'$in': disc_ids}}, function(err, result){
-                cb(err, result.concat(stored_disc))
+                if (err) {
+                    cb(err);
+                } else {
+                    cb(null, result.concat(stored_disc));
+                }
             })
-        }
-    ], callback
+        }],
+
+        callback
     );
 };
 
