@@ -25,33 +25,11 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                 }
             };
             this.authentication = new common.SessionAuthentication();
-//            this.fields = {
-//                _id:null,
-//                title:null,
-//                tooltip_or_title:null,
-//                text_field:null,
-//                text_field_preview:null,
-//                image_field:null,
-//                image_field_preview:null,
-//                description:null,
-//                creator_id:null,
-//                action_resources:null,
-//                tags:null,
-//                creation_date:null,
-//                execution_date:null,
-//                required_participants:null,
-//                grade:null,
-//                evaluate_counter:null,
-////                is_follower: null,
-//                is_going:null,
-//                updated_user_tokens:null,
-//                join_id:null,
-//                num_of_going:null
-//            }
             this.default_query = function (query) {
                 return query.sort({"execution_date.date":'descending'});
             }
         },
+
 
         get_objects:function (req, filters, sorts, limit, offset, callback) {
             if (req.query.get == "myUru") {

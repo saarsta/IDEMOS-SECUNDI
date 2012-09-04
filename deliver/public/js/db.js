@@ -1173,9 +1173,6 @@ var db_functions = {
         var url = '/api/action_grades/';
         var type = "POST";
 
-//        grade_id ? url = '/api/grades/' + grade_id : url = '/api/grades/';
-//        grade_id ? type = "PUT" : type = "POST";
-
         if (grade_id && grade_id !== "undefined" && grade_id !== "0") {
             url = '/api/action_grades/' + grade_id;
             type = "PUT";

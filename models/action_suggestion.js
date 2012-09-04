@@ -9,7 +9,6 @@ var mongoose = require("mongoose"),
 
 var ActionSuggestion = {
     action_id:{type:Schema.ObjectId, ref:'Action', required:true, onDelete:'delete'},
-    cycle_id:{type:Schema.ObjectId, ref:'Cycle', required:true, onDelete:'delete'},
     parts:[
         {start:Number, end:Number, text:Schema.Types.Text}
     ],
