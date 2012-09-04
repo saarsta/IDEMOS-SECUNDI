@@ -3,6 +3,7 @@ var mongoose = require("mongoose"),
     Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId,
     mongoose_types = require('j-forms').types,
+    common = require('./common'),
     utils = require('./../utils');
 
 
@@ -19,7 +20,7 @@ var Discussion = module.exports = new Schema({
     subject_name: String,
     system_message: {type:mongoose_types.Html},
     creation_date:{type:Date, 'default':Date.now},
-    creator_id:{type:ObjectId, ref:'User'},
+    creator_id:{type:ObjectId, ref:'User', query:common.FIND_USER_QUERY},
     first_name:{type:String,editable:false},
     last_name:{type:String,editable:false},
     text_field_preview: {type:mongoose_types.Text},//2-3 lines of the vision_text
@@ -34,12 +35,12 @@ var Discussion = module.exports = new Schema({
     tags:[String],
     //users that connected somehow to discussion for my uru
     users:[
-        new Schema({user_id:{type:ObjectId, ref:'User'}, join_date: {type:Date, 'default':Date.now}})
+        new Schema({user_id:{type:ObjectId, ref:'User', query:common.FIND_USER_QUERY}, join_date: {type:Date, 'default':Date.now}})
     ],
 
     //followers for my uru
     followers:[
-        new Schema({user_id:{type:ObjectId, ref:'User'}, join_date: {type:Date, 'default':Date.now}})
+        new Schema({user_id:{type:ObjectId, ref:'User', query:common.FIND_USER_QUERY}, join_date: {type:Date, 'default':Date.now}})
     ],
     view_counter: {type:Number, 'default':0},
     followers_count:{type:Number, 'default':0, editable:false},

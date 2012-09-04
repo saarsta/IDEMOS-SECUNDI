@@ -1,13 +1,19 @@
 <div class="one">
     <div class="right-image" style="overflow: hidden;">
-        <div style="width:141px;height: 79px; overflow:hidden; " class='auto-scale' >
-            <img  src="{image_field.url}" alt=""/>
-          <!--<img  src="http://profile.ak.fbcdn.net/hprofile-ak-snc4/49136_745621901_4865704_n.jpg" alt="" />-->
-        </div>
+        <a href="/updates/{_id}">
+            <div style="width:141px;height: 79px; overflow:hidden; " class='auto-scale' >
+                    <img  src="{image_field.url}" alt=""/>
+            </div>
+        </a>
+
         <span></span>
     </div>
-    <h4>{title}</h4>
-    <p>{text_field}<a href="/updates/{_id}">קרא עוד</a></p>
+    <a class="no_underline_cursor_when_hover" href="/updates/{_id}">
+        <h4>{title}</h4>
+    </a>
+
+     <p>{text_field}<a href="/updates/{_id}">קרא עוד</a></p>
+
     <a href="/facebookShare?link=/updates/{_id}" target="_blank" class="btn share" data-title="{title}" data-text_preview="{text_field}" data-img_src="{image_field.url}" rel="/updates/{_id}" >
         שתף
     </a>

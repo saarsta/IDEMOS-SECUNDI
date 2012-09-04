@@ -65,6 +65,8 @@ module.exports = function(req, res){
 
             g_cycle = args[0];
             var users = args[1] || [];
+            //TODO: REMOVE ME
+            var BUGBUG_PROXY=null;
 
             _.each(g_cycle.opinion_shapers, function(user){user.avatar = user.avatar_url()});
             if(g_cycle.followers_count != users.length){
@@ -76,7 +78,8 @@ module.exports = function(req, res){
                     g_cycle.is_user_follower_of_cycle = _.any(users, function(user){return user._id + "" == req.session.user ? req.user.id : 0});
                     res.render('cycle.ejs',{
                         cycle: g_cycle,
-                        tab:'cycles'
+                        tab:'cycles',
+                        proxy:BUGBUG_PROXY
                     });
                 })
             }else{
@@ -85,7 +88,8 @@ module.exports = function(req, res){
                 g_cycle.is_user_follower_of_cycle = _.any(users, function(user){return user._id + "" == req.session.user ? req.user.id : 0});
                 res.render('cycle.ejs',{
                     cycle: g_cycle,
-                    tab:'cycles'
+                    tab:'cycles',
+                    proxy:BUGBUG_PROXY
                 });
             }
         }

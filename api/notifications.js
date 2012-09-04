@@ -42,10 +42,6 @@ exports.create_user_notification = function(notification_type, entity_id, user_i
                 if(noti){
                     var date = Date.now();
                     var last_update_date = noti.update_date;
-//                    it doesnt work !!!
-//                    models.Notification.update({id: noti._id}, {$addToSet: {notificators: notificatior_id}, $set:{update_date: Date.now()}}, function(err, num){
-//                        cbk(err, num);
-//                    });
 
                     //TODO change it later to something prettier
                     if((notification_type == 'comment_on_discussion_you_are_part_of' || notification_type == "comment_on_discussion_you_created") &&
@@ -73,7 +69,7 @@ exports.create_user_notification = function(notification_type, entity_id, user_i
                            cbk(err, obj);
                        });
                    }
-                   sendNotificationToUser(noti,last_update_date);
+                   sendNotificationToUser(noti, last_update_date);
                 }else{
                     create_new_notification(notification_type, entity_id, user_id, notificatior_id, sub_entity, function(err, obj){
                         cbk(err, obj);
@@ -117,7 +113,7 @@ exports.create_user_proxy_vote_or_grade_notification = function(notification_typ
                 }else{
                     noti.save(function(err, obj){
                         cbk(err, obj);
-                        sendNotificationToUser(noti,last_update_date);
+                        sendNotificationToUser(noti, last_update_date);
                     });
                 }
 
@@ -148,7 +144,6 @@ exports.create_user_proxy_vote_or_grade_notification = function(notification_typ
                     if(!err && obj)
                         sendNotificationToUser(obj);
                 });
-
             }
         }
     ], function(err, obj){
@@ -188,7 +183,7 @@ var create_new_notification = function(notification_type, entity_id, user_id, no
  * @param callback
  * function(err)
  */
-var sendNotificationToUser = function(notification,last_update_date) {
+var sendNotificationToUser = function(bgv, last_update_date) {
     /**
      * Waterfall:
      * 1) Get user email
@@ -198,6 +193,15 @@ var sendNotificationToUser = function(notification,last_update_date) {
      */
     var email;
     async.waterfall([
+        // TODO finish this
+        function(cbk){
+            if(!notification.visited) {
+                console.log('user should not receive notification because he or she have not visited since');
+                cbk('break');
+                return;
+            }
+            cbk();
+        },
         // 1) Get user email
         function(cbk) {
             models.User.findById(notification.user_id._doc ? notification.user_id.id : notification.user_id,cbk);
@@ -208,12 +212,12 @@ var sendNotificationToUser = function(notification,last_update_date) {
                 cbk("user not found");
 		        return;
             }
-            // if the user hasn't visited since the last notification was sent, dont send another one, cut's the waterfall
-            if(last_update_date && user.last_visit < last_update_date) {
-                console.log('user should not receive notification because he or she have not visited since');
-                cbk('break');
-                return;
-            }
+//            // if the user hasn't visited since the last notification was sent, dont send another one, cut's the waterfall
+//            if(last_update_date && user.last_visit < last_update_date) {
+//                console.log('user should not receive notification because he or she have not visited since');
+//                cbk('break');
+//                return;
+//            }
             // TODO check in account settings if sending mails is allowed
             email = user.email;
             notificationResource.populateNotifications({objects:[notification]},cbk);
@@ -240,8 +244,17 @@ var sendNotificationToUser = function(notification,last_update_date) {
                     console.trace();
                 }
             }
-            else
+            else {
                 console.log('email ' + notification.type + ' sent to ' + email);
+                // TODO finish this
+                notification.visited = false;
+                notification.save(function(err){
+                    if(err) {
+                        console.error('saving notification flag failed');
+                    }
+                });
+
+            }
         });
 };
 
@@ -279,7 +292,6 @@ exports.create_user_vote_or_grade_notification = function(notification_type, ent
                         if(is_on_suggestion){
                             notificator.votes_for += vote_for_or_against == "add" ? 1 : 0;
                             notificator.votes_against += vote_for_or_against == "add" ? 0 : 1;
-
                         }
                     }
                 }else{
@@ -307,7 +319,7 @@ exports.create_user_vote_or_grade_notification = function(notification_type, ent
                     noti.save(function(err, obj){
                         cbk(err, obj);
                         if(!err && obj)
-                            sendNotificationToUser(obj, last_update_date);
+                            hrsd(obj, last_update_date);
                     })
                 }
             }else{
@@ -347,6 +359,15 @@ exports.update_user_notification = function (notification_type, obj_id,user, cal
 
 
 }
+
+// TODO finish this
+exports.updateVisited = function(user,url) {
+    models.Notification.update({user_id:user._id,url:url},{$set:{visited:true}},{multi:true},function(err) {
+        if(err) {
+            console.error('failed setting notification visited to true',err);
+        }
+    })
+};
 
 function isSubEntityExist(notification, sub_entity){
         return _.any(notification.notificators, function(noti){ return noti.sub_entity_id + "" == sub_entity + ""});

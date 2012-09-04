@@ -17,7 +17,7 @@
             <% include partials/tag_search.ejs %>
         </div>
         <div id="content" class="cf">
-            <h2><a class="arrow no_underline" href="javascrpit:void(0)"><%= blogger.blog_title || ""%> </a> <%= blogger.blog_sub_titile || ""%></h2>
+            <h2><a class="arrow no_underline" href="/blogs/<%=blogger._id%>"><%= blogger.blog_title || ""%> </a> <%= blogger.blog_sub_titile || ""%></h2>
             <div class="rightCol" id="articles" >
                 <% for (var i = 0; i < articles.length && i < 8 ; i++) { %>
                        <div class="one-post" item_id="<%= articles[i].id %>" id="<%= articles[i].id %>">
@@ -46,7 +46,7 @@
 
 
                                      <% for (var c = 0; c <articles[i].tags.length; c++) { %>
-                                           <a class="tag-search" href="javascript:void(0);"><%=articles[i].tags[c] %></a>
+                                           <a class="tag-search" href="/blogs/article/?tag_name=<%= articles[i].tags[c]%>""><%=articles[i].tags[c] %></a>
                                      <% }%>
 
                                         <!--<a class="like-btn gray_and_soon" href=""><img src="images/like-btn.png" alt="" /></a>-->
@@ -130,14 +130,6 @@
                         <!--<p><a href="">www.mywebsite.com</a></p>-->
                         <!--<p><a href="">www.facebook.com/myname</a></p>-->
                     <!--</div>-->
- 		<div class="email-registration btns-box cf">
-                 <form id="email-signup">
-                            <input type="text" class="floatLeft"></input>
-                            <a class="floatLeft" type="email" data-not-follow-text="הפסק לעקוב" data-follow-text="הרשמה במייל" data-put-url="/api/follow_blog_by_mail/<%=user._id%>" href="javascript:void(0)">
-                                <% if (articles[0].is_blog_follower_by_mail) { %>    ביטול הרשמה      <% } else {%> הרשמה במייל <% } %>
-                            </a>
-                 </form>
-        </div>
 
                     <% if (blogger.biography) { %>
                     <p><%=blogger.biography %></p>
@@ -145,29 +137,37 @@
 
                     <% if (user) { %>
          	    	<div class="email-registration btns-box cf">
-                        <input type="text" class="floatLeft"></input>
-                        <a class="floatLeft" data-not-follow-text="הפסק לעקוב" data-follow-text="הרשמה במייל" data-put-url="/api/follow_blog_by_mail/<%=user._id%>" href="javascript:void(0)">
-                            <% if (articles[0].is_blog_follower_by_mail) { %>    הרשמה במייל      <% } else {%> ביטול הרשמה <% } %>
-                        </a>
+                         <form id="email-signup" name="email-signup">
+                             <input type="email" name="email" class="floatLeft" placeholder="הרשם לעדכונים בדואר"></input>
+                             <a class="floatRight" data-registration-type="email" data-not-follow-text="בטל רישום" data-follow-text="הרשמה במייל" data-put-url="/api/follow_blog_by_mail/<%=user._id%>" href="javascript:void(0)">
+                                 <% if (articles[0].is_blog_follower_by_mail) { %>    בטל רישום     <% } else {%> הרשמה במייל <% } %>
+                             </a>
+                         </form>
                     </div>
-
-                    <a class="subscribe" data-not-follow-text="הפסק לעקוב" data-follow-text="הרשם לבלוג" data-put-url="/api/follow_blog/<%=user._id%>" href="javascript:void()" title="עקוב אחרי הבלוג באמצעות הפיד באתר עורו">
-                        <% if (articles[0].is_blog_follower) { %>     הפסק לעקוב      <% } else {%> הרשם לבלוג <% } %>
-                    </a>
-                    <% } %>
 
                     <div class="btns-box cf">
-                        <% if (blogger) { %>
-                            <a class="floatLeft" href="/api/articles/?user_id=<%=blogger._id%>&rss=true ">RSS</a>
-                        <% } else {%>
-                            <a class="floatLeft" href="javascript:void(0);">RSS</a>
-                        <% } %>
-                        <a href="javascript:void(0);" class="floatRight gray_and_soon">דואר</a>
+                        <a class="subscribe" data-not-follow-text="הפסק לעקוב" data-follow-text="הרשם לבלוג" data-put-url="/api/follow_blog/<%=user._id%>" href="javascript:void(0)" title="עקוב אחרי הבלוג באמצעות הפיד באתר עורו">
+                            <% if (articles[0].is_blog_follower) { %>     הפסק לעקוב      <% } else {%> הרשם לבלוג <% } %>
+                        </a>
                     </div>
+                    <% } %>
+
+
+                    <!--<div class="btns-box cf">-->
+                        <!--<% if (blogger) { %>-->
+                            <!--<a class="floatLeft" href="/api/articles/?user_id=<%=blogger._id%>&rss=true ">RSS</a>-->
+                        <!--<% } else {%>-->
+                            <!--<a class="floatLeft" href="javascript:void(0);">RSS</a>-->
+                        <!--<% } %>-->
+                        <!--<a href="javascript:void(0);" class="floatRight gray_and_soon">דואר</a>-->
+                    <!--</div>-->
                 </div>
                 <div class="left-search">
                     <form class="bolg-search"  action="#">
-                        <label>חיפוש</label>
+                        <label>
+                           חיפוש בבלוג של
+                            <%=blogger.first_name %>
+                        </label>
                         <input class="search_term" type="text" value="" />
                         <input type="submit" value="חפש" />
                     </form>
@@ -270,7 +270,7 @@ function getComments(article_id) {
     }
 }
 
- $("#submit_post").on('click', function (e) {
+$("#submit_post").on('click', function (e) {
         e.preventDefault();
         db_functions.addArticleComment($("textarea#article_comment").val(),single_article_id , function (err, post) {
             // $("#user_tokens").text(post.updated_user_tokens);
@@ -367,15 +367,24 @@ function getComments(article_id) {
 
         invalidHandler: function(form, validator) {
             var errors = validator.numberOfInvalids();
+        },
+        submitHandler:function(form){
+            ajaxSubmit($('a',form));
         }
-    })
 
-    $('a.subscribe, .email-registration a').click(function () {
-        var button = $(this);
+    });
 
-        if(button.data('registration-type').val() == 'email'){
-            
-        }
+    $('.email-registration a').click(function(){
+        $('#email-signup').submit();
+    });
+
+    var ajaxSubmit = function (button) {
+
+
+//        if(button.data('registration-type') == 'email'){
+//            $('#email-signup').submit();
+//
+//        }
 
         button.text('...');
 
@@ -387,6 +396,12 @@ function getComments(article_id) {
                 button.text(result.is_follower ? button.data('not-follow-text') : button.data('follow-text'));
             }
         });
+
+    };
+    $('a.subscribe').click(function(){
+        event.preventDefault();
+        var button = $(this);
+        ajaxSubmit(button);
     });
 
  </script>
