@@ -108,31 +108,24 @@ var GradeActionSuggestionResource = module.exports = common.GamificationMongoose
                 //if not - check if the creator of the action is the user that is trying to grade
                 // (if so - instead of the user action_grade we take the evaluated action.grade)
                 if (!grade_action) {
-                    models.Action.findById(action_id, function (err, obj) {
-                        if (err || !obj)
-                            cbk(err || {code:404, message:"there is no such action"}, null);
+
+                        //if the creator of the discussion grade the suggestion without grdein the discussion - its ok
+                        // otherwise unauthorise
+                        if (req.user._id + "" != action_obj.creator_id + "")
+                            cbk({code:401, message:"must grade action first"}, null);
                         else {
-                            action_obj = obj;
+                            action_evaluation_grade = action_obj.grade;
+                            is_agree = fields.evaluation_grade >= action_evaluation_grade;
 
-                            //if the creator of the discussion grade the suggestion without grdein the discussion - its ok
-                            // otherwise unauthorise
-                            if (req.user._id + "" != obj.creator_id + "")
-                                cbk({code:401, message:"must grade action first"}, null);
-                            else {
-                                action_evaluation_grade = obj.grade;
-                                is_agree = fields.evaluation_grade >= action_evaluation_grade;
+                            //check if suggestion is approved (al haderech)
 
-                                //check if suggestion is approved (al haderech)
-
-                                //i think there is no need for that, threshold is in suggestion
+                            //i think there is no need for that, threshold is in suggestion
 //                                real_threshold = Number(obj.admin_threshold_for_accepting_change_suggestions) || obj.threshold_for_accepting_change_suggestions;
 
-                                fields.does_support_the_suggestion = is_agree;
-                                fields.proxy_power = proxy_power;
-                                base.call(self, req, fields, cbk);
-                            }
+                            fields.does_support_the_suggestion = is_agree;
+                            fields.proxy_power = proxy_power;
+                            base.call(self, req, fields, cbk);
                         }
-                    })
                 }
                 else {
                     action_evaluation_grade = grade_action.evaluation_grade;
