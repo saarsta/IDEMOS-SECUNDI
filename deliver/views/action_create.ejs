@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<%
+var error_message = error_message || '';
+%>
+
+<html>
+<head>
+    <!--<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# <%= settings.facebook_app_name %>: http://ogp.me/ns/fb/<%= settings.facebook_app_name %>#">-->
+    <% include partials/head.ejs %>
+    <script src="/js/jquery-fieldselection.js" type="text/javascript"></script>
+    <script src="/plugins/ckeditor/ckeditor.js"></script>
+    <script src="/plugins/ckeditor/adapters/jquery.js"></script>
+
+    <!--  <meta property="fb:app_id" content="<XXX%= settings.facebook_app_id %>" />
+        <meta property="og:type"   content="<XXX%= settings.facebook_app_name %>:discussion" />
+        <meta property="og:url"    content="<XXX%= settings.root_path %>/discussions/<XXX%= discussion.id %>" />
+        <meta property="og:title"  content="<XXX%=discussion.title%>" />
+        <meta property="og:description"  content="<XXX%=discussion.text_field%>" />
+        <meta property="og:image"  content="<XXX%= discussion.image_field && discussion.image_field.url ? discussion.image_field.url : 'http://site.e-dologic.co.il/philip_morris/Xls_script/uru_mailing/logo.jpg' %>" />
+    -->
+
+
+</head>
+<body class="body-action">
+<% include partials/body_top.ejs %>
+<div id="wrap">
+    <div id="header">
+        <% include partials/menu.ejs %>
+        <% include partials/user_box.ejs %>
+        <% include partials/failures.ejs %>
+        <% include partials/tag_search.ejs %>
+    </div>
+    <div id="content" class="cf">
+    <div class="discussion-main">
+        <h2><span class="arrow"><%= cycle_name %></span> <a href="">יצירת פעולה חדשה</a></h2>
+        <form action="#">
+            <div class="add-event cf">
+                <div class="add-picture">
+                    <a href=""><span>הוסף תמונה</span></a>
+                </div>
+                <div class="event-text">
+                    <div class="one-line title cf">
+                        <label>כותרת הפעולה</label>
+                        <div class="input">
+                            <input type="text" value="" />
+                        </div>
+                    </div>
+                    <div class="one-line cf">
+                        <div class="type">
+                            <label>סוג הפעולה</label>
+                            <select>
+                                <option>בחר מתוך רשימה</option>
+                                <option>בחר מתוך רשימה</option>
+                                <option>בחר מתוך רשימה</option>
+                            </select>
+                        </div>
+                        <div class="place">
+                            <label>מיקום</label>
+                            <div class="input">
+                                <input type="text" value="" />
+                            </div>
+                            <input type="submit" value="פתח מפה" />
+                        </div>
+                    </div>
+                    <div class="one-line cf">
+                        <div class="date">
+                            <label>תאריך</label>
+                            <div class="input">
+                                <input type="text" value="01/07/2012" />
+                            </div>
+                        </div>
+                        <div class="time">
+                            <label>משעה</label>
+                            <div class="input">
+                                <input type="text" value="15:00" />
+                            </div>
+                            <label>עד שעה</label>
+                            <div class="input">
+                                <input type="text" value="18:00" />
+                            </div>
+                        </div>
+                        <div class="user-number">
+                            <label>מספר משתתפים רצוי</label>
+                            <div class="input">
+                                <input type="text" value="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="one-line cf">
+                        <div class="resources">
+                            <label>משאבים נדרשים</label>
+                            <select>
+                                <option>בחר מתוך רשימה</option>
+                                <option>בחר מתוך רשימה</option>
+                            </select>
+                        </div>
+                        <div class="additional-resources">
+                            <input type="text" value="משאבים נוספים" />
+                            <input type="submit" value="הוסף" />
+                        </div>
+                    </div>
+                    <div class="checkboxes cf">
+                        <label><input type="checkbox" /> אוטובוס</label>
+                        <label><input type="checkbox" /> מלגזה</label>
+                        <label><input type="checkbox" /> כיבוד קל</label>
+                    </div>
+                </div>
+            </div>
+            <div class="bottom">
+                <div class="textarea">
+                    <textarea rows="10" cols="50">
+                        הפוסט הראשון בדיון. הסבר את הצורך במציאות שאתה דורש - מה הבעיה? איך המצב הנוכחי משפיע עליך? איזו עזרה היית רוצה לבקש מהמשתתפים בדיון בשיפור החזון?</textarea>
+                </div>
+                <div class="tags-box tags-box-event">
+                    <div class="add-tag">
+                        <label class="first">תגיות</label>
+                        <div class="input">
+                            <input type="text" value="" />
+                        </div>
+                        <input type="submit" value="הוסף" />
+                    </div>
+                    <div class="tags-list">
+                    </div>
+                </div>
+                <input class="popup-add-text-link" type="submit" value="יצירת דיון" />
+                <label><input type="checkbox" checked="checked" /> שתף את הדיון שיצרת על הקיר שלך</label>
+            </div>
+        </form>
+    </div>
+</div>
+
+</div>
+</body>
+</html>
