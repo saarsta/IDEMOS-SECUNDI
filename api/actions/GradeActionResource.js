@@ -5,6 +5,8 @@ var resources = require('jest'),
     async = require('async'),
     common = require('./../common'),
     calc_thresh = require('../../deliver/tools/calc_thresh.js'),
+    GradeActionSuggestion = require('./grade_action_suggestion_resource.js'),
+    ActionSuggestion = require('./ActionSuggestionResource.js'),
     og_action = require('../../og/og.js').doAction;
 
 
@@ -36,7 +38,7 @@ Authoriztion.prototype.edit_object = function(req,object,callback){
 
 var GradeActionResource = module.exports = common.GamificationMongooseResource.extend({
     init:function(){
-        this._super(models.Grade,'grade', null);
+        this._super(models.GradeAction,'grade_action', null);
 //        GradeResource.super_.call(this,models.Grade);
         this.allowed_methods = ["get", "put", "post"];
         this.authorization = new Authoriztion();
@@ -49,69 +51,6 @@ var GradeActionResource = module.exports = common.GamificationMongooseResource.e
 
     create_obj:function(req,fields,callback)
     {
-//        var user_id = req.session.user_id;
-//        var self = this;
-//        var object = new self.model();
-//
-//        object.user_id = user_id;
-//        for( var field in fields)
-//        {
-//            object.set(field,fields[field]);
-//        }
-//        self.authorization.edit_object(req,object,function(err,object)
-//        {
-//            if(err) callback(err);
-//            else
-//            {
-//                object.save(function(err, grade_object)
-//                {
-//                    if (err){
-//                        callback(err, null);
-//                    }
-//                    else{
-//                        var isNewFollower = false;
-//                        models.User.findOne({_id: grade_object.user_id}, function(err,user_object){
-//                            if(err){
-//
-//                            }else{
-//                                if (common.isArgIsInList(grade_object.action_id, user_object.actions)  == false){
-//                                    isNewFollower = true;
-//                                    user_object.actions.push(grade_object.action_id);
-//                                }
-//
-//                                models.Action.findOne({_id: grade_object.action_id}, function(err,action_object){
-//                                    if (err){
-//                                        callback(err, null);
-//                                    }
-//                                    else{
-////                                      // calculating the current action grade
-//                                        // + insert user to action
-//                                        // + increase followers if necessary
-//
-//                                        action_object.grade_sum += parseInt(grade_object.evaluation_grade);
-//                                        action_object.evaluate_counter++;
-//                                        action_object.grade = action_object.grade_sum / action_object.evaluate_counter;
-//                                        if (isNewFollower){
-//                                            action_object.followers_count++;
-//                                        }
-//                                        action_object.save(function(err){
-//                                            if (err){
-//                                                callback(err, null)
-//                                            }
-//                                            else{
-//                                                callback(self.elaborate_mongoose_errors(err), action_object);
-//                                            }
-//                                        })
-//                                    }
-//                                });
-//                            }
-//                        });
-//                    }
-//                });
-//            }
-//        });
-
-
         var self = this;
         var g_grade_obj;
         var new_grade = null;
@@ -122,6 +61,7 @@ var GradeActionResource = module.exports = common.GamificationMongooseResource.e
         var action_obj;
         var proxy_power = req.user.num_of_given_mandates ? 1 + req.user.num_of_given_mandates * 1/9 : 1;
         var base = self._super;
+
         fields.proxy_power = proxy_power;
         fields.user_id = req.user._id;
         async.waterfall([
@@ -147,7 +87,7 @@ var GradeActionResource = module.exports = common.GamificationMongooseResource.e
 
                     // 2.2 calculate action grade
                     function(cbk1){
-                        //cant grade your own discussion
+                        //cant grade your own action
 
                         action_thresh = Number(action.admin_threshold_for_accepting_change_suggestions) || action.threshold_for_accepting_change_suggestions
                         admin_threshold = action.admin_threshold_for_accepting_change_suggestions;
@@ -177,18 +117,31 @@ var GradeActionResource = module.exports = common.GamificationMongooseResource.e
             // 3) find suggestion object
             //calculate all change suggestion all over again and check if they approved
             function(threshold, cbk){
-                //Todo
-//                models.Suggestion.find({discussion_id: grade_object.discussion_id}, {"_id":1}, function(err, results)
-//                {
-//                    cbk(err, results);
-//                });
-                cbk(null, []);
+                models.ActionSuggestion.find({action_id: g_grade_obj.action_id}, {"_id":1}, function(err, results)
+                {
+                    cbk(err, results);
+                });
             },
 
             // 4) calculate suggestion grades
             function(suggestions, cbk){
-                //Todo
-                cbk(null);
+                var real_threshold
+                async.forEach(suggestions, function(suggestion, itr_cbk){
+                        GradeActionSuggestion.calculateSuggestionGrade(suggestion._id, g_grade_obj.action_id, null, null, action_thresh, null, null,function(err, obj){
+                            //check if suggestion is over the threshold
+                            real_threshold = Number(suggestion.admin_threshold_for_accepting_the_suggestion) || suggestion.threshold_for_accepting_the_suggestion;
+                            if(suggestion.agrees && suggestion.agrees.length > real_threshold){
+
+                                //approveSuggestion.exec()
+                                ActionSuggestion.approveSuggestion(suggestion._id, function(err, obj1){
+                                    itr_cbk(err, obj1);
+                                })
+                            }else
+                                itr_cbk(err, obj);
+                        });}
+                    , function(err){
+                        cbk(err);
+                    });
             },
 
             // 5) publish to facebook
@@ -218,22 +171,22 @@ var GradeActionResource = module.exports = common.GamificationMongooseResource.e
         var g_grade;
         var self = this;
         var suggestions = [];
-        var discussion_thresh;
+        var action_thresh;
         var proxy_power = req.user.num_of_given_mandates ? 1 + req.user.num_of_given_mandates * 1/9 : 1;
 
-        //Todo
-//        var iterator = function(suggestion, itr_cbk){
-//            GradeSuggestion.calculateSuggestionGrade(suggestion._id, object.discussion_id, null, null, discussion_thresh, null, null,function(err, sugg_new_grade, sugg_total_counter){
-//                if(!err){
-//                    suggestions.push({
-//                        _id: suggestion._id,
-//                        grade: sugg_new_grade,
-//                        evaluators_counter: sugg_total_counter
-//                    })
-//                }
-//                itr_cbk(err, 0);
-//            });
-//        }
+
+        var iterator = function(suggestion, itr_cbk){
+            GradeActionSuggestion.calculateActionSuggestionGrade(suggestion._id, object.action_id, null, null, action_thresh, null, null,function(err, sugg_new_grade, sugg_total_counter){
+                if(!err){
+                    suggestions.push({
+                        _id: suggestion._id,
+                        grade: sugg_new_grade,
+                        evaluators_counter: sugg_total_counter
+                    })
+                }
+                itr_cbk(err, 0);
+            });
+        }
 
         object.proxy_power = proxy_power;
         self._super(req, object, function(err, grade_object){
@@ -246,16 +199,14 @@ var GradeActionResource = module.exports = common.GamificationMongooseResource.e
                     function(cbk){
                         g_grade = grade_object;
 
-                        //Todo
-//                        calculateDiscussionGrade(object.discussion_id, function(err, _new_grade, _evaluate_counter){
-//                            new_grade = _new_grade;
-//                            evaluate_counter = _evaluate_counter;
-//                            cbk(err, 0);
-//                        });
-                        cbk(null, 0);
+                        calculateActionGrade(object.action_id, function(err, _new_grade, _evaluate_counter){
+                            new_grade = _new_grade;
+                            evaluate_counter = _evaluate_counter;
+                            cbk(err);
+                        });
                     },
 
-                    //get discussion threshold so i can update every suggestion threshold
+                    //get action threshold so i can update every suggestion threshold
                     function(obj, cbk){
                         models.Action.findById(object.action_id, cbk);
                     },
@@ -266,7 +217,7 @@ var GradeActionResource = module.exports = common.GamificationMongooseResource.e
 
                             //set notifications for all users of proxy
                             function(cbk1){
-                                //Todo
+                                //Todo - set notifications
 //                                models.User.find({"proxy.user_id": req.user._id}, function(err, slaves_users){
 //                                    async.forEach(slaves_users, function(slave, itr_cbk){
 //                                        notifications.create_user_proxy_vote_or_grade_notification("proxy_graded_discussion",
@@ -284,13 +235,12 @@ var GradeActionResource = module.exports = common.GamificationMongooseResource.e
 
                             //calculate all change suggestion all over again
                             function(cbk1){
-                                //Todo
-//                                discussion_thresh = Number(discussion_obj.admin_threshold_for_accepting_change_suggestions) || discussion_obj.threshold_for_accepting_change_suggestions;
-//                                models.Suggestion.find({discussion_id: grade_object.discussion_id}, {"_id":1}, function(err, results)
-//                                {
-//                                    cbk1(err, results);
-//                                });
-                                cbk1(null, 1000);
+
+                                action_thresh = Number(action_obj.admin_threshold_for_accepting_change_suggestions) || action_obj.threshold_for_accepting_change_suggestions;
+                                models.ActionSuggestion.find({action_id: grade_object.action_id}, {"_id":1}, function(err, results)
+                                {
+                                    cbk1(err, results);
+                                });
                             }
                         ],
                             function(err, args){

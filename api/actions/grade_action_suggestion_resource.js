@@ -1,11 +1,12 @@
 var resources = require('jest'),
     util = require('util'),
-    models = require('../models'),
+    models = require('../../models'),
     async = require('async'),
-    common = require('./common'),
+    common = require('./../common'),
     _ = require('underscore'),
-    Suggestion = require('./suggestionResource');
-notifications = require('./notifications');
+    Suggestion = require('./ActionSuggestionResource');
+    GradeSuggestionResource = require('./../GradeSuggestionResource');
+    notifications = require('./../notifications');
 
 //Authorization
 var Authoriztion = function () {
@@ -15,12 +16,12 @@ util.inherits(Authoriztion, resources.Authorization);
 Authoriztion.prototype.edit_object = function (req, object, callback) {
 
     if (req.method == 'POST') {
-        models.GradeSuggestion.findOne({suggestion_id:object.suggestion_id + "", user_id:req.user._id}, function (err, obj) {
+        models.GradeActionSuggestion.findOne({suggestion_id:object.suggestion_id + "", user_id:req.user._id}, function (err, obj) {
             if (err) {
                 callback(err, null);
             } else {
                 if (obj) {
-                    callback({message:"user already grade this discussion", code:401}, null);
+                    callback({message:"user already grade this action", code:401}, null);
                 } else {
                     object.user_id = req.user._id;
                     callback(null, object);
@@ -39,40 +40,35 @@ Authoriztion.prototype.edit_object = function (req, object, callback) {
     }
 };
 
-var GradeSuggestionResource = module.exports = common.GamificationMongooseResource.extend({
+var GradeActionSuggestionResource = module.exports = common.GamificationMongooseResource.extend({
     init:function () {
-        this._super(models.GradeSuggestion, 'grade_suggestion', null);
+        this._super(models.GradeActionSuggestion, 'grade_suggestion', null);
 //        GradeResource.super_.call(this,models.Grade);
         this.allowed_methods = ['get', 'put', 'post'];
         this.authorization = new Authoriztion();
         this.authentication = new common.SessionAuthentication();
-        this.filtering = {discussion_id:{
+        this.filtering = {action_id:{
             exact:null,
             in:null
         },
             suggestion_id:null
         };
-        this.fields = {
-            _id:null,
-
-            //just for debuging!!!
-            user_id:null,
-            suggestion_id:null,
-            evaluation_grade:null,
-            creation_date:null,
-            does_support_the_suggestion:null,
-            /////////////////////////////////
-
-            new_grade:null,
-            evaluate_counter:null,
-//            already_graded: null,
-            agrees:null,
-            not_agrees:null,
-            grade_id:null,
-
-//            wanted_amount_of_tokens: null,
-            curr_amount_of_tokens:null
-        }
+//        this.fields = {
+//            _id:null,
+//
+//            //just for debuging!!!
+//            user_id:null,
+//            suggestion_id:null,
+//            evaluation_grade:null,
+//            creation_date:null,
+//            does_support_the_suggestion:null,
+//            new_grade:null,
+//            evaluate_counter:null,
+//            agrees:null,
+//            not_agrees:null,
+//            grade_id:null,
+//            curr_amount_of_tokens:null
+//        }
     },
 
     create_obj:function (req, fields, callback) {
@@ -82,42 +78,42 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
         var counter = 0;
         var g_suggestion_obj;
         var is_agree;
-        var discussion_evaluation_grade;
+        var action_evaluation_grade;
         var agrees;
         var not_agrees;
         //this is agrees - not_agrees, for now...
         var curr_tokens_amout;
-        var discussion_id = fields.discussion_id;
+        var action_id = fields.action_id;
         var real_threshold;
         var grade_id;
         var proxy_power = req.user.num_of_given_mandates ? 1 + req.user.num_of_given_mandates * 1 / 9 : 1;
-        var discussion_obj;
+        var action_obj;
 
         async.waterfall([
 
-            //user can grade suggestion only if he grade the discussion
+            //user can grade suggestion only if he grade the action
             function (cbk) {
-                models.Grade.findOne({user_id:req.user._id, discussion_id:fields.discussion_id}, cbk);
+                models.GradeAction.findOne({user_id:req.user._id, action_id:fields.action_id}, cbk);
             },
 
-            function (grade_discussion, cbk) {
-                //check if user has graded the discussion first
-                //if not - check if the creator of the discussion is the user that is trying to grade
-                // (if so - instead of the user discussion_grade we take the evaluated discussion.grade)
-                if (!grade_discussion) {
-                    models.Discussion.findById(discussion_id, function (err, obj) {
+            function (grade_action, cbk) {
+                //check if user has graded the action first
+                //if not - check if the creator of the action is the user that is trying to grade
+                // (if so - instead of the user action_grade we take the evaluated action.grade)
+                if (!grade_action) {
+                    models.Action.findById(action_id, function (err, obj) {
                         if (err || !obj)
-                            cbk(err || {code:404, message:"the is no such discussion"}, null);
+                            cbk(err || {code:404, message:"there is no such action"}, null);
                         else {
-                            discussion_obj = obj;
+                            action_obj = obj;
 
                             //if the creator of the discussion grade the suggestion without grdein the discussion - its ok
                             // otherwise unauthorise
                             if (req.user._id + "" != obj.creator_id + "")
-                                cbk({code:401, message:"must grade discussion first"}, null);
+                                cbk({code:401, message:"must grade action first"}, null);
                             else {
-                                discussion_evaluation_grade = obj.grade;
-                                is_agree = fields.evaluation_grade >= discussion_evaluation_grade;
+                                action_evaluation_grade = obj.grade;
+                                is_agree = fields.evaluation_grade >= action_evaluation_grade;
 
                                 //check if suggestion is approved (al haderech)
 
@@ -132,8 +128,8 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                     })
                 }
                 else {
-                    discussion_evaluation_grade = grade_discussion.evaluation_grade;
-                    is_agree = fields.evaluation_grade >= discussion_evaluation_grade;
+                    action_evaluation_grade = grade_action.evaluation_grade;
+                    is_agree = fields.evaluation_grade >= action_evaluation_grade;
                     fields.does_support_the_suggestion = is_agree;
                     fields.proxy_power = proxy_power;
                     base.call(self, req, fields, cbk);
@@ -141,13 +137,12 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
             },
 
             function (grade_suggestion_obj, cbk) {
-//                is_agree = grade_suggestion_obj.evaluation_grade >= discussion_evaluation_grade;
                 grade_id = grade_suggestion_obj._id;
 
                 //update grade suggstoin "does_support_the_suggestion"
                 //find suggestion
 
-                models.Suggestion.findById(grade_suggestion_obj.suggestion_id, function (err, sugg) {
+                models.ActionSuggestion.findById(grade_suggestion_obj.suggestion_id, function (err, sugg) {
                     cbk(err, sugg)
                 });
             },
@@ -160,7 +155,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
 
                 async.parallel([
                     function (cbk1) {
-                        calculateSuggestionGrade(suggestion_obj._id, suggestion_obj.discussion_id, is_agree, null, null, proxy_power, null, function (err, _new_grade, _evaluate_counter) {
+                        calculateActionSuggestionGrade(suggestion_obj._id, suggestion_obj.action_id, is_agree, null, null, proxy_power, null, function (err, _new_grade, _evaluate_counter) {
                             if (!err) {
                                 new_grade = _new_grade;
                                 counter = _evaluate_counter;
@@ -189,30 +184,35 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                             method = "add";
                         else
                             method = "remove";
-                        notifications.create_user_vote_or_grade_notification("user_gave_my_suggestion_tokens",
-                            suggestion_obj._id, suggestion_obj.creator_id, req.user._id, discussion_id, method, false, true,function (err, result) {
-                                cbk1(err, result);
-                            })
+                        //TODO - set notifications
+//                        notifications.create_user_vote_or_grade_notification("user_gave_my_suggestion_tokens",
+//                            suggestion_obj._id, suggestion_obj.creator_id, req.user._id, action_id, method, false, true,function (err, result) {
+//                                cbk1(err, result);
+//                            })
+                        cbk1();
                     },
 
                     //set notifications for all users of proxy
                     function(cbk1){
-                        models.User.find({"proxy.user_id": req.user._id}, function(err, slaves_users){
-                            async.forEach(slaves_users, function(slave, itr_cbk){
-                                notifications.create_user_proxy_vote_or_grade_notification("proxy_graded_change_suggestion", suggestion_obj._id, slave._id, req.user._id, discussion_id, is_agree, null, function(err){
-                                    itr_cbk(err);
-                                })
-                            }, function(err){
-                                cbk1(err);
-                            })
-                        })
+                        //TODO - set notifications
+
+//                        models.User.find({"proxy.user_id": req.user._id}, function(err, slaves_users){
+//                            async.forEach(slaves_users, function(slave, itr_cbk){
+//                                notifications.create_user_proxy_vote_or_grade_notification("proxy_graded_change_suggestion", suggestion_obj._id, slave._id, req.user._id, action_id, is_agree, null, function(err){
+//                                    itr_cbk(err);
+//                                })
+//                            }, function(err){
+//                                cbk1(err);
+//                            })
+//                        })
+                        cbk1();
                     },
 
-                    //add user to be part of the discussion
+                    //add user to be part of the action
                     function(cbk1){
-                        if (! _.any(discussion_obj.users, function(user){ return user.user_id + "" == req.user.id})){
+                        if (! _.any(action_obj.users, function(user){ return user.user_id + "" == req.user.id})){
                             var new_user = {user_id: req.user._id, join_date: Date.now()};
-                            models.Discussion.update({_id: discussion_obj._id}, {$addToSet:{users: new_user}}, function(err, num){cbk1(err, num)});
+                            models.Action.update({_id: action_obj._id}, {$addToSet:{users: new_user}}, function(err, num){cbk1(err, num)});
                         }else{
                             cbk1(null, null);
                         }
@@ -224,30 +224,26 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
 
         ], function (err, obj) {
             if (!err) {
-                req.gamification_type = "grade_suggestion";
-                req.token_price = common.getGamificationTokenPrice('grade_suggestion') > -1 ? common.getGamificationTokenPrice('grade_suggestion') : 0;
+                req.gamification_type = "grade_action_suggestion";
+                req.token_price = common.getGamificationTokenPrice('grade_action_suggestion') > -1 ? common.getGamificationTokenPrice('grade_action_suggestion') : 0;
             }
             callback(err, {
                 grade_id:grade_id,
                 new_grade:new_grade,
                 evaluate_counter:counter,
-//                    already_graded: true,
                 agrees: agrees,
                 not_agrees:not_agrees,
-//                    wanted_amount_of_tokens: real_threshold,
                 curr_amount_of_tokens:curr_tokens_amout
             });
         })
     },
 
     update_obj:function (req, object, callback) {
-        console.log('in update grade suggestion');
         var self = this;
         var base = this._super;
-        var g_grade;
-        var discussion_id = req.body.discussion_id;
+        var action_id = req.body.action_id;
         var is_agree;
-        var discussion_evaluation_grade;
+        var action_evaluation_grade;
         var did_user_change_his_agree;
         var new_grade, evaluate_counter;
         var grade_id = object._id;
@@ -263,25 +259,25 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
 
             //find the limit of between agree and not agree
             function (cbk) {
-                models.Discussion.findById(discussion_id, cbk);
+                models.Action.findById(action_id, cbk);
             },
 
-            function (discussion_obj, cbk) {
-                real_threshold = Number(discussion_obj.admin_threshold_for_accepting_change_suggestions) || discussion_obj.threshold_for_accepting_change_suggestions;
+            function (action_obj, cbk) {
+                real_threshold = Number(action_obj.admin_threshold_for_accepting_change_suggestions) || action_obj.threshold_for_accepting_change_suggestions;
 
-                if (discussion_obj.creator_id + "" == req.user._id + "") {
-                    discussion_evaluation_grade = discussion_obj.grade;
-                    is_agree = object.evaluation_grade >= discussion_evaluation_grade;
-                    models.Suggestion.findById(object.suggestion_id, cbk);
+                if (action_obj.creator_id + "" == req.user._id + "") {
+                    action_evaluation_grade = action_obj.grade;
+                    is_agree = object.evaluation_grade >= action_evaluation_grade;
+                    models.ActionSuggestion.findById(object.suggestion_id, cbk);
                 }
                 else
-                    models.Grade.findOne({discussion_id:discussion_id, user_id:req.user._id || object.user_id}, function (err, grade_discussion) {
-                        if (!err && grade_discussion) {
-                            discussion_evaluation_grade = grade_discussion.evaluation_grade;
-                            is_agree = object.evaluation_grade >= discussion_evaluation_grade;
-                            models.Suggestion.findById(object.suggestion_id, cbk);
+                    models.GradeAction.findOne({action_id:action_id, user_id:req.user._id || object.user_id}, function (err, grade_action) {
+                        if (!err && grade_action) {
+                            action_evaluation_grade = grade_action.evaluation_grade;
+                            is_agree = object.evaluation_grade >= action_evaluation_grade;
+                            models.ActionSuggestion.findById(object.suggestion_id, cbk);
                         }else{
-                            cbk({message: "please grade the discussion", code: 401});
+                            cbk({message: "please grade the action", code: 401});
                         }
                     });
             },
@@ -308,20 +304,22 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                 async.parallel([
 
                     function (cbk1) {
-                        if(did_user_change_his_agree){
-                            if(sugg_obj.creator_id){
-                                notifications.create_user_vote_or_grade_notification("user_gave_my_suggestion_tokens",
-                                    sugg_obj._id, sugg_obj.creator_id, req.user._id, discussion_id, method, did_user_change_his_agree, true,function (err, result) {
-                                        cbk1(err, result);
-                                    })
-                            }else{
-                                console.log('this suggestion - id number ' +  sugg_obj.creator_id + 'doesnt have creator id!!!')
-                                cbk1(null, 0);
-                            }
-
-                        }else{
-                            cbk1(null, 0);
-                        }
+                        //TODO - set notifications
+//                        if(did_user_change_his_agree){
+//                            if(sugg_obj.creator_id){
+//                                notifications.create_user_vote_or_grade_notification("user_gave_my_suggestion_tokens",
+//                                    sugg_obj._id, sugg_obj.creator_id, req.user._id, action_id, method, did_user_change_his_agree, true,function (err, result) {
+//                                        cbk1(err, result);
+//                                    })
+//                            }else{
+//                                console.log('this suggestion - id number ' +  sugg_obj.creator_id + 'doesnt have creator id!!!')
+//                                cbk1(null, 0);
+//                            }
+//
+//                        }else{
+//                            cbk1(null, 0);
+//                        }
+                        cbk1();
                     },
 
                     function (cbk1) {
@@ -342,19 +340,22 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
 
                     //set notifications for all users of proxy
                     function(cbk1){
-                        if (did_user_change_his_agree) {
-                            models.User.find({"proxy.user_id": req.user._id}, function(err, slaves_users){
-                                async.forEach(slaves_users, function(slave, itr_cbk){
-                                    notifications.create_user_proxy_vote_or_grade_notification("proxy_graded_change_suggestion",  sugg_obj._id, slave._id, req.user._id, discussion_id, is_agree, null, function(err){
-                                        itr_cbk(err);
-                                    })
-                                }, function(err){
-                                    cbk1(err);
-                                })
-                            })
-                        }else{
-                            cbk1(null, null);
-                        }
+                        //TODO - set notifications
+
+//                        if (did_user_change_his_agree) {
+//                            models.User.find({"proxy.user_id": req.user._id}, function(err, slaves_users){
+//                                async.forEach(slaves_users, function(slave, itr_cbk){
+//                                    notifications.create_user_proxy_vote_or_grade_notification("proxy_graded_change_suggestion",  sugg_obj._id, slave._id, req.user._id, action_id, is_agree, null, function(err){
+//                                        itr_cbk(err);
+//                                    })
+//                                }, function(err){
+//                                    cbk1(err);
+//                                })
+//                            })
+//                        }else{
+//                            cbk1(null, null);
+//                        }
+                        cbk1();
                     }
                 ], function (err, args) {
                     cbk(err, args[1]);
@@ -364,7 +365,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
             function (grade_sugg_object, cbk) {
 //                g_grade = grade_sugg_object;
 
-                calculateSuggestionGrade(object.suggestion_id, discussion_id, is_agree, did_user_change_his_agree, null, proxy_power, previous_proxy_power, function (err, _new_grade, _evaluate_counter) {
+                calculateActionSuggestionGrade(object.suggestion_id, action_id, is_agree, did_user_change_his_agree, null, proxy_power, previous_proxy_power, function (err, _new_grade, _evaluate_counter) {
                     if (!err) {
                         new_grade = _new_grade;
                         evaluate_counter = _evaluate_counter;
@@ -404,41 +405,39 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
         ], function (err) {
 
 
-                callback(err, {
+            callback(err, {
 
-                        grade_id:grade_id,
-                        new_grade:new_grade,
-                        evaluate_counter:evaluate_counter,
-                        agrees:agrees,
-                        not_agrees:not_agrees,
-//                wanted_amount_of_tokens: real_threshold,
-                        curr_amount_of_tokens:curr_tokens_amout
-                    }
-                )
+                    grade_id:grade_id,
+                    new_grade:new_grade,
+                    evaluate_counter:evaluate_counter,
+                    agrees:agrees,
+                    not_agrees:not_agrees,
+                    curr_amount_of_tokens:curr_tokens_amout
+                }
+            )
         })
     }
 })
 
-var calculateSuggestionGrade = GradeSuggestionResource.calculateSuggestionGrade =
-    function (suggestion_id, discussion_id, is_agree_to_suggestion, did_change_agreement_with_suggestion, discussion_thresh, proxy_power, previous_proxy_power, callback) {
+var calculateActionSuggestionGrade = GradeActionSuggestionResource.calculateActionSuggestionGrade =
+    function (suggestion_id, action_id, is_agree_to_suggestion, did_change_agreement_with_suggestion, action_thresh, proxy_power, previous_proxy_power, callback) {
 
         // suggestios_grade_counter + discussion_grade_counter = all graders
         var suggestios_grade_counter;
-        var discussion_grade_counter;
+        var action_grade_counter;
 
         var suggestios_grade_sum = 0;
-        var discussion_grade_sum = 0;
+        var action_grade_sum = 0;
 
         var total_counter;
         var total_sum;
         var new_grade;
-        var change_length;
-        var g_approved_sugg;
+
         async.waterfall([
 
             //get all grades for the suggestion,
             function (cbk) {
-                models.GradeSuggestion.find({suggestion_id:suggestion_id}, {"user_id":1, "evaluation_grade":1, "proxy_power":1}, function (err, sug_grades) {
+                models.GradeActionSuggestion.find({suggestion_id:suggestion_id}, {"user_id":1, "evaluation_grade":1, "proxy_power":1}, function (err, sug_grades) {
                     cbk(err, sug_grades);
                 });
             },
@@ -461,53 +460,53 @@ var calculateSuggestionGrade = GradeSuggestionResource.calculateSuggestionGrade 
                     users.push(grade.user_id)
                 });
 
-                //get all dicsussion grades that their creators didnot grade the suggestion
-                models.Grade.find({ discussion_id:discussion_id, user_id:{ $nin:users }}, function (err, grades) {
+                //get all action grades that their creators didnot grade the suggestion
+                models.GradeAction.find({ action_id:action_id, user_id:{ $nin:users }}, function (err, grades) {
                     cbk(err, grades);
                 });
             },
 
-            function (disc_grades, cbk) {
-                discussion_grade_counter = disc_grades.length;
+            function (actoin_grades, cbk) {
+                action_grade_counter = actoin_grades.length;
 
-                if (discussion_grade_counter) {
+                if (action_grade_counter) {
                     //calcaulte grades sum with the proxy power
-                    discussion_grade_sum = _.reduce(disc_grades, function (memo, grade) {
+                    action_grade_sum = _.reduce(actoin_grades, function (memo, grade) {
                         return memo + Number(grade.evaluation_grade) * (grade.proxy_power || 1)
                     }, 0);
                     //calcaulte counter sum with the proxy power
-                    discussion_grade_counter = _.reduce(disc_grades, function (memo, grade) {
+                    action_grade_counter = _.reduce(actoin_grades, function (memo, grade) {
                         return memo + (grade.proxy_power || 1)
                     }, 0);
                 }
-                total_counter = suggestios_grade_counter + discussion_grade_counter;
+                total_counter = suggestios_grade_counter + action_grade_counter;
 
-                total_sum = suggestios_grade_sum + discussion_grade_sum;
+                total_sum = suggestios_grade_sum + action_grade_sum;
 
                 new_grade = total_sum / total_counter;
 
                 if (is_agree_to_suggestion != null && did_change_agreement_with_suggestion == null) {
                     if (is_agree_to_suggestion) {
-                        models.Suggestion.update({_id:suggestion_id}, {$set:{grade:new_grade, evaluate_counter:suggestios_grade_counter}, $inc:{agrees:proxy_power}}, function (err, args) {
+                        models.ActionSuggestion.update({_id:suggestion_id}, {$set:{grade:new_grade, evaluate_counter:suggestios_grade_counter}, $inc:{agrees:proxy_power}}, function (err, args) {
                             cbk(err, args);
                         });
                     } else {
-                        models.Suggestion.update({_id:suggestion_id}, {$set:{grade:new_grade, evaluate_counter:suggestios_grade_counter}, $inc:{not_agrees:proxy_power}}, function (err, args) {
+                        models.ActionSuggestion.update({_id:suggestion_id}, {$set:{grade:new_grade, evaluate_counter:suggestios_grade_counter}, $inc:{not_agrees:proxy_power}}, function (err, args) {
                             cbk(err, args);
                         });
                     }
                 } else {
                     if (did_change_agreement_with_suggestion && is_agree_to_suggestion)
-                        models.Suggestion.update({_id:suggestion_id}, {$set:{grade:new_grade, evaluate_counter:suggestios_grade_counter}, $inc:{not_agrees:(previous_proxy_power * -1), agrees:proxy_power}}, function (err, args) {
+                        models.ActionSuggestion.update({_id:suggestion_id}, {$set:{grade:new_grade, evaluate_counter:suggestios_grade_counter}, $inc:{not_agrees:(previous_proxy_power * -1), agrees:proxy_power}}, function (err, args) {
                             cbk(err, args);
                         });
                     else
                     if (did_change_agreement_with_suggestion && !is_agree_to_suggestion)
-                        models.Suggestion.update({_id:suggestion_id}, {$set:{grade:new_grade, evaluate_counter:suggestios_grade_counter}, $inc:{not_agrees:proxy_power, agrees:(previous_proxy_power * -1)}}, function (err, args) {
+                        models.ActionSuggestion.update({_id:suggestion_id}, {$set:{grade:new_grade, evaluate_counter:suggestios_grade_counter}, $inc:{not_agrees:proxy_power, agrees:(previous_proxy_power * -1)}}, function (err, args) {
                             cbk(err, args);
                         });
                     else
-                        models.Suggestion.update({_id:suggestion_id}, {$set:{grade:new_grade, evaluate_counter:suggestios_grade_counter}}, function (err, args) {
+                        models.ActionSuggestion.update({_id:suggestion_id}, {$set:{grade:new_grade, evaluate_counter:suggestios_grade_counter}}, function (err, args) {
                             cbk(err, args);
                         });
                 }
@@ -520,19 +519,19 @@ var calculateSuggestionGrade = GradeSuggestionResource.calculateSuggestionGrade 
                 async.waterfall([
 
                     function (cbk) {
-                        if (discussion_thresh) {
+                        if (action_thresh) {
                             //set suggestion threshold
                             async.waterfall([
                                 function (cbk1) {
-                                    models.Suggestion.findById(suggestion_id, cbk1);
+                                    models.ActionSuggestion.findById(suggestion_id, cbk1);
                                 },
 
                                 function (sugg_obj, cbk1) {
                                     var num_of_words_to_calc_sugg_threshold;
                                     num_of_words_to_calc_sugg_threshold = sugg_obj.getCharCount();
-                                    var sugg_thresh = calculate_sugg_threshold(num_of_words_to_calc_sugg_threshold, discussion_thresh);
+                                    var sugg_thresh = GradeSuggestionResource.calculate_sugg_threshold(num_of_words_to_calc_sugg_threshold, action_thresh);
 
-                                    models.Suggestion.update({_id:suggestion_id}, {$set:{threshold_for_accepting_the_suggestion:sugg_thresh}}, cbk1);
+                                    models.ActionSuggestion.update({_id:suggestion_id}, {$set:{threshold_for_accepting_the_suggestion:sugg_thresh}}, cbk1);
                                 }
                             ], function (err, obj) {
                                 cbk(err, obj);
@@ -547,11 +546,3 @@ var calculateSuggestionGrade = GradeSuggestionResource.calculateSuggestionGrade 
             }
         })
     };
-
-var calculate_sugg_threshold = GradeSuggestionResource.calculate_sugg_threshold = function (factor, threshold) {
-    var log_base_75_of_x =
-        Math.log(factor) / Math.log(75);
-    var result = Math.pow(log_base_75_of_x, common.getThresholdCalcVariables("SCALE_PARAM")) * threshold;
-
-    return Math.round(result);
-}

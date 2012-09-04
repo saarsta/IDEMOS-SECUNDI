@@ -131,6 +131,15 @@ var Schemas = exports.Schemas = {
         does_support_the_suggestion: {type:Boolean}
     },
 
+    GradeActionSuggestion:{
+        user_id:{type:ObjectId, ref:'User', index:true, required:true},
+        suggestion_id:{type:ObjectId, ref:'ActionSuggestion', index:true, required:true},
+        evaluation_grade:{type:Number, min:0, max:10},
+        proxy_power:{type:Number, min: 1, 'default': 1},
+        creation_date:{type:Date, 'default':Date.now},
+        does_support_the_suggestion: {type:Boolean}
+    },
+
     Like:{
         user_id:{type:ObjectId, ref:'User', index:true, required:true},
         info_item_id:{type:ObjectId, ref:'Post', index:true, required:true},
@@ -241,6 +250,7 @@ var Schemas = exports.Schemas = {
         grade_discussion: {type: Number, 'default': 0},
         grade_suggestion: {type: Number, 'default': 0},
         grade_action: {type: Number, 'default': 0},
+        grade_action_suggestion: {type: Number, 'default': 0},
         vote_on_post: {type: Number, 'default': 0},
         vote_on_article_post: {type: Number, 'default': 0},
         vote_on_action_post: {type: Number, 'default': 0},
@@ -358,6 +368,7 @@ var Models = module.exports = {
     Grade:mongoose.model('Grade', new Schema(Schemas.Grade, {strict: true})),
     GradeAction:mongoose.model('GradeAction', new Schema(Schemas.GradeAction, {strict: true})),
     GradeSuggestion:mongoose.model('GradeSuggestion', new Schema(Schemas.GradeSuggestion, {strict: true})),
+    GradeActionSuggestion:mongoose.model('GradeActionSuggestion', new Schema(Schemas.GradeActionSuggestion, {strict: true})),
     Join:mongoose.model('Join', new Schema(Schemas.Join, {strict: true})),
     Category:mongoose.model('Category', new Schema(Schemas.Category, {strict: true})),
     ActionResource:mongoose.model('ActionResource', new Schema(require('./action_resource'), {strict: true})),
