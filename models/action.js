@@ -9,8 +9,8 @@ var mongoose = require("mongoose"),
 var Action = module.exports = new Schema({
     title:{type:String, required:true},
     tooltip:String,
-    text_field:{type:mongoose_types.Html},
-    text_field_preview:{type:mongoose_types.Html},
+    text_field:{type:mongoose_types.Text, required:true},
+    text_field_preview: {type:mongoose_types.Text},
     image_field: mongoose_types.File,
     image_field_preview: mongoose_types.File,
     type: {type:String, "enum":[

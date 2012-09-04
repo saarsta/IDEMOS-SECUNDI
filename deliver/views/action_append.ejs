@@ -163,11 +163,10 @@ var error_message = error_message || '';
                 <%=action.cycle_id.title%></a> </span>
             <span class="blue-title"><%=action.title%></span></h3>
 
-        <div id="discussion_image" style="width: 212px;height: 164px; overflow:hidden;" class='auto-scale floatRight'>
+        <div style="width: 212px;height: 164px; overflow:hidden;" class='auto-scale floatRight'>
             <img src="<%= action.image_field ? action.image_field.url ||'' : '' %>" alt=""/>
-            <!--  images/sample-2.jpg" -->
-
         </div>
+
         <div class="add-offer-info">
             תאריך: 
 			<strong><%=action.from_date.format('dd.mm.yyyy') %></strong> 
@@ -179,9 +178,7 @@ var error_message = error_message || '';
             <strong><%=action.location?action.location.address:''%></strong>
         </div>
         <div class="action_content action-text-overflow">
-      <!--    <p><%-action.text_field%></p>-->
             <textarea id="action_content" class="hidden_textarea"><%=action.text_field%></textarea>
-
          </div>
 
         <a class="more-text" href="">קרא עוד</a>
@@ -199,7 +196,7 @@ var error_message = error_message || '';
                 <%=action.cycle_id.title%></a> </span>
             <span class="blue-title"><%=action.title%></span></h3>
         <div class="text-box cf">
-            <div id="discussion_image" style="width: 139px;height: 135px; overflow:hidden;" class='auto-scale floatRight'>
+            <div style="width: 139px;height: 135px; overflow:hidden;" class='auto-scale floatRight'>
                 <img src="<%= action.image_field ? action.image_field.url ||'' : '' %>" alt=""/>
                 <!--  images/sample-2.jpg" -->
 
@@ -234,7 +231,8 @@ var error_message = error_message || '';
                     <strong><%=action.location?action.location.address:''%></strong>
                 </div>
             </div>
-            <p><%-action.text_field%></p>
+            <!--<p><%-action.text_field%></p>-->
+            <textarea id="action_content_after_read_more" class="hidden_textarea"><%=action.text_field%></textarea>
 
             <a id="readLess" class="read_less" href="">
                 קרא פחות
@@ -261,7 +259,7 @@ var error_message = error_message || '';
         <!--    <a class="btn-grey" href="">שתף</a>-->
 
             <a class="btn-grey share" rel="/actions/<%=action._id%>"
-               data-img_src="<%= action.image_field ? action.image_field.url ||'' : '' %>" data-text_preview="<%=action.text_field_preview%>" data-title="<%=action.title%>"
+               data-img_src="<%= action.image_field ? action.image_field.url ||'' : '' %>" data-text_preview="<%-action.text_field_preview%>" data-title="<%=action.title%>"
                data-name="<%=action.text_field_preview%>"
                href="/facebookShare?link=/actions/<%=action._id%>">
                 שתף
@@ -363,10 +361,6 @@ var error_message = error_message || '';
         הצע
     </a>
 </div>
-
-
-
-
 
 <div class="members-box members-box-action-approved cf ">
     <h2>משתתפים
@@ -522,7 +516,7 @@ var error_message = error_message || '';
                  e.preventDefault();
              });
 
-             $("#action_content").select(function () {
+             $("#action_content, #action_content_after_read_more").select(function () {
                  range = $(this).getSelection();
                  flag = false;
                   db_functions.getSuggestionByAction(action_id, null, null, function(err, suggestions){
@@ -596,6 +590,8 @@ var error_message = error_message || '';
 
 
          } )();
+
+         $("#action_content").val($("#action_content").text());
 
          $(".slider").slider({
              disabled:is_creator,

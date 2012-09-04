@@ -51,8 +51,7 @@ ActionSuggestionResource = module.exports = common.GamificationMongooseResource.
         var iterator = function (suggestion, itr_cbk) {
 
             //set counter og graders manually
-            //TODO - do it
-//            suggestion.manual_counter = Math.round(suggestion.agrees) + Math.round(suggestion.not_agrees);
+            suggestion.manual_counter = Math.round(suggestion.agrees) + Math.round(suggestion.not_agrees);
 
             var curr_grade_obj = {};
 
