@@ -47,7 +47,7 @@ exports.create_user_notification = function(notification_type, entity_id, user_i
 //                        cbk(err, num);
 //                    });
 
-                    //TODO change it later to sometihng prettier
+                    //TODO change it later to something prettier
                     if((notification_type == 'comment_on_discussion_you_are_part_of' || notification_type == "comment_on_discussion_you_created") &&
                         _.any(noti.notificators,  function(notificator){return notificator.notificator_id + "" == notificatior_id + ""})) {
                         var new_notificator = {
