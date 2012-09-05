@@ -49,9 +49,6 @@ var error_message = error_message || '';
                         <div class="type">
                             <label>סוג הפעולה</label>
                             <select>
-                                <option>בחר מתוך רשימה</option>
-                                <option>בחר מתוך רשימה</option>
-                                <option>בחר מתוך רשימה</option>
                             </select>
                         </div>
                         <div class="place">
@@ -90,8 +87,6 @@ var error_message = error_message || '';
                         <div class="resources">
                             <label>משאבים נדרשים</label>
                             <select>
-                                <option>בחר מתוך רשימה</option>
-                                <option>בחר מתוך רשימה</option>
                             </select>
                         </div>
                         <div class="additional-resources">
@@ -100,16 +95,12 @@ var error_message = error_message || '';
                         </div>
                     </div>
                     <div class="checkboxes cf">
-                        <label><input type="checkbox" /> אוטובוס</label>
-                        <label><input type="checkbox" /> מלגזה</label>
-                        <label><input type="checkbox" /> כיבוד קל</label>
                     </div>
                 </div>
             </div>
             <div class="bottom">
                 <div class="textarea">
-                    <textarea rows="10" cols="50">
-                        הפוסט הראשון בדיון. הסבר את הצורך במציאות שאתה דורש - מה הבעיה? איך המצב הנוכחי משפיע עליך? איזו עזרה היית רוצה לבקש מהמשתתפים בדיון בשיפור החזון?</textarea>
+                    <textarea rows="10" cols="50">הפוסט הראשון בדיון. הסבר את הצורך במציאות שאתה דורש - מה הבעיה? איך המצב הנוכחי משפיע עליך? איזו עזרה היית רוצה לבקש מהמשתתפים בדיון בשיפור החזון?</textarea>
                 </div>
                 <div class="tags-box tags-box-event">
                     <div class="add-tag">
@@ -128,7 +119,49 @@ var error_message = error_message || '';
         </form>
     </div>
 </div>
-
 </div>
+<script>
+    var populate = function(select, options) {
+        select.empty();
+        select.append($('<option>').text('בחר מתוך רשימה').val(0));
+        options.map(function (option) {
+            if (option && option.name && option._id) {
+                select.append($('<option>').text(option.name).val(option._id));
+            }
+        })
+    };
+
+    var categories = <%- JSON.stringify(categories) %>;
+    var category_select = $('.type select');
+    var resources = <%- JSON.stringify(resources) %>;
+    var resource_select = $('.resources select');
+    var resource_checkboxes = $('.checkboxes');
+
+    populate(category_select, categories);
+    populate(resource_select, []);
+
+    category_select.change(function () {
+        var category = category_select.val();
+        populate(resource_select, resources.filter(function (r) { return r.category == category; }));
+    });
+
+    resource_select.change(function () {
+        var resource = resource_select.val();
+        if (resource != 0) {
+            var text = resource_select.find('option:selected').text();
+            addResource(resource, text);
+        }
+    });
+
+    var addResource = function (id, text) {
+        var name = 'resource_' + id;
+        resource_checkboxes.find('[name="' + name + '"]').closest('label').remove();
+
+        var label = $('<label>');
+        label.text(text);
+        label.prepend($('<input type="checkbox">').attr('name', name));
+        resource_checkboxes.append(label);
+    };
+</script>
 </body>
 </html>

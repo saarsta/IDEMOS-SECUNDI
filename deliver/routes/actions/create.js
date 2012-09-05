@@ -1,18 +1,35 @@
-var models = require('../../../models');
+var models = require('../../../models'),
+    async = require('async');
 
 module.exports = function (req, res) {
     var id = req.params.cycle_id;
-    models.Cycle.findById(id, function (_, cycle) {
+    async.parallel([
+        function (callback) {
+            models.Cycle.findById(id, callback);
+        },
+        function (callback) {
+            models.ActionResource.find({}, callback);
+        },
+        function (callback) {
+            models.Category.find({}, callback);
+        }
+    ], function (err, results) {
+        var cycle = results[0],
+            resources = results[1],
+            categories = results[2];
+
         if (!cycle) {
-            console.log('Cycle id ' + id + ' not found; returning 404.')
+            console.log('Cycle id ' + id + ' not found; returning 404.');
             res.render('404.ejs');
             return;
         }
 
         console.log('create action for cycle id ' + id + ': ' + cycle.title);
 
-        res.render('action_create.ejs',{
-            cycle: cycle
+        res.render('action_create.ejs', {
+            cycle: cycle,
+            resources: resources,
+            categories: categories
         });
     });
 };
