@@ -1,8 +1,18 @@
+var models = require('../../../models');
+
 module.exports = function (req, res) {
     var id = req.params.cycle_id;
-    console.log('create action for cycle id ' + id);
+    models.Cycle.findById(id, function (_, cycle) {
+        if (!cycle) {
+            console.log('Cycle id ' + id + ' not found; returning 404.')
+            res.render('404.ejs');
+            return;
+        }
 
-    res.render('action_create.ejs',{
-        cycle_name: 'חייבים להציל את הקיפודים'
+        console.log('create action for cycle id ' + id + ': ' + cycle.title);
+
+        res.render('action_create.ejs',{
+            cycle: cycle
+        });
     });
 };
