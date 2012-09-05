@@ -33,7 +33,7 @@ var error_message = error_message || '';
     <div id="content" class="cf">
     <div class="discussion-main">
         <h2><span class="arrow"><%= cycle.title %></span></h2>
-        <form action="#">
+        <form method="post">
             <div class="add-event cf">
                 <div class="add-picture">
                     <a href="javascript:;"><span>הוסף תמונה</span></a>
@@ -42,19 +42,19 @@ var error_message = error_message || '';
                     <div class="one-line title cf">
                         <label>כותרת הפעולה</label>
                         <div class="input">
-                            <input type="text" value="" />
+                            <input type="text" name="title" value="" />
                         </div>
                     </div>
                     <div class="one-line cf">
                         <div class="type">
                             <label>סוג הפעולה</label>
-                            <select>
+                            <select name="category">
                             </select>
                         </div>
                         <div class="place">
                             <label>מיקום</label>
                             <div class="input">
-                                <input type="text" value="" />
+                                <input type="text" name="location" value="" />
                             </div>
                             <input type="submit" value="פתח מפה" />
                         </div>
@@ -63,23 +63,23 @@ var error_message = error_message || '';
                         <div class="date">
                             <label>תאריך</label>
                             <div class="input">
-                                <input type="date" value="2012-10-01" />
+                                <input type="date" name="date" value="2012-10-01" />
                             </div>
                         </div>
                         <div class="time">
                             <label>משעה</label>
                             <div class="input from">
-                                <input type="time" value="15:00" />
+                                <input type="time" name="time[from]" value="15:00" />
                             </div>
                             <label>עד שעה</label>
                             <div class="input to">
-                                <input type="time" value="18:00" />
+                                <input type="time" name="time[to]" value="18:00" />
                             </div>
                         </div>
                         <div class="user-number">
                             <label>מספר משתתפים רצוי</label>
                             <div class="input">
-                                <input type="number" value="" />
+                                <input type="number" name="number_of_participants" value="" />
                             </div>
                         </div>
                     </div>
@@ -100,7 +100,7 @@ var error_message = error_message || '';
             </div>
             <div class="bottom">
                 <div class="textarea">
-                    <textarea rows="10" cols="50">הפוסט הראשון בדיון. הסבר את הצורך במציאות שאתה דורש - מה הבעיה? איך המצב הנוכחי משפיע עליך? איזו עזרה היית רוצה לבקש מהמשתתפים בדיון בשיפור החזון?</textarea>
+                    <textarea rows="10" cols="50" name="text">הפוסט הראשון בדיון. הסבר את הצורך במציאות שאתה דורש - מה הבעיה? איך המצב הנוכחי משפיע עליך? איזו עזרה היית רוצה לבקש מהמשתתפים בדיון בשיפור החזון?</textarea>
                 </div>
                 <div class="tags-box tags-box-event">
                     <div class="add-tag">
@@ -114,7 +114,7 @@ var error_message = error_message || '';
                     </div>
                 </div>
                 <input class="popup-add-text-link" type="submit" value="יצירת דיון" />
-                <label><input type="checkbox" checked="checked" /> שתף את הדיון שיצרת על הקיר שלך</label>
+                <label><input type="checkbox" name="share" checked="checked" /> שתף את הדיון שיצרת על הקיר שלך</label>
             </div>
         </form>
     </div>
@@ -167,6 +167,7 @@ var error_message = error_message || '';
             var label = $('<label>');
             label.text(text);
             label.prepend('<input type="checkbox">');
+            label.append($('<input type="hidden" name="resources[]">').val(text));
             resource_checkboxes.append(label);
         }
     };
@@ -180,7 +181,7 @@ var error_message = error_message || '';
         });
 
         if (add) {
-            tag_list.append($('<span>').text(text));
+            tag_list.append($('<span>').text(text).append($('<input type="hidden" name="tags[]">').val(text)));
         }
     }
 
