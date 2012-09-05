@@ -32,11 +32,11 @@ var error_message = error_message || '';
     </div>
     <div id="content" class="cf">
     <div class="discussion-main">
-        <h2><span class="arrow"><%= cycle.title %></span> <a href="">יצירת פעולה חדשה</a></h2>
+        <h2><span class="arrow"><%= cycle.title %></span></h2>
         <form action="#">
             <div class="add-event cf">
                 <div class="add-picture">
-                    <a href=""><span>הוסף תמונה</span></a>
+                    <a href="javascript:;"><span>הוסף תמונה</span></a>
                 </div>
                 <div class="event-text">
                     <div class="one-line title cf">
@@ -63,23 +63,23 @@ var error_message = error_message || '';
                         <div class="date">
                             <label>תאריך</label>
                             <div class="input">
-                                <input type="text" value="01/07/2012" />
+                                <input type="date" value="2012-10-01" />
                             </div>
                         </div>
                         <div class="time">
                             <label>משעה</label>
-                            <div class="input">
-                                <input type="text" value="15:00" />
+                            <div class="input from">
+                                <input type="time" value="15:00" />
                             </div>
                             <label>עד שעה</label>
-                            <div class="input">
-                                <input type="text" value="18:00" />
+                            <div class="input to">
+                                <input type="time" value="18:00" />
                             </div>
                         </div>
                         <div class="user-number">
                             <label>מספר משתתפים רצוי</label>
                             <div class="input">
-                                <input type="text" value="" />
+                                <input type="number" value="" />
                             </div>
                         </div>
                     </div>
@@ -90,7 +90,7 @@ var error_message = error_message || '';
                             </select>
                         </div>
                         <div class="additional-resources">
-                            <input type="text" value="משאבים נוספים" />
+                            <input type="text" placeholder="משאבים נוספים" />
                             <input type="submit" value="הוסף" />
                         </div>
                     </div>
@@ -121,6 +121,29 @@ var error_message = error_message || '';
 </div>
 </div>
 <script>
+    $.fn.tagAdder = function (callback) {
+        var button = this.find('[type=submit]');
+        var text = this.find('[type=text]');
+        button.click(function () {
+            var value = text.val();
+            value = value.trim();
+
+            if (value != '')
+                callback(value);
+
+            text.val('');
+
+            event.preventDefault();
+        });
+    };
+
+    var categories = <%- JSON.stringify(categories) %>;
+    var category_select = $('.type select');
+    var resources = <%- JSON.stringify(resources) %>;
+    var resource_select = $('.resources select');
+    var resource_checkboxes = $('.checkboxes');
+    var tag_list = $('.tags-list');
+
     var populate = function(select, options) {
         select.empty();
         select.append($('<option>').text('בחר מתוך רשימה').val(0));
@@ -131,11 +154,35 @@ var error_message = error_message || '';
         })
     };
 
-    var categories = <%- JSON.stringify(categories) %>;
-    var category_select = $('.type select');
-    var resources = <%- JSON.stringify(resources) %>;
-    var resource_select = $('.resources select');
-    var resource_checkboxes = $('.checkboxes');
+    var addResource = function (text) {
+        var add = true;
+        resource_checkboxes.find('label').each(function () {
+            if ($(this).text().trim() == text) {
+                // A checkbox with the same text already exists.
+                add = false;
+            }
+        });
+
+        if (add) {
+            var label = $('<label>');
+            label.text(text);
+            label.prepend('<input type="checkbox">');
+            resource_checkboxes.append(label);
+        }
+    };
+
+    var addTag = function (text) {
+        var add = true;
+        tag_list.find('span').each(function () {
+            if ($(this).text().trim() == text) {
+                add = false;
+            }
+        });
+
+        if (add) {
+            tag_list.append($('<span>').text(text));
+        }
+    }
 
     populate(category_select, categories);
     populate(resource_select, []);
@@ -149,19 +196,13 @@ var error_message = error_message || '';
         var resource = resource_select.val();
         if (resource != 0) {
             var text = resource_select.find('option:selected').text();
-            addResource(resource, text);
+            addResource(text);
         }
+        resource_select.val(0);
     });
 
-    var addResource = function (id, text) {
-        var name = 'resource_' + id;
-        resource_checkboxes.find('[name="' + name + '"]').closest('label').remove();
-
-        var label = $('<label>');
-        label.text(text);
-        label.prepend($('<input type="checkbox">').attr('name', name));
-        resource_checkboxes.append(label);
-    };
+    $('.additional-resources').tagAdder(addResource);
+    $('.add-tag').tagAdder(addTag);
 </script>
 </body>
 </html>

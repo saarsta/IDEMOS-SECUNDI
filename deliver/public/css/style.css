@@ -8212,7 +8212,7 @@ a.menu-elections:hover {
 .add-event .date 
 {
     padding-left: 12px;
-    width: 166px;
+    width: 181px;
     float: right;
 }
 .add-event .date label
@@ -8225,7 +8225,7 @@ a.menu-elections:hover {
     background-image: url(../images/date-icon.png);
     background-position: 4px 10px;
     background-repeat: no-repeat;
-    width: 76px;
+    width: 91px;
 }
 .add-event .date .input input
 {
@@ -8233,17 +8233,20 @@ a.menu-elections:hover {
 }
 .add-event .time label:first-child
 {
-    padding-right: 21px;
     background: url(../images/clock-icon.png) 100% 50% no-repeat;
 }
 .add-event .time .input
 {
-    width: 34px;
+    width: 54px;
     margin-left: 10px;
+    padding: 6px 3px;
+    direction: ltr;
 }
 .add-event .user-number
 {
     float: left;
+    direction: ltr;
+}
 }
 .add-event .user-number .input
 {
