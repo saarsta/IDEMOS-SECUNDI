@@ -1,6 +1,12 @@
 var models = require('../../../models'),
     async = require('async');
 
+var hourDifference = function (from, to) {
+    // This is a horrible hack to make the JavaScript Date object accept dateless times.
+    // It's better than writing the code myself though.
+    return new Date('1 Jan 2001 ' + to) - new Date('1 Jan 2001 ' + from);
+}
+
 module.exports = {
     get: function (req, res) {
         var id = req.params.cycle_id;
@@ -41,23 +47,30 @@ module.exports = {
         // TODO: Some validation
 
         var action = new models.Action();
+
+        action.creator_id = req.session.user;
         action.cycle_id = req.body.cycle_id;
+
         action.title = req.body.title;
         action.text_field = req.body.text;
         // action.category = req.body.category; // TODO: Where does this go?
         action.execution_date.date = new Date(req.body.date + 'T' + req.body.time.from);
-        action.execution_date.duration = new Date(req.body.time.to) - new Date(req.body.time.from);
+        action.execution_date.duration = hourDifference(req.body.time.from, req.body.time.to);
         action.location = req.body.location;
-        action.action_resources = req.body.resources.map(function (text) { return { resource: text, amount: 1, left_to_bring: 1 }; });
-        action.required_participants = req.body.number_of_participants;
+        // action.action_resources = req.body.resources.map(function (text) { return { resource: text, amount: 1, left_to_bring: 1 }; });
+        action.required_participants = req.body.number_of_participants || 0;
         action.tags = req.body.tags;
-
-        action.save();
 
         // TODO: do something with the "share this on my wall" checkbox
 
         // TODO: some sort of response.
-        res.write('ok');
-        res.end();
+        action.save(function (err) {
+            res.write(JSON.stringify({
+                request_body: req.body,
+                saving_action: action,
+                database_results: arguments
+            }));
+            res.end();
+        });
     }
 };
