@@ -33,7 +33,7 @@ var error_message = error_message || '';
 
             <div class="text-box cf">
                 <div id="discussion_image" style="width: 212px;height: 164px; overflow:hidden;" class='auto-scale floatRight'>
-                    <img src="<%= discussion.image_field ? discussion.image_field.url ||'' : '' %>" alt=""/>
+                    <img src="<%= discussion.image_field ? discussion.image_field.url ||'' : '' %>" title="<%= discussion.title %>"/>
                 </div>
                 <div class="discussion_content discussion content">
                     <textarea id="discussion_content" class="hidden_textarea"><%=discussion.text_field%></textarea>

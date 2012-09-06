@@ -44,11 +44,11 @@ module.exports = AdminForm.extend({
                                     $inc: {"gamification.approved_discussion_to_cycle": 1,
                                         "score": score}},
                                 cbk2);
-                        },
-
+                        }/*,
+                            //TODO
                         function(cbk2){
                             notifications.create_user_notification(notification_type, cycle._id, creator_id, cbk);
-                        }
+                        }*/
                     ], cbk);
                 }
             ], itr_cbk)

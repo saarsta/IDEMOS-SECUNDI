@@ -266,7 +266,9 @@ exports.create_user_vote_or_grade_notification = function(notification_type, ent
 
         function(cbk){
             notification_type = notification_type + "";
-            models.Notification.findOne({type: notification_type, entity_id: entity_id,user_id: user_id, seen: false}, cbk);
+            models.Notification.findOne({type: notification_type, entity_id: entity_id,user_id: user_id, seen: false}, function(err, result){
+                cbk(err, result)
+            });
         },
 
         function(noti, cbk){
