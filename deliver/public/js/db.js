@@ -966,9 +966,9 @@ var db_functions = {
                     return {
 
                         _id:follower.id,
-                        first_name:follower.first_name,
-                        last_name:follower.last_name,
-                        avatar_url:follower.avatar_url,
+                        first_name: follower.first_name,
+                        last_name: follower.last_name,
+                        avatar_url: follower.avatar_url,
                         join_date:curr_cycle.join_date
 
 

@@ -1,5 +1,6 @@
 var models = require('../../../models'),
-    async = require('async');
+    async = require('async'),
+    notifications = require('../../../api/notifications');
 
 module.exports = function (req, res) {
 
