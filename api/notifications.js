@@ -196,6 +196,7 @@ var sendNotificationToUser = function(notification, last_update_date) {
      * 4) send message
      */
     var email;
+        
     async.waterfall([
         // TODO finish this
         function(cbk){
