@@ -480,11 +480,12 @@ var error_message = error_message || '';
  <div id="action_resources_popup" >
     <div style="margin-right: 30px;margin-top: 24px;">
       <div style="overflow: auto;height: 135px">
-       <ul>
            <% for (var i=0;i < action.action_resources.length;i++){%>
-           <span class="check have_tooltip"><%=action.action_resources[i].resource.name %></span>
+                <input type="checkbox" style="display: inline;"/>
+                 <span  data-id="<%=action.action_resources[i].resource._id %>"
+                        style="display: block;"
+                         class="check have_tooltip"><%=action.action_resources[i].resource.name %></span>
            <% } %>
-       </ul>
      </div>
         <div style="height: 35px"></div>
         <div>
