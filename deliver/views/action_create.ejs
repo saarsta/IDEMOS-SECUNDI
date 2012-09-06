@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<%
+var error_message = error_message || '';
+%>
+
+<html>
+<head>
+    <!--<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# <%= settings.facebook_app_name %>: http://ogp.me/ns/fb/<%= settings.facebook_app_name %>#">-->
+    <% include partials/head.ejs %>
+    <script src="/js/jquery-fieldselection.js" type="text/javascript"></script>
+    <script src="/plugins/ckeditor/ckeditor.js"></script>
+    <script src="/plugins/ckeditor/adapters/jquery.js"></script>
+
+    <!--  <meta property="fb:app_id" content="<XXX%= settings.facebook_app_id %>" />
+        <meta property="og:type"   content="<XXX%= settings.facebook_app_name %>:discussion" />
+        <meta property="og:url"    content="<XXX%= settings.root_path %>/discussions/<XXX%= discussion.id %>" />
+        <meta property="og:title"  content="<XXX%=discussion.title%>" />
+        <meta property="og:description"  content="<XXX%=discussion.text_field%>" />
+        <meta property="og:image"  content="<XXX%= discussion.image_field && discussion.image_field.url ? discussion.image_field.url : 'http://site.e-dologic.co.il/philip_morris/Xls_script/uru_mailing/logo.jpg' %>" />
+    -->
+
+
+</head>
+<body class="body-action">
+<% include partials/body_top.ejs %>
+<div id="wrap">
+    <div id="header">
+        <% include partials/menu.ejs %>
+        <% include partials/user_box.ejs %>
+        <% include partials/failures.ejs %>
+        <% include partials/tag_search.ejs %>
+    </div>
+    <div id="content" class="cf">
+    <div class="discussion-main">
+        <h2><span class="arrow"><%= cycle.title %></span></h2>
+        <form method="post">
+            <div class="add-event cf">
+                <div class="add-picture">
+                    <a href="javascript:;"><span>הוסף תמונה</span></a>
+                </div>
+                <div class="event-text">
+                    <div class="one-line title cf">
+                        <label>כותרת הפעולה</label>
+                        <div class="input">
+                            <input type="text" name="title" value="" />
+                        </div>
+                    </div>
+                    <div class="one-line cf">
+                        <div class="type">
+                            <label>סוג הפעולה</label>
+                            <select name="category">
+                            </select>
+                        </div>
+                        <div class="place">
+                            <label>מיקום</label>
+                            <div class="input">
+                                <input type="text" name="location" value="" />
+                            </div>
+                            <input type="submit" value="פתח מפה" />
+                        </div>
+                    </div>
+                    <div class="one-line cf">
+                        <div class="date">
+                            <label>תאריך</label>
+                            <div class="input">
+                                <input type="date" name="date" value="2012-10-01" />
+                            </div>
+                        </div>
+                        <div class="time">
+                            <label>משעה</label>
+                            <div class="input from">
+                                <input type="time" name="time[from]" value="15:00" />
+                            </div>
+                            <label>עד שעה</label>
+                            <div class="input to">
+                                <input type="time" name="time[to]" value="18:00" />
+                            </div>
+                        </div>
+                        <div class="user-number">
+                            <label>מספר משתתפים רצוי</label>
+                            <div class="input">
+                                <input type="number" name="number_of_participants" value="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="one-line cf">
+                        <div class="resources">
+                            <label>משאבים נדרשים</label>
+                            <select>
+                            </select>
+                        </div>
+                        <div class="additional-resources">
+                            <input type="text" placeholder="משאבים נוספים" />
+                            <input type="submit" value="הוסף" />
+                        </div>
+                    </div>
+                    <div class="checkboxes cf">
+                    </div>
+                </div>
+            </div>
+            <div class="bottom">
+                <div class="textarea">
+                    <textarea rows="10" cols="50" name="text">הפוסט הראשון בדיון. הסבר את הצורך במציאות שאתה דורש - מה הבעיה? איך המצב הנוכחי משפיע עליך? איזו עזרה היית רוצה לבקש מהמשתתפים בדיון בשיפור החזון?</textarea>
+                </div>
+                <div class="tags-box tags-box-event">
+                    <div class="add-tag">
+                        <label class="first">תגיות</label>
+                        <div class="input">
+                            <input type="text" value="" />
+                        </div>
+                        <input type="submit" value="הוסף" />
+                    </div>
+                    <div class="tags-list">
+                    </div>
+                </div>
+                <input class="popup-add-text-link" type="submit" value="יצירת דיון" />
+                <label><input type="checkbox" name="share" checked="checked" /> שתף את הדיון שיצרת על הקיר שלך</label>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+<script>
+    $.fn.tagAdder = function (callback) {
+        var button = this.find('[type=submit]');
+        var text = this.find('[type=text]');
+        button.click(function () {
+            var value = text.val();
+            value = value.trim();
+
+            if (value != '')
+                callback(value);
+
+            text.val('');
+
+            event.preventDefault();
+        });
+    };
+
+    var categories = <%- JSON.stringify(categories) %>;
+    var category_select = $('.type select');
+    var resources = <%- JSON.stringify(resources) %>;
+    var resource_select = $('.resources select');
+    var resource_checkboxes = $('.checkboxes');
+    var tag_list = $('.tags-list');
+
+    var populate = function(select, options) {
+        select.empty();
+        select.append($('<option>').text('בחר מתוך רשימה').val(0));
+        options.map(function (option) {
+            if (option && option.name && option._id) {
+                select.append($('<option>').text(option.name).val(option._id));
+            }
+        })
+    };
+
+    var addResource = function (text) {
+        var add = true;
+        resource_checkboxes.find('label').each(function () {
+            if ($(this).text().trim() == text) {
+                // A checkbox with the same text already exists.
+                add = false;
+            }
+        });
+
+        if (add) {
+            var label = $('<label>');
+            label.text(text);
+            label.prepend('<input type="checkbox">');
+            label.append($('<input type="hidden" name="resources[]">').val(text));
+            resource_checkboxes.append(label);
+        }
+    };
+
+    var addTag = function (text) {
+        var add = true;
+        tag_list.find('span').each(function () {
+            if ($(this).text().trim() == text) {
+                add = false;
+            }
+        });
+
+        if (add) {
+            tag_list.append($('<span>').text(text).append($('<input type="hidden" name="tags[]">').val(text)));
+        }
+    }
+
+    populate(category_select, categories);
+    populate(resource_select, []);
+
+    category_select.change(function () {
+        var category = category_select.val();
+        populate(resource_select, resources.filter(function (r) { return r.category == category; }));
+    });
+
+    resource_select.change(function () {
+        var resource = resource_select.val();
+        if (resource != 0) {
+            var text = resource_select.find('option:selected').text();
+            addResource(text);
+        }
+        resource_select.val(0);
+    });
+
+    $('.additional-resources').tagAdder(addResource);
+    $('.add-tag').tagAdder(addTag);
+</script>
+</body>
+</html>

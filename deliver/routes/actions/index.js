@@ -2,12 +2,13 @@
 
 module.exports = function(router)
 {
-    router.all(/\/subject\/([0-9a-f]+)\/?/,require('./subject'));
+    router.get('/create/:cycle_id', require('./create').get);
+    router.post('/create/:cycle_id', require('./create').post);
 
-    router.all(/\/([0-9a-f]+)\/?$/,require('./main'));
+    router.all(/\/subject\/([0-9a-f]+)\/?/, require('./subject'));
+
+    router.all(/\/([0-9a-f]+)\/?$/, require('./main'));
 
     router.all('', require('./list'));
-
-    router.all(/\/new\/([0-9a-f]+)\/?/,require('./new'));
 
 };
