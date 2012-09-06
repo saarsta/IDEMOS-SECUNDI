@@ -128,7 +128,7 @@ var GradeActionResource = module.exports = common.GamificationMongooseResource.e
             function(suggestions, cbk){
                 var real_threshold
                 async.forEach(suggestions, function(suggestion, itr_cbk){
-                        GradeActionSuggestion.calculateSuggestionGrade(suggestion._id, g_grade_obj.action_id, null, null, action_thresh, null, null,function(err, obj){
+                        GradeActionSuggestion.calculateActionSuggestionGrade(suggestion._id, g_grade_obj.action_id, null, null, action_thresh, null, null,function(err, obj){
                             //check if suggestion is over the threshold
                             real_threshold = Number(suggestion.admin_threshold_for_accepting_the_suggestion) || suggestion.threshold_for_accepting_the_suggestion;
                             if(suggestion.agrees && suggestion.agrees.length > real_threshold){

@@ -163,22 +163,25 @@ var error_message = error_message || '';
                 <%=action.cycle_id.title%></a> </span>
             <span class="blue-title"><%=action.title%></span></h3>
 
-        <div style="width: 212px;height: 164px; overflow:hidden;" class='auto-scale floatRight'>
+        <div id="discussion_image" style="width: 212px;height: 164px; overflow:hidden;" class='auto-scale floatRight'>
             <img src="<%= action.image_field ? action.image_field.url ||'' : '' %>" alt=""/>
-        </div>
+            <!--  images/sample-2.jpg" -->
 
+        </div>
         <div class="add-offer-info">
-            תאריך: 
-			<strong><%=action.from_date.format('dd.mm.yyyy') %></strong> 
-			|  שעה: 
+            תאריך:
+			<strong><%=action.from_date.format('dd.mm.yyyy') %></strong>
+			|  שעה:
 			<strong><%=action.from_date.format('HH:MM') %>-<%=action.to_date.format('HH:MM') %></strong>
         </div>
         <div class="add-offer-info m-2">
             מיקום:
             <strong><%=action.location?action.location.address:''%></strong>
         </div>
-        <div class="action_content action-text-overflow">
-            <textarea id="action_content" class="hidden_textarea"><%=action.text_field%></textarea>
+        <div class="discussion_content action-text-overflow">
+      <!--    <p><%-action.text_field%></p>-->
+            <textarea id="discussion_content" class="hidden_textarea"><%=action.text_field%></textarea>
+
          </div>
 
         <a class="more-text" href="">קרא עוד</a>
@@ -196,7 +199,7 @@ var error_message = error_message || '';
                 <%=action.cycle_id.title%></a> </span>
             <span class="blue-title"><%=action.title%></span></h3>
         <div class="text-box cf">
-            <div style="width: 139px;height: 135px; overflow:hidden;" class='auto-scale floatRight'>
+            <div id="discussion_image" style="width: 139px;height: 135px; overflow:hidden;" class='auto-scale floatRight'>
                 <img src="<%= action.image_field ? action.image_field.url ||'' : '' %>" alt=""/>
                 <!--  images/sample-2.jpg" -->
 
@@ -211,11 +214,17 @@ var error_message = error_message || '';
                     <strong><%=action.from_date.format('HH:MM') %>-<%=action.to_date.format('HH:MM') %></strong>
                 </div>
                 <div class="detail-resourse">
-                    <span class="icon"></span>
-                    משאבים נדרשים:
-                    <% for (var i=0;i < action.action_resources.length;i++){%>
-                    <span class="check"><%=action.action_resources[i].resource.name %></span>
-                    <% } %>
+
+                            <span class="icon"></span>
+                    <div class="detail-resourse-overflow" >
+                            משאבים נדרשים:
+                            <% for (var i=0;i < action.action_resources.length;i++){%>
+                             <span class="check have_tooltip"><%=action.action_resources[i].resource.name %></span>
+                            <% } %>
+                    </div>
+                    <a  id="i_bring_bt" class="gray_and_soon" >
+             גם אני מביא
+                    </a>
 
                 </div>
                 <div class="detail-ratio">
@@ -231,8 +240,7 @@ var error_message = error_message || '';
                     <strong><%=action.location?action.location.address:''%></strong>
                 </div>
             </div>
-            <!--<p><%-action.text_field%></p>-->
-            <textarea id="action_content_after_read_more" class="hidden_textarea"><%=action.text_field%></textarea>
+            <p><%-action.text_field%></p>
 
             <a id="readLess" class="read_less" href="">
                 קרא פחות
@@ -250,16 +258,16 @@ var error_message = error_message || '';
 
 
     </div>
-	
-	
-	
+
+
+
     <div class="add-offer-bottom cf">
         <div class="btn-box">
             <a class="btn-green" href="#" id="action_comment_reply_button">הגב</a>
         <!--    <a class="btn-grey" href="">שתף</a>-->
 
             <a class="btn-grey share" rel="/actions/<%=action._id%>"
-               data-img_src="<%= action.image_field ? action.image_field.url ||'' : '' %>" data-text_preview="<%-action.text_field_preview%>" data-title="<%=action.title%>"
+               data-img_src="<%= action.image_field ? action.image_field.url ||'' : '' %>" data-text_preview="<%=action.text_field_preview%>" data-title="<%=action.title%>"
                data-name="<%=action.text_field_preview%>"
                href="/facebookShare?link=/actions/<%=action._id%>">
                 שתף
@@ -320,7 +328,7 @@ var error_message = error_message || '';
 
     <div class="text-box cf">
         <div class="left">
-            <p id='action_content_txt'><strong></strong>
+            <p id='discussion_content_txt'><strong></strong>
 
             </p>
             <label>
@@ -362,6 +370,10 @@ var error_message = error_message || '';
     </a>
 </div>
 
+
+
+
+
 <div class="members-box members-box-action-approved cf ">
     <h2>משתתפים
         <small id="going_number"></small></h2>
@@ -369,9 +381,9 @@ var error_message = error_message || '';
     </div>
 
     <br clear="all" />
-    <!--<div class="more-deals" >-->
-        <!--<a href="">עוד הצעות</a>-->
-    <!--</div>-->
+    <div class="more-deals" >
+        <a href="">עוד הצעות</a>
+    </div>
 </div>
 
 
@@ -391,7 +403,7 @@ var error_message = error_message || '';
 
 
 
-<div class="system-notice" <%-action.system_message? '' :'style="display: none;"' %>>
+<div class="system-notice" <%-(!(action.system_message))? '' :'style="display: none;"' %>>
     <div class="extra">
         <a class="close" href=""></a>
         <%- action.system_message %>
@@ -464,19 +476,33 @@ var error_message = error_message || '';
              </a>
      </span>
 
+
+ <div id="action_resources_popup" >
+    <div style="margin-right: 30px;margin-top: 24px;">
+      <div style="overflow: auto;height: 135px">
+       <ul>
+           <% for (var i=0;i < action.action_resources.length;i++){%>
+           <span class="check have_tooltip"><%=action.action_resources[i].resource.name %></span>
+           <% } %>
+       </ul>
+     </div>
+        <div style="height: 35px"></div>
+        <div>
+        <a class="i_bring">
+            אני מביא
+        </a>
+            </div>
+        </div>
+ </div>
+
 <% include partials/action_common.ejs %>
 <% include partials/footer.ejs %>
 
  <script type="text/javascript">
      var action_id='<%=action._id%>';
      var my_id = "<%=user_logged ? user._id : ''%>";
-     var my_action_grade = Number("<%= action.grade_obj ? action.grade_obj.value || 0 : 0 %>");
-     var vision = $('#action_content').text();
-
-     var action_grade = Number("<%= action.grade%>");
-
+     var my_discussion_grade = Number("<%= action.grade_obj ? action.grade_obj.value || 0 : 0 %>");
      var creator_id = "<%=action.creator_id%>";
-
      $(function(){
          var grade_id = "<%= action.grade_obj ? action.grade_obj.grade_id : 0 %>";
          var is_creator = (my_id == creator_id);
@@ -487,7 +513,7 @@ var error_message = error_message || '';
 
          (function propselModule(){
              var mouseDown, mouseUp, top, left;
-             $('.action_content').on('mousedown', function (e) {
+             $('.discussion_content').on('mousedown', function (e) {
                  mouseDown = e;
                  console.log(e);
              })
@@ -497,8 +523,13 @@ var error_message = error_message || '';
                          var err = false;
                          var range = $(this).find('textarea').getSelection();
 
+//                console.log(e);
+
+
                          left = Math.ceil((mouseDown.clientX + mouseUp.clientX) / 2 - ($(".popup-window").width() / 2));
                          top = Math.min(mouseDown.clientY, mouseUp.clientY) - $(".popup-window").height() - 40 + $(window).scrollTop();
+
+
 
                      }).on('keydown',
                      function (e) {
@@ -515,17 +546,16 @@ var error_message = error_message || '';
              $('.popup-window').on('focus', function (e) {
                  e.preventDefault();
              });
-
-             $("#action_content, #action_content_after_read_more").select(function () {
+             $("#discussion_content").select(function () {
                  range = $(this).getSelection();
                  flag = false;
-                  db_functions.getSuggestionByAction(action_id, null, null, function(err, suggestions){
+                 /* db_functions.getSuggestionByDiscussion(action_id, null, null, function(err, suggestions){
                      $.each(suggestions.objects, function (index, suggestion) {
                          if ((suggestion.parts[0].start >= range.start && suggestion.parts[0].start <= range.end)
                                  || (suggestion.parts[0].end >= range.start && suggestion.parts[0].end <= range.end)) {
                              flag = true;
                          }
-                     })
+                     })*/
                      if(flag)
                          popupProvider.showOkPopup({message:"הטקסט סומן כבר בהצעה לשינוי קיימת"});
                      else
@@ -533,14 +563,14 @@ var error_message = error_message || '';
                                  .css({ top:top + 20, left:left, opacity:0 })
                                  .show()
                                  .animate({ top:'-=20px', opacity:1 }, 100, 'linear');
-                });
+                // });
 
                  console.log(range);
              });
 
              $('#pop_suggest_bt').on("click", function (e) {
                  e.preventDefault();
-                 $('#action_content_txt').text('"' + range.text + '"');
+                 $('#discussion_content_txt').text('"' + range.text + '"');
                  $('#write-comment').show();
                  $('textarea#discussion_suggest').focus();
                  $('#reload-img').attr('src', $('#reload-img').attr('src'));
@@ -571,7 +601,7 @@ var error_message = error_message || '';
 
                      part.text += " ";
                  var explanation = $("#discussion_explanation").val();
-                 db_functions.addSuggestionToAction(action_id, [part], explanation, function (err, data) {
+                 db_functions.addSuggestionToDiscussion(discussion_id, [part], explanation, function (err, data) {
                      if (!err) {
                          $('#write-comment').hide();
                          render_suggestion(data)
@@ -591,24 +621,22 @@ var error_message = error_message || '';
 
          } )();
 
-         $("#action_content").val($("#action_content").text());
-
          $(".slider").slider({
              disabled:is_creator,
-             value:my_action_grade,
+             value:my_discussion_grade,
              range:"min",
              min:0,
              max:10,
              step:0.10,
              change:function (event, ui) {
 
-                 my_action_grade = ui.value;
-                 db_functions.addActionGrade(action_id, my_action_grade, grade_id, function (err, data) {
+                 my_discussion_grade = ui.value;
+                 db_functions.addDiscussionGrade(action_id, my_discussion_grade, grade_id, function (err, data) {
 
                      if (!err) {
                          $("#amount").val(Math.round(data.new_grade * 100) / 100);
                          $("#graders").text(Math.round(data.evaluate_counter));
-                         $(".dark_bar").css('width', (my_action_grade * 10) + '%');
+                         $(".dark_bar").css('width', (my_discussion_grade * 10) + '%');
                          grade_id = data.grade_id;
                      }
                      else
@@ -617,113 +645,23 @@ var error_message = error_message || '';
              }
          });
 
+         $('.have_tooltip').tooltip({
+             tip:'#action_resources_popup',
+             position:'bottom center'
+         }) ;
+
          var goingModel= new  window.uru.GoingModel({
              joinString:'אם זה קורה, אני שם'
          });
          //start from index 0 loding 1 rows 7 items
          goingModel.loadGoingUsers(0,1);
-        // loadPosts();
 
-         var suggest_grade_id = new Object();
 
-         function render_suggestion(suggestion) {
-             if (suggestion.parts && suggestion.parts.length) {
-                 var original = $('#action_content').val();
-                 suggestion.original_part = function () {
-                     var from = suggestion.parts[0].start;
-                     var end = suggestion.parts[0].end;
-                     return original.substr(from, end - from);
-                 };
-                 suggestion.alternative_part = function () {
-                     return suggestion.parts[0].text;
-                 };
 
-                 var depress_event = false;
-
-                 dust.render('discussion_suggestion', suggestion, function (err, out) {
-                     $('#suggestion_list').prepend(out);
-                     image_autoscale($('#suggestion_list .auto-scale img'));
-                     var suggestion_grade_val = suggestion.grade_obj ? suggestion.grade_obj.evalueation_grade : my_action_grade;
-                     suggest_grade_id[suggestion.id] = suggestion.grade_obj ? suggestion.grade_obj._id : null;
-                     $(".suggest_slider_" + suggestion.id).slider({
-                         value:suggestion_grade_val,
-                         range:"min",
-                         min:0,
-                         max:10,
-                         step:0.10,
-                         slide:function (event, ui) {
-                             var rating = ui.value;
-                             var grade = is_creator ? action_grade : my_action_grade;
-                             if (rating >= grade) {
-                                 $(this).parents(".bottom-box").find(".agree_disagree").removeClass("disagree").addClass("agree")
-                             } else {
-                                 $(this).parents(".bottom-box").find(".agree_disagree").removeClass("agree").addClass("disagree");
-
-                             }
-                         },
-                         change:function (event, ui) {
-                             if(depress_event)
-                                 return;
-                             var rating = ui.value;
-                             db_functions.addActionSuggestionGrade(suggestion.id, action_id, rating, suggest_grade_id[suggestion.id], function (err, data) {
-                                 if (!err) {
-                                     $("#suggest_grade_" + suggestion.id).val(Math.round(data.new_grade * 100) / 100);
-                                     $("#suggest_graders_" + suggestion.id).text(Math.round(data.agrees) + Math.round(data.not_agrees));
-                                     $("#agrees_" + suggestion.id).text(Math.round(data.agrees));
-                                     $("#not_agrees_" + suggestion.id).text(Math.round(data.not_agrees));
-                                     $("#wanted_amount_of_tokens_" + suggestion.id).text(data.wanted_amount_of_tokens);
-                                     $("#curr_amount_of_tokens_" + suggestion.id).text(Math.round(data.curr_amount_of_tokens));
-                                     suggest_grade_id[suggestion.id] = data.grade_id;
-
-                                     //already_graded
-                                 }
-                                 else
-                                 {
-                                     depress_event = true;
-                                     $(".suggest_slider_" + suggestion.id).slider("value", suggestion_grade_val || 0);
-                                     depress_event = false;
-                                     console.log(err);
-                                 }
-                             });
-                         }
-                     });
-
-                     initTooltipWithMessage($('#suggestion_list .right .proxy'), 'מנדטים');
-                     initTooltipWithMessage($('#suggestion_list .right .respect'), 'מוניטין');
-
-                     $(".suggest_slider_" + suggestion.id).prepend($("<div>").addClass("dark_bar").css('width', (my_action_grade * 10) + '%'));
-                 });
-             }
-             return null;
-         }
-
-         db_functions.getSuggestionByAction(action_id, 1, 0, function (err, data) {
-             $.each(data.objects, function (index, suggestion) {
-                 render_suggestion(suggestion);
-             });
-
-             $('#suggestion_number').text('(' + data.meta.total_count + ')');
-             if (data.objects.length > 0) {
-                 $(".deals-box").show();
-                 if (data.meta.total_count >= 2) {
-                     $(".more-deals").show();
-                     $(".more-deals a").on('click', function (e) {
-
-                         db_functions.getSuggestionByAction(action_id, null, 1, function (err, data) {
-                             $.each(data.objects, function (index, suggestion) {
-                                 render_suggestion(suggestion);
-                             });
-                         });
-                         $(".more-deals").hide();
-                         return false;
-                     });
-                 }
-             }
-             else {
-                 $(".deals-box").hide();
-             }
-         });
      });
+
+
+
 
  </script>
 
