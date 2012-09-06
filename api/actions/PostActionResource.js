@@ -129,7 +129,7 @@ var PostActionResource = module.exports = common.GamificationMongooseResource.ex
                     function(cbk2)
                     {
                         // here i can use "$$addToSet" cause this is a new action, so this is the first user
-                        models.Action.update({_id:object.action_id}, {$addToSet: {users: user_id}}, cbk2);
+                        models.Action.update({_id:object.action_id}, {$addToSet: {users: {user_id:user_id,join_date:new Date()}}}, cbk2);
 
                     },
                     //2.2 add action to user ?(duplication of "people that connected somehow to action")
