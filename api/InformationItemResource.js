@@ -250,7 +250,7 @@ module.exports.approveInfoItem = function(id,callback){
 
         //notification for creator
         function(obj, cbk){
-            notifications.create_user_notification(notification_type, id,creator_id, null, null, cbk);
+            notifications.create_user_notification(notification_type, id, creator_id, null, null, '/information_items/' + id, cbk);
         },
 
         //find people that like this info_item and set notification for likers
@@ -267,7 +267,7 @@ module.exports.approveInfoItem = function(id,callback){
     })
 
     var iterator = function(like, itr_cbk){
-        notifications.create_user_notification("approved_info_item_i_liked", id, creator_id, null, null, itr_cbk);
+        notifications.create_user_notification("approved_info_item_i_liked", id, creator_id, null, null,'/information_items/' + id, itr_cbk);
     }
 }
 

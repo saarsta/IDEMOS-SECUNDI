@@ -150,12 +150,15 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
             if (user_schema.user_id == user_id.id || !user_schema.user_id)
                 itr_cbk(null, 0);
             else {
+                //TODO - replace entity_id with sub_entity_id
                 if (discussion_creator_id == user_schema.user_id) {
-                    notifications.create_user_notification("change_suggestion_on_discussion_you_created", discussion_id, user_schema.user_id, user_id, suggestion_object._id, function (err, results) {
+                    notifications.create_user_notification("change_suggestion_on_discussion_you_created", discussion_id, user_schema.user_id, user_id, suggestion_object._id, '/discussions/' + discussion_id, function (err, results) {
                         itr_cbk(err, results);
                     });
                 } else {
-                    notifications.create_user_notification("change_suggestion_on_discussion_you_are_part_of", discussion_id, user_schema.user_id, user_id, suggestion_object._id, function (err, results) {
+                    //TODO - replace entity_id with sub_entity_id
+
+                    notifications.create_user_notification("change_suggestion_on_discussion_you_are_part_of", discussion_id, user_schema.user_id, user_id, suggestion_object._id, '/discussions/' + discussion_id, function (err, results) {
                         itr_cbk(err, results);
                     });
                 }
@@ -251,7 +254,9 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                     function (cbk2) {
                         models.User.find({"proxy.user_id":user_id}, function (err, slaves_users) {
                             async.forEach(slaves_users, function (slave, itr_cbk) {
-                                notifications.create_user_notification("proxy_created_change_suggestion", suggestion_obj._id, slave._id, user_id, discussion_id, function (err, result) {
+                                //TODO - replace entity_id with sub_entity_id
+
+                                notifications.create_user_notification("proxy_created_change_suggestion", suggestion_obj._id, slave._id, user_id, discussion_id, '/discussions/' + discussion_id, function (err, result) {
                                     itr_cbk(err);
                                 })
                             }, function (err) {
@@ -347,8 +352,10 @@ module.exports.approveSuggestion = function (id, callback) {
         async.parallel([
             function (cbk1) {
                 if (suggestion_creator != sugg_grade.user_id + "") {
+                    //TODO - replace entity_id with sub_entity_id
+
                     notifications.create_user_notification("approved_change_suggestion_you_graded",
-                        discussion_id, sugg_grade.user_id + "", null, null, cbk1);
+                        discussion_id, sugg_grade.user_id + "", null, null, '/discussions/' + discussion_id, cbk1);
                 } else {
                     cbk1(null, 0);
                 }
@@ -506,8 +513,10 @@ module.exports.approveSuggestion = function (id, callback) {
 
                 //set notifications for creator
                 function (par_cbk) {
+                    //TODO - replace entity_id with sub_entity_id
+
                     notifications.create_user_notification("approved_change_suggestion_you_created",
-                        discussion_id, sug_obj.creator_id, null, sug_obj._id, function (err, obj) {
+                        discussion_id, sug_obj.creator_id, null, sug_obj._id, '/discussions/' + discussion_id, function (err, obj) {
                             par_cbk(err, obj);
                         });
                 },

@@ -2,7 +2,7 @@
 var models = require('../../../models')
     ,DiscussionResource = require('../../../api/discussions/DiscussionResource.js')
     ,async = require('async')
-    ,notificaions = require('../../../api/notifications.js');
+    ,notifications = require('../../../api/notifications.js');
 
 module.exports = function(req,res)
 {
@@ -32,10 +32,10 @@ module.exports = function(req,res)
             models.Discussion.update({ _id: req.params[0]}, {$inc: {view_counter: 1}}, cbk);
         },
 
-        //update that user visited discussion
+        //update all notifications of user that connected to this object
         function(cbk){
-            if(req.session.user)
-                notificaions.updateVisited(req.session.user, '/discussions/' + req.params[0]);
+            if(user)
+                notifications.updateVisited(user, req.path);
             cbk();
         }
     ],
