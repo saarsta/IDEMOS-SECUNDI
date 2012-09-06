@@ -9,6 +9,7 @@ var models = require('../../../models'),
 *       3.1 for each follower find join date by finding the specific cycle in the list
 *       3.2 sort followers - fb friends, proxies, followed by me, others
 *  4. find opinion shapers
+*  5. find proxy of user
 *  final - render the cycle page
 *
 * */
@@ -72,8 +73,18 @@ module.exports = function(req, res){
                     _.each(results, function(obj){ obj.user_id.opinion_text = obj.text});
                     cbk(err, results);
                 })
+        },
 
+        // get the user object
+        function (cbk) {
+            if (req.session.user)
+                models.User.findById(req.session.user._id, cbk);
+            else {
+                cbk(null, null);
+            }
         }
+
+
        //final - render the cycle page
     ], function(err, args){
 
@@ -84,12 +95,12 @@ module.exports = function(req, res){
         }
         else {
 
-
             g_cycle = args[0];
             g_cycle.opinion_shapers = _.map(args[2], function(opinion_shaper){return opinion_shaper.user_id});
+
             var users = args[1] || [];
-            //TODO: REMOVE ME
-            var BUGBUG_PROXY=null;
+
+            var proxyJson = args[3] ? JSON.stringify(args[3].proxy) : null;
 
             if(g_cycle.followers_count != users.length){
                 //fix follower count
@@ -101,7 +112,7 @@ module.exports = function(req, res){
                     res.render('cycle.ejs',{
                         cycle: g_cycle,
                         tab:'cycles',
-                        proxy:BUGBUG_PROXY
+                        proxy:proxyJson
                     });
                 })
             }else{
@@ -111,7 +122,7 @@ module.exports = function(req, res){
                 res.render('cycle.ejs',{
                     cycle: g_cycle,
                     tab:'cycles',
-                    proxy:BUGBUG_PROXY
+                    proxy:proxyJson
                 });
             }
         }

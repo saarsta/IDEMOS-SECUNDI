@@ -2,11 +2,12 @@
 var models = require('../../../models')
     ,DiscussionResource = require('../../../api/discussions/DiscussionResource.js')
     ,async = require('async')
-    ,notificaions = require('../../../api/notifications.js');
+    ,notifications = require('../../../api/notifications.js');
 
 module.exports = function(req,res)
 {
     var resource = new DiscussionResource();
+    var user = req.session.user;
 
     async.parallel([
         // get the user object
@@ -30,13 +31,6 @@ module.exports = function(req,res)
 
         function(cbk){
             models.Discussion.update({ _id: req.params[0]}, {$inc: {view_counter: 1}}, cbk);
-        },
-
-        //update that user visited discussion
-        function(cbk){
-            if(req.session.user)
-                notificaions.updateVisited(req.session.user, '/discussions/' + req.params[0]);
-            cbk();
         }
     ],
         function(err, results)
@@ -72,6 +66,10 @@ module.exports = function(req,res)
                                 fb_image:discussion.image_field && discussion.image_field.url
 
                             });
+
+                            //update all notifications of user that connected to this object
+                            if(user)
+                                notifications.updateVisited(user, req.path);
                         }
                     });
                 }

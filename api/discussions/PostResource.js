@@ -132,11 +132,11 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                     itr_cbk(null, 0);
                 else{
                     if (discussion_creator_id + "" == user_schema.user_id + ""){
-                        notifications.create_user_notification("comment_on_discussion_you_created", discussion_id, user_schema.user_id, user_id, post_id,function(err, results){
+                        notifications.create_user_notification("comment_on_discussion_you_created", post_id, user_schema.user_id, user_id, discussion_id, '/discussions/' + discussion_id, function(err, results){
                             itr_cbk(err, results);
                         });
                     }else{
-                        notifications.create_user_notification("comment_on_discussion_you_are_part_of", discussion_id, user_schema.user_id, user_id, post_id,function(err, results){
+                        notifications.create_user_notification("comment_on_discussion_you_are_part_of", post_id, user_schema.user_id, user_id, discussion_id,'/discussions/' + discussion_id, function(err, results){
                             itr_cbk(err, results);
                         });
                     }
@@ -235,7 +235,7 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                                     cbk2(err, null);
                                 else{
                                     if(quoted_post)
-                                        notifications.create_user_notification("been_quoted", post_object._id/*ref_to_post_id*/, quoted_post.creator_id, post_object.creator_id, discussion_id, cbk2);
+                                        notifications.create_user_notification("been_quoted", post_object._id/*ref_to_post_id*/, quoted_post.creator_id, post_object.creator_id, discussion_id, '/discussions/' + discussion_id, cbk2);
                                     else
                                     {
                                         console.log("there is no post with post_object.ref_to_post_id id");

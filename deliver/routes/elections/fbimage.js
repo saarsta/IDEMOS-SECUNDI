@@ -63,7 +63,7 @@ var getUserChosenDiscussions = module.exports.getUserChosenDiscussions = functio
                 var disc_ids = user.has_voted.filter(function(val) {return val.length > 20;});
                 var stored_disc = user.has_voted.filter(function(val) {return val.title;});
                 models.Discussion.find({_id: {'$in': disc_ids}}, function(err, result){
-                    cb(err, result.concat(stored_disc))
+                    cb(err, result ? result.concat(stored_disc) : result);
                 })
             }
         }

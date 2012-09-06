@@ -151,11 +151,11 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                 itr_cbk(null, 0);
             else {
                 if (discussion_creator_id == user_schema.user_id) {
-                    notifications.create_user_notification("change_suggestion_on_discussion_you_created", discussion_id, user_schema.user_id, user_id, suggestion_object._id, function (err, results) {
+                    notifications.create_user_notification("change_suggestion_on_discussion_you_created", suggestion_object._id, user_schema.user_id, user_id, discussion_id, '/discussions/' + discussion_id, function (err, results) {
                         itr_cbk(err, results);
                     });
                 } else {
-                    notifications.create_user_notification("change_suggestion_on_discussion_you_are_part_of", discussion_id, user_schema.user_id, user_id, suggestion_object._id, function (err, results) {
+                    notifications.create_user_notification("change_suggestion_on_discussion_you_are_part_of", suggestion_object._id, user_schema.user_id, user_id, discussion_id, '/discussions/' + discussion_id, function (err, results) {
                         itr_cbk(err, results);
                     });
                 }
@@ -251,7 +251,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                     function (cbk2) {
                         models.User.find({"proxy.user_id":user_id}, function (err, slaves_users) {
                             async.forEach(slaves_users, function (slave, itr_cbk) {
-                                notifications.create_user_notification("proxy_created_change_suggestion", suggestion_obj._id, slave._id, user_id, discussion_id, function (err, result) {
+                                notifications.create_user_notification("proxy_created_change_suggestion", suggestion_obj._id, slave._id, user_id, discussion_id, '/discussions/' + discussion_id, function (err, result) {
                                     itr_cbk(err);
                                 })
                             }, function (err) {
@@ -348,7 +348,7 @@ module.exports.approveSuggestion = function (id, callback) {
             function (cbk1) {
                 if (suggestion_creator != sugg_grade.user_id + "") {
                     notifications.create_user_notification("approved_change_suggestion_you_graded",
-                        discussion_id, sugg_grade.user_id + "", null, null, cbk1);
+                        suggestion_object._id, sugg_grade.user_id + "", null, discussion_id, '/discussions/' + discussion_id, cbk1);
                 } else {
                     cbk1(null, 0);
                 }
@@ -361,7 +361,6 @@ module.exports.approveSuggestion = function (id, callback) {
                         cbk1(err, num);
                     });
             }
-
 
         ], function (err, args) {
             itr_cbk(err, args);
@@ -507,7 +506,7 @@ module.exports.approveSuggestion = function (id, callback) {
                 //set notifications for creator
                 function (par_cbk) {
                     notifications.create_user_notification("approved_change_suggestion_you_created",
-                        discussion_id, sug_obj.creator_id, null, sug_obj._id, function (err, obj) {
+                        sug_obj._id, sug_obj.creator_id, null, discussion_id, '/discussions/' + discussion_id, function (err, obj) {
                             par_cbk(err, obj);
                         });
                 },
