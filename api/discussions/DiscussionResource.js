@@ -456,10 +456,9 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
 function notifications_for_the_info_items_relvant(discussion_id, notificator_id, callback) {
 
     var set_notification_for_liked_items = function (like, itr_cbk) {
-        //TODO - replace entity_id with sub_entity_id
         if (like.info_item_creator + "" != like.user_id + "" && like.info_item_creator != null) {
             notifications.create_user_notification("a_dicussion_created_with_info_item_that_you_like",
-                discussion_id, like.user_id, notificator_id, like.info_item_id, '/discussions/' + discussion_id, itr_cbk);
+                like.info_item_id, like.user_id, notificator_id, discussion_id, '/discussions/' + discussion_id, itr_cbk);
         } else {
             itr_cbk(null, 0);
         }
@@ -495,9 +494,8 @@ function notifications_for_the_info_items_relvant(discussion_id, notificator_id,
             //set notifications for information item's creators
             function (par_cbk) {
                 if (creator_id) {
-                    //TODO - replace entity_id with sub_entity_id
                     notifications.create_user_notification("a_dicussion_created_with_info_item_that_you_created",
-                        discussion_id, creator_id, notificator_id, info_item._id, '/discussions/' + discussion_id, par_cbk);
+                        info_item._id, creator_id, notificator_id, discussion_id, '/discussions/' + discussion_id, par_cbk);
                 } else {
                     par_cbk(null, 0);
                 }
