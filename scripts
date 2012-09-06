@@ -32,3 +32,26 @@ fix discussion conneced people
                print('couldnt find user ' + grade_obj.user_id);
         });
     });
+
+insert noti url
+    db.notifications.find().forEach(function(noti){
+        var disc = db.discussions.findOne({"_id": noti.notificators[0].sub_entity_id});
+        if(!disc){
+            disc = db.discussions.findOne({"_id": noti.entity_id});
+        }
+        if(disc){
+            noti.url = "/discussions/" + disc._id;
+            print(noti.url);
+            db.notifications.save(noti);
+        }
+    })
+
+     db.notifications.find().forEach(function(noti){
+            var disc = db.discussions.findOne({"_id": noti.notificators[0].sub_entity_id});
+            if(!disc){
+                disc = db.discussions.findOne({"_id": noti.entity_id});
+            }
+            if(disc){
+               print(disc._id + '');
+            }
+        })

@@ -7,6 +7,7 @@ var models = require('../../../models')
 module.exports = function(req,res)
 {
     var resource = new DiscussionResource();
+    var user = req.session.user;
 
     async.parallel([
         // get the user object
@@ -30,13 +31,6 @@ module.exports = function(req,res)
 
         function(cbk){
             models.Discussion.update({ _id: req.params[0]}, {$inc: {view_counter: 1}}, cbk);
-        },
-
-        //update all notifications of user that connected to this object
-        function(cbk){
-            if(user)
-                notifications.updateVisited(user, req.path);
-            cbk();
         }
     ],
         function(err, results)
@@ -72,6 +66,10 @@ module.exports = function(req,res)
                                 fb_image:discussion.image_field && discussion.image_field.url
 
                             });
+
+                            //update all notifications of user that connected to this object
+                            if(user)
+                                notifications.updateVisited(user, req.path);
                         }
                     });
                 }
