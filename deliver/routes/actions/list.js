@@ -1,4 +1,3 @@
-
 module.exports = function(req,res) {
-    res.render('404.ejs');
+    res.render('actions_list.ejs');
 };
