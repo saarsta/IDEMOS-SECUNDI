@@ -340,8 +340,6 @@ $(document).ready(function () {
         }
     });
 
-
-
     $("#proxy_form").dialog({
         autoOpen:false,
         height:300,
@@ -370,8 +368,8 @@ $(document).ready(function () {
         }
     });
 
-
     $("#discussion_content").val($("#discussion_content").text());
+
     $(".slider").slider({
         disabled:is_creator,
         value:my_discussion_grade,
@@ -382,6 +380,7 @@ $(document).ready(function () {
         change:function (event, ui) {
 
             my_discussion_grade = ui.value;
+
             db_functions.addDiscussionGrade(discussion_id, my_discussion_grade, grade_id, function (err, data) {
 
                 if (!err) {
@@ -449,13 +448,8 @@ $(document).ready(function () {
                 var err = false;
                 var range = $(this).find('textarea').getSelection();
 
-//                console.log(e);
-
-
                 left = Math.ceil((mouseDown.clientX + mouseUp.clientX) / 2 - ($(".popup-window").width() / 2));
                 top = Math.min(mouseDown.clientY, mouseUp.clientY) - $(".popup-window").height() - 40 + $(window).scrollTop();
-
-
 
             }).on('keydown',
             function (e) {
@@ -511,9 +505,6 @@ $(document).ready(function () {
     })
 
     $('#suggestion_list').on('click', '#add_or_remove_proxy', function (e) {
-
-
-
         var userData = $(this).parents('.discussion-item');
         var proxyId = userData.data('creator_id');
         var userName = userData.data('creator_name');
@@ -524,30 +515,28 @@ $(document).ready(function () {
             proxy=newProxy.proxy;
 
         })
-
-
     });
 
-
-
+//    var user_name = common.getURLParameter('user_name');
 
     $('#comments').on('click', '#add_or_remove_proxy', function (e) {
-
         var userData = $(this).parents('.comment-one');
         var proxyId = userData.data('creator_id');
         var userName = userData.data('creator_name');
         e.preventDefault();
-        proxyCommon.addOrRemoveProxy(proxy,proxyId,userName,my_id,function(newProxy){
-            proxy=newProxy.proxy;
 
-        })
-
-
+        if(!my_id){
+            popupProvider.showLoginPopup({}, function(err, result){
+                if(!err)
+//                    window.location = window.location + '?user_name=' + userName + '&proxy_id=' + proxyId;
+                    window.location = window.location;
+            });
+        }else{
+            proxyCommon.addOrRemoveProxy(proxy, proxyId, userName, my_id, function(newProxy){
+                proxy = newProxy.proxy;
+            })
+        }
     });
-
-
-
-
 
     function vote(actionType){
         var post_id = $(this).parents('.comment-one').data("id");
