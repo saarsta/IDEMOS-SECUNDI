@@ -9,7 +9,7 @@ var NotificationCategoryResource = module.exports = resources.MongooseResource.e
     {
         init:function () {
             this._super(models.Notification);
-            this.allowed_methods = ['get', 'put'];
+            this.allowed_methods = ['get'];
             this.authentication = new common.SessionAuthentication();
             this.update_fields = {name:null};
             this.default_query = function (query) {

@@ -56,11 +56,11 @@ var mongoose_resource = require('jest'),
     ElectionsItemResource = require('./ElectionsItemResource'),
     UserChosenDiscussionsResource = require('./elections/user_chosen_discussions_resource.js'),
 
-
     RegisterResource = require('./register_resource'),
     LoginResource = require('./LoginResource'),
     FbConnectResource = require('./FbConnectResource'),
     AvatarResource = require('./avatar_resource'),
+    ResetNotificationResource = require('./reset_notification_resource'),
     OGActionResource = require('./og_action_resource');
 
 
@@ -121,16 +121,14 @@ module.exports = function(app)
     rest_api.register_resource('elections_texts', new ElectionsTextResource());
     rest_api.register_resource('user_chosen_discussions', new UserChosenDiscussionsResource());
 
-
-
     rest_api.register_resource('login', new LoginResource());
     rest_api.register('register',new RegisterResource());
     rest_api.register_resource('fb_connect', new FbConnectResource());
-
 
     rest_api.register_resource('items_count_by_tag_name', new ItemsCountByTagNameResource());
     rest_api.register_resource('fb_request', new FBRequestResource());
     rest_api.register('image_upload',new ImageUploadResource());
     rest_api.register('og_action', new OGActionResource());
     rest_api.register('avatar',new AvatarResource());
+    rest_api.register('reset_notification',new ResetNotificationResource());
 };

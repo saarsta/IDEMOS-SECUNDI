@@ -80,7 +80,7 @@ exports.create_user_notification = function(notification_type, entity_id, user_i
             callback(err, obj);
         })
     }else{
-        create_new_notification(notification_type, entity_id, user_id, notificatior_id, sub_entity, function(err, obj){
+        create_new_notification(notification_type, entity_id, user_id, notificatior_id, sub_entity, url, function(err, obj){
             callback(err, obj);
         });
     }
