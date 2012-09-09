@@ -33,7 +33,7 @@ var error_message = error_message || '';
     <div id="content" class="cf">
     <div class="discussion-main">
         <h2><span class="arrow"><%= cycle.title %></span></h2>
-        <form method="post">
+        <form id="main_form" action="#">
             <div class="add-event cf">
                 <div class="add-picture">
                     <a href="javascript:;"><span>הוסף תמונה</span></a>
@@ -113,8 +113,8 @@ var error_message = error_message || '';
                     <div class="tags-list">
                     </div>
                 </div>
-                <input class="popup-add-text-link" type="submit" value="יצירת דיון" />
-                <label><input type="checkbox" name="share" checked="checked" /> שתף את הדיון שיצרת על הקיר שלך</label>
+                <input class="popup-add-text-link" type="submit" value="יצירת פעולה" />
+                <label><input type="checkbox" name="share" checked="checked" /> שתף את הפעולה שיצרת על הקיר שלך</label>
             </div>
         </form>
     </div>
@@ -204,6 +204,28 @@ var error_message = error_message || '';
 
     $('.additional-resources').tagAdder(addResource);
     $('.add-tag').tagAdder(addTag);
+
+    $('.popup-add-text-link').click(function () {
+        event.preventDefault();
+
+        var data = $('#main_form').serialize();
+        $.ajax({
+            type: 'POST',
+            url: location.href,
+            data: data,
+            dataType: 'json',
+            success: function (result) {
+                if (result.errors) {
+                    popupProvider.showOkPopup('קרתה תקלה בעת שמירת הפעולה.');
+                } else {
+                    location.href = result.redirect;
+                }
+            },
+            error: function () {
+                popupProvider.showOkPopup('קרתה תקלה בעת שמירת הפעולה.');
+            }
+        });
+    });
 </script>
 </body>
 </html>

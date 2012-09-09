@@ -8370,7 +8370,7 @@ a.menu-elections:hover {
     color: #50504F;
 }
 
-.one-box .bottom-plus .left a {
+.one-box .bottom-plus .left a, .one-box a.green-share {
     background: #2FD43B url(../images/green-btn-border.png) 0 0 repeat-x;
     border-color: #2EAB35;
     margin: 0;
