@@ -121,7 +121,7 @@ var scrollTo = function(selector, options){
 var connectPopup = function(callback){
 
     //open popup window
-     popupProvider.showLoginPopup({},callback);
+     popupProvider.showLoginPopup({}, callback);
 
 };
 

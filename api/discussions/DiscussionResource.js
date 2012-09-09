@@ -163,6 +163,8 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
 
         if(fields.text_field)
             fields.text_field_preivew = fields.text_field.substr(0,365);
+        if(!fields.image_field)
+            fields.image_field = { url:'/images/' + fields.subject_id + '.jpg',path:'/images/' + fields.subject_id + '.jpg'};
         if(fields.image_field)
             fields.image_field_preview = fields.image_field;
 

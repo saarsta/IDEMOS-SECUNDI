@@ -46,6 +46,7 @@ var proxyCommon={
                 }
 
                 db_functions.addOrRemoveProxyMandate(my_id, proxyId, changeProxy, function (err, data) {
+                    debugger
                     //  var msg_params = err ? {massage:err.responseText} : {massage:"האסימונים ילקחו בקרוב"};
                     var fixMeProxy;
                     if(data && data.proxy){

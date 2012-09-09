@@ -84,7 +84,8 @@ var popupProvider={
         });
         return popup;
     },
-    showLoginPopup:function(popupConfig,callback){
+
+    showLoginPopup:function(popupConfig, callback){
 
         this.self = this;
         var defaults = {
@@ -145,8 +146,5 @@ var popupProvider={
                 }
             });
         });
-
     }
-
-
 }
