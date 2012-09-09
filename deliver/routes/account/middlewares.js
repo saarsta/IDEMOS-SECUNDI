@@ -73,7 +73,7 @@ exports.auth_middleware = function (req, res, next) {
                             req.session.user_id = user._id;
                             req.session.avatar_url = user.avatar_url();
 
-                            models.Notification.count({user_id: user._id}, function(err, count){
+                            models.Notification.count({user_id: user._id, seen: false}, function(err, count){
                                 if(err){
                                     console.error('error finding user notifications');
                                     user.unseen_notifications = 0;

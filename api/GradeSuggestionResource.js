@@ -190,7 +190,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                         else
                             method = "remove";
                         notifications.create_user_vote_or_grade_notification("user_gave_my_suggestion_tokens",
-                            suggestion_obj._id, suggestion_obj.creator_id, req.user._id, discussion_id, method, false, true,function (err, result) {
+                            suggestion_obj._id, suggestion_obj.creator_id, req.user._id, discussion_id, method, false, true, '/discussions/' +  discussion_id, function (err, result) {
                                 cbk1(err, result);
                             })
                     },
@@ -311,7 +311,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                         if(did_user_change_his_agree){
                             if(sugg_obj.creator_id){
                                 notifications.create_user_vote_or_grade_notification("user_gave_my_suggestion_tokens",
-                                    sugg_obj._id, sugg_obj.creator_id, req.user._id, discussion_id, method, did_user_change_his_agree, true,function (err, result) {
+                                    sugg_obj._id, sugg_obj.creator_id, req.user._id, discussion_id, method, did_user_change_his_agree, true, '/discussions/' +  discussion_id, function (err, result) {
                                         cbk1(err, result);
                                     })
                             }else{

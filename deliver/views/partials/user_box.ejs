@@ -6,7 +6,7 @@
     <%if(unseen_notifications > 0){%><span class="total-number"> <%=unseen_notifications%></span><%}%>
 
     <%if(user_logged && user){%>
-    <a href="/myuru">
+    <a class="reset_notification" href="/myuru">
         <span class="icon"></span>
     </a>
     <%}else{%>
@@ -54,6 +54,7 @@
 </div>
 
 <script type="text/javascript">
+
     $(document).ready(function () {
 
         $("#register_form").validate({
@@ -75,5 +76,12 @@
             userBox.removeClass('active');
         });
     });
+
+    $(".reset_notification").click(function(){
+        db_functions.resetUserNotifications(function(err, result){
+            console.log(err || result);
+        })
+    })
+
     var mail = "<%= (user && user.email) || '' %>";
 </script>

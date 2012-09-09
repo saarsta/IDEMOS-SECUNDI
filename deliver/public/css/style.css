@@ -2165,6 +2165,33 @@ body
     top: -15px;
     display: inline-block;
 }
+.add-offer .text-box #i_bring_bt
+{
+    float: left;
+    top:-34px;
+    display: block;
+    background: #757D7E url(../images/search-submit.png) 0 0 repeat-x;
+    border: 1px solid #2E3030;
+    border-radius: 2px;
+    width: 85px;
+    height: 29px;
+    text-align: center;
+    color: white;
+    font: normal 18px/32px 'AdumaFOTRegular';
+    text-decoration: none;
+    margin-bottom: 5px;
+}
+
+.add-offer .text-box .detail-resourse-overflow
+{
+    padding-right: 0px;
+    overflow: hidden;
+    height: 34px;
+    width:395px;
+    display: block
+}
+
+
 /*.add-offer .text-box .read_less,*/
 .add-offer .text-box .more-text
 {
@@ -8462,3 +8489,31 @@ a.menu-elections:hover {
     margin-bottom: 14px;
     background-color: white;
 }
+
+#action_resources_popup
+{
+    position: absolute;
+    display: none;
+    width: 270px;
+    height: 250px;
+    padding: 7px 7px 15px;
+    background: url(../images/action-resources-popup.png) no-repeat;
+}
+
+#action_resources_popup .i_bring
+{
+    background: #2FD43B url(../images/green-btn-border.png) 0 0 repeat-x;
+    border: 1px solid #2EAB35;
+    width: 120px;
+    display: block;
+    height: 28px;
+    text-align: center;
+    font: normal 18px/32px 'AdumaFOTRegular';
+    color: white;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    text-decoration: none;
+    margin: 0 auto;
+}
+

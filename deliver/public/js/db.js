@@ -59,6 +59,20 @@ var db_functions = {
         });
     },
 
+    resetUserNotifications: function(callback){
+        db_functions.loggedInAjax({
+            url:'/api/reset_notification',
+            type:"POST",
+            async:true,
+            success:function (data, err) {
+                callback(err, data);
+            },
+            error:function (err, data) {
+                callback(err, data);
+            }
+        });
+    },
+
     // --------------blogs-------------------//
     getArticelsByUser:function (user_id, callback) {
         db_functions.loggedInAjax({

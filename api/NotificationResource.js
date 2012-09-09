@@ -9,7 +9,7 @@ var NotificationCategoryResource = module.exports = resources.MongooseResource.e
     {
         init:function () {
             this._super(models.Notification);
-            this.allowed_methods = ['get', 'put'];
+            this.allowed_methods = ['get'];
             this.authentication = new common.SessionAuthentication();
             this.update_fields = {name:null};
             this.default_query = function (query) {
@@ -92,10 +92,12 @@ var iterator = function (users_hash, discussions_hash, posts_hash, info_items_ha
 "פריט מידע שיצרת התקבל למערכת"
                     ;
                     notification.link = "/information_items/" + notification.entity_id;
-                    notification.pic = info_items_hash[notification.entity_id].image_field_preview
-                        || info_items_hash[notification.notificators[0].sub_entity_id].image_field;
+                    if(info_items_hash[notification.entity_id]){
+                        notification.pic = info_items_hash[notification.entity_id].image_field_preview
+                            || info_items_hash[notification.notificators[0].sub_entity_id].image_field;
 
-                    notification.title=info_items_hash[notification.entity_id].title;
+                        notification.title=info_items_hash[notification.entity_id].title;
+                    }
                     itr_cbk();
                     break;
 //                case "approved_info_item_i_liked":
