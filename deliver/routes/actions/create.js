@@ -53,7 +53,7 @@ module.exports = {
 
         action.title = req.body.title;
         action.text_field = req.body.text;
-        // action.category = req.body.category; // TODO: Where does this go?
+        action.type = req.body.category;
         action.execution_date.date = new Date(req.body.date + 'T' + req.body.time.from);
         action.execution_date.duration = hourDifference(req.body.time.from, req.body.time.to);
         action.location = req.body.location;
@@ -63,12 +63,10 @@ module.exports = {
 
         // TODO: do something with the "share this on my wall" checkbox
 
-        // TODO: some sort of response.
         action.save(function (err) {
             res.write(JSON.stringify({
-                request_body: req.body,
-                saving_action: action,
-                database_results: arguments
+                errors: err[0],
+                redirect: '/actions/' + action.id
             }));
             res.end();
         });
