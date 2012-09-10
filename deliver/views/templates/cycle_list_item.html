@@ -46,7 +46,7 @@
                 <div class="info">
                         <div class="first">
                             <span class="status status-green"></span>
-                            <strong> <a class="no_underline_cursor_when_hover" href="/action/{?upcoming_action}{upcoming_action._id}{/upcoming_action}">{?upcoming_action}{upcoming_action.title}{/upcoming_action}</a></strong> | <strong>תאריך ושעה:</strong> {?upcoming_action}{upcoming_action.execution_date|time}{/upcoming_action}
+                            <strong> <a class="no_underline_cursor_when_hover" href="/action/{?upcoming_action}{upcoming_action._id}{/upcoming_action}">{?upcoming_action}{upcoming_action.title}{/upcoming_action}</a></strong> | <strong>תאריך ושעה:</strong> {?upcoming_action}{upcoming_action.execution_date.date|time}{/upcoming_action}
                         </div>
                     <div>
                         <strong>
@@ -57,7 +57,7 @@
             </div>
         </div>
         <div class="left">
-            <a class="share" data-img_src="{?upcoming_action}{upcoming_action.image_field_preview.url}{/upcoming_action}" data-text_preview="{?upcoming_action}{upcoming_action.text_field_preview}{/upcoming_action}" data-title="{?upcoming_action}{upcoming_action.title}{/upcoming_action}" rel="/actions/{_id}" href="/facebookShare?link=/actions/{_id}"><span>שתף</span></a>
+            <a class="share" data-img_src="{?upcoming_action}{upcoming_action.image_field_preview.url}{/upcoming_action}" data-text_preview="{?upcoming_action}{upcoming_action.text_field_preview}{/upcoming_action}" data-title="{?upcoming_action}{upcoming_action.title}{/upcoming_action}" rel="/actions/{?upcoming_action}{upcoming_action._id}{/upcoming_action}" href="/facebookShare?link=/actions/{?upcoming_action}{upcoming_action._id}{/upcoming_action}"><span>שתף</span></a>
 
         </div>
     </div>
