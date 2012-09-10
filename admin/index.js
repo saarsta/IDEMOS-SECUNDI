@@ -135,9 +135,9 @@ module.exports = function(app)
         list:['suggestion_id','user_id']
     });
 
-    admin.registerMongooseModel('OpinionShaper',Models.OpinionShaper,null,{
-        list:['cycle_id','user_id']
-    });
+//    admin.registerMongooseModel('OpinionShaper',Models.OpinionShaper,null,{
+//        list:['cycle_id','user_id']
+//    });
 
     admin.registerMongooseModel('Grade',Models.Grade,null,{
         list:['discussion_id','user_id']
