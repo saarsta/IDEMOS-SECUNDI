@@ -31,9 +31,10 @@ module.exports = function(req, res){
                 'text_field':1,
                 'image_field':1,
                 'discussions':1,
-                'tags':1
+                'tags':1,
+                'opinion_shapers': 1
             })
-            .populate('opinion_shapers', {
+            .populate('opinion_shapers.user_id', {
                 '_id':1,
                 'first_name':1,
                 'last_name':1,
@@ -53,27 +54,27 @@ module.exports = function(req, res){
                 models.User.find({"cycles.cycle_id": req.params[0]}, cbk);
         },
 
-        //get cycle opinion shapers
-        function(cbk){
-            models.OpinionShaper.find({cycle_id: req.params[0]})
-                .limit(3)
-                .populate('user_id', {
-                    '_id':1,
-                    'first_name':1,
-                    'last_name':1,
-                    'avatar': 1,
-                    'facebook_id':1,
-                    'avatar_url':1,
-                    'score':1,
-                    'num_of_proxies_i_represent':1
-                })
-                .exec(function(err, results){
-                    _.each(results, function(obj){obj.user_id.avatar = obj.user_id.avatar_url()});
-                    results = JSON.parse(JSON.stringify(results));
-                    _.each(results, function(obj){ obj.user_id.opinion_text = obj.text});
-                    cbk(err, results);
-                })
-        },
+//        //get cycle opinion shapers
+//        function(cbk){
+//            models.OpinionShaper.find({cycle_id: req.params[0]})
+//                .limit(3)
+//                .populate('user_id', {
+//                    '_id':1,
+//                    'first_name':1,
+//                    'last_name':1,
+//                    'avatar': 1,
+//                    'facebook_id':1,
+//                    'avatar_url':1,
+//                    'score':1,
+//                    'num_of_proxies_i_represent':1
+//                })
+//                .exec(function(err, results){
+//                    _.each(results, function(obj){obj.user_id.avatar = obj.user_id.avatar_url()});
+//                    results = JSON.parse(JSON.stringify(results));
+//                    _.each(results, function(obj){ obj.user_id.opinion_text = obj.text});
+//                    cbk(err, results);
+//                })
+//        },
 
         // get the user object
         function (cbk) {
@@ -95,7 +96,7 @@ module.exports = function(req, res){
         else {
 
             g_cycle = args[0];
-            g_cycle.opinion_shapers = _.map(args[2], function(opinion_shaper){return opinion_shaper.user_id});
+            _.each(g_cycle.opinion_shapers, function(opinion_shaper){ opinion_shaper.user_id.avatar_url = opinion_shaper.user_id.avatar_url();});
 
             var users = args[1] || [];
 

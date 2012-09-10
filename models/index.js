@@ -51,7 +51,6 @@ var Schemas = exports.Schemas = {
     //cycle updates
     Update:new Schema({
         title: {type: String, required: true},
-
         tooltip:String,
         text_field:{type:mongoose_types.Html},
         image_field: mongoose_types.File,
@@ -64,12 +63,12 @@ var Schemas = exports.Schemas = {
         is_hidden:{type:Boolean,'default':true}
     }, {strict: true}),
 
-    //cycle opinion_shapers
-    OpinionShaper: new Schema({
-        user_id:{type:ObjectId, ref:'User', required:true},
-        cycle_id: {type: ObjectId, ref: 'Cycle', required:true},
-        text: String
-    }, {strict: true}),
+//    //cycle opinion_shapers
+//    OpinionShaper: new Schema({
+//        user_id:{type:ObjectId, ref:'User', required:true},
+//        cycle_id: {type: ObjectId, ref: 'Cycle', required:true},
+//        text: String
+//    }, {strict: true}),
 
     Kilkul:{
         user:{type:ObjectId, ref:'User'},
@@ -344,7 +343,7 @@ var Models = module.exports = {
 
     SuccessStory:mongoose.model('SuccessStory', Schemas.SuccessStory),
     Update: mongoose.model('Update', Schemas.Update),
-    OpinionShaper: mongoose.model('OpinionShaper', Schemas.OpinionShaper),
+//    OpinionShaper: mongoose.model('OpinionShaper', Schemas.OpinionShaper),
     Kilkul:mongoose.model('Kilkul', new Schema(Schemas.Kilkul, {strict: true})),
     DiscussionHistory:mongoose.model('DiscussionHistory', new Schema(Schemas.DiscussionHistory, {strict: true})),
 
