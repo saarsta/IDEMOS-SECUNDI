@@ -20,6 +20,10 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
         this.authentication = new common.SessionAuthentication();
         this.allowed_methods = ['get', 'put'];
         this.filtering = {
+            'subject.id': {
+                exact:true,
+                in:true
+            },
             tags:{
                 exact:true,
                 in:true,
@@ -85,7 +89,8 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
             },
             num_upcoming_actions:null,
             participants_count:null,
-            is_follower:null
+            is_follower:null,
+            subject: null
         }
     },
 

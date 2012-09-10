@@ -528,7 +528,6 @@ $(document).ready(function () {
 
     if(user_name  && proxy_id && user_name !== 'null' && proxy_id != 'null'){
         proxyCommon.addOrRemoveProxy(proxy, proxy_id, user_name, my_id, function(newProxy){
-            debugger
             proxy = newProxy.proxy;
             window.location = window.location.pathname+ '#' + post_id;
         })
