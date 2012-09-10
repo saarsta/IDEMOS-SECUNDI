@@ -140,6 +140,7 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                     }
                 }
             ], function(err, action){
+                console.log(err);
                 callback(err, action);
             })
         }
