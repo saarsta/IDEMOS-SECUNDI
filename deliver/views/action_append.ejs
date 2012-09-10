@@ -216,12 +216,28 @@ var error_message = error_message || '';
                 <div class="detail-resourse">
 
                             <span class="icon"></span>
-                    <div class="detail-resourse-overflow" >
+                    <style type="text/css">
+                        .tooltip {
+                            display:none;
+                           // background:url(/media/img/tooltip/black_arrow_big.png);
+                           /* height:163px;
+                            padding:40px 30px 10px 30px;
+                            width:310px;
+                            font-size:11px;
+                            color:#fff;*/
+                        }
+                    </style>
+                    <div class="detail-resourse-overflow"  >
                             משאבים נדרשים:
-                            <% for (var i=0;i < action.action_resources.length;i++){%>
-                             <span class="check have_tooltip"><%=action.action_resources[i].resource.name %></span>
+                            <% for (var i=0;i < action.action_resources.length  ;i++){ %>
+                          <span class="<%=action.action_resources[i].left_to_bring==0?'check-disable': 'uncheck-enable' %> have_tooltip"
+                                  data-id="<%=action.action_resources[i].resource._id %>" >
+                              <%=action.action_resources[i].resource.name %></span>
+
+
                             <% } %>
                     </div>
+
                     <a  id="i_bring_bt" class="gray_and_soon" >
              גם אני מביא
                     </a>
@@ -476,15 +492,24 @@ var error_message = error_message || '';
              </a>
      </span>
 
+<!--<div  id="action_resources_popup"  class="tooltip" style="width: 300px;height: 400px;background: red;z-index: 1000" >
+    aaaa
+</div>-->
 
- <div id="action_resources_popup" >
+
+<div id="action_resources_popup" >
     <div style="margin-right: 30px;margin-top: 24px;">
-      <div style="overflow: auto;height: 135px">
+      <div style="overflow: auto;height: 135px ;" >
            <% for (var i=0;i < action.action_resources.length;i++){%>
-                <input type="checkbox" style="display: inline;"/>
+               <div style="border-bottom: 1px solid #ECECEC;height:35px"
+                    data-id="<%=action.action_resources[i].resource._id %>"
+                    class="<%=action.action_resources[i].left_to_bring==0?'check-disable': 'uncheck-enable' %> ">
+               <!-- <input type="checkbox" style="display: inline;"/>
                  <span  data-id="<%=action.action_resources[i].resource._id %>"
-                        style="display: block;"
-                         class="check have_tooltip"><%=action.action_resources[i].resource.name %></span>
+                         class="check-enable "><%=action.action_resources[i].resource.name %></span>-->
+                    <span>
+                              <%=action.action_resources[i].resource.name %></span>
+               </div>
            <% } %>
      </div>
         <div style="height: 35px"></div>
@@ -645,11 +670,87 @@ var error_message = error_message || '';
                  });
              }
          });
+/*******************************************************************************/
+    (function(){
+            var resId;
 
-         $('.have_tooltip').tooltip({
+            function uncheck (selectedRes){
+                selectedRes.addClass("uncheck-enable");
+                selectedRes.removeClass("check-enable");
+            }
+
+             function check (selectedRes){
+                 selectedRes.removeClass("uncheck-enable");
+                 selectedRes.addClass("check-enable");
+             }
+           $('.have_tooltip').tooltip({
+             //relative:true,
+             opacity:1,
+             position: "bottom center",
+             offset:[0,10],
              tip:'#action_resources_popup',
-             position:'bottom center'
-         }) ;
+             events: {
+                 def:'click,mouseout'
+                // input: 'click, blur',
+                // def:     "click",
+                // checkbox: 'click'
+               //  date: 'click, blur'
+                // checkbox: 'click, mouseout'
+             },
+             onBeforeShow:function(e){
+                resId=$(e.target).data('id');
+                var selectedRes=  $('#action_resources_popup').find('[data-id='+resId+']');
+                if(!selectedRes.hasClass('check-disable')){
+
+                    check(selectedRes);
+                }
+
+             },
+             onHide:function(e){
+               //  var resId=$(e.target).data('id');
+                 var selectedRes=  $('#action_resources_popup').find('[data-id='+resId+']');
+                 if(!selectedRes.hasClass('check-disable')){
+                   uncheck(selectedRes);
+                 }
+             }
+
+             });
+              $('#action_resources_popup').on("click", ".check-enable", function(e){
+                  uncheck($(this));
+              })
+             $('#action_resources_popup').on("click", ".uncheck-enable", function(e){
+                 check($(this));
+             })
+            $('#action_resources_popup').on("click", ".i_bring", function(e){
+                 //get new checks
+
+                var checkedArr=[];
+                 $('#action_resources_popup .check-enable').each(function(){
+                     checkedArr.push($(this).data('id'));
+                 });
+
+                // update ui
+                $.each(checkedArr,function(index,value){
+                    var key=value;
+                    $('.detail-resourse-overflow').find('[data-id='+key+']').each(function(){
+                       $(this).removeClass("uncheck-enable");
+                       $(this).removeClass("check-enable");
+                        $(this).addClass("check-disable");
+                    });
+                })
+
+
+                //save to db
+
+
+
+                //close  popup
+                this.getTip().hide();
+
+            })
+    })();
+
+
 
          var goingModel= new  window.uru.GoingModel({
              joinString:'אם זה קורה, אני שם'
@@ -660,6 +761,7 @@ var error_message = error_message || '';
 
 
      });
+
 
 
 

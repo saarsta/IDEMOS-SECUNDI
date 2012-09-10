@@ -1438,14 +1438,15 @@ body
 {
     float: left;
     width: 238px;
-    color:#b7b6b6;
+    color: black;
     font: normal 11px/13px Arial;
     padding:0;
     height: 13px;
     border: none;
     background:#fff;
 }
-.discussion-main .tags-box .add-tag input[type=submit]
+.discussion-main .tags-box .add-tag input[type=submit],
+.discussion-main .tags-box .add-tag input[type=button]
 {
     background:#3b63ef;
     color:#fff;
@@ -2187,7 +2188,7 @@ body
     padding-right: 0px;
     overflow: hidden;
     height: 34px;
-    width:395px;
+   // width:395px;
     display: block
 }
 
@@ -6978,6 +6979,34 @@ body.body-action .followers-box h2
     background: url(../images/check-icon.png) no-repeat right center;
     margin-right: 10px;
 }
+
+#action_resources_popup .check-disable
+{
+    color: #7F7F7E;
+}
+
+#action_resources_popup .check-disable span,
+.detail-resourse span.check-disable
+{
+    padding-right: 21px;
+    background: url(../images/check-disable-icon.png) no-repeat right center;
+    margin-right: 10px;
+}
+#action_resources_popup .check-enable span,
+.detail-resourse span.check-enable
+{
+    padding-right: 21px;
+    background: url(../images/check-enable-icon.png) no-repeat right center;
+    margin-right: 10px;
+}
+#action_resources_popup .uncheck-enable span,
+.detail-resourse span.uncheck-enable
+{
+    padding-right: 21px;
+    background: url(../images/uncheck-enable-icon.png) no-repeat right center;
+    margin-right: 10px;
+}
+
 .map
 {
     position: relative;
@@ -8168,7 +8197,7 @@ a.menu-elections:hover {
     width: 100%;
     padding:0;
     height: 17px;
-    color:#b7b6b6;
+    color: black;
     font: normal 13px/17px Arial;
     background:#fff;
     border: 0px solid transparent;
@@ -8177,7 +8206,7 @@ a.menu-elections:hover {
 .add-event select
 {
     float: right;
-    color:#b7b6b6;
+    color: black;
     font: normal 13px/20px Arial;
     margin-top: 6px;
 }
@@ -8220,7 +8249,7 @@ a.menu-elections:hover {
     width: 156px;
     margin-left: 7px;
 }
-.add-event .place input[type=submit]
+.add-event .place input[type=button]
 {
     float: right;
     width: 110px;
@@ -8271,7 +8300,6 @@ a.menu-elections:hover {
     float: left;
     direction: ltr;
 }
-}
 .add-event .user-number .input
 {
     width: 34px;
@@ -8309,13 +8337,13 @@ a.menu-elections:hover {
     float: right;
     padding:0;
     height: 17px;
-    color:#b7b6b6;
+    color: black;
     font: normal 13px/17px Arial;
     background:#fff;
     border: 0px solid transparent;
     width: 195px;
 }
-.add-event .additional-resources input[type=submit]
+.add-event .additional-resources input[type=button]
 {
     float: left;
     background: #b7b6b6;
