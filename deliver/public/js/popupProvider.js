@@ -34,10 +34,8 @@ var popupProvider={
                          popupConfig.callback();
                      }
                  });
-               
             }
         });
-
     },
 
     showGiveMandatPopup:function(popupConfig){
@@ -84,7 +82,8 @@ var popupProvider={
         });
         return popup;
     },
-    showLoginPopup:function(popupConfig,callback){
+
+    showLoginPopup:function(popupConfig, callback){
 
         this.self = this;
         var defaults = {
@@ -113,7 +112,6 @@ var popupProvider={
                             values[this.name] = $(this).val();
                         });
 
-
                         db_functions.login(values["email"], values["password"], function(err, result){
                             if(err){
                                 callback(err);
@@ -123,9 +121,7 @@ var popupProvider={
                                 callback(err, result);
                                 $.colorbox.close();
                             }
-
                         });
-
                     });
 
                     $("#fb_ajax_conncect").live('click', function(){
@@ -145,8 +141,5 @@ var popupProvider={
                 }
             });
         });
-
     }
-
-
 }

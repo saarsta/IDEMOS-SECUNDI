@@ -12,6 +12,10 @@ module.exports = AdminForm.extend({
             this.fields['discussions'].validators.push(function(arr) {
                 return arr.length ? true : 'You must select at least one discussion';
             });
+        if(this.fields['subject'])
+            this.fields['subject'].validators.push(function(arr) {
+                return arr.length ? true : 'You must select at least one subject';
+            });
     },
     actual_save : function(callback)
     {

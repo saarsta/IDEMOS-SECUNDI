@@ -121,7 +121,7 @@ var scrollTo = function(selector, options){
 var connectPopup = function(callback){
 
     //open popup window
-     popupProvider.showLoginPopup({},callback);
+     popupProvider.showLoginPopup({}, callback);
 
 };
 
@@ -131,6 +131,11 @@ var notActivatedPopup = function(msg) {
     });
 };
 
+var getURLParameter = function (name) {
+    return decodeURI(
+        (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+    );
+}
 
 function initTooltip(ui){
     ui.tooltipText({

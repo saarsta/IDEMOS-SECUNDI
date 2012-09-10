@@ -62,6 +62,10 @@ app.configure('staging', function(){
 
     app.set('send_mails',true);
 
+    process.on('uncaughtException', function(err) {
+        console.trace(err);
+    });
+
 });
 
 app.configure('production', function(){

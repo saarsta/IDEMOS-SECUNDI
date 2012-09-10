@@ -86,7 +86,7 @@
 
             </div>
             <div class="btn-box">
-                <a href="">+ הצע פעולה חדשה</a>
+                <a href="/actions/create/<%= cycle.id %>" >+ הצע פעולה חדשה</a>
             </div>
         </div>
     </div>
@@ -101,8 +101,7 @@
                 <div class="left">
                     <h2>פעולות הממתינות לאישור</h2>
                     <div class="anticipation-box">
-
-                        <a href="" class="btn">הראה לי את כולן</a>
+                        <a href="../actions/cycle/<%=cycle._id%>" class="btn">הראה לי את כולן</a>
                     </div>
                 </div>
             </div>
@@ -114,22 +113,22 @@
                              <div class="one <% if (c==2) {%>last<% }%> ">
 
                              <div class="img-box" style="overflow: hidden;">
-                                 <a href="/myuru/<%=cycle.opinion_shapers[c]._id%>">
+                                 <a href="/myuru/<%=cycle.opinion_shapers[c].user_id._id%>">
                                      <div style="width:112px;height:120px; overflow:hidden; " class='auto-scale' >
-                                         <img  src="<%=cycle.opinion_shapers[c].avatar %>" alt=""/>
+                                         <img  src="<%=cycle.opinion_shapers[c].user_id.avatar_url %>" alt=""/>
                                          <span class="fillter"></span>
                                      </div>
                                      <span></span>
                                 </a>
                              </div>
-                                <h4><a href="/myuru/<%=cycle.opinion_shapers[c]._id%>"><%=cycle.opinion_shapers[c].first_name %> <%=cycle.opinion_shapers[c].last_name %></a></h4>
-                                <p><% if (cycle.opinion_shapers[c].opinion_text) {%>  <%=cycle.opinion_shapers[c].opinion_text %>  <% } %></p>
+                                <h4><a href="/myuru/<%=cycle.opinion_shapers[c].user_id._id%>"><%=cycle.opinion_shapers[c].user_id.first_name %> <%=cycle.opinion_shapers[c].user_id.last_name %></a></h4>
+                                <p><% if (cycle.opinion_shapers[c].text) {%>  <%=cycle.opinion_shapers[c].text %>  <% } %></p>
                                  <div class="badges">
                                      <div class="proxy">
-                                         <span><%=cycle.opinion_shapers[c].num_of_proxies_i_represent %></span>
+                                         <span><%=cycle.opinion_shapers[c].user_id.num_of_proxies_i_represent %></span>
                                      </div>
                                      <div class="respect">
-                                         <span><%=cycle.opinion_shapers[c].score %></span>
+                                         <span><%=cycle.opinion_shapers[c].user_id.score %></span>
                                      </div>
                                  </div>
                              </div>
