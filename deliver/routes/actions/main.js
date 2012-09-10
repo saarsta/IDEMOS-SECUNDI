@@ -76,10 +76,11 @@ module.exports = function (req, res) {
             res.render('500.ejs', {error:err});
         else {
 
+            var action = args[0];
+
             if (!action)
                 res.render('404.ejs');
             else {
-                var action = args[0];
                 var proxyJson = args[1] ? JSON.stringify(args[1].proxy) : null;
                 var going_users = args[2];
 
