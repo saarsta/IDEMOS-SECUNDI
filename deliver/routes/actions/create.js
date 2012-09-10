@@ -1,5 +1,6 @@
 var models = require('../../../models'),
-    async = require('async');
+    async = require('async'),
+    utils = require('../../../utils');
 
 var hourDifference = function (from, to) {
     // This is a horrible hack to make the JavaScript Date object accept dateless times.
@@ -33,17 +34,18 @@ module.exports = {
 
             console.log('create action for cycle id ' + id + ': ' + cycle.title);
 
+            var today = utils.dateFormat('yyyy-mm-dd');
+
             res.render('action_create.ejs', {
                 cycle: cycle,
                 resources: resources,
-                categories: categories
+                categories: categories,
+                today: today
             });
         });
     },
 
     post: function (req, res) {
-        req.body.cycle_id = req.params.cycle_id;
-
         // TODO: Some validation
 
         var action = new models.Action();
@@ -66,7 +68,7 @@ module.exports = {
         action.save(function (err) {
             res.write(JSON.stringify({
                 errors: err[0],
-                redirect: '/actions/' + action.id
+                redirect: req.app.get('root_path') + '/actions/' + action.id
             }));
             res.end();
         });
