@@ -3612,7 +3612,6 @@ h2 small
     width: 644px;
 }
 .rightCol h2 a
-
 {
     color:#3b63ef;
     padding-left: 14px;
@@ -3620,17 +3619,15 @@ h2 small
     background: url(../images/arrow-left.png) 0 38% no-repeat;
     text-decoration: none;
 }
+
 .rightCol h2 a.last_breadcrum
 {
-
     padding-left: 14px;
     margin-left: 6px;
     color: #50504F;
     background:transparent;
     text-decoration: none;
 }
-
-
 
 .rightCol .nav-btn
 {
@@ -6522,7 +6519,7 @@ a.fraction-btn
     font: bold 13px/15px ARial;
     padding-bottom: 5px;
     letter-spacing: -0.4px;
-    min-height: 45px;
+    min-height: 30px;
 }
 .followers-ppl .one .date
 {

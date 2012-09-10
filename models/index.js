@@ -53,13 +53,10 @@ var Schemas = exports.Schemas = {
         title: {type: String, required: true},
 
         tooltip:String,
-        text_field:{type:mongoose_types.Text},
-//        text_field_preview:{type:mongoose_types.Html},
+        text_field:{type:mongoose_types.Html},
         image_field: mongoose_types.File,
-//        image_field_preview: mongoose_types.File,
         tags:{type:[String], index:true},
         cycle:{type:ObjectId, ref:'Cycle', index:true},
-//        actions: {type: [ObjectId], ref:'Action', index:true},
         is_visible:{type:Boolean, 'default':true},
         creation_date:{type:Date, 'default':Date.now},
 

@@ -174,7 +174,6 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
     update_obj:function (req, object, callback) {
         var user = req.user;
 
-
         var cycle_id = object._id;
         object.is_follower = false;
 

@@ -84,7 +84,6 @@ module.exports = function(req, res){
             }
         }
 
-
        //final - render the cycle page
     ], function(err, args){
 
@@ -101,6 +100,7 @@ module.exports = function(req, res){
             var users = args[1] || [];
 
             var proxyJson = args[3] ? JSON.stringify(args[3].proxy) : null;
+            var user_id = req.session.user ?  req.session.user._id + "" : 0;
 
             if(g_cycle.followers_count != users.length){
                 //fix follower count
@@ -108,7 +108,8 @@ module.exports = function(req, res){
                     g_cycle.followers_count = users.length;
                     if(g_cycle && g_cycle.main_subject)
                         g_cycle.subject_name = g_cycle.main_subject.name;
-                    g_cycle.is_user_follower_of_cycle = _.any(users, function(user){return user._id + "" == req.session.user ? req.user.id : 0});
+
+                    g_cycle.is_user_follower_of_cycle = _.any(users, function(user){return user._id + "" == user_id});
                     res.render('cycle.ejs',{
                         cycle: g_cycle,
                         tab:'cycles',
