@@ -43,34 +43,5 @@ module.exports = {
                 today: today
             });
         });
-    },
-
-    post: function (req, res) {
-        // TODO: Some validation
-
-        var action = new models.Action();
-
-        action.creator_id = req.session.user;
-        action.cycle_id = req.body.cycle_id;
-
-        action.title = req.body.title;
-        action.text_field = req.body.text;
-        action.type = req.body.category;
-        action.execution_date.date = new Date(req.body.date + 'T' + req.body.time.from);
-        action.execution_date.duration = hourDifference(req.body.time.from, req.body.time.to);
-        action.location = req.body.location;
-        // action.action_resources = req.body.resources.map(function (text) { return { resource: text, amount: 1, left_to_bring: 1 }; });
-        action.required_participants = req.body.number_of_participants || 0;
-        action.tags = req.body.tags;
-
-        // TODO: do something with the "share this on my wall" checkbox
-
-        action.save(function (err) {
-            res.write(JSON.stringify({
-                errors: err[0],
-                redirect: req.app.get('root_path') + '/actions/' + action.id
-            }));
-            res.end();
-        });
     }
 };
