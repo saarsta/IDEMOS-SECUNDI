@@ -209,9 +209,10 @@ var error_message = error_message || '';
         event.preventDefault();
 
         var data = $('#main_form').serialize();
+
         $.ajax({
             type: 'POST',
-            url: location.href,
+            url: '/api/actions',
             data: data,
             dataType: 'json',
             success: function (result) {
