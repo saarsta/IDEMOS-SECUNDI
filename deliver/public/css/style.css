@@ -2187,7 +2187,7 @@ body
     padding-right: 0px;
     overflow: hidden;
     height: 34px;
-    width:395px;
+   // width:395px;
     display: block
 }
 
@@ -6981,6 +6981,34 @@ body.body-action .followers-box h2
     background: url(../images/check-icon.png) no-repeat right center;
     margin-right: 10px;
 }
+
+#action_resources_popup .check-disable
+{
+    color: #7F7F7E;
+}
+
+#action_resources_popup .check-disable span,
+.detail-resourse span.check-disable
+{
+    padding-right: 21px;
+    background: url(../images/check-disable-icon.png) no-repeat right center;
+    margin-right: 10px;
+}
+#action_resources_popup .check-enable span,
+.detail-resourse span.check-enable
+{
+    padding-right: 21px;
+    background: url(../images/check-enable-icon.png) no-repeat right center;
+    margin-right: 10px;
+}
+#action_resources_popup .uncheck-enable span,
+.detail-resourse span.uncheck-enable
+{
+    padding-right: 21px;
+    background: url(../images/uncheck-enable-icon.png) no-repeat right center;
+    margin-right: 10px;
+}
+
 .map
 {
     position: relative;
