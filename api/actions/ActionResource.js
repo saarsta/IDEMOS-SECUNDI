@@ -52,7 +52,8 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                 location: null,
                 grade: null,
                 evaluate_counter: null,
-                grade_sum: null
+                grade_sum: null,
+                participants_count: null
             }
         },
 
@@ -63,6 +64,21 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
             }
 
             this._super(req, filters, sorts, limit, offset, function (err, response) {
+
+                _.each(response.objects, function (action) {
+                    action.participants_count = action.users.length;
+//                    action.is_follower = false;
+//                    if (user_actions) {
+//                        if (_.find(user_actions, function (user_cycle) {
+//                            return user_cycle.cycle_id + "" == action._id + "";
+//                        })) {
+//                            action.is_follower = true;
+//                        }
+//                    }
+                })
+
+                callback(err, response);
+
 
 
                 // TODO i need to fix it for my uru
