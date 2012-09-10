@@ -27,6 +27,32 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
             this.authentication = new common.SessionAuthentication();
             this.default_query = function (query) {
                 return query.sort({"execution_date.date":'descending'});
+            },
+
+            this.fields = {
+                title: null,
+                tooltip_or_title: null,
+                text_field: null,
+                text_field_preview: null,
+                image_field: null,
+                image_field_preview: null,
+                type: null,
+                creator_id: null,
+                cycle_id: null,
+                action_resources: null,
+                tags: null,
+                users: null,
+                execution_date: null,
+                creation_date: null,
+                required_participants: null,
+                admin_text: null,
+                system_message: null,
+                num_of_going: null,
+                is_approved: null,
+                location: null,
+                grade: null,
+                evaluate_counter: null,
+                grade_sum: null
             }
         },
 
