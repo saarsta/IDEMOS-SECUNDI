@@ -116,7 +116,7 @@
             var item_id =  item.data('id');
             var actionType =  $(this).data('action');
             e.preventDefault();
-            db_functions.joinToCycleFollowers(item_id, actionType, function(err,data){
+            db_functions.joinToCycleFollowers(item_id, function(err,data){
                 dust.render('cycle_list_item', data, function(err, html){
                     item.replaceWith(html);
                 })

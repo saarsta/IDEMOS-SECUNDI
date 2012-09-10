@@ -416,8 +416,6 @@ $(document).ready(function () {
             dust.render('discussion_information_item', item, function (err, out) {
                 $('.slide-c').append(out);
             });
-
-
         });
 
         $('.slide-c')
@@ -508,28 +506,43 @@ $(document).ready(function () {
         var userData = $(this).parents('.discussion-item');
         var proxyId = userData.data('creator_id');
         var userName = userData.data('creator_name');
-      //  var userProxy = findUserProxy(proxyId);
+        var post_id = $(this).parents('.comment-one').attr('id');
 
-        e.preventDefault();
-        proxyCommon.addOrRemoveProxy(proxy,proxyId,userName,my_id,function(newProxy){
-            proxy=newProxy.proxy;
-
-        })
-    });
-
-//    var user_name = common.getURLParameter('user_name');
-
-    $('#comments').on('click', '#add_or_remove_proxy', function (e) {
-        var userData = $(this).parents('.comment-one');
-        var proxyId = userData.data('creator_id');
-        var userName = userData.data('creator_name');
         e.preventDefault();
 
         if(!my_id){
             popupProvider.showLoginPopup({}, function(err, result){
                 if(!err)
-//                    window.location = window.location + '?user_name=' + userName + '&proxy_id=' + proxyId;
-                    window.location = window.location;
+                    window.location = window.location + '?user_name=' + userName + '&proxy_id=' + proxyId + '&post_id=' + post_id;
+            });
+        }else{
+            proxyCommon.addOrRemoveProxy(proxy, proxyId, userName, my_id, function(newProxy){
+                proxy = newProxy.proxy;
+            })
+        }
+    });
+
+    var user_name = getURLParameter('user_name');
+    var proxy_id = getURLParameter('proxy_id');
+    var post_id = getURLParameter('post_id');
+
+    if(user_name  && proxy_id && user_name !== 'null' && proxy_id != 'null'){
+        proxyCommon.addOrRemoveProxy(proxy, proxy_id, user_name, my_id, function(newProxy){
+            proxy = newProxy.proxy;
+            window.location = window.location.pathname+ '#' + post_id;
+        })
+    }
+
+    $('#comments').on('click', '#add_or_remove_proxy', function (e) {
+        var userData = $(this).parents('.comment-one');
+        var proxyId = userData.data('creator_id');
+        var userName = userData.data('creator_name');
+        var post_id = $(this).parents('.comment-one').attr('id');
+        e.preventDefault();
+        if(!my_id){
+            popupProvider.showLoginPopup({}, function(err, result){
+                if(!err)
+                    window.location = window.location + '?user_name=' + userName + '&proxy_id=' + proxyId + '&post_id=' + post_id;
             });
         }else{
             proxyCommon.addOrRemoveProxy(proxy, proxyId, userName, my_id, function(newProxy){

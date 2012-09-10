@@ -6,7 +6,6 @@
  * To change this template use File | Settings | File Templates.
  */
 
-
 var resources = require('jest'),
     models = require('../../models'),
     async = require('async'),
@@ -27,9 +26,35 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
             this.authentication = new common.SessionAuthentication();
             this.default_query = function (query) {
                 return query.sort({"execution_date.date":'descending'});
+            },
+
+            this.fields = {
+                _id: null,
+                title: null,
+                tooltip_or_title: null,
+                text_field: null,
+                text_field_preview: null,
+                image_field: null,
+                image_field_preview: null,
+                type: null,
+                creator_id: null,
+                cycle_id: null,
+                action_resources: null,
+                tags: null,
+                users: null,
+                execution_date: null,
+                creation_date: null,
+                required_participants: null,
+                admin_text: null,
+                system_message: null,
+                num_of_going: null,
+                is_approved: null,
+                location: null,
+                grade: null,
+                evaluate_counter: null,
+                grade_sum: null
             }
         },
-
 
         get_objects:function (req, filters, sorts, limit, offset, callback) {
             if (req.query.get == "myUru") {
@@ -122,7 +147,6 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                             },
 
                             function (upcoming_action, cbk1) {
-
                                 if (upcoming_action.execution_date.date > g_action.execution_date.date) {
                                     cycle.upcoming_action = g_action._id;
                                     cycle.save(cbk1);
@@ -140,6 +164,7 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                     }
                 }
             ], function(err, action){
+                console.log(err);
                 callback(err, action);
             })
         }

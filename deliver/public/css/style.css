@@ -1438,14 +1438,15 @@ body
 {
     float: left;
     width: 238px;
-    color:#b7b6b6;
+    color: black;
     font: normal 11px/13px Arial;
     padding:0;
     height: 13px;
     border: none;
     background:#fff;
 }
-.discussion-main .tags-box .add-tag input[type=submit]
+.discussion-main .tags-box .add-tag input[type=submit],
+.discussion-main .tags-box .add-tag input[type=button]
 {
     background:#3b63ef;
     color:#fff;
@@ -3612,7 +3613,6 @@ h2 small
     width: 644px;
 }
 .rightCol h2 a
-
 {
     color:#3b63ef;
     padding-left: 14px;
@@ -3620,17 +3620,15 @@ h2 small
     background: url(../images/arrow-left.png) 0 38% no-repeat;
     text-decoration: none;
 }
+
 .rightCol h2 a.last_breadcrum
 {
-
     padding-left: 14px;
     margin-left: 6px;
     color: #50504F;
     background:transparent;
     text-decoration: none;
 }
-
-
 
 .rightCol .nav-btn
 {
@@ -6522,7 +6520,7 @@ a.fraction-btn
     font: bold 13px/15px ARial;
     padding-bottom: 5px;
     letter-spacing: -0.4px;
-    min-height: 45px;
+    min-height: 30px;
 }
 .followers-ppl .one .date
 {
@@ -8199,7 +8197,7 @@ a.menu-elections:hover {
     width: 100%;
     padding:0;
     height: 17px;
-    color:#b7b6b6;
+    color: black;
     font: normal 13px/17px Arial;
     background:#fff;
     border: 0px solid transparent;
@@ -8208,7 +8206,7 @@ a.menu-elections:hover {
 .add-event select
 {
     float: right;
-    color:#b7b6b6;
+    color: black;
     font: normal 13px/20px Arial;
     margin-top: 6px;
 }
@@ -8251,7 +8249,7 @@ a.menu-elections:hover {
     width: 156px;
     margin-left: 7px;
 }
-.add-event .place input[type=submit]
+.add-event .place input[type=button]
 {
     float: right;
     width: 110px;
@@ -8302,7 +8300,6 @@ a.menu-elections:hover {
     float: left;
     direction: ltr;
 }
-}
 .add-event .user-number .input
 {
     width: 34px;
@@ -8340,13 +8337,13 @@ a.menu-elections:hover {
     float: right;
     padding:0;
     height: 17px;
-    color:#b7b6b6;
+    color: black;
     font: normal 13px/17px Arial;
     background:#fff;
     border: 0px solid transparent;
     width: 195px;
 }
-.add-event .additional-resources input[type=submit]
+.add-event .additional-resources input[type=button]
 {
     float: left;
     background: #b7b6b6;

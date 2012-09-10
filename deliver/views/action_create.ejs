@@ -19,6 +19,26 @@ var error_message = error_message || '';
         <meta property="og:image"  content="<XXX%= discussion.image_field && discussion.image_field.url ? discussion.image_field.url : 'http://site.e-dologic.co.il/philip_morris/Xls_script/uru_mailing/logo.jpg' %>" />
     -->
 
+    <style>
+        .error-container {
+            position: relative;
+        }
+        .error-container label.error {
+            display: inline-block;
+            position: absolute;
+
+            top: 30px;
+            right: 0px;
+            white-space: nowrap;
+
+            border: 1px solid black;
+            padding: 1px 2px;
+            background: #ffffdb !important;
+            font: normal 13px/15px Arial;
+
+            direction: rtl;
+        }
+    </style>
 
 </head>
 <body class="body-action">
@@ -34,6 +54,7 @@ var error_message = error_message || '';
     <div class="discussion-main">
         <h2><span class="arrow"><%= cycle.title %></span></h2>
         <form id="main_form" action="#">
+            <input type="hidden" name="cycle_id" value="<%=cycle.id%>" />
             <div class="add-event cf">
                 <div class="add-picture">
                     <a href="javascript:;"><span>הוסף תמונה</span></a>
@@ -42,44 +63,44 @@ var error_message = error_message || '';
                     <div class="one-line title cf">
                         <label>כותרת הפעולה</label>
                         <div class="input">
-                            <input type="text" name="title" value="" />
+                            <input type="text" id="title" name="title" value="" required />
                         </div>
                     </div>
                     <div class="one-line cf">
                         <div class="type">
                             <label>סוג הפעולה</label>
-                            <select name="category">
+                            <select name="category" required>
                             </select>
                         </div>
                         <div class="place">
                             <label>מיקום</label>
                             <div class="input">
-                                <input type="text" name="location" value="" />
+                                <input type="text" name="location" value="" required />
                             </div>
-                            <input type="submit" value="פתח מפה" />
+                            <input type="button" value="פתח מפה" />
                         </div>
                     </div>
                     <div class="one-line cf">
                         <div class="date">
                             <label>תאריך</label>
                             <div class="input">
-                                <input type="date" name="date" value="2012-10-01" />
+                                <input type="date" name="date" value="<%= today %>" required />
                             </div>
                         </div>
                         <div class="time">
                             <label>משעה</label>
                             <div class="input from">
-                                <input type="time" name="time[from]" value="15:00" />
+                                <input type="time" name="time[from]" value="15:00" required />
                             </div>
                             <label>עד שעה</label>
                             <div class="input to">
-                                <input type="time" name="time[to]" value="18:00" />
+                                <input type="time" name="time[to]" value="18:00" required />
                             </div>
                         </div>
                         <div class="user-number">
                             <label>מספר משתתפים רצוי</label>
                             <div class="input">
-                                <input type="number" name="number_of_participants" value="" />
+                                <input type="number" name="number_of_participants" min="0" value="" required />
                             </div>
                         </div>
                     </div>
@@ -91,7 +112,7 @@ var error_message = error_message || '';
                         </div>
                         <div class="additional-resources">
                             <input type="text" placeholder="משאבים נוספים" />
-                            <input type="submit" value="הוסף" />
+                            <input type="button" value="הוסף" />
                         </div>
                     </div>
                     <div class="checkboxes cf">
@@ -100,7 +121,7 @@ var error_message = error_message || '';
             </div>
             <div class="bottom">
                 <div class="textarea">
-                    <textarea rows="10" cols="50" name="text" placeholder="הפוסט הראשון בדיון. הסבר את הצורך במציאות שאתה דורש - מה הבעיה? איך המצב הנוכחי משפיע עליך? איזו עזרה היית רוצה לבקש מהמשתתפים בדיון בשיפור החזון?"></textarea>
+                    <textarea rows="10" cols="50" id="text" name="text" placeholder="הפוסט הראשון בדיון. הסבר את הצורך במציאות שאתה דורש - מה הבעיה? איך המצב הנוכחי משפיע עליך? איזו עזרה היית רוצה לבקש מהמשתתפים בדיון בשיפור החזון?" required></textarea>
                 </div>
                 <div class="tags-box tags-box-event">
                     <div class="add-tag">
@@ -108,13 +129,13 @@ var error_message = error_message || '';
                         <div class="input">
                             <input type="text" value="" />
                         </div>
-                        <input type="submit" value="הוסף" />
+                        <input type="button" value="הוסף" />
                     </div>
                     <div class="tags-list">
                     </div>
                 </div>
                 <input class="popup-add-text-link" type="submit" value="יצירת פעולה" />
-                <label><input type="checkbox" name="share" checked="checked" /> שתף את הפעולה שיצרת על הקיר שלך</label>
+                <label><input type="checkbox" id="share" checked="checked" /> שתף את הפעולה שיצרת על הקיר שלך</label>
             </div>
         </form>
     </div>
@@ -122,7 +143,7 @@ var error_message = error_message || '';
 </div>
 <script>
     $.fn.tagAdder = function (callback) {
-        var button = this.find('[type=submit]');
+        var button = this.find('[type=button]');
         var text = this.find('[type=text]');
         button.click(function () {
             var value = text.val();
@@ -136,6 +157,11 @@ var error_message = error_message || '';
             event.preventDefault();
         });
     };
+
+    $.validator.addMethod("notZero", function(value, element) {
+        console.log("Validator: ", arguments);
+        return value != 0;
+    });
 
     var categories = <%- JSON.stringify(categories) %>;
     var category_select = $('.type select');
@@ -195,23 +221,75 @@ var error_message = error_message || '';
 
     resource_select.change(function () {
         var resource = resource_select.val();
-        if (resource != 0) {
+        if (resource) {
             var text = resource_select.find('option:selected').text();
             addResource(text);
         }
-        resource_select.val(0);
+        resource_select.val('');
     });
 
     $('.additional-resources').tagAdder(addResource);
     $('.add-tag').tagAdder(addTag);
 
+<<<<<<< HEAD
+    $('#main_form').validate({
+        rules: {
+            category: 'notZero'
+        },
+        messages: {
+            title: 'נא למלא כותרת',
+            category: 'נא לבחור את סוג הפעולה מהרשימה',
+            location: 'נא לבחור מיקום',
+            date: 'נא לבחור תאריך',
+            'time[from]': 'נא לבחור שעה',
+            'time[to]': 'נא לבחור שעה',
+            number_of_participants: 'נא למלא מספר משתתפים',
+            text: 'נא למלא פוסט ראשון בדיון'
+        },
+
+        errorPlacement: function (error, element) {
+            element.parent().addClass('error-container').prepend(error);
+        },
+
+        focusInvalid: false,
+        focusCleanup: true,
+
+        submitHandler: function (form) {
+            event.preventDefault();
+
+            var data = $(form).serialize();
+            $.ajax({
+                type: 'POST',
+                url: '/api/actions',
+                data: data,
+                dataType: 'json',
+                success: function (result) {
+                    console.log('ajax success: ', arguments);
+                    if (result.errors) {
+                        popupProvider.showOkPopup({ message: 'קרתה תקלה בעת שמירת הפעולה.' });
+                    } else {
+                        var url = result.redirect;
+                        if ($('#share').is(':checked')) {
+                            shareOnFacebook(url, '', function () {
+                                location.href = url;
+                            });
+                        } else {
+                            location.href = url;
+                        }
+                    }
+                },
+                error: function () {
+                    console.log('ajax error: ', arguments);
+                    popupProvider.showOkPopup({ message: 'קרתה תקלה בעת שמירת הפעולה.' });
+=======
     $('.popup-add-text-link').click(function () {
         event.preventDefault();
 
         var data = $('#main_form').serialize();
+
         $.ajax({
             type: 'POST',
-            url: location.href,
+            url: '/api/actions',
             data: data,
             dataType: 'json',
             success: function (result) {
@@ -219,13 +297,23 @@ var error_message = error_message || '';
                     popupProvider.showOkPopup('קרתה תקלה בעת שמירת הפעולה.');
                 } else {
                     location.href = result.redirect;
+>>>>>>> 76e408e417720cd4c7e5557505e9855ea3ce5f69
                 }
-            },
-            error: function () {
-                popupProvider.showOkPopup('קרתה תקלה בעת שמירת הפעולה.');
-            }
-        });
+            });
+        }
     });
+
+    var shareOnFacebook = function (url, image, callback) {
+        console.log('FB.ui: ', x);
+        FB.ui({
+            method: 'feed',
+            link: url,
+            name: $('#title').val(),
+            picture: image,
+            caption: '',
+            description: $('#text').val()
+        }, callback);
+    };
 </script>
 </body>
 </html>

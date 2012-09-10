@@ -41,7 +41,7 @@ module.exports = function (req, res) {
                 .populate('cycle_id', {'_id': 1, 'title': 1})
                 .exec(function(err, action){
                     //if pending find grade
-                    if(!err && user && !action.is_approved){
+                    if(!err && user && action && !action.is_approved){
                         models.GradeAction.findOne({user_id:user._id, action_id: req.params[0]}, function (err, grade) {
                             if (grade) {
                                 grade_obj = {};
@@ -72,14 +72,6 @@ module.exports = function (req, res) {
         }
     ], function (err, args) {
 
-
-        var action = args[0];
-        var proxyJson = args[1] ? JSON.stringify(args[1].proxy) : null;
-        var going_users = args[2];
-
-        action.grade_obj = grade_obj;
-
-
         if (err)
             res.render('500.ejs', {error:err});
         else {
@@ -87,7 +79,11 @@ module.exports = function (req, res) {
             if (!action)
                 res.render('404.ejs');
             else {
+                var action = args[0];
+                var proxyJson = args[1] ? JSON.stringify(args[1].proxy) : null;
+                var going_users = args[2];
 
+                action.grade_obj = grade_obj;
 
                 action.from_date= action.execution_date.date;
                // action.to_date= action.from_date.addHours(action.execution_date.duration);
