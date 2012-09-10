@@ -43,19 +43,7 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
             document:null,
             title:null,
             tooltip_or_title:null,
-//            users: /*{
-//                user_id:{
-//                    email:null,
-//                    first_name:null,
-//                    avatar_url:null
-//                },
-//                join_date:null*/
-//            },
             followers_users:null,
-            /* users: {
-             user_id: null,
-             join_date: null
-             },*/
             creation_date:null,
             text_field:null,
             text_field_preview:null,

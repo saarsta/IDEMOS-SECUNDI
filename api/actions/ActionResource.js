@@ -6,7 +6,6 @@
  * To change this template use File | Settings | File Templates.
  */
 
-
 var resources = require('jest'),
     models = require('../../models'),
     async = require('async'),
@@ -30,6 +29,7 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
             },
 
             this.fields = {
+                _id: null,
                 title: null,
                 tooltip_or_title: null,
                 text_field: null,
@@ -55,7 +55,6 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                 grade_sum: null
             }
         },
-
 
         get_objects:function (req, filters, sorts, limit, offset, callback) {
             if (req.query.get == "myUru") {
