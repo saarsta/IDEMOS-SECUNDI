@@ -193,7 +193,7 @@ var error_message = error_message || '';
             var label = $('<label>');
             label.text(text);
             label.prepend('<input type="checkbox">');
-            label.append($('<input type="hidden" name="resources[]">').val(text));
+            label.append($('<input type="hidden" name="action_resources[]">').val(text));
             resource_checkboxes.append(label);
         }
     };

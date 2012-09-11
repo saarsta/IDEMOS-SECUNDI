@@ -12,6 +12,11 @@ var resources = require('jest'),
     common = require('../common.js'),
     _ = require('underscore');
 
+var hourDifference = function (from, to) {
+    // This is a horrible hack to make the JavaScript Date object accept dateless times.
+    // It's better than writing the code myself though.
+    return new Date('1 Jan 2001 ' + to) - new Date('1 Jan 2001 ' + from);
+}
 var ActionResource = module.exports = common.GamificationMongooseResource.extend(
     {
         init:function () {
@@ -104,10 +109,19 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
 
             async.waterfall([
                 function(cbk){
+                    // Data external to the request
                     fields.creator_id = user_id;
                     fields.first_name = user.first_name;
                     fields.last_name = user.last_name;
                     fields.users = {user_id: user_id, join_date: Date.now()};
+
+                    // Massage some of the data to an acceptable format
+                    fields.execution_date = {
+                        date: new Date(fields.date + 'T' + fields.time.from),
+                        duration: hourDifference(fields.time.from, fields.time.to)
+                    };
+                    fields.action_resources = fields.action_resources.map(function (text) { return { resource: text, amount: 1, left_to_bring: 1 }; });
+
                     for (var field in fields) {
                         action_object.set(field, fields[field]);
                     }
