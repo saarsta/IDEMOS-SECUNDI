@@ -410,9 +410,14 @@
 
                    for (i = 0; i < data.objects.length; i++) {
                        data.objects[i].isFirst = (i === 0);
-
                        data.objects[i].isEven = ((i % 2)== 0);
                        data.objects[i].voting =      data.objects[i].votes_for - data.objects[i].votes_against;
+                       if(i == data.objects.length-1 || data.objects[i].discussion_id != data.objects[i+1].discussion_id )
+                       {
+                           data.objects[i].discussion_button=true;
+                       }
+
+
                    }
                   dust.renderArray('cycle_post', data.objects, function (err, out) {
                       $('.hide-box').append(out);
