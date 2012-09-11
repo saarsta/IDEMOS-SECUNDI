@@ -18,6 +18,13 @@ var hourDifference = function (from, to) {
     return new Date('1 Jan 2001 ' + to) - new Date('1 Jan 2001 ' + from);
 };
 
+var asArray = function (arg) {
+    if (arg && arg.constructor == Array)
+        return arg;
+    else
+        return [];
+};
+
 var ActionResource = module.exports = common.GamificationMongooseResource.extend({
     init:function () {
         this._super(models.Action, null, common.getGamificationTokenPrice('vote'));
@@ -58,7 +65,9 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
             grade: null,
             evaluate_counter: null,
             grade_sum: null,
-            participants_count: null
+            participants_count: null,
+
+            redirect_link: null
         }
     },
 
@@ -136,7 +145,7 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                     date: new Date(fields.date + 'T' + fields.time.from),
                     duration: hourDifference(fields.time.from, fields.time.to)
                 };
-                fields.action_resources = fields.action_resources.map(function (text) { return { resource: text, amount: 1, left_to_bring: 1 }; });
+                fields.action_resources = asArray(fields.action_resources).map(function (text) { return { resource: text, amount: 1, left_to_bring: 1 }; });
 
                 for (var field in fields) {
                     action_object.set(field, fields[field]);
@@ -181,21 +190,22 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                                 cycle.upcoming_action = g_action._id;
                                 cycle.save(cbk1);
                             }else{
-                                cbk1(null, null);
+                                cbk1(null);
                             }
                         }
-                    ], function(err, action){
-                        cbk(err, action)})
+                    ], function(err){
+                        cbk(err)})
                 } else {
                     cycle.upcoming_action = g_action._id;
                     cycle.save(function(err, cycle){
-                        cbk(err, g_action)
+                        cbk(err)
                     });
                 }
             }
-        ], function(err, action){
-            console.log(err);
-            callback(err, action);
+        ], function(err){
+            callback(err, {
+                redirect_link: req.app.get('root_path') + '/actions/' + g_action.id
+            });
         })
     }
 });

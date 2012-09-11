@@ -20,7 +20,7 @@ var Action = module.exports = new Schema({
     last_name: {type: String, editable:false},
     cycle_id:{type:ObjectId, ref:'Cycle', index:true, required:true},
     action_resources:[
-        {resource: {type:ObjectId, ref:'ActionResource'}, amount:Number, left_to_bring: Number}
+        {resource: String, amount:Number, left_to_bring: Number}
     ],
     tags:[String],
     //users that conected somehow to the action for my uru
