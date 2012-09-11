@@ -76,10 +76,11 @@ module.exports = function (req, res) {
             res.render('500.ejs', {error:err});
         else {
 
+            var action = args[0];
+
             if (!action)
                 res.render('404.ejs');
             else {
-                var action = args[0];
                 var proxyJson = args[1] ? JSON.stringify(args[1].proxy) : null;
                 var going_users = args[2];
 
@@ -95,6 +96,7 @@ module.exports = function (req, res) {
                    is_going = _.any(going_users, function(going_user){ return going_user.user_id + "" == user_id + ""})
                }
                action.is_going = is_going;
+
 
                 var ejsFileName = action.is_approved ? 'action_approved.ejs' : 'action_append.ejs';
                 res.render(ejsFileName,{
