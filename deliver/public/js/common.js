@@ -17,6 +17,16 @@ dust.filters['time'] = function(a){
     return date + " " + time;
 };
 
+dust.filters['time_only'] = function(a){
+
+    var hours = (new Date(Date.parse(a))).getHours();
+    var minutes = (new Date(Date.parse(a))).getMinutes();
+    if(minutes < 10)
+        minutes = "0" + minutes;
+    return hours + ":" + minutes;
+
+};
+
 dust.filters['round'] = function(num){
     return Math.round(num);
 };

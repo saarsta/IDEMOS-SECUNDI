@@ -244,7 +244,7 @@
 
 
             db_functions.getCycleTimeline(cycle_id, function (err, data) {
-                     var type_names={
+                    var type_names={
                          past:'',
                          cycle_creation :'יצירת מעגל תנופה',
                          due_date :'תאריך יעד',
@@ -255,16 +255,53 @@
                          admin_update :'עדכון מערכת'
                              },
 
-                             nodes= data.objects.slice(0);
-                            i=0,
-                            pre_discussion_items = {type:'past',month:'לפני יצירת הדיון',items:[]},
-                            past_months={};
+                    nodes= data.objects.slice(0);
+                    i=0,
+                    pre_discussion_items = {type:'past',month:'לפני יצירת הדיון',items:[]},
+                    past_months={};
+
+                    //init items
+                    $.each(data.objects, function (index, item) {
+
+                        item.type_print =  type_names[item.type];
+                        switch(item.type)
+                        {
+
+                            case 'due_date':
+
+                                break;
+                            case 'cycle_creation':
+
+                                break;
+                            case 'discussion':
+
+                                break;
+                            case 'action':
+                                item.short=item.title
+                                item.link ='/actions/'+item._id;
+                                break;
+                            case 'cycle_update':
+                                item.short=item.title
+                                item.link ='/updates/'+item._id;
+                                break;
+                            case 'today':
+
+                                break;
+                            case 'admin_update':
+                                item.short=item.text
+                                break;
+                            default:
+                                console.log("unknow timleline type : "+  item.type);
+                        }
+
+                    });
+
 
                       //remove all past items from list and move them into past object
                        var pre_discussion=true;
                       $.each(data.objects, function (index, item) {
 
-                            item.type_print =  type_names[item.type];
+
                             if(item.type=='today')  {
                               return false;
                             }
@@ -283,7 +320,7 @@
                                 var item_date=   new Date(item.date)
                                 var ind=item_date.format('mmyy');
                                 if(!past_months[ind]) {
-                                    past_months[ind]=  {type:'past',month:item_date.format('mmmm yy'),items:[]}
+                                    past_months[ind]=  {type:'past',month:item_date.format('mmmm'),items:[]}
                                 }
                                 past_months[ind].items.push(item);
                                 nodes.splice(1,1);
@@ -465,6 +502,25 @@
         });
         $('.followers-diagram .event .green-icon .popup-event').live('click',function(){
             window.location.href = '/updates/'+$(this).attr('item-id');
+        });
+
+        $('.followers-diagram .event .blue-icon .popup-event').live('click',function(){
+            window.location.href = '/actions/'+$(this).attr('item-id');
+        });
+
+
+        $('.join-btn').live("click",function(e){
+            e.preventDefault();
+            var action_id = $(this).attr('item-id');
+            db_functions.joinOrLeaveAction(action_id,function(err,data){
+                if(err){
+                    console.log(err) ;
+                }
+                else{
+                    setJoinBT(data);
+
+                }
+            })
         });
         //
         //.popup-event

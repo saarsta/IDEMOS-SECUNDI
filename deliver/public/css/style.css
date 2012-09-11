@@ -6024,7 +6024,7 @@ a.fraction-btn
     border-bottom: 5px solid #50504f;
     margin-bottom: 75px;
     position: relative;
-    opacity: 0.3;
+   /* opacity: 0.3;   */
 }
 .followers-diagram .event
 {
@@ -6082,6 +6082,8 @@ a.fraction-btn
     background:#2fd43b;
     border: 3px solid #25962d;
 }
+
+.followers-diagram .event .green-icon .popup-event
 .followers-diagram .event .green-icon .popup-event
 {
   cursor: pointer;
@@ -6279,10 +6281,18 @@ a.fraction-btn
     text-align: right;
     border-top: 1px solid #d8dde0;
     margin-right: 3px;
+    line-height: 150%;
+    padding-bottom: 7px;
+    padding-top: 7px;
+}
+.followers-diagram .event .type-three ul li  a
+{
+    text-decoration: none;
 }
 .followers-diagram .event .type-three ul li:first-child
 {
     border: none;
+    padding-top: 0;
 }
 
 
