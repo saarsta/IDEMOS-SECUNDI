@@ -93,7 +93,7 @@ module.exports = function (req, res) {
                // is user going to action?
                if(user){
                    var user_id = user._id;
-                   is_going = _.any(going_users, function(going_user){ return going_user.user_id + "" == user_id + ""})
+                   is_going = going_users.some(function(going_user){ return going_user.user_id + "" == user_id + ""})
                }
                action.is_going = is_going;
 
