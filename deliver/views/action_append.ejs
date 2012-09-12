@@ -762,7 +762,8 @@ var error_message = error_message || '';
                     });
 
                 })
-                db_functions.createNewActionResource()
+                //todo: saar
+               // db_functions.createNewActionResource()
                 $('#action_resources_popup').hide();
             })
 
@@ -794,6 +795,8 @@ var error_message = error_message || '';
             uncheck( $('#action_resources_popup .new_resources span'));
             if(newRes&&newRes.length>0){
                 //save in db
+                //todo: saar
+                //db_functions.addNewActionResource()
                 var id =Math.random()*50000;//BUGBUG XXXXXXXX TODO REPLACE
                 addResource(id,newRes,bringing);
             }
