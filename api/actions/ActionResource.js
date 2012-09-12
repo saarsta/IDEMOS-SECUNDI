@@ -27,7 +27,7 @@ var asArray = function (arg) {
 
 var ActionResource = module.exports = common.GamificationMongooseResource.extend({
     init:function () {
-        this._super(models.Action, null, common.getGamificationTokenPrice('vote'));
+        this._super(models.Action, null, 0);
         this.allowed_methods = ['get', 'post', 'put'];
         this.filtering = {cycle_id:null, is_approved:null, grade:null, num_of_going:null,
             'users.user_id':{

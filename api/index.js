@@ -51,6 +51,8 @@ var mongoose_resource = require('jest'),
     AboutUruTextResource = require('./AboutUruTextResource'),
     AboutUruItemResource = require('./AboutUruItemResource'),
     TeamResource = require('./TeamResource'),
+    TestResource = require('./TestResource'),
+    BringResourceResource = require('./actions/bring_resource_resource'),
     QaResource = require('./QaResource'),
     ElectionsTextResource = require('./ElectionsTextResource'),
     ElectionsItemResource = require('./ElectionsItemResource'),
@@ -116,6 +118,8 @@ module.exports = function(app)
     rest_api.register_resource('about_uru_texts', new AboutUruTextResource());
     rest_api.register_resource('about_uru_items', new AboutUruItemResource());
     rest_api.register_resource('team', new TeamResource());
+    rest_api.register_resource('test', new TestResource());
+    rest_api.register_resource('user_helps_action', new BringResourceResource());
     rest_api.register_resource('qa', new QaResource());
     rest_api.register_resource('elections_items', new ElectionsItemResource());
     rest_api.register_resource('elections_texts', new ElectionsTextResource());
