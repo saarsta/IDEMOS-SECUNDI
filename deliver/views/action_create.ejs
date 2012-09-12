@@ -121,7 +121,7 @@ var error_message = error_message || '';
             </div>
             <div class="bottom">
                 <div class="textarea">
-                    <textarea rows="10" cols="50" id="text" name="text" placeholder="הפוסט הראשון בדיון. הסבר את הצורך במציאות שאתה דורש - מה הבעיה? איך המצב הנוכחי משפיע עליך? איזו עזרה היית רוצה לבקש מהמשתתפים בדיון בשיפור החזון?" required></textarea>
+                    <textarea rows="10" cols="50" id="text" name="text_field" placeholder="הפוסט הראשון בדיון. הסבר את הצורך במציאות שאתה דורש - מה הבעיה? איך המצב הנוכחי משפיע עליך? איזו עזרה היית רוצה לבקש מהמשתתפים בדיון בשיפור החזון?" required></textarea>
                 </div>
                 <div class="tags-box tags-box-event">
                     <div class="add-tag">
@@ -267,7 +267,7 @@ var error_message = error_message || '';
                     if (result.errors) {
                         popupProvider.showOkPopup({ message: 'קרתה תקלה בעת שמירת הפעולה.' });
                     } else {
-                        var url = result.redirect;
+                        var url = result.redirect_link;
                         if ($('#share').is(':checked')) {
                             shareOnFacebook(url, '', function () {
                                 location.href = url;
@@ -286,7 +286,6 @@ var error_message = error_message || '';
     });
 
     var shareOnFacebook = function (url, image, callback) {
-        console.log('FB.ui: ', x);
         FB.ui({
             method: 'feed',
             link: url,
