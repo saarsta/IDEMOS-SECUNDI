@@ -15,7 +15,8 @@
             font-family: Arial, sans-serif;
             font-size: 14pt;
             text-align: right;
-            padding: 457px 40px 0;
+            padding: 440px 0 0;
+            height: 300px;
             background: #EDEDED url('/images/fbimage-top.png') no-repeat top center;
         }
 
@@ -23,7 +24,7 @@
             list-style: none;
             padding: 0;
             margin: 0 auto;
-            width: 96%;
+            width: 700px;
 
             border: 1px solid transparent; /* this prevents ul and li margins from collapsing into each other */
         }
@@ -46,10 +47,10 @@
 
 <div id="navcontainer">
     <ul id="navlist">
-        <% for (var i = 0; i < items.length && i < 8 ; i++) { %>
+        <% for (var i = 0; i < items.length && i < 8 ; i++) { var voted_item = items[i];%>
         <li>
             <span class="checkbox">
-                <b><%=items[i].title%>:</b> <%=items[i].text %>
+                <b><%= voted_item.title + (voted_item.text ? ':' : '') %></b> <%= voted_item.text %>
             </span>
         </li>
         <% } %>
