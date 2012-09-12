@@ -1,19 +1,23 @@
-<div style="left: {offset}%" class="event event-next">
+<div style="left: {offset}px" class="event event-next" id="timeline_item_{timeline_index}">
     <div class="icon blue-icon">
         <span class="i"></span>
-        <div class="popup-event type-one">
+        <div class="popup-event type-one" item-id="{_id}">
             <div class="popup-text">
                 <h4>{title}</h4>
                 <p>{location}</p>
-                <p>תל אביב</p><br />
-                <p>20:00</p>
-                <a class="join-btn" href="">הצטרף</a>
+                <p>{date|time_only}</p>
+                <p>{num_of_going} משתתפים</p>
+
+                <a item-id="{_id}" class="join-btn" href="">הצטרף</a>
             </div>
+        </div>
     </div>
+    {^cluster}
                     <span class="number">
                         {date|date_short}
                     </span>
                     <span class="text">
 פעולה
                     </span>
+    {/cluster}
 </div>
