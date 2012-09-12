@@ -11,17 +11,8 @@ var error_message = error_message || '';
     <script src="/plugins/ckeditor/ckeditor.js"></script>
     <script src="/plugins/ckeditor/adapters/jquery.js"></script>
     <script src="http://maps-api-ssl.google.com/maps/api/js?v=3&sensor=false&language=he"  type="text/javascript"></script>
-
-  <!--  <meta property="fb:app_id" content="<XXX%= settings.facebook_app_id %>" />
-    <meta property="og:type"   content="<XXX%= settings.facebook_app_name %>:discussion" />
-    <meta property="og:url"    content="<XXX%= settings.root_path %>/discussions/<XXX%= discussion.id %>" />
-    <meta property="og:title"  content="<XXX%=discussion.title%>" />
-    <meta property="og:description"  content="<XXX%=discussion.text_field%>" />
-    <meta property="og:image"  content="<XXX%= discussion.image_field && discussion.image_field.url ? discussion.image_field.url : 'http://site.e-dologic.co.il/philip_morris/Xls_script/uru_mailing/logo.jpg' %>" />
--->
-
-
 </head>
+
 <body class="body-action">
 <% include partials/body_top.ejs %>
 <div id="wrap">
@@ -659,6 +650,8 @@ var error_message = error_message || '';
              change:function (event, ui) {
 
                  my_discussion_grade = ui.value;
+                 // This is an Action not a discussion
+/*
                  db_functions.addDiscussionGrade(action_id, my_discussion_grade, grade_id, function (err, data) {
 
                      if (!err) {
@@ -670,6 +663,7 @@ var error_message = error_message || '';
                      else
                          console.log(err);
                  });
+*/
              }
          });
 /******************** action res popup*********************************************/
