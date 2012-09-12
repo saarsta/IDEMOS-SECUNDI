@@ -19,7 +19,6 @@ var CycleTimelineResource = module.exports = jest.Resource.extend({
         this.sorting = {};
     },
 
-
     get_objects:function(req,filters,sorts,limit,offset,callback)
     {
         var arr = [];
@@ -56,9 +55,13 @@ var CycleTimelineResource = module.exports = jest.Resource.extend({
 
                             objs.push(obj);
 
+                            //set date to today after midnight
+                            var date = new Date();
+                            date.setHours(0,0,0,1);
+
                             var obj = {
                                 type: "today",
-                                date: Date.now()
+                                date: date
                             }
 
                             objs.push(obj);

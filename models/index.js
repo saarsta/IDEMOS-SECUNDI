@@ -325,18 +325,18 @@ var Schemas = exports.Schemas = {
     Test:{
         action_resources:[
 //            new Schema(
-                {
-                    resource:{type:ObjectId, ref:'ActionResource'},
-                    amount:Number,
-                    left_to_bring:Number,
-                    bring:[
-                        new Schema(
-                        {
-                            users:{type:ObjectId, ref:'User'},
-                            amount:{type:Number, 'default':0}
-                        })
-                    ]
-                }
+            {
+                resource: {type:ObjectId, ref:'ActionResource'},
+                amount:Number,
+                left_to_bring:Number,
+                bring:[
+                    new Schema(
+                    {
+                        users:{type:ObjectId, ref:'User'},
+                        amount:{type:Number, 'default':0}
+                    })
+                ]
+            }
 // )
         ]
     }
