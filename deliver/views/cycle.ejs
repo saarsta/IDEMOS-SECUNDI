@@ -152,6 +152,8 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+
+        jQuery.easing.def = "easeOutCirc";
              var my_id = "<%=user_logged ? user._id : ''%>";
             var cycle_id = "<%=cycle.id%>";
             var user = "<%=cycle.id%>";
@@ -255,14 +257,23 @@
                          admin_update :'עדכון מערכת'
                              },
 
-                    nodes= data.objects.slice(0);
-                    i=0,
-                    pre_discussion_items = {type:'past',month:'לפני יצירת הדיון',items:[]},
-                    past_months={};
+
+                        i=0,
+                        j= 0,
+                        pre_discussion_items = {type:'past',month:'לפני יצירת הדיון',items:[]},
+                        past_months={},
+                        clusters={};
 
                     //init items
+                    var last_item=null;
                     $.each(data.objects, function (index, item) {
 
+                       // debugger;
+                        if(last_item && last_item.date.substr(0,10)==item.date.substr(0,10))
+                        {
+                            last_item.cluster=true;
+                            item.cluster=true;
+                        }
                         item.type_print =  type_names[item.type];
                         switch(item.type)
                         {
@@ -293,17 +304,23 @@
                             default:
                                 console.log("unknow timleline type : "+  item.type);
                         }
+                        last_item=item;
 
                     });
 
-
-                      //remove all past items from list and move them into past object
-                       var pre_discussion=true;
+                      nodes= data.objects.slice(0);
+                      //remove all past items from list and move them into past objects
+                      //
+                      var pre_discussion=true,
+                          past=true,
+                          custers_count = 0,
+                          clustered_count=0;
                       $.each(data.objects, function (index, item) {
 
 
                             if(item.type=='today')  {
-                              return false;
+                                past=false;
+                              //return false;
                             }
                             if(item.type=='discussion')  {
                                 pre_discussion=false;
@@ -315,7 +332,7 @@
                                 pre_discussion_items.items.push(item) ;
                                 nodes.shift();
                             }
-                            else
+                            else if (past)
                             {
                                 var item_date=   new Date(item.date)
                                 var ind=item_date.format('mmyy');
@@ -324,6 +341,26 @@
                                 }
                                 past_months[ind].items.push(item);
                                 nodes.splice(1,1);
+                            }
+                            else     //present and future items
+                            {
+                                 if(item.cluster)
+                                 {
+                                     var item_date=   new Date(item.date)
+                                     var ind=item_date.format('ddmmyy');
+                                     if(!clusters[ind]) {
+                                        // clusters[ind]=  {type:'cluster',date:item_date,items:[]}
+                                         clusters[ind]=0;
+                                         custers_count++;
+                                     }
+                                    // clusters[ind].items.push(item);
+                                     //nodes.splice(1,1);
+                                     clustered_count++;;
+
+                                     clusters[ind]++;
+
+
+                                 }
                             }
 
                       } );
@@ -337,17 +374,23 @@
                          nodes.splice(1,0,pre_discussion_items);
                      }
 
-
-
-
-                     var count =   nodes.length-1;
+                     var count =   nodes.length-1 -clustered_count + custers_count ;
+                     var render_clusters={};
                      i=0;
                      $.each(nodes, function (index, item) {
-                 //         item_date=   new Date(item.date);
-                 //         item.offset  = Math.floor(((start_date.getTime()-item_date.getTime())*100)/timeline_span );
 
-                          item.offset  =     (i*100)/count;
-
+                          if(item.cluster)
+                          {
+                              var item_date=   new Date(item.date)
+                              var ind=item_date.format('d.m');
+                              if(!render_clusters[ind])  {
+                                  render_clusters[ind]=[];
+                              }
+                              render_clusters[ind].push(i);
+                              clusters[ind]++;
+                          }
+                          item.offset  =    (j*980)/count;
+                          item.timeline_index=i;
                           switch(item.type)
                           {
                               case 'past':
@@ -359,7 +402,7 @@
                               case 'cycle_creation':
                                     dust.render('cycle_timeline_creation', item, timelineAppend);
                                     break;
-                               case 'discussion':
+                              case 'discussion':
                                     dust.render('cycle_timeline_discussion', item, timelineAppend);
                                     break;
                               case 'action':
@@ -378,7 +421,21 @@
                                console.log("unknow timleline type : "+  item.type);
                           }
                           i++;
+                          j++;
+                          if(item.cluster && clusters[ind]!=0)
+                          {
+                            j--;
+                          }
                      });
+
+                    $.each(render_clusters, function (index1, cluster_array) {
+                        var it= [];
+                        $.each(cluster_array, function (index2, item) {
+                            it.push($('#timeline_item_'+item))
+                        });
+                        dust.render('cycle_timeline_dummy', {date:index1}, timelineAppend);
+                        animateCluster(it);
+                    });
              });
 
              function timelineAppend  (err, out) {
@@ -497,7 +554,7 @@
         }
 
         $('.followers-diagram .event .icon').live("hover", function(){
-           console.log('elip');
+         //  console.log('elip');
             $(this).find('.popup-text').ellipsis();
         });
         $('.followers-diagram .event .green-icon .popup-event').live('click',function(){

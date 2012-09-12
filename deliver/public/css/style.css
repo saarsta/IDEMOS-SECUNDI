@@ -6034,6 +6034,21 @@ a.fraction-btn
     margin-left: -12px;
     top: 166px;
 }
+.followers-diagram .event.event-dummy
+{
+              padding-top: 36px;
+}
+.followers-diagram .event.event-dummy   .number
+{
+    clear: both;
+    color: #3C63EF;
+    float: left;
+    margin: 0;
+    text-align: left;
+    white-space: nowrap;
+}
+
+
 .followers-diagram .event .icon
 {
     width: 24px;
