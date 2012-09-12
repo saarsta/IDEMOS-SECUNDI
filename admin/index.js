@@ -187,6 +187,10 @@ module.exports = function(app)
             list:['name'],
             cloneable:true
         });
+    admin.registerMongooseModel('Test',Models.Test,null,{
+            list:['action_resources'],
+            cloneable:true
+    });
 
     admin.registerMongooseModel('Qa',Models.Qa,null,{
                 list:['title']

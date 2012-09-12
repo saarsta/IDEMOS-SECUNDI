@@ -66,8 +66,13 @@ var User = module.exports = new Schema({
     updates: Schema.Types.Mixed,
     //proxy - people i gave my tokens
     proxy: [
-        new Schema({user_id:{type:ObjectId, ref:'User',query:common.FIND_USER_QUERY}, number_of_tokens: {type:Number, 'default': 0, /*min: 0,*/ max: 3},
-        number_of_tokens_to_get_back: {type:Number, 'default': 0,/* min: 0,*/ max: 3}})
+        new Schema(
+            {
+                user_id:{type:ObjectId, ref:'User',query:common.FIND_USER_QUERY},
+                number_of_tokens: {type:Number, 'default': 0, /*min: 0,*/ max: 3},
+                number_of_tokens_to_get_back: {type:Number, 'default': 0,/* min: 0,*/ max: 3
+            }
+        })
     ],
 //    num_of_mandates_i_gave: {type: Number, 'default': 0},
     num_of_given_mandates: {type: Number, 'default': 0},

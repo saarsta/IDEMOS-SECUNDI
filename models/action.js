@@ -19,11 +19,22 @@ var Action = module.exports = new Schema({
     last_name: {type: String, editable:false},
     cycle_id:{type:ObjectId, ref:'Cycle', index:true, required:true},
     action_resources:[
-        {resource: {type:ObjectId, ref:'ActionResource'}, amount:Number, left_to_bring: Number}
+        new Schema({
+            resource: {type:ObjectId, ref:'ActionResource'},
+            amount:Number,
+            left_to_bring: Number
+        })
+    ],
+    what_users_bring: [
+        new Schema({
+            user_id: {type: ObjectId, ref:'User'},
+            amount: {type: Number, 'default': 0},
+            resource: {type:ObjectId, ref:'ActionResource'}
+        })
     ],
     tags:[String],
     //users that conected somehow to the action for my uru
-    users:               [
+    users: [
         new Schema({
             user_id:   {type: ObjectId, ref: 'User'},
             join_date: {type: Date, 'default': Date.now}
