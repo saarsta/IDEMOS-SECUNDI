@@ -133,7 +133,6 @@
                     return map;
                 }
                 ,addPlaceMark:function (point,tooltip){
-
                     var marker = new google.maps.Marker({
                         position: new google.maps.LatLng(point.lat,point.lng),
                         title:tooltip
@@ -148,44 +147,39 @@
 
         $('.more-text').click(function (e) {
             e.preventDefault();
-            <% if(action.location){ %>
-            var location={};
-            location.address='<%=action.location.address%>';
-            location.geometry={};
-            location.geometry.lng=<%=action.location.geometry.lng%>;
-            location.geometry.lat=<%=action.location.geometry.lat%>;
+            <% if(action.location && action.location.geometry) { %>
+                var location={};
+                location.address='<%=action.location.address%>';
+                location.geometry={};
+                location.geometry.lng=<%=action.location.geometry.lng%>;
+                location.geometry.lat=<%=action.location.geometry.lat%>;
 
-            <% }else{ %>
-            var location =null;
+            <% } else { %>
+                var location =null;
             <% } %>
 
             $('#minInfo').hide();
             $('#fullInfo').show();
             if(location){
-            var address=location.address;
-            var coordinate={};
-            coordinate.lng=location.geometry.lng ;
-            coordinate.lat=location.geometry.lat ;
+                var address=location.address;
+                var coordinate={};
+                coordinate.lng=location.geometry.lng ;
+                coordinate.lat=location.geometry.lat ;
 
 
-            //  init_map('map', new google.maps.LatLng(coordinate.lan, coordinate.lng));
+                //  init_map('map', new google.maps.LatLng(coordinate.lan, coordinate.lng));
 
-            map.init_map('map', new google.maps.LatLng(coordinate.lat,coordinate.lng));
-            map.addPlaceMark(coordinate,address);
-        }
-
-
-
+                map.init_map('map', new google.maps.LatLng(coordinate.lat,coordinate.lng));
+                map.addPlaceMark(coordinate,address);
+            }
 
         });/**/
 
         $('#readLess').click(function (e) {
-        e.preventDefault();
-        $('#minInfo').show();
-        $('#fullInfo').hide();
+            e.preventDefault();
+            $('#minInfo').show();
+            $('#fullInfo').hide();
         });
-
-
 
         // just focus
         $("#action_comment_reply_button").on('click', function (e) {
@@ -194,13 +188,11 @@
             focusOnCommentBox();
         });
 
-
-        /**/
-
-        var new_post_ref_id = null;  //if not null =>the create new post is connected to anther post
+        var new_post_ref_id = null;  // if not null => the create new post is connected to anther post
         function setUserScore(userID, score) {
             $('[ data-creator_id=' + userID + ']').find('.score').empty().append(score);
         }
+
         $('#comments').on('click', ".quote_button", function (e) {
             var userName,
                     text;
