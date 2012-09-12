@@ -2,12 +2,6 @@ var models = require('../../../models'),
     async = require('async'),
     utils = require('../../../utils');
 
-var hourDifference = function (from, to) {
-    // This is a horrible hack to make the JavaScript Date object accept dateless times.
-    // It's better than writing the code myself though.
-    return new Date('1 Jan 2001 ' + to) - new Date('1 Jan 2001 ' + from);
-}
-
 module.exports = {
     get: function (req, res) {
         var id = req.params.cycle_id;
