@@ -11,19 +11,30 @@ var Action = module.exports = new Schema({
     text_field_preview:  {type: mongoose_types.Text},
     image_field:         mongoose_types.File,
     image_field_preview: mongoose_types.File,
-    type:                String,
-    description:         String,
-    creation_date:       {type: Date, 'default': Date.now},
-    creator_id:          {type: ObjectId, ref: 'User', index: true, required: true},
-    first_name:          {type: String, editable: false},
-    last_name:           {type: String, editable: false},
-    cycle_id:            {type: ObjectId, ref: 'Cycle', index: true, required: true},
-    tags:                [String],
-    action_resources:    [{
-            resource: {type: ObjectId, ref: 'ActionResource'}, amount: Number, left_to_bring: Number
-    }],
+
+    type: {type: String, require: true},
+    description: String,
+    creator_id: {type:ObjectId, ref:'User', index:true, required:true},
+    first_name: {type: String, editable:false},
+    last_name: {type: String, editable:false},
+    cycle_id:{type:ObjectId, ref:'Cycle', index:true, required:true},
+    action_resources:[
+        new Schema({
+            resource: {type:ObjectId, ref:'ActionResource'},
+            amount:Number,
+            left_to_bring: Number
+        })
+    ],
+    what_users_bring: [
+        new Schema({
+            user_id: {type: ObjectId, ref:'User'},
+            amount: {type: Number, 'default': 0},
+            resource: {type:ObjectId, ref:'ActionResource'}
+        })
+    ],
+    tags:[String],
     //users that conected somehow to the action for my uru
-    users:               [
+    users: [
         new Schema({
             user_id:   {type: ObjectId, ref: 'User'},
             join_date: {type: Date, 'default': Date.now}

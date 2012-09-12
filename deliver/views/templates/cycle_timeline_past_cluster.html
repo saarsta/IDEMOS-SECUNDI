@@ -1,4 +1,4 @@
-<div style="left: {offset}%" class="event past-cluster">
+<div style="left: {offset}px" class="event past-cluster">
     <div class="icon white-icon multi">
         <span class="i right"></span>
         <span class="i left"></span>
@@ -8,7 +8,7 @@
                 <h3>{month}</h3>
                 <ul class="">
                     {#items}
-                    <li><strong>  {date|date_short}</strong> {type_print}</li>
+                    <li><strong>{date|date_short} </strong> {?link}<a href="{link}" >{/link}<strong>{type_print}</strong>{?short} - {short}{/short}{?link}</a>{/link}</li>
                     {/items}
                 </ul>
             </div>

@@ -1,10 +1,3 @@
-/**
- * Created by JetBrains WebStorm.
- * User: saar
- * Date: 08/03/12
- * Time: 14:26
- * To change this template use File | Settings | File Templates.
- */
 
 var resources = require('jest'),
     util = require('util'),

@@ -1248,6 +1248,39 @@ var db_functions = {
             }
         });
     },
+
+    //action_resources == [id: (action_resource_id), amount: (to add or remove to/from user)]
+    addOrRemoveResourceToAction: function(action_id, action_resources, callback){
+        db_functions.loggedInAjax({
+            url:'/api/user_helpsAction/' + action_id,
+            type:"PUT",
+            async:true,
+            data: {action_resources: action_resources},
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function (err) {
+                callback(err, null);
+            }
+        });
+    },
+
+    createNewActionResource: function(action_id, action_resource, callback){
+        db_functions.loggedInAjax({
+            url:'/api/user_helpsAction/' + action_id,
+            type:"PUT",
+            async:true,
+            data: {action_resources: action_resources},
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function (err) {
+                callback(err, null);
+            }
+        });
+    },
     //---------------------------------------------------//
 
     getDiscussionHistory:function (discussion_id, callback) {
