@@ -417,18 +417,27 @@ var db_functions = {
         });
     },
 
-    createDiscussion:function (subject_id, vision, title, tags, image, callback) {
+    createDiscussion: function(subject_id, vision, title, tags, image, callback) {
         db_functions.loggedInAjax({
             url:'/api/discussions/',
             type:"POST",
             async:true,
-            data:{"subject_id":subject_id, "subject_name":subject_name, "text_field":vision, "title":title, "tags":tags, "is_published":true, image_field:image},
-            success:function (data) {
+            data: {
+                "subject_id": subject_id,
+                //"subject_name": subject_name,
+                "text_field": vision,
+                "title": title,
+                "tags": tags,
+                "is_published": true,
+                image_field: image
+            },
+
+            success: function(data) {
                 console.log(data);
                 callback(null, data);
             },
 
-            error:function (err) {
+            error: function(err) {
                 if (err.responseText == "vision can't be more than 800 words")
                     popupProvider.showOkPopup({message:"חזון הדיון צריך להיות 800 מילים לכל היותר"});
                 else if (err.responseText == "you don't have the min amount of tokens to open discussion")
@@ -437,7 +446,7 @@ var db_functions = {
             }
         });
     },
-    addSuggestionToDiscussion:function (discussion_id, parts, explanation, callback) {
+    addSuggestionToDiscussion: function(discussion_id, parts, explanation, callback) {
         db_functions.loggedInAjax({
             url:'/api/suggestions/',
             type:"POST",
@@ -799,21 +808,26 @@ var db_functions = {
     },
 
     getListItems:function (type, query, callback) {
-        var querystring = type;
+        var querystring;
         switch (type) {
             case "actions":
-                querystring = "actions?is_approved=true";
+                querystring = "actions?is_approved=true&";
                 break;
+
             case "pendingActions":
-                querystring = "actions?is_approved=false";
+                querystring = "actions?is_approved=false&";
+                break;
+
+            default:
+                querystring = type + '?';
                 break;
         }
         db_functions.loggedInAjax({
-            url:'/api/' + querystring + '?limit=0',
-            data:query,
-            type:"GET",
-            async:true,
-            success:function (data) {
+            url: '/api/' + querystring + 'limit=0',
+            data: query,
+            type: "GET",
+            async: true,
+            success: function (data) {
                 callback(null, data);
             }
         });

@@ -29,8 +29,12 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
     init:function () {
         this._super(models.Action, null, 0);
         this.allowed_methods = ['get', 'post', 'put'];
-        this.filtering = {cycle_id:null, is_approved:null, grade:null, num_of_going:null,
-            'users.user_id':{
+        this.filtering = {
+            cycle_id:null,
+            is_approved:null,
+            grade:null,
+            num_of_going:null,
+            'users.user_id': {
                 exact:true,
                 in:true
             }
@@ -38,7 +42,7 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
         this.authentication = new common.SessionAuthentication();
         this.default_query = function (query) {
             return query.sort({"execution_date.date":'descending'});
-        },
+        };
 
         this.fields = {
             _id: null,
