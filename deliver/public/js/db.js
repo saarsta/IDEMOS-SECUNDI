@@ -1281,6 +1281,7 @@ var db_functions = {
             }
         });
     },
+
     //---------------------------------------------------//
 
     getDiscussionHistory:function (discussion_id, callback) {

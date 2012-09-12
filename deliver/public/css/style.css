@@ -2835,6 +2835,12 @@ textarea.hidden_textarea::selection
     text-align: center;
     text-decoration: none;
 }
+
+.write-comment .disable{
+    opacity: 0.3;
+    cursor: auto;
+}
+
 /*--------------------*/
 .system-notice
 {
