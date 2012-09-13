@@ -420,6 +420,7 @@ function image_autoscale(obj, params)
 //animateCluster([$('#a1'),$('#a2'),$('#a3'),$('#a4')]);
 function animateCluster  (items)
 {
+    debugger;
     var isSpread=false,
         isOpening=false,
         isClosing=false,
@@ -459,6 +460,7 @@ function animateCluster  (items)
     }
     else if(items.length==4)
     {
+
         var  left=items[0],
             center_left=items[1],
             center_right=items[2],
