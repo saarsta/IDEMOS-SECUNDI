@@ -147,6 +147,12 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                 if(!cycle)
                     cbk('no such cycle');
                 else{
+
+                    if (fields.text_field.length >= 200)
+                        fields.text_field_preview = fields.text_field.substr(0, 200);
+                    else
+                        fields.text_field_preview = fields.text_field;
+
                     fields.subject_id = cycle.subject[0].id;
 
                     // Data external to the request
