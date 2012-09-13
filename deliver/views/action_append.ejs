@@ -142,7 +142,7 @@ var error_message = error_message || '';
 
 <div class="add-offer add-offer-inner">
     <h2>
-        <span class="arrow"><%=action.category%></span>
+        <span class="arrow"><%=action.type%></span>
         <%=action.admin_text%>
     </h2>
     <div  id="minInfo" class="text-box cf">
@@ -151,7 +151,7 @@ var error_message = error_message || '';
             <span class="blue-title"><%=action.title%></span>
         </h3>
 
-        <div id="discussion_image" style="width: 212px;height: 164px; overflow:hidden;" class='auto-scale floatRight'>
+        <div id="action_image" style="width: 212px;height: 164px; overflow:hidden;" class='auto-scale floatRight'>
             <img src="<%= action.image_field ? action.image_field.url ||'' : '' %>" alt=""/>
             <!--  images/sample-2.jpg" -->
 
@@ -185,7 +185,7 @@ var error_message = error_message || '';
                 <%=action.cycle_id.title%></a> </span>
             <span class="blue-title"><%=action.title%></span></h3>
         <div class="text-box cf">
-            <div id="discussion_image" style="width: 139px;height: 135px; overflow:hidden;" class='auto-scale floatRight'>
+            <div id="action_image" style="width: 139px;height: 135px; overflow:hidden;" class='auto-scale floatRight'>
                 <img src="<%= action.image_field ? action.image_field.url ||'' : '' %>" alt=""/>
                 <!--  images/sample-2.jpg" -->
 
@@ -282,7 +282,7 @@ var error_message = error_message || '';
         </div>
         <div class="tags">
              <% for (var c = 0; c<action.tags.length ; c++) { %>
-                    <a href="/discussions/?tag_name=<%=action.tags[c]%>"> <%=action.tags[c] %></a>
+                    <a href="/actions/?tag_name=<%=action.tags[c]%>"> <%=action.tags[c] %></a>
            <% }%>
 
         </div>
@@ -331,17 +331,17 @@ var error_message = error_message || '';
 
     <div class="text-box cf">
         <div class="left">
-            <p id='discussion_content_txt'><strong></strong>
+            <p id='action_content_txt'><strong></strong>
 
             </p>
             <label>
                 ההצעה לשינוי שלי:
             </label>
-            <textarea id='discussion_suggest' class="five-col" cols="0" rows="0"></textarea>
+            <textarea id='action_suggest' class="five-col" cols="0" rows="0"></textarea>
             <label>
                 טיעונים, הצדקות ונימוקים:
             </label>
-            <textarea id="discussion_explanation" class="two-col" cols="0" rows="0"></textarea>
+            <textarea id="action_explanation" class="two-col" cols="0" rows="0"></textarea>
         </div>
         <div class="user-right">
             <div class="img-box" style="overflow: hidden;">
@@ -373,10 +373,6 @@ var error_message = error_message || '';
     </a>
 </div>
 
-
-
-
-
 <div class="members-box members-box-action-approved cf ">
     <h2>משתתפים
         <small id="going_number"></small></h2>
@@ -384,9 +380,9 @@ var error_message = error_message || '';
     </div>
 
     <br clear="all" />
-    <div class="more-deals" >
-        <a href="">עוד הצעות</a>
-    </div>
+    <!--<div class="more-deals" >-->
+        <!--<a href="">עוד הצעות</a>-->
+    <!--</div>-->
 </div>
 
 
@@ -441,7 +437,7 @@ var error_message = error_message || '';
             <div class="text-box cf"
             <%if(user_logged){%> data-creator_id="<%=user._id%>" <%}%> >
             <div class="left">
-                <textarea id="discussion_comment" dir="rtl" class="four-col" cols="0" rows="0"></textarea>
+                <textarea id="action_comment" dir="rtl" class="four-col" cols="0" rows="0"></textarea>
             </div>
             <div class="user-right">
                 <div class="img-box" style="overflow: hidden;">
@@ -543,12 +539,8 @@ var error_message = error_message || '';
                          var range = $(this).find('textarea').getSelection();
 
 //                console.log(e);
-
-
                          left = Math.ceil((mouseDown.clientX + mouseUp.clientX) / 2 - ($(".popup-window").width() / 2));
                          top = Math.min(mouseDown.clientY, mouseUp.clientY) - $(".popup-window").height() - 40 + $(window).scrollTop();
-
-
 
                      }).on('keydown',
                      function (e) {
@@ -592,7 +584,7 @@ var error_message = error_message || '';
                  e.preventDefault();
                  $('#action_content_txt').text('"' + range.text + '"');
                  $('#write-comment').show();
-                 $('textarea#discussion_suggest').focus();
+                 $('textarea#action_suggest').focus();
                  $('#reload-img').attr('src', $('#reload-img').attr('src'));
                  $(".popup-window").hide();
              });
@@ -600,9 +592,26 @@ var error_message = error_message || '';
                  e.preventDefault();
                  new_post_ref_id = null;
                  $(".popup-window").hide();
-                 $("textarea#discussion_comment").val('"' + range.text + '"').focus();
+                 $("textarea#action_comment").val('"' + range.text + '"').focus();
 
 
+             });
+
+             $('#suggestion_list').on('click', '.sugg_rating_button', function () {
+                 var rating = Number($(this).parent().find($(".sugg_rating_select")).val());
+                 sugg_grade_id = $(this).parent().data('grade');
+
+                 var suggestion_id = $(this).parent().attr('id');
+                 var self = this;
+                 db_functions.addSuggestionGrade(suggestion_id, action_id, rating, sugg_grade_id, function (err, data) {
+                     if (!err) {
+                         db_functions.getSuggestionByAction(action_id, null, null, function (err, data) {
+                             $.each(data.objects, function (index, suggestion) {
+                                 render_suggestion(suggestion);
+                             });
+                         })
+                     }
+                 });
              });
 
              $('#suggest_button').click(function () {
@@ -611,16 +620,16 @@ var error_message = error_message || '';
 
              $('#close_suggest').click(function () {
                  $('#suggest_div').hide();
-                 $("textarea#discussion_suggest").val('');
+                 $("textarea#action_suggest").val('');
              });
 
              $('#send_suggestion').click(function () {
-                 var part = {start:range.start, end:range.end, text:$("textarea#discussion_suggest").val()};
+                 var part = {start:range.start, end:range.end, text:$("textarea#action_suggest").val()};
                  //arrange spaces
                  if (vision[part.end - 1] == " " && part.text[part.text.length - 1] != " ")
 
                      part.text += " ";
-                 var explanation = $("#discussion_explanation").val();
+                 var explanation = $("#action_explanation").val();
                  db_functions.addSuggestionToAction(action_id, [part], explanation, function (err, data) {
                      if (!err) {
                          $('#write-comment').hide();
@@ -664,9 +673,149 @@ var error_message = error_message || '';
                      else
                          console.log(err);
                  });
-*/
              }
          });
+
+         var suggest_grade_id = new Object();
+
+         function render_suggestion(suggestion) {
+             if (suggestion.parts && suggestion.parts.length) {
+                 var original = $('#action_content').val();
+                 suggestion.original_part = function () {
+                     var from = suggestion.parts[0].start;
+                     var end = suggestion.parts[0].end;
+                     return original.substr(from, end - from);
+                 };
+                 suggestion.alternative_part = function () {
+                     return suggestion.parts[0].text;
+                 };
+
+                 var depress_event = false;
+
+                 dust.render('discussion_suggestion', suggestion, function (err, out) {
+                     $('#suggestion_list').prepend(out);
+                     image_autoscale($('#suggestion_list .auto-scale img'));
+                     var suggestion_grade_val = suggestion.grade_obj ? suggestion.grade_obj.evalueation_grade : my_action_grade;
+                     suggest_grade_id[suggestion.id] = suggestion.grade_obj ? suggestion.grade_obj._id : null;
+                     $(".suggest_slider_" + suggestion.id).slider({
+                         value:suggestion_grade_val,
+                         range:"min",
+                         min:0,
+                         max:10,
+                         step:0.10,
+                         slide:function (event, ui) {
+                             var rating = ui.value;
+                             var grade = is_creator ? action_grade : my_action_grade;
+                             if (rating >= grade) {
+                                 $(this).parents(".bottom-box").find(".agree_disagree").removeClass("disagree").addClass("agree")
+                             } else {
+                                 $(this).parents(".bottom-box").find(".agree_disagree").removeClass("agree").addClass("disagree");
+
+                             }
+                         },
+                         change:function (event, ui) {
+                             if(depress_event)
+                                 return;
+                             var rating = ui.value;
+                             db_functions.addSuggestionGrade(suggestion.id, action_id, rating, suggest_grade_id[suggestion.id], function (err, data) {
+                                 if (!err) {
+                                     $("#suggest_grade_" + suggestion.id).val(Math.round(data.new_grade * 100) / 100);
+                                     $("#suggest_graders_" + suggestion.id).text(Math.round(data.agrees) + Math.round(data.not_agrees));
+                                     $("#agrees_" + suggestion.id).text(Math.round(data.agrees));
+                                     $("#not_agrees_" + suggestion.id).text(Math.round(data.not_agrees));
+                                     $("#wanted_amount_of_tokens_" + suggestion.id).text(data.wanted_amount_of_tokens);
+                                     $("#curr_amount_of_tokens_" + suggestion.id).text(Math.round(data.curr_amount_of_tokens));
+                                     suggest_grade_id[suggestion.id] = data.grade_id;
+
+                                     //already_graded
+                                 }
+                                 else
+                                 {
+                                     depress_event = true;
+                                     $(".suggest_slider_" + suggestion.id).slider("value", suggestion_grade_val || 0);
+                                     depress_event = false;
+                                     console.log(err);
+                                 }
+                             });
+                         }
+                     });
+
+                     initTooltipWithMessage($('#suggestion_list .right .proxy'), 'מנדטים');
+                     initTooltipWithMessage($('#suggestion_list .right .respect'), 'מוניטין');
+
+                     $(".suggest_slider_" + suggestion.id).prepend($("<div>").addClass("dark_bar").css('width', (my_action_grade * 10) + '%'));
+                 });
+             }
+             return null;
+
+         }
+
+         db_functions.getSuggestionByAction(action_id, 1, 0, function (err, data) {
+             $.each(data.objects, function (index, suggestion) {
+                 render_suggestion(suggestion);
+             });
+
+             $('#suggestion_number').text('(' + data.meta.total_count + ')');
+             if (data.objects.length > 0) {
+                 $(".deals-box").show();
+                 if (data.meta.total_count >= 2) {
+                     $(".more-deals").show();
+                     $(".more-deals a").on('click', function (e) {
+                         db_functions.getSuggestionByAction(action_id, null, 1, function (err, data) {
+                             $.each(data.objects, function (index, suggestion) {
+                                 render_suggestion(suggestion);
+                             });
+                         });
+                         $(".more-deals").hide();
+                         return false;
+                     });
+
+                 }
+
+             }
+             else {
+                 $(".deals-box").hide();
+             }
+         });
+
+         function renderComments(comments) {
+             var i;
+             for (i = 0; i < comments.length; i++) {
+                 comments[i].isFirst = (i === 0);
+                 comments[i].isEven = ((i % 2)== 0);
+                 comments[i].voting =      comments[i].votes_for - comments[i].votes_against;
+             }
+             dust.renderArray('action_comment', comments, null, function (err, out) {
+                 if (!err) {
+                     var comments = $("#comments");
+                     comments.append(out);
+                     var hash = window.location.hash;
+                     if (hash) {
+                         if (!scrollTo(hash)) {
+                             var match = /^#post_([0-9a-f]+)/.exec(hash);
+                             if (match) {
+                                 var post_id = match[1];
+
+                                 db_functions.getPostById(post_id, function (err, post) {
+                                     dust.render('action_comment', post, function (err, out) {
+                                         if (!err)
+                                             comments.append(out);
+                                         scrollTo(hash);
+                                     });
+                                 });
+                             }
+                         }
+                     }
+
+                     image_autoscale($('.auto-scale img', comments));
+
+                     initTooltipWithMessage($('#comments .right .proxy'), 'מנדטים');
+                     initTooltipWithMessage($('#comments .right .respect'), 'מוניטין');
+
+                 }
+             });
+         }
+
 /******************** action res popup*********************************************/
     (function(){
             var resId;
