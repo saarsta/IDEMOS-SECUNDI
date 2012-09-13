@@ -160,7 +160,9 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                         date: new Date(fields.date + 'T' + fields.time.from),
                         duration: hourDifference(fields.time.from, fields.time.to)
                     };
-                    fields.action_resources = asArray(fields.action_resources).map(function (text) { return { resource: text, amount: 1, left_to_bring: 1 }; });
+                    fields.action_resources = asArray(fields.action_resources)
+                        .filter(function (obj) { return obj; } )
+                        .map(function (obj) { return { resource: obj.id, amount: 1, left_to_bring: obj.checked ? 0 : 1 }; });
 
                     for (var field in fields) {
                         action_object.set(field, fields[field]);
