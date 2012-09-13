@@ -35,7 +35,7 @@ module.exports = function (req, res) {
             system_message: 1
         })
         .populate('action_resources.resource')
-        .populate('category', { _id: 1, title: 1 })
+        .populate('category', { _id: 1, name: 1 })
         .populate('cycle_id', { _id: 1, title: 1 })
         .exec(function (err, action) {
             if (err) {

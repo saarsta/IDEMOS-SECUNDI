@@ -142,7 +142,9 @@ var error_message = error_message || '';
 
 <div class="add-offer add-offer-inner">
     <h2>
-        <span class="arrow"><%=action.category%></span>
+
+        <span class="arrow"><%=action.category && action.category.name %></span>
+
         <%=action.admin_text%>
     </h2>
     <div  id="minInfo" class="text-box cf">
