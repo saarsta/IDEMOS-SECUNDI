@@ -420,6 +420,7 @@ function image_autoscale(obj, params)
 //animateCluster([$('#a1'),$('#a2'),$('#a3'),$('#a4')]);
 function animateCluster  (items)
 {
+   //debugger;
     var isSpread=false,
         isOpening=false,
         isClosing=false,
@@ -459,6 +460,7 @@ function animateCluster  (items)
     }
     else if(items.length==4)
     {
+
         var  left=items[0],
             center_left=items[1],
             center_right=items[2],
@@ -471,6 +473,11 @@ function animateCluster  (items)
         center_left.mouseover(spread4);
         center_right.mouseout(unspreadTimer4);
         center_right.mouseover(spread4);
+
+        left.animate({left: '-=12'}, 500);
+        right.animate({left: '+=12'}, 500);
+        center_left.animate({left: '-=4'}, 500);
+        center_right.animate({left: '+=4'}, 500);
     }
 
     function spread4(){
@@ -515,25 +522,25 @@ function animateCluster  (items)
             unspread=setTimeout(function(){
                 isClosing=true;
                 left.animate({
-                    opacity: 0.5,
+           //         opacity: 0.5,
                     left: '+=35'
                 }, 500, function() {
 
                 });
                 center_left.animate({
-                    opacity: 0.5,
+         //           opacity: 0.5,
                     left: '+=12'
                 }, 500, function() {
 
                 });
                 center_right.animate({
-                    opacity: 0.5,
+         //           opacity: 0.5,
                     left: '-=12'
                 }, 500, function() {
 
                 });
                 right.animate({
-                    opacity: 0.5,
+           //         opacity: 0.5,
                     left: '-=35'
                 }, 500, function() {
                     isSpread=false;
