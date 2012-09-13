@@ -142,10 +142,15 @@ var error_message = error_message || '';
 </div>
 </div>
 <script>
-    $.fn.tagAdder = function (callback) {
+    $.fn.tagAdder = function (callback, condition) {
         var button = this.find('[type=button]');
         var text = this.find('[type=text]');
         button.click(function () {
+            if (condition && !condition()) {
+                // Do not add a tag if condition exists and returned false.
+                return;
+            }
+
             var value = text.val();
             value = value.trim();
 
@@ -180,7 +185,7 @@ var error_message = error_message || '';
         })
     };
 
-    var addResource = function (text) {
+    var addResource = function (text, id) {
         var add = true;
         resource_checkboxes.find('label').each(function () {
             if ($(this).text().trim() == text) {
@@ -192,8 +197,34 @@ var error_message = error_message || '';
         if (add) {
             var label = $('<label>');
             label.text(text);
-            label.prepend('<input type="checkbox">');
-            label.append($('<input type="hidden" name="action_resources[]">').val(text));
+
+            var addCheckbox = function (id) {
+                label.prepend($('<input type="checkbox">').attr('name', "action_resources[" + id + "]"));
+            };
+
+            if (id) {
+                // When selecting from the list, we already have an id
+                addCheckbox(id);
+            } else {
+                // When adding from the textbox, we need to generate an id on the server.
+                var loading = $('<img src="/images/loading-small.gif">');
+                label.prepend(loading);
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/action_resources',
+                    data: { category: category_select.val(), name: text },
+                    success: function (result) {
+                        console.log('/api/action_resource success: ', arguments);
+                        loading.remove();
+                        addCheckbox(result._id);
+                    },
+                    error: function () {
+                        console.log('/api/action_resource error: ', arguments);
+                    }
+                });
+            }
+
             resource_checkboxes.append(label);
         }
     };
@@ -222,13 +253,20 @@ var error_message = error_message || '';
     resource_select.change(function () {
         var resource = resource_select.val();
         if (resource) {
-            var text = resource_select.find('option:selected').text();
-            addResource(text);
+            var option = resource_select.find('option:selected');
+            addResource(option.text(), option.val());
         }
         resource_select.val('');
     });
 
-    $('.additional-resources').tagAdder(addResource);
+    $('.additional-resources').tagAdder(addResource, function () {
+        if (category_select.val() != 0) {
+            return true;
+        } else {
+            popupProvider.showOkPopup({ message: 'יש לבחור קודם סוג פעולה.' });
+            return false;
+        }
+    });
     $('.add-tag').tagAdder(addTag);
 
     $('#main_form').validate({
@@ -264,17 +302,13 @@ var error_message = error_message || '';
                 dataType: 'json',
                 success: function (result) {
                     console.log('ajax success: ', arguments);
-                    if (result.errors) {
-                        popupProvider.showOkPopup({ message: 'קרתה תקלה בעת שמירת הפעולה.' });
-                    } else {
-                        var url = result.redirect_link;
-                        if ($('#share').is(':checked')) {
-                            shareOnFacebook(url, '', function () {
-                                location.href = url;
-                            });
-                        } else {
+                    var url = result.redirect_link;
+                    if ($('#share').is(':checked')) {
+                        shareOnFacebook(url, '', function () {
                             location.href = url;
-                        }
+                        });
+                    } else {
+                        location.href = url;
                     }
                 },
                 error: function () {

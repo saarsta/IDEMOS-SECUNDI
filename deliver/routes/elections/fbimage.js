@@ -6,8 +6,8 @@ var createHash = require('crypto').createHash;
 var util = require('util');
 
 var url2png = function (req, url, viewport, fullpage, thumbnail_max_width) {
-    var apikey = req.app.settings.url2png_api_key,
-        secret = req.app.settings.url2png_api_secret,
+    var apikey = req.app.settings['url2png_api_key'],
+        secret = req.app.settings['url2png_api_secret'],
         target = util.format('url=%s&viewport=%s&fullpage=%s&thumbnail_max_width=%s&force=true',
             encodeURIComponent(url),
             viewport,
@@ -25,7 +25,7 @@ var url2png = function (req, url, viewport, fullpage, thumbnail_max_width) {
 module.exports = function(req, res) {
     if (req.method =='POST') {
         var path = 'http://uru-staging.herokuapp.com/elections/fbimage/' + req.session.user.id;
-        var target_url = url2png(req, path, '830x830', true, 830);
+        var target_url = url2png(req, path, '750x750', true, 750);
         res.send({target_url: target_url});
         return;
     }
@@ -39,12 +39,28 @@ module.exports = function(req, res) {
             url: req.url,
             items: items.map(function(dis) {
                 var textParts = dis.title.split(':', 2);
-                return {title: textParts[0], text: textParts[1]};
+                return {title: textParts[0], text: textParts[1] || ''};
             })
         });
     })
 };
 
+var subject_map = {
+    '6':  '50312d145bb1360200000065', // חינוך טוב יותר
+    '7':  '502cefe6abfc52020000002a',
+    '25': '502117271aff910200000c14',
+    '23': '503b992b7ccaa302000000e8', // הוזלת הדיור
+    '21': '503a5b84bd50520200000017', // שיפור תנאים
+    '19': '5022def369668c0200020d1e',
+    '17': 'מאבק בעבריינות: תוחמר האכיפה ומדיניות הענישה על עבירות גוף ורכוש', // מאבק בעבריינות
+    '15': 'יותר שוטרים ברחוב: יועלו משמעותית מספר השוטרים, תגמולם והכשרתם', // יותר שוטרים ברחוב
+    '13': '5023af9b61a325020000efbe',
+    '11': '501e69e17555f60200001f2e',
+    '9':  '502a91a90893a502000000ce',
+    '31': '5030eaf0e840450200000412',
+    '33': '4ff436ba47d7fa010000071f',
+    '35': '4fcdf7180a381201000005b3'
+};
 
 var getUserChosenDiscussions = module.exports.getUserChosenDiscussions = function(req, user_id, callback) {
     async.waterfall([
@@ -53,21 +69,25 @@ var getUserChosenDiscussions = module.exports.getUserChosenDiscussions = functio
             var conditions = (user_id.length == 24) ? {_id: user_id} : {facebook_id:user_id};
             models.User.findOne(conditions, cb)
         },
+
         // get assosiated discussions
         function (user, cb)
         {
+            user = user || {has_voted:[]};
             // we might have some placeholders in this list
-            if(!user)
-                cb('no such user');
-            else{
-                var disc_ids = user.has_voted.filter(function(val) {return val.length > 20;});
-                var stored_disc = user.has_voted.filter(function(val) {return val.title;});
-                models.Discussion.find({_id: {'$in': disc_ids}}, function(err, result){
-                    cb(err, result ? result.concat(stored_disc) : result);
-                })
-            }
-        }
-    ], callback
+            var votes = user.has_voted.map(function(val) { return subject_map[val] || val;});
+            var disc_ids = votes.filter(function(val) {return val.length == 24 && parseInt(val, 16);});
+            var stored_disc = votes.filter(function(val) {return !parseInt(val, 16);}).map(function(val) {return {title:val};});
+            models.Discussion.find({_id: {'$in': disc_ids}}, function(err, result){
+                if (err) {
+                    cb(err);
+                } else {
+                    cb(null, result.concat(stored_disc));
+                }
+            })
+        }],
+
+        callback
     );
 };
 

@@ -220,7 +220,7 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
             }
         ], function(err){
             callback(err, {
-                redirect_link: req.app.get('root_path') + '/actions/' + g_action.id
+                redirect_link: g_action ? req.app.get('root_path') + '/actions/' + g_action.id : null
             });
         })
     }
