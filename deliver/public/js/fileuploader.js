@@ -486,7 +486,7 @@ qq.FileUploader = function(o){
                 
         template: '<div class="qq-uploader">' + 
                 '<div class="qq-upload-drop-area"><span>Drop files here to upload</span></div>' +
-                '<div class="qq-upload-button">Upload a file</div>' +
+                '<div class="qq-upload-button">לחצו כאן להעלאת תמונה</div>' +//fix bug 425 - replace 'upload a file' to לחצו כאן להעלאת תמונה
                 '<ul class="qq-upload-list"></ul>' + 
              '</div>',
 

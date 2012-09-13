@@ -30,6 +30,7 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
         this._super(models.Action, null, 0);
         this.allowed_methods = ['get', 'post', 'put'];
         this.filtering = {
+            subject_id: null,
             cycle_id:null,
             is_approved:null,
             grade:null,
@@ -70,7 +71,6 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
             evaluate_counter: null,
             grade_sum: null,
             participants_count: null,
-
             redirect_link: null
         }
     },
@@ -137,25 +137,37 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
 //            {
 
         async.waterfall([
+
             function(cbk){
-                // Data external to the request
-                fields.creator_id = user_id;
-                fields.first_name = user.first_name;
-                fields.last_name = user.last_name;
-                fields.users = {user_id: user_id, join_date: Date.now()};
+                models.Cycle.findById(fields.cycle_id, cbk);
+            },
 
-                // Massage some of the data to an acceptable format
-                fields.execution_date = {
-                    date: new Date(fields.date + 'T' + fields.time.from),
-                    duration: hourDifference(fields.time.from, fields.time.to)
-                };
-                fields.action_resources = asArray(fields.action_resources).map(function (text) { return { resource: text, amount: 1, left_to_bring: 1 }; });
+            function(cycle, cbk){
 
-                for (var field in fields) {
-                    action_object.set(field, fields[field]);
+                if(!cycle)
+                    cbk('no such cycle');
+                else{
+                    fields.subject_id = cycle.subject[0].id;
+
+                    // Data external to the request
+                    fields.creator_id = user_id;
+                    fields.first_name = user.first_name;
+                    fields.last_name = user.last_name;
+                    fields.users = {user_id: user_id, join_date: Date.now()};
+
+                    // Massage some of the data to an acceptable format
+                    fields.execution_date = {
+                        date: new Date(fields.date + 'T' + fields.time.from),
+                        duration: hourDifference(fields.time.from, fields.time.to)
+                    };
+                    fields.action_resources = asArray(fields.action_resources).map(function (text) { return { resource: text, amount: 1, left_to_bring: 1 }; });
+
+                    for (var field in fields) {
+                        action_object.set(field, fields[field]);
+                    }
+
+                    base.call(self, req, fields, cbk);
                 }
-
-                base.call(self, req, fields, cbk);
             },
 
             function(action_obj, cbk){

@@ -74,7 +74,7 @@
         var selectedSubject;
         db_functions.getAllSubjects(function(err,data)  {
             $.each(data.objects,function(index,disc) {
-                disc.type = 'action';
+                disc.type = 'actions';
             });
             var uru_subject = data.objects[0];
             var level1subjects = data.objects.slice(1,6);
