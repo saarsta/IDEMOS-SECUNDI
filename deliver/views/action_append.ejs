@@ -561,7 +561,6 @@ var error_message = error_message || '';
              $("#action_content, #action_content_after_read_more").select(function () {
                  range = $(this).getSelection();
                  flag = false;
-                    debugger
                   db_functions.getSuggestionByAction(action_id, null, null, function(err, suggestions){
                      $.each(suggestions.objects, function (index, suggestion) {
                          if ((suggestion.parts[0].start >= range.start && suggestion.parts[0].start <= range.end)
@@ -607,7 +606,6 @@ var error_message = error_message || '';
                  db_functions.addSuggestionGrade(suggestion_id, action_id, rating, sugg_grade_id, function (err, data) {
                      if (!err) {
                          db_functions.getSuggestionByAction(action_id, null, null, function (err, data) {
-                             debugger
                              $.each(data.objects, function (index, suggestion) {
                                  render_suggestion(suggestion);
                              });
@@ -633,7 +631,6 @@ var error_message = error_message || '';
                      part.text += " ";
                  var explanation = $("#action_explanation").val();
                  db_functions.addSuggestionToAction(action_id, [part], explanation, function (err, data) {
-                     debugger
                      if (!err) {
                          $('#write-comment').hide();
                          render_suggestion(data)
@@ -754,7 +751,6 @@ var error_message = error_message || '';
          }
 
          db_functions.getSuggestionByAction(action_id, 1, 0, function (err, data) {
-            debugger
              $.each(data.objects, function (index, suggestion) {
                  render_suggestion(suggestion);
              });
@@ -765,7 +761,6 @@ var error_message = error_message || '';
                  if (data.meta.total_count >= 2) {
                      $(".more-deals").show();
                      $(".more-deals a").on('click', function (e) {
-                        debugger
                          db_functions.getSuggestionByAction(action_id, null, 1, function (err, data) {
                              $.each(data.objects, function (index, suggestion) {
                                  render_suggestion(suggestion);
@@ -783,9 +778,7 @@ var error_message = error_message || '';
              }
          });
 
-
          function renderComments(comments) {
-
              var i;
              for (i = 0; i < comments.length; i++) {
                  comments[i].isFirst = (i === 0);
