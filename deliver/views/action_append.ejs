@@ -11,17 +11,8 @@ var error_message = error_message || '';
     <script src="/plugins/ckeditor/ckeditor.js"></script>
     <script src="/plugins/ckeditor/adapters/jquery.js"></script>
     <script src="http://maps-api-ssl.google.com/maps/api/js?v=3&sensor=false&language=he"  type="text/javascript"></script>
-
-  <!--  <meta property="fb:app_id" content="<XXX%= settings.facebook_app_id %>" />
-    <meta property="og:type"   content="<XXX%= settings.facebook_app_name %>:discussion" />
-    <meta property="og:url"    content="<XXX%= settings.root_path %>/discussions/<XXX%= discussion.id %>" />
-    <meta property="og:title"  content="<XXX%=discussion.title%>" />
-    <meta property="og:description"  content="<XXX%=discussion.text_field%>" />
-    <meta property="og:image"  content="<XXX%= discussion.image_field && discussion.image_field.url ? discussion.image_field.url : 'http://site.e-dologic.co.il/philip_morris/Xls_script/uru_mailing/logo.jpg' %>" />
--->
-
-
 </head>
+
 <body class="body-action">
 <% include partials/body_top.ejs %>
 <div id="wrap">
@@ -150,18 +141,15 @@ var error_message = error_message || '';
 </div>
 
 <div class="add-offer add-offer-inner">
-   <h2>
-  <span class="arrow">
-		<%=action.type%>
-		</span>
-       <%=action.admin_text%>
-
-	</h2>
+    <h2>
+        <span class="arrow"><%=action.type%></span>
+        <%=action.admin_text%>
+    </h2>
     <div  id="minInfo" class="text-box cf">
-        <h3><span class="arrow">
-            <a href="/cycles/<%=action.cycle_id._id%>" style="color: #50504F;position: initial;">
-                <%=action.cycle_id.title%></a> </span>
-            <span class="blue-title"><%=action.title%></span></h3>
+        <h3>
+            <span class="arrow"><a href="/cycles/<%=action.cycle_id.id%>" style="color: #50504F;"><%=action.cycle.title%></a></span>
+            <span class="blue-title"><%=action.title%></span>
+        </h3>
 
         <div id="discussion_image" style="width: 212px;height: 164px; overflow:hidden;" class='auto-scale floatRight'>
             <img src="<%= action.image_field ? action.image_field.url ||'' : '' %>" alt=""/>
@@ -238,7 +226,7 @@ var error_message = error_message || '';
                             <% } %>
                     </div>
 
-                    <a  id="i_bring_bt" class="gray_and_soon" >
+                    <a  id="i_bring_bt"  >
              גם אני מביא
                     </a>
 
@@ -499,20 +487,22 @@ var error_message = error_message || '';
 
 <div id="action_resources_popup" >
     <div style="margin-right: 30px;margin-top: 24px;">
-      <div style="overflow: auto;height: 135px ;" >
+      <div class="res-div"  style="overflow: auto;height: 135px ;" >
            <% for (var i=0;i < action.action_resources.length;i++){%>
-               <div style="border-bottom: 1px solid #ECECEC;height:35px"
-                    data-id="<%=action.action_resources[i].resource._id %>"
-                    class="<%=action.action_resources[i].left_to_bring==0?'check-disable': 'uncheck-enable' %> ">
-               <!-- <input type="checkbox" style="display: inline;"/>
-                 <span  data-id="<%=action.action_resources[i].resource._id %>"
-                         class="check-enable "><%=action.action_resources[i].resource.name %></span>-->
-                    <span>
-                              <%=action.action_resources[i].resource.name %></span>
+               <div  data-id="<%=action.action_resources[i].resource._id %>"
+                    class="resource_row <%=action.action_resources[i].left_to_bring==0?'check-disable': 'uncheck-enable' %> ">
+                    <span> <%=action.action_resources[i].resource.name %></span>
                </div>
            <% } %>
      </div>
-        <div style="height: 35px"></div>
+
+        <div class="new_resources" style="height: 35px">
+                <span class="uncheck-enable"></span>
+                <input type="text"/>
+                <a class="add-new-res-bt">
+                   הוסף
+                </a>
+        </div>
         <div>
         <a class="i_bring">
             אני מביא
@@ -657,6 +647,8 @@ var error_message = error_message || '';
              change:function (event, ui) {
 
                  my_discussion_grade = ui.value;
+                 // This is an Action not a discussion
+/*
                  db_functions.addDiscussionGrade(action_id, my_discussion_grade, grade_id, function (err, data) {
 
                      if (!err) {
@@ -668,9 +660,10 @@ var error_message = error_message || '';
                      else
                          console.log(err);
                  });
+*/
              }
          });
-/*******************************************************************************/
+/******************** action res popup*********************************************/
     (function(){
             var resId;
 
@@ -683,38 +676,54 @@ var error_message = error_message || '';
                  selectedRes.removeClass("uncheck-enable");
                  selectedRes.addClass("check-enable");
              }
-           $('.have_tooltip').tooltip({
-             //relative:true,
-             opacity:1,
-             position: "bottom center",
-             offset:[0,10],
-             tip:'#action_resources_popup',
-             events: {
-                 def:'click,mouseout'
-                // input: 'click, blur',
-                // def:     "click",
-                // checkbox: 'click'
-               //  date: 'click, blur'
-                // checkbox: 'click, mouseout'
-             },
-             onBeforeShow:function(e){
-                resId=$(e.target).data('id');
-                var selectedRes=  $('#action_resources_popup').find('[data-id='+resId+']');
-                if(!selectedRes.hasClass('check-disable')){
+             function onPopupClosed(){
+                 $('#action_resources_popup').find('[data-id]').each(function(){
+                     if(!$(this).hasClass('check-disable')){
+                         uncheck($(this));
+                     }
+                 });
+                 $('#action_resources_popup .new_resources input').val('');
+                 uncheck( $('#action_resources_popup .new_resources span'));
 
-                    check(selectedRes);
-                }
-
-             },
-             onHide:function(e){
-               //  var resId=$(e.target).data('id');
-                 var selectedRes=  $('#action_resources_popup').find('[data-id='+resId+']');
-                 if(!selectedRes.hasClass('check-disable')){
-                   uncheck(selectedRes);
-                 }
              }
+              function  addResource(id,text, check){
+                   var class1 = check? 'check-disable': 'uncheck-enable';
+                  //add to popup
+                  $('#action_resources_popup .res-div').append(
+                        '<div  data-id="'+id+'" class="resource_row '+class1 +' ">'+
+                         ' <span>'+text+'</span>'+
+                          '</div>'
+                  );
+                  //add to page
+
+                  $('#fullInfo .detail-resourse-overflow').append(
+                     ' <span class="have_tooltip '+class1+'"  data-id="'+id+'" >'+text+'</span>'
+
+                  );
+              }
+             $('.have_tooltip').tooltip({
+             //relative:true,
+                 opacity:1,
+                 position: "bottom center",
+                 offset:[0,10],
+                 tip:'#action_resources_popup',
+                 events: {
+                     def:'click,mouseout'
+
+                 },
+                 onBeforeShow:function(e){
+                    resId=$(e.target).data('id');
+                    var selectedRes=  $('#action_resources_popup').find('[data-id='+resId+']');
+                    if(!selectedRes.hasClass('check-disable')){
+                        check(selectedRes);
+                    }
+                 },
+                 onHide:function(e){
+                     onPopupClosed();
+                 }
 
              });
+
               $('#action_resources_popup').on("click", ".check-enable", function(e){
                   uncheck($(this));
               })
@@ -727,37 +736,68 @@ var error_message = error_message || '';
                 var checkedArr=[];
                  $('#action_resources_popup .check-enable').each(function(){
                      checkedArr.push($(this).data('id'));
+                     //disable popup
+                     $(this).removeClass("uncheck-enable");
+                     $(this).removeClass("check-enable");
+                     $(this).addClass("check-disable");
                  });
 
                 // update ui
                 $.each(checkedArr,function(index,value){
                     var key=value;
+                     //disable in mainpage
                     $('.detail-resourse-overflow').find('[data-id='+key+']').each(function(){
                        $(this).removeClass("uncheck-enable");
                        $(this).removeClass("check-enable");
-                        $(this).addClass("check-disable");
+                       $(this).addClass("check-disable");
                     });
+
                 })
-
-
-                //save to db
-
-
-
-                //close  popup
-                this.getTip().hide();
-
+                //todo: saar
+               // db_functions.createNewActionResource()
+                $('#action_resources_popup').hide();
             })
+
+        $('#i_bring_bt').tooltip({
+            //relative:true,
+            opacity:1,
+            position: "bottom center",
+            offset:[0,10],
+            tip:'#action_resources_popup',
+            events: {
+                def:'click,mouseout'
+
+            },
+            onShow:function(e){
+               $('#action_resources_popup .new_resources input').focus();
+            },
+            onHide:function(e){
+                onPopupClosed();
+            }
+
+        });
+
+        $('#action_resources_popup .add-new-res-bt').click(function(e){
+            e.preventDefault();
+            var newRes= $('#action_resources_popup .new_resources input').val();
+            $('#action_resources_popup .new_resources input').val('');
+
+            var bringing=$('#action_resources_popup .new_resources span').hasClass('check-enable');
+            uncheck( $('#action_resources_popup .new_resources span'));
+            if(newRes&&newRes.length>0){
+                //save in db
+                //todo: saar
+                //db_functions.addNewActionResource()
+                var id =Math.random()*50000;//BUGBUG XXXXXXXX TODO REPLACE
+                addResource(id,newRes,bringing);
+            }
+        })
     })();
-
-
-
          var goingModel= new  window.uru.GoingModel({
              joinString:'אם זה קורה, אני שם'
          });
          //start from index 0 loding 1 rows 7 items
          goingModel.loadGoingUsers(0,1);
-
 
 
      });

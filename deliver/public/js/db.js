@@ -417,18 +417,27 @@ var db_functions = {
         });
     },
 
-    createDiscussion:function (subject_id, vision, title, tags, image, callback) {
+    createDiscussion: function(subject_id, vision, title, tags, image, callback) {
         db_functions.loggedInAjax({
             url:'/api/discussions/',
             type:"POST",
             async:true,
-            data:{"subject_id":subject_id, "subject_name":subject_name, "text_field":vision, "title":title, "tags":tags, "is_published":true, image_field:image},
-            success:function (data) {
+            data: {
+                "subject_id": subject_id,
+                //"subject_name": subject_name,
+                "text_field": vision,
+                "title": title,
+                "tags": tags,
+                "is_published": true,
+                image_field: image
+            },
+
+            success: function(data) {
                 console.log(data);
                 callback(null, data);
             },
 
-            error:function (err) {
+            error: function(err) {
                 if (err.responseText == "vision can't be more than 800 words")
                     popupProvider.showOkPopup({message:"חזון הדיון צריך להיות 800 מילים לכל היותר"});
                 else if (err.responseText == "you don't have the min amount of tokens to open discussion")
@@ -437,7 +446,7 @@ var db_functions = {
             }
         });
     },
-    addSuggestionToDiscussion:function (discussion_id, parts, explanation, callback) {
+    addSuggestionToDiscussion: function(discussion_id, parts, explanation, callback) {
         db_functions.loggedInAjax({
             url:'/api/suggestions/',
             type:"POST",
@@ -799,21 +808,26 @@ var db_functions = {
     },
 
     getListItems:function (type, query, callback) {
-        var querystring = type;
+        var querystring;
         switch (type) {
             case "actions":
-                querystring = "actions?is_approved=true";
+                querystring = "actions?is_approved=true&";
                 break;
+
             case "pendingActions":
-                querystring = "actions?is_approved=false";
+                querystring = "actions?is_approved=false&";
+                break;
+
+            default:
+                querystring = type + '?';
                 break;
         }
         db_functions.loggedInAjax({
-            url:'/api/' + querystring + '?limit=0',
-            data:query,
-            type:"GET",
-            async:true,
-            success:function (data) {
+            url: '/api/' + querystring + 'limit=0',
+            data: query,
+            type: "GET",
+            async: true,
+            success: function (data) {
                 callback(null, data);
             }
         });
@@ -1281,6 +1295,7 @@ var db_functions = {
             }
         });
     },
+
     //---------------------------------------------------//
 
     getDiscussionHistory:function (discussion_id, callback) {
@@ -1325,7 +1340,7 @@ var db_functions = {
         });
     },
 
-    getInfoItemsOfSubjectByKeywords:function (keywords, subject_id, sort_by, callback) {
+    getInfoItemsOfSubjectByKeywords: function (keywords, subject_id, sort_by, callback) {
         var keywords_arr = $.trim(keywords).replace(/\s+/g, ".%2B");
         db_functions.loggedInAjax({
             url:'/api/information_items/?or=text_field__regex,text_field_preview__regex,title__regex&title__regex=' + keywords_arr + '&text_field__regex=' + keywords_arr + '&text_field_preview__regex=' + keywords_arr + '&subject_id=' + subject_id + '&order_by=' + sort_by,
@@ -1337,6 +1352,21 @@ var db_functions = {
             },
             error:function (err) {
                 callback(err, null);
+            }
+        });
+    },
+
+    addNewActionResource: function(action_id, category_id, resource_name, callback){
+        db_functions.loggedInAjax({
+            url:'/api/action_resources',
+            type:"Post",
+            async:true,
+            data: {action_id: action_id, category: category_id, name: resource_name},
+
+            success:function (data) {
+
+                console.log(data);
+                callback(null, data);
             }
         });
     }
