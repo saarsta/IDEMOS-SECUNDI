@@ -49,8 +49,8 @@ module.exports = {
 var registerUser = module.exports.registerUser = function(req,data,next,callback) {
     var user = new models.User();
     user.email = (data.email || '').toLowerCase().trim();
-    if (data['full_name']) {
-        var name_parts = data['full_name'].split(' ');
+    if ('full_name' in data) {
+        var name_parts = data['full_name'].trim().split(' ');
         user.first_name = name_parts.shift();
         user.last_name = name_parts.join(' ');
     } else {

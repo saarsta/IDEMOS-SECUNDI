@@ -686,9 +686,7 @@ var populateNotifications = module.exports.populateNotifications = function(resu
     ];
 
     var discussion_notification_types = [
-        "comment_on_discussion_you_are_part_of",
         "change_suggestion_on_discussion_you_are_part_of",
-        "comment_on_discussion_you_created",
         "change_suggestion_on_discussion_you_created",
         "approved_change_suggestion_you_created",
         "approved_change_suggestion_you_graded",
@@ -709,6 +707,8 @@ var populateNotifications = module.exports.populateNotifications = function(resu
         .value();
 
     var discussion_notification_types_as_sub_entity = [
+        "comment_on_discussion_you_are_part_of",
+        "comment_on_discussion_you_created",
         "user_gave_my_post_tokens",
         "user_gave_my_suggestion_tokens",
         "proxy_created_change_suggestion",
