@@ -9,7 +9,7 @@ var NotificationCategoryResource = module.exports = resources.MongooseResource.e
     {
         init:function () {
             this._super(models.Notification);
-            this.allowed_methods = ['get', 'put'];
+            this.allowed_methods = ['get'];
             this.authentication = new common.SessionAuthentication();
             this.update_fields = {name:null};
             this.default_query = function (query) {
@@ -85,17 +85,19 @@ var iterator = function (users_hash, discussions_hash, posts_hash, info_items_ha
 
             var discussion = discussions_hash[notification.entity_id + ''] || discussions_hash[notification.notificators[0].sub_entity_id + ''];
             var post = posts_hash[notification.entity_id + ''] || posts_hash[notification.notificators[0].sub_entity_id + ''];
-
+            var post_id = post ? post._id : "";
             switch (notification.type) {
                 case "approved_info_item_i_created":
                     notification.message_of_notificators =
 "פריט מידע שיצרת התקבל למערכת"
                     ;
                     notification.link = "/information_items/" + notification.entity_id;
-                    notification.pic = info_items_hash[notification.entity_id].image_field_preview
-                        || info_items_hash[notification.notificators[0].sub_entity_id].image_field;
+                    if(info_items_hash[notification.entity_id]){
+                        notification.pic = info_items_hash[notification.entity_id].image_field_preview
+                            || info_items_hash[notification.notificators[0].sub_entity_id].image_field;
 
-                    notification.title=info_items_hash[notification.entity_id].title;
+                        notification.title=info_items_hash[notification.entity_id].title;
+                    }
                     itr_cbk();
                     break;
 //                case "approved_info_item_i_liked":
@@ -111,7 +113,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, info_items_ha
 
                     var num_of_comments = notification.notificators.length;
                     if(discussion){
-                        notification.link = "/discussions/" + discussion._id + "" + "#post_" +  notification.notificators[0].sub_entity_id;
+                        notification.link = "/discussions/" + discussion._id + "" + "#post_" +  post_id;
                         notification.pic = discussion.image_field_preview || discussion.image_field;
                         notification.name = discussion.title;
 
@@ -123,7 +125,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, info_items_ha
                         notification.text_preview = discussion.text_field_preview;
 
                         //find the first comment user didnt see
-                       notification.link_to_first_comment_user_didnt_see = "/discussions/" + discussion._id + "#post_" +  notification.notificators[0].sub_entity_id;
+                       notification.link_to_first_comment_user_didnt_see = "/discussions/" + discussion._id + "#post_" +  post_id;
                        console.log( notification.link_to_first_comment_user_didnt_see);
                     }
 
@@ -152,9 +154,9 @@ var iterator = function (users_hash, discussions_hash, posts_hash, info_items_ha
                     var num_of_comments = notification.notificators.length;
                     if(discussion){
                         notification.link = "/discussions/" + discussion._id + "";
-                        //todo: this link don't work =>BUGBUG
+                        //todo: this link doesn't work =>BUGBUG
                        //  notification.suggestions_link='/discussions/' + discussion._id + ' + notification.notificators[0].sub_entity_id;
-                        notification.suggestions_link = "/discussions/" + discussion._id + "#post_" +  notification.notificators[0].sub_entity_id;
+                        notification.suggestions_link = "/discussions/" + discussion._id + "#post_" +  post_id;
                       //  notification.suggestions_link=notification.link; //hot fix remove me
 
 
@@ -291,7 +293,6 @@ var iterator = function (users_hash, discussions_hash, posts_hash, info_items_ha
                     break;
                 case "been_quoted":
                     if(discussion){
-                        var post_id = post ? post._id : ""
                         notification.link = "/discussions/" + discussion._id + '#post_' + post_id;
                         notification.pic = discussion.image_field_preview || discussion.image_field;
                         notification.name = discussion.title;
@@ -303,7 +304,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, info_items_ha
 //                        notification.text_preview = posts_hash[notification.entity_id + ""].text;
                         notification.text_preview = discussion.text_field_preview;
 
-                        notification.quote_link  = "/discussions/" + discussion._id + '#post_' + notification.notificators[0].sub_entity_id;
+                        notification.quote_link  = "/discussions/" + discussion._id + '#post_' + post_id;
                         notification.discussion_link = "/discussions/" + discussion._id;
                     }
                     if(user_obj){
@@ -327,8 +328,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, info_items_ha
                         "פריט מידע שעשית לו לייק תוייג בדיון - "
                     ;
                     if(discussion){
-                        notification.link = "/discussions/" + notification.entity_id;
-                      //  notification.pic = info_items_hash[notification.entity_id + ""].image_field_preview || info_items_hash[notification.entity_id + ""].image_field;
+                        notification.link = "/discussions/" + discussion._id;
                         notification.pic = discussion.image_field_preview || discussion.image_field;
                         notification.name = discussion.title;
 
@@ -344,9 +344,11 @@ var iterator = function (users_hash, discussions_hash, posts_hash, info_items_ha
                     var num_of_users_that_vote_my_sugg = notification.notificators.length;
 
                         var latest_notificator = getLatestNotificator(notification.notificators);
-                        notification.link = "/discussions/" + notification.notificators[0].sub_entity_id;
-                        notification.link += "#post_" + notification.entity_id;
-                        notification.name = discussions_hash[notification.notificators[0].sub_entity_id + ""] && discussions_hash[notification.notificators[0].sub_entity_id + ""].title;
+                    if(discussion){
+                        notification.link = "/discussions/" + discussion._id;
+                        notification.link += "#post_" + post_id;
+                        notification.name = discussion.title;
+                    }
 
                     if(user_obj){
                         notification.pic = user_obj.avatar_url();
@@ -424,7 +426,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, info_items_ha
                     notification.html_version = true;
 
                     if(discussion){
-                        notification.link = "/discussions/" + discussion._id + "#post_" + notification.entity_id;
+                        notification.link = "/discussions/" + discussion._id + "#post_" + post_id;
                         notification.pic = discussion.image_field_preview || discussion.image_field;
                         notification.name = discussion.title;
                         notification.img_src = notification.pic;
@@ -450,7 +452,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, info_items_ha
                     notification.html_version = true;
 
                     if(discussion){
-                        notification.link = "/discussions/" + discussion._id + "#post_" + notification.entity_id;
+                        notification.link = "/discussions/" + discussion._id + "#post_" + post_id;
                         notification.pic = discussion.image_field_preview || discussion.image_field;
                         notification.name = discussion.title;
                         notification.img_src = notification.pic;
@@ -511,7 +513,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, info_items_ha
                         notification.html_version = true;
                         var is_agree = balance > 0 ? "תמך בתגובה בדיון " : "התנגד לתגובה בדיון ";
 
-                            notification.link = "/discussions/" + discussion._id + "#post_" + notification.entity_id;
+                            notification.link = "/discussions/" + discussion._id + "#post_" + post_id;
                             notification.pic = discussion.image_field_preview || discussion.image_field;
                             notification.name = discussion.title;
                             notification.img_src = notification.pic;
@@ -569,10 +571,9 @@ var iterator = function (users_hash, discussions_hash, posts_hash, info_items_ha
                     if(num_of_users_that_vote_my_post){
                         notification.html_version = true;
 
-                        if(notification && notification.notificators[0] && discussion){
+                        if(discussion){
                             var latest_notificator = getLatestNotificator(notification.notificators);
-                            notification.link = "/discussions/" + notification.notificators[0].sub_entity_id + "#post_" + notification.entity_id;
-//                            notification.link += latest_notificator ? "#post_" + notification.entity_id : "";
+                            notification.link = "/discussions/" + discussion._id + "#post_" + post_id;
                             notification.pic = discussion.image_field_preview
                                 || discussion.image_field;
                             notification.name = discussion.title;
@@ -630,9 +631,9 @@ var iterator = function (users_hash, discussions_hash, posts_hash, info_items_ha
                     if(num_of_users_that_vote_my_post){
                         notification.html_version = true;
 
-                        if(notification && notification.notificators[0] && discussion){
+                        if(notification && discussion){
                             var latest_notificator = getLatestNotificator(notification.notificators);
-                            notification.link = "/discussions/" + notification.notificators[0].sub_entity_id + "#post_" + notification.entity_id;
+                            notification.link = "/discussions/" + discussion._id + "#post_" + post_id;
                             notification.pic = discussion.image_field_preview || discussion.image_field;
                             notification.name = discussion.title;
                         }
@@ -685,9 +686,7 @@ var populateNotifications = module.exports.populateNotifications = function(resu
     ];
 
     var discussion_notification_types = [
-        "comment_on_discussion_you_are_part_of",
         "change_suggestion_on_discussion_you_are_part_of",
-        "comment_on_discussion_you_created",
         "change_suggestion_on_discussion_you_created",
         "approved_change_suggestion_you_created",
         "approved_change_suggestion_you_graded",
@@ -708,6 +707,8 @@ var populateNotifications = module.exports.populateNotifications = function(resu
         .value();
 
     var discussion_notification_types_as_sub_entity = [
+        "comment_on_discussion_you_are_part_of",
+        "comment_on_discussion_you_created",
         "user_gave_my_post_tokens",
         "user_gave_my_suggestion_tokens",
         "proxy_created_change_suggestion",

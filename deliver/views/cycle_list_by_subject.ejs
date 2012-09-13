@@ -61,13 +61,13 @@
         var selectedTag='<%=tag_name? tag_name:'' %>';
         var selectedSubject = '<%= subject.id %>';
         function createCyclesQuery(){
-            var sortby=  $('#sorting_select').find(':selected').data('sortby');
+            var sortby = $('#sorting_select').find(':selected').data('sortby');
             var query='order_by='+sortby;
 //            if(selectedTag){
 //                query =query+'&tags='+selectedTag;
 //            }
             if(selectedSubject){
-                query =query+'&subject_id='+selectedSubject;
+                query =query+'&subject.id='+selectedSubject;
             }
             return query;
         }
@@ -83,7 +83,7 @@
             var item_id =   item.data('id');
             var actionType=  $(this).data('action');
             e.preventDefault();
-            db_functions.joinToCycleFollowers(item_id, actionType,function(err,data){
+            db_functions.joinToCycleFollowers(item_id, function(err,data){
                 dust.render('cycle_list_item', data, function(err, html){
                     item.replaceWith(html);
                 })

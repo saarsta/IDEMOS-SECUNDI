@@ -383,12 +383,12 @@ var error_message = error_message || '';
  var my_id = "<%=user_logged ? user._id : ''%>";
  $(document).ready(function () {
 
-     var new_post_ref_id = null;  //if not null =>the create new post is connected to anther post
-     var action_title = "<%= action.title%>"
-     var discussion_img_field_preview = "<%= action.image_field ? action.image_field.url ||'' : '' %>";
+   //  var new_post_ref_id = null;  //if not null =>the create new post is connected to anther post
+    // var action_title = "<%= action.title%>"
+   //  var discussion_img_field_preview = "<%= action.image_field ? action.image_field.url ||'' : '' %>";
 
 
-     <%
+   /*  <%
      if (user_logged) { %>
          var proxy = JSON.parse('<%-proxy%>');
      <%
@@ -397,41 +397,41 @@ var error_message = error_message || '';
      <%
      }
      %>
+*/
 
 
 
-
-     // just focus
+  /*   // just focus
      $("#action_comment_reply_button").on('click', function (e) {
          e.preventDefault();
          var discussionComment = $("textarea#discussion_comment").focus();
          focusOnCommentBox();
-     });
+     });*/
 
-     function setUserScore(userID, score) {
+   /*  function setUserScore(userID, score) {
          $('[ data-creator_id=' + userID + ']').find('.score').empty().append(score);
-     }
+     }*/
 
 
-     function setCommentNumber(number) {
+   /*  function setCommentNumber(number) {
 
          $('#comments_number')[0].innerHTML = '(' + number + ')';
-     }
+     }*/
 
     /* function setGoingNumber(number) {
 
          $('#going_number')[0].innerHTML = '(' + number + ')';
          $('.going_red').html(number);
      }*/
-     function setUserScore(userID, score) {
+    /* function setUserScore(userID, score) {
          $('[ data-creator_id=' + userID + ']').find('.score').empty().append(score);
-     }
+     }*/
 
 
 
 
 
-
+/*
       $("#submit_post").on('click', function (e) {
             e.preventDefault();
             db_functions.addPostToAction(action_id, $("textarea#discussion_comment").val(), new_post_ref_id, function (err, post) {
@@ -452,12 +452,12 @@ var error_message = error_message || '';
                     });
                 }
             })
-         });
+         });*/
 
 
-          var current_offset = 0;
+      //    var current_offset = 0;
 
-     function renderComments(comments) {
+   /*  function renderComments(comments) {
          var i;
          for (i = 0; i < comments.length; i++) {
              comments[i].isFirst = (i === 0);
@@ -493,8 +493,8 @@ var error_message = error_message || '';
 
              }
          });
-     }
-
+     }*/
+/*
           function loadPosts() {
               var selectedOption = $("#sorting_select").val();
               db_functions.getSortedPostByAction(action_id, selectedOption,current_offset, function (err, data) {
@@ -521,7 +521,7 @@ var error_message = error_message || '';
                           FB.XFBML.parse();
                   }
               })
-          }
+          }*/
 
 
 
@@ -531,7 +531,7 @@ var error_message = error_message || '';
 
 
 
-     $('.more_comments').click(function() {
+   /*  $('.more_comments').click(function() {
           loadPosts();
       });
 
@@ -539,13 +539,13 @@ var error_message = error_message || '';
           $("#comments").empty();
           current_offset = 0;
           loadPosts();
-      });
+      });*/
 
 
      /**********************************posts   *********************************************************/
 
 
-     $('#comments').on('click', ".quote_button", function (e) {
+   /*  $('#comments').on('click', ".quote_button", function (e) {
          var userName,
                  text;
 
@@ -566,9 +566,9 @@ var error_message = error_message || '';
          $("textarea#discussion_comment").val(text).focus();
 
          focusOnCommentBox();
-     });
+     });*/
 
-     function vote(actionType){
+   /*  function vote(actionType){
          var post_id = $(this).parents('.comment-one').data("id");
          var button = $(this);
          //TODO:replace db_functions.voteForPost
@@ -601,11 +601,11 @@ var error_message = error_message || '';
      $('#comments').on('click', ".vote_against", function () {
          vote.apply($(this),['remove']);
 
-     });
+     });*/
 
 
 
-     $('#comments,#suggestion_list').on('mouseenter', ".side_menu", function (e) {
+    /* $('#comments,#suggestion_list').on('mouseenter', ".side_menu", function (e) {
          $(this).addClass('hover');
          $('.left', this).show().css({width:0}).animate({'width':87});
      }).on('mouseleave', ".side_menu", function (e) {
@@ -629,112 +629,19 @@ var error_message = error_message || '';
 
 
      });
-
+*/
 
 
      /*********************************************************************************************************/
 
 
-/*
 
-     db_functions.getActionGoing(action_id,0,function(err,data){
-
-         var  userInBrowserCount=data.objects.length;
-         dust.renderArray('action_participant_user',data.objects ,null, function (err, out){
-            $('#participant').append(out);
-	    */
-
-
-   /*  var goingModel=(function(){
-
-         var goingUsers;
-         var  userInBrowserCount=0
-         var paging= 14;
-         var model ={
-
-             loadMoreUsers:function(){
-                 var currentOffset=userInBrowserCount /paging;
-                 this.loadGoingUsers(currentOffset );
-             },
-             loadGoingUsers:function(offcet,numOfPaging){
-                var self=this;
-                 numOfPaging= numOfPaging||  1;
-
-
-                db_functions.getActionGoing(action_id,offcet,paging*numOfPaging,function(err,data){
-
-
-                  userInBrowserCount=userInBrowserCount+data.objects.length;
-                  goingUsers=data.meta.total_count;
-                 dust.renderArray('action_participant_user',data.objects ,null, function (err, out){
-                    $('#participant').append(out);
-                 })
-                 if (goingUsers >userInBrowserCount ) {
-                     $(".more-deals").show();
-
-
-                     } else{
-                     $(".more-deals").hide();
-                 }
-
-
-
-                 setGoingNumber(goingUsers);
-
-             })}
-        }
-         $(".more-deals a").on('click',function(e){
-             e.preventDefault();
-             model.loadMoreUsers();
-         })
-
-         function setJoinBT(data){
-             var isGoing=(data.map_join_to_user !==undefined);
-             var user = data.map_join_to_user;
-             var text= isGoing?
-                     'עזוב'
-                     :
-                     'הצטרף' ;
-             $(".add-offer-btn-box a").html(text);
-              // it's assmoes that me is the first user;
-             if(isGoing){ //add the user to first plase;
-                 goingUsers++;
-                 dust.render('action_participant_user',data,function(err, out){
-                     $('#participant').prepend(out);
-                 });
-
-
-             }else{
-               //  $('#participant').children().first().remove();
-                 $('#participant').find('[data-user_id="'+my_id +'"]').remove();
-                 goingUsers--;
-
-             }
-             setGoingNumber(goingUsers);
-
-         }
-
-
-         $('.add-offer-btn-box').click(function(e){
-             e.preventDefault();
-             db_functions.joinOrLeaveAction(action_id,function(err,data){
-                 if(err){
-                     console.log(err) ;
-                 }
-                 else{
-                     setJoinBT(data);
-
-                 }
-             })
-         });
-
-         return model;
-     })();*/
 
 
      //start from index 0 loding 2 rows 14*7
-     window.uru.goingModel.loadGoingUsers(0,2);
-     loadPosts();
+     var goingModel= new  window.uru.GoingModel();
+     goingModel.loadGoingUsers(0,2);
+     //loadPosts();
  });
  </script>
 

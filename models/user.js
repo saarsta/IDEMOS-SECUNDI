@@ -66,8 +66,13 @@ var User = module.exports = new Schema({
     updates: Schema.Types.Mixed,
     //proxy - people i gave my tokens
     proxy: [
-        new Schema({user_id:{type:ObjectId, ref:'User',query:common.FIND_USER_QUERY}, number_of_tokens: {type:Number, 'default': 0, /*min: 0,*/ max: 3},
-        number_of_tokens_to_get_back: {type:Number, 'default': 0,/* min: 0,*/ max: 3}})
+        new Schema(
+            {
+                user_id:{type:ObjectId, ref:'User',query:common.FIND_USER_QUERY},
+                number_of_tokens: {type:Number, 'default': 0, /*min: 0,*/ max: 3},
+                number_of_tokens_to_get_back: {type:Number, 'default': 0,/* min: 0,*/ max: 3
+            }
+        })
     ],
 //    num_of_mandates_i_gave: {type: Number, 'default': 0},
     num_of_given_mandates: {type: Number, 'default': 0},
@@ -89,7 +94,7 @@ var User = module.exports = new Schema({
     blog_text_1: String,
     blog_text_2: {type:mongoose_types.Text},
     blog_text_3: String,
-    opinion_text: String,
+//    opinion_text: String,
     sent_mail: {type:Date},
     has_voted: [String]
 
@@ -107,6 +112,10 @@ User.methods.avatar_url = function()
     else
         return this.facebook_id ? 'http://graph.facebook.com/' + this.facebook_id + '/picture/?type=large' : "/images/default_user_img.gif";
 };
+
+//User.post('save', function () {
+//   console.log('user post save');
+//});
 
 //User.methods.toString = function()
 //{

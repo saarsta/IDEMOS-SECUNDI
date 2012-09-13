@@ -59,6 +59,20 @@ var db_functions = {
         });
     },
 
+    resetUserNotifications: function(callback){
+        db_functions.loggedInAjax({
+            url:'/api/reset_notification',
+            type:"POST",
+            async:true,
+            success:function (data, err) {
+                callback(err, data);
+            },
+            error:function (err, data) {
+                callback(err, data);
+            }
+        });
+    },
+
     // --------------blogs-------------------//
     getArticelsByUser:function (user_id, callback) {
         db_functions.loggedInAjax({
@@ -403,18 +417,27 @@ var db_functions = {
         });
     },
 
-    createDiscussion:function (subject_id, vision, title, tags, image, callback) {
+    createDiscussion: function(subject_id, vision, title, tags, image, callback) {
         db_functions.loggedInAjax({
             url:'/api/discussions/',
             type:"POST",
             async:true,
-            data:{"subject_id":subject_id, "subject_name":subject_name, "text_field":vision, "title":title, "tags":tags, "is_published":true, image_field:image},
-            success:function (data) {
+            data: {
+                "subject_id": subject_id,
+                //"subject_name": subject_name,
+                "text_field": vision,
+                "title": title,
+                "tags": tags,
+                "is_published": true,
+                image_field: image
+            },
+
+            success: function(data) {
                 console.log(data);
                 callback(null, data);
             },
 
-            error:function (err) {
+            error: function(err) {
                 if (err.responseText == "vision can't be more than 800 words")
                     popupProvider.showOkPopup({message:"חזון הדיון צריך להיות 800 מילים לכל היותר"});
                 else if (err.responseText == "you don't have the min amount of tokens to open discussion")
@@ -423,7 +446,7 @@ var db_functions = {
             }
         });
     },
-    addSuggestionToDiscussion:function (discussion_id, parts, explanation, callback) {
+    addSuggestionToDiscussion: function(discussion_id, parts, explanation, callback) {
         db_functions.loggedInAjax({
             url:'/api/suggestions/',
             type:"POST",
@@ -785,21 +808,26 @@ var db_functions = {
     },
 
     getListItems:function (type, query, callback) {
-        var querystring = type;
+        var querystring;
         switch (type) {
             case "actions":
-                querystring = "actions?is_approved=true";
+                querystring = "actions?is_approved=true&";
                 break;
+
             case "pendingActions":
-                querystring = "actions?is_approved=false";
+                querystring = "actions?is_approved=false&";
+                break;
+
+            default:
+                querystring = type + '?';
                 break;
         }
         db_functions.loggedInAjax({
-            url:'/api/' + querystring + '?limit=0',
-            data:query,
-            type:"GET",
-            async:true,
-            success:function (data) {
+            url: '/api/' + querystring + 'limit=0',
+            data: query,
+            type: "GET",
+            async: true,
+            success: function (data) {
                 callback(null, data);
             }
         });
@@ -966,9 +994,9 @@ var db_functions = {
                     return {
 
                         _id:follower.id,
-                        first_name:follower.first_name,
-                        last_name:follower.last_name,
-                        avatar_url:follower.avatar_url,
+                        first_name: follower.first_name,
+                        last_name: follower.last_name,
+                        avatar_url: follower.avatar_url,
                         join_date:curr_cycle.join_date
 
 
@@ -1154,6 +1182,120 @@ var db_functions = {
         });
     },
 
+    addSuggestionToAction:function (action_id, parts, explanation, callback) {
+        db_functions.loggedInAjax({
+            url:'/api/action_suggestions/',
+            type:"POST",
+            async:true,
+            data:{"action_id":action_id, "parts":parts, "explanation":explanation},
+            success:function (data) {
+                callback(null, data);
+            },
+            error:function (err) {
+                callback(err);
+            }
+        });
+    },
+
+    addActionGrade:function (action_id, grade, grade_id, callback) {
+        var url = '/api/action_grades/';
+        var type = "POST";
+
+        if (grade_id && grade_id !== "undefined" && grade_id !== "0") {
+            url = '/api/action_grades/' + grade_id;
+            type = "PUT";
+        }
+
+        db_functions.loggedInAjax({
+            url:url,
+            type:type,
+            async:true,
+            data:{"action_id":action_id, "evaluation_grade":grade},
+            success:function (data) {
+
+                callback(null, data);
+            },
+            error:function (err) {
+                if (err.responseText != "not authenticated")
+                    alert(err.responseText);
+                callback(err, null);
+            }
+        });
+    },
+
+    addActionSuggestionGrade:function (suggestion_id, action_id, grade, grade_id, callback) {
+        var url;
+        var type;
+
+        grade_id ? url = '/api/action_suggestion_grades/' + grade_id : url = '/api/action_suggestion_grades/';
+        grade_id ? type = "PUT" : type = "POST";
+
+        db_functions.loggedInAjax({
+            url:url,
+            type:type,
+            async:true,
+            data:{"suggestion_id":suggestion_id, "action_id":action_id, "evaluation_grade":grade},
+            success:function (data) {
+
+                callback(null, data);
+            },
+            error:function (err) {
+                if (err.responseText != "not authenticated")
+                    if (err.responseText == "must grade discussion first")
+                        popupProvider.showOkPopup({message:'אנא דרג קודם את החזון בראש העמוד.'})
+                callback(err, null);
+            }
+        });
+    },
+
+    getSuggestionByAction:function (action_id, limit, offset, callback) {
+        db_functions.loggedInAjax({
+            url:'/api/action_suggestions?action_id=' + action_id + "&is_approved=false" + (limit ? '&limit=' + limit : '') + (offset ? '&offset=' + offset : ''),
+            type:"GET",
+            async:true,
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function (err) {
+                callback(err, null);
+            }
+        });
+    },
+
+    //action_resources == [id: (action_resource_id), amount: (to add or remove to/from user)]
+    addOrRemoveResourceToAction: function(action_id, action_resources, callback){
+        db_functions.loggedInAjax({
+            url:'/api/user_helpsAction/' + action_id,
+            type:"PUT",
+            async:true,
+            data: {action_resources: action_resources},
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function (err) {
+                callback(err, null);
+            }
+        });
+    },
+
+    createNewActionResource: function(action_id, action_resource, callback){
+        db_functions.loggedInAjax({
+            url:'/api/user_helpsAction/' + action_id,
+            type:"PUT",
+            async:true,
+            data: {action_resources: action_resources},
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function (err) {
+                callback(err, null);
+            }
+        });
+    },
+
     //---------------------------------------------------//
 
     getDiscussionHistory:function (discussion_id, callback) {
@@ -1198,7 +1340,7 @@ var db_functions = {
         });
     },
 
-    getInfoItemsOfSubjectByKeywords:function (keywords, subject_id, sort_by, callback) {
+    getInfoItemsOfSubjectByKeywords: function (keywords, subject_id, sort_by, callback) {
         var keywords_arr = $.trim(keywords).replace(/\s+/g, ".%2B");
         db_functions.loggedInAjax({
             url:'/api/information_items/?or=text_field__regex,text_field_preview__regex,title__regex&title__regex=' + keywords_arr + '&text_field__regex=' + keywords_arr + '&text_field_preview__regex=' + keywords_arr + '&subject_id=' + subject_id + '&order_by=' + sort_by,
@@ -1210,6 +1352,21 @@ var db_functions = {
             },
             error:function (err) {
                 callback(err, null);
+            }
+        });
+    },
+
+    addNewActionResource: function(action_id, resource_name, callback){
+        db_functions.loggedInAjax({
+            url:'/api/action_resources',
+            type:"Post",
+            async:true,
+            data: {action_id: action_id, category: category_id, name: resource_name},
+
+            success:function (data) {
+
+                console.log(data);
+                callback(null, data);
             }
         });
     }

@@ -5,7 +5,6 @@ var mongoose = require("mongoose"),
     mongoose_types = require('j-forms').types,
     utils = require('../utils');
 
-
 var PostOrSuggestion = module.exports = {
     creator_id:{type:Schema.ObjectId, ref:'User'},
     first_name:{type:String,editable:false},

@@ -14,7 +14,7 @@ var models = require('../models'),
     _ = require('underscore');
 
 
-exports.create_user_notification = function(notification_type, entity_id, user_id, notificatior_id, sub_entity, callback){
+exports.create_user_notification = function(notification_type, entity_id, user_id, notificatior_id, sub_entity, url, callback){
 
     var single_notification_arr = [
         "been_quoted",
@@ -43,7 +43,7 @@ exports.create_user_notification = function(notification_type, entity_id, user_i
                     var date = Date.now();
                     var last_update_date = noti.update_date;
 
-                    //TODO change it later to sometihng prettier
+                    //TODO change it later to something prettier
                     if((notification_type == 'comment_on_discussion_you_are_part_of' || notification_type == "comment_on_discussion_you_created") &&
                         _.any(noti.notificators,  function(notificator){return notificator.notificator_id + "" == notificatior_id + ""})) {
                         var new_notificator = {
@@ -71,7 +71,7 @@ exports.create_user_notification = function(notification_type, entity_id, user_i
                    }
                    sendNotificationToUser(noti, last_update_date);
                 }else{
-                    create_new_notification(notification_type, entity_id, user_id, notificatior_id, sub_entity, function(err, obj){
+                    create_new_notification(notification_type, entity_id, user_id, notificatior_id, sub_entity, url, function(err, obj){
                         cbk(err, obj);
                     });
                 }
@@ -80,7 +80,7 @@ exports.create_user_notification = function(notification_type, entity_id, user_i
             callback(err, obj);
         })
     }else{
-        create_new_notification(notification_type, entity_id, user_id, notificatior_id, sub_entity, function(err, obj){
+        create_new_notification(notification_type, entity_id, user_id, notificatior_id, sub_entity, url, function(err, obj){
             callback(err, obj);
         });
     }
@@ -151,7 +151,7 @@ exports.create_user_proxy_vote_or_grade_notification = function(notification_typ
     })
 };
 
-var create_new_notification = function(notification_type, entity_id, user_id, notificatior_id, sub_entity_id, callback){
+var create_new_notification = function(notification_type, entity_id, user_id, notificatior_id, sub_entity_id, url, callback){
 
     var notification = new models.Notification();
     var notificator = {
@@ -163,6 +163,8 @@ var create_new_notification = function(notification_type, entity_id, user_id, no
     notification.notificators = notificator;
     notification.type = notification_type;
     notification.entity_id = entity_id;
+    //TODO
+    notification.url = url;
     notification.seen = false;
     notification.update_date = new Date();
 
@@ -183,7 +185,7 @@ var create_new_notification = function(notification_type, entity_id, user_id, no
  * @param callback
  * function(err)
  */
-var sendNotificationToUser = function(bgv, last_update_date) {
+var sendNotificationToUser = function(notification, last_update_date) {
     /**
      * Waterfall:
      * 1) Get user email
@@ -228,7 +230,7 @@ var sendNotificationToUser = function(bgv, last_update_date) {
             notification.entity_name = notification.name || '';
             notification.description_of_notificators = notification.description_of_notificators || '';
             notification.message_of_notificators = notification.message_of_notificators || '';
-            templates.renderTemplate('notifications/' + notification.type,notification,cbk);
+            templates.renderTemplate('notifications/' + notification.type, notification, cbk);
         },
         // 4) send message
         function(message,cbk) {
@@ -259,12 +261,14 @@ var sendNotificationToUser = function(bgv, last_update_date) {
 };
 
 exports.create_user_vote_or_grade_notification = function(notification_type, entity_id, user_id, notificatior_id,
-                                                        sub_entity, vote_for_or_against, did_change_the_sugg_agreement, is_on_suggestion, callback){
+                                                        sub_entity, vote_for_or_against, did_change_the_sugg_agreement, is_on_suggestion, url, callback){
     async.waterfall([
 
         function(cbk){
             notification_type = notification_type + "";
-            models.Notification.findOne({type: notification_type, entity_id: entity_id,user_id: user_id, seen: false}, cbk);
+            models.Notification.findOne({type: notification_type, entity_id: entity_id,user_id: user_id, seen: false}, function(err, result){
+                cbk(err, result)
+            });
         },
 
         function(noti, cbk){
@@ -319,7 +323,7 @@ exports.create_user_vote_or_grade_notification = function(notification_type, ent
                     noti.save(function(err, obj){
                         cbk(err, obj);
                         if(!err && obj)
-                            hrsd(obj, last_update_date);
+                            sendNotificationToUser(obj, last_update_date);
                     })
                 }
             }else{
@@ -339,6 +343,8 @@ exports.create_user_vote_or_grade_notification = function(notification_type, ent
                 notification.notificators = notificator;
                 notification.type = notification_type;
                 notification.entity_id = entity_id;
+                //TODO
+                notification.url = url;
                 notification.seen = false;
                 notification.update_date = new Date();
 
@@ -354,17 +360,15 @@ exports.create_user_vote_or_grade_notification = function(notification_type, ent
     })
 }
 
-exports.update_user_notification = function (notification_type, obj_id,user, callback){
-
+exports.update_user_notification = function (notification_type, obj_id, user, callback){
 
 
 }
 
-// TODO finish this
 exports.updateVisited = function(user,url) {
-    models.Notification.update({user_id:user._id,url:url},{$set:{visited:true}},{multi:true},function(err) {
+    models.Notification.update({user_id:user._id, url:url},{$set:{visited:true}},{multi:true},function(err) {
         if(err) {
-            console.error('failed setting notification visited to true',err);
+            console.error('failed setting notification visited to true', err);
         }
     })
 };

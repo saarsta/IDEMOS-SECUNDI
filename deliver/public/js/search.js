@@ -82,6 +82,7 @@ $(document).ready(function () {
 
             $(".search-result-box .tabs").tabs("destroy");
             $(".search-result-box").remove();
+            var showEmpty = true; // fix bug 442 - hide empty search results string when not empty
             var current_section_count = [];
             current_section_count[0] = data.info_items_count;
             current_section_count[1] = data.discussions_count;
@@ -109,6 +110,7 @@ $(document).ready(function () {
                         count:new Array(Math.ceil(count/3))
                     };
                     if (count > 0) {
+                        showEmpty = false;// fix bug 442 - hide empty search results string when not empty
                         dust.render('search_section', section_data, function (err, out) {
                             $('.tabs').append(out);
                             if(count > 0) {
@@ -136,7 +138,7 @@ $(document).ready(function () {
                             createTabs();
                         });
                     }
-                    else
+                    else if (showEmpty)// fix bug 442 - hide empty search results string when not empty
                     {
                         dust.render('search_section_empty', section_data, function (err, out) {
                             $(".tabs").append(out);

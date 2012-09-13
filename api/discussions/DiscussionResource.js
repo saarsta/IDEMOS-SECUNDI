@@ -163,6 +163,8 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
 
         if(fields.text_field)
             fields.text_field_preivew = fields.text_field.substr(0,365);
+        if(!fields.image_field)
+            fields.image_field = { url:'/images/' + fields.subject_id + '.jpg',path:'/images/' + fields.subject_id + '.jpg'};
         if(fields.image_field)
             fields.image_field_preview = fields.image_field;
 
@@ -305,7 +307,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                     function(cbk1){
                         models.User.find({"proxy.user_id": user_id}, function(err, slaves_users){
                             async.forEach(slaves_users, function(slave, itr_cbk){
-                                notifications.create_user_notification("proxy_created_new_discussion", object._id, slave._id, user_id, null, function(err, result){
+                                notifications.create_user_notification("proxy_created_new_discussion", object._id, slave._id, user_id, null, '/discussions/' + object._id, function(err, result){
                                     itr_cbk(err);
                                 })
                             }, function(err){
@@ -458,7 +460,7 @@ function notifications_for_the_info_items_relvant(discussion_id, notificator_id,
     var set_notification_for_liked_items = function (like, itr_cbk) {
         if (like.info_item_creator + "" != like.user_id + "" && like.info_item_creator != null) {
             notifications.create_user_notification("a_dicussion_created_with_info_item_that_you_like",
-                discussion_id, like.user_id, notificator_id, like.info_item_id, itr_cbk);
+                like.info_item_id, like.user_id, notificator_id, discussion_id, '/discussions/' + discussion_id, itr_cbk);
         } else {
             itr_cbk(null, 0);
         }
@@ -495,7 +497,7 @@ function notifications_for_the_info_items_relvant(discussion_id, notificator_id,
             function (par_cbk) {
                 if (creator_id) {
                     notifications.create_user_notification("a_dicussion_created_with_info_item_that_you_created",
-                        discussion_id, creator_id, notificator_id, info_item._id, par_cbk);
+                        info_item._id, creator_id, notificator_id, discussion_id, '/discussions/' + discussion_id, par_cbk);
                 } else {
                     par_cbk(null, 0);
                 }

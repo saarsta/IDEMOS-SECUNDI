@@ -68,19 +68,6 @@ module.exports = function(app)
         form:require('./discussion'),
         order_by:['-creation_date'],
         filters:['created_by','is_published','is_hidden','is_hot_object','is_cycle']
-//            actions:[
-//                {
-//                    value:'approve',
-//                    label:'Approve',
-//                    func: function(user,ids,callback)
-//                    {
-//                        async.forEach(ids,function(id,cbk)
-//                        {
-//                            DiscussionResource.approveDiscussionToCycle(id,cbk);
-//                        },callback);
-//                    }
-//                }
-//            ]
     });
     admin.registerMongooseModel("DiscussionHistory",Models.DiscussionHistory,null,{
         list:['discussion_id', 'date'],
@@ -93,7 +80,11 @@ module.exports = function(app)
         form : require('./cycle'),
         filters:['created_by','is_hidden','is_hot_object']
     });
-    admin.registerMongooseModel("Action",Models.Action,null,{list:['title'],cloneable:true});
+    admin.registerMongooseModel("Action",Models.Action,null,{
+        form:require('./action'),
+        list:['title'],
+        cloneable:true
+    });
 //    admin.registerMongooseModel('Locale',locale.Model, locale.Model.schema.tree,{list:['locale'],form:locale.LocaleForm});
     admin.registerMongooseModel('Post',Models.Post,null,{
         list:['text','username','discussion_id.title'],
@@ -134,6 +125,10 @@ module.exports = function(app)
     admin.registerMongooseModel('VoteSuggestion',Models.VoteSuggestion,null,{
         list:['suggestion_id','user_id']
     });
+
+//    admin.registerMongooseModel('OpinionShaper',Models.OpinionShaper,null,{
+//        list:['cycle_id','user_id']
+//    });
 
     admin.registerMongooseModel('Grade',Models.Grade,null,{
         list:['discussion_id','user_id']
@@ -192,6 +187,10 @@ module.exports = function(app)
             list:['name'],
             cloneable:true
         });
+    admin.registerMongooseModel('Test',Models.Test,null,{
+            list:['action_resources'],
+            cloneable:true
+    });
 
     admin.registerMongooseModel('Qa',Models.Qa,null,{
                 list:['title']

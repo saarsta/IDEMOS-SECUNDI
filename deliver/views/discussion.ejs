@@ -33,7 +33,7 @@ var error_message = error_message || '';
 
             <div class="text-box cf">
                 <div id="discussion_image" style="width: 212px;height: 164px; overflow:hidden;" class='auto-scale floatRight'>
-                    <img src="<%= discussion.image_field ? discussion.image_field.url ||'' : '' %>" alt=""/>
+                    <img src="<%= discussion.image_field ? discussion.image_field.url ||'' : '' %>" title="<%= discussion.title %>"/>
                 </div>
                 <div class="discussion_content discussion content">
                     <textarea id="discussion_content" class="hidden_textarea"><%=discussion.text_field%></textarea>
@@ -93,7 +93,7 @@ var error_message = error_message || '';
                     <div class="summary">
                         <input type="text" id="amount" value="<%= Math.round(discussion.grade*100)/100 %>"/>
                         <span> <div class="inlinediv" id="graders"><%= Math.round(discussion.evaluate_counter) %>
-                        </div> מדרגים</span>
+                        </div> דירוגים</span>
                     </div>
                     <div class="slider">
                     </div>
@@ -173,6 +173,7 @@ var error_message = error_message || '';
                 הצע
             </a>
         </div>
+
         <div class="deals-box">
             <h2>הצעות לשינוי
                 <small id="suggestion_number"></small>
@@ -339,8 +340,6 @@ $(document).ready(function () {
         }
     });
 
-
-
     $("#proxy_form").dialog({
         autoOpen:false,
         height:300,
@@ -369,8 +368,8 @@ $(document).ready(function () {
         }
     });
 
-
     $("#discussion_content").val($("#discussion_content").text());
+
     $(".slider").slider({
         disabled:is_creator,
         value:my_discussion_grade,
@@ -381,6 +380,7 @@ $(document).ready(function () {
         change:function (event, ui) {
 
             my_discussion_grade = ui.value;
+
             db_functions.addDiscussionGrade(discussion_id, my_discussion_grade, grade_id, function (err, data) {
 
                 if (!err) {
@@ -416,8 +416,6 @@ $(document).ready(function () {
             dust.render('discussion_information_item', item, function (err, out) {
                 $('.slide-c').append(out);
             });
-
-
         });
 
         $('.slide-c')
@@ -448,13 +446,8 @@ $(document).ready(function () {
                 var err = false;
                 var range = $(this).find('textarea').getSelection();
 
-//                console.log(e);
-
-
                 left = Math.ceil((mouseDown.clientX + mouseUp.clientX) / 2 - ($(".popup-window").width() / 2));
                 top = Math.min(mouseDown.clientY, mouseUp.clientY) - $(".popup-window").height() - 40 + $(window).scrollTop();
-
-
 
             }).on('keydown',
             function (e) {
@@ -510,43 +503,53 @@ $(document).ready(function () {
     })
 
     $('#suggestion_list').on('click', '#add_or_remove_proxy', function (e) {
-
-
-
         var userData = $(this).parents('.discussion-item');
         var proxyId = userData.data('creator_id');
         var userName = userData.data('creator_name');
-      //  var userProxy = findUserProxy(proxyId);
+        var post_id = $(this).parents('.comment-one').attr('id');
 
         e.preventDefault();
-        proxyCommon.addOrRemoveProxy(proxy,proxyId,userName,my_id,function(newProxy){
-            proxy=newProxy.proxy;
 
-        })
-
-
+        if(!my_id){
+            popupProvider.showLoginPopup({}, function(err, result){
+                if(!err)
+                    window.location = window.location + '?user_name=' + userName + '&proxy_id=' + proxyId + '&post_id=' + post_id;
+            });
+        }else{
+            proxyCommon.addOrRemoveProxy(proxy, proxyId, userName, my_id, function(newProxy){
+                proxy = newProxy.proxy;
+            })
+        }
     });
 
+    var user_name = getURLParameter('user_name');
+    var proxy_id = getURLParameter('proxy_id');
+    var post_id = getURLParameter('post_id');
 
-
+    if(user_name  && proxy_id && user_name !== 'null' && proxy_id != 'null'){
+        proxyCommon.addOrRemoveProxy(proxy, proxy_id, user_name, my_id, function(newProxy){
+            proxy = newProxy.proxy;
+            window.location = window.location.pathname+ '#' + post_id;
+        })
+    }
 
     $('#comments').on('click', '#add_or_remove_proxy', function (e) {
-
         var userData = $(this).parents('.comment-one');
         var proxyId = userData.data('creator_id');
         var userName = userData.data('creator_name');
+        var post_id = $(this).parents('.comment-one').attr('id');
         e.preventDefault();
-        proxyCommon.addOrRemoveProxy(proxy,proxyId,userName,my_id,function(newProxy){
-            proxy=newProxy.proxy;
-
-        })
-
-
+        if(!my_id){
+            popupProvider.showLoginPopup({}, function(err, result){
+                if(!err)
+                    window.location = window.location + '?user_name=' + userName + '&proxy_id=' + proxyId + '&post_id=' + post_id;
+            });
+        }else{
+            proxyCommon.addOrRemoveProxy(proxy, proxyId, userName, my_id, function(newProxy){
+                proxy = newProxy.proxy;
+            })
+        }
     });
-
-
-
-
 
     function vote(actionType){
         var post_id = $(this).parents('.comment-one').data("id");
@@ -713,16 +716,8 @@ $(document).ready(function () {
         if (suggestion.parts && suggestion.parts.length) {
             var original = $('#discussion_content').val();
             suggestion.original_part = function () {
-                console.log("original");
-                console.log(original);
-                console.log("from");
-                console.log(suggestion.parts[0].start);
-                console.log("to");
-                console.log(suggestion.parts[0].end);
-                console.log("sub_str");
                 var from = suggestion.parts[0].start;
                 var end = suggestion.parts[0].end;
-                console.log(original.substr(from, end - from));
                 return original.substr(from, end - from);
             };
             suggestion.alternative_part = function () {
@@ -906,6 +901,11 @@ $(document).ready(function () {
 
     $("#submit_post").on('click', function (e) {
         e.preventDefault();
+        var $this = $(this);
+        if ($this.data('executing')){
+            $this.addClass('disable')
+            return;
+        }
         db_functions.addPostToDiscussion(discussion_id, $("textarea#discussion_comment").val(), new_post_ref_id, function (err, post) {
             // $("#user_tokens").text(post.updated_user_tokens);
             if (!err) {
@@ -917,6 +917,8 @@ $(document).ready(function () {
                     new_post_ref_id = null;
                     postsNumber++;
                     setCommentNumber(postsNumber);
+                    $this.data('executing', false);
+                    $this.removeClass('disable')
                 });
             }
         })

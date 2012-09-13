@@ -7,6 +7,7 @@ var mongoose_resource = require('jest'),
     CyclePostResource = require('./cycles/CyclePostResource.js'),
     CycleShoppingCartResource = require('./cycles/CycleShoppingCartResource.js'),
     CycleTimelineResource = require('./cycles/CycleTimeLineResource.js'),
+    OpinionShaperResource = require('./cycles/OpinionShaperResource.js'),
     ActionShoppingCartResource = require('./actions/ActionShoppingCartResource.js'),
     SubjectResource = require('./SubjectResource'),
     DiscussionResource = require('./discussions/DiscussionResource.js'),
@@ -22,11 +23,13 @@ var mongoose_resource = require('jest'),
     VoteActionPostResource = require('./actions/VoteActionPostResource'),
     GradeResource = require('./discussions/GradeResource.js'),
     GradeSuggestionResource = require('./GradeSuggestionResource'),
-    GradeActionResource = require('./GradeActionResource'),
+    GradeActionSuggestionResource = require('./actions/grade_action_suggestion_resource'),
+    GradeActionResource = require('./actions/GradeActionResource'),
     LikeResource = require('./LikeResource'),
     JoinResource = require('./actions/JoinResource'),
     CategoryResource = require('./CategoryResource'),
     SuggestionResource = require('./suggestionResource.js'),
+    ActionSuggestionResource = require('./actions/ActionSuggestionResource.js'),
     ActionResourceResource = require('./actions/ActionResourceResource.js'),
     ActionResource = require('./actions/ActionResource.js'),
     ActionPopulatedResource = require('./actions/ActionPopulatedResource.js'),
@@ -48,16 +51,17 @@ var mongoose_resource = require('jest'),
     AboutUruTextResource = require('./AboutUruTextResource'),
     AboutUruItemResource = require('./AboutUruItemResource'),
     TeamResource = require('./TeamResource'),
+    BringResourceResource = require('./actions/bring_resource_resource'),
     QaResource = require('./QaResource'),
     ElectionsTextResource = require('./ElectionsTextResource'),
     ElectionsItemResource = require('./ElectionsItemResource'),
     UserChosenDiscussionsResource = require('./elections/user_chosen_discussions_resource.js'),
 
-
     RegisterResource = require('./register_resource'),
     LoginResource = require('./LoginResource'),
     FbConnectResource = require('./FbConnectResource'),
     AvatarResource = require('./avatar_resource'),
+    ResetNotificationResource = require('./reset_notification_resource'),
     OGActionResource = require('./og_action_resource');
 
 
@@ -89,7 +93,9 @@ module.exports = function(app)
     rest_api.register_resource('votes_on_action_post', new VoteActionPostResource());
     rest_api.register_resource('grades', new GradeResource());
     rest_api.register_resource('grades_suggestion', new GradeSuggestionResource());
-    rest_api.register_resource('grades_action', new GradeActionResource());
+    rest_api.register_resource('action_suggestion_grades', new GradeActionSuggestionResource());
+    rest_api.register_resource('action_grades', new GradeActionResource());
+    rest_api.register_resource('action_suggestions', new ActionSuggestionResource());
     rest_api.register_resource('likes', new LikeResource());
     rest_api.register_resource('join', new JoinResource());
     rest_api.register_resource('suggestions', new SuggestionResource());
@@ -100,6 +106,7 @@ module.exports = function(app)
     rest_api.register_resource('cycles', new CycleResource());
     rest_api.register_resource('cycle_posts', new CyclePostResource());
     rest_api.register_resource('cycle_timeline', new CycleTimelineResource());
+    rest_api.register_resource('opinion_shapers', new OpinionShaperResource());
     rest_api.register_resource('articles', new ArticleResource());
     rest_api.register_resource('tags', new TagResource());
     rest_api.register_resource('article_update', new ArticleCommentResource());
@@ -110,21 +117,20 @@ module.exports = function(app)
     rest_api.register_resource('about_uru_texts', new AboutUruTextResource());
     rest_api.register_resource('about_uru_items', new AboutUruItemResource());
     rest_api.register_resource('team', new TeamResource());
+    rest_api.register_resource('user_helps_action', new BringResourceResource());
     rest_api.register_resource('qa', new QaResource());
     rest_api.register_resource('elections_items', new ElectionsItemResource());
     rest_api.register_resource('elections_texts', new ElectionsTextResource());
     rest_api.register_resource('user_chosen_discussions', new UserChosenDiscussionsResource());
 
-
-
     rest_api.register_resource('login', new LoginResource());
     rest_api.register('register',new RegisterResource());
     rest_api.register_resource('fb_connect', new FbConnectResource());
-
 
     rest_api.register_resource('items_count_by_tag_name', new ItemsCountByTagNameResource());
     rest_api.register_resource('fb_request', new FBRequestResource());
     rest_api.register('image_upload',new ImageUploadResource());
     rest_api.register('og_action', new OGActionResource());
     rest_api.register('avatar',new AvatarResource());
+    rest_api.register('reset_notification',new ResetNotificationResource());
 };

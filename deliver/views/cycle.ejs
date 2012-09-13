@@ -26,7 +26,7 @@
 
                       <div class="img-box floatRight" style="overflow: hidden;">
                                 <div style="width:260px; height:190px;" class='auto-scale'>
-                                      <img src="<%=cycle.image_field.url %>" alt=""/>
+                                      <img src="<%=cycle.image_field.url %>" title="<%= cycle.title %>"/>
 
                                 </div>
                                 <span></span>
@@ -58,7 +58,7 @@
                     <div class="top">
                         <a href=""><span></span>  תגובות פופולריות</a>
                     </div>
-                    <div class="hide-box">
+                    <div id="comments" class="hide-box">
 
                     </div>
                 </div>
@@ -86,11 +86,11 @@
 
             </div>
             <div class="btn-box">
-                <a href="">+ הצע פעולה חדשה</a>
+                <a href="/actions/create/<%= cycle.id %>" >+ הצע פעולה חדשה</a>
             </div>
         </div>
     </div>
-    <div class="comments-box">
+    <div  class="comments-box">
         <div class="extra cf">
             <div class="updates-box cf">
                 <div class="right">
@@ -101,8 +101,7 @@
                 <div class="left">
                     <h2>פעולות הממתינות לאישור</h2>
                     <div class="anticipation-box">
-
-                        <a href="" class="btn">הראה לי את כולן</a>
+                        <a href="../actions/cycle/<%=cycle._id%>" class="btn">הראה לי את כולן</a>
                     </div>
                 </div>
             </div>
@@ -113,26 +112,26 @@
                      <% if (cycle.opinion_shapers) for (var c = 0; c<cycle.opinion_shapers.length && c<3 ; c++) { %>
                              <div class="one <% if (c==2) {%>last<% }%> ">
 
-                              <div class="img-box" style="overflow: hidden;">
-                                 <div style="width:112px;height:120px; overflow:hidden; " class='auto-scale' >
-                                     <img  src="<%=cycle.opinion_shapers[c].avatar %>" alt=""/>
-                                     <span class="fillter"></span>
-                                 </div>
-                                 <span></span>
+                             <div class="img-box" style="overflow: hidden;">
+                                 <a href="/myuru/<%=cycle.opinion_shapers[c].user_id._id%>">
+                                     <div style="width:112px;height:120px; overflow:hidden; " class='auto-scale' >
+                                         <img  src="<%=cycle.opinion_shapers[c].user_id.avatar_url %>" alt=""/>
+                                         <span class="fillter"></span>
+                                     </div>
+                                     <span></span>
+                                </a>
                              </div>
-
-
-                                                 <h4><a href=""><%=cycle.opinion_shapers[c].first_name %> <%=cycle.opinion_shapers[c].last_name %></a></h4>
-                                                <p><% if (cycle.opinion_shapers[c].opinion_text) {%>  <%=cycle.opinion_shapers[c].opinion_text %>  <% } %></p>
-                                                 <div class="badges">
-                                                     <div class="proxy">
-                                                         <span><%=cycle.opinion_shapers[c].num_of_proxies_i_represent %></span>
-                                                     </div>
-                                                     <div class="respect">
-                                                         <span><%=cycle.opinion_shapers[c].score %></span>
-                                                     </div>
-                                                 </div>
-                                             </div>
+                                <h4><a href="/myuru/<%=cycle.opinion_shapers[c].user_id._id%>"><%=cycle.opinion_shapers[c].user_id.first_name %> <%=cycle.opinion_shapers[c].user_id.last_name %></a></h4>
+                                <p><% if (cycle.opinion_shapers[c].text) {%>  <%=cycle.opinion_shapers[c].text %>  <% } %></p>
+                                 <div class="badges">
+                                     <div class="proxy">
+                                         <span><%=cycle.opinion_shapers[c].user_id.num_of_proxies_i_represent %></span>
+                                     </div>
+                                     <div class="respect">
+                                         <span><%=cycle.opinion_shapers[c].user_id.score %></span>
+                                     </div>
+                                 </div>
+                             </div>
                      <% }%>
 
 
@@ -153,8 +152,36 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+
+        jQuery.easing.def = "easeOutCirc";
+             var my_id = "<%=user_logged ? user._id : ''%>";
             var cycle_id = "<%=cycle.id%>";
             var user = "<%=cycle.id%>";
+
+
+        <%
+        if (user_logged&&proxy) { %>
+            var proxy = JSON.parse('<%-proxy%>');
+        <%
+        } else { %>
+            var proxy = [];
+        <%
+        }
+        %>
+
+
+        $('#comments').on('click', '#add_or_remove_proxy', function (e) {
+            var userData = $(this).parents('.comment-one');
+            var proxyId = userData.data('creator_id');
+            var userName = userData.data('creator_name');
+            e.preventDefault();
+            proxyCommon.addOrRemoveProxy(proxy,proxyId,userName,my_id,function(newProxy){
+                proxy=newProxy.proxy;
+
+            })
+
+
+        });
 
             $(".inline").colorbox({ inline: true, width: "730" });
 
@@ -187,8 +214,6 @@
                         dust.render('discussion_information_item', item, function (err, out) {
                             $('.slide-c').append(out);
                         });
-
-
                     });
 
                     $('.slide-c')
@@ -221,7 +246,7 @@
 
 
             db_functions.getCycleTimeline(cycle_id, function (err, data) {
-                     var type_names={
+                    var type_names={
                          past:'',
                          cycle_creation :'יצירת מעגל תנופה',
                          due_date :'תאריך יעד',
@@ -232,18 +257,70 @@
                          admin_update :'עדכון מערכת'
                              },
 
-                             nodes= data.objects.slice(0);
-                            i=0,
-                            pre_discussion_items = {type:'past',month:'לפני יצירת הדיון',items:[]},
-                            past_months={};
 
-                      //remove all past items from list and move them into past object
-                       var pre_discussion=true;
+                        i=0,
+                        j= 0,
+                        pre_discussion_items = {type:'past',month:'לפני יצירת הדיון',items:[]},
+                        past_months={},
+                        clusters={};
+
+                    //init items
+                    var last_item=null;
+                    $.each(data.objects, function (index, item) {
+
+                       // debugger;
+                        if(last_item && last_item.date.substr(0,10)==item.date.substr(0,10))
+                        {
+                            last_item.cluster=true;
+                            item.cluster=true;
+                        }
+                        item.type_print =  type_names[item.type];
+                        switch(item.type)
+                        {
+
+                            case 'due_date':
+
+                                break;
+                            case 'cycle_creation':
+
+                                break;
+                            case 'discussion':
+
+                                break;
+                            case 'action':
+                                item.short=item.title
+                                item.link ='/actions/'+item._id;
+                                break;
+                            case 'cycle_update':
+                                item.short=item.title
+                                item.link ='/updates/'+item._id;
+                                break;
+                            case 'today':
+
+                                break;
+                            case 'admin_update':
+                                item.short=item.text
+                                break;
+                            default:
+                                console.log("unknow timleline type : "+  item.type);
+                        }
+                        last_item=item;
+
+                    });
+
+                      nodes= data.objects.slice(0);
+                      //remove all past items from list and move them into past objects
+                      //
+                      var pre_discussion=true,
+                          past=true,
+                          custers_count = 0,
+                          clustered_count=0;
                       $.each(data.objects, function (index, item) {
 
-                            item.type_print =  type_names[item.type];
+
                             if(item.type=='today')  {
-                              return false;
+                                past=false;
+                              //return false;
                             }
                             if(item.type=='discussion')  {
                                 pre_discussion=false;
@@ -255,15 +332,35 @@
                                 pre_discussion_items.items.push(item) ;
                                 nodes.shift();
                             }
-                            else
+                            else if (past)
                             {
                                 var item_date=   new Date(item.date)
                                 var ind=item_date.format('mmyy');
                                 if(!past_months[ind]) {
-                                    past_months[ind]=  {type:'past',month:item_date.format('mmmm yy'),items:[]}
+                                    past_months[ind]=  {type:'past',month:item_date.format('mmmm'),items:[]}
                                 }
                                 past_months[ind].items.push(item);
                                 nodes.splice(1,1);
+                            }
+                            else     //present and future items
+                            {
+                                 if(item.cluster)
+                                 {
+                                     var item_date=   new Date(item.date)
+                                     var ind=item_date.format('ddmmyy');
+                                     if(!clusters[ind]) {
+                                        // clusters[ind]=  {type:'cluster',date:item_date,items:[]}
+                                         clusters[ind]=0;
+                                         custers_count++;
+                                     }
+                                    // clusters[ind].items.push(item);
+                                     //nodes.splice(1,1);
+                                     clustered_count++;;
+
+                                     clusters[ind]++;
+
+
+                                 }
                             }
 
                       } );
@@ -277,17 +374,23 @@
                          nodes.splice(1,0,pre_discussion_items);
                      }
 
-
-
-
-                     var count =   nodes.length-1;
+                     var count =   nodes.length-1 -clustered_count + custers_count ;
+                     var render_clusters={};
                      i=0;
                      $.each(nodes, function (index, item) {
-                 //         item_date=   new Date(item.date);
-                 //         item.offset  = Math.floor(((start_date.getTime()-item_date.getTime())*100)/timeline_span );
 
-                          item.offset  =     (i*100)/count;
-
+                          if(item.cluster)
+                          {
+                              var item_date=   new Date(item.date)
+                              var ind=item_date.format('d.m');
+                              if(!render_clusters[ind])  {
+                                  render_clusters[ind]=[];
+                              }
+                              render_clusters[ind].push(i);
+                              clusters[ind]++;
+                          }
+                          item.offset  =    (j*980)/count;
+                          item.timeline_index=i;
                           switch(item.type)
                           {
                               case 'past':
@@ -299,7 +402,7 @@
                               case 'cycle_creation':
                                     dust.render('cycle_timeline_creation', item, timelineAppend);
                                     break;
-                               case 'discussion':
+                              case 'discussion':
                                     dust.render('cycle_timeline_discussion', item, timelineAppend);
                                     break;
                               case 'action':
@@ -318,9 +421,21 @@
                                console.log("unknow timleline type : "+  item.type);
                           }
                           i++;
-
-
+                          j++;
+                          if(item.cluster && clusters[ind]!=0)
+                          {
+                            j--;
+                          }
                      });
+
+                    $.each(render_clusters, function (index1, cluster_array) {
+                        var it= [];
+                        $.each(cluster_array, function (index2, item) {
+                            it.push($('#timeline_item_'+item))
+                        });
+                        dust.render('cycle_timeline_dummy', {date:index1}, timelineAppend);
+                        animateCluster(it);
+                    });
              });
 
              function timelineAppend  (err, out) {
@@ -329,10 +444,10 @@
 
             db_functions.getPendingActionsByCycle(cycle_id, function ( data,err) {
 
-                    dust.renderArray('cycle_pending_action', data.objects, function (err, out) {
-                        $('.anticipation-box').prepend(out);
+                dust.renderArray('cycle_pending_action', data.objects, function (err, out) {
+                    $('.anticipation-box').prepend(out);
 
-                    });
+                });
            });
 
 
@@ -389,9 +504,14 @@
 
                    for (i = 0; i < data.objects.length; i++) {
                        data.objects[i].isFirst = (i === 0);
-
                        data.objects[i].isEven = ((i % 2)== 0);
                        data.objects[i].voting =      data.objects[i].votes_for - data.objects[i].votes_against;
+                       if(i == data.objects.length-1 || data.objects[i].discussion_id != data.objects[i+1].discussion_id )
+                       {
+                           data.objects[i].discussion_button=true;
+                       }
+
+
                    }
                   dust.renderArray('cycle_post', data.objects, function (err, out) {
                       $('.hide-box').append(out);
@@ -434,11 +554,30 @@
         }
 
         $('.followers-diagram .event .icon').live("hover", function(){
-           console.log('elip');
+         //  console.log('elip');
             $(this).find('.popup-text').ellipsis();
         });
         $('.followers-diagram .event .green-icon .popup-event').live('click',function(){
             window.location.href = '/updates/'+$(this).attr('item-id');
+        });
+
+        $('.followers-diagram .event .blue-icon .popup-event').live('click',function(){
+            window.location.href = '/actions/'+$(this).attr('item-id');
+        });
+
+
+        $('.join-btn').live("click",function(e){
+            e.preventDefault();
+            var action_id = $(this).attr('item-id');
+            db_functions.joinOrLeaveAction(action_id,function(err,data){
+                if(err){
+                    console.log(err) ;
+                }
+                else{
+                    setJoinBT(data);
+
+                }
+            })
         });
         //
         //.popup-event

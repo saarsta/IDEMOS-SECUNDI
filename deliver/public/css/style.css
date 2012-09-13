@@ -982,10 +982,11 @@ body
 }
 #footer .extra
 {
-    width: 980px;
+    width: 970px;
     margin: 0 auto;
     height: 181px;
     overflow:hidden;
+    padding-left: 10px;
 }
 #footer .one-col
 {
@@ -1437,14 +1438,15 @@ body
 {
     float: left;
     width: 238px;
-    color:#b7b6b6;
+    color: black;
     font: normal 11px/13px Arial;
     padding:0;
     height: 13px;
     border: none;
     background:#fff;
 }
-.discussion-main .tags-box .add-tag input[type=submit]
+.discussion-main .tags-box .add-tag input[type=submit],
+.discussion-main .tags-box .add-tag input[type=button]
 {
     background:#3b63ef;
     color:#fff;
@@ -2164,6 +2166,33 @@ body
     top: -15px;
     display: inline-block;
 }
+.add-offer .text-box #i_bring_bt
+{
+    float: left;
+    top:-34px;
+    display: block;
+    background: #757D7E url(../images/search-submit.png) 0 0 repeat-x;
+    border: 1px solid #2E3030;
+    border-radius: 2px;
+    width: 85px;
+    height: 29px;
+    text-align: center;
+    color: white;
+    font: normal 18px/32px 'AdumaFOTRegular';
+    text-decoration: none;
+    margin-bottom: 5px;
+}
+
+.add-offer .text-box .detail-resourse-overflow
+{
+    padding-right: 0px;
+    overflow: hidden;
+    height: 34px;
+   // width:395px;
+    display: block
+}
+
+
 /*.add-offer .text-box .read_less,*/
 .add-offer .text-box .more-text
 {
@@ -2398,12 +2427,12 @@ body
 .extended #discussion_image {
     display:none;
 }
-.discussion_content
+.discussion_content, .action_content
 {
     height: 188px;
     overflow: hidden;
 }
-.extended .discussion_content {
+.extended .discussion_content, .action_content {
     /*  height:400px;     */
 
     overflow: inherit;
@@ -2806,6 +2835,12 @@ textarea.hidden_textarea::selection
     text-align: center;
     text-decoration: none;
 }
+
+.write-comment .disable{
+    opacity: 0.3;
+    cursor: auto;
+}
+
 /*--------------------*/
 .system-notice
 {
@@ -3584,7 +3619,6 @@ h2 small
     width: 644px;
 }
 .rightCol h2 a
-
 {
     color:#3b63ef;
     padding-left: 14px;
@@ -3592,17 +3626,15 @@ h2 small
     background: url(../images/arrow-left.png) 0 38% no-repeat;
     text-decoration: none;
 }
+
 .rightCol h2 a.last_breadcrum
 {
-
     padding-left: 14px;
     margin-left: 6px;
     color: #50504F;
     background:transparent;
     text-decoration: none;
 }
-
-
 
 .rightCol .nav-btn
 {
@@ -5998,6 +6030,7 @@ a.fraction-btn
     border-bottom: 5px solid #50504f;
     margin-bottom: 75px;
     position: relative;
+   /* opacity: 0.3;   */
 }
 .followers-diagram .event
 {
@@ -6007,6 +6040,21 @@ a.fraction-btn
     margin-left: -12px;
     top: 166px;
 }
+.followers-diagram .event.event-dummy
+{
+              padding-top: 36px;
+}
+.followers-diagram .event.event-dummy   .number
+{
+    clear: both;
+    color: #3C63EF;
+    float: left;
+    margin: 0;
+    text-align: left;
+    white-space: nowrap;
+}
+
+
 .followers-diagram .event .icon
 {
     width: 24px;
@@ -6055,6 +6103,8 @@ a.fraction-btn
     background:#2fd43b;
     border: 3px solid #25962d;
 }
+
+.followers-diagram .event .green-icon .popup-event
 .followers-diagram .event .green-icon .popup-event
 {
   cursor: pointer;
@@ -6252,10 +6302,18 @@ a.fraction-btn
     text-align: right;
     border-top: 1px solid #d8dde0;
     margin-right: 3px;
+    line-height: 150%;
+    padding-bottom: 7px;
+    padding-top: 7px;
+}
+.followers-diagram .event .type-three ul li  a
+{
+    text-decoration: none;
 }
 .followers-diagram .event .type-three ul li:first-child
 {
     border: none;
+    padding-top: 0;
 }
 
 
@@ -6493,7 +6551,7 @@ a.fraction-btn
     font: bold 13px/15px ARial;
     padding-bottom: 5px;
     letter-spacing: -0.4px;
-    min-height: 45px;
+    min-height: 30px;
 }
 .followers-ppl .one .date
 {
@@ -6952,6 +7010,73 @@ body.body-action .followers-box h2
     background: url(../images/check-icon.png) no-repeat right center;
     margin-right: 10px;
 }
+
+#action_resources_popup .check-disable
+{
+    color: #7F7F7E;
+}
+
+#action_resources_popup .check-disable span,
+.detail-resourse span.check-disable
+{
+    padding-right: 21px;
+    background: url(../images/check-disable-icon.png) no-repeat right center;
+    margin-right: 10px;
+}
+#action_resources_popup .new_resources .check-enable,
+#action_resources_popup .check-enable span,
+.detail-resourse span.check-enable
+{
+    padding-right: 21px;
+    background: url(../images/check-enable-icon.png) no-repeat right center;
+    margin-right: 10px;
+}
+
+#action_resources_popup .new_resources .uncheck-enable,
+#action_resources_popup .uncheck-enable span,
+.detail-resourse span.uncheck-enable
+{
+    padding-right: 21px;
+    background: url(../images/uncheck-enable-icon.png) no-repeat right center;
+    margin-right: 10px;
+}
+#action_resources_popup .add-new-res-bt {
+    float: left;
+    top: 0px;
+    display: block;
+    background: #757D7E url(../images/search-submit.png) 0 0 repeat-x;
+    border: 1px solid #2E3030;
+    border-radius: 2px;
+    width: 32px;
+    height: 18px;
+    text-align: center;
+    color: white;
+    font: normal 12px/21px 'AdumaFOTRegular';
+    text-decoration: none;
+    margin-top: -23px;
+    margin-left: 17px;
+}
+#action_resources_popup .resource_row
+{
+    border-bottom: 1px solid #ECECEC;
+    height:35px
+}
+
+/*
+
+#action_resources_popup  input {
+    float: left;
+
+    color: black;
+    font: normal 11px/13px Arial;
+    padding: 0;
+    height: 13px;
+    border: none;
+    background:red;
+}
+*/
+
+
 .map
 {
     position: relative;
@@ -8142,7 +8267,7 @@ a.menu-elections:hover {
     width: 100%;
     padding:0;
     height: 17px;
-    color:#b7b6b6;
+    color: black;
     font: normal 13px/17px Arial;
     background:#fff;
     border: 0px solid transparent;
@@ -8151,7 +8276,7 @@ a.menu-elections:hover {
 .add-event select
 {
     float: right;
-    color:#b7b6b6;
+    color: black;
     font: normal 13px/20px Arial;
     margin-top: 6px;
 }
@@ -8177,7 +8302,7 @@ a.menu-elections:hover {
 }
 .add-event .type select
 {
-    width: 233px;
+    width: 198px;
 }
 .add-event .place
 {
@@ -8194,7 +8319,7 @@ a.menu-elections:hover {
     width: 156px;
     margin-left: 7px;
 }
-.add-event .place input[type=submit]
+.add-event .place input[type=button]
 {
     float: right;
     width: 110px;
@@ -8210,7 +8335,7 @@ a.menu-elections:hover {
 .add-event .date 
 {
     padding-left: 12px;
-    width: 166px;
+    width: 181px;
     float: right;
 }
 .add-event .date label
@@ -8223,7 +8348,7 @@ a.menu-elections:hover {
     background-image: url(../images/date-icon.png);
     background-position: 4px 10px;
     background-repeat: no-repeat;
-    width: 76px;
+    width: 91px;
 }
 .add-event .date .input input
 {
@@ -8231,17 +8356,19 @@ a.menu-elections:hover {
 }
 .add-event .time label:first-child
 {
-    padding-right: 21px;
     background: url(../images/clock-icon.png) 100% 50% no-repeat;
 }
 .add-event .time .input
 {
-    width: 34px;
+    width: 54px;
     margin-left: 10px;
+    padding: 6px 3px;
+    direction: ltr;
 }
 .add-event .user-number
 {
     float: left;
+    direction: ltr;
 }
 .add-event .user-number .input
 {
@@ -8280,13 +8407,13 @@ a.menu-elections:hover {
     float: right;
     padding:0;
     height: 17px;
-    color:#b7b6b6;
+    color: black;
     font: normal 13px/17px Arial;
     background:#fff;
     border: 0px solid transparent;
     width: 195px;
 }
-.add-event .additional-resources input[type=submit]
+.add-event .additional-resources input[type=button]
 {
     float: left;
     background: #b7b6b6;
@@ -8338,7 +8465,7 @@ a.menu-elections:hover {
     color: #50504F;
 }
 
-.one-box .bottom-plus .left a {
+.one-box .bottom-plus .left a, .one-box a.green-share {
     background: #2FD43B url(../images/green-btn-border.png) 0 0 repeat-x;
     border-color: #2EAB35;
     margin: 0;
@@ -8457,3 +8584,31 @@ a.menu-elections:hover {
     margin-bottom: 14px;
     background-color: white;
 }
+
+#action_resources_popup
+{
+    position: absolute;
+    display: none;
+    width: 270px;
+    height: 250px;
+    padding: 7px 7px 15px;
+    background: url(../images/action-resources-popup.png) no-repeat;
+}
+
+#action_resources_popup .i_bring
+{
+    background: #2FD43B url(../images/green-btn-border.png) 0 0 repeat-x;
+    border: 1px solid #2EAB35;
+    width: 120px;
+    display: block;
+    height: 28px;
+    text-align: center;
+    font: normal 18px/32px 'AdumaFOTRegular';
+    color: white;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    text-decoration: none;
+    margin: 0 auto;
+}
+

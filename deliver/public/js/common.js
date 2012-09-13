@@ -17,6 +17,16 @@ dust.filters['time'] = function(a){
     return date + " " + time;
 };
 
+dust.filters['time_only'] = function(a){
+
+    var hours = (new Date(Date.parse(a))).getHours();
+    var minutes = (new Date(Date.parse(a))).getMinutes();
+    if(minutes < 10)
+        minutes = "0" + minutes;
+    return hours + ":" + minutes;
+
+};
+
 dust.filters['round'] = function(num){
     return Math.round(num);
 };
@@ -121,7 +131,7 @@ var scrollTo = function(selector, options){
 var connectPopup = function(callback){
 
     //open popup window
-     popupProvider.showLoginPopup({},callback);
+     popupProvider.showLoginPopup({}, callback);
 
 };
 
@@ -131,6 +141,11 @@ var notActivatedPopup = function(msg) {
     });
 };
 
+var getURLParameter = function (name) {
+    return decodeURI(
+        (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+    );
+}
 
 function initTooltip(ui){
     ui.tooltipText({
@@ -398,3 +413,242 @@ function image_autoscale(obj, params)
 
     obj.load();
 };
+
+
+
+//animateCluster([$('#d1'),$('#d2')]);
+//animateCluster([$('#a1'),$('#a2'),$('#a3'),$('#a4')]);
+function animateCluster  (items)
+{
+    var isSpread=false,
+        isOpening=false,
+        isClosing=false,
+        unspread=null;
+
+    if(items.length==2)
+    {
+        var  left=items[0],
+            right= items[1];
+        left.mouseout(unspreadTimer2);
+        left.mouseover(spread2);
+        right.mouseout(unspreadTimer2);
+        right.mouseover(spread2);
+
+
+
+        left.animate({left: '-=4'}, 500);
+        right.animate({left: '+=4'}, 500);
+
+    }
+    else if(items.length==3)
+    {
+
+        var  left=items[0],
+            center=items[1],
+            right= items[2];
+        left.mouseout(unspreadTimer3);
+        left.mouseover(spread3);
+        right.mouseout(unspreadTimer3);
+        right.mouseover(spread3);
+        center.mouseout(unspreadTimer3);
+        center.mouseover(spread3);
+        center.css("z-index",2);
+        left.animate({left: '-=8'}, 500);
+        right.animate({left: '+=8'}, 500);
+
+    }
+    else if(items.length==4)
+    {
+        var  left=items[0],
+            center_left=items[1],
+            center_right=items[2],
+            right= items[3];
+        left.mouseout(unspreadTimer4);
+        left.mouseover(spread4);
+        right.mouseout(unspreadTimer4);
+        right.mouseover(spread4);
+        center_left.mouseout(unspreadTimer4);
+        center_left.mouseover(spread4);
+        center_right.mouseout(unspreadTimer4);
+        center_right.mouseover(spread4);
+    }
+
+    function spread4(){
+
+        clearTimeout(unspread);
+        if(!isSpread && !isOpening && !isClosing ) {
+            isOpening=true;
+            left.animate({
+                opacity: 1,
+                left: '-=35'
+            }, 200, function() {
+
+            });
+            center_left.animate({
+                opacity: 1,
+                left: '-=12'
+            }, 200, function() {
+
+            });
+            center_right.animate({
+                opacity: 1,
+                left: '+=12'
+            }, 200, function() {
+
+            });
+            right.animate({
+                opacity: 1,
+                left: '+=35'
+            }, 200, function() {
+                isSpread=true;
+                isOpening=false;
+
+
+            });
+        } ;
+    }
+    function unspreadTimer4(){
+        if((isSpread || isOpening)&& ! isClosing) {
+
+            clearTimeout(unspread);
+
+            unspread=setTimeout(function(){
+                isClosing=true;
+                left.animate({
+                    opacity: 0.5,
+                    left: '+=35'
+                }, 500, function() {
+
+                });
+                center_left.animate({
+                    opacity: 0.5,
+                    left: '+=12'
+                }, 500, function() {
+
+                });
+                center_right.animate({
+                    opacity: 0.5,
+                    left: '-=12'
+                }, 500, function() {
+
+                });
+                right.animate({
+                    opacity: 0.5,
+                    left: '-=35'
+                }, 500, function() {
+                    isSpread=false;
+                    isClosing=false;
+
+                });
+            }, 1500);
+        }
+    }
+    function spread3(){
+
+        clearTimeout(unspread);
+        if(!isSpread && !isOpening && !isClosing ) {
+            isOpening=true;
+            left.animate({
+                opacity: 1,
+                left: '-=25'
+            }, 200, function() {
+
+            });
+            center.animate({
+                opacity: 1
+
+            }, 200, function() {
+
+            });
+            right.animate({
+                opacity: 1,
+                left: '+=25'
+            }, 200, function() {
+                isSpread=true;
+                isOpening=false;
+
+
+            });
+        } ;
+    }
+    function unspreadTimer3(){
+        if((isSpread || isOpening)&& ! isClosing) {
+
+            clearTimeout(unspread);
+
+            unspread=setTimeout(function(){
+                isClosing=true;
+                left.animate({
+            //        opacity: 0.5,
+                    left: '+=25'
+                }, 500, function() {
+
+                });
+                center.animate({
+             //       opacity: 0.5
+                }, 500, function() {
+
+                });
+
+
+                right.animate({
+              //      opacity: 0.5,
+                    left: '-=25'
+                }, 500, function() {
+                    isSpread=false;
+                    isClosing=false;
+
+                });
+            }, 1500);
+        }
+    }
+
+    function spread2(){
+
+        clearTimeout(unspread);
+        if(!isSpread && !isOpening && !isClosing ) {
+            isOpening=true;
+            left.animate({
+                opacity: 1,
+                left: '-=15'
+            }, 200, function() {
+
+            });
+            right.animate({
+                opacity: 1,
+                left: '+=15'
+            }, 200, function() {
+                isSpread=true;
+                isOpening=false;
+
+
+            });
+        } ;
+    }
+    function unspreadTimer2(){
+        if((isSpread || isOpening)&& ! isClosing) {
+
+            clearTimeout(unspread);
+
+            unspread=setTimeout(function(){
+                isClosing=true;
+                left.animate({
+      //              opacity: 0.5,
+                    left: '+=15'
+                }, 500, function() {
+
+                });
+
+                right.animate({
+      //              opacity: 0.5,
+                    left: '-=15'
+                }, 500, function() {
+                    isSpread=false;
+                    isClosing=false;
+
+                });
+            }, 1500);
+        }
+    }
+
+}

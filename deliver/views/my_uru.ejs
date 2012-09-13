@@ -32,7 +32,7 @@
             <div class="user">
                 <div class="img-box" style="overflow:hidden; position:relative;">
 				    <div style="width:112px; height:120px; float:right;" class="auto-scale">
-                        <img src="<%=pageUser.avatar_url()%>" alt="<%=pageUser.first_name+' '+ pageUser.last_name%>" />
+                        <img src="<%=pageUser.avatar_url()%>" alt="<%=pageUser.first_name+' '+ pageUser.last_name%>" titile="<%=pageUser.first_name+' '+ pageUser.last_name%>"/>
                      </div>
                     <!--div id="upload_image_placeholder" style="position:absolute; top:0px; left:0px;"></div-->
                     <span id="upload_image_placeholder"></span>
@@ -322,10 +322,11 @@
         $('#add_or_remove_proxy').click(function (e) {
 
             if(!currentUserId){
-                //TODO ishai how do i do it?
-                popupProvider.showLoginPopup({},callback);
+                popupProvider.showLoginPopup({}, function(err, result){
+                    if(!err)
+                        window.location = window.location + '/#proxy';
+                });
             }else{
-                // var userData = $(this).parents('.discussion-item');
                 var proxyId = userId //userData.data('creator_id');
                 var userName = '<%=pageUser.first_name %>';
                 e.preventDefault();
@@ -340,6 +341,9 @@
             }
          });
 
+        if(window.location.hash === '#proxy'){
+            $('#add_or_remove_proxy').click();
+        }
 
         if(!isHisUru){
             var uploader = new qq.FileUploader({

@@ -6,63 +6,100 @@
  * To change this template use File | Settings | File Templates.
  */
 
-
 var resources = require('jest'),
     models = require('../../models'),
     async = require('async'),
     common = require('../common.js'),
     _ = require('underscore');
 
-var ActionResource = module.exports = common.GamificationMongooseResource.extend(
-    {
-        init:function () {
-            this._super(models.Action, null, common.getGamificationTokenPrice('vote'));
-            this.allowed_methods = ['get', 'post', 'put'];
-            this.filtering = {cycle_id:null, is_approved:null, grade:null, num_of_going:null,
-                'users.user_id':{
-                    exact:true,
-                    in:true
-                }
-            };
-            this.authentication = new common.SessionAuthentication();
-//            this.fields = {
-//                _id:null,
-//                title:null,
-//                tooltip_or_title:null,
-//                text_field:null,
-//                text_field_preview:null,
-//                image_field:null,
-//                image_field_preview:null,
-//                description:null,
-//                creator_id:null,
-//                action_resources:null,
-//                tags:null,
-//                creation_date:null,
-//                execution_date:null,
-//                required_participants:null,
-//                grade:null,
-//                evaluate_counter:null,
-////                is_follower: null,
-//                is_going:null,
-//                updated_user_tokens:null,
-//                join_id:null,
-//                num_of_going:null
-//            }
-            this.default_query = function (query) {
-                return query.sort({"execution_date.date":'descending'});
+var hourDifference = function (from, to) {
+    // This is a horrible hack to make the JavaScript Date object accept dateless times.
+    // It's better than writing the code myself though.
+    return new Date('1 Jan 2001 ' + to) - new Date('1 Jan 2001 ' + from);
+};
+
+var asArray = function (arg) {
+    if (arg && arg.constructor == Array)
+        return arg;
+    else
+        return [];
+};
+
+var ActionResource = module.exports = common.GamificationMongooseResource.extend({
+    init:function () {
+        this._super(models.Action, null, 0);
+        this.allowed_methods = ['get', 'post', 'put'];
+        this.filtering = {
+            subject_id: null,
+            cycle_id:null,
+            is_approved:null,
+            grade:null,
+            num_of_going:null,
+            'users.user_id': {
+                exact:true,
+                in:true
             }
-        },
+        };
+        this.authentication = new common.SessionAuthentication();
+        this.default_query = function (query) {
+            return query.sort({"execution_date.date":'descending'});
+        };
 
-        get_objects:function (req, filters, sorts, limit, offset, callback) {
-            if (req.query.get == "myUru") {
-                var user_id = req.query.user_id || req.user._id;
-                filters['users.user_id'] = user_id;
-            }
+        this.fields = {
+            _id: null,
+            title: null,
+            tooltip_or_title: null,
+            text_field: null,
+            text_field_preview: null,
+            image_field: null,
+            image_field_preview: null,
+            type: null,
+            creator_id: null,
+            cycle_id: null,
+            action_resources: null,
+            tags: null,
+            users: null,
+            execution_date: null,
+            creation_date: null,
+            required_participants: null,
+            admin_text: null,
+            system_message: null,
+            num_of_going: null,
+            is_approved: null,
+            location: null,
+            grade: null,
+            evaluate_counter: null,
+            grade_sum: null,
+            participants_count: null,
+            redirect_link: null
+        }
+    },
 
-            this._super(req, filters, sorts, limit, offset, function (err, response) {
+    get_objects:function (req, filters, sorts, limit, offset, callback) {
+        if (req.query.get == "myUru") {
+            var user_id = req.query.user_id || req.user._id;
+            filters['users.user_id'] = user_id;
+        }
+
+        this._super(req, filters, sorts, limit, offset, function (err, response) {
+
+            _.each(response.objects, function (action) {
+                action.participants_count = action.users.length;
+//                    action.is_follower = false;
+//                    if (user_actions) {
+//                        if (_.find(user_actions, function (user_cycle) {
+//                            return user_cycle.cycle_id + "" == action._id + "";
+//                        })) {
+//                            action.is_follower = true;
+//                        }
+//                    }
+            })
+
+            callback(err, response);
 
 
-                // TODO i need to fix it for my uru
+
+            // TODO i need to fix it for my uru
 //                _.each(response.objects, function(object){
 //                    object.is_going = false;
 //                    if(req.user){
@@ -78,19 +115,19 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
 //                });
 
 
-                callback(err, response);
-            });
-        },
+            callback(err, response);
+        });
+    },
 
-        create_obj:function (req, fields, callback) {
-            var user_id = req.session.user_id;
-            var self = this;
-            var base = self._super;
-            var action_object = new self.model();
-            var user = req.user;
-            var g_action;
+    create_obj:function (req, fields, callback) {
+        var user_id = req.session.user_id;
+        var self = this;
+        var base = self._super;
+        var action_object = new self.model();
+        var user = req.user;
+        var g_action;
 
-            var min_tokens = common.getGamificationTokenPrice('create_action') > -1 ? common.getGamificationTokenPrice('create_action') : 10;
+        var min_tokens = common.getGamificationTokenPrice('create_action') > -1 ? common.getGamificationTokenPrice('create_action') : 10;
 //            var total_tokens = user.tokens + user.num_of_extra_tokens;
 
 //            if(total_tokens <  min_tokens && total_tokens < min_tokens - (Math.min(Math.floor(user.gamification.tag_suggestion_approved/2), 2))){
@@ -99,72 +136,92 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
 //            else
 //            {
 
-            async.waterfall([
-                function(cbk){
+        async.waterfall([
+
+            function(cbk){
+                models.Cycle.findById(fields.cycle_id, cbk);
+            },
+
+            function(cycle, cbk){
+
+                if(!cycle)
+                    cbk('no such cycle');
+                else{
+                    fields.subject_id = cycle.subject[0].id;
+
+                    // Data external to the request
                     fields.creator_id = user_id;
                     fields.first_name = user.first_name;
                     fields.last_name = user.last_name;
                     fields.users = {user_id: user_id, join_date: Date.now()};
+
+                    // Massage some of the data to an acceptable format
+                    fields.execution_date = {
+                        date: new Date(fields.date + 'T' + fields.time.from),
+                        duration: hourDifference(fields.time.from, fields.time.to)
+                    };
+                    fields.action_resources = asArray(fields.action_resources).map(function (text) { return { resource: text, amount: 1, left_to_bring: 1 }; });
+
                     for (var field in fields) {
                         action_object.set(field, fields[field]);
                     }
 
                     base.call(self, req, fields, cbk);
-                },
+                }
+            },
 
-                function(action_obj, cbk){
-                    g_action = action_obj;
-                    var cycle_id = action_obj.cycle_id;
+            function(action_obj, cbk){
+                g_action = action_obj;
+                var cycle_id = action_obj.cycle_id;
 
-                    async.parallel([
+                async.parallel([
+                    function (cbk1) {
+                        req.gamification_type = "action";
+
+                        // add discussion_id and action_id to the lists in user
+                        var new_action = {
+                            action_id: action_obj._id,
+                            join_date: Date.now()
+                        }
+                        models.User.update({_id:user_id}, {$addToSet:{actions: new_action}}, cbk1)
+                    },
+
+                    function (cbk1) {
+                        models.Cycle.findById(cycle_id, cbk1);
+                    }
+                ], function(err, args){
+                    cbk(err, args[1]);
+                })
+            },
+
+            function(cycle, cbk){
+                if (cycle.upcoming_action) {
+                    async.waterfall([
                         function (cbk1) {
-                            req.gamification_type = "action";
-
-                            // add discussion_id and action_id to the lists in user
-                            var new_action = {
-                                action_id: action_obj._id,
-                                join_date: Date.now()
-                            }
-                            models.User.update({_id:user_id}, {$addToSet:{actions: new_action}}, cbk1)
+                            models.Action.findById(cycle.upcoming_action, cbk1);
                         },
 
-                        function (cbk1) {
-                            models.Cycle.findById(cycle_id, cbk1);
-                        }
-                    ], function(err, args){
-                        cbk(err, args[1]);
-                    })
-                },
-
-                function(cycle, cbk){
-                    if (cycle.upcoming_action) {
-                        async.waterfall([
-                            function (cbk1) {
-                                models.Action.findById(cycle.upcoming_action, cbk1);
-                            },
-
-                            function (upcoming_action, cbk1) {
-
-                                if (upcoming_action.execution_date.date > g_action.execution_date.date) {
-                                    cycle.upcoming_action = g_action._id;
-                                    cycle.save(cbk1);
-                                }else{
-                                    cbk1(null, null);
-                                }
+                        function (upcoming_action, cbk1) {
+                            if (upcoming_action.execution_date.date > g_action.execution_date.date) {
+                                cycle.upcoming_action = g_action._id;
+                                cycle.save(cbk1);
+                            }else{
+                                cbk1(null);
                             }
-                        ], function(err, action){
-                            cbk(err, action)})
-                    } else {
-                        cycle.upcoming_action = g_action._id;
-                        cycle.save(function(err, cycle){
-                            cbk(err, g_action)
-                        });
-                    }
+                        }
+                    ], function(err){
+                        cbk(err)})
+                } else {
+                    cycle.upcoming_action = g_action._id;
+                    cycle.save(function(err, cycle){
+                        cbk(err)
+                    });
                 }
-            ], function(err, action){
-                callback(err, action);
-            })
-        }
-    });
-
-
+            }
+        ], function(err){
+            callback(err, {
+                redirect_link: req.app.get('root_path') + '/actions/' + g_action.id
+            });
+        })
+    }
+});

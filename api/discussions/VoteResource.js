@@ -115,12 +115,12 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
                                                 if(!err){
                                                     if(new_ballance > 0 || (new_ballance == 0 && method == 'remove')){
                                                         notifications.create_user_vote_or_grade_notification("user_gave_my_post_tokens",
-                                                            post_object._id, post_object.creator_id, vote_object.user_id, discussion_id, method, false, false, function(err, result){
+                                                            post_object._id, post_object.creator_id, vote_object.user_id, discussion_id, method, false, false, '/discussions/' +  discussion_id, function(err, result){
                                                                 cbk(err, post_object);
                                                             })
                                                     }else{
                                                         notifications.create_user_vote_or_grade_notification("user_gave_my_post_bad_tokens",
-                                                            post_object._id, post_object.creator_id, vote_object.user_id, discussion_id, method, false, false, function(err, result){
+                                                            post_object._id, post_object.creator_id, vote_object.user_id, discussion_id, method, false, false, '/discussions/' +  discussion_id, function(err, result){
                                                                 cbk(err, post_object);
                                                             })
                                                     }

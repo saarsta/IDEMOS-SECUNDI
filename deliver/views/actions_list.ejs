@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <style>
+        .subject_selected{color: #ff0000 ; font-size: 50px}
+    </style>
+    <% include partials/head.ejs %>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.tikunim-box h2').click(function () {
+                $(this).parent().toggleClass('active');
+            });
+        });
+    </script>
+</head>
+<body>
+<% include partials/body_top.ejs %>
+<div id="wrap">
+    <div id="header">
+        <% include partials/menu.ejs %>
+        <% include partials/user_box.ejs %>
+        <% include partials/failures.ejs %>
+        <% include partials/tag_search.ejs %>
+
+    </div>
+    <div id="content" class="cf">
+        <div id="subjects" class="services-box services-box-all cf">
+            <div id="subjectsLevel1_blue" class="services-blue services-blue-two cf">
+
+            </div>
+            <div id="subjectsLevel2_blue" class="services-blue services-blue-three cf">
+
+            </div>
+            <div class="services-green">
+                <span class="empty"></span>
+                <a href="javascript:void(0);" class="service-10 subjectItem"  data-subject_id=""><span class="text">
+עורו
+                </span><span class="icon"></span></a>
+            </div>
+        </div>
+        <select id="sorting_select" class="left-select">
+            <option value="-creation_date" >
+                תאריך
+            </option>
+            <option value="-grade">
+                דירוג
+            </option>
+            <option value="-followers_count">
+                עוקבים
+            </option>
+        </select>
+
+        <h2>
+כל הפעולות במערכת
+        </h2>
+
+        <div id="action_list">
+
+        </div>
+    </div>
+</div>
+<% include partials/footer.ejs %>
+</body>
+</html>
+
+
+<script type="text/javascript">
+
+    $(function(){
+
+        current_section=1;
+        var selectedTag = '<%= tag_name || "" %>';
+        var selectedSubject;
+        db_functions.getAllSubjects(function(err,data)  {
+            $.each(data.objects,function(index,disc) {
+                disc.type = 'actions';
+            });
+            var uru_subject = data.objects[0];
+            var level1subjects = data.objects.slice(1,6);
+            var level2subjects = data.objects.slice(6,8);
+
+            $('.services-green .subjectItem').data('subject_id', uru_subject._id).attr('href','/cycles/subject/' + uru_subject._id);
+
+            $.each(level1subjects,function(index,subject){
+                dust.render('subject',subject,function(err,out) {
+                    $('#subjectsLevel1_blue').append(out);
+                })
+            });
+
+            $.each(level2subjects,function(index,subject){
+                dust.render('subject',subject,function(err,out) {
+                    $('#subjectsLevel2_blue').append(out);
+                })
+            });
+        });
+
+
+        function createCyclesQuery(){
+            var sortby=  $('#sorting_select').val();
+            var query='order_by='+sortby;
+//            if(selectedTag){
+//                query =query+'&tags='+selectedTag;
+//            }
+            if(selectedSubject){
+                query = query+'&subject_id='+selectedSubject;
+            }
+            return query;
+        }
+
+        function loadCyclesListToPage(){
+            var query = createCyclesQuery();
+            listCommon.reloadList('action_list','actions','action_list_item', query);
+        }
+
+        $('#cycles_list').on('click', '.join_button', function(e){
+            var item =  $(this).parents('[data-id]');
+            var item_id =  item.data('id');
+            var actionType =  $(this).data('action');
+            e.preventDefault();
+            db_functions.joinToCycleFollowers(item_id, function(err,data){
+                dust.render('cycle_list_item', data, function(err, html){
+                    item.replaceWith(html);
+                })
+            })
+        });
+
+        $('#sorting_select').change(loadCyclesListToPage);
+        loadCyclesListToPage();
+    });
+</script>

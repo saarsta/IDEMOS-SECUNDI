@@ -5,7 +5,7 @@
     <div class="user-right user-right-small side_menu">
         <span class="arrow"></span>
         <div class="left">
-            <a id="add_or_remove_proxy" href="javascript:void(0);" disabled="disabled">
+            <a id="add_or_remove_proxy" href="javascript:void(0);">
                 תן מנדט
             </a>
             <a href="javascript:void(0);" class="follow_user gray_and_soon">
@@ -41,7 +41,7 @@
         {?discussion_title}<h3>{discussion_title}</h3>  {/discussion_title}
         <p>{text|s|post}</p>
         <div class="bottom">
-        {?discussion_title}<a href="/discussions/{discussion_id}">מעבר לדיון </a>      {/discussion_title}
+        {?discussion_button}<a href="/discussions/{discussion_id}">מעבר לדיון </a>      {/discussion_button}
         </div>
     </div>
     <div class="ratio">
