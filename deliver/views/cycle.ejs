@@ -430,10 +430,20 @@
 
                     $.each(render_clusters, function (index1, cluster_array) {
                         var it= [];
+                        var dummy=true;
                         $.each(cluster_array, function (index2, item) {
-                            it.push($('#timeline_item_'+item))
+                             if($("#timeline_item_"+item).attr("class").indexOf("today") == -1 )
+                             {
+                                 it.push($('#timeline_item_'+item))
+                             }
+                             else
+                             {
+                                 dummy=false;
+                             }
                         });
-                        dust.render('cycle_timeline_dummy', {date:index1}, timelineAppend);
+                        if (dummy)   {
+                            dust.render('cycle_timeline_dummy', {date:index1}, timelineAppend);
+                        }
                         animateCluster(it);
                     });
              });
