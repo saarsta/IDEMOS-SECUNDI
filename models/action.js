@@ -11,7 +11,7 @@ var Action = module.exports = new Schema({
     text_field_preview:  {type: mongoose_types.Text},
     image_field:         mongoose_types.File,
     image_field_preview: mongoose_types.File,
-    type: {type: String, require: true},
+    category: {type:ObjectId, ref:'Category', require: true},
     description: String,
     creator_id: {type:ObjectId, ref:'User', index:true, required:true},
     first_name: {type: String, editable:false},
