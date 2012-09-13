@@ -262,18 +262,14 @@
                         j= 0,
                         pre_discussion_items = {type:'past',month:'לפני יצירת הדיון',items:[]},
                         past_months={},
-                        clusters={};
+                        clusters={},
+                        past=true;
 
                     //init items
                     var last_item=null;
                     $.each(data.objects, function (index, item) {
 
-                       // debugger;
-                        if(last_item && last_item.date.substr(0,10)==item.date.substr(0,10))
-                        {
-                            last_item.cluster=true;
-                            item.cluster=true;
-                        }
+
                         item.type_print =  type_names[item.type];
                         switch(item.type)
                         {
@@ -296,13 +292,19 @@
                                 item.link ='/updates/'+item._id;
                                 break;
                             case 'today':
-
+                                past=false;
                                 break;
                             case 'admin_update':
                                 item.short=item.text
                                 break;
                             default:
                                 console.log("unknow timleline type : "+  item.type);
+                        }
+                        // debugger;
+                        if(!past && last_item && last_item.date.substr(0,10)==item.date.substr(0,10))
+                        {
+                            last_item.cluster=true;
+                            item.cluster=true;
                         }
                         last_item=item;
 
@@ -311,8 +313,8 @@
                       nodes= data.objects.slice(0);
                       //remove all past items from list and move them into past objects
                       //
+                      past=true;
                       var pre_discussion=true,
-                          past=true,
                           custers_count = 0,
                           clustered_count=0;
                       $.each(data.objects, function (index, item) {
@@ -347,7 +349,7 @@
                                  if(item.cluster)
                                  {
                                      var item_date=   new Date(item.date)
-                                     var ind=item_date.format('ddmmyy');
+                                     var ind=item_date.format('d.m');
                                      if(!clusters[ind]) {
                                         // clusters[ind]=  {type:'cluster',date:item_date,items:[]}
                                          clusters[ind]=0;
@@ -384,10 +386,15 @@
                               var item_date=   new Date(item.date)
                               var ind=item_date.format('d.m');
                               if(!render_clusters[ind])  {
-                                  render_clusters[ind]=[];
+                                  render_clusters[ind]={};
+                                  render_clusters[ind].items=[];
                               }
-                              render_clusters[ind].push(i);
-                              clusters[ind]++;
+                              else
+                              {
+                                  render_clusters[ind].offset=   (j*980)/count;
+                              }
+                              render_clusters[ind].items.push(i);
+                              clusters[ind]--;
                           }
                           item.offset  =    (j*980)/count;
                           item.timeline_index=i;
@@ -422,7 +429,7 @@
                           }
                           i++;
                           j++;
-                          if(item.cluster && clusters[ind]!=0)
+                          if(item.cluster && clusters[ind]!=0 )
                           {
                             j--;
                           }
@@ -431,7 +438,8 @@
                     $.each(render_clusters, function (index1, cluster_array) {
                         var it= [];
                         var dummy=true;
-                        $.each(cluster_array, function (index2, item) {
+                        var offset=cluster_array.offset;
+                        $.each(cluster_array.items, function (index2, item) {
                              if($("#timeline_item_"+item).attr("class").indexOf("today") == -1 )
                              {
                                  it.push($('#timeline_item_'+item))
@@ -442,7 +450,7 @@
                              }
                         });
                         if (dummy)   {
-                            dust.render('cycle_timeline_dummy', {date:index1}, timelineAppend);
+                            dust.render('cycle_timeline_dummy', {date:index1,offset:offset}, timelineAppend);
                         }
                         animateCluster(it);
                     });
