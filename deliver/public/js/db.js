@@ -1356,7 +1356,7 @@ var db_functions = {
         });
     },
 
-    addNewActionResource: function(action_id, category_id, resource_name, callback){
+    addNewActionResource: function(action_id, resource_name, callback){
         db_functions.loggedInAjax({
             url:'/api/action_resources',
             type:"Post",

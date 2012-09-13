@@ -515,7 +515,7 @@ var error_message = error_message || '';
 <% include partials/footer.ejs %>
 
  <script type="text/javascript">
-     var action_id='<%=action._id%>';
+     var action_id = '<%=action._id%>';
      var my_id = "<%=user_logged ? user._id : ''%>";
      var my_discussion_grade = Number("<%= action.grade_obj ? action.grade_obj.value || 0 : 0 %>");
      var creator_id = "<%=action.creator_id%>";
@@ -774,7 +774,6 @@ var error_message = error_message || '';
             onHide:function(e){
                 onPopupClosed();
             }
-
         });
 
         $('#action_resources_popup .add-new-res-bt').click(function(e){
@@ -784,12 +783,14 @@ var error_message = error_message || '';
 
             var bringing=$('#action_resources_popup .new_resources span').hasClass('check-enable');
             uncheck( $('#action_resources_popup .new_resources span'));
-            if(newRes&&newRes.length>0){
+            if(newRes && newRes.length > 0){
                 //save in db
                 //todo: saar
-                //db_functions.addNewActionResource()
-                var id =Math.random()*50000;//BUGBUG XXXXXXXX TODO REPLACE
-                addResource(id,newRes,bringing);
+//                db_functions.addNewActionResource(action_id, newRes, function(err, result){
+//
+//                })
+                var id = Math.random()*50000;//BUGBUG XXXXXXXX TODO REPLACE
+                addResource(id, newRes, bringing);
             }
         })
     })();

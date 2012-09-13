@@ -21,10 +21,20 @@ var ActionResourceResource = module.exports = common.GamificationMongooseResourc
         var action_id = req.body.action_id;
         var amount = req.body.amount;
         var g_action_resource;
+        var g_action;
 
         async.waterfall([
+
             function(cbk){
+                models.Action.findById(action_id, cbk);
+            },
+
+            function(action, cbk){
+                g_action = action;
+
                 fields.is_approved = false;
+                //all action resources of action have the same category..
+                fields.category = action.action_resources[0].category;
 
                 for (var field in fields) {
                     object.set(field, fields[field]);
@@ -41,7 +51,8 @@ var ActionResourceResource = module.exports = common.GamificationMongooseResourc
                     left_to_bring: amount
                 }
 
-                models.Action.update({_id: action_id}, {$addToSet: {action_resources: new_action_resource}}, cbk);
+                g_action.action_resources.push(new_action_resource);
+                g_action.save(function(err, action){ cbk(err, action) })
             }
         ], function(err, hi){
             callback(err, g_action_resource);
