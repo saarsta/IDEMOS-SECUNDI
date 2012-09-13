@@ -30,6 +30,7 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
         this._super(models.Action, null, 0);
         this.allowed_methods = ['get', 'post', 'put'];
         this.filtering = {
+            subject_id: null,
             cycle_id:null,
             is_approved:null,
             grade:null,
