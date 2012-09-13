@@ -185,6 +185,8 @@ var error_message = error_message || '';
         })
     };
 
+    var resource_index = 0;
+
     var addResource = function (text, id) {
         var add = true;
         resource_checkboxes.find('label').each(function () {
@@ -199,7 +201,9 @@ var error_message = error_message || '';
             label.text(text);
 
             var addCheckbox = function (id) {
-                label.prepend($('<input type="checkbox">').attr('name', "action_resources[" + id + "]"));
+                resource_index++;
+                label.prepend($('<input type="hidden">').attr('name', 'action_resources[' + resource_index + '][id]').val(id));
+                label.prepend($('<input type="checkbox">').attr('name', 'action_resources[' + resource_index + '][checked]'));
             };
 
             if (id) {
