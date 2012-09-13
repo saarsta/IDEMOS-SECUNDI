@@ -8614,19 +8614,3 @@ a.menu-elections:hover {
     margin: 0 auto;
 }
 
-
-div.greenbutton {
-    position: relative;
-    width: 300px;
-    margin:0 auto;
-}
-
-div.greenbutton a {
-    display: inline-block;
-    width: 323px;
-    height: 120px;
-    background: url('/images/greenbutton.png') no-repeat center center;
-}
-div.greenbutton a:hover {
-    background-image: url('/images/greenbutton_hover.png');
-}
