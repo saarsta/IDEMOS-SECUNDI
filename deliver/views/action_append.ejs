@@ -166,10 +166,8 @@ var error_message = error_message || '';
             מיקום:
             <strong><%=action.location?action.location.address:''%></strong>
         </div>
-        <div class="discussion_content action-text-overflow">
-      <!--    <p><%-action.text_field%></p>-->
-            <textarea id="discussion_content" class="hidden_textarea"><%=action.text_field%></textarea>
-
+        <div class="action_content action-text-overflow">
+            <textarea id="action_content" class="hidden_textarea"><%=action.text_field%></textarea>
          </div>
 
         <a class="more-text" href="">קרא עוד</a>
@@ -244,7 +242,8 @@ var error_message = error_message || '';
                     <strong><%=action.location?action.location.address:''%></strong>
                 </div>
             </div>
-            <p><%-action.text_field%></p>
+            <!--<p><%-action.text_field%></p>-->
+            <textarea id="action_content_after_read_more" class="hidden_textarea"><%=action.text_field%></textarea>
 
             <a id="readLess" class="read_less" href="">
                 קרא פחות
@@ -517,7 +516,11 @@ var error_message = error_message || '';
  <script type="text/javascript">
      var action_id = '<%=action._id%>';
      var my_id = "<%=user_logged ? user._id : ''%>";
-     var my_discussion_grade = Number("<%= action.grade_obj ? action.grade_obj.value || 0 : 0 %>");
+     var my_action_grade = Number("<%= action.grade_obj ? action.grade_obj.value || 0 : 0 %>");
+     var vision = $('#action_content').text();
+
+     var action_grade = Number("<%= action.grade%>");
+
      var creator_id = "<%=action.creator_id%>";
      $(function(){
          var grade_id = "<%= action.grade_obj ? action.grade_obj.grade_id : 0 %>";
@@ -529,7 +532,7 @@ var error_message = error_message || '';
 
          (function propselModule(){
              var mouseDown, mouseUp, top, left;
-             $('.discussion_content').on('mousedown', function (e) {
+             $('.action_content').on('mousedown', function (e) {
                  mouseDown = e;
                  console.log(e);
              })
@@ -562,16 +565,17 @@ var error_message = error_message || '';
              $('.popup-window').on('focus', function (e) {
                  e.preventDefault();
              });
-             $("#discussion_content").select(function () {
+
+             $("#action_content, #action_content_after_read_more").select(function () {
                  range = $(this).getSelection();
                  flag = false;
-                 /* db_functions.getSuggestionByDiscussion(action_id, null, null, function(err, suggestions){
+                  db_functions.getSuggestionByAction(action_id, null, null, function(err, suggestions){
                      $.each(suggestions.objects, function (index, suggestion) {
                          if ((suggestion.parts[0].start >= range.start && suggestion.parts[0].start <= range.end)
                                  || (suggestion.parts[0].end >= range.start && suggestion.parts[0].end <= range.end)) {
                              flag = true;
                          }
-                     })*/
+                     })
                      if(flag)
                          popupProvider.showOkPopup({message:"הטקסט סומן כבר בהצעה לשינוי קיימת"});
                      else
@@ -579,14 +583,14 @@ var error_message = error_message || '';
                                  .css({ top:top + 20, left:left, opacity:0 })
                                  .show()
                                  .animate({ top:'-=20px', opacity:1 }, 100, 'linear');
-                // });
+                });
 
                  console.log(range);
              });
 
              $('#pop_suggest_bt').on("click", function (e) {
                  e.preventDefault();
-                 $('#discussion_content_txt').text('"' + range.text + '"');
+                 $('#action_content_txt').text('"' + range.text + '"');
                  $('#write-comment').show();
                  $('textarea#discussion_suggest').focus();
                  $('#reload-img').attr('src', $('#reload-img').attr('src'));
@@ -617,7 +621,7 @@ var error_message = error_message || '';
 
                      part.text += " ";
                  var explanation = $("#discussion_explanation").val();
-                 db_functions.addSuggestionToDiscussion(discussion_id, [part], explanation, function (err, data) {
+                 db_functions.addSuggestionToAction(action_id, [part], explanation, function (err, data) {
                      if (!err) {
                          $('#write-comment').hide();
                          render_suggestion(data)
@@ -637,24 +641,24 @@ var error_message = error_message || '';
 
          } )();
 
+         $("#action_content").val($("#action_content").text());
+
          $(".slider").slider({
              disabled:is_creator,
-             value:my_discussion_grade,
+             value:my_action_grade,
              range:"min",
              min:0,
              max:10,
              step:0.10,
              change:function (event, ui) {
 
-                 my_discussion_grade = ui.value;
-                 // This is an Action not a discussion
-/*
-                 db_functions.addDiscussionGrade(action_id, my_discussion_grade, grade_id, function (err, data) {
+                 my_action_grade = ui.value;
+                 db_functions.addActionGrade(action_id, my_action_grade, grade_id, function (err, data) {
 
                      if (!err) {
                          $("#amount").val(Math.round(data.new_grade * 100) / 100);
                          $("#graders").text(Math.round(data.evaluate_counter));
-                         $(".dark_bar").css('width', (my_discussion_grade * 10) + '%');
+                         $(".dark_bar").css('width', (my_action_grade * 10) + '%');
                          grade_id = data.grade_id;
                      }
                      else
@@ -772,6 +776,7 @@ var error_message = error_message || '';
                $('#action_resources_popup .new_resources input').focus();
             },
             onHide:function(e){
+                onPopupClosed();
                 onPopupClosed();
             }
         });
