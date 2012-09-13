@@ -14,15 +14,14 @@ discussion_google_to_objid.mapping = {
     'entry.23.group': '503b992b7ccaa302000000e8', // הוזלת הדיור
     'entry.21.group': '503a5b84bd50520200000017', // שיפור תנאים
     'entry.19.group': '5022def369668c0200020d1e',
-    'entry.17.group': {title: 'מאבק בעבריינות: תוחמר האכיפה ומדיניות הענישה על עבירות גוף ורכוש'}, // מאבק בעבריינות
-    'entry.15.group': {title: 'יותר שוטרים ברחוב: יועלו משמעותית מספר השוטרים, תגמולם והכשרתם'}, // יותר שוטרים ברחוב
+    'entry.17.group': 'מאבק בעבריינות: תוחמר האכיפה ומדיניות הענישה על עבירות גוף ורכוש', // מאבק בעבריינות
+    'entry.15.group': 'יותר שוטרים ברחוב: יועלו משמעותית מספר השוטרים, תגמולם והכשרתם', // יותר שוטרים ברחוב
     'entry.13.group': '5023af9b61a325020000efbe',
     'entry.11.group': '501e69e17555f60200001f2e',
     'entry.9.group':  '502a91a90893a502000000ce',
     'entry.31.group': '5030eaf0e840450200000412',
     'entry.33.group': '4ff436ba47d7fa010000071f',
-    'entry.35.group': '4fcdf7180a381201000005b3',
-    'entry.37.single': '37' // העלה הצעה משלך
+    'entry.35.group': '4fcdf7180a381201000005b3'
 };
 
 
@@ -66,6 +65,8 @@ module.exports = function(req, res) {
         function (cbk) {
             // this is for mongoose compatibility (breaks when nested obj has '.' in name)
             var discussion_ids = Object.keys(req.body).map(discussion_google_to_objid).filter(function(x){return x});
+            if ('entry.37.single' in req.body)
+                discussion_ids.push(req.body['entry.37.single']);
             models.User.findByIdAndUpdate(user._id, {has_voted: discussion_ids}, cbk);
         },
         // delete user from session to trigger reload of the user object or logout

@@ -58,10 +58,12 @@ var CycleTimelineResource = module.exports = jest.Resource.extend({
                             //set date to today after midnight
                             var date = new Date();
                             date.setHours(0,0,0,1);
+                            //set date to one sec after midnight
+                            var new_date = new Date(date.getTime() + 3 * 1000 *60 * 60);
 
                             var obj = {
                                 type: "today",
-                                date: date
+                                date: new_date
                             }
 
                             objs.push(obj);

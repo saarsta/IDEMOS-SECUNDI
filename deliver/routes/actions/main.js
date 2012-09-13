@@ -13,89 +13,95 @@ module.exports = function (req, res) {
      * final - is curr user going
      * */
     var user = req.session.user;
-    var grade_obj;
 
-    async.parallel([
-        function (cbk) {
-            models.Action.findById(req.params[0])
-                .select({
-                    '_id':1,
-                    'creator_id': 1,
-                    'type':1,
-                    'title':1,
-                    'text_field':1,
-                    'image_field':1,
-                    'tags':1,
-                    'location':1,
-                    'execution_date':1,
-                    'required_participants':1,
-                    'cycle_id':1,
-                    'action_resources':1,
-                    'grade': 1,
-                    'evaluate_counter': 1,
-                    'is_approved':1,
-                    'admin_text':1,
-                    'system_message': 1
-                })
-                .populate('action_resources.resource')
-                .populate('cycle_id', {'_id': 1, 'title': 1})
-                .exec(function(err, action){
-                    //if pending find grade
-                    if(!err && user && action && !action.is_approved){
-                        models.GradeAction.findOne({user_id:user._id, action_id: req.params[0]}, function (err, grade) {
-                            if (grade) {
-                                grade_obj = {};
-                                grade_obj["grade_id"] = grade._id;
-                                grade_obj["value"] = grade.evaluation_grade;
-                            }
-                            cbk(err, action);
-                        });
-                    }else{
-                        cbk(err, action);
-                    }
-                });
-        },
-
-        // get the user object
-        function (cbk) {
-            if (req.session.user)
-                models.User.findById(req.session.user._id, cbk);
-            else {
-                cbk(null, null);
+    models.Action.findById(req.params[0])
+        .select({
+            _id: 1,
+            creator_id: 1,
+            category: 1,
+            title: 1,
+            text_field: 1,
+            image_field: 1,
+            tags: 1,
+            location: 1,
+            execution_date: 1,
+            required_participants: 1,
+            cycle_id: 1,
+            action_resources: 1,
+            grade: 1,
+            evaluate_counter: 1,
+            is_approved: 1,
+            admin_text: 1,
+            system_message: 1
+        })
+        .populate('action_resources.resource')
+        .populate('category', { _id: 1, title: 1 })
+        .populate('cycle_id', { _id: 1, title: 1 })
+        .exec(function (err, action) {
+            if (err) {
+                console.log('actions/main.js: Error finding action by id. ', arguments);
+                return res.render('500.ejs', {error:err});
             }
-        },
 
-        function (cbk) {
-            models.Join.find({action_id: req.params[0]})
-                .select({_id:1, user_id:1})
-                .exec(cbk);
-        }
-    ], function (err, args) {
+            if (!action) {
+                console.log('actions/main.js: Action not found. ', arguments);
+                return res.render('404.ejs', {error:err});
+            }
 
-        if (err)
-            res.render('500.ejs', {error:err});
-        else {
+            async.parallel({
+                grade: function(cbk) {
+                    //if pending find grade
+                    if (user && !action.is_approved) {
+                        models.GradeAction.findOne({ user_id:user._id, action_id: req.params[0] }, function (err, grade) {
+                            if (!grade) {
+                                cbk(err, null);
+                            } else {
+                                cbk(err, {
+                                    grade_id: grade._id,
+                                    value: grade.evaluation_grade
+                                });
+                            }
+                        });
+                    } else {
+                        cbk(err, null);
+                    }
+                },
 
-            var action = args[0];
+                user: function (cbk) {
+                    if (req.session.user)
+                        models.User.findById(req.session.user._id, cbk);
+                    else {
+                        cbk(null, null);
+                    }
+                },
 
-            if (!action)
-                res.render('404.ejs');
-            else {
-                var proxyJson = args[1] ? JSON.stringify(args[1].proxy) : null;
-                var going_users = args[2];
+                going_users: function (cbk) {
+                    models.Join.find({action_id: req.params[0]})
+                        .select({_id:1, user_id:1})
+                        .exec(cbk);
+                }
 
-                action.grade_obj = grade_obj;
+            }, function (err, args) {
+                if (err) {
+                    return res.render('500.ejs', {error:err});
+                }
 
-                action.from_date= action.execution_date.date;
-               // action.to_date= action.from_date.addHours(action.execution_date.duration);
-                action.to_date= new Date(action.execution_date.date.getTime() + action.execution_date.duration*1000*3600);
+                var proxyJson = args.user ? JSON.stringify(args.user.proxy) : null;
+                var going_users = args.going_users;
+
+                action.grade_obj = args.grade;
+
+                action.from_date = action.execution_date.date;
+                // action.to_date = action.from_date.addHours(action.execution_date.duration);
+                action.to_date = new Date(action.execution_date.date.getTime() + action.execution_date.duration);
                 var is_going = false;
-               // is user going to action?
-               if(user){
-                   var user_id = user._id;
-                   is_going = going_users.some(function(going_user){ return going_user.user_id + "" == user_id + ""})
-               }
-               action.is_going = is_going;
+
+                // is user going to action?
+                if(user){
+                    var user_id = user._id;
+                    is_going = going_users.some(function(going_user){ return going_user.user_id + "" == user_id + ""})
+                }
+                action.is_going = is_going;
 
 
                 var ejsFileName = action.is_approved ? 'action_approved.ejs' : 'action_append.ejs';
@@ -105,7 +111,6 @@ module.exports = function (req, res) {
                     proxy:proxyJson
                     // pageType:'beforeJoin' //waitAction,beforeJoin
                 });
-            }
-        }
-    });
+            });
+        });
 };
