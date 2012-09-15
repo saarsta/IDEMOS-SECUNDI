@@ -11,6 +11,9 @@ var error_message = error_message || '';
     <script src="/plugins/ckeditor/ckeditor.js"></script>
     <script src="/plugins/ckeditor/adapters/jquery.js"></script>
 
+    <script src="https://maps-api-ssl.google.com/maps/api/js?v=3&sensor=false&language=he&libraries=places"></script>
+    <script src="/node-forms/js/maps.js"></script>
+
     <!--  <meta property="fb:app_id" content="<XXX%= settings.facebook_app_id %>" />
         <meta property="og:type"   content="<XXX%= settings.facebook_app_name %>:discussion" />
         <meta property="og:url"    content="<XXX%= settings.root_path %>/discussions/<XXX%= discussion.id %>" />
@@ -75,9 +78,14 @@ var error_message = error_message || '';
                         <div class="place">
                             <label>מיקום</label>
                             <div class="input">
-                                <input type="text" name="location" value="" required />
+                                <input id="place_input" type="text" name="location[address]" value="" required />
                             </div>
                             <input type="button" value="פתח מפה" />
+                            <div style="height: 0px; overflow: hidden;">
+                                <div style="width: 300px; height: 300px;" id="map_popup">
+                                    <input type="hidden" name="location[coordinates]" />
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="one-line cf">
@@ -272,6 +280,20 @@ var error_message = error_message || '';
         }
     });
     $('.add-tag').tagAdder(addTag);
+
+    $('#map_popup input').geopicker({
+        address_field: 'place_input'
+    });
+    $('.place [type=button]').click(function () {
+        $.colorbox({
+            inline: true,
+            href: '#map_popup',
+            onComplete: function () {
+            },
+            onClosed: function () {
+            }
+        });
+    });
 
     $('#main_form').validate({
         rules: {

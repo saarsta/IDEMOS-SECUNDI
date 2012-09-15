@@ -164,6 +164,14 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                         .filter(function (obj) { return obj; } )
                         .map(function (obj) { return { resource: obj.id, amount: 1, left_to_bring: obj.checked ? 0 : 1 }; });
 
+                    if (fields.location && typeof fields.location.coordinates == 'string') {
+                        var latlng = fields.location.coordinates.split(',');
+                        if (latlng.length == 2) {
+                            fields.location.lat = latlng[0];
+                            fields.location.lng = latlng[1];
+                        }
+                    }
+
                     for (var field in fields) {
                         action_object.set(field, fields[field]);
                     }
