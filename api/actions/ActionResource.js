@@ -170,11 +170,13 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                         .filter(function (obj) { return obj; } )
                         .map(function (obj) { return { resource: obj.id, amount: 1, left_to_bring: obj.checked ? 0 : 1 }; });
 
-                    if (fields.location && typeof fields.location.coordinates == 'string') {
-                        var latlng = fields.location.coordinates.split(',');
+                    if (fields.location && typeof fields.location.geometry == 'string') {
+                        var latlng = fields.location.geometry.split(',');
                         if (latlng.length == 2) {
-                            fields.location.lat = latlng[0];
-                            fields.location.lng = latlng[1];
+                            fields.location.geometry = {
+                                lat: latlng[0],
+                                lng: latlng[1]
+                            };
                         }
                     }
 
