@@ -4,8 +4,7 @@
 <head>
     <% include partials/head.ejs %>
 </head>
-<body
-<%if(!user_logged){%>class="big-head"<%}%>>
+<body <%= user_logged? '' : 'class=big-head' %> >
 <% include partials/body_top.ejs %>
 <div id="wrap">
     <div id="header">
@@ -20,9 +19,8 @@
             <p>
                 תנועת עורו מאפשרת לכולנו להתאגד סביב חזון משותף באמצעות פלטפורמה אינטרנטית מתקדמת, לצאת לפעילות בשטח ולהשפיע על מקבלי ההחלטות. כך נוביל שינוי בישראל
             </p>
-            <div class="greenbutton">
-                <a href="#"><img src="/images/greenbotton.png" alt="תנועת עורו - המצטרף עכשיו"/></a>
-והתחילו להשפיע
+            <div>
+                <a href="/account/register"><img src="/images/greenbutton.png" alt="תנועת עורו - הצטרפו עכשיו"/></a>
             </div>
         </div>
         <%}%>
@@ -82,19 +80,19 @@
             $('.video_img').remove();
             $(this).append(
                     '<object width="560" height="315">' +
-                            '<param name="movie" value="http://www.youtube.com/v/6LYw5crRh8E?version=3&autoplay=1&amp;hl=en_US&amp;rel=0"></param>' +
-                            '<param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param>' +
+                            '<param name="movie" value="http://www.youtube.com/v/6LYw5crRh8E?version=3&autoplay=1&amp;hl=en_US&amp;rel=0" />' +
+                            '<param name="allowFullScreen" value="true" /><param name="allowscriptaccess" value="always" />' +
                             '<embed src="http://www.youtube.com/v/6LYw5crRh8E?version=3&autoplay=1&amp;hl=en_US&amp;rel=0" type="application/x-shockwave-flash" width="416" height="267" allowscriptaccess="always" allowfullscreen="true"></embed>' +
                      '</object>');
         });
 
         $('form.comment-form').live('submit', function (e) {
             e.preventDefault();
-            var feedbackTb = this.feedbackTb;
+            var feedbackTb = this['feedbackTb'];
             if (feedbackTb.value.replace(/\s/g, "") == "") {
                 return;
             }
-            db_functions.addKilkul(this.feedbackTb.value, function (error, data) {
+            db_functions.addKilkul(this['feedbackTb'].value, function (error, data) {
                 if (error) {
                     console.log(error);
                 } else {
@@ -102,7 +100,7 @@
                 }
             });
 
-        })
+        });
 
         db_functions.getHotObjects(function (data) {
             $.each(data.objects, function (key, article) {
@@ -118,7 +116,7 @@
                     $('div.succes-box').append(html);
                 })
             })
-        })
+        });
 
         db_functions.getPopularArticles(3, function (data) {
             $.each(data.objects, function (index, article) {
