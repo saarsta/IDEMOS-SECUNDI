@@ -4718,11 +4718,17 @@ body.search-ative #header
     margin-bottom: 4px;
     position: relative;
 }
+.myuru-top .right .user .img-box .image-container
+{
+    width:112px;
+    height:120px;
+    float:right;
+}
 .myuru-top .right .user .img-box img
 {
     display: block;
 }
-.myuru-top .right .user .img-box span
+.myuru-top .right .user .img-box #upload_image_placeholder
 {
     width: 112px;
     height: 120px;
@@ -4730,6 +4736,18 @@ body.search-ative #header
     position: absolute;
     left: 0;
     top: 0;
+}
+.myuru-top .right .user .img-box .qq-upload-drop-area
+{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+
+    background: rgba(255, 255, 255, 0.7);
+
+    text-align: center;
 }
 .myuru-top .right .user .proxy
 {
