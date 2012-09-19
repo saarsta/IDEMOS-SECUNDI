@@ -1,6 +1,7 @@
 var mongoose = require("mongoose"),
     Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId,
+    common = require('./common'),
     mongoose_types = require('j-forms').types,
     utils = require('../utils'),
     _ = require('underscore'),
@@ -72,7 +73,7 @@ var Schemas = exports.Schemas = {
 //    }, {strict: true}),
 
     Kilkul:{
-        user:{type:ObjectId, ref:'User'},
+        user:{type:ObjectId, ref:'User',query:common.FIND_USER_QUERY},
         user_name:{type:String, editable:false},
         title:{type:String},
         tooltip:String,
@@ -88,14 +89,14 @@ var Schemas = exports.Schemas = {
     },
 
     Vote:{
-        user_id:{type:ObjectId, ref:'User', index:true, required:true},
+        user_id:{type:ObjectId, ref:'User',query:common.FIND_USER_QUERY, index:true, required:true},
         post_id:{type:ObjectId, ref:'Post', index:true, required:true, onDelete:'delete'},
         ballance:{type:Number, 'default':0},
         creation_date:{type:Date, 'default':Date.now}
     },
 
     VoteSuggestion:{
-        user_id:{type:ObjectId, ref:'User', index:true, required:true},
+        user_id:{type:ObjectId, ref:'User',query:common.FIND_USER_QUERY, index:true, required:true},
         suggestion_id:{type:ObjectId, ref:'Suggestion', index:true, required:true},
 //        tokens:Number,
         method:{type:String, "enum":['add', 'remove']},
@@ -103,7 +104,7 @@ var Schemas = exports.Schemas = {
     },
 
     Grade:{
-        user_id:{type:ObjectId, ref:'User', index:true, required:true},
+        user_id:{type:ObjectId, ref:'User',query:common.FIND_USER_QUERY, index:true, required:true},
         discussion_id:{type:ObjectId, ref:'Discussion', index:true, required:true},
         evaluation_grade:{type:Number, min:0, max:10},
         proxy_power:{type:Number, min:1, 'default':1},
@@ -111,14 +112,14 @@ var Schemas = exports.Schemas = {
     },
 
     GradeAction:{
-        user_id:{type:ObjectId, ref:'User', index:true, required:true},
+        user_id:{type:ObjectId, ref:'User',query:common.FIND_USER_QUERY, index:true, required:true},
         action_id:{type:ObjectId, ref:'Action', index:true, required:true},
         evaluation_grade:{type:Number, min:0, max:10},
         creation_date:{type:Date, 'default':Date.now}
     },
 
     GradeSuggestion:{
-        user_id:{type:ObjectId, ref:'User', index:true, required:true},
+        user_id:{type:ObjectId, ref:'User',query:common.FIND_USER_QUERY, index:true, required:true},
         suggestion_id:{type:ObjectId, ref:'Suggestion', index:true, required:true},
         evaluation_grade:{type:Number, min:0, max:10},
         proxy_power:{type:Number, min:1, 'default':1},
@@ -129,7 +130,7 @@ var Schemas = exports.Schemas = {
     },
 
     GradeActionSuggestion:{
-        user_id:{type:ObjectId, ref:'User', index:true, required:true},
+        user_id:{type:ObjectId, ref:'User',query:common.FIND_USER_QUERY, index:true, required:true},
         suggestion_id:{type:ObjectId, ref:'ActionSuggestion', index:true, required:true},
         evaluation_grade:{type:Number, min:0, max:10},
         proxy_power:{type:Number, min:1, 'default':1},
@@ -138,14 +139,14 @@ var Schemas = exports.Schemas = {
     },
 
     Like:{
-        user_id:{type:ObjectId, ref:'User', index:true, required:true},
+        user_id:{type:ObjectId, ref:'User',query:common.FIND_USER_QUERY, index:true, required:true},
         info_item_id:{type:ObjectId, ref:'Post', index:true, required:true},
         creation_date:{type:Date, 'default':Date.now}
     },
 
     Join:{
-        user_id:{type:ObjectId, ref:'User', index:true, required:true},
-        action_creator_id:{type:ObjectId, ref:'User', index:true, required:true},
+        user_id:{type:ObjectId, ref:'User',query:common.FIND_USER_QUERY, index:true, required:true},
+        action_creator_id:{type:ObjectId, ref:'User', query:common.FIND_USER_QUERY, index:true, required:true},
         action_id:{type:ObjectId, ref:'Action', index:true, required:true},
         creation_date:{type:Date, 'default':Date.now}
     },
@@ -167,7 +168,7 @@ var Schemas = exports.Schemas = {
 //    },
 
     ResourceObligation:{
-        user_id:{type:Schema.ObjectId, ref:'User', index:true, required:true},
+        user_id:{type:Schema.ObjectId, ref:'User',query:common.FIND_USER_QUERY, index:true, required:true},
         first_name:String,
         last_name:String,
         action_id:{type:ObjectId, ref:'Action', index:true, required:true},
@@ -178,10 +179,10 @@ var Schemas = exports.Schemas = {
 
 
     Notification:{
-        user_id:{type:ObjectId, ref:'User', index:true, required:true},
+        user_id:{type:ObjectId, ref:'User',query:common.FIND_USER_QUERY, index:true, required:true},
         notificators:[new Schema(
             {
-                notificator_id:{type:ObjectId, ref:'User'},
+                notificator_id:{type:ObjectId, ref:'User',query:common.FIND_USER_QUERY},
                 sub_entity_id:{type:ObjectId},
 
                 //only for votes and grade notifications
@@ -230,7 +231,7 @@ var Schemas = exports.Schemas = {
     },
 
     BlogTag:{
-        user_id:{type:Schema.ObjectId, ref:'User'},
+        user_id:{type:Schema.ObjectId, ref:'User',query:common.FIND_USER_QUERY},
         tag:{type:String, unique:true},
         popularity:{type:Number, 'default':0, select:false}
     },
@@ -332,7 +333,7 @@ var Schemas = exports.Schemas = {
                 bring:[
                     new Schema(
                     {
-                        users:{type:ObjectId, ref:'User'},
+                        users:{type:ObjectId, ref:'User',query:common.FIND_USER_QUERY},
                         amount:{type:Number, 'default':0}
                     })
                 ]

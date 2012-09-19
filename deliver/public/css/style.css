@@ -7087,9 +7087,9 @@ body.body-action .followers-box h2
 }
 .map .map-popup
 {
-    position: absolute;
+   /* position: absolute;
     left: 165px;
-    top: 30px;
+    top: 30px;*/
     width: 172px;
     height: 50px;
     background: url(../images/map-popup-bg.png) no-repeat;
@@ -8615,6 +8615,7 @@ a.menu-elections:hover {
 }
 
 
+
 div.greenbutton {
     position: relative;
     width: 300px;
@@ -8630,3 +8631,4 @@ div.greenbutton a {
 div.greenbutton a:hover {
     background-image: url('/images/greenbutton_hover.png');
 }
+

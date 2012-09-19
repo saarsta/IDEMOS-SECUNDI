@@ -2,6 +2,7 @@ var mongoose = require("mongoose"),
     Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId,
     async = require('async'),
+    common = require('./common'),
     mongoose_types = require('j-forms').types,
     utils = require('../utils');
 
@@ -25,7 +26,7 @@ var Cycle = module.exports = new Schema({
     discussions:[
         {discussion: {type:ObjectId, ref:'Discussion'}, is_main: {type: Boolean, 'default': false}}
     ],
-    admin_updates: [{info: {type: String}, date: {type: Date}}],
+    admin_updates: [{info: {type: String}, date: {type: Date,'default':Date.now}}],
     document: String,
     shopping_cart: [
         {type:ObjectId, ref:'InformationItem'}
@@ -37,9 +38,13 @@ var Cycle = module.exports = new Schema({
     num_upcoming_actions: {type: Number, 'default':0, editable:false},
     //users that conected somehow to the cycle for my uru
     users:{type:[
-        new Schema({user_id:{type:ObjectId, ref:'User'}, join_date: {type:Date, 'default':Date.now}})
+        new Schema({user_id:{type:ObjectId, ref:'User',query:common.FIND_USER_QUERY}, join_date: {type:Date, 'default':Date.now}})
     ], editable:false},
-    opinion_shapers: [{user_id: {type: ObjectId, ref: 'User'}, text: {type:mongoose_types.Text}}],
+    opinion_shapers: [
+
+      // {user_id: {type:ObjectId, ref:'User', query:common.FIND_USER_QUERY}, text: {type:mongoose_types.Text}}
+      new Schema({user_id:{type:ObjectId, ref:'User', query:common.FIND_USER_QUERY}, text: {type:mongoose_types.Text}})
+    ],
     is_hidden:{type:Boolean,'default':true}
 }, {strict: true});
 

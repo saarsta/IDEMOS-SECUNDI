@@ -29,6 +29,7 @@ module.exports = function(req, res){
                 'title':1,
                 'discussion_title':1,
                 'text_field':1,
+                'text_field_preview': 1,
                 'image_field':1,
                 'discussions':1,
                 'tags':1,
@@ -96,7 +97,7 @@ module.exports = function(req, res){
         else {
 
             g_cycle = args[0];
-            _.each(g_cycle.opinion_shapers, function(opinion_shaper){ opinion_shaper.user_id.avatar_url = opinion_shaper.user_id.avatar_url();});
+            _.each(g_cycle.opinion_shapers, function(opinion_shaper){ if(opinion_shaper.user_id)  opinion_shaper.user_id.avatar_url = opinion_shaper.user_id.avatar_url();});
 
             var users = args[1] || [];
 
@@ -114,6 +115,7 @@ module.exports = function(req, res){
                     res.render('cycle.ejs',{
                         cycle: g_cycle,
                         tab:'cycles',
+
                         proxy:proxyJson
                     });
                 })
@@ -124,6 +126,7 @@ module.exports = function(req, res){
                 res.render('cycle.ejs',{
                     cycle: g_cycle,
                     tab:'cycles',
+
                     proxy:proxyJson
                 });
             }

@@ -1062,9 +1062,9 @@ var db_functions = {
         });
     },
 
-    getPendingActionsByCycle:function (cycle_id, callback) {
+    getPendingActionsByCycle:function (cycle_id, limit, callback) {
         db_functions.loggedInAjax({
-            url:'/api/actions/?cycle_id=' + cycle_id + '&is_approved=false',
+            url:'/api/actions/?cycle_id=' + cycle_id + '&is_approved=false' + (limit ? '&limit=' + limit : ''),
             type:"GET",
             async:true,
             success:function (data, err) {
@@ -1266,7 +1266,7 @@ var db_functions = {
     //action_resources == [id: (action_resource_id), amount: (to add or remove to/from user)]
     addOrRemoveResourceToAction: function(action_id, action_resources, callback){
         db_functions.loggedInAjax({
-            url:'/api/user_helpsAction/' + action_id,
+            url:'/api/user_helps_action/' + action_id,
             type:"PUT",
             async:true,
             data: {action_resources: action_resources},
@@ -1280,12 +1280,12 @@ var db_functions = {
         });
     },
 
-    createNewActionResource: function(action_id, action_resource, callback){
+    createNewActionResource: function(action_id, resource_name, amount, callback){
         db_functions.loggedInAjax({
-            url:'/api/user_helpsAction/' + action_id,
-            type:"PUT",
+            url:'/api/action_resources/',
+            type:"POST",
             async:true,
-            data: {action_resources: action_resources},
+            data: {name: resource_name, action_id: action_id, amount: amount},
             success:function (data) {
                 console.log(data);
                 callback(null, data);
@@ -1352,21 +1352,6 @@ var db_functions = {
             },
             error:function (err) {
                 callback(err, null);
-            }
-        });
-    },
-
-    addNewActionResource: function(action_id, resource_name, callback){
-        db_functions.loggedInAjax({
-            url:'/api/action_resources',
-            type:"Post",
-            async:true,
-            data: {action_id: action_id, category: category_id, name: resource_name},
-
-            success:function (data) {
-
-                console.log(data);
-                callback(null, data);
             }
         });
     }
