@@ -565,12 +565,16 @@ body
     height: 306px;
     padding-top: 43px;
     clear: both;
+
+    color:#fff;
+    font: normal 28px/30px 'AdumaFOTRegular';
 }
 .main-video .video-box
 {
     float: right;
     margin-left: 58px;
     position: relative;
+    height: 267px;
 }
 .main-video .video-box span
 {
@@ -582,24 +586,22 @@ body
     background: url(../images/play-btn.png) no-repeat;
     margin: -36px 0 0 -36px;
 }
-.main-video p
+.main-video .side-text
 {
-    color:#fff;
-    font: normal 25px/30px 'AdumaFOTRegular';
+    height: 137px;
     margin-bottom: 35px;
 }
-.main-video a.btn
+.main-video .side-button
 {
-    background: url(../images/main-video-btn.png) no-repeat;
-    width: 504px;
-    height: 85px;
-    text-align: center;
-    color:#fff;
-    padding-top: 5px;
-    font: normal 43px/80px 'AdumaFOTRegular';
-    overflow: hidden;
-    display: block;
-    text-decoration: none;
+    margin-right: -11px; /* To account for transparent bit inside the actual image */
+    float: right;
+    height: 125px;
+}
+.main-video .after-button
+{
+    display: inline-block;
+    width: 190px;
+    margin-top: 45px;
 }
 
 /*----------------------------*/
@@ -7085,16 +7087,17 @@ body.body-action .followers-box h2
     width: 691px;
     margin: 15px auto;
 }
-.map .map-popup
+/*.map .map-popup
 {
-    position: absolute;
+   *//* position: absolute;
     left: 165px;
-    top: 30px;
+    top: 30px;*//*
     width: 172px;
     height: 50px;
     background: url(../images/map-popup-bg.png) no-repeat;
     padding: 11px 14px 0 14px
 }
+
 .map .map-popup h4
 {
     color:#50504f;
@@ -7115,6 +7118,7 @@ body.body-action .followers-box h2
     left: -8px;
     top: -8px;
 }
+*/
 .add-offer .add-offer-bottom-more .tags
 {
     float: right;
@@ -7996,13 +8000,82 @@ body.body-action .followers-box h2
     /*background: url(../images/check-icon.png) 100% 50% no-repeat;*/
     /*margin-right: 10px;*/
 /*}*/
+
+//**.map .map-popup
+{
+   *//**//* position: absolute;
+    left: 165px;
+    top: 30px;*//**//*
+    width: 172px;
+    height: 50px;
+    background: url(../images/map-popup-bg.png) no-repeat;
+    padding: 11px 14px 0 14px
+}
+
+.map .map-popup h4
+{
+    color:#50504f;
+    font: bold 13px/15px Arial;
+    margin: 0;
+}
+.map .map-popup p
+{
+    color:#b7b6b6;
+    font: normal 13px/15px Arial;
+    margin: 0;
+}
+.map a.close{
+    width: 28px;
+    height: 28px;
+    background: url(../images/delete-app.png) no-repeat;
+    position: absolute;
+    left: -8px;
+    top: -8px;
+}
+*/
+
 .map
 {
     position: relative;
     width: 691px;
     margin: 15px auto;
 }
+
 .map .map-popup
+{
+   /* position: absolute;*/
+    left: 0px;
+    top: -60px;
+    width: 172px;
+    height: 50px;
+    background: url(../images/map-popup-bg.png) no-repeat;
+    padding: 11px 14px 0 14px
+}
+
+.map .map-popup h4
+{
+    color:#50504f;
+    font: bold 13px/15px Arial;
+    margin: 0;
+}
+.map .map-popup p
+{
+    color:#b7b6b6;
+    font: normal 13px/15px Arial;
+    margin: 0;
+}
+.map a.close{
+    width: 28px;
+    height: 28px;
+    background: url(../images/delete-app.png) no-repeat;
+    position: absolute;
+    left: -8px;
+    top: -8px;
+}
+
+
+
+/*.map .map-popup
 {
     position: absolute;
     left: 165px;
@@ -8033,7 +8106,7 @@ body.body-action .followers-box h2
     left: -8px;
 
     top: -8px;
-}
+}*/
 .add-offer .add-offer-bottom-more .tags
 {
     float: right;
@@ -8374,7 +8447,7 @@ a.menu-elections:hover {
 }
 .add-event .user-number .input
 {
-    width: 34px;
+    width: 45px;
 }
 .add-event .user-number label
 {
@@ -8615,6 +8688,8 @@ a.menu-elections:hover {
 }
 
 
+
+
 div.greenbutton {
     position: relative;
     width: 300px;
@@ -8630,3 +8705,13 @@ div.greenbutton a {
 div.greenbutton a:hover {
     background-image: url('/images/greenbutton_hover.png');
 }
+
+.rss_bt
+{
+    float: left;
+    background: url('/images/rssIcon.jpg') no-repeat center center!important;
+    width: 31px!important;
+    border: 1px solid white!important;;
+}
+
+

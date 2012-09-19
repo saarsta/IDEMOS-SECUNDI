@@ -142,7 +142,7 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
                 g_action_obj.num_of_going++;
                 g_action_obj = JSON.parse(JSON.stringify(g_action_obj));
                 g_action_obj.map_join_to_user = req.user;
-
+                g_action_obj.map_join_to_user.avatar = req.user.avatar_url(),
                 g_action_obj.is_going = true;
                 req.gamification_type = "join_action";
             }
