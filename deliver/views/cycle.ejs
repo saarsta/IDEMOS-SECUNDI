@@ -50,7 +50,7 @@
                                 <% }%>
                             </div>
                         </div>
-                         <a class="fraction-btn share" data-title="<%= cycle.title %>" data-text_preview="<%= cycle.text_field %>" data-img_src="<%= cycle.image_field.url %>" rel="/cycles/<%= cycle.id %>" href="/facebookShare?link=/cycles/<%= cycle.id %>" target="_blank">שתף</a>
+                         <a class="fraction-btn share" data-title="<%= cycle.title %>" data-text_preview="<%= cycle.text_field_preview%>" data-img_src="<%= cycle.image_field.url %>" rel="/cycles/<%= cycle.id %>" href="/facebookShare?link=/cycles/<%= cycle.id %>" target="_blank">שתף</a>
 
                     </div>
                 </div>
@@ -460,17 +460,13 @@
                  $('.followers-diagram').append(out);
              };
 
-            db_functions.getPendingActionsByCycle(cycle_id, function ( data,err) {
+            db_functions.getPendingActionsByCycle(cycle_id, 4, function ( data,err) {
 
                 dust.renderArray('cycle_pending_action', data.objects, function (err, out) {
                     $('.anticipation-box').prepend(out);
 
                 });
            });
-
-
-
-
 
            	var killScroll = false;
            	var followersPage=0;
