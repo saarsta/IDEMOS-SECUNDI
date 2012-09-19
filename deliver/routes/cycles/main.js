@@ -96,7 +96,7 @@ module.exports = function(req, res){
         else {
 
             g_cycle = args[0];
-            _.each(g_cycle.opinion_shapers, function(opinion_shaper){ opinion_shaper.user_id.avatar_url = opinion_shaper.user_id.avatar_url();});
+            _.each(g_cycle.opinion_shapers, function(opinion_shaper){ if(opinion_shaper.user_id)  opinion_shaper.user_id.avatar_url = opinion_shaper.user_id.avatar_url();});
 
             var users = args[1] || [];
 

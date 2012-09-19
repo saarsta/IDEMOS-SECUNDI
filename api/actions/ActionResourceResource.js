@@ -35,7 +35,7 @@ var ActionResourceResource = module.exports = common.GamificationMongooseResourc
             function(action, cbk){
                 if(!action){
                     cbk('no such action');
-                }else if (!req.body.action_resource){
+                }else if (!req.body.name){
                     cbk('no action_resource');
                 }else{
                     g_action = action;
@@ -47,7 +47,9 @@ var ActionResourceResource = module.exports = common.GamificationMongooseResourc
                         object.set(field, fields[field]);
                     }
 
-                    base.call(self, req, fields, cbk);
+                    base.call(self, req, fields, function(err, obj){
+                        cbk(err, obj);
+                    });
                 }
             },
 
