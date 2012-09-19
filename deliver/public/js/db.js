@@ -1266,7 +1266,7 @@ var db_functions = {
     //action_resources == [id: (action_resource_id), amount: (to add or remove to/from user)]
     addOrRemoveResourceToAction: function(action_id, action_resources, callback){
         db_functions.loggedInAjax({
-            url:'/api/user_helpsAction/' + action_id,
+            url:'/api/user_helps_action/' + action_id,
             type:"PUT",
             async:true,
             data: {action_resources: action_resources},
@@ -1280,12 +1280,12 @@ var db_functions = {
         });
     },
 
-    createNewActionResource: function(action_id, action_resource, callback){
+    createNewActionResource: function(action_id, action_resource, amount, callback){
         db_functions.loggedInAjax({
-            url:'/api/user_helpsAction/' + action_id,
-            type:"PUT",
+            url:'/api/action_resources/',
+            type:"POST",
             async:true,
-            data: {action_resources: action_resources},
+            data: {action_resource: action_resource, action_id: action_id, amount: amount},
             success:function (data) {
                 console.log(data);
                 callback(null, data);

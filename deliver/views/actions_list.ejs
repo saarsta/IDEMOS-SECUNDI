@@ -72,6 +72,8 @@
         current_section=1;
         var selectedTag = '<%= tag_name || "" %>';
         var selectedSubject;
+        var selectedCycle = '<%= cycle_id || "" %>';
+
         db_functions.getAllSubjects(function(err,data)  {
             $.each(data.objects,function(index,disc) {
                 disc.type = 'actions';
@@ -102,8 +104,8 @@
 //            if(selectedTag){
 //                query =query+'&tags='+selectedTag;
 //            }
-            if(selectedSubject){
-                query = query+'&subject_id='+selectedSubject;
+            if(selectedCycle){
+                query = query+'&cycle_id=' + selectedCycle;
             }
             return query;
         }
