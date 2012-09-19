@@ -1,6 +1,7 @@
 var mongoose = require("mongoose"),
     Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId,
+    common = require('./common'),
     mongoose_types = require('j-forms').types;
 
 
@@ -13,7 +14,7 @@ var Action = module.exports = new Schema({
     image_field_preview: mongoose_types.File,
     category: {type:ObjectId, ref:'Category', require: true},
     description: String,
-    creator_id: {type:ObjectId, ref:'User', index:true, required:true},
+    creator_id: {type:ObjectId, ref:'User', query:common.FIND_USER_QUERY, index:true, required:true},
     first_name: {type: String, editable:false},
     last_name: {type: String, editable:false},
     cycle_id:{type:ObjectId, ref:'Cycle', index:true, required:true},
@@ -29,7 +30,7 @@ var Action = module.exports = new Schema({
     ],
     what_users_bring: [
         new Schema({
-            user_id: {type: ObjectId, ref:'User'},
+            user_id:{type:ObjectId, ref:'User', query:common.FIND_USER_QUERY},
             amount: {type: Number, 'default': 0},
             resource: {type:ObjectId, ref:'ActionResource'}
         })
@@ -38,14 +39,14 @@ var Action = module.exports = new Schema({
     //users that conected somehow to the action for my uru
     users: [
         new Schema({
-            user_id:   {type: ObjectId, ref: 'User'},
+            user_id:   {type: ObjectId, ref: 'User', query:common.FIND_USER_QUERY},
             join_date: {type: Date, 'default': Date.now}
         })
     ],
     //users that are going to be in the action
     going_users:         [
         new Schema({
-            user_id:   {type: ObjectId, ref: 'User'},
+            user_id:   {type: ObjectId, ref: 'User', query:common.FIND_USER_QUERY},
             join_date: {type: Date, 'default': Date.now}
         })
     ], //i don't use it for now

@@ -2,11 +2,12 @@ var mongoose = require("mongoose"),
     Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId,
     async = require('async'),
+    common = require('./common'),
     mongoose_types = require('j-forms').types,
     utils = require('../utils');
 
 var PostOrSuggestion = module.exports = {
-    creator_id:{type:Schema.ObjectId, ref:'User'},
+    creator_id:{type:Schema.ObjectId, ref:'User', query:common.FIND_USER_QUERY},
     first_name:{type:String,editable:false},
     last_name:{type:String, editable:false },
 //        username:{type:String,editable:false},

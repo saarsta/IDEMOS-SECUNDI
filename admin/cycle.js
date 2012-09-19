@@ -6,6 +6,12 @@ var notifications = require('../api/notifications')
     ,AdminForm = require('admin-with-forms').AdminForm;
 
 module.exports = AdminForm.extend({
+    init:function(request,options,model) {
+        this._super(request,options,model);
+
+
+        this.static['js'].push('/node-forms/js/autocomplete.js');
+    },
     get_fields: function() {
         this._super();
         if(this.fields['discussions'])

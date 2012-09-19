@@ -1062,9 +1062,9 @@ var db_functions = {
         });
     },
 
-    getPendingActionsByCycle:function (cycle_id, callback) {
+    getPendingActionsByCycle:function (cycle_id, limit, callback) {
         db_functions.loggedInAjax({
-            url:'/api/actions/?cycle_id=' + cycle_id + '&is_approved=false',
+            url:'/api/actions/?cycle_id=' + cycle_id + '&is_approved=false' + (limit ? '&limit=' + limit : ''),
             type:"GET",
             async:true,
             success:function (data, err) {
