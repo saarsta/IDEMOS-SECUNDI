@@ -2,7 +2,7 @@ var models = require('../../../models');
 
 module.exports = function(req,res)
 {
-    res.render('actions_list.ejs')
+    res.render('actions_list.ejs'),
         {
             layout: false,
 //            tag_name:req.query.tag_name,
@@ -12,6 +12,7 @@ module.exports = function(req,res)
 
 //            url:req.url,
 //            tab:'cycles'
+            user_logged: req.isAuthenticated(),
             cycle_id: req.params[0]
         };
 };

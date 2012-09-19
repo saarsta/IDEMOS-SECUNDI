@@ -41,6 +41,8 @@ var ActionResourceResource = module.exports = common.GamificationMongooseResourc
                     g_action = action;
 
                     fields.is_approved = false;
+                    fields.category = action.category;
+
                     for (var field in fields) {
                         object.set(field, fields[field]);
                     }
