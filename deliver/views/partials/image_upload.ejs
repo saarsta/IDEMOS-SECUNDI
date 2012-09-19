@@ -6,7 +6,8 @@
             current_value: '/images/...',
             api_endpoint: '/api/...',
             title: 'some text',
-            disabled: false
+            disabled: false,
+            input_name: 'image_upload'
         }
 
         Use CSS for styling:
@@ -16,18 +17,31 @@
             .img-box #upload_image_placeholder
     */
 %>
+<style type="text/css">
+    #upload_image_placeholder
+    {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+    }
+</style>
 
 <div class="img-box" style="overflow:hidden; position:relative;">
-    <div class="image-container auto-scale">
-        <img src="<%= image_upload.current_value || image_upload.default_image || '' %>" alt="<%= image_upload.title || '' %>" title="<%= image_upload.title || '' %>"/>
+    <div class="image-container">
+        <img src="<%= image_upload.current_value || image_upload.default_image || '' %>" alt="<%= image_upload.title || '' %>" title="<%= image_upload.title || '' %>" class="scale_image" />
     </div>
     <span id="upload_image_placeholder"></span>
+    <input type="hidden" name="<%= image_upload.input_name || 'image_upload' %>" value="" />
 </div>
 
 <% if (!image_upload.disabled) { %>
 <script>
     (function () {
         var image_box = $('.img-box img');
+        var input = $('.img-box input');
+
         new qq.FileUploader({
             element: document.getElementById('upload_image_placeholder'),
             action: '<%= image_upload.api_endpoint || '' %>',
@@ -36,8 +50,9 @@
                 console.log('uploader.onProgress: ', arguments);
             },
             onComplete: function(id, fileName, responseJSON){
-                image_box.attr('src', responseJSON.avatar.url);
-                image_box.autoscale();
+                var url = responseJSON.avatar.url;
+                input.val(url);
+                image_box.attr('src', url);
             },
             template: '<span><div class="qq-uploader">' +
                     '<div class="qq-upload-drop-area"><span>העלאת תמונה</span></div>' +

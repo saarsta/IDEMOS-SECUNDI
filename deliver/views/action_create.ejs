@@ -60,7 +60,14 @@ var error_message = error_message || '';
             <input type="hidden" name="cycle_id" value="<%=cycle.id%>" />
             <div class="add-event cf">
                 <div class="add-picture">
-                    <a href="javascript:;"><span>הוסף תמונה</span></a>
+                    <%
+                        var image_upload = {
+                            default_image: '/images/add-image.png',
+                            api_endpoint: '/api/avatar',
+                            input_name: 'image_field[url]'
+                        };
+                    %>
+                    <% include partials/image_upload.ejs %>
                 </div>
                 <div class="event-text">
                     <div class="one-line title cf">
