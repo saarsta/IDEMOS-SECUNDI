@@ -144,7 +144,7 @@
                              <a class="floatRight" data-registration-type="email" data-not-follow-text="בטל רישום" data-follow-text="הרשמה במייל" data-put-url="/api/follow_blog_by_mail/<%=user._id%>" href="javascript:void(0)">
                                  <% if (articles[0].is_blog_follower_by_mail) { %>    בטל רישום     <% } else {%> הרשמה במייל <% } %>
                              </a>
-                             <a class="rss_bt">
+                             <a href="/api/articles/?user_id=<%=blogger._id%>&rss=true" class="rss_bt">
 
                              </a>
                          </form>
