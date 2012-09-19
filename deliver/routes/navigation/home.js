@@ -1,4 +1,11 @@
 module.exports = function(req, res){
 
-         res.render('index.ejs');
-}
+    if(req.isAuthenticated() && req.session.user.has_voted)
+    {
+        res.render('index.ejs', {
+        });
+    }else{
+        res.render('index_not_logged.ejs', {
+        });
+    }
+};
