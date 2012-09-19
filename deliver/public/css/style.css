@@ -565,12 +565,16 @@ body
     height: 306px;
     padding-top: 43px;
     clear: both;
+
+    color:#fff;
+    font: normal 28px/30px 'AdumaFOTRegular';
 }
 .main-video .video-box
 {
     float: right;
     margin-left: 58px;
     position: relative;
+    height: 267px;
 }
 .main-video .video-box span
 {
@@ -582,24 +586,22 @@ body
     background: url(../images/play-btn.png) no-repeat;
     margin: -36px 0 0 -36px;
 }
-.main-video p
+.main-video .side-text
 {
-    color:#fff;
-    font: normal 25px/30px 'AdumaFOTRegular';
+    height: 137px;
     margin-bottom: 35px;
 }
-.main-video a.btn
+.main-video .side-button
 {
-    background: url(../images/main-video-btn.png) no-repeat;
-    width: 504px;
-    height: 85px;
-    text-align: center;
-    color:#fff;
-    padding-top: 5px;
-    font: normal 43px/80px 'AdumaFOTRegular';
-    overflow: hidden;
-    display: block;
-    text-decoration: none;
+    margin-right: -11px; /* To account for transparent bit inside the actual image */
+    float: right;
+    height: 125px;
+}
+.main-video .after-button
+{
+    display: inline-block;
+    width: 190px;
+    margin-top: 45px;
 }
 
 /*----------------------------*/
