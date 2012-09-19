@@ -133,21 +133,21 @@
                     return map;
                 }
                 ,addPlaceMark:function (point,tooltip){
-                    var marker = new google.maps.Marker({
+                   var marker = new google.maps.Marker({
                         position: new google.maps.LatLng(point.lat,point.lng),
                         title:tooltip
                     });
                     marker.setMap(map);
                     return marker;
 
-                  /*  var marker = new google.maps.Marker({
+                    var marker = new google.maps.Marker({
                         map: map,
                         draggable:false,
                         position: new google.maps.LatLng(point.lat,point.lng),
                         visible: true
                     });
 
-                    var boxText = document.createElement("div");
+                   /* var boxText = document.createElement("div");
                     boxText.style.cssText = "border: 1px solid black; margin-top: 8px; background: yellow; padding: 5px;";
                    // boxText.innerHTML = "City Hall, Sechelt<br>British Columbia<br>Canada";
                     boxText.innerHTML ='<div class="map-popup">  <a class="close" href=""></a> <h4>התעשייה 12, תל אביב</h4>'+
