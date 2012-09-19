@@ -946,7 +946,7 @@ var error_message = error_message || '';
             uncheck( $('#action_resources_popup .new_resources span'));
             if(newRes && newRes.length > 0){
                 //save in db
-      
+
                 db_functions.addNewActionResource(action_id, newRes, function(err, result){
                     var id = Math.random()*50000;//BUGBUG XXXXXXXX TODO REPLACE
                     addResource(id, newRes, bringing);
