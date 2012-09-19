@@ -36,10 +36,6 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
         };
     },
 
-//    get_object:function (req, id, callback) {
-//        this._super(req, id, callback);
-//    },
-
     run_query: function(req,query,callback)
     {
         query.populate('user_id', {'_id':1, 'first_name':1, 'last_name':1, 'facebook_id':1, 'avatar': 1,'avatar_url':1, 'score':1, 'num_of_proxies_i_represent':1});
@@ -146,6 +142,7 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
                 g_action_obj.num_of_going++;
                 g_action_obj = JSON.parse(JSON.stringify(g_action_obj));
                 g_action_obj.map_join_to_user = req.user;
+
                 g_action_obj.is_going = true;
                 req.gamification_type = "join_action";
             }

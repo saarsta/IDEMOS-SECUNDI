@@ -21,7 +21,9 @@ module.exports = function (req, res) {
             category: 1,
             title: 1,
             text_field: 1,
+            text_field_preview: 1,
             image_field: 1,
+            image_field_preview: 1,
             tags: 1,
             location: 1,
             execution_date: 1,
@@ -105,6 +107,7 @@ module.exports = function (req, res) {
 
 
                 var ejsFileName = action.is_approved ? 'action_approved.ejs' : 'action_append.ejs';
+                console.log(action.text_field_preview);
                 res.render(ejsFileName,{
                     action: action,
                     tab: 'actions',

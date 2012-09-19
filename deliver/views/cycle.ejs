@@ -26,7 +26,7 @@
 
                       <div class="img-box floatRight" style="overflow: hidden;">
                                 <div style="width:260px; height:190px;" class='auto-scale'>
-                                      <img src="<%=cycle.image_field.url %>" title="<%= cycle.title %>"/>
+                                      <img src="<%=cycle.image_field && cycle.image_field.url %>" title="<%= cycle.title %>"/>
 
                                 </div>
                                 <span></span>
@@ -50,7 +50,7 @@
                                 <% }%>
                             </div>
                         </div>
-                         <a class="fraction-btn share" data-title="<%= cycle.title %>" data-text_preview="<%= cycle.text_field_preview%>" data-img_src="<%= cycle.image_field.url %>" rel="/cycles/<%= cycle.id %>" href="/facebookShare?link=/cycles/<%= cycle.id %>" target="_blank">שתף</a>
+                         <a class="fraction-btn share" data-title="<%= cycle.title %>" data-text_preview="<%= cycle.text_field_preview%>" data-img_src="<%= cycle.image_field && cycle.image_field.url %>" rel="/cycles/<%= cycle.id %>" href="/facebookShare?link=/cycles/<%= cycle.id %>" target="_blank">שתף</a>
 
                     </div>
                 </div>
