@@ -1,12 +1,13 @@
 var mongoose = require("mongoose"),
     Schema = mongoose.Schema,
+    common = require('./common'),
     mongoose_types = require('j-forms').types,
     ObjectId = Schema.ObjectId,
     utils = require('./../utils');
 
 var tag_suggestions =  {
     tag_name: String,
-    tag_offers: {type:[ObjectId], ref:'User'}
+    tag_offers: {type:[ObjectId], ref:'User',query:common.FIND_USER_QUERY}
 };
 
 
@@ -20,7 +21,7 @@ var InformationItem = module.exports = new Schema({
     image_field: {type:mongoose_types.File,required:true},
     image_field_preview: {type:mongoose_types.File},
     tags:{type:[String], index:true},
-    users:{type:[ObjectId], ref:'User',editable:false},
+    users:{type:[ObjectId], ref:'User',query:common.FIND_USER_QUERY,editable:false},
     discussions:[{type:ObjectId, ref:'Discussion', index:true}],
     cycles:{type:[ObjectId], ref:'Cycle', index:true},
     //this is for later
@@ -34,7 +35,7 @@ var InformationItem = module.exports = new Schema({
     view_counter: {type: Number, 'default': '0'},
 
     //this two fields are for user suggestion of InformationItem, when admin create this it will remain false
-    created_by: {creator_id:{type: ObjectId, ref: 'User', editable: false}, did_user_created_this_item: {type: Boolean, 'default': false, editable: false}},
+    created_by: {creator_id:{type: ObjectId, ref: 'User',query:common.FIND_USER_QUERY, editable: false}, did_user_created_this_item: {type: Boolean, 'default': false, editable: false}},
     discussion_counter:{type:Number,'default':0},
     status: {type: String, "enum": ['approved', 'denied', 'waiting']},
     gamification: {

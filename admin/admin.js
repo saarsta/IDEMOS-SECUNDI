@@ -10,6 +10,8 @@ module.exports = AdminForm.extend({
     init:function(request,options)
     {
         this._super(request,options,mongoose.model('_MongooseAdminUser'));
+        this.static['js'].push('/node-forms/js/autocomplete.js');
+
     }
     ,get_fields:function(){
         this._super();

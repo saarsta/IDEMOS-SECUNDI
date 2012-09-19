@@ -8,14 +8,14 @@ var mongoose = require("mongoose"),
 
 
 var CommentVote = new Schema({
-    user_id:{type:ObjectId, ref:'User', index:true, required:true},
+    user_id:{type:ObjectId, ref:'User',query:common.FIND_USER_QUERY, index:true, required:true},
     method: {type:String, "enum":['vote_for', 'vote_against']},
     time: {type:Date, 'default':Date.now}
 });
 
 
 var Reply = new Schema({
-    author: {type:ObjectId, ref:'User', index:true, required:true},
+    author: {type:ObjectId, ref:'User',query:common.FIND_USER_QUERY, index:true, required:true},
     first_name: String,
     last_name: String,
     text: String,
@@ -27,7 +27,7 @@ var Reply = new Schema({
 
 var Comment = new Schema({
 //    article_id :{type:ObjectId, ref:'Article', index:true, required:true},
-    author :{type:ObjectId, ref:'User', index:true, required:true},
+    author :{type:ObjectId, ref:'User',query:common.FIND_USER_QUERY, index:true, required:true},
     text: String,
     votes: [CommentVote],
     time: {type:Date, 'default':Date.now},

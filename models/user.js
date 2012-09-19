@@ -46,18 +46,18 @@ var User = module.exports = new Schema({
     ],
     //followers (site notifications)
     blogs:[
-        new Schema({blog_id:{type:ObjectId, ref:'User'}, join_date: {type:Date, 'default':Date.now}})
+        new Schema({blog_id:{type:ObjectId, ref:'User',query:common.FIND_USER_QUERY}, join_date: {type:Date, 'default':Date.now}})
     ],
     //followers (mail notifications)
     blogs_email:[
-        new Schema({blog_id:{type:ObjectId, ref:'User'}, mail: String, join_date: {type:Date, 'default':Date.now}})
+        new Schema({blog_id:{type:ObjectId, ref:'User',query:common.FIND_USER_QUERY}, mail: String, join_date: {type:Date, 'default':Date.now}})
     ],
     // i dont know what this fields is, this is not "going users", it might be duplication of "people that conected somehow to the action" for efficiency
     actions:[
         new Schema( {action_id:{type:ObjectId, ref:'Action'}, join_date: {type:Date, 'default':Date.now}})
     ],
     followers: [
-        new Schema({follower_id:{type:ObjectId, ref:'User'}, join_date: {type:Date, 'default':Date.now}})
+        new Schema({follower_id:{type:ObjectId, ref:'User',query:common.FIND_USER_QUERY}, join_date: {type:Date, 'default':Date.now}})
     ],
     password: {type: String, editable:false},
     validation_code: {type: String, editable:false},
