@@ -1280,12 +1280,12 @@ var db_functions = {
         });
     },
 
-    createNewActionResource: function(action_id, action_resource, amount, callback){
+    createNewActionResource: function(action_id, resource_name, amount, callback){
         db_functions.loggedInAjax({
             url:'/api/action_resources/',
             type:"POST",
             async:true,
-            data: {action_resource: action_resource, action_id: action_id, amount: amount},
+            data: {name: resource_name, action_id: action_id, amount: amount},
             success:function (data) {
                 console.log(data);
                 callback(null, data);
@@ -1352,21 +1352,6 @@ var db_functions = {
             },
             error:function (err) {
                 callback(err, null);
-            }
-        });
-    },
-
-    addNewActionResource: function(action_id, resource_name, callback){
-        db_functions.loggedInAjax({
-            url:'/api/action_resources',
-            type:"Post",
-            async:true,
-            data: {action_id: action_id, category: category_id, name: resource_name},
-
-            success:function (data) {
-
-                console.log(data);
-                callback(null, data);
             }
         });
     }
