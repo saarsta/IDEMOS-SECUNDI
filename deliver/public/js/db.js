@@ -1266,7 +1266,7 @@ var db_functions = {
     //action_resources == [id: (action_resource_id), amount: (to add or remove to/from user)]
     addOrRemoveResourceToAction: function(action_id, action_resources, callback){
         db_functions.loggedInAjax({
-            url:'/api/user_helpsAction/' + action_id,
+            url:'/api/user_helps_action/' + action_id,
             type:"PUT",
             async:true,
             data: {action_resources: action_resources},

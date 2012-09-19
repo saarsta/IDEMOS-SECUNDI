@@ -890,7 +890,10 @@ var error_message = error_message || '';
 
                 var checkedArr=[];
                  $('#action_resources_popup .check-enable').each(function(){
-                     checkedArr.push($(this).data('id'));
+                     checkedArr.push(
+                             {id:$(this).data('id'), amount:1}
+                     );
+
                      //disable popup
                      $(this).removeClass("uncheck-enable");
                      $(this).removeClass("check-enable");
@@ -901,16 +904,18 @@ var error_message = error_message || '';
                 $.each(checkedArr,function(index,value){
                     var key=value;
                      //disable in mainpage
-                    $('.detail-resourse-overflow').find('[data-id='+key+']').each(function(){
+                    $('.detail-resourse-overflow').find('[data-id='+key.id+']').each(function(){
                        $(this).removeClass("uncheck-enable");
                        $(this).removeClass("check-enable");
                        $(this).addClass("check-disable");
                     });
 
                 })
-                //todo: saar
-               // db_functions.createNewActionResource()
-                $('#action_resources_popup').hide();
+                 db_functions.addOrRemoveResourceToAction(action_id,checkedArr,function(err,data){
+
+                     $('#action_resources_popup').hide();
+                 });
+
             })
 
         $('#i_bring_bt').tooltip({
@@ -941,12 +946,12 @@ var error_message = error_message || '';
             uncheck( $('#action_resources_popup .new_resources span'));
             if(newRes && newRes.length > 0){
                 //save in db
-                //todo: saar
-//                db_functions.addNewActionResource(action_id, newRes, function(err, result){
-//
-//                })
-                var id = Math.random()*50000;//BUGBUG XXXXXXXX TODO REPLACE
-                addResource(id, newRes, bringing);
+      
+                db_functions.addNewActionResource(action_id, newRes, function(err, result){
+                    var id = Math.random()*50000;//BUGBUG XXXXXXXX TODO REPLACE
+                    addResource(id, newRes, bringing);
+                });
+
             }
         })
     })();
