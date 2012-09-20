@@ -72,6 +72,8 @@ var error_message = error_message || '';
                                 היום
                             </span>
             </div>
+
+
             <div class="event" style="left: 150px">
                 <div class="icon green-icon">
                     <span class="i"></span>
@@ -82,8 +84,11 @@ var error_message = error_message || '';
                             <p>תל אביב</p><br>
                             <p>20:00</p>
                             <a href="" class="join-btn">
-
+                            <% if(!action.is_going) { %>
 							הצטרף
+							<%}else{%>
+							            עזוב
+                            <% } %>
 
                             </a>
                         </div>

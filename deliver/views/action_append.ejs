@@ -71,7 +71,13 @@ var cycle_id = cycle_id || '';
                             <p>אחד העם 19</p>
                             <p>תל אביב</p><br>
                             <p>20:00</p>
-                            <a href="" class="join-btn">הצטרף</a>
+                            <a href="" class="join-btn">
+                            <% if(!action.is_going) { %>
+                                        הצטרף
+                            <% } else{ %>
+                                        עזוב
+                            <% } %>
+                            </a>
                         </div>
                     </div>
                 </div>

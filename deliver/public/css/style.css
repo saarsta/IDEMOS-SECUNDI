@@ -6125,7 +6125,7 @@ a.fraction-btn {
     width: 201px;
     height: 124px;
     padding: 7px 7px 15px;
-    background: url(../images/event-popup.png) no-repeat;
+    background: url(../images/event-popup.png) no-repeat;;
 }
 
 .followers-diagram .event .icon:hover .popup-event {
@@ -6136,6 +6136,7 @@ a.fraction-btn {
     padding: 15px 15px 0 17px;
     position: relative;
     text-align: right;
+    cursor: pointer;
 }
 
 .followers-diagram .event .type-one .popup-text h4 {
@@ -6145,6 +6146,7 @@ a.fraction-btn {
     line-height: 22px;
     font-family: 'AdumaFOTLight';
     margin-bottom: 5px;
+
 }
 
 .followers-diagram .event .type-one .popup-text a.join-btn {
