@@ -30,6 +30,7 @@ var timeline= {
 
 
                 item.type_print =  type_names[item.type];
+                item.date =item.date.substring(0, item.date.length - 1)  ;
                 switch(item.type)
                 {
 
@@ -142,7 +143,7 @@ var timeline= {
 
                 if(item.cluster)
                 {
-                    var item_date=   new Date(item.date)
+                    var item_date=   new Date( item.date);
                     var ind=item_date.format('d.m');
                     if(!render_clusters[ind])  {
                         render_clusters[ind]={};

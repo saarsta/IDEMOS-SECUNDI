@@ -60,7 +60,14 @@ var error_message = error_message || '';
             <input type="hidden" name="cycle_id" value="<%=cycle.id%>" />
             <div class="add-event cf">
                 <div class="add-picture">
-                    <a href="javascript:;"><span>הוסף תמונה</span></a>
+                    <%
+                        var image_upload = {
+                            default_image: '/images/add-image.png',
+                            api_endpoint: '/api/avatar',
+                            input_name: 'image_field[url]'
+                        };
+                    %>
+                    <% include partials/image_upload.ejs %>
                 </div>
                 <div class="event-text">
                     <div class="one-line title cf">
@@ -98,11 +105,11 @@ var error_message = error_message || '';
                         <div class="time">
                             <label>משעה</label>
                             <div class="input from">
-                                <input type="time" name="time[from]" value="15:00" required />
+                                <input type="time" name="time[from]" value="15:00"/>
                             </div>
                             <label>עד שעה</label>
                             <div class="input to">
-                                <input type="time" name="time[to]" value="18:00" required />
+                                <input type="time" name="time[to]" value="18:00"/>
                             </div>
                         </div>
                         <div class="user-number">
@@ -332,8 +339,6 @@ var error_message = error_message || '';
             category: 'נא לבחור את סוג הפעולה מהרשימה',
             location: 'נא לבחור מיקום',
             date: 'נא לבחור תאריך',
-            'time[from]': 'נא לבחור שעה',
-            'time[to]': 'נא לבחור שעה',
             number_of_participants: 'נא למלא מספר משתתפים',
             text: 'נא למלא פוסט ראשון בדיון'
         },
