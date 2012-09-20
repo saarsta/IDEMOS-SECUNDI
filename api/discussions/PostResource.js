@@ -127,25 +127,25 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
         var post_id;
 
         var iterator = function(user_schema, itr_cbk){
-            if(user_schema.user_id){
-                if (user_schema.user_id == user_id)
-                    itr_cbk(null, 0);
-                else{
-                    if (discussion_creator_id + "" == user_schema.user_id + ""){
-                        notifications.create_user_notification("comment_on_discussion_you_created", post_id, user_schema.user_id, user_id, discussion_id, '/discussions/' + discussion_id, function(err, results){
-                            itr_cbk(err, results);
-                        });
-                    }else{
-                        notifications.create_user_notification("comment_on_discussion_you_are_part_of", post_id, user_schema.user_id, user_id, discussion_id,'/discussions/' + discussion_id, function(err, results){
-                            itr_cbk(err, results);
-                        });
-                    }
-                }
-            }else{
-                console.log("in the following discussion - there is a user with no _id");
-                console.log(discussion_id);
+//            if(user_schema.user_id){
+//                if (user_schema.user_id == user_id)
+//                    itr_cbk(null, 0);
+//                else{
+//                    if (discussion_creator_id + "" == user_schema.user_id + ""){
+//                        notifications.create_user_notification("comment_on_discussion_you_created", post_id, user_schema.user_id, user_id, discussion_id, '/discussions/' + discussion_id, function(err, results){
+//                            itr_cbk(err, results);
+//                        });
+//                    }else{
+//                        notifications.create_user_notification("comment_on_discussion_you_are_part_of", post_id, user_schema.user_id, user_id, discussion_id,'/discussions/' + discussion_id, function(err, results){
+//                            itr_cbk(err, results);
+//                        });
+//                    }
+//                }
+//            }else{
+//                console.log("in the following discussion - there is a user with no _id");
+//                console.log(discussion_id);
                 itr_cbk()
-            }
+//            }
 
         }
 
@@ -234,13 +234,13 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                                 if(err)
                                     cbk2(err, null);
                                 else{
-                                    if(quoted_post)
-                                        notifications.create_user_notification("been_quoted", post_object._id/*ref_to_post_id*/, quoted_post.creator_id, post_object.creator_id, discussion_id, '/discussions/' + discussion_id, cbk2);
-                                    else
-                                    {
-                                        console.log("there is no post with post_object.ref_to_post_id id");
+//                                    if(quoted_post)
+//                                        notifications.create_user_notification("been_quoted", post_object._id/*ref_to_post_id*/, quoted_post.creator_id, post_object.creator_id, discussion_id, '/discussions/' + discussion_id, cbk2);
+//                                    else
+//                                    {
+//                                        console.log("there is no post with post_object.ref_to_post_id id");
                                         cbk2(err, 0);
-                                    }
+//                                    }
                                 }
                             })
                         }else{

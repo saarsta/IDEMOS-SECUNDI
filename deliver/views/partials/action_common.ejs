@@ -77,6 +77,7 @@
                 var text= isGoing?leaveString:joinString;
 
                 $(".add-offer-btn-box a").html(text);
+                $(".join-btn").html(text);
                 // it's assmoes that me is the first user;
                 if(isGoing){ //add the user to first plase;
                     goingUsers++;
@@ -98,6 +99,7 @@
 
             $('.add-offer-btn-box').click(function(e){
                 e.preventDefault();
+
                 db_functions.joinOrLeaveAction(action_id,function(err,data){
                     if(err){
                         console.log(err) ;
@@ -109,6 +111,19 @@
                 })
             });
 
+            $('.join-btn').click(function(e){
+                            e.preventDefault();
+
+                            db_functions.joinOrLeaveAction(action_id,function(err,data){
+                                if(err){
+                                    console.log(err) ;
+                                }
+                                else{
+                                    setJoinBT(data);
+
+                                }
+                            })
+                        });
             return model;
         };
       window.uru.GoingModel=GoingModel;
