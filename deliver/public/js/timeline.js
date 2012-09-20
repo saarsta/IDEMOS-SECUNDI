@@ -1,0 +1,222 @@
+
+var timeline= {
+
+
+    render: function (cid) {
+
+        db_functions.getCycleTimeline(cid, function (err, data) {
+            var type_names={
+                    past:'',
+                    cycle_creation :'יצירת מעגל תנופה',
+                    due_date :'תאריך יעד',
+                    discussion:'יצירת דיון',
+                    action  :'פעולה',
+                    cycle_update  :'עדכון',
+                    today  :'היום',
+                    admin_update :'עדכון מערכת'
+                },
+
+
+                i=0,
+                j= 0,
+                pre_discussion_items = {type:'past',month:'לפני יצירת הדיון',items:[]},
+                past_months={},
+                clusters={},
+                past=true;
+
+            //init items
+            var last_item=null;
+            $.each(data.objects, function (index, item) {
+
+
+                item.type_print =  type_names[item.type];
+                switch(item.type)
+                {
+
+                    case 'due_date':
+
+                        break;
+                    case 'cycle_creation':
+
+                        break;
+                    case 'discussion':
+
+                        break;
+                    case 'action':
+                        item.short=item.title
+                        item.link ='/actions/'+item._id;
+                        break;
+                    case 'cycle_update':
+                        item.short=item.title
+                        item.link ='/updates/'+item._id;
+                        break;
+                    case 'today':
+                        past=false;
+                        break;
+                    case 'admin_update':
+                        item.short=item.text
+                        break;
+                    default:
+                        console.log("unknow timleline type : "+  item.type);
+                }
+                // debugger;
+                if(!past && last_item && last_item.date.substr(0,10)==item.date.substr(0,10))
+                {
+                    last_item.cluster=true;
+                    item.cluster=true;
+                }
+                last_item=item;
+
+            });
+
+            nodes= data.objects.slice(0);
+            //remove all past items from list and move them into past objects
+            //
+            past=true;
+            var pre_discussion=true,
+                custers_count = 0,
+                clustered_count=0;
+            $.each(data.objects, function (index, item) {
+
+
+                if(item.type=='today')  {
+                    past=false;
+                    //return false;
+                }
+                if(item.type=='discussion')  {
+                    pre_discussion=false;
+                    return true;
+                }
+                if (pre_discussion)
+                {
+
+                    pre_discussion_items.items.push(item) ;
+                    nodes.shift();
+                }
+                else if (past)
+                {
+                    var item_date=   new Date(item.date)
+                    var ind=item_date.format('mmyy');
+                    if(!past_months[ind]) {
+                        past_months[ind]=  {type:'past',month:item_date.format('mmmm'),items:[]}
+                    }
+                    past_months[ind].items.push(item);
+                    nodes.splice(1,1);
+                }
+                else     //present and future items
+                {
+                    if(item.cluster)
+                    {
+                        var item_date=   new Date(item.date)
+                        var ind=item_date.format('d.m');
+                        if(!clusters[ind]) {
+                            // clusters[ind]=  {type:'cluster',date:item_date,items:[]}
+                            clusters[ind]=0;
+                            custers_count++;
+                        }
+                        // clusters[ind].items.push(item);
+                        //nodes.splice(1,1);
+                        clustered_count++;;
+
+                        clusters[ind]++;
+
+
+                    }
+                }
+
+            } );
+            i=1;
+            $.each(past_months, function (index, item) {
+                nodes.splice(i,0,item);
+                i++;
+            });
+            if (pre_discussion_items.items.length>0)
+            {
+                nodes.splice(1,0,pre_discussion_items);
+            }
+
+            var count =   nodes.length-1 -clustered_count + custers_count ;
+            var render_clusters={};
+            i=0;
+            $.each(nodes, function (index, item) {
+
+                if(item.cluster)
+                {
+                    var item_date=   new Date(item.date)
+                    var ind=item_date.format('d.m');
+                    if(!render_clusters[ind])  {
+                        render_clusters[ind]={};
+                        render_clusters[ind].items=[];
+                    }
+                    else
+                    {
+                        render_clusters[ind].offset=   (j*980)/count;
+                    }
+                    render_clusters[ind].items.push(i);
+                    clusters[ind]--;
+                }
+                item.offset  =    (j*980)/count;
+                item.timeline_index=i;
+                switch(item.type)
+                {
+                    case 'past':
+                        dust.render('cycle_timeline_past_cluster', item, timelineAppend);
+                        break;
+                    case 'due_date':
+                        dust.render('cycle_timeline_due_date', item, timelineAppend);
+                        break;
+                    case 'cycle_creation':
+                        dust.render('cycle_timeline_creation', item, timelineAppend);
+                        break;
+                    case 'discussion':
+                        dust.render('cycle_timeline_discussion', item, timelineAppend);
+                        break;
+                    case 'action':
+                        dust.render('cycle_timeline_action', item, timelineAppend);
+                        break;
+                    case 'cycle_update':
+                        dust.render('cycle_timeline_update', item, timelineAppend);
+                        break;
+                    case 'today':
+                        dust.render('cycle_timeline_today', item, timelineAppend);
+                        break;
+                    case 'admin_update':
+                        dust.render('cycle_timeline_admin_update', item, timelineAppend);
+                        break;
+                    default:
+                        console.log("unknow timleline type : "+  item.type);
+                }
+                i++;
+                j++;
+                if(item.cluster && clusters[ind]!=0 )
+                {
+                    j--;
+                }
+            });
+
+            $.each(render_clusters, function (index1, cluster_array) {
+                var it= [];
+                var dummy=true;
+                var offset=cluster_array.offset;
+                $.each(cluster_array.items, function (index2, item) {
+                    if($("#timeline_item_"+item).attr("class").indexOf("today") == -1 )
+                    {
+                        it.push($('#timeline_item_'+item))
+                    }
+                    else
+                    {
+                        dummy=false;
+                    }
+                });
+                if (dummy)   {
+                    dust.render('cycle_timeline_dummy', {date:index1,offset:offset}, timelineAppend);
+                }
+                animateCluster(it);
+            });
+        });
+
+        function timelineAppend  (err, out) {
+            $('.followers-diagram').append(out);
+        };
+    }
+}

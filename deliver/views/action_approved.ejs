@@ -44,7 +44,7 @@ var error_message = error_message || '';
                     <span class="i"></span>
                 </div>
                             <span class="number">
-                                2.2
+                                2.24
                             </span>
                             <span class="text">
                                 יצירת דיון
@@ -378,9 +378,13 @@ var error_message = error_message || '';
  <script type="text/javascript">
 
  var action_id='<%=action._id%>';
+ var cycle_id='<%= cycle_id.id %>';
  var my_id = "<%=user_logged ? user._id : ''%>";
  $(document).ready(function () {
 
+
+
+     timeline.render(cycle_id)  ;
    //  var new_post_ref_id = null;  //if not null =>the create new post is connected to anther post
     // var action_title = "<%= action.title%>"
    //  var discussion_img_field_preview = "<%= action.image_field ? action.image_field.url ||'' : '' %>";
