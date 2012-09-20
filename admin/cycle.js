@@ -61,7 +61,7 @@ module.exports = AdminForm.extend({
                             notifications.create_user_notification(notification_type, cycle._id, creator_id, cbk);
                         }*/
                         
-                        //cycle shopping cart is the all the discussions items
+                        //cycle shopping cart is all the discussions items
                         ,function(cbk2){
                             models.InformationItem.find({discussions: discussion_id}, function(err, information_items){
                                 async.forEach(information_items, function(info_item, itr_cbk){
@@ -72,12 +72,19 @@ module.exports = AdminForm.extend({
                                     }else{
                                         itr_cbk();
                                     }
-                                }, cbk2);
+                                }, cbk2());
                             })
+                        },
+
+                        //set users that connected somehow to the discussion to be cycle followers
+                        function(cbk2){
+                            async.forEach(disc.users, function(user_that_connected_to_cycle, itr_cbk){
+
+                            }, cbk2())
                         }
-                    ], cbk);
+                    ], cbk());
                 }
-            ], itr_cbk)
+            ], itr_cbk())
         }
 
         if(cycle.isNew){
