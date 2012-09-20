@@ -105,11 +105,11 @@ var error_message = error_message || '';
                         <div class="time">
                             <label>משעה</label>
                             <div class="input from">
-                                <input type="time" name="time[from]" value="15:00" required />
+                                <input type="time" name="time[from]" value="15:00"/>
                             </div>
                             <label>עד שעה</label>
                             <div class="input to">
-                                <input type="time" name="time[to]" value="18:00" required />
+                                <input type="time" name="time[to]" value="18:00"/>
                             </div>
                         </div>
                         <div class="user-number">
@@ -153,7 +153,35 @@ var error_message = error_message || '';
                 <label><input type="checkbox" id="share" checked="checked" /> שתף את הפעולה שיצרת על הקיר שלך</label>
             </div>
         </form>
+
+
     </div>
+
+        <div id="card">
+            <div class="extra">
+                <div class="card-top cf">
+                    <a class="btn btn-1 inline share" rel="/information_cart/{_id}" href="/facebookShare?link=/information_cart/{_id}">שתף</a>
+                    <!-- <a class="btn btn-2" href="/information_items/"><span class="number" style="display:none;"></span>חזור לאסוף פריטי מידע נוספים </a>-->
+                    <a class="btn btn-2" id="collect_information_item_bt"  href="/information_items/"><span class="number" style="display:none;">
+
+                </span>חזור לאסוף פריטי מידע נוספים </a>
+                    <h3 class="basket">
+                        סל מידע
+                    </h3>
+
+                    <p>
+                        יש לך
+                        <span id="info_items_count"></span>
+                        פריטים בעגלה
+                    </p>
+                </div>
+                <div class="card-products cf">
+                    <div class="one-col" id="col1"> </div>
+                    <div class="one-col" id="col2" > </div>
+                    <div class="one-col" id="col3"> </div>
+                </div>
+            </div>
+        </div>
 </div>
 </div>
 <script>
@@ -311,8 +339,6 @@ var error_message = error_message || '';
             category: 'נא לבחור את סוג הפעולה מהרשימה',
             location: 'נא לבחור מיקום',
             date: 'נא לבחור תאריך',
-            'time[from]': 'נא לבחור שעה',
-            'time[to]': 'נא לבחור שעה',
             number_of_participants: 'נא למלא מספר משתתפים',
             text: 'נא למלא פוסט ראשון בדיון'
         },
@@ -362,6 +388,44 @@ var error_message = error_message || '';
             description: $('#text').val()
         }, callback);
     };
+
+    db_functions.getUserShopingCart(function(err,data)
+    {
+        $("#info_items_count").text( data.objects.length );
+        $.each(data.objects,function(index,information_item)
+        {
+            dust.render('information_item_box',information_item,function(err,out)
+            {
+                var div= $('#col1')   ;
+                if(  $('#col2').height() <   div.height() )
+                {
+                    div  =$('#col2');
+                }
+                if(  $('#col3').height() <   div.height() )
+                {
+                    div  =$('#col3');
+                }
+                div.append(out);
+            })
+        });
+
+
+        $('.delete-app').click(removeItemFromCart);
+        $('.delete').click(removeItemFromCart);
+        $('.confirm').click(function(){
+            var item_id = $(this).attr('item_id');
+        });
+    });
+
+    function removeItemFromCart()
+    {
+        var item_id = $(this).attr('item_id');
+        db_functions.removeInfoItemFromShoppingCart(item_id,function(err,data) {
+            $('#'+item_id).remove();
+        });
+        return false  ;
+    }
+
 </script>
 </body>
 </html>
