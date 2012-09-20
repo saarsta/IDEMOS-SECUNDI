@@ -37,121 +37,9 @@ var error_message = error_message || '';
 <div id="content" class="cf">
 <div class="followers-box">
     <div class="extra">
-        <h2><span>ציר הזמן</span> חייבים להציל את הקיפודים</h2>
+        <h2><span>ציר הזמן</span> <%=action.title%></h2>
         <div class="followers-diagram">
-            <div class="event event-prev" style="left: 0px">
-                <div class="icon prev-icon">
-                    <span class="i"></span>
-                </div>
-                            <span class="number">
-                                2.24
-                            </span>
-                            <span class="text">
-                                יצירת דיון
-                            </span>
-            </div>
-            <div class="event event-plus" style="left: 600px">
-                <div class="icon plus-icon">
-                    <span class="i"></span>
-                </div>
-                            <span class="number">
-                                2.2
-                            </span>
-                            <span class="text">
-                                יצירת דיון
-                            </span>
-            </div>
-            <div class="event event-triangle" style="left: 750px">
-                <div class="icon triangle-icon">
-                    <span class="i"></span>
-                </div>
-                            <span class="number">
-                                8.3
-                            </span>
-                            <span class="text">
-                                היום
-                            </span>
-            </div>
-            <div class="event" style="left: 150px">
-                <div class="icon green-icon">
-                    <span class="i"></span>
-                    <div class="popup-event type-one">
-                        <div class="popup-text">
-                            <h4>הפגנה למען הקיפודים</h4>
-                            <p>אחד העם 19</p>
-                            <p>תל אביב</p><br>
-                            <p>20:00</p>
-                            <a href="" class="join-btn">
 
-							הצטרף
-
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                            <span class="number">
-                                4.4
-                            </span>
-                            <span class="text">
-                                דיון פתוח
-                            </span>
-            </div>
-            <div class="event" style="left: 300px">
-                <div class="icon blue-icon">
-                    <span class="i"></span>
-                    <div class="popup-event type-two">
-                        <div class="popup-text">
-                            <img width="112" alt="" class="floatRight" src="images/sample-7.jpg">
-                            <h5>אירוע חשוב מאוד</h5>
-                            <p>הרצאה יוצאת מן הכלל מפי פרופ’ כהן אחד העם 91, תל אביב</p>
-                        </div>
-                    </div>
-                </div>
-                            <span class="number">
-                                4.4
-                            </span>
-                            <span class="text">
-                                דיון פתוח
-                            </span>
-            </div>
-            <div class="event" style="left: 450px">
-                <div class="icon grey-icon">
-                    <span class="i"></span>
-                    <div class="popup-event type-three">
-                        <div class="popup-text">
-                            <h3>פברואר</h3>
-                            <ul class="">
-                                <li><strong>2.2</strong> - יצירת דיון</li>
-                                <li><strong>8.2</strong> - הפגנה</li>
-                                <li><strong>2.2</strong> - דיון</li>
-                                <li><strong>2.2</strong> - יצירת דיון</li>
-                                <li><strong>8.2</strong> - הפגנה</li>
-                                <li><strong>2.2</strong> - דיון</li>
-                                <li><strong>2.2</strong> - יצירת דיון</li>
-                                <li><strong>8.2</strong> - הפגנה</li>
-                                <li><strong>2.2</strong> - דיון</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                            <span class="number">
-                                4.4
-                            </span>
-                            <span class="text">
-                                דיון פתוח
-                            </span>
-            </div>
-            <div class="event event-next" style="left: 100%">
-                <div class="icon next-icon">
-                    <span class="i"></span>
-                </div>
-                            <span class="number">
-                                15.4
-                            </span>
-                            <span class="text">
-                                תאריך יעד
-                            </span>
-            </div>
         </div>
     </div>
 </div>
@@ -378,13 +266,14 @@ var error_message = error_message || '';
  <script type="text/javascript">
 
  var action_id='<%=action._id%>';
- var cycle_id='<%= cycle_id.id %>';
+ var cycle_id='<%= action.cycle_id.id %>';
  var my_id = "<%=user_logged ? user._id : ''%>";
  $(document).ready(function () {
 
 
 
-     timeline.render(cycle_id)  ;
+     timeline.render(cycle_id,action_id )  ;
+
    //  var new_post_ref_id = null;  //if not null =>the create new post is connected to anther post
     // var action_title = "<%= action.title%>"
    //  var discussion_img_field_preview = "<%= action.image_field ? action.image_field.url ||'' : '' %>";

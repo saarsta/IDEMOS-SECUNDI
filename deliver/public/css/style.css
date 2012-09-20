@@ -8596,3 +8596,6 @@ div.greenbutton a:hover {
 }
 
 
+.followers-diagram .event .popup-event.showdiv{
+    display: block;
+}

@@ -2,7 +2,7 @@
 var timeline= {
 
 
-    render: function (cid) {
+    render: function (cid, display_id) {
 
         db_functions.getCycleTimeline(cid, function (err, data) {
             var type_names={
@@ -212,6 +212,15 @@ var timeline= {
                     dust.render('cycle_timeline_dummy', {date:index1,offset:offset}, timelineAppend);
                 }
                 animateCluster(it);
+                if(display_id)
+                {
+                    $('.popup-event[item-id="'+display_id+'"]').addClass('showdiv')   ;
+                    $('.popup-event[item-id="'+display_id+'"]').parent().mouseenter(function() {
+                        $('.popup-event[item-id="'+display_id+'"]').removeClass('showdiv') ;
+                    });
+
+                }
+
             });
         });
 
