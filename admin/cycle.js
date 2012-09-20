@@ -35,6 +35,8 @@ module.exports = AdminForm.extend({
         var notification_type = 'aprroved_discussion_i_created';
 
         var iterator = function(discussion_id, itr_cbk){
+            console.log('inside iterator');
+
             async.waterfall([
                 function(cbk){
                     models.Discussion.findById(discussion_id, cbk);
@@ -61,7 +63,7 @@ module.exports = AdminForm.extend({
                             notifications.create_user_notification(notification_type, cycle._id, creator_id, cbk);
                         }*/
                         
-                        //cycle shopping cart is the all the discussions items
+                        //cycle shopping cart is all the discussions items
                         ,function(cbk2){
                             models.InformationItem.find({discussions: discussion_id}, function(err, information_items){
                                 async.forEach(information_items, function(info_item, itr_cbk){
@@ -74,6 +76,32 @@ module.exports = AdminForm.extend({
                                     }
                                 }, cbk2);
                             })
+                        },
+
+                        //set users that connected somehow to the discussion to be cycle followers
+                        function(cbk2){
+                            console.log('cbk2 1');
+                            async.forEach(disc.users, function(user_that_connected_to_cycle, itr_cbk){
+                                models.User.findById(user_that_connected_to_cycle, function(err, user){
+                                    console.log('cbk2 2');
+                                    if(!_.any(user.cycles, function(user_cycle){ return user_cycle.cycle_id + "" == cycle._id })){
+                                        var new_cycle_follower = {
+                                            cycle_id: cycle._id,
+                                            join_date: Date.now()
+                                        }
+
+                                        user.cycles.push(new_cycle_follower);
+                                        user.save(function(err, obj){
+                                            console.log('saving user to cycle');
+                                            console.log(obj.first_name);
+                                            itr_cbk(err, obj);
+                                        });
+                                    }else{
+                                        console.log('cbk2 3');
+                                        itr_cbk();
+                                    }
+                                })
+                            }, cbk2);
                         }
                     ], cbk);
                 }
@@ -81,6 +109,9 @@ module.exports = AdminForm.extend({
         }
 
         if(cycle.isNew){
+            console.log('length of discussions is.....');
+            console.log(cycle.discussions.length);
+
             async.forEach(cycle.discussions, iterator, function(err, result){
                 if(err)
                     callback(err);
