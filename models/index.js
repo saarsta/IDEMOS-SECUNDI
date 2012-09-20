@@ -305,7 +305,7 @@ var Schemas = exports.Schemas = {
 
     ElectionsText:{
         title:{type:String, required:true},
-        text_field:{type:mongoose_types.Text},
+        text_field:{type: mongoose_types.Text},
         is_hidden:{type:Boolean, 'default':true}
     },
 
