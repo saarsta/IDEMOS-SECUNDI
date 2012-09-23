@@ -177,7 +177,6 @@ var Schemas = exports.Schemas = {
         ]
     },
 
-
     Notification:{
         user_id:{type:ObjectId, ref:'User',query:common.FIND_USER_QUERY, index:true, required:true},
         notificators:[new Schema(

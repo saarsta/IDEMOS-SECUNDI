@@ -90,11 +90,10 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
                 query.populate('upcoming_action');
         }
 
-
         this._super(req, query, callback);
     },
 
-    get_object:function (req, id, callback) {
+    get_object: function (req, id, callback) {
         this._super(req, id, function (err, object) {
             if (object) {
                 object.is_follower = false;
@@ -134,7 +133,6 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
             filters['users.user_id'] = user_id;
         }
 
-
         this._super(req, filters, sorts, limit, offset, function (err, results) {
             var user_cycles;
 
@@ -142,7 +140,7 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
                 user_cycles = req.user.cycles;
 
             _.each(results.objects, function (cycle) {
-                cycle.participants_count = cycle.users.length;
+                cycle.participants_count = cycle.followers_count;
                 cycle.is_follower = false;
                 if (user_cycles) {
                     if (_.find(user_cycles, function (user_cycle) {
@@ -179,21 +177,23 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
                     },
 
                     function (cbk2) {
-                        //connected somehow pepole
+
+                        //no such thing no more
+                        /*//connected somehow pepole
                         var is_new_connected = _.any(object.users, function (user_) {
                             return req.user._id + "" == user_.user_id + ""
-                        });
+                        });*/
 
-                        if (!is_new_connected) {
+                        /*if (!is_new_connected) {
                             var user = {user_id:req.user._id, join_date:Date.now()}
                             models.Cycle.update({_id:cycle_id}, {$inc:{followers_count:1}, $addToSet:{users:user}}, cbk2);
-                        } else
-                            models.Cycle.update({_id:cycle_id}, {$inc:{followers_count:1}}, cbk2);
+                        } else*/
+                            models.Cycle.update({_id: cycle_id}, {$inc:{followers_count:1}}, cbk2);
                     }
                 ], function (err, obj) {
                     object.followers_count++;
                     object.is_follower = true;
-                    object.participants_count = object.users.length;
+                    object.participants_count = object.followers_count;
                     callback(err, object);
                 });
             } else {
@@ -229,7 +229,7 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
                     ], function (err, obj) {
                         object.followers_count--;
                         object.is_follower = false;
-                        object.participants_count = object.users.length;
+                        object.participants_count = object.followers_count;
 
                         callback(err, object);
                     })
