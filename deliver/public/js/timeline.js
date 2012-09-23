@@ -172,6 +172,7 @@ var timeline= {
                         dust.render('cycle_timeline_discussion', item, timelineAppend);
                         break;
                     case 'action':
+                        debugger
                         dust.render('cycle_timeline_action', item, timelineAppend);
                         break;
                     case 'cycle_update':

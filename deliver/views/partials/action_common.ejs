@@ -75,9 +75,10 @@
                 var isGoing=(data.map_join_to_user !==undefined);
                 var user = data.map_join_to_user;
                 var text= isGoing?leaveString:joinString;
+                var joinBtnString = isGoing?"עזוב":"הצטרף";
 
                 $(".add-offer-btn-box a").html(text);
-                $(".join-btn").html(text);
+                $(".join-btn").html(joinBtnString);
                 // it's assmoes that me is the first user;
                 if(isGoing){ //add the user to first plase;
                     goingUsers++;
@@ -111,21 +112,23 @@
                 })
             });
 
-            $('.join-btn').click(function(e){
-                            e.preventDefault();
+        $('.holds_the_timeline').on("click",'.join-btn', function(e){
+            e.preventDefault();
 
-                            db_functions.joinOrLeaveAction(action_id,function(err,data){
-                                if(err){
-                                    console.log(err) ;
-                                }
-                                else{
-                                    setJoinBT(data);
+            db_functions.joinOrLeaveAction(action_id,function(err,data){
+                if(err){
+                    console.log(err) ;
+                }
+                else{
+                    setJoinBT(data);
 
-                                }
-                            })
-                        });
+                }
+            })
+        });
             return model;
         };
+
+
       window.uru.GoingModel=GoingModel;
         var current_offset = 0;
         var map =(function(){

@@ -1,5 +1,5 @@
 <div style="left: {offset}px" class="event event-next" id="timeline_item_{timeline_index}">
-    <div class="icon blue-icon">
+        <div class="icon blue-icon">
         <span class="i"></span>
         <div class="popup-event type-one" item-id="{_id}">
             <div class="popup-text">
@@ -8,7 +8,13 @@
                 <p>{date|time_only}</p>
                 <p>{num_of_going} משתתפים</p>
 
-                <a item-id="{_id}" class="join-btn" href="">הצטרף</a>
+                <a item-id="{_id}" class="join-btn" href="javascript:void(0); " >
+                    {?is_going}
+                    עזוב
+                    {:else}
+                    הצטרף
+                    {/is_going}
+                </a>
             </div>
         </div>
     </div>
