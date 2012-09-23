@@ -72,6 +72,7 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
         var user_id = req.user._id;
         var g_action_obj;
         var join_id;
+        var flag = false;
 
         async.waterfall([
 
@@ -84,9 +85,31 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
             function(join_obj, cbk){
                 if(join_obj){
                     async.parallel([
-                        //reduce action.num_of_going
+                       /* //reduce action.num_of_going
                         function(cbk1){
                             models.Action.update({_id: action_id}, {$inc: {num_of_going: -1}}, cbk1);
+                        },*/
+
+                        //remove user from action.going_users
+                        function(cbk1){
+                            models.Action.findById(action_id, function(err, action){
+                                if(!err && action){
+                                    action.num_of_going--;
+
+                                    for (var i = 0; i < action.going_users.length; i++) {
+                                        if (req.user._id + "" == action.going_users[i].user_id + "") {
+                                            //remove going_user
+                                            flag = true;
+                                            action.going_users.splice(i);
+                                            break;
+                                        }
+                                    }
+
+                                    cbk1(err, action);
+                                }else{
+                                    cbk1(err || 'no such action');
+                                }
+                            })
                         },
 
                         function(cbk1){
@@ -94,12 +117,21 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
                                 cbk1(err, obj);
                             })
                         }
+
+
                     ], function(err, args){
                         if(err)
                             callback(err);
                         else{
                             req.gamification_type = "leave_action";
-                            callback(err, {is_going: false});
+
+                            if(flag){
+                                args[0].save(function(err, action){
+                                    callback(err, {is_going: false});
+                                })
+                            }else{
+                                callback(err, {is_going: false});
+                            }
                         }
                     })
                 }else{
@@ -133,7 +165,7 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
             },
 
             function(obj, cbk){
-                models.Action.update({_id: action_id},/*{$addToSet: {going_users: user_id, users: user_id},*/{$inc:{num_of_going: 1}}, function(err, result){
+                models.Action.update({_id: action_id},{$addToSet: {going_users: {user_id: req.user._id, join_date: Date.now()}}},{$inc:{num_of_going: 1}}, function(err, result){
                     cbk(err, obj);
                 });
             }

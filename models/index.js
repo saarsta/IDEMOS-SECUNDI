@@ -177,7 +177,6 @@ var Schemas = exports.Schemas = {
         ]
     },
 
-
     Notification:{
         user_id:{type:ObjectId, ref:'User',query:common.FIND_USER_QUERY, index:true, required:true},
         notificators:[new Schema(
@@ -305,7 +304,7 @@ var Schemas = exports.Schemas = {
 
     ElectionsText:{
         title:{type:String, required:true},
-        text_field:{type:mongoose_types.Text},
+        text_field:{type: mongoose_types.Text},
         is_hidden:{type:Boolean, 'default':true}
     },
 

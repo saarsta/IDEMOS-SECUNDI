@@ -36,6 +36,8 @@ var Cycle = module.exports = new Schema({
     num_of_comments: {type: Number, 'default':0, editable:false},
     upcoming_action: {type: ObjectId, ref: 'Action', index: true},
     num_upcoming_actions: {type: Number, 'default':0, editable:false},
+
+  //so there is no such thing.. only followers that are located in user.cycles
     //users that conected somehow to the cycle for my uru
     users:{type:[
         new Schema({user_id:{type:ObjectId, ref:'User',query:common.FIND_USER_QUERY}, join_date: {type:Date, 'default':Date.now}})

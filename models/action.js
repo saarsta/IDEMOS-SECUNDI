@@ -43,13 +43,15 @@ var Action = module.exports = new Schema({
             join_date: {type: Date, 'default': Date.now}
         })
     ],
+
     //users that are going to be in the action
+    //this works now !! so start using it fucker!! (its the same as join schema)
     going_users:         [
         new Schema({
             user_id:   {type: ObjectId, ref: 'User', query:common.FIND_USER_QUERY},
             join_date: {type: Date, 'default': Date.now}
         })
-    ], //i don't use it for now
+    ],
 
     execution_date:                                   {
         date:     {type: Date, required: true},
