@@ -273,11 +273,19 @@
 
         $("#submit_post").on('click', function (e) {
             e.preventDefault();
+            var $this = $(this);
+
+            if ($this.data('executing')){
+                return;
+            }
+
+            $this.data('executing', true);
+            $this.addClass('disable');
+
             db_functions.addPostToAction(action_id, $("textarea#discussion_comment").val(), new_post_ref_id, function (err, post) {
                 // $("#user_tokens").text(post.updated_user_tokens);
                 if (!err) {
                     if (my_id && post.creator_id){
-
                         setUserScore(my_id, post.creator_id);
                     }
                     post.voting =      post.votes_for - post.votes_against;
@@ -287,6 +295,8 @@
                         new_post_ref_id = null;
                         postsNumber++;
                         setCommentNumber(postsNumber);
+                        $this.data('executing', false);
+                        $this.removeClass('disable')
 
                     });
                 }
