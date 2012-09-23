@@ -328,8 +328,6 @@
                     }
 
                     image_autoscale($('.auto-scale img', comments));
-
-                    initTooltipWithMessage($('#comments .right .proxy'), 'מנדטים');
                     initTooltipWithMessage($('#comments .right .respect'), 'מוניטין');
 
                 }
@@ -369,6 +367,14 @@
             vote.apply($(this),['remove']);
 
         });
+
+        $('#comments').on('hover', ".right .proxy", function (e) {
+
+            var name = $(this).parents(".comment-one").data("creator_name");
+            var num_of_proxies = $(this).parents(".comment-one").data("num_of_proxies");
+            var text = "מנדטים: " + name + " מייצג " + num_of_proxies + " חברי עורו ";
+            initTooltipWithMessage($('#comments .right .proxy'), text);
+        })
 
 
         function loadPosts() {
