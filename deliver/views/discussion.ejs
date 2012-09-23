@@ -604,9 +604,13 @@ $(document).ready(function () {
 
     // copy the post text+ user to   discussion_comment
     $('#comments').on('click', ".quote_button", function (e) {
+
+
         var userName,
                 text;
         var postDiv = $(this).parents('.comment-one');
+        var text_height = $(this).parents('div').find('.post_text').height();
+
         e.preventDefault();
        // $("textarea#discussion_comment").focus();
         userName = postDiv.data('creator_name');
@@ -621,9 +625,12 @@ $(document).ready(function () {
                 + '<p>&nbsp;</p>';
 
         $("textarea#discussion_comment").val(text).focus();
-
         focusOnCommentBox();
+
+        $('#cke_contents_discussion_comment').height($('#cke_contents_discussion_comment').height() + text_height)
+
     });
+
 
     $('#comments').on('click', ".post_quote a", function (e) {
 
@@ -998,8 +1005,6 @@ $(document).ready(function () {
         editor.focus();
         editor.focusManager.focus();
 
-
-
         setTimeout(function(){
             var s =  CKEDITOR.instances.discussion_comment.getSelection();
             var b = CKEDITOR.instances.discussion_comment.document.getBody();
@@ -1008,7 +1013,6 @@ $(document).ready(function () {
             selected_ranges[0].collapse(false);  //  false collapses the range to the end of the selected node, true before the node.
             s.selectRanges(selected_ranges);
         },100);
-
     };
 
 
