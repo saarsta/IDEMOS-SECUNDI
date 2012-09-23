@@ -902,10 +902,14 @@ $(document).ready(function () {
     $("#submit_post").on('click', function (e) {
         e.preventDefault();
         var $this = $(this);
+
         if ($this.data('executing')){
-            $this.addClass('disable')
             return;
         }
+
+        $this.data('executing', true);
+        $this.addClass('disable');
+
         db_functions.addPostToDiscussion(discussion_id, $("textarea#discussion_comment").val(), new_post_ref_id, function (err, post) {
             // $("#user_tokens").text(post.updated_user_tokens);
             if (!err) {
