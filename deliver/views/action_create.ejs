@@ -188,7 +188,7 @@ var error_message = error_message || '';
     $.fn.tagAdder = function (callback, condition) {
         var button = this.find('[type=button]');
         var text = this.find('[type=text]');
-        button.click(function () {
+        button.click(function (e) {
             if (condition && !condition()) {
                 // Do not add a tag if condition exists and returned false.
                 return;
@@ -202,7 +202,7 @@ var error_message = error_message || '';
 
             text.val('');
 
-            event.preventDefault();
+            e.preventDefault();
         });
     };
 
@@ -351,8 +351,6 @@ var error_message = error_message || '';
         focusCleanup: true,
 
         submitHandler: function (form) {
-            event.preventDefault();
-
             var data = $(form).serialize();
             $.ajax({
                 type: 'POST',
