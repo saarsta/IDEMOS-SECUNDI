@@ -4622,18 +4622,31 @@ body.search-ative #header {
     margin-bottom: 4px;
     position: relative;
 }
-
-.myuru-top .right .user .img-box img {
+.myuru-top .right .user .img-box .image-container
+{
+    width:112px;
+    height:120px;
+    float:right;
+}
+.myuru-top .right .user .img-box img
+{
     display: block;
 }
-
-.myuru-top .right .user .img-box span {
-    width: 112px;
-    height: 120px;
+.myuru-top .right .user .img-box #upload_image_placeholder
+{
     background: url(../images/user-fillter-white-big-empty.png) no-repeat;
+}
+.myuru-top .right .user .img-box .qq-upload-drop-area
+{
     position: absolute;
     left: 0;
+    right: 0;
     top: 0;
+    bottom: 0;
+
+    background: rgba(255, 255, 255, 0.7);
+
+    text-align: center;
 }
 
 .myuru-top .right .user .proxy {
@@ -8173,8 +8186,8 @@ a.menu-elections:hover {
     width: 272px;
     border: 9px solid #ffffff;
 }
-
-.add-event .add-picture a {
+.add-event .add-picture .img-box
+{
     display: block;
     text-align: center;
     height: 147px;
@@ -8597,6 +8610,13 @@ div.greenbutton a:hover {
     border: 1px solid white !important;;
 }
 
+.scale_image
+{
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    margin: auto;
+}
 
 .followers-diagram .event .popup-event.showdiv{
     display: block;

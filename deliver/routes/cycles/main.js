@@ -33,7 +33,8 @@ module.exports = function(req, res){
                 'image_field':1,
                 'discussions':1,
                 'tags':1,
-                'opinion_shapers': 1
+                'opinion_shapers': 1,
+                'followers_count': 1
             })
             .populate('opinion_shapers.user_id', {
                 '_id':1,
@@ -54,28 +55,6 @@ module.exports = function(req, res){
         function(cbk){
                 models.User.find({"cycles.cycle_id": req.params[0]}, cbk);
         },
-
-//        //get cycle opinion shapers
-//        function(cbk){
-//            models.OpinionShaper.find({cycle_id: req.params[0]})
-//                .limit(3)
-//                .populate('user_id', {
-//                    '_id':1,
-//                    'first_name':1,
-//                    'last_name':1,
-//                    'avatar': 1,
-//                    'facebook_id':1,
-//                    'avatar_url':1,
-//                    'score':1,
-//                    'num_of_proxies_i_represent':1
-//                })
-//                .exec(function(err, results){
-//                    _.each(results, function(obj){obj.user_id.avatar = obj.user_id.avatar_url()});
-//                    results = JSON.parse(JSON.stringify(results));
-//                    _.each(results, function(obj){ obj.user_id.opinion_text = obj.text});
-//                    cbk(err, results);
-//                })
-//        },
 
         // get the user object
         function (cbk) {
@@ -104,32 +83,14 @@ module.exports = function(req, res){
             var proxyJson = args[3] ? JSON.stringify(args[3].proxy) : null;
             var user_id = req.session.user ?  req.session.user._id + "" : 0;
 
-            if(g_cycle.followers_count != users.length){
-                //fix follower count
-                models.Cycle.update({_id: args[0]._id}, {$set: {followers_count: users.length}}, function(err, result){
-                    g_cycle.followers_count = users.length;
-                    if(g_cycle && g_cycle.main_subject)
-                        g_cycle.subject_name = g_cycle.main_subject.name;
-
-                    g_cycle.is_user_follower_of_cycle = _.any(users, function(user){return user._id + "" == user_id});
-                    res.render('cycle.ejs',{
-                        cycle: g_cycle,
-                        tab:'cycles',
-
-                        proxy:proxyJson
-                    });
-                })
-            }else{
-                if(g_cycle && g_cycle.main_subject)
-                    g_cycle.subject_name = g_cycle.main_subject.name;
-                g_cycle.is_user_follower_of_cycle = _.any(users, function(user){return user._id + "" == req.session.user ? req.user.id : 0});
-                res.render('cycle.ejs',{
-                    cycle: g_cycle,
-                    tab:'cycles',
-
-                    proxy:proxyJson
-                });
-            }
+            if(g_cycle && g_cycle.main_subject)
+                g_cycle.subject_name = g_cycle.main_subject.name;
+            g_cycle.is_user_follower_of_cycle = _.any(users, function(user){return user._id + "" == req.session.user ? req.user.id : 0});
+            res.render('cycle.ejs',{
+                cycle: g_cycle,
+                tab:'cycles',
+                proxy:proxyJson
+            });
         }
     })
 };

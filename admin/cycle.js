@@ -28,6 +28,8 @@ module.exports = AdminForm.extend({
     {
         var self = this;
         var base = this._super;
+
+
         var cycle = this.instance;
 
         var creator_id;
@@ -39,7 +41,9 @@ module.exports = AdminForm.extend({
 
             async.waterfall([
                 function(cbk){
-                    models.Discussion.findById(discussion_id, cbk);
+                    models.Discussion.findById(discussion_id, function(err, disc){
+                        cbk(err, disc);
+                    });
                 },
 
                 function(disc, cbk){
@@ -111,6 +115,12 @@ module.exports = AdminForm.extend({
         if(cycle.isNew){
             console.log('length of discussions is.....');
             console.log(cycle.discussions.length);
+
+            for(var field_name in self.clean_values)
+                self.instance.set(field_name,self.clean_values[field_name]);
+
+            self.clean_values = {};
+
 
             async.forEach(cycle.discussions, iterator, function(err, result){
                 if(err)

@@ -43,7 +43,10 @@ var CyclePostResource = module.exports = jest.Resource.extend({
                         if(err)
                             cbk(err);
                         else{
-                            _.each(posts, function(post){post.creator_id._doc.avatar_url = post.creator_id.avatar_url()});
+                            _.each(posts, function(post){
+                                if(post.creator_id)
+                                    post.creator_id._doc.avatar_url = post.creator_id.avatar_url()
+                            });
                             var json_posts = JSON.parse(JSON.stringify(posts));
 
                             putIsFollowerAndVoteBallanceOnEachPost(user_id, json_posts, function(err, json_posts){
