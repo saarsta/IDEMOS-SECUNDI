@@ -80,7 +80,7 @@
         </div>
     </div>
     <div class="followers-box">
-        <div class="extra">
+        <div class="extra holds_the_timeline">
             <h2><span>טיימליין</span> 2012</h2>
             <div class="followers-diagram">
 
@@ -367,7 +367,8 @@
         });
 
 
-        $('.join-btn').live("click",function(e){
+
+        $('.holds_the_timeline').on("click",'.join-btn', function(e){
             e.preventDefault();
             var action_id = $(this).attr('item-id');
             db_functions.joinOrLeaveAction(action_id,function(err,data){
@@ -376,7 +377,6 @@
                 }
                 else{
                     setJoinBT(data);
-
                 }
             })
         });
