@@ -19,57 +19,59 @@ var ActionResourceResource = module.exports = common.GamificationMongooseResourc
     // 3. add action resource to action
 
     create_obj: function(req, fields, callback){
-        var object = new this.model();
-        var self = this;
-        var base = self._super;
-        var action_id = req.body.action_id;
-        var g_action;
-        var g_action_resource;
+        var object = new this.model(),
+            self = this,
+            base = self._super,
 
+            action_id = req.body.action_id,
+            name = req.body.name,
+            category = req.body.category,
+            amount = req.body.amount || 1;
+
+        if (!action_id && !category) {
+            return callback('An action or category must be specified.');
+        } else if (!name) {
+            return callback('A name must be specified.');
+        }
 
         async.waterfall([
-            function(cbk){
-                models.Action.findById(action_id, cbk);
-            },
-
-            function(action, cbk){
-                if(!action){
-                    cbk('no such action');
-                }else if (!req.body.name){
-                    cbk('no action_resource');
-                }else{
-                    g_action = action;
-
-                    fields.is_approved = false;
-                    fields.category = action.category;
-
-                    for (var field in fields) {
-                        object.set(field, fields[field]);
-                    }
-
-                    base.call(self, req, fields, function(err, obj){
-                        cbk(err, obj);
-                    });
+            function(callback) {
+                if (action_id) {
+                    models.Action.findById(action_id, callback);
+                } else {
+                    callback(null, null);
                 }
             },
 
-            function(action_resource, cbk){
-                var g_action_resource = action_resource;
-
-                var new_action_resource = {
-                    resource: action_resource._id,
-                    amount: req.body.amount,
-                    left_to_bring: req.body.amount
+            function (action, callback) {
+                if (action_id && !action) {
+                    return callback('no such action');
                 }
 
-                g_action.action_resources.push(new_action_resource);
+                fields.name = name;
+                fields.is_approved = false;
+                fields.category = action ? action.category : category;
 
-                g_action.save(function(err, obj){
-                    cbk(err, obj);
-                })
+                base.call(self, req, fields, function (err, resource) {
+                    callback(err, action, resource);
+                });
+            },
+
+            function (action, resource, callback) {
+                if (!action) {
+                    return callback(null, resource);
+                }
+
+                action.action_resources.push({
+                    resource: resource.id,
+                    amount: amount,
+                    left_to_bring: amount
+                });
+
+                action.save(function (err) {
+                    callback(err, resource);
+                });
             }
-        ], function(err, obj){
-            callback(err, g_action_resource);
-        })
+        ], callback);
     }
 });

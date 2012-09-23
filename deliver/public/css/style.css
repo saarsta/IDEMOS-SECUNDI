@@ -8613,14 +8613,6 @@ div.greenbutton a:hover {
     border: 1px solid white !important;;
 }
 
-.scale_image
-{
-    display: block;
-    max-width: 100%;
-    max-height: 100%;
-    margin: auto;
-}
-
 .followers-diagram .event .popup-event.showdiv{
     display: block;
 }
