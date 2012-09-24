@@ -811,6 +811,8 @@ $(document).ready(function () {
                         $('#suggestion_list').empty();
                         render_suggestion(first_suggestion);
                         self.text('עוד הצעות');
+                        $(this).removeClass('flip');
+
                         $(this).data('executing', false);
                         return false;
                     }else{
@@ -821,6 +823,7 @@ $(document).ready(function () {
                         });
 
                         self.text('סגור הצעות ');
+                        $(this).addClass('flip');
                         $(this).data('executing', true);
 
 //                    $(".more-deals").hide();

@@ -3522,6 +3522,10 @@ h2 small {
     margin: 0 auto;
 }
 
+.more-deals a.flip{
+    background-position: 0 100%;
+}
+
 .big-diagram {
     clear: both;
     background: #fdfdfd;

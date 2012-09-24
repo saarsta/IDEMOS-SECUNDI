@@ -207,6 +207,7 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                     function (cbk1) {
                         models.Cycle.findById(cycle_id, cbk1);
                     }
+
                 ], function(err, args){
                     cbk(err, args[1]);
                 })
