@@ -179,7 +179,7 @@ var error_message = error_message || '';
                 <small id="suggestion_number"></small>
             </h2>
             <div id="suggestion_list"></div>
-            <div class="more-deals" >
+            <div class="more-deals" data-executing="false">
                 <a href="">עוד הצעות</a>
             </div>
         </div>
@@ -789,6 +789,7 @@ $(document).ready(function () {
 
     }
 
+    var first_suggestion;
     db_functions.getSuggestionByDiscussion(discussion_id, 1, 0, function (err, data) {
         $.each(data.objects, function (index, suggestion) {
             render_suggestion(suggestion);
@@ -796,22 +797,35 @@ $(document).ready(function () {
 
         $('#suggestion_number').text('(' + data.meta.total_count + ')');
         if (data.objects.length > 0) {
+            first_suggestion = data.objects[0];
             $(".deals-box").show();
             if (data.meta.total_count >= 2) {
                 $(".more-deals").show();
+
                 $(".more-deals a").on('click', function (e) {
-
-                    db_functions.getSuggestionByDiscussion(discussion_id, null, 1, function (err, data) {
-                        $.each(data.objects, function (index, suggestion) {
-                            render_suggestion(suggestion);
+                    var self = $(this);
+                    if($(this).data('executing')){
+                        $('#suggestion_list').empty();
+                        render_suggestion(first_suggestion);
+                        self.text('עוד הצעות');
+                        $(this).data('executing', false);
+                        return false;
+                    }else{
+                        db_functions.getSuggestionByDiscussion(discussion_id, null, 1, function (err, data) {
+                            $.each(data.objects, function (index, suggestion) {
+                                render_suggestion(suggestion);
+                            });
                         });
-                    });
-                    $(".more-deals").hide();
-                    return false;
+
+                        self.text('סגור הצעות ');
+                        $(this).data('executing', true);
+
+//                    $(".more-deals").hide();
+
+                        return false;
+                    }
                 });
-
             }
-
         }
         else {
             $(".deals-box").hide();
