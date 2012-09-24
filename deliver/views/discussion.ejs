@@ -12,6 +12,9 @@ var error_message = error_message || '';
     <meta property="fb:app_id" content="<%= settings.facebook_app_id %>" />
     <meta property="og:type"   content="<%= settings.facebook_app_name %>:discussion" />
     <meta property="og:url"    content="<%= settings.root_path %>/discussions/<%= discussion.id %>" />
+    <meta property="og:title" content="<%=discussion.title%>" />
+
+    <meta name="title" content="<%=discussion.title%>" />
 
 </head>
 <body>
