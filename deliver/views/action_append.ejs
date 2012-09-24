@@ -27,7 +27,9 @@ var cycle_id = cycle_id || '';
 <div id="content" class="cf">
 <div class="followers-box">
     <div class="extra">
-        <h2><span>ציר הזמן</span> <%=action.cycle_id.title%></h2>
+        <h2><span>ציר הזמן</span> 
+           <a class="no_underline_cursor_when_hover" style="color: #50504F;" href="/cycles/<%=action.cycle_id.id%>"> <%=action.cycle_id.title%> </a>
+        </h2>
         <div class="followers-diagram">
 
         </div>
