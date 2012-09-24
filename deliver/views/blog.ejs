@@ -21,7 +21,7 @@
             <div class="rightCol" id="articles" >
                 <% for (var i = 0; i < articles.length && i < 8 ; i++) { %>
                        <div class="one-post" item_id="<%= articles[i].id %>" id="<%= articles[i].id %>">
-                         <a href="/blogs/<%= articles[i].user_id.id %>">
+                         <a href="/blogs/article/<%= articles[i].id %>">
                             <h3>
                                 <%= articles[i].title %>
                              </h3>
