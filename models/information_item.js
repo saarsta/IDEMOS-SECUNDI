@@ -24,7 +24,6 @@ var InformationItem = module.exports = new Schema({
     users:{type:[ObjectId], ref:'User',query:common.FIND_USER_QUERY,editable:false},
     discussions:[{type:ObjectId, ref:'Discussion', index:true}],
     cycles:{type:[ObjectId], ref:'Cycle', index:true},
-    //this is for later
     actions:{type:[ObjectId], ref:'Action', index:true},
     is_visible:{type:Boolean, 'default':true},
     creation_date:{type:Date, 'default':Date.now,editable:false},

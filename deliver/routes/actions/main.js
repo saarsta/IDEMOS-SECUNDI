@@ -28,6 +28,7 @@ module.exports = function (req, res) {
             location: 1,
             execution_date: 1,
             required_participants: 1,
+            num_of_going: 1,
             cycle_id: 1,
             action_resources: 1,
             grade: 1,

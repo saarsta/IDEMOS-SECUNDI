@@ -127,6 +127,18 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
         var user = req.user;
         var g_action;
 
+        var iterator = function (info_item, itr_cbk) {
+            info_item.actions.push(g_action._id);
+
+            for (var i = 0; i < info_item.users.length; i++) {
+                if (info_item.users[i] + "" == user._id + "") {
+                    info_item.users.splice(i, 1);
+                    i--;
+                }
+            }
+            info_item.save(itr_cbk());
+        };
+
         var min_tokens = common.getGamificationTokenPrice('create_action') > -1 ? common.getGamificationTokenPrice('create_action') : 10;
 //            var total_tokens = user.tokens + user.num_of_extra_tokens;
 
@@ -206,6 +218,17 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
 
                     function (cbk1) {
                         models.Cycle.findById(cycle_id, cbk1);
+                    },
+
+                    //find user's information items, and add it to action
+                    function(cbk1){
+                        models.InformationItem.find({users: user._id}, function(err, info_items){
+                            if(err)
+                                cbk1(err);
+                            else{
+                                async.forEach(info_items, iterator, cbk1);
+                            }
+                        })
                     }
 
                 ], function(err, args){

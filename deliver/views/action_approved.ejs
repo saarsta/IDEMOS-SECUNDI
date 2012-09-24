@@ -114,8 +114,14 @@ var error_message = error_message || '';
                     <span class="icon"></span>
                     כמות משתתפים רצויה:  
 					<strong class="green"><%=action.required_participants %></strong>
-					|  כמות משתתפים נוכחית:  
-					<strong class="red going_red"></strong>
+					|  כמות משתתפים נוכחית:
+                    <% if (action.num_of_going < action.required_participants) { %>
+                        <!--there use to be here class going red that counts going users (what avner did)-->
+                        <strong class="red "><%=action.num_of_going %></strong>
+                    <% } else{ %>
+                        <strong class="green"><%=action.num_of_going %></strong>
+                    <% } %>
+
                 </div>
                 <div class="detail-address">
                     <span class="icon"></span>

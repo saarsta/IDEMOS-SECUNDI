@@ -175,8 +175,8 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
             info_item.discussions.push(created_discussion_id);
 
             for (var i = 0; i < info_item.users.length; i++) {
-                if (object.users[i] == req.session.user_id) {
-                    object.users.splice(i, 1);
+                if (info_item.users[i] == req.session.user_id) {
+                    info_item.users.splice(i, 1);
                     i--;
                 }
             }
