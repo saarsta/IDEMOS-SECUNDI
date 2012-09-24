@@ -21,7 +21,7 @@ var VoteActionPostResource = module.exports = common.GamificationMongooseResourc
                 total_votes: null,
                 popularity:null,
                 updated_user_tokens:null,
-                balance: null
+                voter_balance: null
             };
     },
 
@@ -105,7 +105,7 @@ var VoteActionPostResource = module.exports = common.GamificationMongooseResourc
             //final - return updated postAction
         ], function(err, updated_post){
             if(updated_post)
-                updated_post.balance = new_balance;
+                updated_post.voter_balance = new_balance;
             callback(err, updated_post);
         })
     }

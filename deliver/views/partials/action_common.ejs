@@ -350,7 +350,6 @@
             var func = $(this).parents('#comments').length ? db_functions.voteForActionPost: db_functions.voteForSuggestion;
             func.call(db_functions, post_id, actionType, function (err, post_obj) {
                 if (!err) {
-
                     button.parents(".ratio").find(".count").text(Math.round(post_obj.votes_for-post_obj.votes_against ));
                     var down_arrow = button.parents(".ratio").find(".down");
                     var up_arrow =button.parents(".ratio").find(".up");
