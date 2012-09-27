@@ -42,6 +42,7 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
         var discussion_id;
         //check if user has enought tokens, if so reduce it from user tokens and adds/redueces it form post tokens
         if (req.user) {
+            console.log('vote 1');
             var user_object = req.user;
             var post_id = req.body.post_id;
             models.Vote.findOne({user_id:user_object._id + "", post_id:post_id}, function (err, vote_object) {
@@ -49,6 +50,8 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
                 if (err)
                     callback(err, null);
                 else {
+                    console.log('vote 2');
+
                     if (!vote_object)
                         vote_object = new self.model();
 
@@ -70,6 +73,8 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
                                 callback(err || {message:'couldn\'t find post by id ' + post_id, code:400}, null);
                             }
                             else {
+                                console.log('vote 3');
+
                                 if (post_object.creator_id + "" == req.user._id + "") {
                                     callback({message:'soory, can\'t vote to your own post', code:401}, null);
                                 } else {
@@ -106,19 +111,27 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
 
                                     async.parallel([
                                         function (cbk) {
+                                            console.log('vote 3.1');
+
                                             post_object.save(cbk);
                                         },
                                         function (cbk) {
+                                            console.log('vote 3.2');
+
                                             vote_object.save(function (err, object) {
 
                                                 //set notification for post creator
                                                 if(!err){
                                                     if(new_ballance > 0 || (new_ballance == 0 && method == 'remove')){
+                                                        console.log('vote 3.2.1');
+
                                                         notifications.create_user_vote_or_grade_notification("user_gave_my_post_tokens",
                                                             post_object._id, post_object.creator_id, vote_object.user_id, discussion_id, method, false, false, '/discussions/' +  discussion_id, function(err, result){
                                                                 cbk(err, post_object);
                                                             })
                                                     }else{
+                                                        console.log('vote 3.2.2');
+
                                                         notifications.create_user_vote_or_grade_notification("user_gave_my_post_bad_tokens",
                                                             post_object._id, post_object.creator_id, vote_object.user_id, discussion_id, method, false, false, '/discussions/' +  discussion_id, function(err, result){
                                                                 cbk(err, post_object);
@@ -126,6 +139,8 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
                                                     }
 
                                                 }else{
+                                                    console.log('vote 3.2.3');
+
                                                     cbk(err, post_object);
                                                 }
 
@@ -143,12 +158,16 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
                                                             itr_cbk(err);
                                                         })
                                                 }, function(err){
+                                                    console.log('vote 3.3');
+
                                                     cbk(err);
                                                 })
                                             })
                                         }
                                         ],
                                         function (err, args) {
+                                            console.log('vote 4');
+
                                             callback(err, args[1])
                                         });
                                 }
