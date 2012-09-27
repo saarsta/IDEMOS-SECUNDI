@@ -359,15 +359,7 @@ $(function(){
     initTooltipWithMessage($(".action_comming_soon"), "יעלה בקרוב");
 });
 
-$.fn.autoscale = function (params) {
-//    // We try to find the parent with which to autoscale
-//    var parent = this.closest('.auto-scale');
-//    if (parent.length) {
-//        params.parent = parent;
-//    }
-
-    this.imgscale(params);
-};
+$.fn.autoscale = $.fn.imgscale;
 
 function image_autoscale(obj, params) {
     $(obj).autoscale(params);
