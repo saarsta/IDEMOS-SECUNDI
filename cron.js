@@ -123,6 +123,7 @@ var Cron = exports.Cron = {
         ], callback);*/
     },
 
+
     findWhoInvitedMoreThenNumberOfRegisteredUsers:function (number, callback) {
         var event = "invited more then " + number + " registered users";
         var event_bonus = 3;
@@ -175,6 +176,7 @@ var Cron = exports.Cron = {
         ], callback);
     },
 
+//    X_tokens_for_post
     findWhoGotGtrNumberOfTokensForAPostOrSuggestion:function (number, callback) {
         var event = number + "_tokens_for_a_post_or_suggestion";
         var event_bonus = 1;
@@ -209,6 +211,7 @@ var Cron = exports.Cron = {
         ], callback);
     },
 
+//    X_tokens_for_all_my_posts
     findWhoGotNumberOfTokensForAllPosts:function (number, callback) {
         var event = number + "_tokens_for_all_posts";
         var path = "gamification.bonus." + event;
@@ -250,6 +253,7 @@ var Cron = exports.Cron = {
         })
     },
 
+    //X_suggestions_for_a_discussion
     findWhoInsertedNumberOfApprovedSuggestions:function (number, callback) {
 
         var event = number + "_num_of_approved_suggestions";
@@ -275,6 +279,30 @@ var Cron = exports.Cron = {
                 async.forEach(users, iterator, cbk);
             }
         ], callback);
+    },
+
+    //X_mandates_for_user
+    findWhoGotNumberOfMandates: function(number, callback){
+        var event = number + "_num_of_mandates";
+        var path = "gamification.bonus." + event;
+        var event_bonus = 0;
+        async.waterfall([
+            function(cbk){
+                models.User.find({num_of_given_mandates: {$gt: number}, path: {$ne: true}}, function(err, users){
+                    cbk(err, users);
+                });
+            },
+
+            function(users, cbk){
+                async.forEach(users, function(user, itr_cbk){
+                    addTokensToUserByEventAndSetGamificationBonus(user._id, event, event_bonus, itr_cbk);
+                }, cbk);
+            }
+        ], function(err, obj){
+            if(err)
+                console.error(err);
+            callback(err);
+        })
     },
 
     //TODO this can be replaced with the code in AdminNotify
