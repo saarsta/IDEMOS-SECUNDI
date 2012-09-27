@@ -54,9 +54,9 @@ var InformationItemResource = module.exports = common.GamificationMongooseResour
 
     run_query: function(req,query,callback)
     {
-        if(query._conditions.subject_id){
+        /*if(query._conditions.subject_id){
             query.populate('discussions').populate('cycles').populate('actions');
-        }
+        }*/
 
         this._super(req, query, callback);
     },
