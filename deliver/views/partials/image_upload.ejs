@@ -65,7 +65,8 @@
                 console.log('uploader.onProgress: ', arguments);
             },
             onComplete: function(id, fileName, responseJSON){
-                setImageUrl(responseJSON.avatar.url);
+                console.log(responseJSON);
+                setImageUrl(responseJSON.image ? responseJSON.image.url : responseJSON.avatar.url);
             },
             template: '<span><div class="qq-uploader">' +
                     '<div class="qq-upload-drop-area"><span>העלאת תמונה</span></div>' +
