@@ -160,6 +160,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
         var user = req.user;
         var created_discussion_id;
         var info_items;
+        var number_of_taged_info_items;
 
         if(fields.text_field)
             fields.text_field_preivew = fields.text_field.substr(0,365);
@@ -209,9 +210,9 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
             // 2) check if has enough tokens, get subject
             function(_info_items,cbk) {
                 info_items = _info_items;
-                var count = info_items.length;
+                number_of_taged_info_items = info_items.length;
                 var user_cup = 9 + user.num_of_extra_tokens;
-                if (user_cup < min_tokens && user_cup < min_tokens - (Math.min(Math.floor(count / 2), 2))) {
+                if (user_cup < min_tokens && user_cup < min_tokens - (Math.min(Math.floor(number_of_taged_info_items / 2), 2))) {
                     cbk({message:"you don't have the min amount of tokens to open discussion", code:401}, null);
                 }
                 else {
@@ -254,7 +255,12 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                 }
 
                 req.gamification_type = "discussion";
-                req.token_price = common.getGamificationTokenPrice('create_discussion') > -1 ? common.getGamificationTokenPrice('create_discussion') : 3;
+
+                //set create_discussion_ price
+                // for each tagging of 2 information items the price is minus 1 tokens
+                // the max discount is 3;
+                var price_discount = (Math.min(Math.floor(number_of_taged_info_items / 2), 3));
+                req.token_price = common.getGamificationTokenPrice('create_discussion') > -1 ? common.getGamificationTokenPrice('create_discussion') - price_discount : 3;
                 self.authorization.edit_object(req, object, cbk);
             },
 
