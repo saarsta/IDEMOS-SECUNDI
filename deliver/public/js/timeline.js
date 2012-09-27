@@ -2,7 +2,7 @@
 var timeline= {
 
 
-    render: function (cid, display_id) {
+    render: function (cid, ctitle, display_id) {
 
         db_functions.getCycleTimeline(cid, function (err, data) {
             var type_names={
@@ -38,7 +38,8 @@ var timeline= {
 
                         break;
                     case 'cycle_creation':
-
+                        item.short=ctitle;
+                        item.link='/cycles/'+cid;
                         break;
                     case 'discussion':
 

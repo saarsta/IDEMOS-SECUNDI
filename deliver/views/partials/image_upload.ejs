@@ -30,7 +30,7 @@
 
 <div class="img-box" style="overflow:hidden; position:relative;">
     <div class="image-container">
-        <img src="<%= image_upload.current_value || image_upload.default_image || '' %>" />
+        <img src="<%= image_upload.default_image || '' %>" />
     </div>
     <span id="upload_image_placeholder"></span>
     <input type="hidden" name="<%= image_upload.input_name || 'image_upload' %>" value="" />
@@ -42,6 +42,21 @@
         var image_box = $('.img-box .image-container');
         var input = $('.img-box input');
 
+        var setImageUrl = function (url) {
+            input.val(url);
+
+            var image = $('<img>').attr('src', url);
+            image_box.empty().append(image);
+            var scaler = function () {
+                image.complete = true; // fool the scaler so it doesn't wait for the image to load.
+                image.autoscale({
+                    container: '.img-box'
+                });
+            };
+            scaler();
+            image.load(scaler);
+        };
+
         new qq.FileUploader({
             element: document.getElementById('upload_image_placeholder'),
             action: '<%= image_upload.api_endpoint || '' %>',
@@ -50,19 +65,8 @@
                 console.log('uploader.onProgress: ', arguments);
             },
             onComplete: function(id, fileName, responseJSON){
-                var url = responseJSON.avatar.url;
-                input.val(url);
-
-                var image = $('<img>').attr('src', url);
-                image_box.empty().append(image);
-                var scaler = function () {
-                    image.complete = true; // fool the scaler so it doesn't wait for the image to load.
-                    image.autoscale({
-                        container: '.img-box'
-                    });
-                };
-                scaler();
-                image.load(scaler);
+                console.log(responseJSON);
+                setImageUrl(responseJSON.image ? responseJSON.image.url : responseJSON.avatar.url);
             },
             template: '<span><div class="qq-uploader">' +
                     '<div class="qq-upload-drop-area"><span>העלאת תמונה</span></div>' +
@@ -70,6 +74,10 @@
                     '<ul class="qq-upload-list"></ul>' +
                     '</div></span>'
         });
+
+        <% if (image_upload.current_value) { %>
+            setImageUrl('<%=image_upload.current_value%>');
+        <% } %>
     })();
 </script>
 <% } %>

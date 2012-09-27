@@ -357,13 +357,12 @@ $(function(){
     fbs_click($('.share'));
     initTooltipWithMessage($(".cycle_comming_soon"), "כאן יתקיים התהליך למימוש המציאות הנדרשת שהסכמנו לגביה במערכת הדיונים, באמצעות פעולות, אירועים ועדכונים שוטפים. יעלה בקרוב."   );
     initTooltipWithMessage($(".action_comming_soon"), "יעלה בקרוב");
-
-    $.fn.autoscale = $.fn.imgscale;
 });
 
-function image_autoscale(obj, params)
-{
-    $(obj).imgscale(params);
+$.fn.autoscale = $.fn.imgscale;
+
+function image_autoscale(obj, params) {
+    $(obj).autoscale(params);
 };
 
 
