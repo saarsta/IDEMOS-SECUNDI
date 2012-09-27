@@ -418,6 +418,7 @@ var cycle_id = cycle_id || '';
      var my_action_grade = Number("<%= action.grade_obj ? action.grade_obj.value || 0 : 0 %>");
      var vision = $('#action_content').text();
      var cycle_id='<%= action.cycle_id.id %>';
+     var cycle_title='<%= action.cycle_id.title%>';
      var action_grade = Number("<%= action.grade%>");
 
      var creator_id = "<%=action.creator_id%>";
@@ -861,7 +862,7 @@ var cycle_id = cycle_id || '';
 
 
      });
-     timeline.render(cycle_id,action_id )  ;
+     timeline.render(cycle_id, cycle_title, action_id)  ;
 
 
 
