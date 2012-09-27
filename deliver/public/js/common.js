@@ -357,17 +357,17 @@ $(function(){
     fbs_click($('.share'));
     initTooltipWithMessage($(".cycle_comming_soon"), "כאן יתקיים התהליך למימוש המציאות הנדרשת שהסכמנו לגביה במערכת הדיונים, באמצעות פעולות, אירועים ועדכונים שוטפים. יעלה בקרוב."   );
     initTooltipWithMessage($(".action_comming_soon"), "יעלה בקרוב");
-
-    $.fn.autoscale = function (params) {
-        // We try to find the parent with which to autoscale
-//        var parent = this.closest('.auto-scale');
-//        if (parent.length) {
-//            params.parent = parent;
-//        }
-
-        this.imgscale(params);
-    };
 });
+
+$.fn.autoscale = function (params) {
+//    // We try to find the parent with which to autoscale
+//    var parent = this.closest('.auto-scale');
+//    if (parent.length) {
+//        params.parent = parent;
+//    }
+
+    this.imgscale(params);
+};
 
 function image_autoscale(obj, params) {
     $(obj).autoscale(params);
