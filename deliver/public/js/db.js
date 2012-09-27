@@ -1038,14 +1038,17 @@ var db_functions = {
 
     //----------------------actions----------------------//
 
-    createAction:function (tag_name, callback) {
+    createAction:function (data, callback) {
         db_functions.loggedInAjax({
             url:'/api/actions',
             type:"POST",
             async:true,
-            data: {},
+            data: data,
             success:function (data) {
                 callback(null, data);
+            },
+            error:function (err) {
+                callback(err);
             }
         });
     },

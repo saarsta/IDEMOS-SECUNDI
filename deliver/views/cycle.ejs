@@ -154,7 +154,7 @@
     $(document).ready(function () {
 
         jQuery.easing.def = "easeOutCirc";
-             var my_id = "<%=user_logged ? user._id : ''%>";
+            var my_id = "<%=user_logged ? user._id : ''%>";
             var cycle_id = "<%=cycle.id%>";
             var cycle_title = "<%=cycle.title%>";
             var user = "<%=cycle.id%>";
@@ -176,10 +176,17 @@
             var proxyId = userData.data('creator_id');
             var userName = userData.data('creator_name');
             e.preventDefault();
-            proxyCommon.addOrRemoveProxy(proxy,proxyId,userName,my_id,function(newProxy){
-                proxy=newProxy.proxy;
 
-            })
+            if(!my_id){
+                popupProvider.showLoginPopup({}, function(err, result){
+                    if(!err)
+                        window.location = window.location + '?user_name=' + userName + '&proxy_id=' + proxyId + '&post_id=' + post_id;
+                });
+            }else{
+                proxyCommon.addOrRemoveProxy(proxy, proxyId, userName, my_id, function(newProxy){
+                    proxy = newProxy.proxy;
+                })
+            }
 
 
         });
