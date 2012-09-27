@@ -167,7 +167,7 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
                                         ],
                                         function (err, args) {
                                             console.log('vote 4');
-
+                                            console.log(err || args[1]) ;
                                             callback(err, args[1])
                                         });
                                 }
