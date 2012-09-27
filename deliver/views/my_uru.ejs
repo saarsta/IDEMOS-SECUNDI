@@ -280,9 +280,12 @@
         $('#invite_friends_bt').click(function(e){
             e.preventDefault();
             sendFacebookInvite('Come see that great site', "/",function(err, data){
-                console.log(data);
+                if(!err)
+                {
+                    popupProvider.showOkPopup({message:"ההזמנה הצליחה!"});
+                    console.log(data);
+                }
             });
-
         });
 
 

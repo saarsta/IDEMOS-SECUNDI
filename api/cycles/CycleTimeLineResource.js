@@ -120,7 +120,15 @@ var CycleTimelineResource = module.exports = jest.Resource.extend({
                             action.type = "action";
                             action.date = action.execution_date.date;
                             action.duration = action.execution_date.duration;
-                            action.category = action.category.name;
+                            if(action.category && action.category.name != "אחר")
+                            {
+                                    action.category = action.category.name;
+                            }
+                            else
+                            {
+                                action.category = "פעולה";
+                            }
+
 
                             //put "is_going" true/false on each action
                             action.is_going = req.user ? _.any(action.going_users, function(going_user){return going_user.user_id + "" == req.user._id + ""}) : false;
