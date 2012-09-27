@@ -1,10 +1,6 @@
 
-module.exports ={
-
-    get: function(req, res){
-        res.render('forgot_password.ejs',{
-            title: "עורו"
-        });
-    }
-}
+module.exports = function (req, res) {
+    res.render('error.ejs',{
+        title: "רישום"
+    });};
 

@@ -3,6 +3,7 @@ var Router = require('./router'),
     InformationItems = require('./information_items'),
     Discussions = require('./discussions'),
     Account = require('./account'),
+    AppError = require('./app_error'),
     MyUru= require('./myuru');
   //  HisUru= require('./hisuru') ;
 
@@ -15,6 +16,8 @@ module.exports = function(app) {
     router.include('',Navigation) ;
 
     router.include('/account',Account.routing);
+
+    router.include('/app_error',AppError.routing);
 
     router.all('/facebook',require('./account/facebook'));
 
