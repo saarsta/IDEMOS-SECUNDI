@@ -111,7 +111,8 @@ var CycleTimelineResource = module.exports = jest.Resource.extend({
 
             function(cbk){
                 models.Action.find({cycle_id: cycle_id, is_approved: true})
-                    .select({'_id': 1, 'title': 1, 'text_field_preivew': 1, 'image_field_preview': 1, 'going_users': 1, 'num_of_going': 1, 'location': 1, 'execution_date': 1})
+                    .select({'_id': 1, 'title': 1, 'text_field_preivew': 1, 'image_field_preview': 1, 'going_users': 1, 'num_of_going': 1, 'location': 1, 'execution_date': 1, 'category':1})
+                    .populate('category')
                     .exec(function(err, actions){
                     if(!err){
                         actions = JSON.parse(JSON.stringify(actions));
@@ -119,6 +120,7 @@ var CycleTimelineResource = module.exports = jest.Resource.extend({
                             action.type = "action";
                             action.date = action.execution_date.date;
                             action.duration = action.execution_date.duration;
+                            action.category = action.category.name;
 
                             //put "is_going" true/false on each action
                             action.is_going = req.user ? _.any(action.going_users, function(going_user){return going_user.user_id + "" == req.user._id + ""}) : false;
