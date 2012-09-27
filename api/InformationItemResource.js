@@ -42,19 +42,10 @@ var InformationItemResource = module.exports = common.GamificationMongooseResour
                 first_name:null,
                 last_name:null
             },
-            discussions: {
-                _id: null,
-                title: null
-            },
+            discussions: null,
             discussion_counter:null,
-            cycles: {
-                _id: null,
-                title: null
-            },
-            actions: {
-                _id : null,
-                title: null
-            },
+            cycles: null,
+            actions: null,
             tags: null,
             like_counter: null,
             view_counter: null

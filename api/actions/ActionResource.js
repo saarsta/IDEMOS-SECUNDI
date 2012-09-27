@@ -71,6 +71,7 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
             evaluate_counter: null,
             grade_sum: null,
             participants_count: null,
+            is_follower: null,
             redirect_link: null
         }
     },
@@ -85,17 +86,9 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
 
             _.each(response.objects, function (action) {
                 action.participants_count = action.users.length;
-//                    action.is_follower = false;
-//                    if (user_actions) {
-//                        if (_.find(user_actions, function (user_cycle) {
-//                            return user_cycle.cycle_id + "" == action._id + "";
-//                        })) {
-//                            action.is_follower = true;
-//                        }
-//                    }
+                action.is_follower = _.any(action.going_users, function(going_user){return going_user.user_id + "" == req.user._id + ""});
             })
 
-            callback(err, response);
 
 
 
