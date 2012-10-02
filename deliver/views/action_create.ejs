@@ -354,9 +354,10 @@ var error_message = error_message || '';
             var data = $(form).serialize();
             db_functions.createAction(data, function(err, data){
                 var url = data.redirect_link;
+                var created_action_id = data._id;
                 if ($('#share').is(':checked')) {
                     shareOnFacebook(url, '', function () {
-                        location.href = url;
+                        window.location.replace("/actions/" + created_action_id);
                     });
                 } else {
                     location.href = url;

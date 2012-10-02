@@ -86,7 +86,7 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
 
             _.each(response.objects, function (action) {
                 action.participants_count = action.users.length;
-                action.is_follower = _.any(action.going_users, function(going_user){return going_user.user_id + "" == req.user._id + ""});
+                action.is_follower = req.user && _.any(action.going_users, function(going_user){return going_user.user_id + "" == req.user._id + ""});
             })
 
 
@@ -255,7 +255,8 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
             }
         ], function(err){
             callback(err, {
-                redirect_link: g_action ? req.app.get('root_path') + '/actions/' + g_action.id : null
+                redirect_link: g_action ? req.app.get('root_path') + '/actions/' + g_action.id : null,
+                _id: g_action.id
             });
         })
     }

@@ -13,7 +13,10 @@ var db_functions = {
                         var success = options.success;
                         options.success = function () {
                             success.apply(this, arguments);
-                            window.location.href = window.location.href;
+                            if(!window.location.href.contains('actions/create/') && !window.location.href.contains('discussions/new/'))
+                            {
+                                window.location.href = window.location.href;
+                            }
                         };
                         options.error = function () {
                             onError.apply(this, arguments);
