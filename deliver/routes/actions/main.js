@@ -92,8 +92,8 @@ module.exports = function (req, res) {
                 var proxyJson = args.user ? JSON.stringify(args.user.proxy) : null;
                 var going_users = args.going_users;
 
+                action.num_of_going = going_users.length;
                 action.grade_obj = args.grade;
-
                 action.from_date = action.execution_date.date;
                 // action.to_date = action.from_date.addHours(action.execution_date.duration);
                 action.to_date = new Date(action.execution_date.date.getTime() + action.execution_date.duration);
