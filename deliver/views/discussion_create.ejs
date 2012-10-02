@@ -215,6 +215,18 @@
     var current_section=1;
     $(document).ready(function () {
 
+
+        var is_logged = <%= user_logged %>;
+        var is_cup_for_create_discussion = <%= is_cup_for_create_discussion %>;
+
+        if(!(is_logged && is_cup_for_create_discussion)){
+            var message = is_logged ? "כדי לפתוח דיון חדש עליך לצבור קודם 10 אסימונים" : 
+                    "כדי לפתוח דיון חדש עליך להיות מחובר למערכת ולצבור קודם 10 אסימונים" +
+                            "<p><a href='../../account/login'>לחץ כאן כדי להירשם</a></p>";
+            popupProvider.showOkPopup({message: message});
+        }
+
+
         var discussion_image = {};
 
         var uploader = new qq.FileUploader({
