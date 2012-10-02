@@ -18,11 +18,11 @@
         </div>
     </div>
     <div class="left">
-        {?is_follower}
+        {?is_going}
         <a class="join_button"  data-action="leave"  href="#">עזוב</a>
         {:else}
         <a class="join_button" data-action="follower" href="#">הצטרף</a>
-        {/is_follower}
+        {/is_going}
         <a class="share green-share" data-img_src="{image_field_preview.url}" data-text_preview="{text_field_preview}" data-title="{title}" rel="/actions/{_id}" href="/facebookShare?link=/actions/{_id}"><span>שתף</span></a>
     </div>
     <div class="bottom-plus cf">
