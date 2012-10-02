@@ -42,13 +42,12 @@ var db_functions = {
                 onError(xhr, ajaxOptions, thrownError);
         };
 
-        if(options.type == 'PUT' || options.type == 'POST')
-        {
-            debugger
-            popupProvider.showOkPopup({
-                message: 'hi'
-            });
-        }
+//        if(options.type == 'PUT' || options.type == 'POST')
+//        {
+//            popupProvider.showOkPopup({
+//                message: 'hi'
+//            });
+//        }
         $.ajax(options);
     },
 
