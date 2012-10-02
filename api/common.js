@@ -95,7 +95,7 @@ var SessionAuthentication = exports.SessionAuthentication = jest.Authentication.
     }
 });
 
-var TokenAuthorization = exports.TokenAuthorization = jest.Authorization.extend({
+var TokenAuthorization = qexports.TokenAuthorization = jest.Authorization.extend({
     init:function(token_price)
     {
         this.token_price = token_price;
