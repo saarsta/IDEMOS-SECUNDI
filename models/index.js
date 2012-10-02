@@ -262,6 +262,7 @@ var Schemas = exports.Schemas = {
         X_tokens_for_post:{type:Number, 'default':1000000},
         X_tokens_for_all_my_posts:{type:Number, 'default':1000000},
         X_suggestions_for_a_discussion:{type:Number, 'default':1000000},
+        X_mandates_for_user: {type:Number, 'default':1000000},
         discussion_high_graded_by_min_of_X_people:{type:Number, 'default':1000000},
         spend_tokens_for_X_days_in_a_row:{type:Number, 'default':1000000}
     },

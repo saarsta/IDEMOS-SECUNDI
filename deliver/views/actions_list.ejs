@@ -121,13 +121,13 @@ var cycle_id = cycle_id || '';
             listCommon.reloadList('action_list',type,'action_list_item', query);
         }
 
-        $('#cycles_list').on('click', '.join_button', function(e){
+        $('#action_list').on('click', '.join_button', function(e){
             var item =  $(this).parents('[data-id]');
             var item_id =  item.data('id');
             var actionType =  $(this).data('action');
             e.preventDefault();
-            db_functions.joinToCycleFollowers(item_id, function(err,data){
-                dust.render('cycle_list_item', data, function(err, html){
+            db_functions.joinOrLeaveAction(item_id, function(err,data){
+                dust.render('action_list_item', data, function(err, html){
                     item.replaceWith(html);
                 })
             })

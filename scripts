@@ -55,3 +55,14 @@ insert noti url
                print(disc._id + '');
             }
         })
+
+
+
+//put default category on each action
+
+db.actions.find().forEach(function(action){
+            if(!action.category){
+                 print(action._id + '');
+                action.category = "4f9eaaf583fbf3fc0f000059";
+            }
+        })

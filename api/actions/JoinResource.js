@@ -23,6 +23,7 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
         this.authentication = new common.SessionAuthentication();
         this.filtering = {discussion_id: null, action_id: null};
         this.fields = {
+            _id: null,
             map_join_to_user: {
                 _id : null,
                 first_name : null,
@@ -127,10 +128,10 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
 
                             if(flag){
                                 args[0].save(function(err, action){
-                                    callback(err, {is_going: false});
+                                    callback(err, {_id:action_id, is_going: false});
                                 })
                             }else{
-                                callback(err, {is_going: false});
+                                callback(err, {_id:action_id, is_going: false});
                             }
                         }
                     })
@@ -174,7 +175,7 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
                 g_action_obj.num_of_going++;
                 g_action_obj = JSON.parse(JSON.stringify(g_action_obj));
                 g_action_obj.map_join_to_user = req.user;
-                g_action_obj.map_join_to_user.avatar = req.user.avatar_url(),
+                g_action_obj.map_join_to_user.avatar = req.user.avatar_url();
                 g_action_obj.is_going = true;
                 req.gamification_type = "join_action";
             }
