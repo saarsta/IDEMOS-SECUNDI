@@ -35,7 +35,6 @@ exports.create_user_notification = function(notification_type, entity_id, user_i
                     models.Notification.findOne({type: notification_type, entity_id: entity_id, user_id: user_id, seen: false}, cbk);
                 else
                     models.Notification.findOne({type: notification_type, user_id: user_id, seen: false}, cbk);
-
             },
 
             function(noti, cbk){
@@ -163,7 +162,6 @@ var create_new_notification = function(notification_type, entity_id, user_id, no
     notification.notificators = notificator;
     notification.type = notification_type;
     notification.entity_id = entity_id;
-    //TODO
     notification.url = url;
     notification.seen = false;
     notification.update_date = new Date();
@@ -343,7 +341,6 @@ exports.create_user_vote_or_grade_notification = function(notification_type, ent
                 notification.notificators = notificator;
                 notification.type = notification_type;
                 notification.entity_id = entity_id;
-                //TODO
                 notification.url = url;
                 notification.seen = false;
                 notification.update_date = new Date();

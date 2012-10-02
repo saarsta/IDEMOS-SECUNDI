@@ -9,7 +9,7 @@ module.exports = function(req,res)
         // render whatever
         console.log(subject);
 
-        var user = req.user;
+        var user = req.session.user;
         var is_cup_for_create_discussion;
         if(user){
             is_cup_for_create_discussion = user.num_of_extra_tokens > 0 || (user.num_of_extra_tokens == 0 && req.params[0] == "4fd0dae0ded0cb0100000fde");

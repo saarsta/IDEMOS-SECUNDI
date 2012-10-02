@@ -35,13 +35,20 @@ var db_functions = {
                 var message = "הושעת מהמערכת עקב החלטת מוביל תחום. אם ברצונך לקבל פרטים נוספים או לערער על ההחלטה, אנא שלח מייל לmovilim@uru.org.il.";
                 notActivatedPopup(message);
             } else if (xhr.responseText == 'Error: Unauthorized - there is not enought tokens') {
-
                 alert("אין מספיק אסימונים בשביל לבצע פעולה זו");
             } else if (xhr.responseText == "user must have a least 10 tokens to open create discussion")
                 alert("צריך מינימום של 10 אסימונים בשביל ליצור דיון");
             else
                 onError(xhr, ajaxOptions, thrownError);
         };
+
+        if(options.type == 'PUT' || options.type == 'POST')
+        {
+            debugger
+            popupProvider.showOkPopup({
+                message: 'hi'
+            });
+        }
         $.ajax(options);
     },
 
