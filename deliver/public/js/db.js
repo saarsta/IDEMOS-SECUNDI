@@ -13,7 +13,10 @@ var db_functions = {
                         var success = options.success;
                         options.success = function () {
                             success.apply(this, arguments);
-                            window.location.href = window.location.href;
+                            if(!window.location.href.contains('actions/create/') && !window.location.href.contains('discussions/new/'))
+                            {
+                                window.location.href = window.location.href;
+                            }
                         };
                         options.error = function () {
                             onError.apply(this, arguments);
@@ -1038,14 +1041,17 @@ var db_functions = {
 
     //----------------------actions----------------------//
 
-    createAction:function (tag_name, callback) {
+    createAction:function (data, callback) {
         db_functions.loggedInAjax({
             url:'/api/actions',
             type:"POST",
             async:true,
-            data: {},
+            data: data,
             success:function (data) {
                 callback(null, data);
+            },
+            error:function (err) {
+                callback(err);
             }
         });
     },

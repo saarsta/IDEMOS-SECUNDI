@@ -352,27 +352,17 @@ var error_message = error_message || '';
 
         submitHandler: function (form) {
             var data = $(form).serialize();
-            $.ajax({
-                type: 'POST',
-                url: '/api/actions',
-                data: data,
-                dataType: 'json',
-                success: function (result) {
-                    console.log('ajax success: ', arguments);
-                    var url = result.redirect_link;
-                    if ($('#share').is(':checked')) {
-                        shareOnFacebook(url, '', function () {
-                            location.href = url;
-                        });
-                    } else {
-                        location.href = url;
-                    }
-                },
-                error: function () {
-                    console.log('ajax error: ', arguments);
-                    popupProvider.showOkPopup({ message: 'קרתה תקלה בעת שמירת הפעולה.' });
+            db_functions.createAction(data, function(err, data){
+                var url = data.redirect_link;
+                var created_action_id = data._id;
+                if ($('#share').is(':checked')) {
+                    shareOnFacebook(url, '', function () {
+                        window.location.replace("/actions/" + created_action_id);
+                    });
+                } else {
+                    location.href = url;
                 }
-            });
+            })
         }
     });
 
