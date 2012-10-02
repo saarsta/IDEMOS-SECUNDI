@@ -13,7 +13,10 @@ var db_functions = {
                         var success = options.success;
                         options.success = function () {
                             success.apply(this, arguments);
-                            window.location.href = window.location.href;
+                            if(!window.location.href.contains('actions/create/') && !window.location.href.contains('discussions/new/'))
+                            {
+                                window.location.href = window.location.href;
+                            }
                         };
                         options.error = function () {
                             onError.apply(this, arguments);
@@ -32,13 +35,19 @@ var db_functions = {
                 var message = "הושעת מהמערכת עקב החלטת מוביל תחום. אם ברצונך לקבל פרטים נוספים או לערער על ההחלטה, אנא שלח מייל לmovilim@uru.org.il.";
                 notActivatedPopup(message);
             } else if (xhr.responseText == 'Error: Unauthorized - there is not enought tokens') {
-
                 alert("אין מספיק אסימונים בשביל לבצע פעולה זו");
             } else if (xhr.responseText == "user must have a least 10 tokens to open create discussion")
                 alert("צריך מינימום של 10 אסימונים בשביל ליצור דיון");
             else
                 onError(xhr, ajaxOptions, thrownError);
         };
+
+//        if(options.type == 'PUT' || options.type == 'POST')
+//        {
+//            popupProvider.showOkPopup({
+//                message: 'hi'
+//            });
+//        }
         $.ajax(options);
     },
 
@@ -1038,14 +1047,17 @@ var db_functions = {
 
     //----------------------actions----------------------//
 
-    createAction:function (tag_name, callback) {
+    createAction:function (data, callback) {
         db_functions.loggedInAjax({
             url:'/api/actions',
             type:"POST",
             async:true,
-            data: {},
+            data: data,
             success:function (data) {
                 callback(null, data);
+            },
+            error:function (err) {
+                callback(err);
             }
         });
     },

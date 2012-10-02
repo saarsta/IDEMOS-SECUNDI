@@ -215,9 +215,7 @@ var Schemas = exports.Schemas = {
         ]
 //        is_proxy_notification: {type: Boolean, 'default': false}
         },
-
         entity_id:{type:ObjectId},
-
         seen:{type:Boolean, 'default':false},
         update_date:{type:Date, 'default':Date.now},
         url:String,

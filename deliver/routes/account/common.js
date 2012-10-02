@@ -8,11 +8,13 @@ exports.DONT_NEED_LOGIN_PAGES = [/^\/images/,/^\/static/, /^\/css/, /stylesheets
     /facebookconnect.html/, /account\/afterSuccessFbConnect/, /account\/facebooklogin/,
     /api\/subjects/, /^\/admin/, /^\/api\//];//regex
 
-exports.REDIRECT_FOR_LOGIN_PAGES = [/^\/discussions\/new/,/^\/myuru$/];
+
+//i removed this!! : /^\/discussions\/new/,
+exports.REDIRECT_FOR_LOGIN_PAGES = [/^\/myuru$/];
+
 
 var hash_password = exports.hash_password = function(password)
 {
-
     return crypto.createHmac('sha1', 'ninjastyle').update(password).digest('hex');
 };
 

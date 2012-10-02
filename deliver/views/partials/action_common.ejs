@@ -12,6 +12,22 @@
         }
         %>
 
+        var editor;
+
+        $( '#discussion_comment' ).ckeditor(            {
+            height: 100,
+            'line-height':10,
+            language:'he',
+            removePlugins : 'elementspath',
+            on :
+            {
+                instanceReady : function( ev )
+                {
+                    editor = this;
+                }
+            }
+        });
+
 
 
 
