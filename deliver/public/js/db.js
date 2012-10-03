@@ -443,6 +443,8 @@ var db_functions = {
             error: function(err) {
                 if (err.responseText == "vision can't be more than 800 words")
                     popupProvider.showOkPopup({message:"חזון הדיון צריך להיות 800 מילים לכל היותר"});
+                if(err.responseText == "title can't be longer than 75 characters")
+                    popupProvider.showOkPopup({message:"אורך כותרת החזון צריך להיות 75 אותיות לכל היותר"});
                 else if (err.responseText == "you don't have the min amount of tokens to open discussion")
                     popupProvider.showOkPopup({message:"מצטערים, אין לך מספיק אסימונים..."});
                 callback(err, null);

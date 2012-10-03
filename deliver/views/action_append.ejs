@@ -817,7 +817,7 @@ var cycle_id = cycle_id || '';
 
             })
 
-        $('#i_bring_bt').tooltip({
+       /* $('#i_bring_bt').tooltip({
             //relative:true,
             opacity:1,
             position: "bottom center",
@@ -834,6 +834,11 @@ var cycle_id = cycle_id || '';
                 onPopupClosed();
                 onPopupClosed();
             }
+        }); */
+
+        $('#i_bring_bt').click(function(e){
+            e.preventDefault();
+
         });
 
         $('#action_resources_popup .add-new-res-bt').click(function(e){
