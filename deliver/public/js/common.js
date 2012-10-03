@@ -135,6 +135,23 @@ var connectPopup = function(callback){
 
 };
 
+
+var tokensInformationPopup = function(num_of_tokens, needs_guide_page){
+
+    var msg = "עבור פעולה זו נדרשים" +
+        num_of_tokens +
+        " " +
+        "אסימונים"
+
+    if(needs_guide_page){
+        msg += '<p><a href="#">למדריך לחץ כאן</a></p>';
+    }
+
+    popupProvider.showOkPopup({
+        message: msg
+    });
+};
+
 var notActivatedPopup = function(msg) {
     popupProvider.showOkPopup({
         message: msg

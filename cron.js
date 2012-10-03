@@ -43,10 +43,12 @@ var Cron = exports.Cron = {
         var event_bonus = 2;
         var bucket = {};
         var invited_users = {};
+        var bonus_type = "extra_cup";
+
 
         var iterator = function(user, itr_cbk){
             if(user.count >= number){
-                addTokensToUserByEventAndSetGamificationBonus(user._id, event, event_bonus);
+                addTokensToUserByEventAndSetGamificationBonus(user._id, event, event_bonus, bonus_type, itr_cbk);
             }
         }
 
@@ -129,6 +131,9 @@ var Cron = exports.Cron = {
         var event_bonus = 3;
         var bucket = {};
         var invited_users = {};
+        var bonus_type = "extra_cup";
+
+
         async.waterfall([
             function (cbk) {
                 models.User.find({has_been_invited:true}, cbk);
@@ -159,7 +164,7 @@ var Cron = exports.Cron = {
                         bucket[inviter_string] = -1;
                         async.parallel([
                             function (cbk2) {
-                                addTokensToUserByEventAndSetGamificationBonus(inviter_id_string, event, event_bonus, function (err, result) {
+                                addTokensToUserByEventAndSetGamificationBonus(inviter_id_string, event, event_bonus, bonus_type, function (err, result) {
                                     cbk2(err, result);
                                 });
                             },
@@ -181,12 +186,14 @@ var Cron = exports.Cron = {
         var event = number + "_tokens_for_a_post_or_suggestion";
         var event_bonus = 1;
         var creator_user_id;
+        //this type means that user will get tokens fill up
+        var bonus_type = "extra_tokens";
 
         var iterator = function(post_or_suggestion, itr_cbk){
 
             async.parallel([
                 function(cbk){
-                    addTokensToUserByEventAndSetGamificationBonus(post_or_suggestion.creator_id, event, event_bonus, cbk);
+                    addTokensToUserByEventAndSetGamificationBonus(post_or_suggestion.creator_id, event, event_bonus, bouns_type, cbk);
                 },
 
                 function(cbk){
@@ -217,10 +224,11 @@ var Cron = exports.Cron = {
         var path = "gamification.bonus." + event;
         var event_bonus = 1;
         var creator_user_id;
+        var bonus_type = "extra_cup";
 
         var iterator = function(group_post, itr_cbk){
             if(group_post.sum > number){
-                addTokensToUserByEventAndSetGamificationBonus(group_post.creator_id, event, event_bonus, itr_cbk);
+                addTokensToUserByEventAndSetGamificationBonus(group_post.creator_id, event, event_bonus, bonus_type, itr_cbk);
             }else{
                 itr_cbk(null, 0);
             }
@@ -260,10 +268,11 @@ var Cron = exports.Cron = {
         var path = "gamification.bonus." + event;
         var event_bonus = 3;
         var found_users = [];
+        var bonus_type = "extra_cup";
 
         var iterator = function(user, iteration_cbk){
             if(user.gamifiacation.approved_suggestion && user.gamifiacation.approved_suggestion > number){
-                addTokensToUserByEventAndSetGamificationBonus(user._id, event, event_bonus, iteration_cbk);
+                addTokensToUserByEventAndSetGamificationBonus(user._id, event, event_bonus, bonus_type, iteration_cbk);
             }else{
                 iteration_cbk(null, 0);
             }
@@ -286,6 +295,8 @@ var Cron = exports.Cron = {
         var event = number + "_num_of_mandates";
         var path = "gamification.bonus." + event;
         var event_bonus = 0;
+        var bonus_type = "extra_cup";
+
         async.waterfall([
             function(cbk){
                 models.User.find({num_of_given_mandates: {$gt: number}, path: {$ne: true}}, function(err, users){
@@ -295,7 +306,7 @@ var Cron = exports.Cron = {
 
             function(users, cbk){
                 async.forEach(users, function(user, itr_cbk){
-                    addTokensToUserByEventAndSetGamificationBonus(user._id, event, event_bonus, itr_cbk);
+                    addTokensToUserByEventAndSetGamificationBonus(user._id, event, event_bonus, bonus_type, itr_cbk);
                 }, cbk);
             }
         ], function(err, obj){
@@ -311,12 +322,13 @@ var Cron = exports.Cron = {
         var path =  "gamification.bonus." + event;
         var dicussion_gamification_path = "gamification.has_rewarded_creator_of_turning_to_cycle";
         var event_bonus = 3;
+        var bonus_type = "extra_cup";
 
 
         var iterator = function (discussion, iteration_cbk){
             async.waterfall([
                 function(cbk){
-                    addTokensToUserByEventAndSetGamificationBonus(discussion.creator_id, event, event_bonus, cbk);
+                    addTokensToUserByEventAndSetGamificationBonus(discussion.creator_id, event, event_bonus, bonus_type, cbk);
                 },
 
                 function(result, cbk){
@@ -343,12 +355,13 @@ var Cron = exports.Cron = {
         var event = "action_approval";
         var gamification_action_path = "gamification.approved_to_cycle";
         var event_bonus = 1;
+        var bonus_type = "extra_cup";
 
         var iterator = function(action, iteration_cbk){
             async.waterfall([
 
                 function(cbk1){
-                    addTokensToUserByEventAndSetGamificationBonus(action.creator_id, event, event_bonus, cbk1);
+                    addTokensToUserByEventAndSetGamificationBonus(action.creator_id, event, event_bonus, bonus_type, cbk1);
                 },
 
                 function(result, cbk1){
@@ -427,6 +440,7 @@ var Cron = exports.Cron = {
         var num_of_top_liked = 10;
         var event = "high_liked_submited_info_item";
         var event_bonus = 2;
+        var bonus_type = "extra_cup";
 
         var iterator = function(info_item, itr_cbk){
             async.waterfall([
@@ -436,7 +450,7 @@ var Cron = exports.Cron = {
 
                 function(result, cbk){
 //                    addTokensToUserByEventAndIncGamificationBonus(info_item.created_by.creator_id, event, event_bonus, cbk);
-                    addTokensToUserByEventAndSetGamificationBonus(info_item.created_by.creator_id, event, event_bonus, cbk);
+                    addTokensToUserByEventAndSetGamificationBonus(info_item.created_by.creator_id, event, event_bonus, bonus_type, cbk);
                 }
             ], callback);
         };
@@ -622,6 +636,8 @@ var daily_cron =  exports.daily_cron = {
     findWhoSpentAllTokensInNumberOfDaysInARow: function(num_of_days, callback){
         var event = "spent_all_tokens_for_" + num_of_days + "_days";
         var event_bonus = 2;
+        var bonus_type = "extra_cup";
+
         var iterator = function(user, itr_cbk){
             user.number_of_days_of_spending_all_tokens += 1;
             async.parallel([
@@ -769,14 +785,39 @@ var daily_cron =  exports.daily_cron = {
     });
 }*/
 
-function addTokensToUserByEventAndSetGamificationBonus(user_id, event, event_bonus, callback) {
+function addTokensToUserByEventAndSetGamificationBonus(user_id, event, event_bonus, bonus_type, callback) {
 
     var set_gamification_bonus = {};
 
+    var conditions = (bonus_type == 'extra_cup') ? {num_of_extra_tokens:event_bonus} : {tokens: event_bonus};
+
     set_gamification_bonus['gamification.bonus.' + event] = true;
-    models.User.update({_id:user_id}, {$inc:{num_of_extra_tokens:event_bonus}, $set:set_gamification_bonus}, function (err, result) {
+
+    //find user and update his new tokens/cup and gamifications
+
+    async.waterfall([
+        function(cbk){
+            models.User.findById(user_id, cbk);
+        },
+
+        function(user, cbk){
+            user.set_gamification_bonus = true;
+            if(bonus_type == 'extra_cup') {
+                user.num_of_extra_tokens = Math.min(user.num_of_extra_tokens + event_bonus, 6);
+            }else{
+                user.tokens = Math.min(user.tokens + event_bonus, user.tokens + user.num_of_extra_tokens);
+            }
+
+            user.save(function(err, saved_user){
+                cbk(err, saved_user);
+            })
+        }
+    ], function(err, user){
+        callback(err, user);
+    })
+    /*models.User.update({_id:user_id}, {$inc:conditions, $set:set_gamification_bonus}, function (err, result) {
         callback(err, result);
-    });
+    });*/
 }
 
 function setTokenAchivementsToInviter(invited_users_arr, event, callback) {
