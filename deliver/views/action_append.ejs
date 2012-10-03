@@ -161,8 +161,6 @@ var cycle_id = cycle_id || '';
                 <p><a href="">צפה במפה</a> | <a href="">קבל מסלול נסיעה</a></p>
             </div>-->
         </div>
-
-
     </div>
 
 
@@ -222,6 +220,31 @@ var cycle_id = cycle_id || '';
         <% } %>
             </a>
 
+    </div>
+    <div id="action_resources_popup" >
+        <div style="margin-right: 30px;margin-top: 24px;">
+            <div class="res-div"  style="overflow: auto;height: 135px ;" >
+                <% for (var i=0;i < action.action_resources.length;i++){%>
+                <div  data-id="<%=action.action_resources[i].resource._id %>"
+                      class="resource_row <%=action.action_resources[i].left_to_bring==0?'check-disable': 'uncheck-enable' %> ">
+                    <span> <%=action.action_resources[i].resource.name %></span>
+                </div>
+                <% } %>
+            </div>
+
+            <div class="new_resources" style="height: 35px">
+                <span class="uncheck-enable"></span>
+                <input type="text"/>
+                <a class="add-new-res-bt">
+                    הוסף
+                </a>
+            </div>
+            <div>
+                <a class="i_bring">
+                    אני מביא
+                </a>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -383,31 +406,7 @@ var cycle_id = cycle_id || '';
 </div>-->
 
 
-<div id="action_resources_popup" >
-    <div style="margin-right: 30px;margin-top: 24px;">
-      <div class="res-div"  style="overflow: auto;height: 135px ;" >
-           <% for (var i=0;i < action.action_resources.length;i++){%>
-               <div  data-id="<%=action.action_resources[i].resource._id %>"
-                    class="resource_row <%=action.action_resources[i].left_to_bring==0?'check-disable': 'uncheck-enable' %> ">
-                    <span> <%=action.action_resources[i].resource.name %></span>
-               </div>
-           <% } %>
-     </div>
 
-        <div class="new_resources" style="height: 35px">
-                <span class="uncheck-enable"></span>
-                <input type="text"/>
-                <a class="add-new-res-bt">
-                   הוסף
-                </a>
-        </div>
-        <div>
-        <a class="i_bring">
-            אני מביא
-        </a>
-            </div>
-        </div>
- </div>
 
 <% include partials/action_common.ejs %>
 <% include partials/footer.ejs %>
@@ -817,29 +816,55 @@ var cycle_id = cycle_id || '';
 
             })
 
-       /* $('#i_bring_bt').tooltip({
+        $('body').click(function(e) {
+            var left = $('#action_resources_popup').offset().left;
+            var top = $('#action_resources_popup').offset().top - 30;
+            var bottom = top + $('#action_resources_popup').height();
+            var right = left + $('#action_resources_popup').width();
+
+            var x = e.pageX;
+            var y = e.pageY;
+
+            if(!(x > left && x < right && y > top && y < bottom)){
+                $('#action_resources_popup').hide();
+            }
+
+        });
+
+        $('#i_bring_bt').click(function () {
+            var box = $('#action_resources_popup');
+            var leftPosition = -65;
+            var topPosition = $('.detail-resourse').position().top + $(this).height();
+            box.css({
+                opacity: 1,
+                left: leftPosition,
+                top: topPosition
+            }).toggle();
+        });
+
+           /*     .tooltip({
             //relative:true,
             opacity:1,
             position: "bottom center",
             offset:[0,10],
             tip:'#action_resources_popup',
             events: {
-                def:'click,mouseout'
-
+                def: 'click, mouseout'
             },
             onShow:function(e){
                $('#action_resources_popup .new_resources input').focus();
             },
+
             onHide:function(e){
                 onPopupClosed();
                 onPopupClosed();
             }
-        }); */
+        });*/
 
-        $('#i_bring_bt').click(function(e){
-            e.preventDefault();
+       /* $('#i_bring_bt').click({
 
-        });
+        });*/
+
 
         $('#action_resources_popup .add-new-res-bt').click(function(e){
             e.preventDefault();
