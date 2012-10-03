@@ -190,6 +190,12 @@ module.exports = function(app)
             list:['name'],
             cloneable:true
         });
+
+    admin.registerMongooseModel('Founder',Models.Founder,null,{
+        list:['name'],
+        cloneable:true
+    });
+
     admin.registerMongooseModel('Test',Models.Test,null,{
             list:['action_resources'],
             cloneable:true

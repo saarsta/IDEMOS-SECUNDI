@@ -14,14 +14,35 @@
         <% include partials/failures.ejs %>
         <% include partials/tag_search.ejs %>
     </div>
+    <!--fix bug 420 : add text to team page as in founders page -->
+    <div id="content_text" class="cf" style="background-image: url('/images/team_text.png'); background-position: center -30px;height: 400px;  padding-bottom:0px;">
+    </div>
+    <div id="content" class="cf">
 
-    <!--<div id="content" class="cf">-->
-    <div id="content" class="cf" style="background-image: url('/images/founders.png'); background-position: center -30px; height: 2610px; padding-bottom:0px;">
+        <h2><a style="text-decoration: none" href="javascript:void(0);">מייסדי עורו</a></h2>
+        <div class="staff-box cf" id="founder">
 
-    <!--</div>-->
+        </div>
+
+    </div>
 </div>
 
 
 <% include partials/footer.ejs %>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        db_functions.getFounders(function (data) {
+            $.each(data.objects, function (index, item) {
+                dust.render('team', item, function (err, out) {
+                    $('#founder').append(out);
+                });
+            });
+        });
+    });
+
+</script>
+
 </body>
 </html>
