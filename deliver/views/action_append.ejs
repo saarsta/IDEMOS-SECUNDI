@@ -62,7 +62,7 @@ var cycle_id = cycle_id || '';
         </div>
         <div class="add-offer-info m-2">
             מיקום:
-            <strong><%=action.location?action.location.address:''%></strong>
+            <strong><%=action.location?action.location.address:""%></strong>
         </div>
         <div class="action_content action-text-overflow">
             <p id="action_content" class="hidden_textarea"><%=action.text_field%></p>
@@ -888,6 +888,7 @@ var cycle_id = cycle_id || '';
                 }
             })
         })();
+
         var goingModel= new  window.uru.GoingModel({
             joinString:'אם זה קורה, אני שם'
         });

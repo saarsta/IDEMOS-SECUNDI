@@ -864,7 +864,7 @@ var db_functions = {
 
     getItemsCountByTagName:function (tag_name, callback) {
         db_functions.loggedInAjax({
-            url:'/api/items_count_by_tag_name' + (tag_name ? '?tag_name=' + tag_name : ''),
+            url:'/api/items_count_by_tag_name' + (tag_name ? '?tag_name=' + encodeURIComponent(tag_name) : ''),
             type:"GET",
             async:true,
             success:function (data) {
@@ -894,7 +894,7 @@ var db_functions = {
 
     getItemsByTagNameAndType:function (type, tag_name, page, callback) {
         this.loggedInAjax({
-            url:'/api/' + type + '?limit=3&offset=' + (page * 3) + (tag_name ? '&tags=' + tag_name : ''),
+            url:'/api/' + type + '?limit=3&offset=' + (page * 3) + (encodeURIComponent(tag_name) ? '&tags=' + encodeURIComponent(tag_name) : ''),
             type:"GET",
             async:true,
             success:function (data) {
