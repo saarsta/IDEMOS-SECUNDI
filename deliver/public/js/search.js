@@ -35,23 +35,17 @@ $(document).ready(function () {
         var pageIndexByType = {};
 
         db_functions.getItemsCountByTagName(search_term, function (err, data) {
-            var createTabs = (function () {
-                var finishedCalls = 0;
-                return function () {
-                    if (++finishedCalls == 5) {
-                        $(".search-result-box .tabs").tabs({
-                            selected:selected_tab,
-                            select:function(event,ui){
-                                selected_tab = ui.index;
-                                populateItems(sections[ui.index], pageIndexByType[sections[ui.index]] || 0);
-                            }
-                        });
+            var createTabs = function () {
+                $(".search-result-box .tabs").tabs({
+                    selected:selected_tab,
+                    select:function(event,ui){
+                        selected_tab = ui.index;
+                        populateItems(sections[ui.index], pageIndexByType[sections[ui.index]] || 0);
                     }
-                };
-            })();
+                });
+            };
 
             var populateItems = function(type,page) {
-
                 var slide = $("#tabs-" + type + " .tab-slide .slides-one:eq(" + page + ")");
                 if(!slide.data('loaded')) {
                     slide.data('loaded','true');
@@ -80,8 +74,8 @@ $(document).ready(function () {
             };
 
 
-            $(".search-result-box .tabs").tabs("destroy");
-            $(".search-result-box").remove();
+            // $(".search-result-box .tabs").tabs("destroy");
+            // $(".search-result-box").remove();
             var showEmpty = true; // fix bug 442 - hide empty search results string when not empty
             var current_section_count = [];
             current_section_count[0] = data.info_items_count;
