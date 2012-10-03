@@ -53,8 +53,6 @@ var tags_replace = {
     's': 's'
 };
 
-
-
 dust.filters['tags'] = function(text) {
     $.each(tags_replace,function(key,value) {
         text = text.replace(RegExp('\\[' + key + '\\]','g'),'<' + value + '>').replace(RegExp('\\[\\/' + key +  '\\]','g'),'</' + value + '>')

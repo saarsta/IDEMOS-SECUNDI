@@ -3,8 +3,11 @@
         <span class="i"></span>
         <div class="popup-event type-three">
             <div class="popup-text">
-                <h3>{text|s}</h3>
-
+                {?manuver_link}
+                    <h3>{text|s}</h3>
+                {:else}
+                    <h3>{text}</h3>
+                {/manuver_link}
             </div>
         </div>
     </div>

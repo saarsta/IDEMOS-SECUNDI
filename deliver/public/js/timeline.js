@@ -56,7 +56,17 @@ var timeline= {
                         past=false;
                         break;
                     case 'admin_update':
-                        item.short=item.text
+                        //this ugly manuver is fot set link for admin_update only when there is such one
+                        var temp_text = item.text;
+                        temp_text =  temp_text.replace(/\[url(?:=([^\]]*))\]((?:.|\n)*)?\[\/url\]/,'<a href="$1" target="_blank">$2</a>')
+
+                        if(! (temp_text == item.text)){
+                            item.text = temp_text;
+                            item.manuver_link = true;
+                        }
+
+                        item.short = item.text;
+
                         break;
                     default:
                         console.log("unknow timleline type : "+  item.type);
@@ -119,10 +129,7 @@ var timeline= {
                         // clusters[ind].items.push(item);
                         //nodes.splice(1,1);
                         clustered_count++;;
-
                         clusters[ind]++;
-
-
                     }
                 }
 

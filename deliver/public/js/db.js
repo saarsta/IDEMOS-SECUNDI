@@ -265,6 +265,18 @@ var db_functions = {
         });
     },
 
+    getFounders:function (callback) {
+        db_functions.loggedInAjax({
+            url:'/api/founders',
+            type:"GET",
+            async:true,
+            success:function (data) {
+                console.log(data);
+                callback(data);
+            }
+        });
+    },
+
     getQaItems:function (callback) {
         db_functions.loggedInAjax({
             url:'/api/qa',

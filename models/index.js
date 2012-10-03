@@ -295,6 +295,14 @@ var Schemas = exports.Schemas = {
         is_hidden:{type:Boolean, 'default':true}
     },
 
+    Founder:{
+        name:String,
+        duty:String,
+        text_field:{type:mongoose_types.Html, required:true},
+        img_field:{type:mongoose_types.File, required:true},
+        is_hidden:{type:Boolean, 'default':true}
+    },
+
     Qa:{
         title:{type:String, required:true},
         text_field:{type:mongoose_types.Text},
@@ -392,6 +400,7 @@ var Models = module.exports = {
     AboutUruText:mongoose.model('AboutUruText', new Schema(Schemas.AboutUruText, {strict:true})),
     AboutUruItem:mongoose.model('AboutUruItem', new Schema(Schemas.AboutUruItem, {strict:true})),
     Team:mongoose.model('Team', new Schema(Schemas.Team, {strict:true})),
+    Founder:mongoose.model('Founder', new Schema(Schemas.Founder, {strict:true})),
     Test:mongoose.model('Test', new Schema(Schemas.Test, {strict:true})),
     Qa:mongoose.model('Qa', new Schema(Schemas.Qa, {strict:true})),
     ElectionsText:mongoose.model('ElectionsText', new Schema(Schemas.ElectionsText, {strict:true})),
