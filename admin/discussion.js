@@ -1,24 +1,15 @@
-
-var j_forms = require('j-forms');
-var async = require('async');
-var models = require('../models');
-var notifications = require('../api/notifications')
-    ,AdminForm = require('admin-with-forms').AdminForm;
+var AdminForm = require('admin-with-forms').AdminForm;
 
 module.exports = AdminForm.extend({
+    init:function(request, options, model) {
+        this._super(request, options, model);
+        this['static']['inline-style'].push('.nf_fieldset label.field span.field_label {height: auto; margin-bottom: 1em;}');
+    },
+
+
     get_fields: function() {
         this._super();
-        if(this.fields['threshold_for_accepting_change_suggestions'])
+        if('threshold_for_accepting_change_suggestions' in this.fields)
             this.fields['threshold_for_accepting_change_suggestions'].widget.attrs['readonly'] = 'readonly';
-    },
-    actual_save : function(callback)
-    {
-        var self = this;
-        this._super(function(err,object) {
-            console.log(err);
-            console.log(self.errors);
-            console.log(object);
-            callback(err,object);
-        });
     }
 });
