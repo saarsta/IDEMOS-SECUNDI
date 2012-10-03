@@ -32,15 +32,18 @@ exports.create_user_notification = function(notification_type, entity_id, user_i
             function(cbk){
                 notification_type = notification_type + "";
                 if(entity_id)
-                    models.Notification.findOne({type: notification_type, entity_id: entity_id, user_id: user_id, seen: false}, cbk);
+                    models.Notification.findOne({type: notification_type, entity_id: entity_id, user_id: user_id}, cbk);
                 else
-                    models.Notification.findOne({type: notification_type, user_id: user_id, seen: false}, cbk);
+                    models.Notification.findOne({type: notification_type, user_id: user_id}, cbk);
             },
 
             function(noti, cbk){
                 if(noti){
+                    noti.seen = false;
+
                     var date = Date.now();
                     var last_update_date = noti.update_date;
+
 
                     //TODO change it later to something prettier
                     if((notification_type == 'comment_on_discussion_you_are_part_of' || notification_type == "comment_on_discussion_you_created") &&
@@ -91,7 +94,7 @@ exports.create_user_proxy_vote_or_grade_notification = function(notification_typ
 
         function(cbk){
             notification_type = notification_type + "";
-            models.Notification.findOne({type: notification_type, "entity_id": entity_id, user_id: user_id, seen: false}, cbk);
+            models.Notification.findOne({type: notification_type, "entity_id": entity_id, user_id: user_id}, cbk);
         },
 
         function(noti, cbk){
@@ -104,6 +107,7 @@ exports.create_user_proxy_vote_or_grade_notification = function(notification_typ
 
                 var last_update_date = noti.update_date;
                 noti.update_date = Date.now();
+                noti.seen = false;
 
                 if(notification_type == "proxy_vote_to_post" && noti.notificators[0].ballance == 0){
                     noti.remove(function(err, obj){
@@ -264,7 +268,7 @@ exports.create_user_vote_or_grade_notification = function(notification_type, ent
 
         function(cbk){
             notification_type = notification_type + "";
-            models.Notification.findOne({type: notification_type, entity_id: entity_id,user_id: user_id, seen: false}, function(err, result){
+            models.Notification.findOne({type: notification_type, entity_id: entity_id,user_id: user_id}, function(err, result){
                 cbk(err, result)
             });
         },
@@ -272,6 +276,7 @@ exports.create_user_vote_or_grade_notification = function(notification_type, ent
         function(noti, cbk){
             if(noti){
 
+                noti.seen = false;
                 //this tow lines tries to prevant a bug that i dont understand
                 if(!noti.user_id){
                     console.log("user id wasnt in noti in create_user_vote_or_grade_notification!");

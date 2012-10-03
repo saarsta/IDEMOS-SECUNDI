@@ -114,7 +114,7 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
 
                                                 //Todo - i remove it for now because of the duplicate key error
                                                 //set notification for post creator
-                                               /* if(!err){
+                                                if(!err){
                                                     if(new_ballance > 0 || (new_ballance == 0 && method == 'remove')){
                                                         notifications.create_user_vote_or_grade_notification("user_gave_my_post_tokens",
                                                             post_object._id, post_object.creator_id, vote_object.user_id, discussion_id, method, false, false, '/discussions/' +  discussion_id, function(err, result){
@@ -129,9 +129,9 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
 
                                                 }else{
                                                     cbk(err, post_object);
-                                                }*/
+                                                }
 
-                                                cbk(err, post_object);
+//                                                cbk(err, post_object);
                                             });
                                         },
 
@@ -139,7 +139,7 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
                                         function(cbk){
                                             //Todo - i remove it for now because of the duplicate key error
 
-                                            /*models.User.find({"proxy.user_id": req.user._id}, function(err, slaves_users){
+                                            models.User.find({"proxy.user_id": req.user._id}, function(err, slaves_users){
                                                 async.forEach(slaves_users, function(slave, itr_cbk){
                                                     notifications.create_user_proxy_vote_or_grade_notification(
                                                         "proxy_vote_to_post", post_object._id, slave._id, req.user._id,
@@ -150,8 +150,8 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
                                                 }, function(err){
                                                     cbk(err);
                                                 })
-                                            })*/
-                                            cbk();
+                                            })
+//                                            cbk();
                                         }
                                         ],
                                         function (err, args) {

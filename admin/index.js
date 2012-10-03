@@ -69,6 +69,9 @@ module.exports = function(app)
         order_by:['-creation_date'],
         filters:['created_by','is_published','is_hidden','is_hot_object','is_cycle']
     });
+
+//    admin.registerSingleRowModel(Models.GamificationTokens,'GamificationTokens', {form:require('./gamification_tokens')});
+
     admin.registerMongooseModel("DiscussionHistory",Models.DiscussionHistory,null,{
         list:['discussion_id', 'date'],
         cloneable:true,
@@ -216,7 +219,6 @@ module.exports = function(app)
     admin.registerMongooseModel('FBRequest',Models.FBRequest,null,{
         list_populate:['creator'],
         list:['link','creator.first_name','creator.last_name']
-
     });
 
     admin.registerSingleRowModel(Models.GamificationTokens,'GamificationTokens');
