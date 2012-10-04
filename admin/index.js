@@ -70,7 +70,7 @@ module.exports = function(app)
         filters:['created_by','is_published','is_hidden','is_hot_object','is_cycle']
     });
 
-//    admin.registerSingleRowModel(Models.GamificationTokens,'GamificationTokens', {form:require('./gamification_tokens')});
+    admin.registerSingleRowModel(Models.GamificationTokens,'GamificationTokens', {form:require('./gamification_tokens')});
 
     admin.registerMongooseModel("DiscussionHistory",Models.DiscussionHistory,null,{
         list:['discussion_id', 'date'],
@@ -226,8 +226,6 @@ module.exports = function(app)
         list_populate:['creator'],
         list:['link','creator.first_name','creator.last_name']
     });
-
-    admin.registerSingleRowModel(Models.GamificationTokens,'GamificationTokens');
 
     admin.registerSingleRowModel(Models.ThresholdCalcVariables,'ThresholdCalcVariables');
 
