@@ -461,6 +461,8 @@ var db_functions = {
             error: function(err) {
                 if (err.responseText == "vision can't be more than 800 words")
                     popupProvider.showOkPopup({message:"חזון הדיון צריך להיות 800 מילים לכל היותר"});
+                if(err.responseText == "title can't be longer than 75 characters")
+                    popupProvider.showOkPopup({message:"אורך כותרת החזון צריך להיות 75 אותיות לכל היותר"});
                 else if (err.responseText == "you don't have the min amount of tokens to open discussion")
                     popupProvider.showOkPopup({message:"מצטערים, אין לך מספיק אסימונים..."});
                 callback(err, null);
@@ -874,7 +876,7 @@ var db_functions = {
 
     getItemsCountByTagName:function (tag_name, callback) {
         db_functions.loggedInAjax({
-            url:'/api/items_count_by_tag_name' + (tag_name ? '?tag_name=' + tag_name : ''),
+            url:'/api/items_count_by_tag_name' + (tag_name ? '?tag_name=' + encodeURIComponent(tag_name) : ''),
             type:"GET",
             async:true,
             success:function (data) {
@@ -904,7 +906,7 @@ var db_functions = {
 
     getItemsByTagNameAndType:function (type, tag_name, page, callback) {
         this.loggedInAjax({
-            url:'/api/' + type + '?limit=3&offset=' + (page * 3) + (tag_name ? '&tags=' + tag_name : ''),
+            url:'/api/' + type + '?limit=3&offset=' + (page * 3) + (encodeURIComponent(tag_name) ? '&tags=' + encodeURIComponent(tag_name) : ''),
             type:"GET",
             async:true,
             success:function (data) {

@@ -15,29 +15,31 @@
 <script type="text/javascript">
 
    $(document).ready(function(){
-       var action_id = "";
+       var action_id = window.location.href.substring(32);
     db_functions.getActionShoppingCart(action_id, function (err, data) {
-        $.each(data.objects, function (index, item) {
-            dust.render('discussion_information_item', item, function (err, out) {
-                 $('.slide-c').append(out);
-            });
-        });
-
-        $('.slide-c').after('<div id="nav2">').cycle({
-            fx:'scrollHorz',
-            speed:'fast',
-            timeout:0,
-            pager:'#nav2',
-            next:'#prev',
-            prev:'#next'
+        if(data)
+        {
+            $.each(data.objects, function (index, item) {
+                dust.render('discussion_information_item', item, function (err, out) {
+                     $('.slide-c').append(out);
+                });
             });
 
-            if (data.objects.length < 2) {
-            $("#prev").hide();
-            $("#next").hide();
-            }
+            $('.slide-c').after('<div id="nav2">').cycle({
+                fx:'scrollHorz',
+                speed:'fast',
+                timeout:0,
+                pager:'#nav2',
+                next:'#prev',
+                prev:'#next'
+                });
 
-            });
+                if (data.objects.length < 2) {
+                $("#prev").hide();
+                $("#next").hide();
+                }
+
+        }});
    })
 
 </script>

@@ -218,15 +218,18 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                     cbk({message:"you don't have the min amount of tokens to open discussion", code:401}, null);
                 }
                 else {
-                    //vision cant be more than 800 words
+                    //vision cant be more than 800 words, title can't be more than 75 letters
                     var vision_splited_to_words = fields.text_field.split(" ");
                     var words_counter = 0;
+                    var title_length = fields.title.length;
 
                     _.each(vision_splited_to_words, function (word) {
                         if (word != " " && word != "") words_counter++
                     });
                     if (words_counter >= 800) {
                         cbk({message:"vision can't be more than 800 words", code:401}, null);
+                    } else if(title_length > 75) {
+                        cbk({message:"title can't be longer than 75 characters", code:401}, null);
                     } else {
 
                         //get subject_name
