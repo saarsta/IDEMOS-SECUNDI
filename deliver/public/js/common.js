@@ -134,10 +134,10 @@ var connectPopup = function(callback){
 };
 
 
-var tokensInformationPopup = function(num_of_tokens, needs_guide_page){
+var tokensInformationPopup = function(needed_tokens, user_tokens, needs_guide_page){
 
     var msg = "עבור פעולה זו נדרשים" +
-        num_of_tokens +
+
         " " +
         "אסימונים"
 

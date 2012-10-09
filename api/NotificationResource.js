@@ -682,7 +682,8 @@ var populateNotifications = module.exports.populateNotifications = function(resu
     ];
 
     var post_notification_types = [
-        "been_quoted"
+        "been_quoted",
+        "proxy_vote_to_post"
     ];
 
     var discussion_notification_types = [
