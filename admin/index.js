@@ -156,6 +156,7 @@ module.exports = function(app)
         list:['tag']
     });
     admin.registerMongooseModel('Action',Models.Action,null,{
+        form:require('./action'),
         list:['title'],
         actions:[
             {

@@ -12,10 +12,13 @@ module.exports = AdminForm.extend({
 
         this.static['js'].push('/node-forms/js/autocomplete.js');
     },
+
     get_fields: function() {
         this._super();
-        if(this.fields['type'])
-            this.fields['type'].widget.attrs['readonly'] = 'readonly';
+//        if('is_approved' in this.fields)
+        this.fields['is_approved'].widget.attrs['readonly'] = 'readonly';
+        this.fields['is_approved'].widget.attrs['disabled'] = 'disabled';
+
     },
 
     actual_save : function(callback)
