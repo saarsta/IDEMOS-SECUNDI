@@ -56,7 +56,12 @@ var cycle_id = cycle_id || '';
         </select>
 
         <h2>
+            <% if (cycle_id) { %>
+            כל הרעיונות לפעולה עבור מעגל התנופה
+            <a class="no_underline_cursor_when_hover" href="/cycles/<%=cycle_id%>"><%=cycle_title%></a>
+            <% } else { %>
 כל הפעולות במערכת
+            <% } %>
         </h2>
 
         <div id="action_list">
