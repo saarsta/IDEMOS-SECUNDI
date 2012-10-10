@@ -261,3 +261,66 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
         })
     }
 });
+
+module.exports.approveAction = function (id, callback) {
+
+    var is_first_approved_action_of_cycle = false;
+    var g_action;
+    var g_cycle;
+
+    async.waterfall([
+
+        //find action
+        function (cbk) {
+            models.Action.findById(id, cbk);
+        },
+
+        //find cycle
+        function(action, cbk){
+            if(action.is_approved)
+                cbk("action is already approved");
+            else{
+                g_action = action;
+                action.is_approved = true;
+
+                models.Cycle.findById(action.cycle_id, cbk);
+
+            }
+        },
+
+        //set actions as "approved" and if this action is the cycle's upcoming_action set it...
+        function(cycle, cbk){
+            g_cycle = cycle;
+
+            if(cycle.upcoming_action){
+                models.Action.findById(cycle.upcoming_action, function(err, up_action){
+                    cbk(err, up_action);
+                });
+            }else{
+                is_first_approved_action_of_cycle = true;
+                cbk();
+            }
+
+        },
+
+        function(upcoming_action, cbk){
+            if(is_first_approved_action_of_cycle || (g_action && g_action.execution_date.date < upcoming_action.execution_date.date)){
+                g_cycle.upcoming_action = g_action;
+                g_cycle.save(cbk);
+            }else{
+                cbk();
+            }
+        }],
+
+        function(err, obj){
+            if(!err){
+                g_action.save(
+                    function(err, action){
+                        callback(err, action);
+                    }
+                );
+            }else{
+                callback(err);
+            }
+        })
+}

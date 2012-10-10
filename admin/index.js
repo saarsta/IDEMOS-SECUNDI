@@ -5,6 +5,7 @@ var j_forms = require('j-forms'),
     async = require('async'),
     DiscussionResource = require('../api/discussions/DiscussionResource.js'),
     SuggestionResource = require('../api/suggestionResource'),
+    ActionResource = require('../api/actions/ActionResource'),
     locale = require('../locale');
 
 module.exports = function(app)
@@ -83,11 +84,11 @@ module.exports = function(app)
         form : require('./cycle'),
         filters:['created_by','is_hidden','is_hot_object']
     });
-    admin.registerMongooseModel("Action",Models.Action,null,{
-        form:require('./action'),
-        list:['title'],
-        cloneable:true
-    });
+//    admin.registerMongooseModel("Action",Models.Action,null,{
+//        form:require('./action'),
+//        list:['title'],
+//        cloneable:true
+//    });
 //    admin.registerMongooseModel('Locale',locale.Model, locale.Model.schema.tree,{list:['locale'],form:locale.LocaleForm});
     admin.registerMongooseModel('Post',Models.Post,null,{
         list:['text','username','discussion_id.title'],
@@ -155,7 +156,20 @@ module.exports = function(app)
         list:['tag']
     });
     admin.registerMongooseModel('Action',Models.Action,null,{
-        list:['title']
+        list:['title'],
+        actions:[
+            {
+                value:'approve',
+                label:'Approve',
+                func: function(user,ids,callback)
+                {
+                    async.forEach(ids,function(id,cbk)
+                    {
+                        ActionResource.approveAction(id,cbk);
+                    },callback);
+                }
+            }
+        ]
     });
 
     admin.registerMongooseModel('ActionResource',Models.ActionResource,null,{

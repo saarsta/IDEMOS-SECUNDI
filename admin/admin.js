@@ -30,6 +30,7 @@ module.exports = AdminForm.extend({
 
         return fields;
     },
+
     is_valid:function(callback)
     {
         var self = this;
