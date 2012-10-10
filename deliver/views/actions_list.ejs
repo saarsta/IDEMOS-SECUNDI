@@ -29,6 +29,7 @@ var cycle_id = cycle_id || '';
 
     </div>
     <div id="content" class="cf">
+        <% if (!cycle_id) { %>
         <div id="subjects" class="services-box services-box-all cf">
             <div id="subjectsLevel1_blue" class="services-blue services-blue-two cf">
 
@@ -36,6 +37,8 @@ var cycle_id = cycle_id || '';
             <div id="subjectsLevel2_blue" class="services-blue services-blue-three cf">
 
             </div>
+
+
             <div class="services-green">
                 <span class="empty"></span>
                 <a href="javascript:void(0);" class="service-10 subjectItem"  data-subject_id=""><span class="text">
@@ -43,6 +46,8 @@ var cycle_id = cycle_id || '';
                 </span><span class="icon"></span></a>
             </div>
         </div>
+        <% } %>
+
         <select id="sorting_select" class="left-select">
             <option value="-creation_date" >
                 תאריך
@@ -81,32 +86,34 @@ var cycle_id = cycle_id || '';
         current_section=1;
         var selectedTag = '<%= tag_name || "" %>';
         var selectedSubject;
+        var cyc
 
         var selectedCycle = '<%= cycle_id || "" %>';
         var type = 'actions';
 
-        db_functions.getAllSubjects(function(err,data)  {
-            $.each(data.objects,function(index,disc) {
-                disc.type = 'actions';
-            });
-            var uru_subject = data.objects[0];
-            var level1subjects = data.objects.slice(1,6);
-            var level2subjects = data.objects.slice(6,8);
+        if(!selectedCycle)
+            db_functions.getAllSubjects(function(err,data)  {
+                $.each(data.objects,function(index,disc) {
+                    disc.type = 'actions';
+                });
+                var uru_subject = data.objects[0];
+                var level1subjects = data.objects.slice(1,6);
+                var level2subjects = data.objects.slice(6,8);
 
-            $('.services-green .subjectItem').data('subject_id', uru_subject._id).attr('href','/cycles/subject/' + uru_subject._id);
+                $('.services-green .subjectItem').data('subject_id', uru_subject._id).attr('href','/cycles/subject/' + uru_subject._id);
 
-            $.each(level1subjects,function(index,subject){
-                dust.render('subject',subject,function(err,out) {
-                    $('#subjectsLevel1_blue').append(out);
-                })
-            });
+                $.each(level1subjects,function(index,subject){
+                    dust.render('subject',subject,function(err,out) {
+                        $('#subjectsLevel1_blue').append(out);
+                    })
+                });
 
-            $.each(level2subjects,function(index,subject){
-                dust.render('subject',subject,function(err,out) {
-                    $('#subjectsLevel2_blue').append(out);
-                })
+                $.each(level2subjects,function(index,subject){
+                    dust.render('subject',subject,function(err,out) {
+                        $('#subjectsLevel2_blue').append(out);
+                    })
+                });
             });
-        });
 
         function createCyclesQuery(){
             var sortby =  $('#sorting_select').val();
