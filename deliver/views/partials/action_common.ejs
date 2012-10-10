@@ -149,6 +149,13 @@
                 window.location.replace("/actions/" + action_id);
             });
 
+            //click on the update green icon goes to action
+            $('.holds_the_timeline').on("click",'.green-icon', function(e){
+                e.preventDefault();
+                var update_id = $(this).find(".type-one").attr("item-id");
+                window.location.replace("/updates/" + update_id);
+            });
+
             return model;
         };
 
