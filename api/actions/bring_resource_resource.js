@@ -38,7 +38,7 @@ var BringResourceResource = module.exports = common.GamificationMongooseResource
                 }
 
                 //set action-->action_resource
-                curr_resource.left_to_bring -= action_resource_that_user_bring.amount;
+                curr_resource.left_to_bring -= Number(action_resource_that_user_bring.amount);
 
                 //set action-->what_users_bring;
 
@@ -48,7 +48,7 @@ var BringResourceResource = module.exports = common.GamificationMongooseResource
                 })
 
                 if(curr_what_users_bring){
-                    curr_what_users_bring.amount += action_resource_that_user_bring.amount;
+                    curr_what_users_bring.amount += Number(action_resource_that_user_bring.amount);
                     if(curr_what_users_bring.amount < 0)
                         itr_cbk('error with amount in uesr 1!');
                     else

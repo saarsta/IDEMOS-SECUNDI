@@ -23,10 +23,13 @@ var ActionResourceResource = module.exports = common.GamificationMongooseResourc
             self = this,
             base = self._super,
 
+            user_id = req.body.user_id,
             action_id = req.body.action_id,
             name = req.body.name,
             category = req.body.category,
-            amount = req.body.amount || 1;
+            amount = req.body.amount || 1,
+            amountBringing = req.body.amountBringing || 0;
+
 
         if (!action_id && !category) {
             return callback('An action or category must be specified.');
@@ -35,6 +38,8 @@ var ActionResourceResource = module.exports = common.GamificationMongooseResourc
         }
 
         async.waterfall([
+
+            //find action
             function(callback) {
                 if (action_id) {
                     models.Action.findById(action_id, callback);
@@ -43,6 +48,7 @@ var ActionResourceResource = module.exports = common.GamificationMongooseResourc
                 }
             },
 
+            //create new action_resource
             function (action, callback) {
                 if (action_id && !action) {
                     return callback('no such action');
@@ -57,6 +63,11 @@ var ActionResourceResource = module.exports = common.GamificationMongooseResourc
                 });
             },
 
+
+            /*  1. push new action_resource to action_resources[]
+                2. if user brings the resource that was just created, update what_users_bring and push it to action what_users_bring[]
+             */
+
             function (action, resource, callback) {
                 if (!action) {
                     return callback(null, resource);
@@ -67,6 +78,20 @@ var ActionResourceResource = module.exports = common.GamificationMongooseResourc
                     amount: amount,
                     left_to_bring: amount
                 });
+
+                if(amountBringing >= 0 && amount - amountBringing >= 0)
+                {
+                    action.what_users_bring.push({
+                        user_id: user_id,
+                        amount: amountBringing,
+                        resource: resource.id
+                    });
+
+                    var curr_resource = _.find(action.action_resources, function(action_resource){
+                        return action_resource.resource + "" == resource.id + "";
+                    })
+                    curr_resource.left_to_bring -= Number(amountBringing);
+                }
 
                 action.save(function (err) {
                     callback(err, resource);

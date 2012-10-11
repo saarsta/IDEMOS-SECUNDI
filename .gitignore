@@ -22,3 +22,7 @@ compiled_templates.js
 /data/
 
 *.orig
+
+iisnode
+app.js.debug
+vwd.webinfo

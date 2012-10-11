@@ -138,6 +138,7 @@ ActionSuggestionResource = module.exports = common.GamificationMongooseResource.
         fields.first_name = user.first_name;
         fields.last_name = user.last_name;
 
+
         var iterator = function (user_schema, itr_cbk) {
             if (user_schema.user_id == user_id.id || !user_schema.user_id)
                 itr_cbk(null, 0);

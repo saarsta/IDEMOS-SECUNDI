@@ -1,4 +1,5 @@
 <script type="text/javascript" >
+    var action_id = "<%=action._id%>";
     $(function(){
 
         window.uru= window.uru||{};
@@ -44,7 +45,7 @@
                 joinString=options.joinString;
             }
             var goingUsers;
-            var userInBrowserCount=0
+            var userInBrowserCount=0;
             var paging= 14;
             var model ={
 
@@ -229,38 +230,34 @@
             };
         })();
 
-        if ($('#action_content').text().length < 250) {
-            $('.more-text').hide();
-        } else {
-            $('.more-text').click(function (e) {
-                e.preventDefault();
-                <% if(action.location && action.location.geometry) { %>
-                    var location={};
-                    location.address='<%=action.location.address%>';
-                    location.geometry={};
-                    location.geometry.lng=<%=action.location.geometry.lng%>;
-                    location.geometry.lat=<%=action.location.geometry.lat%>;
+        $('.more-text').click(function (e) {
+            e.preventDefault();
+            <% if(action.location && action.location.geometry) { %>
+                var location={};
+                location.address='<%=action.location.address%>';
+                location.geometry={};
+                location.geometry.lng=<%=action.location.geometry.lng%>;
+                location.geometry.lat=<%=action.location.geometry.lat%>;
 
-                <% } else { %>
-                    var location =null;
-                <% } %>
+            <% } else { %>
+                var location =null;
+            <% } %>
 
-                $('#minInfo').hide();
-                $('#fullInfo').show();
-                if(location){
-                    var address=location.address;
-                    var coordinate={};
-                    coordinate.lng=location.geometry.lng ;
-                    coordinate.lat=location.geometry.lat ;
+            $('#minInfo').hide();
+            $('#fullInfo').show();
+            if(location){
+                var address=location.address;
+                var coordinate={};
+                coordinate.lng=location.geometry.lng ;
+                coordinate.lat=location.geometry.lat ;
 
 
-                    //  init_map('map', new google.maps.LatLng(coordinate.lan, coordinate.lng));
+                //  init_map('map', new google.maps.LatLng(coordinate.lan, coordinate.lng));
 
-                    map.init_map('map', new google.maps.LatLng(coordinate.lat,coordinate.lng));
-                    map.addPlaceMark(coordinate,address);
-                }
-            });
-        }
+                map.init_map('map', new google.maps.LatLng(coordinate.lat,coordinate.lng));
+                map.addPlaceMark(coordinate,address);
+            }
+        });
 
         $('.read_less').click(function (e) {
             e.preventDefault();
@@ -306,7 +303,6 @@
         $("#submit_post").on('click', function (e) {
             e.preventDefault();
             var $this = $(this);
-
             if ($this.data('executing')){
                 return;
             }
@@ -482,8 +478,23 @@
 
         });
 
+        function focusOnCommentBox(){
+            editor.focus();
+            editor.focusManager.focus();
+
+            setTimeout(function(){
+                var s =  CKEDITOR.instances.discussion_comment.getSelection();
+                var b = CKEDITOR.instances.discussion_comment.document.getBody();
+                s.selectElement(b);
+                var selected_ranges = s.getRanges();
+                selected_ranges[0].collapse(false);  //  false collapses the range to the end of the selected node, true before the node.
+                s.selectRanges(selected_ranges);
+            },100);
+        };
+
 
         loadPosts();
+
 
 
 
