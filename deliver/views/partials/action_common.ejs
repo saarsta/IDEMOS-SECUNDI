@@ -1,4 +1,5 @@
 <script type="text/javascript" >
+    var action_id = "<%=action._id%>";
     $(function(){
 
         window.uru= window.uru||{};
@@ -44,7 +45,7 @@
                 joinString=options.joinString;
             }
             var goingUsers;
-            var userInBrowserCount=0
+            var userInBrowserCount=0;
             var paging= 14;
             var model ={
 
@@ -128,19 +129,34 @@
                 })
             });
 
-        $('.holds_the_timeline').on("click",'.join-btn', function(e){
-            e.preventDefault();
+            $('.holds_the_timeline').on("click",'.join-btn', function(e){
+                e.preventDefault();
 
-            db_functions.joinOrLeaveAction(action_id,function(err,data){
-                if(err){
-                    console.log(err) ;
-                }
-                else{
-                    setJoinBT(data);
+                db_functions.joinOrLeaveAction(action_id,function(err,data){
+                    if(err){
+                        console.log(err) ;
+                    }
+                    else{
+                        setJoinBT(data);
 
-                }
-            })
-        });
+                    }
+                })
+            });
+
+            //click on the action blue icon goes to action
+            $('.holds_the_timeline').on("click",'.blue-icon', function(e){
+                e.preventDefault();
+                var action_id = $(this).find(".type-one").attr("item-id");
+                window.location.replace("/actions/" + action_id);
+            });
+
+            //click on the update green icon goes to action
+            $('.holds_the_timeline').on("click",'.green-icon', function(e){
+                e.preventDefault();
+                var update_id = $(this).find(".type-one").attr("item-id");
+                window.location.replace("/updates/" + update_id);
+            });
+
             return model;
         };
 
@@ -291,7 +307,6 @@
         $("#submit_post").on('click', function (e) {
             e.preventDefault();
             var $this = $(this);
-
             if ($this.data('executing')){
                 return;
             }

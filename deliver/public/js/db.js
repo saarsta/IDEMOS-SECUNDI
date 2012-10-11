@@ -1306,12 +1306,12 @@ var db_functions = {
         });
     },
 
-    createNewActionResource: function(action_id, resource_name, amount, callback){
+    createNewActionResource: function(action_id, resource_name, amount, amountBringing, user_id, callback){
         db_functions.loggedInAjax({
             url:'/api/action_resources/',
             type:"POST",
             async:true,
-            data: {name: resource_name, action_id: action_id, amount: amount},
+            data: {name: resource_name, action_id: action_id, amount: amount, amountBringing: amountBringing, user_id: user_id},
             success:function (data) {
                 console.log(data);
                 callback(null, data);

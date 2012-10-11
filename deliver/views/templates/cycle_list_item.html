@@ -37,28 +37,31 @@
         {/is_follower}
         <a class="share" data-img_src="{image_field_preview.url}" data-text_preview="{text_field_preview}" data-title="{title}" rel="/cycles/{_id}" href="/facebookShare?link=/cycles/{_id}"><span>שתף</span></a>
     </div>
-    <div class="bottom-plus cf">
-        <div class="right">
-            <div class="bottom cf">
-                <div class="info-more">
-                    הפעולה הקרובה
-                </div>
-                <div class="info">
-                        <div class="first">
-                            <span class="status status-green"></span>
-                            <strong> <a class="no_underline_cursor_when_hover" href="/actions/{?upcoming_action}{upcoming_action._id}{/upcoming_action}">{?upcoming_action}{upcoming_action.title}{/upcoming_action}</a></strong> | <strong>תאריך ושעה:</strong> {?upcoming_action}{upcoming_action.execution_date.date|time}{/upcoming_action}
+
+    {?upcoming_action}
+        <div class="bottom-plus cf">
+            <div class="right">
+                <div class="bottom cf">
+                    <div class="info-more">
+                        הפעולה הקרובה
+                    </div>
+                    <div class="info">
+                            <div class="first">
+                                <span class="status status-green"></span>
+                                <strong> <a class="no_underline_cursor_when_hover" href="/actions/{?upcoming_action}{upcoming_action._id}{/upcoming_action}">{?upcoming_action}{upcoming_action.title}{/upcoming_action}</a></strong> | <strong>תאריך ושעה:</strong> {?upcoming_action}{upcoming_action.execution_date.date|time}{/upcoming_action}
+                            </div>
+                        <div>
+                            <strong>
+                                מספר משתתפים:
+                            </strong> {?upcoming_action}{upcoming_action.num_of_going}{/upcoming_action}
                         </div>
-                    <div>
-                        <strong>
-                            מספר משתתפים:
-                        </strong> {?upcoming_action}{upcoming_action.num_of_going}{/upcoming_action}
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="left">
-            <a class="share" data-img_src="{?upcoming_action}{upcoming_action.image_field_preview.url}{/upcoming_action}" data-text_preview="{?upcoming_action}{upcoming_action.text_field_preview}{/upcoming_action}" data-title="{?upcoming_action}{upcoming_action.title}{/upcoming_action}" rel="/actions/{?upcoming_action}{upcoming_action._id}{/upcoming_action}" href="/facebookShare?link=/actions/{?upcoming_action}{upcoming_action._id}{/upcoming_action}"><span>שתף</span></a>
+            <div class="left">
+                <a class="share" data-img_src="{?upcoming_action}{upcoming_action.image_field_preview.url}{/upcoming_action}" data-text_preview="{?upcoming_action}{upcoming_action.text_field_preview}{/upcoming_action}" data-title="{?upcoming_action}{upcoming_action.title}{/upcoming_action}" rel="/actions/{?upcoming_action}{upcoming_action._id}{/upcoming_action}" href="/facebookShare?link=/actions/{?upcoming_action}{upcoming_action._id}{/upcoming_action}"><span>שתף</span></a>
 
+            </div>
         </div>
-    </div>
+    {/upcoming_action}
 </div>

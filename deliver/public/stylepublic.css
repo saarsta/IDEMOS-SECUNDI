@@ -4161,7 +4161,7 @@ body.search-ative #header
     z-index: 15;
     width: 150px;
     height: 83px;
-    background: url(../images/token-popup.png) no-repeat;
+    background: url(images/token-popup.png) no-repeat;
     padding: 16px 24px 0 13px;
 }
 .myuru-top .left .token-bar:hover .token-popup
@@ -4246,6 +4246,9 @@ body.search-ative #header
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
 }
+
+
+
 
 .myuru-top .left .token-bar .bars
 {
@@ -4342,7 +4345,7 @@ body.search-ative #header
 #content .search-result-box .btn-box a
 {
     border: 1px solid #8f8f8f;
-    background:#b7b6b6 url(../images/search-submit.png) 0 0 repeat-x;
+    background:#b7b6b6 url(images/search-submit.png) 0 0 repeat-x;
     height: 28px;
     color:#fff;
     font-size: 18px;
@@ -4424,7 +4427,7 @@ body.search-ative #header
     color:#b7b6b6;
     font: normal 12px/14px "AdumaFOTRegular";
     position: relative;
-    background: url(../images/proxy-icon.png) 100% 2px no-repeat;
+    background: url(images/proxy-icon.png) 100% 2px no-repeat;
     padding-right: 20px;
     margin-bottom: 6px;
 }
@@ -4447,7 +4450,7 @@ body.search-ative #header
     color:#b7b6b6;
     font: normal 12px/14px "AdumaFOTRegular";
     position: relative;
-    background: url(../images/respect-icon.png) 98% 0 no-repeat;
+    background: url(images/respect-icon.png) 98% 0 no-repeat;
 }
 .users-list .user-left .respect span
 {
@@ -4469,7 +4472,7 @@ body.search-ative #header
     font: normal 16px/20px Arial;
     padding-left: 25px;
     text-align: center;
-    background: url(../images/ajax-loader-3.gif) 57px 18px no-repeat;
+    background: url(images/ajax-loader-3.gif) 57px 18px no-repeat;
 }
 .myuru-bottom .renewal .one a.btn
 {
@@ -4516,7 +4519,7 @@ body.search-ative #header
 }
 .main-text .left a.grey-btn
 {
-    background:#757d7e url(../images/search-submit.png) 0 0 repeat-x;
+    background:#757d7e url(images/search-submit.png) 0 0 repeat-x;
     display: block;
     border: 1px solid #2e3030;
     height: 29px;

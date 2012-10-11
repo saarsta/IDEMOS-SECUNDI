@@ -347,37 +347,44 @@ $("#submit_post").on('click', function (e) {
 
     });
 
-    $('#email-signup').validate({
-        errorElement: "p",
+    var errors = 0;
 
-        rules:{
-            email:{
-                required: true
-            }
-        },
-        messages:{
-            email:{
-                required:'נא להזין כתובת מייל',
-                email:'ההרשמה לא הצליחה, אנא בידקו את כתובת המייל שהוזנה'
-            }
-        },
-        highlight: function (element, errorClass) {
-            $(element).addClass('error').removeClass('valid');
-        },
-        unhighlight: function (element, errorClass) {
-            $(element).removeClass('error').addClass('valid');
-        },
 
-        invalidHandler: function(form, validator) {
-            var errors = validator.numberOfInvalids();
-        },
-        submitHandler:function(form){
-            ajaxSubmit($('a',form));
-        }
-
-    });
 
     $('.email-registration a').click(function(){
+        $('#email-signup').validate({
+            errorElement: "p",
+
+            rules:{
+                email:{
+                    required: true
+                }
+            },
+            messages:{
+                email:{
+                    required:'נא להזין כתובת מייל',
+                    email:'ההרשמה לא הצליחה, אנא בידקו את כתובת המייל שהוזנה'
+                }
+            },
+            highlight: function (element, errorClass) {
+                $(element).addClass('error').removeClass('valid');
+            },
+            unhighlight: function (element, errorClass) {
+                $(element).removeClass('error').addClass('valid');
+            },
+
+            invalidHandler: function(form, validator) {
+                debugger
+                errors = validator.numberOfInvalids();
+            },
+            submitHandler:function(form){
+                if ($("#email-signup").valid()) {
+                    ajaxSubmit($('a',form));
+                }
+            }
+        });
+
+
         $('#email-signup').submit();
     });
 
