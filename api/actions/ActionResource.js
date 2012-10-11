@@ -175,6 +175,22 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                         .filter(function (obj) { return obj; } )
                         .map(function (obj) { return { resource: obj.id, amount: 1, left_to_bring: obj.checked ? 0 : 1 }; });
 
+                    fields.what_users_bring = asArray(fields.what_users_bring);
+                    for(var i = 0; i < fields.action_resources.length; i++)
+                    {
+                        var resource_amount = fields.action_resources[i].amount - fields.action_resources[i].left_to_bring;
+                        var new_what_users_bring = {
+                            resource: fields.action_resources[i].resource,
+                            amount: resource_amount,
+                            user_id: (resource_amount == 0) ? null : user_id
+                        }
+
+                        if(new_what_users_bring.user_id != null)
+                        {
+                            fields.what_users_bring.push(new_what_users_bring);
+                        }
+                    }
+
                     if (fields.location && typeof fields.location.geometry == 'string') {
                         var latlng = fields.location.geometry.split(',');
                         if (latlng.length == 2) {

@@ -115,11 +115,14 @@ var cycle_id = cycle_id || '';
                             משאבים נדרשים:
                             <% for (var i=0;i < action.action_resources.length  ;i++){ %>
                           <span class="<%=action.action_resources[i].left_to_bring==0?'check-disable': 'uncheck-enable' %> have_tooltip"
-                                  data-id="<%=action.action_resources[i].resource._id %>" >
+                                  data-id="<%=action.action_resources[i].resource._id %>"
+                                  id="resource_<%=action.action_resources[i].resource._id%>">
+
                               <%=action.action_resources[i].resource.name %></span>
 
 
                             <% } %>
+
                     </div>
 
                     <a  id="i_bring_bt"  >
@@ -223,6 +226,7 @@ var cycle_id = cycle_id || '';
             </a>
 
     </div>
+
     <div id="action_resources_popup" >
         <div style="margin-right: 30px;margin-top: 24px;">
             <div class="res-div"  style="overflow: auto;height: 135px ;" >
@@ -248,6 +252,8 @@ var cycle_id = cycle_id || '';
             </div>
         </div>
     </div>
+
+
 </div>
 
 <% include partials/action_shopping_cart.ejs %>
@@ -403,6 +409,9 @@ var cycle_id = cycle_id || '';
              </a>
      </span>
 
+
+    </div>
+
 <!--<div  id="action_resources_popup"  class="tooltip" style="width: 300px;height: 400px;background: red;z-index: 1000" >
     aaaa
 </div>-->
@@ -416,14 +425,43 @@ var cycle_id = cycle_id || '';
 <script type="text/javascript">
     var action_id = '<%=action._id%>';
     var my_id = "<%=user_logged ? user._id : ''%>";
+    var my_avatar = "<%=avatar%>";
     var my_action_grade = Number("<%= action.grade_obj ? action.grade_obj.value || 0 : 0 %>");
     var vision = $('#action_content').text();
     var cycle_id='<%= action.cycle_id.id %>';
     var cycle_title='<%= action.cycle_id.title%>';
     var action_grade = Number("<%= action.grade%>");
+    var action_resources = <%- JSON.stringify(action.action_resources) %>;
+
 
     var creator_id = "<%=action.creator_id%>";
+
     $(function(){
+
+        for (var i=0;i < action_resources.length  ;i++){
+            var resource_id = action_resources[i].resource._id;
+            var bringing_user = null;
+
+
+
+            $.each(what_users_bring, function(index, value){
+                if(value.resource == resource_id){
+                    if(value.user_id){
+                        var my_resource = (value.user_id._id == my_id) ? true : false;
+                        var data = {
+                            name: value.user_id.first_name + " " + value.user_id.last_name,
+                            resource: value.resource,
+                            avatar: value.user_id.avatar,
+                            my_resource: my_resource
+                        }
+
+                        dust.render('user_brings_resource_popup', data, function(err, out){
+                            $('.body-action').append(out);
+                        });
+                    }
+                }
+            })
+    }
         var grade_id = "<%= action.grade_obj ? action.grade_obj.grade_id : 0 %>";
         var is_creator = (my_id == creator_id);
         $('.system-notice .close').click(function (e) {
@@ -742,6 +780,49 @@ var cycle_id = cycle_id || '';
                 uncheck( $('#action_resources_popup .new_resources span'));
 
             }
+
+
+            function removeTooltip(id)
+            {
+                var api = $('#resource_' + id).data('tooltip'),
+                tip = api.getTip(),
+                trigger = api.getTrigger();
+
+                if(tip){
+                    tip.remove();
+                }
+                trigger.unbind('mouseover, mouseout');
+
+            }
+
+            function addResourceTooltip(data)
+            {
+                var api = $('#resource-popup' + data.resource);
+                if(!api.attr('data-resource')){
+                    dust.render('user_brings_resource_popup', data, function(err, out){
+                        $('.body-action').append(out);
+                    });
+                }
+
+                var tooltipDataElement = $('#resource_' + data.resource).data('tooltip');
+                if (tooltipDataElement) {
+                    tooltipDataElement.show = tooltipDataElement.originalShow;
+                } else {
+                    $('#resource_' + data.resource).tooltip({
+                        opacity:1,
+                        position: 'bottom center',
+                        offset:[0,10],
+                        tip:'#resource-popup' + data.resource,
+                        events: {
+                            def:'mouseover, mouseout'
+                        },
+                        onHide:function(e){
+                            onPopupClosed();
+                        }
+                    });
+                }
+            }
+
             function  addResource(id,text, check){
                 var class1 = check? 'check-disable': 'uncheck-enable';
                 //add to popup
@@ -750,35 +831,42 @@ var cycle_id = cycle_id || '';
                                 ' <span>'+text+'</span>'+
                                 '</div>'
                 );
+
                 //add to page
-
+                var new_resource = '<span id="resource_'+id+'" class="have_tooltip '+class1+'"  data-id="'+id+'"  >'+text+'</span>';
                 $('#fullInfo .detail-resourse-overflow').append(
-                        ' <span class="have_tooltip '+class1+'"  data-id="'+id+'" >'+text+'</span>'
-
+                        new_resource
                 );
+
+                //add to
+                var data = {
+                    name: "אני",
+                    resource: id,
+                    avatar: my_avatar,
+                    my_resource: true
+                };
+
+                addResourceTooltip(data);
+
             }
-            $('.have_tooltip').tooltip({
-                //relative:true,
-                opacity:1,
-                position: "bottom center",
-                offset:[0,10],
-                tip:'#action_resources_popup',
-                events: {
-                    def:'click,mouseout'
 
-                },
-                onBeforeShow:function(e){
-                    resId=$(e.target).data('id');
-                    var selectedRes=  $('#action_resources_popup').find('[data-id='+resId+']');
-                    if(!selectedRes.hasClass('check-disable')){
-                        check(selectedRes);
-                    }
-                },
-                onHide:function(e){
-                    onPopupClosed();
+            $.each(action_resources, function(index, value){
+                if($('#resource_' + value.resource._id).hasClass('check-disable')){
+                    $('#resource_' + value.resource._id).tooltip({
+                        opacity:1,
+                        position: 'bottom center',
+                        offset:[0,10],
+                        tip:'#resource-popup' + value.resource._id,
+                        events: {
+                            def:'mouseover, mouseout'
+                        },
+                        onHide:function(e){
+                            onPopupClosed();
+                        }
+                    });
                 }
+            })
 
-            });
 
             $('#action_resources_popup').on("click", ".check-enable", function(e){
                 uncheck($(this));
@@ -818,6 +906,17 @@ var cycle_id = cycle_id || '';
                      $('#action_resources_popup').hide();
                  });
 
+                $.each(checkedArr, function(index, value){
+                    var data = {
+                        name: "אני",
+                        resource: value.id,
+                        avatar: my_avatar,
+                        my_resource: true
+                    };
+                    addResourceTooltip(data);
+                })
+
+
             })
 
         $('body').click(function(e) {
@@ -835,6 +934,52 @@ var cycle_id = cycle_id || '';
 
         });
 
+        $('.body-action').on('click', '.i_dont_bring_bt',(function(e){
+            var removedResource = $(e.target).parents('.user_brings_resource_popup').attr('data-resource');
+
+            //remove from what users bring
+            for(var i in what_users_bring)
+            {
+                if(what_users_bring[i].resource == removedResource)
+                {
+                    what_users_bring.splice(i, 1);
+                    break;
+                }
+            }
+
+            var tooltipData = $('#resource_' + removedResource).data('tooltip');
+            tooltipData.originalShow = tooltipData.show;
+            tooltipData.show = function(){};
+
+            //$('#resource_' + removedResource).removeData('tooltip');
+            //$('#resource-popup' + removedResource).remove();
+            //removeTooltip(removedResource);
+
+            var checkedArr=[];
+            checkedArr.push(
+                {id:removedResource, amount: -1}
+            );
+
+                //enable popup
+            $('.res-div').find('[data-id='+removedResource+']').each(function(){
+                $(this).removeClass("check-disable");
+                $(this).addClass("uncheck-enable");
+                $(this).addClass("check-enable");
+            });
+
+            // update ui
+            //disable in mainpage
+            $('.detail-resourse-overflow').find('[data-id='+removedResource+']').each(function(){
+                $(this).addClass("uncheck-enable");
+                $(this).addClass("check-enable");
+                $(this).removeClass("check-disable");
+            });
+
+            db_functions.addOrRemoveResourceToAction(action_id, checkedArr, function(err,data){
+                $('#action_resources_popup').hide();
+            });
+        }));
+
         $('#i_bring_bt').click(function () {
             var box = $('#action_resources_popup');
             var leftPosition = -65;
@@ -846,30 +991,6 @@ var cycle_id = cycle_id || '';
             }).toggle();
         });
 
-           /*     .tooltip({
-            //relative:true,
-            opacity:1,
-            position: "bottom center",
-            offset:[0,10],
-            tip:'#action_resources_popup',
-            events: {
-                def: 'click, mouseout'
-            },
-            onShow:function(e){
-               $('#action_resources_popup .new_resources input').focus();
-            },
-
-            onHide:function(e){
-                onPopupClosed();
-                onPopupClosed();
-            }
-        });*/
-
-       /* $('#i_bring_bt').click({
-
-        });*/
-
-
         $('#action_resources_popup .add-new-res-bt').click(function(e){
             e.preventDefault();
             var newRes= $('#action_resources_popup .new_resources input').val();
@@ -877,11 +998,18 @@ var cycle_id = cycle_id || '';
 
             var bringing=$('#action_resources_popup .new_resources span').hasClass('check-enable');
             uncheck( $('#action_resources_popup .new_resources span'));
+            var amount = 1;
+            var amountBringing = 0;
+            if(bringing){
+                amountBringing = 1;
+            }
             if(newRes && newRes.length > 0){
                 //save in db
 
-                    db_functions.createNewActionResource(action_id, newRes,1, function(err, result){
+
+                    db_functions.createNewActionResource(action_id, newRes, amount, amountBringing, my_id, function(err, result){
                         var id =result._id;
+                        action_resources.push(result);
                         addResource(id, newRes, bringing);
                     });
 
@@ -898,6 +1026,8 @@ var cycle_id = cycle_id || '';
 
     });
     timeline.render(cycle_id, cycle_title, action_id)  ;
+
+    var what_users_bring = <%- JSON.stringify(action.what_users_bring) %>;
 </script>
 
 </body>

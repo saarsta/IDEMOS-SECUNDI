@@ -35,11 +35,13 @@ module.exports = function (req, res) {
             evaluate_counter: 1,
             is_approved: 1,
             admin_text: 1,
-            system_message: 1
+            system_message: 1,
+            what_users_bring: 1
         })
         .populate('action_resources.resource')
         .populate('category', { _id: 1, name: 1 })
         .populate('cycle_id', { _id: 1, title: 1 })
+        .populate('what_users_bring.user_id', {_id: 1, first_name: 1, last_name: 1, avatar: 1, facebook_id: 1})
         .exec(function (err, action) {
             if (err) {
                 console.log('actions/main.js: Error finding action by id. ', arguments);
@@ -71,6 +73,7 @@ module.exports = function (req, res) {
                 },
 
                 user: function (cbk) {
+                    _.each(action.what_users_bring, function(obj){obj.user_id.avatar = obj.user_id.avatar_url()})
                     if (req.session.user)
                         models.User.findById(req.session.user._id, cbk);
                     else {
@@ -78,11 +81,15 @@ module.exports = function (req, res) {
                     }
                 },
 
+
                 going_users: function (cbk) {
                     models.Join.find({action_id: req.params[0]})
                         .select({_id:1, user_id:1})
                         .exec(cbk);
                 }
+
+
+
 
             }, function (err, args) {
                 if (err) {
@@ -98,6 +105,7 @@ module.exports = function (req, res) {
                 // action.to_date = action.from_date.addHours(action.execution_date.duration);
                 action.to_date = new Date(action.execution_date.date.getTime() + action.execution_date.duration);
                 var is_going = false;
+
 
                 // is user going to action?
                 if(user){

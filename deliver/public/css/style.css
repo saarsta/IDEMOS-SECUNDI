@@ -6919,6 +6919,69 @@ body.body-action .followers-box h2 {
     margin-right: 10px;
 }
 
+.user_brings_resource_popup
+{
+    position: absolute;
+    display: none;
+    width: 150px;
+    height: 83px;
+    background: url(../images/action-resources-popup.png) no-repeat center top;
+    background-size: 200px 90px;
+    padding: 16px 24px 0 13px;
+}
+.user_brings_resource_popup .have_tooltip:hover
+{
+    display: block
+}
+
+.user_brings_resource_popup .user-right
+{
+    float: right;
+    padding-left: 7px;
+    padding-top: 9px;
+    border-left: 1px solid #c5c5c5;
+    height: 55px;
+    margin-left: 7px;
+}
+
+.user_brings_resource_popup .img-box
+{
+    position: relative;
+}
+
+.user_brings_resource_popup .img-box img
+{
+    display: block;
+}
+
+.user_brings_resource_popup .img-box  img.wraper
+{
+    position: absolute;
+    left:0;
+    top: 0;
+}
+.user_brings_resource_popup .user-left
+{
+    float: left;
+    width: 94px;
+    padding-top: 5px;
+}
+.user_brings_resource_popup .user-left p
+{
+    color:#50504f;
+    font: bold 13px/15px Arial;
+    margin-bottom: 7px;
+}
+.user_brings_resource_popup .user-left .proxy
+{
+    color:#b7b6b6;
+    font: normal 12px/14px "AdumaFOTRegular";
+    position: relative;
+    background: url(images/proxy-icon.png) 100% 2px no-repeat;
+    padding-right: 20px;
+    margin-bottom: 6px;
+}
+
 #action_resources_popup .check-disable {
     color: #7F7F7E;
 }
@@ -7143,6 +7206,33 @@ body.body-action .followers-box h2 {
 .hisuru-popup .giveProxy {
     margin-left: 20px;
     margin-top: 3px;
+}
+
+.dont_bring .i_dont_bring_bt {
+    margin-left: 15px;
+    margin-top: 3px;
+}
+
+
+.dont_bring a
+{
+    display: block;
+    background:#757d7e url(../images/search-submit.png) 0 0 repeat-x;
+    border: 1px solid #2e3030;
+    border-radius: 2px;
+    width: 60px;
+    height: 25px;
+    float:left;
+    text-align: center;
+    color:#ffffff;
+    font: normal 18px/29px 'AdumaFOTRegular';
+    text-decoration: none;
+    /* margin: 10px auto 20px auto;*/
+    margin-left: 10px;
+    font-size: 12px;
+
+
+
 }
 
 /* tooltip styling */
