@@ -6152,7 +6152,7 @@ a.fraction-btn {
     background: url(../images/event-popup.png) no-repeat;;
 }
 
-.followers-diagram .event .icon:hover .popup-event {
+.followers-diagram .event .active.popup-event {
     display: block;
 }
 

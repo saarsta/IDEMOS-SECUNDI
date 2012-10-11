@@ -397,6 +397,26 @@
             window.location.replace("/updates/" + update_id);
         });
 
+        $('.followers-diagram').on("mouseenter", ".icon", function(e){
+            e.preventDefault();
+            var popup_event = $(this).children('.popup-event');
+            var timeout = popup_event.data('timeout');
+            if(timeout){
+                clearTimeout(timeout);
+            }
+            popup_event.addClass('active');
+        });
+
+        $('.followers-diagram').on("mouseleave", ".icon", function(e){
+            e.preventDefault();
+            var popup_event = $(this).children('.popup-event');
+            var timeout = setTimeout(function () {
+                popup_event.removeClass('active');
+            }, 2000);
+            popup_event.data('timeout', timeout);
+        })
+
+
 
         //
         //.popup-event
