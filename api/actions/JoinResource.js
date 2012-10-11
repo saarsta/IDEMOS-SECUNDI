@@ -33,7 +33,8 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
                 num_of_proxies_i_represent : null
             },
             num_of_going: null,
-            is_going: null
+            is_going: null,
+            action_obj: null
         };
     },
 
@@ -95,6 +96,7 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
                         function(cbk1){
                             models.Action.findById(action_id, function(err, action){
                                 if(!err && action){
+                                    g_action_obj = action;
                                     action.num_of_going--;
 
                                     for (var i = 0; i < action.going_users.length; i++) {
@@ -105,6 +107,7 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
                                             break;
                                         }
                                     }
+                                    g_action_obj.participants_count = g_action_obj.num_of_going;
 
                                     cbk1(err, action);
                                 }else{
@@ -128,10 +131,10 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
 
                             if(flag){
                                 args[0].save(function(err, action){
-                                    callback(err, {_id:action_id, is_going: false});
+                                    callback(err, {_id:action_id, is_going: false, action_obj: g_action_obj});
                                 })
                             }else{
-                                callback(err, {_id:action_id, is_going: false});
+                                callback(err, {_id:action_id, is_going: false, action_obj: g_action_obj});
                             }
                         }
                     })
@@ -177,9 +180,10 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
                 g_action_obj.map_join_to_user = req.user;
                 g_action_obj.map_join_to_user.avatar = req.user.avatar_url();
                 g_action_obj.is_going = true;
+                g_action_obj.participants_count = g_action_obj.num_of_going;
                 req.gamification_type = "join_action";
             }
-            callback(err, g_action_obj);
+            callback(err, {action_obj: g_action_obj});
         });
     }
 });
