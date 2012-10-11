@@ -253,7 +253,7 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                         },
 
                         function (upcoming_action, cbk1) {
-                            if (upcoming_action.execution_date.date > g_action.execution_date.date) {
+                            if (!upcoming_action || upcoming_action.execution_date.date > g_action.execution_date.date) {
                                 cycle.upcoming_action = g_action._id;
                                 cycle.save(cbk1);
                             }else{

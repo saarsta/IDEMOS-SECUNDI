@@ -230,38 +230,34 @@
             };
         })();
 
-        if ($('#action_content').text().length < 250) {
-            $('.more-text').hide();
-        } else {
-            $('.more-text').click(function (e) {
-                e.preventDefault();
-                <% if(action.location && action.location.geometry) { %>
-                    var location={};
-                    location.address='<%=action.location.address%>';
-                    location.geometry={};
-                    location.geometry.lng=<%=action.location.geometry.lng%>;
-                    location.geometry.lat=<%=action.location.geometry.lat%>;
+        $('.more-text').click(function (e) {
+            e.preventDefault();
+            <% if(action.location && action.location.geometry) { %>
+                var location={};
+                location.address='<%=action.location.address%>';
+                location.geometry={};
+                location.geometry.lng=<%=action.location.geometry.lng%>;
+                location.geometry.lat=<%=action.location.geometry.lat%>;
 
-                <% } else { %>
-                    var location =null;
-                <% } %>
+            <% } else { %>
+                var location =null;
+            <% } %>
 
-                $('#minInfo').hide();
-                $('#fullInfo').show();
-                if(location){
-                    var address=location.address;
-                    var coordinate={};
-                    coordinate.lng=location.geometry.lng ;
-                    coordinate.lat=location.geometry.lat ;
+            $('#minInfo').hide();
+            $('#fullInfo').show();
+            if(location){
+                var address=location.address;
+                var coordinate={};
+                coordinate.lng=location.geometry.lng ;
+                coordinate.lat=location.geometry.lat ;
 
 
-                    //  init_map('map', new google.maps.LatLng(coordinate.lan, coordinate.lng));
+                //  init_map('map', new google.maps.LatLng(coordinate.lan, coordinate.lng));
 
-                    map.init_map('map', new google.maps.LatLng(coordinate.lat,coordinate.lng));
-                    map.addPlaceMark(coordinate,address);
-                }
-            });
-        }
+                map.init_map('map', new google.maps.LatLng(coordinate.lat,coordinate.lng));
+                map.addPlaceMark(coordinate,address);
+            }
+        });
 
         $('.read_less').click(function (e) {
             e.preventDefault();
