@@ -82,10 +82,24 @@ var getUserChosenDiscussions = module.exports.getUserChosenDiscussions = functio
                 if (err) {
                     cb(err);
                 } else {
-                    cb(null, result.concat(stored_disc));
+
+                    //set post_count for each discussion
+                    async.forEach(result, function(obj, itr_cbk){
+                        models.Post.count({discussion_id: obj._id}, function(err, count){
+                            if(err){
+                                itr_cbk(err);
+                            }else{
+                                obj.post_count = count;
+                                itr_cbk(err, obj);
+                            }
+                        })
+                    }, function(err, objs){
+                        cb(null, result.concat(stored_disc));
+                    })
                 }
             })
-        }],
+        }
+        ],
 
         callback
     );

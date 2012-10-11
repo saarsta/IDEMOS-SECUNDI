@@ -38,7 +38,7 @@ var timeline= {
 
                         break;
                     case 'cycle_creation':
-                        item.short=ctitle;
+                        item.short= ctitle;
                         item.link='/cycles/'+cid;
                         break;
                     case 'discussion':

@@ -2,8 +2,13 @@ var models = require('../../../models');
 
 module.exports = function(req,res)
 {
-    console.log(req.params[0]);
-    res.render('actions_list.ejs', {
-            cycle_id: req.params[0]
+
+    models.Cycle.findById(req.params[0], function(err, cycle){
+
+        res.render('actions_list.ejs', {
+            cycle_id: req.params[0],
+            cycle_title: cycle.title
         });
+    })
+
 };

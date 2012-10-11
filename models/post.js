@@ -1,12 +1,13 @@
 var mongoose = require("mongoose"),
     Schema = mongoose.Schema,
+    common = require('./common'),
     ObjectId = Schema.ObjectId,
     async = require('async'),
     mongoose_types = require('j-forms').types,
     utils = require('../utils');
 
 var Post = {
-    discussion_id:{type:Schema.ObjectId, ref:'Discussion', index:true, required:true, onDelete:'delete'},
+    discussion_id:{type:Schema.ObjectId, ref:'Discussion', query:common.FIND_USER_QUERY,index:true, required:true, onDelete:'delete'},
     text:{type:mongoose_types.Html},
     votes_for: {type: Number, 'default': 0},
     votes_against: {type: Number, 'default': 0},
