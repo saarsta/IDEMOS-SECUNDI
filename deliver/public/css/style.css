@@ -937,9 +937,9 @@ body {
     top: 0;
 }
 
-.blog-box .one h4 {
+.blog-box .one p{
     color: #50504f;
-    font: bold 13px/20px Arial;
+    font: normal 16px/13px Arial;
     margin: 0;
     padding-top: 20px;
 }
@@ -951,7 +951,7 @@ body {
 
 .blog-box .one a {
     color: #50504f;
-    font: normal 13px/16px Arial;
+    font: bold 20px/13px Arial;
     margin: 0;
 }
 
@@ -6139,7 +6139,7 @@ a.fraction-btn {
     background: url(../images/event-popup.png) no-repeat;;
 }
 
-.followers-diagram .event .icon:hover .popup-event {
+.followers-diagram .event .active.popup-event {
     display: block;
 }
 
