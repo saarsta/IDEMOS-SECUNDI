@@ -112,25 +112,21 @@ var cycle_id = cycle_id || '';
                         }
                     </style>
                     <div class="detail-resourse-overflow"  >
-                            משאבים נדרשים:
-                            <% for (var i=0;i < action.action_resources.length  ;i++){ %>
-                          <span class="<%=action.action_resources[i].left_to_bring==0?'check-disable': 'uncheck-enable' %> have_tooltip"
-                                  data-id="<%=action.action_resources[i].resource._id %>"
-                                  id="resource_<%=action.action_resources[i].resource._id%>">
+						<span id="i_bring_bt">
+							גם אני מביא
+						</span>
 
-                              <%=action.action_resources[i].resource.name %></span>
+                        משאבים נדרשים:
+                        <% for (var i=0;i < action.action_resources.length  ;i++){ %>
+                        <span class="<%=action.action_resources[i].left_to_bring==0?'check-disable': 'uncheck-enable' %> have_tooltip"
+                                data-id="<%=action.action_resources[i].resource._id %>"
+                                id="resource_<%=action.action_resources[i].resource._id%>">
+
+                            <%=action.action_resources[i].resource.name %></span>
 
 
-                            <% } %>
-
+                        <% } %>
                     </div>
-
-                    <a  id="i_bring_bt"  >
-             גם אני מביא
-                    </a>
-
-
-
                 </div>
                 <div class="detail-ratio">
                     <span class="icon"></span>
