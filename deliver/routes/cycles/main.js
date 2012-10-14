@@ -85,7 +85,7 @@ module.exports = function(req, res){
 
             if(g_cycle && g_cycle.main_subject)
                 g_cycle.subject_name = g_cycle.main_subject.name;
-            g_cycle.is_user_follower_of_cycle = _.any(users, function(user){return user._id + "" == req.session.user ? req.user.id : 0});
+            g_cycle.is_user_follower_of_cycle = _.any(users, function(user){return user._id + "" == (req.session.user ? req.session.user._id : 0)});
             res.render('cycle.ejs',{
                 cycle: g_cycle,
                 tab:'cycles',
