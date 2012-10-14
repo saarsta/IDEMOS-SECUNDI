@@ -286,20 +286,14 @@ var error_message = error_message || '';
      $('.followers-diagram').on("mouseenter", ".icon", function(e){
          e.preventDefault();
          var popup_event = $(this).children('.popup-event');
-         var timeout = popup_event.data('timeout');
-         if(timeout){
-             clearTimeout(timeout);
-         }
-         popup_event.addClass('active');
+         popup_event.stop(true, true);
+         popup_event.show();
      });
 
      $('.followers-diagram').on("mouseleave", ".icon", function(e){
          e.preventDefault();
          var popup_event = $(this).children('.popup-event');
-         var timeout = setTimeout(function () {
-             popup_event.removeClass('active');
-         }, 1000);
-         popup_event.data('timeout', timeout);
+         popup_event.fadeOut(2000);
      })
 
    //  var new_post_ref_id = null;  //if not null =>the create new post is connected to anther post

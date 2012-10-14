@@ -580,7 +580,6 @@ $(document).ready(function () {
 
     $('#comments').on('click', '.vote_for', function () {
         vote.apply($(this),['add']);
-
     });
 
     $('#comments').on('click', ".vote_against", function () {
@@ -627,16 +626,7 @@ $(document).ready(function () {
                 + "[/ציטוט]"
                 + '<p>&nbsp;</p>';
 
-        if($("textarea#discussion_comment").val() == "")
-        {
-            $("textarea#discussion_comment").val(text).focus();
-        }
-        else
-        {
-            $("textarea#discussion_comment").val($("textarea#discussion_comment").val() + text).focus();
-
-        }
-
+        $("textarea#discussion_comment").val(text).focus();
         focusOnCommentBox();
 
         $('#cke_contents_discussion_comment').height($('#cke_contents_discussion_comment').height() + text_height)
