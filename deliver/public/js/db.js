@@ -1,3 +1,21 @@
+var user = {
+    load: function() {
+        db_functions.loggedInAjax({
+            url: '/api/users'
+        });
+    },
+    update: function(data) {
+        $.extend(user.data, data);
+    },
+    data: {},
+    get: function(prop) {
+        if (!user.data) user.load();
+
+        return user.data[prop];
+    }
+};
+
+
 var db_functions = {
 
     loggedInAjax:function (options) {
@@ -44,6 +62,7 @@ var db_functions = {
 
 //        if(options.type == 'PUT' || options.type == 'POST')
 //        {
+//            global.user.
 //            popupProvider.showOkPopup({
 //                message: 'hi'
 //            });
