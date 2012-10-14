@@ -89,7 +89,8 @@ var getUserChosenDiscussions = module.exports.getUserChosenDiscussions = functio
                             if(err){
                                 itr_cbk(err);
                             }else{
-                                obj.post_count = count;
+                                //TODO grade_sum == post_count cause mongoode dont allow me to add a field!!
+                                obj.grade_sum = count;
                                 itr_cbk(err, obj);
                             }
                         })

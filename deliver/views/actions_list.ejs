@@ -138,7 +138,8 @@ var cycle_id = cycle_id || '';
             var item_id =  item.data('id');
             var actionType =  $(this).data('action');
             e.preventDefault();
-            db_functions.joinOrLeaveAction(item_id, function(err,data){
+            db_functions.joinOrLeaveAction(item_id, function(err, data){
+                data = data.action_obj;
                 dust.render('action_list_item', data, function(err, html){
                     item.replaceWith(html);
                 })
