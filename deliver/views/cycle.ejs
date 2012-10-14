@@ -121,8 +121,8 @@
                                      <span></span>
                                 </a>
                              </div>
-                                <h4><a href="/myuru/<%=cycle.opinion_shapers[c].user_id._id%>"><%=cycle.opinion_shapers[c].user_id.first_name %> <%=cycle.opinion_shapers[c].user_id.last_name %></a></h4>
-                                <p><% if (cycle.opinion_shapers[c].text) {%>  <%=cycle.opinion_shapers[c].text %>  <% } %></p>
+                                <h4 class="opinion_shaper"><a href="/myuru/<%=cycle.opinion_shapers[c].user_id._id%>"><%=cycle.opinion_shapers[c].user_id.first_name %> <%=cycle.opinion_shapers[c].user_id.last_name %></a></h4>
+                                <p class="opinion_shaper"><% if (cycle.opinion_shapers[c].text) {%>  <%=cycle.opinion_shapers[c].text %>  <% } %></p>
                                  <div class="badges">
                                      <div class="proxy">
                                          <span><%=cycle.opinion_shapers[c].user_id.num_of_proxies_i_represent %></span>

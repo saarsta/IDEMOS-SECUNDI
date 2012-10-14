@@ -187,7 +187,7 @@ body {
     display: none;
 }
 
-.user-box:hover h2, user-box.active,
+.user-box:hover h2, .user-box.active,
 .tikunim-box:hover h2,
 .tikunim-box.hover h2 {
     display: block;
@@ -937,9 +937,16 @@ body {
     top: 0;
 }
 
-.blog-box .one p{
+.blog-box .one .opinion_shaper{
     color: #50504f;
-    font: normal 16px/13px Arial;
+    font: normal 16px Arial;
+    margin: 0;
+    padding-top: 20px;
+}
+
+.blog-box .one .no_underline_cursor_when_hover{
+    color: #50504f;
+    font: normal 13px Arial;
     margin: 0;
     padding-top: 20px;
 }
@@ -949,9 +956,15 @@ body {
     text-decoration: none;
 }
 
-.blog-box .one a {
+.blog-box .one .opinion_shaper a {
     color: #50504f;
     font: bold 20px/13px Arial;
+    margin: 0;
+}
+
+.blog-box .one .tags a {
+    color: #50504f;
+    font: bold 13px Arial;
     margin: 0;
 }
 
@@ -1205,7 +1218,7 @@ body {
     padding-top: 20px;
 }
 
-.user-box:hover h2, .user-box.active .h2 {
+.user-box:hover h2, .user-box.active h2 {
     display: block;
 }
 
