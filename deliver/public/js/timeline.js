@@ -27,8 +27,6 @@ var timeline= {
             //init items
             var last_item=null;
             $.each(data.objects, function (index, item) {
-
-
                 item.type_print =  type_names[item.type];
                 item.date =item.date.substring(0, item.date.length - 1)  ;
                 switch(item.type)
@@ -87,11 +85,11 @@ var timeline= {
             past=true;
             var pre_discussion=true,
                 custers_count = 0,
-                clustered_count=0;
+                clustered_count=0,
+				todayNodeIndex = -1;
             $.each(data.objects, function (index, item) {
-
-
                 if(item.type=='today')  {
+					todayNodeIndex = index;
                     past=false;
                     //return false;
                 }
@@ -130,9 +128,10 @@ var timeline= {
                         //nodes.splice(1,1);
                         clustered_count++;;
                         clusters[ind]++;
+						i--;
                     }
                 }
-
+				i++;
             } );
             i=1;
             $.each(past_months, function (index, item) {
@@ -144,7 +143,20 @@ var timeline= {
                 nodes.splice(1,0,pre_discussion_items);
             }
 
-            var count =   nodes.length-1 -clustered_count + custers_count ;
+            var count = nodes.length-1 -clustered_count + custers_count;
+			var offsetFromIndex = function (index) {
+				var LastOffset = 980;
+				var TodayOffset = LastOffset / 3;
+				if (todayNodeIndex < 0) {
+					// No node found for 'today'.
+					return (index * LastOffset) / count;
+				} else if (index <= todayNodeIndex) {
+					return (index * TodayOffset) / todayNodeIndex;
+				} else {
+					return ((index - todayNodeIndex) * (LastOffset - TodayOffset)) / (count - todayNodeIndex) + TodayOffset;
+				}
+			};
+
             var render_clusters={};
             i=0;
             $.each(nodes, function (index, item) {
@@ -159,12 +171,12 @@ var timeline= {
                     }
                     else
                     {
-                        render_clusters[ind].offset=   (j*980)/count;
+                        render_clusters[ind].offset = offsetFromIndex(j);
                     }
                     render_clusters[ind].items.push(i);
                     clusters[ind]--;
                 }
-                item.offset  =    (j*980)/count;
+                item.offset = offsetFromIndex(j);
                 item.timeline_index=i;
                 switch(item.type)
                 {
