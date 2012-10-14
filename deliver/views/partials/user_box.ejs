@@ -69,11 +69,27 @@
         });
 
         var userBox = $('.user-box');
+        userBox.hover(
+                function(){
+                    var timeout = userBox.data('timeout');
+                    if(timeout){
+                        clearTimeout(timeout);
+                    }
+                    userBox.addClass('active');
+                },
+                function(){
+                    var timeout = setTimeout(function(){
+                        userBox.removeClass('active');
+                    }, 1000);
+                    userBox.data('timeout', timeout);
+                }
+        );
+
         userBox.focusin(function () {
             userBox.addClass('active');
         });
         userBox.focusout(function () {
-            userBox.removeClass('active');
+                userBox.removeClass('active');
         });
     });
 
