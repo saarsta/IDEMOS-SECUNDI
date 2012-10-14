@@ -863,6 +863,30 @@ var cycle_id = cycle_id || '';
                 }
             })
 
+            $('.have_tooltip').click(function () {
+                if($(this).hasClass('uncheck-enable')){
+                    var box = $('#action_resources_popup');
+                    var leftPosition = $(this).position().left - 80;
+                    var topPosition = $(this).position().top + $(this).height() + 125;
+                    var resourceId = $(this).attr('data-id');
+                    $.each(box.find('[data-id]'), function(index, value){
+                        if(resourceId == value.getAttribute('data-id'))
+                        {
+                            $(value).addClass('check-enable');
+                            $(value).removeClass('uncheck-enable');
+                        }
+                    });
+
+
+                    box.css({
+                        opacity: 1,
+                        left: leftPosition,
+                        top: topPosition
+                    }).toggle();
+                }
+            });
+
+
 
             $('#action_resources_popup').on("click", ".check-enable", function(e){
                 uncheck($(this));
@@ -979,20 +1003,14 @@ var cycle_id = cycle_id || '';
             $('.followers-diagram').on("mouseenter", ".icon", function(e){
                 e.preventDefault();
                 var popup_event = $(this).children('.popup-event');
-                var timeout = popup_event.data('timeout');
-                if(timeout){
-                    clearTimeout(timeout);
-                }
-                popup_event.addClass('active');
+                popup_event.stop(true, true);
+                popup_event.show();
             });
 
             $('.followers-diagram').on("mouseleave", ".icon", function(e){
                 e.preventDefault();
                 var popup_event = $(this).children('.popup-event');
-                var timeout = setTimeout(function () {
-                    popup_event.removeClass('active');
-                }, 1000);
-                popup_event.data('timeout', timeout);
+                popup_event.fadeOut(2000);
             })
 
         $('#i_bring_bt').click(function () {
@@ -1005,6 +1023,8 @@ var cycle_id = cycle_id || '';
                 top: topPosition
             }).toggle();
         });
+
+
 
         $('#action_resources_popup .add-new-res-bt').click(function(e){
             e.preventDefault();
