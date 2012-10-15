@@ -295,7 +295,7 @@
                     + "[/ציטוט]"
                     + '<p>&nbsp;</p>';
 
-            $("textarea#discussion_comment").val(text).focus();
+            $("textarea#discussion_comment").val($("textarea#discussion_comment").val() + text).focus();
 
             focusOnCommentBox();
         });

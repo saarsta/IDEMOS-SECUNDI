@@ -626,7 +626,7 @@ $(document).ready(function () {
                 + "[/ציטוט]"
                 + '<p>&nbsp;</p>';
 
-        $("textarea#discussion_comment").val(text).focus();
+        $("textarea#discussion_comment").val($("textarea#discussion_comment").val() + text).focus();
         focusOnCommentBox();
 
         $('#cke_contents_discussion_comment').height($('#cke_contents_discussion_comment').height() + text_height)
