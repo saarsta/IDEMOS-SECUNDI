@@ -36,7 +36,9 @@ module.exports = function (req, res) {
             is_approved: 1,
             admin_text: 1,
             system_message: 1,
-            what_users_bring: 1
+            what_users_bring: 1,
+            social_popup_title: 1,
+            social_popup_text: 1
         })
         .populate('action_resources.resource')
         .populate('category', { _id: 1, name: 1 })

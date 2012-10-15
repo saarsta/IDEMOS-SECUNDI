@@ -8757,5 +8757,49 @@ div.icons img {
 
     filter: alpha(opacity = 70);
     opacity: 0.7;
-    z-index: 10;
+    z-index: 15;
+}
+
+.sb-container {
+    width: 600px;
+
+    box-shadow: 0px 0px 3px 2px #ededed;
+}
+
+.sb-top {
+    height: 64px;
+    padding: 24px;
+
+    background: #ffffff;
+    color: #505050;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.sb-bottom {
+    height: 140px;
+    padding:  10px;
+
+    background: #ededed;
+    color: #3760ec;
+}
+
+.sb-top .sb-title {
+    height: 35px;
+}
+
+.sb-title {
+    text-align: center;
+
+    font: 16pt 'AdumaFOTMedium';
+}
+
+.sb-text {
+    text-align: center;
+
+    font: 12pt 'AdumaFOTMedium';
+}
+
+.sb-icons {
+    margin: 20px 0px 5px 0px;
+    height: 30px;
 }
