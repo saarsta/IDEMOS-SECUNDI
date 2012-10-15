@@ -141,8 +141,8 @@
          	    	<div class="email-registration btns-box cf">
                          <form id="email-signup" name="email-signup">
                              <input type="email" name="email" class="floatLeft" placeholder="הרשם לעדכונים בדואר"> </input>
-                             <a class="floatRight" data-registration-type="email" data-not-follow-text="בטל רישום" data-follow-text="הרשמה במייל" data-put-url="/api/follow_blog_by_mail/<%=user._id%>" href="javascript:void(0)">
-                                 <% if (articles[0].is_blog_follower_by_mail) { %>    בטל רישום     <% } else {%> הרשמה במייל <% } %>
+                             <a class="mail-subscription floatRight" data-put-url="/api/follow_blog_by_mail/<%=user._id%>" href="javascript:void(0)">
+                                 הרשמה במייל
                              </a>
                              <a href="/api/articles/?user_id=<%=blogger._id%>&rss=true" class="rss_bt">
 
@@ -363,7 +363,7 @@ $("#submit_post").on('click', function (e) {
             messages:{
                 email:{
                     required:'נא להזין כתובת מייל',
-                    email:'ההרשמה לא הצליחה, אנא בידקו את כתובת המייל שהוזנה'
+                    email:'אנא בידקו את כתובת המייל שהוזנה'
                 }
             },
             highlight: function (element, errorClass) {
@@ -374,12 +374,11 @@ $("#submit_post").on('click', function (e) {
             },
 
             invalidHandler: function(form, validator) {
-                debugger
                 errors = validator.numberOfInvalids();
             },
             submitHandler:function(form){
                 if ($("#email-signup").valid()) {
-                    ajaxSubmit($('a',form));
+                    ajaxSubmit($('.mail-subscription'));
                 }
             }
         });
@@ -389,13 +388,7 @@ $("#submit_post").on('click', function (e) {
     });
 
     var ajaxSubmit = function (button) {
-
-
-//        if(button.data('registration-type') == 'email'){
-//            $('#email-signup').submit();
-//
-//        }
-
+		var originalButtonText = button.text();
         button.text('...');
 
         $.ajax({
@@ -403,7 +396,8 @@ $("#submit_post").on('click', function (e) {
             url: button.data('put-url'),
             data: {blog_id: bloggerId, mail: $('.email-registration input').val()},
             success: function (result) {
-                button.text(result.is_follower ? button.data('not-follow-text') : button.data('follow-text'));
+                var text = result.is_follower ? button.data('not-follow-text') : button.data('follow-text');
+				button.text(text || originalButtonText);
             }
         });
 
