@@ -29,17 +29,8 @@ var follow_blog_by_mail_resource = module.exports = common.GamificationMongooseR
         var blog = _.find(object.blogs_email, function(blog){return blog.mail == mail});
 
         if(blog){
-            //delete follower
-
-            blog.remove(function(err, res){
-                if(!err){
-                    object.save(function(err, obj){
-                        obj.is_follower = false;
-                        callback(err, obj);
-                    })
-                }
-            })
-        }else{
+            // The blog is already followed. Nothing to do here.
+        } else {
             //add blog
             var new_blog = {
                 blog_id: blog_id,
