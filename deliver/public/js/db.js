@@ -40,6 +40,7 @@ var db_functions = {
                             onError.apply(this, arguments);
                             window.location.href = window.location.href;
                         };
+
                         $.ajax(options);
                     }
                 });

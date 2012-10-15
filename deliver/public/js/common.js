@@ -69,7 +69,7 @@ dust.filters['tags'] = function(text) {
 dust.filters['post'] = function(text) {
     var isHtml = text.indexOf('<p') == 0;
     text = dust.filters['tags'](text);
-    text = text.replace(/\[(?:quote|ציטוט)=(?:"|&quot;)(.*?)(?:"|&quot;)\s*\]\n?((?:.|\n)*)?\n?\[\/(?:quote|ציטוט)\]\n?/g,
+    text = text.replace(/\[(?:quote|ציטוט)=(?:"|&quot;)(.*?)(?:"|&quot;)\s*\]\n?((?:.|\n)*?)\n?\[\/(?:quote|ציטוט)\]\n?/g,
         '<div class="post_quote" ><p style="font-style:italic" ><a class="ref_link" href="javascript:void(0);" style="display: block; margin-bottom: 8px; text-decoration: underline;">' +
             ' $1 כתב:' +
             '</a>' +
