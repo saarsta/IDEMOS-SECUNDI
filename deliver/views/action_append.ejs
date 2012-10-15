@@ -167,7 +167,7 @@ var cycle_id = cycle_id || '';
 
 
     <div class="add-offer-bottom cf">
-        <div class="btn-box">
+        <div class="btn-box row-btn-box">
             <a class="btn-green" href="#" id="action_comment_reply_button">הגב</a>
         <!--    <a class="btn-grey" href="">שתף</a>-->
 
@@ -177,10 +177,10 @@ var cycle_id = cycle_id || '';
                href="/facebookShare?link=/actions/<%=action._id%>">
                 שתף
             </a>
-            <div class="btns-grey">
+           <!-- <div class="btns-grey">
                 <a href="">הצעה לשינוי</a>
                 <a href="">היסטוריה</a>
-            </div>
+            </div>-->
         </div>
         <div class="tags">
              <% for (var c = 0; c<action.tags.length ; c++) { %>
@@ -188,7 +188,8 @@ var cycle_id = cycle_id || '';
            <% }%>
 
         </div>
-        <div class="slide-box">
+
+        <!--<div class="slide-box">
 
             <div class="summary">
                 <input type="text" id="amount" value="<%= Math.round(action.grade*100)/100 %>"/>
@@ -209,7 +210,8 @@ var cycle_id = cycle_id || '';
                 <span>9</span>
                 <span>10</span>
             </div>
-        </div>
+        </div>-->
+
     </div>
     <div class="add-offer-btn-box">
        <!-- <a href="">אם זה קורה, אני שם</a>-->
