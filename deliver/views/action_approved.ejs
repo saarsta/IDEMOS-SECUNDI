@@ -33,6 +33,8 @@ var error_message = error_message || '';
         <% include partials/user_box.ejs %>
         <% include partials/failures.ejs %>
         <% include partials/tag_search.ejs %>
+        <% include partials/social_popup.ejs %>
+
     </div>
 <div id="content" class="cf">
 <div class="followers-box">
@@ -175,7 +177,7 @@ var error_message = error_message || '';
             </div>-->
         </div>
     </div>
-    <div class="add-offer-btn-box">
+    <div class="add-offer-btn-box" data-social-popup="true">
         <a href="#" >
             <% if(!action.is_going) { %>
             הצטרף
@@ -286,20 +288,14 @@ var error_message = error_message || '';
      $('.followers-diagram').on("mouseenter", ".icon", function(e){
          e.preventDefault();
          var popup_event = $(this).children('.popup-event');
-         var timeout = popup_event.data('timeout');
-         if(timeout){
-             clearTimeout(timeout);
-         }
-         popup_event.addClass('active');
+         popup_event.stop(true, true);
+         popup_event.show();
      });
 
      $('.followers-diagram').on("mouseleave", ".icon", function(e){
          e.preventDefault();
          var popup_event = $(this).children('.popup-event');
-         var timeout = setTimeout(function () {
-             popup_event.removeClass('active');
-         }, 1000);
-         popup_event.data('timeout', timeout);
+         popup_event.fadeOut(2000);
      })
 
    //  var new_post_ref_id = null;  //if not null =>the create new post is connected to anther post

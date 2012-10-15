@@ -32,9 +32,13 @@ exports.create_user_notification = function(notification_type, entity_id, user_i
             function(cbk){
                 notification_type = notification_type + "";
                 if(entity_id)
-                    models.Notification.findOne({type: notification_type, entity_id: entity_id, user_id: user_id}, cbk);
+                    models.Notification.findOne({type: notification_type, entity_id: entity_id, user_id: user_id}, function(err , obj){
+                        cbk(err, obj);
+                    });
                 else
-                    models.Notification.findOne({type: notification_type, user_id: user_id}, cbk);
+                    models.Notification.findOne({type: notification_type, user_id: user_id}, function(err , obj){
+                        cbk(err, obj);
+                    });
             },
 
             function(noti, cbk){
@@ -171,7 +175,8 @@ var create_new_notification = function(notification_type, entity_id, user_id, no
     notification.update_date = new Date();
 
     notification.save(function(err, obj){
-        callback(err, obj);
+        callback(null, 0);
+//        callback(err, obj);
         if(!err && obj)
             sendNotificationToUser(obj);
     });
