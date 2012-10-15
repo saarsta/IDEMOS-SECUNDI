@@ -28,21 +28,38 @@ var follow_blog_by_mail_resource = module.exports = common.GamificationMongooseR
 
         var blog = _.find(object.blogs_email, function(blog){return blog.mail == mail});
 
-        if(blog){
-            // The blog is already followed. Nothing to do here.
-        } else {
-            //add blog
-            var new_blog = {
-                blog_id: blog_id,
-                mail: mail,
-                join_date: Date.now()
-            }
+		if (req.body.unfollow) {
+			// Unfollow request
+			if (blog) {
+				blog.remove(function(err, res){
+					if(!err){
+						object.save(function(err, obj){
+							obj.is_follower = false;
+							callback(err, obj);
+						})
+					}
+				})
+			} else {
+				// The blog is already not followed. Nothing to do here.
+			}
+		} else {
+			// Follow request
+			if(blog){
+				// The blog is already followed. Nothing to do here.
+			} else {
+				//add blog
+				var new_blog = {
+					blog_id: blog_id,
+					mail: mail,
+					join_date: Date.now()
+				}
 
-            object.blogs_email.push(new_blog);
-            object.save(function(err, obj){
-                obj.is_follower = true;
-                callback(err, obj);
-            })
-        }
+				object.blogs_email.push(new_blog);
+				object.save(function(err, obj){
+					obj.is_follower = true;
+					callback(err, obj);
+				})
+			}
+		}
     }
 })
