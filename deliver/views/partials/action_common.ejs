@@ -29,11 +29,8 @@
             }
         });
 
-
-
-
-        /*   var goingModel=(function(options){*/
-    var GoingModel =function (options){
+        /* var goingModel=(function(options){ */
+    var GoingModel = function (options){
 
            options=options||{};
             var leaveString="עזוב";
@@ -89,8 +86,8 @@
             }
 
             function setJoinBT(data){
-                var isGoing=(data.map_join_to_user !==undefined);
-                var user = data.map_join_to_user;
+                var isGoing = (data.action_obj.map_join_to_user !== undefined);
+                var user = data.action_obj.map_join_to_user;
                 var text= isGoing?leaveString:joinString;
                 var joinBtnString = isGoing?"עזוב":"הצטרף";
 
@@ -118,15 +115,18 @@
             $('.add-offer-btn-box').click(function(e){
                 e.preventDefault();
 
-                db_functions.joinOrLeaveAction(action_id,function(err,data){
-                    if(err){
-                        console.log(err) ;
-                    }
-                    else{
-                        setJoinBT(data);
+                if($(this).data("social-popup")){
+                    $('#box-share,#screen').show();
+                }else
+                    db_functions.joinOrLeaveAction(action_id,function(err,data){
+                        if(err){
+                            console.log(err) ;
+                        }
+                        else{
+                            setJoinBT(data);
 
-                    }
-                })
+                        }
+                    })
             });
 
             $('.holds_the_timeline').on("click",'.join-btn', function(e){
