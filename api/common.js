@@ -334,12 +334,12 @@ var uploadHandler = exports.uploadHandler = function(req,callback) {
 			var attempt = function (index) {
 				var name = index + '_' + filename;
 				var path = filename_to_path(name);
-				fs.stat(path, function (err, stats) {
-					if (err) {
+				fs.exists(path, function (exists) {
+					if (exists) {
+						attempt(index + 1);
+					} else {
 						// File doesn't exist. We can create it
 						callback(null, name, path, fs.createWriteStream(path));
-					} else {
-						attempt(index + 1);
 					}
 				});
 			};
