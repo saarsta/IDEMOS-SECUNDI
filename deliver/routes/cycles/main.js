@@ -89,6 +89,7 @@ module.exports = function(req, res){
             res.render('cycle.ejs',{
                 cycle: g_cycle,
                 tab:'cycles',
+                type: 'cycle',
                 proxy:proxyJson
             });
         }

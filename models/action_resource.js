@@ -5,6 +5,6 @@ var mongoose = require("mongoose"),
 var ActionResource = module.exports =  {
     category: {type: ObjectId, ref: 'Category', required: true},
     name: {type: String, required: true},
-    is_approved: {type: Boolean, 'default': true},
-    is_hidden:{type:Boolean,'default':true}
+    is_approved: {type: Boolean, 'default': true}
+//    is_hidden:{type:Boolean,'default':true}
 };

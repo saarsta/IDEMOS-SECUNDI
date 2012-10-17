@@ -15,7 +15,8 @@ module.exports = function(req,res) {
                     avatar: req.session.avatar_url,
                     user_logged: req.isAuthenticated(),
                     url: req.url,
-                    tab: 'actions'
+                    tab: 'actions',
+                    type: 'approved_action'
                 });
         }
     });

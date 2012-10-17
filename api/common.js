@@ -103,6 +103,13 @@ var TokenAuthorization = exports.TokenAuthorization = jest.Authorization.extend(
 
     edit_object : function(req,object,callback){
 
+        console.log("this.token_price:");
+        console.log(this.token_price);
+        console.log("req.token_price:");
+        console.log(req.token_price);
+        console.log("req.user.tokens:");
+        console.log(req.user.tokens);
+
         if (this.token_price || req.token_price)
         {
             if(req.user.tokens >= (this.token_price || req.token_price)){
@@ -317,17 +324,59 @@ exports.getThresholdCalcVariables = function(type)
     return threshold_calc_variables[type] || 0;
 };
 
-var create_filename = function(filename)
-{
-    var parts = filename.split('.');
-    var filename = parts.length > 1 ? parts.slice(0,parts.length-1).join('.') : parts[0];
-    filename = filename.replace(/\s\-/g,'_');
-    var ext = parts.length > 1 ? '.' + parts[parts.length-1] : '';
-    ext = ext.replace(/\s\-/g,'_');
-    return '/' + filename + '_' + (Date.now()%1000) + ext;
-};
 
 var uploadHandler = exports.uploadHandler = function(req,callback) {
+	var sanitize_filename = function(filename) {
+			// This regex matches any character that's not alphanumeric, '_', '-' or '.', thus sanitizing the filename.
+			// Hebrew characters are not allowed because they would wreak havoc with the url in any case.
+			var regex = /[^-\w_\.]/g;
+			return unescape(filename).replace(regex, '-');
+		},
+		filename_to_path = function (filename) {
+			return path.join(__dirname,'..','deliver','public','cdn', filename);
+		},
+		create_file = function (filename, callback) {
+			// This function attempts to create 0_filename, 1_filename, etc., until it finds a file that doesn't exist.
+			// Then it creates that and returns by calling callback(null, name, path, stream);
+			var attempt = function (index) {
+				var name = index + '_' + filename;
+				var path = filename_to_path(name);
+				fs.exists(path, function (exists) {
+					if (exists) {
+						attempt(index + 1);
+					} else {
+						// File doesn't exist. We can create it
+						callback(null, name, path, fs.createWriteStream(path));
+					}
+				});
+			};
+			attempt(0);
+		},
+		writeToFile = function (fName, stream, callback){
+			create_file(sanitize_filename(fName), function (err, filename, fullPath, os) {
+				if (err) {
+					return callback(err);
+				}
+
+				stream.on('data',function(data) {
+					os.write(data);
+				});
+
+				stream.on('end',function() {
+					os.on('close', function () {
+						callback(null,{
+							filename: filename,
+							fullPath: fullPath
+						});
+					});
+
+					os.end();
+				});
+
+				stream.resume();
+			});
+		};
+
     var knoxClient = require('j-forms').fields.getKnoxClient();
 
     var fName = req.header('x-file-name');
@@ -338,30 +387,12 @@ var uploadHandler = exports.uploadHandler = function(req,callback) {
         return;
     }
 
-    var filename = create_filename(fName);
-
-    function writeToFile(callback){
-        var os = fs.createWriteStream(path.join(__dirname,'..','deliver','public','cdn') + filename);
-
-        stream.on('data',function(data) {
-            os.write(data);
-        });
-
-        stream.on('end',function() {
-            os.end();
-            var value = {path:filename,url:'/cdn/' + filename};
-            callback(null,value);
-        });
-
-        stream.resume();
-    }
-
     var stream = req.queueStream || req;
 
     if(knox&&knoxClient)
     {
-
-        writeToFile(function(err,value) {
+		// First, we write the file to disk. Then we upload it to Amazon.
+        writeToFile(fName, stream, function(err,value) {
 
             if(err) {
                 callback(err);
@@ -369,15 +400,13 @@ var uploadHandler = exports.uploadHandler = function(req,callback) {
             }
 
             setTimeout(function() {
+                stream = fs.createReadStream(value.fullPath);
 
-                var file = path.join(__dirname,'..','deliver','public','cdn',value.path);
-                stream = fs.createReadStream(file);
-
-                knoxClient.putStream(stream, '/' + filename, function(err, res){
+                knoxClient.putStream(stream, '/' + value.filename + '_' + (new Date().getTime()), function(err, res){
                     if(err)
                         callback(err);
                     else {
-                        fs.unlink(file);
+                        fs.unlink(value.fullPath);
                         var value = {
                             path:res.socket._httpMessage.url,
                             url:res.socket._httpMessage.url
@@ -387,7 +416,16 @@ var uploadHandler = exports.uploadHandler = function(req,callback) {
                 });
             },200);
         });
-    }
-    else
-        writeToFile(callback);
+	} else {
+		writeToFile(fName, stream, function (err, value) {
+			if (err) {
+				callback(err);
+			} else {
+				callback(null, {
+					path: value.filename,
+					url: '/cdn/' + value.filename
+				});
+			}
+		});
+	}
 };

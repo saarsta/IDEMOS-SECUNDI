@@ -99,8 +99,6 @@
                     dust.render('action_participant_user',data,function(err, out){
                         $('#participant').prepend(out);
                     });
-
-
                 }else{
                     //  $('#participant').children().first().remove();
                     $('#participant').find('[data-user_id="'+my_id +'"]').remove();
@@ -111,22 +109,32 @@
 
             }
 
+//            function shareScreen() {
+//                $('#box-share,#screen').show();
+//                $('#screen,#close').one('click',function () {
+//                    debugger
+//                    window.location.href = '/discussions';
+//                }).show();
+//            }
 
-            $('.add-offer-btn-box').click(function(e){
+            $('.social-on-click').click(function(e){
                 e.preventDefault();
 
-                if($(this).data("social-popup")){
-                    $('#box-share,#screen').show();
-                }else
-                    db_functions.joinOrLeaveAction(action_id,function(err,data){
-                        if(err){
-                            console.log(err) ;
-                        }
-                        else{
-                            setJoinBT(data);
-
-                        }
-                    })
+                db_functions.joinOrLeaveAction(action_id, function(err,data){
+                    if(err){
+                        console.log(err) ;
+                    }
+                    else{
+                        setJoinBT(data);
+                        if(data.action_obj.is_going)
+                            setTimeout(function(){
+                                $('#box-share,#screen').show();
+                                $('#close').click(function(){
+                                    $('#box-share,#screen').hide();
+                                })
+                            }, 100);
+                    }
+                })
             });
 
             $('.holds_the_timeline').on("click",'.join-btn', function(e){
@@ -138,7 +146,6 @@
                     }
                     else{
                         setJoinBT(data);
-
                     }
                 })
             });

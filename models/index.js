@@ -152,8 +152,8 @@ var Schemas = exports.Schemas = {
     },
 
     Category:{
-        name:{type:String},
-        is_hidden:{type:Boolean, 'default':true}
+        name:{type:String}
+//        is_hidden:{type:Boolean, 'default':true}
     },
 
 //    ActionSuggestion: {

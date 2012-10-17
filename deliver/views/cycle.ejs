@@ -13,6 +13,7 @@
             <% include partials/user_box.ejs %>
             <% include partials/failures.ejs %>
             <% include partials/tag_search.ejs %>
+            <% include partials/social_popup.ejs %>
         </div>
 
 
@@ -75,7 +76,7 @@
     </div>
     <div class="blue-bar">
         <div class="extra">
-            <a class="green-btn" href="javascript:void(0)"><%= cycle.is_user_follower_of_cycle ? "הפסק לעקוב" : "עקוב אחרי מעגל התנופה"%> </a>
+            <a class="green-btn social-on-click" data-title="<%= cycle.title %>" data-img_src="<%= cycle.image_field && cycle.image_field.url %>" data-rel="/cycles/<%= cycle.id %>" href="javascript:void(0)"><%= cycle.is_user_follower_of_cycle ? "הפסק לעקוב" : "עקוב אחרי מעגל התנופה"%> </a>
             <p id="followers_count" >מספר העוקבים אחרי מעגל תנופה זה: <strong><%= cycle.followers_count %></strong></p>
         </div>
     </div>
@@ -209,6 +210,14 @@
                 db_functions.joinToCycleFollowers(cycle_id, function(err, result){
                     button.text(result.is_follower ? "הפסק לעקוב" : "עקוב אחרי מעגל התנופה");
                     $('#followers_count strong').text(result.followers_count);
+                    if(result.is_follower){
+                        setTimeout(function(){
+                            $('#box-share,#screen').show();
+                            $('#close').click(function(){
+                                $('#box-share,#screen').hide();
+                            })
+                        }, 100);
+                    }
                 })
             });
             db_functions.getCycleShoppingCart(cycle_id, function ( err,data) {
