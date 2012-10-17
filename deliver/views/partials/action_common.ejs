@@ -99,8 +99,6 @@
                     dust.render('action_participant_user',data,function(err, out){
                         $('#participant').prepend(out);
                     });
-
-
                 }else{
                     //  $('#participant').children().first().remove();
                     $('#participant').find('[data-user_id="'+my_id +'"]').remove();

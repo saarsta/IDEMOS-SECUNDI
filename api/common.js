@@ -103,6 +103,13 @@ var TokenAuthorization = exports.TokenAuthorization = jest.Authorization.extend(
 
     edit_object : function(req,object,callback){
 
+        console.log("this.token_price:");
+        console.log(this.token_price);
+        console.log("req.token_price:");
+        console.log(req.token_price);
+        console.log("req.user.tokens:");
+        console.log(req.user.tokens);
+
         if (this.token_price || req.token_price)
         {
             if(req.user.tokens >= (this.token_price || req.token_price)){
