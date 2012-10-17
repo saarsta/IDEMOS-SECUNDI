@@ -89,7 +89,7 @@ var timeline= {
 				todayNodeIndex = -1;
             $.each(data.objects, function (index, item) {
                 if(item.type=='today')  {
-					todayNodeIndex = index;
+					todayNodeIndex = i;
                     past=false;
                     //return false;
                 }
