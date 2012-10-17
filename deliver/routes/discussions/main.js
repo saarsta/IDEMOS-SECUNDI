@@ -63,7 +63,8 @@ module.exports = function(req,res)
                                 proxy:proxyJson,
                                 fb_description: discussion.text_field_preview,
                                 fb_title: discussion.title,
-                                fb_image:discussion.image_field && discussion.image_field.url
+                                fb_image:discussion.image_field && discussion.image_field.url,
+                                user:user
 
                             });
 

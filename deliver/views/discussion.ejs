@@ -384,9 +384,20 @@ $(document).ready(function () {
 
             my_discussion_grade = ui.value;
 
-            db_functions.addDiscussionGrade(discussion_id, my_discussion_grade, grade_id, function (err, data) {
+            var user_info = {
+                user_logged_in : user.first_name ? true : false,
+                action_done : (user.actions_done_by_user && user.actions_done_by_user.grade_object) ? true : false,
+                action_name : "grade_object",
+                tokens_owned : user.tokens ? user.tokens : 0
+            }
+
+            db_functions.addDiscussionGrade(discussion_id, my_discussion_grade, grade_id, user_info, function (err, data) {
 
                 if (!err) {
+                    if(!user.actions_done_by_user.grade_object)
+                    {
+                        user.actions_done_by_user.grade_object = true;
+                    }
                     $("#amount").val(Math.round(data.new_grade * 100) / 100);
                     $("#graders").text(Math.round(data.evaluate_counter));
                     $(".dark_bar").css('width', (my_discussion_grade * 10) + '%');
@@ -760,8 +771,18 @@ $(document).ready(function () {
                         if(depress_event)
                             return;
                         var rating = ui.value;
-                        db_functions.addSuggestionGrade(suggestion.id, discussion_id, rating, suggest_grade_id[suggestion.id], function (err, data) {
+                        var user_info = {
+                            user_logged_in : user.first_name ? true : false,
+                            action_done : (user.actions_done_by_user && user.actions_done_by_user.grade_object) ? true : false,
+                            action_name : "grade_object",
+                            tokens_owned : user.tokens ? user.tokens : 0
+                        }
+                        db_functions.addSuggestionGrade(suggestion.id, discussion_id, rating, suggest_grade_id[suggestion.id], user_info, function (err, data) {
                             if (!err) {
+                                if(!user.actions_done_by_user.grade_object)
+                                {
+                                    user.actions_done_by_user.grade_object = true;
+                                }
                                 $("#suggest_grade_" + suggestion.id).val(Math.round(data.new_grade * 100) / 100);
                                 $("#suggest_graders_" + suggestion.id).text(Math.round(data.agrees) + Math.round(data.not_agrees));
                                 $("#agrees_" + suggestion.id).text(Math.round(data.agrees));
@@ -948,9 +969,20 @@ $(document).ready(function () {
         $this.data('executing', true);
         $this.addClass('disable');
 
-        db_functions.addPostToDiscussion(discussion_id, $("textarea#discussion_comment").val(), new_post_ref_id, function (err, post) {
+        var user_info = {
+            user_logged_in : user.first_name ? true : false,
+            action_done : (user.actions_done_by_user && user.actions_done_by_user.post_on_object) ? true : false,
+            action_name : "post_on_object",
+            tokens_owned : user.tokens ? user.tokens : 0
+        }
+
+        db_functions.addPostToDiscussion(discussion_id, $("textarea#discussion_comment").val(), new_post_ref_id, user_info, function (err, post) {
             // $("#user_tokens").text(post.updated_user_tokens);
             if (!err) {
+                if(!user.actions_done_by_user.post_on_object)
+                {
+                    user.actions_done_by_user.post_on_object = true;
+                }
                 if (my_id)
                     setUserScore(my_id, post.creator_id.score);
                 dust.render('discussion_comment', post, function (err, out) {
@@ -974,8 +1006,18 @@ $(document).ready(function () {
 
         var suggestion_id = $(this).parent().attr('id');
         var self = this;
-        db_functions.addSuggestionGrade(suggestion_id, discussion_id, rating, sugg_grade_id, function (err, data) {
+        var user_info = {
+            user_logged_in : user.first_name ? true : false,
+            action_done : (user.actions_done_by_user && user.actions_done_by_user.grade_object) ? true : false,
+            action_name : "grade_object",
+            tokens_owned : user.tokens ? user.tokens : 0
+        }
+        db_functions.addSuggestionGrade(suggestion_id, discussion_id, rating, sugg_grade_id, user_info, function (err, data) {
             if (!err) {
+                if(!user.actions_done_by_user.grade_object)
+                {
+                    user.actions_done_by_user.grade_object = true;
+                }
                 db_functions.getSuggestionByDiscussion(discussion_id, function (err, data) {
                     $.each(data.objects, function (index, suggestion) {
                         render_suggestion(suggestion);
@@ -1001,8 +1043,20 @@ $(document).ready(function () {
 
             part.text += " ";
         var explanation = $("#discussion_explanation").val();
-        db_functions.addSuggestionToDiscussion(discussion_id, [part], explanation, function (err, data) {
+
+        var user_info = {
+            user_logged_in : user.first_name ? true : false,
+            action_done : (user.actions_done_by_user && user.actions_done_by_user.suggestion_on_object) ? true : false,
+            action_name : "suggestion_on_object",
+            tokens_owned : user.tokens ? user.tokens : 0
+        }
+
+        db_functions.addSuggestionToDiscussion(discussion_id, [part], explanation, user_info, function (err, data) {
             if (!err) {
+                if(!user.actions_done_by_user.suggestion_on_object)
+                {
+                    user.actions_done_by_user.suggestion_on_object = true;
+                }
                 $('#write-comment').hide();
                 /*
                  $("textarea#discussion_suggest").val('');

@@ -155,33 +155,142 @@ var error_message = error_message || '';
         </form>
     </div>
 
-        <div id="card">
-            <div class="extra">
-                <div class="card-top cf">
-                    <a class="btn btn-1 inline share" rel="/information_cart/{_id}" href="/facebookShare?link=/information_cart/{_id}">שתף</a>
-                    <!-- <a class="btn btn-2" href="/information_items/"><span class="number" style="display:none;"></span>חזור לאסוף פריטי מידע נוספים </a>-->
-                    <a class="btn btn-2" id="collect_information_item_bt"  href="/information_items/"><span class="number" style="display:none;">
+
+</div>
+
+
+</div>
+
+<div id="card">
+    <div class="extra">
+        <div class="card-top cf">
+            <a class="btn btn-1 inline share" rel="/information_cart/{_id}" href="/facebookShare?link=/information_cart/{_id}">שתף</a>
+            <!-- <a class="btn btn-2" href="/information_items/"><span class="number" style="display:none;"></span>חזור לאסוף פריטי מידע נוספים </a>-->
+            <a class="btn btn-2" id="collect_information_item_bt"  href="/information_items/"><span class="number" style="display:none;">
 
                 </span>חזור לאסוף פריטי מידע נוספים </a>
-                    <h3 class="basket">
-                        סל מידע
-                    </h3>
+            <h3 class="basket">
+                סל מידע
+            </h3>
 
-                    <p>
-                        יש לך
-                        <span id="info_items_count"></span>
-                        פריטים בעגלה
-                    </p>
+            <p>
+                יש לך
+                <span id="info_items_count"></span>
+                פריטים בעגלה
+            </p>
+        </div>
+        <div class="card-products cf">
+            <div class="one-col" id="col1"> </div>
+            <div class="one-col" id="col2" > </div>
+            <div class="one-col" id="col3"> </div>
+        </div>
+    </div>
+</div>
+<div style="display: none;">
+    <div class="popup" id="user-search">
+        <form class="search-top cf" action="#">
+            <label>הזמן חברים להשתתף בדיון</label>
+            <div class="input">
+                <input type="text" value="" />
+            </div>
+            <input type="submit" value="שפח" />
+        </form>
+        <div class="search-result cf">
+            <div class="one">
+                <a class="delete-app" href=""></a>
+                <div class="img-box">
+                    <img width="58" src="/images/user-1.jpg" alt="" />
+                    <span></span>
                 </div>
-                <div class="card-products cf">
-                    <div class="one-col" id="col1"> </div>
-                    <div class="one-col" id="col2" > </div>
-                    <div class="one-col" id="col3"> </div>
+                יבקעי לאומש
+            </div>
+            <div class="one">
+                <a class="delete-app" href=""></a>
+                <div class="img-box">
+                    <img width="58" src="/images/user-1.jpg" alt="" />
+                    <span></span>
                 </div>
+                יבקעי לאומש
+            </div>
+            <div class="one">
+                <a class="delete-app" href=""></a>
+                <div class="img-box">
+                    <img width="58" src="/images/user-1.jpg" alt="" />
+                    <span></span>
+                </div>
+                שמואל יעקבי
+            </div>
+            <div class="one">
+                <a class="delete-app" href=""></a>
+                <div class="img-box">
+                    <img width="58" src="/images/user-1.jpg" alt="" />
+                    <span></span>
+                </div>
+                יבקעי לאומש
+            </div>
+            <div class="one">
+                <a class="delete-app" href=""></a>
+                <div class="img-box">
+                    <img width="58" src="/images/user-1.jpg" alt="" />
+                    <span></span>
+                </div>
+                יבקעי לאומש
+            </div>
+            <div class="one">
+                <a class="delete-app" href=""></a>
+                <div class="img-box">
+                    <img width="58" src="/images/user-1.jpg" alt="" />
+                    <span></span>
+                </div>
+                יבקעי לאומש
+            </div>
+            <div class="one">
+                <a class="delete-app" href=""></a>
+                <div class="img-box">
+                    <img width="58" src="/images/user-1.jpg" alt="" />
+                    <span></span>
+                </div>
+                יבקעי לאומש
+            </div>
+            <div class="one">
+                <a class="delete-app" href=""></a>
+                <div class="img-box">
+                    <img width="58" src="/images/user-1.jpg" alt="" />
+                    <span></span>
+                </div>
+                יבקעי לאומש
+            </div>
+            <div class="one">
+                <a class="delete-app" href=""></a>
+                <div class="img-box">
+                    <img width="58" src="/images/user-1.jpg" alt="" />
+                    <span></span>
+                </div>
+                יבקעי לאומש
+            </div>
+            <div class="one">
+                <a class="delete-app" href=""></a>
+                <div class="img-box">
+                    <img width="58" src="/images/user-1.jpg" alt="" />
+                    <span></span>
+                </div>
+                יבקעי לאומש
             </div>
         </div>
+        <form class="search-bottom cf" action="#">
+            <label>ליימ םהל חלש וא</label>
+            <div class="input">
+                <input type="text" value="" />
+            </div>
+            <input type="submit" value="חלש" />
+        </form>
+    </div>
+
+
 </div>
-</div>
+
+<% include partials/footer.ejs %>
+
 <script>
     $.fn.tagAdder = function (callback, condition) {
         var button = this.find('[type=button]');
@@ -350,9 +459,21 @@ var error_message = error_message || '';
 
         submitHandler: function (form) {
             var data = $(form).serialize();
-            db_functions.createAction(data, function(err, data){
+            var user_info = {
+                user_logged_in : user.first_name ? true : false,
+                action_done : (user.actions_done_by_user && user.actions_done_by_user.create_object) ? true : false,
+                action_name : "create_object",
+                tokens_owned : user.tokens ? user.tokens : 0
+            }
+
+            db_functions.createAction(data, user_info, function(err, data){
                 var url = data.redirect_link;
                 var created_action_id = data._id;
+                if(!user.actions_done_by_user.create_object)
+                {
+                    user.actions_done_by_user.post_on_object = true;
+                }
+
                 if ($('#share').is(':checked')) {
                     shareOnFacebook(url, '', function () {
                         window.location.replace("/actions/" + created_action_id);

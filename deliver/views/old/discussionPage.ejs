@@ -637,6 +637,7 @@
 
                 var part = {start:range.start, end:range.end, text:$("textarea#discussion_suggest").val()};
                 var explanation = $("#discussion_explanation").val();
+
                 db_functions.addSuggestionToDiscussion(discussion_id,[part], explanation, function(err,data)
                 {
                     if(!err)

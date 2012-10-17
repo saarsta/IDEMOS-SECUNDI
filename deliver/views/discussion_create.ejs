@@ -79,6 +79,7 @@
             </div>
         </div>
     </div>
+
     <div id="card">
         <div class="extra">
             <div class="card-top cf">
@@ -280,24 +281,42 @@
          		    $(element).removeClass('error').addClass('valid');
          	    },
            		submitHandler: function(form) {
-                     title = $("#title").val();
-                     vision = $("#vision").val();
+                     var title = $("#title").val(),
+                     vision = $("#vision").val(),
                      first_post = $("#first_post").val();
                      var tags  = [];
                       $(".new_tags").each(function(index) {
                          tags.push( $(this).text());
                      });
-                     subject_id   = $("#subject_id").val();
+                     var subject_id   = $("#subject_id").val(),
                      subject_name  = $("#subject_name").val();
 
-                     db_functions.createDiscussion(subject_id, vision, title, tags,discussion_image, function(err, data){
+                     var user_info = {
+                           user_logged_in : user.first_name ? true : false,
+                           action_done : (user.actions_done_by_user && user.actions_done_by_user.create_object) ? true : false,
+                           action_name : "create_object",
+                           tokens_owned : user.tokens ? user.tokens : 0
+                       }
+
+
+                     db_functions.createDiscussion(subject_id, vision, title, tags,discussion_image, user_info, function(err, data){
                          if (err){
 
                          }else{
-                             creator_id = data.creator_id;
+                             if(!user.actions_done_by_user.create_object)
+                             {
+                                 user.actions_done_by_user.post_on_object = true;
+                             }
+                             var creator_id = data.creator_id,
                              created_discussion_id = data._id;
                              if ($.trim(first_post) != ""){
-                                 db_functions.addPostToDiscussion(created_discussion_id, first_post,null, function(err, data){
+                                 var user_info = {
+                                     user_logged_in : user.first_name ? true : false,
+                                     action_done : true,
+                                     action_name : "",
+                                     tokens_owned : user.tokens ? user.tokens : 0
+                                 }
+                                 db_functions.addPostToDiscussion(created_discussion_id, first_post,null, user_info, function(err, data){
                                      if (err){
                                          console.error(err);
                                      }else{

@@ -96,39 +96,15 @@ var User = module.exports = new Schema({
     blog_text_3: String,
 //    opinion_text: String,
     sent_mail: {type:Date},
-    has_voted: [String],
-
     actions_done_by_user:{
-        create_discussion:false,
-        create_article:false,
-        create_action:false,
-        post_on_discussion:false,
-        post_on_action:false,
-        suggestion_on_discussion:false,
-        suggestion_on_action:false,
-        grade_discussion:false,
-        grade_suggestion:false,
-        grade_action:false,
-        grade_action_suggestion:false,
-        vote_on_post:false,
-        vote_on_article_post:false,
-        vote_on_action_post:false,
-        like_info_item:false,
-        join_to_action:false,
-        ceate_kilkul:false,
-        join_kilkul:false,
-        min_tokens_to_create_dicussion:false,
-        min_tokens_to_create_action:false,
-        min_tokens_to_create_blog:false,
-        invite_X_people_who_got_Y_extra_tokens:false,
-        invite_X_people_who_signed_in:false,
-        X_tokens_for_post:false,
-        X_tokens_for_all_my_posts:false,
-        X_suggestions_for_a_discussion:false,
-        X_mandates_for_user: false,
-        discussion_high_graded_by_min_of_X_people:false,
-        spend_tokens_for_X_days_in_a_row:false
-    }
+        create_object:false,
+        post_on_object:false,
+        suggestion_on_object:false,
+        grade_object:false,
+        vote_on_object:false,
+        join_to_object:false
+    },
+    has_voted: [String]
 
 }, {strict:true});
 

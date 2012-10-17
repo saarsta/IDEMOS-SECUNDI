@@ -307,16 +307,27 @@
                 return;
             }
 
+            var user_info = {
+                user_logged_in : user.first_name ? true : false,
+                action_done : (user.actions_done_by_user && user.actions_done_by_user.post_on_object) ? true : false,
+                action_name : "post_on_object",
+                tokens_owned : user.tokens ? user.tokens : 0
+            }
+
             $this.data('executing', true);
             $this.addClass('disable');
 
-            db_functions.addPostToAction(action_id, $("textarea#discussion_comment").val(), new_post_ref_id, function (err, post) {
+            db_functions.addPostToAction(action_id, $("textarea#discussion_comment").val(), new_post_ref_id, user_info, function (err, post) {
                 // $("#user_tokens").text(post.updated_user_tokens);
                 if (!err) {
+                    if(!user.actions_done_by_user.post_on_object)
+                    {
+                        user.actions_done_by_user.post_on_object = true;
+                    }
                     if (my_id && post.creator_id){
                         setUserScore(my_id, post.creator_id);
                     }
-                    post.voting =      post.votes_for - post.votes_against;
+                    post.voting = post.votes_for - post.votes_against;
                     dust.render('discussion_comment', post, function (err, out) {
                         $("#comments").append(out);
                         $("textarea#discussion_comment").val('');

@@ -14,6 +14,7 @@ module.exports = function(req,res) {
             avatar:req.session.avatar_url,
             user_logged: req.isAuthenticated(),
             url:req.url,
-            tab:'discussions'
+            tab:'discussions',
+            user:req.session.user
         });
 };
