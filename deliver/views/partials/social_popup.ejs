@@ -51,13 +51,55 @@
     var global = global || {};
     var type = '<%= type %>';
 
+    var button = $('.social-on-click');
+    var rel = button.data('rel');
+    var title = button.data('title');
+    var title_of_main_entity = button.data('main_title');
+    var img_src = button.data('img_src');
+    var text_preview;
+    var new_title;
+
+    if(type == 'approved_action'){
+        new_title =
+                "גם אני אשתתף בפעולה "
+                        +   title;
+
+        text_preview =
+                "הצטרפתי לפעולה במטרה לקדם את המהלך "
+                        + title_of_main_entity
+                        + "."
+                        + " אם גם לך חשוב לקדם את הנושא אפשר להצטרף ולתמוך באתר עורו. "
+                        + "אשמח לראותך שם!";
+
+    }else if(type == 'pending_action'){
+        new_title = "גם אני אתמוך ברעיון לפעולה"
+                + " " + title;
+        text_preview =
+                "הצטרפתי למהלך "
+                        + title_of_main_entity
+                        + ". אם גם לך חשוב לקדם את הנושא אפשר להצטרף ולתמוך באתר עורו. "
+                        + "אשמח לראותך שם!";
+    }else{
+        new_title =
+                "הצטרפתי לקידום הפעילות בנושא "
+                        + title
+                        + "."
+                        + " מה איתך?";
+        text_preview =
+                "החלטתי לקחת חלק בפעילות של תנועת עורו בתחום"
+                        + " "
+                        +  title
+                        + ". גם לך חשוב לקדם את הנושא? אם כן, אפשר לקבל פרטים נוספים, להצטרף ולתמוך באתר עורו."
+                        + " "
+                        + "אשמח לראותך שם!";
+    }
     global.share_messages = {
-        'a': 'גם אני מרגיש חלק מהרוב הלא מיוצג, שמתי בצד הבדלים של שמאל-ימין מדיני ובחרתי בנושאים שחשוב לי לשנות. מרגישים כמוני? הצטרפו והצביעו!'
+        'a': new_title + text_preview
     };
+
 
     $('#share-facebook').one('click', function () {
 
-        debugger
         var button = $('.social-on-click');
         var rel = button.data('rel');
         var title = button.data('title');
