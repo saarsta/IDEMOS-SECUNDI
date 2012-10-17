@@ -31,7 +31,7 @@ $(function(){
                     if (!response || response.error) {
                         alert('Error occured');
                     } else {
-//                        popupProvider.showOkPopup({message:'השיתוף הסתיים בהצלחה.'});
+                        popupProvider.showOkPopup({message:'השיתוף הסתיים בהצלחה.'});
                     }
                 });
             });
