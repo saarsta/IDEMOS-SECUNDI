@@ -41,6 +41,7 @@ module.exports = function(app) {
     router.include('/meida', InformationItems);
 
     router.include('/discussions',Discussions);
+    router.include('/daily_discussions',require('./daily_discussions'));
 
     router.include('/myuru',MyUru);
 

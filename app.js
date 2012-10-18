@@ -28,9 +28,9 @@ app.set('facebook_secret', process.env.FACEBOOK_SECRET || '5ef7a37e8a09eca5ee54f
 app.set('show_only_published', true);//process.env.SHOW_ONLY_PUBLISHED == '1');
 
 app.set('sendgrid_user',process.env.SENDGRID_USER || 'app2952775@heroku.com');
-app.set('sendgrid_key',process.env.SENDGRID_KEY || 'a0oui08x');
 
 app.set('system_email', process.env.SYSTEM_EMAIL || 'info@uru.org.il');
+app.set('sendgrid_key',process.env.SENDGRID_KEY || 'a0oui08x');
 app.set('root_path', process.env.ROOT_PATH || 'http://dev.empeeric.com');
 app.set('DB_URL',process.env.MONGOLAB_URI || 'mongodb://localhost/uru');
 app.set('url2png_api_key', process.env.url2png_api_key || 'P503113E58ED4A')
