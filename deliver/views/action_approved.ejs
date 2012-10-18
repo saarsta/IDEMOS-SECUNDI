@@ -106,7 +106,7 @@ var error_message = error_message || '';
                     <span class="icon"></span>
                     משאבים נדרשים:
 					<% for (var i=0;i < action.action_resources.length;i++){%>
-                         <span class="check"><%=action.action_resources[i].resource.name %></span>
+                         <span class="check"><%=action.action_resources[i].resource && action.action_resources[i].resource.name %></span>
                     <% } %>
 					
                 </div>

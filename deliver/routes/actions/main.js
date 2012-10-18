@@ -50,7 +50,7 @@ module.exports = function (req, res) {
                 return res.render('500.ejs', {error:err});
             }
 
-            if (!action) {
+            if (!action || !action.cycle_id) {
                 console.log('actions/main.js: Action not found. ', arguments);
                 return res.render('404.ejs', {error:err});
             }
