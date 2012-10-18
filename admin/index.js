@@ -262,4 +262,11 @@ module.exports = function(app)
         createable:false
     });
 
+    admin.registerMongooseModel('DailyDiscussion',mongoose.model('DailyDiscussion'),null,{
+        list:['title'],
+        list_populate:['discussion_id'],
+        order_by:['gui_order'],
+        sortable:'gui_order'
+    });
+
 };
