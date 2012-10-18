@@ -155,6 +155,7 @@ var timeline= {
 
                 if(item.cluster)
                 {
+					console.log('Item ' + index + ' in cluster (index: ' + j + ').');
                     var item_date=   new Date( item.date);
                     var ind=item_date.format('d.m');
                     if(!render_clusters[ind])  {
