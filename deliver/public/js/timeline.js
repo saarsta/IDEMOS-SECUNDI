@@ -91,20 +91,13 @@ var timeline= {
                 if(item.type=='today')  {
 					todayNodeIndex = i;
                     past=false;
-                    //return false;
-                }
-                if(item.type=='discussion')  {
+                } else if(item.type=='discussion')  {
                     pre_discussion=false;
-                    return true;
-                }
-                if (pre_discussion)
-                {
+                } else if (pre_discussion) {
 
                     pre_discussion_items.items.push(item) ;
                     nodes.shift();
-                }
-                else if (past)
-                {
+                } else if (past) {
                     var item_date=   new Date(item.date)
                     var ind=item_date.format('mmyy');
                     if(!past_months[ind]) {
@@ -112,9 +105,7 @@ var timeline= {
                     }
                     past_months[ind].items.push(item);
                     nodes.splice(1,1);
-                }
-                else     //present and future items
-                {
+                } else {    //present and future items
                     if(item.cluster)
                     {
                         var item_date=   new Date(item.date)
