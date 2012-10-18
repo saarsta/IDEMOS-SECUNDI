@@ -654,7 +654,6 @@ var logFunctionCalls = function (f, name) {
 		call += '(';
 		for (var i = 0; i < arguments.length; i++) {
 			if (first) {
-				call += '(';
 				first = false;
 			} else {
 				call += ', ';
