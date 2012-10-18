@@ -1,18 +1,18 @@
 var user = {
-    load: function() {
-        db_functions.loggedInAjax({
-            url: '/api/users'
-        });
-    },
+//    load: function() {
+//        db_functions.loggedInAjax({
+//            url: '/api/users'
+//        });
+//    },
     update: function(data) {
         $.extend(user.data, data);
-    },
-    data: {},
-    get: function(prop) {
-        if (!user.data) user.load();
-
-        return user.data[prop];
     }
+//    data: {},
+//    get: function(prop) {
+//        if (!user.data) user.load();
+//
+//        return user.data[prop];
+//    }
 };
 
 
@@ -24,7 +24,7 @@ var db_functions = {
         };
         options.error = function (xhr, ajaxOptions, thrownError) {
             if (xhr.responseText == 'not authenticated') {
-                connectPopup(function (err) {
+                connectPopup(function (err, data) {
                     if (err)
                         onError(xhr, ajaxOptions, thrownError);
                     else {
@@ -40,7 +40,26 @@ var db_functions = {
                             onError.apply(this, arguments);
                             window.location.href = window.location.href;
                         };
+
+                        //TODO - for now no need for this popup
+                       /* if(data.hasOwnProperty("actions_done_by_user") && options.hasOwnProperty("user_info")){
+                            if(data.actions_done_by_user[options.user_info.action_name]) {
+                                $.ajax(options);
+                            } else {
+                                var config = {
+                                    tokens_needed:3,
+                                    tokens_owned: data.tokens,
+                                    callback: function(clicked){
+                                        if(clicked == 'ok'){
+                                            $.ajax(options);
+                                        }
+                                    }
+                                };
+                                popupProvider.showExplanationPopup(config);
+                            }
+                        }*/
                         $.ajax(options);
+
                     }
                 });
             } else if (xhr.responseText == 'not_activated') {
@@ -67,7 +86,25 @@ var db_functions = {
 //                message: 'hi'
 //            });
 //        }
-        $.ajax(options);
+
+        //TODO - for now no need for this popup
+       /* if(options.hasOwnProperty('user_info') && options.user_info.action_done == false && options.user_info.user_logged_in)
+        {
+            var config = {
+                tokens_needed:3,
+                tokens_owned:options.user_info.tokens_owned,
+                callback: function(clicked){
+                    if(clicked == 'ok'){
+                        $.ajax(options);
+                    }
+                }
+            };
+            popupProvider.showExplanationPopup(config);
+        }
+        else
+        {*/
+            $.ajax(options);
+       /* }*/
     },
 
     login:function (email, password, callback) {
@@ -146,12 +183,13 @@ var db_functions = {
     },
 
     //method - "add" or "remove"
-    voteOnArticleComment:function (post_article_id, method, callback) {
+    voteOnArticleComment:function (post_article_id, method,user_info, callback) {
         db_functions.loggedInAjax({
             url:'/api/votes_on_article_comment',
             type:"POST",
             async:true,
             data:{"method":method, "post_article_id":post_article_id},
+            user_info: user_info,
             success:function (data, err) {
                 callback(err, data);
             },
@@ -457,7 +495,7 @@ var db_functions = {
         });
     },
 
-    createDiscussion: function(subject_id, vision, title, tags, image, callback) {
+    createDiscussion: function(subject_id, vision, title, tags, image, user_info, callback) {
         db_functions.loggedInAjax({
             url:'/api/discussions/',
             type:"POST",
@@ -471,6 +509,7 @@ var db_functions = {
                 "is_published": true,
                 image_field: image
             },
+            user_info: user_info,
 
             success: function(data) {
                 console.log(data);
@@ -488,12 +527,13 @@ var db_functions = {
             }
         });
     },
-    addSuggestionToDiscussion: function(discussion_id, parts, explanation, callback) {
+    addSuggestionToDiscussion: function(discussion_id, parts, explanation, user_info, callback) {
         db_functions.loggedInAjax({
             url:'/api/suggestions/',
             type:"POST",
             async:true,
             data:{"discussion_id":discussion_id, "parts":parts, "explanation":explanation},
+            user_info: user_info,
             success:function (data) {
                 console.log(data);
                 callback(null, data);
@@ -578,12 +618,13 @@ var db_functions = {
         });
     },
 
-    voteForPost:function (post_id, method, callback) {
+    voteForPost:function (post_id, method, user_info, callback) {
         db_functions.loggedInAjax({
             url:'/api/votes/',
             type:"POST",
             async:true,
             data:{"post_id":post_id, "method":method},
+            user_info: user_info,
             success:function (data) {
                 console.log(data);
                 callback(null, data);
@@ -594,12 +635,13 @@ var db_functions = {
         });
     },
 
-    voteForSuggestion:function (suggestionId, method, callback) {
+    voteForSuggestion:function (suggestionId, method, user_info, callback) {
         db_functions.loggedInAjax({
             url:'/api/votes_on_suggestion/',
             type:"POST",
             async:true,
             data:{"suggestion_id":suggestionId, "method":method},
+            user_info: user_info,
             success:function (data) {
                 console.log(data);
                 alert('success');
@@ -612,12 +654,13 @@ var db_functions = {
 
     },
 
-    addPostToDiscussion:function (discussion_id, post_content, refParentPostId, callback) {
+    addPostToDiscussion:function (discussion_id, post_content, refParentPostId, user_info, callback) {
         db_functions.loggedInAjax({
             url:'/api/posts/',
             type:"POST",
             async:true,
             data:{"discussion_id":discussion_id, "text":post_content, "ref_to_post_id":refParentPostId},
+            user_info: user_info,
             success:function (data) {
                 console.log(data);
                 callback(null, data);
@@ -659,7 +702,7 @@ var db_functions = {
         });
     },
 
-    addDiscussionGrade:function (discussion_id, grade, grade_id, callback) {
+    addDiscussionGrade:function (discussion_id, grade, grade_id, user_info, callback) {
         var url = '/api/grades/';
         var type = "POST";
 
@@ -676,6 +719,7 @@ var db_functions = {
             type:type,
             async:true,
             data:{"discussion_id":discussion_id, "evaluation_grade":grade},
+            user_info: user_info,
             success:function (data) {
 
                 callback(null, data);
@@ -688,7 +732,7 @@ var db_functions = {
         });
     },
 
-    addSuggestionGrade:function (suggestion_id, discussion_id, grade, grade_id, callback) {
+    addSuggestionGrade:function (suggestion_id, discussion_id, grade, grade_id, user_info, callback) {
         var url;
         var type;
 
@@ -700,6 +744,7 @@ var db_functions = {
             type:type,
             async:true,
             data:{"suggestion_id":suggestion_id, "discussion_id":discussion_id, "evaluation_grade":grade},
+            user_info: user_info,
             success:function (data) {
 
                 callback(null, data);
@@ -1080,12 +1125,13 @@ var db_functions = {
 
     //----------------------actions----------------------//
 
-    createAction:function (data, callback) {
+    createAction:function (data, user_info, callback) {
         db_functions.loggedInAjax({
             url:'/api/actions',
             type:"POST",
             async:true,
             data: data,
+            user_info: user_info,
             success:function (data) {
                 callback(null, data);
             },
@@ -1196,12 +1242,13 @@ var db_functions = {
         });
     },
 
-    addPostToAction:function (action_id, post_content, refParentPostId, callback) {
+    addPostToAction:function (action_id, post_content, refParentPostId, user_info, callback) {
         db_functions.loggedInAjax({
             url:'/api/posts_of_action/',
             type:"POST",
             async:true,
             data:{"action_id":action_id, "text":post_content, "ref_to_post_id":refParentPostId},
+            user_info: user_info,
             success:function (data) {
                 console.log(data);
                 callback(null, data);
@@ -1212,12 +1259,13 @@ var db_functions = {
         });
     },
 
-    voteForActionPost:function (post_id, method, callback) {
+    voteForActionPost:function (post_id, method, user_info, callback) {
         db_functions.loggedInAjax({
             url:'/api/votes_on_action_post/',
             type:"POST",
             async:true,
             data:{"post_action_id":post_id, "method":method},
+            user_info: user_info,
             success:function (data) {
                 callback(null, data);
             },
@@ -1227,12 +1275,13 @@ var db_functions = {
         });
     },
 
-    addSuggestionToAction:function (action_id, parts, explanation, callback) {
+    addSuggestionToAction:function (action_id, parts, explanation, user_info, callback) {
         db_functions.loggedInAjax({
             url:'/api/action_suggestions/',
             type:"POST",
             async:true,
             data:{"action_id":action_id, "parts":parts, "explanation":explanation},
+            user_info: user_info,
             success:function (data) {
                 callback(null, data);
             },
@@ -1242,7 +1291,7 @@ var db_functions = {
         });
     },
 
-    addActionGrade:function (action_id, grade, grade_id, callback) {
+    addActionGrade:function (action_id, grade, grade_id, user_info, callback) {
         var url = '/api/action_grades/';
         var type = "POST";
 
@@ -1256,6 +1305,7 @@ var db_functions = {
             type:type,
             async:true,
             data:{"action_id":action_id, "evaluation_grade":grade},
+            user_info: user_info,
             success:function (data) {
 
                 callback(null, data);

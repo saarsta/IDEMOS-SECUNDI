@@ -196,6 +196,22 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
                             cbk(err);
                         });
                     },
+                    // update actions done by user
+                    function(cbk){
+                        var actions_done_by_user = {
+                            create_object:false,
+                            post_on_object:false,
+                            suggestion_on_object:false,
+                            grade_object:true,
+                            vote_on_object:false,
+                            join_to_object:false
+                        }
+                        models.User.update({_id:req.user.id}, {$addToSet:{actions_done_by_user : actions_done_by_user}});
+                        models.User.update({_id:req.user.id}, {"actions_done_by_user.grade_object" : true},function(err) {
+                            cbk(err);
+                        });
+                    },
+
                     // 5) publish to facebook
                     function (cbk) {
                         og_action({
@@ -208,6 +224,8 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
                         });
                         cbk();
                     }
+
+
                 ],
                 // Final) set gamification details, return object
                 function(err, args){

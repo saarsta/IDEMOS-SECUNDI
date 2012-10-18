@@ -1,11 +1,47 @@
 <div id="box-share">
-    <div id="close"><img src="/images/elections/close.png" alt="עורו"/></div>
-    <div class="icons">
-        <a href="mailto:?subject=%D7%92%D7%9D%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%A8%D7%92%D7%99%D7%A9%20%D7%90%D7%96%D7%A8%D7%97%20%D7%9C%D7%90%20%D7%9E%D7%99%D7%95%D7%A6%D7%92%20%E2%80%93%20%D7%90%D7%96%20%D7%91%D7%97%D7%A8%D7%AA%D7%99%20%D7%91%D7%A0%D7%95%D7%A9%D7%90%D7%99%D7%9D%20%D7%94%D7%97%D7%A9%D7%95%D7%91%D7%99%D7%9D%20%D7%9C%D7%99%20%D7%91%D7%90%D7%9E%D7%AA!&body=מרגישים כמוני שהפוליטיקאים לא סופרים אותנו? במקום להתייאש הצטרפתי לעורו כדי שנוכל להתאגד ולקבוע סדר יום אזרחי חדש. הצבעתי בבחירות של עורו! http://uru.org.il"
-           target="_blank"><img class="icon" src="/images/elections/enva.png" alt="עורו"/></a>
-        <a href="javascript:void(0)" id="share-google"><img class="icon" src="/images/elections/google.png" alt="עורו"/></a>
-        <a href="javascript:void(0)" id="share-twitter"><img class="icon" src="/images/elections/tweet.png" alt="עורו"/></a>
-        <a href="javascript:void(0)" id="share-facebook"><img class="icon" src="/images/elections/face.png" alt="עורו"/></a>
+    <div class="sb-container">
+        <div class="sb-top">
+            <div class="sb-title">
+   <% if(type == 'approved_action'){ %>
+                מצוין. שמחים שהצטרפת לפעולה
+                <% } else if(type == 'pending_action'){ %>
+                כדי שזה יקרה אנחנו צריכים גם את חבריך!
+                <% } else { %>
+                תודה על תמיכתך במעגל התנופה!
+                <% } %>
+
+            </div>
+            <div class="sb-text">
+                <% if(type == 'approved_action'){ %>
+                ככל שיהיו יותר משתתפים לפעולה כך הסיכוי שלה להצליח גבוה יותר, לכן כדאי להזמין חברים להצטרף לפעולה ולהמשיך להעביר אותה הלאה.
+                <% } else if(type == 'pending_action'){ %>
+                ככל שיותר חברים יתמכו ברעיון זה כך יגדלו הסיכויים שהוא יהפוך לפעולה בשטח. לכן כדאי להזמין חברים נוספים להצטרף ולהפוך את הרעיון הזה למציאות.
+                <% } else { %>
+                עכשיו, כדי שנושא זה יקודם אנחנו זקוקים לתמיכה רחבה ככל הניתן, לכן כדאי להזמין חברים נוספים להשתתף ולתמוך בפעילות.                <% } %>
+
+            </div>
+        </div>
+        <div class="sb-bottom">
+            <div class="sb-title">
+                כעת שתף/י את הבחירה שלך עם חבריך.
+            </div>
+            <div class="sb-text">
+                <div class="sb-icons">
+                    <div id="close"><img src="/images/elections/close.png" alt="עורו"/></div>
+                    <div class="icons">
+                        <a href="mailto:?subject=%D7%92%D7%9D%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%A8%D7%92%D7%99%D7%A9%20%D7%90%D7%96%D7%A8%D7%97%20%D7%9C%D7%90%20%D7%9E%D7%99%D7%95%D7%A6%D7%92%20%E2%80%93%20%D7%90%D7%96%20%D7%91%D7%97%D7%A8%D7%AA%D7%99%20%D7%91%D7%A0%D7%95%D7%A9%D7%90%D7%99%D7%9D%20%D7%94%D7%97%D7%A9%D7%95%D7%91%D7%99%D7%9D%20%D7%9C%D7%99%20%D7%91%D7%90%D7%9E%D7%AA!&body=מרגישים כמוני שהפוליטיקאים לא סופרים אותנו? במקום להתייאש הצטרפתי לעורו כדי שנוכל להתאגד ולקבוע סדר יום אזרחי חדש. הצבעתי בבחירות של עורו! http://uru.org.il"
+                           target="_blank"><img class="icon" src="/images/elections/enva.png" alt="עורו"/></a>
+                        <a href="javascript:void(0)" id="share-google"><img class="icon" src="/images/elections/google.png" alt="עורו"/></a>
+                        <a href="javascript:void(0)" id="share-twitter"><img class="icon" src="/images/elections/tweet.png" alt="עורו"/></a>
+                        <a href="javascript:void(0)" id="share-facebook"><img class="icon" src="/images/elections/face.png" alt="עורו"/></a>
+                    </div>
+                </div>
+            </div>
+            <div>
+                </br>
+                Some text
+            </div>
+        </div>
     </div>
 </div>
 
@@ -13,25 +49,105 @@
 
 <script>
     var global = global || {};
+    var type = '<%= type %>';
+
+    var button = $('.social-on-click');
+    var rel = button.data('rel');
+    var title = button.data('title');
+    var title_of_main_entity = button.data('main_title');
+    var img_src = button.data('img_src');
+    var text_preview;
+    var new_title;
+
+    if(type == 'approved_action'){
+        new_title =
+                "גם אני אשתתף בפעולה "
+                        +   title;
+
+        text_preview =
+                "הצטרפתי לפעולה במטרה לקדם את המהלך "
+                        + title_of_main_entity
+                        + "."
+                        + " אם גם לך חשוב לקדם את הנושא אפשר להצטרף ולתמוך באתר עורו. "
+                        + "אשמח לראותך שם!";
+
+    }else if(type == 'pending_action'){
+        new_title = "גם אני אתמוך ברעיון לפעולה"
+                + " " + title;
+        text_preview =
+                "הצטרפתי למהלך "
+                        + title_of_main_entity
+                        + ". אם גם לך חשוב לקדם את הנושא אפשר להצטרף ולתמוך באתר עורו. "
+                        + "אשמח לראותך שם!";
+    }else{
+        new_title =
+                "הצטרפתי לקידום הפעילות בנושא "
+                        + title
+                        + "."
+                        + " מה איתך?";
+        text_preview =
+                "החלטתי לקחת חלק בפעילות של תנועת עורו בתחום"
+                        + " "
+                        +  title
+                        + ". גם לך חשוב לקדם את הנושא? אם כן, אפשר לקבל פרטים נוספים, להצטרף ולתמוך באתר עורו."
+                        + " "
+                        + "אשמח לראותך שם!";
+    }
     global.share_messages = {
-        'a': 'גם אני מרגיש חלק מהרוב הלא מיוצג, שמתי בצד הבדלים של שמאל-ימין מדיני ובחרתי בנושאים שחשוב לי לשנות. מרגישים כמוני? הצטרפו והצביעו!'
+        'a': new_title + text_preview
     };
 
+
     $('#share-facebook').one('click', function () {
-        facebookLogin(function (error) {
-            $.post('/elections/fbimage/' + FB.getUserID(), function (data) {
-                var obj = {
-                    url: data.target_url,
-                    message: global.share_messages.a
-                };
-                FB.api('/me/photos', 'post', obj, function (response) {
-                    if (!response || response.error) {
-                        alert('Error occured');
-                    } else {
-                        popupProvider.showOkPopup({message: 'השיתוף הסתיים בהצלחה.'});
-                    }
-                });
-            });
+
+        var button = $('.social-on-click');
+        var rel = button.data('rel');
+        var title = button.data('title');
+        var title_of_main_entity = button.data('main_title');
+        var img_src = button.data('img_src');
+        var text_preview;
+        var new_title;
+
+        if(type == 'approved_action'){
+            new_title =
+                    "גם אני אשתתף בפעולה "
+                +   title;
+
+            text_preview =
+                    "הצטרפתי לפעולה במטרה לקדם את המהלך "
+                + title_of_main_entity
+                + "."
+                + " אם גם לך חשוב לקדם את הנושא אפשר להצטרף ולתמוך באתר עורו. "
+                + "אשמח לראותך שם!";
+
+        }else if(type == 'pending_action'){
+            new_title = "גם אני אתמוך ברעיון לפעולה"
+                + " " + title;
+            text_preview =
+                    "הצטרפתי למהלך "
+                + title_of_main_entity
+                + ". אם גם לך חשוב לקדם את הנושא אפשר להצטרף ולתמוך באתר עורו. "
+                + "אשמח לראותך שם!";
+        }else{
+            new_title =
+                    "הצטרפתי לקידום הפעילות בנושא "
+                + title
+                + "."
+                + " מה איתך?";
+            text_preview =
+                    "החלטתי לקחת חלק בפעילות של תנועת עורו בתחום"
+                + " "
+                +  title
+                + ". גם לך חשוב לקדם את הנושא? אם כן, אפשר לקבל פרטים נוספים, להצטרף ולתמוך באתר עורו."
+                + " "
+                + "אשמח לראותך שם!";
+        }
+        sendFacebookShare(rel, title, img_src, text_preview, function(err){
+            if(err){
+                alert('Error occured');
+            }else{
+//                popupProvider.showOkPopup({message: 'השיתוף הסתיים בהצלחה.'});
+            }
         });
     });
 
@@ -47,4 +163,5 @@
                 'share-google', 'status=0,scrollbars=0,location=0,height=320,width=660,resizable=1');
         return false;
     });
+
 </script>

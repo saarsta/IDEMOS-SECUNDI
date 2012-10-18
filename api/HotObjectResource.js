@@ -37,6 +37,7 @@ var HotObjectResource = module.exports = jest.Resource.extend({
             view_counter: null
         }
     },
+
     get_objects:function(req,filters,sorts,limit,offset,callback)
     {
         var arr = [];

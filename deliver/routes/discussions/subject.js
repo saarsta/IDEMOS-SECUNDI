@@ -2,6 +2,7 @@ var models = require('../../../models');
 
 module.exports = function(req,res) {
     var subject_id = req.params[0];
+
     models.Subject.findById(subject_id,function(err,subject) {
         if(err)
             res.render('500.ejs',{error:err});

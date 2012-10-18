@@ -24,7 +24,7 @@ var Cycle = module.exports = new Schema({
     image_field_preview: mongoose_types.File,
     tags:[String],
     discussions:[
-        {discussion: {type:ObjectId, ref:'Discussion', query:common.FIND_USER_QUERY}, is_main: {type: Boolean, 'default': false}}
+        {discussion: {type:ObjectId, ref:'Discussion', query:common.FIND_DISCUSSION_QUERY}, is_main: {type: Boolean, 'default': false}}
     ],
     admin_updates: [{info: {type:mongoose_types.Text}, date: {type: Date,'default':Date.now}}],
     document: String,

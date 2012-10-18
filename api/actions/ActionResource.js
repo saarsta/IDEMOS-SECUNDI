@@ -238,6 +238,22 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                                 async.forEach(info_items, iterator, cbk1);
                             }
                         })
+                    },
+
+                    // update actions done by user
+                    function(cbk1){
+                        var actions_done_by_user = {
+                            create_object:false,
+                            post_on_object:false,
+                            suggestion_on_object:false,
+                            grade_object:false,
+                            vote_on_object:false,
+                            join_to_object:false
+                        }
+                        models.User.update({_id:user._id}, {$addToSet:{actions_done_by_user : actions_done_by_user}});
+                        models.User.update({_id:user._id}, {"actions_done_by_user.create_object" : true},function(err) {
+                            cbk1(err);
+                        });
                     }
 
                 ], function(err, args){
@@ -299,7 +315,7 @@ module.exports.approveAction = function (id, callback) {
                 g_action = action;
                 action.is_approved = true;
 
-                models.Cycle.findById(action.cycle_id, cbk);
+                models.Cycle.findOne({_id: action.cycle_id, is_hidden: -1}, cbk);
 
             }
         },

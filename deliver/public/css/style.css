@@ -937,14 +937,14 @@ body {
     top: 0;
 }
 
-.blog-box .one .opinion_shaper {
+.blog-box .one .opinion_shaper{
     color: #50504f;
     font: normal 16px Arial;
     margin: 0;
     padding-top: 20px;
 }
 
-.blog-box .one .no_underline_cursor_when_hover {
+.blog-box .one .no_underline_cursor_when_hover{
     color: #50504f;
     font: normal 13px Arial;
     margin: 0;
@@ -1784,6 +1784,8 @@ body {
     display: inline-block;
     position: relative;
     width: 110px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .popup .popup-bottom a.dark-grey-btn:hover {
@@ -3528,7 +3530,7 @@ h2 small {
     margin: 0 auto;
 }
 
-.more-deals a.flip {
+.more-deals a.flip{
     background-position: 0 100%;
 }
 
@@ -4635,9 +4637,9 @@ body.search-ative #header {
 }
 
 .myuru-top .right .user .img-box .image-container {
-    width: 112px;
-    height: 120px;
-    float: right;
+    width:112px;
+    height:120px;
+    float:right;
 }
 
 .myuru-top .right .user .img-box img {
@@ -6865,7 +6867,7 @@ body.body-action .followers-box h2 {
 .add-offer .details {
     border-top: 1px solid #ececec;
     margin-bottom: 20px;
-    margin-right: 139px;
+	margin-right:  139px;
 }
 
 .add-offer .details div {
@@ -6958,7 +6960,7 @@ body.body-action .followers-box h2 {
 
 .user_brings_resource_popup .img-box  img.wraper {
     position: absolute;
-    left: 0;
+    left:0;
     top: 0;
 }
 
@@ -6969,13 +6971,13 @@ body.body-action .followers-box h2 {
 }
 
 .user_brings_resource_popup .user-left p {
-    color: #50504f;
+    color:#50504f;
     font: bold 13px/15px Arial;
     margin-bottom: 7px;
 }
 
 .user_brings_resource_popup .user-left .proxy {
-    color: #b7b6b6;
+    color:#b7b6b6;
     font: normal 12px/14px "AdumaFOTRegular";
     position: relative;
     background: url(images/proxy-icon.png) 100% 2px no-repeat;
@@ -7216,14 +7218,14 @@ body.body-action .followers-box h2 {
 
 .dont_bring a {
     display: block;
-    background: #757d7e url(../images/search-submit.png) 0 0 repeat-x;
+    background:#757d7e url(../images/search-submit.png) 0 0 repeat-x;
     border: 1px solid #2e3030;
     border-radius: 2px;
     width: 60px;
     height: 25px;
-    float: left;
+    float:left;
     text-align: center;
-    color: #ffffff;
+    color:#ffffff;
     font: normal 18px/29px 'AdumaFOTRegular';
     text-decoration: none;
     /* margin: 10px auto 20px auto;*/
@@ -7908,7 +7910,7 @@ body.body-action .followers-box h2 {
 .add-offer .details {
     border-top: 1px solid #ececec;
     margin-bottom: 20px;
-    margin-right: 139px;
+	margin-right:  139px;
 }
 
 .add-offer .details>div {
@@ -8709,7 +8711,7 @@ div.greenbutton a:hover {
     border: 1px solid white !important;;
 }
 
-.followers-diagram .event .popup-event.showdiv {
+.followers-diagram .event .popup-event.showdiv{
     display: block;
 }
 
@@ -8757,5 +8759,99 @@ div.icons img {
 
     filter: alpha(opacity = 70);
     opacity: 0.7;
-    z-index: 10;
+    z-index: 15;
 }
+
+.sb-container {
+    width: 600px;
+
+    box-shadow: 0px 0px 3px 2px #ededed;
+}
+
+.sb-top {
+    height: 64px;
+    padding: 24px;
+
+    background: #ffffff;
+    color: #505050;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.sb-bottom {
+    height: 140px;
+    padding:  10px;
+
+    background: #ededed;
+    color: #3760ec;
+}
+
+.sb-top .sb-title {
+    height: 35px;
+}
+
+.sb-title {
+    text-align: center;
+
+    font: 16pt 'AdumaFOTMedium';
+}
+
+.sb-text {
+    text-align: center;
+
+    font: 12pt 'AdumaFOTMedium';
+}
+
+.sb-icons {
+    margin: 20px 0px 5px 0px;
+    height: 30px;
+}
+
+
+
+
+.CornerPromotionDiv {
+    position: fixed;
+    bottom: 15px;
+    right: -300px;
+    z-index: 2000;
+    border: solid 1px #D8D7D5;
+    background-color: white;
+    width: 296px;
+    height: 138px;
+    overflow: hidden;
+    display: none;
+    display: block;
+}
+
+.CornerPromotionDiv .floatRight
+{
+    float: right;
+    margin-left: 10px;
+}
+.CornerPromotionDiv .header
+{
+
+    background-color:#3B63EF;
+    width:296px;
+    overflow:hidden;
+    height:22px;
+    color:white;
+    font-size:14px;
+    text-align:right;
+    font-weight:bold;
+    padding-right:10px;
+    padding-top:5px
+}
+
+.closeCornerPromotion
+{
+    color:white;float:left;margin-left:20px;margin-top:3px;cursor:pointer;font-weight:normal;font-size:12px
+}
+.cornerPromotionTitle
+{
+    color: #043D89; font-size: 14px; font-weight: bold;line-height: 16px
+}
+
+.closeCornerPromotion:hover {text-decoration:underline !important;}
+.cornerPromotionTitle:hover {text-decoration:underline !important;}
+

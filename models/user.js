@@ -96,6 +96,14 @@ var User = module.exports = new Schema({
     blog_text_3: String,
 //    opinion_text: String,
     sent_mail: {type:Date},
+    actions_done_by_user:{
+        create_object:false,
+        post_on_object:false,
+        suggestion_on_object:false,
+        grade_object:false,
+        vote_on_object:false,
+        join_to_object:false
+    },
     has_voted: [String]
 
 }, {strict:true});

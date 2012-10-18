@@ -38,6 +38,43 @@ var popupProvider={
         });
     },
 
+    showExplanationPopup:function(popupConfig){
+        var clicked;
+        var defaults = {
+            okButtonText:'אישור',
+            cancelButtonText: 'ביטול',
+            tokens_needed: 0,
+            tokens_owned: 0,
+            callback: $.noop,
+            onOkCilcked:function(e){
+                e.preventDefault();
+                clicked = 'ok';
+                $.colorbox.close();
+            },
+            onCancelClicked:function(e){
+                e.preventDefault();
+                clicked = 'cancel';
+                $.colorbox.close();
+            }
+        };
+
+        popupConfig = $.extend(defaults,popupConfig);
+
+        dust.render('explanation_popup',popupConfig,function(err,out){
+            if(!err){
+                $.colorbox({ html:out,
+                    onComplete:function(e){
+                        $('.ok-button').click(popupConfig.onOkCilcked);
+                        $('.cancel-button').click(popupConfig.onCancelClicked);
+                    },
+                    onClosed:function(){
+                        popupConfig.callback(clicked);
+                    }
+                });
+            }
+        });
+    },
+
     showGiveMandatPopup:function(popupConfig){
 
         this.self = this;
@@ -101,7 +138,6 @@ var popupProvider={
 
              $.colorbox({ html:out,
                 onComplete:function (e) {
-
                     $('#login_pop_form').submit(function() {
                         // get all the inputs into an array.
                         var $inputs = $('#login_pop_form :input');
@@ -118,7 +154,9 @@ var popupProvider={
                                 $("#login_title").text("נסה שוב");
                             }
                             else{
-                                callback(err, result);
+                                $(document).one('cbox_closed', function(){
+                                    callback(err, result);
+                                });
                                 $.colorbox.close();
                             }
                         });
@@ -127,7 +165,9 @@ var popupProvider={
                     $("#fb_ajax_conncect").live('click', function(){
                             facebookLogin(function(err, result){
                                 if(!err){
-                                    callback(err, result);
+                                    $(document).one('cbox_closed', function(){
+                                        callback(err, result);
+                                    });
                                     $.colorbox.close();
                                 }else{
                                     callback(err, result);
