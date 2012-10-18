@@ -26,7 +26,8 @@ module.exports = {
                 cycle: results.cycle,
                 resources: results.resources,
                 categories: results.categories,
-                today: utils.dateFormat('yyyy-mm-dd')
+                today: utils.dateFormat('yyyy-mm-dd'),
+                user:req.session.user
             });
         });
     }

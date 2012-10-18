@@ -1784,6 +1784,8 @@ body {
     display: inline-block;
     position: relative;
     width: 110px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .popup .popup-bottom a.dark-grey-btn:hover {
