@@ -18,6 +18,4 @@ var DailyDiscussionResource = module.exports = jest.MongooseResource.extend(
            // self._super(req, fields, callback);
         }
     }
-
-
 )

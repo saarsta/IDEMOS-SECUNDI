@@ -346,7 +346,7 @@ var Schemas = exports.Schemas = {
             }
 // )
         ]
-    }    ,
+    },
     DailyDiscussion:{
         title:{type:String, required:true},
         image_field: { type:mongoose_types.File, required:true},
