@@ -29,7 +29,7 @@ var error_message = error_message || '';
     <div id="content" class="cf">
         <div class="add-offer">
             <h2><span class="arrow">
-<%=discussion.subject_name%>
+<%=discussion.subject.name%>
             </span>
                 <%=discussion.title%>
             </h2>
@@ -55,8 +55,8 @@ var error_message = error_message || '';
 
                     <a class="btn-grey share" rel="/discussions/<%=discussion.id%>"
                        data-img_src="<%= discussion.image_field ? discussion.image_field.url ||'' : '' %>" data-text_preview="<%=discussion.text_field_preview%>" data-title=" דיון בחזון <%=discussion.title%>"
-                       data-name="<%=discussion.text_field_preview%>"
-                       href="/facebookShare?link=/discussions/<%=discussion.id%>">
+                       data-name="<%=discussion.title%>"
+                       href="/facebookShare?link=/daily_discussions/<%=discussion.id%>">
                         שתף
                     </a>
 
@@ -117,13 +117,13 @@ var error_message = error_message || '';
     <div style="padding:10px">
 
                         <div  style="width: 128px;height: 90px; overflow:hidden;" class='auto-scale floatRight'>
-                            <img src="/cdn/Hydrangeas_389.jpg" title="dddd" style="border:solid 1px #d8d7d5"/>
+                            <img src="<%= discussion.discussion.image_field ? discussion.discussion.image_field.url ||'' : '' %>" title="dddd" style="border:solid 1px #d8d7d5"/>
                         </div>
 
 
                     <div>
-                        <a class="cornerPromotionTitle" href="#">
-<% related_discussion.title %>
+                        <a class="cornerPromotionTitle" href="/discussions/<%= discussion.discussion._id %>">
+<%= discussion.discussion.title %>
                         </a>
                     </div>
 
