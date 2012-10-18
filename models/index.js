@@ -20,7 +20,7 @@ var Schemas = exports.Schemas = {
 
     Headline:new Schema({
         title:{type:String, required:true},
-        tooltip:String,
+        tooltip: String,
         type:{type:String, "enum":["from_the_news_paper", "daily_survey", "conclusion"]},
         text_field:{type:mongoose_types.Html},
         image_field:mongoose_types.File,
@@ -351,7 +351,7 @@ var Schemas = exports.Schemas = {
         title:{type:String, required:true},
         image_field: { type:mongoose_types.File, required:true},
         subject:    {type:ObjectId, ref:'Subject'   , index:true, required:true},
-        discussion: {type:ObjectId, ref:'Discussion', index:true, required:true}  ,
+        discussion: {type:ObjectId, ref:'Discussion',query:common.FIND_DISCUSSION_QUERY, required:true}  ,
         system_message: {type:mongoose_types.Html},
         creation_date:{type:Date, 'default':Date.now},
         text_field:{type:mongoose_types.Text, required:true},
