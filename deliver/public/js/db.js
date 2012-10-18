@@ -178,12 +178,13 @@ var db_functions = {
     },
 
     //method - "add" or "remove"
-    voteOnArticleComment:function (post_article_id, method, callback) {
+    voteOnArticleComment:function (post_article_id, method,user_info, callback) {
         db_functions.loggedInAjax({
             url:'/api/votes_on_article_comment',
             type:"POST",
             async:true,
             data:{"method":method, "post_article_id":post_article_id},
+            user_info: user_info,
             success:function (data, err) {
                 callback(err, data);
             },
@@ -612,12 +613,13 @@ var db_functions = {
         });
     },
 
-    voteForPost:function (post_id, method, callback) {
+    voteForPost:function (post_id, method, user_info, callback) {
         db_functions.loggedInAjax({
             url:'/api/votes/',
             type:"POST",
             async:true,
             data:{"post_id":post_id, "method":method},
+            user_info: user_info,
             success:function (data) {
                 console.log(data);
                 callback(null, data);
@@ -628,12 +630,13 @@ var db_functions = {
         });
     },
 
-    voteForSuggestion:function (suggestionId, method, callback) {
+    voteForSuggestion:function (suggestionId, method, user_info, callback) {
         db_functions.loggedInAjax({
             url:'/api/votes_on_suggestion/',
             type:"POST",
             async:true,
             data:{"suggestion_id":suggestionId, "method":method},
+            user_info: user_info,
             success:function (data) {
                 console.log(data);
                 alert('success');
@@ -1251,12 +1254,13 @@ var db_functions = {
         });
     },
 
-    voteForActionPost:function (post_id, method, callback) {
+    voteForActionPost:function (post_id, method, user_info, callback) {
         db_functions.loggedInAjax({
             url:'/api/votes_on_action_post/',
             type:"POST",
             async:true,
             data:{"post_action_id":post_id, "method":method},
+            user_info: user_info,
             success:function (data) {
                 callback(null, data);
             },
