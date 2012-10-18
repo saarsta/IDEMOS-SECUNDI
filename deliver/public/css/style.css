@@ -8722,3 +8722,53 @@ div.greenbutton a:hover {
 .followers-diagram .event .popup-event.showdiv{
     display: block;
 }
+
+
+
+
+.CornerPromotionDiv {
+    position: fixed;
+    bottom: 15px;
+    right: -300px;
+    z-index: 2000;
+    border: solid 1px #D8D7D5;
+    background-color: white;
+    width: 296px;
+    height: 138px;
+    overflow: hidden;
+    display: none;
+    display: block;
+}
+
+.CornerPromotionDiv .floatRight
+{
+    float: right;
+    margin-left: 10px;
+}
+.CornerPromotionDiv .header
+{
+
+    background-color:#3B63EF;
+    width:296px;
+    overflow:hidden;
+    height:22px;
+    color:white;
+    font-size:14px;
+    text-align:right;
+    font-weight:bold;
+    padding-right:10px;
+    padding-top:5px
+}
+
+.closeCornerPromotion
+{
+    color:white;float:left;margin-left:20px;margin-top:3px;cursor:pointer;font-weight:normal;font-size:12px
+}
+.cornerPromotionTitle
+{
+    color: #043D89; font-size: 14px; font-weight: bold;line-height: 16px
+}
+
+.closeCornerPromotion:hover {text-decoration:underline !important;}
+.cornerPromotionTitle:hover {text-decoration:underline !important;}
+

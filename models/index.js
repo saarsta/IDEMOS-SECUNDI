@@ -346,6 +346,21 @@ var Schemas = exports.Schemas = {
             }
 // )
         ]
+    }    ,
+    DailyDiscussion:{
+        title:{type:String, required:true},
+        image_field: { type:mongoose_types.File, required:true},
+        subject:    {type:ObjectId, ref:'Subject'   , index:true, required:true},
+        discussion: {type:ObjectId, ref:'Discussion', query:common.FIND_DISCUSSION_QUERY, required:true}  ,
+        subject_name: String,
+        system_message: {type:mongoose_types.Html},
+        creation_date:{type:Date, 'default':Date.now},
+        text_field:{type:mongoose_types.Text, required:true},
+        tags:[String],
+        view_counter: {type:Number, 'default':0},
+        is_visible:{type:Boolean, 'default':true},
+        is_published:{type:Boolean, 'default':false},
+        is_hidden:{type:Boolean,'default':true}
     }
 };
 
@@ -411,7 +426,7 @@ var Models = module.exports = {
     ImageUpload:mongoose.model('ImageUpload', require('./image_upload')),
 
     FooterLink:mongoose.model('FooterLink', require('./footer_link')),
-
+    DailyDiscussion:mongoose.model('DailyDiscussion', new Schema(Schemas.DailyDiscussion, {strict:true})),
     Schemas:Schemas,
     setDefaultPublish:function (is_publish) {
         _.each(module.exports, function (model, name) {

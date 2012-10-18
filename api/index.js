@@ -63,6 +63,7 @@ var mongoose_resource = require('jest'),
     FbConnectResource = require('./FbConnectResource'),
     AvatarResource = require('./avatar_resource'),
     ResetNotificationResource = require('./reset_notification_resource'),
+    DailyDiscussionResource = require('./DailyDiscussionResource.js'),
     OGActionResource = require('./og_action_resource');
 
 
@@ -135,4 +136,5 @@ module.exports = function(app)
     rest_api.register('og_action', new OGActionResource());
     rest_api.register('avatar',new AvatarResource());
     rest_api.register('reset_notification',new ResetNotificationResource());
+    rest_api.register_resource('daily_discussions', new DailyDiscussionResource());
 };
