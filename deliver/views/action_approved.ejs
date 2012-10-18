@@ -40,7 +40,7 @@ var error_message = error_message || '';
 <div class="followers-box">
     <div class="extra holds_the_timeline">
             <h2><span>ציר הזמן</span>
-                <a class="no_underline_cursor_when_hover" style="color: #50504F;" href="/cycles/<%=action.cycle_id.id%>"> <%=action.cycle_id.title%> </a>
+                <a class="no_underline_cursor_when_hover" style="color: #50504F;" href="/cycles/<%=action.cycle_id && action.cycle_id.id%>"> <%= action.cycle_id && action.cycle_id.title%> </a>
             </h2>
         <div class="followers-diagram">
 

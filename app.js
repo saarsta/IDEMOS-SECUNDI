@@ -25,7 +25,7 @@ app.set('facebook_app_id', process.env.FACEBOOK_APPID || '175023072601087');
 app.set('facebook_app_name',process.env.FACEBOOK_APPNAME || 'uru_dev');
 app.set('facebook_secret', process.env.FACEBOOK_SECRET || '5ef7a37e8a09eca5ee54f6ae56aa003f');
 
-app.set('show_only_published', process.env.SHOW_ONLY_PUBLISHED == '1');
+app.set('show_only_published', true);//process.env.SHOW_ONLY_PUBLISHED == '1');
 
 app.set('sendgrid_user',process.env.SENDGRID_USER || 'app2952775@heroku.com');
 app.set('sendgrid_key',process.env.SENDGRID_KEY || 'a0oui08x');
