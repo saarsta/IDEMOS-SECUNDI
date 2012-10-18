@@ -22,6 +22,7 @@
         <% include partials/user_box.ejs %>
         <% include partials/failures.ejs %>
         <% include partials/tag_search.ejs %>
+        <% include partials/social_popup.ejs %>
 
     </div>
     <div id="content" class="cf">
@@ -119,6 +120,14 @@
             db_functions.joinToCycleFollowers(item_id, function(err,data){
                 dust.render('cycle_list_item', data, function(err, html){
                     item.replaceWith(html);
+                    if(data.is_follower){
+                        setTimeout(function(){
+                            $('#box-share,#screen').show();
+                            $('#close').click(function(){
+                                $('#box-share,#screen').hide();
+                            })
+                        }, 100);
+                    }
                 })
             })
         });

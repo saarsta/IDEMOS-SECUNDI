@@ -37,6 +37,8 @@ module.exports = function (req, res) {
             admin_text: 1,
             system_message: 1,
             what_users_bring: 1
+//            social_popup_title: 1,
+//            social_popup_text: 1
         })
         .populate('action_resources.resource')
         .populate('category', { _id: 1, name: 1 })
@@ -114,13 +116,14 @@ module.exports = function (req, res) {
                 }
                 action.is_going = is_going;
 
-
                 var ejsFileName = action.is_approved ? 'action_approved.ejs' : 'action_append.ejs';
+                var type = action.is_approved ? 'approved_action' : 'pending_action';
                 console.log(action.text_field_preview);
                 res.render(ejsFileName,{
                     action: action,
                     tab: 'actions',
-                    proxy:proxyJson
+                    type: type,
+                    proxy: proxyJson
                     // pageType:'beforeJoin' //waitAction,beforeJoin
                 });
             });

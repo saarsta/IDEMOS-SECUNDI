@@ -214,10 +214,25 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                 var user_cup = 9 + user.num_of_extra_tokens;
 
                 //conditions for creating a new discussion
+
+                //adding logs..
+                console.log("user_cup:");
+                console.log(user_cup);
+                console.log("min_tokens:");
+                console.log(min_tokens);
+                console.log("number_of_taged_info_items:");
+                console.log(number_of_taged_info_items);
+                console.log("fields.subject_id:");
+                console.log(fields.subject_id);
+                console.log("is good?");
+
+                var is_good_flag = true;
                 if (user_cup < min_tokens && user_cup < min_tokens - (Math.min(Math.floor(number_of_taged_info_items / 2), 2)) && fields.subject_id != '4fd0dae0ded0cb0100000fde') {
+                    console.log(false);
                     cbk({message:"you don't have the min amount of tokens to open discussion", code:401}, null);
                 }
                 else {
+                    console.log(true);
                     //vision cant be more than 800 words, title can't be more than 75 letters
                     var vision_splited_to_words = fields.text_field.split(" ");
                     var words_counter = 0;

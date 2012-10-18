@@ -20,7 +20,8 @@ module.exports = function(req,res) {
                     avatar:req.session.avatar_url,
                     user_logged: req.isAuthenticated(),
                     url:req.url,
-                    tab:'cycles'
+                    tab:'cycles',
+                    type: 'cycle'
                 });
         }
     });

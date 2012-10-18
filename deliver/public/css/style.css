@@ -4633,22 +4633,22 @@ body.search-ative #header {
     margin-bottom: 4px;
     position: relative;
 }
-.myuru-top .right .user .img-box .image-container
-{
+
+.myuru-top .right .user .img-box .image-container {
     width:112px;
     height:120px;
     float:right;
 }
-.myuru-top .right .user .img-box img
-{
+
+.myuru-top .right .user .img-box img {
     display: block;
 }
-.myuru-top .right .user .img-box #upload_image_placeholder
-{
+
+.myuru-top .right .user .img-box #upload_image_placeholder {
     background: url(../images/user-fillter-white-big-empty.png) no-repeat;
 }
-.myuru-top .right .user .img-box .qq-upload-drop-area
-{
+
+.myuru-top .right .user .img-box .qq-upload-drop-area {
     position: absolute;
     left: 0;
     right: 0;
@@ -6163,7 +6163,6 @@ a.fraction-btn {
     cursor: pointer;
 }
 
-
 .followers-diagram .event .type-one .popup-text h4 {
 
     color: #3c63ef;
@@ -6926,8 +6925,7 @@ body.body-action .followers-box h2 {
     margin-right: 10px;
 }
 
-.user_brings_resource_popup
-{
+.user_brings_resource_popup {
     position: absolute;
     display: none;
     width: 150px;
@@ -6936,13 +6934,12 @@ body.body-action .followers-box h2 {
     background-size: 200px 90px;
     padding: 16px 24px 0 13px;
 }
-.user_brings_resource_popup .have_tooltip:hover
-{
+
+.user_brings_resource_popup .have_tooltip:hover {
     display: block
 }
 
-.user_brings_resource_popup .user-right
-{
+.user_brings_resource_popup .user-right {
     float: right;
     padding-left: 7px;
     padding-top: 9px;
@@ -6951,36 +6948,33 @@ body.body-action .followers-box h2 {
     margin-left: 7px;
 }
 
-.user_brings_resource_popup .img-box
-{
+.user_brings_resource_popup .img-box {
     position: relative;
 }
 
-.user_brings_resource_popup .img-box img
-{
+.user_brings_resource_popup .img-box img {
     display: block;
 }
 
-.user_brings_resource_popup .img-box  img.wraper
-{
+.user_brings_resource_popup .img-box  img.wraper {
     position: absolute;
     left:0;
     top: 0;
 }
-.user_brings_resource_popup .user-left
-{
+
+.user_brings_resource_popup .user-left {
     float: left;
     width: 94px;
     padding-top: 5px;
 }
-.user_brings_resource_popup .user-left p
-{
+
+.user_brings_resource_popup .user-left p {
     color:#50504f;
     font: bold 13px/15px Arial;
     margin-bottom: 7px;
 }
-.user_brings_resource_popup .user-left .proxy
-{
+
+.user_brings_resource_popup .user-left .proxy {
     color:#b7b6b6;
     font: normal 12px/14px "AdumaFOTRegular";
     position: relative;
@@ -7220,9 +7214,7 @@ body.body-action .followers-box h2 {
     margin-top: 3px;
 }
 
-
-.dont_bring a
-{
+.dont_bring a {
     display: block;
     background:#757d7e url(../images/search-submit.png) 0 0 repeat-x;
     border: 1px solid #2e3030;
@@ -7237,8 +7229,6 @@ body.body-action .followers-box h2 {
     /* margin: 10px auto 20px auto;*/
     margin-left: 10px;
     font-size: 12px;
-
-
 
 }
 
@@ -8294,8 +8284,8 @@ a.menu-elections:hover {
     width: 272px;
     border: 9px solid #ffffff;
 }
-.add-event .add-picture .img-box
-{
+
+.add-event .add-picture .img-box {
     display: block;
     text-align: center;
     height: 147px;
@@ -8721,6 +8711,97 @@ div.greenbutton a:hover {
 
 .followers-diagram .event .popup-event.showdiv{
     display: block;
+}
+
+#box-share {
+    display: none;
+    position: fixed;
+    z-index: 20;
+    top: 50%;
+    left: 50%;
+    width: 594px;
+    height: 235px;
+    margin: -115px 0 0 -315px;
+    text-align: center;
+    border: 0;
+    background: #fff url(../images/elections/box-bg.png) no-repeat 0 0;
+}
+
+#close img {
+    position: absolute;
+    top: -15px;
+    left: -15px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+div.icons {
+    position: absolute;
+    left: 200px;
+    bottom: 15px;
+}
+
+div.icons img {
+    margin: 3px;
+}
+
+#screen {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+
+    filter: alpha(opacity = 70);
+    opacity: 0.7;
+    z-index: 15;
+}
+
+.sb-container {
+    width: 600px;
+
+    box-shadow: 0px 0px 3px 2px #ededed;
+}
+
+.sb-top {
+    height: 64px;
+    padding: 24px;
+
+    background: #ffffff;
+    color: #505050;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.sb-bottom {
+    height: 140px;
+    padding:  10px;
+
+    background: #ededed;
+    color: #3760ec;
+}
+
+.sb-top .sb-title {
+    height: 35px;
+}
+
+.sb-title {
+    text-align: center;
+
+    font: 16pt 'AdumaFOTMedium';
+}
+
+.sb-text {
+    text-align: center;
+
+    font: 12pt 'AdumaFOTMedium';
+}
+
+.sb-icons {
+    margin: 20px 0px 5px 0px;
+    height: 30px;
 }
 
 
