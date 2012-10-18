@@ -1,3 +1,4 @@
+/*
 
 var models = require('../../../models')
     ,DailyDiscussionResource = require('../../../api/DailyDiscussionResource.js')
@@ -42,4 +43,4 @@ module.exports = function(req,res)
             }
         });
 
-};
+};*/
