@@ -71,7 +71,7 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
     create_obj: function(req,fields,callback){
         var self = this;
         var action_id = req.body.action_id;
-        var user_id = req.user._id;
+        var user_id = req.user.id;
         var g_action_obj;
         var join_id;
         var flag = false;
@@ -96,18 +96,18 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
                         function(cbk1){
                             models.Action.findById(action_id, function(err, action){
                                 if(!err && action){
-                                    g_action_obj = action;
                                     action.num_of_going--;
+                                    g_action_obj = action;
+                                    g_action_obj.participants_count = g_action_obj.num_of_going;
 
                                     for (var i = 0; i < action.going_users.length; i++) {
-                                        if (req.user._id + "" == action.going_users[i].user_id + "") {
+                                        if (req.user.id + "" == action.going_users[i].user_id + "") {
                                             //remove going_user
                                             flag = true;
                                             action.going_users.splice(i);
                                             break;
                                         }
                                     }
-                                    g_action_obj.participants_count = g_action_obj.num_of_going;
 
                                     cbk1(err, action);
                                 }else{
@@ -169,18 +169,19 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
             },
 
             function(obj, cbk){
-                models.Action.update({_id: action_id},{$addToSet: {going_users: {user_id: req.user._id, join_date: Date.now()}}},{$inc:{num_of_going: 1}}, function(err, result){
+                models.Action.update({_id: action_id},{$addToSet: {going_users: {user_id: req.user.id, join_date: Date.now()}},$set:{ num_of_going: g_action_obj.going_users.length + 1}}, function(err, result){
                     cbk(err, obj);
                 });
             }
         ],function(err, obj){
             if(!err){
+
                 g_action_obj.num_of_going++;
                 g_action_obj = JSON.parse(JSON.stringify(g_action_obj));
                 g_action_obj.map_join_to_user = req.user;
                 g_action_obj.map_join_to_user.avatar = req.user.avatar_url();
                 g_action_obj.is_going = true;
-                g_action_obj.participants_count = g_action_obj.num_of_going;
+                g_action_obj.participants_count = g_action_obj.going_users.length + 1;
                 req.gamification_type = "join_action";
             }
             callback(err, {action_obj: g_action_obj});

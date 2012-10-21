@@ -85,7 +85,7 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
         this._super(req, filters, sorts, limit, offset, function (err, response) {
 
             _.each(response.objects, function (action) {
-                action.participants_count = action.users.length;
+                action.participants_count = action.going_users.length;
                 action.is_going = req.user && _.any(action.going_users, function(going_user){return going_user.user_id + "" == req.user._id + ""});
             })
 
@@ -165,6 +165,7 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                     fields.first_name = user.first_name;
                     fields.last_name = user.last_name;
                     fields.users = {user_id: user_id, join_date: Date.now()};
+                    fields.num_of_going = 0;
 
                     // Massage some of the data to an acceptable format
                     fields.execution_date = {
@@ -250,8 +251,8 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                             vote_on_object:false,
                             join_to_object:false
                         }
-                        models.User.update({_id:user._id}, {$addToSet:{actions_done_by_user : actions_done_by_user}});
-                        models.User.update({_id:user._id}, {"actions_done_by_user.create_object" : true},function(err) {
+                        models.User.update({_id:user_id}, {$addToSet:{actions_done_by_user : actions_done_by_user}});
+                        models.User.update({_id:user_id}, {"actions_done_by_user.create_object" : true},function(err) {
                             cbk1(err);
                         });
                     }
