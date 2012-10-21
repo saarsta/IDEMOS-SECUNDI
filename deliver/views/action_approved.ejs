@@ -174,7 +174,7 @@ var error_message = error_message || '';
             </div>-->
         </div>
     </div>
-    <div class="add-offer-btn-box social-on-click" data-rel="/actions/<%=action._id%>" data-img_src="<%= action.image_field ? action.image_field.url ||'' : '' %>" data-title="<%=action.title%>">
+    <div class="add-offer-btn-box social-on-click" data-rel="/actions/<%=action._id%>" data-img_src="<%= action.image_field ? action.image_field.url ||'' : '' %>" data-title="<%=action.title%>" data-main_title="<%= action.cycle_id && action.cycle_id.title %>">
         <a href="#" >
             <% if(!action.is_going) { %>
             הצטרף
