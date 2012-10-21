@@ -8852,6 +8852,34 @@ div.icons img {
     color: #043D89; font-size: 14px; font-weight: bold;line-height: 16px
 }
 
+.cycle_join_tooltip {
+    position: absolute;
+    left: -96px;
+    top: -146px;
+    display: none;
+    width: 201px;
+    height: 124px;
+    padding: 7px 7px 15px;
+    background: url(../images/event-popup.png) no-repeat;;
+}
+
+.cycle_join_tooltip .cycle_tooltip_text {
+    color: #50504f;
+    font-size: 18px;
+    line-height: 22px;
+    font-family: 'AdumaFOTMedium';
+    margin-top: 20px;
+    margin-left: 15px;
+    margin-right: 15px;
+    text-align: center;
+}
+
+.img-box.floatRight{
+    margin-left: 19px;
+}
+
+
+
 .closeCornerPromotion:hover {text-decoration:underline !important;}
 .cornerPromotionTitle:hover {text-decoration:underline !important;}
 

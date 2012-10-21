@@ -76,7 +76,7 @@
     </div>
     <div class="blue-bar">
         <div class="extra">
-            <a class="green-btn social-on-click" data-title="<%= cycle.title %>" data-img_src="<%= cycle.image_field && cycle.image_field.url %>" data-rel="/cycles/<%= cycle.id %>" href="javascript:void(0)"><%= cycle.is_user_follower_of_cycle ? "הפסק לעקוב" : "עקוב אחרי מעגל התנופה"%> </a>
+            <a class="green-btn social-on-click" title="לקידום הנושא ולקבלת עדכונים על המשך הפעילות לחצו כאן" data-img_src="<%= cycle.image_field && cycle.image_field.url %>" data-rel="/cycles/<%= cycle.id %>" href="javascript:void(0)"><%= cycle.is_user_follower_of_cycle ? "הפסק לעקוב" : "אני בעד"%> </a>
             <p id="followers_count" >מספר העוקבים אחרי מעגל תנופה זה: <strong><%= cycle.followers_count %></strong></p>
         </div>
     </div>
@@ -140,11 +140,24 @@
                 <h2>עוקבים</h2>
 
             </div>
+
         </div>
+
     </div>
+<!--<div class="cycle_join_tooltip">
+    <p class="cycle_tooltip_text">
+        לקידום הנושא ולקבלת עדכונים על המשך הפעילות לחצו כאן
+    </p>
+</div>-->
+
+
+
+
 
 
 <% include partials/footer.ejs %>
+
+
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -203,12 +216,13 @@
                 return false;
             });
 
+
             $('.green-btn').click(function(){
                 var button = $(this);
                 button.text('...');
 
                 db_functions.joinToCycleFollowers(cycle_id, function(err, result){
-                    button.text(result.is_follower ? "הפסק לעקוב" : "עקוב אחרי מעגל התנופה");
+                    button.text(result.is_follower ? "הפסק לעקוב" : "אני בעד");
                     $('#followers_count strong').text(result.followers_count);
                     if(result.is_follower){
                         setTimeout(function(){
@@ -423,6 +437,15 @@
             popup_event.fadeOut(2000);
         })
 
+//        $('.green-btn.social-on-click').tooltip({
+//            opacity:1,
+//            position: 'top center',
+//            offset:[0,1],
+//            tip:'.cycle_join_tooltip',
+//            events: {
+//                def:'mouseover, mouseout'
+//            }
+//        });
 
 
         //

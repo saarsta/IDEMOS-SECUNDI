@@ -139,24 +139,26 @@ module.exports = function (req, res) {
 
         var av=user_obj.avatar_url();
 
-        res.render('my_uru.ejs',
-            {
-                layout:false,
-                tag_name:req.query.tag_name,
-                biographyReadonly:isHisuru,
-                title:"אורו שלי",
-                logged:req.isAuthenticated(),
-                big_impressive_title:"",
-                user: sessionUser,//current user
-                pageUser:user_obj ,///  hisuru user
-                //   avatar:user_obj.avatar_url(),
-                curr_user_proxy: curr_user_db ? curr_user_db.proxy : null,
-                user_logged:req.isAuthenticated(),
-                url:req.url,
-                tokensBarModel:tokensBarModel,
-                tab:'',
-                isHisUru:isHisuru,
-                proxy:proxyJson
-            });
+        models.User.findOne({"_id":req.session.user_id}, function(err, user){
+            res.render('my_uru.ejs',
+                {
+                    layout:false,
+                    tag_name:req.query.tag_name,
+                    biographyReadonly:isHisuru,
+                    title:"אורו שלי",
+                    logged:req.isAuthenticated(),
+                    big_impressive_title:"",
+                    user: user,//current user
+                    pageUser:user_obj ,///  hisuru user
+                    //   avatar:user_obj.avatar_url(),
+                    curr_user_proxy: curr_user_db ? curr_user_db.proxy : null,
+                    user_logged:req.isAuthenticated(),
+                    url:req.url,
+                    tokensBarModel:tokensBarModel,
+                    tab:'',
+                    isHisUru:isHisuru,
+                    proxy:proxyJson
+                });
+        })
     })
 };
