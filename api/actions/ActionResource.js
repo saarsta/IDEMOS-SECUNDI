@@ -223,15 +223,20 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                 var cycle_id = action_obj.cycle_id;
 
                 async.parallel([
+
+                    // 1. add discussion_id and action_id to the lists in user
+
+                    // 2. update actions done by user
                     function (cbk1) {
                         req.gamification_type = "action";
 
-                        // add discussion_id and action_id to the lists in user
+                        // 1. add discussion_id and action_id to the lists in user
                         var new_action = {
                             action_id: action_obj._id,
                             join_date: Date.now()
                         }
-                        models.User.update({_id:user_id}, {$addToSet:{actions: new_action}}, cbk1)
+
+                        models.User.update({_id:user_id}, {$addToSet:{actions: new_action}, $set: {"actions_done_by_user.create_object": true}}, cbk1)
                     },
 
                     function (cbk1) {
@@ -247,22 +252,6 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                                 async.forEach(info_items, iterator, cbk1);
                             }
                         })
-                    },
-
-                    // update actions done by user
-                    function(cbk1){
-                        var actions_done_by_user = {
-                            create_object:false,
-                            post_on_object:false,
-                            suggestion_on_object:false,
-                            grade_object:false,
-                            vote_on_object:false,
-                            join_to_object:false
-                        }
-                        models.User.update({_id:user_id}, {$addToSet:{actions_done_by_user : actions_done_by_user}});
-                        models.User.update({_id:user_id}, {"actions_done_by_user.create_object" : true},function(err) {
-                            cbk1(err);
-                        });
                     }
 
                 ], function(err, args){

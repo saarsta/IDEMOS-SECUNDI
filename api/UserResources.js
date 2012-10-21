@@ -17,10 +17,10 @@ var UserResource = module.exports =  mongoose_resource.MongooseResource.extend({
             exact:true,
             in:true
         },
-            'cycles.cycle_id': {
-                exact:true,
-                in:true
-            }
+        'cycles.cycle_id': {
+            exact:true,
+            in:true
+        }
         }
     },
 
