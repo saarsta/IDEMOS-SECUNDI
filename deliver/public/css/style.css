@@ -8874,6 +8874,10 @@ div.icons img {
     text-align: center;
 }
 
+.img-box.floatRight{
+    margin-left: 19px;
+}
+
 
 
 .closeCornerPromotion:hover {text-decoration:underline !important;}
