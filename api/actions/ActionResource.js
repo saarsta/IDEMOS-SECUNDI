@@ -316,7 +316,7 @@ module.exports.approveAction = function (id, callback) {
                 g_action = action;
                 action.is_approved = true;
 
-                models.Cycle.findById(action.cycle_id, cbk);
+                models.Cycle.findOne({_id: action.cycle_id, is_hidden: -1}, cbk);
 
             }
         },

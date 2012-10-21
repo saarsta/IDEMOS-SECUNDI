@@ -28,7 +28,7 @@
 
 <% if (has_voted) { %>
 
-<div id="elected-dicussions">
+<!--<div id="elected-dicussions">
         <span class="title1">
                                                             אנו שמחים שבחרת להצביע ולקחת חלק בשינוי שהתנועה שואפת להוביל.
         </span>
@@ -42,7 +42,7 @@
 
 <div id="elected_discussions_list">
 </div>
-</div>
+</div>-->
 
 <% } %>
         <div id="subjects" class="services-box services-box-all cf">
@@ -113,7 +113,8 @@
             });
 
         });
-        if (has_voted) db_functions.loggedInAjax({
+        //remove this for now, till the next elections or something
+        /*if (has_voted) db_functions.loggedInAjax({
             url: '/api/user_chosen_discussions/' + user_id,
             type: "GET",
             async: true,
@@ -132,7 +133,7 @@
             {
                 alert(data);
             }
-        });
+        });*/
 
         function createDiscussionsQuery(){
             var sortby = $('#sorting_select').val();
