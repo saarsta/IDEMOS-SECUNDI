@@ -56,6 +56,7 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
             type: null,
             creator_id: null,
             cycle_id: null,
+            cycle_title: null,
             action_resources: null,
             tags: null,
             users: null,
@@ -84,10 +85,17 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
 
         this._super(req, filters, sorts, limit, offset, function (err, response) {
 
-            _.each(response.objects, function (action) {
+            async.forEach(response.objects, function (action, itr_cbk) {
                 action.participants_count = action.users.length;
                 action.is_going = req.user && _.any(action.going_users, function(going_user){return going_user.user_id + "" == req.user._id + ""});
-            })
+
+                models.Cycle.findById(action.cycle_id, {title: 1}, function(err, cycle){
+                    action.cycle_title = cycle.title;
+                    itr_cbk();
+                })
+            }, function(err){
+                callback(err,response);
+            });
 
 
 
@@ -108,7 +116,7 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
 //                });
 
 
-            callback(err, response);
+//            callback(err, response);
         });
     },
 
