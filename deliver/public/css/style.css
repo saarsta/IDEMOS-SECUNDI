@@ -6154,10 +6154,6 @@ a.fraction-btn {
     background: url(../images/event-popup.png) no-repeat;;
 }
 
-.followers-diagram .event .active.popup-event {
-    display: block;
-}
-
 .followers-diagram .event .type-one .popup-text {
     padding: 15px 15px 0 17px;
     position: relative;
@@ -8740,8 +8736,8 @@ div.greenbutton a:hover {
 
 div.icons {
     position: absolute;
-    left: 200px;
-    bottom: 15px;
+    left: 217px;
+    bottom: 16px;
 }
 
 div.icons img {
@@ -8769,7 +8765,7 @@ div.icons img {
 }
 
 .sb-top {
-    height: 64px;
+    height: 74px;
     padding: 24px;
 
     background: #ffffff;
@@ -8778,7 +8774,7 @@ div.icons img {
 }
 
 .sb-bottom {
-    height: 140px;
+    height: 100px;
     padding:  10px;
 
     background: #ededed;
@@ -8786,19 +8782,19 @@ div.icons img {
 }
 
 .sb-top .sb-title {
-    height: 35px;
+    height: 40px;
 }
 
 .sb-title {
     text-align: center;
 
-    font: 16pt 'AdumaFOTMedium';
+    font: 18pt 'AdumaFOTMedium';
 }
 
 .sb-text {
     text-align: center;
 
-    font: 12pt 'AdumaFOTMedium';
+    font: 14pt 'AdumaFOTRegular';
 }
 
 .sb-icons {

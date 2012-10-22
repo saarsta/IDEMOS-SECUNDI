@@ -136,20 +136,8 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
                                         },
                                         // update actions done by user
                                         function(cbk){
-                                            var actions_done_by_user = {
-                                                create_object:false,
-                                                post_on_object:false,
-                                                suggestion_on_object:false,
-                                                grade_object:false,
-                                                vote_on_object:true,
-                                                join_to_object:false
-                                            }
-                                            models.User.update({_id:user_object._id}, {$addToSet:{actions_done_by_user : actions_done_by_user}});
-                                            models.User.update({_id:user_object._id}, {"actions_done_by_user.vote_on_object" : true},function(err) {
-                                                cbk(err, post_object);
-                                            });
+                                            models.User.update({_id:user_object._id}, {$set: {"actions_done_by_user.vote_on_object": true}}, cbk);
                                         },
-
 
                                         //set notifications for all my slaves
                                         function(cbk){

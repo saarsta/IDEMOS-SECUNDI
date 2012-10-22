@@ -285,14 +285,20 @@ var error_message = error_message || '';
      $('.followers-diagram').on("mouseenter", ".icon", function(e){
          e.preventDefault();
          var popup_event = $(this).children('.popup-event');
-         popup_event.stop(true, true);
-         popup_event.show();
+         if(!popup_event.hasClass('showdiv'))
+         {
+             popup_event.stop(true, true);
+             popup_event.show();
+         }
      });
 
      $('.followers-diagram').on("mouseleave", ".icon", function(e){
          e.preventDefault();
          var popup_event = $(this).children('.popup-event');
-         popup_event.fadeOut(2000);
+         if(!popup_event.hasClass('showdiv'))
+         {
+            popup_event.fadeOut(2000);
+         }
      })
 
    //  var new_post_ref_id = null;  //if not null =>the create new post is connected to anther post

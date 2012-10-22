@@ -146,6 +146,9 @@ var CycleTimelineResource = module.exports = jest.Resource.extend({
             _.each(arr, function(item){ item.date = new Date(item.date)})
             arr = _.sortBy(arr, function(item){ return Math.min(item.date);  });
 
+            //TODO remove this, and get the actual chosen items to display default popups on timeline
+            arr[0].is_default_displayed = true;
+            arr[1].is_default_displayed = true;
 
             callback(null,{meta:{total_count: arr.length}, objects: arr});
         });
