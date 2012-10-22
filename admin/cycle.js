@@ -159,7 +159,7 @@ module.exports = AdminForm.extend({
         }
 
 
-        if((!this.data.is_hidden && cycle.is_hidden) && (this.data.is_hidden && !cycle.is_hidden)){
+        /*if((!this.data.is_hidden && cycle.is_hidden) && (this.data.is_hidden && !cycle.is_hidden)){
             //if condition true is_hidden was changed and "cycle.is_hidden" is what was before the change
             var err_string = "";
             models.Action.find({cycle_id: cycle._id}, function(err, actions){
@@ -168,6 +168,7 @@ module.exports = AdminForm.extend({
                     err_string += action.is_hidden ? " is hidden" : " is not hidden";
                 }})
             })
+        }*/
 
         // SAVE TIMELINE STUFF TO DB
 
