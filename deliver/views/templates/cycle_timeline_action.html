@@ -2,11 +2,11 @@
         <div class="icon blue-icon">
         <span class="i"></span>
 
-        {?is_default_displayed}
+        {?is_displayed}
             <div class="popup-event type-one showdiv" item-id="{_id}">
         {:else}
             <div class="popup-event type-one" item-id="{_id}">
-        {/is_default_displayed}
+        {/is_displayed}
         <div class="popup-text">
             <h4 title="{title}">{title}</h4>
             {?location}<p>{location.address}</p>{/location}
