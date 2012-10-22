@@ -17,7 +17,11 @@ var Action = module.exports = new Schema({
     creator_id: {type:ObjectId, ref:'User', query:common.FIND_USER_QUERY, index:true, required:true},
     first_name: {type: String, editable:false},
     last_name: {type: String, editable:false},
-    cycle_id:{type:ObjectId, ref:'Cycle', index:true, required:true},
+
+    //the first cycle is the main cycle, is_displayed reffers to the timeline popup that is displayed by default
+    cycle_id:[
+        new Schema({cycle: {type:ObjectId, ref:'Cycle', index:true, required:true}, is_displayed:{type: Boolean, 'default': false}})
+    ],
     subject_id:
         {type:ObjectId, ref:'Subject', index:true, required:true}
     ,

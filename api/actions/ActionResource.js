@@ -89,7 +89,7 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                 action.participants_count = action.users.length;
                 action.is_going = req.user && _.any(action.going_users, function(going_user){return going_user.user_id + "" == req.user._id + ""});
 
-                models.Cycle.findById(action.cycle_id, {title: 1}, function(err, cycle){
+                models.Cycle.findById(action.cycle_id[0].cycle, {title: 1}, function(err, cycle){
                     action.cycle_title = cycle.title;
                     itr_cbk();
                 })

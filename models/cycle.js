@@ -26,7 +26,7 @@ var Cycle = module.exports = new Schema({
     discussions:[
         {discussion: {type:ObjectId, ref:'Discussion', query:common.FIND_DISCUSSION_QUERY}, is_main: {type: Boolean, 'default': false}}
     ],
-    admin_updates: [{info: {type:mongoose_types.Text}, date: {type: Date,'default':Date.now}}],
+    admin_updates: [{info: {type:mongoose_types.Text}, date: {type: Date,'default':Date.now}, is_displayed: {type: Boolean, 'default': false}}],
     document: String,
     shopping_cart: [
         {type:ObjectId, ref:'InformationItem'}
@@ -48,6 +48,18 @@ var Cycle = module.exports = new Schema({
       new Schema({user_id:{type:ObjectId, ref:'User', query:common.FIND_USER_QUERY}, text: {type:mongoose_types.Text}})
     ],
     is_hidden:{type:Boolean,'default':true}
+
+    invited_friends: [
+        new Schema({
+            object_type:{type:String},
+            object_id:{type:String},
+            facebook_request:{type:String}  ,
+            facebook_ids:[{type:String}]  ,
+            emails:[{type:String}]  ,
+            date: {type:Date, 'default':Date.now}
+        })
+    ],
+
 }, {strict: true});
 
 Cycle.pre("save", function(next){

@@ -117,24 +117,39 @@ module.exports = AdminForm.extend({
             ], itr_cbk)
         }
 
-        if(cycle.isNew){
-            console.log('length of discussions is.....');
-            console.log(cycle.discussions.length);
-
-            for(var field_name in self.clean_values)
-                self.instance.set(field_name,self.clean_values[field_name]);
-
-            self.clean_values = {};
-
-
-            async.forEach(cycle.discussions, iterator, function(err, result){
-                if(err)
-                    callback(err);
-                else
-                    base.call(self,callback);
-            });
-        }else{
-            this._super(callback);
+        if((!this.data.is_hidden && cycle.is_hidden) && (this.data.is_hidden && !cycle.is_hidden)){
+            //if condition true is_hidden was changed and "cycle.is_hidden" is what was before the change
+            var err_string = "";
+            models.Action.find({cycle_id: cycle._id}, function(err, actions){
+                _.each(actions, function(action){ if(action.is_hidden == cycle.is_hidden){
+                    err_string += action.title;
+                    err_string += action.is_hidden ? " is hidden" : " is not hidden";
+                }})
+            })
         }
+
+        if(err_string){
+            alert(err_string);
+            callback("is hidden err");
+        }else
+            if(cycle.isNew){
+                console.log('length of discussions is.....');
+                console.log(cycle.discussions.length);
+
+                for(var field_name in self.clean_values)
+                    self.instance.set(field_name,self.clean_values[field_name]);
+
+                self.clean_values = {};
+
+
+                async.forEach(cycle.discussions, iterator, function(err, result){
+                    if(err)
+                        callback(err);
+                    else
+                        base.call(self,callback);
+                });
+            }else{
+                this._super(callback);
+            }
     }
 });
