@@ -169,6 +169,9 @@ var timeline= {
                 }
                 item.offset = offsetFromIndex(j);
                 item.timeline_index=i;
+                if(display_id){
+                    item.is_default_displayed = false;
+                }
                 switch(item.type)
                 {
                     case 'past':
@@ -206,6 +209,22 @@ var timeline= {
                 }
             });
 
+            if(display_id) {
+                $('.popup-event[item-id="'+display_id+'"]').addClass('showdiv')   ;
+            } else {
+                $('.icon').mouseenter(function() {
+                    var diagram = $('.followers-diagram');
+
+                    $.each(diagram.find('div'), function(index, element){
+                        if($(element).hasClass('showdiv'))
+                        {
+                            $(element).fadeOut(2000);
+                        }
+                    })
+
+                });
+            }
+
             $.each(render_clusters, function (index1, cluster_array) {
                 var it= [];
                 var dummy=true;
@@ -224,14 +243,9 @@ var timeline= {
                     dust.render('cycle_timeline_dummy', {date:index1,offset:offset}, timelineAppend);
                 }
                 animateCluster(it);
-                if(display_id)
-                {
-                    $('.popup-event[item-id="'+display_id+'"]').addClass('showdiv')   ;
-                    $('.popup-event[item-id="'+display_id+'"]').parent().mouseenter(function() {
-                        $('.popup-event[item-id="'+display_id+'"]').removeClass('showdiv') ;
-                    });
 
-                }
+
+
 
             });
         });

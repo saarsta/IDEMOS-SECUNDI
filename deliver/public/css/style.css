@@ -6154,10 +6154,6 @@ a.fraction-btn {
     background: url(../images/event-popup.png) no-repeat;;
 }
 
-.followers-diagram .event .active.popup-event {
-    display: block;
-}
-
 .followers-diagram .event .type-one .popup-text {
     padding: 15px 15px 0 17px;
     position: relative;
