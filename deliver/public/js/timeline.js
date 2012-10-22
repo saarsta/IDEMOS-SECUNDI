@@ -170,7 +170,7 @@ var timeline= {
                 item.offset = offsetFromIndex(j);
                 item.timeline_index=i;
                 if(display_id){
-                    item.is_default_displayed = false;
+                    item.is_displayed = false;
                 }
                 switch(item.type)
                 {
