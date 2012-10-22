@@ -25,6 +25,7 @@ module.exports = function(app)
 
     mongoose_admin.loadApi(app);
 
+
 //    if(require('../utils').getShowOnlyPublished()) {
 //        var _modelCounts = admin.modelCounts;
 //        admin.modelCounts = function(collectionName,filters, onReady) {
@@ -113,6 +114,7 @@ module.exports = function(app)
 //            }
 //        };
 //    }
+
 
     admin.ensureUserExists('Uruad','uruadmin!@#uruadmin');
     admin.ensureUserExists('ishai','istheadmin');

@@ -11,7 +11,41 @@ module.exports = AdminForm.extend({
 
 
         this.static['js'].push('/node-forms/js/autocomplete.js');
+
+        this.timeline_data = {};
     },
+
+    prepareTimeline: function(callback) {
+        // GET THE DATA FROM THE DB
+        this.timeline_data['check_me'] = true;
+        // set the field value
+        this.data.check_me = true;
+
+        callback();
+    },
+
+    render_ready:function(callback) {
+        var self = this;
+        var base = self._super;
+        self.prepareTimeline(function(err){
+            if(err)
+                callback(err);
+            else
+                base.call(self,callback);
+        });
+    },
+
+    save:function(callback) {
+        var self = this;
+        var base = self._super;
+        self.prepareTimeline(function(err){
+            if(err)
+                callback(err);
+            else
+                base.call(self,callback);
+        });
+    },
+
     get_fields: function() {
         this._super();
         if(this.fields['discussions'])
@@ -22,6 +56,13 @@ module.exports = AdminForm.extend({
             this.fields['subject'].validators.push(function(arr) {
                 return arr.length ? true : 'You must select at least one subject';
             });
+
+        // create a checkbox field
+        this.fields['check_me'] = new j_forms.fields.BooleanField();
+
+        // add the checkbox field to the upper level
+        this.fieldsets[0].fields.push('check_me');
+
     },
 
     actual_save : function(callback)
@@ -116,6 +157,8 @@ module.exports = AdminForm.extend({
                 }
             ], itr_cbk)
         }
+
+        // SAVE TIMELINE STUFF TO DB
 
         if(cycle.isNew){
             console.log('length of discussions is.....');
