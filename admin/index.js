@@ -35,6 +35,18 @@ module.exports = function(app)
             _listModelDocuments.call(this,collectionName, start, count,filters,sort, onReady);
         };
 
+        admin.getDocument = function(collectionName, documentId, onReady) {
+            this.models[collectionName].model.findOne({_id:documentId,is_hidden:-1}, function(err, document) {
+                if (err) {
+                    console.log('Unable to get document because: ' + err);
+                    onReady('Unable to get document', null);
+                } else {
+                    onReady(null, document);
+                }
+            });
+        };
+
+
     }
 
     admin.ensureUserExists('Uruad','uruadmin!@#uruadmin');
