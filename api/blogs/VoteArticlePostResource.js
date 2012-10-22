@@ -87,6 +87,7 @@ var VoteArticlePostResource = module.exports = common.GamificationMongooseResour
                     }
 
             },
+
             // 4. update PostArticle with its new votes
             function(obj, cbk){
 
@@ -114,9 +115,24 @@ var VoteArticlePostResource = module.exports = common.GamificationMongooseResour
             }
         //final - return updated postArticle
         ], function(err, updated_post){
-             if(updated_post)
+             if(updated_post){
                  updated_post.balance = new_balance;
-            callback(err, updated_post);
+
+                 // update actions done by user
+                 var actions_done_by_user = {
+                     create_object:false,
+                     post_on_object:false,
+                     suggestion_on_object:false,
+                     grade_object:false,
+                     vote_on_object:true,
+                     join_to_object:false
+                 }
+                 models.User.update({_id:req.session.user._id}, {$addToSet:{actions_done_by_user : actions_done_by_user}});
+                 models.User.update({_id:req.session.user._id}, {"actions_done_by_user.vote_on_object" : true},function(err) {
+                     callback(err, updated_post);
+                 });
+             }
+
         })
     }
 })

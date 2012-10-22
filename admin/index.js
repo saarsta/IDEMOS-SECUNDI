@@ -12,42 +12,109 @@ module.exports = function(app)
 {
     j_forms.forms.set_models(Models);
 
+    if(app.get('env') == 'production'){
+        app.all(/^\/admin/,function(req,res) {
+            res.redirect('http://uru-staging.herokuapp.com/admin/');
+        });
+        return;
+    }
+
+
 
     var admin = mongoose_admin.createAdmin(app,{root:'admin'});
 
     mongoose_admin.loadApi(app);
 
-    if(require('../utils').getShowOnlyPublished()) {
-        var _modelCounts = admin.modelCounts;
-        admin.modelCounts = function(collectionName,filters, onReady) {
-                filters = filters || {};
-                if(this.models[collectionName].model.schema.paths.is_hidden)
-                    filters['is_hidden'] = -1;
-                _modelCounts.call(this,collectionName,filters,onReady);
-        };
 
-        var _listModelDocuments = admin.listModelDocuments;
-        admin.listModelDocuments = function(collectionName, start, count,filters,sort, onReady) {
-            filters = filters || {};
-            if(this.models[collectionName].model.schema.paths.is_hidden)
-                filters['is_hidden'] = -1;
+//    if(require('../utils').getShowOnlyPublished()) {
+//        var _modelCounts = admin.modelCounts;
+//        admin.modelCounts = function(collectionName,filters, onReady) {
+//                filters = filters || {};
+//                if(this.models[collectionName].model.schema.paths.is_hidden)
+//                    filters['is_hidden'] = -1;
+//                _modelCounts.call(this,collectionName,filters,onReady);
+//        };
+//
+//        var _listModelDocuments = admin.listModelDocuments;
+//        admin.listModelDocuments = function(collectionName, start, count,filters,sort, onReady) {
+//            filters = filters || {};
+//            if(this.models[collectionName].model.schema.paths.is_hidden)
+//                filters['is_hidden'] = -1;
+//
+//            _listModelDocuments.call(this,collectionName, start, count,filters,sort, onReady);
+//        };
+//
+//        admin.getDocument = function(collectionName, documentId, onReady) {
+//            this.models[collectionName].model.findOne({_id:documentId,is_hidden:-1}, function(err, document) {
+//                if (err) {
+//                    console.log('Unable to get document because: ' + err);
+//                    onReady('Unable to get document', null);
+//                } else {
+//                    onReady(null, document);
+//                }
+//            });
+//        };
+//
+//        var permissions = require('admin-with-forms/permissions');
+//        var MongooseAdminAudit = require('admin-with-forms/mongoose_admin_audit.js').MongooseAdminAudit;
+//
+//        admin.updateDocument = function(req,user, collectionName, documentId, params, onReady) {
+//            onReady = _.once(onReady);
+//            var self = this;
+//            var fields = this.models[collectionName].fields;
+//            var model = this.models[collectionName].model;
+//            if(permissions.hasPermissions(user,collectionName,'update'))
+//            {
+//
+//                var form_type = this.models[collectionName].options.form || AdminForm;
+//                model.findOne({_id:documentId,is_hidden:-1}, function(err, document) {
+//                    if (err) {
+//                        console.log('Error retrieving document to update: ' + err);
+//                        onReady('Unable to update', null);
+//                    } else {
+//
+//                        var form = new form_type(req,{instance:document,data:params},model);
+//                        form.is_valid(function(err,valid)
+//                        {
+//                            if(err)
+//                            {
+//                                onReady(err, null);
+//                                return;
+//                            }
+//                            if(valid)
+//                            {
+//                                form.save(function(err,document)
+//                                {
+//                                    if (err) {
+////                            console.log('Unable to update document: ' + err);
+//                                        onReady(form, null);
+//                                    } else {
+//
+//                                        if (self.models[collectionName].options && self.models[collectionName].options.post) {
+//                                            document = self.models[collectionName].options.post(document);
+//                                        }
+//                                        MongooseAdminAudit.logActivity(user, self.models[collectionName].modelName, collectionName, document._id, 'edit', null, function(err, auditLog) {
+//                                            onReady(null, document);
+//                                        });
+//                                    }
+//
+//                                });
+//                            }
+//                            else
+//                            {
+//                                onReady(form,null);
+//                            }
+//                        });
+//                    }
+//                });
+//            }
+//            else
+//            {
+//                onReady('unauthorized');
+//            }
+//        };
+//    }
 
-            _listModelDocuments.call(this,collectionName, start, count,filters,sort, onReady);
-        };
-
-        admin.getDocument = function(collectionName, documentId, onReady) {
-            this.models[collectionName].model.findOne({_id:documentId,is_hidden:-1}, function(err, document) {
-                if (err) {
-                    console.log('Unable to get document because: ' + err);
-                    onReady('Unable to get document', null);
-                } else {
-                    onReady(null, document);
-                }
-            });
-        };
-
-
-    }
 
     admin.ensureUserExists('Uruad','uruadmin!@#uruadmin');
     admin.ensureUserExists('ishai','istheadmin');

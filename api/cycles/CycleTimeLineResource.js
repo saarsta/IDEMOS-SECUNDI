@@ -128,13 +128,14 @@ var CycleTimelineResource = module.exports = jest.Resource.extend({
                             {
                                 action.category = "פעולה";
                             }
-
-
+                            if(action.num_of_going < 0)
+                            {
+                                action.num_of_going = action.going_users ? action.going_users.length : 0;
+                            }
                             //put "is_going" true/false on each action
                             action.is_going = req.user ? _.any(action.going_users, function(going_user){return going_user.user_id + "" == req.user._id + ""}) : false;
                         })
                     }
-
                     cbk(err, actions);
                 });
             }

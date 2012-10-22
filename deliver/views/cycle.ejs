@@ -76,7 +76,7 @@
     </div>
     <div class="blue-bar">
         <div class="extra">
-            <a class="green-btn social-on-click" data-title="<%= cycle.title %>" data-img_src="<%= cycle.image_field && cycle.image_field.url %>" data-rel="/cycles/<%= cycle.id %>" href="javascript:void(0)"><%= cycle.is_user_follower_of_cycle ? "הפסק לעקוב" : "עקוב אחרי מעגל התנופה"%> </a>
+            <a class="green-btn social-on-click" title="לקידום הנושא ולקבלת עדכונים על המשך הפעילות לחצו כאן" data-img_src="<%= cycle.image_field && cycle.image_field.url %>" data-rel="/cycles/<%= cycle.id %>" href="javascript:void(0)"><%= cycle.is_user_follower_of_cycle ? "הפסק לעקוב" : "אני בעד"%> </a>
             <p id="followers_count" >מספר העוקבים אחרי מעגל תנופה זה: <strong><%= cycle.followers_count %></strong></p>
         </div>
     </div>
@@ -140,11 +140,24 @@
                 <h2>עוקבים</h2>
 
             </div>
+
         </div>
+
     </div>
+<!--<div class="cycle_join_tooltip">
+    <p class="cycle_tooltip_text">
+        לקידום הנושא ולקבלת עדכונים על המשך הפעילות לחצו כאן
+    </p>
+</div>-->
+
+
+
+
 
 
 <% include partials/footer.ejs %>
+
+
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -203,12 +216,13 @@
                 return false;
             });
 
+
             $('.green-btn').click(function(){
                 var button = $(this);
                 button.text('...');
 
                 db_functions.joinToCycleFollowers(cycle_id, function(err, result){
-                    button.text(result.is_follower ? "הפסק לעקוב" : "עקוב אחרי מעגל התנופה");
+                    button.text(result.is_follower ? "הפסק לעקוב" : "אני בעד");
                     $('#followers_count strong').text(result.followers_count);
                     if(result.is_follower){
                         setTimeout(function(){
@@ -313,31 +327,26 @@
              });
 
              db_functions.getCyclePosts(cycle_id, function (err,data) {
-
                    for (i = 0; i < data.objects.length; i++) {
                        data.objects[i].isFirst = (i === 0);
                        data.objects[i].isEven = ((i % 2)== 0);
-                       data.objects[i].voting =      data.objects[i].votes_for - data.objects[i].votes_against;
+                       data.objects[i].voting = data.objects[i].votes_for - data.objects[i].votes_against;
                        if(i == data.objects.length-1 || data.objects[i].discussion_id != data.objects[i+1].discussion_id )
                        {
                            data.objects[i].discussion_button=true;
                        }
-
-
                    }
                   dust.renderArray('cycle_post', data.objects, function (err, out) {
                       $('.hide-box').append(out);
                   });
-              });
+             });
 
-              $('.hide-box').on('click', '.vote_for', function () {
+             $('.hide-box').on('click', '.vote_for', function () {
                      vote.apply($(this),['add']);
-
              });
 
              $('.hide-box').on('click', ".vote_against", function () {
                  vote.apply($(this),['remove']);
-
              });
 
 
@@ -345,9 +354,18 @@
             var post_id = $(this).parents('.one').data("id");
             var button = $(this);
 
-            db_functions.voteForPost(post_id, actionType, function (err, post_obj) {
+            var user_info = {
+                user_logged_in : user.first_name ? true : false,
+                action_done : (user.actions_done_by_user && user.actions_done_by_user.vote_on_object) ? true : false,
+                action_name : "vote_on_object",
+                tokens_owned : user.tokens ? user.tokens : 0
+            }
+            db_functions.voteForPost(post_id, actionType, user_info, function (err, post_obj) {
                 if (!err) {
-
+                    if(!user.actions_done_by_user.vote_on_object)
+                    {
+                        user.actions_done_by_user.vote_on_object = true;
+                    }
                        button.parents(".ratio").find(".count").text(Math.round(post_obj.votes_for-post_obj.votes_against ));
                        var down_arrow = button.parents(".ratio").find(".down");
                        var up_arrow =button.parents(".ratio").find(".up");
@@ -419,6 +437,15 @@
             popup_event.fadeOut(2000);
         })
 
+//        $('.green-btn.social-on-click').tooltip({
+//            opacity:1,
+//            position: 'top center',
+//            offset:[0,1],
+//            tip:'.cycle_join_tooltip',
+//            events: {
+//                def:'mouseover, mouseout'
+//            }
+//        });
 
 
         //

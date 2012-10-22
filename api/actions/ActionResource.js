@@ -56,6 +56,7 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
             type: null,
             creator_id: null,
             cycle_id: null,
+            cycle_title: null,
             action_resources: null,
             tags: null,
             users: null,
@@ -84,10 +85,17 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
 
         this._super(req, filters, sorts, limit, offset, function (err, response) {
 
-            _.each(response.objects, function (action) {
+            async.forEach(response.objects, function (action, itr_cbk) {
                 action.participants_count = action.users.length;
                 action.is_going = req.user && _.any(action.going_users, function(going_user){return going_user.user_id + "" == req.user._id + ""});
-            })
+
+                models.Cycle.findById(action.cycle_id, {title: 1}, function(err, cycle){
+                    action.cycle_title = cycle.title;
+                    itr_cbk();
+                })
+            }, function(err){
+                callback(err,response);
+            });
 
 
 
@@ -108,7 +116,7 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
 //                });
 
 
-            callback(err, response);
+//            callback(err, response);
         });
     },
 
@@ -165,6 +173,7 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                     fields.first_name = user.first_name;
                     fields.last_name = user.last_name;
                     fields.users = {user_id: user_id, join_date: Date.now()};
+                    fields.num_of_going = 0;
 
                     // Massage some of the data to an acceptable format
                     fields.execution_date = {
@@ -214,15 +223,20 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                 var cycle_id = action_obj.cycle_id;
 
                 async.parallel([
+
+                    // 1. add discussion_id and action_id to the lists in user
+
+                    // 2. update actions done by user
                     function (cbk1) {
                         req.gamification_type = "action";
 
-                        // add discussion_id and action_id to the lists in user
+                        // 1. add discussion_id and action_id to the lists in user
                         var new_action = {
                             action_id: action_obj._id,
                             join_date: Date.now()
                         }
-                        models.User.update({_id:user_id}, {$addToSet:{actions: new_action}}, cbk1)
+
+                        models.User.update({_id:user_id}, {$addToSet:{actions: new_action}, $set: {"actions_done_by_user.create_object": true}}, cbk1)
                     },
 
                     function (cbk1) {
@@ -299,7 +313,7 @@ module.exports.approveAction = function (id, callback) {
                 g_action = action;
                 action.is_approved = true;
 
-                models.Cycle.findById(action.cycle_id, cbk);
+                models.Cycle.findOne({_id: action.cycle_id, is_hidden: -1}, cbk);
 
             }
         },

@@ -36,7 +36,8 @@ module.exports = function (req, res) {
             is_approved: 1,
             admin_text: 1,
             system_message: 1,
-            what_users_bring: 1
+            what_users_bring: 1,
+            going_users: 1
 //            social_popup_title: 1,
 //            social_popup_text: 1
         })
@@ -44,13 +45,14 @@ module.exports = function (req, res) {
         .populate('category', { _id: 1, name: 1 })
         .populate('cycle_id', { _id: 1, title: 1 })
         .populate('what_users_bring.user_id', {_id: 1, first_name: 1, last_name: 1, avatar: 1, facebook_id: 1})
+
         .exec(function (err, action) {
             if (err) {
                 console.log('actions/main.js: Error finding action by id. ', arguments);
                 return res.render('500.ejs', {error:err});
             }
 
-            if (!action) {
+            if (!action || !action.cycle_id) {
                 console.log('actions/main.js: Action not found. ', arguments);
                 return res.render('404.ejs', {error:err});
             }
@@ -81,14 +83,13 @@ module.exports = function (req, res) {
                     else {
                         cbk(null, null);
                     }
-                },
-
-
-                going_users: function (cbk) {
-                    models.Join.find({action_id: req.params[0]})
-                        .select({_id:1, user_id:1})
-                        .exec(cbk);
                 }
+
+//                going_users: function (cbk) {
+//                    models.Join.find({action_id: req.params[0]})
+//                        .select({_id:1, user_id:1})
+//                        .exec(cbk);
+//                }
 
 
 
@@ -99,7 +100,7 @@ module.exports = function (req, res) {
                 }
 
                 var proxyJson = args.user ? JSON.stringify(args.user.proxy) : null;
-                var going_users = args.going_users;
+                var going_users = action.going_users;
 
                 action.num_of_going = going_users.length;
                 action.grade_obj = args.grade;
