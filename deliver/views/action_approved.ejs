@@ -39,7 +39,7 @@ var error_message = error_message || '';
 <div class="followers-box">
     <div class="extra holds_the_timeline">
             <h2><span>ציר הזמן</span>
-                <a class="no_underline_cursor_when_hover" style="color: #50504F;" href="/cycles/<%=action.cycle_id && action.cycle_id.id%>"> <%= action.cycle_id && action.cycle_id.title%> </a>
+                <a class="no_underline_cursor_when_hover" style="color: #50504F;" href="/cycles/<%=action.cycle_id && action.cycle_id[0].cycle.id%>"> <%= action.cycle_id && action.cycle_id[0].cycle.title%> </a>
             </h2>
         <div class="followers-diagram">
 
@@ -174,7 +174,7 @@ var error_message = error_message || '';
             </div>-->
         </div>
     </div>
-    <div class="add-offer-btn-box social-on-click" data-rel="/actions/<%=action._id%>" data-img_src="<%= action.image_field ? action.image_field.url ||'' : '' %>" data-title="<%=action.title%>" data-main_title="<%= action.cycle_id && action.cycle_id.title %>">
+    <div class="add-offer-btn-box social-on-click" data-rel="/actions/<%=action._id%>" data-img_src="<%= action.image_field ? action.image_field.url ||'' : '' %>" data-title="<%=action.title%>" data-main_title="<%= action.cycle_id && action.cycle_id[0].cycle.title %>">
         <a href="#" >
             <% if(!action.is_going) { %>
             הצטרף
@@ -273,9 +273,9 @@ var error_message = error_message || '';
  <script type="text/javascript">
 
  var action_id='<%=action._id%>';
- var cycle_id='<%= action.cycle_id.id %>';
+ var cycle_id='<%= action.cycle_id[0].cycle.id %>';
  var my_id = "<%=user_logged ? user._id : ''%>";
- var cycle_title = '<%= action.cycle_id.title %>';
+ var cycle_title = "<%= action.cycle_id[0].cycle.title %>";
  $(document).ready(function () {
 
 

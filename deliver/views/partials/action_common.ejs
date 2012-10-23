@@ -1,7 +1,7 @@
 <script type="text/javascript" >
     var action_id = "<%=action._id%>";
-    var cycle_id='<%= action.cycle_id.id %>';
-    var cycle_title='<%= action.cycle_id.title%>';
+    var cycle_id='<%= action.cycle_id[0].cycle.id %>';
+    var cycle_title="<%= action.cycle_id[0].cycle.title%>";
     $(function(){
 
         window.uru= window.uru||{};

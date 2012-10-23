@@ -37,13 +37,14 @@ module.exports = function (req, res) {
             admin_text: 1,
             system_message: 1,
             what_users_bring: 1,
-            going_users: 1
+            going_users: 1,
+            cycle_id: 1
 //            social_popup_title: 1,
 //            social_popup_text: 1
         })
         .populate('action_resources.resource')
         .populate('category', { _id: 1, name: 1 })
-        .populate('cycle_id', { _id: 1, title: 1 })
+        .populate('cycle_id.cycle', { _id: 1, title: 1 })
         .populate('what_users_bring.user_id', {_id: 1, first_name: 1, last_name: 1, avatar: 1, facebook_id: 1})
 
         .exec(function (err, action) {
@@ -101,6 +102,7 @@ module.exports = function (req, res) {
 
                 var proxyJson = args.user ? JSON.stringify(args.user.proxy) : null;
                 var going_users = action.going_users;
+                var cycle = action.cycle_id[0];
 
                 action.num_of_going = going_users.length;
                 action.grade_obj = args.grade;
@@ -116,7 +118,7 @@ module.exports = function (req, res) {
                     is_going = going_users.some(function(going_user){ return going_user.user_id + "" == user_id + ""})
                 }
                 action.is_going = is_going;
-
+                action.cycle_id = cycle;
                 var ejsFileName = action.is_approved ? 'action_approved.ejs' : 'action_append.ejs';
                 var type = action.is_approved ? 'approved_action' : 'pending_action';
                 console.log(action.text_field_preview);

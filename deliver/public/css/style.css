@@ -8737,7 +8737,7 @@ div.greenbutton a:hover {
 div.icons {
     position: absolute;
     left: 217px;
-    bottom: 16px;
+    bottom: 21px;
 }
 
 div.icons img {
@@ -8800,6 +8800,12 @@ div.icons img {
 .sb-icons {
     margin: 20px 0px 5px 0px;
     height: 30px;
+}
+
+.sb-small-text{
+    text-align: center;
+    font: 12pt 'AdumaFOTRegular';
+    color: #3760ec;
 }
 
 

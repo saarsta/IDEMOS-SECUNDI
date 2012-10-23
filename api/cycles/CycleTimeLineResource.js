@@ -34,7 +34,8 @@ var CycleTimelineResource = module.exports = jest.Resource.extend({
                                     var obj = {
                                         type: "admin_update",
                                         text: admin_update.info,
-                                        date: admin_update.date
+                                        date: admin_update.date,
+                                        is_displayed: admin_update.is_displayed
                                     }
                                     objs.push(obj);
                                 }
@@ -50,7 +51,8 @@ var CycleTimelineResource = module.exports = jest.Resource.extend({
 
                             var obj = {
                                 type: "cycle_creation",
-                                date: cycle.creation_date
+                                date: cycle.creation_date.date,
+                                is_displayed: cycle.creation_date.is_displayed
                             }
 
                             objs.push(obj);
@@ -71,7 +73,7 @@ var CycleTimelineResource = module.exports = jest.Resource.extend({
                             var discussion = _.find(cycle.discussions, function(discussion){ return discussion.is_main == true});
                             if(discussion){
                                 models.Discussion.findById(discussion.discussion)
-                                    .select({'_id': 1, 'title': 1, 'text_field_preivew': 1, 'image_field_preview': 1, 'creation_date': 1})
+                                    .select({'_id': 1, 'title': 1, 'text_field_preivew': 1, 'image_field_preview': 1, 'creation_date': 1, 'is_displayed': 1})
                                     .exec(function(err, discussion_obj){
                                         if(!err && discussion_obj){
                                             discussion_obj = JSON.parse(JSON.stringify(discussion_obj));
@@ -93,7 +95,7 @@ var CycleTimelineResource = module.exports = jest.Resource.extend({
 
             function(cbk){
                 models.Update.find({cycle: cycle_id})
-                    .select({'_id': 1, 'title': 1, 'text_field': 1, 'image_field': 1, 'creation_date': 1})
+                    .select({'_id': 1, 'title': 1, 'text_field': 1, 'image_field': 1, 'creation_date': 1, 'is_displayed': 1})
                     .exec(function(err, updates){
 
                         updates = JSON.parse(JSON.stringify(updates));
@@ -110,8 +112,8 @@ var CycleTimelineResource = module.exports = jest.Resource.extend({
             },
 
             function(cbk){
-                models.Action.find({cycle_id: cycle_id, is_approved: true})
-                    .select({'_id': 1, 'title': 1, 'text_field_preivew': 1, 'image_field_preview': 1, 'going_users': 1, 'num_of_going': 1, 'location': 1, 'execution_date': 1, 'category':1})
+                models.Action.find({"cycle_id.cycle": cycle_id, is_approved: true})
+                    .select({'_id': 1, 'title': 1, 'text_field_preivew': 1, 'image_field_preview': 1, 'going_users': 1, 'num_of_going': 1, 'location': 1, 'execution_date': 1, 'category':1, 'cycle_id.is_displayed': 1})
                     .populate('category')
                     .exec(function(err, actions){
                     if(!err){
@@ -146,9 +148,6 @@ var CycleTimelineResource = module.exports = jest.Resource.extend({
             _.each(arr, function(item){ item.date = new Date(item.date)})
             arr = _.sortBy(arr, function(item){ return Math.min(item.date);  });
 
-            //TODO remove this, and get the actual chosen items to display default popups on timeline
-            arr[0].is_displayed = true;
-            arr[1].is_displayed = true;
 
             callback(null,{meta:{total_count: arr.length}, objects: arr});
         });
