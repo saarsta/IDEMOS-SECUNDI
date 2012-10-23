@@ -3,6 +3,7 @@ var timeline= {
 		console.log('Rendering timeline.');
 
         db_functions.getCycleTimeline(cid, function (err, data) {
+			console.log('timeline data: ', data.objects);
             var type_names={
                     past:'',
                     cycle_creation :'יצירת מעגל תנופה',
