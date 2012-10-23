@@ -12,9 +12,9 @@
         <h4>{title}</h4>
     </a>
 
-     <p>{text_field}<a href="/updates/{_id}">קרא עוד</a></p>
+     <p>{text_field_preview|s}<a href="/updates/{_id}">קרא עוד</a></p>
 
-    <a href="/facebookShare?link=/updates/{_id}" target="_blank" class="btn share" data-title="{title}" data-text_preview="{text_field}" data-img_src="{image_field.url}" rel="/updates/{_id}" >
+    <a href="/facebookShare?link=/updates/{_id}" target="_blank" class="btn share" data-title="{title}" data-text_preview="{text_field_preview}" data-img_src="{image_field.url}" rel="/updates/{_id}" >
         שתף
     </a>
 </div>

@@ -3,8 +3,6 @@
         <span class="i"></span>
 
 
-        <div class="popup-event type-two" item-id="{_id}">
-
         {?is_displayed}
             <div class="popup-event type-two showdiv" item-id="{_id}">
         {:else}
@@ -13,9 +11,9 @@
 
 
             <div class="popup-text">
-                <img  width="90" src="http://profile.ak.fbcdn.net/hprofile-ak-snc4/49136_745621901_4865704_n.jpg" class="floatRight" />
+                <img  width="90" src="{image_field.url}" class="floatRight" />
                 <h5>{title}</h5>
-                {text_field}
+                {text_field|s}
             </div>
         </div>
     </div>

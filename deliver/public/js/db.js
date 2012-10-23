@@ -1449,7 +1449,22 @@ var db_functions = {
                 callback(err, null);
             }
         });
+    },
+
+    startStopGettingEmailNotifications: function (user_id, mail_notifications, callback) {
+        db_functions.loggedInAjax({
+            type: 'PUT',
+            url: '/api/users/' + user_id,
+            data: JSON.stringify({mail_notifications: mail_notifications}),
+            success: function (data) {
+                callback(null, data)
+            },
+            dataType: 'json',
+            processData: false,
+            contentType: "application/json"
+        });
     }
+
 };
 
 

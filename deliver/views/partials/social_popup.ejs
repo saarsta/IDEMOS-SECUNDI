@@ -38,7 +38,12 @@
                 </div>
             </div>
             <div class="mail-notifications-cancel sb-small-text">
-                לחץ כאן כדי לא לקבל לקבל עדכונים במייל
+                <% if(user.mail_notifications == 'true'){ %>
+                לחץ כאן כדי לא לקבל עדכונים במייל
+                <% } else { %>
+               לחץ כאן כדי לקבל עדכונים במייל
+                <% } %>
+
             </div>
         </div>
     </div>
@@ -164,5 +169,15 @@
                 'share-google', 'status=0,scrollbars=0,location=0,height=320,width=660,resizable=1');
         return false;
     });
+
+    $('.mail-notifications-cancel').on('click', function(){
+        console.log(user);
+        var mail_notifications = user.mail_notifications = user.mail_notifications ? false : true;
+        db_functions.startStopGettingEmailNotifications(user._id, mail_notifications, function(err, data){
+            if(!err)
+                $('.mail-notifications-cancel').text(mail_notifications ? "לחץ כאן כדי לא לקבל עדכונים במייל" : "לחץ כאן כדי לקבל עדכונים במייל");
+
+        })
+    })
 
 </script>
