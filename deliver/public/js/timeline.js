@@ -1,10 +1,9 @@
-
 var timeline= {
-
-
     render: function (cid, ctitle, display_id) {
+		console.log('Rendering timeline.');
 
         db_functions.getCycleTimeline(cid, function (err, data) {
+			console.log('timeline data: ', data.objects);
             var type_names={
                     past:'',
                     cycle_creation :'יצירת מעגל תנופה',
@@ -124,6 +123,7 @@ var timeline= {
                 }
 				i++;
             } );
+			console.log("Today's index: " + todayNodeIndex);
             i=1;
             $.each(past_months, function (index, item) {
                 nodes.splice(i,0,item);
@@ -135,7 +135,7 @@ var timeline= {
             }
 
             var count = nodes.length-1 -clustered_count + custers_count;
-			var offsetFromIndex = function (index) {
+			var offsetFromIndex = function offsetFromIndex(index) {
 				var LastOffset = 980;
 				var TodayOffset = LastOffset / 3;
 				if (todayNodeIndex < 0) {
@@ -148,12 +148,15 @@ var timeline= {
 				}
 			};
 
+			offsetFromIndex = logFunctionCalls(offsetFromIndex);
+
             var render_clusters={};
             i=0;
             $.each(nodes, function (index, item) {
 
                 if(item.cluster)
                 {
+					console.log('Item ' + index + ' in cluster (index: ' + j + ').');
                     var item_date=   new Date( item.date);
                     var ind=item_date.format('d.m');
                     if(!render_clusters[ind])  {
