@@ -119,20 +119,10 @@ var VoteArticlePostResource = module.exports = common.GamificationMongooseResour
                  updated_post.balance = new_balance;
 
                  // update actions done by user
-                 var actions_done_by_user = {
-                     create_object:false,
-                     post_on_object:false,
-                     suggestion_on_object:false,
-                     grade_object:false,
-                     vote_on_object:true,
-                     join_to_object:false
-                 }
-                 models.User.update({_id:req.session.user._id}, {$addToSet:{actions_done_by_user : actions_done_by_user}});
-                 models.User.update({_id:req.session.user._id}, {"actions_done_by_user.vote_on_object" : true},function(err) {
+                 models.User.update({_id:req.session.user._id},{$set: {"actions_done_by_user.vote_on_object": true}}, function(){
                      callback(err, updated_post);
                  });
              }
-
         })
     }
 })

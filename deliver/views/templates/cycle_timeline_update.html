@@ -4,6 +4,14 @@
 
 
         <div class="popup-event type-two" item-id="{_id}">
+
+        {?is_default_displayed}
+            <div class="popup-event type-two showdiv" item-id="{_id}">
+        {:else}
+                <div class="popup-event type-two" item-id="{_id}">
+        {/is_default_displayed}
+
+
             <div class="popup-text">
                 <img  width="90" src="http://profile.ak.fbcdn.net/hprofile-ak-snc4/49136_745621901_4865704_n.jpg" class="floatRight" />
                 <h5>{title}</h5>
@@ -11,6 +19,7 @@
             </div>
         </div>
     </div>
+
     {^cluster}
         <span class="number">
               {date|date_short}

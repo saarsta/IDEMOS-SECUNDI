@@ -128,13 +128,14 @@ var CycleTimelineResource = module.exports = jest.Resource.extend({
                             {
                                 action.category = "פעולה";
                             }
-
-
+                            if(action.num_of_going < 0)
+                            {
+                                action.num_of_going = action.going_users ? action.going_users.length : 0;
+                            }
                             //put "is_going" true/false on each action
                             action.is_going = req.user ? _.any(action.going_users, function(going_user){return going_user.user_id + "" == req.user._id + ""}) : false;
                         })
                     }
-
                     cbk(err, actions);
                 });
             }
@@ -145,6 +146,9 @@ var CycleTimelineResource = module.exports = jest.Resource.extend({
             _.each(arr, function(item){ item.date = new Date(item.date)})
             arr = _.sortBy(arr, function(item){ return Math.min(item.date);  });
 
+            //TODO remove this, and get the actual chosen items to display default popups on timeline
+            arr[0].is_default_displayed = true;
+            arr[1].is_default_displayed = true;
 
             callback(null,{meta:{total_count: arr.length}, objects: arr});
         });

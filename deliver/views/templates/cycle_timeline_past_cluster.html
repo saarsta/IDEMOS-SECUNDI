@@ -3,7 +3,12 @@
         <span class="i right"></span>
         <span class="i left"></span>
         <span class="i center"></span>
-        <div class="popup-event type-three">
+        {?is_default_displayed}
+        <div class="popup-event type-three showdiv">
+            {:else}
+            <div class="popup-event type-three">
+                {/is_default_displayed}
+
             <div class="popup-text">
                 <h3>{month}</h3>
                 <ul class="">

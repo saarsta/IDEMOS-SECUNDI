@@ -11,7 +11,41 @@ module.exports = AdminForm.extend({
 
 
         this.static['js'].push('/node-forms/js/autocomplete.js');
+
+        this.timeline_data = {};
     },
+
+    prepareTimeline: function(callback) {
+        // GET THE DATA FROM THE DB
+        this.timeline_data['check_me'] = true;
+        // set the field value
+        this.data.check_me = true;
+
+        callback();
+    },
+
+    render_ready:function(callback) {
+        var self = this;
+        var base = self._super;
+        self.prepareTimeline(function(err){
+            if(err)
+                callback(err);
+            else
+                base.call(self,callback);
+        });
+    },
+
+    save:function(callback) {
+        var self = this;
+        var base = self._super;
+        self.prepareTimeline(function(err){
+            if(err)
+                callback(err);
+            else
+                base.call(self,callback);
+        });
+    },
+
     get_fields: function() {
         this._super();
         if(this.fields['discussions'])
@@ -22,6 +56,13 @@ module.exports = AdminForm.extend({
             this.fields['subject'].validators.push(function(arr) {
                 return arr.length ? true : 'You must select at least one subject';
             });
+
+        // create a checkbox field
+        this.fields['check_me'] = new j_forms.fields.BooleanField();
+
+        // add the checkbox field to the upper level
+        this.fieldsets[0].fields.push('check_me');
+
     },
 
     actual_save : function(callback)
@@ -117,6 +158,20 @@ module.exports = AdminForm.extend({
             ], itr_cbk)
         }
 
+
+        /*if((!this.data.is_hidden && cycle.is_hidden) && (this.data.is_hidden && !cycle.is_hidden)){
+            //if condition true is_hidden was changed and "cycle.is_hidden" is what was before the change
+            var err_string = "";
+            models.Action.find({cycle_id: cycle._id}, function(err, actions){
+                _.each(actions, function(action){ if(action.is_hidden == cycle.is_hidden){
+                    err_string += action.title;
+                    err_string += action.is_hidden ? " is hidden" : " is not hidden";
+                }})
+            })
+        }*/
+
+        // SAVE TIMELINE STUFF TO DB
+
         if(cycle.isNew){
             console.log('length of discussions is.....');
             console.log(cycle.discussions.length);
@@ -136,5 +191,29 @@ module.exports = AdminForm.extend({
         }else{
             this._super(callback);
         }
+
+        if(err_string){
+            alert(err_string);
+            callback("is hidden err");
+        }else
+            if(cycle.isNew){
+                console.log('length of discussions is.....');
+                console.log(cycle.discussions.length);
+
+                for(var field_name in self.clean_values)
+                    self.instance.set(field_name,self.clean_values[field_name]);
+
+                self.clean_values = {};
+
+
+                async.forEach(cycle.discussions, iterator, function(err, result){
+                    if(err)
+                        callback(err);
+                    else
+                        base.call(self,callback);
+                });
+            }else{
+                this._super(callback);
+            }
     }
 });
