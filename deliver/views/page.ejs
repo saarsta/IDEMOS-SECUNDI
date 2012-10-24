@@ -6,7 +6,9 @@
     <script src="/resources/js/jquery-fieldselection.js" type="text/javascript"></script>
 </head>
 <body>
+
 <% include partials/body_top.ejs %>
+
 <div id="wrap">
     <div id="header">
         <% include partials/menu.ejs %>
@@ -15,15 +17,29 @@
         <% include partials/tag_search.ejs %>
     </div>
 
-    <% if(page.title) { %>
+    <!--style="width: 644px"-->
+        <div class="main-text" >
+            <div class="about-one">
+                <% if(page.title) { %>
+                <h4>
+                    <%= page.title %>
+                </h4>
+                <% } %>
+                <p>
+                    <%- page.html %>
+                </p>
+            </div>
+        </div>
+
+    <!--<% if(page.title) { %>
         <h2>
             <%= page.title %>
         </h2>
     <% } %>
-    <%- page.html %>
+    <%- page.html %>-->
 </div>
 
-
 <% include partials/footer.ejs %>
+
 </body>
 </html>
