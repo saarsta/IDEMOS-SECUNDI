@@ -324,7 +324,7 @@ var db_functions = {
 
     getFounders:function (callback) {
         db_functions.loggedInAjax({
-            url:'/api/founders',
+            url:'/api/founders?limit=0',
             type:"GET",
             async:true,
             success:function (data) {
