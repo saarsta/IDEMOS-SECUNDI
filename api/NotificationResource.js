@@ -61,7 +61,6 @@ var NotificationCategoryResource = module.exports = resources.MongooseResource.e
                 filters['user_id'] = user_id;
 
 
-
             this._super(req, filters, sorts, limit, offset, function (err, results) {
 
                 if(err)

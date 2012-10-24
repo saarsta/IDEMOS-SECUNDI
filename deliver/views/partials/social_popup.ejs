@@ -38,7 +38,7 @@
                 </div>
             </div>
             <div class="mail-notifications-cancel sb-small-text">
-                <% if(user.mail_notifications == 'true'){ %>
+                <% if(user && user.mail_notifications == 'true'){ %>
                 לחץ כאן כדי לא לקבל עדכונים במייל
                 <% } else { %>
                לחץ כאן כדי לקבל עדכונים במייל
@@ -62,8 +62,12 @@
     var img_src = button.data('img_src');
     var text_preview;
     var new_title;
+    var twitter_msg = "";
+
 
     if(type == 'approved_action'){
+        twitter_msg = "הצטרפתי לפעולה כחלק מקמפיין לשינוי באתר תנועת עורו. גם אתם מוזמנים להצטרף ולתמוך במהלך";
+
         new_title =
                 "גם אני אשתתף בפעולה "
                         +   title;
@@ -76,6 +80,7 @@
                         + "אשמח לראותך שם!";
 
     }else if(type == 'pending_action'){
+        twitter_msg = "תמכתי ברעיון לפעולה כחלק מקמפיין לשינוי באתר תנועת עורו. גם אתם מוזמנים להצטרף ולתמוך במהלך";
         new_title = "גם אני אתמוך ברעיון לפעולה"
                 + " " + title;
         text_preview =
@@ -84,6 +89,7 @@
                         + ". אם גם לך חשוב לקדם את הנושא אפשר להצטרף ולתמוך באתר עורו. "
                         + "אשמח לראותך שם!";
     }else{
+        twitter_msg = "הצטרפתי לקמפיין לשינוי באתר תנועת עורו. גם אתם מוזמנים להצטרף ולתמוך במהלך";
         new_title =
                 "הצטרפתי לקידום הפעילות בנושא "
                         + title
@@ -98,8 +104,9 @@
                         + " "
                         + "אשמח לראותך שם!";
     }
+
     global.share_messages = {
-        'a': new_title + text_preview
+        'a': twitter_msg
     };
 
 
@@ -158,14 +165,14 @@
     });
 
     $('#share-twitter').on('click', function () {
-        window.open('https://twitter.com/share?url=' + encodeURIComponent('http://www.uru.org.il') + '&text=' +
+        window.open('https://twitter.com/share?url=' + encodeURIComponent(rel) /*+ '&text=' */+
                 encodeURIComponent(global.share_messages.a) + '&via=URUisrael', 'share-twitter', 'status=0,scrollbars=0,location=0,height=320,width=660,resizable=1'
         );
         return false;
     });
 
     $('#share-google').on('click', function () {
-        window.open('https://plusone.google.com/_/+1/confirm?hl=en&url=' + encodeURIComponent('http://www.uru.org.il'),
+        window.open('https://plusone.google.com/_/+1/confirm?hl=en&url=' + encodeURIComponent(rel),
                 'share-google', 'status=0,scrollbars=0,location=0,height=320,width=660,resizable=1');
         return false;
     });

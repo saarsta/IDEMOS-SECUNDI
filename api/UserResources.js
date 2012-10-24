@@ -23,26 +23,7 @@ var UserResource = module.exports =  mongoose_resource.MongooseResource.extend({
             in:true
         }
         }
-    }/*,
-
-    //update user biography
-    update_obj: function (req, object, callback) {
-        if(req.body.biography)
-        {
-            object.biography = req.body.biography;
-
-            object.save(function(err, user_obj){
-                callback(err, user_obj);
-            })
-        }
-        else {
-            object.mail_notifications =
-            object.save(function(err, user_obj){
-                callback(err, user_obj);
-            })
-        }
-
-    }*/
+    }
 });
 
 
