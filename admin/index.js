@@ -122,7 +122,8 @@ module.exports = function(app)
     admin.registerMongooseModel("User",Models.User,null,{
         form:require('./user'),
         list:['username','first_name','last_name'],
-        filters:['email','first_name','last_name','facebook_id','gender','age','invitation_code','identity_provider']
+        filters:['email','first_name','last_name','facebook_id','gender','age','invitation_code','identity_provider'],
+        search:'/__value__/.test(this.first_name)||/__value__/.test(this.last_name)'
     });
     admin.registerMongooseModel("InformationItem",Models.InformationItem, null,{
         list:['title'],
@@ -175,7 +176,7 @@ module.exports = function(app)
         list_populate:['discussion_id'],
         order_by:['-creation_date'],
         filters:['discussion_id','creator_id'],
-        search:'/__value__/.test(this.discussion_id)'
+        search:'/__value__/.test(this.title)'
 
     });
     admin.registerMongooseModel('PostAction',Models.PostAction,null,{

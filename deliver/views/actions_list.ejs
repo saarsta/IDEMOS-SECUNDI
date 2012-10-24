@@ -123,7 +123,7 @@ var cycle_id = cycle_id || '';
 //                query =query+'&tags='+selectedTag;
 //            }
             if(selectedCycle){
-                query = query+'&cycle_id=' + selectedCycle;
+                query = query+'&cycle_id.cycle=' + selectedCycle;
                 type = 'pendingActions';
             }
             return query;

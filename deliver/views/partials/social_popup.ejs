@@ -38,7 +38,7 @@
                 </div>
             </div>
             <div class="mail-notifications-cancel sb-small-text">
-                <% if(user.mail_notifications == 'true'){ %>
+                <% if(user && user.mail_notifications == 'true'){ %>
                 לחץ כאן כדי לא לקבל עדכונים במייל
                 <% } else { %>
                לחץ כאן כדי לקבל עדכונים במייל

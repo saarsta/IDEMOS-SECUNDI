@@ -1464,7 +1464,6 @@ var db_functions = {
             contentType: "application/json"
         });
     }
-
 };
 
 
