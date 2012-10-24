@@ -1155,7 +1155,7 @@ var db_functions = {
 
     getPendingActionsByCycle:function (cycle_id, limit, callback) {
         db_functions.loggedInAjax({
-            url:'/api/actions/?cycle_id=' + cycle_id + '&is_approved=false' + (limit ? '&limit=' + limit : ''),
+            url:'/api/actions/?cycle_id.cycle=' + cycle_id + '&is_approved=false' + (limit ? '&limit=' + limit : ''),
             type:"GET",
             async:true,
             success:function (data, err) {
@@ -1449,7 +1449,22 @@ var db_functions = {
                 callback(err, null);
             }
         });
+    },
+
+    startStopGettingEmailNotifications: function (user_id, mail_notifications, callback) {
+        db_functions.loggedInAjax({
+            type: 'PUT',
+            url: '/api/users/' + user_id,
+            data: JSON.stringify({mail_notifications: mail_notifications}),
+            success: function (data) {
+                callback(null, data)
+            },
+            dataType: 'json',
+            processData: false,
+            contentType: "application/json"
+        });
     }
+
 };
 
 

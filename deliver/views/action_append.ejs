@@ -30,7 +30,7 @@ var cycle_id = cycle_id || '';
 <div class="followers-box">
     <div class="extra">
         <h2><span>ציר הזמן</span> 
-           <a class="no_underline_cursor_when_hover" style="color: #50504F;" href="/cycles/<%=action.cycle_id.id%>"> <%=action.cycle_id.title%> </a>
+           <a class="no_underline_cursor_when_hover" style="color: #50504F;" href="/cycles/<%=action.cycle_id[0].cycle.id%>"> <%=action.cycle_id[0].cycle.title%> </a>
         </h2>
         <div class="followers-diagram">
 
@@ -47,7 +47,7 @@ var cycle_id = cycle_id || '';
     </h2>
     <div  id="minInfo" class="text-box cf">
         <h3>
-            <span class="arrow"><a href="/cycles/<%=action.cycle_id.id%>" style="color: #50504F;top :0px "><%=action.cycle_id.title%></a></span>
+            <span class="arrow"><a href="/cycles/<%=action.cycle_id[0].cycle.id%>" style="color: #50504F;top :0px "><%=action.cycle_id[0].cycle.title%></a></span>
             <span class="blue-title"><%=action.title%></span>
         </h3>
 
@@ -81,8 +81,8 @@ var cycle_id = cycle_id || '';
     <div id="fullInfo" class="add-offer text-box cf fullInfo" style="display: none">
         <!--  <h2><span class="arrow">פעולת שטח</span> <a href="">מפגינים מול ביתו של שר התשתיות</a></h2>-->
         <h3><span class="arrow">
-            <a href="/cycles/<%=action.cycle_id._id%>" style="color: #50504F;position: initial;">
-                <%=action.cycle_id.title%></a> </span>
+            <a href="/cycles/<%=action.cycle_id[0].cycle._id%>" style="color: #50504F;position: initial;">
+                <%=action.cycle_id[0].cycle.title%></a> </span>
             <span class="blue-title"><%=action.title%></span></h3>
         <div class="text-box cf">
             <div id="action_image" style="width: 139px;height: 135px; overflow:hidden;" class='auto-scale floatRight'>
@@ -428,8 +428,8 @@ var cycle_id = cycle_id || '';
     var my_avatar = "<%=avatar%>";
     var my_action_grade = Number("<%= action.grade_obj ? action.grade_obj.value || 0 : 0 %>");
     var vision = $('#action_content').text();
-    var cycle_id='<%= action.cycle_id.id %>';
-    var cycle_title='<%= action.cycle_id.title%>';
+    var cycle_id='<%= action.cycle_id[0].cycle.id %>' ? '<%= action.cycle_id[0].cycle.id %>' : '';
+    var cycle_title="<%= action.cycle_id[0].cycle.title%>";
     var action_grade = Number("<%= action.grade%>");
     var action_resources = <%- JSON.stringify(action.action_resources) %>;
 

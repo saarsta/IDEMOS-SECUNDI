@@ -90,7 +90,7 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                 action.is_going = req.user && _.any(action.going_users, function(going_user){return going_user.user_id + "" == req.user._id + ""});
 
                 models.Cycle.findById(action.cycle_id[0].cycle, {title: 1}, function(err, cycle){
-                    action.cycle_title = cycle.title;
+                    action.cycle_title = cycle && cycle.title;
                     itr_cbk();
                 })
             }, function(err){
@@ -214,13 +214,21 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                         action_object.set(field, fields[field]);
                     }
 
-                    base.call(self, req, fields, cbk);
+                    //set cycle_id as an object
+                    fields.cycle_id = {
+                        cycle: fields.cycle_id,
+                        is_displayed: false
+                    }
+
+                    base.call(self, req, fields, function(err, action){
+                        cbk(err, action);
+                    });
                 }
             },
 
             function(action_obj, cbk){
                 g_action = action_obj;
-                var cycle_id = action_obj.cycle_id;
+                var cycle_id = action_obj.cycle_id[0].cycle;
 
                 async.parallel([
 
@@ -284,9 +292,10 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                 }
             }
         ], function(err){
+            var a = 9;
             callback(err, {
                 redirect_link: g_action ? req.app.get('root_path') + '/actions/' + g_action.id : null,
-                _id: g_action.id
+                _id: g_action && g_action.id
             });
         })
     }
@@ -313,7 +322,7 @@ module.exports.approveAction = function (id, callback) {
                 g_action = action;
                 action.is_approved = true;
 
-                models.Cycle.findOne({_id: action.cycle_id, is_hidden: -1}, cbk);
+                models.Cycle.findOne({_id: action.cycle_id[0].cycle, is_hidden: -1}, cbk);
 
             }
         },

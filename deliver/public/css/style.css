@@ -6204,7 +6204,7 @@ a.fraction-btn {
     text-align: right;
     height: 115px;
     overflow: hidden;
-
+    cursor: pointer;
 }
 
 .followers-diagram .event .type-two .popup-text h5 {
@@ -6215,10 +6215,6 @@ a.fraction-btn {
 
 .followers-diagram .event .type-two .popup-text .floatRight {
     margin: 0 0 7px 9px;
-}
-
-.followers-diagram .event .type-two .popup-text p {
-    clear: both;
 }
 
 .followers-diagram .event .type-three h3 {
@@ -8737,7 +8733,7 @@ div.greenbutton a:hover {
 div.icons {
     position: absolute;
     left: 217px;
-    bottom: 16px;
+    bottom: 21px;
 }
 
 div.icons img {
@@ -8775,7 +8771,7 @@ div.icons img {
 
 .sb-bottom {
     height: 100px;
-    padding:  10px;
+    padding:  12px;
 
     background: #ededed;
     color: #3760ec;
@@ -8800,6 +8796,13 @@ div.icons img {
 .sb-icons {
     margin: 20px 0px 5px 0px;
     height: 30px;
+}
+
+.sb-small-text{
+    text-align: center;
+    font: 12pt 'AdumaFOTRegular';
+    color: #3760ec;
+    cursor: pointer;
 }
 
 

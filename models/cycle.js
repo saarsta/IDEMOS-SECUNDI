@@ -1,3 +1,6 @@
+
+
+
 var mongoose = require("mongoose"),
     Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId,
@@ -7,7 +10,7 @@ var mongoose = require("mongoose"),
     utils = require('../utils');
 
 var Cycle = module.exports = new Schema({
-    creation_date: {type:Date, 'default':Date.now},
+    creation_date: {date:{type:Date, 'default':Date.now}, is_displayed: {type: Boolean, 'default': false}},
     due_date : {type:Date/*, 'default':function(){ return Date.now() + 1000*3600*24*30;  }*/},
     subject:[{
         id:{type:ObjectId, ref:'Subject', index:true, required:true},

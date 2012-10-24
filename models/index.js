@@ -60,6 +60,7 @@ var Schemas = exports.Schemas = {
         cycle:{type:ObjectId, ref:'Cycle', index:true},
         is_visible:{type:Boolean, 'default':true},
         creation_date:{type:Date, 'default':Date.now},
+        is_displayed: {type:Boolean, 'default':false},
 
         gui_order:{type:Number, 'default':9999999, editable:false},
         is_hidden:{type:Boolean, 'default':true}

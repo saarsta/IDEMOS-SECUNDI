@@ -67,17 +67,39 @@ db.actions.find().forEach(function(action){
             }
         })
 
--------------------------------------------------
-db.actions.find().forEach(function(obj){
-        print('checking ' + obj._id);
-        db.grades.find({"discussion_id": obj._id}).forEach(function(grade_obj){
-            var user = db.users.findOne({"_id": grade_obj.user_id});
-            if(user && user._id && !isUserInDiscussion(obj.users, user._id)) {
-                print('adding user to discussion ' + user.email);
-                obj.users.push({ user_id : user._id, join_date: new Date()});
-                db.discussions.save(obj);
-            }
-            else
-               print('couldnt find user ' + grade_obj.user_id);
-        });
-    });
+
+        ---------------------
+
+
+
+//change actions, so that one action can have more than one cycle
+db.actions.find().forEach(function (obj) {
+    var cycle_id = obj.cycle_id;
+    if (!obj.cycle_id.length) {
+        print(cycle_id);
+        obj.cycle_id = [{}];
+        obj.cycle_id[0].cycle = cycle_id;
+        obj.cycle_id[0].is_displayed = false;
+        db.actions.save(obj);
+    }
+})
+
+
+---------------------------------------------------------------
+
+db.cycles.find().forEach(function (obj) {
+    if(!obj.creation_date.date){
+        print(obj.creation_date);
+        var creation_date = {date: obj.creation_date, is_displayed: false};
+
+         obj.creation_date = creation_date;
+         db.cycles.save(obj);
+    }
+})
+
+        var creation_date = {};
+
+        creation_date.date = obj.creation_date;
+        creation_date.is_displayed = false;
+        obj.creation_date = creation_date;
+        obj.cycles.save(obj);

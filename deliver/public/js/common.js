@@ -625,3 +625,48 @@ function animateCluster  (items)
     }
 
 }
+
+var logFunctionCalls = function (f, name) {
+	var stringify = function (x) {
+		if (typeof x == "function") {
+			return '(function ' + x.name + ')';
+		} else {
+			try {
+				return JSON.stringify(x);
+			} catch (e) {
+				return x.toString();
+			}
+		}
+	};
+
+	return function () {
+		var call = '';
+		// context
+		if (this && this != window) {
+			call += stringify(this);
+		}
+
+		// name
+		call += name || f.name || 'anonymous';
+
+		// arguments
+		var first = true;
+		call += '(';
+		for (var i = 0; i < arguments.length; i++) {
+			if (first) {
+				first = false;
+			} else {
+				call += ', ';
+			}
+
+			call += stringify(arguments[i]);
+		}
+		call += ')';
+
+		// Call the function, log the call and result
+		console.log('Calling ' + call);
+		var result = f.apply(this, arguments);
+		console.log(call + ' = ' + stringify(result));
+		return result;
+	};
+};

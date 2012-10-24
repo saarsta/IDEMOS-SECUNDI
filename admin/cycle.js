@@ -20,8 +20,36 @@ module.exports = AdminForm.extend({
         this.timeline_data['check_me'] = true;
         // set the field value
         this.data.check_me = true;
-
         callback();
+
+//        // GET THE DATA FROM THE DB
+//        var my_cycle_id = this.instance.id;
+//        var cycle = this;
+//        cycle.data.actions = {};
+//        cycle.timeline_data.actions = {};
+//        models.Action.find({"cycle_id.cycle": my_cycle_id, is_approved: true})
+//            .select({'_id': 1, 'title': 1, 'cycle_id': 1})
+//            .exec(function(err, actions){
+//                if(!err){
+//                    actions = JSON.parse(JSON.stringify(actions));
+//                    async.forEach(actions, function(action){
+//                        var is_displayed = false;
+//                        async.forEach(action.cycle_id, function(index, cycle_id){
+//                            if(cycle_id.cycle == my_cycle_id){
+//                                is_displayed = cycle_id.is_displayed;
+//                            }
+//                        })
+//                        cycle.timeline_data.actions['action' + action._id] = {id: null, title: null, is_displayed: null};
+//                        cycle.timeline_data.actions['action' + action._id].id = action._id;
+//                        cycle.timeline_data.actions['action' + action._id].title = action.title;
+//                        cycle.timeline_data.actions['action' + action._id].is_displayed = is_displayed;
+//
+//                        // set the field value
+//                        cycle.data.actions['action' + action._id] = cycle.timeline_data.actions['action' + action._id];
+//                    })
+//                }
+//                callback();
+//            })
     },
 
     render_ready:function(callback) {
@@ -62,6 +90,11 @@ module.exports = AdminForm.extend({
 
         // add the checkbox field to the upper level
         this.fieldsets[0].fields.push('check_me');
+
+//        async.forEach(this.data.actions, function(action){
+//            this.fields['action: ' + action.title] = new j_forms.fields.BooleanField();
+//            this.fieldsets[0].fields.push('action: ' + action.title);
+//        })
 
     },
 
