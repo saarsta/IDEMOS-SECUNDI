@@ -90,9 +90,12 @@ var timeline = {
 						month = date.format('mmyy');
 					result[month] = result[month] || {
 						date: date,
+						is_displayed: false,
 						items: []
 					};
+
 					result[month].items.push(item);
+					result[month].is_displayed = result[month].is_displayed || item.is_displayed;
 				});
 				return result;
 			};
@@ -122,7 +125,8 @@ var timeline = {
 					__proto__: timeline_item_prototype,
 					template: 'cycle_timeline_past_cluster',
 					month: cluster.date.format('mmmm'),
-					items: cluster.items
+					items: cluster.items,
+					is_displayed: cluster.is_displayed
 				});
 			});
 
