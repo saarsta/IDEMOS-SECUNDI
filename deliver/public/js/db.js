@@ -778,15 +778,17 @@ var db_functions = {
         db_functions.loggedInAjax({
             url:'/api/users/' + user_id,
             type:"PUT",
-            data:{biography:biography},
+            data:JSON.stringify({biography:biography}),
             async:true,
             success:function (data) {
                 callback(null, data);
             },
-
             error:function (err) {
                 callback(err, null);
-            }
+            },
+            dataType: 'json',
+            processData: false,
+            contentType: "application/json"
         });
     },
 
