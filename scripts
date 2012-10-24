@@ -68,38 +68,36 @@ db.actions.find().forEach(function(action){
         })
 
 
-        ---------------------
+------------------------------------------------------------------------------------
 
 
+//the following are for the new timeline default popups
 
-//change actions, so that one action can have more than one cycle
-db.actions.find().forEach(function (obj) {
-    var cycle_id = obj.cycle_id;
-    if (!obj.cycle_id.length) {
-        print(cycle_id);
-        obj.cycle_id = [{}];
-        obj.cycle_id[0].cycle = cycle_id;
-        obj.cycle_id[0].is_displayed = false;
-        db.actions.save(obj);
-    }
-})
+        //change actions, so that one action can have more than one cycle
+        db.actions.find().forEach(function (obj) {
+            var cycle_id = obj.cycle_id;
+            if (!obj.cycle_id.length) {
+                print(cycle_id);
+                obj.cycle_id = [{}];
+                obj.cycle_id[0].cycle = cycle_id;
+                obj.cycle_id[0].is_displayed = false;
+                db.actions.save(obj);
+            }
+        })
 
 
----------------------------------------------------------------
+        ---------------------------------------------------------------
 
-db.cycles.find().forEach(function (obj) {
-    if(!obj.creation_date.date){
-        print(obj.creation_date);
-        var creation_date = {date: obj.creation_date, is_displayed: false};
+        db.cycles.find().forEach(function (obj) {
+            if(!obj.creation_date.date){
+                print(obj.creation_date);
+                var creation_date = {date: obj.creation_date, is_displayed: false};
 
-         obj.creation_date = creation_date;
-         db.cycles.save(obj);
-    }
-})
+                 obj.creation_date = creation_date;
+                 db.cycles.save(obj);
+            }
+        })
 
-        var creation_date = {};
 
-        creation_date.date = obj.creation_date;
-        creation_date.is_displayed = false;
-        obj.creation_date = creation_date;
-        obj.cycles.save(obj);
+--------------------------------------------------------------------------------------
+

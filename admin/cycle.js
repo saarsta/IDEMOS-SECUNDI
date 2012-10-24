@@ -225,28 +225,5 @@ module.exports = AdminForm.extend({
             this._super(callback);
         }
 
-        if(err_string){
-            alert(err_string);
-            callback("is hidden err");
-        }else
-            if(cycle.isNew){
-                console.log('length of discussions is.....');
-                console.log(cycle.discussions.length);
-
-                for(var field_name in self.clean_values)
-                    self.instance.set(field_name,self.clean_values[field_name]);
-
-                self.clean_values = {};
-
-
-                async.forEach(cycle.discussions, iterator, function(err, result){
-                    if(err)
-                        callback(err);
-                    else
-                        base.call(self,callback);
-                });
-            }else{
-                this._super(callback);
-            }
     }
 });

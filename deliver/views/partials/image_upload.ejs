@@ -61,11 +61,20 @@
             element: document.getElementById('upload_image_placeholder'),
             action: '<%= image_upload.api_endpoint || '' %>',
             debug: false,
+            onSubmit: function(id, SfileName){
+                if(user === ""){
+                    popupProvider.showOkPopup({message: "נא התחבר למערכת"});
+                    return false;
+                }
+            },
             onProgress: function(id, fileName, loaded, total){
                 console.log('uploader.onProgress: ', arguments);
             },
             onComplete: function(id, fileName, responseJSON){
                 console.log(responseJSON);
+                if(!user){
+                    alert('bla bla bla');
+                }
                 setImageUrl(responseJSON.image ? responseJSON.image.url : responseJSON.avatar.url);
             },
             template: '<span><div class="qq-uploader">' +
