@@ -97,13 +97,17 @@ var timeline= {
                     pre_discussion_items.items.push(item) ;
                     nodes.shift();
                 } else if (past) {
-                    var item_date=   new Date(item.date)
+                    var item_date=   new Date(item.date);
                     var ind=item_date.format('mmyy');
                     if(!past_months[ind]) {
                         past_months[ind]=  {type:'past',month:item_date.format('mmmm'),items:[]}
                     }
+                    if(item.is_displayed){
+                        past_months[ind].is_displayed = true;
+                    }
                     past_months[ind].items.push(item);
                     nodes.splice(1,1);
+
                 } else {    //present and future items
                     if(item.cluster)
                     {
@@ -169,6 +173,9 @@ var timeline= {
                     }
                     render_clusters[ind].items.push(i);
                     clusters[ind]--;
+                    if(item.is_displayed){
+                        render_clusters[ind].is_displayed = true;
+                    }
                 }
                 item.offset = offsetFromIndex(j);
                 item.timeline_index=i;
