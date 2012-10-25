@@ -73,7 +73,9 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
             grade_sum: null,
             participants_count: null,
             is_going: null,
-            redirect_link: null
+            redirect_link: null,
+            social_popup_title: null,
+            social_popup_text: null
         }
     },
 
