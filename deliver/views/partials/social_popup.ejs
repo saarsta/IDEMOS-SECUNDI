@@ -29,20 +29,62 @@
                 <div class="sb-icons">
                     <div id="close"><img src="/images/elections/close.png" alt="עורו"/></div>
                     <div class="icons">
-                        <a href="mailto:?subject=%D7%92%D7%9D%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%A8%D7%92%D7%99%D7%A9%20%D7%90%D7%96%D7%A8%D7%97%20%D7%9C%D7%90%20%D7%9E%D7%99%D7%95%D7%A6%D7%92%20%E2%80%93%20%D7%90%D7%96%20%D7%91%D7%97%D7%A8%D7%AA%D7%99%20%D7%91%D7%A0%D7%95%D7%A9%D7%90%D7%99%D7%9D%20%D7%94%D7%97%D7%A9%D7%95%D7%91%D7%99%D7%9D%20%D7%9C%D7%99%20%D7%91%D7%90%D7%9E%D7%AA!&body=מרגישים כמוני שהפוליטיקאים לא סופרים אותנו? במקום להתייאש הצטרפתי לעורו כדי שנוכל להתאגד ולקבוע סדר יום אזרחי חדש. הצבעתי בבחירות של עורו! http://uru.org.il"
-                           target="_blank"><img class="icon" src="/images/elections/enva.png" alt="עורו"/></a>
+                        <a href="#" id="mail" ><img class="icon" src="/images/elections/enva.png" alt="עורו"/></a>
                         <a href="javascript:void(0)" id="share-google"><img class="icon" src="/images/elections/google.png" alt="עורו"/></a>
                         <a href="javascript:void(0)" id="share-twitter"><img class="icon" src="/images/elections/tweet.png" alt="עורו"/></a>
                         <a href="javascript:void(0)" id="share-facebook"><img class="icon" src="/images/elections/face.png" alt="עורו"/></a>
                     </div>
                 </div>
             </div>
-            <div>
-                </br>
-                Some text
+            <div id="cloudsponge">
+                <!-- Include these scripts to import address books with CloudSponge -->
+
+                <script type="text/javascript" charset="utf-8">
+                    var csPageOptions = {
+
+                         domain_key:"MEJVM6QW5TG7SQF4B8G3",
+                       // domain_key:"G5XMTFDEGQNEND8A6YZB",
+                        textarea_id:"contact_list",
+                        include:['mailing_address','name','email'],
+                        afterSubmitContacts: function(contacts, source, owner) {
+
+
+                            var i, contact, name, email, phone, mailing_address ,emails=[];
+                            for (i = 0; i < contacts.length; i++) {
+                                contact = contacts[i];
+                                name = contact.fullName();
+                                email = contact.selectedEmail();
+
+                                console.log(email) ;
+                                emails.push(email);
+                            }
+                            db_functions.submitInvitedFriends('action',action_id,null,emails, function (data, err){
+
+                            } );
+                        }
+                    }
+                </script>
+
+                <!-- Any link with a class="cs_import" will start the import process -->
+                <div id="deep-link" style="">
+        <span id="" style="padding-right: 20px;">
+
+          <a id="source-yahoo" href="#" onclick="return cloudsponge.launch('yahoo');"><img alt="Yahoo" height="28" src="http://www.cloudsponge.com/images/address_books/yahoo.png?1349284367" width="28"></a>
+           <a id="source-windowslive" href="#" onclick="return cloudsponge.launch('windowslive');"><img alt="Windows Live" height="28" src="http://www.cloudsponge.com/images/address_books/msn.png?1349284367" width="28"></a>
+
+          <a id="source-outlook" href="#" onclick="return cloudsponge.launch('outlook');" style="display: inline; "><img alt="Microsoft Outlook" height="28" src="http://www.cloudsponge.com/images/address_books/microsoft.png?1349284367" width="28"></a>
+          <a id="source-addressbook" href="#" onclick="return cloudsponge.launch('addressbook');" style="display:none"><img alt="Mac Address Book" height="28" src="http://www.cloudsponge.com/images/address_books/apple.png?1349284367" width="28"></a>
+                        <a id="source-gmail" href="#" onclick="return cloudsponge.launch('gmail');"><img alt="Gmail" height="28" src="http://www.cloudsponge.com/images/address_books/google.png?1349284367" width="28"></a>
+
+        </span>
+                </div>
+                <!-- This textarea will be populated with the contacts returned by CloudSponge
+                <textarea id="contact_list" style="width:450px;height:82px"></textarea>
+                -->
             </div>
         </div>
     </div>
+
 </div>
 
 <div id="screen"></div>
@@ -142,13 +184,31 @@
                 + " "
                 + "אשמח לראותך שם!";
         }
-        sendFacebookShare(rel, title, img_src, text_preview, function(err){
-            if(err){
-                alert('Error occured');
-            }else{
-//                popupProvider.showOkPopup({message: 'השיתוף הסתיים בהצלחה.'});
+          /*
+         sendFacebookShare(rel, title, img_src, text_preview, function(err){
+         if(err){
+         alert('Error occured');
+         }else{
+         //                popupProvider.showOkPopup({message: 'השיתוף הסתיים בהצלחה.'});
+         }
+
+         });
+
+           sendFacebookInvite("test", "http://www.uru.org.il/actions/"+action_id,function(err, data){
+           'הזמנה להצטרף לפעולה!'
+         */
+
+
+        sendFacebookInvite('Come see that great site', "/",function(err, data){
+            if(!err)
+            {
+                popupProvider.showOkPopup({message:"ההזמנה הצליחה!"});
+                console.log(data);
+                db_functions.submitInvitedFriends('action',action_id,data.response,null);
             }
         });
+
+
     });
 
     $('#share-twitter').on('click', function () {
@@ -163,5 +223,11 @@
                 'share-google', 'status=0,scrollbars=0,location=0,height=320,width=660,resizable=1');
         return false;
     });
+
+    $('#mail').on('click', function () {
+        $("#cloudsponge").slideToggle();
+        return false;
+    });
+
 
 </script>

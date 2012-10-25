@@ -8778,7 +8778,7 @@ div.icons img {
 }
 
 .sb-bottom {
-    height: 140px;
+    min-height: 140px;
     padding:  10px;
 
     background: #ededed;
@@ -8806,6 +8806,11 @@ div.icons img {
     height: 30px;
 }
 
+#cloudsponge{
+    margin-top: 30px;
+    display: none;
+
+}
 
 
 

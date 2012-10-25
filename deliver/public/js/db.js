@@ -538,7 +538,10 @@ var db_functions = {
             }
         });
     },
-    addFacebookRequest:function (link, request_ids, callback) {
+
+    addFacebookRequest:function (link, response, callback) {
+        var request_ids =response.request;
+        var to  =response.to;
         db_functions.loggedInAjax({
             url:'/api/fb_request/',
             type:"POST",
@@ -546,6 +549,7 @@ var db_functions = {
             contentType:'application/json',
             data:JSON.stringify({"link":link, "fb_request_ids":request_ids}),
             success:function (data) {
+                data.response=  response;
                 console.log(data);
                 callback(null, data);
             },
@@ -1442,6 +1446,23 @@ var db_functions = {
             },
             error:function (err) {
                 callback(err, null);
+            }
+        });
+    } ,
+
+
+    submitInvitedFriends: function (object_type,object_id,facebook_ids,emails, callback) {
+
+        db_functions.loggedInAjax({
+            url:'/api/user_invited_friends',
+            type:"POST",
+            async:true,
+            data:{type:object_type, id:object_id,email:emails,facebook:facebook_ids},
+            success:function (data, err) {
+                callback(err, data);
+            },
+            error:function (err, data) {
+                callback(err, data);
             }
         });
     }
