@@ -318,41 +318,50 @@ module.exports.approveAction = function (id, callback) {
         function(action, cbk){
             console.log(action);
 
-            if(action.is_approved)
-                cbk("action is already approved");
-            else{
-                g_action = action;
-                action.is_approved = true;
+            if(!action){
+                cbk("no such action!");
+            }else{
+                if(action.is_approved)
+                    cbk("action is already approved");
+                else{
+                    g_action = action;
+                    action.is_approved = true;
 
-                models.Cycle.findOne({_id: action.cycle_id[0].cycle, is_hidden: -1}, cbk);
+                    models.Cycle.findOne({_id: action.cycle_id[0].cycle, is_hidden: -1}, cbk);
 
+                }
             }
         },
 
         //set actions as "approved" and if this action is the cycle's upcoming_action set it...
         function(cycle, cbk){
-            console.log(cycle);
             g_cycle = cycle;
 
-            if(cycle.upcoming_action){
-                models.Action.findById(cycle.upcoming_action, function(err, up_action){
-                    cbk(err, up_action);
-                });
+            if(!cycle){
+                cbk("no such cycle!");
             }else{
-                is_first_approved_action_of_cycle = true;
-                cbk();
+                if(cycle.upcoming_action){
+                    models.Action.findById(cycle.upcoming_action, function(err, up_action){
+                        cbk(err, up_action);
+                    });
+                }else{
+                    is_first_approved_action_of_cycle = true;
+                    cbk();
+                }
             }
-
         },
 
         function(upcoming_action, cbk){
-            console.log(upcoming_action);
 
-            if(is_first_approved_action_of_cycle || (g_action && g_action.execution_date.date < upcoming_action.execution_date.date)){
-                g_cycle.upcoming_action = g_action;
-                g_cycle.save(cbk);
+            if(!upcoming_action){
+                cbk("no such upcoming_action!");
             }else{
-                cbk();
+                if(is_first_approved_action_of_cycle || (g_action && g_action.execution_date.date < upcoming_action.execution_date.date)){
+                    g_cycle.upcoming_action = g_action;
+                    g_cycle.save(cbk);
+                }else{
+                    cbk();
+                }
             }
         }],
 
@@ -360,7 +369,6 @@ module.exports.approveAction = function (id, callback) {
             if(err){
                 console.error("1");
                 console.error(err);
-
             }
             if(!err){
                 g_action.save(
