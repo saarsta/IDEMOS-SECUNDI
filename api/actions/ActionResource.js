@@ -366,24 +366,21 @@ module.exports.approveAction = function (id, callback) {
         }],
 
         function(err, obj){
-            if(err){
-                console.error("1");
-                console.error(err);
-            }
             if(!err){
+                console.log("1");
                 g_action.save(
                     function(err, action){
                         if(err){
-                            console.err("2");
-                            console.err(err);
+                            console.log("2");
+                            console.error(err);
                         }
                         callback(err, action);
                     }
                 );
             }else{
                 if(err){
-                    console.err("3");
-                    console.err(err);
+                    console.log("3");
+                    console.error(err);
                 }
                 callback(err);
             }
