@@ -316,6 +316,8 @@ module.exports.approveAction = function (id, callback) {
 
         //find cycle
         function(action, cbk){
+            console.log(action);
+
             if(action.is_approved)
                 cbk("action is already approved");
             else{
@@ -329,6 +331,7 @@ module.exports.approveAction = function (id, callback) {
 
         //set actions as "approved" and if this action is the cycle's upcoming_action set it...
         function(cycle, cbk){
+            console.log(cycle);
             g_cycle = cycle;
 
             if(cycle.upcoming_action){
@@ -343,6 +346,8 @@ module.exports.approveAction = function (id, callback) {
         },
 
         function(upcoming_action, cbk){
+            console.log(upcoming_action);
+
             if(is_first_approved_action_of_cycle || (g_action && g_action.execution_date.date < upcoming_action.execution_date.date)){
                 g_cycle.upcoming_action = g_action;
                 g_cycle.save(cbk);
@@ -352,13 +357,26 @@ module.exports.approveAction = function (id, callback) {
         }],
 
         function(err, obj){
+            if(err){
+                console.error("1");
+                console.error(err);
+
+            }
             if(!err){
                 g_action.save(
                     function(err, action){
+                        if(err){
+                            console.err("2");
+                            console.err(err);
+                        }
                         callback(err, action);
                     }
                 );
             }else{
+                if(err){
+                    console.err("3");
+                    console.err(err);
+                }
                 callback(err);
             }
         })
