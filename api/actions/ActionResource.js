@@ -354,6 +354,10 @@ module.exports.approveAction = function (id, callback) {
         function(upcoming_action, cbk){
 
             if(!upcoming_action){
+                //this is a patch cause sometimes upcoming action is cannot be find because of the is_hidden bug
+                models.Cycle.update({_id: g_cycle._id}, {$set :{upcoming_action : g_cycle.upcoming_action}}, function(err, num){
+                    cbk(err, num);
+                });
                 cbk("no such upcoming_action!");
             }else{
                 if(is_first_approved_action_of_cycle || (g_action && g_action.execution_date.date < upcoming_action.execution_date.date)){
