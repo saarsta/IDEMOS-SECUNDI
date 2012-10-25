@@ -15,8 +15,8 @@ module.exports = AdminForm.extend({
 
     get_fields: function() {
         this._super();
-//        this.fields['is_approved'].widget.attrs['readonly'] = 'readonly';
-//        this.fields['is_approved'].widget.attrs['disabled'] = 'disabled';
+        this.fields['is_approved'].widget.attrs['readonly'] = 'readonly';
+        this.fields['is_approved'].widget.attrs['disabled'] = 'disabled';
 
     },
 
