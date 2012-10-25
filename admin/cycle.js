@@ -11,7 +11,69 @@ module.exports = AdminForm.extend({
 
 
         this.static['js'].push('/node-forms/js/autocomplete.js');
+
+        this.timeline_data = {};
     },
+
+    prepareTimeline: function(callback) {
+        // GET THE DATA FROM THE DB
+        this.timeline_data['check_me'] = true;
+        // set the field value
+        this.data.check_me = true;
+        callback();
+
+//        // GET THE DATA FROM THE DB
+//        var my_cycle_id = this.instance.id;
+//        var cycle = this;
+//        cycle.data.actions = {};
+//        cycle.timeline_data.actions = {};
+//        models.Action.find({"cycle_id.cycle": my_cycle_id, is_approved: true})
+//            .select({'_id': 1, 'title': 1, 'cycle_id': 1})
+//            .exec(function(err, actions){
+//                if(!err){
+//                    actions = JSON.parse(JSON.stringify(actions));
+//                    async.forEach(actions, function(action){
+//                        var is_displayed = false;
+//                        async.forEach(action.cycle_id, function(index, cycle_id){
+//                            if(cycle_id.cycle == my_cycle_id){
+//                                is_displayed = cycle_id.is_displayed;
+//                            }
+//                        })
+//                        cycle.timeline_data.actions['action' + action._id] = {id: null, title: null, is_displayed: null};
+//                        cycle.timeline_data.actions['action' + action._id].id = action._id;
+//                        cycle.timeline_data.actions['action' + action._id].title = action.title;
+//                        cycle.timeline_data.actions['action' + action._id].is_displayed = is_displayed;
+//
+//                        // set the field value
+//                        cycle.data.actions['action' + action._id] = cycle.timeline_data.actions['action' + action._id];
+//                    })
+//                }
+//                callback();
+//            })
+    },
+
+    render_ready:function(callback) {
+        var self = this;
+        var base = self._super;
+        self.prepareTimeline(function(err){
+            if(err)
+                callback(err);
+            else
+                base.call(self,callback);
+        });
+    },
+
+    save:function(callback) {
+        var self = this;
+        var base = self._super;
+        self.prepareTimeline(function(err){
+            if(err)
+                callback(err);
+            else
+                base.call(self,callback);
+        });
+    },
+
     get_fields: function() {
         this._super();
         if(this.fields['discussions'])
@@ -22,6 +84,18 @@ module.exports = AdminForm.extend({
             this.fields['subject'].validators.push(function(arr) {
                 return arr.length ? true : 'You must select at least one subject';
             });
+
+        // create a checkbox field
+        this.fields['check_me'] = new j_forms.fields.BooleanField();
+
+        // add the checkbox field to the upper level
+        this.fieldsets[0].fields.push('check_me');
+
+//        async.forEach(this.data.actions, function(action){
+//            this.fields['action: ' + action.title] = new j_forms.fields.BooleanField();
+//            this.fieldsets[0].fields.push('action: ' + action.title);
+//        })
+
     },
 
     actual_save : function(callback)
@@ -117,6 +191,20 @@ module.exports = AdminForm.extend({
             ], itr_cbk)
         }
 
+
+        /*if((!this.data.is_hidden && cycle.is_hidden) && (this.data.is_hidden && !cycle.is_hidden)){
+            //if condition true is_hidden was changed and "cycle.is_hidden" is what was before the change
+            var err_string = "";
+            models.Action.find({cycle_id: cycle._id}, function(err, actions){
+                _.each(actions, function(action){ if(action.is_hidden == cycle.is_hidden){
+                    err_string += action.title;
+                    err_string += action.is_hidden ? " is hidden" : " is not hidden";
+                }})
+            })
+        }*/
+
+        // SAVE TIMELINE STUFF TO DB
+
         if(cycle.isNew){
             console.log('length of discussions is.....');
             console.log(cycle.discussions.length);
@@ -136,5 +224,6 @@ module.exports = AdminForm.extend({
         }else{
             this._super(callback);
         }
+
     }
 });

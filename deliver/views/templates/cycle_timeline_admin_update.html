@@ -1,7 +1,12 @@
 <div style="left: {offset}px" class="event event-prev creation" id="timeline_item_{timeline_index}">
     <div class="icon grey-icon">
         <span class="i"></span>
-        <div class="popup-event type-three">
+
+        {?is_displayed}
+            <div class="popup-event type-three showdiv">
+        {:else}
+            <div class="popup-event type-three">
+        {/is_displayed}
             <div class="popup-text">
                 {?manuver_link}
                     <h3>{text|s}</h3>

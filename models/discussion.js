@@ -32,6 +32,7 @@ var Discussion = module.exports = new Schema({
         flag:{type:Boolean, 'default':false, editable:false},
         date:{type:Date, 'default':Date.now, editable:false}
     },
+    is_displayed:{type: Boolean, 'deafult': false},
     tags:[String],
     //users that connected somehow to discussion for my uru
     users:[

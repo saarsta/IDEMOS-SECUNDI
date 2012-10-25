@@ -56,6 +56,7 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
             type: null,
             creator_id: null,
             cycle_id: null,
+            cycle_title: null,
             action_resources: null,
             tags: null,
             users: null,
@@ -84,10 +85,17 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
 
         this._super(req, filters, sorts, limit, offset, function (err, response) {
 
-            _.each(response.objects, function (action) {
+            async.forEach(response.objects, function (action, itr_cbk) {
                 action.participants_count = action.users.length;
                 action.is_going = req.user && _.any(action.going_users, function(going_user){return going_user.user_id + "" == req.user._id + ""});
-            })
+
+                models.Cycle.findById(action.cycle_id[0].cycle, {title: 1}, function(err, cycle){
+                    action.cycle_title = cycle && cycle.title;
+                    itr_cbk();
+                })
+            }, function(err){
+                callback(err,response);
+            });
 
 
 
@@ -108,7 +116,7 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
 //                });
 
 
-            callback(err, response);
+//            callback(err, response);
         });
     },
 
@@ -165,6 +173,7 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                     fields.first_name = user.first_name;
                     fields.last_name = user.last_name;
                     fields.users = {user_id: user_id, join_date: Date.now()};
+                    fields.num_of_going = 0;
 
                     // Massage some of the data to an acceptable format
                     fields.execution_date = {
@@ -205,24 +214,37 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                         action_object.set(field, fields[field]);
                     }
 
-                    base.call(self, req, fields, cbk);
+                    //set cycle_id as an object
+                    fields.cycle_id = {
+                        cycle: fields.cycle_id,
+                        is_displayed: false
+                    }
+
+                    base.call(self, req, fields, function(err, action){
+                        cbk(err, action);
+                    });
                 }
             },
 
             function(action_obj, cbk){
                 g_action = action_obj;
-                var cycle_id = action_obj.cycle_id;
+                var cycle_id = action_obj.cycle_id[0].cycle;
 
                 async.parallel([
+
+                    // 1. add discussion_id and action_id to the lists in user
+
+                    // 2. update actions done by user
                     function (cbk1) {
                         req.gamification_type = "action";
 
-                        // add discussion_id and action_id to the lists in user
+                        // 1. add discussion_id and action_id to the lists in user
                         var new_action = {
                             action_id: action_obj._id,
                             join_date: Date.now()
                         }
-                        models.User.update({_id:user_id}, {$addToSet:{actions: new_action}}, cbk1)
+
+                        models.User.update({_id:user_id}, {$addToSet:{actions: new_action}, $set: {"actions_done_by_user.create_object": true}}, cbk1)
                     },
 
                     function (cbk1) {
@@ -238,22 +260,6 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                                 async.forEach(info_items, iterator, cbk1);
                             }
                         })
-                    },
-
-                    // update actions done by user
-                    function(cbk1){
-                        var actions_done_by_user = {
-                            create_object:false,
-                            post_on_object:false,
-                            suggestion_on_object:false,
-                            grade_object:false,
-                            vote_on_object:false,
-                            join_to_object:false
-                        }
-                        models.User.update({_id:user._id}, {$addToSet:{actions_done_by_user : actions_done_by_user}});
-                        models.User.update({_id:user._id}, {"actions_done_by_user.create_object" : true},function(err) {
-                            cbk1(err);
-                        });
                     }
 
                 ], function(err, args){
@@ -286,9 +292,10 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                 }
             }
         ], function(err){
+            var a = 9;
             callback(err, {
                 redirect_link: g_action ? req.app.get('root_path') + '/actions/' + g_action.id : null,
-                _id: g_action.id
+                _id: g_action && g_action.id
             });
         })
     }
@@ -315,7 +322,7 @@ module.exports.approveAction = function (id, callback) {
                 g_action = action;
                 action.is_approved = true;
 
-                models.Cycle.findOne({_id: action.cycle_id, is_hidden: -1}, cbk);
+                models.Cycle.findOne({_id: action.cycle_id[0].cycle, is_hidden: -1}, cbk);
 
             }
         },

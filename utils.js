@@ -12,10 +12,10 @@
  };
 
 
- var model = mongoose.Model;
- var _find = model.find;
- model.find = function()
- {
+var model = mongoose.Model;
+var _find = model.find;
+model.find = function()
+{
      var args = Array.prototype.slice.call(arguments);
      if(this.schema.paths.is_hidden && SHOW_ONLY_PUBLISHED)
      {
@@ -32,10 +32,10 @@
              args[0] = query;
      }
      return _find.apply(this,args);
- };
- var _findOne = model.findOne;
- model.findOne = function()
- {
+};
+var _findOne = model.findOne;
+model.findOne = function()
+{
      var args = Array.prototype.slice.call(arguments);
      if(this.schema.paths.is_hidden && SHOW_ONLY_PUBLISHED)
      {
@@ -52,11 +52,11 @@
              args[0] = query;
      }
      return _findOne.apply(this,args);
- };
+};
 
- var _count = model.count;
- model.count = function()
- {
+var _count = model.count;
+model.count = function()
+{
      var args = Array.prototype.slice.call(arguments);
      if(this.schema.paths.is_hidden && SHOW_ONLY_PUBLISHED)
      {
@@ -73,7 +73,7 @@
              args[0] = query;
      }
      return _count.apply(this,args);
- };
+};
 
 
  exports.split_db_url = function(db_url)

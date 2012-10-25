@@ -34,13 +34,12 @@ var error_message = error_message || '';
         <% include partials/failures.ejs %>
         <% include partials/tag_search.ejs %>
         <% include partials/social_popup.ejs %>
-
     </div>
 <div id="content" class="cf">
 <div class="followers-box">
     <div class="extra holds_the_timeline">
             <h2><span>ציר הזמן</span>
-                <a class="no_underline_cursor_when_hover" style="color: #50504F;" href="/cycles/<%=action.cycle_id && action.cycle_id.id%>"> <%= action.cycle_id && action.cycle_id.title%> </a>
+                <a class="no_underline_cursor_when_hover" style="color: #50504F;" href="/cycles/<%=action.cycle_id && action.cycle_id[0].cycle.id%>"> <%= action.cycle_id && action.cycle_id[0].cycle.title%> </a>
             </h2>
         <div class="followers-diagram">
 
@@ -106,7 +105,7 @@ var error_message = error_message || '';
                     <span class="icon"></span>
                     משאבים נדרשים:
 					<% for (var i=0;i < action.action_resources.length;i++){%>
-                         <span class="check"><%=action.action_resources[i].resource.name %></span>
+                         <span class="check"><%=action.action_resources[i].resource && action.action_resources[i].resource.name %></span>
                     <% } %>
 					
                 </div>
@@ -175,7 +174,7 @@ var error_message = error_message || '';
             </div>-->
         </div>
     </div>
-    <div class="add-offer-btn-box social-on-click" data-rel="/actions/<%=action._id%>" data-img_src="<%= action.image_field ? action.image_field.url ||'' : '' %>" data-title="<%=action.title%>">
+    <div class="add-offer-btn-box social-on-click" data-rel="/actions/<%=action._id%>" data-img_src="<%= action.image_field ? action.image_field.url ||'' : '' %>" data-title="<%=action.title%>" data-main_title="<%= action.cycle_id && action.cycle_id[0].cycle.title %>">
         <a href="#" >
             <% if(!action.is_going) { %>
             הצטרף
@@ -274,9 +273,9 @@ var error_message = error_message || '';
  <script type="text/javascript">
 
  var action_id='<%=action._id%>';
- var cycle_id='<%= action.cycle_id.id %>';
+ var cycle_id='<%= action.cycle_id[0].cycle.id %>';
  var my_id = "<%=user_logged ? user._id : ''%>";
- var cycle_title = '<%= action.cycle_id.title %>';
+ var cycle_title = "<%= action.cycle_id[0].cycle.title %>";
  $(document).ready(function () {
 
 
@@ -286,14 +285,20 @@ var error_message = error_message || '';
      $('.followers-diagram').on("mouseenter", ".icon", function(e){
          e.preventDefault();
          var popup_event = $(this).children('.popup-event');
-         popup_event.stop(true, true);
-         popup_event.show();
+         if(!popup_event.hasClass('showdiv'))
+         {
+             popup_event.stop(true, true);
+             popup_event.show();
+         }
      });
 
      $('.followers-diagram').on("mouseleave", ".icon", function(e){
          e.preventDefault();
          var popup_event = $(this).children('.popup-event');
-         popup_event.fadeOut(2000);
+         if(!popup_event.hasClass('showdiv'))
+         {
+            popup_event.fadeOut(2000);
+         }
      })
 
    //  var new_post_ref_id = null;  //if not null =>the create new post is connected to anther post

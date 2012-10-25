@@ -25,6 +25,7 @@ module.exports = function(app)
 
     mongoose_admin.loadApi(app);
 
+
 //    if(require('../utils').getShowOnlyPublished()) {
 //        var _modelCounts = admin.modelCounts;
 //        admin.modelCounts = function(collectionName,filters, onReady) {
@@ -114,13 +115,15 @@ module.exports = function(app)
 //        };
 //    }
 
+
     admin.ensureUserExists('Uruad','uruadmin!@#uruadmin');
     admin.ensureUserExists('ishai','istheadmin');
 
     admin.registerMongooseModel("User",Models.User,null,{
         form:require('./user'),
         list:['username','first_name','last_name'],
-        filters:['email','first_name','last_name','facebook_id','gender','age','invitation_code','identity_provider']
+        filters:['email','first_name','last_name','facebook_id','gender','age','invitation_code','identity_provider'],
+        search:'/__value__/.test(this.first_name)||/__value__/.test(this.last_name)'
     });
     admin.registerMongooseModel("InformationItem",Models.InformationItem, null,{
         list:['title'],
@@ -145,7 +148,8 @@ module.exports = function(app)
         cloneable:true,
         form:require('./discussion'),
         order_by:['-creation_date'],
-        filters:['created_by','is_published','is_hidden','is_hot_object','is_cycle']
+        filters:['created_by','is_published','is_hidden','is_hot_object','is_cycle'],
+        search:'/__value__/.test(this.title)'
     });
 
     admin.registerSingleRowModel(Models.GamificationTokens,'GamificationTokens', {form:require('./gamification_tokens')});
@@ -171,7 +175,9 @@ module.exports = function(app)
         list:['text','username','discussion_id.title'],
         list_populate:['discussion_id'],
         order_by:['-creation_date'],
-        filters:['discussion_id','creator_id']
+        filters:['discussion_id','creator_id'],
+        search:'/__value__/.test(this.title)'
+
     });
     admin.registerMongooseModel('PostAction',Models.PostAction,null,{
         list:['text','username','discussion_id.title'],

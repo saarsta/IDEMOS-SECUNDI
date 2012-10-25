@@ -1,5 +1,9 @@
 <div style="left:{offset}px" class="event event-prev creation">
-    <div class="icon plus-icon">
+    {?is_displayed}
+        <div class="icon plus-icon showdiv">
+    {:else}
+        <div class="icon plus-icon">
+    {/is_displayed}
         <span class="i"></span>
     </div>
         <span class="number">

@@ -252,19 +252,9 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
 
                     // update actions done by user
                     function(cbk2){
-                        var actions_done_by_user = {
-                            create_object:false,
-                            post_on_object:true,
-                            suggestion_on_object:false,
-                            grade_object:false,
-                            vote_on_object:false,
-                            join_to_object:false
-                        }
-                        models.User.update({_id:user.id}, {$addToSet:{actions_done_by_user : actions_done_by_user}});
-                        models.User.update({_id:user.id}, {"actions_done_by_user.post_on_object" : true},function(err) {
-                            cbk2(err);
-                        });
+                        models.User.update({_id:user.id},{$set: {"actions_done_by_user.post_on_object": true}}, cbk2);
                     },
+
 
                     //if this post create on discussion create, its free of tokens, otherwise put it on req
                     // TODO remove this. Post on Discussion create should be one single resource and one single calls, creation of first post should be done from there -> this check won't be necessary

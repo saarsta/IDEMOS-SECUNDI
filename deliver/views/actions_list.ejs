@@ -123,7 +123,7 @@ var cycle_id = cycle_id || '';
 //                query =query+'&tags='+selectedTag;
 //            }
             if(selectedCycle){
-                query = query+'&cycle_id=' + selectedCycle;
+                query = query+'&cycle_id.cycle=' + selectedCycle;
                 type = 'pendingActions';
             }
             return query;
@@ -141,6 +141,9 @@ var cycle_id = cycle_id || '';
             e.preventDefault();
             db_functions.joinOrLeaveAction(item_id, function(err, data){
                 data = data.action_obj;
+                if(!data.participants_count){
+                    data.participants_count = data.num_of_going;
+                }
                 dust.render('action_list_item', data, function(err, html){
                     item.replaceWith(html);
                     if(data.is_going){

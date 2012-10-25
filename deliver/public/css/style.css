@@ -2126,7 +2126,7 @@ body {
 .add-offer .text-box p {
     color: #7f7f7e;
     font: normal 13px/17px Arial;
-    margin-bottom: 20px;
+    margin-bottom: 21px;
 }
 
 .add-offer .text-box a {
@@ -6154,10 +6154,6 @@ a.fraction-btn {
     background: url(../images/event-popup.png) no-repeat;;
 }
 
-.followers-diagram .event .active.popup-event {
-    display: block;
-}
-
 .followers-diagram .event .type-one .popup-text {
     padding: 15px 15px 0 17px;
     position: relative;
@@ -6208,7 +6204,7 @@ a.fraction-btn {
     text-align: right;
     height: 115px;
     overflow: hidden;
-
+    cursor: pointer;
 }
 
 .followers-diagram .event .type-two .popup-text h5 {
@@ -6219,10 +6215,6 @@ a.fraction-btn {
 
 .followers-diagram .event .type-two .popup-text .floatRight {
     margin: 0 0 7px 9px;
-}
-
-.followers-diagram .event .type-two .popup-text p {
-    clear: both;
 }
 
 .followers-diagram .event .type-three h3 {
@@ -8740,8 +8732,8 @@ div.greenbutton a:hover {
 
 div.icons {
     position: absolute;
-    left: 200px;
-    bottom: 15px;
+    left: 217px;
+    bottom: 21px;
 }
 
 div.icons img {
@@ -8769,7 +8761,7 @@ div.icons img {
 }
 
 .sb-top {
-    height: 64px;
+    height: 74px;
     padding: 24px;
 
     background: #ffffff;
@@ -8786,19 +8778,19 @@ div.icons img {
 }
 
 .sb-top .sb-title {
-    height: 35px;
+    height: 40px;
 }
 
 .sb-title {
     text-align: center;
 
-    font: 16pt 'AdumaFOTMedium';
+    font: 18pt 'AdumaFOTMedium';
 }
 
 .sb-text {
     text-align: center;
 
-    font: 12pt 'AdumaFOTMedium';
+    font: 14pt 'AdumaFOTRegular';
 }
 
 .sb-icons {
@@ -8806,6 +8798,12 @@ div.icons img {
     height: 30px;
 }
 
+.sb-small-text{
+    text-align: center;
+    font: 12pt 'AdumaFOTRegular';
+    color: #3760ec;
+    cursor: pointer;
+}
 #cloudsponge{
     margin-top: 30px;
     display: none;
@@ -8856,6 +8854,34 @@ div.icons img {
 {
     color: #043D89; font-size: 14px; font-weight: bold;line-height: 16px
 }
+
+.cycle_join_tooltip {
+    position: absolute;
+    left: -96px;
+    top: -146px;
+    display: none;
+    width: 201px;
+    height: 124px;
+    padding: 7px 7px 15px;
+    background: url(../images/event-popup.png) no-repeat;;
+}
+
+.cycle_join_tooltip .cycle_tooltip_text {
+    color: #50504f;
+    font-size: 18px;
+    line-height: 22px;
+    font-family: 'AdumaFOTMedium';
+    margin-top: 20px;
+    margin-left: 15px;
+    margin-right: 15px;
+    text-align: center;
+}
+
+.img-box.floatRight{
+    margin-left: 19px;
+}
+
+
 
 .closeCornerPromotion:hover {text-decoration:underline !important;}
 .cornerPromotionTitle:hover {text-decoration:underline !important;}

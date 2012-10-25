@@ -1,5 +1,7 @@
 <script type="text/javascript" >
     var action_id = "<%=action._id%>";
+    var cycle_id='<%= action.cycle_id[0].cycle.id %>';
+    var cycle_title="<%= action.cycle_id[0].cycle.title%>";
     $(function(){
 
         window.uru= window.uru||{};
@@ -96,7 +98,7 @@
                 // it's assmoes that me is the first user;
                 if(isGoing){ //add the user to first plase;
                     goingUsers++;
-                    dust.render('action_participant_user',data,function(err, out){
+                    dust.render('action_participant_user', data.action_obj, function(err, out){
                         $('#participant').prepend(out);
                     });
                 }else{
@@ -106,6 +108,7 @@
 
                 }
                 setGoingNumber(goingUsers);
+                timeline.render(cycle_id, cycle_title, action_id);
 
             }
 

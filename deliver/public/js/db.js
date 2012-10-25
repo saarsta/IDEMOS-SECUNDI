@@ -41,7 +41,8 @@ var db_functions = {
                             window.location.href = window.location.href;
                         };
 
-                        if(data.hasOwnProperty("actions_done_by_user") && options.hasOwnProperty("user_info")){
+                        //TODO - for now no need for this popup
+                       /* if(data.hasOwnProperty("actions_done_by_user") && options.hasOwnProperty("user_info")){
                             if(data.actions_done_by_user[options.user_info.action_name]) {
                                 $.ajax(options);
                             } else {
@@ -56,8 +57,10 @@ var db_functions = {
                                 };
                                 popupProvider.showExplanationPopup(config);
                             }
+                        }*/
+                        $.ajax(options);
+
                         }
-                    }
                 });
             } else if (xhr.responseText == 'not_activated') {
                 var message = 'ההרשמה לאתר לא הושלמה, על מנת להמשיך לחץ על הלינק שנשלח לתיבת הדואר שלך.' +
@@ -83,7 +86,9 @@ var db_functions = {
 //                message: 'hi'
 //            });
 //        }
-        if(options.hasOwnProperty('user_info') && options.user_info.action_done == false && options.user_info.user_logged_in)
+
+        //TODO - for now no need for this popup
+       /* if(options.hasOwnProperty('user_info') && options.user_info.action_done == false && options.user_info.user_logged_in)
         {
             var config = {
                 tokens_needed:3,
@@ -97,9 +102,9 @@ var db_functions = {
             popupProvider.showExplanationPopup(config);
         }
         else
-        {
+        {*/
             $.ajax(options);
-        }
+       /* }*/
     },
 
     login:function (email, password, callback) {
@@ -319,7 +324,7 @@ var db_functions = {
 
     getFounders:function (callback) {
         db_functions.loggedInAjax({
-            url:'/api/founders',
+            url:'/api/founders?limit=0',
             type:"GET",
             async:true,
             success:function (data) {
@@ -777,15 +782,17 @@ var db_functions = {
         db_functions.loggedInAjax({
             url:'/api/users/' + user_id,
             type:"PUT",
-            data:{biography:biography},
+            data:JSON.stringify({biography:biography}),
             async:true,
             success:function (data) {
                 callback(null, data);
             },
-
             error:function (err) {
                 callback(err, null);
-            }
+            },
+            dataType: 'json',
+            processData: false,
+            contentType: "application/json"
         });
     },
 
@@ -1154,7 +1161,7 @@ var db_functions = {
 
     getPendingActionsByCycle:function (cycle_id, limit, callback) {
         db_functions.loggedInAjax({
-            url:'/api/actions/?cycle_id=' + cycle_id + '&is_approved=false' + (limit ? '&limit=' + limit : ''),
+            url:'/api/actions/?cycle_id.cycle=' + cycle_id + '&is_approved=false' + (limit ? '&limit=' + limit : ''),
             type:"GET",
             async:true,
             success:function (data, err) {
@@ -1447,6 +1454,21 @@ var db_functions = {
             error:function (err) {
                 callback(err, null);
             }
+        });
+    },
+
+    startStopGettingEmailNotifications: function (user_id, no_mail_notifications, callback) {
+        db_functions.loggedInAjax({
+            type: 'PUT',
+            url: '/api/users/' + user_id,
+            data: JSON.stringify({no_mail_notifications: no_mail_notifications}),
+            success: function (data) {
+                $.extend(user, data);
+                callback(null, data)
+            },
+            dataType: 'json',
+            processData: false,
+            contentType: "application/json"
         });
     } ,
 

@@ -2,32 +2,36 @@
         <div class="icon blue-icon">
         <span class="i"></span>
 
-        <div class="popup-event type-one" item-id="{_id}">
-            <div class="popup-text">
-                <h4 title="{title}">{title}</h4>
-                {?location}<p>{location.address}</p>{/location}
-                <p>{date|time_only}</p>
-                <p>{num_of_going} משתתפים</p>
+        {?is_displayed}
+            <div class="popup-event type-one showdiv" item-id="{_id}">
+        {:else}
+            <div class="popup-event type-one" item-id="{_id}">
+        {/is_displayed}
+        <div class="popup-text">
+            <h4 title="{title}">{title}</h4>
+            {?location}<p>{location.address}</p>{/location}
+            <p>{date|time_only}</p>
+            <p>{num_of_going} משתתפים</p>
 
-                <a item-id="{_id}" class="join-btn" href="javascript:void(0); " >
-                    {?is_going}
-                    עזוב
-                    {:else}
-                    הצטרף
-                    {/is_going}
-                </a>
-            </div>
+            <a item-id="{_id}" class="join-btn" href="javascript:void(0); " >
+                {?is_going}
+                עזוב
+                {:else}
+                הצטרף
+                {/is_going}
+            </a>
         </div>
+    </div>
 
     </div>
     {^cluster}
-                    <span class="number">
-                        {date|date_short}
-                    </span>
-                    <span class="text">
-                        {?category}
-                        {category}
-                        {/category}
-                    </span>
+            <span class="number">
+                {date|date_short}
+            </span>
+            <span class="text">
+                {?category}
+                {category}
+                {/category}
+            </span>
     {/cluster}
 </div>

@@ -139,5 +139,5 @@ module.exports = function(app)
     rest_api.register('og_action', new OGActionResource());
     rest_api.register('avatar',new AvatarResource());
     rest_api.register('reset_notification',new ResetNotificationResource());
-    rest_api.register_resource('daily_discussions', new DailyDiscussionResource());
+//    rest_api.register_resource('daily_discussions', new DailyDiscussionResource());
 };

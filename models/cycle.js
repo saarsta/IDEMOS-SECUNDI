@@ -1,3 +1,6 @@
+
+
+
 var mongoose = require("mongoose"),
     Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId,
@@ -7,7 +10,7 @@ var mongoose = require("mongoose"),
     utils = require('../utils');
 
 var Cycle = module.exports = new Schema({
-    creation_date: {type:Date, 'default':Date.now},
+    creation_date: {date:{type:Date, 'default':Date.now}, is_displayed: {type: Boolean, 'default': false}},
     due_date : {type:Date/*, 'default':function(){ return Date.now() + 1000*3600*24*30;  }*/},
     subject:[{
         id:{type:ObjectId, ref:'Subject', index:true, required:true},
@@ -26,7 +29,7 @@ var Cycle = module.exports = new Schema({
     discussions:[
         {discussion: {type:ObjectId, ref:'Discussion', query:common.FIND_DISCUSSION_QUERY}, is_main: {type: Boolean, 'default': false}}
     ],
-    admin_updates: [{info: {type:mongoose_types.Text}, date: {type: Date,'default':Date.now}}],
+    admin_updates: [{info: {type:mongoose_types.Text}, date: {type: Date,'default':Date.now}, is_displayed: {type: Boolean, 'default': false}}],
     document: String,
     shopping_cart: [
         {type:ObjectId, ref:'InformationItem'}
@@ -48,6 +51,7 @@ var Cycle = module.exports = new Schema({
       new Schema({user_id:{type:ObjectId, ref:'User', query:common.FIND_USER_QUERY}, text: {type:mongoose_types.Text}})
     ],
     is_hidden:{type:Boolean,'default':true}
+
 }, {strict: true});
 
 Cycle.pre("save", function(next){

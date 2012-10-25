@@ -115,6 +115,7 @@ var User = module.exports = new Schema({
         vote_on_object:false,
         join_to_object:false
     },
+    no_mail_notifications : {type : Boolean, "default": true},
     has_voted: [String]
 
 }, {strict:true});
