@@ -8812,13 +8812,10 @@ div.icons img {
 
 .sb-small-text{
     text-align: center;
-    font: 12pt 'AdumaFOTRegular';
+    font: 11pt 'AdumaFOTRegular';
     color: #3760ec;
     cursor: pointer;
 }
-
-
-
 
 .CornerPromotionDiv {
     position: fixed;

@@ -10,7 +10,7 @@ var FooterLink = module.exports = new Schema({
     link:{type:String},
     name:{type:String, required:true},
     title:{type:String, required:false},
-    html:{type:types.Text,required:true},
+    html:{type:types.Html,required:true},
     is_hidden:{type:Boolean,'default':true},
     is_on_top:{type:Boolean,'default':false},
     is_on_footer:{type:Boolean},
