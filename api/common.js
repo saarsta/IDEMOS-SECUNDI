@@ -402,6 +402,8 @@ var uploadHandler = exports.uploadHandler = function(req,callback) {
                         callback(err);
                     else {
                         fs.unlink(value_full_path);
+                        console.log("res.socket._httpMessage");
+                        console.log(res.socket._httpMessage);
                         var value = {
                             path:res.socket._httpMessage.url,
                             url:res.socket._httpMessage.url
