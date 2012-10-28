@@ -39,7 +39,6 @@ app.set('url2png_api_secret', process.env.url2png_api_key || 'SF1BFA95A57BE4');
 
 app.configure('development', function(){
 app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-
 // TODO REMOVE THIS BEFORE COMMIT
 //    app.set('send_mails',true);
 
