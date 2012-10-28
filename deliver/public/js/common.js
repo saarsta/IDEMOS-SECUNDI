@@ -66,6 +66,10 @@ dust.filters['tags'] = function(text) {
     return text;
 };
 
+dust.filters['check'] = function(text) {
+    text = text.replace(/<iframe(.*?)<\/iframe>/g,"");
+    return text;
+}
 dust.filters['post'] = function(text) {
     var isHtml = text.indexOf('<p') == 0;
     text = dust.filters['tags'](text);
