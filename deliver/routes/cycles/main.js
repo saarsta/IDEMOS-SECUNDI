@@ -34,7 +34,9 @@ module.exports = function(req, res){
                 'discussions':1,
                 'tags':1,
                 'opinion_shapers': 1,
-                'followers_count': 1
+                'followers_count': 1,
+                'social_popup_title': 1,
+                'social_popup_text': 1
             })
             .populate('opinion_shapers.user_id', {
                 '_id':1,
@@ -90,7 +92,9 @@ module.exports = function(req, res){
                 cycle: g_cycle,
                 tab:'cycles',
                 type: 'cycle',
-                proxy:proxyJson
+                proxy:proxyJson,
+                social_popup_title: g_cycle.social_popup_title,
+                social_popup_text: g_cycle.social_popup_text
             });
         }
     })
