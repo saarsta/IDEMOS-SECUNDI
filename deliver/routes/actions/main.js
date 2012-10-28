@@ -38,9 +38,9 @@ module.exports = function (req, res) {
             system_message: 1,
             what_users_bring: 1,
             going_users: 1,
-            cycle_id: 1
-//            social_popup_title: 1,
-//            social_popup_text: 1
+            cycle_id: 1,
+            social_popup_title: 1,
+            social_popup_text: 1
         })
         .populate('action_resources.resource')
         .populate('category', { _id: 1, name: 1 })
@@ -85,16 +85,6 @@ module.exports = function (req, res) {
                         cbk(null, null);
                     }
                 }
-
-//                going_users: function (cbk) {
-//                    models.Join.find({action_id: req.params[0]})
-//                        .select({_id:1, user_id:1})
-//                        .exec(cbk);
-//                }
-
-
-
-
             }, function (err, args) {
                 if (err) {
                     return res.render('500.ejs', {error:err});
@@ -111,7 +101,6 @@ module.exports = function (req, res) {
                 action.to_date = new Date(action.execution_date.date.getTime() + action.execution_date.duration);
                 var is_going = false;
 
-
                 // is user going to action?
                 if(user){
                     var user_id = user._id;
@@ -126,7 +115,9 @@ module.exports = function (req, res) {
                     action: action,
                     tab: 'actions',
                     type: type,
-                    proxy: proxyJson
+                    proxy: proxyJson,
+                    social_popup_title: action.social_popup_title,
+                    social_popup_text: action.social_popup_text
                     // pageType:'beforeJoin' //waitAction,beforeJoin
                 });
             });

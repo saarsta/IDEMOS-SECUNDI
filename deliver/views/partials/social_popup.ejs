@@ -1,7 +1,16 @@
+<%
+    var object_social_title = social_popup_title || "";
+    var object_social_text = social_popup_text || "";
+%>
+
 <div id="box-share">
     <div class="sb-container">
         <div class="sb-top">
-            <div class="sb-title">
+            <div class="sb-title" id="social-popup-title">
+
+                <% if(object_social_title) { %>
+                    <%=  object_social_title %>
+                <%  } else { %>
    <% if(type == 'approved_action'){ %>
                 מצוין. שמחים שהצטרפת לפעולה!
                 <% } else if(type == 'pending_action'){ %>
@@ -9,16 +18,20 @@
                 <% } else { %>
                 תודה על תמיכתך במעגל התנופה!
                 <% } %>
+   <% } %>
 
             </div>
-            <div class="sb-text">
+            <div class="sb-text" id="social-popup-text">
+            <% if(object_social_text) { %>
+                <%=  object_social_text %>
+            <%  } else { %>
                 <% if(type == 'approved_action'){ %>
                 ככל שיהיו יותר משתתפים לפעולה כך הסיכוי שלה להצליח גבוה יותר, לכן כדאי להזמין חברים להצטרף לפעולה ולהמשיך להעביר אותה הלאה.
                 <% } else if(type == 'pending_action'){ %>
                 ככל שיותר חברים יתמכו ברעיון זה כך יגדלו הסיכויים שהוא יהפוך לפעולה בשטח. לכן כדאי להזמין חברים נוספים להצטרף ולהפוך את הרעיון הזה למציאות.
                 <% } else { %>
                 עכשיו, כדי שנושא זה יקודם אנחנו זקוקים לתמיכה רחבה ככל הניתן, לכן כדאי להזמין חברים נוספים להשתתף ולתמוך בפעילות.                <% } %>
-
+                <% } %>
             </div>
         </div>
         <div class="sb-bottom">
@@ -29,7 +42,7 @@
                 <div class="sb-icons">
                     <div id="close"><img src="/images/elections/close.png" alt="עורו"/></div>
                     <div class="icons">
-                        <a href="mailto:?subject=%D7%92%D7%9D%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%A8%D7%92%D7%99%D7%A9%20%D7%90%D7%96%D7%A8%D7%97%20%D7%9C%D7%90%20%D7%9E%D7%99%D7%95%D7%A6%D7%92%20%E2%80%93%20%D7%90%D7%96%20%D7%91%D7%97%D7%A8%D7%AA%D7%99%20%D7%91%D7%A0%D7%95%D7%A9%D7%90%D7%99%D7%9D%20%D7%94%D7%97%D7%A9%D7%95%D7%91%D7%99%D7%9D%20%D7%9C%D7%99%20%D7%91%D7%90%D7%9E%D7%AA!&body=תודה שהצטרפת!"
+                        <a href="mailto:?subject=%D7%94%D7%A6%D7%98%D7%A8%D7%A4%D7%AA%D7%99%20%D7%9C%D7%A7%D7%99%D7%93%D7%95%D7%9D%20%D7%91%D7%90%D7%AA%D7%A8%20%D7%A2%D7%95%D7%A8%D7%95!&body=גם לך חשוב לקדם את הנושא? אם כן, אפשר לקבל פרטים נוספים, להצטרף ולתמוך באתר עורו!  http://uru.org.il/cycles"
                            target="_blank"><img class="icon" src="/images/elections/enva.png" alt="עורו"/></a>
                         <a href="javascript:void(0)" id="share-google"><img class="icon" src="/images/elections/google.png" alt="עורו"/></a>
                         <a href="javascript:void(0)" id="share-twitter"><img class="icon" src="/images/elections/tweet.png" alt="עורו"/></a>
@@ -47,6 +60,8 @@
             </div>
         </div>
     </div>
+
+
 </div>
 
 <div id="screen"></div>

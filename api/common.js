@@ -104,13 +104,6 @@ var TokenAuthorization = exports.TokenAuthorization = jest.Authorization.extend(
 
     edit_object : function(req,object,callback){
 
-        console.log("this.token_price:");
-        console.log(this.token_price);
-        console.log("req.token_price:");
-        console.log(req.token_price);
-        console.log("req.user.tokens:");
-        console.log(req.user.tokens);
-
         if (this.token_price || req.token_price)
         {
             if(req.user.tokens >= (this.token_price || req.token_price)){
@@ -401,13 +394,14 @@ var uploadHandler = exports.uploadHandler = function(req,callback) {
             }
 
             setTimeout(function() {
+                var value_full_path = value.fullPath;
                 stream = fs.createReadStream(value.fullPath);
 
                 knoxClient.putStream(stream, '/' + value.filename + '_' + (new Date().getTime()), function(err, res){
                     if(err)
                         callback(err);
                     else {
-                        fs.unlink(value.fullPath);
+                        fs.unlink(value_full_path);
                         var value = {
                             path:res.socket._httpMessage.url,
                             url:res.socket._httpMessage.url
