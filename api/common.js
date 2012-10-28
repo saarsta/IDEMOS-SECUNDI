@@ -394,7 +394,9 @@ var uploadHandler = exports.uploadHandler = function(req,callback) {
             }
 
             setTimeout(function() {
+
                 var value_full_path = value.fullPath;
+                
                 stream = fs.createReadStream(value.fullPath);
 
                 knoxClient.putStream(stream, '/' + value.filename + '_' + (new Date().getTime()), function(err, res){
