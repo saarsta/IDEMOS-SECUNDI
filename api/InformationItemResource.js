@@ -18,6 +18,7 @@ var InformationItemResource = module.exports = common.GamificationMongooseResour
 {
     init:function () {
         this._super(models.InformationItem, null, null);
+        this.authentication = new common.SessionAuthentication();
         this.allowed_methods = ['get', 'post', 'put'];
 //        this.authentication = new common.SessionAuthentication();
         this.filtering = {
