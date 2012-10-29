@@ -31,9 +31,9 @@
     </div>
     <div class="left">
         {?is_follower}
-        <a class="join_button social-on-click" data-action="leave" data-img_src="{image_field_preview.url}" data-title="{title}" data-rel="/cycles/{_id}" href="#">עזוב</a>
+        <a class="join_button social-on-click" data-social-title="{social_popup_title}" data-social-text="{social_popup_text}" data-action="leave" data-img_src="{image_field_preview.url}" data-title="{title}" data-rel="/cycles/{_id}" href="#">עזוב</a>
         {:else}
-        <a class="join_button social-on-click" data-action="follower" data-img_src="{image_field_preview.url}" data-title="{title}" data-rel="/cycles/{_id}" href="#">הצטרף</a>
+        <a class="join_button social-on-click" data-social-title="{social_popup_title}" data-social-text="{social_popup_text}" data-action="follower" data-img_src="{image_field_preview.url}" data-title="{title}" data-rel="/cycles/{_id}" href="#">הצטרף</a>
         {/is_follower}
         <a class="share" data-img_src="{image_field_preview.url}" data-text_preview="{text_field_preview}" data-title="{title}" rel="/cycles/{_id}" href="/facebookShare?link=/cycles/{_id}"><span>שתף</span></a>
     </div>

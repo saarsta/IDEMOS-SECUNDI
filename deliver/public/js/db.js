@@ -495,6 +495,17 @@ var db_functions = {
         });
     },
 
+	createInformationItem: function (data, callback) {
+		db_functions.loggedInAjax({
+			url: '/api/information_items/',
+			type: 'POST',
+			data: data,
+			async: true,
+			success: function () { callback(null); },
+			error: function () { callback('error'); }
+		});
+	},
+
     createDiscussion: function(subject_id, vision, title, tags, image, user_info, callback) {
         db_functions.loggedInAjax({
             url:'/api/discussions/',

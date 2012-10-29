@@ -4616,6 +4616,7 @@ body.search-ative #header {
 .upload-popup .tab input {
     color: #50504f;
     font: normal 12px/16px Arial;
+	width: 531px;
 }
 
 .upload-tabs ul {
@@ -4673,6 +4674,17 @@ body.search-ative #header {
 .upload-tabs li a:hover span,
 .upload-tabs li.ui-state-active a span {
     background-position: 50% 0;
+}
+
+.upload-tabs .tab#image .img-box {
+	height: 147px;
+}
+
+.upload-tabs .tab#video .img-box {
+	height: 100px;
+}
+.upload-tabs .tab#video img {
+	display: none;
 }
 
 .tabs img {
@@ -4857,7 +4869,7 @@ body.search-ative #header {
     display: block;
 }
 
-.myuru-top .right .user .img-box #upload_image_placeholder {
+.myuru-top .right .user .img-box .upload_image_placeholder {
     background: url(../images/user-fillter-white-big-empty.png) no-repeat;
 }
 
@@ -9011,7 +9023,7 @@ div.icons img {
 
 .sb-small-text{
     text-align: center;
-    font: 12pt 'AdumaFOTRegular';
+    font: 11pt 'AdumaFOTRegular';
     color: #3760ec;
     cursor: pointer;
 }
@@ -9092,8 +9104,9 @@ div.icons img {
     margin-left: 19px;
 }
 
-
-
 .closeCornerPromotion:hover {text-decoration:underline !important;}
 .cornerPromotionTitle:hover {text-decoration:underline !important;}
 
+input[type=url] {
+	direction: ltr;
+}

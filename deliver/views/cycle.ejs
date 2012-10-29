@@ -16,7 +16,6 @@
             <% include partials/social_popup.ejs %>
         </div>
 
-
         <div id="content" class="cf">
             <div class="right-add-offer">
                 <div id="cycle" class="add-offer add-offer-small">
@@ -314,16 +313,16 @@
             });
 
             $('.hide-box').on('mouseenter', ".side_menu",
-                        function (e) {
-                            $(this).addClass('hover');
-                            $('.left', this).show().css({width:0}).animate({'width':87});
+                    function (e) {
+                        $(this).addClass('hover');
+                        $('.left', this).show().css({width:0}).animate({'width':87});
 
-                        }).on('mouseleave', ".side_menu", function (e) {
-                            var side = $(this);
-                            side.removeClass('hover');
-                            $('.left', this).animate({'width':0}, function () {
-                                $(this).hide();
-                            });
+                    }).on('mouseleave', ".side_menu", function (e) {
+                        var side = $(this);
+                        side.removeClass('hover');
+                        $('.left', this).animate({'width':0}, function () {
+                            $(this).hide();
+                        });
              });
 
              db_functions.getCyclePosts(cycle_id, function (err,data) {

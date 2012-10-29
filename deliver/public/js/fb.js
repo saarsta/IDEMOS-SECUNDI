@@ -2,6 +2,7 @@ function sendFacebookInvite(message,link,callback) {
     FB.ui(
         {method: 'apprequests', message: message},
         function(response) {
+
             if(!response) {
                 callback('canceled');
             } else {
@@ -40,7 +41,6 @@ function sendFacebookShare(_, title, src, text_preview, callback) {
         });
     });
 }
-
 
 function facebookLogin(callback) {
     FB.getLoginStatus(function(response) {

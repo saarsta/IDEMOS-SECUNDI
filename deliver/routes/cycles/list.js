@@ -17,6 +17,8 @@ module.exports = function(req,res)
             user_logged: req.isAuthenticated(),
             url:req.url,
             tab:'cycles',
-            type: 'cycle'
+            type: 'cycle',
+            social_popup_title: "",
+            social_popup_text: ""
         });
 };
