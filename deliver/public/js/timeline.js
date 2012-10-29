@@ -204,7 +204,6 @@ var timeline = {
 //----------------------------------------------------------------------------------------------------
 
             var markers = [];
-
             var myOptions = {
                 pane: "floatPane",
                 enableEventPropagation: "true",
@@ -215,7 +214,7 @@ var timeline = {
                     width: "200px",
                     height: "145px"
                 },
-                pixelOffset: new google.maps.Size(-109, -160),
+                pixelOffset: new google.maps.Size(-109, -155),
                 closeBoxURL: ""
             };
             var popup = new InfoBox(myOptions);
@@ -292,5 +291,29 @@ var timeline = {
                 }
             })
 		});
-	}
+	},
+    addTabEvents: function(map, cycle_title){
+        $('.tabs-nav h2').click(function(){
+            var tab = $(this);
+            var mapCenter = map.getCenter();
+            if(!$(this).hasClass('selected')){
+                if($('.map_tab').hasClass('selected')){
+                    $('.map_tab').removeClass('selected');
+                    $('h2.timeline_tab').html($('h2.timeline_tab').html().replace('<span>טיימליין</span>', '<span>טיימליין</span>' + cycle_title));
+                    $('.map_tab').html($('h2.map_tab').html().replace(cycle_title, ""));
+                } else {
+                    $('.timeline_tab').removeClass('selected');
+                    $('.map_tab').html($('h2.map_tab').html().replace('<span>מפה</span>', '<span>מפה</span>' + cycle_title));
+                    $('h2.timeline_tab').html($('h2.timeline_tab').html().replace(cycle_title, ""));
+
+                }
+                $(this).addClass('selected');
+                $('#tabs_cycle_timeline').toggle();
+                $('#tabs_cycle_map').toggle();
+                google.maps.event.trigger(map, 'resize');
+                if(mapCenter != map.getCenter())
+                map.setCenter(mapCenter);
+            }
+        })
+    }
 }

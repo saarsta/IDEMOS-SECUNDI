@@ -4178,12 +4178,19 @@ body.search-ative #header {
 h2.timeline_tab{
     padding-left: 25px;
     text-align: left;
-    color: #50504f;
 }
 
 h2.map_tab{
     padding-right: 25px;
     color: #B7B6B6;
+}
+
+.cycle_tabs_box #tabs_cycle_timeline{
+    display: block;
+}
+
+.cycle_tabs_box #tabs_cycle_map{
+    display: none;
 }
 
 .cycle_tabs_box .tabs-nav li {
@@ -4195,14 +4202,18 @@ h2.map_tab{
     border: none;
 }
 
-.cycle_tabs_box .tabs-nav li a {
+.cycle_tabs_box .tabs-nav li{
     color: #b7b6b6;
     text-decoration: none;
 }
 
-.cycle_tabs_box .tabs-nav li:hover {
+.cycle_tabs_box .tabs-nav h2:hover {
     color: #50504f;
     cursor: pointer;
+}
+
+.cycle_tabs_box .tabs-nav h2.selected {
+    color: #50504f;
 }
 
 .cycle_tabs_box #cycle_map {
@@ -9044,6 +9055,120 @@ div.icons img {
 
 .img-box.floatRight{
     margin-left: 19px;
+}
+
+.jspContainer
+{
+    overflow: hidden;
+    position: relative;
+}
+
+.jspPane
+{
+    position: absolute;
+}
+
+.jspVerticalBar
+{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 16px;
+    height: 100%;
+    background: red;
+}
+
+.jspHorizontalBar
+{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 16px;
+    background: red;
+}
+
+.jspVerticalBar *,
+.jspHorizontalBar *
+{
+    margin: 0;
+    padding: 0;
+}
+
+.jspCap
+{
+    display: none;
+}
+
+.jspHorizontalBar .jspCap
+{
+    float: left;
+}
+
+.jspTrack
+{
+    background: #dde;
+    position: relative;
+}
+
+.jspDrag
+{
+    background: #bbd;
+    position: relative;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+}
+
+.jspHorizontalBar .jspTrack,
+.jspHorizontalBar .jspDrag
+{
+    float: left;
+    height: 100%;
+}
+
+.jspArrow
+{
+    background: #50506d;
+    text-indent: -20000px;
+    display: block;
+    cursor: pointer;
+}
+
+.jspArrow.jspDisabled
+{
+    cursor: default;
+    background: #80808d;
+}
+
+.jspVerticalBar .jspArrow
+{
+    height: 16px;
+}
+
+.jspHorizontalBar .jspArrow
+{
+    width: 16px;
+    float: left;
+    height: 100%;
+}
+
+.jspVerticalBar .jspArrow:focus
+{
+    outline: none;
+}
+
+.jspCorner
+{
+    background: #eeeef4;
+    float: left;
+    height: 100%;
+}
+
+/* Yuk! CSS Hack for IE6 3 pixel bug :( */
+* html .jspCorner
+{
+    margin: 0 -3px 0 0;
 }
 
 
