@@ -5,7 +5,7 @@ if(!console) {
 }
 
 dust.filters['time'] = function(a){
-    console.log(a);
+   // console.log(a);
     var date = $.datepicker.formatDate('dd.mm.yy', new Date(Date.parse(a)));
     var date_short = $.datepicker.formatDate('d.m', new Date(Date.parse(a)));
     var hours = (new Date(Date.parse(a))).getHours();

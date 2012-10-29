@@ -1,95 +1,124 @@
 <%
-        var unseen_notifications = user_logged && user ? user.unseen_notifications || 0 : 0;
+var unseen_notifications = user_logged && user ? user.unseen_notifications || 0 : 0;
 %>
-
-<div class="user-box">
-    <%if(unseen_notifications > 0){%><span class="total-number"> <%=unseen_notifications%></span><%}%>
-
     <%if(user_logged && user){%>
-    <a class="reset_notification" href="/myuru">
-        <span class="icon"></span>
-    </a>
-    <%}else{%>
-    <label for="user_box_email">
-        <span class="icon"></span>
-    </label>
+<div class="user-box">
+    <%if(unseen_notifications > 0){%>
+        <a class="notifications" href="/myuru#notifications"><%=unseen_notifications%></a>
     <%}%>
-    <h2 id="login_head">
-        <%if(user_logged && user){%><%=user.first_name%><%}else{%>התחבר<%}%>
-    </h2>
-    <div class="hide-box">
-        <%if(user_logged && user){%>
-        <div class="user-login-box cf">
-            <ul>
-                <li class="chip"><a href="/myuru">האסימונים שלי <span class="icon-menu"></span><span class="number"><%=Math.floor(user.tokens)%></span></a></li>
-                <li class="respect"><a href="/myuru">מוניטין <span class="icon-menu"></span><span class="number"><%=user.score%></span></a></li>
-                <li class="notifications"><a href="/myuru#notifications" >עדכונים <span class="icon-menu"></span><span class="number"><%=unseen_notifications%></span></a></li>
-                <li class="settings hide"><a href="">הגדרות <span class="icon-menu"></span></a></li>
-                <li class="help hide"><a href="">עזרה <span class="icon-menu"></span></a></li>
-            </ul>
-            <div class="btn-box">
-                <!--<a href="">הצג</a>
-                <a href="">הסתר</a>-->
-                <a href="/account/logout">
-התנתק
-                </a>
-            </div>
-        </div>
-        <%}else{%>
-        <!--action="/account/login"-->
-        <form id="register_form" >
-            <input id="user_box_email" name="email" type="email" placeholder='דוא"ל'/>
-            <input name="password" type="password" placeholder="סיסמא" />
-            <a class="forgot_password" href="/account/forgot_password">
-                שכחת סיסמא?
-            </a>
-            <input type="submit" value="התחבר" />
-        </form>
-        <div class="spacer"></div>
-        <!--href="/account/facebooklogin?next=<%=url%>"-->
-        <a id="fb_connect" class="facebook" style="cursor:pointer;"></a>
-        <a href="/account/register" class="register_link">הירשם</a>
-        <%}%>
-    </div>
+    <a class="icon" href="javascript:void(0)"></a>
+    <a class="name" href="/myuru"> <%=user.first_name%></a>
 </div>
+
+        <div class="user-info-box-container">
+            <div class="user-info-box">
+                <div class="user-box-top">
+                    <div class="messages">
+                        <div class="right">
+
+                        הודעות חדשות
+                        </div>
+                        <div class="left">
+                            <%=unseen_notifications%>
+                        </div>
+                    </div>
+                    <div class="tokens">
+                        <div class="right">
+                        אסימונים
+                        </div>
+                            <div class="left">
+                                <%=Math.floor(user.tokens)%>
+                        </div>
+                    </div>
+                    <div class="fame">
+                        <div class="right">
+                        מוניטין
+                        </div>
+                            <div class="left">
+                                <%=user.score%>
+                        </div>
+                    </div>
+                </div>
+                <div class="user-box-bottom">
+
+                    <div class="hide settings"><p>
+                        הגדרות
+                    </p> </div>
+                    <div class="hide help"><p>
+                        עזרה
+                    </p> </div>
+                    <div class="logout"><p>
+                        התנתק
+                        </p></div>
+
+
+                </div>
+            </div>
+
+        </div>
+
+
+
+    <%}else{%>
+<div id="login_button" >
+    <a  class="login_button" href="javascript:void(0)" > </a>
+</div>
+    <%}%>
+
 
 <script type="text/javascript">
 
     $(document).ready(function () {
 
-        $("#register_form").validate({
-            rules:{
-                email:{required: true},
-                password:{required: true }
-            },
-            messages:{
-                email: 'הכנס דוא"ל',
-                password: 'הכנס סיסמא'
-            }
-        });
+        $("#login_button a").click(function(){
+            popupProvider.showLoginPopup({}, function(err, result){
+                if(!err)
+                {
+                  //  window.location = window.location + '?user_name=' + userName + '&proxy_id=' + proxyId + '&post_id=' + post_id;
+                    window.location = window.location ;
+                }
 
-        var userBox = $('.user-box');
+            });
+            return false;
+        })
+
+        $(".user-box.icon").click(function(){ window.location = "/myuru";});
+        $(".user-info-box .messages").click(function(){ window.location = "/myuru#notifications";});
+        $(".user-info-box .tokens").click(function(){ window.location = "/myuru";});
+        $(".user-info-box .fame").click(function(){ window.location = "/myuru";});
+        $(".user-info-box .logout").click(function(){ window.location = "/account/logout";});
+
+
+        /*$(".user-box .icon").hover(function(){
+            $(".user-info-box-container").show();
+        });*/
+
+        var userBox = $('.user-box ,.user-info-box-container');
         userBox.hover(
                 function(){
                     var timeout = userBox.data('timeout');
                     if(timeout){
                         clearTimeout(timeout);
                     }
-                    userBox.addClass('active');
+                    $(".user-info-box-container").show();
+                    //userBox.addClass('active');
                 },
                 function(){
                     var timeout = setTimeout(function(){
-                        userBox.removeClass('active');
+                        //userBox.removeClass('active');
+                        $(".user-info-box-container").hide();
                     }, 1000);
                     userBox.data('timeout', timeout);
                 }
         );
 
         userBox.focusin(function () {
-            userBox.addClass('active');
+            $(".user-info-box-container").show();
+            //userBox.addClass('active');
         });
         userBox.focusout(function () {
-                userBox.removeClass('active');
+            $(".user-info-box-container").hide();
+            //userBox.removeClass('active');
         });
     });
 
