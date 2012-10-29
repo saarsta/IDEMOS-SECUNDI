@@ -113,7 +113,7 @@ var CycleTimelineResource = module.exports = jest.Resource.extend({
 
             function(cbk){
                 models.Action.find({"cycle_id.cycle": cycle_id, is_approved: true})
-                    .select({'_id': 1, 'title': 1, 'text_field_preivew': 1, 'image_field_preview': 1, 'going_users': 1, 'num_of_going': 1, 'location': 1, 'execution_date': 1, 'category':1, 'cycle_id.is_displayed': 1})
+                    .select({'_id': 1, 'title': 1, 'text_field_preview': 1, 'image_field_preview': 1, 'going_users': 1, 'num_of_going': 1, 'location': 1, 'execution_date': 1, 'category':1, 'cycle_id.is_displayed': 1})
                     .populate('category')
                     .exec(function(err, actions){
                     if(!err){
