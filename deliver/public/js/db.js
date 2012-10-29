@@ -60,7 +60,7 @@ var db_functions = {
                         }*/
                         $.ajax(options);
 
-                    }
+                        }
                 });
             } else if (xhr.responseText == 'not_activated') {
                 var message = 'ההרשמה לאתר לא הושלמה, על מנת להמשיך לחץ על הלינק שנשלח לתיבת הדואר שלך.' +
@@ -495,6 +495,17 @@ var db_functions = {
         });
     },
 
+	createInformationItem: function (data, callback) {
+		db_functions.loggedInAjax({
+			url: '/api/information_items/',
+			type: 'POST',
+			data: data,
+			async: true,
+			success: function () { callback(null); },
+			error: function () { callback('error'); }
+		});
+	},
+
     createDiscussion: function(subject_id, vision, title, tags, image, user_info, callback) {
         db_functions.loggedInAjax({
             url:'/api/discussions/',
@@ -543,7 +554,10 @@ var db_functions = {
             }
         });
     },
-    addFacebookRequest:function (link, request_ids, callback) {
+
+    addFacebookRequest:function (link, response, callback) {
+        var request_ids =response.request;
+        var to  =response.to;
         db_functions.loggedInAjax({
             url:'/api/fb_request/',
             type:"POST",
@@ -551,6 +565,7 @@ var db_functions = {
             contentType:'application/json',
             data:JSON.stringify({"link":link, "fb_request_ids":request_ids}),
             success:function (data) {
+                data.response=  response;
                 console.log(data);
                 callback(null, data);
             },
@@ -1465,6 +1480,23 @@ var db_functions = {
             dataType: 'json',
             processData: false,
             contentType: "application/json"
+        });
+    } ,
+
+
+    submitInvitedFriends: function (object_type,object_id,facebook_ids,emails, callback) {
+
+        db_functions.loggedInAjax({
+            url:'/api/user_invited_friends',
+            type:"POST",
+            async:true,
+            data:{type:object_type, id:object_id,email:emails,facebook:facebook_ids},
+            success:function (data, err) {
+                callback(err, data);
+            },
+            error:function (err, data) {
+                callback(err, data);
+            }
         });
     }
 };

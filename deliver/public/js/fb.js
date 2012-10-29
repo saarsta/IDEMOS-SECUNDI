@@ -2,15 +2,15 @@ function sendFacebookInvite(message,link,callback) {
     FB.ui(
         {method: 'apprequests', message: message},
         function(response) {
+
             if(!response) {
                 callback('canceled');
             } else {
-                db_functions.addFacebookRequest(link, response.request, callback);
+                db_functions.addFacebookRequest(link, response, callback);
             }
         }
     );
 }
-
 
 
 function sendFacebookShare(_, title, src, text_preview, callback) {
@@ -41,7 +41,6 @@ function sendFacebookShare(_, title, src, text_preview, callback) {
         });
     });
 }
-
 
 function facebookLogin(callback) {
     FB.getLoginStatus(function(response) {

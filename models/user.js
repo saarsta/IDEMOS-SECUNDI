@@ -59,6 +59,17 @@ var User = module.exports = new Schema({
     followers: [
         new Schema({follower_id:{type:ObjectId, ref:'User',query:common.FIND_USER_QUERY}, join_date: {type:Date, 'default':Date.now}})
     ],
+    invited_friends: [
+        new Schema({
+            object_type:{type:String},
+            object_id:{type:ObjectId},
+            facebook_request:{type:String}  ,
+            facebook_ids:[{type:String}]  ,
+            emails:[{type:String}]  ,
+            date: {type:Date, 'default':Date.now}
+        })
+    ],
+
     password: {type: String, editable:false},
     validation_code: {type: String, editable:false},
     tokens:{type:Number, 'default':9, min: 0/*, max:15.9*/},

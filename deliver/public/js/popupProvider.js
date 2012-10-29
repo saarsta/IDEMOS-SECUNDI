@@ -151,7 +151,9 @@ var popupProvider={
                         db_functions.login(values["email"], values["password"], function(err, result){
                             if(err){
                                 callback(err);
-                                $("#login_title").text("נסה שוב");
+                               // $("#login_title").text("נסה שוב");
+                                $(".login-popup .noalert").hide();
+                                $(".login-popup .alert").show();
                             }
                             else{
                                 $(document).one('cbox_closed', function(){

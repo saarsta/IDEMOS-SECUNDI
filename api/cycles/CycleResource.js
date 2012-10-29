@@ -78,7 +78,9 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
             num_upcoming_actions:null,
             participants_count:null,
             is_follower:null,
-            subject: null
+            subject: null,
+            social_popup_title: null,
+            social_popup_text: null
         }
     },
 

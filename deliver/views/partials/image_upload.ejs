@@ -1,7 +1,11 @@
 <%
+	global.image_upload_total_count = global.image_upload_total_count || 0;	
+
+	(function (image_upload, id) {
     /* Usage:
 
         Have a variable called image_upload = {
+			background_color: '#...'
             default_image: '/images/...',
             current_value: '/images/...',
             api_endpoint: '/api/...',
@@ -14,7 +18,7 @@
             .img-box
             .img-box .image-container
             .img-box .image-container img
-            .img-box #upload_image_placeholder
+            .img-box .upload_image_placeholder
     */
 %>
 <style type="text/css">
@@ -28,18 +32,17 @@
     }
 </style>
 
-<div class="img-box" style="overflow:hidden; position:relative;">
-    <div class="image-container">
-        <img src="<%= image_upload.default_image || '' %>" />
+<div class="img-box" style="overflow: hidden; position: relative; background: <%= image_upload.background_color || '' %> url('<%= image_upload.default_image || '' %>') no-repeat center center;">
+    <div class="image-container" id="upload_image_container_<%=id%>">
     </div>
-    <span id="upload_image_placeholder"></span>
+    <span class="upload_image_placeholder" id="upload_image_placeholder_<%=id%>"></span>
     <input type="hidden" name="<%= image_upload.input_name || 'image_upload' %>" value="" />
 </div>
 
 <% if (!image_upload.disabled) { %>
 <script>
     (function () {
-        var image_box = $('.img-box .image-container');
+        var image_box = $('.img-box #upload_image_container_<%=id%>');
         var input = $('.img-box input');
 
         var setImageUrl = function (url) {
@@ -58,7 +61,7 @@
         };
 
         new qq.FileUploader({
-            element: document.getElementById('upload_image_placeholder'),
+            element: document.getElementById('upload_image_placeholder_<%=id%>'),
             action: '<%= image_upload.api_endpoint || '' %>',
             debug: false,
             onSubmit: function(id, SfileName){
@@ -90,3 +93,6 @@
     })();
 </script>
 <% } %>
+<%
+	})(image_upload, global.image_upload_total_count++);
+%>

@@ -15,12 +15,20 @@
         <% include partials/tag_search.ejs %>
     </div>
 
-    <% if(page.title) { %>
-        <h2>
-            <%= page.title %>
-        </h2>
-    <% } %>
-    <%- page.html %>
+    <div class="main-text" style="margin-bottom: 50px">
+        <div class="about-one">
+            <% if(page.title) { %>
+            <h4>
+                <%= page.title %>
+            </h4>
+            <% } %>
+            <p>
+                <%- page.html %>
+            </p>
+
+        </div>
+    </div>
+
 </div>
 
 

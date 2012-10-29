@@ -87,7 +87,6 @@ var cycle_id = cycle_id || '';
         current_section=1;
         var selectedTag = '<%= tag_name || "" %>';
         var selectedSubject;
-        var cyc
 
         var selectedCycle = '<%= cycle_id || "" %>';
         var type = 'actions';
@@ -137,7 +136,10 @@ var cycle_id = cycle_id || '';
         $('#action_list').on('click', '.join_button', function(e){
             var item =  $(this).parents('[data-id]');
             var item_id =  item.data('id');
-            var actionType =  $(this).data('action');
+            var social_popup_title = $(this).data('social-title');
+            var social_popup_text = $(this).data('social-text');
+            var actionType = $(this).data('action');
+
             e.preventDefault();
             db_functions.joinOrLeaveAction(item_id, function(err, data){
                 data = data.action_obj;
@@ -148,7 +150,14 @@ var cycle_id = cycle_id || '';
                     item.replaceWith(html);
                     if(data.is_going){
                         setTimeout(function(){
+                            //if action schema has social text we update the popup
                             $('#box-share,#screen').show();
+                            if(social_popup_title){
+                                $('#social-popup-title').text(social_popup_title);
+                            }
+                            if(social_popup_text){
+                                $('#social-popup-text').text(social_popup_text);
+                            }
                             $('#close').click(function(){
                                 $('#box-share,#screen').hide();
                             })

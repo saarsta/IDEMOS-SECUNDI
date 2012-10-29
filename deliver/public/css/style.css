@@ -126,6 +126,7 @@ body {
     background-color: White;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
+    border-radius: 2px;
     z-index: 7;
     width: 95px;
 }
@@ -138,8 +139,9 @@ body {
     display: block;
 }
 
+
+/*
 .user-box {
-    background: #3b63ef;
     border-radius: 2px;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
@@ -152,10 +154,36 @@ body {
 .user-box span.icon {
     width: 21px;
     height: 22px;
-    background: url(../images/user-icon.png) 0 50% no-repeat;
+    background: url(../images/URU_User.btn_sprite.png) 0 0 no-repeat;
     display: block;
     float: left;
+    font-weight: bold;
+    font-size: 14px;
+    color: #656565;
+    padding-left: 40px;
 }
+
+
+.user-box h2,
+.tikunim-box h2 {
+    color: #fff;
+    font-size: 18px;
+    line-height: 22px;
+    font-weight: normal;
+    font-family: 'AdumaFOTMedium';
+    padding-left: 25px;
+    display: none;
+}
+
+.user-box:hover h2, .user-box.active,
+.tikunim-box:hover h2,
+.tikunim-box.hover h2 {
+    display: block;
+}
+
+
+
+
 
 .tikunim-box {
     background: #3de749;
@@ -175,24 +203,6 @@ body {
     display: block;
     float: left;
 }
-
-.user-box h2,
-.tikunim-box h2 {
-    color: #fff;
-    font-size: 18px;
-    line-height: 22px;
-    font-weight: normal;
-    font-family: 'AdumaFOTMedium';
-    padding-left: 25px;
-    display: none;
-}
-
-.user-box:hover h2, .user-box.active,
-.tikunim-box:hover h2,
-.tikunim-box.hover h2 {
-    display: block;
-}
-
 .tikunim-box:hover,
 .tikunim-box.active,
 .tikunim-box.hover {
@@ -200,23 +210,13 @@ body {
     z-index: 3;
 }
 
-/*remove by avner
-.tikunim-box.active h2
-{
-    display: block;
-}
-*/
+
 .tikunim-box .hide-box {
     padding-top: 13px;
     display: none;
 }
 
-/*
-.tikunim-box.active .hide-box
-{
-    display: block;
-}
-*/
+
 .tikunim-box .hide-box textarea {
     border: 1px solid #dad9d9;
     background: url(../images/textarea-bg.png) 0 0 repeat;
@@ -256,23 +256,13 @@ body {
     z-index: 4;
 }
 
-/* remove by avner
-.user-box.active h2
-{
-    display: block;
-}
- */
+
 .user-box .hide-box {
     padding-top: 10px;
     display: none;
 }
 
-/* remove by avner
-.user-box.active .hide-box
-{
-    display: block
-}
-*/
+
 
 .user-box .spacer {
     background: url(../images/spacer-user-box.png) 50% 50% no-repeat;
@@ -478,19 +468,238 @@ body {
     font: bold 12px/14px Arial;
     text-align: center;
 }
-
-/*remove by avner
-.user-box.active .total-number
-{
-    display: none;
-}
 */
+#login_button a
+{
+
+    display: inline-block;
+    background: url(../images/URU_Connect_btn_sprite.png) -240px 0 no-repeat;
+    height: 42px;
+    width: 120px;
+    margin: 0 auto;
+    position: absolute;
+    left: 0;
+    top: 47px;
+}
+
+#login_button a:hover
+{
+    background: url(../images/URU_Connect_btn_sprite.png) -120px 0 no-repeat;
+}
+#login_button a:active
+{
+    background: url(../images/URU_Connect_btn_sprite.png) 0 0 no-repeat;
+}
+
+.user-box {
+    position: absolute;
+    left: 0;
+    top: 47px;
+
+
+}
+.user-box a.icon{
+    width: 43px;
+    height: 44px;
+    background: url(../images/URU_User.btn_sprite.png)   -89px 1px  no-repeat;
+    display: block;
+    float: left;
+    font-weight: bold;
+    font-size: 14px;
+    color: #656565;
+}
+
+.user-box a.icon:hover
+{
+    background: url(../images/URU_User.btn_sprite.png) -45px 0 no-repeat;
+}
+.user-box a.icon:active
+{
+    background: url(../images/URU_User.btn_sprite.png) -1px 0 no-repeat;
+}
+
+.user-box a.name{
+    text-decoration: none;
+    float: left;
+    font-weight: bold;
+    font-size: 14px;
+    color: #656565;
+    padding: 13px 0 0 10px;
+}
+
+.user-box a.notifications{
+    position: absolute;
+    left: -7px;
+    top: -7px;
+   /* background: url(../images/URU_User.btn_sprite.png)   -89px 1px  no-repeat; */
+    background-color: #ff00af;
+    display:     block;
+    width:20px;
+    height:20px;
+
+    border-radius:10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    font-size:13px;
+    font-weight: bold;
+    color:#fff;
+    line-height: 20px;
+    text-align:center;
+    text-decoration:none;
+
+
+}
+
+.user-info-box-container
+{
+    position: absolute;
+    top:110px;
+    left: -10px;
+    height: 180px;
+    width: 250px;
+    font-family: arial;
+    display: none;
+
+}
+
+.user-info-box  {
+    position: relative;
+    background: #fff;
+    border: 1px solid #b7b6b6;
+    height: 180px;
+    width: 100%;
+    z-index: 10;
+
+}
+.user-info-box:after,
+.user-info-box:before {
+    bottom: 100%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+
+.user-info-box:after {
+    border-color: rgba(255, 255, 255, 0);
+    border-bottom-color: #fff;
+    border-width: 10px;
+    left: 13%;
+    margin-left: -10px;
+}
+.user-info-box:before {
+    border-color: rgba(183, 182, 182, 0);
+    border-bottom-color: #b7b6b6;
+    border-width: 11px;
+    left: 13%;
+    margin-left: -11px;
+}
+
+.user-info-box .user-box-top{
+    height: 130px;
+    padding: 10px 10px 0 20px;
+}
+
+.user-info-box .user-box-bottom{
+    height: 40px;
+    width: 100%;
+    background-color: #ededed;
+    border: 0;
+}
+.user-info-box .user-box-top div
+{
+    border-bottom: 1px solid #ececec;
+    height: 40px;
+    width:100%;
+    position: relative;
+    cursor: pointer;
+
+
+}
+
+.user-info-box div.messages{
+
+    background: url(../images/URU_User.Info_Msg_Icon.gif) 180px 10px no-repeat;
+}
+
+.user-info-box div.tokens{
+    background: url(../images/URU_User.Info_Token_Icon.gif)  180px 10px no-repeat;;
+}
+
+.user-info-box div.fame{
+  border: 0;
+  background: url(../images/URU_User.Info_Repute_Icon.gif) 180px 10px no-repeat;;
+}
+.user-info-box .user-box-top .right
+{
+    position: absolute;
+    padding: 12px 50px 0 0;
+    color: #656565;
+    font-size: 15px;
+    width: 60%;
+    font-weight: bold;
+    border: 0;
+}
+
+.user-info-box .user-box-top .left
+{
+    position: absolute;
+    top: 2px;
+    left: 0;
+    text-align: left;
+    color: #3b63ef;
+    font-size: 32px;
+    width: 30%;
+    font-weight: bold;
+    border: 0;
+}
+.user-info-box .user-box-top .messages .left{
+color: #ff00af;
+}
+
+.user-info-box .user-box-bottom div{
+    float: right;
+    border:solid 1px #b7b6b6;
+    height: 27px;
+    min-width: 30px;
+    background-color: #f7f7f7;
+    margin: 6px 6px 0 0 ;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    cursor: pointer;
+}
+
+.user-info-box .user-box-bottom div p{
+    font-size: 12px;
+    font-weight: bold;
+    color:#6f6f6f;
+    padding: 6px 25px 0 10px;
+}
+.user-info-box .user-box-bottom div.settings{
+    background:#f7f7f7 url(../images/URU_User.Info_Settings_Icon.gif) 52px 6px no-repeat;;
+}
+
+
+.user-info-box .user-box-bottom div.help{
+    background:#f7f7f7 url(../images/URU_User.Info_Help_Icon.gif) 40px 6px no-repeat;;
+}
+
+.user-info-box .user-box-bottom div.logout{
+   margin-right: 40px;;
+}
+.user-info-box .user-box-bottom div.logout p{
+    padding: 5px 10px 0 10px;
+    color: #dc0032;
+}
 /*-----------------------------*/
 .search-box {
-    padding: 17px 42px 17px 0;
+    padding: 17px 0;
     height: 31px;
     clear: both;
-    background: url(../images/search-icon.png) 100% 19px no-repeat;
+    /*background: url(../images/search-icon.png) 100% 19px no-repeat;*/
 }
 
 .search-box label {
@@ -501,34 +710,37 @@ body {
 }
 
 .search-box input[type=text] {
-    border: 1px solid #1a43d4;
+    border: 1px solid #b7b6b6;
     border-radius: 2px;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
-    background: #3b63ef;
+
     height: 25px;
-    width: 652px;
-    margin-left: 25px;
+    width: 330px;
+    margin-left: 5px;
     padding: 3px 10px 2px;
     color: #fff;
     font: bold 15px/30px Arial;
     float: right;
+    background-color: #f5f5f5;
 }
 
 .big-head .search-box input[type=text] {
-    border: 1px solid #9db1f7;
-    width: 648px;
+
+    width: 330px;
+    background-color: #f5f5f5;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
 }
 
 .search-box input[type=submit] {
     float: right;
-    background: #757d7e url(../images/search-submit.png) 0 0 repeat-x;
-    border: 1px solid #2e3030;
-    border-radius: 2px;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    width: 110px;
-    height: 31px;
+    background: transparent url(../images/URU_search_btn_reg.png) 0 0 no-repeat;
+    border: 0;
+
+    width: 38px;
+    height: 38px;
     color: #ffffff;
     font: normal 18px/33px 'AdumaFOTRegular';
     padding: 0;
@@ -536,12 +748,11 @@ body {
 }
 
 .search-box input[type=submit]:hover {
-    background-color: #555a5d;
+
 }
 
 .search-box input[type=submit]:active {
-    background-color: #919d9d;
-    background-position: 0 100%;
+
 }
 
 /*------------------------*/
@@ -4578,6 +4789,7 @@ h2.map_tab{
 .upload-popup .tab input {
     color: #50504f;
     font: normal 12px/16px Arial;
+	width: 531px;
 }
 
 .upload-tabs ul {
@@ -4635,6 +4847,17 @@ h2.map_tab{
 .upload-tabs li a:hover span,
 .upload-tabs li.ui-state-active a span {
     background-position: 50% 0;
+}
+
+.upload-tabs .tab#image .img-box {
+	height: 147px;
+}
+
+.upload-tabs .tab#video .img-box {
+	height: 100px;
+}
+.upload-tabs .tab#video img {
+	display: none;
 }
 
 .tabs img {
@@ -4819,7 +5042,7 @@ h2.map_tab{
     display: block;
 }
 
-.myuru-top .right .user .img-box #upload_image_placeholder {
+.myuru-top .right .user .img-box .upload_image_placeholder {
     background: url(../images/user-fillter-white-big-empty.png) no-repeat;
 }
 
@@ -5642,10 +5865,10 @@ h2.map_tab{
     position: absolute;
     background-color: #b9c9fd;
     top: 48px;
-    right: 182px;
-    width: 660px;
+
+    width: 350px;
     z-index: 10;
-    border: 1px solid #0F2FA0;
+    border: 1px solid #aaa;
     border-top: none;
     border-radius: 2px 2px 2px 2px;
     display: none;
@@ -8950,8 +9173,8 @@ div.icons img {
 }
 
 .sb-bottom {
-    height: 100px;
-    padding:  12px;
+    min-height: 140px;
+    padding:  10px;
 
     background: #ededed;
     color: #3760ec;
@@ -8980,11 +9203,15 @@ div.icons img {
 
 .sb-small-text{
     text-align: center;
-    font: 12pt 'AdumaFOTRegular';
+    font: 11pt 'AdumaFOTRegular';
     color: #3760ec;
     cursor: pointer;
 }
+#cloudsponge{
+    margin-top: 30px;
+    display: none;
 
+}
 
 
 
@@ -9057,122 +9284,9 @@ div.icons img {
     margin-left: 19px;
 }
 
-.jspContainer
-{
-    overflow: hidden;
-    position: relative;
-}
-
-.jspPane
-{
-    position: absolute;
-}
-
-.jspVerticalBar
-{
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 16px;
-    height: 100%;
-    background: red;
-}
-
-.jspHorizontalBar
-{
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 16px;
-    background: red;
-}
-
-.jspVerticalBar *,
-.jspHorizontalBar *
-{
-    margin: 0;
-    padding: 0;
-}
-
-.jspCap
-{
-    display: none;
-}
-
-.jspHorizontalBar .jspCap
-{
-    float: left;
-}
-
-.jspTrack
-{
-    background: #dde;
-    position: relative;
-}
-
-.jspDrag
-{
-    background: #bbd;
-    position: relative;
-    top: 0;
-    left: 0;
-    cursor: pointer;
-}
-
-.jspHorizontalBar .jspTrack,
-.jspHorizontalBar .jspDrag
-{
-    float: left;
-    height: 100%;
-}
-
-.jspArrow
-{
-    background: #50506d;
-    text-indent: -20000px;
-    display: block;
-    cursor: pointer;
-}
-
-.jspArrow.jspDisabled
-{
-    cursor: default;
-    background: #80808d;
-}
-
-.jspVerticalBar .jspArrow
-{
-    height: 16px;
-}
-
-.jspHorizontalBar .jspArrow
-{
-    width: 16px;
-    float: left;
-    height: 100%;
-}
-
-.jspVerticalBar .jspArrow:focus
-{
-    outline: none;
-}
-
-.jspCorner
-{
-    background: #eeeef4;
-    float: left;
-    height: 100%;
-}
-
-/* Yuk! CSS Hack for IE6 3 pixel bug :( */
-* html .jspCorner
-{
-    margin: 0 -3px 0 0;
-}
-
-
-
 .closeCornerPromotion:hover {text-decoration:underline !important;}
 .cornerPromotionTitle:hover {text-decoration:underline !important;}
 
+input[type=url] {
+	direction: ltr;
+}

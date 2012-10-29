@@ -50,6 +50,8 @@ var Cycle = module.exports = new Schema({
       // {user_id: {type:ObjectId, ref:'User', query:common.FIND_USER_QUERY}, text: {type:mongoose_types.Text}}
       new Schema({user_id:{type:ObjectId, ref:'User', query:common.FIND_USER_QUERY}, text: {type:mongoose_types.Text}})
     ],
+    social_popup_title: {type: String},
+    social_popup_text: {type: String},
     is_hidden:{type:Boolean,'default':true}
 
 }, {strict: true});
