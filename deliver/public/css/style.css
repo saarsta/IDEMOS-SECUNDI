@@ -6622,11 +6622,11 @@ a.fraction-btn {
     font-size: 18px;
     line-height: 22px;
     font-family: 'AdumaFOTLight';
-    margin-bottom: 19px;
+    margin-bottom: 5px;
     /* saar added this code for ellipse in timeline actoin popup */
     width: 169px;
-    height: 22px;
-    /*overflow: hidden;*/
+    height: 44px;
+    overflow: hidden;
     /*white-space: nowrap;*/
     /*text-overflow: ellipsis;*/
 }
