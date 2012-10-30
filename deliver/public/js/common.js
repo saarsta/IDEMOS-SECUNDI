@@ -674,3 +674,38 @@ var logFunctionCalls = function (f, name) {
 		return result;
 	};
 };
+
+var googleMap =(function(){
+    var map;
+    return {
+        init_map: function ( id , center) {
+            var myOptions = {
+                zoom: 11,
+                center: center,
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                panControl: false,
+                zoomControl: false,
+                scaleControl: false,
+                mapTypeControl: false,
+                streetViewControl: false
+            };
+            map = new google.maps.Map(document.getElementById( id ), myOptions);
+            return map;
+        },
+        addPlaceMark:function (point,tooltip) {
+            var marker = new google.maps.Marker({
+                position: new google.maps.LatLng(point.lat,point.lng),
+                title:tooltip
+            });
+            marker.setMap(map);
+            return marker;
+
+            var marker = new google.maps.Marker({
+                map: map,
+                draggable:false,
+                position: new google.maps.LatLng(point.lat,point.lng),
+                visible: true
+            });
+        }
+    };
+})();

@@ -1,5 +1,5 @@
 var timeline = {
-	render: function (cid, ctitle, display_id) {
+	render: function (cid, ctitle, display_id, map) {
 		console.log('Rendering timeline.');
 
 		db_functions.getCycleTimeline(cid, function (err, data) {
@@ -197,6 +197,123 @@ var timeline = {
 					})
 				});
 			}
+
+
+//----------------------------------------------------------------------------------------------------
+            //add actions to cycle map
+//----------------------------------------------------------------------------------------------------
+
+            var markers = [];
+            var myOptions = {
+                pane: "floatPane",
+                enableEventPropagation: "true",
+                boxStyle: {
+                    background: "url(../images/event-popup.png) no-repeat",
+                    "padding-top": "7px",
+                    "padding-left": "7px",
+                    width: "200px",
+                    height: "145px"
+                },
+                pixelOffset: new google.maps.Size(-109, -155),
+                closeBoxURL: ""
+            };
+            var popup = new InfoBox(myOptions);
+
+            $.each(data.objects, function(index, item){
+                if(item.type == 'action' && item.location)
+                {
+                    var action_list_box = document.getElementById('action_list');
+                    data = {
+                        title: item.title,
+                        date: item.date,
+                        num_of_going: item.num_of_going,
+                        is_going: item.is_going,
+                        text_field_preview: item.text_field_preview,
+                        location: item.location,
+                        is_displayed: false,
+                        _id: item._id
+                    };
+                    dust.render('action_map_list_item', data, function(err, out){
+                        $('#action_list').append(out);
+                    });
+
+                    var markerPosition = new google.maps.LatLng(item.location.geometry.lat, item.location.geometry.lng);
+                    var marker = new google.maps.Marker({
+                        position : markerPosition,
+                        map: map,
+                        flat: true,
+                        title: item.title,
+                        icon: {
+                            fillColor: "#3C63EF",
+                            fillOpacity: 1,
+                            strokeColor: "#2049D3",
+                            strokeWeight: 3,
+                            strokeOpacity: 1,
+                            path: google.maps.SymbolPath.CIRCLE,
+                            scale: 10
+                        },
+                        shape: google.maps.SymbolPath.CIRCLE,
+                        visible:true
+                    });
+                    marker.metadata = {"id": item._id};
+                    markers.push(marker);
+
+                    google.maps.event.addListener(marker, 'click', function(){
+                        var myId = marker.metadata.id;
+                        var content = $('div.popup-event[item-id=' + myId + ']').clone()[0];
+                        popup.setContent(content);
+                        popup.open(map, marker);
+                        selectActionItem(myId);
+                    });
+
+
+                    $('#action_list .action_map_item').click(function(){
+                        var myId = $(this).attr('data-id');
+                        selectActionItem(myId);
+                        $.each(markers, function(indenx, marker){
+                            if(myId == marker.metadata.id){
+                                var content = $('div.popup-event[item-id=' + myId + ']').clone()[0];
+                                popup.setContent(content);
+                                popup.open(map, marker);
+                            }
+                        })
+                    });
+
+                    var selectActionItem = function(id){
+                        $.each($('.action_map_item'), function(index, item){
+                            if(item.getAttribute('data-id') == id){
+                                $(item).addClass('selected');
+                            } else if($(item).hasClass('selected')){
+                                $(item).removeClass('selected');
+                            }
+                        })
+                    }
+                }
+            })
 		});
-	}
+	},
+    addTabEvents: function(map, cycle_title){
+        $('.tabs-nav h2').click(function(){
+            var tab = $(this);
+            var mapCenter = map.getCenter();
+            if(!$(this).hasClass('selected')){
+                if($('.map_tab').hasClass('selected')){
+                    $('.map_tab').removeClass('selected');
+                    $('h2.timeline_tab').html($('h2.timeline_tab').html().replace('<span>טיימליין</span>', '<span>טיימליין</span>' + cycle_title));
+                    $('.map_tab').html($('h2.map_tab').html().replace(cycle_title, ""));
+                } else {
+                    $('.timeline_tab').removeClass('selected');
+                    $('.map_tab').html($('h2.map_tab').html().replace('<span>מפה</span>', '<span>מפה</span>' + cycle_title));
+                    $('h2.timeline_tab').html($('h2.timeline_tab').html().replace(cycle_title, ""));
+
+                }
+                $(this).addClass('selected');
+                $('#tabs_cycle_timeline').toggle();
+                $('#tabs_cycle_map').toggle();
+                google.maps.event.trigger(map, 'resize');
+                if(mapCenter != map.getCenter())
+                map.setCenter(mapCenter);
+            }
+        })
+    }
 }

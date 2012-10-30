@@ -1,0 +1,13 @@
+<div class="action_map_item" data-id="{_id}">
+    <h4>
+        {title}
+    </h4>
+    <p>
+        {text_field_preview}
+    </p>
+    {?location}<p>{location.address}</p>{/location}
+    <div>
+        <h3 class="right">{date|date_short}</h3>
+        <h3 class="left">{num_of_going} משתתפים</h3>
+    </div>
+</div>
