@@ -806,12 +806,12 @@ color: #ff00af;
     clear: both;
 }
 
-/*#content h2 {
+#content h2 {
     border-top: 6px solid #d6dbde;
     color: #50504f;
     font: normal 24px/49px 'AdumaFOTMedium';
     margin: 0;
-}*/
+}
 
 #content .right-col {
     float: right;
@@ -2240,14 +2240,10 @@ color: #ff00af;
     width: 713px;
     background: #fdfdfd;
     margin-bottom: 3px;
-    border-top: 6px solid #D6DBDE;
 }
 
 .add-offer h2 {
     padding: 0 8px;
-    font: 26px/41px 'AdumaFOTRegular';
-    margin: 0;
-    color: #50504F;
 }
 
 .add-offer-inner {
@@ -2275,7 +2271,7 @@ color: #ff00af;
     margin: 0 8px;
 }
 
-#content .add-offer-inner .text-box h3 {
+#content .add-offer-inner .text-box h5 {
     font: 26px/41px 'AdumaFOTRegular';
     padding: 0;
     margin: 0;
@@ -4389,12 +4385,12 @@ body.search-ative #header {
     padding-top: 10px;
 }
 
-h2.timeline_tab{
+h5.timeline_tab{
     padding-left: 25px;
     text-align: left;
 }
 
-h2.map_tab{
+h5.map_tab{
     padding-right: 25px;
     color: #B7B6B6;
     direction: rtl;
@@ -4417,7 +4413,7 @@ h2.map_tab{
     float: right;
 }
 
-.cycle_tabs_box .tabs-nav h2:hover {
+.cycle_tabs_box .tabs-nav h5:hover {
     color: #50504f;
     cursor: pointer;
 }
@@ -4488,7 +4484,7 @@ div.action_list::-webkit-scrollbar-button {
     -moz-box-shadow: -2px 0px 5px lightgray;
     box-shadow: -2px 0px 5px lightgray;
     position: relative;
-    overflow: hidden;
+    ovewrflow:auto;
 }
 
 .cycle_tabs_box #action_list_box .title{
@@ -6395,8 +6391,7 @@ a.fraction-btn {
     min-height: 275px;
 }
 
-
-.followers-box h2 {
+.followers-box h5 {
     font-size: 24px;
     line-height: 26px;
     font-family: 'AdumaFOTMedium';
@@ -6405,7 +6400,7 @@ a.fraction-btn {
     width: 460px;
 }
 
-.followers-box h2 span {
+.followers-box h5 span {
     padding-left: 14px;
     margin-left: 3px;
     background: url(../images/arrow-left.png) 0 50% no-repeat;
@@ -7305,7 +7300,7 @@ body.body-action .followers-box {
     margin-top: -20px;
 }
 
-body.body-action .followers-box h2 {
+body.body-action .followers-box h5 {
     border-top: none !important;
 }
 
@@ -8348,7 +8343,7 @@ body.body-action .followers-box {
     margin-top: -20px;
 }
 
-body.body-action .followers-box h2 {
+body.body-action .followers-box h5 {
     border-top: none !important;
 }
 

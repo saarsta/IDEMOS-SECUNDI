@@ -313,18 +313,18 @@ var timeline = {
                         }
                     }
                 })
-                $('.tabs-nav h2').click(function(){
+                $('.tabs-nav h5').click(function(){
                     var tab = $(this);
                     var mapCenter = map.getCenter();
                     if(!$(this).hasClass('selected')){
                         if($('.map_tab').hasClass('selected')){
                             $('.map_tab').removeClass('selected');
-                            $('h2.timeline_tab').html($('h2.timeline_tab').html().replace('<span>ציר הזמן</span>', '<span>ציר הזמן</span>' + ctitle));
-                            $('.map_tab').html($('h2.map_tab').html().replace(ctitle, ""));
+                            $('h5.timeline_tab').html($('h5.timeline_tab').html().replace('<span>ציר הזמן</span>', '<span>ציר הזמן</span>' + ctitle));
+                            $('.map_tab').html($('h5.map_tab').html().replace(ctitle, ""));
                         } else {
                             $('.timeline_tab').removeClass('selected');
-                            $('.map_tab').html($('h2.map_tab').html().replace('<span>מפה</span>', '<span>מפה</span>' + ctitle));
-                            $('h2.timeline_tab').html($('h2.timeline_tab').html().replace(ctitle, ""));
+                            $('.map_tab').html($('h5.map_tab').html().replace('<span>מפה</span>', '<span>מפה</span>' + ctitle));
+                            $('h5.timeline_tab').html($('h5.timeline_tab').html().replace(ctitle, ""));
 
                         }
                         $(this).addClass('selected');
