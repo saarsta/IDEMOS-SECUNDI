@@ -2343,9 +2343,12 @@ color: #ff00af;
 .add-offer .text-box a {
     color: #3b63ef;
     margin-bottom: -15px;
-    position: relative;
     top: -15px;
     display: inline-block;
+}
+
+.read-more {
+    position: relative;
 }
 
 .add-offer .text-box #i_bring_bt {

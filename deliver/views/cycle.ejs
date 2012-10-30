@@ -38,7 +38,7 @@
                         <h3><%- cycle.discussion_title %></h3>
                         <p> <%- cycle.text_field %>   </p>
                         </div>
-                        <p id="read_more"> <a href="javascript:void(0);"> קרא עוד </a> </p> </div>
+                        <p id="read_more"> <a class="read-more" href="javascript:void(0);"> קרא עוד </a> </p> </div>
                     <div class="add-offer-bottom cf">
                         <div class="right">
                             <div class="tags">
@@ -238,8 +238,21 @@
                     button.text(result.is_follower ? "הפסק לעקוב" : "אני בעד");
                     $('#followers_count strong').text(result.followers_count);
                     if(result.is_follower){
+                        //set mail subject for social popup
+
+                        var mail_subject = "הצטרפתי לקידום הפעילות בנושא "
+                                + cycle_title
+                                + ". מה איתך?"
+                        mail_subject = encodeURIComponent(mail_subject);
+                        var mail_body = "החלטתי לקחת חלק בפעילות של תנועת עורו בתחום"
+                                + " "
+                                + cycle_title
+                                + ". גם לך חשוב לקדם את הנושא? אם כן, אפשר לקבל פרטים נוספים, להצטרף ולתמוך באתר עורו. אשמח לראות אותך שם! "
+                                + "http://www.uru.org.il/cycles/" + cycle_id;
+
                         setTimeout(function(){
                             $('#box-share,#screen').show();
+                            $('#social-popup-mail').attr("href", "mailto:?subject=" + mail_subject + "&body=" + mail_body);
                             $('#close').click(function(){
                                 $('#box-share,#screen').hide();
                             })

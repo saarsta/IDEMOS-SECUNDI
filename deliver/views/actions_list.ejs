@@ -39,7 +39,6 @@ var cycle_id = cycle_id || '';
 
             </div>
 
-
             <div class="services-green">
                 <span class="empty"></span>
                 <a href="javascript:void(0);" class="service-10 subjectItem"  data-subject_id=""><span class="text">
@@ -135,7 +134,9 @@ var cycle_id = cycle_id || '';
 
         $('#action_list').on('click', '.join_button', function(e){
             var item =  $(this).parents('[data-id]');
-            var item_id =  item.data('id');
+            var item_id = item.data('id');
+            var cycle_id = $(this).data('main_id');
+            var cycle_title = $(this).data('main_title');
             var social_popup_title = $(this).data('social-title');
             var social_popup_text = $(this).data('social-text');
             var actionType = $(this).data('action');
@@ -149,9 +150,24 @@ var cycle_id = cycle_id || '';
                 dust.render('action_list_item', data, function(err, html){
                     item.replaceWith(html);
                     if(data.is_going){
+
+                        //set mail subject for social popup
+
+                        var mail_subject = "הצטרפתי לקידום הפעילות בנושא "
+                                + cycle_title
+                                + ". מה איתך?"
+                        mail_subject = encodeURIComponent(mail_subject);
+                        var mail_body = "החלטתי לקחת חלק בפעילות של תנועת עורו בתחום"
+                                + " "
+                                + cycle_title
+                                + ". גם לך חשוב לקדם את הנושא? אם כן, אפשר לקבל פרטים נוספים, להצטרף ולתמוך באתר עורו. אשמח לראות אותך שם! "
+                                + "http://www.uru.org.il/cycles/" + cycle_id;
+
                         setTimeout(function(){
                             //if action schema has social text we update the popup
                             $('#box-share,#screen').show();
+                            $('#social-popup-mail').attr("href", "mailto:?subject=" + mail_subject + "&body=" + mail_body);
+
                             if(social_popup_title){
                                 $('#social-popup-title').text(social_popup_title);
                             }
