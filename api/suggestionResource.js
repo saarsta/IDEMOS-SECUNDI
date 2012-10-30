@@ -235,7 +235,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                                     return user.user_id + "" == req.user.id
                                 })) {
                                     var new_user = {user_id:req.user._id, join_date:Date.now()};
-                                    models.Discussion.update({_id:disc_obj._id}, {$addToSet:{users:new_user}}, function (err, num) {
+                                    models.Discussion.update({_id:disc_obj._id}, {$set:{last_updated: Date.now()}}, {$addToSet:{users:new_user}}, function (err, num) {
                                         discussion_creator_id = disc_obj.creator_id;
                                         async.forEach(disc_obj.users, iterator, cbk2);
                                     });
