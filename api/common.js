@@ -325,7 +325,7 @@ var uploadHandler = exports.uploadHandler = function(req,callback) {
 			// This regex matches any character that's not alphanumeric, '_', '-' or '.', thus sanitizing the filename.
 			// Hebrew characters are not allowed because they would wreak havoc with the url in any case.
 			var regex = /[^-\w_\.]/g;
-			return unescape(filename).replace(regex, '-');
+			return decodeURIComponent(filename).replace(regex, '-');
 		},
 		filename_to_path = function (filename) {
 			return path.join(__dirname,'..','deliver','public','cdn', filename);
