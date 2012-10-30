@@ -4432,15 +4432,13 @@ h2.map_tab{
 }
 
 .cycle_tabs_box #action_list{
-    word-break: break-all;
     background: white;
     width: 238px;
     height: 354px;
     z-index: 10;
     position: relative;
     background: white;
-    overflow-y: auto;
-    overflow-x: hidden;
+    overflow: auto;
 }
 
 #action_list {
@@ -4486,7 +4484,6 @@ div.action_list::-webkit-scrollbar-button {
     -webkit-box-shadow: -2px 0px 5px lightgray;
     -moz-box-shadow: -2px 0px 5px lightgray;
     box-shadow: -2px 0px 5px lightgray;
-    z-index: 10;
     position: relative;
     overflow: hidden;
 }
