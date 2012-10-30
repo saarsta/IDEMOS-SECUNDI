@@ -312,20 +312,17 @@ var timeline = {
                             })
                         }
                     }
-                })
+                });
                 $('.tabs-nav h5').click(function(){
                     var tab = $(this);
                     var mapCenter = map.getCenter();
                     if(!$(this).hasClass('selected')){
                         if($('.map_tab').hasClass('selected')){
                             $('.map_tab').removeClass('selected');
-                            $('h5.timeline_tab').html($('h5.timeline_tab').html().replace('<span>ציר הזמן</span>', '<span>ציר הזמן</span>' + ctitle));
-                            $('.map_tab').html($('h5.map_tab').html().replace(ctitle, ""));
+                            $('h5.timeline_tab').append($("#timeline-second-part"));
                         } else {
                             $('.timeline_tab').removeClass('selected');
-                            $('.map_tab').html($('h5.map_tab').html().replace('<span>מפה</span>', '<span>מפה</span>' + ctitle));
-                            $('h5.timeline_tab').html($('h5.timeline_tab').html().replace(ctitle, ""));
-
+                            $('.map_tab').append($("#timeline-second-part"));
                         }
                         $(this).addClass('selected');
                         $('#tabs_cycle_timeline').toggle();

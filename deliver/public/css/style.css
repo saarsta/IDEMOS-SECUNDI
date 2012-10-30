@@ -6403,10 +6403,18 @@ a.fraction-btn {
     width: 460px;
 }
 
-.followers-box h5 span {
+.followers-box h5 .timeline-first-part {
+    float: right;
     padding-left: 14px;
     margin-left: 3px;
     background: url(../images/arrow-left.png) 0 50% no-repeat;
+}
+
+.followers-box h5 #timeline-second-part {
+    padding-right: 4px;
+    text-align: right;
+    display: inline-block;
+    width: 364px;
 }
 
 .followers-box .extra {
