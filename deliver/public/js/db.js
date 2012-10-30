@@ -1,18 +1,8 @@
 var user = {
-//    load: function() {
-//        db_functions.loggedInAjax({
-//            url: '/api/users'
-//        });
-//    },
     update: function(data) {
         $.extend(user.data, data);
-    }
-//    data: {},
-//    get: function(prop) {
-//        if (!user.data) user.load();
-//
-//        return user.data[prop];
-//    }
+    },
+    actions_done_by_user: {}
 };
 
 
