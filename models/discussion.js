@@ -20,6 +20,7 @@ var Discussion = module.exports = new Schema({
     subject_name: String,
     system_message: {type:mongoose_types.Html},
     creation_date:{type:Date, 'default':Date.now},
+    last_updated:{type:Date, 'default':Date.now},
     creator_id:{type:ObjectId, ref:'User', query:common.FIND_USER_QUERY},
     first_name:{type:String,editable:false},
     last_name:{type:String,editable:false},

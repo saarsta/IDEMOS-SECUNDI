@@ -4431,12 +4431,55 @@ h2.map_tab{
     float: left;
 }
 
+.cycle_tabs_box #action_list{
+    word-break: break-all;
+    background: white;
+    width: 238px;
+    height: 354px;
+    z-index: 10;
+    position: relative;
+    background: white;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#action_list {
+    direction: ltr;
+}
+
+#action_list .action_map_item{
+    direction: rtl;
+}
+div.action_list::-webkit-scrollbar{
+    width: 6px;
+    height: 6px;
+}
+
+div.action_list::-webkit-track {
+    width: 6px;
+}
+
+div.action_list::-webkit-scrollbar-button {
+    display: none;
+}
+
+::-webkit-scrollbar-track-piece  {
+    background-color: #EDEDED;
+}
+
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 3px;
+    background-color:  #50504f;
+}
+
+
 #cycle_map_box {
     border-top: 6px solid  #D6DBDE;
     border-bottom: 6px solid #D6DBDE;
 }
 
-.cycle_tabs_box #action_list{
+
+.cycle_tabs_box #action_list_box{
     background: white;
     width: 238px;
     height: 354px;
@@ -4445,10 +4488,10 @@ h2.map_tab{
     box-shadow: -2px 0px 5px lightgray;
     z-index: 10;
     position: relative;
-    overflow: auto;
+    overflow: hidden;
 }
 
-.cycle_tabs_box #action_list .title{
+.cycle_tabs_box #action_list_box .title{
     font: 20px 'AdumaFOTRegular';
     color: #3B63EF;
     line-height: 25px;
@@ -4457,6 +4500,7 @@ h2.map_tab{
     margin-top: 13px;
     padding-bottom: 5px;
     margin-bottom: 3px;
+    direction: rtl;
 }
 
 #cycle_map .type-one .popup-text {
@@ -9212,8 +9256,6 @@ div.icons img {
     display: none;
 
 }
-
-
 
 .CornerPromotionDiv {
     position: fixed;
