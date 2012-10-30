@@ -709,3 +709,14 @@ var googleMap =(function(){
         }
     };
 })();
+
+var getUserPosition = function(user_position, cbk){
+    if(navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position){
+            console.log(position);
+            user_position.lat = position.coords.latitude;
+            user_position.lng = position.coords.longitude;
+        });
+    }
+    cbk(user_position);
+}
