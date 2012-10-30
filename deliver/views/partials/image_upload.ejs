@@ -75,9 +75,6 @@
             },
             onComplete: function(id, fileName, responseJSON){
                 console.log(responseJSON);
-                if(!user){
-                    alert('bla bla bla');
-                }
                 setImageUrl(responseJSON.image ? responseJSON.image.url : responseJSON.avatar.url);
             },
             template: '<span><div class="qq-uploader">' +

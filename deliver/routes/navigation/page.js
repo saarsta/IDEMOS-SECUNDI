@@ -4,6 +4,8 @@ var models = require('../../../models');
 
 module.exports = function(req,res) {
 
+    var page = models.FooterLink.getFooterLink(req.params.link);
+
     res.render('page.ejs',{
         layout: false,
         url: req.url,
