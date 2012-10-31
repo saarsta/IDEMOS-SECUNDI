@@ -1073,7 +1073,7 @@ var db_functions = {
 
     getCylceFollowers:function (cycle_id, page, callback) {
         db_functions.loggedInAjax({
-            url:'/api/users?cycles.cycle_id=' + cycle_id + '&limit=3&offset=' + (page * 14),
+            url:'/api/users?cycles.cycle_id=' + cycle_id + /*&limit=3*/'&offset=' + (page * 14),
             type:"GET",
             async:true,
             success:function (data, err) {
