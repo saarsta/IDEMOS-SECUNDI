@@ -169,8 +169,8 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                 fields.first_name = user.first_name;
                 fields.last_name = user.last_name;
                 fields.avatar = user.avatar;
-                if(fields.ref_to_post_id == "null" || fields.ref_to_post_id == "undefined")
-                    fields.ref_to_post_id = null;
+                if(!fields.ref_to_post_id || fields.ref_to_post_id == "null" || fields.ref_to_post_id == "undefined")
+                    delete fields.ref_to_post_id;
 
                 // TODO add better sanitizer
              //   fields.text = sanitizer.sanitize(fields.text);
