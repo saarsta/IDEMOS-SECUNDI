@@ -696,7 +696,7 @@ color: #ff00af;
 }
 /*-----------------------------*/
 .search-box {
-    padding: 26px 0;
+    padding: 18px 0;
     height: 31px;
     clear: both;
     /*background: url(../images/search-icon.png) 100% 19px no-repeat;*/
@@ -811,10 +811,13 @@ color: #ff00af;
 }
 
 #content h2 {
-    border-top: 6px solid #d6dbde;
+
     color: #50504f;
-    font: normal 24px/49px 'AdumaFOTMedium';
-    margin: 0;
+    font: normal 24px/35px 'AdumaFOTMedium';
+    margin: 10px 28px 15px 28px;
+    padding: 0 0 15px 0;
+
+    border-bottom: solid 1px #ebebeb;
 }
 
 #content .right-col {
@@ -2249,6 +2252,7 @@ color: #ff00af;
     width: 713px;
     background: #fdfdfd;
     margin-bottom: 3px;
+    border-top: 6px solid #D6DBDE
 }
 
 .add-offer h2 {
@@ -2265,9 +2269,12 @@ color: #ff00af;
 
 .update h2 .arrow,
 .add-offer h2 .arrow {
-    padding-left: 8px;
+    padding-left: 13px;
     margin-left: 8px;
     background: url(../images/arrow-left.png) 0 40% no-repeat;
+    color: #3b63ef;
+    font:   normal 21px/30px 'AdumaFOTMedium'  ;
+
 }
 
 .add-offer .floatRight {
@@ -2346,7 +2353,7 @@ color: #ff00af;
 .add-offer .text-box p {
     color: #7f7f7e;
     font: normal 13px/17px Arial;
-    margin-bottom: 21px;
+    margin-bottom: 12px;
 }
 
 .add-offer .text-box a {
@@ -5896,6 +5903,7 @@ div.action_list::-webkit-scrollbar-button {
 }
 
 .add-offer-small {
+    position: relative;
     width: 642px;
     margin-bottom: 20px;
 }
@@ -6079,12 +6087,12 @@ div.action_list::-webkit-scrollbar-button {
     color: #50504f;
     font: bold 16px/19px Arial;
     margin-bottom: 5px;
-    padding-top: 8px;
+
 }
 
 .add-offer-small .add-offer-bottom .right {
     float: right;
-    width: 468px;
+     width: 100%;
 }
 
 .add-offer-small .add-offer-bottom {
@@ -6092,11 +6100,43 @@ div.action_list::-webkit-scrollbar-button {
 }
 
 .add-offer-small .add-offer-bottom .right .tags {
+
+    padding: 0 20px 22px;
+    margin: 0;
+    background-image: url(../images/Cycles_Gray.Label_Icon.gif);
+    background-repeat: no-repeat;
+    background-position: 570px 0;
+    color: #b4b9bb;
+    font-size: 12px;
+}
+.add-offer-small .add-offer-bottom .right .tags a{
+color: #5578f1;
+    background-color: transparent;
+}
+
+.add-offer-small .add-offer-bottom .right .followers {
     border-top: 1px solid #ebebeb;
     border-bottom: 1px solid #ebebeb;
     padding: 11px 0 12px;
     margin-bottom: 22px;
+    color:#656565;
 }
+.add-offer-small .add-offer-bottom .right .followers .blue-box {
+    background-color: #3b63ef;
+    color: #fff;
+    height: 23px;
+    width: 25px;
+    margin-left: 5px;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    display: inline-block;
+    font-size: 20px;
+    padding-top: 2px;
+    text-align: center;
+}
+
+
 
 a.fraction-btn {
     float: left;
@@ -6369,21 +6409,32 @@ a.fraction-btn {
     font-family: 'AdumaFOTRegular';
 }
 
-.blue-bar a.green-btn {
-    float: left;
-    width: 218px;
-    height: 35px;
-    border: 1px solid #2eab35;
+.add-offer  a.green-btn {
+    position: absolute;
+    left:30px;
+    top:39px;
+    width: 111px;
+    height: 42px;
+
     border-radius: 2px;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
-    background: #2fd43b url(../images/green-btn-border.png) 0 0 repeat-x;
+    background: transparent url(../images/Cycles_Pro_btn_sprite.png) -225px 0 no-repeat;
     text-decoration: none;
     text-align: center;
     color: #ffffff;
     font-family: 'AdumaFOTRegular';
     font-size: 20px;
     line-height: 35px;
+}
+
+.add-offer  a.green-btn:hover
+{
+    background: url(../images/Cycles_Pro_btn_sprite.png) -113px 0 no-repeat;
+}
+.add-offer  a.green-btn:active
+{
+    background: url(../images/Cycles_Pro_btn_sprite.png) -1px 0 no-repeat;
 }
 
 /*------------------------*/

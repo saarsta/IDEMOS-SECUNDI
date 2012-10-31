@@ -12,9 +12,8 @@ $(document).ready(function () {
         var current_section = typeof(window.current_section) == 'undefined' || window.current_section == null ? -1 : window.current_section;
         if (current_section >= 0) {
             search_term = $(this).find(".search_term").val();
-            if(search_term!=""){
-                displaySearchResults();
-            }
+           displaySearchResults();
+
             return false;
         }
         else
