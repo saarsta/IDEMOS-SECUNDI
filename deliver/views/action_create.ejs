@@ -9,6 +9,7 @@ var error_message = error_message || '';
     <script src="/plugins/ckeditor/ckeditor.js"></script>
     <script src="/plugins/ckeditor/adapters/jquery.js"></script>
     <script src="/node-forms/js/maps.js"></script>
+    <script src="/js/autocompleteTag.js"></script>
 
     <style>
         .error-container {
@@ -128,11 +129,15 @@ var error_message = error_message || '';
                 </div>
                 <div class="tags-box tags-box-event">
                     <div class="add-tag">
-                        <label class="first">תגיות</label>
                         <div class="input">
-                            <input type="text" value="" />
+                            <input type="text" value="" id="tag" placeholder=
+                                    "הוסף תגיות"
+                                    />
                         </div>
-                        <input type="button" value="הוסף" />
+                        <input type="submit" value="הוסף" id="add_tag" />
+                        <ul id="search_suggestion">
+                            <li class="topborder"></li>
+                        </ul>
                     </div>
                     <div class="tags-list">
                     </div>

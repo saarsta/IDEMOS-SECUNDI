@@ -186,8 +186,10 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                 post_id = _post_object._id;
                 post_object = _post_object;
                 console.log('debugging waterfall 2');
-                discussion_id = post_object.discussion_id;
-                post_object.save(function(err,result,num)
+                discussion_id = post_object.discussion_id + "";
+                post_object.creator_id + "";
+
+                post_object.save(function(err, result, num)
                 {
                     cbk(err,result);
                 });

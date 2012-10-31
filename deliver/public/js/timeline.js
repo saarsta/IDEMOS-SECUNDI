@@ -3,8 +3,9 @@ var timeline = {
 	render: function (cid, ctitle, display_id) {
 		console.log('Rendering timeline.');
 
+
         var map = timeline.map;
-        if(!map){
+        if(!$('#cycle_map').is(':empty')){
             var tabsData = {title: ctitle};
             dust.render('cycle_timeline_map_tabs', tabsData, function(err, out){
                 $('.tabs-box').append(out);
