@@ -4512,16 +4512,12 @@ div.action_list::-webkit-scrollbar-button {
 #cycle_map .type-one .popup-text h4 {
 
     color: #3c63ef;
-    font-size: 20px;
-    line-height: 22px;
+    font-size: 18px;
+    line-height: 20px;
     font-family: 'AdumaFOTLight';
-    margin-bottom: 5px;
-    /* saar added this code for ellipse in timeline actoin popup */
     width: 169px;
-    height: 22px;
+    height: 40px;
     overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
 
 }
 
@@ -4547,7 +4543,7 @@ div.action_list::-webkit-scrollbar-button {
 }
 
 #cycle_map .popup-text p.going_num{
-    margin-top: 17px;
+    margin-top: 4px;
     font-weight: bold;
     font-size: 13px;
 }
