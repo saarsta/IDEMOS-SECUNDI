@@ -19,9 +19,9 @@
     </div>
     <div class="left">
         {?is_going}
-        <a class="join_button social-on-click" data-social-title="{social_popup_title}" data-social-text="{social_popup_text}" data-action="leave" data-action="follower" data-img_src="{image_field_preview.url}" data-text_preview="{text_field_preview}" data-title="{title}" data-rel="/actions/{_id}" data-main_title="{cycle_title}" href="#">עזוב</a>
+        <a class="join_button social-on-click" data-social-title="{social_popup_title}" data-social-text="{social_popup_text}" data-action="leave" data-action="follower" data-img_src="{image_field_preview.url}" data-text_preview="{text_field_preview}" data-title="{title}" data-rel="/actions/{_id}" data-main_title="{cycle_title}" data-main_id="{cycle_id[0].cycle}" href="#">עזוב</a>
         {:else}
-        <a class="join_button social-on-click" data-social-title="{social_popup_title}" data-social-text="{social_popup_text}" data-action="follower" data-img_src="{image_field_preview.url}" data-text_preview="{text_field_preview}" data-title="{title}" data-rel="/actions/{_id}" data-main_title="{cycle_title}" href="#">הצטרף</a>
+        <a class="join_button social-on-click" data-social-title="{social_popup_title}" data-social-text="{social_popup_text}" data-action="follower" data-img_src="{image_field_preview.url}" data-text_preview="{text_field_preview}" data-title="{title}" data-rel="/actions/{_id}" data-main_title="{cycle_title}" data-main_id="{cycle_id[0].cycle}" href="#">הצטרף</a>
         {/is_going}
         <a class="share green-share" data-img_src="{image_field_preview.url}" data-title="{title}" rel="/actions/{_id}" href="/facebookShare?link=/actions/{_id}"><span>שתף</span></a>
     </div>

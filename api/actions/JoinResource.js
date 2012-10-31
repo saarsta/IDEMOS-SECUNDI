@@ -87,10 +87,6 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
             function(join_obj, cbk){
                 if(join_obj){
                     async.parallel([
-                       /* //reduce action.num_of_going
-                        function(cbk1){
-                            models.Action.update({_id: action_id}, {$inc: {num_of_going: -1}}, cbk1);
-                        },*/
 
                         //remove user from action.going_users
                         function(cbk1){

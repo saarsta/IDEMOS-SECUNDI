@@ -90,7 +90,7 @@
             function setJoinBT(data){
                 var isGoing = (data.action_obj.map_join_to_user !== undefined);
                 var user = data.action_obj.map_join_to_user;
-                var text= isGoing?leaveString:joinString;
+                var text = isGoing?leaveString:joinString;
                 var joinBtnString = isGoing?"עזוב":"הצטרף";
 
                 $(".add-offer-btn-box a").html(text);
@@ -110,7 +110,6 @@
                 setGoingNumber(goingUsers);
 
                 timeline.render(cycle_id, cycle_title, action_id);
-
             }
 
 //            function shareScreen() {
@@ -130,10 +129,23 @@
                     }
                     else{
                         setJoinBT(data);
-                        if(data.action_obj.is_going)
-                            setTimeout(function(){
-                                $('#box-share,#screen').show();
+                        if(data.action_obj.is_going === true)
+                            //set mail subject for social popup
 
+                            var mail_subject = "הצטרפתי לקידום הפעילות בנושא "
+                                + cycle_title
+                                + ". מה איתך?"
+                            mail_subject = encodeURIComponent(mail_subject);
+                            var mail_body = "החלטתי לקחת חלק בפעילות של תנועת עורו בתחום"
+                                + " "
+                                + cycle_title
+                                + ". גם לך חשוב לקדם את הנושא? אם כן, אפשר לקבל פרטים נוספים, להצטרף ולתמוך באתר עורו. אשמח לראות אותך שם! "
+                                + "http://www.uru.org.il/cycles/" + cycle_id;
+
+                            setTimeout(function(){
+
+                                $('#box-share,#screen').show();
+                                $('#social-popup-mail').attr("href", "mailto:?subject=" + mail_subject + "&body=" + mail_body);
                                 $('#close').click(function(){
                                     $('#box-share,#screen').hide();
                                 })

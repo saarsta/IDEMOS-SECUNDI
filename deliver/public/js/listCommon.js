@@ -6,7 +6,7 @@ var listCommon = (function(){
                 if(!query){
                   query={};
                 }
-                db_functions.getListItems(original_type,query, function(err,data){
+                db_functions.getListItems(original_type, query, function(err,data){
                     jqueryContainer.css('height',jqueryContainer.height());
                     jqueryContainer.empty();
                     $.each(data.objects,function(index,elm)

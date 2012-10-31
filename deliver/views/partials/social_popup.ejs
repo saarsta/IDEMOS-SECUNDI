@@ -1,6 +1,6 @@
 <%
-    var object_social_title = social_popup_title || "";
-    var object_social_text = social_popup_text || "";
+    var object_social_title = global.social_popup_title || "";
+    var object_social_text = global.social_popup_text || "";
 %>
 
 <div id="box-share">
@@ -42,7 +42,8 @@
                 <div class="sb-icons">
                     <div id="close"><img src="/images/elections/close.png" alt="עורו"/></div>
                     <div class="icons">
-                        <a href="#" id="mail" ><img class="icon" src="/images/elections/enva.png" alt="עורו"/></a>
+                        <a id="social-popup-mail" href="#"
+                           target="_blank"><img class="icon" src="/images/elections/enva.png" alt="עורו"/></a>
                         <a href="javascript:void(0)" id="share-google"><img class="icon" src="/images/elections/google.png" alt="עורו"/></a>
                         <a href="javascript:void(0)" id="share-twitter"><img class="icon" src="/images/elections/tweet.png" alt="עורו"/></a>
                         <a href="javascript:void(0)" id="share-facebook"><img class="icon" src="/images/elections/face.png" alt="עורו"/></a>

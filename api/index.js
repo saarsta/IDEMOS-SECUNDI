@@ -63,7 +63,7 @@ var mongoose_resource = require('jest'),
     FbConnectResource = require('./FbConnectResource'),
     AvatarResource = require('./avatar_resource'),
     ResetNotificationResource = require('./reset_notification_resource'),
-    DailyDiscussionResource = require('./DailyDiscussionResource'),
+//    DailyDiscussionResource = require('./DailyDiscussionResource'),
     OGActionResource = require('./og_action_resource'),
     UserInviteFriendsResource=      require('./UserInviteFriendsResource');
 

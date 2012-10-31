@@ -5,7 +5,6 @@ var error_message = error_message || '';
 <html>
 <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# <%= settings.facebook_app_name %>: http://ogp.me/ns/fb/<%= settings.facebook_app_name %>#">
     <% include partials/head.ejs %>
-    <script src="/js/jquery-fieldselection.js" type="text/javascript"></script>
     <script src="/plugins/ckeditor/ckeditor.js"></script>
     <script src="/plugins/ckeditor/adapters/jquery.js"></script>
 
@@ -204,6 +203,9 @@ var error_message = error_message || '';
     <div class="extra cf">
 
         <select class="left-select" id="sorting_select">
+            <option value="-last_updated">
+                עדכון אחרון
+            </option>
             <option value="-creation_date">
                 תאריך
             </option>

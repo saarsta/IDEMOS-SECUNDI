@@ -2271,7 +2271,7 @@ color: #ff00af;
     margin: 0 8px;
 }
 
-#content .add-offer-inner .text-box h3 {
+#content .add-offer-inner .text-box h5 {
     font: 26px/41px 'AdumaFOTRegular';
     padding: 0;
     margin: 0;
@@ -2343,9 +2343,12 @@ color: #ff00af;
 .add-offer .text-box a {
     color: #3b63ef;
     margin-bottom: -15px;
-    position: relative;
     top: -15px;
     display: inline-block;
+}
+
+.read-more {
+    position: relative;
 }
 
 .add-offer .text-box #i_bring_bt {
@@ -4380,51 +4383,52 @@ body.search-ative #header {
 }
 
 .cycle_tabs_box .tabs-nav {
-    height: 19px;
-    padding-bottom: 33px;
-    padding-top: 20px;
-    border-bottom: 1px solid #B7B6B6;
+    height: 30px;
+    padding-bottom: 10px;
+    padding-top: 10px;
 }
 
-h2.timeline_tab{
+h5.timeline_tab{
     padding-left: 25px;
     text-align: left;
 }
 
-h2.map_tab{
+h5.map_tab{
     padding-right: 25px;
     color: #B7B6B6;
+    direction: rtl;
 }
 
 .cycle_tabs_box #tabs_cycle_timeline{
     display: block;
+    margin-top: 20px;
+    border-top: 1px solid #B7B6B6;
 }
 
 .cycle_tabs_box #tabs_cycle_map{
+    margin-top: 20px;
     display: none;
-}
-
-.cycle_tabs_box .tabs-nav li {
-    float: right;
-    border-right: 2px solid #b7b6b6;
-}
-
-.cycle_tabs_box .tabs-nav li:first-child {
-    border: none;
 }
 
 .cycle_tabs_box .tabs-nav li{
     color: #b7b6b6;
     text-decoration: none;
+    float: right;
 }
 
-.cycle_tabs_box .tabs-nav h2:hover {
+.cycle_tabs_box .tabs-nav h5:hover {
     color: #50504f;
     cursor: pointer;
 }
 
-.cycle_tabs_box .tabs-nav h2.selected {
+.cycle_tabs_box .tabs-nav .right.selected {
     color: #50504f;
+    border-left: 2px solid #B7B6B6;
+}
+
+.cycle_tabs_box .tabs-nav .left.selected {
+    color: #50504f;
+    border-right: 2px solid #B7B6B6;
 }
 
 .cycle_tabs_box #cycle_map {
@@ -4439,11 +4443,9 @@ h2.map_tab{
     position: relative;
     background: white;
     overflow: auto;
-}
-
-#action_list {
     direction: ltr;
 }
+
 
 #action_list .action_map_item{
     direction: rtl;
@@ -4485,7 +4487,7 @@ div.action_list::-webkit-scrollbar-button {
     -moz-box-shadow: -2px 0px 5px lightgray;
     box-shadow: -2px 0px 5px lightgray;
     position: relative;
-    overflow: hidden;
+    ovewrflow:auto;
 }
 
 .cycle_tabs_box #action_list_box .title{
@@ -6380,25 +6382,39 @@ a.fraction-btn {
 }
 
 /*------------------------*/
-.followers-box {
+.followers-box.cycle{
     background: #f7f4ce;
     padding-bottom: 18px;
     margin-bottom: 24px;
 }
 
-.followers-box h2 {
-    font-size: 28px;
-    line-height: 28px;
+.followers-box{
+    background: #f7f4ce;
+    margin-bottom: 24px;
+    min-height: 275px;
+}
+
+.followers-box h5 {
+    font-size: 24px;
+    line-height: 26px;
     font-family: 'AdumaFOTMedium';
     font-weight: normal;
     margin: 0;
     width: 460px;
 }
 
-.followers-box h2 span {
+.followers-box h5 .timeline-first-part {
+    float: right;
     padding-left: 14px;
     margin-left: 3px;
     background: url(../images/arrow-left.png) 0 50% no-repeat;
+}
+
+.followers-box h5 #timeline-second-part {
+    padding-right: 4px;
+    text-align: right;
+    display: inline-block;
+    width: 364px;
 }
 
 .followers-box .extra {
@@ -6603,16 +6619,15 @@ a.fraction-btn {
 .followers-diagram .event .type-one .popup-text h4 {
 
     color: #3c63ef;
-    font-size: 20px;
-    line-height: 22px;
+    font-size: 18px;
+    line-height: 20px;
     font-family: 'AdumaFOTLight';
-    margin-bottom: 5px;
     /* saar added this code for ellipse in timeline actoin popup */
     width: 169px;
-    height: 22px;
+    height: 40px;
     overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    /*white-space: nowrap;*/
+    /*text-overflow: ellipsis;*/
 }
 
 .followers-diagram .event .type-one .popup-text a.join-btn {
@@ -6638,7 +6653,7 @@ a.fraction-btn {
 
 .followers-diagram .event .popup-text p.going_num {
     font-weight: bold;
-    margin-top: 17px;
+    margin-top: 4px;
     font-size: 13px;
 }
 
@@ -7295,7 +7310,7 @@ body.body-action .followers-box {
     margin-top: -20px;
 }
 
-body.body-action .followers-box h2 {
+body.body-action .followers-box h5 {
     border-top: none !important;
 }
 
@@ -8338,7 +8353,7 @@ body.body-action .followers-box {
     margin-top: -20px;
 }
 
-body.body-action .followers-box h2 {
+body.body-action .followers-box h5 {
     border-top: none !important;
 }
 

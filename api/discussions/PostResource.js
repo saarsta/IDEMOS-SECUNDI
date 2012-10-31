@@ -207,7 +207,7 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                         console.log('debugging waterfall 3 1');
 
                         //add user that connected somehow to discussion
-                        models.Discussion.update({_id:object.discussion_id, "users.user_id": {$ne: user_id}},
+                        models.Discussion.update({_id:object.discussion_id, "users.user_id": {$ne: user_id}}, {$set:{last_updated: Date.now()}},
                             {$addToSet: {users: {user_id: user_id, join_date: Date.now()}}}, cbk2);
                     },
 
