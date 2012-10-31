@@ -320,11 +320,12 @@ exports.getThresholdCalcVariables = function(type)
 
 
 var uploadHandler = exports.uploadHandler = function(req,callback) {
+
 	var sanitize_filename = function(filename) {
 			// This regex matches any character that's not alphanumeric, '_', '-' or '.', thus sanitizing the filename.
 			// Hebrew characters are not allowed because they would wreak havoc with the url in any case.
 			var regex = /[^-\w_\.]/g;
-			return unescape(filename).replace(regex, '-');
+			return decodeURIComponent(filename).replace(regex, '-');
 		},
 		filename_to_path = function (filename) {
 			return path.join(__dirname,'..','deliver','public','cdn', filename);
@@ -403,12 +404,14 @@ var uploadHandler = exports.uploadHandler = function(req,callback) {
                     if(err)
                         callback(err);
                     else {
+                        var path = res.socket._httpMessage.url;
+
                         fs.unlink(value_full_path);
                         console.log("res.socket._httpMessage");
                         console.log(res.socket._httpMessage);
                         var value = {
-                            path:res.socket._httpMessage.url,
-                            url:res.socket._httpMessage.url
+                            path: path,
+                            url: path
                         };
                         callback(null,value);
                     }

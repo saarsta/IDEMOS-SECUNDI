@@ -372,8 +372,9 @@ module.exports.approveAction = function (id, callback) {
         }],
 
         function(err, obj){
-            if(!err){
-                console.log("1");
+            if(!err || err == 'no such cycle!'){
+                if(err)
+                    console.error("no such cycle, so cycle.upcomin_action didn't change");
                 g_action.save(
                     function(err, action){
                         if(err){
@@ -392,3 +393,6 @@ module.exports.approveAction = function (id, callback) {
             }
         })
 }
+
+
+

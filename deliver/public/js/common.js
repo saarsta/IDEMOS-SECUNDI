@@ -5,7 +5,7 @@ if(!console) {
 }
 
 dust.filters['time'] = function(a){
-    console.log(a);
+   // console.log(a);
     var date = $.datepicker.formatDate('dd.mm.yy', new Date(Date.parse(a)));
     var date_short = $.datepicker.formatDate('d.m', new Date(Date.parse(a)));
     var hours = (new Date(Date.parse(a))).getHours();
@@ -674,3 +674,49 @@ var logFunctionCalls = function (f, name) {
 		return result;
 	};
 };
+
+var googleMap =(function(){
+    var map;
+    return {
+        init_map: function ( id , center) {
+            var myOptions = {
+                zoom: 11,
+                center: center,
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                panControl: false,
+                zoomControl: false,
+                scaleControl: false,
+                mapTypeControl: false,
+                streetViewControl: false
+            };
+            map = new google.maps.Map(document.getElementById( id ), myOptions);
+            return map;
+        },
+        addPlaceMark:function (point,tooltip) {
+            var marker = new google.maps.Marker({
+                position: new google.maps.LatLng(point.lat,point.lng),
+                title:tooltip
+            });
+            marker.setMap(map);
+            return marker;
+
+            var marker = new google.maps.Marker({
+                map: map,
+                draggable:false,
+                position: new google.maps.LatLng(point.lat,point.lng),
+                visible: true
+            });
+        }
+    };
+})();
+
+var getUserPosition = function(user_position, cbk){
+    if(navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position){
+            console.log(position);
+            user_position.lat = position.coords.latitude;
+            user_position.lng = position.coords.longitude;
+        });
+    }
+    cbk(user_position);
+}

@@ -61,6 +61,9 @@
             <a  id="new_discussion_bt"  class="green-btn" href="#">צור דיון חדש</a>
         </div>
         <select id="sorting_select" class="left-select">
+            <option value="-last_updated">
+                עדכון אחרון
+            </option>
             <option value="-creation_date" >
 						תאריך
 						</option>
@@ -149,7 +152,7 @@
 
         function loadDiscussionsListToPage(){
             var query = createDiscussionsQuery();
-            listCommon.reloadList('discussions_list','discussions','discussion_list_item',query);
+            listCommon.reloadList('discussions_list', 'discussions', 'discussion_list_item', query);
 
         }
 

@@ -1,10 +1,12 @@
 
 .login-popup
 {
-    background: #3b63ef;
 
-    width:200px;
-    height:300px;
+    background-color:transparent;
+
+    width:490px;
+    display: inline-block;
+
 
 
 
@@ -18,26 +20,12 @@
 
 }
 .login-popup> div
-{
-    padding:40px;
+{   background-color:#fff;
+    padding: 20px  40px 40px 40px;
     float: right;
 
 }
-.login-popup  input[type=submit]
-{
-    border: 1px solid #0f1e54;
-    background:#263a81 url(../images/submit-btn.png) 0 0 repeat-x;
-    height: 28px;
-    color:#fff;
-    font-size: 18px;
-    line-height: 28px;
-    padding:0;
-    cursor: pointer;
-    width: 100%;
-    font-family: 'AdumaFOTMedium';
-    margin-top: 8px;
-    display:block;
-}
+
 
 .user-box span.icon
 {
@@ -50,12 +38,13 @@
 
 .login-popup h2
 {
-    color:#fff;
-    font-size: 18px;
+    color:#50504f;
+    font-size: 23px;
     line-height: 22px;
     font-weight: normal;
     font-family: 'AdumaFOTMedium';
     padding-left: 25px;
+    margin-bottom: 10px;
 }
 
 
@@ -68,53 +57,142 @@
 }
 .login-popup a.facebook
 {
-    display: block;
-    background: url(../images/facebook-btn.png) no-repeat;
-    height: 28px;
-    width: 123px;
+    float: right;
+    display: inline-block;
+    background: url(../images/URU_FB_Connect_btn_sprite.png) 0 0 no-repeat;
+    height: 42px;
+    width: 230px;
     margin: 0 auto;
 }
+
+.login-popup a.facebook:hover
+{
+    background: url(../images/URU_FB_Connect_btn_sprite.png) 0 -42px no-repeat;
+}
+.login-popup a.facebook:active
+{
+    background: url(../images/URU_FB_Connect_btn_sprite.png) 0 -84px no-repeat;
+}
+.login-popup input[type=password],
 .login-popup input[type=text]
 {
-    height: 15px;
+
+    height: 38px;
     border: 1px solid #d8d8d8;
     padding:1px 4px;
-    width: 113px;
+    width: 205px;
     color:#a5a5a4;
     font: normal 12px/15px Arial;
     margin-bottom: 10px;
     display: block;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -khtml-border-radius: 5px; /* KHTML */
+
+    background-image:url('../images/URU_Connect_Form_Email_icon.gif');
+    background-repeat:no-repeat;
+    padding-left:20px;
+    background-position: 235px 9px;
+    padding-right: 40px;
+
+
+
 }
 .forgot_password
 {
     height: 10px;
     padding:1px 4px;
     width: 113px;
-    color:#E7E7E7;
+    color:#dc0032;
     font: normal 12px/15px Arial;
     margin-bottom: 10px;
     display: block;
 }
 .login-popup input[type=password]
 {
-    height: 15px;
-    border: 1px solid #d8d8d8;
-    padding:1px 4px;
-    width: 113px;
-    color:#a5a5a4;
-    font: normal 12px/15px Arial;
-    margin-bottom: 10px;
+    background-image:url('../images/URU_Connect_Form_Pass_icon.gif');
+}
+
+.login-popup .box{
+    float: right;
+    display: inline-block;
+}
+
+.login-popup .left{
+    margin-right: 20px;;
+    text-align: center;
+    font-size: 13px;
+    color:#50504f;
+}
+
+
+.login-popup .bottom{
+    padding-top:30px ;
+    clear: both;
+}
+.login-popup .bottom h2{
+    float: right;
+    padding: 12px 0 0 10px;
+}
+
+.login-popup  input[type=submit]
+{
+   padding-bottom: 7px;
+
+    background: white url(../images/URU_Connect_btn_sprite.png)   -241px 0 no-repeat;
+    height: 45px;
+    color: white;
+    font-size: 18px;
+    line-height: 28px;
+    padding: 0;
+    cursor: pointer;
+    width: 118px;
+    font-family: 'AdumaFOTMedium';
+     border: 0;
     display: block;
 }
 
+
 .login-popup input[type=submit]:hover
 {
-    background:#152151 url(../images/submit-btn.png) 0 0 repeat-x;
+    background:#fff url(../images/URU_Connect_btn_sprite.png)  -121px 0 no-repeat;
 }
 .login-popup input[type=submit]:active
 {
-    background:#3c63ef url(../images/submit-btn.png) 0 100% repeat-x;
+    background:#fff url(../images/URU_Connect_btn_sprite.png) -1px 0 no-repeat;
+}
+
+.register{
+    font-weight: bold;
+}
+
+.login-popup .alert
+{
+    width: 485px;
+    height: 58px;
+    background-color: #fffbb9;
+    padding:0 ;
+    display: none;
+    background-image: url('../images/URU_Form.Alert_icon.png');
+    background-repeat: no-repeat;
+    background-position: 410px 10px;
+}
+
+.login-popup .alert  p
+{
+    padding: 21px 80px 0 0;
+    font-size: 15px;
+    color: #50504f;
 }
 
 
+.login-popup .noalert
+{
+    width: 100%;
+    height: 58px;
+    background-color:transparent;
+    padding:0 ;
 
+
+}

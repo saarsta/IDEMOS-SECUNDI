@@ -1,6 +1,28 @@
 var timeline = {
+    map: null,
 	render: function (cid, ctitle, display_id) {
 		console.log('Rendering timeline.');
+
+        var map = timeline.map;
+        if(!map){
+            var tabsData = {title: ctitle};
+            dust.render('cycle_timeline_map_tabs', tabsData, function(err, out){
+                $('.tabs-box').append(out);
+                var user_position = {latitude: null, longitude: null};
+                getUserPosition(user_position, function(){
+                    if(user_position.lng && user_position.lat){
+                        map = googleMap.init_map('cycle_map', new google.maps.LatLng(user_position.lat, user_position.lng));
+                        googleMap.addPlaceMark(user_position);
+                    }else {
+                        user_position.lng = 34.777821;
+                        user_position.lat = 32.066157;
+                        map = googleMap.init_map('cycle_map', new google.maps.LatLng(32.066157, 34.777821));
+                        googleMap.addPlaceMark(user_position);
+                    }
+                });
+            });
+        }
+
 
 		db_functions.getCycleTimeline(cid, function (err, data) {
 			var timeline_item_prototype = new (function TimeLineItem() {} );
@@ -197,6 +219,120 @@ var timeline = {
 					})
 				});
 			}
-		});
+
+
+//----------------------------------------------------------------------------------------------------
+            //add actions to cycle map
+//----------------------------------------------------------------------------------------------------
+
+            if($('#action_list div.action_map_item')){
+                var markers = [];
+                var myOptions = {
+                    pane: "floatPane",
+                    enableEventPropagation: "true",
+                    boxStyle: {
+                        background: "url(../images/event-popup.png) no-repeat",
+                        "padding-top": "7px",
+                        "padding-left": "7px",
+                        width: "200px",
+                        height: "145px"
+                    },
+                    pixelOffset: new google.maps.Size(-109, -155),
+                    closeBoxURL: ""
+                };
+                var popup = new InfoBox(myOptions);
+
+                $.each(data.objects, function(index, item){
+                    if(item.type == 'action' && item.location)
+                    {
+                        var action_list_box = document.getElementById('action_list');
+                        data = {
+                            title: item.title,
+                            date: item.date,
+                            num_of_going: item.num_of_going,
+                            is_going: item.is_going,
+                            text_field_preview: item.text_field_preview,
+                            location: item.location,
+                            is_displayed: false,
+                            _id: item._id
+                        };
+                        dust.render('action_map_list_item', data, function(err, out){
+                            $('#action_list').append(out);
+                        });
+
+                        var markerPosition = new google.maps.LatLng(item.location.geometry.lat, item.location.geometry.lng);
+                        var marker = new google.maps.Marker({
+                            position : markerPosition,
+                            map: map,
+                            flat: true,
+                            title: item.title,
+                            icon: {
+                                fillColor: "#3C63EF",
+                                fillOpacity: 1,
+                                strokeColor: "#2049D3",
+                                strokeWeight: 3,
+                                strokeOpacity: 1,
+                                path: google.maps.SymbolPath.CIRCLE,
+                                scale: 10
+                            },
+                            shape: google.maps.SymbolPath.CIRCLE,
+                            visible:true
+                        });
+                        marker.metadata = {"id": item._id};
+                        markers.push(marker);
+
+                        google.maps.event.addListener(marker, 'click', function(){
+                            var myId = marker.metadata.id;
+                            var content = $('div.popup-event[item-id=' + myId + ']').clone()[0];
+                            popup.setContent(content);
+                            popup.open(map, marker);
+                            selectActionItem(myId);
+                        });
+
+
+                        $('#action_list .action_map_item').click(function(){
+                            var myId = $(this).attr('data-id');
+                            selectActionItem(myId);
+                            $.each(markers, function(indenx, marker){
+                                if(myId == marker.metadata.id){
+                                    var content = $('div.popup-event[item-id=' + myId + ']').clone()[0];
+                                    popup.setContent(content);
+                                    popup.open(map, marker);
+                                }
+                            })
+                        });
+
+                        var selectActionItem = function(id){
+                            $.each($('.action_map_item'), function(index, item){
+                                if(item.getAttribute('data-id') == id){
+                                    $(item).addClass('selected');
+                                } else if($(item).hasClass('selected')){
+                                    $(item).removeClass('selected');
+                                }
+                            })
+                        }
+                    }
+                });
+                $('.tabs-nav h5').click(function(){
+                    var tab = $(this);
+                    var mapCenter = map.getCenter();
+                    if(!$(this).hasClass('selected')){
+                        if($('.map_tab').hasClass('selected')){
+                            $('.map_tab').removeClass('selected');
+                            $('h5.timeline_tab').append($("#timeline-second-part"));
+                        } else {
+                            $('.timeline_tab').removeClass('selected');
+                            $('.map_tab').append($("#timeline-second-part"));
+                        }
+                        $(this).addClass('selected');
+                        $('#tabs_cycle_timeline').toggle();
+                        $('#tabs_cycle_map').toggle();
+                        google.maps.event.trigger(map, 'resize');
+                        if(mapCenter != map.getCenter())
+                            map.setCenter(mapCenter);
+                    }
+                })
+            }
+        });
 	}
-}
+};

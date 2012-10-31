@@ -1,7 +1,11 @@
 <%
+	global.image_upload_total_count = global.image_upload_total_count || 0;	
+
+	(function (image_upload, id) {
     /* Usage:
 
         Have a variable called image_upload = {
+			background_color: '#...'
             default_image: '/images/...',
             current_value: '/images/...',
             api_endpoint: '/api/...',
@@ -14,7 +18,7 @@
             .img-box
             .img-box .image-container
             .img-box .image-container img
-            .img-box #upload_image_placeholder
+            .img-box .upload_image_placeholder
     */
 %>
 <style type="text/css">
@@ -26,20 +30,32 @@
         right: 0;
         bottom: 0;
     }
+
+    .qq-upload-list {
+        display: block;
+    }
+
+    .qq-upload-spinner {
+        width: 220px;
+        height: 19px;
+        background:  url(/images/upload_loader.gif);
+        position: absolute;
+        top: 64px;
+        left: 27px;
+    }
 </style>
 
-<div class="img-box" style="overflow:hidden; position:relative;">
-    <div class="image-container">
-        <img src="<%= image_upload.default_image || '' %>" />
+<div class="img-box" style="overflow: hidden; position: relative; background: <%= image_upload.background_color || '' %> url('<%= image_upload.default_image || '' %>') no-repeat center center;">
+    <div class="image-container" id="upload_image_container_<%=id%>">
     </div>
-    <span id="upload_image_placeholder"></span>
+    <span class="upload_image_placeholder" id="upload_image_placeholder_<%=id%>"></span>
     <input type="hidden" name="<%= image_upload.input_name || 'image_upload' %>" value="" />
 </div>
 
 <% if (!image_upload.disabled) { %>
 <script>
     (function () {
-        var image_box = $('.img-box .image-container');
+        var image_box = $('.img-box #upload_image_container_<%=id%>');
         var input = $('.img-box input');
 
         var setImageUrl = function (url) {
@@ -57,8 +73,9 @@
             image.load(scaler);
         };
 
+
         new qq.FileUploader({
-            element: document.getElementById('upload_image_placeholder'),
+            element: document.getElementById('upload_image_placeholder_<%=id%>'),
             action: '<%= image_upload.api_endpoint || '' %>',
             debug: false,
             onSubmit: function(id, SfileName){
@@ -69,20 +86,38 @@
             },
             onProgress: function(id, fileName, loaded, total){
                 console.log('uploader.onProgress: ', arguments);
+
+
             },
             onComplete: function(id, fileName, responseJSON){
                 console.log(responseJSON);
-                if(!user){
-                    alert('bla bla bla');
-                }
                 setImageUrl(responseJSON.image ? responseJSON.image.url : responseJSON.avatar.url);
+            },
+            classes: {
+                button: 'qq-upload-button',
+                drop: 'qq-upload-drop-area',
+                dropActive: 'qq-upload-drop-area-active',
+                dropDisabled: 'qq-upload-drop-area-disabled',
+                list: 'qq-upload-list',
+                progressBar: 'qq-progress-bar',
+                file: 'qq-upload-file',
+                spinner: 'qq-upload-spinner',
+                finished: 'qq-upload-finished',
+                size: 'qq-upload-size',
+                cancel: 'qq-upload-cancel',
+                failText: 'qq-upload-failed-text',
+                success: 'alert alert-success',
+                fail: 'alert alert-error',
+                successIcon: null,
+                failIcon: null
             },
             template: '<span><div class="qq-uploader">' +
                     '<div class="qq-upload-drop-area"><span>העלאת תמונה</span></div>' +
                     '<div class="qq-upload-button"></div>' +
                     '<ul class="qq-upload-list"></ul>' +
                     '</div></span>'
-        });
+            }
+        );
 
         <% if (image_upload.current_value) { %>
             setImageUrl('<%=image_upload.current_value%>');
@@ -90,3 +125,6 @@
     })();
 </script>
 <% } %>
+<%
+	})(image_upload, global.image_upload_total_count++);
+%>

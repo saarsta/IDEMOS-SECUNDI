@@ -3,7 +3,6 @@
 <html>
 <head>
     <% include partials/head.ejs %>
-    <script src="/resources/js/jquery-fieldselection.js" type="text/javascript"></script>
 </head>
 <body>
 <% include partials/body_top.ejs %>
@@ -15,23 +14,61 @@
         <% include partials/tag_search.ejs %>
     </div>
 
-    <div class="main-text" style="margin-bottom: 50px">
-        <div class="about-one">
-            <% if(page.title) { %>
-            <h4>
-                <%= page.title %>
-            </h4>
-            <% } %>
-            <p>
-                <%- page.html %>
-            </p>
+    <div id="content" class="cf">
+        <div class="rightCol">
 
+            <div class="main-text" style="margin-bottom: 50px">
+                <div class="about-one">
+                    <% if(page.title) { %>
+                    <h4>
+                        <%= page.title %>
+                    </h4>
+                    <% } %>
+                    <p>
+                        <%- page.html %>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="leftCol">
+
+            <% for (var c = 0; c
+            <page. highlights.length
+            ; c++) { %>
+
+            <div class="page-left">
+                <div class="img-box">
+                    <div style="width:292px; height:155px;" class='auto-scale'>
+                        <img style="width:292px; height:155px;" src="<%=page.highlights[0].img_field.url%>" alt="<%=page.highlights[0].img_text%>" />
+                    </div>
+
+                    <% if(page.highlights[c].img_text) { %>
+                        <p>
+                            <%=page.highlights[c].img_text%>
+                        </p>
+                    <% } %>
+
+                </div>
+                <div class="text">
+                    <% if(page.highlights[c].text_field) { %>
+
+                    <h3>
+                        <%=page.highlights[c].text_field%>
+                    </h3>
+                    <% } %>
+
+                </div>
+            </div>
+            <% }%>
         </div>
     </div>
 
 </div>
 
 
+
 <% include partials/footer.ejs %>
+
 </body>
 </html>

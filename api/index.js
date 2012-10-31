@@ -63,9 +63,9 @@ var mongoose_resource = require('jest'),
     FbConnectResource = require('./FbConnectResource'),
     AvatarResource = require('./avatar_resource'),
     ResetNotificationResource = require('./reset_notification_resource'),
-//    DailyDiscussionResource = require('./DailyDiscussionResource.js'),
-    OGActionResource = require('./og_action_resource');
-
+//    DailyDiscussionResource = require('./DailyDiscussionResource'),
+    OGActionResource = require('./og_action_resource'),
+    UserInviteFriendsResource=      require('./UserInviteFriendsResource');
 
 
 module.exports = function(app)
@@ -116,6 +116,9 @@ module.exports = function(app)
     rest_api.register_resource('notifications', new NotificationResource());
     rest_api.register_resource('user_followers', new UserFollowerResource());
     rest_api.register_resource('user_proxies', new UserProxyResource());
+    rest_api.register_resource('user_proxies', new UserProxyResource());
+    rest_api.register_resource('user_invited_friends', new UserInviteFriendsResource());
+
     rest_api.register_resource('about_uru_texts', new AboutUruTextResource());
     rest_api.register_resource('about_uru_items', new AboutUruItemResource());
     rest_api.register_resource('team', new TeamResource());

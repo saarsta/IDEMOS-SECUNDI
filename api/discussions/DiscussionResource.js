@@ -63,8 +63,9 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
             participants_count: null,
             evaluate_counter: null,
             _id:null,
-            is_follower:null,
-            grade:null,
+            is_follower: null,
+            grade: null,
+            last_updated: null,
 
             grade_obj:{
                 grade_id:null,

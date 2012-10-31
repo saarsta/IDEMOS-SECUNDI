@@ -17,7 +17,8 @@ var ImageUploadResource = module.exports = jest.MongooseResource.extend({
         this.authentication = new common.SessionAuthentication();
 
         this.fields = {
-            image: null
+            image: null,
+            success: null
         };
     },
 
@@ -37,6 +38,7 @@ var ImageUploadResource = module.exports = jest.MongooseResource.extend({
                 callback(err);
             else {
                 fields.image = value;
+                fields.success = true;
                 base.call(self,req,fields,callback);
             }
         });

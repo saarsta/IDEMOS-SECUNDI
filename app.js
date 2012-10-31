@@ -38,7 +38,15 @@ app.set('url2png_api_secret', process.env.url2png_api_key || 'SF1BFA95A57BE4');
 
 
 app.configure('development', function(){
-app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+
+    app.use(express.errorHandler());
+    require('j-forms').setAmazonCredentials({
+        key: 'AKIAJM4EPWE637IGDTQA',
+        secret: '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',
+        bucket: 'uru'
+    });
+
 // TODO REMOVE THIS BEFORE COMMIT
 //    app.set('send_mails',true);
 

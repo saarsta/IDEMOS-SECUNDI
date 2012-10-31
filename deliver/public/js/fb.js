@@ -6,11 +6,12 @@ function sendFacebookInvite(message,link,callback) {
             if(!response) {
                 callback('canceled');
             } else {
-                db_functions.addFacebookRequest(link, response.request, callback);
+                db_functions.addFacebookRequest(link, response, callback);
             }
         }
     );
 }
+
 
 function sendFacebookShare(_, title, src, text_preview, callback) {
     // log to db

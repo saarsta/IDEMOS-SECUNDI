@@ -1,18 +1,8 @@
 var user = {
-//    load: function() {
-//        db_functions.loggedInAjax({
-//            url: '/api/users'
-//        });
-//    },
     update: function(data) {
         $.extend(user.data, data);
-    }
-//    data: {},
-//    get: function(prop) {
-//        if (!user.data) user.load();
-//
-//        return user.data[prop];
-//    }
+    },
+    actions_done_by_user: {}
 };
 
 
@@ -60,7 +50,7 @@ var db_functions = {
                         }*/
                         $.ajax(options);
 
-                    }
+                        }
                 });
             } else if (xhr.responseText == 'not_activated') {
                 var message = 'ההרשמה לאתר לא הושלמה, על מנת להמשיך לחץ על הלינק שנשלח לתיבת הדואר שלך.' +
@@ -495,6 +485,17 @@ var db_functions = {
         });
     },
 
+	createInformationItem: function (data, callback) {
+		db_functions.loggedInAjax({
+			url: '/api/information_items/',
+			type: 'POST',
+			data: data,
+			async: true,
+			success: function () { callback(null); },
+			error: function () { callback('error'); }
+		});
+	},
+
     createDiscussion: function(subject_id, vision, title, tags, image, user_info, callback) {
         db_functions.loggedInAjax({
             url:'/api/discussions/',
@@ -543,7 +544,10 @@ var db_functions = {
             }
         });
     },
-    addFacebookRequest:function (link, request_ids, callback) {
+
+    addFacebookRequest:function (link, response, callback) {
+        var request_ids =response ? response.request :null;
+        var to  =response ? response.to :null;
         db_functions.loggedInAjax({
             url:'/api/fb_request/',
             type:"POST",
@@ -551,6 +555,7 @@ var db_functions = {
             contentType:'application/json',
             data:JSON.stringify({"link":link, "fb_request_ids":request_ids}),
             success:function (data) {
+                data.response=  response;
                 console.log(data);
                 callback(null, data);
             },
@@ -1068,7 +1073,7 @@ var db_functions = {
 
     getCylceFollowers:function (cycle_id, page, callback) {
         db_functions.loggedInAjax({
-            url:'/api/users?cycles.cycle_id=' + cycle_id + '&limit=3&offset=' + (page * 14),
+            url:'/api/users?cycles.cycle_id=' + cycle_id + /*&limit=3*/'&offset=' + (page * 14),
             type:"GET",
             async:true,
             success:function (data, err) {
@@ -1465,6 +1470,23 @@ var db_functions = {
             dataType: 'json',
             processData: false,
             contentType: "application/json"
+        });
+    } ,
+
+
+    submitInvitedFriends: function (object_type,object_id,facebook_ids,emails, callback) {
+
+        db_functions.loggedInAjax({
+            url:'/api/user_invited_friends',
+            type:"POST",
+            async:true,
+            data:{type:object_type, id:object_id,email:emails,facebook:facebook_ids},
+            success:function (data, err) {
+                callback(err, data);
+            },
+            error:function (err, data) {
+                callback(err, data);
+            }
         });
     }
 };
