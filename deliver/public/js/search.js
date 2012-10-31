@@ -174,7 +174,6 @@ $(document).ready(function () {
     });
     $("#search_term").blur(function () {
         setTimeout("$('#search_suggest').hide()", 200);
-
     });
 
     $("#search_suggest").on("click", "li", function () {
