@@ -219,7 +219,6 @@ $(document).ready(function () {
             $("#search_suggest").hide();
 
         }
-
     }
 
         search_term = $("#search_term").val()
