@@ -782,9 +782,13 @@ color: #ff00af;
     margin: -36px 0 0 -36px;
 }
 
+.main-video .side-title {
+    font:normal 30px/35px 'AdumaFOTRegular';
+    margin-bottom: 5px;
+}
 .main-video .side-text {
-    height: 137px;
-    margin-bottom: 35px;
+    font:normal 22px/30px 'AdumaFOTRegular';
+    margin-bottom: 42px;
 }
 
 .main-video .side-button {

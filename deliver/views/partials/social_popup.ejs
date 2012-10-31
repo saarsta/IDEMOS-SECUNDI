@@ -63,9 +63,13 @@
 
                 <script type="text/javascript" charset="utf-8">
                     var csPageOptions = {
-
-                         domain_key:"MEJVM6QW5TG7SQF4B8G3",
-                       // domain_key:"G5XMTFDEGQNEND8A6YZB",
+                   <%if(locals.NODE_ENV && locals.NODE_ENV=='staging'){  %>
+                        domain_key:"HPZ65GELQ4UZMGFUSTRR",   // uru-staging.herokuapp.com
+                   <% } else  if(locals.NODE_ENV && locals.NODE_ENV=='production'){  %>
+                        domain_key:"G5XMTFDEGQNEND8A6YZB",     //uru.org.il
+                   <% }else { %>
+                        domain_key:"MEJVM6QW5TG7SQF4B8G3",     //dev.empeeric.com
+                   <% } %>
                         textarea_id:"contact_list",
                         include:['mailing_address','name','email'],
                         afterSubmitContacts: function(contacts, source, owner) {

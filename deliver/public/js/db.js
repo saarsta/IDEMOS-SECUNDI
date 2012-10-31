@@ -21,7 +21,7 @@ var db_functions = {
                         var success = options.success;
                         options.success = function () {
                             success.apply(this, arguments);
-                            if(!window.location.href.contains('actions/create/') && !window.location.href.contains('discussions/new/'))
+                            if(window.location.href.indexOf('actions/create/')==-1 && window.location.href.indexOf('discussions/new/')==-1)
                             {
                                 window.location.href = window.location.href;
                             }
