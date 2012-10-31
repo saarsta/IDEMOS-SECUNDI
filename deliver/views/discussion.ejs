@@ -301,7 +301,7 @@ $(document).ready(function () {
 
     /***************************************************/
     var my_id = "<%=user_logged ? user._id : ''%>";
-    var discussion_id = "<%=discussion.id%>";
+    var discussion_id = "<%=discussion_id%>";
     <%
     if (user_logged) { %>
         var proxy = JSON.parse('<%-proxy%>');

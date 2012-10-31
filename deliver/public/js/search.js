@@ -18,7 +18,7 @@ $(document).ready(function () {
             return false;
         }
         else
-            return false;
+            return true;
     });
 
     $('.tag-search').live("click",function () {
