@@ -126,10 +126,12 @@
     var title = button.data('title');
     var title_of_main_entity = button.data('main_title');
     var img_src = button.data('img_src');
-    var text_preview;
-    var new_title;
-    var twitter_msg = "";
+    var prev = button.data('data-text_preview');
+    var text_preview=prev;
+    var new_title=title;
+    var twitter_msg = title;
 
+    /*
 
     if(type == 'approved_action'){
         twitter_msg = "הצטרפתי לפעולה כחלק מקמפיין לשינוי באתר תנועת עורו. גם אתם מוזמנים להצטרף ולתמוך במהלך";
@@ -168,6 +170,7 @@
                         + " "
                         + "אשמח לראותך שם!";
     }
+    */
 
     global.share_messages = {
         'a': twitter_msg
@@ -180,10 +183,11 @@
         var rel = button.data('rel');
         var title = button.data('title');
         var title_of_main_entity = button.data('main_title');
+        var prev = button.data('data-text_preview');
         var img_src = button.data('img_src');
         var text_preview;
         var new_title;
-
+      /*
         if(type == 'approved_action'){
             new_title =
                     "גם אני אשתתף בפעולה "
@@ -218,7 +222,11 @@
                 + "אשמח לראותך שם!";
         }
 
-         sendFacebookShare(rel, title, img_src, text_preview, function(err){
+         */
+        new_title =  title;
+        text_preview =prev;
+
+        sendFacebookShare(rel, title, img_src, text_preview, function(err){
              if(err){
                 alert('Error occured');
              }else{
@@ -244,7 +252,8 @@
         rel = button.data('rel');
 
         window.open('https://twitter.com/share?url=' + encodeURIComponent('http://www.uru.org.il' + rel) + '&text=' +
-                encodeURIComponent(global.share_messages.a) + '&via=URUisrael', 'share-twitter', 'status=0,scrollbars=0,location=0,height=320,width=660,resizable=1'
+            //    encodeURIComponent(global.share_messages.a) + '&via=URUisrael', 'share-twitter', 'status=0,scrollbars=0,location=0,height=320,width=660,resizable=1'
+                encodeURIComponent(button.data('title')) + '&via=URUisrael', 'share-twitter', 'status=0,scrollbars=0,location=0,height=320,width=660,resizable=1'
         );
         return false;
     });

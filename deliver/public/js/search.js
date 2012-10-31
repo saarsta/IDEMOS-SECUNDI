@@ -12,13 +12,12 @@ $(document).ready(function () {
         var current_section = typeof(window.current_section) == 'undefined' || window.current_section == null ? -1 : window.current_section;
         if (current_section >= 0) {
             search_term = $(this).find(".search_term").val();
-            if(search_term!=""){
-                displaySearchResults();
-            }
+           displaySearchResults();
+
             return false;
         }
         else
-            return false;
+            return true;
     });
 
     $('.tag-search').live("click",function () {
@@ -39,8 +38,8 @@ $(document).ready(function () {
         db_functions.getItemsCountByTagName(search_term, function (err, data) {
             var createTabs = function () {
                 $(".search-result-box .tabs").tabs({
-                    selected:selected_tab,
-                    select:function(event,ui){
+                    selected: selected_tab,
+                    select: function(event,ui){
                         selected_tab = ui.index;
                         populateItems(sections[ui.index], pageIndexByType[sections[ui.index]] || 0);
                     }
