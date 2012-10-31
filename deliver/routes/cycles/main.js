@@ -16,6 +16,9 @@ var models = require('../../../models'),
 
 module.exports = function(req, res){
 
+    console.log('env');
+    console.log(process.env);
+
     var g_cycle;
 
     async.parallel([
