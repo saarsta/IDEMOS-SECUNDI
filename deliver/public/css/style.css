@@ -696,7 +696,7 @@ color: #ff00af;
 }
 /*-----------------------------*/
 .search-box {
-    padding: 17px 0;
+    padding: 26px 0;
     height: 31px;
     clear: both;
     /*background: url(../images/search-icon.png) 100% 19px no-repeat;*/
@@ -736,10 +736,10 @@ color: #ff00af;
 
 .search-box input[type=submit] {
     float: right;
-    background: transparent url(../images/URU_search_btn_reg.png) 0 0 no-repeat;
+    background: transparent url(../images/URU_search_btn_reg.png) -71px 0 no-repeat;
     border: 0;
 
-    width: 38px;
+    width: 34px;
     height: 38px;
     color: #ffffff;
     font: normal 18px/33px 'AdumaFOTRegular';
@@ -748,11 +748,11 @@ color: #ff00af;
 }
 
 .search-box input[type=submit]:hover {
-
+    background: transparent url(../images/URU_search_btn_reg.png) -36px 0 no-repeat;
 }
 
 .search-box input[type=submit]:active {
-
+    background: transparent url(../images/URU_search_btn_reg.png) 0 0 no-repeat;
 }
 
 /*------------------------*/
@@ -782,9 +782,13 @@ color: #ff00af;
     margin: -36px 0 0 -36px;
 }
 
+.main-video .side-title {
+    font:normal 30px/35px 'AdumaFOTRegular';
+    margin-bottom: 5px;
+}
 .main-video .side-text {
-    height: 137px;
-    margin-bottom: 35px;
+    font:normal 22px/30px 'AdumaFOTRegular';
+    margin-bottom: 42px;
 }
 
 .main-video .side-button {
@@ -6434,8 +6438,6 @@ a.fraction-btn {
     margin-left: -12px;
     top: 166px;
 }
-
-
 
 .followers-diagram .event.event-dummy {
     padding-top: 36px;

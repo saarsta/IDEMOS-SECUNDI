@@ -21,7 +21,7 @@ var db_functions = {
                         var success = options.success;
                         options.success = function () {
                             success.apply(this, arguments);
-                            if(!window.location.href.contains('actions/create/') && !window.location.href.contains('discussions/new/'))
+                            if(window.location.href.indexOf('actions/create/')==-1 && window.location.href.indexOf('discussions/new/')==-1)
                             {
                                 window.location.href = window.location.href;
                             }
@@ -546,8 +546,8 @@ var db_functions = {
     },
 
     addFacebookRequest:function (link, response, callback) {
-        var request_ids =response.request;
-        var to  =response.to;
+        var request_ids =response ? response.request :null;
+        var to  =response ? response.to :null;
         db_functions.loggedInAjax({
             url:'/api/fb_request/',
             type:"POST",
@@ -1073,7 +1073,7 @@ var db_functions = {
 
     getCylceFollowers:function (cycle_id, page, callback) {
         db_functions.loggedInAjax({
-            url:'/api/users?cycles.cycle_id=' + cycle_id + '&limit=3&offset=' + (page * 14),
+            url:'/api/users?cycles.cycle_id=' + cycle_id + /*&limit=3*/'&offset=' + (page * 14),
             type:"GET",
             async:true,
             success:function (data, err) {
