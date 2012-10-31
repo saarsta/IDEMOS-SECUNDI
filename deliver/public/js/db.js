@@ -1,18 +1,8 @@
 var user = {
-//    load: function() {
-//        db_functions.loggedInAjax({
-//            url: '/api/users'
-//        });
-//    },
     update: function(data) {
         $.extend(user.data, data);
-    }
-//    data: {},
-//    get: function(prop) {
-//        if (!user.data) user.load();
-//
-//        return user.data[prop];
-//    }
+    },
+    actions_done_by_user: {}
 };
 
 
@@ -556,8 +546,8 @@ var db_functions = {
     },
 
     addFacebookRequest:function (link, response, callback) {
-        var request_ids =response.request;
-        var to  =response.to;
+        var request_ids =response ? response.request :null;
+        var to  =response ? response.to :null;
         db_functions.loggedInAjax({
             url:'/api/fb_request/',
             type:"POST",
