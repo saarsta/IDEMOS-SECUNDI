@@ -1611,12 +1611,13 @@ color: #ff00af;
 
 .discussion-main .tags-box {
     padding: 9px 0;
-    height: 15px;
+    height: 18px;
 }
 
 .discussion-main .tags-box .add-tag {
     float: right;
     padding-left: 15px;
+    position: relative;
 }
 
 .discussion-main .tags-box .add-tag .input {
@@ -1624,9 +1625,10 @@ color: #ff00af;
     padding: 0 7px;
     width: 234px;
     float: right;
-    margin-left: 5px;
+    margin-left: 8px;
     background: #fff;
     border-radius: 3px;
+    height: 18px;
 }
 
 .discussion-main .tags-box .add-tag .input label {
@@ -1643,7 +1645,7 @@ color: #ff00af;
     color: black;
     font: normal 11px/13px Arial;
     padding: 0;
-    height: 13px;
+    height: 18px;
     border: none;
     background: #fff;
 }
@@ -1659,7 +1661,8 @@ color: #ff00af;
     float: right;
     border: none;
     border-radius: 3px;
-    height: 15px;
+    height: 18px;
+    margin-top: 1px;
 }
 
 .discussion-main .tags-box .tags-list span {
@@ -1668,8 +1671,10 @@ color: #ff00af;
     color: #fff;
     background: #b7b6b6;
     padding: 0 4px;
-    font: normal 11px/15px Arial;
+    font: normal 11px/18px Arial;
     border-radius: 3px;
+    height: 18px;
+    margin-top: 1px;
 }
 
 .discussion-main .bottom {
@@ -9342,3 +9347,41 @@ div.icons img {
 input[type=url] {
 	direction: ltr;
 }
+
+.tags-box #search_suggestion{
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: 17px;
+    width: 248px;
+    z-index: 10;
+    border: 1px solid #AAA;
+    border-top: none;
+    border-radius: 2px 2px 2px 2px;
+    font: normal 11px/13px Arial;
+    text-align: right;
+}
+
+
+#search_suggestion li {
+    font: normal 12px/15px Arial;
+    padding: 4px 5px;
+    color: black;
+    cursor: pointer;
+}
+
+#search_suggestion li:hover {
+    background-color: #d3d3d3;
+    color: white;
+}
+
+#search_suggestion li.topborder,
+#search_suggestion li:hover.topborder {
+    border-top: 1px solid #AAA;
+    margin-right: 20px;
+    margin-left: 20px;
+    height: 1px;
+    cursor: default;
+    padding: 0;
+}
+
