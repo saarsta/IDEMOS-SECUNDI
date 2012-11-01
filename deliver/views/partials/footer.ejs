@@ -71,6 +71,8 @@
 <script src="/js/jquerypp/jquery.selection.js" type="text/javascript"></script>
 <script src="/js/date.format.js" type="text/javascript"></script>
 <script src="/js/select2.js"></script>
+<script src="/plugins/ckeditor/ckeditor.js"></script>
+<script src="/plugins/ckeditor/adapters/jquery.js"></script>
 
 <script src="/js/js-webshim/minified/extras/modernizr-custom.js"></script>
 <script src="/js/js-webshim/minified/polyfiller.js"></script>
@@ -90,7 +92,7 @@
 <script src="/js/proxy_common.js" type="text/javascript"></script>
 
 <script>
-    var user = <%- JSON.stringify(locals.user) %>;
+    var user = <%- JSON.stringify(locals.user) || '' %>;
     $.webshims.polyfill();
 </script>
 
