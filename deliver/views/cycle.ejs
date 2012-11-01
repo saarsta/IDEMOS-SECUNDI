@@ -23,7 +23,7 @@
                         <%= cycle.title %>
                     </h2>
 
-                        <a class="share-btn" data-img_src="{image_field_preview.url}" data-text_preview="{text_field_preview}" data-title="{title}" rel="/cycles/{_id}" href="/facebookShare?link=/cycles/{_id}"><span>שתף</span></a>
+                        <a class="share-btn" data-img_src="{image_field.url}" data-text_preview="{text_field_preview}" data-title="{title}" rel="/cycles/{_id}" href="/facebookShare?link=/cycles/{_id}"><span>שתף</span></a>
 
                         <a class="green-btn social-on-click" data-text_preview="<%=cycle.text_field_preview%>" title="לקידום הנושא ולקבלת עדכונים על המשך הפעילות לחצו כאן"  data-title="<%=cycle.title%>"data-img_src="<%= cycle.image_field && cycle.image_field.url %>" data-rel="/cycles/<%= cycle.id %>" href="javascript:void(0)"> </a>
 
