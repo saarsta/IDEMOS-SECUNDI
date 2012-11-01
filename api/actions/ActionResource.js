@@ -31,7 +31,7 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
         this.allowed_methods = ['get', 'post', 'put'];
         this.filtering = {
             subject_id: null,
-            cycle_id:null,
+            'cycle_id.cycle': null,
             is_approved:null,
             grade:null,
             num_of_going:null,
@@ -91,7 +91,7 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                 action.participants_count = action.users.length;
                 action.is_going = req.user && _.any(action.going_users, function(going_user){return going_user.user_id + "" == req.user._id + ""});
 
-                models.Cycle.findById(action.cycle_id[0].cycle, {title: 1}, function(err, cycle){
+                models.Cycle.findById(action.cycle_id[0].cycle + "", {title: 1}, function(err, cycle){
                     action.cycle_title = cycle && cycle.title;
                     itr_cbk();
                 })

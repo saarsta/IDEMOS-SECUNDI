@@ -38,8 +38,8 @@ $(document).ready(function () {
         db_functions.getItemsCountByTagName(search_term, function (err, data) {
             var createTabs = function () {
                 $(".search-result-box .tabs").tabs({
-                    selected:selected_tab,
-                    select:function(event,ui){
+                    selected: selected_tab,
+                    select: function(event,ui){
                         selected_tab = ui.index;
                         populateItems(sections[ui.index], pageIndexByType[sections[ui.index]] || 0);
                     }

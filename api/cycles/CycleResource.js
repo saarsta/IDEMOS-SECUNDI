@@ -70,10 +70,20 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
             upcoming_action:{
                 _id:null,
                 title:null,
-                text_field_preview:null,
-                image_field_preview:null,
-                execution_date:null,
-                num_of_going:null
+                text_field_preview: null,
+                image_field_preview: null,
+                execution_date: null,
+                num_of_going: null,
+                is_approved: null
+            },
+            mok_upcoming_action:{
+                _id:null,
+                title:null,
+                text_field_preview: null,
+                image_field_preview: null,
+                execution_date: null,
+                num_of_going: null,
+                is_approved: null
             },
             num_upcoming_actions:null,
             participants_count:null,
@@ -141,7 +151,9 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
             if (req.user)
                 user_cycles = req.user.cycles;
 
-            _.each(results.objects, function (cycle) {
+            async.forEach(results.objects, function (cycle, itr_cbk) {
+                var cycle_id = cycle.id;
+
                 cycle.participants_count = cycle.followers_count;
                 cycle.is_follower = false;
                 if (user_cycles) {
@@ -151,9 +163,20 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
                         cycle.is_follower = true;
                     }
                 }
-            })
 
-            callback(err, results);
+                models.Action.find({'cycle_id.cycle': cycle_id, is_approved: true})
+                    .sort({'execution_date.date': 'descending'})
+                    .limit(1)
+                    .exec(function(err, actions){
+                        if(actions.length)
+                            cycle.mok_upcoming_action = actions[0];
+
+                        itr_cbk(err);
+                    });
+
+            }, function(err, obj){
+                callback(err, results);
+            });
         });
     },
 

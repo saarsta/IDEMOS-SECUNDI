@@ -1,27 +1,9 @@
 <!DOCTYPE html>
-<%
-var error_message = error_message || '';
-%>
-
+<% error_message = locals.error_message || ''; %>
 <html>
 <head>
-<!--<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# <%= settings.facebook_app_name %>: http://ogp.me/ns/fb/<%= settings.facebook_app_name %>#">-->
-
 
    <% include partials/head.ejs %>
-
-    <script src="/plugins/ckeditor/ckeditor.js"></script>
-    <script src="/plugins/ckeditor/adapters/jquery.js"></script><link href="select2.css" rel="stylesheet"/>
-    <script src="/js/select2.js"></script>
-
-  <!--  <meta property="fb:app_id" content="<XXX%= settings.facebook_app_id %>" />
-    <meta property="og:type"   content="<XXX%= settings.facebook_app_name %>:discussion" />
-    <meta property="og:url"    content="<XXX%= settings.root_path %>/discussions/<XXX%= discussion.id %>" />
-    <meta property="og:title"  content="<XXX%=discussion.title%>" />
-    <meta property="og:description"  content="<XXX%=discussion.text_field%>" />
-    <meta property="og:image"  content="<XXX%= discussion.image_field && discussion.image_field.url ? discussion.image_field.url : 'http://site.e-dologic.co.il/philip_morris/Xls_script/uru_mailing/logo.jpg' %>" />
--->
-
 
 </head>
 <body class="body-action">
@@ -34,6 +16,8 @@ var error_message = error_message || '';
         <% include partials/tag_search.ejs %>
         <% include partials/social_popup.ejs %>
     </div>
+
+
 <div id="content" class="cf">
 
 <div class="followers-box">
@@ -49,11 +33,8 @@ var error_message = error_message || '';
 
     <div id="minInfo" class="text-box cf" >
         <h3><span class="arrow"><%=action.category && action.category.name%></span> <span class="blue-title"><%=action.title%></span></h3>
-
 				<div id="discussion_image" style="width: 212px;height: 164px; overflow:hidden;" class='auto-scale floatRight'>
                     <img src="<%= action.image_field ? action.image_field.url ||'' : '' %>" alt=""/>
-					 <!--  images/sample-2.jpg" -->
-
                 </div>
         <div class="add-offer-info">
             תאריך: 
@@ -71,7 +52,6 @@ var error_message = error_message || '';
 
 
         <a class="more-text" href="">קרא עוד</a>
-       <!-- <a class="less-text" href="">קרא עוד</a>-->
         <div class="add-offer-users">
             כמות משתתפים רצויה:
 			<%=action.required_participants%>
@@ -80,22 +60,18 @@ var error_message = error_message || '';
 
 
     <div id="fullInfo" class="add-offer text-box cf fullInfo" style="display: none">
-      <!--  <h2><span class="arrow">פעולת שטח</span> <a href="">מפגינים מול ביתו של שר התשתיות</a></h2>-->
-        <h3><span class="arrow"><%=action.type%></span> <span class="blue-title"><%=action.title%></span></h3>
+        <h3><span class="arrow"><%= action.category && action.category.name %></span> <span class="blue-title"><%=action.title%></span></h3>
         <div class="text-box cf">
             <div id="discussion_image" style="width: 139px;height: 135px; overflow:hidden;" class='auto-scale floatRight'>
                 <img src="<%= action.image_field ? action.image_field.url ||'' : '' %>" alt=""/>
-                <!--  images/sample-2.jpg" -->
-
             </div>
-            <!--<img class="floatRight" src="../images/sample-8.jpg" alt="" />-->
             <div class="details">
                 <div class="detail-date">
                     <span class="icon"></span>
                     תאריך:
-						<strong><%=action.from_date.format('dd.mm.yyyy') %></strong> 
+						<strong><%= action.from_date.format('dd.mm.yyyy') %></strong> 
 					|  שעה: 
-					<strong><%=action.from_date.format('HH:MM') %>-<%=action.to_date.format('HH:MM') %></strong>
+					<strong><%= action.from_date.format('HH:MM') %>-<%=action.to_date.format('HH:MM') %></strong>
                 </div>
                 <div class="detail-resourse">
                     <span class="icon"></span>
@@ -124,31 +100,16 @@ var error_message = error_message || '';
 				<strong><%=action.location?action.location.address:''%></strong>
                 </div>
             </div>
-			 <p><%-action.text_field%></p>
-					
-                <a id="readLess" class="read_less" href="">
-				קרא פחות
-				</a></p>
+			<p><%- action.text_field %></p>
+            <a id="readLess" class="read_less" href="">קרא פחות</a>
         </div>
 
-            <div id="map" class="map" style="width:691px ;height:125px ">
-                <!--<img src="../images/map.jpg" alt="" />
-                <div class="map-popup">
-                    <a class="close" href=""></a>
-                    <h4>התעשייה 12, תל אביב</h4>
-                    <p><a href="">צפה במפה</a> | <a href="">קבל מסלול נסיעה</a></p>
-                </div>-->
-            </div>
+        <div id="map" class="map" style="width:691px ;height:125px "></div>
     </div>
-
-
-
 
     <div class="add-offer-bottom cf">
         <div class="btn-box row-btn-box">
-            <a class="btn-grey" href="#" id="action_comment_reply_button">
-			הגב
-			</a>
+            <a class="btn-grey" href="#" id="action_comment_reply_button">הגב</a>
 
             <a class="btn-grey share" rel="/actions/<%=action._id%>"
                data-img_src="<%= action.image_field ? action.image_field.url ||'' : '' %>" data-text_preview="<%=action.text_field_preview%>" data-title="<%=action.title%>"
@@ -159,52 +120,40 @@ var error_message = error_message || '';
         </div>
         <div class="tags">
             <% for (var c = 0; c<action.tags.length ; c++) { %>
-                    <a href="/discussions/?tag_name=<%=action.tags[c]%>"> <%=action.tags[c] %></a>
-           <% }%>
-          <!--  <div class="more">
-                <span></span>
-                <ul>
-                    <li><a href="">הצג עוד תגיות</a></li>
-                    <li><a href="">הוסף תגית</a></li>
-                </ul>
-            </div>-->
+                <a href="/discussions/?tag_name=<%=action.tags[c]%>"> <%=action.tags[c] %></a>
+            <% }%>
         </div>
     </div>
-    <div class="add-offer-btn-box social-on-click" data-rel="/actions/<%=action._id%>" data-img_src="<%= action.image_field ? action.image_field.url ||'' : '' %>" data-title="<%=action.title%>" data-main_title="<%= action.cycle_id && action.cycle_id[0].cycle.title %>">
-        <a href="#" >
+    <div
+        class="add-offer-btn-box social-on-click"
+        data-rel="/actions/<%=action._id%>"
+        data-img_src="<%= action.image_field ? action.image_field.url ||'' : '' %>"
+        data-title="<%=action.title%>"
+        data-main_title="<%= action.cycle_id && action.cycle_id[0].cycle.title %>">
+        <a href="#">
             <% if(!action.is_going) { %>
             הצטרף
-            <% } else{ %>
+            <% } else { %>
             עזוב
             <% } %>
-            </a>
+        </a>
     </div>
 </div>
 
- <% include partials/action_shopping_cart.ejs %>
+<% include partials/action_shopping_cart.ejs %>
 
-
-<div class="members-box members-box-action-approved cf ">
-<h2>משתתפים
-    <small id="going_number"></small></h2>
-	<div  id="participant">
-	</div>
-
-<br clear="all" />
-<div class="more-deals" >
-    <a href="">עוד הצעות</a>
-</div>
-</div>
-
-</div>
-</div>
-<!--
-<div class="system-notice">
-    <div class="extra">
-        <a class="close" href=""></a>
-        <strong>:תכרעמ תעדוה</strong> תורקל הזל ומרגו וביגה ,ופתש .הפונת לגעמ תויהל דתעתמ הז ןויד
+<div class="members-box members-box-action-approved cf">
+    <h2>משתתפים<small id="going_number"></small></h2>
+	<div  id="participant"></div>
+    <br clear="all" />
+    <div class="more-deals" >
+        <a href="">עוד הצעות</a>
     </div>
-</div>-->
+</div>
+
+</div><!-- content -->
+</div><!-- wrap -->
+
 <div class="comments-box comments-box-inner">
     <div class="extra cf">
         <select class="left-select">
@@ -218,12 +167,8 @@ var error_message = error_message || '';
 			מיין לפי תוצאות
 			</option>
         </select>
-        <h2>
-		תגובות
-		<small id="comments_number"></small></h2>
-        <div id="comments">
-
-        </div>
+        <h2>תגובות<small id="comments_number"></small></h2>
+        <div id="comments"></div>
         <a href="javascript:void(0)" class="more_comments" style="display:none;">הראה עוד</a>
         <div class="write-comment">
             <h3>
@@ -266,295 +211,36 @@ var error_message = error_message || '';
 <% include partials/footer.ejs %>
 <% include partials/action_common.ejs %>
 
- <script type="text/javascript">
+<script type="text/javascript">
+var action_id = '<%= action._id %>';
+var cycle_id = '<%= action.cycle_id[0].cycle.id %>';
+var my_id = "<%= user_logged ? user._id : '' %>";
+var cycle_title = "<%= action.cycle_id[0].cycle.title %>";
+$(document).ready(function () {
+    timeline.render(cycle_id, cycle_title, action_id);
 
- var action_id='<%=action._id%>';
- var cycle_id='<%= action.cycle_id[0].cycle.id %>';
- var my_id = "<%=user_logged ? user._id : ''%>";
- var cycle_title = "<%= action.cycle_id[0].cycle.title %>";
- $(document).ready(function () {
-     timeline.render(cycle_id, cycle_title, action_id )  ;
+    $('.followers-diagram').on("mouseenter", ".icon", function(e){
+        e.preventDefault();
+        var popup_event = $(this).children('.popup-event');
+        if(!popup_event.hasClass('showdiv')) {
+            popup_event.stop(true, true);
+            popup_event.show();
+        }
+    });
 
-     $('.followers-diagram').on("mouseenter", ".icon", function(e){
-         e.preventDefault();
-         var popup_event = $(this).children('.popup-event');
-         if(!popup_event.hasClass('showdiv'))
-         {
-             popup_event.stop(true, true);
-             popup_event.show();
-         }
-     });
-
-     $('.followers-diagram').on("mouseleave", ".icon", function(e){
-         e.preventDefault();
-         var popup_event = $(this).children('.popup-event');
-         if(!popup_event.hasClass('showdiv'))
-         {
+    $('.followers-diagram').on("mouseleave", ".icon", function(e){
+        e.preventDefault();
+        var popup_event = $(this).children('.popup-event');
+        if(!popup_event.hasClass('showdiv')) {
             popup_event.fadeOut(2000);
-         }
-     })
-
-   //  var new_post_ref_id = null;  //if not null =>the create new post is connected to anther post
-    // var action_title = "<%= action.title%>"
-   //  var discussion_img_field_preview = "<%= action.image_field ? action.image_field.url ||'' : '' %>";
-
-
-   /*  <%
-     if (user_logged) { %>
-         var proxy = JSON.parse('<%-proxy%>');
-     <%
-     } else { %>
-         var proxy = [];
-     <%
-     }
-     %>
-*/
-
-
-
-  /*   // just focus
-     $("#action_comment_reply_button").on('click', function (e) {
-         e.preventDefault();
-         var discussionComment = $("textarea#discussion_comment").focus();
-         focusOnCommentBox();
-     });*/
-
-   /*  function setUserScore(userID, score) {
-         $('[ data-creator_id=' + userID + ']').find('.score').empty().append(score);
-     }*/
-
-
-   /*  function setCommentNumber(number) {
-
-         $('#comments_number')[0].innerHTML = '(' + number + ')';
-     }*/
-
-    /* function setGoingNumber(number) {
-
-         $('#going_number')[0].innerHTML = '(' + number + ')';
-         $('.going_red').html(number);
-     }*/
-    /* function setUserScore(userID, score) {
-         $('[ data-creator_id=' + userID + ']').find('.score').empty().append(score);
-     }*/
-
-
-
-
-
-/*
-      $("#submit_post").on('click', function (e) {
-            e.preventDefault();
-            db_functions.addPostToAction(action_id, $("textarea#discussion_comment").val(), new_post_ref_id, function (err, post) {
-                // $("#user_tokens").text(post.updated_user_tokens);
-                if (!err) {
-                    if (my_id && post.creator_id){
-
-                        setUserScore(my_id, post.creator_id);
-                    }
-                    post.voting =      post.votes_for - post.votes_against;
-                    dust.render('discussion_comment', post, function (err, out) {
-                        $("#comments").append(out);
-                        $("textarea#discussion_comment").val('');
-                        new_post_ref_id = null;
-                        postsNumber++;
-                        setCommentNumber(postsNumber);
-
-                    });
-                }
-            })
-         });*/
-
-
-      //    var current_offset = 0;
-
-   /*  function renderComments(comments) {
-         var i;
-         for (i = 0; i < comments.length; i++) {
-             comments[i].isFirst = (i === 0);
-             comments[i].isEven = ((i % 2)== 0);
-             comments[i].voting =      comments[i].votes_for - comments[i].votes_against;
-         }
-         dust.renderArray('discussion_comment', comments, null, function (err, out) {
-             if (!err) {
-                 var comments = $("#comments");
-                 comments.append(out);
-                 var hash = window.location.hash;
-                 if (hash) {
-                     if (!scrollTo(hash)) {
-                         var match = /^#post_([0-9a-f]+)/.exec(hash);
-                         if (match) {
-                             var post_id = match[1];
-
-                             db_functions.getPostById(post_id, function (err, post) {
-                                 dust.render('discussion_comment', post, function (err, out) {
-                                     if (!err)
-                                         comments.append(out);
-                                     scrollTo(hash);
-                                 });
-                             });
-                         }
-                     }
-                 }
-
-                 image_autoscale($('.auto-scale img', comments));
-
-                 initTooltipWithMessage($('#comments .right .proxy'), 'מנדטים');
-                 initTooltipWithMessage($('#comments .right .respect'), 'מוניטין');
-
-             }
-         });
-     }*/
-/*
-          function loadPosts() {
-              var selectedOption = $("#sorting_select").val();
-              db_functions.getSortedPostByAction(action_id, selectedOption,current_offset, function (err, data) {
-                  if (err) {
-                      console.log(err);
-                  } else {
-                      current_offset += data.objects.length;
-
-                      $.each(data.objects, function (index, post) {
-                          post.title = action_title;
-                          post.image_field_preview = discussion_img_field_preview;
-                      });
-
-                      renderComments(data.objects);
-
-                      if(data.meta.total_count > current_offset )
-                          $('.more_comments').show();
-                      else
-                          $('.more_comments').hide();
-                      postsNumber = data.meta.total_count;
-                      setCommentNumber(postsNumber);
-
-                      if(typeof(FB) != 'undefined')
-                          FB.XFBML.parse();
-                  }
-              })
-          }*/
-
-
-
-
-
-
-
-
-
-   /*  $('.more_comments').click(function() {
-          loadPosts();
-      });
-
-      $('#sorting_select').change(function() {
-          $("#comments").empty();
-          current_offset = 0;
-          loadPosts();
-      });*/
-
-
-     /**********************************posts   *********************************************************/
-
-
-   /*  $('#comments').on('click', ".quote_button", function (e) {
-         var userName,
-                 text;
-
-         var postDiv = $(this).parents('.comment-one');
-         e.preventDefault();
-         // $("textarea#discussion_comment").focus();
-         userName = postDiv.data('creator_name');
-         new_post_ref_id = postDiv.data('id');
-
-         var text_to_quote = $('.actual_text', postDiv).length ? $('.actual_text', postDiv).text() : $('.post_text', postDiv).text();
-
-         text = "[ציטוט=" + '"' + userName + '"' + " " + "]\n"
-                 + text_to_quote
-                 + '\n'
-                 + "[/ציטוט]"
-                 + '<p>&nbsp;</p>';
-
-         $("textarea#discussion_comment").val(text).focus();
-
-         focusOnCommentBox();
-     });*/
-
-   /*  function vote(actionType){
-         var post_id = $(this).parents('.comment-one').data("id");
-         var button = $(this);
-         //TODO:replace db_functions.voteForPost
-         var func = $(this).parents('#comments').length ? db_functions.voteForActionPost: db_functions.voteForSuggestion;
-         func.call(db_functions, post_id, actionType, function (err, post_obj) {
-             if (!err) {
-
-                 button.parents(".ratio").find(".count").text(Math.round(post_obj.votes_for-post_obj.votes_against ));
-                 var down_arrow = button.parents(".ratio").find(".down");
-                 var up_arrow =button.parents(".ratio").find(".up");
-                 down_arrow.removeClass("balance0").removeClass("balance1").removeClass("balance2").removeClass("balance3").removeClass("balance-1").removeClass("balance-2").removeClass("balance-3").addClass("balance"+post_obj.voter_balance);
-                 up_arrow.removeClass("balance0").removeClass("balance1").removeClass("balance2").removeClass("balance3").removeClass("balance-1").removeClass("balance-2").removeClass("balance-3").addClass("balance"+post_obj.voter_balance);
-             }
-             else {
-                 if (err.responseText == 'Error: there is not enought tokens')
-                     popupProvider.showOkPopup( {message:     'אין לך מספיק אסימונים'});
-                 if (err.responseText == 'user already voted for this post')
-                     popupProvider.showOkPopup( {message:     'באפשרותך לתת עד שלושה אסימונים לתגובה בדיון'});
-                 if (err.responseText == 'soory, can\'t vote to your own post')
-                     popupProvider.showOkPopup( {message:     'מצטערים, לא ניתן להצביע לתגובה של עצמך'});
-             }
-         })
-     }
-
-     $('#comments').on('click', '.vote_for', function () {
-         vote.apply($(this),['add']);
-
-     });
-
-     $('#comments').on('click', ".vote_against", function () {
-         vote.apply($(this),['remove']);
-
-     });*/
-
-
-
-    /* $('#comments,#suggestion_list').on('mouseenter', ".side_menu", function (e) {
-         $(this).addClass('hover');
-         $('.left', this).show().css({width:0}).animate({'width':87});
-     }).on('mouseleave', ".side_menu", function (e) {
-                 var side = $(this);
-                 side.removeClass('hover');
-                 $('.left', this).animate({'width':0}, function () {
-                     $(this).hide();
-                 });
-             });
-
-
-     $('#comments').on('click', '#add_or_remove_proxy', function (e) {
-         var userData = $(this).parents('.comment-one');
-         var proxyId = userData.data('creator_id');
-         var userName = userData.data('creator_name');
-         e.preventDefault();
-         proxyCommon.addOrRemoveProxy(proxy,proxyId,userName,my_id,function(newProxy){
-             proxy=newProxy.proxy;
-
-         })
-
-
-     });
-*/
-
-
-     /*********************************************************************************************************/
-
-
-
-
-
-     //start from index 0 loding 2 rows 14*7
-     var goingModel= new  window.uru.GoingModel();
-     goingModel.loadGoingUsers(0,2);
-     //loadPosts();
- });
- </script>
+        }
+    })
+    //start from index 0 loding 2 rows 14*7
+    var goingModel = new window.uru.GoingModel();
+    goingModel.loadGoingUsers(0,2);
+    //loadPosts();
+});
+</script>
 
 </body>
 </html>

@@ -6,10 +6,6 @@ var error_message = error_message || '';
 <html>
 <head>
     <% include partials/head.ejs %>
-    <script src="/plugins/ckeditor/ckeditor.js"></script>
-    <script src="/plugins/ckeditor/adapters/jquery.js"></script>
-    <script src="/node-forms/js/maps.js"></script>
-    <script src="/js/autocompleteTag.js"></script>
 
     <style>
         .error-container {
@@ -283,6 +279,8 @@ var error_message = error_message || '';
 </div>
 
 <% include partials/footer.ejs %>
+
+<script src="/js/autocompleteTag.js"></script>
 
 <script>
     $.fn.tagAdder = function (callback, condition) {

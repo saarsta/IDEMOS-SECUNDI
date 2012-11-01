@@ -103,8 +103,8 @@ var PostActionResource = module.exports = common.GamificationMongooseResource.ex
         var base = this._super;
         var post_object = new self.model();
         var user = req.user;
-        if(fields.ref_to_post_id == "null" || fields.ref_to_post_id == "undefined")
-            fields.ref_to_post_id = null;
+        if(!fields.ref_to_post_id || fields.ref_to_post_id == "null" || fields.ref_to_post_id == "undefined")
+            delete fields.ref_to_post_id;
 
         async.waterfall([
 
