@@ -116,7 +116,6 @@ var timeline = {
 						is_displayed: false,
 						items: []
 					};
-
 					result[month].items.push(item);
 					result[month].is_displayed = result[month].is_displayed || item.is_displayed;
 				});
