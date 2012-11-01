@@ -1,5 +1,5 @@
 
-window.console || (window.console = { log: function(str) { }, error: function(str) { }};)
+window.console || (window.console = { log: function(str) { }, error: function(str) { }})
 
 dust.filters['time'] = function(a){
    // console.log(a);
