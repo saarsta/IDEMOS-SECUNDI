@@ -60,7 +60,7 @@
 
 
     <div id="fullInfo" class="add-offer text-box cf fullInfo" style="display: none">
-        <h3><span class="arrow"><%=action.type%></span> <span class="blue-title"><%=action.title%></span></h3>
+        <h3><span class="arrow"><%= action.category && action.category.name %></span> <span class="blue-title"><%=action.title%></span></h3>
         <div class="text-box cf">
             <div id="discussion_image" style="width: 139px;height: 135px; overflow:hidden;" class='auto-scale floatRight'>
                 <img src="<%= action.image_field ? action.image_field.url ||'' : '' %>" alt=""/>
