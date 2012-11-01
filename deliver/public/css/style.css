@@ -519,6 +519,8 @@ body {
 }
 
 .user-box a.name{
+
+    font-family: arial;
     text-decoration: none;
     float: left;
     font-weight: bold;
@@ -654,6 +656,7 @@ body {
     width: 30%;
     font-weight: bold;
     border: 0;
+    font-family: 'AdumaFOTRegular';
 }
 .user-info-box .user-box-top .messages .left{
 color: #ff00af;
@@ -688,7 +691,9 @@ color: #ff00af;
 }
 
 .user-info-box .user-box-bottom div.logout{
-   margin-right: 40px;;
+    box-shadow: 1px 1px 2px #888;
+
+    margin-right: 40px;;
 }
 .user-info-box .user-box-bottom div.logout p{
     padding: 5px 10px 0 10px;
@@ -711,34 +716,35 @@ color: #ff00af;
 
 .search-box input[type=text] {
     border: 1px solid #b7b6b6;
-    border-radius: 2px;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
 
     height: 25px;
     width: 330px;
     margin-left: 5px;
     padding: 3px 10px 2px;
-    color: #fff;
+    color: #505052;
     font: bold 15px/30px Arial;
     float: right;
     background-color: #f5f5f5;
 }
 
+.big-head .search-box {
+   margin-top: 8px;
+}
+
 .big-head .search-box input[type=text] {
 
-    width: 330px;
-    background-color: #f5f5f5;
-    border-radius: 2px;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
+
+
 }
 
 .search-box input[type=submit] {
     float: right;
     background: transparent url(../images/URU_search_btn_reg.png) -71px 0 no-repeat;
     border: 0;
-
+     margin-top: -1px;
     width: 34px;
     height: 38px;
     color: #ffffff;
@@ -752,7 +758,7 @@ color: #ff00af;
 }
 
 .search-box input[type=submit]:active {
-    background: transparent url(../images/URU_search_btn_reg.png) 0 0 no-repeat;
+    background: transparent url(../images/URU_search_btn_reg.png) -1px 0 no-repeat;
 }
 
 /*------------------------*/
@@ -4236,7 +4242,9 @@ h2 small {
     padding-top: 27px;
 }
 
-.one-box .left a {
+.one-box .left a,
+.add-offer a.share-btn
+{
     display: block;
     background: #757d7e url(../images/search-submit.png) 0 0 repeat-x;
     border: 1px solid #757d7e;
@@ -5953,10 +5961,6 @@ div.action_list::-webkit-scrollbar-button {
     padding: 0;
 }
 
-.search-box input:focus {
-    background: #b9c9fd;
-    color: #505052;
-}
 
 #uplod_image_placeholder {
 
@@ -6125,7 +6129,8 @@ color: #5578f1;
     background-color: #3b63ef;
     color: #fff;
     height: 23px;
-    width: 25px;
+    height: 23px;
+    padding: 0 3px;
     margin-left: 5px;
     border-radius: 3px;
     -moz-border-radius: 3px;
@@ -6415,7 +6420,7 @@ a.fraction-btn {
     top:39px;
     width: 111px;
     height: 42px;
-
+     display: none;
     border-radius: 2px;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
@@ -7000,7 +7005,7 @@ a.fraction-btn {
     font: bold 13px/15px ARial;
     padding-bottom: 5px;
     letter-spacing: -0.4px;
-    min-height: 30px;
+    min-height: 45px;
 }
 
 .followers-ppl .one .date {
@@ -9043,7 +9048,10 @@ a.menu-elections:hover {
     color: #50504F;
 }
 
-.one-box .bottom-plus .left a, .one-box a.green-share {
+.one-box .bottom-plus .left a,
+.one-box a.green-share ,
+.add-offer a.share-btn
+{
     background: #2FD43B url(../images/green-btn-border.png) 0 0 repeat-x;
     border-color: #2EAB35;
     margin: 0;
@@ -9318,7 +9326,7 @@ div.icons img {
     cursor: pointer;
 }
 #cloudsponge{
-    margin-top: 30px;
+    margin: 10px 0;
     display: none;
 
 }
@@ -9436,3 +9444,10 @@ input[type=url] {
     padding: 0;
 }
 
+
+.add-offer a.share-btn  {
+    display: none;
+    position: absolute;
+    left: 29px;
+    top: 44px;
+}
