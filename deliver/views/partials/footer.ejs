@@ -92,7 +92,7 @@
 <script src="/js/proxy_common.js" type="text/javascript"></script>
 
 <script>
-    var user = <%- JSON.stringify(locals.user) || '' %>;
+    var user = <%- JSON.stringify(locals.user || '') %>;
     $.webshims.polyfill();
 </script>
 
