@@ -212,8 +212,17 @@ app.configure(function(){
     app.use(app.router);
 
     app.locals({
-        footer_links:function() { return mongoose.model('FooterLink').getFooterLinks(); },
-        cleanHtml:function(html) { return (html || '').replace(/<[^>]*?>/g,'').replace(/\[[^\]]*?]/g,'');},
+        footer_links: function(place) {
+            var links = mongoose.model('FooterLink').getFooterLinks();
+            var non_cms_pages = {'about':1, 'team':1, 'founders':1, 'qa':1};
+            var ret = links.filter(function(item) {return item[place];}).map(function(menu) {
+                var page_prefix = menu.tab in non_cms_pages ? '/' : '/page/';
+                var link = menu.link ? menu.link : (page_prefix + menu.tab);
+                return {link:link, name:menu.name};
+            })
+            return ret;
+        },
+        cleanHtml: function(html) { return (html || '').replace(/<[^>]*?>/g,'').replace(/\[[^\]]*?]/g,'');},
         fb_description:"עורו היא תנועה חברתית לייצוג הרוב בישראל. אנו מאמינים שבעידן שבו אנו חיים, כולנו מסוגלים וזכאים להשתתף בקבלת ההחלטות. לכן, עורו מנהלת פלטפורמה לדיון ציבורי, יסודי ואפקטיבי שיוביל שינוי בסדר היום. אצלנו, האג'נדה מוכתבת מלמטה.",
         fb_title:'עורו - הבית של הרוב',
         fb_image:'http://site.e-dologic.co.il/philip_morris/Xls_script/uru_mailing/logo.jpg'
