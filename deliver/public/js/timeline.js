@@ -116,6 +116,7 @@ var timeline = {
 						is_displayed: false,
 						items: []
 					};
+
 					result[month].items.push(item);
 					result[month].is_displayed = result[month].is_displayed || item.is_displayed;
 				});
@@ -201,6 +202,11 @@ var timeline = {
 					item.is_displayed = false;
 				}
 
+                //TODO maria this is an ugly temporary fix
+                if(item.template == "cycle_timeline_action"){
+                    if(nodes[index].cycle_id[0].is_displayed)
+                        item.is_displayed = true;
+                }
 				dust.render(item.template, item, function (err, out) {
 					$('.followers-diagram').append(out);
 				});
