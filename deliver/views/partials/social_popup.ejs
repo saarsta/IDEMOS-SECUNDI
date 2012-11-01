@@ -60,13 +60,16 @@
 
 
                     var csPageOptions = {
+
+
                    <%if(process && process.NODE_ENV && process.NODE_ENV=='staging'){  %>
-                        domain_key:"HPZ65GELQ4UZMGFUSTRR",   // uru-staging.herokuapp.com
+                      //  domain_key:"HPZ65GELQ4UZMGFUSTRR",   // uru-staging.herokuapp.com
                    <% } else  if(process && process.NODE_ENV && process.NODE_ENV=='production'){  %>
-                        domain_key:"G5XMTFDEGQNEND8A6YZB",     //uru.org.il
+                     //   domain_key:"G5XMTFDEGQNEND8A6YZB",     //uru.org.il
                    <% }else { %>
-                        domain_key:"MEJVM6QW5TG7SQF4B8G3",     //dev.empeeric.com
+                     //   domain_key:"MEJVM6QW5TG7SQF4B8G3",     //dev.empeeric.com
                    <% } %>
+                         domain_key:"G5XMTFDEGQNEND8A6YZB",
                          textarea_id:"contact_list",
                         include:['mailing_address','name','email'],
                         afterSubmitContacts: function(contacts, source, owner) {
