@@ -1,14 +1,9 @@
 <!DOCTYPE html>
-<%
-var cycle_id = cycle_id || '';
-%>
+<% cycle_id = locals.cycle_id || ''; %>
 
 <html>
 <head>
-<!--<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# <%= settings.facebook_app_name %>: http://ogp.me/ns/fb/<%= settings.facebook_app_name %>#">-->
     <% include partials/head.ejs %>
-    <script src="/plugins/ckeditor/ckeditor.js"></script>
-    <script src="/plugins/ckeditor/adapters/jquery.js"></script>
 </head>
 
 <body class="body-action">
@@ -20,7 +15,6 @@ var cycle_id = cycle_id || '';
         <% include partials/failures.ejs %>
         <% include partials/tag_search.ejs %>
         <% include partials/social_popup.ejs %>
-
     </div>
 <div id="content" class="cf">
 <div class="followers-box">
