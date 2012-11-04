@@ -37,6 +37,7 @@ module.exports = function (app) {
         list:['title'],
         order_by:['gui_order'],
         sortable:'gui_order',
+        filters:['status'],
         cloneable:true,
         actions:[
             {
