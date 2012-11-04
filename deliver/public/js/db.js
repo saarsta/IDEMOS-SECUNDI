@@ -50,6 +50,7 @@ var db_functions = {
 //                            }
 //                        }
                         $.ajax(options);
+
                     }
                 });
             } else if (xhr.responseText == 'not_activated') {
@@ -78,6 +79,7 @@ var db_functions = {
 //        }
 
         //TODO - for now no need for this popup
+
 //        if(options.hasOwnProperty('user_info') && options.user_info.action_done == false && options.user_info.user_logged_in)
 //        {
 //            var config = {
