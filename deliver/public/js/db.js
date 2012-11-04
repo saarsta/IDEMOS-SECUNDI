@@ -31,8 +31,7 @@ var db_functions = {
                             window.location.href = window.location.href;
                         };
 
-                        //TODO - for now no need for this popup
-                        if(data.hasOwnProperty("actions_done_by_user") && options.hasOwnProperty("user_info")){
+                        /*if(data.hasOwnProperty("actions_done_by_user") && options.hasOwnProperty("user_info")){
                             if(data.actions_done_by_user[options.user_info.action_name]) {
                                 $.ajax(options);
                             } else {
@@ -47,7 +46,8 @@ var db_functions = {
                                 };
                                 popupProvider.showExplanationPopup(config);
                             }
-                        }
+                        }*/
+                        $.ajax(options);
 
                     }
                 });
@@ -77,7 +77,7 @@ var db_functions = {
 //        }
 
         //TODO - for now no need for this popup
-        if(options.hasOwnProperty('user_info') && options.user_info.action_done == false && options.user_info.user_logged_in)
+        /*if(options.hasOwnProperty('user_info') && options.user_info.action_done == false && options.user_info.user_logged_in)
         {
             var config = {
                 tokens_needed:3,
@@ -91,9 +91,9 @@ var db_functions = {
             popupProvider.showExplanationPopup(config);
         }
         else
-        {
+        {*/
             $.ajax(options);
-        }
+        /*}*/
     },
 
     login:function (email, password, callback) {
