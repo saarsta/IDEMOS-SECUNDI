@@ -6731,12 +6731,14 @@ a.fraction-btn {
     height: 115px;
     overflow: hidden;
     cursor: pointer;
+    text-overflow: ellipsis;
 }
 
 .followers-diagram .event .type-two .popup-text h5 {
     color: #50504f;
     font: bold 13px/17px Arial;
     margin: 0;
+
 }
 
 .followers-diagram .event .type-two .popup-text .floatRight {
