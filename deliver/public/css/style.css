@@ -880,6 +880,14 @@ color: #ff00af;
     margin-bottom: 30px;
 }
 
+.news-list .one .item_text_preview p {
+    color: #50504f;
+    font: normal 13px/17px ARial;
+    height: 54px;
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
 .tags {
     padding: 12px 0 3px;
     line-height: 14px;
@@ -6723,12 +6731,14 @@ a.fraction-btn {
     height: 115px;
     overflow: hidden;
     cursor: pointer;
+    height: 95px;
 }
 
 .followers-diagram .event .type-two .popup-text h5 {
     color: #50504f;
     font: bold 13px/17px Arial;
     margin: 0;
+
 }
 
 .followers-diagram .event .type-two .popup-text .floatRight {

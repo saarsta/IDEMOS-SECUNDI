@@ -32,7 +32,7 @@ var db_functions = {
                         };
 
                         //TODO - for now no need for this popup
-                       /* if(data.hasOwnProperty("actions_done_by_user") && options.hasOwnProperty("user_info")){
+                        if(data.hasOwnProperty("actions_done_by_user") && options.hasOwnProperty("user_info")){
                             if(data.actions_done_by_user[options.user_info.action_name]) {
                                 $.ajax(options);
                             } else {
@@ -47,10 +47,9 @@ var db_functions = {
                                 };
                                 popupProvider.showExplanationPopup(config);
                             }
-                        }*/
-                        $.ajax(options);
-
                         }
+
+                    }
                 });
             } else if (xhr.responseText == 'not_activated') {
                 var message = 'ההרשמה לאתר לא הושלמה, על מנת להמשיך לחץ על הלינק שנשלח לתיבת הדואר שלך.' +
@@ -78,7 +77,7 @@ var db_functions = {
 //        }
 
         //TODO - for now no need for this popup
-       /* if(options.hasOwnProperty('user_info') && options.user_info.action_done == false && options.user_info.user_logged_in)
+        if(options.hasOwnProperty('user_info') && options.user_info.action_done == false && options.user_info.user_logged_in)
         {
             var config = {
                 tokens_needed:3,
@@ -92,9 +91,9 @@ var db_functions = {
             popupProvider.showExplanationPopup(config);
         }
         else
-        {*/
+        {
             $.ajax(options);
-       /* }*/
+        }
     },
 
     login:function (email, password, callback) {
@@ -1073,7 +1072,7 @@ var db_functions = {
 
     getCylceFollowers:function (cycle_id, page, callback) {
         db_functions.loggedInAjax({
-            url:'/api/users?cycles.cycle_id=' + cycle_id + /*&limit=3*/'&offset=' + (page * 14),
+            url:'/api/users?cycles.cycle_id=' + cycle_id + '&limit = 21' + '&offset=' + (page * 21),
             type:"GET",
             async:true,
             success:function (data, err) {
