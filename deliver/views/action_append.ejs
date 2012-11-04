@@ -541,10 +541,10 @@
                 }
                 db_functions.addSuggestionGrade(suggestion_id, action_id, rating, sugg_grade_id, user_info, function (err, data) {
                     if (!err) {
-                        if(!user.actions_done_by_user.grade_object)
-                        {
-                            user.actions_done_by_user.grade_object = true;
-                        }
+//                        if(!(user.actions_done_by_user && user.actions_done_by_user.grade_object))
+//                        {
+//                            user.actions_done_by_user.grade_object = true;
+//                        }
                         db_functions.getSuggestionByAction(action_id, null, null, function (err, data) {
                             $.each(data.objects, function (index, suggestion) {
                                 render_suggestion(suggestion);
@@ -625,10 +625,10 @@
                 db_functions.addActionGrade(action_id, my_action_grade, grade_id, user_info, function (err, data) {
 
                     if (!err) {
-                        if(!user.actions_done_by_user.grade_object)
-                        {
-                            user.actions_done_by_user.grade_object = true;
-                        }
+//                        if(!(user.actions_done_by_user && user.actions_done_by_user.grade_object))
+//                        {
+//                            user.actions_done_by_user.grade_object = true;
+//                        }
                         $("#amount").val(Math.round(data.new_grade * 100) / 100);
                         $("#graders").text(Math.round(data.evaluate_counter));
                         $(".dark_bar").css('width', (my_action_grade * 10) + '%');
@@ -689,10 +689,10 @@
                             }
                             db_functions.addSuggestionGrade(suggestion.id, action_id, rating, suggest_grade_id[suggestion.id], user_info, function (err, data) {
                                 if (!err) {
-                                    if(!user.actions_done_by_user.grade_object)
-                                    {
-                                        user.actions_done_by_user.grade_object = true;
-                                    }
+//                                    if(!(user.actions_done_by_user && user.actions_done_by_user.grade_object))
+//                                    {
+//                                        user.actions_done_by_user.grade_object = true;
+//                                    }
                                     $("#suggest_grade_" + suggestion.id).val(Math.round(data.new_grade * 100) / 100);
                                     $("#suggest_graders_" + suggestion.id).text(Math.round(data.agrees) + Math.round(data.not_agrees));
                                     $("#agrees_" + suggestion.id).text(Math.round(data.agrees));

@@ -21,6 +21,7 @@ var db_functions = {
                         var success = options.success;
                         options.success = function () {
                             success.apply(this, arguments);
+                            debugger
                             if(window.location.href.indexOf('actions/create/')==-1 && window.location.href.indexOf('discussions/new/')==-1)
                             {
                                 window.location.href = window.location.href;
@@ -32,23 +33,23 @@ var db_functions = {
                         };
 
                         //TODO - for now no need for this popup
-                        if(data.hasOwnProperty("actions_done_by_user") && options.hasOwnProperty("user_info")){
-                            if(data.actions_done_by_user[options.user_info.action_name]) {
-                                $.ajax(options);
-                            } else {
-                                var config = {
-                                    tokens_needed:3,
-                                    tokens_owned: data.tokens,
-                                    callback: function(clicked){
-                                        if(clicked == 'ok'){
-                                            $.ajax(options);
-                                        }
-                                    }
-                                };
-                                popupProvider.showExplanationPopup(config);
-                            }
-                        }
-
+//                        if(data.hasOwnProperty("actions_done_by_user") && options.hasOwnProperty("user_info")){
+//                            if(data.actions_done_by_user[options.user_info.action_name]) {
+//                                $.ajax(options);
+//                            } else {
+//                                var config = {
+//                                    tokens_needed:3,
+//                                    tokens_owned: data.tokens,
+//                                    callback: function(clicked){
+//                                        if(clicked == 'ok'){
+//                                            $.ajax(options);
+//                                        }
+//                                    }
+//                                };
+//                                popupProvider.showExplanationPopup(config);
+//                            }
+//                        }
+                        $.ajax(options);
                     }
                 });
             } else if (xhr.responseText == 'not_activated') {
@@ -77,23 +78,23 @@ var db_functions = {
 //        }
 
         //TODO - for now no need for this popup
-        if(options.hasOwnProperty('user_info') && options.user_info.action_done == false && options.user_info.user_logged_in)
-        {
-            var config = {
-                tokens_needed:3,
-                tokens_owned:options.user_info.tokens_owned,
-                callback: function(clicked){
-                    if(clicked == 'ok'){
-                        $.ajax(options);
-                    }
-                }
-            };
-            popupProvider.showExplanationPopup(config);
-        }
-        else
-        {
+//        if(options.hasOwnProperty('user_info') && options.user_info.action_done == false && options.user_info.user_logged_in)
+//        {
+//            var config = {
+//                tokens_needed:3,
+//                tokens_owned:options.user_info.tokens_owned,
+//                callback: function(clicked){
+//                    if(clicked == 'ok'){
+//                        $.ajax(options);
+//                    }
+//                }
+//            };
+//            popupProvider.showExplanationPopup(config);
+//        }
+//        else
+//        {
             $.ajax(options);
-        }
+//        }
     },
 
     login:function (email, password, callback) {
