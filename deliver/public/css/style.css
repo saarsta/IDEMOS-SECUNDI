@@ -880,6 +880,14 @@ color: #ff00af;
     margin-bottom: 30px;
 }
 
+.news-list .one .item_text_preview p {
+    color: #50504f;
+    font: normal 13px/17px ARial;
+    height: 54px;
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
 .tags {
     padding: 12px 0 3px;
     line-height: 14px;
