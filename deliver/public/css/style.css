@@ -6731,7 +6731,7 @@ a.fraction-btn {
     height: 115px;
     overflow: hidden;
     cursor: pointer;
-    text-overflow: ellipsis;
+    height: 95px;
 }
 
 .followers-diagram .event .type-two .popup-text h5 {

@@ -348,29 +348,30 @@ margin-top: 15px;">
            	var followersPage=0;
            	getFollowers();
 
-            function   getFollowers()
+            function getFollowers()
             {
-
                  db_functions.getCylceFollowers(cycle_id, followersPage,function ( data) {
-                    followersPage++;
-                   if(data.meta.total_count<14) {
-                         killScroll = true;
+                     followersPage++;
+                     if(data.meta.total_count < 21) {
+                        killScroll = true;
+                     } else {
+                        killScroll = false;
                      }
-                    dust.renderArray('cycle_follower', data.objects, function (err, out) {
+                     dust.renderArray('cycle_follower', data.objects, function (err, out) {
                         $('#followers').append(out);
-
-                    });
+                     });
                 });
             }
             	// Detect that we are at bottom of page, and call autoloading function
             $(window).scroll(function(){
                 if  ($(window).scrollTop()+100 >= ($(document).height() - ($(window).height()))){
-                    if (killScroll == false) { // - Keeps the loader from fetching more than once.
-                        //killScroll = true; // - Set killScroll to true, to make sure we do not trigger this code again before it's done running.
-                         getFollowers();
+                    if(killScroll == false) { // - Keeps the loader from fetching more than once.
+                        killScroll = true; // - Set killScroll to true, to make sure we do not trigger this code again before it's done running.
+                        getFollowers();
                     }
                 }
             });
+
             $('#read_more').click(function () {
                 $(".cycle-content").height("auto");
                  $(this).hide();
