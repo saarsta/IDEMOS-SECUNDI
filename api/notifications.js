@@ -72,7 +72,9 @@ exports.create_user_notification = function(notification_type, entity_id, user_i
                        noti.notificators.push(new_notificator);
                        noti.update_date = date;
                        noti.save(function(err, obj){
-                           cbk(err, obj);
+                           if(err)
+                               console.error(err);
+                           cbk(null, obj || noti);
                        });
                    }
                    sendNotificationToUser(noti, last_update_date);
@@ -147,7 +149,9 @@ exports.create_user_proxy_vote_or_grade_notification = function(notification_typ
                 notification.update_date = new Date();
 
                 notification.save(function(err, obj){
-                    cbk(err, obj);
+                    if(err)
+                        console.error(err);
+                    cbk(null, obj || notification);
                     if(!err && obj)
                         sendNotificationToUser(obj);
                 });
@@ -175,8 +179,10 @@ var create_new_notification = function(notification_type, entity_id, user_id, no
     notification.update_date = new Date();
 
     notification.save(function(err, obj){
-//        callback(null, 0);
-        callback(err, obj);
+
+        if(err)
+            console.error(err);
+        callback(null, obj || notification);
         if(!err && obj)
             sendNotificationToUser(obj);
     });
@@ -356,7 +362,9 @@ exports.create_user_vote_or_grade_notification = function(notification_type, ent
                 notification.update_date = new Date();
 
                 notification.save(function(err, obj){
-                    cbk(err, obj);
+                    if(err)
+                        console.error(err);
+                    cbk(null, obj || noti);
                     if(!err && obj)
                         sendNotificationToUser(obj);
                 });
