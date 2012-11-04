@@ -410,7 +410,7 @@ var Cron = exports.Cron = {
         var num_of_top_graded = 10;
         var num_of_max_graders = 10;
         var event = "high_graded_discussions_of_min_graders";
-        var event_bonus = 2;
+        var event_bonus = 1;
         var iterator = function(discussion, itr_cbk){
             async.waterfall([
                 function(cbk){
@@ -439,7 +439,7 @@ var Cron = exports.Cron = {
     findHighLikedInfoItem: function(callback){
         var num_of_top_liked = 10;
         var event = "high_liked_submited_info_item";
-        var event_bonus = 2;
+        var event_bonus = 1;
         var bonus_type = "extra_cup";
 
         var iterator = function(info_item, itr_cbk){
@@ -635,7 +635,7 @@ var daily_cron =  exports.daily_cron = {
     //this should happen before the tokens fill again
     findWhoSpentAllTokensInNumberOfDaysInARow: function(num_of_days, callback){
         var event = "spent_all_tokens_for_" + num_of_days + "_days";
-        var event_bonus = 2;
+        var event_bonus = 1;
         var bonus_type = "extra_cup";
 
         var iterator = function(user, itr_cbk){

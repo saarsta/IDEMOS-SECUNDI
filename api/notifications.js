@@ -175,8 +175,8 @@ var create_new_notification = function(notification_type, entity_id, user_id, no
     notification.update_date = new Date();
 
     notification.save(function(err, obj){
-        callback(null, 0);
-//        callback(err, obj);
+//        callback(null, 0);
+        callback(err, obj);
         if(!err && obj)
             sendNotificationToUser(obj);
     });
