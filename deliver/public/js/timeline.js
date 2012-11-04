@@ -202,11 +202,6 @@ var timeline = {
 					item.is_displayed = false;
 				}
 
-                //TODO maria this is an ugly temporary fix
-                if(item.template == "cycle_timeline_action"){
-                    if(nodes[index].cycle_id[0].is_displayed)
-                        item.is_displayed = true;
-                }
 				dust.render(item.template, item, function (err, out) {
 					$('.followers-diagram').append(out);
 				});
