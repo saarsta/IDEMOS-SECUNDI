@@ -167,6 +167,10 @@
                 })
             });
 
+            $('#timeline-second-part').click(function(){
+                window.location.replace("/cycles/" + cycle_id);
+            })
+
             //click on the action blue icon goes to action
             $('.holds_the_timeline').on("click",'.blue-icon', function(e){
                 e.preventDefault();
@@ -180,7 +184,6 @@
                 var update_id = $(this).find(".type-one").attr("item-id");
                 window.location.replace("/updates/" + update_id);
             });
-
             return model;
         };
 
