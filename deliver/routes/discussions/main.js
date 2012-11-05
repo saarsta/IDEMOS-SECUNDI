@@ -65,7 +65,6 @@ module.exports = function(req,res)
                                 fb_title: discussion.title,
                                 fb_image:discussion.image_field && discussion.image_field.url,
                                 user:user
-
                             });
 
                             //update all notifications of user that connected to this object

@@ -3,7 +3,15 @@
 <html>
 <head>
 
-   <% include partials/head.ejs %>
+<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# <%= settings.facebook_app_name %>: http://ogp.me/ns/fb/<%= settings.facebook_app_name %>#">
+    <meta property="fb:app_id" content="<%= settings.facebook_app_id %>" />
+    <meta property="og:type"   content="<%= settings.facebook_app_name %>:go" />
+    <meta property="og:url"    content="<%= settings.root_path %>/actions/<%= action.id %>" />
+    <meta property="og:title" content="<%=action.title%>" />
+    <meta name="title" content="<%=action.title%>" />
+
+    <% include partials/head.ejs %>
+</head>
 
 </head>
 <body class="body-action">
