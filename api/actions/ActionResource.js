@@ -98,27 +98,6 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
             }, function(err){
                 callback(err,response);
             });
-
-
-
-
-            // TODO i need to fix it for my uru
-//                _.each(response.objects, function(object){
-//                    object.is_going = false;
-//                    if(req.user){
-//                        var user_id = req.user._id;
-//                        if(_.any(object.going_users, function(user){ user.user_id = user_id;})){
-//                            object.is_going = true;
-//                            models.Join.findOne({action_id: object._id, user_id: user_id}, function(err, join){
-//                                if(!err)
-//                                    object.join_id = join._id;
-//                            })
-//                        }
-//                    }
-//                });
-
-
-//            callback(err, response);
         });
     },
 

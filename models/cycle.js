@@ -31,9 +31,9 @@ var Cycle = module.exports = new Schema({
     ],
     admin_updates: [{info: {type:mongoose_types.Text}, date: {type: Date,'default':Date.now}, is_displayed: {type: Boolean, 'default': false}}],
     document: String,
-    shopping_cart: [
-        {type:ObjectId, ref:'InformationItem'}
-    ],
+//    shopping_cart: [
+//        {type:ObjectId, ref:'InformationItem'}
+//    ],
     is_hot_object: {type:Boolean,'default':false},
     followers_count: {type: Number, 'default':0, editable:false},
     num_of_comments: {type: Number, 'default':0, editable:false},

@@ -21,7 +21,7 @@ var db_functions = {
                         var success = options.success;
                         options.success = function () {
                             success.apply(this, arguments);
-                            debugger
+
                             if(window.location.href.indexOf('actions/create/')==-1 && window.location.href.indexOf('discussions/new/')==-1)
                             {
                                 window.location.href = window.location.href;
