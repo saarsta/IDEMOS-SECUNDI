@@ -76,53 +76,6 @@ var Cron = exports.Cron = {
         ], function(err, result){
             callback(err,result);
         })
-       /* async.waterfall([
-            function (cbk) {
-                models.User.find({num_of_extra_tokens: {$gt : extra_tokens - 1}, has_been_invited:true}, cbk);
-            },
-
-            function (users, cbk) {
-                async.forEach(users, iterator, cbk);
-            },
-
-            function (users, cbk) {
-                for (var i = 0; i < users.length; i++) {
-                    var inviter_string = users[i].invited_by.toString();
-                    users[i].tokens_achivements_to_user_who_invited_me = users[i].tokens_achivements_to_user_who_invited_me || {};
-                    if (!users[i].tokens_achivements_to_user_who_invited_me[event]) {
-                        if (!bucket[inviter_string]) {
-                            bucket[inviter_string] = 1;
-                            invited_users[inviter_string] = [];
-                            invited_users[inviter_string].push(users[i]._id);
-
-                        } else {
-                            bucket[inviter_string] += 1;
-                            invited_users[inviter_string].push(users[i]._id);
-                        }
-                    }
-                }
-
-                for (var i = 0; i < users.length; i++) {
-                    var inviter_id_string = users[i].invited_by.toString();
-                    if (bucket[inviter_string] >= number && bucket[inviter_string] != -1) {
-                        //once one user gave his inviter the extra tokens and all invited users has set
-                        // tokens_achivements_to_invited_user  bucket[inviter_string] sets to (-1)
-                        bucket[inviter_string] = -1;
-                        async.parallel([
-                            function (cbk2) {
-                                addTokensToUserByEventAndSetGamificationBonus(inviter_id_string, event, event_bonus, cbk2);
-                            },
-
-                            function (cbk2) {
-                                //update achivement only for the relevant users
-                                var sliced_invited_users = invited_users[inviter_string].slice(0, number);
-                                setTokenAchivementsToInviter(sliced_invited_users, event, cbk2);
-                            }
-                        ], cbk);
-                    }
-                }
-            }
-        ], callback);*/
     },
 
 
@@ -321,7 +274,7 @@ var Cron = exports.Cron = {
         var event = "discussion_turned_to_cycle";
         var path =  "gamification.bonus." + event;
         var dicussion_gamification_path = "gamification.has_rewarded_creator_of_turning_to_cycle";
-        var event_bonus = 3;
+        var event_bonus = 1;
         var bonus_type = "extra_cup";
 
 
