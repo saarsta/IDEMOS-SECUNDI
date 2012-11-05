@@ -31,7 +31,7 @@ module.exports = function (app) {
         form:require('./user'),
         list:['username', 'first_name', 'last_name'],
         filters:['email', 'first_name', 'last_name', 'facebook_id', 'gender', 'age', 'invitation_code', 'identity_provider'],
-//        search:'/__value__/.test(this.first_name)||/__value__/.test(this.last_name)'
+        search:'/__value__/.test(this.first_name)||/__value__/.test(this.last_name)'
     });
     admin.registerMongooseModel("InformationItem", Models.InformationItem, null, {
         list:['title'],
