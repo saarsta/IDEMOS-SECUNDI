@@ -119,7 +119,7 @@ module.exports = function (req, res) {
                     social_popup_title: action.social_popup_title,
                     social_popup_text: action.social_popup_text,
                     meta: {
-                        type: req.settings.facebook_app_name + ':activity',
+                        type: req.app.settings.facebook_app_name + ':activity',
                         id: action.id,
                         image: ((action.image_field_preview && action.image_field_preview.url) ||
                             (action.image_field && action.image_field.url)),
