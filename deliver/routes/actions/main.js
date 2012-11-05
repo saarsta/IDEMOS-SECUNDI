@@ -117,8 +117,16 @@ module.exports = function (req, res) {
                     type: type,
                     proxy: proxyJson,
                     social_popup_title: action.social_popup_title,
-                    social_popup_text: action.social_popup_text
-                    // pageType:'beforeJoin' //waitAction,beforeJoin
+                    social_popup_text: action.social_popup_text,
+                    meta: {
+                        type:'action',
+                        id: action.id,
+                        image: ((action.image_field_preview && action.image_field_preview.url) ||
+                            (action.image_field && action.image_field.url)),
+                        title: action && action.title,
+                        description: action.text_field_preview || action.text_field,
+                        link: action && ('/action/' + action.id)
+                    }
                 });
             });
         });
