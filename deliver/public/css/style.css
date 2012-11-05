@@ -4357,13 +4357,7 @@ h2 small {
 }
 
 /*---------------------------*/
-body.search-ative {
-    background: #ebebeb url(../images/search-active-bg.png) 0 0 repeat-x;
-}
 
-body.search-ative #header {
-    height: 612px;
-}
 
 .search-result-box {
     height: 347px;
@@ -4408,6 +4402,9 @@ body.search-ative #header {
     text-decoration: none;
 }
 
+.search-result-box .tabs-nav .ui-state-active a{
+    color: #3ee84a;
+}
 .search-result-box .tabs-nav li a:hover,
 .search-result-box .tabs-nav li a:active,
 .search-result-box .tabs-nav li.ui-tabs-selected a {
@@ -7371,9 +7368,6 @@ a.fraction-btn {
     text-align: center;
 }
 
-body.body-action {
-    background: #EDEDED url(../images/header-bg-three.png) 0 0 repeat-x;
-}
 
 body.body-action .followers-box {
     margin-top: -20px;
@@ -9460,4 +9454,12 @@ input[type=url] {
     position: absolute;
     left: 29px;
     top: 44px;
+}
+
+body.search-active {
+    background: #ebebeb url(../images/search-active-bg.png) 0 0 repeat-x;
+}
+
+body.search-active #header {
+    height: 612px;
 }

@@ -55,9 +55,9 @@
 </body>
 </html>
 <script type="text/javascript">
-
+    var current_section=2;
     $(function(){
-        current_section=1;
+
         var selectedTag='<%=tag_name? tag_name:'' %>';
         var selectedSubject = '<%= subject.id %>';
         function createCyclesQuery(){
