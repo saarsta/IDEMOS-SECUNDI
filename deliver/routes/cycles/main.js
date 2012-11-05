@@ -94,7 +94,15 @@ module.exports = function(req, res){
                 type: 'cycle',
                 proxy:proxyJson,
                 social_popup_title: g_cycle.social_popup_title,
-                social_popup_text: g_cycle.social_popup_text
+                social_popup_text: g_cycle.social_popup_text,
+                meta:{
+                    type:'cycles',
+                    title:g_cycle.title,
+                    description:g_cycle.text_field_preview || g_cycle.text_field,
+                    image: (g_cycle.image_field_preview && g_cycle.image_field_preview.url) || (g_cycle.image_field && g_cycle.image_field.url),
+                    link:'/cycles/' + g_cycle.id,
+                    id:g_cycle.id
+                }
             });
         }
     })
