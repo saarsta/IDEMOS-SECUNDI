@@ -27,7 +27,7 @@ var asArray = function (arg) {
 
 var ActionResource = module.exports = common.GamificationMongooseResource.extend({
     init:function () {
-        this._super(models.Action, null, 0);
+        this._super(models.Action, 'create_action', common.getGamificationTokenPrice('create_action') > -1 ? common.getGamificationTokenPrice('create_action') : 3);
         this.allowed_methods = ['get', 'post', 'put'];
         this.filtering = {
             subject_id: null,
@@ -121,14 +121,16 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
             info_item.save(itr_cbk());
         };
 
-        var min_tokens = common.getGamificationTokenPrice('create_action') > -1 ? common.getGamificationTokenPrice('create_action') : 10;
-//            var total_tokens = user.tokens + user.num_of_extra_tokens;
+        //var min_tokens = common.getGamificationTokenPrice('create_action') > -1 ? common.getGamificationTokenPrice('create_action') : 10;
+        //var total_tokens = user.tokens + user.num_of_extra_tokens;
 
-//            if(total_tokens <  min_tokens && total_tokens < min_tokens - (Math.min(Math.floor(user.gamification.tag_suggestion_approved/2), 2))){
-//                callback({message: "user must have a least 10 tokens to open create discussion", code:401}, null);
-//            }
-//            else
-//            {
+/*        if(total_tokens <  min_tokens && total_tokens < min_tokens - (Math.min(Math.floor(user.gamification.tag_suggestion_approved/2), 2))){
+            callback({message: "user must have a least 10 tokens to open create discussion", code:401}, null);
+        }
+        else
+        {
+
+        }*/
 
         async.waterfall([
 
@@ -217,7 +219,8 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
 
                     // 2. update actions done by user
                     function (cbk1) {
-                        req.gamification_type = "action";
+                        req.gamification_type = "create_action";
+                        req.token_price = common.getGamificationTokenPrice('create_action') > -1 ? common.getGamificationTokenPrice('create_action') : 3;
 
                         // 1. add discussion_id and action_id to the lists in user
                         var new_action = {
@@ -225,7 +228,9 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                             join_date: Date.now()
                         }
 
-                        models.User.update({_id:user_id}, {$addToSet:{actions: new_action}, $set: {"actions_done_by_user.create_object": true}}, cbk1)
+                        models.User.update({_id:user_id}, {$addToSet:{actions: new_action}, $set: {"actions_done_by_user.create_object": true}}, function(err){
+                            cbk1(err);
+                        })
                     },
 
                     function (cbk1) {
