@@ -6,8 +6,8 @@
 <meta name="description" content="<%= fb_description %>" />
 
 <!-- TODO: set correct og type for each page -->
-<meta property="og:type" content="website" />
-<meta property="og:title" content="<%=fb_title%>" />
+<meta property="og:type" content="<%= meta.type || 'website' %>" />
+<meta property="og:title" content="<%= meta.title || fb_title%>" />
 <meta property="og:description" content="<%=fb_description%>" />
 <meta property="og:image" content="<%= fb_image %>" />
 <meta property="og:site_name" content="עורו" />
