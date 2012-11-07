@@ -29,9 +29,11 @@ module.exports = function (app) {
     admin.registerMongooseModel("User", Models.User, null, {
         form:require('./user'),
         list:['username', 'first_name', 'last_name'],
-        filters:['email', 'first_name', 'last_name', 'gender', 'identity_provider'],
-        search:'/__value__/.test(this.first_name)||/__value__/.test(this.last_name)'
+        filters:['email', 'gender', 'identity_provider'],
+        search:'/__value__/.test(this.first_name)',
+        search:'/__value__/.test(this.last_name)',
     });
+
     admin.registerMongooseModel("InformationItem", Models.InformationItem, null, {
         list:['title'],
         order_by:['gui_order'],
