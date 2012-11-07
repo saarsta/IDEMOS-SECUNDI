@@ -193,6 +193,7 @@
 				popupProvider.showOkPopup({ message: 'קרתה תקלה בעת שמירת פריט המידע' });
 			} else {
 				popupProvider.showOkPopup({ message: 'פריט המידע נשמר' });
+                $('.upload-popup').hide();
 			}
 		});
 		event.preventDefault();
