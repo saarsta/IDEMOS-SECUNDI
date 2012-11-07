@@ -21,7 +21,7 @@ function sendFacebookShare(_, title, src, text_preview, callback) {
             return;
         }
         // sanitize text_preview
-        text_preview = text_preview.replace(/(<([^>]+?)>)/ig, "");
+        text_preview = text_preview ? text_preview.replace(/(<([^>]+?)>)/ig, ""):'';
         var link = window.location.protocol + '//' + window.location.hostname + link_obj.link;
         // fix src
         if (src.indexOf("http") == -1) {

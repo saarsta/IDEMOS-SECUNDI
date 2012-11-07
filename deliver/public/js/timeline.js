@@ -1,25 +1,18 @@
 var timeline = {
     map: null,
+    user_position: null,
 	render: function (cid, ctitle, display_id) {
 		console.log('Rendering timeline.');
 
+
         var map = timeline.map;
-        if(!map){
+        if(!$('#cycle_map').is(':empty')){
             var tabsData = {title: ctitle};
             dust.render('cycle_timeline_map_tabs', tabsData, function(err, out){
                 $('.tabs-box').append(out);
-                var user_position = {latitude: null, longitude: null};
-                getUserPosition(user_position, function(){
-                    if(user_position.lng && user_position.lat){
-                        map = googleMap.init_map('cycle_map', new google.maps.LatLng(user_position.lat, user_position.lng));
-                        googleMap.addPlaceMark(user_position);
-                    }else {
-                        user_position.lng = 34.777821;
-                        user_position.lat = 32.066157;
-                        map = googleMap.init_map('cycle_map', new google.maps.LatLng(32.066157, 34.777821));
-                        googleMap.addPlaceMark(user_position);
-                    }
-                });
+                var default_lng = 34.777821;
+                var default_lat = 32.066157;
+                map = googleMap.init_map('cycle_map', new google.maps.LatLng(default_lat, default_lng));
             });
         }
 
@@ -323,6 +316,21 @@ var timeline = {
                         } else {
                             $('.timeline_tab').removeClass('selected');
                             $('.map_tab').append($("#timeline-second-part"));
+                            var user_position = timeline.user_position;
+                            if(!user_position){
+                                user_position = {lng: null, lat: null};
+                                getUserPosition(user_position, function(){
+                                    if(user_position.lng && user_position.lat){
+                                        googleMap.addPlaceMark(user_position);
+                                    }else {
+                                        user_position.lng = 34.777821;
+                                        user_position.lat = 32.066157;
+                                        googleMap.addPlaceMark(user_position);
+                                    }
+                                    timeline.user_position = user_position;
+                                });
+                            }
+
                         }
                         $(this).addClass('selected');
                         $('#tabs_cycle_timeline').toggle();

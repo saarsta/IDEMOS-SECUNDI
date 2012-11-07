@@ -27,11 +27,11 @@ var asArray = function (arg) {
 
 var ActionResource = module.exports = common.GamificationMongooseResource.extend({
     init:function () {
-        this._super(models.Action, null, 0);
+        this._super(models.Action, 'create_action', common.getGamificationTokenPrice('create_action') > -1 ? common.getGamificationTokenPrice('create_action') : 3);
         this.allowed_methods = ['get', 'post', 'put'];
         this.filtering = {
             subject_id: null,
-            cycle_id:null,
+            'cycle_id.cycle': null,
             is_approved:null,
             grade:null,
             num_of_going:null,
@@ -91,34 +91,13 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                 action.participants_count = action.users.length;
                 action.is_going = req.user && _.any(action.going_users, function(going_user){return going_user.user_id + "" == req.user._id + ""});
 
-                models.Cycle.findById(action.cycle_id[0].cycle, {title: 1}, function(err, cycle){
+                models.Cycle.findById(action.cycle_id[0].cycle + "", {title: 1}, function(err, cycle){
                     action.cycle_title = cycle && cycle.title;
                     itr_cbk();
                 })
             }, function(err){
                 callback(err,response);
             });
-
-
-
-
-            // TODO i need to fix it for my uru
-//                _.each(response.objects, function(object){
-//                    object.is_going = false;
-//                    if(req.user){
-//                        var user_id = req.user._id;
-//                        if(_.any(object.going_users, function(user){ user.user_id = user_id;})){
-//                            object.is_going = true;
-//                            models.Join.findOne({action_id: object._id, user_id: user_id}, function(err, join){
-//                                if(!err)
-//                                    object.join_id = join._id;
-//                            })
-//                        }
-//                    }
-//                });
-
-
-//            callback(err, response);
         });
     },
 
@@ -142,14 +121,16 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
             info_item.save(itr_cbk());
         };
 
-        var min_tokens = common.getGamificationTokenPrice('create_action') > -1 ? common.getGamificationTokenPrice('create_action') : 10;
-//            var total_tokens = user.tokens + user.num_of_extra_tokens;
+        //var min_tokens = common.getGamificationTokenPrice('create_action') > -1 ? common.getGamificationTokenPrice('create_action') : 10;
+        //var total_tokens = user.tokens + user.num_of_extra_tokens;
 
-//            if(total_tokens <  min_tokens && total_tokens < min_tokens - (Math.min(Math.floor(user.gamification.tag_suggestion_approved/2), 2))){
-//                callback({message: "user must have a least 10 tokens to open create discussion", code:401}, null);
-//            }
-//            else
-//            {
+/*        if(total_tokens <  min_tokens && total_tokens < min_tokens - (Math.min(Math.floor(user.gamification.tag_suggestion_approved/2), 2))){
+            callback({message: "user must have a least 10 tokens to open create discussion", code:401}, null);
+        }
+        else
+        {
+
+        }*/
 
         async.waterfall([
 
@@ -238,7 +219,8 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
 
                     // 2. update actions done by user
                     function (cbk1) {
-                        req.gamification_type = "action";
+                        req.gamification_type = "create_action";
+                        req.token_price = common.getGamificationTokenPrice('create_action') > -1 ? common.getGamificationTokenPrice('create_action') : 3;
 
                         // 1. add discussion_id and action_id to the lists in user
                         var new_action = {
@@ -246,7 +228,9 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                             join_date: Date.now()
                         }
 
-                        models.User.update({_id:user_id}, {$addToSet:{actions: new_action}, $set: {"actions_done_by_user.create_object": true}}, cbk1)
+                        models.User.update({_id:user_id}, {$addToSet:{actions: new_action}, $set: {"actions_done_by_user.create_object": true}}, function(err){
+                            cbk1(err);
+                        })
                     },
 
                     function (cbk1) {

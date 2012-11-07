@@ -7,22 +7,20 @@ $(document).ready(function () {
     var search_term = "";
     var sections = ['information_items', 'discussions', 'cycles', 'actions', 'articles'];
     var selected_tab = null;
+    var current_section = typeof(window.current_section) == 'undefined' || window.current_section == null ? -1 : window.current_section;
 
     $('.search-input').live("submit",function () {
-        var current_section = typeof(window.current_section) == 'undefined' || window.current_section == null ? -1 : window.current_section;
         if (current_section >= 0) {
             search_term = $(this).find(".search_term").val();
-            if(search_term!=""){
-                displaySearchResults();
-            }
+            displaySearchResults();
+
             return false;
         }
         else
-            return false;
+            return true;
     });
 
     $('.tag-search').live("click",function () {
-        var current_section = typeof(window.current_section) == 'undefined' || window.current_section == null ? -1 : window.current_section;
         if (current_section >= 0) {
             search_term = $(this).text();
             displaySearchResults();
@@ -35,12 +33,15 @@ $(document).ready(function () {
     function displaySearchResults() {
 
         var pageIndexByType = {};
-
+        if($("body").hasClass('search-active')){
+            $('.search-result-box').remove();
+            $("body").removeClass('search-active');
+        }
         db_functions.getItemsCountByTagName(search_term, function (err, data) {
             var createTabs = function () {
                 $(".search-result-box .tabs").tabs({
-                    selected:selected_tab,
-                    select:function(event,ui){
+                    selected: selected_tab,
+                    select: function(event,ui){
                         selected_tab = ui.index;
                         populateItems(sections[ui.index], pageIndexByType[sections[ui.index]] || 0);
                     }
@@ -85,7 +86,7 @@ $(document).ready(function () {
             current_section_count[2] = data.cycles_count;
             current_section_count[3] = data.actions_count;
             current_section_count[4] = data.blogs_count;
-            if (current_section && current_section_count[current_section] > 0) {
+            if (current_section /*&& current_section_count[current_section] > 0*//* && current_section != 0*/) {
                 selected_tab = current_section;
             }
             else {
@@ -93,7 +94,7 @@ $(document).ready(function () {
             }
             dust.render('search_results', data, function (err, out) {
 
-                $("body").addClass("search-ative");
+                $("body").addClass("search-active");
                 $(".search-box").before(out);
                 $('.search-result-box .close').on('click', hideSearchResults);
 
@@ -105,6 +106,7 @@ $(document).ready(function () {
                         section:type,
                         count:new Array(Math.ceil(count/3))
                     };
+                    showEmpty = true;
                     if (count > 0) {
                         showEmpty = false;// fix bug 442 - hide empty search results string when not empty
                         dust.render('search_section', section_data, function (err, out) {
@@ -131,18 +133,16 @@ $(document).ready(function () {
                                     populateItems(type,0);
                                 }
                             }
-                            createTabs();
                         });
                     }
                     else if (showEmpty)// fix bug 442 - hide empty search results string when not empty
                     {
                         dust.render('search_section_empty', section_data, function (err, out) {
                             $(".tabs").append(out);
-                            createTabs();
                         });
                     }
                 });
-
+                createTabs();
             });
         });
         window.location.hash="search";
@@ -150,7 +150,7 @@ $(document).ready(function () {
 
     function hideSearchResults() {
         $('.search-result-box').hide();
-        $("body").removeClass("search-ative");
+        $("body").removeClass("search-active");
         return false;
 
     }
@@ -172,9 +172,9 @@ $(document).ready(function () {
     $(".tab-slide-cycles .slides-one .one").live('click', function () {
         window.location.replace("/cycles/" + $(this).attr("item_id"));
     });
+
     $("#search_term").blur(function () {
         setTimeout("$('#search_suggest').hide()", 200);
-
     });
 
     $("#search_suggest").on("click", "li", function () {
@@ -221,11 +221,10 @@ $(document).ready(function () {
             $("#search_suggest").hide();
 
         }
-
     }
 
-        search_term = $("#search_term").val()
-        if (search_term)
-            displaySearchResults();
+    search_term = $("#search_term").val()
+    if (search_term)
+        displaySearchResults();
 
 });

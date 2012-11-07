@@ -3514,11 +3514,11 @@ body
     border-left: 1px solid #cac9c9;
 }
 /*---------------------------*/
-body.search-ative
+body.search-active
 {
     background: url(../images/search-active-bg.png) 0 0 repeat-x;
 }
-body.search-ative #header
+body.search-active #header
 {
     height: 612px;
 }

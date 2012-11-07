@@ -18,7 +18,15 @@
         <div id="content" class="cf">
             <div class="right-add-offer">
                 <div id="cycle" class="add-offer add-offer-small">
-                    <h2><span class="arrow"> <%= cycle.subject_name %></span> <%= cycle.title %></h2>
+                    <h2 class="cycle-title"><span class="arrow"> <%= cycle.subject_name %></span>
+                        <br>
+                        <%= cycle.title %>
+                    </h2>
+
+                        <a class="share-btn" data-img_src="{image_field.url}" data-text_preview="{text_field_preview}" data-title="{title}" rel="/cycles/{_id}" href="/facebookShare?link=/cycles/{_id}"><span>שתף</span></a>
+
+                        <a class="green-btn social-on-click" data-text_preview="<%=cycle.text_field_preview%>" title="לקידום הנושא ולקבלת עדכונים על המשך הפעילות לחצו כאן"  data-title="<%=cycle.title%>"data-img_src="<%= cycle.image_field && cycle.image_field.url %>" data-rel="/cycles/<%= cycle.id %>" href="javascript:void(0)"> </a>
+
                     <div class="text-box cf">
                     <div class="cycle-content">
                     <% if (cycle.image_field) { %>
@@ -31,26 +39,35 @@
                                 <span></span>
                             </div>
                     <% } %>
+
                         <h3><%- cycle.discussion_title %></h3>
                         <p> <%- cycle.text_field %>   </p>
                         </div>
                         <p id="read_more"> <a class="read-more" href="javascript:void(0);"> קרא עוד </a> </p> </div>
-                    <div class="add-offer-bottom cf">
+                    <div class="add-offer-bottom ">
+                        <div class="right">
+                            <div class="followers">
+                                <p id="followers_count" ><div class="blue-box"> <%= cycle.followers_count %>  </div>
+                                עוקבים אחרי מעגל תנופה זה
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="add-offer-bottom ">
                         <div class="right">
                             <div class="tags">
-                            <!--
-                                <div class="info">
-                                    <span class="talks">33</span>
-                                    <span class="watched">151</span>
-                                </div>
-                                -->
+                                תגיות:
+                                <!--
+                                    <div class="info">
+                                        <span class="talks">33</span>
+                                        <span class="watched">151</span>
+                                    </div>
+                                    -->
                                 <% if (cycle.tags) for (var c = 0; c<cycle.tags.length; c++) { %>
-                                      <a href="?tag_name=<%=cycle.tags[c]%>"> <%=cycle.tags[c] %></a>
+                                <a href="?tag_name=<%=cycle.tags[c]%>"> <%=cycle.tags[c] %></a>
                                 <% }%>
                             </div>
                         </div>
-                         <a class="fraction-btn share" data-title="<%= cycle.title %>" data-text_preview="<%= cycle.text_field_preview%>" data-img_src="<%= cycle.image_field && cycle.image_field.url %>" rel="/cycles/<%= cycle.id %>" href="/facebookShare?link=/cycles/<%= cycle.id %>" target="_blank">שתף</a>
-
                     </div>
                 </div>
                 <div class="popular-comments cf">
@@ -67,7 +84,7 @@
 
                 <%if(cycle.id=="508026e8cb2276020000001f"){%>
 
-                <a target="_blank" href="http://boker.nana10.co.il/"><img style="float: right;margin: 10px 0 10px 10px" src="../../images/Orly&Guy_logo.png" > </a>
+                <a target="_blank" href="https://www.facebook.com/pages/%D7%90%D7%95%D7%A8%D7%9C%D7%99-%D7%95%D7%92%D7%99%D7%90/177621142281988"><img style="float: right;margin: 10px 0 10px 10px" src="../../images/Orly&Guy_logo.png" > </a>
                 <h3 style="line-height: 20px;
 color: #3B63EF;
 margin: 0;
@@ -96,12 +113,7 @@ margin-top: 15px;">
             </div>
         </div>
     </div>
-    <div class="blue-bar">
-        <div class="extra">
-            <a class="green-btn social-on-click" title="לקידום הנושא ולקבלת עדכונים על המשך הפעילות לחצו כאן"  data-title="<%=cycle.title%>"data-img_src="<%= cycle.image_field && cycle.image_field.url %>" data-rel="/cycles/<%= cycle.id %>" href="javascript:void(0)"><%= cycle.is_user_follower_of_cycle ? "הפסק לעקוב" : "אני בעד"%> </a>
-            <p id="followers_count" >מספר העוקבים אחרי מעגל תנופה זה: <strong><%= cycle.followers_count %></strong></p>
-        </div>
-    </div>
+
     <div class="followers-box cycle">
         <div class="extra holds_the_timeline">
             <div class="tabs-box">
@@ -180,14 +192,31 @@ margin-top: 15px;">
 
 
 <script type="text/javascript">
-    $(document).ready(function () {
-
+var current_section=2;
+    var _main=$(document).ready( function () {
         jQuery.easing.def = "easeOutCirc";
-            var my_id = "<%=user_logged ? user._id : ''%>";
-            var cycle_id = "<%=cycle.id%>";
-            var cycle_title = "<%=cycle.title%>";
-            var user = "<%=cycle.id%>";
+        var my_id = "<%=user_logged ? user._id : ''%>";
+        var cycle_id = "<%=cycle.id%>";
 
+        var cycle_title = "<%=cycle.title%>";
+        var user = "<%=cycle.id%>";
+        //set mail subject for social popup
+
+        $(".<%= cycle.is_user_follower_of_cycle ? "share-btn":"green-btn" %>").show();
+
+        window.vars={};
+        window.vars.object_id = "<%=cycle.id%>";
+        window.vars.mail_subject = "הצטרפתי לקידום הפעילות בנושא "
+                + cycle_title
+                + ". מה איתך?"
+        window.vars.mail_subject = encodeURIComponent(window.vars.mail_subject);
+        window.vars.mail_body = "החלטתי לקחת חלק בפעילות של תנועת עורו בתחום"
+                + " "
+                + cycle_title
+                + ". גם לך חשוב לקדם את הנושא? אם כן, אפשר לקבל פרטים נוספים, להצטרף ולתמוך באתר עורו. אשמח לראות אותך שם! "
+                + "http://www.uru.org.il/cycles/"
+                + cycle_id;
+        window.vars.mail_body = encodeURIComponent(window.vars.mail_body);
 
         <%
         if (user_logged&&proxy) { %>
@@ -238,34 +267,36 @@ margin-top: 15px;">
 
             $('.green-btn').click(function(){
                 var button = $(this);
-                button.text('...');
+                //button.text('...');
 
                 db_functions.joinToCycleFollowers(cycle_id, function(err, result){
-                    button.text(result.is_follower ? "הפסק לעקוב" : "אני בעד");
+                    //  button.text(result.is_follower ? "הפסק לעקוב" : "אני בעד");
+                    //button.text('');
                     $('#followers_count strong').text(result.followers_count);
-                    if(result.is_follower){
-                        //set mail subject for social popup
+                    $(".green-btn").hide();
+                    $(".share-btn").show();
 
-                        var mail_subject = "הצטרפתי לקידום הפעילות בנושא "
-                                + cycle_title
-                                + ". מה איתך?"
-                        mail_subject = encodeURIComponent(mail_subject);
-                        var mail_body = "החלטתי לקחת חלק בפעילות של תנועת עורו בתחום"
-                                + " "
-                                + cycle_title
-                                + ". גם לך חשוב לקדם את הנושא? אם כן, אפשר לקבל פרטים נוספים, להצטרף ולתמוך באתר עורו. אשמח לראות אותך שם! "
-                                + "http://www.uru.org.il/cycles/" + cycle_id;
+                   // if(result.is_follower){
+                    share() ;
 
-                        setTimeout(function(){
-                            $('#box-share,#screen').show();
-                            $('#social-popup-mail').attr("href", "mailto:?subject=" + mail_subject + "&body=" + mail_body);
-                            $('#close').click(function(){
-                                $('#box-share,#screen').hide();
-                            })
-                        }, 100);
-                    }
+                   // }
                 })
             });
+
+            $('.share-btn').click(share);
+
+            function share()
+            {
+                setTimeout(function(){
+                    $('#box-share,#screen').show();
+                    //$('#social-popup-mail').attr("href", "mailto:?subject=" + mail_subject + "&body=" + mail_body);
+                    $('#close').click(function(){
+                        $('#box-share,#screen').hide();
+                    })
+                }, 100);
+                return false;
+            }
+
             db_functions.getCycleShoppingCart(cycle_id, function ( err,data) {
 
                     $.each(data.objects, function (index, item) {
@@ -317,29 +348,30 @@ margin-top: 15px;">
            	var followersPage=0;
            	getFollowers();
 
-            function   getFollowers()
+            function getFollowers()
             {
-
                  db_functions.getCylceFollowers(cycle_id, followersPage,function ( data) {
-                    followersPage++;
-                   if(data.meta.total_count<14) {
-                         killScroll = true;
+                     followersPage++;
+                     if(data.meta.total_count < 21) {
+                        killScroll = true;
+                     } else {
+                        killScroll = false;
                      }
-                    dust.renderArray('cycle_follower', data.objects, function (err, out) {
+                     dust.renderArray('cycle_follower', data.objects, function (err, out) {
                         $('#followers').append(out);
-
-                    });
+                     });
                 });
             }
             	// Detect that we are at bottom of page, and call autoloading function
             $(window).scroll(function(){
                 if  ($(window).scrollTop()+100 >= ($(document).height() - ($(window).height()))){
-                    if (killScroll == false) { // - Keeps the loader from fetching more than once.
-                        //killScroll = true; // - Set killScroll to true, to make sure we do not trigger this code again before it's done running.
-                         getFollowers();
+                    if(killScroll == false) { // - Keeps the loader from fetching more than once.
+                        killScroll = true; // - Set killScroll to true, to make sure we do not trigger this code again before it's done running.
+                        getFollowers();
                     }
                 }
             });
+
             $('#read_more').click(function () {
                 $(".cycle-content").height("auto");
                  $(this).hide();
@@ -467,7 +499,7 @@ margin-top: 15px;">
         //click on the update green icon goes to action
         $('.holds_the_timeline').on("click",'.green-icon', function(e){
             e.preventDefault();
-            var update_id = $(this).find(".type-one").attr("item-id");
+            var update_id = $(this).find(".type-two").attr("item-id");
             window.location.replace("/updates/" + update_id);
         });
 

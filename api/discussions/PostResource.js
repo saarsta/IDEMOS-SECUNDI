@@ -169,8 +169,8 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                 fields.first_name = user.first_name;
                 fields.last_name = user.last_name;
                 fields.avatar = user.avatar;
-                if(fields.ref_to_post_id == "null" || fields.ref_to_post_id == "undefined")
-                    fields.ref_to_post_id = null;
+                if(!fields.ref_to_post_id || fields.ref_to_post_id == "null" || fields.ref_to_post_id == "undefined")
+                    delete fields.ref_to_post_id;
 
                 // TODO add better sanitizer
              //   fields.text = sanitizer.sanitize(fields.text);
@@ -186,8 +186,10 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                 post_id = _post_object._id;
                 post_object = _post_object;
                 console.log('debugging waterfall 2');
-                discussion_id = post_object.discussion_id;
-                post_object.save(function(err,result,num)
+                discussion_id = post_object.discussion_id + "";
+                post_object.creator_id + "";
+
+                post_object.save(function(err, result, num)
                 {
                     cbk(err,result);
                 });
@@ -252,7 +254,9 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
 
                     // update actions done by user
                     function(cbk2){
-                        models.User.update({_id:user.id},{$set: {"actions_done_by_user.post_on_object": true}}, cbk2);
+                        models.User.update({_id:user.id},{$set: {"actions_done_by_user.post_on_object": true}}, function(err){
+                            cbk2(err);
+                        });
                     },
 
 

@@ -8,6 +8,7 @@
 
 var jest = require('jest'),
     util = require('util'),
+    og_action = require('../../og/og.js').doAction,
     models = require('../../models'),
     common = require('../common.js'),
     async = require('async'),
@@ -168,6 +169,20 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
                 models.Action.update({_id: action_id},{$addToSet: {going_users: {user_id: req.user.id, join_date: Date.now()}},$set:{ num_of_going: g_action_obj.going_users.length + 1}}, function(err, result){
                     cbk(err, obj);
                 });
+            },
+
+            // publish to facebook
+            function(args,cbk) {
+                og_action({
+                    action: 'go',
+                    object_name:'action',
+                    object_url : '/actions/' + action_id,
+                    callback_url:'/actions/' + action_id,
+                    fid : req.user.facebook_id,
+                    access_token: req.user.access_token,
+                    user: req.user
+                });
+                cbk();
             }
         ],function(err, obj){
             if(!err){

@@ -1,34 +1,15 @@
 <a href="/" id="logo"></a>
 <ul id="main-menu">
     <li class="menu_item about_item">
-        <a href="/about">
-
-אודות עורו
-        </a>
+        <a href="/about">אודות עורו</a>
         <ul>
-            <%
-            var links =  footer_links();
-            var pages = ['about', 'team', 'qa', 'founders'];
-
-            links.forEach(function(menu){
-            var page =  pages.indexOf(menu.tab) === -1 ? '/page/' : '/';
-            if(menu.is_on_top)  { %>
-                <li><a href="<%= menu.link ? menu.link : page + menu.tab %>">
-                    <%= menu.name %>
-                </a></li>
-            <% }}) %>
-
-
+            <% footer_links('is_on_top').forEach(function(menu){ %>
+                <li><a href="<%= menu.link %>"><%= menu.name %></a></li>
+            <% }) %>
         </ul>
     </li>
     <li class="menu_item"><a href="/information_items">מאגר מידע</a></li>
     <li class="menu_item"><a href="/discussions">דיונים</a></li>
-    <li class="menu_item gray_and_soon"><a href="javascript:void(0);">מעגלי תנופה</a></li>
-    <li class="menu_item"><a class="action_comming_soon" href="javascript:void(0)">פעולות ואירועים</a></li>
-   <!-- <li class="menu_item menu-elections-item">
-        <a href="/elections" class="menu-elections">
-        בחירות
-        </a>
-    </li>-->
-
+    <li class="menu_item"><a href="/cycles">מעגלי תנופה</a></li>
+    <li class="menu_item"><a href="/actions">פעולות ואירועים</a></li>
 </ul>

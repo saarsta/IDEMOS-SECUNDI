@@ -54,7 +54,7 @@
 
 <% if (!image_upload.disabled) { %>
 <script>
-    (function () {
+    $(document).ready(function () {
         var image_box = $('.img-box #upload_image_container_<%=id%>');
         var input = $('.img-box input');
 
@@ -122,7 +122,7 @@
         <% if (image_upload.current_value) { %>
             setImageUrl('<%=image_upload.current_value%>');
         <% } %>
-    })();
+    });
 </script>
 <% } %>
 <%

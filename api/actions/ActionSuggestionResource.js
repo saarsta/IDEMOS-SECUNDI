@@ -239,7 +239,9 @@ ActionSuggestionResource = module.exports = common.GamificationMongooseResource.
 
                     // update actions done by user
                     function(cbk1){
-                        models.User.update({_id:user._id},{$set: {"actions_done_by_user.suggestion_on_object": true}}, cbk1);
+                        models.User.update({_id:user._id},{$set: {"actions_done_by_user.suggestion_on_object": true}}, function(err){
+                            cbk1(err);
+                        });
                     },
 
                     //set notifications for users that i represent (proxy)

@@ -95,7 +95,6 @@ module.exports = AdminForm.extend({
 //            this.fields['action: ' + action.title] = new j_forms.fields.BooleanField();
 //            this.fieldsets[0].fields.push('action: ' + action.title);
 //        })
-
     },
 
     actual_save : function(callback)
@@ -192,16 +191,6 @@ module.exports = AdminForm.extend({
         }
 
 
-        /*if((!this.data.is_hidden && cycle.is_hidden) && (this.data.is_hidden && !cycle.is_hidden)){
-            //if condition true is_hidden was changed and "cycle.is_hidden" is what was before the change
-            var err_string = "";
-            models.Action.find({cycle_id: cycle._id}, function(err, actions){
-                _.each(actions, function(action){ if(action.is_hidden == cycle.is_hidden){
-                    err_string += action.title;
-                    err_string += action.is_hidden ? " is hidden" : " is not hidden";
-                }})
-            })
-        }*/
 
         // SAVE TIMELINE STUFF TO DB
 
@@ -222,8 +211,26 @@ module.exports = AdminForm.extend({
                     base.call(self,callback);
             });
         }else{
-            this._super(callback);
-        }
+            var is_cycle_hidden_when_save = this.data.is_hidden ? true : false;
 
+            //check if is_hidden flag was changed to true
+            if((is_cycle_hidden_when_save && !cycle.is_hidden)){
+//                if cycle is now hidden
+                models.Action.find({"cycle_id.cycle": cycle._id}, function(err, actions){
+                    if (err)
+                        callback(err);
+                    else
+                       if( _.any(actions, function(action){ return action.is_hidden != is_cycle_hidden_when_save })){
+                           console.error("trying to save cycle as hidden when one of the action is not hidden");
+//                           var err = new Error();
+                           self.fields['title'] =
+
+                           callback("trying to save cycle as hidden when one of the action is not hidden");
+                       }else
+                           base.call(self,callback);
+                })
+            }else
+                this._super(callback);
+        }
     }
 });

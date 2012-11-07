@@ -519,6 +519,8 @@ body {
 }
 
 .user-box a.name{
+
+    font-family: arial;
     text-decoration: none;
     float: left;
     font-weight: bold;
@@ -654,6 +656,7 @@ body {
     width: 30%;
     font-weight: bold;
     border: 0;
+    font-family: 'AdumaFOTRegular';
 }
 .user-info-box .user-box-top .messages .left{
 color: #ff00af;
@@ -688,7 +691,9 @@ color: #ff00af;
 }
 
 .user-info-box .user-box-bottom div.logout{
-   margin-right: 40px;;
+    box-shadow: 1px 1px 2px #888;
+
+    margin-right: 40px;;
 }
 .user-info-box .user-box-bottom div.logout p{
     padding: 5px 10px 0 10px;
@@ -696,7 +701,7 @@ color: #ff00af;
 }
 /*-----------------------------*/
 .search-box {
-    padding: 26px 0;
+    padding: 18px 0;
     height: 31px;
     clear: both;
     /*background: url(../images/search-icon.png) 100% 19px no-repeat;*/
@@ -711,34 +716,35 @@ color: #ff00af;
 
 .search-box input[type=text] {
     border: 1px solid #b7b6b6;
-    border-radius: 2px;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
 
     height: 25px;
     width: 330px;
     margin-left: 5px;
     padding: 3px 10px 2px;
-    color: #fff;
+    color: #505052;
     font: bold 15px/30px Arial;
     float: right;
     background-color: #f5f5f5;
 }
 
+.big-head .search-box {
+   margin-top: 8px;
+}
+
 .big-head .search-box input[type=text] {
 
-    width: 330px;
-    background-color: #f5f5f5;
-    border-radius: 2px;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
+
+
 }
 
 .search-box input[type=submit] {
     float: right;
     background: transparent url(../images/URU_search_btn_reg.png) -71px 0 no-repeat;
     border: 0;
-
+     margin-top: -1px;
     width: 34px;
     height: 38px;
     color: #ffffff;
@@ -752,7 +758,7 @@ color: #ff00af;
 }
 
 .search-box input[type=submit]:active {
-    background: transparent url(../images/URU_search_btn_reg.png) 0 0 no-repeat;
+    background: transparent url(../images/URU_search_btn_reg.png) -1px 0 no-repeat;
 }
 
 /*------------------------*/
@@ -782,9 +788,13 @@ color: #ff00af;
     margin: -36px 0 0 -36px;
 }
 
+.main-video .side-title {
+    font:normal 30px/35px 'AdumaFOTRegular';
+    margin-bottom: 5px;
+}
 .main-video .side-text {
-    height: 137px;
-    margin-bottom: 35px;
+    font:normal 22px/30px 'AdumaFOTRegular';
+    margin-bottom: 42px;
 }
 
 .main-video .side-button {
@@ -807,10 +817,16 @@ color: #ff00af;
 }
 
 #content h2 {
-    border-top: 6px solid #d6dbde;
+
     color: #50504f;
-    font: normal 24px/49px 'AdumaFOTMedium';
-    margin: 0;
+    font: normal 24px/35px 'AdumaFOTMedium';
+    margin: 10px 28px 15px 28px;
+    padding: 0 0 15px 0;
+    border-bottom: solid 1px #ebebeb;
+}
+
+#content h2.cycle-title{
+    width: 465px;
 }
 
 #content .right-col {
@@ -863,6 +879,14 @@ color: #ff00af;
     color: #50504f;
     font: normal 13px/17px ARial;
     height: 34px;
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
+.news-list .one .item_text_preview p {
+    color: #50504f;
+    font: normal 13px/17px ARial;
+    height: 54px;
     overflow: hidden;
     margin-bottom: 30px;
 }
@@ -1607,12 +1631,13 @@ color: #ff00af;
 
 .discussion-main .tags-box {
     padding: 9px 0;
-    height: 15px;
+    height: 18px;
 }
 
 .discussion-main .tags-box .add-tag {
     float: right;
     padding-left: 15px;
+    position: relative;
 }
 
 .discussion-main .tags-box .add-tag .input {
@@ -1620,9 +1645,10 @@ color: #ff00af;
     padding: 0 7px;
     width: 234px;
     float: right;
-    margin-left: 5px;
+    margin-left: 8px;
     background: #fff;
     border-radius: 3px;
+    height: 18px;
 }
 
 .discussion-main .tags-box .add-tag .input label {
@@ -1639,7 +1665,7 @@ color: #ff00af;
     color: black;
     font: normal 11px/13px Arial;
     padding: 0;
-    height: 13px;
+    height: 18px;
     border: none;
     background: #fff;
 }
@@ -1655,7 +1681,8 @@ color: #ff00af;
     float: right;
     border: none;
     border-radius: 3px;
-    height: 15px;
+    height: 18px;
+    margin-top: 1px;
 }
 
 .discussion-main .tags-box .tags-list span {
@@ -1664,8 +1691,10 @@ color: #ff00af;
     color: #fff;
     background: #b7b6b6;
     padding: 0 4px;
-    font: normal 11px/15px Arial;
+    font: normal 11px/18px Arial;
     border-radius: 3px;
+    height: 18px;
+    margin-top: 1px;
 }
 
 .discussion-main .bottom {
@@ -2240,6 +2269,7 @@ color: #ff00af;
     width: 713px;
     background: #fdfdfd;
     margin-bottom: 3px;
+    border-top: 6px solid #D6DBDE
 }
 
 .add-offer h2 {
@@ -2256,9 +2286,12 @@ color: #ff00af;
 
 .update h2 .arrow,
 .add-offer h2 .arrow {
-    padding-left: 8px;
+    padding-left: 13px;
     margin-left: 8px;
     background: url(../images/arrow-left.png) 0 40% no-repeat;
+    color: #3b63ef;
+    font:   normal 21px/30px 'AdumaFOTMedium'  ;
+
 }
 
 .add-offer .floatRight {
@@ -2337,7 +2370,7 @@ color: #ff00af;
 .add-offer .text-box p {
     color: #7f7f7e;
     font: normal 13px/17px Arial;
-    margin-bottom: 21px;
+    margin-bottom: 12px;
 }
 
 .add-offer .text-box a {
@@ -4220,7 +4253,9 @@ h2 small {
     padding-top: 27px;
 }
 
-.one-box .left a {
+.one-box .left a,
+.add-offer a.share-btn
+{
     display: block;
     background: #757d7e url(../images/search-submit.png) 0 0 repeat-x;
     border: 1px solid #757d7e;
@@ -4325,13 +4360,7 @@ h2 small {
 }
 
 /*---------------------------*/
-body.search-ative {
-    background: #ebebeb url(../images/search-active-bg.png) 0 0 repeat-x;
-}
 
-body.search-ative #header {
-    height: 612px;
-}
 
 .search-result-box {
     height: 347px;
@@ -4376,6 +4405,9 @@ body.search-ative #header {
     text-decoration: none;
 }
 
+.search-result-box .tabs-nav .ui-state-active a{
+    color: #3ee84a;
+}
 .search-result-box .tabs-nav li a:hover,
 .search-result-box .tabs-nav li a:active,
 .search-result-box .tabs-nav li.ui-tabs-selected a {
@@ -4512,16 +4544,12 @@ div.action_list::-webkit-scrollbar-button {
 #cycle_map .type-one .popup-text h4 {
 
     color: #3c63ef;
-    font-size: 20px;
-    line-height: 22px;
+    font-size: 18px;
+    line-height: 20px;
     font-family: 'AdumaFOTLight';
-    margin-bottom: 5px;
-    /* saar added this code for ellipse in timeline actoin popup */
     width: 169px;
-    height: 22px;
+    height: 40px;
     overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
 
 }
 
@@ -4547,7 +4575,7 @@ div.action_list::-webkit-scrollbar-button {
 }
 
 #cycle_map .popup-text p.going_num{
-    margin-top: 17px;
+    margin-top: 4px;
     font-weight: bold;
     font-size: 13px;
 }
@@ -5891,6 +5919,7 @@ div.action_list::-webkit-scrollbar-button {
 }
 
 .add-offer-small {
+    position: relative;
     width: 642px;
     margin-bottom: 20px;
 }
@@ -5940,10 +5969,6 @@ div.action_list::-webkit-scrollbar-button {
     padding: 0;
 }
 
-.search-box input:focus {
-    background: #b9c9fd;
-    color: #505052;
-}
 
 #uplod_image_placeholder {
 
@@ -5958,7 +5983,7 @@ div.action_list::-webkit-scrollbar-button {
 .qq-uploader {
     position: relative;
     width: 100%;
-    height: 100%;
+    height: 74px;
 }
 
 .qq-upload-button {
@@ -6074,12 +6099,12 @@ div.action_list::-webkit-scrollbar-button {
     color: #50504f;
     font: bold 16px/19px Arial;
     margin-bottom: 5px;
-    padding-top: 8px;
+
 }
 
 .add-offer-small .add-offer-bottom .right {
     float: right;
-    width: 468px;
+     width: 100%;
 }
 
 .add-offer-small .add-offer-bottom {
@@ -6087,11 +6112,44 @@ div.action_list::-webkit-scrollbar-button {
 }
 
 .add-offer-small .add-offer-bottom .right .tags {
+
+    padding: 0 20px 22px;
+    margin: 0;
+    background-image: url(../images/Cycles_Gray.Label_Icon.gif);
+    background-repeat: no-repeat;
+    background-position: 570px 0;
+    color: #b4b9bb;
+    font-size: 12px;
+}
+.add-offer-small .add-offer-bottom .right .tags a{
+color: #5578f1;
+    background-color: transparent;
+}
+
+.add-offer-small .add-offer-bottom .right .followers {
     border-top: 1px solid #ebebeb;
     border-bottom: 1px solid #ebebeb;
     padding: 11px 0 12px;
     margin-bottom: 22px;
+    color:#656565;
 }
+.add-offer-small .add-offer-bottom .right .followers .blue-box {
+    background-color: #3b63ef;
+    color: #fff;
+    height: 23px;
+    height: 23px;
+    padding: 0 3px;
+    margin-left: 5px;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    display: inline-block;
+    font-size: 20px;
+    padding-top: 2px;
+    text-align: center;
+}
+
+
 
 a.fraction-btn {
     float: left;
@@ -6364,21 +6422,32 @@ a.fraction-btn {
     font-family: 'AdumaFOTRegular';
 }
 
-.blue-bar a.green-btn {
-    float: left;
-    width: 218px;
-    height: 35px;
-    border: 1px solid #2eab35;
+.add-offer  a.green-btn {
+    position: absolute;
+    left:30px;
+    top:39px;
+    width: 111px;
+    height: 42px;
+     display: none;
     border-radius: 2px;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
-    background: #2fd43b url(../images/green-btn-border.png) 0 0 repeat-x;
+    background: transparent url(../images/Cycles_Pro_btn_sprite.png) -225px 0 no-repeat;
     text-decoration: none;
     text-align: center;
     color: #ffffff;
     font-family: 'AdumaFOTRegular';
     font-size: 20px;
     line-height: 35px;
+}
+
+.add-offer  a.green-btn:hover
+{
+    background: url(../images/Cycles_Pro_btn_sprite.png) -113px 0 no-repeat;
+}
+.add-offer  a.green-btn:active
+{
+    background: url(../images/Cycles_Pro_btn_sprite.png) -1px 0 no-repeat;
 }
 
 /*------------------------*/
@@ -6662,12 +6731,14 @@ a.fraction-btn {
     height: 115px;
     overflow: hidden;
     cursor: pointer;
+    height: 95px;
 }
 
 .followers-diagram .event .type-two .popup-text h5 {
     color: #50504f;
     font: bold 13px/17px Arial;
     margin: 0;
+
 }
 
 .followers-diagram .event .type-two .popup-text .floatRight {
@@ -6944,7 +7015,7 @@ a.fraction-btn {
     font: bold 13px/15px ARial;
     padding-bottom: 5px;
     letter-spacing: -0.4px;
-    min-height: 30px;
+    min-height: 45px;
 }
 
 .followers-ppl .one .date {
@@ -7300,9 +7371,6 @@ a.fraction-btn {
     text-align: center;
 }
 
-body.body-action {
-    background: #EDEDED url(../images/header-bg-three.png) 0 0 repeat-x;
-}
 
 body.body-action .followers-box {
     margin-top: -20px;
@@ -8987,7 +9055,10 @@ a.menu-elections:hover {
     color: #50504F;
 }
 
-.one-box .bottom-plus .left a, .one-box a.green-share {
+.one-box .bottom-plus .left a,
+.one-box a.green-share ,
+.add-offer a.share-btn
+{
     background: #2FD43B url(../images/green-btn-border.png) 0 0 repeat-x;
     border-color: #2EAB35;
     margin: 0;
@@ -9262,7 +9333,7 @@ div.icons img {
     cursor: pointer;
 }
 #cloudsponge{
-    margin-top: 30px;
+    margin: 10px 0;
     display: none;
 
 }
@@ -9341,4 +9412,57 @@ div.icons img {
 
 input[type=url] {
 	direction: ltr;
+}
+
+.tags-box #search_suggestion{
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: 17px;
+    width: 248px;
+    z-index: 10;
+    border: 1px solid #AAA;
+    border-top: none;
+    border-radius: 2px 2px 2px 2px;
+    font: normal 11px/13px Arial;
+    text-align: right;
+}
+
+
+#search_suggestion li {
+    font: normal 12px/15px Arial;
+    padding: 4px 5px;
+    color: black;
+    cursor: pointer;
+}
+
+#search_suggestion li:hover {
+    background-color: #d3d3d3;
+    color: white;
+}
+
+#search_suggestion li.topborder,
+#search_suggestion li:hover.topborder {
+    border-top: 1px solid #AAA;
+    margin-right: 20px;
+    margin-left: 20px;
+    height: 1px;
+    cursor: default;
+    padding: 0;
+}
+
+
+.add-offer a.share-btn  {
+    display: none;
+    position: absolute;
+    left: 29px;
+    top: 44px;
+}
+
+body.search-active {
+    background: #ebebeb url(../images/search-active-bg.png) 0 0 repeat-x;
+}
+
+body.search-active #header {
+    height: 612px;
 }

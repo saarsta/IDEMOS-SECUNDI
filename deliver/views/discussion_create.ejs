@@ -9,6 +9,7 @@
 <head>
     <% include partials/head.ejs %>
     <% include partials/facebook.ejs %>
+    <script src="/js/autocompleteTag.js"></script>
 </head>
 <body>
 <% include partials/body_top.ejs %>
@@ -19,6 +20,7 @@
                <% include partials/failures.ejs %>
 
                <% include partials/tag_search.ejs %>
+
         </div>
         <div id="content" class="cf">
             <div class="discussion-main">
@@ -59,6 +61,9 @@
                                         />
                             </div>
                             <input type="submit" value="הוסף" id="add_tag" />
+                            <ul id="search_suggestion">
+                                <li class="topborder"></li>
+                            </ul>
                         </div>
                         <div class="tags-list">
 
@@ -257,7 +262,7 @@
                                  '<span class="qq-upload-size"></span>' +
                                  '<a class="qq-upload-cancel" href="#">Cancel</a>' +
                                  '<span class="qq-upload-failed-text">Failed</span>' +
-                             '</li>',
+                             '</li>'
 
          });
          $("#request_form").validate({
@@ -390,21 +395,6 @@
 
          $("span.new_tags").live("click", function(){ $(this).remove(); });
          $("div.information_item_link").live("click", function(){   window.location.replace("/information_items/" + $(this).attr('item_id')); });
-
-
-         $("#add_tag").click(   function(){
-               var tag_text =  $("#tag").val();
-               if(tag_text!="")
-               {
-                    var tag_element = $( document.createElement('span') );
-                    tag_element.text(   tag_text);
-                    tag_element.attr("class","new_tags");
-                    $(".tags-list").append(  tag_element)  ;
-                    $("#tag").val("");
-               }
-               return false;
-          });
-
     });
 
    /* $('#collect_information_item_bt').click(function(e){

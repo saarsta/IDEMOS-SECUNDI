@@ -85,9 +85,10 @@
 </html>
 <script type="text/javascript">
 
+    var current_section = 1;
     $(function(){
 
-        var current_section = 1;
+
         var selectedTag = '<%=tag_name ? tag_name : '' %>';
         var user_id = '<%=user_id%>';
         var has_voted = <%=has_voted%>;

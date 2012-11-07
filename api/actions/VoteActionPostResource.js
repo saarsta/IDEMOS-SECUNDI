@@ -56,7 +56,7 @@ var VoteActionPostResource = module.exports = common.GamificationMongooseResourc
                 new_balance = balance + balance_delta;
 
                 if (Math.abs(new_balance) > limit) {
-                    cbk({message:'user already voted for this post', code:401}, null);
+                    cbk({message:'user already voted for this post', code:401});
                 }else if(!vote){
                     fields.user_id = user_id;
                     fields.balance = balance_delta;
@@ -104,14 +104,17 @@ var VoteActionPostResource = module.exports = common.GamificationMongooseResourc
             }
             //final - return updated postAction
         ], function(err, updated_post){
-            if(updated_post){
-                updated_post.voter_balance = new_balance;
+            if(err){
+                callback(err);
+            }else
+                if(updated_post){
+                    updated_post.voter_balance = new_balance;
 
-                // update actions done by user
-                    models.User.update({_id:req.session.user._id},{$set: {"actions_done_by_user.vote_on_object": true}}, function(){
-                        callback(err, updated_post);
-                    });
-                }
+                    // update actions done by user
+                        models.User.update({_id:req.session.user._id},{$set: {"actions_done_by_user.vote_on_object": true}}, function(){
+                            callback(err, updated_post);
+                        });
+                    }
 
         })
     }
