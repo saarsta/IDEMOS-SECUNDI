@@ -190,7 +190,8 @@ module.exports = AdminForm.extend({
             ], itr_cbk)
         }
 
-            
+
+
         // SAVE TIMELINE STUFF TO DB
 
         if(cycle.isNew){
