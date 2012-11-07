@@ -95,7 +95,6 @@ module.exports = AdminForm.extend({
 //            this.fields['action: ' + action.title] = new j_forms.fields.BooleanField();
 //            this.fieldsets[0].fields.push('action: ' + action.title);
 //        })
-
     },
 
     actual_save : function(callback)
@@ -191,10 +190,6 @@ module.exports = AdminForm.extend({
             ], itr_cbk)
         }
 
-
-
-
-
         // SAVE TIMELINE STUFF TO DB
 
         if(cycle.isNew){
@@ -214,18 +209,20 @@ module.exports = AdminForm.extend({
                     base.call(self,callback);
             });
         }else{
-
             var is_cycle_hidden_when_save = this.data.is_hidden ? true : false;
 
             //check if is_hidden flag was changed to true
             if((is_cycle_hidden_when_save && !cycle.is_hidden)){
-                //if cycle is now hidden
+//                if cycle is now hidden
                 models.Action.find({"cycle_id.cycle": cycle._id}, function(err, actions){
                     if (err)
                         callback(err);
                     else
                        if( _.any(actions, function(action){ return action.is_hidden != is_cycle_hidden_when_save })){
                            console.error("trying to save cycle as hidden when one of the action is not hidden");
+//                           var err = new Error();
+                           self.fields['title'] =
+
                            callback("trying to save cycle as hidden when one of the action is not hidden");
                        }else
                            base.call(self,callback);

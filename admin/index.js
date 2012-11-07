@@ -50,7 +50,7 @@ module.exports = function (app) {
         ],
         filters:['created_by', 'status', 'is_hidden', 'is_hot_object']
     });
-    admin.registerMongooseModel("Subject", Models.Subject, null, {list:['name'], order_by:['gui_order'], sortable:'gui_order'});
+    admin.registerMongooseModel("Subject", Models.Subject, null, {order_by:['gui_order'], sortable:'gui_order'});
     admin.registerMongooseModel("Discussion", Models.Discussion, null, {
         list:['title'],
         cloneable:true,
