@@ -19,7 +19,6 @@ module.exports = function (app) {
         return;
     }
 
-
     var admin = mongoose_admin.createAdmin(app, {root:'admin'});
 
     mongoose_admin.loadApi(app);
@@ -30,7 +29,7 @@ module.exports = function (app) {
     admin.registerMongooseModel("User", Models.User, null, {
         form:require('./user'),
         list:['username', 'first_name', 'last_name'],
-        filters:['email', 'first_name', 'last_name', 'facebook_id', 'gender', 'age', 'invitation_code', 'identity_provider'],
+        filters:['email', 'first_name', 'last_name', 'gender', 'identity_provider'],
         search:'/__value__/.test(this.first_name)||/__value__/.test(this.last_name)'
     });
     admin.registerMongooseModel("InformationItem", Models.InformationItem, null, {
@@ -56,7 +55,7 @@ module.exports = function (app) {
         cloneable:true,
         form:require('./discussion'),
         order_by:['-creation_date'],
-        filters:['created_by', 'is_published', 'is_hidden', 'is_hot_object', 'is_cycle'],
+        filters:['created_by', 'is_published', 'is_hidden', 'is_hot_object', 'is_cycle.flag'],
 //        search:'/__value__/.test(this.title)'
     });
 
