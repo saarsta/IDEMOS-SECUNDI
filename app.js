@@ -91,7 +91,6 @@ app.configure('production', function(){
 
 });
 
-
 if(!mongoose.connection.host)
     mongoose.connect(app.settings.DB_URL);
 

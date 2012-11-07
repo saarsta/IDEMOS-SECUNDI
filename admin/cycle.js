@@ -217,8 +217,8 @@ module.exports = AdminForm.extend({
 
             var is_cycle_hidden_when_save = this.data.is_hidden ? true : false;
 
-            //check if is_hidden flag was changed
-            if(/*(!is_cycle_hidden_when_save && cycle.is_hidden) || */(is_cycle_hidden_when_save && !cycle.is_hidden)){
+            //check if is_hidden flag was changed to true
+            if((is_cycle_hidden_when_save && !cycle.is_hidden)){
                 //if cycle is now hidden
                 models.Action.find({"cycle_id.cycle": cycle._id}, function(err, actions){
                     if (err)
