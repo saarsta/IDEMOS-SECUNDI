@@ -191,29 +191,9 @@ module.exports = AdminForm.extend({
             ], itr_cbk)
         }
 
-        var is_cycle_hidden_when_save = this.data.is_hidden ? true : false;
 
-//        async.waterfall([
-//            function(cbk){
-//
-//            }
-//        ])
-//
-//        //check if is_hidden flag was changed
-//        if((!is_cycle_hidden_when_save && cycle.is_hidden) || (is_cycle_hidden_when_save && !cycle.is_hidden)){
-//            //if condition true is_hidden was changed and "cycle.is_hidden" is what was before the change
-//            var err_string = "";
-//            models.Action.find({"cycle_id.cycle": cycle._id}, function(err, actions){
-//                _.each(actions, function(action){ if(action.is_hidden != is_cycle_hidden_when_save){
-//                    err_string += action.title;
-//                    err_string += action.is_hidden ? " is hidden" : " is not hidden";
-//                }})
-//
-//                if(err_string){
-//
-//                }
-//            })
-//        }
+
+
 
         // SAVE TIMELINE STUFF TO DB
 
@@ -234,8 +214,24 @@ module.exports = AdminForm.extend({
                     base.call(self,callback);
             });
         }else{
-            this._super(callback);
-        }
 
+            var is_cycle_hidden_when_save = this.data.is_hidden ? true : false;
+
+            //check if is_hidden flag was changed
+            if(/*(!is_cycle_hidden_when_save && cycle.is_hidden) || */(is_cycle_hidden_when_save && !cycle.is_hidden)){
+                //if cycle is now hidden
+                models.Action.find({"cycle_id.cycle": cycle._id}, function(err, actions){
+                    if (err)
+                        callback(err);
+                    else
+                       if( _.any(actions, function(action){ return action.is_hidden != is_cycle_hidden_when_save })){
+                           console.error("trying to save cycle as hidden when one of the action is not hidden");
+                           callback("trying to save cycle as hidden when one of the action is not hidden");
+                       }else
+                           base.call(self,callback);
+                })
+            }else
+                this._super(callback);
+        }
     }
 });
