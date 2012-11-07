@@ -129,18 +129,18 @@
                     }
                     else{
                         setJoinBT(data);
-                        if(data.action_obj.is_going === true)
+                        if(data.action_obj.is_going === true){
                             //set mail subject for social popup
 
                             var mail_subject = "הצטרפתי לקידום הפעילות בנושא "
-                                + cycle_title
-                                + ". מה איתך?"
+                                    + cycle_title
+                                    + ". מה איתך?"
                             mail_subject = encodeURIComponent(mail_subject);
                             var mail_body = "החלטתי לקחת חלק בפעילות של תנועת עורו בתחום"
-                                + " "
-                                + cycle_title
-                                + ". גם לך חשוב לקדם את הנושא? אם כן, אפשר לקבל פרטים נוספים, להצטרף ולתמוך באתר עורו. אשמח לראות אותך שם! "
-                                + "http://www.uru.org.il/cycles/" + cycle_id;
+                                    + " "
+                                    + cycle_title
+                                    + ". גם לך חשוב לקדם את הנושא? אם כן, אפשר לקבל פרטים נוספים, להצטרף ולתמוך באתר עורו. אשמח לראות אותך שם! "
+                                    + "http://www.uru.org.il/cycles/" + cycle_id;
 
                             setTimeout(function(){
 
@@ -150,6 +150,7 @@
                                     $('#box-share,#screen').hide();
                                 })
                             }, 100);
+                        }
                     }
                 })
             });

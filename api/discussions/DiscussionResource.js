@@ -356,9 +356,10 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
 
                     // update actions done by user
                     function(cbk1){
-                        models.User.update({_id:user._id},{$set: {"actions_done_by_user.create_object": true}}, cbk1);
+                        models.User.update({_id:user._id},{$set: {"actions_done_by_user.create_object": true}}, function(err){
+                            cbk1(err);
+                        });
                     }
-
 
                 ], function(err){
                     cbk(err);

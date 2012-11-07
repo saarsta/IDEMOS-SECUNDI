@@ -822,8 +822,11 @@ color: #ff00af;
     font: normal 24px/35px 'AdumaFOTMedium';
     margin: 10px 28px 15px 28px;
     padding: 0 0 15px 0;
-
     border-bottom: solid 1px #ebebeb;
+}
+
+#content h2.cycle-title{
+    width: 465px;
 }
 
 #content .right-col {
@@ -4357,13 +4360,7 @@ h2 small {
 }
 
 /*---------------------------*/
-body.search-ative {
-    background: #ebebeb url(../images/search-active-bg.png) 0 0 repeat-x;
-}
 
-body.search-ative #header {
-    height: 612px;
-}
 
 .search-result-box {
     height: 347px;
@@ -4408,6 +4405,9 @@ body.search-ative #header {
     text-decoration: none;
 }
 
+.search-result-box .tabs-nav .ui-state-active a{
+    color: #3ee84a;
+}
 .search-result-box .tabs-nav li a:hover,
 .search-result-box .tabs-nav li a:active,
 .search-result-box .tabs-nav li.ui-tabs-selected a {
@@ -5983,7 +5983,7 @@ div.action_list::-webkit-scrollbar-button {
 .qq-uploader {
     position: relative;
     width: 100%;
-    height: 100%;
+    height: 74px;
 }
 
 .qq-upload-button {
@@ -7371,9 +7371,6 @@ a.fraction-btn {
     text-align: center;
 }
 
-body.body-action {
-    background: #EDEDED url(../images/header-bg-three.png) 0 0 repeat-x;
-}
 
 body.body-action .followers-box {
     margin-top: -20px;
@@ -9460,4 +9457,12 @@ input[type=url] {
     position: absolute;
     left: 29px;
     top: 44px;
+}
+
+body.search-active {
+    background: #ebebeb url(../images/search-active-bg.png) 0 0 repeat-x;
+}
+
+body.search-active #header {
+    height: 612px;
 }
