@@ -254,7 +254,9 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
 
                     // update actions done by user
                     function(cbk2){
-                        models.User.update({_id:user.id},{$set: {"actions_done_by_user.post_on_object": true}}, cbk2);
+                        models.User.update({_id:user.id},{$set: {"actions_done_by_user.post_on_object": true}}, function(err){
+                            cbk2(err);
+                        });
                     },
 
 

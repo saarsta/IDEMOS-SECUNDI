@@ -263,7 +263,9 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
 
                     // update actions done by user
                     function(cbk2){
-                        models.User.update({_id:user.id},{$set: {"actions_done_by_user.suggestion_on_object": true}}, cbk2);
+                        models.User.update({_id:user.id},{$set: {"actions_done_by_user.suggestion_on_object": true}}, function(err){
+                            cbk2(err);
+                        });
                     }
 
                 ], function (err) {

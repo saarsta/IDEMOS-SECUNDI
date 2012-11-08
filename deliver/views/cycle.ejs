@@ -18,7 +18,7 @@
         <div id="content" class="cf">
             <div class="right-add-offer">
                 <div id="cycle" class="add-offer add-offer-small">
-                    <h2><span class="arrow"> <%= cycle.subject_name %></span>
+                    <h2 class="cycle-title"><span class="arrow"> <%= cycle.subject_name %></span>
                         <br>
                         <%= cycle.title %>
                     </h2>
@@ -219,8 +219,8 @@
 
 
 <script type="text/javascript">
+var current_section=2;
     var _main=$(document).ready( function () {
-
         jQuery.easing.def = "easeOutCirc";
         var my_id = "<%=user_logged ? user._id : ''%>";
         var cycle_id = "<%=cycle.id%>";
@@ -444,12 +444,13 @@
                     followersPage++;
                      pending=false;
 
-                   if(data.meta.total_count<14) {
+                   if(data.meta.total_count<21) {
                          killScroll = true;
+                     } else {
+                        killScroll = false;
                      }
                     dust.renderArray('cycle_follower', data.objects, function (err, out) {
                         $('#followers').append(out);
-
                     });
                 });
             }
@@ -457,11 +458,12 @@
             $(window).scroll(function(){
                 if  ($(window).scrollTop()+100 >= ($(document).height() - ($(window).height()))){
                     if (killScroll == false) { // - Keeps the loader from fetching more than once.
-                        //killScroll = true; // - Set killScroll to true, to make sure we do not trigger this code again before it's done running.
+                        killScroll = true; // - Set killScroll to true, to make sure we do not trigger this code again before it's done running.
                          getFollowers();
                     }
                 }
             });
+
             $('#read_more').click(function () {
                 $(".cycle-content").height("auto");
                  $(this).hide();
@@ -589,7 +591,7 @@
         //click on the update green icon goes to action
         $('.holds_the_timeline').on("click",'.green-icon', function(e){
             e.preventDefault();
-            var update_id = $(this).find(".type-one").attr("item-id");
+            var update_id = $(this).find(".type-two").attr("item-id");
             window.location.replace("/updates/" + update_id);
         });
 

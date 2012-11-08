@@ -113,7 +113,7 @@ var CycleTimelineResource = module.exports = jest.Resource.extend({
 
             function(cbk){
                 models.Action.find({"cycle_id.cycle": cycle_id, is_approved: true})
-                    .select({'_id': 1, 'title': 1, 'text_field_preview': 1, 'image_field_preview': 1, 'going_users': 1, 'num_of_going': 1, 'location': 1, 'execution_date': 1, 'category':1, 'cycle_id.is_displayed': 1})
+                    .select({'_id': 1, 'title': 1, 'text_field_preview': 1, 'image_field_preview': 1, 'going_users': 1, 'num_of_going': 1, 'location': 1, 'execution_date': 1, 'category':1, 'cycle_id': 1})
                     .populate('category')
                     .exec(function(err, actions){
                     if(!err){
@@ -122,6 +122,13 @@ var CycleTimelineResource = module.exports = jest.Resource.extend({
                             action.type = "action";
                             action.date = action.execution_date.date;
                             action.duration = action.execution_date.duration;
+                            _.each(action.cycle_id, function(cycle){
+                                if(cycle.cycle == cycle_id)
+                                {
+                                    action.cycle = cycle.cycle;
+                                    action.is_displayed = cycle.is_displayed;
+                                }
+                            })
                             if(action.category && action.category.name != "אחר")
                             {
                                     action.category = action.category.name;

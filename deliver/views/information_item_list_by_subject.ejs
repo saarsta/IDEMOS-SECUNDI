@@ -32,12 +32,12 @@
 </div>
 <% include partials/footer.ejs %>
   <script type="text/javascript">
+  var current_section=0;
   $(document).ready(function () {
 
         var is_logged = "<%= user_logged %>" == "true";
         var subject_id = "<%= subject.id%>";
         var tag_name = "<%=tag_name || ''%>";
-        current_section=0;
         getItems();
         $('.notice .close').live("click", function(){
 

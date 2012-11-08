@@ -88,7 +88,7 @@
 </html>
 <script type="text/javascript">
     var is_logged = "<%= user_logged %>" == "true";
-    current_section=0;
+    var current_section=0;
     db_functions.getAllSubjects(function(err,data)
     {
         var uru_subject = data.objects[0];
@@ -193,6 +193,7 @@
 				popupProvider.showOkPopup({ message: 'קרתה תקלה בעת שמירת פריט המידע' });
 			} else {
 				popupProvider.showOkPopup({ message: 'פריט המידע נשמר' });
+                $('.upload-popup').hide();
 			}
 		});
 		event.preventDefault();

@@ -20,11 +20,15 @@ var CycleShoppingCartResource = module.exports = common.GamificationMongooseReso
         this.allowed_methods = ['get'];
         this.authentication = new common.SessionAuthentication();
         this.authorization = new Authorization();
-
         this.default_query = function(query)
         {
             return query.where('status', 'approved').sort({"creation_date.date":'descending'});
         };
+    },
 
+    get_objects:function(req,filters,sorts,limit,offset,callback){
+        this._super(req,filters,sorts,limit,offset,function(err, results){
+            callback(err, results);
+        })
     }
 });

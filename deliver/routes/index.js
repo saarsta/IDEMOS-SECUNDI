@@ -37,27 +37,17 @@ module.exports = function(app) {
 
     router.include('./pending_actions',require('./pending_actions'));
 
-    // TODO remove this (only for backward comp)
     router.include('/meida', InformationItems);
 
     router.include('/discussions',Discussions);
+
     router.include('/daily_discussions',require('./daily_discussions'));
 
     router.include('/myuru',MyUru);
-
-   // router.include('/hisuru',MyUru);
-  //  router.include('/hisuru',HisUru);
 
     router.include('/og', require('../../og'));
 
     router.post('/elections/vote',require('./elections/vote'));
 
-    //router.get('/elections/fbimage',require('./elections/fbimage'));
-
     router.all('/elections/fbimage/:id', require('./elections/fbimage'));
-
-//    router.all(/.*/,function(req,res) {
-//        res.render('404.ejs',{});
-//    });
-
 };

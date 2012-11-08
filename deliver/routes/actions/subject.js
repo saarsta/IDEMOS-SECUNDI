@@ -16,7 +16,9 @@ module.exports = function(req,res) {
                     user_logged: req.isAuthenticated(),
                     url: req.url,
                     tab: 'actions',
-                    type: 'approved_action'
+                    type: 'approved_action',
+                    social_popup_title: "",
+                    social_popup_text: ""
                 });
         }
     });

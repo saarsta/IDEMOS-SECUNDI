@@ -71,7 +71,7 @@ var error_message = error_message || '';
                     <% for (var c = 0; c
                     <discussion. tags.length
                     ; c++) { %>
-                    <a href="/discussions/?tag_name=<%=discussion.tags[c]%>"> <%=discussion. tags[c] %></a>
+                    <a href="?tag_name=<%=discussion.tags[c]%>"> <%=discussion. tags[c] %></a>
                     <% }%>
 
    <!--                 <div class="more">
@@ -392,10 +392,10 @@ $(document).ready(function () {
             db_functions.addDiscussionGrade(discussion_id, my_discussion_grade, grade_id, user_info, function (err, data) {
 
                 if (!err) {
-                    if(!user.actions_done_by_user.grade_object)
-                    {
-                        user.actions_done_by_user.grade_object = true;
-                    }
+//                    if(!(user.actions_done_by_user && user.actions_done_by_user.grade_object))
+//                    {
+//                        user.actions_done_by_user.grade_object = true;
+//                    }
                     $("#amount").val(Math.round(data.new_grade * 100) / 100);
                     $("#graders").text(Math.round(data.evaluate_counter));
                     $(".dark_bar").css('width', (my_discussion_grade * 10) + '%');
@@ -786,10 +786,10 @@ $(document).ready(function () {
                         }
                         db_functions.addSuggestionGrade(suggestion.id, discussion_id, rating, suggest_grade_id[suggestion.id], user_info, function (err, data) {
                             if (!err) {
-                                if(!user.actions_done_by_user.grade_object)
-                                {
-                                    user.actions_done_by_user.grade_object = true;
-                                }
+//                                if(!(user.actions_done_by_user && user.actions_done_by_user.grade_object))
+//                                {
+//                                    user.actions_done_by_user.grade_object = true;
+//                                }
                                 $("#suggest_grade_" + suggestion.id).val(Math.round(data.new_grade * 100) / 100);
                                 $("#suggest_graders_" + suggestion.id).text(Math.round(data.agrees) + Math.round(data.not_agrees));
                                 $("#agrees_" + suggestion.id).text(Math.round(data.agrees));
@@ -992,6 +992,7 @@ $(document).ready(function () {
                 }
                 if (my_id)
                     setUserScore(my_id, post.creator_id.score);
+                post.voting = post.votes_for - post.votes_against;
                 dust.render('discussion_comment', post, function (err, out) {
                     $("#comments").append(out);
                     $("textarea#discussion_comment").val('');
@@ -1021,10 +1022,10 @@ $(document).ready(function () {
         }
         db_functions.addSuggestionGrade(suggestion_id, discussion_id, rating, sugg_grade_id, user_info, function (err, data) {
             if (!err) {
-                if(!user.actions_done_by_user.grade_object)
-                {
-                    user.actions_done_by_user.grade_object = true;
-                }
+//                if(!(user.actions_done_by_user && user.actions_done_by_user.grade_object))
+//                {
+//                    user.actions_done_by_user.grade_object = true;
+//                }
                 db_functions.getSuggestionByDiscussion(discussion_id, function (err, data) {
                     $.each(data.objects, function (index, suggestion) {
                         render_suggestion(suggestion);

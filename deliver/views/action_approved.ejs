@@ -3,7 +3,12 @@
 <html>
 <head>
 
-   <% include partials/head.ejs %>
+<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# <%= settings.facebook_app_name %>: http://ogp.me/ns/fb/<%= settings.facebook_app_name %>#">
+    <meta property="fb:app_id" content="<%= settings.facebook_app_id %>" />
+    <meta property="og:url"    content="<%= settings.root_path %>/actions/<%= action.id %>" />
+
+    <% include partials/head.ejs %>
+</head>
 
 </head>
 <body class="body-action">
@@ -120,7 +125,7 @@
         </div>
         <div class="tags">
             <% for (var c = 0; c<action.tags.length ; c++) { %>
-                <a href="/discussions/?tag_name=<%=action.tags[c]%>"> <%=action.tags[c] %></a>
+                <a href="?tag_name=<%=action.tags[c]%>"> <%=action.tags[c] %></a>
             <% }%>
         </div>
     </div>
@@ -212,6 +217,7 @@
 <% include partials/action_common.ejs %>
 
 <script type="text/javascript">
+var current_section=3;
 var action_id = '<%= action._id %>';
 var cycle_id = '<%= action.cycle_id[0].cycle.id %>';
 var my_id = "<%= user_logged ? user._id : '' %>";

@@ -1,7 +1,7 @@
 var TokensBarModel =function (tokenPixels, numExtraTokens, tokens, proxies) {
        var HIGH_BAR_VALUE=15;
        var USER_DAILY_TOKENS=9;
-      var self= this;
+       var self= this;
 
         function calcTotalProxy(proxies){
             var sum= 0;

@@ -55,7 +55,7 @@ module.exports = function (req, res) {
 
                         .exec(function(err, user){
                             if(req.session.user)
-                                req.session.user.biography = user.biography;
+                                req.session.user.biography = user && user.biography;
                             cbk1(err, user);
                         })
                 },

@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies.
  */
@@ -90,7 +89,6 @@ app.configure('production', function(){
     });
 
 });
-
 
 if(!mongoose.connection.host)
     mongoose.connect(app.settings.DB_URL);
@@ -202,7 +200,8 @@ app.configure(function(){
             user_logged: req.isAuthenticated && req.isAuthenticated(),
             user: req.session && req.session.user,
             avatar: (req.session && req.session.avatar_url) || "/images/default_user_img.gif",
-            url: req.url
+            url: req.url,
+            meta: {}
         });
 
         next();

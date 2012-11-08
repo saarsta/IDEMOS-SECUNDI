@@ -220,7 +220,9 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
 
                     // update actions done by user
                     function(cbk1){
-                        models.User.update({_id:req.user.id},{$set: {"actions_done_by_user.grade_object": true}}, cbk1);
+                        models.User.update({_id:req.user.id},{$set: {"actions_done_by_user.grade_object": true}}, function(err){
+                            cbk1(err);
+                        });
                     }
                 ], function (err, args) {
                     cbk(err, args);
