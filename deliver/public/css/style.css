@@ -819,7 +819,7 @@ color: #ff00af;
 #content h2 {
 
     color: #50504f;
-    font: normal 24px/35px 'AdumaFOTMedium';
+    font: normal 20px/35px 'AdumaFOTMedium';
     margin: 10px 28px 15px 28px;
     padding: 0 0 15px 0;
 
@@ -2762,6 +2762,7 @@ textarea.hidden_textarea::selection {
 }
 
 /*-----------------------*/
+
 .card-left {
     float: left;
     width: 238px;
@@ -2829,6 +2830,75 @@ textarea.hidden_textarea::selection {
     top: 20px;
 }
 
+.info_items {
+
+    display: inline-block;
+    margin: 0 auto;
+    text-align: center;
+    width: 100%;
+
+}
+
+.info_items h3 {
+    color: #50504f;
+    font: normal 23px/50px 'AdumaFOTMedium';
+    margin-bottom: 10px;
+}
+
+.info_items h3 span {
+    padding-left: 38px;
+    background: url(../images/basket-icon.png) 0 25% no-repeat;
+}
+
+.info_items .diagram-box {
+    padding-bottom: 15px;
+    border-bottom: 1px solid #dddddd;
+    margin-bottom: 10px;
+}
+
+.info_items .diagram-box img {
+    margin-bottom: 23px;
+    display: block;
+}
+
+.info_items .diagram-box .percent {
+    float: left;
+    margin-left: 35px;
+    color: #cbcbcb;
+    text-align: center;
+    font: normal 13px/15px Arial
+}
+
+.info_items .diagram-box .percent span {
+    color: #bebebd;
+    font: normal 50px/52px 'AdumaFOTRegular';
+    display: block;
+}
+
+.info_items .comment-slide {
+    color: #50504f;
+    font: normal 13px/17px Arial;
+    padding: 0 0;
+    position: relative;
+}
+
+.info_items .comment-slide #prev {
+    width: 9px;
+    height: 13px;
+    background: url(../images/prev-next-arrow.png) 0 0 no-repeat;
+    position: absolute;
+    left: -13px;
+    top: 20px;
+}
+
+.info_items .comment-slide #next {
+    width: 9px;
+    height: 13px;
+    background: url(../images/prev-next-arrow.png) 100% 0 no-repeat;
+    position: absolute;
+    right: -13px;
+    top: 20px;
+}
 #nav2 {
     text-align: center;
     margin-top: 10px;
@@ -6085,8 +6155,12 @@ div.action_list::-webkit-scrollbar-button {
 .add-offer-small .text-box {
     margin: 0 28px 0 60px;
     border-bottom: none;
-}
 
+}
+.add-offer .text-box p{
+       font-size: 14px;
+    line-height: 21px;;
+}
 .add-offer .text-box h3 {
     color: #50504f;
     font: bold 16px/19px Arial;
@@ -6105,7 +6179,7 @@ div.action_list::-webkit-scrollbar-button {
 
 .add-offer-small .add-offer-bottom .right .tags {
 
-    padding: 0 20px 22px;
+    padding: 0 20px 15px;
     margin: 0;
     background-image: url(../images/Cycles_Gray.Label_Icon.gif);
     background-repeat: no-repeat;
@@ -6119,27 +6193,123 @@ color: #5578f1;
 }
 
 .add-offer-small .add-offer-bottom .right .followers {
+    font-family: arial;
     border-top: 1px solid #ebebeb;
     border-bottom: 1px solid #ebebeb;
     padding: 11px 0 12px;
-    margin-bottom: 22px;
+    margin-bottom: 15px;
     color:#656565;
 }
 .add-offer-small .add-offer-bottom .right .followers .blue-box {
     background-color: #3b63ef;
     color: #fff;
     height: 23px;
-    height: 23px;
-    padding: 0 3px;
+    padding: 1px 4px 3px 5px;
     margin-left: 5px;
     border-radius: 3px;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
     display: inline-block;
-    font-size: 20px;
-    padding-top: 2px;
+
     text-align: center;
+    font: normal 24px 'AdumaFOTMedium';
 }
+.add-offer-small .dots
+{
+    background: transparent    url(../images/Cycles_Tabs_Upper.Dots.gif) 0 0 repeat-x;
+     width: 100%;
+    height: 25px;
+    clear: both;
+}
+.add-offer-small .tabs
+{
+    position: relative;
+    height: 35px;
+    border-bottom: solid 4px #D6DBDE;
+
+    color:#50504f   ;
+
+    text-align: center;
+    font: normal 20px/46px 'AdumaFOTMedium';
+
+}
+
+.add-offer-small .tab
+{
+    width: 320px;
+    height: 35px;
+    background: transparent    url(../images/Cycles_Tabs_Sprite.jpg) 0 -3px repeat-x;
+    cursor: pointer;
+}
+
+.add-offer-small .tab.active ,
+.add-offer-small .tab.active:hover
+{
+    width: 320px;
+    height: 35px;
+    background: transparent    url(../images/Cycles_Tabs_Sprite.jpg) 0 -79px repeat-x;
+    cursor: pointer;
+    z-index: 1;
+    color:#3b63ef;
+}
+
+.add-offer-small .tab.left
+{
+   position: absolute;
+   top:0;
+   left:10px;
+}
+
+.add-offer-small .tab.right
+{
+    position: absolute;
+    top:0;
+    right:10px;
+}
+.add-offer-small .tab:hover
+{
+   background-position: 0 -41px;
+    color:#b4b9bb;
+}
+
+.add-offer-small .tab:hover   .tab_icon
+{
+    background-position: 14px -14px;
+}
+
+.add-offer-small .tab:active
+{
+    background-position: 0 -79px;
+    color:#3b63ef;
+}
+
+.add-offer-small .tab.active    .tab_icon
+{
+    background-position: 0 -28px;
+}
+
+.add-offer-small .tab:active   .tab_icon
+{
+    background-position: 14px -14px;
+}
+
+.add-offer-small .tab .tab_icon
+{
+    background: url("../images/URU_tabs_max.min_btns.png") repeat-x scroll 14px 0 transparent;
+    cursor: pointer;
+    height: 14px;
+    left: 30px;
+    position: absolute;
+    top: 14px;
+    width: 14px;
+}
+.add-offer-small .tab.right .tab_icon{
+
+}
+.add-offer-small .tab.left .tab_icon{
+
+}
+
 
 
 
@@ -6178,6 +6348,7 @@ a.fraction-btn {
 
 .popular-comments .hide-box {
     padding-top: 47px;
+    background-color: #f6f6f6;
 }
 
 .popular-comments .top a {
@@ -9450,4 +9621,243 @@ input[type=url] {
     position: absolute;
     left: 29px;
     top: 44px;
+}
+
+.cycle_sub_branding{
+    border-bottom: 1px solid #D6DBDE
+}
+
+.cycle_sub_branding  a img{
+    float: right;
+    margin: -4px  0 10px 10px
+}
+
+.cycle_sub_branding  h3{
+    line-height: 20px;
+    color: #3B63EF;
+    margin: 0;
+    font-size: 30px;
+    margin-top: 15px;
+}
+.cycle_sub_branding  span{
+
+    color: #7F7F7E;
+    font: normal 13px/17px Arial; margin-top: -10px
+}
+.cycle_sub_branding  img.main_image{
+    width:100%;
+    margin-bottom: 10px
+}
+
+
+
+
+#info_items{
+    direction: ltr;
+
+}
+
+
+#info_items #slider {
+    width: 560px;
+}
+
+#info_items #slider li {
+    width: 263px;
+    background-color:#fff;
+    height:290px;
+    text-align: right;
+}
+
+
+#info_items .mb-wrapper {
+
+    margin: 0 auto 20px;
+    position: relative;
+    left: 0;
+    top: 0;
+    /*
+    border: 5px solid #ccc;
+border-radius: 10px;
+box-shadow: inset 0 0 10px #888;
+    */
+}
+
+/* Panel Wrapper */
+#info_items .mb-slider, .mb-scroll {
+
+    height: 100%;
+    overflow: hidden;
+    margin: 0 auto;
+    padding: 0;
+    position: relative;
+    left: 0;
+    top: 0;
+
+    /***(>'-')> Control Panel Font size here <('-'<)***/
+    font-size: 18px;
+}
+#info_items .mb-scroll {
+    position: relative;
+}
+
+#info_items .maskleft{
+    position: absolute;
+
+
+
+    top: 0;
+    left: 0;
+    width: 130px;
+    height: 300px;
+
+    background: -moz-linear-gradient(left,  rgba(246,246,246,1) 0%, rgba(246,246,246,0) 99%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(246,246,246,1)), color-stop(99%,rgba(246,246,246,0))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(left,  rgba(246,246,246,1) 0%,rgba(246,246,246,0) 99%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(left,  rgba(246,246,246,1) 0%,rgba(246,246,246,0) 99%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(left,  rgba(246,246,246,1) 0%,rgba(246,246,246,0) 99%); /* IE10+ */
+    background: linear-gradient(to right,  rgba(246,246,246,1) 0%,rgba(246,246,246,0) 99%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff',GradientType=1 ); /* IE6-9 */
+
+}
+
+
+#info_items .maskright{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 130px;
+    height: 300px;
+
+    background: -moz-linear-gradient(left,  rgba(246,246,246,0) 0%, rgba(246,246,246,1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(246,246,246,0)), color-stop(100%,rgba(246,246,246,1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(left,  rgba(246,246,246,0) 0%,rgba(246,246,246,1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(left,  rgba(246,246,246,0) 0%,rgba(246,246,246,1) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(left,  rgba(246,246,246,0) 0%,rgba(246,246,246,1) 100%); /* IE10+ */
+    background: linear-gradient(to right,  rgba(246,246,246,0) 0%,rgba(246,246,246,1) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 */
+
+}
+
+
+/* active slider border highlight */
+#info_items .mb-active-slider {
+
+}
+
+/*** Slider panel ***/
+#info_items .mb-slider .mb-panel {
+    margin: 0;
+    padding: 0;
+    display: block;
+    cursor: pointer;
+    float: left;
+    list-style: none;
+    margin: 0 20px;
+}
+
+/* Cursor to arrow over current panel, pointer for all others,
+change .current class name using plugin option, currentPanel : 'current' */
+#info_items .mb-slider .mb-panel.current {
+    cursor: auto;
+}
+
+/*** Inside the panel ***/
+#info_items .mb-inside {
+    padding: 20px;
+
+}
+
+#content  #info_items .mb-inside  h2 {
+    color:	#3b63ef;
+    font: bold  13px/20px 'arial';
+    margin: 0;
+    padding: 0 ;
+    border: 0;
+}
+#info_items .mb-inside  p {
+    font: normal  13px/20px 'arial';
+    color:	#7f7f7e;
+}
+
+
+
+#info_items .mb-inside * {
+    max-width: 100%;
+}
+
+/*** Left & Right Navigation Arrows ***/
+#info_items a.mb-scrollButtons {
+    display: block;
+    width: 14px;
+    height: 21px;
+    background: transparent url(../images/URU_data.items_arrows_sprite.png) no-repeat;
+    position: absolute;
+    top: 170px;
+    margin-top: -29px; /* if you change the arrow images, you may have to adjust this (1/2 height of arrow image) */
+    cursor: pointer;
+    text-decoration: none;
+    outline: 0;
+    border: 0;
+}
+#info_items a.mb-scrollButtons.mb-left {
+    background-position: left top;
+    left: -35px;
+}
+#info_items a.mb-scrollButtons.mb-right {
+    background-position: right top;
+    right: -35px;
+}
+#info_items a.mb-scrollButtons.mb-left:hover {
+    background-position: left 50%;
+}
+#info_items a.mb-scrollButtons.mb-right:hover {
+    background-position: right 50%;
+}
+
+#info_items a.mb-scrollButtons.mb-left:active {
+    background-position: left bottom;
+}
+#info_items a.mb-scrollButtons.mb-right:active {
+    background-position: right bottom;
+}
+#info_items a.mb-scrollButtons.disabled {
+    display: none;
+}
+
+/*** Controls added below the panels ***/
+#info_items .mb-controls {
+    margin: 0 auto;
+    text-align: center;
+
+    position: relative;
+    z-index: 100;
+}
+#info_items .mb-controls a {
+    color: #d6dbde;
+    font: 28px/2.2 Georgia, Serif;
+    display: inline-block;
+    text-decoration: none;
+    padding: 2px;
+    margin: 0 5px 0 0;
+    text-align: center;
+    outline: 0;
+}
+#info_items .mb-controls a:hover {
+    color: #666;
+}
+#info_items .mb-controls a.current {
+    color: #919394;
+}
+#info_items .mb-active-slider .mb-controls {
+
+}
+#info_items .mb-links
+{
+    direction: ltr;
+}
+
+.updates-box .right .fb-comments
+{
+    padding: 0 36px 0 38px  ;
 }
