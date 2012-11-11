@@ -69,47 +69,65 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="popular-comments cf">
-                    <div class="top">
-                        <a href=""><span></span>תגובות פופולריות מהדיונים</a>
-                    </div>
-                    <div id="comments" class="hide-box">
+                    <div class="dots">
+
 
                     </div>
+                    <div class="tabs">
+                        <div class="tab left">
+                            <div class="tab_icon">  </div>
+
+
+פריטי מידע רלוונטים
+                        </div>
+                        <div class="tab right">
+                            <div class="tab_icon">  </div>
+
+
+                            תגובות פופלריות מהדיונים
+                        </div>
+                    </div>
+                    <div class="popular-comments cf">
+                        <div class="hide-box">
+                            <div id="comments" >
+                            </div>
+                            <div id="info_items" class="info_items">
+
+
+
+
+
+                                <!-- MovingBoxes Slider -->
+                                <ul id="slider">
+
+
+
+                                </ul><!-- end Slider #1 -->
+
+
+
+
+
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
             </div>
             <div class="card-left">
 
 
-                <%if(cycle.id=="508026e8cb2276020000001f"){%>
-
-                <a target="_blank" href="https://www.facebook.com/pages/%D7%90%D7%95%D7%A8%D7%9C%D7%99-%D7%95%D7%92%D7%99%D7%90/177621142281988"><img style="float: right;margin: 10px 0 10px 10px" src="../../images/Orly&Guy_logo.png" > </a>
-                <h3 style="line-height: 20px;
-color: #3B63EF;
-margin: 0;
-font-size: 30px;
-margin-top: 15px;">
-                    אורלי וגיא</h3>
-                <span style="color: #7F7F7E;
-                font: normal 13px/17px Arial; margin-top: -10px " >
-בשיתוף עם תוכנית הבוקר של אורלי וגיא
-
-                     </span>
-                <img src="../../images/Orly&Guy_image.png" style="width:100%;margin-bottom: 10px">
-                <div style="border-bottom: 1px solid #D6DBDE">
+  <%if (cycle.sub_branding_title){%>
+           <div class="cycle_sub_branding">
+                <a target="_blank" href="<%= cycle.sub_branding_link %>"><img src="<%= cycle.sub_branding_logo.url %>" > </a>
+                <h3 >   <%= cycle.sub_branding_title %> </h3>
+                <span > <%= cycle.sub_branding_text %></span>
+                <img class="main_image" src="<%= cycle.sub_branding_image.url %>" style="">
+                <div style="">
                    </div>
-
-
-                <%} else{ %>
-                <h3><span>סל מידע</span></h3>
-                <div class="comment-slide">
-                    <a href="" id="prev" ></a>
-                    <a href="" id="next" ></a>
-                    <div class="slide-c"></div>
-                </div>
-                <%} %>
-
+           </div>
+  <%} %>
             </div>
         </div>
     </div>
@@ -138,36 +156,45 @@ margin-top: 15px;">
                     </div>
                 </div>
             </div>
-            <div class="blog-box cf">
-                <h2>מובילי דעת קהל</h2>
+
+            <div class="updates-box cf">
+                <div class="right">
+                        <div class="fb-comments"  data-href="http://www.uru.org.il/cycles/<%= cycle.id %>"  data-num-posts="3" data-width="570"> </div>
+                </div>
+                <div class="left">
+                    <h2>מובילי דעת קהל</h2>
 
 
-                     <% if (cycle.opinion_shapers) for (var c = 0; c<cycle.opinion_shapers.length && c<3 ; c++) { %>
-                             <div class="one <% if (c==2) {%>last<% }%> ">
+                    <% if (cycle.opinion_shapers) for (var c = 0; c<cycle.opinion_shapers.length && c<3 ; c++) { %>
+                    <div class="one <% if (c==2) {%>last<% }%> ">
 
-                             <div class="img-box" style="overflow: hidden;">
-                                 <a href="/myuru/<%=cycle.opinion_shapers[c].user_id._id%>">
-                                     <div style="width:112px;height:120px; overflow:hidden; " class='auto-scale' >
-                                         <img  src="<%=cycle.opinion_shapers[c].user_id.avatar_url %>" alt=""/>
-                                         <span class="fillter"></span>
-                                     </div>
-                                     <span></span>
-                                </a>
-                             </div>
-                                <h4 class="opinion_shaper"><a href="/myuru/<%=cycle.opinion_shapers[c].user_id._id%>"><%=cycle.opinion_shapers[c].user_id.first_name %> <%=cycle.opinion_shapers[c].user_id.last_name %></a></h4>
-                                <p class="opinion_shaper"><% if (cycle.opinion_shapers[c].text) {%>  <%=cycle.opinion_shapers[c].text %>  <% } %></p>
-                                 <div class="badges">
-                                     <div class="proxy">
-                                         <span><%=cycle.opinion_shapers[c].user_id.num_of_proxies_i_represent %></span>
-                                     </div>
-                                     <div class="respect">
-                                         <span><%=cycle.opinion_shapers[c].user_id.score %></span>
-                                     </div>
-                                 </div>
-                             </div>
-                     <% }%>
-
+                        <div class="img-box" style="overflow: hidden;">
+                            <a href="/myuru/<%=cycle.opinion_shapers[c].user_id._id%>">
+                                <div style="width:112px;height:120px; overflow:hidden; " class='auto-scale' >
+                                    <img  src="<%=cycle.opinion_shapers[c].user_id.avatar_url %>" alt=""/>
+                                    <span class="fillter"></span>
+                                </div>
+                                <span></span>
+                            </a>
+                        </div>
+                        <h4 class="opinion_shaper"><a href="/myuru/<%=cycle.opinion_shapers[c].user_id._id%>"><%=cycle.opinion_shapers[c].user_id.first_name %> <%=cycle.opinion_shapers[c].user_id.last_name %></a></h4>
+                        <p class="opinion_shaper"><% if (cycle.opinion_shapers[c].text) {%>  <%=cycle.opinion_shapers[c].text %>  <% } %></p>
+                        <div class="badges">
+                            <div class="proxy">
+                                <span><%=cycle.opinion_shapers[c].user_id.num_of_proxies_i_represent %></span>
+                            </div>
+                            <div class="respect">
+                                <span><%=cycle.opinion_shapers[c].user_id.score %></span>
+                            </div>
+                        </div>
+                    </div>
+                    <% }%>
+                </div>
             </div>
+
+
+
+
             <div class="followers-ppl cf" id="followers">
                 <h2>עוקבים</h2>
 
@@ -248,6 +275,43 @@ var current_section=2;
 
         });
 
+            $(".tabs .right").click(function(){
+                if( $(this).hasClass('active'))
+                {
+                    closeTabs();
+                }
+                else
+                {
+                    $(this).addClass('active');
+                    $(".tabs .left").removeClass('active');
+                    $('.popular-comments .hide-box').slideDown();
+                    $(".popular-comments .hide-box #comments").show();
+                    $(".popular-comments .hide-box #info_items").hide();
+                }
+
+            });
+
+            $(".tabs .left").click(function(){
+                if( $(this).hasClass('active'))
+                {
+                    closeTabs();
+                }
+                else
+                {
+                    $(this).addClass('active');
+                    $(".tabs .right").removeClass('active');
+                    $('.popular-comments .hide-box').slideDown();
+                    $(".popular-comments .hide-box #comments").hide();
+                    $(".popular-comments .hide-box #info_items").show();
+                }
+            });
+
+
+            function   closeTabs(){
+                $(".tabs .tab").removeClass('active');
+                $('.popular-comments .hide-box').slideUp();
+            }
+
             $(".inline").colorbox({ inline: true, width: "730" });
 
             $('.popular-comments .user-right').hover(function () {
@@ -300,11 +364,28 @@ var current_section=2;
             db_functions.getCycleShoppingCart(cycle_id, function ( err,data) {
 
                     $.each(data.objects, function (index, item) {
-                        dust.render('discussion_information_item', item, function (err, out) {
-                            $('.slide-c').append(out);
+                        dust.render('cycle_information_item', item, function (err, out) {
+                            $('#slider').append(out);
                         });
                     });
 
+                    $('#info_items #slider').movingBoxes({
+                        /* width and panelWidth options deprecated, but still work to keep the plugin backwards compatible
+                         width: 500,
+                         panelWidth: 0.5,
+                         */
+
+                        initAnimation :false,
+                        fixedHeight :true,
+                        reducedSize :1,
+                        startPanel   : 1,      // start with this panel
+                        wrap         : true,   // if true, the panel will "wrap" (it really rewinds/fast forwards) at the ends
+                        buildNav     : true,   // if true, navigation links will be added
+                        navFormatter : function(){ return "&#9679;"; } // function which returns the navigation text for each panel
+
+                    });
+
+                    /*
                     $('.slide-c')
                        .after('<div id="nav2">')
                        .cycle({
@@ -319,6 +400,7 @@ var current_section=2;
                         $("#prev").hide();
                         $("#next").hide();
                     }
+                    */
 
             });
 
@@ -346,28 +428,38 @@ var current_section=2;
 
            	var killScroll = false;
            	var followersPage=0;
+            var pending = false;
            	getFollowers();
 
-            function getFollowers()
+            function   getFollowers()
             {
+                 if(pending)
+                 {
+                     return;
+                 }
+                pending=true;
+
                  db_functions.getCylceFollowers(cycle_id, followersPage,function ( data) {
-                     followersPage++;
-                     if(data.meta.total_count < 21) {
-                        killScroll = true;
+
+                    followersPage++;
+                     pending=false;
+
+                   if(data.meta.total_count<21) {
+                         killScroll = true;
                      } else {
                         killScroll = false;
                      }
-                     dust.renderArray('cycle_follower', data.objects, function (err, out) {
+                    dust.renderArray('cycle_follower', data.objects, function (err, out) {
                         $('#followers').append(out);
-                     });
+                    });
                 });
             }
             	// Detect that we are at bottom of page, and call autoloading function
             $(window).scroll(function(){
                 if  ($(window).scrollTop()+100 >= ($(document).height() - ($(window).height()))){
-                    if(killScroll == false) { // - Keeps the loader from fetching more than once.
+                    if (killScroll == false) { // - Keeps the loader from fetching more than once.
                         killScroll = true; // - Set killScroll to true, to make sure we do not trigger this code again before it's done running.
-                        getFollowers();
+                         getFollowers();
                     }
                 }
             });
@@ -401,7 +493,7 @@ var current_section=2;
                        }
                    }
                   dust.renderArray('cycle_post', data.objects, function (err, out) {
-                      $('.hide-box').append(out);
+                      $('.hide-box #comments').append(out);
                   });
              });
 

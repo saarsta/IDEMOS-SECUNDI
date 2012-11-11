@@ -182,9 +182,9 @@ var timeline = {
 			}
 
 			// Combine past and future bits - we don't need the separation any more.
-			console.log('Original timeline data: ', data.objects);
-			console.log('Items:', items);
-			console.log('Nodes:', nodes);
+			//console.log('Original timeline data: ', data.objects);
+			//console.log('Items:', items);
+			//console.log('Nodes:', nodes);
 			nodes = nodes.past.concat([nodes.today], nodes.future);
 						
 			// Render the now ready timeline.
