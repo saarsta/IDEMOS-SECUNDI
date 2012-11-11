@@ -36,7 +36,6 @@ var NotificationCategoryResource = module.exports = resources.MongooseResource.e
                 link:null,
                 pic:null,
                 html_version: null,
-                html_version_1: null,
                 part_one: null,
                 part_tow: null,
                 part_three: null,
@@ -85,6 +84,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, info_items_ha
             var discussion = discussions_hash[notification.entity_id + ''] || discussions_hash[notification.notificators[0].sub_entity_id + ''];
             var post = posts_hash[notification.entity_id + ''] || posts_hash[notification.notificators[0].sub_entity_id + ''];
             var post_id = post ? post._id : "";
+
             switch (notification.type) {
                 case "approved_info_item_i_created":
                     notification.message_of_notificators =
@@ -843,7 +843,10 @@ var populateNotifications = module.exports.populateNotifications = function(resu
             if(info_items_ids.length)
                 models.InformationItem.find({},
                     {'id':1,
-                        'image_field_preview':1, 'image_field':1, 'title':1})
+                        'image_field_preview':1,
+                        'image_field':1,
+                        'title':1
+                    })
                     .where('_id').in(info_items_ids)
                     .exec(function (err, info_items) {
 

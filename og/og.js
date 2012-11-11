@@ -25,7 +25,7 @@ SignedRequest.secret = config.FB_SECRET;
  * @param callback (optional) - the callback function for the action in the following
  * signature : function(err)
  */
-var doAction = function(  data ,callback ){
+var doAction = function(data ,callback ){
     var callback_url = data.callback_url || data.object_url;
         var post_url = "https://graph.facebook.com/me/"+config.FB_APP_NAME+":"+data.action + '?access_token=' + data.access_token;
 

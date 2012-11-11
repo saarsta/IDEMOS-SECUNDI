@@ -8,7 +8,9 @@ module.exports = function(req,res)
         res.render('actions_list.ejs', {
             type: 'pending_action',
             cycle_id: req.params[0],
-            cycle_title: cycle.title
+            cycle_title: cycle.title,
+            social_popup_title: "",
+            social_popup_text: ""
         });
     })
 

@@ -207,9 +207,6 @@ var sendNotificationToUser = function(notification, last_update_date) {
      * 4) send message
      */
 
-    //TODO remove it when sending notifications is back
-    return
-
     var email;
 
     async.waterfall([
