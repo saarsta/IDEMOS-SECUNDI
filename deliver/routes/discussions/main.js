@@ -65,7 +65,7 @@ module.exports = function(req,res)
                                         (discussion.image_field && discussion.image_field.url)),
                                     title: discussion && discussion.title,
                                     description: discussion.text_field_preview || discussion.text_field,
-                                    link: action && ('/discussions/' + discussion.id)
+                                    link: discussion && ('/discussions/' + discussion.id)
                                 }
                             });
 
