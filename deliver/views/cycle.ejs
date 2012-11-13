@@ -32,6 +32,27 @@
 אני בעד
 </span></span></a>
 
+                    <div id="cloudsponge_2">
+                            <div id="deep-link" style="">
+                                <span style="margin-right:-15px">
+                                    <a id="source-yahoo" href="#" onclick="return cloudsponge.launch('yahoo');"><img alt="Yahoo" height="28" src="http://www.cloudsponge.com/images/address_books/yahoo.png?1349284367" width="28"></a>
+                                    <a id="source-windowslive" href="#" onclick="return cloudsponge.launch('windowslive');"><img alt="Windows Live" height="28" src="http://www.cloudsponge.com/images/address_books/msn.png?1349284367" width="28"></a>
+
+                                    <a id="source-outlook" href="#" onclick="return cloudsponge.launch('outlook');" style="display: inline; "><img alt="Microsoft Outlook" height="28" src="http://www.cloudsponge.com/images/address_books/microsoft.png?1349284367" width="28"></a>
+                                    <a id="source-addressbook" href="#" onclick="return cloudsponge.launch('addressbook');" style="display:none"><img alt="Mac Address Book" height="28" src="http://www.cloudsponge.com/images/address_books/apple.png?1349284367" width="28"></a>
+                                    <a id="source-gmail" href="#" onclick="return cloudsponge.launch('gmail');"><img alt="Gmail" height="28" src="http://www.cloudsponge.com/images/address_books/google.png?1349284367" width="28"></a>
+                                </span>
+                            </div>
+                    </div>
+
+
+
+
+
+
+
+
+
 
                     <div class="text-box cf">
                     <div class="cycle-content">
@@ -698,7 +719,13 @@ var current_section=2;
         }
         $("#cycle .sharing .facebook_sh").on('click', facebookShare)   ;
         $('#cycle .sharing .twitter').on('click', twitterShare);
-        $('#cycle .sharing .email').on('click', share);
+        $('#cycle .sharing .email').on('click', function(){
+            $("#cloudsponge_2").slideToggle();
+        });
+
+        $('#cloudsponge_2 a').on('click', function(){
+            $("#cloudsponge_2").slideToggle();
+        });
 
     });
 

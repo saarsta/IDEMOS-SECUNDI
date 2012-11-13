@@ -10007,3 +10007,11 @@ change .current class name using plugin option, currentPanel : 'current' */
     font-weight: bold;
     margin-top: 10px;
 }
+
+#cloudsponge_2{
+    display: none;
+    width: 130px;
+    position: absolute;
+    left: -10px;
+    top: 80px;
+}
