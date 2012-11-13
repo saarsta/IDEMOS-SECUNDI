@@ -206,7 +206,7 @@
 
             <div class="updates-box cf">
                 <div class="right">
-                    <h2>תגובות</h2>
+
                         <div class="fb-comments"  data-href="http://www.uru.org.il/cycles/<%= cycle.id %>"  data-num-posts="3" data-width="642" colorscheme="light" > </div>
                 </div>
                 <div class="left">
@@ -391,6 +391,10 @@ var current_section=2;
 
             db_functions.getCycleShoppingCart(cycle_id, function ( err,data) {
 
+                       if( data.objects.length>0)
+                       {
+                         $(".add-offer-small .tab.left").show()
+                       }
                     $.each(data.objects, function (index, item) {
                         dust.render('cycle_information_item', item, function (err, out) {
                             $('#slider').append(out);
@@ -725,6 +729,10 @@ var current_section=2;
 
         $('#cloudsponge_2 a').on('click', function(){
             $("#cloudsponge_2").slideToggle();
+        });
+
+        $('a.mb-scrollButtons').dblclick(function(event) {
+            event.isPropagationStopped() ;
         });
 
     });
