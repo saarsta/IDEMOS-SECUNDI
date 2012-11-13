@@ -233,7 +233,6 @@ var iterator = function (users_hash, discussions_hash, posts_hash, info_items_ha
                         notification.description_of_notificators = num_of_comments + " " + "אנשים";
                         notification.message_of_notificators =
 "הגיבו על הצעה לשינוי שהעלית בדיון - "
-
                         ;
                         itr_cbk();
                     } else {

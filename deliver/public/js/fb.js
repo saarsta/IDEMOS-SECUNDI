@@ -1,13 +1,16 @@
 function sendFacebookInvite(message,link,callback) {
     FB.ui(
-        {method: 'apprequests', message: message},
-        function(response) {
+        {
+            method: 'apprequests',
+            message: message},
 
-            if(!response) {
-                callback('canceled');
-            } else {
-                db_functions.addFacebookRequest(link, response, callback);
-            }
+            function(response) {
+
+                if(!response) {
+                    callback('canceled');
+                } else {
+                    db_functions.addFacebookRequest(link, response, callback);
+                }
         }
     );
 }
