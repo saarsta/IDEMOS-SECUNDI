@@ -27,8 +27,8 @@
 			// defaults
 			base.$window = base.$el.parent(); // mb-scroll
 			base.$wrap = base.$window.parent() // mb-wrapper
-				.prepend('<a class="mb-scrollButtons mb-left"></a>')
-				.append('<a class="mb-scrollButtons mb-right"></a><div class="mb-left-shadow"></div><div class="mb-right-shadow"></div>');
+				.prepend('<a class="mb-scrollButtons mb-left"><div></div></a>')
+				.append('<a class="mb-scrollButtons mb-right"><div></div></a><div class="mb-left-shadow"></div><div class="mb-right-shadow"></div>');
 
 			base.$panels = base.$el.children().addClass('mb-panel');
 			base.runTime = $('.mb-slider').index(base.$el) + 1; // Get index (run time) of this slider on the page
@@ -52,7 +52,18 @@
 				base.goForward();
 				return false;
 			});
-			// code to run to update MovingBoxes when the number of panels change
+
+            base.$left = base.$wrap.find('.mb-left').dblclick(function(event){
+                event.stopPropagation();
+                return false;
+            });
+            base.$right = base.$wrap.find('.mb-right').dblclick(function(event){
+                event.stopPropagation();
+                return false;
+            });
+
+
+            // code to run to update MovingBoxes when the number of panels change
 			base.update(false);
 			// make sure current panel is centered
 			base.setWrap(base.curPanel);
