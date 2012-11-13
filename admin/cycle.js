@@ -223,7 +223,7 @@ module.exports = AdminForm.extend({
                        if( _.any(actions, function(action){ return action.is_hidden != is_cycle_hidden_when_save })){
                            console.error("trying to save cycle as hidden when one of the action is not hidden");
 //                           var err = new Error();
-                           self.fields['title'] =
+//                           self.fields['title'] =
 
                            callback("trying to save cycle as hidden when one of the action is not hidden");
                        }else

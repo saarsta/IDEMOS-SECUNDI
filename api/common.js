@@ -384,7 +384,7 @@ var uploadHandler = exports.uploadHandler = function(req,callback) {
 
     var stream = req.queueStream || req;
 
-    if(knox&&knoxClient)
+    if(knox && knoxClient)
     {
 		// First, we write the file to disk. Then we upload it to Amazon.
         writeToFile(fName, stream, function(err,value) {
@@ -407,6 +407,8 @@ var uploadHandler = exports.uploadHandler = function(req,callback) {
                         var path = res.socket._httpMessage.url;
 
                         fs.unlink(value_full_path);
+                        console.log("res.socket._httpMessage");
+                        console.log(res.socket._httpMessage);
                         var value = {
                             path: path,
                             url: path
