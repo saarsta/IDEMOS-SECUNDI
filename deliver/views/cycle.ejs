@@ -23,7 +23,7 @@
                         <%= cycle.title %>
                     </h2>
                        <div class="sharing">
-                           <a    href="javascript:void(0)" class="facebook"></a>
+                           <a    href="javascript:void(0)" class="facebook_sh"></a>
                            <a    href="javascript:void(0)" class="twitter"></a>
                            <a    href="javascript:void(0)" class="email"></a>
                        </div>
@@ -86,7 +86,7 @@
 
 פריטי מידע רלוונטים
                         </div>
-                        <div class="tab right">
+                        <div class="tab right front">
                             <div class="tab_icon">  </div>
 
 
@@ -303,14 +303,16 @@ var current_section=2;
         });
 
             $(".tabs .right").click(function(){
-                if( $(this).hasClass('active'))
+                $(".tabs .left").removeClass('front').removeClass('open');
+                if( $(this).hasClass('open'))
                 {
                     closeTabs();
+                    $(this).removeClass('open')
                 }
                 else
                 {
-                    $(this).addClass('active');
-                    $(".tabs .left").removeClass('active');
+                    $(this).addClass('open').addClass('front');
+
                     $('.popular-comments .hide-box').slideDown();
                     $(".popular-comments .hide-box #comments").show();
                     $(".popular-comments .hide-box #info_items").hide();
@@ -319,14 +321,16 @@ var current_section=2;
             });
 
             $(".tabs .left").click(function(){
-                if( $(this).hasClass('active'))
+                $(".tabs .right").removeClass('front').removeClass('open');
+                if( $(this).hasClass('open'))
                 {
                     closeTabs();
+                    $(this).removeClass('open')
                 }
                 else
                 {
-                    $(this).addClass('active');
-                    $(".tabs .right").removeClass('active');
+                    $(this).addClass('open').addClass('front');
+                    $(".tabs .right").removeClass('front');
                     $('.popular-comments .hide-box').slideDown();
                     $(".popular-comments .hide-box #comments").hide();
                     $(".popular-comments .hide-box #info_items").show();
@@ -650,13 +654,13 @@ var current_section=2;
 
         $('#cycle .iconbutton').click(function(){
             minifyButton(350);
-            share();
+            setTimeout(share,300) ;
 
 
         });
 
         function minifyButton(speed) {
-            var w =  $(this).width()-18;
+            var w =  $('a.iconbutton').width()-18;
             $('a.iconbutton span.button_inner').css('min-width',w).css('position','relative');
             $('a.iconbutton span.button_inner span').html('&nbsp;&nbsp;');
             $('a.iconbutton span.button_inner span')
@@ -687,7 +691,7 @@ var current_section=2;
             }, 100);
             return false;
         }
-        $("#cycle .sharing .facebook").on('click', facebookShare)   ;
+        $("#cycle .sharing .facebook_sh").on('click', facebookShare)   ;
         $('#cycle .sharing .twitter').on('click', twitterShare);
         $('#cycle .sharing .email').on('click', share);
 
