@@ -290,6 +290,7 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                     access_token: req.user.access_token,
                     user: req.user
                 });
+                cbk();
             }
         ], function(err){
             var a = 9;
