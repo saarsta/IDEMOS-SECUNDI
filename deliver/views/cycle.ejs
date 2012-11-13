@@ -650,16 +650,20 @@ var current_section=2;
 
         $(".<%= cycle.is_user_follower_of_cycle ? "share-btn":"green-btn" %>").show();
            */
+        var button_minified=false;
         <%= cycle.is_user_follower_of_cycle ? "minifyButton(1)":"" %>
 
+
         $('#cycle .iconbutton').click(function(){
-            minifyButton(350);
-            setTimeout(share,300) ;
-
-
+             if (!button_minified)
+             {
+                 minifyButton(350);
+                 setTimeout(share,300) ;
+             }
         });
 
         function minifyButton(speed) {
+            button_minified=true;
             var w =  $('a.iconbutton').width()-18;
             $('a.iconbutton span.button_inner').css('min-width',w).css('position','relative');
             $('a.iconbutton span.button_inner span').html('&nbsp;&nbsp;');
@@ -673,6 +677,7 @@ var current_section=2;
 
             }, speed, function() {
                 $('a.iconbutton span.button_inner span').css('width',0);
+                $('a.iconbutton').addClass('minified') ;
             });
             $('a.iconbutton').animate({
                 left:150

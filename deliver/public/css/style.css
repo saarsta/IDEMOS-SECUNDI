@@ -9909,9 +9909,9 @@ change .current class name using plugin option, currentPanel : 'current' */
     background: transparent url('../images/URU_Pro.Sharing_Icon_sprite.png') no-repeat scroll right top;
 }
 
-#cycle .sharing  a.facebook{            background-position: -1px 0; margin-left: 8px;}
-#cycle .sharing  a.facebook:hover{      background-position: -1px -28px;}
-#cycle .sharing  a.facebook:active{     background-position: -1px -56px;}
+#cycle .sharing  a.facebook_sh{            background-position: -1px 0; margin-left: 8px;}
+#cycle .sharing  a.facebook_sh:hover{      background-position: -1px -28px;}
+#cycle .sharing  a.facebook_sh:active{     background-position: -1px -56px;}
 #cycle .sharing  a.twitter{    background-position: -27px 0;}
 #cycle .sharing  a.twitter:hover{    background-position: -27px -28px;}
 #cycle .sharing  a.twitter:active{    background-position: -27px -56px;}
@@ -9952,6 +9952,11 @@ change .current class name using plugin option, currentPanel : 'current' */
 }
 
 
+#cycle a.iconbutton.minified
+{
+    background-position:  right 0;
+}
+
 #cycle a.iconbutton  span.button_inner {
     background: transparent url('../images/Cycles_Pro_long_btn_sprite.png') 0 -90px no-repeat;
     height:32px;
@@ -9976,6 +9981,12 @@ change .current class name using plugin option, currentPanel : 'current' */
     background-position: 0 -2px;
     outline: none; /* hide dotted outline in Firefox */
 }
+
+#cycle a.iconbutton.minified  span.button_inner {
+    background-position: 0 -2px;
+    outline: none; /* hide dotted outline in Firefox */
+}
+
 
 #cycle a.iconbutton  span.button_inner span {
     padding-bottom: 10px;
