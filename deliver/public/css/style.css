@@ -6229,14 +6229,15 @@ color: #5578f1;
     height: 25px;
     clear: both;
 }
+
+
+
 .add-offer-small .tabs
 {
     position: relative;
     height: 35px;
     border-bottom: solid 4px #D6DBDE;
-
     color:#50504f   ;
-
     text-align: center;
     font: normal 20px/42px 'AdumaFOTMedium';
 
@@ -6246,26 +6247,14 @@ color: #5578f1;
 {
     width: 320px;
     height: 35px;
-    background: transparent    url(../images/Cycles_Tabs_Sprite.jpg) 0 -3px repeat-x;
-    cursor: pointer;
-}
-
-.add-offer-small .tab.active ,
-.add-offer-small .tab.active:hover
-{
-    width: 320px;
-    height: 35px;
     background: transparent    url(../images/Cycles_Tabs_Sprite.jpg) 0 -79px repeat-x;
     cursor: pointer;
-    z-index: 1;
-    color:#3b63ef;
 }
-
 .add-offer-small .tab.left
 {
-   position: absolute;
-   top:0;
-   left:10px;
+    position: absolute;
+    top:0;
+    left:10px;
 }
 
 .add-offer-small .tab.right
@@ -6274,31 +6263,26 @@ color: #5578f1;
     top:0;
     right:10px;
 }
+
+
+.add-offer-small .tab.front
+{
+    background-position: 0 -3px;
+    color:#50504f;
+    z-index: 1;
+}
+
+.add-offer-small .tab.front.open
+{
+
+    color:#3b63ef;
+
+}
+
 .add-offer-small .tab:hover
 {
-   background-position: 0 -41px;
+    background-position: 0 -41px;
     color:#b4b9bb;
-}
-
-.add-offer-small .tab:hover   .tab_icon
-{
-    background-position: 14px -14px;
-}
-
-.add-offer-small .tab:active
-{
-    background-position: 0 -79px;
-    color:#3b63ef;
-}
-
-.add-offer-small .tab.active    .tab_icon
-{
-    background-position: 0 -28px;
-}
-
-.add-offer-small .tab:active   .tab_icon
-{
-    background-position: 14px -14px;
 }
 
 .add-offer-small .tab .tab_icon
@@ -6311,14 +6295,29 @@ color: #5578f1;
     top: 14px;
     width: 14px;
 }
-.add-offer-small .tab.right .tab_icon{
 
+.add-offer-small .tab:hover   .tab_icon
+{
+    background-position: 14px -14px;
 }
-.add-offer-small .tab.left .tab_icon{
 
+.add-offer-small .tab:active   .tab_icon
+{
+    background-position: 14px -28px;
+}
+.add-offer-small .tab.open .tab_icon
+{
+    background-position: 0 0;
+}
+.add-offer-small .tab.open:hover   .tab_icon
+{
+    background-position: 0 -14px;
 }
 
-
+.add-offer-small .tab.open:active   .tab_icon
+{
+    background-position: 0 -28px;
+}
 
 
 a.fraction-btn {
@@ -9890,6 +9889,7 @@ change .current class name using plugin option, currentPanel : 'current' */
 .updates-box .right .fb-comments
 {
     padding: 0  ;
+    background-color: white;
 }
 
 #cycle .sharing
@@ -9909,9 +9909,9 @@ change .current class name using plugin option, currentPanel : 'current' */
     background: transparent url('../images/URU_Pro.Sharing_Icon_sprite.png') no-repeat scroll right top;
 }
 
-#cycle .sharing  a.facebook{            background-position: -1px 0; margin-left: 8px;}
-#cycle .sharing  a.facebook:hover{      background-position: -1px -28px;}
-#cycle .sharing  a.facebook:active{     background-position: -1px -56px;}
+#cycle .sharing  a.facebook_sh{            background-position: -1px 0; margin-left: 8px;}
+#cycle .sharing  a.facebook_sh:hover{      background-position: -1px -28px;}
+#cycle .sharing  a.facebook_sh:active{     background-position: -1px -56px;}
 #cycle .sharing  a.twitter{    background-position: -27px 0;}
 #cycle .sharing  a.twitter:hover{    background-position: -27px -28px;}
 #cycle .sharing  a.twitter:active{    background-position: -27px -56px;}
@@ -9952,6 +9952,11 @@ change .current class name using plugin option, currentPanel : 'current' */
 }
 
 
+#cycle a.iconbutton.minified
+{
+    background-position:  right 0;
+}
+
 #cycle a.iconbutton  span.button_inner {
     background: transparent url('../images/Cycles_Pro_long_btn_sprite.png') 0 -90px no-repeat;
     height:32px;
@@ -9976,6 +9981,12 @@ change .current class name using plugin option, currentPanel : 'current' */
     background-position: 0 -2px;
     outline: none; /* hide dotted outline in Firefox */
 }
+
+#cycle a.iconbutton.minified  span.button_inner {
+    background-position: 0 -2px;
+    outline: none; /* hide dotted outline in Firefox */
+}
+
 
 #cycle a.iconbutton  span.button_inner span {
     padding-bottom: 10px;
