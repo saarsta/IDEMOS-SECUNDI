@@ -51,7 +51,7 @@ var NotificationCategoryResource = module.exports = resources.MongooseResource.e
             }
         },
 
-        get_objects:function (req, filters, sorts, limit, offset, callback) {
+        get_objects: function (req, filters, sorts, limit, offset, callback) {
             var user_id = req.query.user_id;
             if (!user_id && req.user)
                 user_id = req.user._id;
