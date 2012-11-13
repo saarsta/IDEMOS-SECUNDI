@@ -6238,7 +6238,7 @@ color: #5578f1;
     color:#50504f   ;
 
     text-align: center;
-    font: normal 20px/46px 'AdumaFOTMedium';
+    font: normal 20px/42px 'AdumaFOTMedium';
 
 }
 
@@ -9431,7 +9431,7 @@ div.greenbutton a:hover {
 
 div.icons {
     position: absolute;
-    left: 217px;
+    left: 239px;
     bottom: 21px;
 }
 
@@ -9780,7 +9780,7 @@ change .current class name using plugin option, currentPanel : 'current' */
 /*** Inside the panel ***/
 #info_items .mb-inside {
     padding: 20px;
-
+   cursor: pointer;
 }
 
 #content  #info_items .mb-inside  h2 {
@@ -9803,37 +9803,52 @@ change .current class name using plugin option, currentPanel : 'current' */
 
 /*** Left & Right Navigation Arrows ***/
 #info_items a.mb-scrollButtons {
+
     display: block;
-    width: 14px;
-    height: 21px;
-    background: transparent url(../images/URU_data.items_arrows_sprite.png) no-repeat;
+
     position: absolute;
     top: 170px;
     margin-top: -29px; /* if you change the arrow images, you may have to adjust this (1/2 height of arrow image) */
     cursor: pointer;
     text-decoration: none;
     outline: 0;
+    width: 35px;
+    height: 50px;
     border: 0;
+
+}
+#info_items a.mb-scrollButtons div{
+    margin: 15px 10px;
+    width: 14px;
+    height: 21px;
+    background: transparent url(../images/URU_data.items_arrows_sprite.png) no-repeat;
 }
 #info_items a.mb-scrollButtons.mb-left {
-    background-position: left top;
     left: -35px;
 }
-#info_items a.mb-scrollButtons.mb-right {
-    background-position: right top;
+#info_items a.mb-scrollButtons.mb-left div{
+    background-position: left top;
+
+}
+#info_items a.mb-scrollButtons.mb-right{
+
     right: -35px;
 }
-#info_items a.mb-scrollButtons.mb-left:hover {
+#info_items a.mb-scrollButtons.mb-right div{
+    background-position: right top;
+
+}
+#info_items a.mb-scrollButtons.mb-left:hover div{
     background-position: left 50%;
 }
-#info_items a.mb-scrollButtons.mb-right:hover {
+#info_items a.mb-scrollButtons.mb-right:hover div{
     background-position: right 50%;
 }
 
-#info_items a.mb-scrollButtons.mb-left:active {
+#info_items a.mb-scrollButtons.mb-left:active div{
     background-position: left bottom;
 }
-#info_items a.mb-scrollButtons.mb-right:active {
+#info_items a.mb-scrollButtons.mb-right:active div{
     background-position: right bottom;
 }
 #info_items a.mb-scrollButtons.disabled {
@@ -9874,5 +9889,110 @@ change .current class name using plugin option, currentPanel : 'current' */
 
 .updates-box .right .fb-comments
 {
-    padding: 0 36px 0 38px  ;
+    padding: 0  ;
+}
+
+#cycle .sharing
+{
+    position: absolute;
+    left: 33px;
+    top: 47px;
+}
+
+
+#cycle .sharing  a
+{
+    display: inline-block;
+    width: 28px;
+    height: 26px;
+   margin-left: 5px;
+    background: transparent url('../images/URU_Pro.Sharing_Icon_sprite.png') no-repeat scroll right top;
+}
+
+#cycle .sharing  a.facebook{            background-position: -1px 0; margin-left: 8px;}
+#cycle .sharing  a.facebook:hover{      background-position: -1px -28px;}
+#cycle .sharing  a.facebook:active{     background-position: -1px -56px;}
+#cycle .sharing  a.twitter{    background-position: -27px 0;}
+#cycle .sharing  a.twitter:hover{    background-position: -27px -28px;}
+#cycle .sharing  a.twitter:active{    background-position: -27px -56px;}
+#cycle .sharing  a.email{      background-position: -57px 0; }
+#cycle .sharing  a.email:hover{      background-position: -57px -28px; }
+#cycle .sharing  a.email:active{      background-position: -57px -56px; }
+
+#cycle    a.iconbutton {
+    position: absolute;
+    left: 30px;
+    top: 39px;
+    /*width: 111px;
+    height: 42px;
+    display: none;
+       */
+    font-size: 20px;
+    line-height: 35px;
+    font-family: 'AdumaFOTRegular';
+    background: transparent url('../images/Cycles_Pro_left.cap_btn_sprite.png') no-repeat scroll right -88px;
+    color: #FFF;
+    display: block;
+    float: right;
+    font: normal 12px arial, sans-serif;
+    height: 42px;
+    padding-right: 11px; /* sliding doors padding */
+    text-decoration: none;
+
+}
+
+#cycle a.iconbutton:hover {
+    background-position: right -44px ;
+    outline: none; /* hide dotted outline in Firefox */
+}
+
+#cycle a.iconbutton:active {
+    background-position:  right 0;
+    outline: none; /* hide dotted outline in Firefox */
+}
+
+
+#cycle a.iconbutton  span.button_inner {
+    background: transparent url('../images/Cycles_Pro_long_btn_sprite.png') 0 -90px no-repeat;
+    height:32px;
+    display: block;
+    line-height: 17px;
+    padding: 5px 0 5px 18px;
+    text-align: center;
+    font-weight: bold;
+    color: #fff;
+    font-size: 14px;
+    /*text-shadow: #686868 0 -1px 0;*/
+    min-width: 75px;
+
+}
+
+#cycle a.iconbutton:hover span.button_inner {
+    background-position: 0 -46px;
+
+}
+
+#cycle a.iconbutton:active  span.button_inner {
+    background-position: 0 -2px;
+    outline: none; /* hide dotted outline in Firefox */
+}
+
+#cycle a.iconbutton  span.button_inner span {
+    padding-bottom: 10px;
+
+    padding-right: 25px;
+
+    font-size: 22px;
+
+    line-height: 28px;
+    background: transparent url('../images/URU_large_pro.hand_icon.png')  right 2px no-repeat;
+    text-align: right;
+}
+
+.cycle_buy_shirt,
+.cycle_buy_shirt div
+{
+    font-family: arial;
+    font-weight: bold;
+    margin-top: 10px;
 }

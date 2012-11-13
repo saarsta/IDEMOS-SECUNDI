@@ -23,7 +23,9 @@ module.exports = function(app) {
 
     router.all('/facebookShare',require('./account/facebook_share'));
 
-    router.all('/elections_only',require('./navigation/elections_only'));
+    router.all('/elections_only',require('./navigation/elections_only'))
+
+    router.all('/order_shirts',require('./navigation/order_shirts'));
 
     router.include('/information_items',InformationItems);
 

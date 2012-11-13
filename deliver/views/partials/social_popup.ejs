@@ -36,7 +36,7 @@
         </div>
         <div class="sb-bottom">
             <div class="sb-title">
-                כעת שתף/י את הבחירה שלך עם חבריך.
+                   &nbsp;
             </div>
             <div class="sb-text">
                 <div class="sb-icons">
@@ -44,7 +44,7 @@
                     <div class="icons">
                         <a id="social-popup-mail" href="#"
                            target="_blank"><img class="icon" src="/images/elections/enva.png" alt="עורו"/></a>
-                        <a href="javascript:void(0)" id="share-google"><img class="icon" src="/images/elections/google.png" alt="עורו"/></a>
+
                         <a href="javascript:void(0)" id="share-twitter"><img class="icon" src="/images/elections/tweet.png" alt="עורו"/></a>
                         <a href="javascript:void(0)" id="share-facebook"><img class="icon" src="/images/elections/face.png" alt="עורו"/></a>
                     </div>
@@ -106,9 +106,7 @@
 
                     </span>
                 </div>
-                <!-- This textarea will be populated with the contacts returned by CloudSponge
-                <textarea id="contact_list" style="width:450px;height:82px"></textarea>
-                -->
+
             </div>
             <div class="mail-notifications-cancel sb-small-text">
                 <% if(user && user.no_mail_notifications && user.no_mail_notifications == "true"){ %>
@@ -187,7 +185,9 @@
     };
 
 
-    $('#share-facebook').one('click', function () {
+    $("#share-facebook").one('click', facebookShare)   ;
+
+    function facebookShare () {
 
         var button = $('.social-on-click');
         var rel = button.data('rel');
@@ -236,28 +236,30 @@
         new_title =  title;
         text_preview =prev;
 
-        sendFacebookShare(rel, title, img_src, text_preview, function(err){
-             if(err){
-                alert('Error occured');
-             }else{
-//                             popupProvider.showOkPopup({message: 'השיתוף הסתיים בהצלחה.'});
-            }
-         });
-
-
-//        sendFacebookInvite('Come see that great site', "/",function(err, data){
-//            if(!err)
-//            {
-//                popupProvider.showOkPopup({message:"ההזמנה הצליחה!"});
-//                console.log(data);
-//                db_functions.submitInvitedFriends('action',action_id,data.response,null);
+//        sendFacebookShare(rel, title, img_src, text_preview, function(err){
+//             if(err){
+//                alert('Error occured');
+//             }else{
+////                             popupProvider.showOkPopup({message: 'השיתוף הסתיים בהצלחה.'});
 //            }
-//        });
+//         });
 
 
-    });
+        sendFacebookInvite('Come see that great site', "/",function(err, data){
+            if(!err)
+            {
+                popupProvider.showOkPopup({message:"ההזמנה הצליחה!"});
+                console.log(data);
+                db_functions.submitInvitedFriends('action',action_id,data.response,null);
+            }
+        });
 
-    $('#share-twitter').on('click', function () {
+
+    }
+
+    $('#share-twitter').on('click', twitterShare);
+
+    function twitterShare () {
         button = $('.social-on-click');
         rel = button.data('rel');
 
@@ -266,7 +268,7 @@
                 encodeURIComponent(button.data('title')) + '&via=URUisrael', 'share-twitter', 'status=0,scrollbars=0,location=0,height=320,width=660,resizable=1'
         );
         return false;
-    });
+    }
 
     $('#share-google').on('click', function () {
         button = $('.social-on-click');

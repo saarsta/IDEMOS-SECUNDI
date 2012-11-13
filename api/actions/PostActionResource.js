@@ -10,6 +10,7 @@ var resources = require('jest'),
     util = require('util'),
     models = require('../../models'),
     common = require('../common.js'),
+    og_action = require('../../og/og.js').doAction,
     async = require('async');
 
 var PostActionResource = module.exports = common.GamificationMongooseResource.extend({
@@ -145,11 +146,25 @@ var PostActionResource = module.exports = common.GamificationMongooseResource.ex
                         });
                     },
 
-                    // update actions done by user
+                    // 2.3 update actions done by user
                     function(cbk2){
                         models.User.update({_id:user.id},{$set: {"actions_done_by_user.post_on_object": true}}, function(err){
                             cbk2(err);
                         });
+                    },
+
+                    // 2.4 publish to facebook
+                    function(cbk2) {
+                        og_action({
+                            action: 'comment',
+                            object_name: 'action',
+                            object_url : '/actions/' + action_id,
+                            callback_url: '/actions/' + action_id + '/posts/' + post_object._id,
+                            fid: user.facebook_id,
+                            access_token: user.access_token,
+                            user: user
+                        });
+                        cbk2();
                     }
                 ],
                     cbk);
