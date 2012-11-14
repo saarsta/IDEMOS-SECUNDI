@@ -147,10 +147,19 @@
 
   <%if (cycle.sub_branding_title){%>
            <div class="cycle_sub_branding">
-                <a target="_blank" href="<%= cycle.sub_branding_link %>"><img src="<%= cycle.sub_branding_logo.url %>" > </a>
+                <a target="_blank" href="<%= cycle.sub_branding_link %>">
+
+                    <div style="width:90px;height: 90px;" class='auto-scale'>
+                        <img src="<%= cycle.sub_branding_logo.url %>" >
+                    </div>
+
+
+                </a>
                 <h3 >   <%= cycle.sub_branding_title %> </h3>
                 <span > <%= cycle.sub_branding_text %></span>
-                <img class="main_image" src="<%= cycle.sub_branding_image.url %>" style="">
+               <div style="width:238px;height: 174px" class='auto-scale'>
+                        <img class="main_image" src="<%= cycle.sub_branding_image.url %>" style="">
+                   </div>
                 <div style="">
                    </div>
            </div>
@@ -161,10 +170,10 @@
                         <a href="/order_shirts">
 
 
-                להזמנת חולצה הקלק כאן
+להזמנת חולצה לחצו כאן
 
                 <br>
-                <div style="width:238px;" class='auto-scale'>
+                <div style="width:238px;height: 200px" class='auto-scale'>
 
                     <img src="../images/shirt.jpg" alt="name" />
 

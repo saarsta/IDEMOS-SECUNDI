@@ -1541,6 +1541,18 @@ color: #ff00af;
 
 .services-green a.service-8 span.icon {
     background-image: url(../images/icon-8.png);
+    opacity:0;
+}
+
+.services-green a.service-8 span.text {
+    text-indent: 0;
+}
+
+.services-green a.service-8:hover span.text {
+    opacity: 0.4;
+}
+.services-green a.service-8:hover span.icon {
+    opacity: 1;
 }
 
 .services-green a.service-9 span.icon {
@@ -1580,6 +1592,8 @@ color: #ff00af;
 #nav a.activeSlide {
     background-position: 0 0;
 }
+
+
 
 /*----------------*/
 .discussion-main .top {
@@ -9642,13 +9656,13 @@ body.search-active #header {
     border-bottom: 1px solid #D6DBDE
 }
 
-.cycle_sub_branding  a img{
+.cycle_sub_branding  a div{
     float: right;
     margin: -4px  0 10px 10px
 }
 
 .cycle_sub_branding  h3{
-    line-height: 20px;
+    line-height: 28px;
     color: #3B63EF;
     margin: 0;
     font-size: 30px;
