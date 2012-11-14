@@ -37,7 +37,7 @@ app.set('url2png_api_secret', process.env.url2png_api_key || 'SF1BFA95A57BE4');
 
 
 express.logger.token('memory', function(req, res){ return util.format('%dMb %dMb', (process.memoryUsage().rss / 1048576).toFixed(2), (process.memoryUsage().heapUsed / 1048576).toFixed(2)); })
-express.logger.format('default2', ':remote-addr - - [:date] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" :response-time :memory');
+express.logger.format('default2', ':response-time :memory :res[content-length] :status ":method :url HTTP/:http-version"');
 
 
 app.configure('development', function(){
