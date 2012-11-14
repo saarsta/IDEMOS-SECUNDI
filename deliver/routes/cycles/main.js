@@ -104,7 +104,7 @@ module.exports = function(req, res){
                 social_popup_title: g_cycle.social_popup_title,
                 social_popup_text: g_cycle.social_popup_text,
                 meta:{
-                    type:'cycles',
+                    type:req.app.settings.facebook_app_name + ':cycle',
                     title:g_cycle.title,
                     description: no_tags_description,
                     image: (g_cycle.image_field_preview && g_cycle.image_field_preview.url) || (g_cycle.image_field && g_cycle.image_field.url),

@@ -12,6 +12,7 @@ var jest = require('jest'),
     models = require('../../models'),
     common = require('../common.js'),
     async = require('async'),
+    og_action = require('../../og/og.js').doAction,
     _ = require('underscore');
 
 var CycleResource = module.exports = common.GamificationMongooseResource.extend({
@@ -216,6 +217,18 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
                             models.Cycle.update({_id: cycle_id}, {$inc:{followers_count:1}}, cbk2);
                     }
                 ], function (err, obj) {
+
+                    // publish to facebook
+                    og_action({
+                        action: 'join',
+                        object_name:'cycle',
+                        object_url : '/cycles/' + cycle_id,
+                        callback_url:'/cycles/' + cycle_id,
+                        fid : req.user.facebook_id,
+                        access_token: req.user.access_token,
+                        user: req.user
+                    });
+
                     object.followers_count++;
                     object.is_follower = true;
                     object.participants_count = object.followers_count;
