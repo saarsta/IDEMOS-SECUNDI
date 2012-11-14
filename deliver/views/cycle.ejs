@@ -187,7 +187,15 @@
             </div>
         </div>
     </div>
+     <a name="timeline"></a>
+<div class="system-notice cycle-system-notice">
+    <div class="extra">
+        <a class="close" href="javascript:void(0);"></a>
 
+        כאן תוכלו לראות את הפעולות המתקיימות לקידום הנושא. לחצו על ציון התאריך או המיקום במפה כדי לקבל פרטים נוספים, לתמוך ולהשתתף.
+
+    </div>
+</div>
     <div class="followers-box cycle">
         <div class="extra holds_the_timeline">
             <div class="tabs-box">
@@ -726,6 +734,8 @@ var current_section=2;
                 //$('#social-popup-mail').attr("href", "mailto:?subject=" + mail_subject + "&body=" + mail_body);
                 $('#close').click(function(){
                     $('#box-share,#screen').hide();
+                    var aTag = $("a[name='timeline']");
+                    $('html,body').animate({scrollTop: aTag.offset().top},'slow');
                 })
             }, 100);
             return false;
@@ -742,6 +752,11 @@ var current_section=2;
 
         $('a.mb-scrollButtons').dblclick(function(event) {
             event.isPropagationStopped() ;
+        });
+
+        $('.system-notice .close').click(function () {
+
+            $(this).parents('.system-notice').fadeOut(800);
         });
 
     });

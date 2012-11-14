@@ -3129,12 +3129,23 @@ textarea.hidden_textarea::selection {
     margin-bottom: 30px;
 }
 
+.system-notice.cycle-system-notice {
+    padding: 10px 0;
+    margin-bottom: 0;
+}
+
 .system-notice .extra {
     position: relative;
     width: 980px;
     margin: 0 auto;
     color: #ffffff;
     font: normal 15px/35px Arial;
+}
+
+
+.system-notice.cycle-system-notice  .extra
+{
+    font: normal 17px/35px Arial;
 }
 
 .system-notice .close {
@@ -3144,6 +3155,11 @@ textarea.hidden_textarea::selection {
     background: url(../images/delete-app.png) no-repeat;
     width: 28px;
     height: 28px;
+}
+
+.system-notice.cycle-system-notice  .close {
+    top: auto;
+    bottom: -22px;
 }
 
 .system-notice a {
@@ -7214,7 +7230,7 @@ a.fraction-btn {
 
 #footer .footer_line {
     margin: 0 auto;
-    width: 660px;
+    width: 730px;
 }
 
 #footer .footer_line a {
