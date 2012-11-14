@@ -57,7 +57,16 @@ module.exports = function(req,res)
                                 fb_description: discussion.text_field_preview,
                                 fb_title: discussion.title,
                                 fb_image:discussion.image_field && discussion.image_field.url,
-                                user:user
+                                user:user,
+                                meta: {
+                                    type: req.app.settings.facebook_app_name + ':discussion',
+                                    id: discussion.id,
+                                    image: ((discussion.image_field_preview && discussion.image_field_preview.url) ||
+                                        (discussion.image_field && discussion.image_field.url)),
+                                    title: discussion && discussion.title,
+                                    description: discussion.text_field_preview || discussion.text_field,
+                                    link: discussion && ('/discussions/' + discussion.id)
+                                }
                             });
 
                             //update all notifications of user that connected to this object

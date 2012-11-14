@@ -369,7 +369,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
             // 8) publish to facebook
             function(cbk) {
                 og_action({
-                    action: 'created',
+                    action: 'create',
                     object_name:'discussion',
                     object_url : '/discussions/' + object.id,
                     fid : user.facebook_id,
