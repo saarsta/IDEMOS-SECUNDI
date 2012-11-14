@@ -2,7 +2,7 @@ var resources = require('jest'),
     util = require('util'),
     models = require('../models'),
     common = require('./common'),
-    async = require('async');
+    async = require('async'),
     _  = require('underscore');
 
 var NotificationCategoryResource = module.exports = resources.MongooseResource.extend(
@@ -36,13 +36,19 @@ var NotificationCategoryResource = module.exports = resources.MongooseResource.e
                 link:null,
                 pic:null,
                 html_version: null,
-                html_version_1: null,
                 part_one: null,
                 part_tow: null,
                 part_three: null,
+                part_four: null,
                 extra_link: null,
                 link_to_first_comment_user_didnt_see: null,
                 discussion_link: null,
+                is_going: null,
+                extra_text: null,
+                user_link: null,
+                check_going: null,
+                user: null,
+                main_link: null,
 
                 //for the share part
                 img_src: null,
@@ -66,7 +72,7 @@ var NotificationCategoryResource = module.exports = resources.MongooseResource.e
                 if(err)
                     callback(err);
                 else
-                    populateNotifications(results,function(err, results){
+                    populateNotifications(results, user_id, function(err, results){
                         callback(err, results);
                     });
             });
@@ -74,7 +80,7 @@ var NotificationCategoryResource = module.exports = resources.MongooseResource.e
     });
 
 
-var iterator = function (users_hash, discussions_hash, posts_hash, info_items_hash) {
+var iterator = function (users_hash, discussions_hash, posts_hash, info_items_hash, actions_hash, cycles_hash, updates_hash, resources_hash, user_id) {
     return function (notification, itr_cbk) {
         {
             var description_of_notificators;
@@ -85,6 +91,15 @@ var iterator = function (users_hash, discussions_hash, posts_hash, info_items_ha
             var discussion = discussions_hash[notification.entity_id + ''] || discussions_hash[notification.notificators[0].sub_entity_id + ''];
             var post = posts_hash[notification.entity_id + ''] || posts_hash[notification.notificators[0].sub_entity_id + ''];
             var post_id = post ? post._id : "";
+            var action = actions_hash[notification.entity_id + ''] || actions_hash[notification.notificators[0].sub_entity_id + ''];
+            var cycle = cycles_hash[notification.entity_id + ''] || cycles_hash[notification.notificators[0].sub_entity_id + ''];
+            var update = updates_hash[notification.entity_id + ''];
+            var resource = resources_hash[notification.notificators[0].sub_entity_id + ''];
+            var going_users;
+            if(action){
+                going_users = _.map(action.going_users, function(user){return user.user_id + "";});
+            }
+
             switch (notification.type) {
                 case "approved_info_item_i_created":
                     notification.message_of_notificators =
@@ -336,6 +351,176 @@ var iterator = function (users_hash, discussions_hash, posts_hash, info_items_ha
                             +
                             notification.name;
                         notification.text_preview = discussion.text_field_preview;
+                    }
+                    itr_cbk();
+                    break;
+
+                case "user_brings_resource_to_action_you_created":
+                    notification.html_version = true;
+                    if(user_obj){
+                        notification.user = user_obj.first_name + " " + user_obj.last_name;
+                        notification.user_link = "/myuru/" + user_obj._id + '';
+                    }
+                    if(resource){
+                        notification.part_one = " התחייב/ה להביא " + resource.name + " לקידום פעולה ";
+                    }
+                    if(action){
+                        notification.pic = action.image_field_preview || action.image_field;
+                        notification.img_src = notification.pic;
+                        notification.extra_link = "/actions/" + action._id;
+                        notification.part_tow = action.title;
+                        notification.part_three = " במסגרת מעגל התנופה ";
+                        notification.link = "/cycles/" + action.cycle_id[0].cycle;
+                        notification.main_link = "/actions/" + action._id;
+                        models.Cycle.findById(action.cycle_id[0].cycle, {title : 1}, function(err, cycle){
+                            notification.part_four = cycle.title;
+                            itr_cbk();
+                        });
+                    }
+                    else{
+                        itr_cbk();
+                    }
+                    break;
+
+                case "response_added_to_action_you_joined":
+                    notification.html_version = true;
+                    notification.part_one = "נוספה תגובה חדשה לפעולה ";
+                    notification.part_three = " שבמעגל התנופה ";
+                    if(cycle){
+                        notification.link = "/cycles/" + cycle.id;
+                        notification.part_four = cycle.title;
+                    }
+                    if(action){
+                        notification.extra_link = "/actions/" + action._id;
+                        notification.part_tow = action.title;
+                        notification.pic = action.image_field_preview || action.image_field;
+                        notification.img_src = notification.pic;
+                        notification.main_link = "/actions/" + action._id;
+                    }
+                    itr_cbk();
+                    break;
+
+                case "action_suggested_in_cycle_you_are_part_of":
+                    notification.html_version = true;
+                    notification.part_one = "למעגל התנופה ";
+                    notification.part_three = " נוסף רעיון לפעולה: "
+                    if(cycle){
+                        notification.extra_link = "/cycles/" + cycle.id;
+                        notification.part_tow = cycle.title;
+                        notification.pic = cycle.image_field_preview || cycle.image_field;
+                        notification.img_src = notification.pic;
+                    }
+                    if(action){
+                        notification.link = "/actions/" + action._id;
+                        notification.part_four = action.title;
+                        notification.extra_text = "לחצו כאן כדי לגרום לזה לקרות!";
+                        notification.check_going = true;
+                        if(going_users){
+                            if(_.contains(going_users, user_id + "")){
+                                notification.is_going = true;
+                            } else {
+                                notification.is_going = false;
+                            }
+                        }
+                    }
+                    itr_cbk();
+                    break;
+
+                case "action_you_created_was_approved":
+                    notification.html_version = true;
+                    notification.part_one = "הרעיון שהעלית לפעולה במעגל התנופה ";
+                    notification.part_three = " התקבל ויוצא לדרך!";
+                    if(cycle){
+                        notification.extra_link = "/cycles/" + cycle.id;
+                        notification.part_tow = cycle.title;
+                    }
+                    if(action){
+                        notification.pic = action.image_field_preview || action.image_field;
+                        notification.img_src = notification.pic;
+                        notification.link = "/actions/" + action._id;
+                    }
+                    itr_cbk();
+                    break;
+
+                case "user_joined_action_you_created":
+                    notification.html_version = true;
+
+                    var num_of_joined = notification.notificators.length;
+                    if(num_of_joined > 1) {
+                        notification.user = num_of_joined + " חברי עורו";
+                        notification.part_one = " הביעו תמיכה ברעיון לפעולה שהעלית במעגל התנופה ";
+                    } else {
+                        if(user_obj)
+                        notification.user = user_obj.first_name + " " + user_obj.last_name;
+                        notification.part_one = " הביע תמיכה ברעיון לפעולה שהעלית במעגל התנופה "
+                        notification.user_link = "/myuru/" + user_obj._id + '';
+                    }
+                    if(action){
+                        notification.pic = action.image_field_preview || action.image_field;
+                        notification.img_src = notification.pic;
+                        notification.link = "/actions/" + action._id;
+                    }
+                    if(cycle){
+                        notification.extra_link = "/cycles/" + cycle.id;
+                        notification.part_tow = cycle.title;
+                    }
+                    itr_cbk();
+                    break;
+
+                case "action_you_are_participating_in_was_approved":
+                    notification.html_version = true;
+                    notification.part_one = "הרעיון לפעולה שהשתתפת בו במעגל התנופה ";
+                    notification.part_three = " התקבל ויוצא לדרך!";
+                    if(cycle){
+                        notification.extra_link = "/cycles/" + cycle.id;
+                        notification.part_tow = cycle.title;
+                    }
+                    if(action){
+                        notification.pic = action.image_field_preview || action.image_field;
+                        notification.img_src = notification.pic;
+                        notification.link = "/actions/" + action._id;
+                    }
+                    itr_cbk();
+                    break;
+                    itr_cbk();
+                    break;
+                case "action_added_in_cycle_you_are_part_of":
+                    notification.html_version = true;
+                    notification.part_one = "למעגל התנופה ";
+                    notification.part_three = " שבהשתתפותך נוספה פעולה חדשה - "
+                    if(cycle){
+                        notification.extra_link = "/cycles/" + cycle.id;
+                        notification.part_tow = cycle.title;
+                        notification.pic = cycle.image_field_preview || cycle.image_field;
+                        notification.img_src = notification.pic;
+                    }
+                    if(action){
+                        notification.link = "/actions/" + action._id;
+                        notification.part_four = action.title;
+                        notification.check_going = true;
+                        if(going_users){
+                            if(_.contains(going_users, user_id + "")){
+                                notification.is_going = true;
+                            } else {
+                                notification.is_going = false;
+                            }
+                        }
+                    }
+                    itr_cbk();
+                    break;
+                case "update_created_in_cycle_you_are_part_of":
+                    notification.html_version = true;
+                    notification.part_one = "פריט מידע חדש נוסף למעגל תנופה ";
+                    notification.part_three = " שבהשתתפותך - ";
+                    if(cycle){
+                        notification.extra_link = "/cycles/" + cycle.id;
+                        notification.part_tow = cycle.title;
+                        notification.pic = cycle.image_field_preview || cycle.image_field;
+                        notification.img_src = notification.pic;
+                    }
+                    if(update){
+                        notification.link = "/updates/" + update.id;
+                        notification.part_four = update.title;
                     }
                     itr_cbk();
                     break;
@@ -665,7 +850,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, info_items_ha
     };
 };
 
-var populateNotifications = module.exports.populateNotifications = function(results, callback) {
+var populateNotifications = module.exports.populateNotifications = function(results, user_id, callback) {
     //formulate notifications
     var notificator_ids = _.chain(results.objects)
         .map(function (notification) {
@@ -677,13 +862,78 @@ var populateNotifications = module.exports.populateNotifications = function(resu
 
     var post_or_suggestion_notification_types = [
         "user_gave_my_post_tokens",
-        "user_gave_my_suggestion_tokens",
+        "user_gave_my_suggestion_tokens"
     ];
 
     var post_notification_types = [
         "been_quoted",
         "proxy_vote_to_post"
     ];
+
+    var cycle_notification_types_as_sub_entity = [
+        "action_suggested_in_cycle_you_are_part_of",
+        "action_added_in_cycle_you_are_part_of",
+        "update_created_in_cycle_you_are_part_of",
+        "action_you_created_was_approved",
+        "action_you_are_participating_in_was_approved",
+        "user_joined_action_you_created",
+        "response_added_to_action_you_joined"
+    ];
+
+    var cycle_ids = _.chain(results.objects)
+        .map(function (notification) {
+            return  _.indexOf(cycle_notification_types_as_sub_entity, notification.type) > -1
+                ? notification.notificators[0].sub_entity_id : null;
+        })
+        .compact()
+        .uniq()
+        .value();
+
+    var action_notification_type = [
+        "action_suggested_in_cycle_you_are_part_of",
+        "action_added_in_cycle_you_are_part_of",
+        "action_you_created_was_approved",
+        "action_you_are_participating_in_was_approved",
+        "user_joined_action_you_created",
+        "user_brings_resource_to_action_you_created",
+        "response_added_to_action_you_joined"
+
+    ];
+
+    var action_ids = _.chain(results.objects)
+        .map(function (notification) {
+            return  _.indexOf(action_notification_type, notification.type) > -1
+                ? notification.entity_id : null;
+        })
+        .compact()
+        .uniq()
+        .value();
+
+    var update_notification_type = [
+        "update_created_in_cycle_you_are_part_of"
+    ];
+
+    var resource_notification_type = [
+        "user_brings_resource_to_action_you_created"
+    ];
+
+    var resource_ids = _.chain(results.objects)
+        .map(function (notification) {
+            return  _.indexOf(resource_notification_type, notification.type) > -1
+                ? notification.notificators[0].sub_entity_id : null;
+        })
+        .compact()
+        .uniq()
+        .value();
+
+    var update_ids = _.chain(results.objects)
+        .map(function (notification) {
+            return  _.indexOf(update_notification_type, notification.type) > -1
+                ? notification.entity_id : null;
+        })
+        .compact()
+        .uniq()
+        .value();
 
     var discussion_notification_types = [
         "change_suggestion_on_discussion_you_are_part_of",
@@ -843,7 +1093,10 @@ var populateNotifications = module.exports.populateNotifications = function(resu
             if(info_items_ids.length)
                 models.InformationItem.find({},
                     {'id':1,
-                        'image_field_preview':1, 'image_field':1, 'title':1})
+                        'image_field_preview':1,
+                        'image_field':1,
+                        'title':1
+                    })
                     .where('_id').in(info_items_ids)
                     .exec(function (err, info_items) {
 
@@ -858,9 +1111,81 @@ var populateNotifications = module.exports.populateNotifications = function(resu
                     });
             else
                 cbk(null,{});
+        },
+        function(cbk){
+            if(action_ids.length){
+                models.Action.find()
+                    .where('_id').in(action_ids)
+                    .select({'_id': 1, 'title': 1, 'image_field': 1, 'image_field_preview': 1, 'going_users': 1, 'cycle_id': 1})
+                    .exec(function(err, actions){
+                        if(!err){
+                            var actions_hash = {};
+
+                            _.each(actions, function(action){
+                                actions_hash[action._id] = action;
+                            });
+                        }
+                        cbk(err, actions_hash);
+                    });
+            } else
+                cbk(null,{});
+        },
+        function(cbk){
+            if(cycle_ids.length){
+                models.Cycle.find()
+                    .where('_id').in(cycle_ids)
+                    .select({'_id': 1, 'title': 1, 'image_field': 1, 'image_field_preview': 1})
+                    .exec(function(err, cycles){
+                        if(!err){
+                            var cycles_hash = {};
+
+                            _.each(cycles, function(cycle){
+                                cycles_hash[cycle._id] = cycle;
+                            });
+                        }
+                        cbk(err, cycles_hash);
+                    });
+            }else
+                cbk(null,{});
+        },
+        function(cbk){
+            if(update_ids.length){
+                models.Update.find()
+                    .where('_id').in(update_ids)
+                    .select({'_id': 1, 'title': 1, 'image_field': 1})
+                    .exec(function(err, updates){
+                        if(!err){
+                            var updates_hash = {};
+
+                            _.each(updates, function(update){
+                                updates_hash[update._id] = update;
+                            });
+                        }
+                        cbk(err, updates_hash);
+                    })
+            }else
+                cbk(null,{});
+        },
+        function(cbk){
+            if(resource_ids.length){
+                models.ActionResource.find()
+                    .where('_id').in(resource_ids)
+                    .select({'_id': 1, 'name': 1})
+                    .exec(function(err, resources){
+                        if(!err){
+                            var resources_hash = {};
+
+                            _.each(resources, function(resource){
+                                resources_hash[resource._id] = resource;
+                            });
+                        }
+                        cbk(err, resources_hash);
+                    })
+            }else
+                cbk(null,{});
         }
     ], function(err, args){
-        async.forEach(results.objects, iterator(args[0], args[1], args[2], args[3]), function (err, obj) {
+        async.forEach(results.objects, iterator(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], user_id), function (err, obj) {
             callback(err, results);
         })
     })

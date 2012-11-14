@@ -224,7 +224,6 @@ var my_id = "<%= user_logged ? user._id : '' %>";
 var cycle_title = "<%= action.cycle_id[0].cycle.title %>";
 $(document).ready(function () {
     timeline.render(cycle_id, cycle_title, action_id);
-
     $('.followers-diagram').on("mouseenter", ".icon", function(e){
         e.preventDefault();
         var popup_event = $(this).children('.popup-event');

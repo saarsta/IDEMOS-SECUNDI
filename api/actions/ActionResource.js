@@ -11,6 +11,7 @@ var resources = require('jest'),
     async = require('async'),
     common = require('../common.js'),
     _ = require('underscore');
+    notifications = require('../notifications.js');
 
 var hourDifference = function (from, to) {
     // This is a horrible hack to make the JavaScript Date object accept dateless times.
@@ -134,8 +135,12 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
 
         async.waterfall([
 
+            //find cycle
             function(cbk){
-                models.Cycle.findById(fields.cycle_id, cbk);
+
+                models.Cycle.findById(fields.cycle_id, function(err, cycle_obj){
+                    cbk(err, cycle_obj);
+                });
             },
 
             function(cycle, cbk){
@@ -143,7 +148,6 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                 if(!cycle)
                     cbk('no such cycle');
                 else{
-
                     if (fields.text_field.length >= 200)
                         fields.text_field_preview = fields.text_field.substr(0, 200);
                     else
@@ -234,7 +238,9 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                     },
 
                     function (cbk1) {
-                        models.Cycle.findById(cycle_id, cbk1);
+                        models.Cycle.findById(cycle_id, function(err, cycle){
+                            cbk1(err, cycle);
+                        });
                     },
 
                     //find user's information items, and add it to action
@@ -246,6 +252,31 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                                 async.forEach(info_items, iterator, cbk1);
                             }
                         })
+                    },
+                    function(cbk1){
+                        models.User.find({"cycles.cycle_id": cycle_id}, function(err, followers){
+                            if (err) return cbk1(err);
+
+                            var notified_user_ids = _.map(followers, function(follower) { return follower.id });
+                            async.forEach(notified_user_ids, function(notified_user, itr_cbk) {
+                                if (notified_user != user_id) {
+                                    notifications.create_user_notification("action_suggested_in_cycle_you_are_part_of", action_obj._id,
+                                        notified_user, user_id, cycle_id, '/actions/' + action_obj._id, function(err, result){
+                                            itr_cbk(err);
+                                        })
+                                }
+                                else
+                                    itr_cbk();
+                            }, function(err){
+                                if (err){
+                                    console.log("failed adding user notifications on approved action");
+                                    cbk1(err, "im arg number 4");
+                                }
+                                else{
+                                    cbk1();
+                                }
+                            });
+                        });
                     }
 
                 ], function(err, args){
@@ -346,6 +377,8 @@ module.exports.approveAction = function (id, callback) {
                 });
                 cbk("no such upcoming_action!");
             }else{
+
+
                 if(is_first_approved_action_of_cycle || (g_action && g_action.execution_date.date < upcoming_action.execution_date.date)){
                     g_cycle.upcoming_action = g_action;
                     g_cycle.save(cbk);
@@ -353,6 +386,54 @@ module.exports.approveAction = function (id, callback) {
                     cbk();
                 }
             }
+        },
+        function(cbk){
+            //add cycle user notifications
+            var creator_id = g_action.creator_id;
+            var cycles = _.map(g_action.cycle_id, function(cycle_obj){return cycle_obj.cycle});
+            async.forEach(cycles, function(cycle_id, callback){
+                models.User.find({'cycles.cycle_id': cycle_id}, function(err, followers){
+                    if (err){
+                        callback(err);
+                    } else {
+                        var notified_user_ids = _.map(followers, function(follower){return follower.id});
+                        async.forEach(notified_user_ids, function(notified_user, itr_cbk){
+                            if(creator_id == notified_user){
+                                notifications.create_user_notification("action_you_created_was_approved", g_action._id,
+                                    notified_user, null, cycle_id, '/actions/' + g_action._id, function(err, result){
+                                        itr_cbk(err);
+                                    })
+                            } else {
+                                notifications.create_user_notification("action_added_in_cycle_you_are_part_of", g_action._id,
+                                    notified_user, null, cycle_id, '/actions/' + g_action._id, function(err, result){
+                                        itr_cbk(err);
+                                    })
+                            }
+                        }, function(err){
+                            callback(err);
+                        });
+                    }
+                })
+            }, function(){
+                    cbk();
+            });
+        },
+        function(cbk){
+            //add action user notifications
+            var creator_id = g_action.creator_id;
+            var notified_user_ids = _.map(g_action.going_users, function(user){return user.user_id;});
+            async.forEach(notified_user_ids, function(notified_user, itr_cbk){
+                if(creator_id != notified_user){
+                    notifications.create_user_notification("action_you_are_participating_in_was_approved", g_action._id,
+                        notified_user, null, g_cycle._id, '/actions/' + g_action._id, function(err, result){
+                            itr_cbk(err);
+                        });
+                } else {
+                    itr_cbk();
+                }
+            }, function(){
+                    cbk();
+            });
         }],
 
         function(err, obj){

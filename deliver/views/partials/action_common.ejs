@@ -155,6 +155,10 @@
                 })
             });
 
+        if(window.location.hash){
+            $('.social-on-click').click();
+        }
+
             $('.holds_the_timeline').on("click",'.join-btn', function(e){
                 e.preventDefault();
 

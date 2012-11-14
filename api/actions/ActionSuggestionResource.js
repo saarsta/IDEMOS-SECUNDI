@@ -143,18 +143,20 @@ ActionSuggestionResource = module.exports = common.GamificationMongooseResource.
             if (user_schema.user_id == user_id.id || !user_schema.user_id)
                 itr_cbk(null, 0);
             else {
-                //TODO - set notifications
-//                if (action_creator_id == user_schema.user_id) {
-//                    notifications.create_user_notification("change_suggestion_on_discussion_you_created", discussion_id, user_schema.user_id, user_id, suggestion_object._id, function (err, results) {
-//                        itr_cbk(err, results);
-//                    });
-//                } else {
-//                    notifications.create_user_notification("change_suggestion_on_discussion_you_are_part_of", discussion_id, user_schema.user_id, user_id, suggestion_object._id, function (err, results) {
-//                        itr_cbk(err, results);
-//                    });
-//                }
-
-                itr_cbk(null, 0);
+                var action_id = suggestion_object.action_id;
+                models.Action.findById(action_id, {'_id': 1, 'going_users': 1, 'cycle_id': 1}, function(err, action){
+                    var notified_users = _.map(action.going_users, function(user){return user.user_id + ''});
+                    async.forEach(notified_users, function(notified_user, itr_cbk){
+                        if(notified_user != user_id){
+                            notifications.create_user_notification("response_added_to_action_you_joined", action_id,
+                                notified_user, null , action.cycle_id[0].cycle, '/actions/' + action_id, function(err){
+                                    itr_cbk(err);
+                                });
+                        } else {
+                            itr_cbk();
+                        }
+                    })
+                }, itr_cbk(null, 0));
             }
         }
 

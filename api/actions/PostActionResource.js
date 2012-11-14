@@ -10,6 +10,7 @@ var resources = require('jest'),
     util = require('util'),
     models = require('../../models'),
     common = require('../common.js'),
+    notifications = require('../notifications.js'),
     async = require('async');
 
 var PostActionResource = module.exports = common.GamificationMongooseResource.extend({
@@ -150,6 +151,25 @@ var PostActionResource = module.exports = common.GamificationMongooseResource.ex
                         models.User.update({_id:user.id},{$set: {"actions_done_by_user.post_on_object": true}}, function(err){
                             cbk2(err);
                         });
+                    },
+
+                    //add notifications to users that joined the action
+                    function(cbk2){
+                        models.Action.findById(action_id, {'_id': 1, 'going_users': 1, 'cycle_id': 1}, function(err, action){
+                            var notified_users = _.map(action.going_users, function(user){return user.user_id + ''});
+                            async.forEach(notified_users, function(notified_user, itr_cbk){
+                                if(notified_user != user_id){
+                                    notifications.create_user_notification("response_added_to_action_you_joined", action_id,
+                                        notified_user, null , action.cycle_id[0].cycle, '/actions/' + action_id, function(err){
+                                            itr_cbk(err);
+                                        });
+                                } else {
+                                    itr_cbk();
+                                }
+                            }, cbk2)
+                        })
+
+
                     }
                 ],
                     cbk);

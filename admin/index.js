@@ -57,7 +57,7 @@ module.exports = function (app) {
         cloneable:true,
         form:require('./discussion'),
         order_by:['-creation_date'],
-        filters:['created_by', 'is_published', 'is_hidden', 'is_hot_object', 'is_cycle.flag'],
+        filters:['created_by', 'is_published', 'is_hidden', 'is_hot_object', 'is_cycle.flag']
 //        search:'/__value__/.test(this.title)'
     });
 
@@ -178,7 +178,8 @@ module.exports = function (app) {
     });
 
     admin.registerMongooseModel('Update', Models.Update, null, {
-        list:['title']
+        list:['title'],
+        form:require('./update')
     });
 
     admin.registerMongooseModel('Kilkul', Models.Kilkul, null, {
@@ -226,7 +227,8 @@ module.exports = function (app) {
 
     admin.registerMongooseModel('Notification', Models.Notification, null, {
         list:['type'],
-        order_by:['-on_date']
+        order_by:['-on_date'],
+        filters:['type']
     });
 
     admin.registerMongooseModel('FBRequest', Models.FBRequest, null, {
