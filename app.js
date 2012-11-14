@@ -36,9 +36,11 @@ app.set('url2png_api_key', process.env.url2png_api_key || 'P503113E58ED4A');
 app.set('url2png_api_secret', process.env.url2png_api_key || 'SF1BFA95A57BE4');
 
 
-app.configure('development', function(){
-    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+express.logger.token('memory', function(req, res){ return util.format('%dMb %dMb', (process.memoryUsage().rss / 1048576).toFixed(2), (process.memoryUsage().heapUsed / 1048576).toFixed(2)); })
+express.logger.format('default2', ':remote-addr - - [:date] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" :response-time :memory');
 
+
+app.configure('development', function(){
     app.use(express.errorHandler());
     require('j-forms').setAmazonCredentials({
         key: 'AKIAJM4EPWE637IGDTQA',
@@ -50,12 +52,6 @@ app.configure('development', function(){
 //    app.set('send_mails',true);
 
 });
-
-
-app.configure('avner_env', function(){
-    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-});
-
 
 
 app.configure('staging', function(){
@@ -136,6 +132,8 @@ app.configure(function(){
     if(app.settings.public_folder2)
         app.use(express.static(app.settings.public_folder2));
     require('j-forms').serve_static(app,express);
+
+    app.use(express.logger('default2'));
 
     app.use(function(req,res,next) {
         var agent = req.header('User-Agent');
