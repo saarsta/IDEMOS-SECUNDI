@@ -191,7 +191,7 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
             function(cbk) {
                 og_action({
                     action: 'go',
-                    object_name:'action',
+                    object_name:'activity',
                     object_url : '/actions/' + action_id,
                     callback_url:'/actions/' + action_id,
                     fid : req.user.facebook_id,

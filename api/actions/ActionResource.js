@@ -10,6 +10,7 @@ var resources = require('jest'),
     models = require('../../models'),
     async = require('async'),
     common = require('../common.js'),
+    og_action = require('../../og/og.js').doAction,
     _ = require('underscore');
     notifications = require('../notifications.js');
 
@@ -307,6 +308,20 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                         cbk(err)
                     });
                 }
+            },
+
+            function(cbk){
+                // publish to facebook
+                og_action({
+                    action: 'suggest',
+                    object_name: 'activity',
+                    object_url : '/actions/' + g_action.id,
+                    callback_url:'/cycles/' + g_action.id,
+                    fid : req.user.facebook_id,
+                    access_token: req.user.access_token,
+                    user: req.user
+                });
+                cbk();
             }
         ], function(err){
             var a = 9;

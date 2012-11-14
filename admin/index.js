@@ -80,7 +80,6 @@ module.exports = function (app) {
         order_by:['-creation_date'],
         filters:['discussion_id', 'creator_id'],
         search:'/__value__/.test(this.discussion_id)'
-
     });
     admin.registerMongooseModel('PostAction', Models.PostAction, null, {
         list:['text', 'username', 'discussion_id.title'],
@@ -113,11 +112,6 @@ module.exports = function (app) {
     admin.registerMongooseModel('VoteSuggestion', Models.VoteSuggestion, null, {
         list:['suggestion_id', 'user_id']
     });
-
-//    admin.registerMongooseModel('OpinionShaper',Models.OpinionShaper,null,{
-//        list:['cycle_id','user_id']
-//    });
-
     admin.registerMongooseModel('Grade', Models.Grade, null, {
         list:['discussion_id', 'user_id']
     });
@@ -255,12 +249,12 @@ module.exports = function (app) {
         createable:false
     });
 
-//    admin.registerMongooseModel('DailyDiscussion',mongoose.model('DailyDiscussion'),null,{
-//        list:['title'],
-//        list_populate:['discussion_id'],
-//        order_by:['gui_order'],
-//        sortable:'gui_order'
-//    });
+    admin.registerMongooseModel('DailyDiscussion',mongoose.model('DailyDiscussion'),null,{
+        list:['title'],
+        list_populate:['discussion_id'],
+        order_by:['gui_order'],
+        sortable:'gui_order'
+    });
 
 };
 

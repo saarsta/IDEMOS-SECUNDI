@@ -213,16 +213,18 @@ var sendNotificationToUser = function(notification, last_update_date) {
      * 3) create text message
      * 4) send message
      */
+
     var email;
+
     async.waterfall([
-        // TODO finish this
         function(cbk){
+
             if(!notification.visited) {
                 console.log('user should not receive notification because he or she have not visited since');
                 cbk('break');
                 return;
-            }
-            cbk();
+            }else
+                cbk();
         },
         // 1) Get user email
         function(cbk) {
@@ -257,7 +259,7 @@ var sendNotificationToUser = function(notification, last_update_date) {
             mail.sendMailFromTemplate(email,message,cbk);
         }
     ],
-        // Final)
+        // Final
         function(err) {
             if(err) {
                 if(err != 'break') {
@@ -268,7 +270,6 @@ var sendNotificationToUser = function(notification, last_update_date) {
             }
             else {
                 console.log('email ' + notification.type + ' sent to ' + email);
-                // TODO finish this
                 notification.visited = false;
                 notification.save(function(err){
                     if(err) {

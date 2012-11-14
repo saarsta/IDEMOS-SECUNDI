@@ -5,10 +5,8 @@ var error_message = error_message || '';
 <html>
 <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# <%= settings.facebook_app_name %>: http://ogp.me/ns/fb/<%= settings.facebook_app_name %>#">
     <meta property="fb:app_id" content="<%= settings.facebook_app_id %>" />
-    <meta property="og:type"   content="<%= settings.facebook_app_name %>:discussion" />
-    <meta property="og:url"    content="<%= settings.root_path %>/discussions/<%= discussion.id %>" />
-    <meta property="og:title" content="<%=discussion.title%>" />
-    <meta name="title" content="<%=discussion.title%>" />
+    <meta property="og:url" content="<%= settings.root_path %>/discussions/<%= discussion.id %>" />
+
 
     <% include partials/head.ejs %>
 </head>

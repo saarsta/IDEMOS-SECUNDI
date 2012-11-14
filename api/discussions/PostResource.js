@@ -277,8 +277,6 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                     cbk);
             },
 
-
-
             // 4) publish to facebook
             function(args,cbk) {
                 og_action({

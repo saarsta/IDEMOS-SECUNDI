@@ -23,7 +23,7 @@ module.exports = function(req,res,next) {
     });
 
     if( rule)
-        rule.handler(req,res,match);
+        rule.handler(req, res, match);
     else
        next();
 };

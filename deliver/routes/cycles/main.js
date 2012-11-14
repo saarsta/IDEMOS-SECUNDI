@@ -94,6 +94,8 @@ module.exports = function(req, res){
             if(g_cycle && g_cycle.main_subject)
                 g_cycle.subject_name = g_cycle.main_subject.name;
             g_cycle.is_user_follower_of_cycle = _.any(users, function(user){return user._id + "" == (req.session.user ? req.session.user._id : 0)});
+            var description = g_cycle.text_field_preview || g_cycle.text_field;
+            var no_tags_description = description.replace(/(<([^>]+?)>)/ig,"");
             res.render('cycle.ejs',{
                 cycle: g_cycle,
                 tab:'cycles',
@@ -102,9 +104,9 @@ module.exports = function(req, res){
                 social_popup_title: g_cycle.social_popup_title,
                 social_popup_text: g_cycle.social_popup_text,
                 meta:{
-                    type:'cycles',
+                    type:req.app.settings.facebook_app_name + ':cycle',
                     title:g_cycle.title,
-                    description:g_cycle.text_field_preview || g_cycle.text_field,
+                    description: no_tags_description,
                     image: (g_cycle.image_field_preview && g_cycle.image_field_preview.url) || (g_cycle.image_field && g_cycle.image_field.url),
                     link:'/cycles/' + g_cycle.id,
                     id:g_cycle.id

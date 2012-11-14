@@ -22,10 +22,37 @@
                         <br>
                         <%= cycle.title %>
                     </h2>
+                       <div class="sharing">
+                           <a    href="javascript:void(0)" class="facebook_sh"></a>
+                           <a    href="javascript:void(0)" class="twitter"></a>
+                           <a    href="javascript:void(0)" class="email"></a>
+                       </div>
 
-                        <a class="share-btn" data-img_src="{image_field.url}" data-text_preview="{text_field_preview}" data-title="{title}" rel="/cycles/{_id}" href="/facebookShare?link=/cycles/{_id}"><span>שתף</span></a>
+                    <a  class="iconbutton social-on-click" data-text_preview="<%=cycle.text_field_preview%>" title="לקידום הנושא ולקבלת עדכונים על המשך הפעילות לחצו כאן"  data-title="<%=cycle.title%>"data-img_src="<%= cycle.image_field && cycle.image_field.url %>" data-rel="/cycles/<%= cycle.id %>" href="javascript:void(0)"  ><span class="button_inner"><span >
+אני בעד
+</span></span></a>
 
-                        <a class="green-btn social-on-click" data-text_preview="<%=cycle.text_field_preview%>" title="לקידום הנושא ולקבלת עדכונים על המשך הפעילות לחצו כאן"  data-title="<%=cycle.title%>"data-img_src="<%= cycle.image_field && cycle.image_field.url %>" data-rel="/cycles/<%= cycle.id %>" href="javascript:void(0)"> </a>
+                    <div id="cloudsponge_2">
+                            <div id="deep-link" style="">
+                                <span style="margin-right:-15px">
+                                    <a id="source-yahoo" href="#" onclick="return cloudsponge.launch('yahoo');"><img alt="Yahoo" height="28" src="http://www.cloudsponge.com/images/address_books/yahoo.png?1349284367" width="28"></a>
+                                    <a id="source-windowslive" href="#" onclick="return cloudsponge.launch('windowslive');"><img alt="Windows Live" height="28" src="http://www.cloudsponge.com/images/address_books/msn.png?1349284367" width="28"></a>
+
+                                    <a id="source-outlook" href="#" onclick="return cloudsponge.launch('outlook');" style="display: inline; "><img alt="Microsoft Outlook" height="28" src="http://www.cloudsponge.com/images/address_books/microsoft.png?1349284367" width="28"></a>
+                                    <a id="source-addressbook" href="#" onclick="return cloudsponge.launch('addressbook');" style="display:none"><img alt="Mac Address Book" height="28" src="http://www.cloudsponge.com/images/address_books/apple.png?1349284367" width="28"></a>
+                                    <a id="source-gmail" href="#" onclick="return cloudsponge.launch('gmail');"><img alt="Gmail" height="28" src="http://www.cloudsponge.com/images/address_books/google.png?1349284367" width="28"></a>
+                                </span>
+                            </div>
+                    </div>
+
+
+
+
+
+
+
+
+
 
                     <div class="text-box cf">
                     <div class="cycle-content">
@@ -80,11 +107,11 @@
 
 פריטי מידע רלוונטים
                         </div>
-                        <div class="tab right">
+                        <div class="tab right front">
                             <div class="tab_icon">  </div>
 
 
-                            תגובות פופלריות מהדיונים
+                            תגובות פופולריות מהדיונים
                         </div>
                     </div>
                     <div class="popular-comments cf">
@@ -120,18 +147,55 @@
 
   <%if (cycle.sub_branding_title){%>
            <div class="cycle_sub_branding">
-                <a target="_blank" href="<%= cycle.sub_branding_link %>"><img src="<%= cycle.sub_branding_logo.url %>" > </a>
+                <a target="_blank" href="<%= cycle.sub_branding_link %>">
+
+                    <div style="width:90px;height: 90px;" class='auto-scale'>
+                        <img src="<%= cycle.sub_branding_logo.url %>" >
+                    </div>
+
+
+                </a>
                 <h3 >   <%= cycle.sub_branding_title %> </h3>
                 <span > <%= cycle.sub_branding_text %></span>
-                <img class="main_image" src="<%= cycle.sub_branding_image.url %>" style="">
+               <div style="width:238px;height: 174px" class='auto-scale'>
+                        <img class="main_image" src="<%= cycle.sub_branding_image.url %>" style="">
+                   </div>
                 <div style="">
                    </div>
            </div>
   <%} %>
+
+                <% if (cycle.id == '508026e8cb2276020000001f'){%>
+                <div class="cycle_buy_shirt">
+                        <a href="/order_shirts">
+
+
+להזמנת חולצה לחצו כאן
+
+                <br>
+                <div style="width:238px;height: 200px" class='auto-scale'>
+
+                    <img src="../images/shirt.jpg" alt="name" />
+
+                </div>
+                        </a>
+                </div>
+                <%} %>
+
+
+
             </div>
         </div>
     </div>
+     <a name="timeline"></a>
+<div class="system-notice cycle-system-notice">
+    <div class="extra">
+        <a class="close" href="javascript:void(0);"></a>
 
+        כאן תוכלו לראות את הפעולות המתקיימות לקידום הנושא. לחצו על ציון התאריך או המיקום במפה כדי לקבל פרטים נוספים, לתמוך ולהשתתף.
+
+    </div>
+</div>
     <div class="followers-box cycle">
         <div class="extra holds_the_timeline">
             <div class="tabs-box">
@@ -159,7 +223,8 @@
 
             <div class="updates-box cf">
                 <div class="right">
-                        <div class="fb-comments"  data-href="http://www.uru.org.il/cycles/<%= cycle.id %>"  data-num-posts="3" data-width="570"> </div>
+
+                        <div class="fb-comments"  data-href="http://www.uru.org.il/cycles/<%= cycle.id %>"  data-num-posts="3" data-width="642" colorscheme="light" > </div>
                 </div>
                 <div class="left">
                     <h2>מובילי דעת קהל</h2>
@@ -229,7 +294,7 @@ var current_section=2;
         var user = "<%=cycle.id%>";
         //set mail subject for social popup
 
-        $(".<%= cycle.is_user_follower_of_cycle ? "share-btn":"green-btn" %>").show();
+
 
         window.vars={};
         window.vars.object_id = "<%=cycle.id%>";
@@ -276,14 +341,16 @@ var current_section=2;
         });
 
             $(".tabs .right").click(function(){
-                if( $(this).hasClass('active'))
+                $(".tabs .left").removeClass('front').removeClass('open');
+                if( $(this).hasClass('open'))
                 {
                     closeTabs();
+                    $(this).removeClass('open')
                 }
                 else
                 {
-                    $(this).addClass('active');
-                    $(".tabs .left").removeClass('active');
+                    $(this).addClass('open').addClass('front');
+
                     $('.popular-comments .hide-box').slideDown();
                     $(".popular-comments .hide-box #comments").show();
                     $(".popular-comments .hide-box #info_items").hide();
@@ -292,17 +359,20 @@ var current_section=2;
             });
 
             $(".tabs .left").click(function(){
-                if( $(this).hasClass('active'))
+                $(".tabs .right").removeClass('front').removeClass('open');
+                if( $(this).hasClass('open'))
                 {
                     closeTabs();
+                    $(this).removeClass('open')
                 }
                 else
                 {
-                    $(this).addClass('active');
-                    $(".tabs .right").removeClass('active');
+                    $(this).addClass('open').addClass('front');
+                    $(".tabs .right").removeClass('front');
                     $('.popular-comments .hide-box').slideDown();
                     $(".popular-comments .hide-box #comments").hide();
                     $(".popular-comments .hide-box #info_items").show();
+                    $('.mb-left').click();
                 }
             });
 
@@ -311,6 +381,11 @@ var current_section=2;
                 $(".tabs .tab").removeClass('active');
                 $('.popular-comments .hide-box').slideUp();
             }
+
+            $('.mb-inside').live("click", function(){
+                window.location.href = '/information_items/'+$(this).parent().attr('item-id');
+            });
+
 
             $(".inline").colorbox({ inline: true, width: "730" });
 
@@ -329,40 +404,14 @@ var current_section=2;
             });
 
 
-            $('.green-btn').click(function(){
-                var button = $(this);
-                //button.text('...');
 
-                db_functions.joinToCycleFollowers(cycle_id, function(err, result){
-                    //  button.text(result.is_follower ? "הפסק לעקוב" : "אני בעד");
-                    //button.text('');
-                    $('#followers_count strong').text(result.followers_count);
-                    $(".green-btn").hide();
-                    $(".share-btn").show();
-
-                   // if(result.is_follower){
-                    share() ;
-
-                   // }
-                })
-            });
-
-            $('.share-btn').click(share);
-
-            function share()
-            {
-                setTimeout(function(){
-                    $('#box-share,#screen').show();
-                    //$('#social-popup-mail').attr("href", "mailto:?subject=" + mail_subject + "&body=" + mail_body);
-                    $('#close').click(function(){
-                        $('#box-share,#screen').hide();
-                    })
-                }, 100);
-                return false;
-            }
 
             db_functions.getCycleShoppingCart(cycle_id, function ( err,data) {
 
+                       if( data.objects.length>0)
+                       {
+                         $(".add-offer-small .tab.left").show()
+                       }
                     $.each(data.objects, function (index, item) {
                         dust.render('cycle_information_item', item, function (err, out) {
                             $('#slider').append(out);
@@ -382,6 +431,8 @@ var current_section=2;
                         wrap         : true,   // if true, the panel will "wrap" (it really rewinds/fast forwards) at the ends
                         buildNav     : true,   // if true, navigation links will be added
                         navFormatter : function(){ return "&#9679;"; } // function which returns the navigation text for each panel
+
+
 
                     });
 
@@ -614,6 +665,100 @@ var current_section=2;
          //   alert("Goodbye!"); });
         // $('.popup-text').ellipsis();
         //.popup-event
+         /*
+        $('.green-btn').click(function(){
+            var button = $(this);
+            //button.text('...');
+
+            db_functions.joinToCycleFollowers(cycle_id, function(err, result){
+                //  button.text(result.is_follower ? "הפסק לעקוב" : "אני בעד");
+                //button.text('');
+                $('#followers_count strong').text(result.followers_count);
+                $(".green-btn").hide();
+                $(".share-btn").show();
+
+                // if(result.is_follower){
+                share() ;
+
+                // }
+            })
+        });
+
+        $('.share-btn').click(share);
+
+
+
+
+
+        $(".<%= cycle.is_user_follower_of_cycle ? "share-btn":"green-btn" %>").show();
+           */
+        var button_minified=false;
+        <%= cycle.is_user_follower_of_cycle ? "minifyButton(1)":"" %>
+
+
+        $('#cycle .iconbutton').click(function(){
+             if (!button_minified)
+             {
+                 minifyButton(350);
+                 setTimeout(share,300) ;
+             }
+        });
+
+        function minifyButton(speed) {
+            button_minified=true;
+            var w =  $('a.iconbutton').width()-18;
+            $('a.iconbutton span.button_inner').css('min-width',w).css('position','relative');
+            $('a.iconbutton span.button_inner span').html('&nbsp;&nbsp;');
+            $('a.iconbutton span.button_inner span')
+                    .css('position','absolute')
+                    .css('width',w)
+                    .css('right','0')
+                    .css('top','6px');
+            $('a.iconbutton span.button_inner').animate({
+                'min-width': 15 ,
+
+            }, speed, function() {
+                $('a.iconbutton span.button_inner span').css('width',0);
+                $('a.iconbutton').addClass('minified') ;
+            });
+            $('a.iconbutton').animate({
+                left:150
+            },speed);
+
+        }
+
+        function share()
+        {
+            setTimeout(function(){
+                $('#box-share,#screen').show();
+                //$('#social-popup-mail').attr("href", "mailto:?subject=" + mail_subject + "&body=" + mail_body);
+                $('#close').click(function(){
+                    $('#box-share,#screen').hide();
+                    var aTag = $("a[name='timeline']");
+                    $('html,body').animate({scrollTop: aTag.offset().top},'slow');
+                })
+            }, 100);
+            return false;
+        }
+        $("#cycle .sharing .facebook_sh").on('click', facebookShare)   ;
+        $('#cycle .sharing .twitter').on('click', twitterShare);
+        $('#cycle .sharing .email').on('click', function(){
+            $("#cloudsponge_2").slideToggle();
+        });
+
+        $('#cloudsponge_2 a').on('click', function(){
+            $("#cloudsponge_2").slideToggle();
+        });
+
+        $('a.mb-scrollButtons').dblclick(function(event) {
+            event.isPropagationStopped() ;
+        });
+
+        $('.system-notice .close').click(function () {
+
+            $(this).parents('.system-notice').fadeOut(800);
+        });
+
     });
 
 </script>
