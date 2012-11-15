@@ -699,7 +699,7 @@ var current_section=2;
         $('#cycle .iconbutton').click(function(){
              if (!button_minified)
              {
-                 db_functions.joinToCycleFollowers(cycle_id, function(err, result){
+                 db_functions.joinToCycleFollowers(cycle_id,true, function(err, result){
 
                      $('.blue-box').text(result.followers_count);
                      minifyButton(350);
