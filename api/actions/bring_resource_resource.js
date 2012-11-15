@@ -2,6 +2,7 @@ var resources = require('jest'),
     models = require('../../models'),
     async = require('async'),
     common = require('../common.js'),
+    notifications = require('../notifications.js'),
     _ = require('underscore');
 
 var BringResourceResource = module.exports = common.GamificationMongooseResource.extend({
@@ -64,7 +65,21 @@ var BringResourceResource = module.exports = common.GamificationMongooseResource
                         itr_cbk('error with amount in uesr 2!');
                     }else{
                         action.what_users_bring.push(new_what_users_bring);
-                        itr_cbk();
+                        var creator_id = action.creator_id;
+                        if(action_resource_that_user_bring.amount > 0){
+                            if(creator_id != new_what_users_bring.user_id)
+                            {
+                                notifications.create_user_notification("user_brings_resource_to_action_you_created", action._id,
+                                    creator_id, new_what_users_bring.user_id, new_what_users_bring.resource, '/actions/' + action._id, function(err){
+                                        itr_cbk(err);
+                                    });
+                            } else {
+                                itr_cbk();
+                            }
+                        } else {
+                            itr_cbk();
+                        }
+
                     }
                 }
             }, function(err, arg){

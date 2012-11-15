@@ -276,7 +276,12 @@ var timeline = {
 
                         google.maps.event.addListener(marker, 'click', function(){
                             var myId = marker.metadata.id;
-                            var content = $('div.popup-event[item-id=' + myId + ']').clone()[0];
+                            var content;
+                            if($('div.popup-event[item-id=' + myId + ']')){
+                                content = $('div.popup-event[item-id=' + myId + ']').clone()[0];
+                            } else {
+
+                            }
                             popup.setContent(content);
                             popup.open(map, marker);
                             selectActionItem(myId);

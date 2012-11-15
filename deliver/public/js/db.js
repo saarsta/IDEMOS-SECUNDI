@@ -411,6 +411,9 @@ var db_functions = {
 
             success:function (data) {
                 callback(data);
+            },
+            error:function(err){
+                callback(err);
             }
         });
     },

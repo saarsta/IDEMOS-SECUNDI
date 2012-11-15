@@ -128,15 +128,15 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
 
         var iterator = function(user_schema, itr_cbk){
             if(user_schema.user_id){
-                if (user_schema.user_id == user_id)
+                if (user_schema.user_id + "" == user_id)
                     itr_cbk(null, 0);
                 else{
                     if (discussion_creator_id + "" == user_schema.user_id + ""){
-                        notifications.create_user_notification("comment_on_discussion_you_created", post_id, user_schema.user_id, user_id, discussion_id, '/discussions/' + discussion_id, function(err, results){
+                        notifications.create_user_notification("comment_on_discussion_you_created", discussion_id, user_schema.user_id + "", user_id, post_id, '/discussions/' + discussion_id, function(err, results){
                             itr_cbk(err, results);
                         });
                     }else{
-                        notifications.create_user_notification("comment_on_discussion_you_are_part_of", post_id, user_schema.user_id, user_id, discussion_id,'/discussions/' + discussion_id, function(err, results){
+                        notifications.create_user_notification("comment_on_discussion_you_are_part_of", discussion_id, user_schema.user_id + "", user_id, post_id,'/discussions/' + discussion_id, function(err, results){
                             itr_cbk(err, results);
                         });
                     }

@@ -212,7 +212,15 @@ var Schemas = exports.Schemas = {
             "proxy_graded_discussion",
             "proxy_created_change_suggestion",
             "proxy_graded_change_suggestion",
-            "proxy_vote_to_post"
+            "proxy_vote_to_post",
+            "action_suggested_in_cycle_you_are_part_of",
+            "update_created_in_cycle_you_are_part_of",
+            "action_added_in_cycle_you_are_part_of",
+            "action_you_created_was_approved",
+            "action_you_are_participating_in_was_approved",
+            "user_joined_action_you_created",
+            "user_brings_resource_to_action_you_created",
+            "response_added_to_action_you_joined"
         ]
 //        is_proxy_notification: {type: Boolean, 'default': false}
         },

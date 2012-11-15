@@ -1340,6 +1340,11 @@ color: #ff00af;
     margin: 0;
 }
 
+.renewal .one p .extra_text{
+    font-weight: bold;
+    float:left;
+}
+
 .renewal .one .date {
     color: #b7b6b6;
     font: italic 11px/19px Arial;
@@ -5731,10 +5736,10 @@ div.action_list::-webkit-scrollbar-button {
     background: url(../images/ajax-loader-3.gif) 57px 18px no-repeat;
 }
 
-.myuru-bottom .renewal .one a.btn {
+/*.myuru-bottom .renewal .one a.btn {
     background-color: #b7b6b6;
     border-color: #8f8f8f;
-}
+}*/
 
 .main-text {
     background: #fff;
@@ -8896,6 +8901,11 @@ body.body-action .followers-box h5 {
 
 .link_to_resource {
     cursor: pointer;
+}
+
+.link_to_resource .user {
+    color: #50504F;
+    font-weight: bold;
 }
 
 .inline_link {

@@ -12,6 +12,7 @@ var jest = require('jest'),
     models = require('../../models'),
     common = require('../common.js'),
     async = require('async'),
+    notifications = require('../notifications.js'),
     _ = require('underscore'),
     JOIN_PRICE = 0;
 
@@ -149,12 +150,13 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
                     fields.user_id = user_id;
                     fields.action_creator_id = action.creator_id;
 
+
                     for(var field in fields)
                     {
                         join_object.set(field,fields[field]);
                     }
-
                     self.authorization.edit_object(req, join_object, cbk);
+
                 }
             },
 
@@ -171,8 +173,22 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
                 });
             },
 
+            //add notification to the action creator
+            function(obj, cbk){
+                var creator_id = g_action_obj.creator_id;
+                var cycle_id = g_action_obj.cycle_id[0].cycle;
+                if(creator_id != user_id){
+                    notifications.create_user_notification("user_joined_action_you_created", g_action_obj._id,
+                        creator_id, user_id, cycle_id, '/actions/' + g_action_obj._id, function(err, result){
+                            cbk(err);
+                        });
+                } else {
+                    cbk();
+                }
+            },
+
             // publish to facebook
-            function(args,cbk) {
+            function(cbk) {
                 og_action({
                     action: 'go',
                     object_name:'activity',
@@ -186,7 +202,6 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
             }
         ],function(err, obj){
             if(!err){
-
                 g_action_obj.num_of_going++;
                 g_action_obj = JSON.parse(JSON.stringify(g_action_obj));
                 g_action_obj.map_join_to_user = req.user;

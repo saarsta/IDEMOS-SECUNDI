@@ -22,7 +22,14 @@ exports.create_user_notification = function(notification_type, entity_id, user_i
         "approved_change_suggestion_you_created",
         "approved_change_suggestion_you_graded",
         "proxy_created_new_discussion",
-        "proxy_created_change_suggestion"
+        "proxy_created_change_suggestion",
+        "action_suggested_in_cycle_you_are_part_of",
+        "update_created_in_cycle_you_are_part_of",
+        "action_added_in_cycle_you_are_part_of",
+        "action_you_created_was_approved",
+        "action_you_are_participating_in_was_approved",
+        "user_brings_resource_to_action_you_created",
+        "response_added_to_action_you_joined"
     ];
 
     if(notificatior_id && _.indexOf(single_notification_arr, notification_type) == -1){
@@ -77,7 +84,7 @@ exports.create_user_notification = function(notification_type, entity_id, user_i
                            cbk(null, obj || noti);
                        });
                    }
-                   sendNotificationToUser(noti, last_update_date);
+                   //sendNotificationToUser(noti, last_update_date);
                 }else{
                     create_new_notification(notification_type, entity_id, user_id, notificatior_id, sub_entity, url, function(err, obj){
                         cbk(err, obj);
@@ -183,8 +190,8 @@ var create_new_notification = function(notification_type, entity_id, user_id, no
         if(err)
             console.error(err);
         callback(null, obj || notification);
-        if(!err && obj)
-            sendNotificationToUser(obj);
+        /*if(!err && obj)
+            sendNotificationToUser(obj);*/
     });
 };
 
