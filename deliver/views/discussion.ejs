@@ -378,30 +378,37 @@ $(document).ready(function () {
         step:0.10,
         change:function (event, ui) {
 
-            my_discussion_grade = ui.value;
+            if (event.originalEvent) {      //ugly hack because of slider api bug
+                var my_prev_grade = my_discussion_grade;
+                my_discussion_grade = ui.value;
 
-            var user_info = {
-                user_logged_in : user.first_name ? true : false,
-                action_done : (user.actions_done_by_user && user.actions_done_by_user.grade_object) ? true : false,
-                action_name : "grade_object",
-                tokens_owned : user.tokens ? user.tokens : 0
-            }
-
-            db_functions.addDiscussionGrade(discussion_id, my_discussion_grade, grade_id, user_info, function (err, data) {
-
-                if (!err) {
-//                    if(!(user.actions_done_by_user && user.actions_done_by_user.grade_object))
-//                    {
-//                        user.actions_done_by_user.grade_object = true;
-//                    }
-                    $("#amount").val(Math.round(data.new_grade * 100) / 100);
-                    $("#graders").text(Math.round(data.evaluate_counter));
-                    $(".dark_bar").css('width', (my_discussion_grade * 10) + '%');
-                    grade_id = data.grade_id;
+                var user_info = {
+                    user_logged_in : user.first_name ? true : false,
+                    action_done : (user.actions_done_by_user && user.actions_done_by_user.grade_object) ? true : false,
+                    action_name : "grade_object",
+                    tokens_owned : user.tokens ? user.tokens : 0
                 }
-                else
-                    console.log(err);
-            });
+
+                db_functions.addDiscussionGrade(discussion_id, my_discussion_grade, grade_id, user_info, function (err, data) {
+
+                    if (!err) {
+                        if(data == 'canceled'){
+                            $(".slider").slider('value',my_prev_grade);
+                        } else {
+    //                    if(!(user.actions_done_by_user && user.actions_done_by_user.grade_object))
+    //                    {
+    //                        user.actions_done_by_user.grade_object = true;
+    //                    }
+                            $("#amount").val(Math.round(data.new_grade * 100) / 100);
+                            $("#graders").text(Math.round(data.evaluate_counter));
+                            $(".dark_bar").css('width', (my_discussion_grade * 10) + '%');
+                            grade_id = data.grade_id;
+                        }
+                    }
+                    else
+                        console.log(err);
+                });
+            }
         }
     });
 
@@ -572,24 +579,26 @@ $(document).ready(function () {
         }
         var func = $(this).parents('#comments').length ? db_functions.voteForPost : db_functions.voteForSuggestion;
         func.call(db_functions, post_id, actionType, user_info, function (err, post_obj) {
-            if (!err) {
-                if(!user.actions_done_by_user.vote_on_object)
-                {
-                    user.actions_done_by_user.vote_on_object = true;
+            if(post_obj != 'canceled'){
+                if (!err) {
+                    if(!user.actions_done_by_user.vote_on_object)
+                    {
+                        user.actions_done_by_user.vote_on_object = true;
+                    }
+                       button.parents(".ratio").find(".count").text(Math.round(post_obj.votes_for-post_obj.votes_against ));
+                       var down_arrow = button.parents(".ratio").find(".down");
+                       var up_arrow =button.parents(".ratio").find(".up");
+                       down_arrow.removeClass("balance0").removeClass("balance1").removeClass("balance2").removeClass("balance3").removeClass("balance-1").removeClass("balance-2").removeClass("balance-3").addClass("balance"+post_obj.voter_balance);
+                       up_arrow.removeClass("balance0").removeClass("balance1").removeClass("balance2").removeClass("balance3").removeClass("balance-1").removeClass("balance-2").removeClass("balance-3").addClass("balance"+post_obj.voter_balance);
                 }
-                   button.parents(".ratio").find(".count").text(Math.round(post_obj.votes_for-post_obj.votes_against ));
-                   var down_arrow = button.parents(".ratio").find(".down");
-                   var up_arrow =button.parents(".ratio").find(".up");
-                   down_arrow.removeClass("balance0").removeClass("balance1").removeClass("balance2").removeClass("balance3").removeClass("balance-1").removeClass("balance-2").removeClass("balance-3").addClass("balance"+post_obj.voter_balance);
-                   up_arrow.removeClass("balance0").removeClass("balance1").removeClass("balance2").removeClass("balance3").removeClass("balance-1").removeClass("balance-2").removeClass("balance-3").addClass("balance"+post_obj.voter_balance);
-            }
-            else {
-                if (err.responseText == 'Error: there is not enought tokens')
-                    popupProvider.showOkPopup( {message:     'אין לך מספיק אסימונים'});
-                if (err.responseText == 'user already voted for this post')
-                    popupProvider.showOkPopup( {message:     'באפשרותך לתת עד שלושה אסימונים לתגובה בדיון'});
-                if (err.responseText == 'soory, can\'t vote to your own post')
-                    popupProvider.showOkPopup( {message:     'מצטערים, לא ניתן להצביע לתגובה של עצמך'});
+                else {
+                    if (err.responseText == 'Error: there is not enought tokens')
+                        popupProvider.showOkPopup( {message:     'אין לך מספיק אסימונים'});
+                    if (err.responseText == 'user already voted for this post')
+                        popupProvider.showOkPopup( {message:     'באפשרותך לתת עד שלושה אסימונים לתגובה בדיון'});
+                    if (err.responseText == 'soory, can\'t vote to your own post')
+                        popupProvider.showOkPopup( {message:     'מצטערים, לא ניתן להצביע לתגובה של עצמך'});
+                }
             }
         })
     }
@@ -773,39 +782,46 @@ $(document).ready(function () {
                         }
                     },
                     change:function (event, ui) {
-                        if(depress_event)
-                            return;
-                        var rating = ui.value;
-                        var user_info = {
-                            user_logged_in : user.first_name ? true : false,
-                            action_done : (user.actions_done_by_user && user.actions_done_by_user.grade_object) ? true : false,
-                            action_name : "grade_object",
-                            tokens_owned : user.tokens ? user.tokens : 0
-                        }
-                        db_functions.addSuggestionGrade(suggestion.id, discussion_id, rating, suggest_grade_id[suggestion.id], user_info, function (err, data) {
-                            if (!err) {
-//                                if(!(user.actions_done_by_user && user.actions_done_by_user.grade_object))
-//                                {
-//                                    user.actions_done_by_user.grade_object = true;
-//                                }
-                                $("#suggest_grade_" + suggestion.id).val(Math.round(data.new_grade * 100) / 100);
-                                $("#suggest_graders_" + suggestion.id).text(Math.round(data.agrees) + Math.round(data.not_agrees));
-                                $("#agrees_" + suggestion.id).text(Math.round(data.agrees));
-                                $("#not_agrees_" + suggestion.id).text(Math.round(data.not_agrees));
-                                $("#wanted_amount_of_tokens_" + suggestion.id).text(data.wanted_amount_of_tokens);
-                                $("#curr_amount_of_tokens_" + suggestion.id).text(Math.round(data.curr_amount_of_tokens));
-                                suggest_grade_id[suggestion.id] = data.grade_id;
+                        if (event.originalEvent) {
+                            var my_prev_grade = suggestion_grade_val;
+                            if(depress_event)
+                                return;
+                            var rating = ui.value;
+                            var user_info = {
+                                user_logged_in : user.first_name ? true : false,
+                                action_done : (user.actions_done_by_user && user.actions_done_by_user.grade_object) ? true : false,
+                                action_name : "grade_object",
+                                tokens_owned : user.tokens ? user.tokens : 0
+                            }
+                            db_functions.addSuggestionGrade(suggestion.id, discussion_id, rating, suggest_grade_id[suggestion.id], user_info, function (err, data) {
+                                if (!err) {
+                                    if(data == 'canceled'){
+                                        $(".suggest_slider_" + suggestion.id).slider('value',my_prev_grade);
+                                    } else {
+                                        //                                if(!(user.actions_done_by_user && user.actions_done_by_user.grade_object))
+    //                                {
+    //                                    user.actions_done_by_user.grade_object = true;
+    //                                }
+                                        $("#suggest_grade_" + suggestion.id).val(Math.round(data.new_grade * 100) / 100);
+                                        $("#suggest_graders_" + suggestion.id).text(Math.round(data.agrees) + Math.round(data.not_agrees));
+                                        $("#agrees_" + suggestion.id).text(Math.round(data.agrees));
+                                        $("#not_agrees_" + suggestion.id).text(Math.round(data.not_agrees));
+                                        $("#wanted_amount_of_tokens_" + suggestion.id).text(data.wanted_amount_of_tokens);
+                                        $("#curr_amount_of_tokens_" + suggestion.id).text(Math.round(data.curr_amount_of_tokens));
+                                        suggest_grade_id[suggestion.id] = data.grade_id;
 
-                                //already_graded
-                            }
-                            else
-                            {
-                                depress_event = true;
-                                $(".suggest_slider_" + suggestion.id).slider("value", suggestion_grade_val || 0);
-                                depress_event = false;
-                                console.log(err);
-                            }
-                        });
+                                        //already_graded
+                                    }
+                                }
+                                else
+                                {
+                                    depress_event = true;
+                                    $(".suggest_slider_" + suggestion.id).slider("value", suggestion_grade_val || 0);
+                                    depress_event = false;
+                                    console.log(err);
+                                }
+                            });
+                        }
                     }
                 });
 
@@ -984,22 +1000,29 @@ $(document).ready(function () {
         db_functions.addPostToDiscussion(discussion_id, $("textarea#discussion_comment").val(), new_post_ref_id, user_info, function (err, post) {
             // $("#user_tokens").text(post.updated_user_tokens);
             if (!err) {
-                if(!user.actions_done_by_user.post_on_object)
-                {
-                    user.actions_done_by_user.post_on_object = true;
-                }
-                if (my_id)
-                    setUserScore(my_id, post.creator_id.score);
-                post.voting = post.votes_for - post.votes_against;
-                dust.render('discussion_comment', post, function (err, out) {
-                    $("#comments").append(out);
-                    $("textarea#discussion_comment").val('');
-                    new_post_ref_id = null;
-                    postsNumber++;
-                    setCommentNumber(postsNumber);
+                if(post == 'canceled'){
                     $this.data('executing', false);
-                    $this.removeClass('disable')
-                });
+                    $this.removeClass('disable');
+                }
+                else
+                {
+                    if(!user.actions_done_by_user.post_on_object)
+                    {
+                        user.actions_done_by_user.post_on_object = true;
+                    }
+                    if (my_id)
+                        setUserScore(my_id, post.creator_id.score);
+                    post.voting = post.votes_for - post.votes_against;
+                    dust.render('discussion_comment', post, function (err, out) {
+                        $("#comments").append(out);
+                        $("textarea#discussion_comment").val('');
+                        new_post_ref_id = null;
+                        postsNumber++;
+                        setCommentNumber(postsNumber);
+                        $this.data('executing', false);
+                        $this.removeClass('disable')
+                    });
+                }
             }
         })
     });
@@ -1059,16 +1082,18 @@ $(document).ready(function () {
 
         db_functions.addSuggestionToDiscussion(discussion_id, [part], explanation, user_info, function (err, data) {
             if (!err) {
-                if(!user.actions_done_by_user.suggestion_on_object)
-                {
-                    user.actions_done_by_user.suggestion_on_object = true;
+                if(data != 'canceled'){
+                    if(!user.actions_done_by_user.suggestion_on_object)
+                    {
+                        user.actions_done_by_user.suggestion_on_object = true;
+                    }
+                    $('#write-comment').hide();
+                    /*
+                     $("textarea#discussion_suggest").val('');
+                     $("#user_tokens").text(data.updated_user_tokens);*/
+                    render_suggestion(data)
+                    $(".deals-box").show();
                 }
-                $('#write-comment').hide();
-                /*
-                 $("textarea#discussion_suggest").val('');
-                 $("#user_tokens").text(data.updated_user_tokens);*/
-                render_suggestion(data)
-                $(".deals-box").show();
             } else {
                 var err = err;
                 if(err.responseText == "a suggestion with this indexes already exist")

@@ -106,7 +106,6 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
                                             break;
                                         }
                                     }
-
                                     cbk1(err, action);
                                 }else{
                                     cbk1(err || 'no such action');
@@ -199,6 +198,12 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
                     user: req.user
                 });
                 cbk();
+            },
+            // update actions done by user
+            function(cbk){
+                models.User.update({_id:user.id},{$set: {"actions_done_by_user.join_to_object": true}}, function(err){
+                    cbk(err);
+                });
             }
         ],function(err, obj){
             if(!err){

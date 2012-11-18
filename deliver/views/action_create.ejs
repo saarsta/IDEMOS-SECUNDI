@@ -90,11 +90,11 @@ var error_message = error_message || '';
                         <div class="time">
                             <label>משעה</label>
                             <div class="input from">
-                                <input type="time" name="time[from]" value="15:00"/>
+                                <input type="time" name="time[from]" value="15:00" step="any"/>
                             </div>
                             <label>עד שעה</label>
                             <div class="input to">
-                                <input type="time" name="time[to]" value="18:00"/>
+                                <input type="time" name="time[to]" value="18:00" no-seconds/>
                             </div>
                         </div>
                         <div class="user-number">
@@ -455,22 +455,24 @@ var error_message = error_message || '';
                 action_done : (user.actions_done_by_user && user.actions_done_by_user.create_object) ? true : false,
                 action_name : "create_object",
                 tokens_owned : user.tokens ? user.tokens : 0
-            }
+            };
 
             db_functions.createAction(data, user_info, function(err, data){
-                var url = data.redirect_link;
-                var created_action_id = data._id;
-                if(!user.actions_done_by_user.create_object)
-                {
-                    user.actions_done_by_user.post_on_object = true;
-                }
+                if(data != 'canceled'){
+                    var url = data.redirect_link;
+                    var created_action_id = data._id;
+                    if(!user.actions_done_by_user.create_object)
+                    {
+                        user.actions_done_by_user.post_on_object = true;
+                    }
 
-                if ($('#share').is(':checked')) {
-                    shareOnFacebook(url, '', function () {
-                        window.location.replace("/actions/" + created_action_id);
-                    });
-                } else {
-                    location.href = url;
+                    if ($('#share').is(':checked')) {
+                        shareOnFacebook(url, '', function () {
+                            window.location.replace("/actions/" + created_action_id);
+                        });
+                    } else {
+                        location.href = url;
+                    }
                 }
             })
         }

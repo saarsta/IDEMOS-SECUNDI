@@ -2031,6 +2031,20 @@ color: #ff00af;
     height: 31px;
 }
 
+#explanation_popup .popup-bottom{
+    height: 44px;
+}
+
+#explanation_popup .middle-popup{
+    padding: 21px 28px 15px;
+}
+
+#explanation_popup .info-link a{
+    font-size: 15px;
+    line-height: 30px;
+    text-decoration: none;
+}
+
 .popup .popup-bottom a.dark-grey-btn {
     color: #fff;
     background: #757d7e url(../images/search-submit.png) 0 0 repeat-x;
