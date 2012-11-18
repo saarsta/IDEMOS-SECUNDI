@@ -220,7 +220,8 @@ var Schemas = exports.Schemas = {
             "action_you_are_participating_in_was_approved",
             "user_joined_action_you_created",
             "user_brings_resource_to_action_you_created",
-            "response_added_to_action_you_joined"
+            "post_added_to_action_you_joined",
+            "post_added_to_action_you_created"
         ]
 //        is_proxy_notification: {type: Boolean, 'default': false}
         },

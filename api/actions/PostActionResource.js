@@ -155,14 +155,23 @@ var PostActionResource = module.exports = common.GamificationMongooseResource.ex
 
                     //add notifications to users that joined the action
                     function(cbk2){
-                        models.Action.findById(action_id, {'_id': 1, 'going_users': 1, 'cycle_id': 1}, function(err, action){
+                        action_id = action_id + "";
+                        models.Action.findById(action_id, {'_id': 1, 'going_users': 1, 'cycle_id': 1, 'creator_id': 1}, function(err, action){
+                            var creator_id = action.creator_id + "";
                             var notified_users = _.map(action.going_users, function(user){return user.user_id + ''});
                             async.forEach(notified_users, function(notified_user, itr_cbk){
-                                if(notified_user != user_id){
-                                    notifications.create_user_notification("response_added_to_action_you_joined", action_id,
-                                        notified_user, null , action.cycle_id[0].cycle, '/actions/' + action_id, function(err){
-                                            itr_cbk(err);
-                                        });
+                                if(user_id != notified_user){
+                                    if(creator_id == notified_user){
+                                        notifications.create_user_notification("post_added_to_action_you_created", post_object.id,
+                                            notified_user, user_id , action_id, '/actions/' + action_id, function(err){
+                                                itr_cbk(err);
+                                            });
+                                    } else {
+                                        notifications.create_user_notification("post_added_to_action_you_joined", post_object.id,
+                                            notified_user, user_id , action_id, '/actions/' + action_id, function(err){
+                                                itr_cbk(err);
+                                            });
+                                    }
                                 } else {
                                     itr_cbk();
                                 }
