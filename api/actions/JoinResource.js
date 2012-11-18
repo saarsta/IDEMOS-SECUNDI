@@ -201,7 +201,7 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
             },
             // update actions done by user
             function(cbk){
-                models.User.update({_id:user.id},{$set: {"actions_done_by_user.join_to_object": true}}, function(err){
+                models.User.update({_id:user_id},{$set: {"actions_done_by_user.join_to_object": true}}, function(err){
                     cbk(err);
                 });
             }

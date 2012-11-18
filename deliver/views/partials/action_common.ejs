@@ -84,7 +84,9 @@
             function setGoingNumber(number) {
 
                 $('#going_number')[0].innerHTML = '(' + number + ')';
-                $('.going_red').html(number);
+                $('.going.red').html(number);
+                $('.going.green').html(number);
+                $('div.popup-event[item-id=' + action_id + ']' + ' .going_num').html(number + ' משתתפים');
             }
 
             function setJoinBT(data){
@@ -135,6 +137,10 @@
                         console.log(err) ;
                     } else {
                         if(data != 'canceled'){
+                            if(!user.actions_done_by_user.join_to_object)
+                            {
+                                user.actions_done_by_user.join_to_object = true;
+                            }
                             setJoinBT(data);
                             if(data.action_obj.is_going === true){
                                 //set mail subject for social popup
@@ -182,6 +188,10 @@
                         console.log(err) ;
                     }else{
                         if(data != 'canceled'){
+                            if(!user.actions_done_by_user.join_to_object)
+                            {
+                                user.actions_done_by_user.join_to_object = true;
+                            }
                             setJoinBT(data);
                         }
                     }
