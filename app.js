@@ -18,7 +18,7 @@ app.set('old_views', __dirname + '/views');
 app.set('public_folder', __dirname + '/deliver/public');
 app.set('public_folder2', __dirname + '/public');
 
-app.set('port', process.env.PORT || 80);
+app.set('port', app.get('port') || 80);
 
 app.set('facebook_app_id', process.env.FACEBOOK_APPID || '175023072601087');
 app.set('facebook_app_name',process.env.FACEBOOK_APPNAME || 'uru_dev');
@@ -50,7 +50,6 @@ app.configure('development', function(){
 
 // TODO REMOVE THIS BEFORE COMMIT
 //    app.set('send_mails',true);
-
 });
 
 
@@ -199,7 +198,7 @@ app.configure(function(){
             user: req.session && req.session.user,
             avatar: (req.session && req.session.avatar_url) || "/images/default_user_img.gif",
             url: req.url,
-            meta: {}
+            meta: {},
         });
 
         next();
@@ -222,14 +221,11 @@ app.configure(function(){
         cleanHtml: function(html) { return (html || '').replace(/<[^>]*?>/g,'').replace(/\[[^\]]*?]/g,'');},
         fb_description:"עורו היא תנועה חברתית לייצוג הרוב בישראל. אנו מאמינים שבעידן שבו אנו חיים, כולנו מסוגלים וזכאים להשתתף בקבלת ההחלטות. לכן, עורו מנהלת פלטפורמה לדיון ציבורי, יסודי ואפקטיבי שיוביל שינוי בסדר היום. אצלנו, האג'נדה מוכתבת מלמטה.",
         fb_title:'עורו - הבית של הרוב',
-        fb_image:'http://site.e-dologic.co.il/philip_morris/Xls_script/uru_mailing/logo.jpg'
-
+        fb_image:'http://site.e-dologic.co.il/philip_morris/Xls_script/uru_mailing/logo.jpg',
+        get:function(attr) {
+            return app.get(attr);
+        }
     });
-
-
-
-
-
 });
 
 
@@ -246,25 +242,36 @@ require('./deliver/routes')(app);
 var cron = require('./cron');
 cron.run(app);
 
-
 async.waterfall([
+
         function(cbk) {
-            mongoose.model('FooterLink').load(cbk);
+            async.parallel([
+                function(cbk1){
+                    mongoose.model('FooterLink').load(cbk1);
+                },
+
+                function(cbk1){
+                    mongoose.model('GamificationTokens').findOne(cbk1);
+                }
+            ], function(err, args){
+                cbk(err, args[1]);
+            })
         }
     ],
-    function(err) {
+    function(err, gamification) {
         if(err) {
             console.error('init failed');
             console.error(err);
             console.trace();
         }
         else {
-            var server = app.listen(app.settings.port);
+            var server = app.listen(app.get('port'),function(err){
+                console.log("Express server listening on port %d in %s mode", (server.address()||{}).port, app.get('env'));
+            });
             server.on('error', function(err) {
                 console.error('********* Server Is NOT Working !!!! ***************',err);
             });
-            console.log("Express server listening on port %d in %s mode", (server.address()||{}).port, app.settings.env);
-
+            app.set('gamification_tokens',gamification);
         }
     }
 );

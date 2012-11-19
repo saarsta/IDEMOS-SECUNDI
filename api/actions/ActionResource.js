@@ -348,8 +348,6 @@ module.exports.approveAction = function (id, callback) {
 
         //find cycle
         function(action, cbk){
-            console.log(action);
-
             if(!action){
                 cbk("no such action!");
             }else{

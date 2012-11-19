@@ -66,8 +66,6 @@ var CyclePostResource = module.exports = jest.Resource.extend({
 
 function getSortedPostsByNumberOfDiscussions(discussions, callback)
 {
-    console.log('discussion');
-    console.log(discussions);
     if (!discussions){
         console.error('cycle has no discussions!!!')
         callback(null, null);

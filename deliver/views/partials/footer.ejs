@@ -111,6 +111,7 @@
 <script>
     var user = <%- JSON.stringify(locals.user || '') %>;
     /*$.webshims.polyfill();*/
+    var gamification_price = <%- JSON.stringify(get('gamification_tokens')) %>;
 </script>
 
 <!-- ClickTale Bottom part -->
