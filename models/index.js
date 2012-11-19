@@ -54,6 +54,7 @@ var Schemas = exports.Schemas = {
     Update:new Schema({
         title:{type:String, required:true},
         tooltip:String,
+        text_field_preview:{type:mongoose_types.Html},
         text_field:{type:mongoose_types.Html},
         image_field:mongoose_types.File,
         tags:{type:[String], index:true},

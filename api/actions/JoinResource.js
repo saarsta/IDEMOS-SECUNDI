@@ -96,7 +96,7 @@ var JoinResource = module.exports = common.GamificationMongooseResource.extend({
                                 if(!err && action){
                                     action.num_of_going--;
                                     g_action_obj = action;
-                                    g_action_obj.participants_count = g_action_obj.num_of_going;
+                                    g_action_obj.participants_count = action.going_users.length;
 
                                     for (var i = 0; i < action.going_users.length; i++) {
                                         if (req.user.id + "" == action.going_users[i].user_id + "") {

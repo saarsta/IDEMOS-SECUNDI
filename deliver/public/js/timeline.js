@@ -74,6 +74,11 @@ var timeline = {
 				}
 
 				// Set all the item's display properties
+                if(item.type == 'cycle_update'){
+                    if(!item.text_field_preview){
+                        item.text_field_preview = item.text_field;
+                    }
+                }
 				item.type_print = type.name;
 				if (type.text) item.short = type.text(item);
 				if (type.link) item.link = type.link(item);

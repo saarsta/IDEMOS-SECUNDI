@@ -95,7 +95,7 @@ var CycleTimelineResource = module.exports = jest.Resource.extend({
 
             function(cbk){
                 models.Update.find({cycle: cycle_id})
-                    .select({'_id': 1, 'title': 1, 'text_field': 1, 'image_field': 1, 'creation_date': 1, 'is_displayed': 1})
+                    .select({'_id': 1, 'title': 1, 'text_field_preview': 1, 'text_field': 1, 'image_field': 1, 'creation_date': 1, 'is_displayed': 1})
                     .exec(function(err, updates){
 
                         updates = JSON.parse(JSON.stringify(updates));
