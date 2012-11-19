@@ -256,6 +256,20 @@ module.exports = function (app) {
         sortable:'gui_order'
     });
 
+    admin.registerMongooseModel('QuoteGameCandidate',mongoose.model('QuoteGameCandidate'),null,{
+        list:['title'],
+        order_by:['gui_order'],
+        sortable:'gui_order'
+    });
+
+    admin.registerMongooseModel('QuoteGameQoute',mongoose.model('QuoteGameQoute'),null,{
+        list:['title'],
+        list_populate:['QuoteGameCandidate'],
+        order_by:['gui_order'],
+        sortable:'gui_order'
+    });
+
+
 };
 
 
