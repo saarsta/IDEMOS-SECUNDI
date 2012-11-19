@@ -216,17 +216,6 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
 
                 //conditions for creating a new discussion
 
-                //adding logs..
-                console.log("user_cup:");
-                console.log(user_cup);
-                console.log("min_tokens:");
-                console.log(min_tokens);
-                console.log("number_of_taged_info_items:");
-                console.log(number_of_taged_info_items);
-                console.log("fields.subject_id:");
-                console.log(fields.subject_id);
-                console.log("is good?");
-
                 var is_good_flag = true;
                 if (user_cup < min_tokens && user_cup < min_tokens - (Math.min(Math.floor(number_of_taged_info_items / 2), 2)) && fields.subject_id != '4fd0dae0ded0cb0100000fde') {
                     console.log(false);
@@ -369,7 +358,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
             // 8) publish to facebook
             function(cbk) {
                 og_action({
-                    action: 'create',
+                    action: 'created',
                     object_name:'discussion',
                     object_url : '/discussions/' + object.id,
                     fid : user.facebook_id,
