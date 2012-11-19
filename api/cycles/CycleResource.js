@@ -188,10 +188,13 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
 
         var cycle_id = object._id;
         object.is_follower = false;
+        var wants_to_leave=false;
+        if(req.query.force=="false")     {
+             wants_to_leave = _.any(user.cycles, function (cycle) {
+                return cycle.cycle_id + "" == cycle_id + ""
+            });
+        }
 
-        var wants_to_leave = _.any(user.cycles, function (cycle) {
-            return cycle.cycle_id + "" == cycle_id + ""
-        });
 
         if (!wants_to_leave) {
             if (!(_.any(user.cycles, function (cycle) {

@@ -1111,9 +1111,9 @@ var db_functions = {
         });
     },
 
-    joinToCycleFollowers:function (cycle_id, callback) {
+    joinToCycleFollowers:function (cycle_id,force_join, callback) {
         db_functions.loggedInAjax({
-            url:'/api/cycles/' + cycle_id,
+            url:'/api/cycles/' + cycle_id + '?force='+force_join,
             type:"PUT",
             async:true,
             success:function (data) {

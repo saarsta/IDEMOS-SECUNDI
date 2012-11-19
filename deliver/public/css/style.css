@@ -1546,7 +1546,7 @@ color: #ff00af;
 
 .services-green a.service-8 span.icon {
     background-image: url(../images/icon-8.png);
-    opacity:0;
+    opacity:0.4;
 }
 
 .services-green a.service-8 span.text {
@@ -1573,6 +1573,12 @@ color: #ff00af;
 .services-green a.service-10 span.text {
     display: block;
     padding-top: 58px;
+}
+
+.services-green a.service-8 span.text{
+    position: absolute;
+    z-index: 2;
+    right:2px;
 }
 
 .one-slide {

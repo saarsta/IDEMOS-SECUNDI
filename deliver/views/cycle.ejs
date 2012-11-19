@@ -707,8 +707,12 @@ var current_section=2;
         $('#cycle .iconbutton').click(function(){
              if (!button_minified)
              {
-                 minifyButton(350);
-                 setTimeout(share,300) ;
+                 db_functions.joinToCycleFollowers(cycle_id,true, function(err, result){
+
+                     $('.blue-box').text(result.followers_count);
+                     minifyButton(350);
+                     setTimeout(share,300) ;
+                 } );
              }
         });
 
