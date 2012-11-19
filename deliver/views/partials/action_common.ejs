@@ -123,22 +123,23 @@
             $('.social-on-click').click(function(e){
                 e.preventDefault();
 
-                var user_info = {
+                /*var user_info = {
                     user_logged_in : user.first_name ? true : false,
                     action_done : (user.actions_done_by_user && user.actions_done_by_user.join_to_object) ? true : false,
                     action_name : "join_to_object",
-                    tokens_owned : user.tokens ? user.tokens : 0
-                }
+                    tokens_owned : user.tokens ? user.tokens : 0,
+                    price: gamification_price['join_action']
+                }*/
 
-                db_functions.joinOrLeaveAction(action_id, user_info, function(err,data){
+                db_functions.joinOrLeaveAction(action_id, /*user_info,*/ function(err,data){
                     if(err){
                         console.log(err) ;
                     } else {
                         if(data != 'canceled'){
-                            if(!user.actions_done_by_user.join_to_object)
+                            /*if(!user.actions_done_by_user.join_to_object)
                             {
                                 user.actions_done_by_user.join_to_object = true;
-                            }
+                            }*/
                             setJoinBT(data);
                             if(data.action_obj.is_going === true){
                                 //set mail subject for social popup
@@ -174,22 +175,22 @@
             $('.holds_the_timeline').on("click",'.join-btn', function(e){
                 e.preventDefault();
 
-                var user_info = {
+                /*var user_info = {
                     user_logged_in : user.first_name ? true : false,
                     action_done : (user.actions_done_by_user && user.actions_done_by_user.join_to_object) ? true : false,
                     action_name : "join_to_object",
                     tokens_owned : user.tokens ? user.tokens : 0
-                }
+                }*/
 
-                db_functions.joinOrLeaveAction(action_id, user_info,function(err,data){
+                db_functions.joinOrLeaveAction(action_id, function(err,data){
                     if(err){
                         console.log(err) ;
                     }else{
                         if(data != 'canceled'){
-                            if(!user.actions_done_by_user.join_to_object)
+                            /*if(!user.actions_done_by_user.join_to_object)
                             {
                                 user.actions_done_by_user.join_to_object = true;
-                            }
+                            }*/
                             setJoinBT(data);
                         }
                     }
@@ -301,7 +302,8 @@
                 user_logged_in : user.first_name ? true : false,
                 action_done : (user.actions_done_by_user && user.actions_done_by_user.post_on_object) ? true : false,
                 action_name : "post_on_object",
-                tokens_owned : user.tokens ? user.tokens : 0
+                tokens_owned : user.tokens ? user.tokens : 0,
+                price: gamification_price['post_on_action']
             }
 
             $this.data('executing', true);
@@ -385,7 +387,8 @@
                 user_logged_in : user.first_name ? true : false,
                 action_done : (user.actions_done_by_user && user.actions_done_by_user.vote_on_object) ? true : false,
                 action_name : "vote_on_object",
-                tokens_owned : user.tokens ? user.tokens : 0
+                tokens_owned : user.tokens ? user.tokens : 0,
+                price: gamification_price['vote_on_post']
             }
             var func = $(this).parents('#comments').length ? db_functions.voteForActionPost: db_functions.voteForSuggestion;
             func.call(db_functions, post_id, actionType, user_info, function (err, post_obj) {

@@ -419,6 +419,7 @@
     var cycle_title="<%= action.cycle_id[0].cycle.title%>";
     var action_grade = Number("<%= action.grade%>");
     var action_resources = <%- JSON.stringify(action.action_resources) %>;
+    var gamification_prices = <%- JSON.stringify(gamification_price) %>;
 
 
     var creator_id = "<%=action.creator_id%>";
@@ -538,7 +539,8 @@
                     user_logged_in : user.first_name ? true : false,
                     action_done : (user.actions_done_by_user && user.actions_done_by_user.grade_object) ? true : false,
                     action_name : "grade_object",
-                    tokens_owned : user.tokens ? user.tokens : 0
+                    tokens_owned : user.tokens ? user.tokens : 0,
+                    price: gamification_price['suggestion_on_action']
                 }
                 db_functions.addSuggestionGrade(suggestion_id, action_id, rating, sugg_grade_id, user_info, function (err, data) {
                     if (!err) {
@@ -576,7 +578,8 @@
                     user_logged_in : user.first_name ? true : false,
                     action_done : (user.actions_done_by_user && user.actions_done_by_user.suggestion_on_object) ? true : false,
                     action_name : "suggestion_on_object",
-                    tokens_owned : user.tokens ? user.tokens : 0
+                    tokens_owned : user.tokens ? user.tokens : 0,
+                    price: gamification_price['suggestion_on_action']
                 }
 
                 db_functions.addSuggestionToAction(action_id, [part], explanation, user_info, function (err, data) {
@@ -620,7 +623,8 @@
                     user_logged_in : user.first_name ? true : false,
                     action_done : (user.actions_done_by_user && user.actions_done_by_user.grade_object) ? true : false,
                     action_name : "grade_object",
-                    tokens_owned : user.tokens ? user.tokens : 0
+                    tokens_owned : user.tokens ? user.tokens : 0,
+                    price: gamification_price['grade_action']
                 }
 
                 db_functions.addActionGrade(action_id, my_action_grade, grade_id, user_info, function (err, data) {
@@ -686,7 +690,8 @@
                                 user_logged_in : user.first_name ? true : false,
                                 action_done : (user.actions_done_by_user && user.actions_done_by_user.grade_object) ? true : false,
                                 action_name : "grade_object",
-                                tokens_owned : user.tokens ? user.tokens : 0
+                                tokens_owned : user.tokens ? user.tokens : 0,
+                                price: gamification_price['grade_action_suggestion']
                             }
                             db_functions.addSuggestionGrade(suggestion.id, action_id, rating, suggest_grade_id[suggestion.id], user_info, function (err, data) {
                                 if (!err) {

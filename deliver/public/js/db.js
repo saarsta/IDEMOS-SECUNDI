@@ -38,7 +38,7 @@ var db_functions = {
                                 $.ajax(options);
                             } else {
                                 var config = {
-                                    tokens_needed:3,
+                                    tokens_needed: options.user_info.price,
                                     tokens_owned: data.tokens,
                                     callback: function(clicked){
                                         if(clicked == 'ok'){
@@ -83,7 +83,7 @@ var db_functions = {
         if(options.hasOwnProperty('user_info') && options.user_info.action_done == false && options.user_info.user_logged_in)
         {
             var config = {
-                tokens_needed:3,
+                tokens_needed: options.user_info.price,
                 tokens_owned:options.user_info.tokens_owned,
                 callback: function(clicked){
                     if(clicked == 'ok'){
@@ -1177,13 +1177,13 @@ var db_functions = {
         });
     },
 
-    joinOrLeaveAction:function (action_id, user_info, callback) {
+    joinOrLeaveAction:function (action_id, callback) {
         db_functions.loggedInAjax({
             url:'/api/join/',
             type:"POST",
             data:{action_id:action_id},
             async:true,
-            user_info: user_info,
+            /*user_info: user_info,*/
             success:function (data) {
                 callback(null, data);
             },
