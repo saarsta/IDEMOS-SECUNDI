@@ -33,24 +33,24 @@ var db_functions = {
                         };
 
                         //TODO - for now no need for this popup
-//                        if(data.hasOwnProperty("actions_done_by_user") && options.hasOwnProperty("user_info")){
-//                            if(data.actions_done_by_user[options.user_info.action_name]) {
-//                                $.ajax(options);
-//                            } else {
-//                                var config = {
-//                                    tokens_needed:3,
-//                                    tokens_owned: data.tokens,
-//                                    callback: function(clicked){
-//                                        if(clicked == 'ok'){
-//                                            $.ajax(options);
-//                                        }
-//                                    }
-//                                };
-//                                popupProvider.showExplanationPopup(config);
-//                            }
-//                        }
-                        $.ajax(options);
-
+                        if(data.hasOwnProperty("actions_done_by_user") && options.hasOwnProperty("user_info")){
+                            if(data.actions_done_by_user[options.user_info.action_name]) {
+                                $.ajax(options);
+                            } else {
+                                var config = {
+                                    tokens_needed:3,
+                                    tokens_owned: data.tokens,
+                                    callback: function(clicked){
+                                        if(clicked == 'ok'){
+                                            $.ajax(options);
+                                        }else{
+                                            options.success.call(this, "canceled");
+                                        }
+                                    }
+                                };
+                                popupProvider.showExplanationPopup(config);
+                            }
+                        }
                     }
                 });
             } else if (xhr.responseText == 'not_activated') {
@@ -80,23 +80,25 @@ var db_functions = {
 
         //TODO - for now no need for this popup
 
-//        if(options.hasOwnProperty('user_info') && options.user_info.action_done == false && options.user_info.user_logged_in)
-//        {
-//            var config = {
-//                tokens_needed:3,
-//                tokens_owned:options.user_info.tokens_owned,
-//                callback: function(clicked){
-//                    if(clicked == 'ok'){
-//                        $.ajax(options);
-//                    }
-//                }
-//            };
-//            popupProvider.showExplanationPopup(config);
-//        }
-//        else
-//        {
+        if(options.hasOwnProperty('user_info') && options.user_info.action_done == false && options.user_info.user_logged_in)
+        {
+            var config = {
+                tokens_needed:3,
+                tokens_owned:options.user_info.tokens_owned,
+                callback: function(clicked){
+                    if(clicked == 'ok'){
+                        $.ajax(options);
+                    }else{
+                        options.success.call(this, "canceled");
+                    }
+                }
+            };
+            popupProvider.showExplanationPopup(config);
+        }
+        else
+        {
             $.ajax(options);
-//        }
+        }
     },
 
     login:function (email, password, callback) {
@@ -109,7 +111,6 @@ var db_functions = {
             success:function (err, data) {
                 callback(null, data);
             },
-
             error:function (err, data) {
                 callback(err, null);
             }
@@ -1176,12 +1177,13 @@ var db_functions = {
         });
     },
 
-    joinOrLeaveAction:function (action_id, callback) {
+    joinOrLeaveAction:function (action_id, user_info, callback) {
         db_functions.loggedInAjax({
             url:'/api/join/',
             type:"POST",
             data:{action_id:action_id},
             async:true,
+            user_info: user_info,
             success:function (data) {
                 callback(null, data);
             },

@@ -91,13 +91,14 @@ var NotificationCategoryResource = module.exports = resources.MongooseResource.e
     });
 
 
-var iterator = function (users_hash, discussions_hash, posts_hash, info_items_hash, actions_hash, cycles_hash, updates_hash, resources_hash, user_id) {
+var iterator = function (users_hash, discussions_hash, posts_hash, action_posts_hash, info_items_hash, actions_hash, cycles_hash, updates_hash, resources_hash, user_id) {
     return function (notification, itr_cbk) {
         {
             var user_obj = notification.notificators.length ?
                 users_hash[notification.notificators[0].notificator_id] : null;
             var discussion = discussions_hash[notification.entity_id + ''] || discussions_hash[notification.notificators[0].sub_entity_id + ''];
             var info_item = info_items_hash[notification.entity_id + ''] || info_items_hash[notification.notificators[0].sub_entity_id + ''];
+            var action_post = action_posts_hash[notification.entity_id + ''];
             var post = posts_hash[notification.entity_id + ''] || posts_hash[notification.notificators[0].sub_entity_id + ''];
             var post_id = post ? post._id : "";
             var action = actions_hash[notification.entity_id + ''] || actions_hash[notification.notificators[0].sub_entity_id + ''];
@@ -191,7 +192,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, info_items_ha
                 case "comment_on_discussion_you_created" :
                     var num_of_comments = notification.notificators.length;
                     if(discussion){
-                        notification.main_link = "/discussions/" + discussion._id + "";
+                        notification.main_link = "/discussions/" + discussion._id + "#post" + post_id;
                         notification.pic = discussion.image_field_preview || discussion.image_field;
                         notification.part_two = discussion.title;
                         notification.link_two = "/discussions/" + discussion._id + "";
@@ -205,7 +206,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, info_items_ha
 
                     if (num_of_comments > 1) {
                         notification.user = num_of_comments + " " + "אנשים";
-                        notification.part_one = "הגיבו על דיון שיצרת - ";
+                        notification.part_one = " הגיבו על דיון שיצרת - ";
                         itr_cbk(null, 1);
                     } else {
                         if(user_obj){
@@ -213,7 +214,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, info_items_ha
                             notification.user_link = "/myuru/" + user_obj._id + "";
                             notification.pic = user_obj.avatar_url();
                         }
-                        notification.part_one = "הגיב על דיון שיצרת - ";
+                        notification.part_one = " הגיב על דיון שיצרת - ";
                         itr_cbk();
                     }
                     break;
@@ -359,21 +360,65 @@ var iterator = function (users_hash, discussions_hash, posts_hash, info_items_ha
                     }
                     break;
 
-                case "response_added_to_action_you_joined":
-                    notification.part_one = "נוספה תגובה חדשה לפעולה ";
-                    notification.part_three = " שבמעגל התנופה ";
-                    if(cycle){
-                        notification.link_four = "/cycles/" + cycle.id;
-                        notification.part_four = cycle.title;
+                case "post_added_to_action_you_created":
+                    var num_of_joined = notification.notificators.length;
+                    if(num_of_joined > 1){
+                        notification.part_one = "נוספו "
+                            + num_of_joined + " תגובות חדשות לפעולה "
+                    } else {
+                        if(user_obj){
+                            notification.part_one = " הוסיף תגובה חדשה לפעולה ";
+                            notification.user = user_obj.first_name + " " + user_obj.last_name;
+                            notification.user_link = "/myuru/" + user_obj._id + "";
+                        }
+
                     }
+                    notification.part_three = " שיצרת במעגל התנופה ";
+
                     if(action){
                         notification.link_two = "/actions/" + action._id;
                         notification.part_two = action.title;
                         notification.pic = action.image_field_preview || action.image_field;
                         notification.img_src = notification.pic;
-                        notification.main_link = "/actions/" + action._id;
+                        notification.main_link = "/actions/" + action._id + "#post_" + action_post.id;
+                        notification.link_four = "/cycles/" + action.cycle_id[0].cycle;
+                        models.Cycle.findById(action.cycle_id[0].cycle, {title : 1}, function(err, cycle){
+                            notification.part_four = cycle.title;
+                            itr_cbk();
+                        });
+                    } else {
+                        itr_cbk();
                     }
-                    itr_cbk();
+                    break;
+
+                case "post_added_to_action_you_joined":
+                    var num_of_joined = notification.notificators.length;
+                    if(num_of_joined > 1){
+                        notification.part_one = "נוספו "
+                        + num_of_joined + " תגובות חדשות לפעולה "
+                    } else {
+                        if(user_obj){
+                            notification.part_one = " הוסיף תגובה חדשה לפעולה ";
+                            notification.user = user_obj.first_name + " " + user_obj.last_name;
+                            notification.user_link = "/myuru/" + user_obj._id + "";
+                        }
+                    }
+                    notification.part_three = " שבמעגל התנופה ";
+
+                    if(action){
+                        notification.link_two = "/actions/" + action._id;
+                        notification.part_two = action.title;
+                        notification.pic = action.image_field_preview || action.image_field;
+                        notification.img_src = notification.pic;
+                        notification.main_link = "/actions/" + action._id + "#post" + action_post.id;
+                        notification.link_four = "/cycles/" + action.cycle_id[0].cycle;
+                        models.Cycle.findById(action.cycle_id[0].cycle, {title : 1}, function(err, cycle){
+                            notification.part_four = cycle.title;
+                            itr_cbk();
+                        });
+                    } else {
+                        itr_cbk();
+                    }
                     break;
 
                 case "action_suggested_in_cycle_you_are_part_of":
@@ -824,7 +869,14 @@ var populateNotifications = module.exports.populateNotifications = function(resu
 
     var post_notification_types = [
         "been_quoted",
-        "proxy_vote_to_post"
+        "proxy_vote_to_post",
+        "comment_on_discussion_you_are_part_of",
+        "comment_on_discussion_you_created"
+    ];
+
+    var action_post_notification_types = [
+        "post_added_to_action_you_created",
+        "post_added_to_action_you_joined"
     ];
 
     var cycle_notification_types_as_sub_entity = [
@@ -833,8 +885,7 @@ var populateNotifications = module.exports.populateNotifications = function(resu
         "update_created_in_cycle_you_are_part_of",
         "action_you_created_was_approved",
         "action_you_are_participating_in_was_approved",
-        "user_joined_action_you_created",
-        "response_added_to_action_you_joined"
+        "user_joined_action_you_created"
     ];
 
     var cycle_ids = _.chain(results.objects)
@@ -852,11 +903,14 @@ var populateNotifications = module.exports.populateNotifications = function(resu
         "action_you_created_was_approved",
         "action_you_are_participating_in_was_approved",
         "user_joined_action_you_created",
-        "user_brings_resource_to_action_you_created",
-        "response_added_to_action_you_joined"
+        "user_brings_resource_to_action_you_created"
 
     ];
 
+    var action_notification_type_as_sub_entity = [
+        "post_added_to_action_you_joined",
+        "post_added_to_action_you_created"
+    ];
     var action_ids = _.chain(results.objects)
         .map(function (notification) {
             return  _.indexOf(action_notification_type, notification.type) > -1
@@ -865,6 +919,17 @@ var populateNotifications = module.exports.populateNotifications = function(resu
         .compact()
         .uniq()
         .value();
+
+    var action_ids_as_sub_entity = _.chain(results.objects)
+        .map(function (notification) {
+            return  _.indexOf(action_notification_type_as_sub_entity, notification.type) > -1
+                ? notification.notificators[0].sub_entity_id : null;
+        })
+        .compact()
+        .uniq()
+        .value();
+
+    var action_ids = _.union(action_ids, action_ids_as_sub_entity);
 
     var update_notification_type = [
         "update_created_in_cycle_you_are_part_of"
@@ -902,6 +967,7 @@ var populateNotifications = module.exports.populateNotifications = function(resu
         "a_dicussion_created_with_info_item_that_you_created",
         "proxy_created_new_discussion",
         "proxy_graded_discussion"
+
     ];
 
     var discussion_ids = _.chain(results.objects)
@@ -914,13 +980,13 @@ var populateNotifications = module.exports.populateNotifications = function(resu
         .value();
 
     var discussion_notification_types_as_sub_entity = [
-        "comment_on_discussion_you_are_part_of",
-        "comment_on_discussion_you_created",
         "user_gave_my_post_tokens",
         "user_gave_my_suggestion_tokens",
         "proxy_created_change_suggestion",
         "proxy_graded_change_suggestion",
-        "proxy_vote_to_post"
+        "proxy_vote_to_post",
+        "comment_on_discussion_you_are_part_of",
+        "comment_on_discussion_you_created"
     ];
 
     var discussion_ids_as_sub_entity = _.chain(results.objects)
@@ -956,6 +1022,15 @@ var populateNotifications = module.exports.populateNotifications = function(resu
         .map(function (notification) {
             return  _.indexOf(post_notification_types, notification.type) > -1
                 ? notification.entity_id : null;
+        })
+        .compact()
+        .uniq()
+        .value();
+
+    var action_post_ids = _.chain(results.objects)
+        .map(function (notification) {
+            return  _.indexOf(action_post_notification_types, notification.type) > -1
+                ? notification.entity_id + "" : null;
         })
         .compact()
         .uniq()
@@ -1041,6 +1116,25 @@ var populateNotifications = module.exports.populateNotifications = function(resu
                             });
                         }
                         cbk(err, post_items_hash);
+                    });
+            else
+                cbk(null,{});
+        },
+
+        function(cbk){
+            if(action_post_ids.length)
+                models.PostAction.find({},{'id':1, 'text':1})
+                    .where('_id').in(action_post_ids)
+                    .exec(function (err, posts_items) {
+
+                        if(!err){
+                            var action_post_items_hash = {};
+
+                            _.each(posts_items, function (post_item) {
+                                action_post_items_hash[post_item.id] = post_item;
+                            });
+                        }
+                        cbk(err, action_post_items_hash);
                     });
             else
                 cbk(null,{});
@@ -1142,7 +1236,7 @@ var populateNotifications = module.exports.populateNotifications = function(resu
                 cbk(null,{});
         }
     ], function(err, args){
-        async.forEach(results.objects, iterator(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], user_id), function (err, obj) {
+        async.forEach(results.objects, iterator(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], user_id), function (err, obj) {
             callback(err, results);
         })
     })

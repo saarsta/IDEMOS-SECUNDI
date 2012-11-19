@@ -28,8 +28,14 @@ exports.create_user_notification = function(notification_type, entity_id, user_i
         "action_added_in_cycle_you_are_part_of",
         "action_you_created_was_approved",
         "action_you_are_participating_in_was_approved",
-        "user_brings_resource_to_action_you_created",
-        "response_added_to_action_you_joined"
+        "user_brings_resource_to_action_you_created"
+    ];
+
+    var multi_notification_arr = [
+        'comment_on_discussion_you_are_part_of',
+        "comment_on_discussion_you_created",
+        "post_added_to_action_you_joined",
+        "post_added_to_action_you_created"
     ];
 
     if(notificatior_id && _.indexOf(single_notification_arr, notification_type) == -1){
@@ -38,7 +44,12 @@ exports.create_user_notification = function(notification_type, entity_id, user_i
 
             function(cbk){
                 notification_type = notification_type + "";
-                if(entity_id)
+                if(_.contains(multi_notification_arr, notification_type) && sub_entity){
+                    models.Notification.findOne({type: notification_type, 'notificators.sub_entity_id': sub_entity, user_id: user_id}, function(err , obj){
+                        cbk(err, obj);
+                    });
+                }
+                else if(entity_id)
                     models.Notification.findOne({type: notification_type, entity_id: entity_id, user_id: user_id}, function(err , obj){
                         cbk(err, obj);
                     });
@@ -57,7 +68,7 @@ exports.create_user_notification = function(notification_type, entity_id, user_i
 
 
                     //TODO change it later to something prettier
-                    if((notification_type == 'comment_on_discussion_you_are_part_of' || notification_type == "comment_on_discussion_you_created") &&
+                    if((_.contains(multi_notification_arr, notification_type)) &&
                         _.any(noti.notificators,  function(notificator){return notificator.notificator_id + "" == notificatior_id + ""})) {
                         var new_notificator = {
                             notificator_id: notificatior_id,

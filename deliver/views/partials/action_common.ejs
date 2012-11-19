@@ -84,7 +84,9 @@
             function setGoingNumber(number) {
 
                 $('#going_number')[0].innerHTML = '(' + number + ')';
-                $('.going_red').html(number);
+                $('.going.red').html(number);
+                $('.going.green').html(number);
+                $('div.popup-event[item-id=' + action_id + ']' + ' .going_num').html(number + ' משתתפים');
             }
 
             function setJoinBT(data){
@@ -123,51 +125,75 @@
             $('.social-on-click').click(function(e){
                 e.preventDefault();
 
-                db_functions.joinOrLeaveAction(action_id, function(err,data){
+                var user_info = {
+                    user_logged_in : user.first_name ? true : false,
+                    action_done : (user.actions_done_by_user && user.actions_done_by_user.join_to_object) ? true : false,
+                    action_name : "join_to_object",
+                    tokens_owned : user.tokens ? user.tokens : 0
+                }
+
+                db_functions.joinOrLeaveAction(action_id, user_info, function(err,data){
                     if(err){
                         console.log(err) ;
-                    }
-                    else{
-                        setJoinBT(data);
-                        if(data.action_obj.is_going === true){
-                            //set mail subject for social popup
+                    } else {
+                        if(data != 'canceled'){
+                            if(!user.actions_done_by_user.join_to_object)
+                            {
+                                user.actions_done_by_user.join_to_object = true;
+                            }
+                            setJoinBT(data);
+                            if(data.action_obj.is_going === true){
+                                //set mail subject for social popup
 
-                            var mail_subject = "הצטרפתי לקידום הפעילות בנושא "
-                                    + cycle_title
-                                    + ". מה איתך?"
-                            mail_subject = encodeURIComponent(mail_subject);
-                            var mail_body = "החלטתי לקחת חלק בפעילות של תנועת עורו בתחום"
-                                    + " "
-                                    + cycle_title
-                                    + ". גם לך חשוב לקדם את הנושא? אם כן, אפשר לקבל פרטים נוספים, להצטרף ולתמוך באתר עורו. אשמח לראות אותך שם! "
-                                    + "http://www.uru.org.il/cycles/" + cycle_id;
+                                var mail_subject = "הצטרפתי לקידום הפעילות בנושא "
+                                        + cycle_title
+                                        + ". מה איתך?"
+                                mail_subject = encodeURIComponent(mail_subject);
+                                var mail_body = "החלטתי לקחת חלק בפעילות של תנועת עורו בתחום"
+                                        + " "
+                                        + cycle_title
+                                        + ". גם לך חשוב לקדם את הנושא? אם כן, אפשר לקבל פרטים נוספים, להצטרף ולתמוך באתר עורו. אשמח לראות אותך שם! "
+                                        + "http://www.uru.org.il/cycles/" + cycle_id;
 
-                            setTimeout(function(){
+                                setTimeout(function(){
 
-                                $('#box-share,#screen').show();
-                                $('#social-popup-mail').attr("href", "mailto:?subject=" + mail_subject + "&body=" + mail_body);
-                                $('#close').click(function(){
-                                    $('#box-share,#screen').hide();
-                                })
-                            }, 100);
+                                    $('#box-share,#screen').show();
+                                    $('#social-popup-mail').attr("href", "mailto:?subject=" + mail_subject + "&body=" + mail_body);
+                                    $('#close').click(function(){
+                                        $('#box-share,#screen').hide();
+                                    })
+                                }, 100);
+                            }
                         }
                     }
                 })
             });
 
-        if(window.location.hash){
+        if(window.location.hash.indexOf("join") > -1){
             $('.social-on-click').click();
         }
 
             $('.holds_the_timeline').on("click",'.join-btn', function(e){
                 e.preventDefault();
 
-                db_functions.joinOrLeaveAction(action_id,function(err,data){
+                var user_info = {
+                    user_logged_in : user.first_name ? true : false,
+                    action_done : (user.actions_done_by_user && user.actions_done_by_user.join_to_object) ? true : false,
+                    action_name : "join_to_object",
+                    tokens_owned : user.tokens ? user.tokens : 0
+                }
+
+                db_functions.joinOrLeaveAction(action_id, user_info,function(err,data){
                     if(err){
                         console.log(err) ;
-                    }
-                    else{
-                        setJoinBT(data);
+                    }else{
+                        if(data != 'canceled'){
+                            if(!user.actions_done_by_user.join_to_object)
+                            {
+                                user.actions_done_by_user.join_to_object = true;
+                            }
+                            setJoinBT(data);
+                        }
                     }
                 })
             });
@@ -285,25 +311,30 @@
 
             db_functions.addPostToAction(action_id, $("textarea#discussion_comment").val(), new_post_ref_id, user_info, function (err, post) {
                 // $("#user_tokens").text(post.updated_user_tokens);
-                if (!err) {
-                    if(!user.actions_done_by_user.post_on_object)
-                    {
-                        user.actions_done_by_user.post_on_object = true;
-                    }
-                    if (my_id && post.creator_id){
-                        setUserScore(my_id, post.creator_id);
-                    }
-                    post.voting = post.votes_for - post.votes_against;
-                    dust.render('discussion_comment', post, function (err, out) {
-                        $("#comments").append(out);
-                        $("textarea#discussion_comment").val('');
-                        new_post_ref_id = null;
-                        postsNumber++;
-                        setCommentNumber(postsNumber);
+                if(!err){
+                    if(post == 'canceled'){
                         $this.data('executing', false);
-                        $this.removeClass('disable')
-
-                    });
+                        $this.removeClass('disable');
+                    }
+                    else{
+                        if(!user.actions_done_by_user.post_on_object)
+                        {
+                            user.actions_done_by_user.post_on_object = true;
+                        }
+                        if (my_id && post.creator_id){
+                            setUserScore(my_id, post.creator_id);
+                        }
+                        post.voting = post.votes_for - post.votes_against;
+                        dust.render('discussion_comment', post, function (err, out) {
+                            $("#comments").append(out);
+                            $("textarea#discussion_comment").val('');
+                            new_post_ref_id = null;
+                            postsNumber++;
+                            setCommentNumber(postsNumber);
+                            $this.data('executing', false);
+                            $this.removeClass('disable');
+                        });
+                    }
                 }
             })
         });
@@ -361,15 +392,17 @@
             var func = $(this).parents('#comments').length ? db_functions.voteForActionPost: db_functions.voteForSuggestion;
             func.call(db_functions, post_id, actionType, user_info, function (err, post_obj) {
                 if (!err) {
-                    if(!user.actions_done_by_user.vote_on_object)
-                    {
-                        user.actions_done_by_user.vote_on_object = true;
+                    if(post_obj != 'canceled'){
+                        if(!user.actions_done_by_user.vote_on_object)
+                        {
+                            user.actions_done_by_user.vote_on_object = true;
+                        }
+                        button.parents(".ratio").find(".count").text(Math.round(post_obj.votes_for-post_obj.votes_against ));
+                        var down_arrow = button.parents(".ratio").find(".down");
+                        var up_arrow =button.parents(".ratio").find(".up");
+                        down_arrow.removeClass("balance0").removeClass("balance1").removeClass("balance2").removeClass("balance3").removeClass("balance-1").removeClass("balance-2").removeClass("balance-3").addClass("balance"+post_obj.voter_balance);
+                        up_arrow.removeClass("balance0").removeClass("balance1").removeClass("balance2").removeClass("balance3").removeClass("balance-1").removeClass("balance-2").removeClass("balance-3").addClass("balance"+post_obj.voter_balance);
                     }
-                    button.parents(".ratio").find(".count").text(Math.round(post_obj.votes_for-post_obj.votes_against ));
-                    var down_arrow = button.parents(".ratio").find(".down");
-                    var up_arrow =button.parents(".ratio").find(".up");
-                    down_arrow.removeClass("balance0").removeClass("balance1").removeClass("balance2").removeClass("balance3").removeClass("balance-1").removeClass("balance-2").removeClass("balance-3").addClass("balance"+post_obj.voter_balance);
-                    up_arrow.removeClass("balance0").removeClass("balance1").removeClass("balance2").removeClass("balance3").removeClass("balance-1").removeClass("balance-2").removeClass("balance-3").addClass("balance"+post_obj.voter_balance);
                 }
                 else {
                     if (err.responseText == 'Error: there is not enought tokens')

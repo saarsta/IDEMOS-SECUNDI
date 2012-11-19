@@ -93,9 +93,9 @@
 					|  כמות משתתפים נוכחית:
                     <% if (action.num_of_going < action.required_participants) { %>
                         <!--there use to be here class going red that counts going users (what avner did)-->
-                        <strong class="red "><%=action.num_of_going %></strong>
+                        <strong class="going red "><%=action.num_of_going %></strong>
                     <% } else{ %>
-                        <strong class="green"><%=action.num_of_going %></strong>
+                        <strong class="going green"><%=action.num_of_going %></strong>
                     <% } %>
 
                 </div>

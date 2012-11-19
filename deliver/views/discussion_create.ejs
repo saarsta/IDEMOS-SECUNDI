@@ -18,7 +18,6 @@
               <% include partials/menu.ejs %>
                <% include partials/user_box.ejs %>
                <% include partials/failures.ejs %>
-
                <% include partials/tag_search.ejs %>
 
         </div>
@@ -220,7 +219,6 @@
 <script type="text/javascript">
     var current_section=1;
     $(document).ready(function () {
-
 
         var is_logged = <%= user_logged %>;
         var is_cup_for_create_discussion = <%= is_cup_for_create_discussion %>;
