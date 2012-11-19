@@ -356,6 +356,7 @@ var Schemas = exports.Schemas = {
 // )
         ]
     },
+
     DailyDiscussion:{
         title:{type:String, required:true},
         image_field: { type:mongoose_types.File, required:true},
@@ -369,7 +370,31 @@ var Schemas = exports.Schemas = {
         is_visible:{type:Boolean, 'default':true},
         is_published:{type:Boolean, 'default':false},
         is_hidden:{type:Boolean,'default':true}
+    } ,
+
+    QuoteGameCandidate:{
+        name:{type:String, required:true},
+        image_field_thumb: { type:mongoose_types.File, required:true},
+        image_field: { type:mongoose_types.File, required:true},
+        biography: {type:String},
+        wins:   {type:Number, 'default':0, editable:false},
+        party:{type:String, "enum":["הליכוד ביתנו", "העבודה", "חד\"ש"]}
+    }  ,
+
+    QuoteGameQoute:{
+        qoute:{type:String, required:true},
+        priority:{type:Number, 'default':5},
+        candidate  : {type:ObjectId, ref:'QuoteGameCandidate'   , index:true, required:true},
+        response :{
+            skip:   {type:Number, 'default':0, editable:false},
+            positive:   {type:Number, 'default':0, editable:false},
+            very_positive:   {type:Number, 'default':0, editable:false},
+            negative:   {type:Number, 'default':0, editable:false},
+            very_negative:   {type:Number, 'default':0, editable:false}
+
+        }
     }
+
 };
 
 var schemas_with_tooltip = [require('./discussion'), require('./articles'), require('./cycle'), require('./information_item'), require('./action'), Schemas.Headline, Schemas.Update];
@@ -435,6 +460,9 @@ var Models = module.exports = {
 
     FooterLink:mongoose.model('FooterLink', require('./footer_link')),
     DailyDiscussion:mongoose.model('DailyDiscussion', new Schema(Schemas.DailyDiscussion, {strict:true})),
+    QuoteGameCandidate:mongoose.model('QuoteGameCandidate', new Schema(Schemas.QuoteGameCandidate, {strict:true})),
+    QuoteGameQoute:mongoose.model('QuoteGameQoute', new Schema(Schemas.QuoteGameQoute, {strict:true})),
+
     Schemas:Schemas,
     setDefaultPublish:function (is_publish) {
         _.each(module.exports, function (model, name) {
