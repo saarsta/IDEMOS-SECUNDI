@@ -19,7 +19,7 @@ app.set('old_views', __dirname + '/views');
 app.set('public_folder', __dirname + '/deliver/public');
 app.set('public_folder2', __dirname + '/public');
 
-app.set('port', app.get('port') || 80);
+app.set('port', /*app.get('port') ||*/ 80);
 
 app.set('facebook_app_id', process.env.FACEBOOK_APPID || '175023072601087');
 app.set('facebook_app_name',process.env.FACEBOOK_APPNAME || 'uru_dev');
