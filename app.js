@@ -8,6 +8,7 @@ var express = require('express'),
     utils = require('./utils'),
     auth = require("connect-auth");
 
+
 require('./tools/compile_templates');
 require('./deliver/tools/compile_dust_templates');
 
