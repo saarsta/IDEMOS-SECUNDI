@@ -38,6 +38,36 @@ var popupProvider={
         });
     },
 
+    showOkPopupWithLink:function(popupConfig){
+        var defaults = {
+            okButtonText:'סגור',
+            part_one:'',
+            part_two: '',
+            part_three: '',
+            link: ''
+            ,callback: $.noop
+            ,onOkCilcked:function(e){
+                e.preventDefault();
+                $.colorbox.close();
+            }
+        };
+
+        popupConfig = $.extend(defaults,popupConfig);
+
+        dust.render('ok_popup_link',popupConfig,function(err,out){
+            if(!err){
+                $.colorbox({ html:out,
+                    onComplete:function(e){
+                        $('.ok-button').click(popupConfig.onOkCilcked);
+                    },
+                    onClosed:function(){
+                        popupConfig.callback();
+                    }
+                });
+            }
+        });
+    },
+
     showExplanationPopup:function(popupConfig){
         var clicked;
         var defaults = {
