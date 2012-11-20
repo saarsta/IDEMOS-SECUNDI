@@ -48,7 +48,7 @@ var db_functions = {
 
                         //TODO - for now no need for this popup
                         if(data.hasOwnProperty("actions_done_by_user") && options.hasOwnProperty("user_info")){
-                            if(data.actions_done_by_user[options.user_info.action_name]) {
+                            if(data.actions_done_by_user[options.user_info.action_name] || options.user_info.price <= 0) {
                                 $.ajax(options);
                             } else {
                                 var config = {
@@ -96,7 +96,7 @@ var db_functions = {
 
         //TODO - for now no need for this popup
 
-        if(options.hasOwnProperty('user_info') && options.user_info.action_done == false && options.user_info.user_logged_in)
+        if((options.hasOwnProperty('user_info') && options.user_info.action_done == false && options.user_info.user_logged_in) && options.user_info.price > 0)
         {
             var config = {
                 tokens_needed: options.user_info.price,
