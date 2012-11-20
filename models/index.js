@@ -382,8 +382,8 @@ var Schemas = exports.Schemas = {
         party:{type:String, "enum":["הליכוד ביתנו", "העבודה", "חד\"ש"]}
     }  ,
 
-    QuoteGameQoute:{
-        qoute:{type:String, required:true},
+    QuoteGameQuote:{
+        quote:{type:String, required:true},
         priority:{type:Number, 'default':5},
         candidate  : {type:ObjectId, ref:'QuoteGameCandidate'   , index:true, required:true},
         response :{
@@ -462,7 +462,7 @@ var Models = module.exports = {
     FooterLink:mongoose.model('FooterLink', require('./footer_link')),
     DailyDiscussion:mongoose.model('DailyDiscussion', new Schema(Schemas.DailyDiscussion, {strict:true})),
     QuoteGameCandidate:mongoose.model('QuoteGameCandidate', new Schema(Schemas.QuoteGameCandidate, {strict:true})),
-    QuoteGameQoute:mongoose.model('QuoteGameQoute', new Schema(Schemas.QuoteGameQoute, {strict:true})),
+    QuoteGameQuote:mongoose.model('QuoteGameQuote', new Schema(Schemas.QuoteGameQuote, {strict:true})),
 
     Schemas:Schemas,
     setDefaultPublish:function (is_publish) {

@@ -14,14 +14,15 @@ var UserResource = module.exports =  mongoose_resource.MongooseResource.extend({
         };
         this.allowed_methods = ['get','post','put','delete'];
         this.authentication = new common.SessionAuthentication();
-        this.filtering = {'followers.follower_id': {
-            exact:true,
-            in:true
-        },
-        'cycles.cycle_id': {
-            exact:true,
-            in:true
-        }
+        this.filtering = {
+            'followers.follower_id': {
+                exact:true,
+                in:true
+            },
+            'cycles.cycle_id': {
+                exact:true,
+                in:true
+            }
         }
     }
 });

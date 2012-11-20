@@ -63,7 +63,9 @@ var mongoose_resource = require('jest'),
     FbConnectResource = require('./FbConnectResource'),
     AvatarResource = require('./avatar_resource'),
     ResetNotificationResource = require('./reset_notification_resource'),
-//    DailyDiscussionResource = require('./DailyDiscussionResource'),
+    DailyDiscussionResource = require('./DailyDiscussionResource'),
+    QuoteGameCandidateResource = require('./QuoteGameCandidateResource'),
+    QuoteGameQuoteResource = require('./QuoteGameQuoteResource'),
     OGActionResource = require('./og_action_resource'),
     UserInviteFriendsResource=      require('./UserInviteFriendsResource');
 
@@ -139,5 +141,7 @@ module.exports = function(app)
     rest_api.register('og_action', new OGActionResource());
     rest_api.register('avatar',new AvatarResource());
     rest_api.register('reset_notification',new ResetNotificationResource());
-//    rest_api.register_resource('daily_discussions', new DailyDiscussionResource());
+    rest_api.register_resource('daily_discussions', new DailyDiscussionResource());
+    rest_api.register_resource('quote_game_candidate', new QuoteGameCandidateResource());
+    rest_api.register_resource('quote_game_quote', new QuoteGameQuoteResource());
 };
