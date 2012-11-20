@@ -255,7 +255,7 @@ var sendNotificationToUser = function(notification, last_update_date) {
 //            }
             // TODO check in account settings if sending mails is allowed
             email = user.email;
-            notificationResource.populateNotifications({objects:[notification]},cbk);
+            notificationResource.populateNotifications({objects:[notification]}, user.id, cbk);
         },
         // 3) create text message
         function(results,cbk) {
