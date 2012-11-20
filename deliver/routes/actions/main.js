@@ -110,7 +110,6 @@ module.exports = function (req, res) {
                 action.cycle_id = cycle;
                 var ejsFileName = action.is_approved ? 'action_approved.ejs' : 'action_append.ejs';
                 var type = action.is_approved ? 'approved_action' : 'pending_action';
-                console.log(action.text_field_preview);
                 res.render(ejsFileName,{
                     action: action,
                     tab: 'actions',

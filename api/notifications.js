@@ -95,7 +95,7 @@ exports.create_user_notification = function(notification_type, entity_id, user_i
                            cbk(null, obj || noti);
                        });
                    }
-                   //sendNotificationToUser(noti, last_update_date);
+                   sendNotificationToUser(noti, last_update_date);
                 }else{
                     create_new_notification(notification_type, entity_id, user_id, notificatior_id, sub_entity, url, function(err, obj){
                         cbk(err, obj);
@@ -201,8 +201,8 @@ var create_new_notification = function(notification_type, entity_id, user_id, no
         if(err)
             console.error(err);
         callback(null, obj || notification);
-        /*if(!err && obj)
-            sendNotificationToUser(obj);*/
+        if(!err && obj)
+            sendNotificationToUser(obj);
     });
 };
 
@@ -255,7 +255,7 @@ var sendNotificationToUser = function(notification, last_update_date) {
 //            }
             // TODO check in account settings if sending mails is allowed
             email = user.email;
-            notificationResource.populateNotifications({objects:[notification]},cbk);
+            notificationResource.populateNotifications({objects:[notification]}, user.id, cbk);
         },
         // 3) create text message
         function(results,cbk) {

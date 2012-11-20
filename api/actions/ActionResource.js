@@ -90,9 +90,9 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
         this._super(req, filters, sorts, limit, offset, function (err, response) {
 
             async.forEach(response.objects, function (action, itr_cbk) {
-                action.participants_count = action.users.length;
+                action.participants_count = action.going_users.length;
                 action.is_going = req.user && _.any(action.going_users, function(going_user){return going_user.user_id + "" == req.user._id + ""});
-
+                action.num_of_going = action.going_users ? action.going_users.length : 0;
                 models.Cycle.findById(action.cycle_id[0].cycle + "", {title: 1}, function(err, cycle){
                     action.cycle_title = cycle && cycle.title;
                     itr_cbk();
@@ -348,8 +348,6 @@ module.exports.approveAction = function (id, callback) {
 
         //find cycle
         function(action, cbk){
-            console.log(action);
-
             if(!action){
                 cbk("no such action!");
             }else{

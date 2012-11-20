@@ -49,7 +49,6 @@ module.exports = AdminForm.extend({
                                             itr_cbk(err);
                                         })
                                 }
-
                             });
                         }
                     })
@@ -60,7 +59,6 @@ module.exports = AdminForm.extend({
             base.call(self, function(err, object){
                 console.log(err);
                 console.log(self.errors);
-                console.log(object);
 
                 //is approved sometimes changes when saving the form
 
@@ -72,14 +70,13 @@ module.exports = AdminForm.extend({
                     callback(err,object);
             });
         }
+
         if(was_hidden_before == true && is_action_hidden_when_save == false)
         {
             var is_cycle_hidden = false;
             var cycle_ids = _.map(this.instance.cycle_id, function(cycle_obj){
                 return cycle_obj.cycle + "";
             });
-
-
 
             models.Cycle.find()
                 .where('_id').in(cycle_ids)

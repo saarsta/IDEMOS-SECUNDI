@@ -305,7 +305,8 @@ $("#submit_post").on('click', function (e) {
                   user_logged_in : user.first_name ? true : false,
                   action_done : (user.actions_done_by_user && user.actions_done_by_user.vote_on_object) ? true : false,
                   action_name : "vote_on_object",
-                  tokens_owned : user.tokens ? user.tokens : 0
+                  tokens_owned : user.tokens ? user.tokens : 0,
+                  price: gamification_price['vote_on_article_post']
               }
               db_functions.voteOnArticleComment( post_id,actionType, user_info, function (err, post_obj)
               {
