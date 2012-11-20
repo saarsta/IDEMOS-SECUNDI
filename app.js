@@ -35,10 +35,8 @@ app.set('DB_URL',process.env.MONGOLAB_URI || 'mongodb://localhost/uru');
 app.set('url2png_api_key', process.env.url2png_api_key || 'P503113E58ED4A');
 app.set('url2png_api_secret', process.env.url2png_api_key || 'SF1BFA95A57BE4');
 
-
 express.logger.token('memory', function(req, res){ return util.format('%dMb %dMb', (process.memoryUsage().rss / 1048576).toFixed(2), (process.memoryUsage().heapUsed / 1048576).toFixed(2)); })
 express.logger.format('default2', ':response-time :memory :res[content-length] :status ":method :url HTTP/:http-version"');
-
 
 app.configure('development', function(){
     app.use(express.errorHandler());
@@ -66,7 +64,6 @@ app.configure('staging', function(){
     process.on('uncaughtException', function(err) {
         console.trace(err);
     });
-
 });
 
 app.configure('production', function(){
@@ -82,7 +79,6 @@ app.configure('production', function(){
     process.on('uncaughtException', function(err) {
         console.trace(err);
     });
-
 });
 
 if(!mongoose.connection.host)
