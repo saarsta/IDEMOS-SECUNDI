@@ -6960,12 +6960,12 @@ a.fraction-btn {
     height: 95px;
 }
 
-.followers-diagram .event .type-two .popup-text h5 {
+.followers-diagram .event .type-two .popup-text .title{
+    overflow: hidden;
+    text-overflow: ellipsis;
     color: #50504f;
     font: bold 13px/17px Arial;
-    height: 50px;
-    width: 185px;
-
+    max-height: 50px;
 }
 
 .followers-diagram .event .type-two .popup-text .floatRight {
