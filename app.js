@@ -237,6 +237,7 @@ if(app.settings.send_mails)
 require('./deliver/routes')(app);
 
 var cron = require('./cron');
+
 cron.run(app);
 
 async.waterfall([
