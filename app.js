@@ -257,6 +257,7 @@ async.waterfall([
         }
     ],
     function(err, gamification) {
+        console.log("errrrr", err);
         if(err) {
             console.error('init failed');
             console.error(err);
