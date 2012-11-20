@@ -257,13 +257,13 @@ module.exports = function (app) {
     });
 
     admin.registerMongooseModel('QuoteGameCandidate',mongoose.model('QuoteGameCandidate'),null,{
-        list:['title'],
+        list:['name'],
         order_by:['gui_order'],
         sortable:'gui_order'
     });
 
-    admin.registerMongooseModel('QuoteGameQoute',mongoose.model('QuoteGameQoute'),null,{
-        list:['title'],
+    admin.registerMongooseModel('QuoteGameQuote',mongoose.model('QuoteGameQuote'),null,{
+        list:['quote'],
         list_populate:['QuoteGameCandidate'],
         order_by:['gui_order'],
         sortable:'gui_order'
