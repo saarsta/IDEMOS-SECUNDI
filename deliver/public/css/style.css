@@ -818,13 +818,24 @@ color: #ff00af;
 
 #content h2 {
 
+
+
+    border-top: 6px solid #d6dbde;
+    color: #50504f;
+    font: normal 24px/49px 'AdumaFOTMedium';
+    margin: 0;
+}
+
+#content .add-offer h2 ,
+#content #cycle h2 {
+
+    border-top: 0;
     color: #50504f;
     font: normal 20px/35px 'AdumaFOTMedium';
     margin: 10px 28px 15px 28px;
     padding: 0 0 15px 0;
     border-bottom: solid 1px #ebebeb;
 }
-
 #content h2.cycle-title{
     width: 465px;
 }
@@ -6227,7 +6238,7 @@ div.action_list::-webkit-scrollbar-button {
 .add-offer .text-box h3 {
     color: #50504f;
     font: bold 16px/19px Arial;
-    margin-bottom: 5px;
+    margin: 15px 0;
 
 }
 

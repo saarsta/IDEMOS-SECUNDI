@@ -203,7 +203,7 @@ var popupProvider={
                                     $.colorbox.close();
                                 }else{
                                     callback(err, result);
-                                    $("#login_title").text(err);
+                                  //  $("#login_title").text(err);
                                 }
                             })
                     })
