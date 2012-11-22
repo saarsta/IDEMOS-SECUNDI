@@ -1495,7 +1495,40 @@ var db_functions = {
                 callback(err, data);
             }
         });
+    }  ,
+
+
+    getQuoteGameQuotes:function ( callback) {
+        db_functions.loggedInAjax({
+            url:'/api/quote_game_quote/?limit=0',
+            type:"GET",
+            async:true,
+            success:function (data, err) {
+                callback(err, data);
+            },
+            error:function (err, data) {
+                callback(err, data);
+            }
+        });
+    }  ,
+
+    getQuoteGameCandidate:function (candidate_id, callback) {
+        db_functions.loggedInAjax({
+            url:'/api/quote_game_candidate/' + candidate_id,
+            type:"GET",
+            async:true,
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function (err) {
+                callback(err, null);
+            }
+        });
     }
+
+
+
 };
 
 

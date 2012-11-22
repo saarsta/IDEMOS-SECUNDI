@@ -116,8 +116,12 @@ var User = module.exports = new Schema({
         join_to_object:false
     },
     no_mail_notifications : {type : Boolean, "default": true},
-    has_voted: [String]
-
+    has_voted: [String] ,
+    quote_game: {
+        played: {type : Boolean, "default": false}  ,
+        candidate  : {type:ObjectId, ref:'QuoteGameCandidate'   , index:true, required:true},
+        qoutes_count: {type: Number, 'default': 0, editable: false}
+    }
 }, {strict:true});
 
 User.methods.toString = function()

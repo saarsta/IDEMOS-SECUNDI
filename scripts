@@ -57,7 +57,9 @@ insert noti url
         })
 
 
-
+    db.users.find().forEach(function(user){
+                  print(user._id + '');
+    })
 //put default category on each action
 
 db.actions.find().forEach(function(action){
@@ -67,7 +69,11 @@ db.actions.find().forEach(function(action){
             }
         })
 
+ db.actions.find().forEach(function(action){
 
+                  print(action._id + '');
+
+         })
 ------------------------------------------------------------------------------------
 
 

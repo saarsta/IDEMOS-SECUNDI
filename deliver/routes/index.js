@@ -45,6 +45,8 @@ module.exports = function(app) {
 
     router.include('/daily_discussions',require('./daily_discussions'));
 
+    router.include('/elections_game',require('./elections_game'));
+
     router.include('/myuru',MyUru);
 
     router.include('/og', require('../../og'));

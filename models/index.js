@@ -384,6 +384,7 @@ var Schemas = exports.Schemas = {
     QuoteGameQuote:{
         quote:{type:String, required:true},
         priority:{type:Number, 'default':5},
+        //reference
         candidate  : {type:ObjectId, ref:'QuoteGameCandidate'   , index:true, required:true},
         response :{
             skip:   {type:Number, 'default':0, editable:false},

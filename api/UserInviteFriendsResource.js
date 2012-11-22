@@ -47,7 +47,6 @@ var UserInviteFriendsResource = module.exports = common.GamificationMongooseReso
                              return  invite.object_id  != fields.id;
                      });
                      new_invite_object.emails = _.union(new_invite_object.emails,new_invite_object.emails,invite_object.emails)
-
                  }
              }
 
