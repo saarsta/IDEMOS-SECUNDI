@@ -1,12 +1,13 @@
 /**
  * Module dependencies.
  */
-var express = require('express'),
-    mongoose = require('mongoose'),
-    MongoStore  = require('connect-mongo')(express),
-    async = require('async'),
-    utils = require('./utils'),
-    auth = require("connect-auth");
+var express = require('express');
+var mongoose = require('mongoose');
+var MongoStore = require('connect-mongo')(express);
+var async = require('async');
+var utils = require('./utils');
+var util = require('util');
+var auth = require("connect-auth");
 
 
 require('./tools/compile_templates');
@@ -36,7 +37,7 @@ app.set('DB_URL',process.env.MONGOLAB_URI || 'mongodb://localhost/uru');
 app.set('url2png_api_key', process.env.url2png_api_key || 'P503113E58ED4A');
 app.set('url2png_api_secret', process.env.url2png_api_key || 'SF1BFA95A57BE4');
 
-express.logger.token('memory', function(req, res){ return util.format('%dMb %dMb', (process.memoryUsage().rss / 1048576).toFixed(2), (process.memoryUsage().heapUsed / 1048576).toFixed(2)); })
+express.logger.token('memory', function(){ return util.format('%dMb %dMb', (process.memoryUsage().rss / 1048576).toFixed(2), (process.memoryUsage().heapUsed / 1048576).toFixed(2)); });
 express.logger.format('default2', ':response-time :memory :res[content-length] :status ":method :url HTTP/:http-version"');
 
 app.configure('development', function(){
@@ -46,9 +47,6 @@ app.configure('development', function(){
         secret: 'loQKQjWXxSTnxYv1vsb97X4UW13E6nsagEWNMuNs',
         bucket: 'uru'
     });
-
-// TODO REMOVE THIS BEFORE COMMIT
-//    app.set('send_mails',true);
 });
 
 
