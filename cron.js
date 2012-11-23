@@ -78,7 +78,6 @@ var Cron = exports.Cron = {
         })
     },
 
-
     findWhoInvitedMoreThenNumberOfRegisteredUsers:function (number, callback) {
         var event = "invited more then " + number + " registered users";
         var event_bonus = 3;
@@ -146,7 +145,7 @@ var Cron = exports.Cron = {
 
             async.parallel([
                 function(cbk){
-                    addTokensToUserByEventAndSetGamificationBonus(post_or_suggestion.creator_id, event, event_bonus, bouns_type, cbk);
+                    addTokensToUserByEventAndSetGamificationBonus(post_or_suggestion.creator_id, event, event_bonus, bonus_type, cbk);
                 },
 
                 function(cbk){
@@ -189,7 +188,7 @@ var Cron = exports.Cron = {
 
         async.waterfall([
             function (cbk) {
-                models.User.find({path:{$ne:true}},'_id').limit(10000).exec(cbk);
+                models.User.find({path:{$ne:true}},'_id').limit(10000).exec(cbk);//TODO is path works?
             },
 
             function (users, cbk) {
@@ -201,7 +200,6 @@ var Cron = exports.Cron = {
                          initial: {sum: 0},
                          reduce: function(obj,prev) { prev.sum += obj.votes_for}
                      }, function(err, result){
-
                          cbk(err, result);
                 });
             },
@@ -754,7 +752,7 @@ function addTokensToUserByEventAndSetGamificationBonus(user_id, event, event_bon
         },
 
         function(user, cbk){
-            user.set_gamification_bonus = true;
+            user.set_gamification_bonus = true;//TODO does it work??
             if(bonus_type == 'extra_cup') {
                 user.num_of_extra_tokens = Math.min(user.num_of_extra_tokens + event_bonus, 6);
             }else{
@@ -768,6 +766,7 @@ function addTokensToUserByEventAndSetGamificationBonus(user_id, event, event_bon
     ], function(err, user){
         callback(err, user);
     })
+
     /*models.User.update({_id:user_id}, {$inc:conditions, $set:set_gamification_bonus}, function (err, result) {
         callback(err, result);
     });*/

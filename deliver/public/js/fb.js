@@ -55,7 +55,6 @@ function facebookLogin(callback) {
     });
 }
 
-
 function fb_auth_and_persist(callback) {
     FB.login(function(response) {
         console.log(response);
