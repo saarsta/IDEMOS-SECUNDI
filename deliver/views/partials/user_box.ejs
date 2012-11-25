@@ -74,8 +74,14 @@ var unseen_notifications = user_logged && user ? user.unseen_notifications || 0 
             popupProvider.showLoginPopup({}, function(err, result){
                 if(!err)
                 {
-                  //  window.location = window.location + '?user_name=' + userName + '&proxy_id=' + proxyId + '&post_id=' + post_id;
-                    window.location = window.location ;
+
+                  if(typeof window.vars.afterLogin === "undefined") {
+                      window.vars.afterLogin();
+                  }   else   {
+                      //  window.location = window.location + '?user_name=' + userName + '&proxy_id=' + proxyId + '&post_id=' + post_id;
+                      window.location = window.location ;
+                  }
+
                 }
 
             });

@@ -35,7 +35,7 @@ var error_message = error_message || '';
                     <img src="<%= discussion.image_field ? discussion.image_field.url ||'' : '' %>" title="<%= discussion.title %>"/>
                 </div>
                 <div class="discussion_content discussion content">
-                    <textarea id="discussion_content" class="hidden_textarea"><%=discussion.text_field%></textarea>
+                    <textarea id="discussion_content" class="hidden_textarea"><%- discussion.text_field %></textarea>
                 </div>
 
                 <p  id="read_more">
@@ -82,6 +82,12 @@ var error_message = error_message || '';
                 <div class="slide-c">
                 </div>
             </div>
+        </div>
+
+        <div class="">
+
+                <div class="fb-comments"  data-href="http://www.uru.org.il/daily_discussions/<%= discussion.id %>"  data-num-posts="3" data-width="713" colorscheme="light" > </div>
+
         </div>
 
 

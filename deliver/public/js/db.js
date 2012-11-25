@@ -24,12 +24,26 @@ var db_functions = {
 
                             if(window.location.href.indexOf('actions/create/')==-1 && window.location.href.indexOf('discussions/new/')==-1)
                             {
-                                window.location.href = window.location.href;
+                                if(typeof window.vars.afterLogin === "undefined") {
+                                    window.location.href = window.location.href;
+
+                                }
+                                else
+                                {
+                                    window.vars.afterLogin  ();
+                                }
+
                             }
                         };
                         options.error = function () {
                             onError.apply(this, arguments);
-                            window.location.href = window.location.href;
+                            if(typeof window.vars.afterLogin === "undefined") {
+                                window.location.href = window.location.href;
+                            }
+                            else
+                            {
+                                window.vars.afterLogin ();
+                            }
                         };
 
                         //TODO - for now no need for this popup
@@ -52,6 +66,8 @@ var db_functions = {
                             }
                         }
                     }
+
+                    $.ajax(options);
                 });
             } else if (xhr.responseText == 'not_activated') {
                 var message = 'ההרשמה לאתר לא הושלמה, על מנת להמשיך לחץ על הלינק שנשלח לתיבת הדואר שלך.' +
@@ -1118,6 +1134,9 @@ var db_functions = {
             async:true,
             success:function (data) {
                 callback(null, data);
+            },
+            error:function (err) {
+                callback(err, null);
             }
         });
     },
