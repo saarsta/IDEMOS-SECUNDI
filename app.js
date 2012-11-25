@@ -1,12 +1,14 @@
 /**
  * Module dependencies.
  */
-var express = require('express'),
-    mongoose = require('mongoose'),
-    MongoStore  = require('connect-mongo')(express),
-    async = require('async'),
-    utils = require('./utils'),
-    auth = require("connect-auth");
+var express = require('express');
+var mongoose = require('mongoose');
+var MongoStore = require('connect-mongo')(express);
+var async = require('async');
+var utils = require('./utils');
+var util = require('util');
+var auth = require("connect-auth");
+
 
 require('./tools/compile_templates');
 require('./deliver/tools/compile_dust_templates');
@@ -18,7 +20,7 @@ app.set('old_views', __dirname + '/views');
 app.set('public_folder', __dirname + '/deliver/public');
 app.set('public_folder2', __dirname + '/public');
 
-app.set('port', app.get('port') || 80);
+app.set('port', process.env.PORT || 80);
 
 app.set('facebook_app_id', process.env.FACEBOOK_APPID || '175023072601087');
 app.set('facebook_app_name',process.env.FACEBOOK_APPNAME || 'uru_dev');
@@ -35,10 +37,8 @@ app.set('DB_URL',process.env.MONGOLAB_URI || 'mongodb://localhost/uru');
 app.set('url2png_api_key', process.env.url2png_api_key || 'P503113E58ED4A');
 app.set('url2png_api_secret', process.env.url2png_api_key || 'SF1BFA95A57BE4');
 
-
-express.logger.token('memory', function(req, res){ return util.format('%dMb %dMb', (process.memoryUsage().rss / 1048576).toFixed(2), (process.memoryUsage().heapUsed / 1048576).toFixed(2)); })
+express.logger.token('memory', function(){ return util.format('%dMb %dMb', (process.memoryUsage().rss / 1048576).toFixed(2), (process.memoryUsage().heapUsed / 1048576).toFixed(2)); });
 express.logger.format('default2', ':response-time :memory :res[content-length] :status ":method :url HTTP/:http-version"');
-
 
 app.configure('development', function(){
     app.use(express.errorHandler());
@@ -47,9 +47,6 @@ app.configure('development', function(){
         secret: 'loQKQjWXxSTnxYv1vsb97X4UW13E6nsagEWNMuNs',
         bucket: 'uru'
     });
-
-// TODO REMOVE THIS BEFORE COMMIT
-//    app.set('send_mails',true);
 });
 
 
@@ -66,7 +63,6 @@ app.configure('staging', function(){
     process.on('uncaughtException', function(err) {
         console.trace(err);
     });
-
 });
 
 app.configure('production', function(){
@@ -82,7 +78,6 @@ app.configure('production', function(){
     process.on('uncaughtException', function(err) {
         console.trace(err);
     });
-
 });
 
 if(!mongoose.connection.host)
@@ -240,6 +235,7 @@ if(app.settings.send_mails)
 require('./deliver/routes')(app);
 
 var cron = require('./cron');
+
 cron.run(app);
 
 async.waterfall([
