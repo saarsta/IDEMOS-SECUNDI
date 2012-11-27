@@ -293,6 +293,7 @@ var current_section=2;
         var cycle_title = "<%=cycle.title%>";
         var user = "<%=cycle.id%>";
         var sharepop = <%=share%>;
+        var join = <%=join%>;
         //set mail subject for social popup
 
 
@@ -705,6 +706,25 @@ var current_section=2;
 
         $(".<%= cycle.is_user_follower_of_cycle ? "share-btn":"green-btn" %>").show();
            */
+
+        if(join){
+            if(my_id!='') {
+                db_functions.joinToCycleFollowers(cycle_id,true, function(err, result){ share()} );
+            }  else  {
+                facebookLogin(function(err, result){
+                    if(!err){
+                        window.location.href = window.location.href.replace('join','share') ;
+                    }else{
+                        db_functions.joinToCycleFollowers(cycle_id,true, function(err, result){ } );
+                    }
+                })
+            }
+
+
+
+        }
+
+
         var button_minified=false;
         <%= cycle.is_user_follower_of_cycle ? "minifyButton(1)":"" %>
 

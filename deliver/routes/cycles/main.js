@@ -103,7 +103,8 @@ module.exports = function(req, res){
                 proxy:proxyJson,
                 social_popup_title: g_cycle.social_popup_title,
                 social_popup_text: g_cycle.social_popup_text,
-                share:req.query.share? true:false,
+                share:req.query.share ? true:false,
+                join:req.query.join ? true:false,
                 meta:{
                     type:req.app.settings.facebook_app_name + ':cycle',
                     title:g_cycle.title,
