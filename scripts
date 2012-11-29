@@ -107,3 +107,32 @@ db.actions.find().forEach(function(action){
 
 --------------------------------------------------------------------------------------
 
+// fix action going_users
+
+db.actions.find().forEach(function(action){
+	db.joins.find({"action_id": action._id}).forEach(function(join) {
+		//var user = action.going_users.filter(function(going_user) {
+		//	return  going_user.user_id + "" == join.user_id + ""
+		//})
+
+		var flag = false;
+		for(var i=0; i<action.going_users.length; i++){
+			if(action.going_users[i].user_id + "" == join.user_id + "") flag = true;
+		}
+
+		print(flag);
+
+		// user has joined action but isn't in going_users list
+		if(!flag) {
+			print(join.user_id);
+
+			var new_going_user = {
+				user_id: join.user_id,
+				join_date: join.creation_date
+			}
+			action.going_users.push( new_going_user );
+		}
+	})
+
+	db.actions.save(action);
+})
