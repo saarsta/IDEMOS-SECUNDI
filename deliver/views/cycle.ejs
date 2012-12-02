@@ -459,11 +459,11 @@ var current_section=2;
 
             db_functions.getCycleUpdates(cycle_id, function (err, data) {
 
-                        $.each(data.objects, function (index, item) {
-                            if(!item.text_field_preivew){
-                                item.text_field_preview = item.text_field.trim().substring(0, 300).split(" ").slice(0, -1).join(" ") + "... ";
-                            }
-                        });
+//                        $.each(data.objects, function (index, item) {
+//                            if(!item.text_field_preivew){
+//                                item.text_field_preview = item.text_field.trim().substring(0, 300).split(" ").slice(0, -1).join(" ") + "... ";
+//                            }
+//                        });
                         dust.renderArray('cycle_update', data.objects, function (err, out) {
                             $('.updates').append(out);
 
