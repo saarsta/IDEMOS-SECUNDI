@@ -130,9 +130,10 @@ db.actions.find().forEach(function(action){
 				user_id: join.user_id,
 				join_date: join.creation_date
 			}
-			action.going_users.push( new_going_user );
+			action.going_users.push(new_going_user);
 		}
 	})
 
 	db.actions.save(action);
 })
+
