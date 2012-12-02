@@ -73,7 +73,7 @@ app.configure('production', function(){
         bucket: 'uru'
     });
 
-    app.set('send_mails',false);
+    app.set('send_mails',true);
 
     process.on('uncaughtException', function(err) {
         console.trace(err);
