@@ -570,15 +570,13 @@
 
 
         $('.poll_option').click(function () {
-
-            var response =$(this).attr('id').substring(7);
-            $('.quote_credit,.quote_party').slideDown();
-
-            quotes[current_qoute].response=  response;
-            $('#current_quote_photo img').attr('src',quotes[current_qoute].candidate.image_field_thumb.url);
-            setTimeout(showNextQoute , 3000);
-            db_functions.setQuoteGameResponse(my_id,hash, response,function (err, data) {
-
+                var quote_id   =quotes[current_qoute]._id;
+                var response =$(this).attr('id').substring(7);
+                $('.quote_credit,.quote_party').slideDown();
+                quotes[current_qoute].response=  response;
+                $('#current_quote_photo img').attr('src',quotes[current_qoute].candidate.image_field_thumb.url);
+                setTimeout(showNextQoute , 3000);
+                db_functions.setQuoteGameResponse(my_id, quote_id,hash, response,function (err, data) {
             });
 
         });

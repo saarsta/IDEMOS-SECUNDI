@@ -1,13 +1,14 @@
 
 var common = require('./common')
 models = require('../models'),
-    async = require('async');
+    async = require('async'),
+    _ = require('underscore');;
 
 var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
     {
         init:function () {
             this._super(models.QuoteGameQuote, null, null);
-            this.allowed_methods = ['get'];
+            this.allowed_methods = ['get','put'];
             //this.authentication = new common.SessionAuthentication();
             //this.filtering = {cycle: null};
             this.default_query = function (query) {
@@ -39,5 +40,21 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
 
 
             });
+        }   ,
+
+        update_obj:function (req, object, callback) {
+            var ind=    req.body.response;
+
+            models.QuoteGameStatistics.find
+
+            _.indexOf(array, value)
+
+            models.QuoteGameQuote.update(
+                {_id:object._id},
+                {$inc: { 'response.positive' : 1 } },
+                function (err, quote) {
+                    callback(err, quote);
+            });
+
         }
     });

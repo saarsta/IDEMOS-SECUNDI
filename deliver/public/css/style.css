@@ -9993,6 +9993,7 @@ change .current class name using plugin option, currentPanel : 'current' */
 #cycle .sharing  a.email:active{      background-position: -57px -56px; }
 
 #cycle    a.iconbutton {
+    direction: ltr;
     position: absolute;
     left: 30px;
     top: 39px;
@@ -10009,7 +10010,7 @@ change .current class name using plugin option, currentPanel : 'current' */
     float: right;
     font: normal 12px arial, sans-serif;
     height: 42px;
-    padding-right: 11px; /* sliding doors padding */
+    padding-right: 10px; /* sliding doors padding */
     text-decoration: none;
 
 }
@@ -10070,6 +10071,7 @@ change .current class name using plugin option, currentPanel : 'current' */
 
     line-height: 28px;
     background: transparent url('../images/URU_large_pro.hand_icon.png')  right 2px no-repeat;
+
     text-align: right;
 }
 

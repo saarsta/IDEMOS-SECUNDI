@@ -386,15 +386,18 @@ var Schemas = exports.Schemas = {
         priority:{type:Number, 'default':5},
         //reference
         candidate  : {type:ObjectId, ref:'QuoteGameCandidate'   , index:true, required:true},
-        response :{
-            skip:   {type:Number, 'default':0, editable:false},
-            positive:   {type:Number, 'default':0, editable:false},
-            very_positive:   {type:Number, 'default':0, editable:false},
-            negative:   {type:Number, 'default':0, editable:false},
-            very_negative:   {type:Number, 'default':0, editable:false}
-
+        response: {
+            skip:           {type:Number, 'default':0},//editable:false
+            positive:       {type:Number, 'default':0},
+            very_positive:  {type:Number, 'default':0},
+            negative:       {type:Number, 'default':0},
+            very_negative:  {type:Number, 'default':0}
         }
+    },
+    QuoteGameStatistics:{
+        hashes:[String]
     }
+
 
 };
 
