@@ -24,7 +24,7 @@ var db_functions = {
 
                             if(window.location.href.indexOf('actions/create/')==-1 && window.location.href.indexOf('discussions/new/')==-1)
                             {
-                                if(typeof window.vars.afterLogin === "undefined") {
+                                if(typeof window.vars === "undefined"  || typeof window.vars.afterLogin === "undefined") {
                                     window.location.href = window.location.href;
 
                                 }
@@ -37,7 +37,7 @@ var db_functions = {
                         };
                         options.error = function () {
                             onError.apply(this, arguments);
-                            if(typeof window.vars.afterLogin === "undefined") {
+                            if(typeof window.vars === "undefined"  || typeof window.vars.afterLogin === "undefined") {
                                 window.location.href = window.location.href;
                             }
                             else
@@ -1536,6 +1536,23 @@ var db_functions = {
             url:'/api/quote_game_candidate/' + candidate_id,
             type:"GET",
             async:true,
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function (err) {
+                callback(err, null);
+            }
+        });
+    } ,
+
+    setQuoteGameResponse:function (user_id,quote_id,hash,response, callback) {
+
+        $.ajax({
+            url:'/api/quote_game_response/' + quote_id ,
+            type:"PUT",
+            async:true,
+            data: {user_id: user_id, quote_id: quote_id, hash: hash,response:response},
             success:function (data) {
                 console.log(data);
                 callback(null, data);
