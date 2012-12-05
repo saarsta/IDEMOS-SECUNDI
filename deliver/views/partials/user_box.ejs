@@ -75,11 +75,11 @@ var unseen_notifications = user_logged && user ? user.unseen_notifications || 0 
                 if(!err)
                 {
 
-                  if(typeof window.vars.afterLogin === "undefined") {
-                      window.vars.afterLogin();
+                  if(typeof window.vars === "undefined" || typeof window.vars.afterLogin === "undefined") {
+                      window.location = window.location ;
                   }   else   {
                       //  window.location = window.location + '?user_name=' + userName + '&proxy_id=' + proxyId + '&post_id=' + post_id;
-                      window.location = window.location ;
+                      window.vars.afterLogin();
                   }
 
                 }

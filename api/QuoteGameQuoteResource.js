@@ -1,13 +1,14 @@
 
 var common = require('./common')
 models = require('../models'),
-    async = require('async');
+    async = require('async'),
+    _ = require('underscore');;
 
 var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
     {
         init:function () {
             this._super(models.QuoteGameQuote, null, null);
-            this.allowed_methods = ['get'];
+            this.allowed_methods = ['get','put'];
             //this.authentication = new common.SessionAuthentication();
             //this.filtering = {cycle: null};
             this.default_query = function (query) {
@@ -39,5 +40,42 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
 
 
             });
+        }   ,
+
+        update_obj:function (req, object, callback) {
+            var res=    req.body.response;
+            var user_id   =req.body.user_id;
+            var quote_id   =req.body.quote_id;
+            var hash_code   =req.body.hash;
+            // models.InformationItem.update({_id: info_item_id}, {$inc: {like_counter: 1}}, function(err,count)
+          //  models.Like.find({user_id: user_id, info_item_id: info_item_id}, cbk);
+
+            async.waterfall([
+
+                function(cbk){
+                    models.QuoteGameHashes.update({hash: hash_code}, {hash: hash_code}, {upsert: true}, function(err,count)
+                    {
+                        cbk(err,count);
+                    });
+                },
+//                function(result, cbk){
+//                    if(user_id!="") {
+//                        models.Users.update({_id: user_id}, { $set:{ "quote_game.played": true} , $inc:{"quote_game.qoutes_count":1}} ,cbk);
+//                     } else {
+//                        cbk()
+//                    }
+//
+//                },
+//
+//                function(result, cbk){
+//                    models.QuoteGameQuote.update(  {_id:object._id},   {$inc: { 'response.positive' : 1 } }, cbk);
+//                }
+            ],function(err, result){
+                callback(err, "goooooooooooooo lior"/*quote*/);
+            });
+
+           // models.QuoteGameQuote.update({_id: quote_id}, {$inc:{"response.res":1}} );
+            //_.indexOf(array, value)
+
         }
     });

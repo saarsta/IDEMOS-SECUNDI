@@ -386,15 +386,19 @@ var Schemas = exports.Schemas = {
         priority:{type:Number, 'default':5},
         //reference
         candidate  : {type:ObjectId, ref:'QuoteGameCandidate'   , index:true, required:true},
-        response :{
-            skip:   {type:Number, 'default':0, editable:false},
-            positive:   {type:Number, 'default':0, editable:false},
-            very_positive:   {type:Number, 'default':0, editable:false},
-            negative:   {type:Number, 'default':0, editable:false},
-            very_negative:   {type:Number, 'default':0, editable:false}
-
+        response: {
+            skip:           {type:Number, 'default':0},//editable:false
+            positive:       {type:Number, 'default':0},
+            very_positive:  {type:Number, 'default':0},
+            negative:       {type:Number, 'default':0},
+            very_negative:  {type:Number, 'default':0}
         }
+    },
+
+    QuoteGameHashes:{
+        hash :  String
     }
+
 
 };
 
@@ -464,6 +468,7 @@ var Models = module.exports = {
     DailyDiscussion:mongoose.model('DailyDiscussion', new Schema(Schemas.DailyDiscussion, {strict:true})),
     QuoteGameCandidate:mongoose.model('QuoteGameCandidate', new Schema(Schemas.QuoteGameCandidate, {strict:true})),
     QuoteGameQuote:mongoose.model('QuoteGameQuote', new Schema(Schemas.QuoteGameQuote, {strict:true})),
+    QuoteGameHashes:mongoose.model('QuoteGameHashes', new Schema(Schemas.QuoteGameHashes, {strict:true})),
 
     Schemas:Schemas,
     setDefaultPublish:function (is_publish) {

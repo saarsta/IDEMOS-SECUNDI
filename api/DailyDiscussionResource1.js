@@ -3,7 +3,7 @@ var common = require('./common')
 models = require('../models'),
     async = require('async');
 
-var DailyDiscussionResource = module.exports = jest.MongooseResource.extend(
+var DailyDiscussionResource1 = module.exports = jest.MongooseResource.extend(
     {
         init:function () {
             this._super(models.DailyDiscussion, null, null);

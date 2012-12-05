@@ -1,13 +1,13 @@
 
 
 var models = require('../../../models')
-    ,DailyDiscussionResource = require('../../../api/DailyDiscussionResource.js')
+    ,DailyDiscussionResource1 = require('../../../api/DailyDiscussionResource1.js')
     ,async = require('async')
     ,notifications = require('../../../api/notifications.js');
 
 module.exports = function(req,res)
 {
-    var resource = new DailyDiscussionResource();
+    var resource = new DailyDiscussionResource1();
   //  var user = req.session.user;
 
     async.parallel([

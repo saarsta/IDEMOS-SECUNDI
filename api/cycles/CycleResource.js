@@ -240,7 +240,8 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
             } else {
                 callback({message:"user is already a follower", code:401}, null);
             }
-        } else {
+        }
+        else {
             if (wants_to_leave) {
 
                 var flag = false;
