@@ -100,7 +100,9 @@ var forgotPassword = function(user,callback)
         function(body,cbk) {
             mail.sendMail(user.email,body,'יצירת סיסמא חדשה לאתר עוּרו',cbk);
         }
-    ],callback);
+    ],function(err, obj){
+        callback(err, obj);
+    });
 //    crypto.randomBytes(6, function(ex, buf) {
 //        var validation = buf.toString('hex');
 //

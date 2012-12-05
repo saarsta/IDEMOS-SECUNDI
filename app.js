@@ -47,6 +47,8 @@ app.configure('development', function(){
         secret: 'loQKQjWXxSTnxYv1vsb97X4UW13E6nsagEWNMuNs',
         bucket: 'uru'
     });
+
+    app.set('send_mails',true);
 });
 
 
