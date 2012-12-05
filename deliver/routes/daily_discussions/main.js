@@ -36,8 +36,16 @@ module.exports = function(req,res)
                         discussion: daily_discussion,
                         fb_description: daily_discussion.text_field_preview,
                         fb_title: daily_discussion.title,
-                        fb_image:daily_discussion.image_field && daily_discussion.image_field.url
-
+                        fb_image:daily_discussion.image_field && daily_discussion.image_field.url ,
+                        meta: {
+                            type: req.app.settings.facebook_app_name + ':discussion',
+                            id: daily_discussion.id,
+                            image: ((daily_discussion.image_field_preview && daily_discussion.image_field_preview.url) ||
+                                (daily_discussion.image_field && daily_discussion.image_field.url)),
+                            title: daily_discussion.title  ,
+                            description: ' ',
+                            link: daily_discussion && ('/daily_discussions/' + daily_discussion.id)
+                        }
                     });
                 }
             }

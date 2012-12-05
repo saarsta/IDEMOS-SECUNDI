@@ -364,7 +364,7 @@ var Schemas = exports.Schemas = {
         discussion: {type:ObjectId, ref:'Discussion',query:common.FIND_DISCUSSION_QUERY}  ,
         text_field: {type:mongoose_types.Html, required:true},
         creation_date:{type:Date, 'default':Date.now},
-        system_message:{type:mongoose_types.Text},
+        system_message:{type:mongoose_types.Html},
         tags:[String],
         view_counter: {type:Number, 'default':0},
         is_visible:{type:Boolean, 'default':true},
