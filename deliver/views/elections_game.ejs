@@ -475,7 +475,7 @@
             </div>
         </div>
         <div id="poll_holder">
-            <input class="poll_option" id="option_1" type="button" />
+            <input class="poll_option" id="option_1" type="button" data-response=""/>
             <input class="poll_option" id="option_2" type="button" />
             <input class="poll_option" id="option_3" type="button" />
             <input class="poll_option" id="option_4" type="button" />
@@ -571,13 +571,14 @@
 
         $('.poll_option').click(function () {
                 var quote_id   =quotes[current_qoute]._id;
-                var response =$(this).attr('id').substring(7);
+                var response =$(this).attr('res');
                 $('.quote_credit,.quote_party').slideDown();
                 quotes[current_qoute].response=  response;
                 $('#current_quote_photo img').attr('src',quotes[current_qoute].candidate.image_field_thumb.url);
                 setTimeout(showNextQoute , 3000);
                 db_functions.setQuoteGameResponse(my_id, quote_id,hash, response,function (err, data) {
-            });
+
+                });
 
         });
 

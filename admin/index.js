@@ -255,7 +255,11 @@ module.exports = function (app) {
         order_by:['gui_order'],
         sortable:'gui_order'
     });
-
+    admin.registerMongooseModel('QuoteGameParty',mongoose.model('QuoteGameParty'),null,{
+        list:['name'],
+        order_by:['gui_order'],
+        sortable:'gui_order'
+    });
     admin.registerMongooseModel('QuoteGameCandidate',mongoose.model('QuoteGameCandidate'),null,{
         list:['name'],
         order_by:['gui_order'],

@@ -43,7 +43,7 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
         }   ,
 
         update_obj:function (req, object, callback) {
-            var res=    req.body.response;
+            var res=    'response.'+req.body.response;
             var user_id   =req.body.user_id;
             var quote_id   =req.body.quote_id;
             var hash_code   =req.body.hash;
@@ -51,27 +51,28 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
           //  models.Like.find({user_id: user_id, info_item_id: info_item_id}, cbk);
 
             async.waterfall([
-
                 function(cbk){
                     models.QuoteGameHashes.update({hash: hash_code}, {hash: hash_code}, {upsert: true}, function(err,count)
                     {
                         cbk(err,count);
                     });
                 },
-//                function(result, cbk){
-//                    if(user_id!="") {
-//                        models.Users.update({_id: user_id}, { $set:{ "quote_game.played": true} , $inc:{"quote_game.qoutes_count":1}} ,cbk);
-//                     } else {
-//                        cbk()
-//                    }
-//
-//                },
-//
-//                function(result, cbk){
-//                    models.QuoteGameQuote.update(  {_id:object._id},   {$inc: { 'response.positive' : 1 } }, cbk);
-//                }
+                function(result, cbk){
+                    if(user_id!="") {
+                        models.User.update({_id: user_id}, { $set:{ "quote_game.played": true} , $inc:{"quote_game.qoutes_count":1}}, function(err,count)
+                        {
+                            cbk(err,count);
+                        });
+                     } else {
+                        cbk()
+                    }
+
+                },
+                function(result, cbk){
+                    models.QuoteGameQuote.update(  {_id:object._id},   {$inc: { res : 1 } }, cbk);
+                }
             ],function(err, result){
-                callback(err, "goooooooooooooo lior"/*quote*/);
+                callback(err, ""/*quote*/);
             });
 
            // models.QuoteGameQuote.update({_id: quote_id}, {$inc:{"response.res":1}} );
