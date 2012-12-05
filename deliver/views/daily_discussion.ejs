@@ -35,7 +35,7 @@ var error_message = error_message || '';
                     <img src="<%= discussion.image_field ? discussion.image_field.url ||'' : '' %>" title="<%= discussion.title %>"/>
                 </div>
                 <div class="discussion_content discussion content">
-                    <textarea id="discussion_content" class="hidden_textarea"><%- discussion.text_field %></textarea>
+                    <div id="discussion_content" class="hidden_textarea"><%- discussion.text_field %></div>
                 </div>
 
                 <p  id="read_more">
@@ -70,20 +70,23 @@ var error_message = error_message || '';
 
             </div>
         </div>
-        <div class="card-left">
-            <h3><span>
-סל מידע
-            </span></h3>
 
-            <div class="comment-slide">
-                <a href="" id="prev"></a>
-                <a href="" id="next"></a>
 
-                <div class="slide-c">
-                </div>
-            </div>
-        </div>
+        <% if (discussion.id=='50bf219dd673cc0200000032' || discussion.id=='50bf2f9238fe6d2471000022'  ) { %>
+        <div id="debate_1_3156" style="margin-right: 100px"></div>
 
+        <script>
+            (function () {
+                var opst = document.createElement('script');
+                opst.type = 'text/javascript';
+                opst.async = true;
+                opst.src = 'http://www.opinionstage.com/debates/3156/embed.js';
+                (document.getElementsByTagName('head')[0] ||
+                        document.getElementsByTagName('body')[0]).appendChild(opst);
+            }());
+        </script>
+
+        <% } %>
         <div class="">
 
                 <div class="fb-comments"  data-href="http://www.uru.org.il/daily_discussions/<%= discussion.id %>"  data-num-posts="3" data-width="713" colorscheme="light" > </div>
@@ -108,6 +111,33 @@ var error_message = error_message || '';
 
 </div>
 
+<% if (discussion.id=='50bf219dd673cc0200000032' || discussion.id=='50bf2f9238fe6d2471000022'  ) { %>
+
+
+<div id="CornerPromotionDiv" class="CornerPromotionDiv">
+    <div class="header" >
+        דיונים אחרים שעשויים לעניין אותך :
+        <a class="closeCornerPromotion"  >
+            סגור
+        </a>
+    </div>
+    <div style="padding:10px">
+
+        <div  style="width: 128px;height: 90px; overflow:hidden;" class='auto-scale floatRight'>
+            <img src="http://uru.s3.amazonaws.com/cc-by-sa-alonuziel_395.jpg" title="" style="border:solid 1px #d8d7d5"/>
+        </div>
+        <div>
+            <a class="cornerPromotionTitle1" href="/discussions/subject/<%= discussion.subject._id %>">
+                לכל הדיונים בנושא
+                <%= discussion.subject.name %>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<% }else {%>
+
 
 <div id="CornerPromotionDiv" class="CornerPromotionDiv">
     <div class="header" >
@@ -118,20 +148,21 @@ var error_message = error_message || '';
     </div>
     <div style="padding:10px">
 
-                        <div  style="width: 128px;height: 90px; overflow:hidden;" class='auto-scale floatRight'>
-                            <img src="<%= discussion.discussion.image_field ? discussion.discussion.image_field.url ||'' : '' %>" title="dddd" style="border:solid 1px #d8d7d5"/>
-                        </div>
-
-
-                    <div>
-                        <a class="cornerPromotionTitle" href="/discussions/<%= discussion.discussion._id %>">
-<%= discussion.discussion.title %>
-                        </a>
-                    </div>
-
+        <div  style="width: 128px;height: 90px; overflow:hidden;" class='auto-scale floatRight'>
+            <img src="<%= discussion.discussion.image_field ? discussion.discussion.image_field.url ||'' : '' %>" title="dddd" style="border:solid 1px #d8d7d5"/>
+        </div>
+        <div>
+            <a class="cornerPromotionTitle" href="/discussions/<%= discussion.discussion._id %>">
+                <%= discussion.discussion.title %>
+            </a>
+        </div>
     </div>
 </div>
 
+
+
+
+<% }%>
 <% include partials/footer.ejs %>
 <script type="text/javascript">
 var current_section = 1;

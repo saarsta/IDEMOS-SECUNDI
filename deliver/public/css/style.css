@@ -9623,6 +9623,13 @@ div.icons img {
 {
     color: #043D89; font-size: 14px; font-weight: bold;line-height: 16px
 }
+.cornerPromotionTitle1
+{
+    color: #043D89;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 16px
+}
 
 .cycle_join_tooltip {
     position: absolute;

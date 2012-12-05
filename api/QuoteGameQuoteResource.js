@@ -72,7 +72,7 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
                     models.QuoteGameQuote.update(  {_id:object._id},   {$inc: { res : 1 } }, cbk);
                 }
             ],function(err, result){
-                callback(err, "goooooooooooooo lior"/*quote*/);
+                callback(err, ""/*quote*/);
             });
 
            // models.QuoteGameQuote.update({_id: quote_id}, {$inc:{"response.res":1}} );
