@@ -371,14 +371,52 @@ var Schemas = exports.Schemas = {
         is_published:{type:Boolean, 'default':false},
         is_hidden:{type:Boolean,'default':true}
     } ,
+    QuoteGameParty:{
+        name:{type:String, required:true},
+        image_field_thumb: { type:mongoose_types.File, required:true},
+        image_field: { type:mongoose_types.File, required:true},
+        overview: {type:String},
+        platform: {type:ObjectId, ref:'InformationItem'   , index:true, required:true},
+        official_site: {type:String},
+        open_knesset_id: {type:Number},
+        open_knesset_link: {type:String},
+        wikipedia_link: {type:String},
+        email: {type:String},
+        facebook: {type:String},
+        twitter: {type:String},
+        sandtalk_id:  {type:Number},
+        wins:   {type:Number, 'default':0, editable:false},
+        governence_quality_link : {type:String},
 
+    }  ,
     QuoteGameCandidate:{
         name:{type:String, required:true},
         image_field_thumb: { type:mongoose_types.File, required:true},
         image_field: { type:mongoose_types.File, required:true},
+        party_18th_knesset:{type:ObjectId, ref:'QuoteGameParty'   , index:true, required:true},
+        party_19th_knesset:{type:ObjectId, ref:'QuoteGameParty'   , index:true, required:true},
         biography: {type:String},
-        wins:   {type:Number, 'default':0, editable:false},
-        party:{type:String, "enum":["הליכוד ביתנו", "העבודה", "חד\"ש"]}
+        sandtalk_id:  {type:String},
+        sandtalk_link:  {type:String},
+        official_site: {type:String},
+        open_knesset_id: {type:Number},
+        open_knesset_link: {type:String},
+        wikipedia_link: {type:String} ,
+        doners:[{
+            name: {type:String} ,
+            location: {type:String} ,
+            date:{type:Date},
+            usd: {type:Number},
+            nis: {type:Number}
+        }]  ,
+        doners_link : {type:String},
+        governence_quality_text : {type:String},
+        email: {type:String},
+        telephone: {type:String},
+        fax: {type:String},
+        facebook: {type:String},
+        twitter: {type:String},
+        wins:   {type:Number, 'default':0, editable:false}
     }  ,
 
     QuoteGameQuote:{
@@ -467,6 +505,8 @@ var Models = module.exports = {
 
     DailyDiscussion:mongoose.model('DailyDiscussion', new Schema(Schemas.DailyDiscussion, {strict:true})),
     QuoteGameCandidate:mongoose.model('QuoteGameCandidate', new Schema(Schemas.QuoteGameCandidate, {strict:true})),
+
+    QuoteGameParty:mongoose.model('QuoteGameParty', new Schema(Schemas.QuoteGameParty, {strict:true})),
     QuoteGameQuote:mongoose.model('QuoteGameQuote', new Schema(Schemas.QuoteGameQuote, {strict:true})),
     QuoteGameHashes:mongoose.model('QuoteGameHashes', new Schema(Schemas.QuoteGameHashes, {strict:true})),
 
