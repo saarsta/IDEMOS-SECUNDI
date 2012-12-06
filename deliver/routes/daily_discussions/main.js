@@ -40,11 +40,10 @@ module.exports = function(req,res)
                         meta: {
                             type: req.app.settings.facebook_app_name + ':discussion',
                             id: daily_discussion.id,
-                            image: ((daily_discussion.image_field_preview && daily_discussion.image_field_preview.url) ||
-                                (daily_discussion.image_field && daily_discussion.image_field.url)),
+                            image: daily_discussion.image_field.url,
                             title: daily_discussion.title  ,
                             description: ' ',
-                            link: daily_discussion && ('/daily_discussions/' + daily_discussion.id)
+                            link: '/daily_discussions/' + daily_discussion.id
                         }
                     });
                 }

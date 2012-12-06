@@ -2686,7 +2686,7 @@ color: #ff00af;
 
 .extended .discussion_content, .action_content {
     /*  height:400px;     */
-
+       display: inline-block;
     overflow: inherit;
 }
 
