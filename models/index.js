@@ -373,10 +373,10 @@ var Schemas = exports.Schemas = {
     } ,
     QuoteGameParty:{
         name:{type:String, required:true},
-        image_field_thumb: { type:mongoose_types.File, required:true},
-        image_field: { type:mongoose_types.File, required:true},
+        image_field_thumb: { type:mongoose_types.File},
+        image_field: { type:mongoose_types.File},
         overview: {type:String},
-        platform: {type:ObjectId, ref:'InformationItem'   , index:true, required:true},
+        platform:{type:mongoose_types.Text},
         official_site: {type:String},
         open_knesset_id: {type:Number},
         open_knesset_link: {type:String},
@@ -390,13 +390,13 @@ var Schemas = exports.Schemas = {
 
     }  ,
     QuoteGameCandidate:{
-        name:{type:String, required:true},
-        image_field_thumb: { type:mongoose_types.File, required:true},
-        image_field: { type:mongoose_types.File, required:true},
+        name:{type:String ,required:true},
+        image_field_thumb: { type:mongoose_types.File},
+        image_field: { type:mongoose_types.File },
         party_18th_knesset:{type:ObjectId, ref:'QuoteGameParty'   , index:true, required:true},
         party_19th_knesset:{type:ObjectId, ref:'QuoteGameParty'   , index:true, required:true},
         biography: {type:String},
-        sandtalk_id:  {type:String},
+        sandtalk_id:  {type:Number},
         sandtalk_link:  {type:String},
         official_site: {type:String},
         open_knesset_id: {type:Number},
@@ -406,8 +406,8 @@ var Schemas = exports.Schemas = {
             name: {type:String} ,
             location: {type:String} ,
             date:{type:Date},
-            usd: {type:Number},
-            nis: {type:Number}
+            usd: {type:String},
+            nis: {type:String}
         }]  ,
         doners_link : {type:String},
         governence_quality_text : {type:String},
