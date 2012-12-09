@@ -385,8 +385,8 @@ var Schemas = exports.Schemas = {
         facebook: {type:String},
         twitter: {type:String},
         sandtalk_id:  {type:Number},
-        wins:   {type:Number, 'default':0, editable:false},
         governence_quality_link : {type:String},
+        wins:   {type:Number, 'default':0, editable:false},
 
     }  ,
     QuoteGameCandidate:{
@@ -416,11 +416,13 @@ var Schemas = exports.Schemas = {
         fax: {type:String},
         facebook: {type:String},
         twitter: {type:String},
+        governence_quality_link : {type:String},
         wins:   {type:Number, 'default':0, editable:false}
     }  ,
 
     QuoteGameQuote:{
         quote:{type:String, required:true},
+        source_link:{type:String},
         priority:{type:Number, 'default':5},
         //reference
         candidate  : {type:ObjectId, ref:'QuoteGameCandidate'   , index:true, required:true},
