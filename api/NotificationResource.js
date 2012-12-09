@@ -966,8 +966,10 @@ var populateNotifications = module.exports.populateNotifications = function(resu
         "a_dicussion_created_with_info_item_that_you_like",
         "a_dicussion_created_with_info_item_that_you_created",
         "proxy_created_new_discussion",
-        "proxy_graded_discussion"
-
+        "proxy_graded_discussion",
+      "comment_on_discussion_you_are_part_of",
+      "comment_on_discussion_you_created"
+//        "comment_on_discussion_you_are_part_of"
     ];
 
     var discussion_ids = _.chain(results.objects)
@@ -986,7 +988,7 @@ var populateNotifications = module.exports.populateNotifications = function(resu
         "proxy_graded_change_suggestion",
         "proxy_vote_to_post",
         "comment_on_discussion_you_are_part_of",
-        "comment_on_discussion_you_created"
+        "comment_on_discussion_you_created",
     ];
 
     var discussion_ids_as_sub_entity = _.chain(results.objects)
