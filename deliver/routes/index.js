@@ -47,7 +47,7 @@ module.exports = function(app) {
 
     router.include('/elections_game',require('./elections_game'));
 
-    router.all('/elections-game',require('./navigation/elections_game_tmp'));
+    router.all('/election-game',require('./navigation/elections_game_tmp'));
 
     router.include('/myuru',MyUru);
 
