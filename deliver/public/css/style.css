@@ -2354,6 +2354,12 @@ color: #ff00af;
     margin: 0 8px;
 }
 
+.add-offer .text-box1 {
+    padding-bottom: 19px;
+    border-bottom: 1px solid #d4d9dc;
+    margin: 0 30px;
+}
+
 #content .add-offer-inner .text-box h5 {
     font: 26px/41px 'AdumaFOTRegular';
     padding: 0;

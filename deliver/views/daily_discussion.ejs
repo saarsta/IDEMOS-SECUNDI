@@ -26,22 +26,15 @@ var error_message = error_message || '';
                 <%=discussion.title%>
             </h2>
 
-            <div class="text-box cf">
-                <div id="discussion_image" style="width: 212px;height: 164px; overflow:hidden;" class='auto-scale floatRight'>
-                    <img src="<%= discussion.image_field ? discussion.image_field.url ||'' : '' %>" title="<%= discussion.title %>"/>
+            <div class="text-box1 cf">
+                <div class="">
+                    <div id="discussion_image" style="width: 212px;height: 164px; overflow:hidden;" class='auto-scale floatRight'>
+                        <img src="<%= discussion.image_field ? discussion.image_field.url ||'' : '' %>" title="<%= discussion.title %>"/>
+                    </div>
+                    <%- discussion.text_field %>
                 </div>
-                <div class="discussion_content discussion content">
-                    <div id="discussion_content" class="hidden_textarea"><%- discussion.text_field %></div>
-                </div>
-
-                <p  id="read_more">
-                    <a href="javascript:void(0);">
-                        קרא עוד
-                    </a>
-                </p>
-
-
             </div>
+
             <div class="add-offer-bottom cf">
                 <div class="btn-box">
 
@@ -173,17 +166,19 @@ $(document).ready(function () {
     var creator_id = "<%=discussion.creator_id%>";
 
 
+
+    var h=  $(".hidden_textarea").get(0).scrollHeight;
+    $(".discussion_content").height(h);
+
+
     $('.system-notice .close').click(function () {
 
         $(this).parents('.system-notice').fadeOut(800);
     });
 
-    $('#read_more').click(function () {
 
-        $(this).parents('.text-box').addClass('extended');
-        var h=  $(".hidden_textarea").get(0).scrollHeight;
-        $(".discussion_content").height(h);
-    });
+
+
 
      var closed = false;
     $('.closeCornerPromotion').click(function() {  // OR  $(window).scroll(function() {
