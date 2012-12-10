@@ -89,7 +89,7 @@ var InformationItemResource = module.exports = common.GamificationMongooseResour
 
     },
 
-    create_obj: function(req,fields,callback){
+    create_obj: function(req, fields, callback){
         var user_id = req.session.user_id;
         var self = this;
         var info_item_object = new self.model();

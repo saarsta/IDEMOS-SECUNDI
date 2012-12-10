@@ -237,24 +237,25 @@ if(app.settings.send_mails)
 require('./deliver/routes')(app);
 
 var cron = require('./cron');
+var common = require('./api/common');
 
 cron.run(app);
 
 async.waterfall([
 
-        function(cbk) {
-            async.parallel([
-                function(cbk1){
-                    mongoose.model('FooterLink').load(cbk1);
-                },
+    function(cbk) {
+        async.parallel([
+            function(cbk1){
+                mongoose.model('FooterLink').load(cbk1);
+            },
 
-                function(cbk1){
-                    mongoose.model('GamificationTokens').findOne(cbk1);
-                }
-            ], function(err, args){
-                cbk(err, args[1]);
-            })
-        }
+            function(cbk1){
+                mongoose.model('GamificationTokens').findOne(cbk1);
+            }
+        ], function(err, args){
+            cbk(err, args[1]);
+        })
+    }
     ],
     function(err, gamification) {
         if(err) {

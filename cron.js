@@ -15,16 +15,16 @@ exports.run = function(app)
     }, 60*60*1000);
 
     setInterval(function(){
-        console.log("cron updateTagAutoComplete runs");
-        daily_cron.updateTagAutoComplete(function(err, result){
+        once_an_hour_cron.findWhoGotGtrNumberOfTokensForAPostOrSuggestion(common.getGamificationTokenPrice('X_tokens_for_post'),function(err, result){
             console.log(err || result);
         })
+    }, 60*60*1000);
 
+    setInterval(function(){
         console.log("cron updateBlogTagAutoComplete runs");
         daily_cron.updateBlogTagAutoComplete(function(err, result){
             console.log(err || result);
         })
-
     }, 60 * 1000 * 24 * 60);
 
     setInterval(function(){
@@ -33,14 +33,32 @@ exports.run = function(app)
         console.log(err || result);
         })
     },60 * 1000 * 24 * 60);
+
+    setInterval(function(){
+        daily_cron.findWhoGotNumberOfTokensForAllPosts(common.getGamificationTokenPrice('X_tokens_for_all_my_posts'), function(err, result){
+        console.log(err || result);
+        })
+    },60 * 1000 * 24 * 60);
+
+    setInterval(function(){
+        daily_cron.findWhoInsertedNumberOfApprovedSuggestions(common.getGamificationTokenPrice('X_suggestions_for_a_discussion'), function(err, result){
+        console.log(err || result);
+        })
+    },60 * 1000 * 24 * 60);
+
+    setInterval(function(){
+        daily_cron.findWhoGotNumberOfMandates(common.getGamificationTokenPrice('X_mandates_for_user'), function(err, result){
+        console.log(err || result);
+        })
+    },60 * 1000 * 24 * 60);
 };
 
-var Cron = exports.Cron = {
+exports.Cron_func = {
 
     findWhoInvitedNumberOfUsersThatGotExtraTokens:function(extra_tokens, number, callback) {
         var event = "invited " + number + " pepole that got " + extra_tokens + " tokens";
         var path = "gamification.bonus." + event + "";
-        var event_bonus = 2;
+        var event_bonus = 1;
         var bucket = {};
         var invited_users = {};
         var bonus_type = "extra_cup";
@@ -131,85 +149,6 @@ var Cron = exports.Cron = {
                 }
             }
         ], callback);
-    },
-
-//    X_tokens_for_post
-    findWhoGotGtrNumberOfTokensForAPostOrSuggestion:function (number, callback) {
-        var event = number + "_tokens_for_a_post_or_suggestion";
-        var event_bonus = 1;
-        var creator_user_id;
-        //this type means that user will get tokens fill up
-        var bonus_type = "extra_tokens";
-
-        var iterator = function(post_or_suggestion, itr_cbk){
-
-            async.parallel([
-                function(cbk){
-                    addTokensToUserByEventAndSetGamificationBonus(post_or_suggestion.creator_id, event, event_bonus, bonus_type, cbk);
-                },
-
-                function(cbk){
-                    models.PostOrSuggestion.update({_id:post_or_suggestion._id}, {$set: {"gamification.high_number_of_tokens_bonus":true}}, cbk);
-                }
-            ], function(err, args){
-                itr_cbk(err, args);
-            })
-
-        }
-        async.waterfall([
-
-            function (cbk) {
-                models.PostOrSuggestion.find().where("gamification.high_number_of_tokens_bonus", false)
-                    .where("votes_for").gt(number)
-                    .exec(cbk);
-            },
-
-            function (posts, cbk) {
-                async.forEach(posts, iterator, cbk);
-            }
-        ], callback);
-    },
-
-//    X_tokens_for_all_my_posts
-    findWhoGotNumberOfTokensForAllPosts:function (number, callback) {
-        var event = number + "_tokens_for_all_posts";
-        var path = "gamification.bonus." + event;
-        var event_bonus = 1;
-        var creator_user_id;
-        var bonus_type = "extra_cup";
-
-        var iterator = function(group_post, itr_cbk){
-            if(group_post.sum > number){
-                addTokensToUserByEventAndSetGamificationBonus(group_post.creator_id, event, event_bonus, bonus_type, itr_cbk);
-            }else{
-                itr_cbk(null, 0);
-            }
-        }
-
-        async.waterfall([
-            function (cbk) {
-                models.User.find({path:{$ne:true}},'_id').limit(10000).exec(cbk);//TODO is path works?
-            },
-
-            function (users, cbk) {
-                var user_ids = _.map(users,function(user) { return user._id});
-                 models.PostOrSuggestion.collection.group(
-                     {
-                         key: {creator_id: true},
-                         cond: {creator_id: {$in: user_ids}},
-                         initial: {sum: 0},
-                         reduce: function(obj,prev) { prev.sum += obj.votes_for}
-                     }, function(err, result){
-                         cbk(err, result);
-                });
-            },
-
-            function(gruop_posts, cbk){
-                async.forEach(gruop_posts, iterator, cbk);
-            }
-        ], function(err, obj){
-            callback(err, obj);
-        })
     },
 
     //X_suggestions_for_a_discussion
@@ -447,7 +386,46 @@ var once_an_hour_cron =   exports.once_an_hour_cron = {
                 async.forEach(users, iterator, cbk);
             }
         ], callback);
+    },
+
+  //    X_tokens_for_post
+  findWhoGotGtrNumberOfTokensForAPostOrSuggestion:function (number, callback) {
+    var event = number + "_tokens_for_a_post_or_suggestion";
+    var event_bonus = 1;
+    var creator_user_id;
+    //this type means that user will get tokens fill up
+    var bonus_type = "extra_cup";
+
+    var iterator = function(post_or_suggestion, itr_cbk){
+
+      async.parallel([
+        function(cbk){
+          addTokensToUserByEventAndSetGamificationBonus(post_or_suggestion.creator_id, event, event_bonus, bonus_type, function(err, result){
+            cbk(err, result);
+          });
+        },
+
+        function(cbk){
+          models.PostOrSuggestion.update({_id:post_or_suggestion._id}, {$set: {"gamification.high_number_of_tokens_bonus":true}}, cbk);
+        }
+      ], function(err, args){
+        itr_cbk(err, args);
+      })
+
     }
+    async.waterfall([
+
+      function (cbk) {
+        models.PostOrSuggestion.find().where("gamification.high_number_of_tokens_bonus", false)
+          .where("votes_for").gt(number)
+          .exec(cbk);
+      },
+
+      function (posts, cbk) {
+        async.forEach(posts, iterator, cbk);
+      }
+    ], callback);
+  },
 }
 
 
@@ -722,7 +700,49 @@ var daily_cron =  exports.daily_cron = {
             else
                 console.log("Cron - BlogTags completed successfuly");
        })
+    },
+
+  //    X_tokens_for_all_my_posts
+  findWhoGotNumberOfTokensForAllPosts:function (number, callback) {
+    var event = number + "_tokens_for_all_posts";
+    var path = "gamification.bonus." + event;
+    var event_bonus = 1;
+    var creator_user_id;
+    var bonus_type = "extra_cup";
+
+    var iterator = function(group_post, itr_cbk){
+      if(group_post.sum > number){
+        addTokensToUserByEventAndSetGamificationBonus(group_post.creator_id, event, event_bonus, bonus_type, itr_cbk);
+      }else{
+        itr_cbk(null, 0);
+      }
     }
+
+    async.waterfall([
+      function (cbk) {
+        models.User.find({path:{$ne:true}},'_id').limit(10000).exec(cbk);//TODO is path works?
+      },
+
+      function (users, cbk) {
+        var user_ids = _.map(users,function(user) { return user._id});
+        models.PostOrSuggestion.collection.group(
+          {
+            key: {creator_id: true},
+            cond: {creator_id: {$in: user_ids}},
+            initial: {sum: 0},
+            reduce: function(obj,prev) { prev.sum += obj.votes_for}
+          }, function(err, result){
+            cbk(err, result);
+          });
+      },
+
+      function(gruop_posts, cbk){
+        async.forEach(gruop_posts, iterator, cbk);
+      }
+    ], function(err, obj){
+      callback(err, obj);
+    })
+  },
 }
 
 /*function addTokensToUserByEventAndIncGamificationBonus(user_id, event, event_bonus, callback) {
@@ -747,13 +767,20 @@ function addTokensToUserByEventAndSetGamificationBonus(user_id, event, event_bon
     //find user and update his new tokens/cup and gamifications
 
     async.waterfall([
+
+      //        function(user, cbk){
+//          models.User.update({_id:user_id}, {/*$inc:conditions, */$set: set_gamification_bonus}, function (err, result) {
+//            cbk(err, user);
+//          });
+//        },
         function(cbk){
             models.User.findById(user_id, cbk);
         },
 
         function(user, cbk){
-            user.set_gamification_bonus = true;//TODO does it work??
+            user.gamification['bonus.' + event] = true;
             if(bonus_type == 'extra_cup') {
+                // max cup is 6
                 user.num_of_extra_tokens = Math.min(user.num_of_extra_tokens + event_bonus, 6);
             }else{
                 user.tokens = Math.min(user.tokens + event_bonus, user.tokens + user.num_of_extra_tokens);
@@ -766,10 +793,6 @@ function addTokensToUserByEventAndSetGamificationBonus(user_id, event, event_bon
     ], function(err, user){
         callback(err, user);
     })
-
-    /*models.User.update({_id:user_id}, {$inc:conditions, $set:set_gamification_bonus}, function (err, result) {
-        callback(err, result);
-    });*/
 }
 
 function setTokenAchivementsToInviter(invited_users_arr, event, callback) {
