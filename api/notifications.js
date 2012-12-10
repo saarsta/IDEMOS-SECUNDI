@@ -5,7 +5,7 @@
  * Time: 13:19
  * To change this template use File | Settings | File Templates.
  */
-var send_mail_notification = false;
+var SEND_MAIL_NOTIFICATION = true;
 
 var models = require('../models'),
     async = require('async'),
@@ -231,9 +231,9 @@ var sendNotificationToUser = function (notification, last_update_date) {
      */
 
     var email;
+    var  uru_group = ['saarsta@gmail.com', 'konfortydor@gmail.com', 'aharon@uru.org.il', 'liorur@gmail.com'];
 
-
-    if (send_mail_notification)
+    if (SEND_MAIL_NOTIFICATION)
         async.waterfall([
             function (cbk) {
 
@@ -254,12 +254,7 @@ var sendNotificationToUser = function (notification, last_update_date) {
                     cbk("user not found");
                     return;
                 }
-//            // if the user hasn't visited since the last notification was sent, dont send another one, cut's the waterfall
-//            if(last_update_date && user.last_visit < last_update_date) {
-//                console.log('user should not receive notification because he or she have not visited since');
-//                cbk('break');
-//                return;
-//            }
+
                 // TODO check in account settings if sending mails is allowed
                 email = user.email;
                 notificationResource.populateNotifications({objects:[notification]}, user.id, cbk);
@@ -274,7 +269,10 @@ var sendNotificationToUser = function (notification, last_update_date) {
             },
             // 4) send message
             function (message, cbk) {
-                mail.sendMailFromTemplate(email, message, cbk);
+                if (_.any(uru_group, function(mail) { email === mail }))
+                    mail.sendMailFromTemplate(email, message, cbk);
+                else
+                    cbk(null);
             }
         ],
             // Final
