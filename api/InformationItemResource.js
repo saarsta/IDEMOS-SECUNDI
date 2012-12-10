@@ -10,7 +10,7 @@ var models = require('../models'),
     async = require('async'),
     common = require('./common'),
     notifications = require('./notifications'),
-
+    mail = require('../lib/mail'),
     NUM_OF_TAG_SUGG_BEFORE_APPROVAL = 1,
     SUGGEST_TAG_PRICE = 1;
 
@@ -93,6 +93,10 @@ var InformationItemResource = module.exports = common.GamificationMongooseResour
         var user_id = req.session.user_id;
         var self = this;
         var info_item_object = new self.model();
+        var mail_to = 'aharon@uru.org.il';
+        var mail_subject = 'new information item';
+        var mail_body = 'YO! a new information item is waiting for you.. the title is: ' + fields.title;
+
 
         fields.created_by = {creator_id:user_id, did_user_created_this_item: true};
         fields.status = "waiting";
@@ -107,7 +111,18 @@ var InformationItemResource = module.exports = common.GamificationMongooseResour
             },
 
             function(info_obj, cbk){
-                info_obj.save(cbk);
+                info_obj.save(function(err, number){
+                  cbk(err, number);
+                });
+            },
+
+            // send mail to aharon about the news
+            function(obj, cbk){
+                mail.sendMail(mail_to, mail_body, mail_subject, function(err, result){
+                    if (err) console.error(err);
+                });
+
+                cbk(null, 0);
             }
         ], callback);
     },
