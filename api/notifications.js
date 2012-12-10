@@ -236,7 +236,6 @@ var sendNotificationToUser = function (notification, last_update_date) {
     if (SEND_MAIL_NOTIFICATION)
         async.waterfall([
             function (cbk) {
-
                 if (!notification.visited) {
                     console.log('user should not receive notification because he or she have not visited since');
                     cbk('break');
@@ -269,7 +268,7 @@ var sendNotificationToUser = function (notification, last_update_date) {
             },
             // 4) send message
             function (message, cbk) {
-                if (_.any(uru_group, function(mail) { email === mail }))
+                if (_.any(uru_group, function(mail) { return email === mail }))
                     mail.sendMailFromTemplate(email, message, cbk);
                 else
                     cbk(null);
