@@ -182,15 +182,15 @@ var Schemas = exports.Schemas = {
     Notification:{
         user_id:{type:ObjectId, ref:'User',query:common.FIND_USER_QUERY, index:true, required:true},
         notificators:[new Schema(
-            {
-                notificator_id:{type:ObjectId, ref:'User',query:common.FIND_USER_QUERY},
-                sub_entity_id:{type:ObjectId},
+        {
+            notificator_id:{type:ObjectId, ref:'User',query:common.FIND_USER_QUERY},
+            sub_entity_id:{type:ObjectId},
 
-                //only for votes and grade notifications
-                ballance:Number,
-                votes_for:{type:Number, 'default':0},
-                votes_against:{type:Number, 'default':0}
-            }
+            //only for votes and grade notifications
+            ballance:Number,
+            votes_for:{type:Number, 'default':0},
+            votes_against:{type:Number, 'default':0}
+        }
         )],
         type:{type:String, "enum":[
             'approved_info_item_i_created',

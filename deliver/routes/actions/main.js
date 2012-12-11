@@ -108,6 +108,9 @@ module.exports = function (req, res) {
                 }
                 action.is_going = is_going;
                 action.cycle_id = cycle;
+                var cycle_title = action.cycle_id[0].cycle.title;
+                var main_title = cycle_title;
+                main_title =  main_title + ' - ' +  (action && action.title);
                 var ejsFileName = action.is_approved ? 'action_approved.ejs' : 'action_append.ejs';
                 var type = action.is_approved ? 'approved_action' : 'pending_action';
                 res.render(ejsFileName,{
@@ -123,7 +126,8 @@ module.exports = function (req, res) {
                         image: ((action.image_field_preview && action.image_field_preview.url) ||
                             (action.image_field && action.image_field.url)),
                         title: action && action.title,
-                        description: action.text_field_preview || action.text_field,
+                        main_title: main_title,
+                        description: action.text_field_preview || action.text_fiel,
                         link: action && ('/action/' + action.id)
                     }
                 });

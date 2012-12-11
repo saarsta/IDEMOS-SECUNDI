@@ -1,4 +1,4 @@
-תגובתך צוטטה על ידי משתתף בדיון -  "<%-entity_name%>"
+תגובתך צוטטה על ידי משתתף בדיון -  "<%-part_tow%>"
 <!--body -->
 <div style="direction:rtl">
     <div align="center"><font face="arial"><br><br></font></div>
@@ -31,8 +31,8 @@
  בדיון שאתה משתתף בו,
 					<span lang="HE" style="font-family:Arial,sans-serif">
                         <font color="#3333ff"><b><u><span lang="HE" style="font-family:Arial,sans-serif">
-                        <a href="<%= settings.root_path %><%= discussion_link %>">
-                           <%-entity_name %>
+                        <a href="<%= settings.root_path %><%= discussion_link || main_link %>">
+                           <%-part_tow %>
                         </a>
                             </span></u></b></font>
 
