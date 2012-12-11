@@ -17,11 +17,15 @@ var models = require('../../../models'),
 module.exports = function(req, res){
 
     var g_cycle;
+    var cycle_id=req.params[0]||null;
+    cycle_id= req.url=="/vote" ?'5098eb8bc492d10200000024': cycle_id;
+    cycle_id= req.url=="/smallgov" ?'508026e8cb2276020000001f': cycle_id;
+    cycle_id= req.health=="/vote" ?'507c39809cba93020000003d': cycle_id;
 
     async.parallel([
         //1. find cycle by id
         function(cbk){
-            models.Cycle.findById(req.params[0])
+            models.Cycle.findById(cycle_id)
             .select({
                 '_id':1,
                 'subject':1,
@@ -61,7 +65,7 @@ module.exports = function(req, res){
 
         //find cycle followers
         function(cbk){
-                models.User.find({"cycles.cycle_id": req.params[0]}, cbk);
+                models.User.find({"cycles.cycle_id": cycle_id}, cbk);
         },
 
         // get the user object

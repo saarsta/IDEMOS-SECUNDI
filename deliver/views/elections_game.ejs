@@ -475,11 +475,11 @@
             </div>
         </div>
         <div id="poll_holder">
-            <input class="poll_option" id="option_1" type="button" data-response=""/>
-            <input class="poll_option" id="option_2" type="button" />
-            <input class="poll_option" id="option_3" type="button" />
-            <input class="poll_option" id="option_4" type="button" />
-            <input class="poll_option" id="option_0" type="button" />
+            <input class="poll_option" id="option_1" type="button" data-response="very_positive" />
+            <input class="poll_option" id="option_2" type="button" data-response="positive" />
+            <input class="poll_option" id="option_3" type="button" data-response="negative" />
+            <input class="poll_option" id="option_4" type="button" data-response="very_negative" />
+            <input class="poll_option" id="option_0" type="button" data-response="skip" />
         </div>
         <div id="other_buttons_holder">
             <input class="end_game"  type="button" />
@@ -571,7 +571,7 @@
 
         $('.poll_option').click(function () {
                 var quote_id   =quotes[current_qoute]._id;
-                var response =$(this).attr('res');
+                var response =$(this).data('response');
                 $('.quote_credit,.quote_party').slideDown();
                 quotes[current_qoute].response=  response;
                 $('#current_quote_photo img').attr('src',quotes[current_qoute].candidate.image_field_thumb.url);
@@ -601,7 +601,7 @@
         });
 
         function completeGame() {
-
+            window.location.href = '/elections_game/results/'
         }
 
 

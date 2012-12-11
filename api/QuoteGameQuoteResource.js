@@ -43,13 +43,17 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
         }   ,
 
         update_obj:function (req, object, callback) {
-            var res=    'response.'+req.body.response;
+            var response=    'response.'+req.body.response;
             var user_id   =req.body.user_id;
             var quote_id   =req.body.quote_id;
             var hash_code   =req.body.hash;
             // models.InformationItem.update({_id: info_item_id}, {$inc: {like_counter: 1}}, function(err,count)
           //  models.Like.find({user_id: user_id, info_item_id: info_item_id}, cbk);
-
+            if(!req.session.election_game)
+            {
+                req.session.election_game={};
+            }
+            req.session.election_game.quote_id=response;
             async.waterfall([
                 function(cbk){
                     models.QuoteGameHashes.update({hash: hash_code}, {hash: hash_code}, {upsert: true}, function(err,count)
@@ -59,7 +63,9 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
                 },
                 function(result, cbk){
                     if(user_id!="") {
-                        models.User.update({_id: user_id}, { $set:{ "quote_game.played": true} , $inc:{"quote_game.qoutes_count":1}}, function(err,count)
+                        models.User.update({_id: user_id}, { $set:{ "quote_game.played": true} ,
+                                                            $inc:{"quote_game.qoutes_count":1} ,
+                                                            $push:{quote: quote_id ,selection: response} }, function(err,count)
                         {
                             cbk(err,count);
                         });
@@ -69,7 +75,7 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
 
                 },
                 function(result, cbk){
-                    models.QuoteGameQuote.update(  {_id:object._id},   {$inc: { res : 1 } }, cbk);
+                    models.QuoteGameQuote.update(  {_id:object._id},   {$inc: { response : 1 } }, cbk);
                 }
             ],function(err, result){
                 callback(err, ""/*quote*/);

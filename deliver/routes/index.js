@@ -56,4 +56,11 @@ module.exports = function(app) {
     router.post('/elections/vote',require('./elections/vote'));
 
     router.all('/elections/fbimage/:id', require('./elections/fbimage'));
-};
+
+    router.all('/smallgov', require('./cycles/main'));//,'508026e8cb2276020000001f'
+
+    router.all('/vote', require('./cycles/main'));//'5098eb8bc492d10200000024'
+
+    router.all('/health', require('./cycles/main'));//'507c39809cba93020000003d'
+
+ };
