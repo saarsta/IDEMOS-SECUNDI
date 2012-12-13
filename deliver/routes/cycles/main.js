@@ -20,7 +20,7 @@ module.exports = function(req, res){
     var cycle_id=req.params[0]||null;
     cycle_id= req.url=="/vote" ?'5098eb8bc492d10200000024': cycle_id;
     cycle_id= req.url=="/smallgov" ?'508026e8cb2276020000001f': cycle_id;
-    cycle_id= req.health=="/vote" ?'507c39809cba93020000003d': cycle_id;
+    cycle_id= req.url=="/health" ?'507c39809cba93020000003d': cycle_id;
 
     async.parallel([
         //1. find cycle by id

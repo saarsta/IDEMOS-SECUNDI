@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>משחק הבחירות</title>
-    <!-- Bootstrap -->
+
+<% include partials/head.ejs %>
+
+
     <style type="text/css">
     body{
         margin: 0;
@@ -46,7 +48,7 @@
         margin:auto;
         width:940px;
         height:70px;
-        line-height:70px;
+       /* line-height:70px;    */
     }
 
     #logo_holder{
@@ -78,6 +80,7 @@
 
     #social_holder .social_item{
         margin:10px 0;
+        text-align: left;
     }
 
     #participants_holder{
@@ -109,7 +112,10 @@
     }
 
     #login{
+        position: relative;
+        margin-top: -32px;
         float:left;
+        width:150px;
     }
 
     #login input{
@@ -120,6 +126,7 @@
         height:40px;
         float:left;
         cursor:pointer;
+
     }
 
     #content_wrapper{
@@ -702,6 +709,7 @@
         float:right;
         width:610px;
         margin-left:50px;
+
     }
 
     #content_right_holder .segment{
@@ -722,9 +730,12 @@
         margin:0px 0px 5px 0px;
         font-family:arial;
         font-weight:bold;
+        font-size: 1.5em;
     }
-
+    #content_right_holder .segment h2.title,
     #content_right_holder .segment.about h2.title{
+
+
         color:#3b63ef;
         font-size:24px;
         float:right;
@@ -732,7 +743,9 @@
         padding-right:25px;
         margin-top: 15px;
     }
-
+    #content_right_holder .segment{
+        width: 100%;
+     }
     .title_link{
         position: relative;
     }
@@ -760,6 +773,7 @@
         padding: 15px 25px;
         position: relative;
         width:500px;
+        margin-top: 20px;
         margin-bottom: 35px;
         margin-right: 30px;
     }
@@ -856,12 +870,7 @@
         padding-bottom:4px;
     }
 
-    #content_right_holder .segment.more_stats.kahol .bar_1,
-    #content_right_holder .segment.more_stats.kahol .bar_2{
-        width:260px;
-        float:right;
-        margin: 10px 0;
-    }
+
 
     #content_right_holder .segment.more_stats.kahol .bar_title,
     #content_right_holder .segment.more_stats.kahol .bar_percentage,
@@ -888,29 +897,7 @@
         float:left;
     }
 
-    #content_right_holder .segment.more_stats.kahol .bar_2 .bar .bar_inner{
-        background:url(../images/bar_red.png) repeat-x top left;
-    }
 
-    #content_right_holder .segment.more_stats.kahol .name .bar_1 .bar .bar_inner{
-        width:69%;
-    }
-
-    #content_right_holder .segment.more_stats.kahol .name .bar_2 .bar .bar_inner{
-        width:31%;
-    }
-
-    #content_right_holder .segment.more_stats.kahol .party .bar_1 .bar .bar_inner{
-        width:58%;
-    }
-
-    #content_right_holder .segment.more_stats.kahol .party .bar_2 .bar .bar_inner{
-        width:25%;
-    }
-
-    #content_right_holder .segment.more_stats.kahol .party .bar_1 .bar .bar_inner{
-        background:url(../images/bar_yellow.png) repeat-x top left;
-    }
 
     #content_right_holder .segment.more_stats.donors table{
         width:570px;
@@ -939,17 +926,11 @@
         float:left;
     }
 
-    #content_right_holder .segment.more_stats.kahol .bar_2 .bar_percentage{
-        color:#c23808;
-    }
 
-    #content_right_holder .segment.more_stats.kahol .name .bar_1 .bar_percentage{
-        color:#1dba2c;
-    }
 
-    #content_right_holder .segment.more_stats.kahol .party .bar_1 .bar_percentage{
-        color:#d3b800;
-    }
+
+
+
 
     .header{
         background:url(../images/bg_header.png) no-repeat 0 0;
@@ -1000,7 +981,7 @@
     span.remark{
         font-style:italic;
         color:#7f7f7e;
-        font-size:12px;
+        font-size:15px;
         width:500px;
         display:block;
         margin:10px;
@@ -1191,6 +1172,39 @@
 
         /* Results Page - End*/
 
+    #content_right_holder .segment.more_stats.kahol .bar_green,
+    #content_right_holder .segment.more_stats.kahol .bar_red,
+    #content_right_holder .segment.more_stats.kahol .bar_yellow{
+        width:260px;
+        float:right;
+        margin: 10px 0;
+    }
+
+    #content_right_holder .segment.more_stats.kahol .bar_red .bar_percentage
+    {
+        color:#c23808;
+    }
+
+    #content_right_holder .segment.more_stats.kahol  .bar_green .bar_percentage{
+        color:#1dba2c;
+    }
+
+    #content_right_holder .segment.more_stats.kahol  .bar_yellow .bar_percentage{
+        color:#d3b800;
+    }
+
+    #content_right_holder .segment.more_stats.kahol .bar_red .bar .bar_inner{
+        background:url(../images/bar_red.png) repeat-x top left;
+    }
+
+    #content_right_holder .segment.more_stats.kahol .bar_yellow .bar .bar_inner{
+        background:url(../images/bar_yellow.png) repeat-x top left;
+    }
+
+    #content_right_holder .segment.more_stats.kahol .bar_green .bar .bar_inner{
+        background:url(../images/bar_green.png) repeat-x top left;
+    }
+
 
     </style>
 </head>
@@ -1248,7 +1262,7 @@
             </div>
         </div>
         <div id="login">
-            <input id="login_button" type="button" />
+            <% include partials/user_box.ejs %>
         </div>
     </div>
 </div>
@@ -1276,15 +1290,15 @@
                 <input class="commit" type="button" />
             </div>
             <div class="graph_col col1">
-                <div class="percentage">  <%= first.score %>%</div>
+                <div class="percentage">  <%= winners[0].score %>%</div>
                 <div class="bar"></div>
             </div>
             <div class="graph_col col2">
-                <div class="percentage"> <%= second.score %>%</div>
+                <div class="percentage"> <%= winners[1].score %>%</div>
                 <div class="bar"></div>
             </div>
             <div class="graph_col col3">
-                <div class="percentage"> <%= third.score %>%</div>
+                <div class="percentage"> <%= winners[2].score %>%</div>
                 <div class="bar"></div>
             </div>
         </div>
@@ -1292,37 +1306,37 @@
 </div>
 <div id="selector_wrapper">
     <div id="selector_holder">
-        <div class="selection item_1 selected">
-            <div class="photo"  >
-                    <img src="<%= first.image_field ? first.image_field.url : '../images/quote_photo.png' %>" title="<%= first.name %>"/>
+        <div class="selection selected" id="selection_0">
+            <div class="photo" >
+                    <img src="<%= winners[0].image_field ? winners[0].image_field.url : '../images/quote_photo.png' %>" title="<%= winners[0].name %>"/>
             </div>
-            <a href="">
+            <a href="javascript:void(0);" class="canditate_button">
                 <div class="name">
-                    <%= first.name %>
+                    <%= winners[0].name %>
                     <div class="title">
-                        <%= first.party_19th_knesset.name %>
+                        <%= winners[0].party_19th_knesset.name %>
                     </div>
                 </div>
             </a>
         </div>
-        <div class="selection item_2">
-            <div class="photo">   <img src="<%= second.image_field ? second.image_field.url : '../images/quote_photo.png' %>" title="<%= second.name %>"/></div>
-            <a href="">
+        <div class="selection "  id="selection_1" >
+            <div class="photo">   <img src="<%= winners[1].image_field ? winners[1].image_field.url : '../images/quote_photo.png' %>" title="<%= winners[1].name %>"/></div>
+            <a href="javascript:void(0);"  class="canditate_button">
                 <div class="name">
-                    <%= second.name %>
+                    <%= winners[1].name %>
                     <div class="title">
-                        <%= second.party_19th_knesset.name %>
+                        <%= winners[1].party_19th_knesset.name %>
                     </div>
                 </div>
             </a>
         </div>
-        <div class="selection item_3">
-            <div class="photo"> <img src="<%= third.image_field ? third.image_field.url : '../images/quote_photo.png' %>" title="<%= third.name %>"/></div>
-            <a href="">
+        <div class="selection "  id="selection_2"  >
+            <div class="photo"> <img src="<%= winners[2].image_field ? winners[2].image_field.url : '../images/quote_photo.png' %>" title="<%= winners[2].name %>"/></div>
+            <a href="javascript:void(0);" class="canditate_button">
                 <div class="name">
-                    <%= third.name %>
+                    <%= winners[2].name %>
                     <div class="title">
-                        <%= third.party_19th_knesset.name %>
+                        <%= winners[2].party_19th_knesset.name %>
                     </div>
                 </div>
             </a>
@@ -1332,186 +1346,199 @@
 <div id="content_main_wrapper">
 <div id="content_main_holder">
 <div id="content_right_holder">
-    <div class="segment about">
-        <h2 class="title">
+<% for(i=0;i<3;i++) { var cand=winners[i]; %>
+    <div class="candidate_container" id="info_<%=i%>" style="display:none" >
 
-            קצת
-            על
-            <%= first.name %>
+        <div class="segment about">
+            <h2 class="title">
 
-            ומפלגת
-            <%= first.party_19th_knesset.name %>
+                קצת
+                על
+                <%= cand.name %>
 
-        </h2>
-        <div class="title_link"><a target="_blank" href="">אינדקס פוליטיקאים ומפלגות</a></div>
+                ומפלגת
+                <%= cand.party_19th_knesset.name %>
 
-        <div class="bubble"><span> <%= first_win_ratio %>%</span>
-            מחברי עורו הזדהו עם
-            <%= first.name %>
-        </div>
+            </h2>
+            <div class="title_link"><a target="_blank" href="">אינדקס מועמדים ומפלגות</a></div>
 
-        <div class="text">
-            <div class="col_right">
-                <div class="about_politician">
-                    <h2>  <%= first.name %></h2>
-                    <%= first.biography %>
-                    <a class="read_more"  target="_blank" href="<%= first.wikipedia_link %>">המשך לדף פוליטיקאי</a>
+            <div class="bubble"><span> <%= first_win_ratio %>%</span>
+                 הזדהו עם
+                <%= cand.name %>
+            </div>
+
+            <div class="text">
+                <div class="col_right">
+                    <div class="about_politician">
+                        <h2>  <%= cand.name %></h2>
+                        <%= cand.biography %>
+                        <a class="read_more"  target="_blank" href="<%= cand.wikipedia_link %>">המשך לדף מועמד</a>
+                    </div>
+                    <div class="contact_info">
+                        <h3>פרטי התקשרות</h3>
+    <% if( cand.telephone) { %>
+                        <div class="contact_detail_holder">
+                            <div class="detail_name">טלפון:</div>
+                            <div class="detail_value">  <%= cand.telephone %></div>
+                        </div>
+    <% } %>
+    <% if( cand.fax) { %>
+                        <div class="contact_detail_holder">
+                            <div class="detail_name">פקס:</div>
+                            <div class="detail_value">  <%= cand.fax %></div>
+                        </div>
+    <% } %>
+    <% if( cand.email) { %>
+                        <div class="contact_detail_holder">
+                            <div class="detail_name">דוא"ל:</div>
+                            <div class="detail_value"><a href="mailto:<%= cand.email %>"><%= cand.email %></a></div>
+                        </div>
+    <% } %>
+    <% if( cand.facebook) { %>
+                        <div class="contact_detail_holder">
+                            <div class="detail_name">פייסבוק:</div>
+                            <div class="detail_value fb"><a href="<%= cand.facebook %>">
+                                <%= cand.name %>
+                                בפייסבוק
+                            </a></div>
+                        </div>
+    <% } %>
+    <% if( cand.twitter) { %>
+                        <div class="contact_detail_holder">
+                            <div class="detail_name">טוויטר:</div>
+                            <div class="detail_value tw"><a  target="_blank"  href="<%= cand.twitter %>">
+                                <%= cand.name %>
+    בטוויטר
+                            </a></div>
+    <% } %>
+
+                        </div>
+
+                        <div class="contact_detail_holder">
+                            <div class="detail_name">אתר:</div>
+                            <div class="detail_value"><a  target="_blank" href="<%= cand.official_site %>"><%= cand.official_site %></a></div>
+                        </div>
+
+                    </div>
+                    <div class="share_buttons">
+                        <span>שתף</span>
+                        <div class="share_button">
+                            <a href=""><img src="../images/icon_email_small.png" /></a>
+                        </div>
+                        <div class="share_button">
+                            <a href=""><img src="../images/icon_tw_small.png" /></a>
+                        </div>
+                        <div class="share_button">
+                            <a href=""><img src="../images/icon_fb_small.png" /></a>
+                        </div>
+                    </div>
                 </div>
-                <div class="contact_info">
-                    <h3>פרטי התקשרות</h3>
-<% if( first.telephone) { %>
-                    <div class="contact_detail_holder">
-                        <div class="detail_name">טלפון:</div>
-                        <div class="detail_value">  <%= first.telephone %></div>
-                    </div>
-<% } %>
-<% if( first.fax) { %>
-                    <div class="contact_detail_holder">
-                        <div class="detail_name">פקס:</div>
-                        <div class="detail_value">  <%= first.fax %></div>
-                    </div>
-<% } %>
-<% if( first.email) { %>
-                    <div class="contact_detail_holder">
-                        <div class="detail_name">דוא"ל:</div>
-                        <div class="detail_value"><a href="mailto:<%= first.email %>"><%= first.email %></a></div>
-                    </div>
-<% } %>
-<% if( first.facebook) { %>
-                    <div class="contact_detail_holder">
-                        <div class="detail_name">פייסבוק:</div>
-                        <div class="detail_value fb"><a href="<%= first.facebook %>">
-                            <%= first.name %>
-                            בפייסבוק
-                        </a></div>
-                    </div>
-<% } %>
-<% if( first.twitter) { %>
-                    <div class="contact_detail_holder">
-                        <div class="detail_name">טוויטר:</div>
-                        <div class="detail_value tw"><a  target="_blank"  href="<%= first.twitter %>">
-                            <%= first.name %>
-בטוויטר
-                        </a></div>
-<% } %>
+                <div class="col_left">
+                    <div class="about_party">
+                        <h2><%= cand.party_19th_knesset.name %></h2>
 
+                        <%= cand.party_19th_knesset.overview||'' %>
+                        <a class="read_more"  target="_blank"  href=" <%= cand.party_19th_knesset.wikipedia_link %>">המשך לדף מפלגה</a>
                     </div>
-
-                    <div class="contact_detail_holder">
-                        <div class="detail_name">אתר:</div>
-                        <div class="detail_value"><a  target="_blank" href="<%= first.official_site %>"><%= first.official_site %></a></div>
-                    </div>
-
-                </div>
-                <div class="share_buttons">
-                    <span>שתף</span>
-                    <div class="share_button">
-                        <a href=""><img src="../images/icon_email_small.png" /></a>
-                    </div>
-                    <div class="share_button">
-                        <a href=""><img src="../images/icon_tw_small.png" /></a>
-                    </div>
-                    <div class="share_button">
-                        <a href=""><img src="../images/icon_fb_small.png" /></a>
-                    </div>
+                    <!--   <div class="map">
+                          <h3>מקום מגורים</h3>
+                         <iframe width="260" height="190" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.co.il/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=Amsterdam+20,+Tel+Aviv-Yafo&amp;aq=0&amp;oq=%D7%90%D7%9E&amp;sll=31.406252,35.081816&amp;sspn=7.085721,9.876709&amp;ie=UTF8&amp;hq=&amp;hnear=Amsterdam+20,+Tel+Aviv-Yafo&amp;t=m&amp;ll=32.086429,34.779882&amp;spn=0.013817,0.02223&amp;z=14&amp;iwloc=A&amp;output=embed"></iframe>
+                    </div>-->
                 </div>
             </div>
-            <div class="col_left">
-                <div class="about_party">
-                    <h2><%= first.party_19th_knesset.name %></h2>
 
-                    <%= first.party_19th_knesset.overview||'' %>
-                    <a class="read_more"  target="_blank"  href=" <%= first.party_19th_knesset.wikipedia_link %>">המשך לדף מפלגה</a>
-                </div>
-                <div class="map">
-                    <h3>מקום מגורים</h3>
-                    <iframe width="260" height="190" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.co.il/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=Amsterdam+20,+Tel+Aviv-Yafo&amp;aq=0&amp;oq=%D7%90%D7%9E&amp;sll=31.406252,35.081816&amp;sspn=7.085721,9.876709&amp;ie=UTF8&amp;hq=&amp;hnear=Amsterdam+20,+Tel+Aviv-Yafo&amp;t=m&amp;ll=32.086429,34.779882&amp;spn=0.013817,0.02223&amp;z=14&amp;iwloc=A&amp;output=embed"></iframe>
-                </div>
-            </div>
         </div>
+        <div class="segment">
 
-    </div>
-
-    <div class="segment more_stats">
         <h2 class="title">
             מדדים נוספים על פעילות
-            <%= first.name %>
-            ו<%= first.party_19th_knesset.name %>
+            <%= cand.name %>
+            ו<%= cand.party_19th_knesset.name %>
         </h2>
-         <div id="social_index"></div>
+            </div>
+        <% if(cand.governence_quality_text) { %>
 
-<% if (first.party_18th_knesset && first.party_18th_knesset.open_knesset_id) { %>
-        <iframe width="610" height="400" style="border: 0" src="http://ydaniv.github.com/ok-agenda-viz/?agenda_id=74#party_<%= first.party_18th_knesset.open_knesset_id %>"></iframe>
+        <div class="segment more_stats">
+
+            <div class="header">
+                <div class="item logo"><img src="../images/icon_hatnua.png" /></div>
+                <div class="item title">מבחן איכות השלטון</div>
+                <div class="item link"><a href="">לאתר התנועה לאיכות השלטון</a></div>
+            </div>
+            <div class="text">
+                <%=cand.governence_quality_text%>
+            </div>
+
+        </div>
+
+        <% } %>
+        <div class="segment more_stats">
+
+             <div id="social_index<%=i%>"></div>
+
+    <% if (cand.party_18th_knesset && cand.party_18th_knesset.open_knesset_id) { %>
+            <div class="text">
+
+                <span class="remark">
+
+                    דירוג המועמד בהתאם להצבעותיו סביב הצעות החוק הרלוונטיות לאג'נדת
+                    <b>
+                        המדד החברתי
+                    </b>
+                    על פי ניתוח דפוסי הצבעה ונתוני "כנסת פתוחה".
+                </span>
+                <hr />
+
+            </div>
+            <iframe width="610" height="400" style="border: 0" src="http://ydaniv.github.com/ok-agenda-viz/?agenda_id=74#party_<%= cand.party_18th_knesset.open_knesset_id %>"></iframe>
+    <% } %>
+
+        </div>
+
+        <div class="segment more_stats kahol">
+
+            <div class="header">
+                <div class="item logo"><img src="../images/icon_kahol.png" /></div>
+                <div class="item title">מדדי כחול להסכמה ואמון</div>
+                <div class="item link"><a target="_blank" href="<%= cand.sandtalk_link %>">לאתר כחול</a></div>
+            </div>
+            <div class="text" id="sandtalk<%=i%>">
+
+            </div>
+
+        </div>
+        <%  var donors=false;
+            for (var c = 0; c <cand.doners.length ; c++) {  if(cand.doners[c].nis){ donors=true}}
+            if(donors) { %>
+            <div class="segment more_stats donors">
+
+            <div class="header">
+                <div class="item logo"><img src="../images/icon_israel.png" /></div>
+                <div class="item title"> התורמים הגדולים</div>
+                <div class="item link"><a target="_blank" href="<%= cand.doners_link %>">לאתר מבקר המדינה</a></div>
+            </div>
+            <div class="text">
+                <table>
+                    <% for (var c = 0; c <cand.doners.length ; c++) {  if(cand.doners[c].nis){ %>
+
+                        <tr class="<%= c%2? 'even':'odd' %>">
+                            <td><%= cand.doners[c].name %></td>
+                            <td> <%= cand.doners[c].nis %>
+                                ש"ח
+                            </td>
+                            <td><% if (cand.doners[c].date) { %><%= cand.doners[c].date.format('dd/mm/yyyy') %>   <% }%></td>
+                            <td><%= cand.doners[c].location %></td>
+                        </tr>
+                    <% }}%>
+                </table>
+            </div>
+
+        </div>
+        <% } %>
+
+
+    </div>
 <% } %>
-        <div class="text">
-
-            <span class="remark">
-
-                דירוג המועמד בהתאם להצבעותיו סביב הצעות החוק הרלוונטיות לאג'נדת
-                <b>
-              המדד החברתי
-                   </b>
-                על פי ניתוח דפוסי הצבעה ונתוני "כנסת פתוחה".
-            </span>
-            <hr />
-
-        </div>
-    </div>
-
-    <div class="segment more_stats kahol">
-
-        <div class="header">
-            <div class="item logo"><img src="../images/icon_kahol.png" /></div>
-            <div class="item title">מדדי כחול להסכמה ואמון</div>
-            <div class="item link"><a target="_blank" href="<%= first.sandtalk_link %>">לאתר כחול</a></div>
-        </div>
-        <div class="text" id="sandtalk">
-
-        </div>
-
-    </div>
-   <% if(first.doners.length >0) { %>
-    <div class="segment more_stats donors">
-
-        <div class="header">
-            <div class="item logo"><img src="../images/icon_israel.png" /></div>
-            <div class="item title"> התורמים הגדולים</div>
-            <div class="item link"><a target="_blank" href="<%= first.doners_link %>">לאתר מבקר המדינה</a></div>
-        </div>
-        <div class="text">
-            <table>
-                <% for (var c = 0; c <first.doners.length ; c++) { %>
-                    <tr class="<%= c%2? 'even':'odd' %>">
-                        <td><%= first.doners[c].name %></td>
-                        <td> <%= first.doners[c].nis %>
-                            ש"ח
-                        </td>
-                        <td><% if (first.doners[c].date) { %><%= first.doners[c].date.format('dd/mm/yyyy') %>   <% }%></td>
-                        <td><%= first.doners[c].location %></td>
-                    </tr>
-                <% }%>
-            </table>
-        </div>
-
-    </div>
-    <% } %>
-
-    <% if(first.governence_quality_text) { %>
-
-    <div class="segment more_stats">
-
-        <div class="header">
-            <div class="item logo"><img src="../images/icon_hatnua.png" /></div>
-            <div class="item title">מבחן איכות השלטון</div>
-            <div class="item link"><a href="">לאתר התנועה לאיכות השלטון</a></div>
-        </div>
-        <div class="text">
-            <%=first.governence_quality_text%>
-        </div>
-
-    </div>
-
-    <% } %>
     <div id="back_to_top">חזרה למעלה</div>
 </div>
 <div id="content_left_sidebar">
@@ -1530,7 +1557,7 @@
         </div>
     </div>
     <div class="segment related">
-        <h2>משתמשים שהזדהו עם פוליטיקאי זה הזדהו גם עם:</h2>
+        <h2>משתמשים שהזדהו עם מועמד זה הזדהו גם עם:</h2>
         <div id="related_items_holder">
             <div class="related_items">
                 <div class="related_item">
@@ -1633,73 +1660,101 @@
 
     $(document).ready(function () {
 
-        var first_name= "<%=first.name%>";
-        var first_score= "<%=first.score%>";
-        var second_score= "<%=second.score%>";
-        var third_score= "<%=third.score%>";
-        var open_knesset_id= "<%=first.open_knesset_id%>";
-        var sandtalk_id= "<%=first.sandtalk_id%>";
-        var open_knesset_link = "<%=first.open_knesset_link%>";
-        var current_party_open_knesset_id= "<%=first.party_19th_knesset.open_knesset_id%>";
-        var prev_party_open_knesset_id= "<%=first.party_18th_knesset.open_knesset_id%>";
-        var current_party_sandtalk_id= "<%=first.party_19th_knesset.sandtalk_id%>";
-        var prev_party_sandtalk_id= "<%=first.party_18th_knesset.sandtalk_id%>";
-        var prev_party_name= "<%=first.party_18th_knesset.name%>";
+        var name= ["<%=winners[0].name%>","<%=winners[1].name%>","<%=winners[2].name%>"];
+        var score= ["<%=winners[0].score%>","<%=winners[1].score%>","<%=winners[2].score%>"];
+        var open_knesset_id= ["<%=winners[0].open_knesset_id%>","<%=winners[1].open_knesset_id%>","<%=winners[2].open_knesset_id%>"];
+        var sandtalk_id= ["<%=winners[0].sandtalk_id%>","<%=winners[1].sandtalk_id%>","<%=winners[2].sandtalk_id%>"];
+        var open_knesset_link = ["<%=winners[0].open_knesset_link%>","<%=winners[1].open_knesset_link%>","<%=winners[2].open_knesset_link%>"];
+        var current_party_open_knesset_id= ["<%=winners[0].party_19th_knesset.open_knesset_id%>","<%=winners[1].party_19th_knesset.open_knesset_id%>","<%=winners[2].party_19th_knesset.open_knesset_id%>"];
+        var prev_party_open_knesset_id= ["<%=winners[0].party_18th_knesset.open_knesset_id%>","<%=winners[1].party_18th_knesset.open_knesset_id%>","<%=winners[2].party_18th_knesset.open_knesset_id%>"];
+        var current_party_sandtalk_id= ["<%=winners[0].party_19th_knesset.sandtalk_id%>","<%=winners[1].party_19th_knesset.sandtalk_id%>","<%=winners[2].party_19th_knesset.sandtalk_id%>"];
+        var prev_party_sandtalk_id= ["<%=winners[0].party_18th_knesset.sandtalk_id%>","<%=winners[1].party_18th_knesset.sandtalk_id%>","<%=winners[2].party_18th_knesset.sandtalk_id%>"];
+        var prev_party_name= ["<%=winners[0].party_18th_knesset.name%>","<%=winners[1].party_18th_knesset.name%>","<%=winners[2].party_18th_knesset.name%>"];
+        var data_loaded= [false,false,false];
+        getCandidateData(0);
+        $("#info_0").show();
 
          $("#graph .graph_col.col1 .bar").animate({
-             height: first_score+'%'
-         }, first_score*20, function() {
+             height: score[0]+'%'
+         }, score[0]*20, function() {
 
          });
 
         $("#graph .graph_col.col2 .bar").animate({
-            height: second_score+'%'
-            }, second_score*20, function() {
+            height: score[1]+'%'
+            }, score[1]*20, function() {
 
         });
 
         $("#graph .graph_col.col3 .bar").animate({
-            height: third_score+'%'
-        }, third_score*20, function() {
+            height: score[2]+'%'
+            }, score[2]*20, function() {
 
         });
 
+        $(".canditate_button").click(function(){
+            var parent= $(this).parent(".selection");
+            var i= parent.attr('id').substr(10);
+            $(".selection").removeClass("selected");
+            parent.addClass("selected");
+            $(".candidate_container").hide();
+            getCandidateData(i) ;
+            $("#info_"+i).show();
+        });
 
 
-    $.getJSON("http://oknesset.org/api/member/" +open_knesset_id+ "?callback=?", null, function(data) {
+        function getCandidateData(i){
+             if(data_loaded[i]){
+                 return;
+             }else
+             {
+                 data_loaded[i]=true;
+             }
+            /*
+             $.getJSON("http://oknesset.org/api/member/" +open_knesset_id[i]+ "?callback=?", null, function(data) {
 
-    });
-
-    $.getJSON("http://oknesset.org/api/v2/member-agendas/" + open_knesset_id + "/?callback=?", null,function(data) {
-        $.each(data.agendas, function (index, agenda) {
-                if(agenda.id==74) {
-                    agenda.link=open_knesset_link;
-                    dust.render('elections_game_social_index', agenda, function (err, out) {
-                        $('#social_index').append(out);
-                    });
-                }
-            });
-     });
+             });
+             */
 
 
-        $.getJSON("http://www.sandtalks.co.il/api/ranks?consumerKey=jdjhjdewjgdoc1rjwfdjcmzvn1fatlivduxcd09vnmivthpmate1uutey3dlmkmwbvpisc4zshuvsm9p&EntityId="+ sandtalk_id+ "&callback=?", null,function(data) {
-            data.name=first_name;
-            data.margin=50;
-            dust.render('elections_game_sandtalk', data, function (err, out) {
-                $('#sandtalk').prepend(out);
-                $('.kahol').show();
+            $.getJSON("http://oknesset.org/api/v2/member-agendas/" + open_knesset_id[i] + "/?callback=?", null,function(data) {
+                $.each(data.agendas, function (index, agenda) {
+                    if(agenda.id==74) {
+                        agenda.link=open_knesset_link[i];
+                        dust.render('elections_game_social_index', agenda, function (err, out) {
+                            $('#social_index'+i).append(out);
+                        });
+                    }
                 });
-        });
-
-        $.getJSON("http://www.sandtalks.co.il/api/ranks?consumerKey=jdjhjdewjgdoc1rjwfdjcmzvn1fatlivduxcd09vnmivthpmate1uutey3dlmkmwbvpisc4zshuvsm9p&EntityId="+ prev_party_sandtalk_id+ "&callback=?", null,function(data) {
-            data.name=prev_party_name;
-            data.margin=0;
-            dust.render('elections_game_sandtalk', data, function (err, out) {
-                $('#sandtalk').append(out);
-                $('.kahol').show();
-
             });
-        });
+
+
+            $.getJSON("http://www.sandtalks.co.il/api/ranks?consumerKey=jdjhjdewjgdoc1rjwfdjcmzvn1fatlivduxcd09vnmivthpmate1uutey3dlmkmwbvpisc4zshuvsm9p&EntityId="+ sandtalk_id[i]+ "&callback=?", null,function(data) {
+                data.name=name[i];
+                data.margin=50;
+                data.bottom_bar_color =data.beleavePercent <=33 ? "red":(data.beleavePercent <=66 ? "yellow":"green") ;
+                data.top_bar_color  =data.agreePercent <=33 ? "red":(data.agreePercent <=66 ? "yellow":"green") ;
+                dust.render('elections_game_sandtalk', data, function (err, out) {
+                    $('#sandtalk'+i).prepend(out);
+                    $('.kahol').show();
+                });
+            });
+
+            $.getJSON("http://www.sandtalks.co.il/api/ranks?consumerKey=jdjhjdewjgdoc1rjwfdjcmzvn1fatlivduxcd09vnmivthpmate1uutey3dlmkmwbvpisc4zshuvsm9p&EntityId="+ prev_party_sandtalk_id[i]+ "&callback=?", null,function(data) {
+                data.name=prev_party_name[i];
+                data.margin=0;
+                data.bottom_bar_color =data.beleavePercent <=33 ? "red":(data.beleavePercent <=66 ? "yellow":"green") ;
+                data.top_bar_color  =data.agreePercent <=33 ? "red":(data.agreePercent <=66 ? "yellow":"green") ;
+                dust.render('elections_game_sandtalk', data, function (err, out) {
+                    $('#sandtalk'+i).append(out);
+                    $('.kahol').show();
+
+                });
+            });
+        }
+
+
+
 
 
 });

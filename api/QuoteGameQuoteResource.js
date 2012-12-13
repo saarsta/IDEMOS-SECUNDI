@@ -12,7 +12,9 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
             //this.authentication = new common.SessionAuthentication();
             //this.filtering = {cycle: null};
             this.default_query = function (query) {
-                return query.populate('candidate').sort({priority: 'descending'});
+                return query
+                    .populate('candidate');
+
             };
         }    ,
 
@@ -23,18 +25,8 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
                 if(err) {
                     callback(err);
                 }
-
                 else {
-                    var random_results=JSON.parse(JSON.stringify(results));
-                    random_results.meta.total_count=0;
-                    random_results.objects=[];
-                    for(i=0 ; i<30 && i<results.meta.total_count ;i++)
-                    {
-                        var ind = Math.floor(Math.random() * results.objects.length);
-                        random_results.objects.push(results.objects[ind])  ;
-                        random_results.meta.total_count++;
-                        results.objects.splice(ind,1);
-                    }
+                    random_results=wightedRandomSelection(results,30);
                     callback(err, random_results);
                 }
 
@@ -85,4 +77,76 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
             //_.indexOf(array, value)
 
         }
+
     });
+
+
+  function wightedRandomSelection(results,amount){
+    var random_results=JSON.parse(JSON.stringify(results));
+    random_results.meta.total_count=0;
+    random_results.objects=[];
+
+
+    var weights=[],
+        weights_norm=[],
+        sum= 0,
+        selected_indexes=[];
+
+    for(i=0 ; i<results.meta.total_count ;i++)
+    {
+        var weight = results.objects[i].priority
+        weights.push(weight);
+        sum+=weight;
+        weights_norm.push(sum);
+    }
+
+    for (i=0; i<results.objects.length; i++){
+        weights_norm[i] = weights_norm[i]/sum;
+    }
+
+
+    while(random_results.meta.total_count<amount) {
+        var i=get_rand() ;
+        if (_.indexOf(selected_indexes, i) ==-1)
+        {
+            selected_indexes.push(i);
+            random_results.objects.push(results.objects[i])  ;
+            random_results.meta.total_count++;
+        }
+    }
+    return random_results;
+    /*
+     for(i=0 ; i<30 && i<results.meta.total_count ;i++)
+     {
+     var ind = Math.floor(Math.random() * results.objects.length);
+     random_results.objects.push(results.objects[ind])  ;
+     random_results.meta.total_count++;
+     results.objects.splice(ind,1);
+     }
+     */
+
+    function get_rand(){
+        needle = Math.random();
+        high = weights_norm.length - 1;
+        low = 0;
+
+        while(low < high){
+            probe = Math.ceil((high+low)/2);
+
+            if(weights_norm[probe] < needle){
+                low = probe + 1;
+            }else if(weights_norm[probe] > needle){
+                high = probe - 1;
+            }else{
+                return probe;
+            }
+        }
+
+        if(low != high ){
+            return (weights_norm[low] >= needle) ? low : probe;
+        }else{
+            return (weights_norm[low] >= needle) ? low : low + 1;
+        }
+    }
+
+}

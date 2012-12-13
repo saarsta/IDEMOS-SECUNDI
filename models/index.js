@@ -395,6 +395,7 @@ var Schemas = exports.Schemas = {
         image_field: { type:mongoose_types.File },
         party_18th_knesset:{type:ObjectId, ref:'QuoteGameParty'   , index:true, required:true},
         party_19th_knesset:{type:ObjectId, ref:'QuoteGameParty'   , index:true, required:true},
+        party_name:{type:String},
         biography: {type:String},
         sandtalk_id:  {type:Number},
         sandtalk_link:  {type:String},

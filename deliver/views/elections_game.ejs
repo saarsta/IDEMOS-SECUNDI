@@ -36,7 +36,7 @@
     #header_bottom{
         width:100%;
         height:70px;
-        line-height:70px;
+
     }
 
     #logo_holder{
@@ -68,6 +68,7 @@
 
     #social_holder .social_item{
         margin:10px 0;
+        text-align: left;
     }
 
     #participants_holder{
@@ -80,14 +81,17 @@
         max-width:220px;
         float:right;
         color:#9b9a9a;
+        line-height:70px;
     }
 
     #participants_thumbs{
         max-width:610px;
         float:right;
         border-left: 1px solid #d5d5d5;
-        padding:10px 15px;
-        margin:10px 0;
+        padding: 0px 15px;
+        margin: 14px 0;
+        padding: 16px 7px 0 7px;
+        margin: 4px 0;
     }
 
     .participant_thumb{
@@ -99,7 +103,10 @@
     }
 
     #login{
+        position: relative;
+        margin-top: -32px;
         float:left;
+        width:130px;
     }
 
     #login input{
@@ -203,7 +210,7 @@
     .quote_start{
         width:32px;
         height:23px;
-        background:url(images/sprite.png) -10px -14px no-repeat;
+        background:url(images/sprite.png) -50px -13px no-repeat;
         display:block;
         position:absolute;
         top:0px;
@@ -251,13 +258,13 @@
     #current_quote_photo{
         position: absolute;
         top: 38%;
-        right: -90px;
+        left: 710px;
     }
 
     #current_quote_photo img{
         vertical-align:middle;
         max-height:118px;
-        max-width:82px;
+
         border:3px solid #fff;
         -moz-box-shadow: 0px 1px 3px #8e8d8d;
         -webkit-box-shadow: 0px 1px 3px #8e8d8d;
@@ -445,21 +452,26 @@
                     <%= game_played %>
                 </div>
                 <div id="participants_thumbs">
-                    <% for (var c = 0; c < 14 ; c++) { %>
-                        <div class="participant_thumb participant_1"></div>
+                    <% for (var c = 0; c < users_icons_count ; c++) { %>
+                    <div class="img-box" style="overflow: hidden;float: right;">
+                        <div style="width:32px; height:48px; overflow:hidden; " class='auto-scale' >
+                            <img  src="<%=users[c].avatar.url%>" alt="<%users[c].first_name%>"/>
+                        </div>
+                        <span></span>
+                    </div>
                     <% }%>
 
                 </div>
             </div>
             <div id="login">
-                <input id="login_button" type="button" />
+                <% include partials/user_box.ejs %>
             </div>
         </div>
     </div>
     <div id="content_wrapper">
         <div id="how_to_play">
             <h2>אז איך משחקים במשחק הזה בעצם</h2>
-            מדרגים ציטוט של פוליטיקאי ומגלים לאיזה צד של המפה אנחנו שייכים</h2>
+            מדרגים ציטוט של מועמד ומגלים לאיזה צד של המפה אנחנו שייכים</h2>
             <div id="close_button"></div>
         </div>
         <div id="quotes_holder">
