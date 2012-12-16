@@ -14,6 +14,7 @@ module.exports = function(req,res)
         function(cbk)  {
             models.DailyDiscussion.findById(req.params[0], cbk)
             .populate('subject', {'name':1})
+            .populate('cycle')
             .populate('discussion');
         }
     ],

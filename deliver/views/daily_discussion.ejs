@@ -127,9 +127,30 @@ var error_message = error_message || '';
 </div>
 
 
+<% }else if(discussion.cycle) {%>
+
+
+<div id="CornerPromotionDiv" class="CornerPromotionDiv">
+    <div class="header" >
+        מעגל תנופה שעשוי לעניין אותך:
+        <a class="closeCornerPromotion"  >
+            סגור
+        </a>
+    </div>
+    <div style="padding:10px">
+
+        <div  style="width: 128px;height: 90px; overflow:hidden;" class='auto-scale floatRight'>
+            <img src="<%= discussion.cycle.image_field ? discussion.cycle.image_field.url ||'' : '' %>" title="" style="border:solid 1px #d8d7d5"/>
+        </div>
+        <div>
+            <a class="cornerPromotionTitle" href="/cycles/<%= discussion.cycle._id %>">
+                <%= discussion.cycle.title %>
+            </a>
+        </div>
+    </div>
+</div>
+
 <% }else {%>
-
-
 <div id="CornerPromotionDiv" class="CornerPromotionDiv">
     <div class="header" >
         דיון שעשוי לעניין אותך:
@@ -149,9 +170,6 @@ var error_message = error_message || '';
         </div>
     </div>
 </div>
-
-
-
 
 <% }%>
 <% include partials/footer.ejs %>

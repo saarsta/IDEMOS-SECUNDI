@@ -362,6 +362,7 @@ var Schemas = exports.Schemas = {
         image_field: { type:mongoose_types.File, required:true},
         subject:    {type:ObjectId, ref:'Subject'   , index:true, required:true},
         discussion: {type:ObjectId, ref:'Discussion',query:common.FIND_DISCUSSION_QUERY}  ,
+        cycle:      {type:ObjectId, ref:'Cycle'     , index:true}  ,
         text_field: {type:mongoose_types.Html, required:true},
         creation_date:{type:Date, 'default':Date.now},
         system_message:{type:mongoose_types.Html},
