@@ -1546,13 +1546,13 @@ var db_functions = {
         });
     } ,
 
-    setQuoteGameResponse:function (user_id,quote_id,hash,response, callback) {
+    setQuoteGameResponse:function (user_id,quote_id,hash,response, candidate_id,reset,callback) {
 
         $.ajax({
             url:'/api/quote_game_response/' + quote_id ,
             type:"PUT",
             async:true,
-            data: {user_id: user_id, quote_id: quote_id, hash: hash,response:response},
+            data: {user_id: user_id, quote_id: quote_id, hash: hash,response:response,candidate_id:candidate_id,reset:reset},
             success:function (data) {
                 console.log(data);
                 callback(null, data);

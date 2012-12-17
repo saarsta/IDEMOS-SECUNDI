@@ -78,6 +78,10 @@ function getSortedPostsByNumberOfDiscussions(discussions, callback)
                 callback(null, null);
                 break;
             case 1:
+                if(!discussions[0]) {
+                    callback(null, null);
+                    break;
+                }
                 models.Post.find({discussion_id: discussions[0]._id})
                     .sort({popularity:'descending'})
                     .select({

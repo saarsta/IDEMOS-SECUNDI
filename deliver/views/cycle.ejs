@@ -15,7 +15,17 @@
             <% include partials/social_popup.ejs %>
         </div>
 
+
+
         <div id="content" class="cf">
+            <% if(cycle._id=='5098eb8bc492d10200000024'){ %>
+                <img id="cover" src="../images/5098eb8bc492d10200000024.jpg" style="position: absolute;  z-index: 2;     top: -20px;" usemap="#image-map-1" >
+                <map name="image-map-1" id="image-map-1">
+                    <area href="javascript:void(0)" alt="" id="readmore" shape="rect" coords="420,400,490,430" />
+                    <area href="javascript:void(0)" alt="" id="join" shape="rect" coords="188,477,495,552" />
+                </map>
+
+            <% } %>
             <div class="right-add-offer">
                 <div id="cycle" class="add-offer add-offer-small">
                     <h2 class="cycle-title"><span class="arrow"> <%= cycle.subject_name %></span>
@@ -27,11 +37,16 @@
                            <a    href="javascript:void(0)" class="twitter"></a>
                            <a    href="javascript:void(0)" class="email"></a>
                        </div>
+                    <% if(cycle._id=='5098eb8bc492d10200000024'){ %>
 
+                    <a  class="iconbutton social-on-click" data-text_preview="<%=cycle.text_field_preview%>" title="לקידום הנושא ולקבלת עדכונים על המשך הפעילות לחצו כאן"  data-title="<%=cycle.title%>"data-img_src="<%= cycle.image_field && cycle.image_field.url %>" data-rel="/cycles/<%= cycle.id %>" href="javascript:void(0)"  ><span class="button_inner"><span >
+אני מצביע לטובתי
+</span></span></a>
+                    <% }else{ %>
                     <a  class="iconbutton social-on-click" data-text_preview="<%=cycle.text_field_preview%>" title="לקידום הנושא ולקבלת עדכונים על המשך הפעילות לחצו כאן"  data-title="<%=cycle.title%>"data-img_src="<%= cycle.image_field && cycle.image_field.url %>" data-rel="/cycles/<%= cycle.id %>" href="javascript:void(0)"  ><span class="button_inner"><span >
 אני בעד
 </span></span></a>
-
+                    <% } %>
                     <div id="cloudsponge_2">
                             <div id="deep-link" style="">
                                 <span style="margin-right:-15px">
@@ -810,7 +825,17 @@ var current_section=2;
             window.location.href = window.location.href  + '?share=true'    ;
 
         }
+        $('area').click(function() {
+            var id = $(this).attr('id');
+            $('#cover').hide();
+            if(id=="readmore"){
+             //  $('#cover').hide();
+            }
+            if(id=="join"){
+                $('#cycle .iconbutton').click();
+            }
 
+        });
 
     });
 

@@ -9,6 +9,7 @@
     body{
         margin: 0;
         font-family:arial;
+        background-color: #4d4d4d;
     }
 
     #wrapper{
@@ -177,7 +178,7 @@
     #quotes_holder{
         width:820px;
         margin:15px auto 0px auto;
-        padding:15px 50px;
+        padding:15px 50px 0 50px;
     }
 
     #quotes_counter{
@@ -187,7 +188,7 @@
 
     #current_quote_holder{
         position:relative;
-        min-height:260px;
+        display: none;
         border: 5px solid #fff;
         background:#fff url(images/bg_quote.jpg) bottom center repeat-x;
         margin:15px auto;
@@ -259,13 +260,17 @@
         position: absolute;
         top: 38%;
         left: 710px;
+        border:3px solid #fff;
+        height: 118px;
+        overflow:hidden;
+        height:118px;
+        width: 82px;
     }
 
     #current_quote_photo img{
         vertical-align:middle;
-        max-height:118px;
-
-        border:3px solid #fff;
+        position: absolute;
+        height:118px;
         -moz-box-shadow: 0px 1px 3px #8e8d8d;
         -webkit-box-shadow: 0px 1px 3px #8e8d8d;
         box-shadow: 0px 1px 3px #8e8d8d;
@@ -274,9 +279,9 @@
     #poll_holder{
         width: 780px;
         margin: 0px auto 15px auto;
-        height:60px;
+
         position: relative;
-        top: 112px;
+        top: 35px;
     }
 
     .poll_option{
@@ -338,6 +343,8 @@
     }
 
     #footer_content{
+        padding-top: 20px;
+
         width:800px;
         border-top:1px solid #5e5e5d;
         margin:135px auto 0px auto;
@@ -393,6 +400,13 @@
         width:100%;
     }
 
+    #preload_img{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 0;
+        height: 0;
+    }
     .social_icon{
         float:right;
         width:26px;
@@ -408,10 +422,11 @@
     var js, fjs = d.getElementsByTagName(s)[0];
     if (d.getElementById(id)) return;
     js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+    js.src = "//connect.facebook.net/he_IL/all.js#xfbml=1";
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
 <div id="wrapper">
+    <img src="images/quote_photo.png" id="preload_img"  >
     <div id="header_wrapper">
         <div id="header_top">
             <div id="logo_holder">
@@ -453,7 +468,7 @@
                 </div>
                 <div id="participants_thumbs">
                     <% for (var c = 0; c < users_icons_count ; c++) { %>
-                    <div class="img-box" style="overflow: hidden;float: right;">
+                    <div class="img-box" style="overflow: hidden;float: right;margin-right: 5px">
                         <div style="width:32px; height:48px; overflow:hidden; " class='auto-scale' >
                             <img  src="<%=users[c].avatar.url%>" alt="<%users[c].first_name%>"/>
                         </div>
@@ -475,6 +490,7 @@
             <div id="close_button"></div>
         </div>
         <div id="quotes_holder">
+            <!--
             <div id="quotes_counter">
 
                 ציטוט
@@ -482,6 +498,7 @@
                 מתוך
                 <span id="total_qoute_count"> </span>
             </div>
+            -->
             <div id="current_quote_holder">
 
             </div>
@@ -493,12 +510,16 @@
             <input class="poll_option" id="option_4" type="button" data-response="very_negative" />
             <input class="poll_option" id="option_0" type="button" data-response="skip" />
         </div>
+
+    </div>
+
+    <div id="footer_wrapper">
+       <!--
         <div id="other_buttons_holder">
             <input class="end_game"  type="button" />
             <input class="to_index"  type="button" />
         </div>
-    </div>
-    <div id="footer_wrapper">
+         -->
         <div id="footer_content">
             <div class="col col_1">
                 <h3>קישורים מהירים</h3>
@@ -580,17 +601,25 @@
             showNextQoute();
         });
 
-
+        var buttons_disabled=true;
         $('.poll_option').click(function () {
+                if(buttons_disabled) {
+                    return;
+                }  else  {
+                    buttons_disabled=true;
+                }
                 var quote_id   =quotes[current_qoute]._id;
                 var response =$(this).data('response');
                 $('.quote_credit,.quote_party').slideDown();
                 quotes[current_qoute].response=  response;
                 $('#current_quote_photo img').attr('src',quotes[current_qoute].candidate.image_field_thumb.url);
+                $('#current_quote_photo img').css('left', '-' +(($("#current_quote_photo img").width()-82)/2)+'px');
+
                 setTimeout(showNextQoute , 3000);
-                db_functions.setQuoteGameResponse(my_id, quote_id,hash, response,function (err, data) {
+                db_functions.setQuoteGameResponse(my_id, quote_id,hash, response,quotes[current_qoute].candidate._id,false,function (err, data) {
 
                 });
+                $('#how_to_play').fadeOut(800);
 
         });
 
@@ -601,11 +630,13 @@
                 completeGame();
                 return ;
             }
-
+            $('#preload_img').attr('src',quotes[current_qoute].candidate.image_field_thumb.url);
             $("#current_qoute_count").text(current_qoute+1)  ;
             dust.render('quote', quotes[current_qoute], function (err, out) {
                 $('#current_quote_holder').html(out);
                 $('.quote_credit,.quote_party').hide().removeClass('hide');
+                $('#current_quote_holder').show();
+                buttons_disabled=false;
             });
         }
         $('.end_game').click(function () {
@@ -613,7 +644,8 @@
         });
 
         function completeGame() {
-            window.location.href = '/elections_game/results/'
+          //  window.location.href = '/elections_game/results'     ;
+            console.log("results");
         }
 
 
