@@ -48,7 +48,7 @@ body {
 }
 
 .big-head {
-    background: #ededed url(../images/header-bg-big.png) 0 0 repeat-x;
+    background: #ededed url(../images/BG-web1.gif) 0 0 repeat-x;
 }
 
 #wrap {
@@ -764,7 +764,7 @@ color: #ff00af;
 /*------------------------*/
 .main-video {
     height: 306px;
-    padding-top: 43px;
+    padding-top: 40px;
     clear: both;
 
     color: #fff;
@@ -793,12 +793,13 @@ color: #ff00af;
     margin-bottom: 5px;
 }
 .main-video .side-text {
+    color: #5255ee;
     font:normal 22px/30px 'AdumaFOTRegular';
-    margin-bottom: 42px;
+    margin-bottom: 35px;
 }
 
 .main-video .side-button {
-    margin-right: -11px; /* To account for transparent bit inside the actual image */
+    /*   margin-right: -11px; To account for transparent bit inside the actual image */
     float: right;
     height: 125px;
 }
@@ -9729,7 +9730,7 @@ body.search-active #header {
 
 .cycle_sub_branding  a div{
     float: right;
-    margin: -4px  0 10px 10px
+    margin: -4px  0 2px 10px
 }
 
 .cycle_sub_branding  h3{
@@ -10077,17 +10078,21 @@ change .current class name using plugin option, currentPanel : 'current' */
 
 #cycle a.iconbutton  span.button_inner span {
     padding-bottom: 10px;
-
     padding-right: 25px;
-
     font-size: 22px;
-
     line-height: 28px;
     background: transparent url('../images/URU_large_pro.hand_icon.png')  right 2px no-repeat;
-
     text-align: right;
 }
-
+#cycle a.iconbutton  span.button_inner span.arrow {
+    padding-bottom: 10px;
+    padding-right: 0;
+    padding-left: 25px;
+    font-size: 22px;
+    line-height: 28px;
+    background: transparent url('../images/arrow1.png')  4px 4px no-repeat;
+    text-align: right;
+}
 .cycle_buy_shirt,
 .cycle_buy_shirt div
 {

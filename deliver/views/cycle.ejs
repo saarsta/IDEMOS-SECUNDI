@@ -18,7 +18,7 @@
 
 
         <div id="content" class="cf">
-            <% if(cycle._id=='5098eb8bc492d10200000024'){ %>
+            <% if(cycle._id=='5098eb8bc492d10200000024' &&  !cycle.is_user_follower_of_cycle) { %>
                 <img id="cover" src="../images/5098eb8bc492d10200000024.jpg" style="position: absolute;  z-index: 2;     top: -20px;" usemap="#image-map-1" >
                 <map name="image-map-1" id="image-map-1">
                     <area href="javascript:void(0)" alt="" id="readmore" shape="rect" coords="420,400,490,430" />
@@ -39,9 +39,13 @@
                        </div>
                     <% if(cycle._id=='5098eb8bc492d10200000024'){ %>
 
-                    <a  class="iconbutton social-on-click" data-text_preview="<%=cycle.text_field_preview%>" title="לקידום הנושא ולקבלת עדכונים על המשך הפעילות לחצו כאן"  data-title="<%=cycle.title%>"data-img_src="<%= cycle.image_field && cycle.image_field.url %>" data-rel="/cycles/<%= cycle.id %>" href="javascript:void(0)"  ><span class="button_inner"><span >
+                    <a  class="iconbutton social-on-click" data-text_preview="<%=cycle.text_field_preview%>" title="לקידום הנושא ולקבלת עדכונים על המשך הפעילות לחצו כאן"  data-title="<%=cycle.title%>"data-img_src="<%= cycle.image_field && cycle.image_field.url %>" data-rel="/cycles/<%= cycle.id %>" href="javascript:void(0)"  >
+                        <span class="button_inner">
+                            <span class="arrow" >
 אני מצביע לטובתי
-</span></span></a>
+                            </span>
+                        </span>
+                    </a>
                     <% }else{ %>
                     <a  class="iconbutton social-on-click" data-text_preview="<%=cycle.text_field_preview%>" title="לקידום הנושא ולקבלת עדכונים על המשך הפעילות לחצו כאן"  data-title="<%=cycle.title%>"data-img_src="<%= cycle.image_field && cycle.image_field.url %>" data-rel="/cycles/<%= cycle.id %>" href="javascript:void(0)"  ><span class="button_inner"><span >
 אני בעד
@@ -59,15 +63,6 @@
                                 </span>
                             </div>
                     </div>
-
-
-
-
-
-
-
-
-
 
                     <div class="text-box cf">
                     <div class="cycle-content">
@@ -172,7 +167,7 @@
                 </a>
                 <h3 >   <%= cycle.sub_branding_title %> </h3>
                 <span > <%= cycle.sub_branding_text %></span>
-               <div style="width:238px;height: 174px" class='auto-scale'>
+               <div style="width:238px;height: 174px;margin-top: 8px;" class='auto-scale'>
                         <img class="main_image" src="<%= cycle.sub_branding_image.url %>" style="">
                    </div>
                 <div style="">
@@ -237,7 +232,7 @@
             </div>
 
             <div class="updates-box cf">
-                <div class="right">
+                <div class="right" style="width: 642;overflow: hidden">
 
                         <div class="fb-comments"  data-href="http://www.uru.org.il/cycles/<%= cycle.id %>"  data-num-posts="3" data-width="642" colorscheme="light" > </div>
                 </div>

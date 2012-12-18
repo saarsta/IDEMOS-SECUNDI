@@ -270,6 +270,8 @@
         color:#3b63ef;
     }
 
+
+
     #current_quote_photo{
         position: absolute;
         top: 38%;
@@ -566,7 +568,7 @@
     #selector_holder .selected .name .title{
         color:#3b63ef;
     }
-
+    /*
     #selector_holder .photo{
         text-align: center;
         position: relative;
@@ -578,6 +580,32 @@
     #selector_holder .photo img{
         height: 118px;
         border:4px solid #fff;
+    }
+    */
+
+    #selector_holder .photo{
+
+        float:left;
+        margin-left: 72px;
+        position: relative;
+        top: 0px;
+        background: url(../images/shadow_1.png) no-repeat 70px 110px;
+        margin-bottom: 8px;
+
+        border:3px solid #fff;
+        height: 118px;
+        overflow:hidden;
+        height:118px;
+        width: 82px;
+    }
+
+    #selector_holder .photo img{
+        vertical-align:middle;
+        position: absolute;
+        height:118px;
+        -moz-box-shadow: 0px 1px 3px #8e8d8d;
+        -webkit-box-shadow: 0px 1px 3px #8e8d8d;
+        box-shadow: 0px 1px 3px #8e8d8d;
     }
 
     #selector_holder .selection.selected .name{
@@ -621,6 +649,7 @@
     }
 
     #graph .graph_col .percentage{
+        right: -10px;
         position:absolute;
         bottom:0px;
         font-size:22px;
@@ -1204,7 +1233,9 @@
     #content_right_holder .segment.more_stats.kahol .bar_green .bar .bar_inner{
         background:url(../images/bar_green.png) repeat-x top left;
     }
-
+    #back_to_top{
+        cursor: pointer;
+    }
 
     </style>
 </head>
@@ -1349,6 +1380,12 @@
 <% for(i=0;i<3;i++) { var cand=winners[i]; %>
     <div class="candidate_container" id="info_<%=i%>" style="display:none" >
 
+
+
+
+
+
+
         <div class="segment about">
             <h2 class="title">
 
@@ -1360,9 +1397,15 @@
                 <%= cand.party_19th_knesset.name %>
 
             </h2>
-            <div class="title_link"><a target="_blank" href="">אינדקס מועמדים ומפלגות</a></div>
 
-            <div class="bubble"><span> <%= first_win_ratio %>%</span>
+            <div class="title_link">
+                <a target="_blank" href="">
+                    אינדקס מועמדים ומפלגות
+                </a>
+            </div>
+
+            <div class="bubble">
+                <span> <%= first_win_ratio %>%</span>
                  הזדהו עם
                 <%= cand.name %>
             </div>
@@ -1378,41 +1421,58 @@
                         <h3>פרטי התקשרות</h3>
     <% if( cand.telephone) { %>
                         <div class="contact_detail_holder">
-                            <div class="detail_name">טלפון:</div>
-                            <div class="detail_value">  <%= cand.telephone %></div>
+                            <div class="detail_name">
+                                טלפון:
+                            </div>
+                            <div class="detail_value">
+                                <%= cand.telephone %>
+                            </div>
                         </div>
     <% } %>
     <% if( cand.fax) { %>
                         <div class="contact_detail_holder">
-                            <div class="detail_name">פקס:</div>
-                            <div class="detail_value">  <%= cand.fax %></div>
+                            <div class="detail_name">
+                                פקס:
+                            </div>
+                            <div class="detail_value">
+                                <%= cand.fax %>
+                            </div>
                         </div>
     <% } %>
     <% if( cand.email) { %>
                         <div class="contact_detail_holder">
-                            <div class="detail_name">דוא"ל:</div>
-                            <div class="detail_value"><a href="mailto:<%= cand.email %>"><%= cand.email %></a></div>
+                            <div class="detail_name">
+                                דוא"ל:
+                            </div>
+                            <div class="detail_value">
+                                <a href="mailto:<%= cand.email %>"><%= cand.email %></a>
+                            </div>
                         </div>
     <% } %>
     <% if( cand.facebook) { %>
                         <div class="contact_detail_holder">
-                            <div class="detail_name">פייסבוק:</div>
-                            <div class="detail_value fb"><a href="<%= cand.facebook %>">
+                            <div class="detail_name">
+                                פייסבוק:
+                            </div>
+                            <div class="detail_value fb">
+                                <a href="<%= cand.facebook %>">
                                 <%= cand.name %>
                                 בפייסבוק
-                            </a></div>
+                                </a>
+                            </div>
                         </div>
     <% } %>
     <% if( cand.twitter) { %>
                         <div class="contact_detail_holder">
                             <div class="detail_name">טוויטר:</div>
-                            <div class="detail_value tw"><a  target="_blank"  href="<%= cand.twitter %>">
+                            <div class="detail_value tw">
+                                <a  target="_blank"  href="<%= cand.twitter %>">
                                 <%= cand.name %>
     בטוויטר
-                            </a></div>
-    <% } %>
-
+                                </a>
+                            </div>
                         </div>
+    <% } %>
 
                         <div class="contact_detail_holder">
                             <div class="detail_name">אתר:</div>
@@ -1448,6 +1508,14 @@
             </div>
 
         </div>
+
+
+
+
+
+
+
+
         <div class="segment">
 
         <h2 class="title">
@@ -1591,68 +1659,7 @@
 </div>
 </div>
 </div>
-<div id="footer_wrapper">
-    <div id="footer_content">
-        <div class="col col_1">
-            <h3>קישורים מהירים</h3>
-            <ul>
-                <li><a href="">אודות עורו</a></li>
-                <li><a href="">הסיפור שלנו</a></li>
-                <li><a href="">בעיתונות</a></li>
-                <li><a href="">הצוות</a></li>
-                <li><a href="">תקנון האתר</a></li>
-                <li><a href="">כללי התנהלות באתר</a></li>
-            </ul>
-        </div>
-        <div class="col col_2">
-            <h3>מערכת האתר</h3>
-            <ul>
-                <li><a href="">שאלות נפוצות</a></li>
-                <li>
-                    מדריך למשתמש:
-                    <ul>
-                        <li><a href="">דיונים</a></li>
-                        <li><a href="">מעגלי תנופה</a></li>
-                        <li><a href="">פעולות</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-        <div class="col col_3">
-            <h3>צרו קשר</h3>
-            התנועה האזרחית החדשה בע"מ (חל"צ)<br/>
-            רחוב התעשייה 8, תל-אביב<br/>
-            טל' 03-7368600<br/>
-            פקס 03-7368700<br/>
-            <a href="mailto:info@uru.org.il">info@uru.org.il</a>
-        </div>
-        <div class="col col_4">
-            <h3>ברשתות החברתיות</h3>
-            <div id="social_icon_row">
-                <div class="social_icon">
-                    <a href="#"><img src="../images/icon_fb.png" /></a>
-                </div>
-                <div class="social_icon">
-                    <a href="#"><img src="../images/icon_tw.png" /></a>
-                </div>
-                <div class="social_icon">
-                    <a href="#"><img src="../images/icon_gp.png" /></a>
-                </div>
-            </div>
-            <div id="social_icon_row">
-                <div class="social_icon">
-                    <a href="#"><img src="../images/icon_yt.png" /></a>
-                </div>
-                <div class="social_icon">
-                    <a href="#"><img src="../images/icon_share.png" /></a>
-                </div>
-                <div class="social_icon">
-                    <a href="#"><img src="../images/icon_rss.png" /></a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<% include partials/ections_game_footer.ejs %>
 </div>
 <% include partials/includes.ejs %>
 <script type="text/javascript">
@@ -1671,6 +1678,11 @@
         var prev_party_sandtalk_id= ["<%=winners[0].party_18th_knesset.sandtalk_id%>","<%=winners[1].party_18th_knesset.sandtalk_id%>","<%=winners[2].party_18th_knesset.sandtalk_id%>"];
         var prev_party_name= ["<%=winners[0].party_18th_knesset.name%>","<%=winners[1].party_18th_knesset.name%>","<%=winners[2].party_18th_knesset.name%>"];
         var data_loaded= [false,false,false];
+
+
+        $('#selector_holder .photo img').css('left', '-' +(($('#selector_holder .photo img').width()-82)/2)+'px');
+
+
         getCandidateData(0);
         $("#info_0").show();
 
@@ -1692,6 +1704,9 @@
 
         });
 
+        $("#back_to_top").click(function(){
+            $("html, body").animate({ scrollTop: 0 }, "slow");
+        });
         $(".canditate_button").click(function(){
             var parent= $(this).parent(".selection");
             var i= parent.attr('id').substr(10);
