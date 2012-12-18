@@ -10108,3 +10108,7 @@ change .current class name using plugin option, currentPanel : 'current' */
     left: -10px;
     top: 80px;
 }
+
+.preload_img{
+    position: absolute;         top: 0;         left: 0;           width: 0;         height: 0;
+}
