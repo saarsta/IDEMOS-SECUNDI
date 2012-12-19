@@ -58,6 +58,7 @@ var timeline = {
 
 			var discussion_seen = false,
 				today_seen = false,
+                no_discussion = false,
 				items = {
 					pre_discussion: [],
 					discussion: null,
@@ -65,7 +66,10 @@ var timeline = {
 					today: null,
 					future: []
 				};
-
+            $.each(data.objects, function (_, item) {
+                item._id='50d1bb23b713ea0200000031'
+                    no_discussion=true;
+            });
 			$.each(data.objects, function (_, item) {
 				var type = types[item.type];
 				if (!type) {
@@ -136,7 +140,7 @@ var timeline = {
 				});
 			}
 
-			if (discussion_seen) {
+			if (discussion_seen && !no_discussion) {
 				nodes.past.push(items.discussion);
 			}
 
@@ -149,6 +153,8 @@ var timeline = {
 					is_displayed: cluster.is_displayed
 				});
 			});
+
+
 
 			nodes.today = items.today;
 			nodes.future = items.future;
