@@ -67,7 +67,7 @@ var timeline = {
 					future: []
 				};
             $.each(data.objects, function (_, item) {
-                item._id='50d1bb23b713ea0200000031'
+               if( item._id=='50d1bb23b713ea0200000031' )
                     no_discussion=true;
             });
 			$.each(data.objects, function (_, item) {
