@@ -25,12 +25,12 @@ var Cycle = module.exports = new Schema({
     text_field_preview:{type:mongoose_types.Html},
     image_field: mongoose_types.File,
     image_field_preview: mongoose_types.File,
-
-    sub_branding_image: mongoose_types.File,
-    sub_branding_logo: mongoose_types.File,
-    sub_branding_title: {type: String},
-    sub_branding_text: {type: String},
-    sub_branding_link: {type: String},
+    sub_branding:[ {
+                image: mongoose_types.File,
+                title: {type: String},
+                text: {type: String},
+                link: {type: String}
+    }],
     tags:[String],
     discussions:[
         {discussion: {type:ObjectId, ref:'Discussion', query:common.FIND_DISCUSSION_QUERY}, is_main: {type: Boolean, 'default': false}}
