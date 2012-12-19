@@ -39,11 +39,7 @@ module.exports = function(req, res){
                 'tags':1,
                 'opinion_shapers': 1,
                 'followers_count': 1,
-                'sub_branding_image': 1,
-                'sub_branding_logo': 1,
-                'sub_branding_title': 1,
-                'sub_branding_text': 1,
-                'sub_branding_link': 1,
+                'sub_branding': 1,
                 'social_popup_title': 1,
                 'social_popup_text': 1
 

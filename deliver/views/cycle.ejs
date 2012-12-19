@@ -6,7 +6,8 @@
 </head>
 <body>
 <% include partials/body_top.ejs %>
-<div id="wrap">
+<div id="all" class="hidden">
+<div id="wrap" >
         <div id="header">
             <% include partials/menu.ejs %>
             <% include partials/user_box.ejs %>
@@ -17,7 +18,7 @@
 
 
 
-        <div id="content" class="cf">
+        <div id="content" class="cf" >
             <% if(cycle._id=='5098eb8bc492d10200000024' &&  !cycle.is_user_follower_of_cycle) { %>
                 <img id="cover" src="../images/5098eb8bc492d10200000024.jpg" style="position: absolute;  z-index: 2;     top: -20px;" usemap="#image-map-1" >
                 <map name="image-map-1" id="image-map-1">
@@ -100,8 +101,8 @@
                                         <span class="watched">151</span>
                                     </div>
                                     -->
-                                <% if (cycle.tags) for (var c = 0; c<cycle.tags.length; c++) { %>
-                                <a href="?tag_name=<%=cycle.tags[c]%>"> <%=cycle.tags[c] %></a>
+                                <% if (cycle.tags) for (var c = 0; c < cycle.tags.length ; c++) { %>
+                                    <a href="?tag_name=<%=cycle.tags[c]%>"> <%=cycle.tags[c] %></a>
                                 <% }%>
                             </div>
                         </div>
@@ -154,25 +155,23 @@
             </div>
             <div class="card-left">
 
+  <% if (cycle.sub_branding){    %>
+         <div class="cycle_sub_branding">
+             <h3 >   בשיתוף עם </h3>
+         <%  for (var c = 0; c < cycle.sub_branding.length ; c++) { %>
+             <a target="_blank" href="<%= cycle.sub_branding[c].link %>">
+             <% if  (cycle.sub_branding[c].text) {%>
 
-  <%if (cycle.sub_branding_title){%>
-           <div class="cycle_sub_branding">
-                <a target="_blank" href="<%= cycle.sub_branding_link %>">
+                    <%= cycle.sub_branding[c].text %>
 
-                    <div style="width:90px;height: 90px;" class='auto-scale'>
-                        <img src="<%= cycle.sub_branding_logo.url %>" >
-                    </div>
+             <%} %>
+               <div style="width:238px;margin-top: 8px;" class='auto-scale'>
+                        <img class="main_image" src="<%= cycle.sub_branding[c].image.url %>" style="">
+                </div>
+             </a>
 
-
-                </a>
-                <h3 >   <%= cycle.sub_branding_title %> </h3>
-                <span > <%= cycle.sub_branding_text %></span>
-               <div style="width:238px;height: 174px;margin-top: 8px;" class='auto-scale'>
-                        <img class="main_image" src="<%= cycle.sub_branding_image.url %>" style="">
-                   </div>
-                <div style="">
-                   </div>
-           </div>
+         <%} %>
+         </div>
   <%} %>
 
                 <% if (cycle.id == '508026e8cb2276020000001f'){%>
@@ -291,7 +290,7 @@
 
 <% include partials/footer.ejs %>
 
-
+ </div>
 
 <script type="text/javascript">
 var current_section=2;
@@ -306,7 +305,7 @@ var current_section=2;
         var join = <%=join%>;
         //set mail subject for social popup
 
-
+        $("#all").show();
 
         window.vars={};
         window.vars.object_id = "<%=cycle.id%>";

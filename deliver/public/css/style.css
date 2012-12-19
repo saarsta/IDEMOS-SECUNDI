@@ -794,7 +794,7 @@ color: #ff00af;
 }
 .main-video .side-text {
     color: #5255ee;
-    font:normal 22px/30px 'AdumaFOTRegular';
+    font:normal 27px/30px 'AdumaFOTRegular';
     margin-bottom: 35px;
 }
 
@@ -9740,10 +9740,11 @@ body.search-active #header {
     font-size: 30px;
     margin-top: 15px;
 }
-.cycle_sub_branding  span{
+.cycle_sub_branding  a{
 
+    text-decoration: none;
     color: #7F7F7E;
-    font: normal 13px/17px Arial; margin-top: -10px
+    font: normal 16px/20px Arial; margin-top: -10px
 }
 .cycle_sub_branding  img.main_image{
     width:100%;
@@ -10111,4 +10112,8 @@ change .current class name using plugin option, currentPanel : 'current' */
 
 .preload_img{
     position: absolute;         top: 0;         left: 0;           width: 0;         height: 0;
+}
+
+.hidden{
+    display: none;
 }
