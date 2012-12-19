@@ -20,7 +20,7 @@
 
         <div id="content" class="cf" >
             <% if(cycle._id=='5098eb8bc492d10200000024' &&  !cycle.is_user_follower_of_cycle) { %>
-                <img id="cover" src="../images/5098eb8bc492d10200000024.jpg" style="position: absolute;  z-index: 2;     top: -20px;" usemap="#image-map-1" >
+                <img id="cover" src="../images/5098eb8bc492d10200000024.jpg" style="position: absolute;  z-index: 2;     top: -20px;left:0" usemap="#image-map-1" >
                 <map name="image-map-1" id="image-map-1">
                     <area href="javascript:void(0)" alt="" id="readmore" shape="rect" coords="420,400,490,430" />
                     <area href="javascript:void(0)" alt="" id="join" shape="rect" coords="188,477,495,552" />
@@ -127,8 +127,7 @@
                     </div>
                     <div class="popular-comments cf">
                         <div class="hide-box">
-                            <div id="comments" >
-                            </div>
+                            <div id="comments" ></div>
                             <div id="info_items" class="info_items">
 
 
@@ -547,6 +546,13 @@ var current_section=2;
              });
 
              db_functions.getCyclePosts(cycle_id, function (err,data) {
+
+                 if( data.meta.total_count>0)
+                 {
+                     $(".add-offer-small .tab.right").show()
+                 } else{
+                     return;
+                 }
                    for (i = 0; i < data.objects.length; i++) {
                        data.objects[i].isFirst = (i === 0);
                        data.objects[i].isEven = ((i % 2)== 0);
@@ -742,7 +748,8 @@ var current_section=2;
              if (!button_minified)
              {
                  db_functions.joinToCycleFollowers(cycle_id,true, function(err, result){
-
+                     minifyButton(350);
+                     setTimeout(share,300) ;
                  } );
              }
         });
@@ -773,6 +780,8 @@ var current_section=2;
                 $('a.iconbutton span.button_inner span').css('width',0);
                 $('a.iconbutton').addClass('minified') ;
             });
+            $('a.iconbutton').removeAttr("title");
+            $('a.iconbutton').css("cursor","default");
             $('a.iconbutton').animate({
                 left:150
             },speed);
