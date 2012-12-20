@@ -10,11 +10,7 @@ db.users.find().forEach(function(obj){
 })
 
 //candidate populate pary name
-db.quotegamecandidates.find().forEach(function(candidate){
-        var party = db.quotegameparties.findOne({"_id":ObjectId(candidate.party_19th_knesset)})
-        candidate.party_name= party.name;
-        db.quotegamecandidates.save(candidate);
- })
+
 
 
 fix discussion conneced people

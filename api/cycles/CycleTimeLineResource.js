@@ -85,7 +85,7 @@ var CycleTimelineResource = module.exports = jest.Resource.extend({
                                         cbk(err, objs);
                                     });
                             }else
-                                cbk(null, {});
+                                cbk(null, objs);
 
                         }
                     }else

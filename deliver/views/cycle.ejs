@@ -6,27 +6,27 @@
 </head>
 <body>
 <% include partials/body_top.ejs %>
-<div id="all" class="hidden">
+
+
+
+
+
+
 <div id="wrap" >
         <div id="header">
             <% include partials/menu.ejs %>
             <% include partials/user_box.ejs %>
             <% include partials/failures.ejs %>
-            <% include partials/tag_search.ejs %>
+            <div  class="cf cycle_hidden_parts" >
+                    <% include partials/tag_search.ejs %>
+              </div>
             <% include partials/social_popup.ejs %>
         </div>
 
 
 
-        <div id="content" class="cf" >
-            <% if(cycle._id=='5098eb8bc492d10200000024' &&  !cycle.is_user_follower_of_cycle) { %>
-                <img id="cover" src="../images/5098eb8bc492d10200000024.jpg" style="position: absolute;  z-index: 2;     top: -20px;left:0" usemap="#image-map-1" >
-                <map name="image-map-1" id="image-map-1">
-                    <area href="javascript:void(0)" alt="" id="readmore" shape="rect" coords="420,400,490,430" />
-                    <area href="javascript:void(0)" alt="" id="join" shape="rect" coords="188,477,495,552" />
-                </map>
+        <div id="content" class="cf cycle_hidden_parts" >
 
-            <% } %>
             <div class="right-add-offer">
                 <div id="cycle" class="add-offer add-offer-small">
                     <h2 class="cycle-title"><span class="arrow"> <%= cycle.subject_name %></span>
@@ -75,7 +75,7 @@
 
                                 </div>
                                 <span></span>
-                            </div>
+                       </div>
                     <% } %>
 
                         <h3><%- cycle.discussion_title %></h3>
@@ -195,8 +195,35 @@
             </div>
         </div>
     </div>
-     <a name="timeline"></a>
-<div class="system-notice cycle-system-notice">
+<% if(cycle._id=='5098eb8bc492d10200000024' &&  !cycle.is_user_follower_of_cycle) { %>
+<div class="cycle_banner" >
+    <div class="banner_content" >
+        <div class="img-box floatRight" style="overflow: hidden;">
+            <div style="width:450px; " class='auto-scale'>
+                <img src="/images/icon_vote.png" title=""/>
+
+            </div>
+        </div>
+        <div class="banner_text" >
+            להיות אדיש זה אקט של ייאוש וחידלון. אקט מוכר של כולנו. אבל לא להצביע זה כמו להצביע למפלגה עם הדעות הכי מנוגדות אליך. זה לתת לה את הקול שלך במתנה.
+               <br>
+            לא להצביע זה להגיד: אני לא מעורב. וזה, במציאות שלנו, בלתי אפשרי. כי אתה כן. מעורב. הילדים שלך מעורבים וחשבון הבנק שלך מעורב. אתה מעורב כי אתה חי פה. ואין לך ארץ אחרת.
+                   <br>
+            אז תצביע. לטובתך.
+
+          <a href="javascript:void(0);" id="readmore">קרא עוד</a>
+          <a href="javascript:void(0);" id="join"></a>
+
+            לחץ כאן כדאי לקחת חלק בעתיד שלך. של כולנו.
+        </div>
+
+    </div>
+</div>
+<% }%>
+
+
+     <a name="timeline" class="cycle_hidden_parts"></a>
+<div class="cycle_hidden_parts system-notice cycle-system-notice">
     <div class="extra">
         <a class="close" href="javascript:void(0);"></a>
 
@@ -204,7 +231,7 @@
 
     </div>
 </div>
-    <div class="followers-box cycle">
+    <div class="cycle_hidden_parts followers-box cycle">
         <div class="extra holds_the_timeline">
             <div class="tabs-box">
             </div>
@@ -213,7 +240,7 @@
             </div>
         </div>
     </div>
-    <div  class="comments-box">
+    <div  class="cycle_hidden_parts comments-box">
         <div class="extra cf">
             <div class="updates-box cf">
                 <div class="right">
@@ -289,7 +316,6 @@
 
 <% include partials/footer.ejs %>
 
- </div>
 
 <script type="text/javascript">
 var current_section=2;
@@ -304,7 +330,7 @@ var current_section=2;
         var join = <%=join%>;
         //set mail subject for social popup
 
-        $("#all").show();
+
 
         window.vars={};
         window.vars.object_id = "<%=cycle.id%>";
@@ -828,17 +854,18 @@ var current_section=2;
             window.location.href = window.location.href  + '?share=true'    ;
 
         }
-        $('area').click(function() {
-            var id = $(this).attr('id');
-            $('#cover').hide();
-            if(id=="readmore"){
-             //  $('#cover').hide();
-            }
-            if(id=="join"){
-                $('#cycle .iconbutton').click();
-            }
 
-        });
+         <%= (cycle._id=='5098eb8bc492d10200000024' &&  !cycle.is_user_follower_of_cycle)? "":"$('.cycle_hidden_parts').show();" %>
+        $('#readmore').click(function() {
+            $('.cycle_hidden_parts').show();
+            $('.cycle_banner').hide();
+        } );
+
+        $('#join').click(function() {
+            $('.cycle_hidden_parts').show();
+            $('.cycle_banner').hide();
+            $('#cycle .iconbutton').click();
+        } );
 
     });
 

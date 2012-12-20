@@ -10118,3 +10118,42 @@ change .current class name using plugin option, currentPanel : 'current' */
 .hidden{
     display: none;
 }
+
+.cycle_hidden_parts{
+    display: none;
+}
+
+.cycle_banner{
+    margin-top: -95px;
+    height: 680px;
+    width:100%;
+    background: url(../images/BG3000x680.gif) top left no-repeat;
+}
+.cycle_banner .banner_content{
+    width: 980px;
+    margin: 0 auto;
+    padding-top: 100px;
+}
+.cycle_banner .banner_text{
+    color: #4c64ea;
+    font: normal 27px/30px 'AdumaFOTRegular';
+    width: 450px;
+    float: right;
+    margin-right: 50px;
+}
+.cycle_banner .banner_text #readmore{
+  display: block;
+    margin: 20px 0;
+
+}
+
+.cycle_banner .banner_text #join{
+    background: url(../images/btn_vote.png) top left no-repeat;
+    width: 304px;
+    height: 68px;
+    display: block;
+    margin-bottom: 20px;
+}
+
+
+

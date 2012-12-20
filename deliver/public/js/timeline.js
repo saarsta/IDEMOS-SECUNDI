@@ -58,7 +58,7 @@ var timeline = {
 
 			var discussion_seen = false,
 				today_seen = false,
-                no_discussion = false,
+                no_discussion = true,
 				items = {
 					pre_discussion: [],
 					discussion: null,
@@ -67,9 +67,12 @@ var timeline = {
 					future: []
 				};
             $.each(data.objects, function (_, item) {
-               if( item._id=='50d1bb23b713ea0200000031' )
-                    no_discussion=true;
+                   if(type === types.discussion)  {
+                       no_discussion=false;
+                   }
+
             });
+            if(no_discussion)  discussion_seen=true;
 			$.each(data.objects, function (_, item) {
 				var type = types[item.type];
 				if (!type) {
