@@ -119,9 +119,9 @@ var User = module.exports = new Schema({
     has_voted: [String] ,
     quote_game: {
         played: {type : Boolean, "default": false}  ,
-        candidate  : {type:ObjectId, ref:'QuoteGameCandidate'  },
-        qoutes_count: {type: Number, 'default': 0, editable: false},
-        voted:[{quote: {type:ObjectId, ref:'QuoteGameQuote'},selection: String}]
+        games :[{type:ObjectId, ref:'QuoteGameGames'}] ,
+        quotes_count: {type: Number, 'default': 0, editable: false},
+        quotes:[{quote: {type:ObjectId, ref:'QuoteGameQuote'},selection: String}]
     }
 }, {strict:true});
 

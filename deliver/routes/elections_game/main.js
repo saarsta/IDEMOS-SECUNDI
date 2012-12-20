@@ -14,7 +14,7 @@ module.exports = function(req,res)
 
         .exec(function(err, users){
             var users_count  =   users ? users.length   :0;
-            models.QuoteGameHashes.find()
+            models.QuoteGameGames.find()
                 .exec(function(err, hashes){
                         res.setHeader("Expires", "0");
                         res.render('elections_game.ejs',{

@@ -437,8 +437,11 @@ var Schemas = exports.Schemas = {
         }
     },
 
-    QuoteGameHashes:{
-        hash :  String
+    QuoteGameGames:{
+        hash :  String ,
+        first :   {type:ObjectId, ref:'QuoteGameCandidate'},
+        second :   {type:ObjectId, ref:'QuoteGameCandidate'},
+        third :   {type:ObjectId, ref:'QuoteGameCandidate'}
     }
 
 
@@ -512,7 +515,7 @@ var Models = module.exports = {
 
     QuoteGameParty:mongoose.model('QuoteGameParty', new Schema(Schemas.QuoteGameParty, {strict:true})),
     QuoteGameQuote:mongoose.model('QuoteGameQuote', new Schema(Schemas.QuoteGameQuote, {strict:true})),
-    QuoteGameHashes:mongoose.model('QuoteGameHashes', new Schema(Schemas.QuoteGameHashes, {strict:true})),
+    QuoteGameGames:mongoose.model('QuoteGameGames', new Schema(Schemas.QuoteGameGames, {strict:true})),
 
     Schemas:Schemas,
     setDefaultPublish:function (is_publish) {

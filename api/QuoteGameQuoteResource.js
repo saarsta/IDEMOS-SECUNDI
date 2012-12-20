@@ -35,7 +35,7 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
                         played_quotes.push(propertyName);
                     }
                     _.each(results.objects,function(o){
-                        if(_.indexOf(played_quotes, o._id)==-1) {
+                        if(_.indexOf(played_quotes, o._id)==-1 && o.priority > 0 ) {
                             if( !qoute_by_candidte[o.candidate.id]) {
                                 qoute_by_candidte[o.candidate.id]=[];
                             }
@@ -53,22 +53,22 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
         }   ,
 
         update_obj:function (req, object, callback) {
-            var response=    'response.'+req.body.response;
-            var user_id   =req.body.user_id;
-            var quote_id   =req.body.quote_id;
-            var hash_code   =req.body.hash;
-            var candidate_id   =req.body.candidate_id;
-            var reset   =req.body.reset;
+            var response        ='response.'+req.body.response;
+            var user_id         =req.body.user_id;
+            var quote_id        =req.body.quote_id;
+            var game_code       =req.session.election_game.game_code || req.body.hash;
+            var candidate_id    =req.body.candidate_id;
+            var reset           =req.body.reset;
             // models.InformationItem.update({_id: info_item_id}, {$inc: {like_counter: 1}}, function(err,count)
           //  models.Like.find({user_id: user_id, info_item_id: info_item_id}, cbk);
             if(!req.session.election_game || reset=='true')
             {
                 req.session.election_game={};
             }
+            req.session.election_game.game_code=game_code;
             req.session.election_game[quote_id]={candidate:candidate_id,response: req.body.response};
             req.session.save(function(calee,length){
                 var played_quotes=[];
-
                 for(var propertyName in req.session.election_game) {
                     played_quotes.push(propertyName);
                 }
@@ -76,16 +76,22 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
             });
             async.waterfall([
                 function(cbk){
-                    models.QuoteGameHashes.update({hash: hash_code}, {hash: hash_code}, {upsert: true}, function(err,count)
+                    models.QuoteGameGames.update({game_code: game_code}, {game_code: game_code}, {upsert: true}, function(err,count)
                     {
                         cbk(err,count);
                     });
                 },
                 function(result, cbk){
+
+                   // var qu = quote_id+"_"+req.body.response;
+                    qu={quote:quote_id ,selection:req.body.response}
                     if(user_id!="") {
                         models.User.update({_id: user_id}, { $set:{ "quote_game.played": true} ,
-                                                            $inc:{"quote_game.qoutes_count":1} ,
-                                                            $push:{quote: quote_id ,selection: response} }, function(err,count)
+                                                            $inc:{"quote_game.quotes_count":1} ,
+                                                            $addToSet:{"quote_game.quotes" : qu } ,
+                                                            $addToSet:{"quote_game.games" : game_code }
+
+                        }, function(err,count)
                         {
                             cbk(err,count);
                         });
