@@ -5,11 +5,47 @@ var models = require('../../../models')
                                            //50c430b5d18ea20200000028   50c43377d18ea2020000002c  50c0968895f1e90200000026
 module.exports = function(req, res){
 
+    var winners,
+        candidate_win_ratio=0,
+
+        game_code       =req.session.election_game.game_code;
+    async.waterfall([
+
+        function(cbk){/// determine game results
+            winners= determineWinners(req.session.election_game);
+            cbk(null,winners);
+
+        },
+        function(winners,cbk){ /// update game statistics
+
+            models.QuoteGameGames.update({game_code: game_code}, { first :   winners[0].candidate, second :  winners[1].candidate,third :winners[2].candidate }, function(err,count)
+            {
+                cbk(err,count);
+            });
+
+        },
+        function(count,cbk){    /// get winners portion
+            candidate_win_ratio=0;
+            models.QuoteGameGames.find({first: { $exists: true }}, function(err,games)
+            {
+                var winner_count=0;
+                _.each(games, function(element, index, list){
+                    if(element.first==winners[0].candidate)
+                    {
+                        winner_count++;
+                    }
+                })
+                candidate_win_ratio= Math.round((100*winner_count)/games.length);
+                cbk(err);
+            }) ;
+
+        },
 
 
-    var  winners= determineWinners(req.session.election_game);
+    ],function(err, result){
 
-    //var winner = req.params[0]  || '50c434f0d18ea20200000030';
+
+
     models.QuoteGameCandidate.find({ _id:  {$in:[winners[0].candidate,winners[1].candidate, winners[2].candidate]}})
         .populate('party_19th_knesset', { _id: 1, name: 1 , overview:1, wikipedia_link:1,open_knesset_id:1,sandtalk_id:1 })
         .populate('party_18th_knesset', { _id: 1, name:1, open_knesset_id:1,sandtalk_id:1})
@@ -17,7 +53,7 @@ module.exports = function(req, res){
         .exec(function(err, candidates){
             candidates[1].score=  22;
             candidates[2].score=  2;
-            var first,second,third;
+            var first,second,third, liked_1, liked_2;
             _.each(candidates, function(element, index, list){
                 if(element._id== winners[0].candidate){
                     first=    element;
@@ -31,14 +67,14 @@ module.exports = function(req, res){
                     third=    element;
                     third.score=winners[2].score;
                 }
-
             });
 
             res.render('elections_game_results.ejs', {
                winners: [first, second,  third],
                second:second,
                third:  third,
-               first_win_ratio: 18.64
+               first_win_ratio: candidate_win_ratio ,
+                quotes_count: _.keys(req.session.election_game).length -1
                /*meta: {
                     type: req.app.settings.facebook_app_name + ':discussion',
                     id: discussion.id,
@@ -49,7 +85,8 @@ module.exports = function(req, res){
                     link: discussion && ('/discussions/' + discussion.id)
                 }*/
             });
-        });
+        })
+    });
 
 
     function determineWinners(results){

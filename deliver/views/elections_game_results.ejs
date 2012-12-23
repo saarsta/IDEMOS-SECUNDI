@@ -1236,6 +1236,11 @@
     #back_to_top{
         cursor: pointer;
     }
+    .play_more{
+
+        color:#AFBCF7  ;
+        margin-right: 15px;
+    }
 
     </style>
 </head>
@@ -1302,7 +1307,16 @@
     <div id="results_header">
         <div id="results_title">
             <h2 class="title">תוצאות המשחק לפי אחוזי הזדהות</h2>
-            <h3>סה"כ ענית על 56 שאלות</h3>
+            <h3>
+                סכ"ה דרגת
+                <%= quotes_count %>
+            ציטוטים
+
+                <a  class="play_more" id="continue_game" href="/elections_game">המשך  לשחק</a>
+                <a class="play_more" id="reset_game" href="javascript:void(0);">התחל משחק חדש </a>
+
+            </h3>
+
         </div>
         <div id="results_share">
             <a class="results_share_icon" href="">שתף תוצאות</a>
@@ -1680,8 +1694,10 @@
         var data_loaded= [false,false,false];
 
 
-        $('#selector_holder .photo img').css('left', '-' +(($('#selector_holder .photo img').width()-82)/2)+'px');
 
+        $.each( $('#selector_holder .photo img'), function(index, value) {
+            $(this).css('left', '-' +(($(this).width()-82)/2)+'px');
+        });
 
         getCandidateData(0);
         $("#info_0").show();
@@ -1702,6 +1718,11 @@
             height: score[2]+'%'
             }, score[2]*20, function() {
 
+        });
+        $("#reset_game").click(function(){
+            db_functions.getQuoteGameQuotes(true,function (err, data) {
+                window.location.href = '/elections_game';
+            }) ;
         });
 
         $("#back_to_top").click(function(){
@@ -1768,11 +1789,14 @@
             });
         }
 
+        $('#social_holder').hide();
+        $('.social_icon').hide();
+        $('#results_share').hide();
 
 
 
 
-});
+    });
 
 
 

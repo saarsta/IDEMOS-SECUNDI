@@ -182,6 +182,16 @@
     }
 
     #quotes_counter{
+        float:right;
+        color:#afbcf7;
+        font-style:italic;
+    }
+    #goto_results{
+        display: none;
+        float: left;
+    }
+    #goto_results a{
+
         color:#afbcf7;
         font-style:italic;
     }
@@ -191,7 +201,7 @@
         display: none;
         border: 5px solid #fff;
         background:#fff url(images/bg_quote.jpg) bottom center repeat-x;
-        margin:15px auto;
+        margin:30px auto;
         padding:15px 40px;
     }
 
@@ -437,6 +447,7 @@
             <div id="title_holder">
                 <img src="images/title.png" />
             </div>
+
             <div id="social_holder">
                 <div class="social_item fb">
                     <div class="fb-like" data-href="http://developers.facebook.com" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false"></div>
@@ -495,8 +506,15 @@
 
                 ציטוט
                 <span id="current_qoute_count"> </span>
+                <!--
                 מתוך
                 <span id="total_qoute_count"> </span>
+                -->
+            </div>
+            <div id="goto_results">
+                 <a  href="elections_game/results">
+                     עבור לתוצאות
+                 >></a>
             </div>
 
             <div id="current_quote_holder">
@@ -513,6 +531,12 @@
 
     </div>
 
+    <!--
+ <div id="other_buttons_holder">
+     <input class="end_game"  type="button" />
+     <input class="to_index"  type="button" />
+ </div>
+  -->
     <% include partials/ections_game_footer.ejs %>
 </div>
 <% include partials/includes.ejs %>
@@ -525,14 +549,24 @@
         var my_id = "<%=user_logged ? user._id : ''%>";
         var quotes=null;
         var current_qoute=-1;
+        var played_quotes=0;
+
+        loadQoutes();
+
+        function loadQoutes(){
+            db_functions.getQuoteGameQuotes(false,function (err, data) {
+                quotes=data.objects ;
+                current_qoute=-1;
+                played_quotes= data.meta.played_quotes;
+                if(played_quotes>20){
+                    $(this).parents('#how_to_play').hide();
+                }
+                $("#total_qoute_count").text(data.objects.length + played_quotes ) ;
+                showNextQoute();
+            });
+        }
 
 
-
-        db_functions.getQuoteGameQuotes(function (err, data) {
-            quotes=data.objects ;
-            $("#total_qoute_count").text(data.objects.length)
-            showNextQoute();
-        });
 
         var buttons_disabled=true;
         $('.poll_option').click(function () {
@@ -560,11 +594,14 @@
         function showNextQoute() {
             current_qoute++;
             if (current_qoute==quotes.length) {
-                completeGame();
+                loadQoutes();
                 return ;
             }
+            if(current_qoute+1 + played_quotes > 25 ){
+                    $('#goto_results').show();
+            }
             $('#preload_img').attr('src',quotes[current_qoute].candidate.image_field_thumb.url);
-            $("#current_qoute_count").text(current_qoute+1)  ;
+            $("#current_qoute_count").text(current_qoute+1 + played_quotes)  ;
             dust.render('quote', quotes[current_qoute], function (err, out) {
                 $('#current_quote_holder').html(out);
                 $('.quote_credit,.quote_party').hide().removeClass('hide');
@@ -584,9 +621,12 @@
 
 
         $('#close_button').click(function () {
-
             $(this).parents('#how_to_play').fadeOut(800);
         });
+
+        $('#social_holder').hide();
+        $('.social_icon').hide();
+
 
     } );
 

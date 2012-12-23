@@ -1517,10 +1517,11 @@ var db_functions = {
     }  ,
 
 
-    getQuoteGameQuotes:function ( callback) {
+    getQuoteGameQuotes:function (reset, callback) {
         db_functions.loggedInAjax({
             url:'/api/quote_game_quote/?limit=0',
             type:"GET",
+            data: {reset:reset},
             async:true,
             success:function (data, err) {
                 callback(err, data);
@@ -1533,8 +1534,9 @@ var db_functions = {
 
     getQuoteGameCandidate:function (candidate_id, callback) {
         db_functions.loggedInAjax({
-            url:'/api/quote_game_candidate/' + candidate_id,
+            url:'/api/quote_game_candidate/?limit=0',
             type:"GET",
+
             async:true,
             success:function (data) {
                 console.log(data);

@@ -30,7 +30,13 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
                 else {
                     var random_results=JSON.parse(JSON.stringify(results));
                     var played_quotes=[];
-                    var qoute_by_candidte={}
+                    var qoute_by_candidte={}  ;
+                    var reset           =req.query.reset;
+                    if(!req.session.election_game || reset=='true')
+                    {
+                        req.session.election_game={};
+                        callback(err, {});
+                    }
                     for(var propertyName in req.session.election_game) {
                         played_quotes.push(propertyName);
                     }
@@ -45,6 +51,7 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
                     });
                     random_results.objects = shuffle(quoteSelection (qoute_by_candidte,25,(played_quotes.length>=25?false:true)));
                     random_results.meta.total_count=random_results.objects.length;
+                    random_results.meta.played_quotes=Math.max(played_quotes.length-1,0);
                     callback(err, random_results);
                 }
 
@@ -56,15 +63,14 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
             var response        ='response.'+req.body.response;
             var user_id         =req.body.user_id;
             var quote_id        =req.body.quote_id;
-            var game_code       =req.session.election_game.game_code || req.body.hash;
+            var game_code       = req.body.hash;
             var candidate_id    =req.body.candidate_id;
-            var reset           =req.body.reset;
+
+            game_code =(req.session.election_game && req.session.election_game.game_code) ?  req.session.election_game.game_code :game_code;
+
             // models.InformationItem.update({_id: info_item_id}, {$inc: {like_counter: 1}}, function(err,count)
           //  models.Like.find({user_id: user_id, info_item_id: info_item_id}, cbk);
-            if(!req.session.election_game || reset=='true')
-            {
-                req.session.election_game={};
-            }
+
             req.session.election_game.game_code=game_code;
             req.session.election_game[quote_id]={candidate:candidate_id,response: req.body.response};
             req.session.save(function(calee,length){
@@ -140,22 +146,22 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
 //  bibi    50c430b5d18ea20200000028
 //  yair    50c43377d18ea2020000002c
 //  livni   50c436bfd18ea20200000034
+//  liberman 50c434f0d18ea20200000030
 
 // secondary candidates
-//liberman 50c434f0d18ea20200000030
+
 //ishi      50c468c9a17227020000011b
 //benet     50c47ecea172270200000152
 //galon     50c4810da172270200000158
-//hanin     50c485dba17227020000015f
-//gafni     50c45f31a1722702000000fc
-
+//zhalke    50c46c16a172270200000125
+//barake    50c47b3ba17227020000014e
 
     function quoteSelection(quotes_by_candidate,amount,initial){
         var quotes =    [];
         var rest=[];
         if(initial) {
-            var  primaryCandidtes = ['50c0968895f1e90200000026','50c430b5d18ea20200000028','50c43377d18ea2020000002c','50c436bfd18ea20200000034']  ;
-            var  secondaryCandidtes = ['50c434f0d18ea20200000030','50c468c9a17227020000011b','50c47ecea172270200000152','50c4810da172270200000158','50c485dba17227020000015f','50c45f31a1722702000000fc'] ;
+            var  primaryCandidtes = ['50c0968895f1e90200000026','50c430b5d18ea20200000028','50c43377d18ea2020000002c','50c436bfd18ea20200000034','50c434f0d18ea20200000030']  ;
+            var  secondaryCandidtes = ['50c468c9a17227020000011b','50c47ecea172270200000152','50c4810da172270200000158','50c46c16a172270200000125','50c47b3ba17227020000014e'] ;
             //grab 3 quotes from each primary candidate
             _.each(primaryCandidtes,function(canditate_id){
                 quotes = _.union(quotes,weightedSelection(quotes_by_candidate[canditate_id],3));
@@ -214,47 +220,6 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
         return ret;
     }
 
-     /*
-    function wightedRandomSelection(results,amount){
-
-    var random_results=JSON.parse(JSON.stringify(results));
-    random_results.meta.total_count=0;
-    random_results.objects=[];
-
-
-    var weights=[],
-        weights_norm=[],
-        sum= 0,
-        selected_indexes=[];
-
-    for(i=0 ; i<results.meta.total_count ;i++)
-    {
-        var weight = results.objects[i].priority
-        weights.push(weight);
-        sum+=weight;
-        weights_norm.push(sum);
-    }
-
-    for (i=0; i<results.objects.length; i++){
-        weights_norm[i] = weights_norm[i]/sum;
-    }
-
-
-    while(random_results.meta.total_count<amount) {
-        var i=get_rand(weights_norm) ;
-        if (_.indexOf(selected_indexes, i) ==-1)
-        {
-            selected_indexes.push(i);
-            random_results.objects.push(results.objects[i])  ;
-            random_results.meta.total_count++;
-        }
-    }
-    return random_results;
-
-
-
-}
-     */
 
 function get_rand(weights_norm){
     needle = Math.random();

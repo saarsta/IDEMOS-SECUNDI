@@ -438,7 +438,7 @@ var Schemas = exports.Schemas = {
     },
 
     QuoteGameGames:{
-        hash :  String ,
+        game_code :  String ,
         first :   {type:ObjectId, ref:'QuoteGameCandidate'},
         second :   {type:ObjectId, ref:'QuoteGameCandidate'},
         third :   {type:ObjectId, ref:'QuoteGameCandidate'}
