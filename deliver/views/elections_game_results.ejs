@@ -1571,10 +1571,10 @@
 
         <% } %>
         <div class="segment more_stats">
-
+            <% if (cand.party_18th_knesset && cand.party_18th_knesset.open_knesset_id) { %>
              <div id="social_index<%=i%>"></div>
 
-    <% if (cand.party_18th_knesset && cand.party_18th_knesset.open_knesset_id) { %>
+
             <div class="text">
 
                 <span class="remark">
@@ -1599,9 +1599,10 @@
                </div>
 
            </div>
-   <% } %>
-        </div>
 
+        </div>
+        <% } %>
+        <% if (cand.sandtalk_id) { %>
         <div class="segment more_stats kahol">
 
             <div class="header">
@@ -1614,6 +1615,7 @@
             </div>
 
         </div>
+        <% } %>
         <%  var donors=false;
             for (var c = 0; c <cand.doners.length ; c++) {  if(cand.doners[c].nis){ donors=true}}
             if(donors) { %>

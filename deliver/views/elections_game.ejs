@@ -4,7 +4,7 @@
     <title>משחק הבחירות</title>
     <!-- Bootstrap -->
 
-    <% include partials/head.ejs %>
+    <% include partials/head_min.ejs %>
     <style>
     body{
         margin: 0;
@@ -121,6 +121,7 @@
     }
 
     #content_wrapper{
+
         direction:rtl;
         margin-top: -14px;
         z-index: 0;
@@ -131,6 +132,9 @@
         -moz-background-size: cover;
         -o-background-size: cover;
         background-size: cover;
+        min-height: 520px;
+        position: relative;
+
     }
 
     #how_to_play{
@@ -287,11 +291,12 @@
     }
 
     #poll_holder{
-        width: 780px;
+        width:100%;
         margin: 0px auto 15px auto;
 
-        position: relative;
-        top: 35px;
+        position: absolute;
+        bottom: -49px;
+        clear: both;
     }
 
     .poll_option{
@@ -357,7 +362,7 @@
 
         width:800px;
         border-top:1px solid #5e5e5d;
-        margin:135px auto 0px auto;
+        margin:65px auto 0px auto;
     }
 
     #footer_wrapper h3{
@@ -443,13 +448,18 @@
 </head>
 <body>
 
-<script>(function(d, s, id) {
+<script>
+    /*
+    (function(d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0];
     if (d.getElementById(id)) return;
     js = d.createElement(s); js.id = id;
     js.src = "//connect.facebook.net/he_IL/all.js#xfbml=1";
     fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
+}(document, 'script', 'facebook-jssdk'));
+          */
+
+</script>
 <div id="wrapper">
     <img src="images/quote_photo.png" id="preload_img"  >
     <div id="header_wrapper">
@@ -471,11 +481,13 @@
 
                     <!-- Place this tag after the last +1 button tag. -->
                     <script type="text/javascript">
+                        /*
                         (function() {
                             var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
                             po.src = 'https://apis.google.com/js/plusone.js';
                             var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
                         })();
+                        */
                     </script>
                 </div>
                 <div class="social_item tw">
@@ -535,11 +547,13 @@
             </div>
         </div>
         <div id="poll_holder">
-            <input class="poll_option" id="option_1" type="button" data-response="very_positive" />
-            <input class="poll_option" id="option_2" type="button" data-response="positive" />
-            <input class="poll_option" id="option_3" type="button" data-response="negative" />
-            <input class="poll_option" id="option_4" type="button" data-response="very_negative" />
-            <input class="poll_option" id="option_0" type="button" data-response="skip" />
+            <div style="width: 780px;margin: auto;">
+                <input class="poll_option" id="option_1" type="button" data-response="very_positive" />
+                <input class="poll_option" id="option_2" type="button" data-response="positive" />
+                <input class="poll_option" id="option_3" type="button" data-response="negative" />
+                <input class="poll_option" id="option_4" type="button" data-response="very_negative" />
+                <input class="poll_option" id="option_0" type="button" data-response="skip" />
+            </div>
         </div>
 
     </div>
@@ -563,6 +577,7 @@
         var quotes=null;
         var current_qoute=-1;
         var played_quotes=0;
+        var skipped=0;
 
         loadQoutes();
 
@@ -590,6 +605,9 @@
                 }
                 var quote_id   =quotes[current_qoute]._id;
                 var response =$(this).data('response');
+                if(response=='skip'){
+                    skipped++;
+                }
                 $('.quote_credit,.quote_party').slideDown();
                 quotes[current_qoute].response=  response;
                 $('#current_quote_photo img').attr('src',quotes[current_qoute].candidate.image_field_thumb.url);
@@ -610,11 +628,11 @@
                 loadQoutes();
                 return ;
             }
-            if(current_qoute+1 + played_quotes > 25 ){
+            if(current_qoute+1 + played_quotes-skipped > 25 ){
                     $('#goto_results').show();
             }
             $('#preload_img').attr('src',quotes[current_qoute].candidate.image_field_thumb.url);
-            $("#current_qoute_count").text(current_qoute+1 + played_quotes)  ;
+            $("#current_qoute_count").text(current_qoute+1 + played_quotes-skipped)  ;
             dust.render('quote', quotes[current_qoute], function (err, out) {
                 $('#current_quote_holder').html(out);
                 $('.quote_credit,.quote_party').hide().removeClass('hide');
