@@ -610,7 +610,9 @@
                 }
                 $('.quote_credit,.quote_party').slideDown();
                 quotes[current_qoute].response=  response;
-                $('#current_quote_photo img').attr('src',quotes[current_qoute].candidate.image_field_thumb.url);
+                $('#current_quote_photo img').attr('src',quotes[current_qoute].candidate.image_field_thumb.url).load(function() {
+                    $('#current_quote_photo img').css('left', '-' +(($("#current_quote_photo img").width()-82)/2)+'px');
+                });  ;
                 $('#current_quote_photo img').css('left', '-' +(($("#current_quote_photo img").width()-82)/2)+'px');
 
                 setTimeout(showNextQoute , 3000);
