@@ -1517,11 +1517,11 @@ var db_functions = {
     }  ,
 
 
-    getQuoteGameQuotes:function (reset, callback) {
+    getQuoteGameQuotes:function (reset,candidate_id ,callback) {
         db_functions.loggedInAjax({
             url:'/api/quote_game_quote/?limit=0',
             type:"GET",
-            data: {reset:reset},
+            data: {reset:reset,candidate_id:candidate_id},
             async:true,
             success:function (data, err) {
                 callback(err, data);

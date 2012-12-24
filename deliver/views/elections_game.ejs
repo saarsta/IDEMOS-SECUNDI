@@ -582,7 +582,7 @@
         loadQoutes();
 
         function loadQoutes(){
-            db_functions.getQuoteGameQuotes(false,function (err, data) {
+            db_functions.getQuoteGameQuotes(false,null,function (err, data) {
                 quotes=data.objects ;
                 current_qoute=-1;
                 played_quotes= data.meta.played_quotes;

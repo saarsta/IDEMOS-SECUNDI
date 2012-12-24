@@ -28,31 +28,47 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
                     callback(err);
                 }
                 else {
-                    var random_results=JSON.parse(JSON.stringify(results));
+                   
+                    var final_results=JSON.parse(JSON.stringify(results));
                     var played_quotes=[];
                     var qoute_by_candidte={}  ;
                     var reset           =req.query.reset;
+                    var candidate_id           =req.query.candidate_id;
+
                     if(!req.session.election_game || reset=='true')
                     {
                         req.session.election_game={};
                         callback(err, {});
                     }
-                    for(var propertyName in req.session.election_game) {
-                        played_quotes.push(propertyName);
-                    }
-                    _.each(results.objects,function(o){
-                        if(_.indexOf(played_quotes, o._id)==-1 && o.priority > 0 ) {
-                            if( !qoute_by_candidte[o.candidate.id]) {
-                                qoute_by_candidte[o.candidate.id]=[];
-                            }
 
-                            qoute_by_candidte[o.candidate.id].push(o);
+                    if(candidate_id){
+                        final_results.objects=[];
+                        _.each(results.objects,function(o){
+                            if(o.candidate.id==candidate_id)  {
+                                o._doc['voted'] =  req.session.election_game[o.id] || null;
+                                final_results.objects.push(o);
+                            }
+                        });
+                        final_results.meta.total_count=final_results.objects.length;
+                    }else{
+                        for(var propertyName in req.session.election_game) {
+                            played_quotes.push(propertyName);
                         }
-                    });
-                    random_results.objects = shuffle(quoteSelection (qoute_by_candidte,25,(played_quotes.length>=25?false:true)));
-                    random_results.meta.total_count=random_results.objects.length;
-                    random_results.meta.played_quotes=Math.max(played_quotes.length-1,0);
-                    callback(err, random_results);
+                        _.each(results.objects,function(o){
+                            if(_.indexOf(played_quotes, o._id)==-1 && o.priority > 0 ) {
+                                if( !qoute_by_candidte[o.candidate.id]) {
+                                    qoute_by_candidte[o.candidate.id]=[];
+                                }
+
+                                qoute_by_candidte[o.candidate.id].push(o);
+                            }
+                        });
+                        final_results.objects = shuffle(quoteSelection (qoute_by_candidte,25,(played_quotes.length>=25?false:true)));
+                        final_results.meta.total_count=final_results.objects.length;
+                        final_results.meta.played_quotes=Math.max(played_quotes.length-1,0);
+
+                    }
+                    callback(err, final_results);
                 }
 
 
@@ -160,14 +176,14 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
         var quotes =    [];
         var rest=[];
         if(initial) {
-            var  primaryCandidtes = ['50c0968895f1e90200000026','50c430b5d18ea20200000028','50c43377d18ea2020000002c','50c436bfd18ea20200000034','50c434f0d18ea20200000030']  ;
+            var  primaryCandidtes =   ['50c0968895f1e90200000026','50c430b5d18ea20200000028','50c43377d18ea2020000002c','50c436bfd18ea20200000034','50c434f0d18ea20200000030']  ;
             var  secondaryCandidtes = ['50c468c9a17227020000011b','50c47ecea172270200000152','50c4810da172270200000158','50c46c16a172270200000125','50c47b3ba17227020000014e'] ;
             //grab 3 quotes from each primary candidate
             _.each(primaryCandidtes,function(canditate_id){
-                quotes = _.union(quotes,weightedSelection(quotes_by_candidate[canditate_id],3));
+                quotes = _.union(quotes,weightedSelection(quotes_by_candidate[canditate_id],2));
             })
             _.each(secondaryCandidtes,function(canditate_id){
-                quotes = _.union(quotes,weightedSelection(quotes_by_candidate[canditate_id],2));
+                quotes = _.union(quotes,weightedSelection(quotes_by_candidate[canditate_id],1));
             })
 
             for(var propertyName in quotes_by_candidate) {

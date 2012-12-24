@@ -2,7 +2,7 @@
 <html>
 <head>
 
-<% include partials/head.ejs %>
+<% include partials/head_min.ejs %>
 
 
     <style type="text/css">
@@ -1121,7 +1121,7 @@
     }
 
     .quotes_holder .status.even{
-        background:#fafafa url(../images/bg_quotes_list.png) no-repeat 0 0;
+        background:#fafafa;
     }
 
     .quotes_holder .status span{
@@ -1131,10 +1131,13 @@
         top:40%;
         left:10px;
     }
-    .quotes_holder .status span.positive{
+    .quotes_holder .status span.positive ,
+    .quotes_holder .status span.very_positive
+    {
         background:url(../images/icon_positive.png) no-repeat 0 0;
     }
 
+    .quotes_holder .status span.very_negative,
     .quotes_holder .status span.negative{
         background:url(../images/icon_negative.png) no-repeat 0 0;
     }
@@ -1260,16 +1263,26 @@
         margin: 10px 0 0 153px;
         cursor: pointer;
     }
+
+    .hidden_quotes{
+        display: none;
+    }
     </style>
 </head>
 <body>
-<script>(function(d, s, id) {
+<script>
+
+    /*
+    (function(d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0];
     if (d.getElementById(id)) return;
     js = d.createElement(s); js.id = id;
     js.src = "//connect.facebook.net/he_IL/all.js#xfbml=1";
     fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
+}(document, 'script', 'facebook-jssdk'));
+*/
+
+</script>
 <div id="wrapper" class="results_page">
 <div id="header_wrapper">
     <div id="header_top">
@@ -1289,11 +1302,13 @@
 
                 <!-- Place this tag after the last +1 button tag. -->
                 <script type="text/javascript">
+                    /*
                     (function() {
                         var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
                         po.src = 'https://apis.google.com/js/plusone.js';
                         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
                     })();
+                    */
                 </script>
             </div>
             <div class="social_item tw">
@@ -1409,13 +1424,6 @@
 <div id="content_right_holder">
 <% for(i=0;i<3;i++) { var cand=winners[i]; %>
     <div class="candidate_container" id="info_<%=i%>" style="display:none" >
-
-
-
-
-
-
-
         <div class="segment about">
             <h2 class="title">
 
@@ -1539,13 +1547,6 @@
 
         </div>
 
-
-
-
-
-
-
-
         <div class="segment">
 
         <h2 class="title">
@@ -1570,8 +1571,9 @@
         </div>
 
         <% } %>
+        <% if (cand.party_18th_knesset && cand.party_18th_knesset.open_knesset_id) { %>
         <div class="segment more_stats">
-            <% if (cand.party_18th_knesset && cand.party_18th_knesset.open_knesset_id) { %>
+
              <div id="social_index<%=i%>"></div>
 
 
@@ -1655,14 +1657,11 @@
         <h2>ציטוטים נוספים</h2>
         <div id="quotes_sidebar_holder">
             <div class="quotes_holder">
-                <div class="status odd"><span class="positive"></span>העלאת מס חברות ל- 35%. זה נזק מיידי למשק. זה צעד שיגרום לאבטלת המונים יגרום לנזק</div>
-                <div class="status even"><span class="negative"></span>העלאת מס חברות ל- 35%. זה נזק מיידי למשק. זה צעד שיגרום לאבטלת המונים יגרום לנזק</div>
-                <div class="status odd"><span class="missing"></span>העלאת מס חברות ל- 35%. זה נזק מיידי למשק. זה צעד שיגרום לאבטלת המונים יגרום לנזק</div>
-                <div class="status even"><span class="positive"></span>העלאת מס חברות ל- 35%. זה נזק מיידי למשק. זה צעד שיגרום לאבטלת המונים יגרום לנזק</div>
-            </div>
+
+              </div>
         </div>
         <div id="more_quotes">
-            <a href="">עוד ציטוטים</a>
+            <a href="javascript:void(0);">עוד ציטוטים</a>
         </div>
     </div>
     <div class="segment related">
@@ -1708,6 +1707,7 @@
 
     $(document).ready(function () {
 
+        var winnder_id= '<%=winners[0]._id%>';
         var name= ["<%=winners[0].name%>","<%=winners[1].name%>","<%=winners[2].name%>"];
         var score= ["<%=winners[0].score%>","<%=winners[1].score%>","<%=winners[2].score%>"];
         var open_knesset_id= ["<%=winners[0].open_knesset_id%>","<%=winners[1].open_knesset_id%>","<%=winners[2].open_knesset_id%>"];
@@ -1748,7 +1748,7 @@
 
         });
         $("#reset_game").click(function(){
-            db_functions.getQuoteGameQuotes(true,function (err, data) {
+            db_functions.getQuoteGameQuotes(true,null,function (err, data) {
                 window.location.href = '/elections_game';
             }) ;
         });
@@ -1783,6 +1783,29 @@
             loadAgenda(ind,66)
 
         }) ;
+
+        db_functions.getQuoteGameQuotes(false,winnder_id,function (err, data) {
+            var i=0;
+            $.each(data.objects, function (index, quote) {
+
+                quote.odd= i%2 ? 'odd' : 'even';
+                if(i>2) quote.odd+=' hidden_quotes'
+                quote.vote= quote.voted?  quote.voted.response:'';
+                dust.render('elections_game_additiona_quote', quote, function (err, out) {
+                    $('.quotes_holder').append(out);
+                });
+               i++;
+
+            });
+
+        }) ;
+
+        $('#more_quotes').click(function( ){
+            $('.hidden_quotes').show() ;
+            $('#more_quotes').hide();
+
+        } );
+
 
         function loadAgenda(ind,agenda){
             $('#openk_'+ind).attr('src','http://ydaniv.github.com/ok-agenda-viz/?agenda_id='+agenda+'#party_'+prev_party_open_knesset_id[ind]);
