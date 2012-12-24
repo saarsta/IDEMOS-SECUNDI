@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>משחק הבחירות</title>
+    <title>פוליטיקלי קורקט</title>
     <!-- Bootstrap -->
 
     <% include partials/head_min.ejs %>
@@ -9,7 +9,7 @@
     body{
         margin: 0;
         font-family:arial;
-        background-color: #4d4d4d;
+
     }
 
     #wrapper{
@@ -52,9 +52,15 @@
         float:right;
         width:640px;
         height:120px;
-        line-height:120px;
+
         margin:auto;
         text-align:center;
+        font-size: 50px;
+        font-weight: bold;
+    }
+    #title_holder span{
+
+        font-size: 16px;
     }
 
     #logo_holder img,
@@ -468,8 +474,15 @@
                 <a id="logo" href="\"></a>
             </div>
             <div id="title_holder">
-                <img src="images/title.png" />
+                פוליטיקלי קורקט
+                <br>
+                <span>
+                                  כל מה שצריך לדעת לפני ששמים את הפתק בקלפי
+
+                </span>
+
             </div>
+
 
             <div id="social_holder">
                 <div class="social_item fb">
@@ -521,8 +534,14 @@
     </div>
     <div id="content_wrapper">
         <div id="how_to_play">
-            <h2>אז איך משחקים במשחק הזה בעצם</h2>
-            מדרגים ציטוט של מועמד ומגלים לאיזה צד של המפה אנחנו שייכים</h2>
+            <h2>
+            איך אני יודע באיזה צד אני במפה הפוליטית?
+                </h2>
+            לפניכם ציטוטים נבחרים של נבחרינו.
+            סמנו לפי הדרוג את עמדתכם לגבי תוכן הציטוט
+            ותגלו מאחורי מי אתם עומדים בבחירות 2013
+
+
             <div id="close_button"></div>
         </div>
         <div id="quotes_holder">
@@ -615,7 +634,7 @@
                 });  ;
                 $('#current_quote_photo img').css('left', '-' +(($("#current_quote_photo img").width()-82)/2)+'px');
 
-                setTimeout(showNextQoute , 3000);
+                setTimeout(showNextQoute , 2000);
                 db_functions.setQuoteGameResponse(my_id, quote_id,hash, response,quotes[current_qoute].candidate._id,false,function (err, data) {
 
                 });

@@ -187,6 +187,7 @@
     #quotes_sidebar_holder{
         border:1px solid #d6dbde;
         background:#fff;
+        margin-top:10px;
     }
 
     #quotes_holder{
@@ -607,6 +608,7 @@
         -moz-box-shadow: 0px 1px 3px #8e8d8d;
         -webkit-box-shadow: 0px 1px 3px #8e8d8d;
         box-shadow: 0px 1px 3px #8e8d8d;
+        cursor: pointer;
     }
 
     #selector_holder .selection.selected .name{
@@ -703,6 +705,8 @@
         border:1px solid #cccccc;
         padding:8px;
         z-index: 100;
+        top:-34px;
+        left:-30px;
     }
 
     #commitment span{
@@ -1111,17 +1115,29 @@
         background: url(../images/icon_quotations.png) no-repeat scroll right center transparent;
     }
 
+
     .quotes_holder .status{
         font-size:14px;
         font-family:david;
         color:#4a4a4b;
         padding:17px 20px 17px 40px;
         position:relative;
+        text-decoration: none;
 
+    }
+    .quotes_holder .status a{
+        font-family:david;
+        color:#4a4a4b;
+        text-decoration: none;
+    }
+    .quotes_holder .status a:hover{
+        font-family:david;
+        color:#1a1a1b;
+        text-decoration: none;
     }
 
     .quotes_holder .status.even{
-        background:#fafafa;
+        background:#eaeaea;
     }
 
     .quotes_holder .status span{
@@ -1337,7 +1353,9 @@
 <div id="results_holder">
     <div id="results_header">
         <div id="results_title">
-            <h2 class="title">תוצאות המשחק לפי אחוזי הזדהות</h2>
+            <h2 class="title">
+                והרי התוצאות על פי אחוזי ההסכמה
+            </h2>
             <h3>
                 סה"כ דירגת
                 <%= quotes_count %>
@@ -1360,8 +1378,11 @@
         <div id="graph">
             <div id="commitment">
 							<span>
-								עכשיו שכאתה יודע עם מי אתה מזדהה<br/>
-								לחץ פה כדי להתחייב להצביע בבחירות
+עכשיו, כשהבנת באיזה ד של המפה אתה עומד ובמי אתה מאמין,
+                                <br>
+                                יהיה לך הרבה יותר קל לבחור. לחץ ותהיה חלק מאיתנו.
+
+
 							</span>
                 <input class="commit" type="button" />
             </div>
@@ -1550,7 +1571,10 @@
         <div class="segment">
 
         <h2 class="title">
-            מדדים נוספים על פעילות
+
+            מידע נוסף על פעילות
+
+
             <%= cand.name %>
             ו<%= cand.party_19th_knesset.name %>
         </h2>
@@ -1664,6 +1688,7 @@
             <a href="javascript:void(0);">עוד ציטוטים</a>
         </div>
     </div>
+    <!--
     <div class="segment related">
         <h2>משתמשים שהזדהו עם מועמד זה הזדהו גם עם:</h2>
         <div id="related_items_holder">
@@ -1695,6 +1720,7 @@
             </div>
         </div>
     </div>
+    -->
 </div>
 </div>
 </div>
@@ -1724,7 +1750,13 @@
 
         $.each( $('#selector_holder .photo img'), function(index, value) {
             $(this).css('left', '-' +(($(this).width()-82)/2)+'px');
+
         });
+        $('#selector_holder .photo img').load(function(index, value) {
+            $(this).css('left', '-' +(($(this).width()-82)/2)+'px');
+
+        }  );
+
 
         getCandidateData(0);
         $("#info_0").show();
@@ -1756,16 +1788,30 @@
         $("#back_to_top").click(function(){
             $("html, body").animate({ scrollTop: 0 }, "slow");
         });
+
+        $('#selector_holder .photo').click(function(){
+            var parent= $(this).parent(".selection");
+            var i= parent.attr('id').substr(10);
+            $(".selection").removeClass("selected");
+            parent.addClass("selected");
+            changeinfo(i)
+        }  );
+
         $(".canditate_button").click(function(){
             var parent= $(this).parent(".selection");
             var i= parent.attr('id').substr(10);
             $(".selection").removeClass("selected");
             parent.addClass("selected");
+            changeinfo(i)
+
+        });
+        function changeinfo(i){
+
             $(".candidate_container").hide();
             getCandidateData(i) ;
             $("#info_"+i).show();
             loadAgenda(i,74)
-        });
+        }
 
         $('.agendas .mishmar').click(function(){
          //   $('.remark').html("            דירוג המועמד בהתאם להצבעותיו סביב הצעות החוק הרלוונטיות לאג'נדת                                            <b>             המדד החברתי                 </b>                  על פי ניתוח דפוסי הצבעה ונתוני \"כנסת פתוחה\".                ");
@@ -1808,7 +1854,8 @@
 
 
         function loadAgenda(ind,agenda){
-            $('#openk_'+ind).attr('src','http://ydaniv.github.com/ok-agenda-viz/?agenda_id='+agenda+'#party_'+prev_party_open_knesset_id[ind]);
+            $('#openk_'+ind).attr('src','http://ydaniv.github.com/ok-agenda-viz/?agenda_id='+agenda);
+           // $('#openk_'+ind).attr('src','http://ydaniv.github.com/ok-agenda-viz/?agenda_id='+agenda+'#party_'+prev_party_open_knesset_id[ind]);
         }
         function getCandidateData(i){
              if(data_loaded[i]){
