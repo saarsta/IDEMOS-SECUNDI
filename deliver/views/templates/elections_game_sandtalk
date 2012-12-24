@@ -1,6 +1,6 @@
 <div class="col_right" style="margin-left:{margin}px;">
     <div class="name">
-        <h2>{name}</h2>
+        <h2>{name|s}</h2>
         <div class="bar_{top_bar_color}">
             <div class="bar_title">הסכמה</div>
             <div class="bar"><div class="bar_inner" style="width:{agreePercent}%"></div></div>

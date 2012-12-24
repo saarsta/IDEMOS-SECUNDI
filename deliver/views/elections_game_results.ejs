@@ -1255,6 +1255,11 @@
         background-position: 100% 0;
     }
 
+    .agendas div{
+        float:right;
+        margin: 10px 0 0 153px;
+        cursor: pointer;
+    }
     </style>
 </head>
 <body>
@@ -1319,7 +1324,7 @@
         <div id="results_title">
             <h2 class="title">תוצאות המשחק לפי אחוזי הזדהות</h2>
             <h3>
-                סכ"ה דרגת
+                סה"כ דירגת
                 <%= quotes_count %>
             ציטוטים
 
@@ -1439,7 +1444,7 @@
                 <div class="col_right">
                     <div class="about_politician">
                         <h2>  <%= cand.name %></h2>
-                        <%= cand.biography %>
+                        <%= cand.biography || '' %>
                         <a class="read_more"  target="_blank" href="<%= cand.wikipedia_link %>">המשך לדף מועמד</a>
                     </div>
                     <div class="contact_info">
@@ -1574,18 +1579,27 @@
 
                 <span class="remark">
 
-                    דירוג המועמד בהתאם להצבעותיו סביב הצעות החוק הרלוונטיות לאג'נדת
-                    <b>
-                        המדד החברתי
-                    </b>
+                    דירוג המועמד בהתאם להצבעותיו סביב הצעות החוק הרלוונטיות לאג'נדות
                     על פי ניתוח דפוסי הצבעה ונתוני "כנסת פתוחה".
                 </span>
                 <hr />
 
             </div>
-            <iframe width="610" height="400" style="border: 0" src="http://ydaniv.github.com/ok-agenda-viz/?agenda_id=74#party_<%= cand.party_18th_knesset.open_knesset_id %>"></iframe>
-    <% } %>
+            <iframe id="openk_<%=i%>" width="610" height="400" style="border: 0" src=""></iframe>
 
+           <div class="agendas" data-ind="<%=i%>">
+               <div  class="mishmar auto-scale"  style="width:93px; height:80px; overflow:hidden; "  >
+                   <img  src="../images/hamishmar.jpg" alt="המשמר החברתי"/>
+               </div>
+               <div class="edu auto-scale"  style="width:80px; height:80px; overflow:hidden; "  >
+                   <img  src="../images/mirsham.jpg" alt="מרשם"/>
+               </div>
+               <div  class="mirsham auto-scale" style="margin-left:0;width:130px; height:80px; overflow:hidden; "  >
+                   <img  src="../images/hinuch.png" alt="חינוך ישראלי"/>
+               </div>
+
+           </div>
+   <% } %>
         </div>
 
         <div class="segment more_stats kahol">
@@ -1712,6 +1726,7 @@
 
         getCandidateData(0);
         $("#info_0").show();
+        loadAgenda(0,74)
 
          $("#graph .graph_col.col1 .bar").animate({
              height: score[0]+'%'
@@ -1747,9 +1762,29 @@
             $(".candidate_container").hide();
             getCandidateData(i) ;
             $("#info_"+i).show();
+            loadAgenda(i,74)
         });
 
+        $('.agendas .mishmar').click(function(){
+         //   $('.remark').html("            דירוג המועמד בהתאם להצבעותיו סביב הצעות החוק הרלוונטיות לאג'נדת                                            <b>             המדד החברתי                 </b>                  על פי ניתוח דפוסי הצבעה ונתוני \"כנסת פתוחה\".                ");
+            var ind=$(this).parent().data('ind');
+            loadAgenda(ind,74)
+        }) ;
+        $('.agendas .edu').click(function(){
+         //   $('.remark').html("            דירוג המועמד בהתאם להצבעותיו סביב הצעות החוק הרלוונטיות לאג'נדת                                            <b>             המדד החברתי                 </b>                  על פי ניתוח דפוסי הצבעה ונתוני \"כנסת פתוחה\".                ");
+            var ind=$(this).parent().data('ind');
+            loadAgenda(ind,61)
+        }) ;
+        $('.agendas .mirsham').click(function(){
+         //   $('.remark').html("            דירוג המועמד בהתאם להצבעותיו סביב הצעות החוק הרלוונטיות לאג'נדת                                            <b>             המדד החברתי                 </b>                  על פי ניתוח דפוסי הצבעה ונתוני \"כנסת פתוחה\".                ");
+            var ind=$(this).parent().data('ind');
+            loadAgenda(ind,66)
 
+        }) ;
+
+        function loadAgenda(ind,agenda){
+            $('#openk_'+ind).attr('src','http://ydaniv.github.com/ok-agenda-viz/?agenda_id='+agenda+'#party_'+prev_party_open_knesset_id[ind]);
+        }
         function getCandidateData(i){
              if(data_loaded[i]){
                  return;
