@@ -24,7 +24,8 @@
         "facebook-signed-request" : "0.0.2",
         "request" : "2.10.0",
         "xml": "0.0.7",
-        "logging": "2.0.16"
+        "logging": "2.0.16",
+        "MD5":"1.0.3"
   },
 	"engines": {
 		"node": "0.8.12",

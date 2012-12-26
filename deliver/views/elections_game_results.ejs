@@ -2,7 +2,14 @@
 <html>
 <head>
 
-<% include partials/head_min.ejs %>
+<% include partials/head.ejs %>
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="דרגו אמירות של מועמדים לכנסת, גלו באיזה צד אתם במפה הפוליטית ואת כל המידע על המועמד ומפלגתו" />
+<meta property="og:description" content="דרגו את העמדה שלכם, גלו באיזה צד אתם במפה הפוליטית ואת כל המידע על המועמד ומפלגתו" />
+<meta property="og:image" content="http://www.uru.org.il/images/icon1.png" />
+<meta property="og:site_name" content="עורו" />
+<meta property="og:url" content="http://www.uru.org.il/elections_game" />
 
 
     <style type="text/css">
@@ -63,7 +70,7 @@
         float:right;
         width:640px;
         height:120px;
-        line-height:120px;
+
         margin:auto;
         text-align:center;
     }
@@ -1306,29 +1313,38 @@
             <a id="logo" href="/"> </a>
         </div>
         <div id="title_holder">
-            <img src="../images/title.png" />
+            <img src="../images/logo_game.png">
         </div>
         <div id="social_holder">
             <div class="social_item fb">
-                <div class="fb-like" data-href="http://developers.facebook.com" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false"></div>
+
+
+
+                <a id="fb-share" style='text-decoration:none;' type="icon_link" onClick="window.open('http://www.facebook.com/sharer.php?s=100&amp;p[title]=דרגו אמירות של מועמדים לכנסת, גלו באיזה צד אתם במפה הפוליטית ואת כל המידע על המועמד ומפלגתו&amp;p[summary]=דרגו את העמדה שלכם, גלו באיזה צד אתם במפה הפוליטית ואת כל המידע על המועמד ומפלגתו&amp;p[url]=http://www.uru.org.il/elections_game&amp;p[images][0]=http://www.uru.org.il/images/icon1.png','sharer','toolbar=0,status=0,width=580,height=325');" href="javascript: void(0)">
+                    <img src="../images/facebook-share.jpg" width="72"  alt="Share"/>
+                </a>
+
             </div>
+           <!--
             <div class="social_item gp">
-                <!-- Place this tag where you want the +1 button to render. -->
+
                 <div class="g-plusone"></div>
 
-                <!-- Place this tag after the last +1 button tag. -->
+
                 <script type="text/javascript">
-                    /*
+
                     (function() {
                         var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
                         po.src = 'https://apis.google.com/js/plusone.js';
                         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
                     })();
-                    */
+
                 </script>
             </div>
+        -->
             <div class="social_item tw">
-                <a href="https://twitter.com/share" class="twitter-share-button">Tweet</a>
+
+                <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://http://www.uru.org.il/elections_game" data-text="פוליטיקלי קורקט: כל מה שצריך לדעת לפני ששמים את הפתק בקלפי דרגו אמירות של מועמדים לכנסת, גלו באיזה צד אתם במפה הפוליטית ואת כל המידע על המועמד ומפלגתו">Tweet</a>
                 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
             </div>
         </div>
@@ -1371,7 +1387,23 @@
             <a class="results_share_icon" href="">שתף תוצאות</a>
             <a class="results_share_icon" href=""><img src="../images/icon_email_white.png" /></a>
             <a class="results_share_icon" href=""><img src="../images/icon_tw_white.png" /></a>
-            <a class="results_share_icon" href=""><img src="../images/icon_fb_white.png" /></a>
+
+            <a class="btn-grey share"
+               rel="/elections_game"
+               data-img_src="<%= share_img %>"
+               data-text_preview="אלה המועמדים אלאלבחירות 2013 שאני הזדהיתי איתם.            בואו לגלות במי אתם תומכים."
+               data-text="אלה המועמדים אלאלבחירות 2013 שאני הזדהיתי איתם.            בואו לגלות במי אתם תומכים."
+               data-title="פוליטיקלי קורקט"
+               data-name="פוליטיקלי קורקט"
+               href="/facebookShare?link=/elections_game%>">
+                <img src="../images/icon_fb_white.png" />
+            </a>
+
+
+            <a class="results_share_icon" href="" id="fb-share" style='text-decoration:none;' type="icon_link" onClick="window.open('http://www.facebook.com/sharer.php?s=100&amp;p[title]=פוליטיקלי קורקט&amp;p[summary]=אלה המועמדים לבחירות 2013 שאני הזדהיתי איתם.         בואו לגלות במי אתם תומכים.&amp;p[url]=http://www.uru.org.il/elections_game&amp;p[images][0]=<%=share_img %>','sharer','toolbar=0,status=0,width=580,height=325');" href="javascript: void(0)">
+
+            </a>
+
         </div>
     </div>
     <div id="graph_holder">
@@ -1907,9 +1939,6 @@
             });
         }
 
-        $('#social_holder').hide();
-        $('.social_icon').hide();
-        $('#results_share').hide();
 
 
 

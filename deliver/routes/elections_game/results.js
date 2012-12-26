@@ -1,6 +1,7 @@
 var models = require('../../../models')
       ,async = require('async')
     ,_ = require('underscore')
+    ,md5 = require('MD5')
     ,notifications = require('../../../api/notifications.js');
                                            //50c430b5d18ea20200000028   50c43377d18ea2020000002c  50c0968895f1e90200000026
 module.exports = function(req, res){
@@ -84,6 +85,7 @@ module.exports = function(req, res){
                 candidates[2]=JSON.parse(JSON.stringify( candidates[0]));
             }
             var first,second,third, liked_1, liked_2;
+
             _.each(candidates, function(element, index, list){
                 if(element._id== winners[0].candidate){
                     first=    element;
@@ -99,11 +101,18 @@ module.exports = function(req, res){
                 }
             });
 
+            var share_url="uru-staging.herokuapp.com/elections_game/image?first_id="+first._id+"&first_score="+first.score+"&second_id="+second._id+"&second_score="+second.score+"&third_id="+third._id+"&third_score="+third.score;
+            var share_url_encoded=encodeURIComponent(share_url);
+            var share_query_string="url="+share_url_encoded+"&viewport=900x447";
+            var share_token  = md5(share_query_string + req.app.settings.url2png_api_secret)
+            var share_img="http://beta.url2png.com/v6/P503113E58ED4A/"+share_token+"/png/?"+share_query_string;
+
             res.render('elections_game_results.ejs', {
                winners: [first, second,  third],
                second:second,
                third:  third,
                first_win_ratio: candidate_win_ratio ,
+               share_img:share_img,
                quotes_count: _.keys(req.session.election_game).length -1
                /*meta: {
                     type: req.app.settings.facebook_app_name + ':discussion',

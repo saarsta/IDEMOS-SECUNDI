@@ -570,7 +570,7 @@ var db_functions = {
     addFacebookRequest:function (link, response, callback) {
         var request_ids =response ? response.request :null;
         var to  =response ? response.to :null;
-        db_functions.loggedInAjax({
+        $.ajax({
             url:'/api/fb_request/',
             type:"POST",
             async:true,

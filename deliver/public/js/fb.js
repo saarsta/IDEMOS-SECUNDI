@@ -20,12 +20,14 @@ function sendFacebookShare(_, title, src, text_preview, callback) {
     // log to db
     db_functions.addFacebookRequest(_, null, function(err, link_obj) {
         if(err) {
-            callback(err);
-            return;
+            //callback(err);
+           // return;
+            console.log(err);
         }
         // sanitize text_preview
         text_preview = text_preview ? text_preview.replace(/(<([^>]+?)>)/ig, ""):'';
-        var link = window.location.protocol + '//' + window.location.hostname + link_obj.link;
+        var linko=    link_obj?    link_obj.link :''
+        var link = window.location.protocol + '//' + window.location.hostname + linko;
         // fix src
         if (src.indexOf("http") == -1) {
             src = window.location.protocol + '//' + window.location.hostname + src;

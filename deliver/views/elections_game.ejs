@@ -6,8 +6,8 @@
 
 
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="פוליטיקלי קורקט" />
-    <meta property="og:description" content="משחק הציטוטים של עורו" />
+    <meta property="og:title" content="פוליטיקלי קורקט: כל מה שצריך לדעת לפני ששמים את הפתק בקלפי" />
+    <meta property="og:description" content="דרגו אמירות של מועמדים לכנסת, גלו באיזה צד אתם במפה הפוליטית ואת כל המידע על המועמד ומפלגתו" />
     <meta property="og:image" content="http://www.uru.org.il/images/icon1.png" />
     <meta property="og:site_name" content="עורו" />
     <meta property="og:url" content="http://www.uru.org.il/elections_game" />
@@ -491,15 +491,8 @@
                 <a id="logo" href="\"></a>
             </div>
             <div id="title_holder">
-                <div id="title_holder_inner">
-                פוליטיקלי קורקט
-                <br>
-                <span>
-                                  כל מה שצריך לדעת לפני ששמים את הפתק בקלפי
-
-                </span>
-
-                </div> </div>
+               <img src="images/logo_game.png">
+             </div>
 
 
             <div id="social_holder">
@@ -510,17 +503,17 @@
 
 
 
-                    <a id="fb-share" style='text-decoration:none;' type="icon_link" onClick="window.open('http://www.facebook.com/sharer.php?s=100&amp;p[title]=פוליטיקלי קורקט&amp;p[summary]=משחק הציטוטים של עורו&amp;p[url]=http://www.uru.org.il/elections_game&amp;p[images][0]=http://www.uru.org.il/images/icon1.png','sharer','toolbar=0,status=0,width=580,height=325');" href="javascript: void(0)">
+                    <a id="fb-share" style='text-decoration:none;' type="icon_link" onClick="window.open('http://www.facebook.com/sharer.php?s=100&amp;p[title]=פוליטיקלי קורקט: כל מה שצריך לדעת לפני ששמים את הפתק בקלפי&amp;p[summary]=דרגו אמירות של מועמדים לכנסת, גלו באיזה צד אתם במפה הפוליטית ואת כל המידע על המועמד ומפלגתו&amp;p[url]=http://www.uru.org.il/elections_game&amp;p[images][0]=http://www.uru.org.il/images/icon1.png','sharer','toolbar=0,status=0,width=580,height=325');" href="javascript: void(0)">
                         <img src="images/facebook-share.jpg" width="62" height="18" alt="Share"/>
                     </a>
 
                 </div>
+                <!--
+           <div class="social_item gp">
 
-                <div class="social_item gp">
-                    <!-- Place this tag where you want the +1 button to render. -->
                     <div class="g-plusone"></div>
 
-                    <!-- Place this tag after the last +1 button tag. -->
+
                     <script type="text/javascript">
 
                         (function() {
@@ -531,8 +524,9 @@
 
                     </script>
                 </div>
+            -->
                 <div class="social_item tw">
-                    <a href="https://twitter.com/share" class="twitter-share-button">Tweet</a>
+                    <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://http://www.uru.org.il/elections_game" data-text="פוליטיקלי קורקט: כל מה שצריך לדעת לפני ששמים את הפתק בקלפי דרגו אמירות של מועמדים לכנסת, גלו באיזה צד אתם במפה הפוליטית ואת כל המידע על המועמד ומפלגתו">Tweet</a>
                     <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
                 </div>
             </div>
@@ -706,7 +700,7 @@
 
         //$('#social_holder').hide();
         //$('.social_icon').hide();
-
+       /*
         var facebookAppId = '<%= settings.facebook_app_id %>';
 
         var tag_name = "<% if (typeof tag_name !== "undefined") {%> <%= tag_name || '' %><% } %>";
@@ -726,7 +720,7 @@
                 oauth:true
             });
         });
-
+          */
     } );
 
 
