@@ -8,12 +8,17 @@ module.exports = function(req, res){
     var winners,
         candidate_win_ratio=0,
 
-        game_code       =req.session.election_game.game_code;
-    async.waterfall([
+        game_code       =req.session.election_game ? req.session.election_game.game_code:null;
+        async.waterfall([
 
         function(cbk){/// determine game results
-            winners= determineWinners(req.session.election_game);
-            cbk(null,winners);
+            if(!game_code)  {
+                cbk('no game');
+            }   else  {
+
+                winners= determineWinners(req.session.election_game);
+                cbk(null,winners);
+            }
 
         },
         function(winners,cbk){ /// update game statistics
@@ -44,15 +49,40 @@ module.exports = function(req, res){
 
     ],function(err, result){
 
+    if(err!=null){
+        console.log(err);
+        if(req.params[0]){
+            candidate_win_ratio=50;
+            winners=[];
+            winners.push({candidate :req.params[0] , score:70}) ;
+            winners.push({candidate :req.params[0] , score:70}) ;
+            winners.push({candidate :req.params[0] , score:70}) ;
+        }   else {
+            res.writeHead(302, {
+                'Location': '/elections_game'
+                //add other headers here...
+            });
+            res.end();
+            return;
+        }
+    }   /*
 
-
+            response.writeHead(302, {
+                'Location': 'your/404/path.html'
+                //add other headers here...
+            });
+            response.end();
+          */
     models.QuoteGameCandidate.find({ _id:  {$in:[winners[0].candidate,winners[1].candidate, winners[2].candidate]}})
         .populate('party_19th_knesset', { _id: 1, name: 1 , overview:1, wikipedia_link:1,open_knesset_id:1,sandtalk_id:1 })
         .populate('party_18th_knesset', { _id: 1, name:1, open_knesset_id:1,sandtalk_id:1})
         // .populate("proxy.user_id"/*,['id','_id','first_name','last_name','avatar','facebook_id','num_of_given_mandates', "followers",'score','num_of_proxies_i_represent']*/)
         .exec(function(err, candidates){
-            candidates[1].score=  22;
-            candidates[2].score=  2;
+            if (candidates.length==1)
+            {
+                candidates[1]=JSON.parse(JSON.stringify( candidates[0]));
+                candidates[2]=JSON.parse(JSON.stringify( candidates[0]));
+            }
             var first,second,third, liked_1, liked_2;
             _.each(candidates, function(element, index, list){
                 if(element._id== winners[0].candidate){
@@ -74,7 +104,7 @@ module.exports = function(req, res){
                second:second,
                third:  third,
                first_win_ratio: candidate_win_ratio ,
-                quotes_count: _.keys(req.session.election_game).length -1
+               quotes_count: _.keys(req.session.election_game).length -1
                /*meta: {
                     type: req.app.settings.facebook_app_name + ':discussion',
                     id: discussion.id,
