@@ -2,6 +2,16 @@
 <html>
 <head>
     <title>פוליטיקלי קורקט</title>
+
+
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="פוליטיקלי קורקט" />
+    <meta property="og:description" content="משחק הציטוטים של עורו" />
+    <meta property="og:image" content="http://www.uru.org.il/images/icon1.png" />
+    <meta property="og:site_name" content="עורו" />
+    <meta property="og:url" content="http://www.uru.org.il/elections_game" />
+
     <!-- Bootstrap -->
 
     <% include partials/head_min.ejs %>
@@ -493,22 +503,32 @@
 
 
             <div id="social_holder">
+
+
+
                 <div class="social_item fb">
-                    <div class="fb-like" data-href="http://developers.facebook.com" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false"></div>
+
+
+
+                    <a id="fb-share" style='text-decoration:none;' type="icon_link" onClick="window.open('http://www.facebook.com/sharer.php?s=100&amp;p[title]=פוליטיקלי קורקט&amp;p[summary]=משחק הציטוטים של עורו&amp;p[url]=http://www.uru.org.il/elections_game&amp;p[images][0]=http://www.uru.org.il/images/icon1.png','sharer','toolbar=0,status=0,width=580,height=325');" href="javascript: void(0)">
+                        <img src="images/facebook-share.jpg" width="62" height="18" alt="Share"/>
+                    </a>
+
                 </div>
+
                 <div class="social_item gp">
                     <!-- Place this tag where you want the +1 button to render. -->
                     <div class="g-plusone"></div>
 
                     <!-- Place this tag after the last +1 button tag. -->
                     <script type="text/javascript">
-                        /*
+
                         (function() {
                             var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
                             po.src = 'https://apis.google.com/js/plusone.js';
                             var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
                         })();
-                        */
+
                     </script>
                 </div>
                 <div class="social_item tw">
@@ -684,9 +704,28 @@
             $(this).parents('#how_to_play').fadeOut(800);
         });
 
-        $('#social_holder').hide();
-        $('.social_icon').hide();
+        //$('#social_holder').hide();
+        //$('.social_icon').hide();
 
+        var facebookAppId = '<%= settings.facebook_app_id %>';
+
+        var tag_name = "<% if (typeof tag_name !== "undefined") {%> <%= tag_name || '' %><% } %>";
+        var current_section=null;
+        $(document).ready(function () {
+            $('.tikunim-box h2').click(function () {
+                $(this).parent().toggleClass('active');
+            });
+        });
+
+        $.getScript("//connect.facebook.net/en_US/all.js", function () {
+            FB.init({
+                appId:facebookAppId, // App ID local
+                status:true, // check login status
+                cookie:false, // enable cookies to allow the server to access the session
+                xfbml:true, // parse XFBML
+                oauth:true
+            });
+        });
 
     } );
 
