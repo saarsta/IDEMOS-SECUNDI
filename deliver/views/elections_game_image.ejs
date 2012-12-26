@@ -533,7 +533,7 @@
         float:right;
         position:relative;
         top:-115px;
-        margin:0 10px;
+        margin:0 9px;
     }
 
     #selector_holder .selection a{
@@ -1301,7 +1301,7 @@
     <div id="selector_wrapper">
         <div id="selector_holder">
             <div class="selection item_1">
-                <div class="photo"><a href=""><img src="../images/quote_photo.png" /></a></div>
+                <div class="photo"><a href=""><img style="width:82px;height:118px" src="<%= first.image_field.url %>" /></a></div>
                 <a href="">
                     <div class="name">
                         <%= first.name %>
@@ -1312,7 +1312,7 @@
                 </a>
             </div>
             <div class="selection item_2">
-                <div class="photo"><a href=""><img src="../images/quote_photo.png" /></a></div>
+                <div class="photo"><a href=""><img style="width:82px;height:118px"  src="<%= second.image_field.url %>" /></a></div>
                 <a href="">
                     <div class="name">
                         <%= second.name %>
@@ -1323,7 +1323,7 @@
                 </a>
             </div>
             <div class="selection item_3">
-                <div class="photo"><a href=""><img src="../images/quote_photo.png" /></a></div>
+                <div class="photo"><a href=""><img style="width:82px;height:118px"  src="<%= third.image_field.url %>" /></a></div>
                 <a href="">
                     <div class="name">
                         <%= third.name %>
