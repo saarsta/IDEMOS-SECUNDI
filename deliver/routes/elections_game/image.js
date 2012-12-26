@@ -1,6 +1,6 @@
 var models = require('../../../models')
     ,async = require('async')
-    ,im = require('node-imagemagick')
+
     ,notifications = require('../../../api/notifications.js');
 
 module.exports = function(req,res)
