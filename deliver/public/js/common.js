@@ -191,7 +191,7 @@ function fbs_click(ui) {
 
     ui.click( function() {
 
-        sendFacebookShare($(this).attr('rel'), $(this).data('title'), $(this).data('img_src'), $(this).data('text_preview'), function(err) {
+        sendFacebookShare($(this).attr('rel'), $(this).data('title'), $(this).data('img_src'), $(this).data('text_preview'), $(this).attr('rel'), function(err) {
             console.log(err);
         });
 //            var u = ;

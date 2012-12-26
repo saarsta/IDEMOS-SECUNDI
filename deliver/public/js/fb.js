@@ -16,7 +16,7 @@ function sendFacebookInvite(message,link,callback) {
 }
 
 
-function sendFacebookShare(_, title, src, text_preview, callback) {
+function sendFacebookShare(_, title, src, text_preview,err_link, callback) {
     // log to db
     db_functions.addFacebookRequest(_, null, function(err, link_obj) {
         if(err) {
@@ -26,8 +26,8 @@ function sendFacebookShare(_, title, src, text_preview, callback) {
         }
         // sanitize text_preview
         text_preview = text_preview ? text_preview.replace(/(<([^>]+?)>)/ig, ""):'';
-        var linko=    link_obj?    link_obj.link :''
-        var link = window.location.protocol + '//' + window.location.hostname + linko;
+
+        var link =   link_obj?  window.location.protocol + '//' + window.location.hostname + linko :  window.location.protocol + '//' + window.location.hostname +err_link ;
         // fix src
         if (src.indexOf("http") == -1) {
             src = window.location.protocol + '//' + window.location.hostname + src;
