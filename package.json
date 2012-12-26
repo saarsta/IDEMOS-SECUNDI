@@ -24,8 +24,7 @@
         "facebook-signed-request" : "0.0.2",
         "request" : "2.10.0",
         "xml": "0.0.7",
-        "logging": "2.0.16"  ,
-        "node-imagemagick":"0.1.8"
+        "logging": "2.0.16"
   },
 	"engines": {
 		"node": "0.8.12",
