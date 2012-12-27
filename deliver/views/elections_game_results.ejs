@@ -1290,6 +1290,33 @@
     .hidden_quotes{
         display: none;
     }
+
+
+    #game_controls_holder{
+        position: relative;
+        top: -5px;
+        width: 264px;
+        float: left;
+    }
+
+    #game_controls_holder a{
+        color:#afbcf7;
+        font-size:14px;
+        text-decoration:none;
+    }
+
+    #game_controls_holder a.icon.continue{
+        background:url(../images/icon_continue.png) no-repeat center right;
+        padding-right:15px;
+        padding-left:10px;
+        border-left: 1px solid #afbcf7;
+    }
+
+    #game_controls_holder a.icon.reset{
+        background:url(../images/icon_reset.png) no-repeat top right;
+        padding-right:15px;
+        margin-right:6px;
+    }
     </style>
 </head>
 <body>
@@ -1377,8 +1404,7 @@
                 <%= quotes_count %>
             ציטוטים
 
-                <a  class="play_more" id="continue_game" href="/elections_game">המשך  לשחק</a>
-                <a class="play_more" id="reset_game" href="javascript:void(0);">התחל משחק חדש </a>
+
 
             </h3>
 
@@ -1398,6 +1424,13 @@
                href="javascript: void(0)">
                 <img src="../images/icon_fb_white.png" />
             </a>
+
+
+
+            <div id="game_controls_holder">
+                <a class="icon continue" id="continue_game" href="/elections_game">המשך לשחק</a>
+                <a class="icon reset"  id="reset_game" href="javascript:void(0);">אפס תוצאות והתחל מחדש</a>
+            </div>
 
 
             <a class="results_share_icon" href="" id="fb-share" style='text-decoration:none;' type="icon_link" onClick="window.open('http://www.facebook.com/sharer.php?s=100&amp;p[title]=פוליטיקלי קורקט&amp;p[summary]=אלה המועמדים לבחירות 2013 שאני הזדהיתי איתם.         בואו לגלות במי אתם תומכים.&amp;p[url]=http://www.uru.org.il/elections_game&amp;p[images][0]=<%=share_img %>','sharer','toolbar=0,status=0,width=580,height=325');" href="javascript: void(0)">
