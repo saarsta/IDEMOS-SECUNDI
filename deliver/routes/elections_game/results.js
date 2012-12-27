@@ -2,6 +2,9 @@ var models = require('../../../models')
       ,async = require('async')
     ,_ = require('underscore')
     ,md5 = require('MD5')
+    ,http = require('http')
+    ,fs = require('fs')
+    ,url = require('url')
     ,notifications = require('../../../api/notifications.js');
                                            //50c430b5d18ea20200000028   50c43377d18ea2020000002c  50c0968895f1e90200000026
 module.exports = function(req, res){
@@ -103,10 +106,12 @@ module.exports = function(req, res){
 
             var share_url="uru-staging.herokuapp.com/elections_game/image?first_id="+first._id+"&first_score="+first.score+"&second_id="+second._id+"&second_score="+second.score+"&third_id="+third._id+"&third_score="+third.score;
             var share_url_encoded=encodeURIComponent(share_url);
-            var share_query_string="url="+share_url_encoded+"&viewport=900x447";
+            var share_query_string="url="+share_url_encoded+"&viewport=870x447";
             var share_token  = md5(share_query_string + req.app.settings.url2png_api_secret)
             var share_img="http://beta.url2png.com/v6/P503113E58ED4A/"+share_token+"/png/?"+share_query_string;
 
+
+            download_file_httpget(share_img,'deliver/public/images/eg/'+first._id+first.score+second._id+second.score+third._id+third.score+'.png') ;
             res.render('elections_game_results.ejs', {
                winners: [first, second,  third],
                second:second,
@@ -127,6 +132,27 @@ module.exports = function(req, res){
         })
     });
 
+    var download_file_httpget = function(file_url,target) {
+        var options = {
+            host: url.parse(file_url).host,
+            port: 80,
+            path: url.parse(file_url).pathname
+        };
+
+        var file_name = url.parse(file_url).pathname.split('/').pop();
+        var file = fs.createWriteStream(target);
+
+        http.get(file_url, function(res) {
+            res.on('data', function(data) {
+                file.write(data);
+            }).on('error', function(data) {
+                    file.write(data);
+                }).on('end', function() {
+                    file.end();
+                    console.log( 'success');
+                });
+        });
+    };
 
     function determineWinners(results){
         var candidates={};

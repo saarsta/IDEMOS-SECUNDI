@@ -464,6 +464,103 @@
         background-position: 100% 0;
     }
 
+    #game_progress_holder{
+        display: none;
+        position:relative;
+        margin:auto;
+        width:730px;
+        height:60px;
+        padding:15px 20px;
+        font-size:16px;
+        color:#7c7763;
+        background:#2f4aa8;
+        -moz-border-radius-topleft: 0px;
+        -moz-border-radius-topright:0px;
+        -moz-border-radius-bottomleft:10px;
+        -moz-border-radius-bottomright:10px;
+        -webkit-border-top-left-radius:0px;
+        -webkit-border-top-right-radius:0px;
+        -webkit-border-bottom-left-radius:8px;
+        -webkit-border-bottom-right-radius:8px;
+        border-top-left-radius:0px;
+        border-top-right-radius:0px;
+        border-bottom-left-radius:8px;
+        border-bottom-right-radius:8px;
+        -moz-box-shadow: 0px 2px 5px #000000;
+        -webkit-box-shadow: 0px 2px 5px #000000;
+        box-shadow: 0px 2px 5px #000000;
+    }
+
+    #game_progress_holder h2{
+        color:#fff;
+        margin:0 3px;
+        font-size:30px;
+        font-weight:bold;
+    }
+
+    #game_progress_holder span{
+        color:#d1d1d1;
+        font-size:22px;
+    }
+
+    #game_progress_holder .text{
+        float:right;
+    }
+
+    .game_progress{
+        width:481px;
+        height:20px;
+        display:block;
+        background:url(images/bg_game_progress_bar.png) 0 0 no-repeat;
+        float:left;
+        margin-top:20px;
+        position:relative;
+    }
+
+    .game_progress_bar{
+        position:absolute;
+        width:75%;
+        height:16px;
+        display:block;
+        background:url(images/game_progress_bar.png) top right repeat-x;
+        top:2px;
+        right:1px;
+        -moz-border-radius: 3px;
+        -webkit-border-radius: 3px;
+        border-radius:3px;
+    }
+
+    .game_progress_bar_indicator{
+        position:absolute;
+        width:33px;
+        height:29px;
+        display:block;
+        top:11px;
+        right:75%;
+    }
+
+    .game_progress_bar_indicator img{
+        position:relative;
+        left:17px;
+    }
+
+    .game_progress_percentage{
+        width: 436px;
+        height: 20px;
+        float: right;
+        display: block;
+        position: relative;
+        top: 4px;
+    }
+
+    .game_progress span{
+        float:right;
+        position:absolute;
+        top:20px;
+        color:#ececed;
+        text-align:center;
+    }
+
 
     </style>
 
@@ -504,7 +601,7 @@
 
 
                     <a id="fb-share" style='text-decoration:none;' type="icon_link" onClick="window.open('http://www.facebook.com/sharer.php?s=100&amp;p[title]=פוליטיקלי קורקט: כל מה שצריך לדעת לפני ששמים את הפתק בקלפי&amp;p[summary]=דרגו אמירות של מועמדים לכנסת, גלו באיזה צד אתם במפה הפוליטית ואת כל המידע על המועמד ומפלגתו&amp;p[url]=http://www.uru.org.il/elections_game&amp;p[images][0]=http://www.uru.org.il/images/icon1.png','sharer','toolbar=0,status=0,width=580,height=325');" href="javascript: void(0)">
-                        <img src="images/facebook-share.jpg" width="62" height="18" alt="Share"/>
+                        <img src="images/facebook-share.jpg" width="72" alt="Share"/>
                     </a>
 
                 </div>
@@ -555,6 +652,23 @@
         </div>
     </div>
     <div id="content_wrapper">
+        <div id="game_progress_holder">
+            <div class="text">
+                <h2>שחקו יותר</h2>
+                <span>וקבלו תוצאות אמינות יותר</span>
+            </div>
+            <div class="game_progress">
+                <div class="game_progress_bar"></div>
+                <div class="game_progress_bar_indicator"><img src="images/indicator.png" /></div>
+                <div class="game_progress_percentage">
+                    <span style="right:0%;">0</span>
+                    <span style="right:25%;">25</span>
+                    <span style="right:52%;">50</span>
+                    <span style="right:80%;">75</span>
+                    <span style="right:102%;">100</span>
+                </div>
+            </div>
+        </div>
         <div id="how_to_play">
             <h2>
             איך אני יודע באיזה צד אני במפה הפוליטית?
@@ -660,7 +774,8 @@
                 db_functions.setQuoteGameResponse(my_id, quote_id,hash, response,quotes[current_qoute].candidate._id,false,function (err, data) {
 
                 });
-                $('#how_to_play').fadeOut(800);
+            $('#how_to_play').hide();
+            $('#game_progress_holder').show();
 
         });
 
@@ -672,10 +787,14 @@
                 return ;
             }
             if(current_qoute+1 + played_quotes-skipped > 25 ){
-                    $('#goto_results').show();
+                $('#how_to_play').hide();
+                $('#game_progress_holder').show();
+                $('#goto_results').show();
+
             }
             $('#preload_img').attr('src',quotes[current_qoute].candidate.image_field_thumb.url);
             $("#current_qoute_count").text(current_qoute+1 + played_quotes-skipped)  ;
+            progress(current_qoute+1 + played_quotes-skipped)
             dust.render('quote', quotes[current_qoute], function (err, out) {
                 $('#current_quote_holder').html(out);
                 $('.quote_credit,.quote_party').hide().removeClass('hide');
@@ -692,10 +811,15 @@
           //  console.log("results");
         }
 
-
+        function progress(i){
+            $(".game_progress_bar_indicator").css('right',i+'%');
+            $(".game_progress_bar").css('width',i+'%');
+        }
 
         $('#close_button').click(function () {
-            $(this).parents('#how_to_play').fadeOut(800);
+            $('#how_to_play').hide();
+            $('#game_progress_holder').show();
+
         });
 
         //$('#social_holder').hide();

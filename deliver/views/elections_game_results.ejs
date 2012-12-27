@@ -2,7 +2,7 @@
 <html>
 <head>
 
-<% include partials/head.ejs %>
+<% include partials/head_min.ejs %>
 
 <meta property="og:type" content="website" />
 <meta property="og:title" content="דרגו אמירות של מועמדים לכנסת, גלו באיזה צד אתם במפה הפוליטית ואת כל המידע על המועמד ומפלגתו" />
@@ -1388,14 +1388,14 @@
             <a class="results_share_icon" href=""><img src="../images/icon_email_white.png" /></a>
             <a class="results_share_icon" href=""><img src="../images/icon_tw_white.png" /></a>
 
-            <a class="btn-grey share"
+            <a class="fb_share"
                rel="/elections_game"
                data-img_src="<%= share_img %>"
                data-text_preview="אלה המועמדים לבחירות 2013 שאני הזדהיתי איתם. בואו לגלות במי אתם תומכים."
                data-text="אלה המועמדים לבחירות 2013 שאני הזדהיתי איתם. בואו לגלות במי אתם תומכים."
                data-title="פוליטיקלי קורקט"
                data-name="פוליטיקלי קורקט"
-               href="/facebookShare?link=/elections_game%>">
+               href="javascript: void(0)">
                 <img src="../images/icon_fb_white.png" />
             </a>
 
@@ -1937,8 +1937,86 @@
 
                 });
             });
+
+
         }
 
+
+        $(".fb_share").click(function(){
+
+            var facebookAppId = '<%= settings.facebook_app_id %>';
+
+            var tag_name = "<% if (typeof tag_name !== "undefined") {%> <%= tag_name || '' %><% } %>";
+            var current_section=null;
+            $(document).ready(function () {
+                $('.tikunim-box h2').click(function () {
+                    $(this).parent().toggleClass('active');
+                });
+            });
+
+            $.getScript("//connect.facebook.net/en_US/all.js", function () {
+                FB.init({
+                    appId:facebookAppId, // App ID local
+                    status:true, // check login status
+                    cookie:false, // enable cookies to allow the server to access the session
+                    xfbml:true, // parse XFBML
+                    oauth:true
+                });
+
+
+
+            });
+            var link= 'http://www.uru.org.il' + $(this).attr('rel'),
+                title = $(this).data('title'),
+                image= $(this).data('img_src'),
+                body = $(this).data('text_preview')   ;
+           // image="http://www.uru.org.il/images/eg/50c4810da17227020000015810050c47b3ba17227020000014e10050c45407a17227020000004b90.png";
+
+            FB.ui(
+                {
+                    method: 'feed',
+                    name: 'Facebook Dialogs',
+                    link: link,
+                    picture: image,
+                    caption: 'Reference Documentation',
+                    description: 'Dialogs provide a simple, consistent interface for applications to interface with users.'
+                },
+                function(response) {
+                    if (response && response.post_id) {
+                        alert('Post was published.');
+                    } else {
+                        alert('Post was not published.');
+                    }
+                }
+            );
+            /*
+            var publish = {
+                method: 'feed',
+                message: 'getting educated about Facebook Connect',
+                name: 'Connect',
+                caption: title,
+                description: body,
+                link: link,
+                picture: image,
+                actions: [
+                    { name: 'fbrell', link: link }
+                ],
+                user_message_prompt: 'Share your thoughts about RELL'
+            };
+
+            FB.ui(publish,  function(response) {
+                if (response && response.post_id) {
+                    alert('Post was published.');
+                } else {
+                    alert('Post was not published.');
+                }
+            });
+            */
+            //https://www.facebook.com/sharer/sharer.php
+
+            return false;
+
+        });
 
 
 
