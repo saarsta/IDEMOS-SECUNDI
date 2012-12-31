@@ -413,13 +413,15 @@ var Schemas = exports.Schemas = {
         }]  ,
         doners_link : {type:String},
         governence_quality_text : {type:String},
+        governence_quality_link : {type:String},
         email: {type:String},
         telephone: {type:String},
         fax: {type:String},
         facebook: {type:String},
         twitter: {type:String},
         governence_quality_link : {type:String},
-        wins:   {type:Number, 'default':0, editable:false}
+        wins:   {type:Number, 'default':0, editable:false}  ,
+        additional_links : [{link: {type:String},text: {type:String}}]
     }  ,
 
     QuoteGameQuote:{
@@ -440,8 +442,12 @@ var Schemas = exports.Schemas = {
     QuoteGameGames:{
         game_code :  String ,
         first :   {type:ObjectId, ref:'QuoteGameCandidate'},
-        second :   {type:ObjectId, ref:'QuoteGameCandidate'},
-        third :   {type:ObjectId, ref:'QuoteGameCandidate'}
+        second :  {type:ObjectId, ref:'QuoteGameCandidate'},
+        third :   {type:ObjectId, ref:'QuoteGameCandidate'},
+        quote_count :    {type:Number, 'default':0,editable:false},
+        creation_date:{type:Date, 'default':Date.now},
+        updated:  {type:Date, 'default':Date.now, editable:false},
+        results_code:  {type:String}
     }
 
 

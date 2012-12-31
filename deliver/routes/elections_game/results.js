@@ -26,8 +26,8 @@ module.exports = function(req, res){
 
         },
         function(winners,cbk){ /// update game statistics
-
-            models.QuoteGameGames.update({game_code: game_code}, { first :   winners[0].candidate, second :  winners[1].candidate,third :winners[2].candidate }, function(err,count)
+            var share_img_code= winners[0].candidate + winners[0].score + winners[1].candidate + winners[1].score + winners[2].candidate + winners[2].score ;
+            models.QuoteGameGames.update({game_code: game_code}, { first :   winners[0].candidate, second :  winners[1].candidate,third :winners[2].candidate,results_code: share_img_code}, function(err,count)
             {
                 cbk(err,count);
             });
@@ -109,49 +109,68 @@ module.exports = function(req, res){
             var share_query_string="url="+share_url_encoded+"&viewport=870x447";
             var share_token  = md5(share_query_string + req.app.settings.url2png_api_secret)
             var share_img="http://beta.url2png.com/v6/P503113E58ED4A/"+share_token+"/png/?"+share_query_string;
-
-
-            download_file_httpget(share_img,'deliver/public/images/eg/'+first._id+first.score+second._id+second.score+third._id+third.score+'.png') ;
-            res.render('elections_game_results.ejs', {
-               winners: [first, second,  third],
-               second:second,
-               third:  third,
-               first_win_ratio: candidate_win_ratio ,
-               share_img:share_img,
-               quotes_count: _.keys(req.session.election_game).length -1
-               /*meta: {
-                    type: req.app.settings.facebook_app_name + ':discussion',
-                    id: discussion.id,
-                    image: ((discussion.image_field_preview && discussion.image_field_preview.url) ||
-                        (discussion.image_field && discussion.image_field.url)),
-                    title: discussion && discussion.title,
-                    description: discussion.text_field_preview || discussion.text_field,
-                    link: discussion && ('/discussions/' + discussion.id)
-                }*/
-            });
+            var share_img_code=first._id+first.score+second._id+second.score+third._id+third.score;
+            download_file_httpget(share_img,share_img_code, function(err,image_full_path){
+                res.render('elections_game_results.ejs', {
+                    winners: [first, second,  third],
+                    second:second,
+                    third:  third,
+                    first_win_ratio: candidate_win_ratio ,
+                    share_img:image_full_path,
+                    quotes_count: _.keys(req.session.election_game).length -1
+                });
+            }) ;
         })
     });
 
-    var download_file_httpget = function(file_url,target) {
-        var options = {
-            host: url.parse(file_url).host,
-            port: 80,
-            path: url.parse(file_url).pathname
-        };
+    var download_file_httpget = function(file_url,code,callback) {
+        models.QuoteGameGames.find({results_code: code}, function(err,count)
+        {
+            if(count.length>0) {
+                callback(null,'http://uru.s3.amazonaws.com/'+code+'.png');
+            }   else  {
+                var target = 'deliver/public/images/eg/' + code + '.png' ;
+                var options = {
+                    host: url.parse(file_url).host,
+                    port: 80,
+                    path: url.parse(file_url).pathname
+                };
 
-        var file_name = url.parse(file_url).pathname.split('/').pop();
-        var file = fs.createWriteStream(target);
+                var file_name = url.parse(file_url).pathname.split('/').pop();
+                var file = fs.createWriteStream(target);
 
-        http.get(file_url, function(res) {
-            res.on('data', function(data) {
-                file.write(data);
-            }).on('error', function(data) {
-                    file.write(data);
-                }).on('end', function() {
-                    file.end();
-                    console.log( 'success');
+                http.get(file_url, function(res) {
+                    res.on('data', function(data) {
+                        file.write(data);
+                    }).on('error', function(data) {
+                            file.write(data);
+                        }).on('end', function() {
+                            file.end();
+                            console.log( 'download success');
+                            var value_full_path = target;
+                            stream = fs.createReadStream(target);
+                            var knoxClient = require('j-forms').fields.getKnoxClient();
+                            var filename = target.substring(target.lastIndexOf('/')+1);
+                            knoxClient.putStream(stream, '/eg/'+filename , function(err, res){
+                                if(err)  {
+                                    callback(err);
+                                    console.log( 'amazone upload fail');
+                                }
+                                else {
+                                    var path = res.socket._httpMessage.url;
+                                    fs.unlink(value_full_path);
+                                    console.log("res.socket._httpMessage");
+                                    console.log(res.socket._httpMessage);
+                                    callback(null,path);
+                                }
+                            });
+                        });
                 });
-        });
+            }
+
+        })
+
+
     };
 
     function determineWinners(results){
@@ -168,13 +187,13 @@ module.exports = function(req, res){
                         score=10;
                         break;
                     case 'positive':
-                        score=8;
+                        score=5;
                         break;
                     case 'negative':
-                        score=2;
+                        score=-5;
                         break;
                     case 'very_negative':
-                        score=0;
+                        score=-10;
                         break;
                 }
                 candidates[element.candidate].push(score);

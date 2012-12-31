@@ -731,6 +731,7 @@
         border:none;
         background:url(../images/button_commit.png) no-repeat 0 0;
         margin-right:10px;
+        cursor: pointer;
     }
 
     #content_main_wrapper{
@@ -851,11 +852,13 @@
         float:right;
         width:260px;
         margin-left:50px;
+
     }
 
     #content_right_holder .segment.about .text .col_left{
         float:right;
         width:260px;
+
     }
 
         /* More Stats Segment */
@@ -1071,7 +1074,12 @@
     .text .about_politician a.read_more{
         width:260px;
         margin-top:5px;
-        display:block;
+        margin-left:15px;
+
+    }
+    .about_politician,
+    .about_party{
+        min-height: 120px;
     }
 
     .text .share_buttons{
@@ -1140,7 +1148,7 @@
     .quotes_holder .status a:hover{
         font-family:david;
         color:#1a1a1b;
-        text-decoration: none;
+        text-decoration: underline;
     }
 
     .quotes_holder .status.even{
@@ -1281,9 +1289,9 @@
         background-position: 100% 0;
     }
 
-    .agendas div{
+    .agendas> div{
         float:right;
-        margin: 10px 0 0 153px;
+        margin: 10px 0 0 70px;
         cursor: pointer;
     }
 
@@ -1380,10 +1388,10 @@
         <div id="sponsors_holder">
             <h2>שיתופי פעולה</h2>
             <div id="sponsors_logos">
-                <div class="sponsors_logo logo_1"></div>
-                <div class="sponsors_logo logo_2"></div>
-                <div class="sponsors_logo logo_3"></div>
-                <div class="sponsors_logo logo_4"></div>
+                <a class="sponsors_logo logo_1" target="_blank" href="http://oknesset.org/"></a>
+                <a class="sponsors_logo logo_2" target="_blank" href="http://hamishmar.org.il/"></a>
+                <a class="sponsors_logo logo_3" target="_blank" href="http://www.sandtalks.co.il/"></a>
+                <a class="sponsors_logo logo_4" target="_blank" href="http://www.mqg.org.il/"></a>
                 <div class="sponsors_logo logo_5"></div>
             </div>
         </div>
@@ -1410,11 +1418,13 @@
 
         </div>
         <div id="results_share">
-            <a class="results_share_icon" href="">שתף תוצאות</a>
-            <a class="results_share_icon" href=""><img src="../images/icon_email_white.png" /></a>
-            <a class="results_share_icon" href=""><img src="../images/icon_tw_white.png" /></a>
+            <a class="results_share_icon"   href="javascript: void(0)">
+                שתף תוצאות
+            </a>
+            <a class="results_share_icon"   href="javascript: void(0)"><img src="../images/icon_email_white.png" /></a>
+            <a class="results_share_icon"   href="javascript: void(0)"><img src="../images/icon_tw_white.png" /></a>
 
-            <a class="fb_share"
+            <a class="results_share_icon fb_share"
                rel="/elections_game"
                data-img_src="<%= share_img %>"
                data-text_preview="אלה המועמדים לבחירות 2013 שאני הזדהיתי איתם. בואו לגלות במי אתם תומכים."
@@ -1539,7 +1549,11 @@
                     <div class="about_politician">
                         <h2>  <%= cand.name %></h2>
                         <%= cand.biography || '' %>
-                        <a class="read_more"  target="_blank" href="<%= cand.wikipedia_link %>">המשך לדף מועמד</a>
+                        <br>
+                        <a class="read_more"  target="_blank" href="<%= cand.wikipedia_link %>">
+                        לערך  בוויקיפדיה
+                    </a>
+
                     </div>
                     <div class="contact_info">
                         <h3>פרטי התקשרות</h3>
@@ -1573,37 +1587,10 @@
                             </div>
                         </div>
     <% } %>
-    <% if( cand.facebook) { %>
-                        <div class="contact_detail_holder">
-                            <div class="detail_name">
-                                פייסבוק:
-                            </div>
-                            <div class="detail_value fb">
-                                <a href="<%= cand.facebook %>">
-                                <%= cand.name %>
-                                בפייסבוק
-                                </a>
-                            </div>
-                        </div>
-    <% } %>
-    <% if( cand.twitter) { %>
-                        <div class="contact_detail_holder">
-                            <div class="detail_name">טוויטר:</div>
-                            <div class="detail_value tw">
-                                <a  target="_blank"  href="<%= cand.twitter %>">
-                                <%= cand.name %>
-    בטוויטר
-                                </a>
-                            </div>
-                        </div>
-    <% } %>
 
-                        <div class="contact_detail_holder">
-                            <div class="detail_name">אתר:</div>
-                            <div class="detail_value"><a  target="_blank" href="<%= cand.official_site %>"><%= cand.official_site %></a></div>
-                        </div>
 
                     </div>
+                    <!--
                     <div class="share_buttons">
                         <span>שתף</span>
                         <div class="share_button">
@@ -1616,18 +1603,62 @@
                             <a href=""><img src="../images/icon_fb_small.png" /></a>
                         </div>
                     </div>
+                    -->
                 </div>
                 <div class="col_left">
                     <div class="about_party">
                         <h2><%= cand.party_19th_knesset.name %></h2>
 
                         <%= cand.party_19th_knesset.overview||'' %>
-                        <a class="read_more"  target="_blank"  href=" <%= cand.party_19th_knesset.wikipedia_link %>">המשך לדף מפלגה</a>
+                        <br>
+                        <a class="read_more"  target="_blank"  href=" <%= cand.party_19th_knesset.wikipedia_link %>">                            לערך  בוויקיפדיה</a>
+                   <% if(cand.party_19th_knesset.platform) { %>
+                        <a class="read_more"  target="_blank"  href=" <%= cand.party_19th_knesset.platform %>">
+                            למצע המפלגה
+                        </a>
+                        <% } %>
+
+
                     </div>
                     <!--   <div class="map">
                           <h3>מקום מגורים</h3>
                          <iframe width="260" height="190" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.co.il/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=Amsterdam+20,+Tel+Aviv-Yafo&amp;aq=0&amp;oq=%D7%90%D7%9E&amp;sll=31.406252,35.081816&amp;sspn=7.085721,9.876709&amp;ie=UTF8&amp;hq=&amp;hnear=Amsterdam+20,+Tel+Aviv-Yafo&amp;t=m&amp;ll=32.086429,34.779882&amp;spn=0.013817,0.02223&amp;z=14&amp;iwloc=A&amp;output=embed"></iframe>
                     </div>-->
+
+                    <div class="contact_info">
+                        <h3>&nbsp;</h3>
+
+                        <% if( cand.facebook) { %>
+                        <div class="contact_detail_holder">
+                            <div class="detail_name">
+                                פייסבוק:
+                            </div>
+                            <div class="detail_value fb">
+                                <a href="<%= cand.facebook %>">
+                                    <%= cand.name %>
+                                    בפייסבוק
+                                </a>
+                            </div>
+                        </div>
+                        <% } %>
+                        <% if( cand.twitter) { %>
+                        <div class="contact_detail_holder">
+                            <div class="detail_name">טוויטר:</div>
+                            <div class="detail_value tw">
+                                <a  target="_blank"  href="<%= cand.twitter %>">
+                                    <%= cand.name %>
+                                    בטוויטר
+                                </a>
+                            </div>
+                        </div>
+                        <% } %>
+                        <% if( cand.official_site) { %>
+                        <div class="contact_detail_holder">
+                            <div class="detail_name">אתר:</div>
+                            <div class="detail_value"><a  target="_blank" href="<%= cand.official_site %>"><%= cand.official_site %></a></div>
+                        </div>
+                        <% } %>
+                    </div>
                 </div>
             </div>
 
@@ -1651,7 +1682,7 @@
             <div class="header">
                 <div class="item logo"><img src="../images/icon_hatnua.png" /></div>
                 <div class="item title">מבחן איכות השלטון</div>
-                <div class="item link"><a href="">לאתר התנועה לאיכות השלטון</a></div>
+                <div class="item link"><a href="">לקריאה נוספת באתר התנועה לאיכות השלטון</a></div>
             </div>
             <div class="text">
                 <%=cand.governence_quality_text%>
@@ -1679,18 +1710,29 @@
             <iframe id="openk_<%=i%>" width="610" height="400" style="border: 0" src=""></iframe>
 
            <div class="agendas" data-ind="<%=i%>">
-               <div  class="mishmar auto-scale"  style="width:93px; height:80px; overflow:hidden; "  >
-                   <img  src="../images/hamishmar.jpg" alt="המשמר החברתי"/>
+               <div>
+                   <div  class="mishmar auto-scale"  style="width:93px; height:80px; overflow:hidden;margin-bottom: 10px; "  >
+                       <img  src="../images/hamishmar.jpg" alt="המשמר החברתי"/>
+
+                   </div>
+                   המדד החברתי
                </div>
-               <div class="edu auto-scale"  style="width:80px; height:80px; overflow:hidden; "  >
+               <div>
+               <div class="edu auto-scale"  style="width:80px; height:80px; overflow:hidden;margin-bottom: 10px; "  >
                    <img  src="../images/mirsham.jpg" alt="מרשם"/>
+
+
                </div>
-               <div  class="mirsham auto-scale" style="margin-left:0;width:130px; height:80px; overflow:hidden; "  >
+               שיפור מערכת הבריאות
+               </div>
+               <div>
+               <div  class="mirsham auto-scale" style="margin-left:0;width:130px; height:80px; overflow:hidden;margin-bottom: 10px; "  >
                    <img  src="../images/hinuch.png" alt="חינוך ישראלי"/>
+
                </div>
-
+               קידום חינוך ציבורי איכותי
            </div>
-
+           </div>
         </div>
         <% } %>
         <% if (cand.sandtalk_id) { %>
@@ -1714,8 +1756,8 @@
 
             <div class="header">
                 <div class="item logo"><img src="../images/icon_israel.png" /></div>
-                <div class="item title"> התורמים הגדולים</div>
-                <div class="item link"><a target="_blank" href="<%= cand.doners_link %>">לאתר מבקר המדינה</a></div>
+                <div class="item title"> התורמים הגדולים לפריימריס</div>
+                <div class="item link"><a target="_blank" href="<%= cand.doners_link %>"> לרשימת התורמים המלאה</a></div>
             </div>
             <div class="text">
                 <table>
@@ -1799,6 +1841,7 @@
     $(document).ready(function () {
 
         var winnder_id= '<%=winners[0]._id%>';
+        var winners= ["<%=winners[0].id%>","<%=winners[1].id%>","<%=winners[2].id%>"];
         var name= ["<%=winners[0].name%>","<%=winners[1].name%>","<%=winners[2].name%>"];
         var score= ["<%=winners[0].score%>","<%=winners[1].score%>","<%=winners[2].score%>"];
         var open_knesset_id= ["<%=winners[0].open_knesset_id%>","<%=winners[1].open_knesset_id%>","<%=winners[2].open_knesset_id%>"];
@@ -1812,6 +1855,18 @@
         var data_loaded= [false,false,false];
 
 
+        dust.render('elections_game_disclaimer', null, function (err, out) {
+            $.colorbox({
+                html:out,
+                onComplete:function(e){
+
+                },
+                onClosed:function(){
+
+                }
+            });
+        });
+
 
         $.each( $('#selector_holder .photo img'), function(index, value) {
             $(this).css('left', '-' +(($(this).width()-82)/2)+'px');
@@ -1824,6 +1879,7 @@
 
 
         getCandidateData(0);
+        getCandidateQuotes(winners[0]);
         $("#info_0").show();
         loadAgenda(0,74)
 
@@ -1876,6 +1932,7 @@
             getCandidateData(i) ;
             $("#info_"+i).show();
             loadAgenda(i,74)
+            getCandidateQuotes  (winners[i]);
         }
 
         $('.agendas .mishmar').click(function(){
@@ -1895,21 +1952,28 @@
 
         }) ;
 
-        db_functions.getQuoteGameQuotes(false,winnder_id,function (err, data) {
-            var i=0;
-            $.each(data.objects, function (index, quote) {
 
-                quote.odd= i%2 ? 'odd' : 'even';
-                if(i>2) quote.odd+=' hidden_quotes'
-                quote.vote= quote.voted?  quote.voted.response:'';
-                dust.render('elections_game_additiona_quote', quote, function (err, out) {
-                    $('.quotes_holder').append(out);
+        function getCandidateQuotes(id)   {
+
+            db_functions.getQuoteGameQuotes(false,id,function (err, data) {
+                var i=0;
+                $('.quotes_holder').html("");
+                $.each(data.objects, function (index, quote) {
+
+                    quote.odd= i%2 ? 'odd' : 'even';
+                    if(i>2) quote.odd+=' hidden_quotes'
+                    quote.vote= quote.voted?  quote.voted.response:'';
+                    dust.render('elections_game_additiona_quote', quote, function (err, out) {
+                        $('.quotes_holder').append(out);
+                    });
+                    i++;
+
                 });
-               i++;
+                $('#more_quotes').show();
 
-            });
+            }) ;
+        }
 
-        }) ;
 
         $('#more_quotes').click(function( ){
             $('.hidden_quotes').show() ;
@@ -1974,6 +2038,10 @@
 
         }
 
+        $(".commit").click(function(){
+
+            window.open('http://www.uru.org.il/cycles/5098eb8bc492d10200000024','_blank');
+        });
 
         $(".fb_share").click(function(){
 
@@ -2008,11 +2076,11 @@
             FB.ui(
                 {
                     method: 'feed',
-                    name: 'Facebook Dialogs',
+                    name:title,
                     link: link,
                     picture: image,
-                    caption: 'Reference Documentation',
-                    description: 'Dialogs provide a simple, consistent interface for applications to interface with users.'
+                   // caption: title,
+                    description: body
                 },
                 function(response) {
                     if (response && response.post_id) {

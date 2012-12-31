@@ -98,7 +98,8 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
             });
             async.waterfall([
                 function(cbk){
-                    models.QuoteGameGames.update({game_code: game_code}, {game_code: game_code}, {upsert: true}, function(err,count)
+                    var now= Date.now
+                    models.QuoteGameGames.update({game_code: game_code}, {  $set:{ game_code: game_code , updated :now }, $inc:{"quote_count":1} }, {upsert: true}, function(err,count)
                     {
                         cbk(err,count);
                     });
@@ -163,21 +164,25 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
 //  yair    50c43377d18ea2020000002c
 //  livni   50c436bfd18ea20200000034
 //  liberman 50c434f0d18ea20200000030
+//  benet     50c47ecea172270200000152
 
 // secondary candidates
 
 //ishi      50c468c9a17227020000011b
-//benet     50c47ecea172270200000152
 //galon     50c4810da172270200000158
-//zhalke    50c46c16a172270200000125
 //barake    50c47b3ba17227020000014e
+//litzman   50ca2e6f607aa2020000008f
+//shtinitz  50c45f7ea172270200000100
 
+/// anocdotal
+
+//zhalke    50c46c16a172270200000125
     function quoteSelection(quotes_by_candidate,amount,initial){
         var quotes =    [];
         var rest=[];
         if(initial) {
-            var  primaryCandidtes =   ['50c0968895f1e90200000026','50c430b5d18ea20200000028','50c43377d18ea2020000002c','50c436bfd18ea20200000034','50c434f0d18ea20200000030']  ;
-            var  secondaryCandidtes = ['50c468c9a17227020000011b','50c47ecea172270200000152','50c4810da172270200000158','50c46c16a172270200000125','50c47b3ba17227020000014e'] ;
+            var  primaryCandidtes =   ['50c0968895f1e90200000026','50c430b5d18ea20200000028','50c43377d18ea2020000002c','50c436bfd18ea20200000034','50c434f0d18ea20200000030','50c47ecea172270200000152']  ;
+            var  secondaryCandidtes = ['50c468c9a17227020000011b','50c47ecea172270200000152','50c4810da172270200000158','50ca2e6f607aa2020000008f','50c47b3ba17227020000014e','50c45f7ea172270200000100'] ;
             //grab 3 quotes from each primary candidate
             _.each(primaryCandidtes,function(canditate_id){
                 quotes = _.union(quotes,weightedSelection(quotes_by_candidate[canditate_id],2));
