@@ -19,6 +19,7 @@
     body{
         margin: 0;
         font-family:arial;
+        background: #EDEDED url(../images/bg_top1.png) 0 0 repeat-x;
 
     }
 
@@ -777,6 +778,7 @@
                 if(response=='skip'){
                     skipped++;
                 }
+                $('.quote_source').show();
                 $('.quote_credit,.quote_party').slideDown();
                 quotes[current_qoute].response=  response;
                 $('#current_quote_photo img').attr('src',quotes[current_qoute].candidate.image_field_thumb.url).load(function() {

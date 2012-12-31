@@ -10,8 +10,8 @@ var models = require('../../../models')
 module.exports = function(req, res){
 
     var winners,
+        candidate_page=false,
         candidate_win_ratio=0,
-
         game_code       =req.session.election_game ? req.session.election_game.game_code:null;
         async.waterfall([
 
@@ -56,6 +56,7 @@ module.exports = function(req, res){
     if(err!=null){
         console.log(err);
         if(req.params[0]){
+            candidate_page=true;
             candidate_win_ratio=50;
             winners=[];
             winners.push({candidate :req.params[0] , score:70}) ;
@@ -115,8 +116,10 @@ module.exports = function(req, res){
                     winners: [first, second,  third],
                     second:second,
                     third:  third,
+                    candidate_page:candidate_page,
                     first_win_ratio: candidate_win_ratio ,
                     share_img:image_full_path,
+
                     quotes_count: _.keys(req.session.election_game).length -1
                 });
             }) ;
@@ -175,6 +178,7 @@ module.exports = function(req, res){
 
     function determineWinners(results){
         var candidates={};
+        var max_quotes=0;
         _.each(results, function(element, index, list){
             if(!candidates[element.candidate]) {
                 candidates[element.candidate]=[];
@@ -189,6 +193,9 @@ module.exports = function(req, res){
                     case 'positive':
                         score=5;
                         break;
+                    case 'skip':
+                        score=0;
+                        break;
                     case 'negative':
                         score=-5;
                         break;
@@ -197,12 +204,13 @@ module.exports = function(req, res){
                         break;
                 }
                 candidates[element.candidate].push(score);
+                max_quotes=Math.max(max_quotes,candidates[element.candidate].length)
             }
         } );
         candidates_scors=[];
         _.each(candidates, function(element, index, list){
             var sum=_.reduce(element, function(memo, num){ return memo + num; }, 0);
-            var final_score = Math.round( (10* sum)/ element.length );
+            var final_score = Math.round( (10* sum)/ element.length ) * Math.pow(0.95,(max_quotes-element.length));
             candidates_scors.push({candidate :index , score:final_score}) ;
         });
 

@@ -98,7 +98,7 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
             });
             async.waterfall([
                 function(cbk){
-                    var now= Date.now
+                    var now= Date.now()
                     models.QuoteGameGames.update({game_code: game_code}, {  $set:{ game_code: game_code , updated :now }, $inc:{"quote_count":1} }, {upsert: true}, function(err,count)
                     {
                         cbk(err,count);
