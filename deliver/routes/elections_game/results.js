@@ -17,7 +17,7 @@ module.exports = function(req, res){
 
         function(cbk){/// determine game results
             if(!game_code)  {
-                cbk('no game');
+                cbk('candidate page');
             }   else  {
 
                 winners= determineWinners(req.session.election_game);
@@ -111,7 +111,8 @@ module.exports = function(req, res){
             var share_token  = md5(share_query_string + req.app.settings.url2png_api_secret)
             var share_img="http://beta.url2png.com/v6/P503113E58ED4A/"+share_token+"/png/?"+share_query_string;
             var share_img_code=first._id+first.score+second._id+second.score+third._id+third.score;
-            download_file_httpget(share_img,share_img_code, function(err,image_full_path){
+            download_file_httpget(share_img,share_img_code,candidate_page, function(err,image_full_path){
+                 var quote_count= (req.session.election_game) ?  _.keys(req.session.election_game).length -1 :0;
                 res.render('elections_game_results.ejs', {
                     winners: [first, second,  third],
                     second:second,
@@ -119,14 +120,16 @@ module.exports = function(req, res){
                     candidate_page:candidate_page,
                     first_win_ratio: candidate_win_ratio ,
                     share_img:image_full_path,
-
-                    quotes_count: _.keys(req.session.election_game).length -1
+                    quotes_count: quote_count
                 });
             }) ;
         })
     });
 
-    var download_file_httpget = function(file_url,code,callback) {
+    var download_file_httpget = function(file_url,code,candidate_page,callback) {
+        if(candidate_page)   {
+            callback(null,null);
+        }
         models.QuoteGameGames.find({results_code: code}, function(err,count)
         {
             if(count.length>0) {
@@ -210,7 +213,7 @@ module.exports = function(req, res){
         candidates_scors=[];
         _.each(candidates, function(element, index, list){
             var sum=_.reduce(element, function(memo, num){ return memo + num; }, 0);
-            var final_score = Math.round( (10* sum)/ element.length ) * Math.pow(0.95,(max_quotes-element.length));
+            var final_score = Math.floor( ((10* sum)/ element.length ) * Math.pow(0.95,(max_quotes-element.length)));
             candidates_scors.push({candidate :index , score:final_score}) ;
         });
 

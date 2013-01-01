@@ -1424,8 +1424,14 @@
             <a class="results_share_icon"   href="javascript: void(0)">
                 שתף תוצאות
             </a>
-            <a class="results_share_icon"   href="javascript: void(0)"><img src="../images/icon_email_white.png" /></a>
-            <a class="results_share_icon"   href="javascript: void(0)"><img src="../images/icon_tw_white.png" /></a>
+            <a class="results_share_icon mail_share"
+               data-img_src="<%= share_img %>"
+               data-text_preview="אלה המועמדים לבחירות 2013 שאני הזדהיתי איתם. בואו לגלות במי אתם תומכים."
+               href="javascript: void(0)"><img src="../images/icon_email_white.png" /></a>
+            <a class="results_share_icon tw_share"
+               data-img_src="<%= share_img %>"
+               data-text_preview="אלה המועמדים לבחירות 2013 שאני הזדהיתי איתם. בואו לגלות במי אתם תומכים."
+               href="javascript: void(0)"><img src="../images/icon_tw_white.png" /></a>
 
             <a class="results_share_icon fb_share"
                rel="/elections_game"
@@ -1717,14 +1723,14 @@
 
            <div class="agendas" data-ind="<%=i%>">
                <div>
-                   <div  class="mishmar auto-scale"  style="width:93px; height:80px; overflow:hidden;margin-bottom: 10px; "  >
+                   <div  class="mishmar auto-scale"  style=" height:40px; overflow:hidden;margin-bottom: 10px; "  >
                        <img  src="../images/hamishmar.jpg" alt="המשמר החברתי"/>
 
                    </div>
                    המדד החברתי
                </div>
                <div>
-               <div class="edu auto-scale"  style="width:80px; height:80px; overflow:hidden;margin-bottom: 10px; "  >
+               <div class="edu auto-scale"  style=" height:40px; overflow:hidden;margin-bottom: 10px; "  >
                    <img  src="../images/mirsham.jpg" alt="מרשם"/>
 
 
@@ -1732,7 +1738,7 @@
                שיפור מערכת הבריאות
                </div>
                <div>
-               <div  class="mirsham auto-scale" style="margin-left:0;width:130px; height:80px; overflow:hidden;margin-bottom: 10px; "  >
+               <div  class="mirsham auto-scale" style="margin-left:0;height:40px; overflow:hidden;margin-bottom: 10px; "  >
                    <img  src="../images/hinuch.png" alt="חינוך ישראלי"/>
 
                </div>
@@ -1847,7 +1853,7 @@
     $(document).ready(function () {
 
         var winnder_id= '<%=winners[0]._id%>';
-        var winners= ["<%=winners[0].id%>","<%=winners[1].id%>","<%=winners[2].id%>"];
+        var winners= ["<%=winners[0]._id%>","<%=winners[1]._id%>","<%=winners[2]._id%>"];
         var name= ["<%=winners[0].name%>","<%=winners[1].name%>","<%=winners[2].name%>"];
         var score= ["<%=winners[0].score%>","<%=winners[1].score%>","<%=winners[2].score%>"];
         var open_knesset_id= ["<%=winners[0].open_knesset_id%>","<%=winners[1].open_knesset_id%>","<%=winners[2].open_knesset_id%>"];
@@ -2048,6 +2054,21 @@
 
             window.open('http://www.uru.org.il/cycles/5098eb8bc492d10200000024','_blank');
         });
+
+
+        $(".mail_share").click(function(){
+            var body='<img src="'+$(this).data('img_src') +'" />'  ;
+            window.location.href = "mailto:"+"?subject=" +  encodeURIComponent( $(this).data('text_preview') )  + "&body=" +body;
+            return false;
+        });
+        $(".tw_share").click(function(){
+            window.open('https://twitter.com/share?url=' + encodeURIComponent( $(this).data('img_src') ) + '&text=' +
+                //    encodeURIComponent(global.share_messages.a) + '&via=URUisrael', 'share-twitter', 'status=0,scrollbars=0,location=0,height=320,width=660,resizable=1'
+                    encodeURIComponent( $(this).data('text_preview') ) + '&via=URUisrael', 'share-twitter', 'status=0,scrollbars=0,location=0,height=320,width=660,resizable=1'
+            );
+            return false;
+        });
+
 
         $(".fb_share").click(function(){
 
