@@ -267,6 +267,12 @@
         bottom:0px;
         left:0px;
     }
+
+    .quote_credit{
+        display: none;
+    }
+
+
      .quote_source,
     .quote_credit{
         font-family:david;
@@ -302,6 +308,12 @@
     .quote_credit a:hover{
         text-decoration:underline;
     }
+    .quote_credit a.source{
+        font-weight: normal;
+        margin-right: 10px;
+        font-size: 14px;
+    }
+
 
     .quote_party{
         font-family:david;
@@ -579,6 +591,37 @@
     }
 
 
+   .pluginErrorLink{color:#f03d25}
+    .pluginButton{background:#eceef5;-webkit-border-radius:3px;border:1px solid #cad4e7;cursor:pointer;padding:2px 6px 4px;white-space:nowrap;color:#3b5998 ; font-size: 12px}
+    .pluginButtonInline{display:inline-block}
+    .pluginButtonX{cursor:default}
+    .pluginButton button{background:transparent;border:0;margin:-1px;padding:0;font:inherit;color:inherit;cursor:pointer}
+    .pluginButtonIcon{position:relative;top:3px;margin-right:3px}
+    .pluginButtonSmall{padding:1px 9px 2px 7px}
+    .pluginButtonSmall .pluginButtonIcon{margin-right:2px;}
+    .pluginButton:hover{border-color:#9dacce}
+    .pluginButtonPressed, .pluginButtonPressed:hover{background-color:#eee;border-color:#ddd;color:#aaa}
+    .pluginSkinDark .pluginButton{background-color:#c7c7c7;border-color:#999;color:#333}
+    .pluginSkinDark .pluginButton:hover{background-color:#d9d9d9;border-color:#ddd}
+    .pluginSkinDark .pluginButtonPressed, .pluginSkinDark .pluginButtonPressed:hover{background-color:#444;border-color:#555;color:#666}
+    .pluginButtonErrorLink{color:#a00;font-weight:bold}
+    .pluginButtonX .pluginButtonXOff, .pluginButtonX button:hover .pluginButtonXOn{display:inline-block}
+    .pluginButtonX .pluginButtonXOn, .pluginButtonX button:hover .pluginButtonXOff{display:none}
+    .pluginButton .pluginButtonThrobber, form.async_saving .pluginButtonIconWithThrobber{display:none}
+    form.async_saving .pluginButtonThrobber{display:inline-block;margin-top:2px;margin-bottom:1px;max-width:14px}.pluginCountButton{background:#fff;border:1px solid #c1c1c1;height:14px;line-height:14px;margin-left:6px;min-width:15px;padding:1px 2px;text-align:center;white-space:nowrap}
+    .pluginCountButtonNub{height:0;left:2px;position:relative;top:-14px;width:5px;z-index:2}
+    .pluginCountButtonNub s, .pluginCountButtonNub i{border-color:transparent #D7D7D7 transparent;border-style:solid;border-width:4px 5px 4px 0;display:block;position:relative;top:1px}
+    .pluginCountButtonNub i{border-right-color:#fff;left:2px;top:-7px}
+    .pluginCountButtonDark{background:#d7d7d7;border-color:#d7d7d7;color:#333}
+    .pluginCountButtonDarkNub i{display:none}.pluginCountTextConnected,
+                                             .pluginCountConnected .pluginCountTextDisconnected{display:none}
+    .pluginCountConnected .pluginCountTextConnected{display:inline}.sp_like{background-image:url(https://fbstatic-a.akamaihd.net/rsrc.php/v2/yI/x/1dQf_ATK831.png);background-repeat:no-repeat;display:inline-block;height:14px;width:14px}
+    .sx_like_fav{background-position:-0px -0px}
+    .sx_like_ch{background-position:-0px -15px}
+    .sx_like_x{background-position:-0px -30px}
+    .sx_like_thumb{background-position:-0px -45px}i.img{-ms-high-contrast-adjust:none;_overflow:hidden}
+    i.img u{position:absolute;top:-9999999px}
+
     </style>
 
 
@@ -586,13 +629,7 @@
 <body>
 
 
-<script>(function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
-    fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));
+<script>
 </script>
 <div id="wrapper">
     <img src="images/quote_photo.png" id="preload_img"  >
@@ -608,13 +645,17 @@
 
             <div id="social_holder">
 
-
-
                 <div class="social_item fb">
+                    <div class="pluginButton pluginButtonSmall pluginButtonInline pluginConnectButtonDisconnected" title="">
+                        <div>
+                            <button type="submit">Like
+                                <i class="pluginButtonIcon img sp_like sx_like_fav"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
 
-                    <div class="fb-like" data-href="http://www.uru.org.il/elections_game" data-send="false" data-font='arial' data-layout="button_count" data-width="450" data-show-faces="false"></div>
 
-               </div>
                 <!--
            <div class="social_item gp">
 
@@ -750,11 +791,11 @@
             db_functions.getQuoteGameQuotes(false,null,function (err, data) {
                 quotes=data.objects ;
                 current_qoute=-1;
-                played_quotes= data.meta.played_quotes;
+                played_quotes= data.meta.played_quotes||0;
                 if(played_quotes>20){
                     $(this).parents('#how_to_play').hide();
                 }
-                $("#total_qoute_count").text(data.objects.length + played_quotes ) ;
+                //$("#total_qoute_count").text(data.objects.length + played_quotes ) ;
                 showNextQoute();
             });
         }
@@ -773,8 +814,8 @@
                 if(response=='skip'){
                     skipped++;
                 }
-                $('.quote_source').show();
-                $('.quote_credit,.quote_party').slideDown();
+                $('.quote_credit').show();
+
                 quotes[current_qoute].response=  response;
                 $('#current_quote_photo img').attr('src',quotes[current_qoute].candidate.image_field_thumb.url).load(function() {
                     $('#current_quote_photo img').css('left', '-' +(($("#current_quote_photo img").width()-82)/2)+'px');
@@ -808,7 +849,7 @@
             progress(current_qoute+1 + played_quotes-skipped)
             dust.render('quote', quotes[current_qoute], function (err, out) {
                 $('#current_quote_holder').html(out);
-                $('.quote_credit,.quote_party').hide().removeClass('hide');
+
                 $('#current_quote_holder').show();
                 buttons_disabled=false;
             });
@@ -833,29 +874,45 @@
 
         });
 
-        //$('#social_holder').hide();
-        //$('.social_icon').hide();
-       /*
-        var facebookAppId = '<%= settings.facebook_app_id %>';
+        $('.pluginButton').click(function () {
 
-        var tag_name = "<% if (typeof tag_name !== "undefined") {%> <%= tag_name || '' %><% } %>";
-        var current_section=null;
-        $(document).ready(function () {
-            $('.tikunim-box h2').click(function () {
-                $(this).parent().toggleClass('active');
-            });
-        });
+            var facebookAppId = '<%= settings.facebook_app_id %>';
+            $.getScript("//connect.facebook.net/en_US/all.js", function () {
+                FB.init({
+                    appId:facebookAppId, // App ID local
+                    status:true, // check login status
+                    cookie:false, // enable cookies to allow the server to access the session
+                    xfbml:true, // parse XFBML
+                    oauth:true
+                });
+                var title='            פוליטיקלי קורקט- כל מה שצריך לדעת לפני ששמים את הפתק בקלפי';
+                var body='            דרגו את העמדה שלכם, גלו באיזה צד אתם במפה הפוליטית ואת כל המידע על המועמד ומפלגתו';
 
-        $.getScript("//connect.facebook.net/en_US/all.js", function () {
-            FB.init({
-                appId:facebookAppId, // App ID local
-                status:true, // check login status
-                cookie:false, // enable cookies to allow the server to access the session
-                xfbml:true, // parse XFBML
-                oauth:true
+                FB.ui(
+                    {
+                        method: 'feed',
+                        name:title,
+                        link: 'http://www.uru.org.il/elections_game',
+                        picture: 'http://www.uru.org.il/images/logo_game.png',
+                        // caption: title,
+                        description: body
+                    },
+                    function(response) {
+                        if (response && response.post_id) {
+                            alert('Post was published.');
+                        } else {
+                            alert('Post was not published.');
+                        }
+                    }
+                );
+
+
             });
-        });
-          */
+
+
+        }  );
+
+
     } );
 
 

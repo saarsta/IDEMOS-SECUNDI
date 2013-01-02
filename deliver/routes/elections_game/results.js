@@ -12,12 +12,17 @@ module.exports = function(req, res){
     var winners,
         candidate_page=false,
         candidate_win_ratio=0,
+        share_img_code,
         game_code       =req.session.election_game ? req.session.election_game.game_code:null;
         async.waterfall([
 
         function(cbk){/// determine game results
-            if(!game_code)  {
+
+            if( req.params[0])  {
                 cbk('candidate page');
+            } else
+            if(!game_code)  {
+                cbk('no game code');
             }   else  {
 
                 winners= determineWinners(req.session.election_game);
@@ -26,8 +31,8 @@ module.exports = function(req, res){
 
         },
         function(winners,cbk){ /// update game statistics
-            var share_img_code= winners[0].candidate + winners[0].score + winners[1].candidate + winners[1].score + winners[2].candidate + winners[2].score ;
-            models.QuoteGameGames.update({game_code: game_code}, { first :   winners[0].candidate, second :  winners[1].candidate,third :winners[2].candidate,results_code: share_img_code}, function(err,count)
+            share_img_code= winners[0].candidate + winners[0].score + winners[1].candidate + winners[1].score + winners[2].candidate + winners[2].score ;
+            models.QuoteGameGames.update({game_code: game_code}, { first :   winners[0].candidate, second :  winners[1].candidate,third :winners[2].candidate}, function(err,count)
             {
                 cbk(err,count);
             });
@@ -111,6 +116,7 @@ module.exports = function(req, res){
             var share_token  = md5(share_query_string + req.app.settings.url2png_api_secret)
             var share_img="http://beta.url2png.com/v6/P503113E58ED4A/"+share_token+"/png/?"+share_query_string;
             var share_img_code=first._id+first.score+second._id+second.score+third._id+third.score;
+            console.log (share_img);
             download_file_httpget(share_img,share_img_code,game_code,candidate_page, function(err,image_full_path){
                  var quote_count= (req.session.election_game) ?  _.keys(req.session.election_game).length -1 :0;
                 res.render('elections_game_results.ejs', {
@@ -129,12 +135,15 @@ module.exports = function(req, res){
     var download_file_httpget = function(file_url,image_code,game_code,candidate_page,callback) {
         if(candidate_page)   {
             callback(null,null);
+            return;
         }
-        models.QuoteGameGames.find({results_code: image_code,  game_code: { $ne: game_code }}, function(err,count)
+        models.QuoteGameGames.find({results_code: image_code}, function(err,count)
         {
-            if(count.length>0) {
-                callback(null,'http://uru.s3.amazonaws.com/'+image_code+'.png');
-            }   else  {
+//            if(count.length>0) {
+//                callback(null,'https://uru.s3.amazonaws.com/eg/'+image_code+'.png');
+//            }
+//            else
+//            {
                 var target = 'deliver/public/images/eg/' + image_code + '.png' ;
                 var options = {
                     host: url.parse(file_url).host,
@@ -165,14 +174,19 @@ module.exports = function(req, res){
                                 else {
                                     var path = res.socket._httpMessage.url;
                                     fs.unlink(value_full_path);
-                                    console.log("res.socket._httpMessage");
-                                    console.log(res.socket._httpMessage);
-                                    callback(null,path);
+                                    //console.log("res.socket._httpMessage");
+                                    //console.log(res.socket._httpMessage);
+                                    console.log( 'amazone upload success '+path);
+                                    models.QuoteGameGames.update({game_code: game_code}, {results_code: share_img_code}, function(err,count)
+                                    {
+                                        callback(null,path);
+                                    });
+
                                 }
                             });
                         });
                 });
-            }
+         //   }
 
         })
 

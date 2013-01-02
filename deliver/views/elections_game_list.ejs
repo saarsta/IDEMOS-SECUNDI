@@ -1370,13 +1370,13 @@
     #politicians_grid_holder .item{
         background:#f6f6f6;
         border: 1px solid #d7d8da;
-        width:260px;
+        width:194px;
         height:115px;
-        padding:25px 20px;
+        padding:14px 14px;
         color:#525252;
         float:right;
-        margin-left:17px;
-        margin-bottom:17px;
+        margin-left:14px;
+        margin-bottom:14px;
     }
 
     #politicians_grid_holder .item.last{
@@ -1396,18 +1396,45 @@
         color:#3B63EF;
         font-size:12px;
     }
+
+
+
+    .pluginErrorLink{color:#f03d25}
+    .pluginButton{background:#eceef5;-webkit-border-radius:3px;border:1px solid #cad4e7;cursor:pointer;padding:2px 6px 4px;white-space:nowrap;color:#3b5998 ; font-size: 12px}
+    .pluginButtonInline{display:inline-block}
+    .pluginButtonX{cursor:default}
+    .pluginButton button{background:transparent;border:0;margin:-1px;padding:0;font:inherit;color:inherit;cursor:pointer}
+    .pluginButtonIcon{position:relative;top:3px;margin-right:3px}
+    .pluginButtonSmall{padding:1px 9px 2px 7px}
+    .pluginButtonSmall .pluginButtonIcon{margin-right:2px;}
+    .pluginButton:hover{border-color:#9dacce}
+    .pluginButtonPressed, .pluginButtonPressed:hover{background-color:#eee;border-color:#ddd;color:#aaa}
+    .pluginSkinDark .pluginButton{background-color:#c7c7c7;border-color:#999;color:#333}
+    .pluginSkinDark .pluginButton:hover{background-color:#d9d9d9;border-color:#ddd}
+    .pluginSkinDark .pluginButtonPressed, .pluginSkinDark .pluginButtonPressed:hover{background-color:#444;border-color:#555;color:#666}
+    .pluginButtonErrorLink{color:#a00;font-weight:bold}
+    .pluginButtonX .pluginButtonXOff, .pluginButtonX button:hover .pluginButtonXOn{display:inline-block}
+    .pluginButtonX .pluginButtonXOn, .pluginButtonX button:hover .pluginButtonXOff{display:none}
+    .pluginButton .pluginButtonThrobber, form.async_saving .pluginButtonIconWithThrobber{display:none}
+    form.async_saving .pluginButtonThrobber{display:inline-block;margin-top:2px;margin-bottom:1px;max-width:14px}.pluginCountButton{background:#fff;border:1px solid #c1c1c1;height:14px;line-height:14px;margin-left:6px;min-width:15px;padding:1px 2px;text-align:center;white-space:nowrap}
+    .pluginCountButtonNub{height:0;left:2px;position:relative;top:-14px;width:5px;z-index:2}
+    .pluginCountButtonNub s, .pluginCountButtonNub i{border-color:transparent #D7D7D7 transparent;border-style:solid;border-width:4px 5px 4px 0;display:block;position:relative;top:1px}
+    .pluginCountButtonNub i{border-right-color:#fff;left:2px;top:-7px}
+    .pluginCountButtonDark{background:#d7d7d7;border-color:#d7d7d7;color:#333}
+    .pluginCountButtonDarkNub i{display:none}.pluginCountTextConnected,
+                                             .pluginCountConnected .pluginCountTextDisconnected{display:none}
+    .pluginCountConnected .pluginCountTextConnected{display:inline}.sp_like{background-image:url(https://fbstatic-a.akamaihd.net/rsrc.php/v2/yI/x/1dQf_ATK831.png);background-repeat:no-repeat;display:inline-block;height:14px;width:14px}
+    .sx_like_fav{background-position:-0px -0px}
+    .sx_like_ch{background-position:-0px -15px}
+    .sx_like_x{background-position:-0px -30px}
+    .sx_like_thumb{background-position:-0px -45px}i.img{-ms-high-contrast-adjust:none;_overflow:hidden}
+    i.img u{position:absolute;top:-9999999px}
+
     </style>
 
 </head>
 <body>
-<script>(function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
-    fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));
-</script>
+
 <div id="wrapper" class="politicians_page">
 <div id="header_wrapper">
     <div id="header_top">
@@ -1419,11 +1446,13 @@
         </div>
         <div id="social_holder">
             <div class="social_item fb">
-
-
-                <div class="fb-like" data-href="http://www.uru.org.il/elections_game" data-send="false" data-font='arial' data-layout="button_count" data-width="450" data-show-faces="false"></div>
-
-
+                <div class="pluginButton pluginButtonSmall pluginButtonInline pluginConnectButtonDisconnected" title="">
+                    <div>
+                        <button type="submit">Like
+                            <i class="pluginButtonIcon img sp_like sx_like_fav"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
             <!--
              <div class="social_item gp">
@@ -1469,7 +1498,7 @@
     <div id="page_title_holder">
         <h2>אינדקס הפוליטיקאים
             </h2>
-        <span><a href="">חזרה למשחק</a></span>
+        <span><a href="/elections_game">חזרה למשחק</a></span>
     </div>
 </div>
 <div id="content_wrapper">
@@ -1477,7 +1506,7 @@
         <div id="content_main_holder">
             <div id="politicians_grid_holder">
                 <% for (var c = 0; c <candidates.length ; c++) {  %>
-                <div class="item <%= c%3 ? 'last':'' %>">
+                <div class="item <%= c%4==3 ?'last':''%>">
                     <div class="photo"><img src="<%= candidates[c].image_field.url %>" /></div>
                     <div class="name"><%= candidates[c].name %></div>
                     <div class="party"><%= candidates[c].party_name %></div>
@@ -1488,68 +1517,59 @@
         </div>
     </div>
 </div>
-<div id="footer_wrapper">
-    <div id="footer_content">
-        <div class="col col_1">
-            <h3>קישורים מהירים</h3>
-            <ul>
-                <li><a href="">אודות עורו</a></li>
-                <li><a href="">הסיפור שלנו</a></li>
-                <li><a href="">בעיתונות</a></li>
-                <li><a href="">הצוות</a></li>
-                <li><a href="">תקנון האתר</a></li>
-                <li><a href="">כללי התנהלות באתר</a></li>
-            </ul>
-        </div>
-        <div class="col col_2">
-            <h3>מערכת האתר</h3>
-            <ul>
-                <li><a href="">שאלות נפוצות</a></li>
-                <li>
-                    מדריך למשתמש:
-                    <ul>
-                        <li><a href="">דיונים</a></li>
-                        <li><a href="">מעגלי תנופה</a></li>
-                        <li><a href="">פעולות</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-        <div class="col col_3">
-            <h3>צרו קשר</h3>
-            התנועה האזרחית החדשה בע"מ (חל"צ)<br/>
-            רחוב התעשייה 8, תל-אביב<br/>
-            טל' 03-7368600<br/>
-            פקס 03-7368700<br/>
-            <a href="mailto:info@uru.org.il">info@uru.org.il</a>
-        </div>
-        <div class="col col_4">
-            <h3>ברשתות החברתיות</h3>
-            <div id="social_icon_row">
-                <div class="social_icon">
-                    <a href="#"><img src="../images/icon_fb.png" /></a>
-                </div>
-                <div class="social_icon">
-                    <a href="#"><img src="../images/icon_tw.png" /></a>
-                </div>
-                <div class="social_icon">
-                    <a href="#"><img src="../images/icon_gp.png" /></a>
-                </div>
-            </div>
-            <div id="social_icon_row">
-                <div class="social_icon">
-                    <a href="#"><img src="../images/icon_yt.png" /></a>
-                </div>
-                <div class="social_icon">
-                    <a href="#"><img src="../images/icon_share.png" /></a>
-                </div>
-                <div class="social_icon">
-                    <a href="#"><img src="../images/icon_rss.png" /></a>
-                </div>
-            </div>
-        </div>
-    </div>
+    <% include partials/ections_game_footer.ejs %>
 </div>
-</div>
+<% include partials/includes.ejs %>
+<script type="text/javascript">
+
+
+    $(document).ready(function () {
+
+
+        $('.pluginButton').click(function () {
+
+            var facebookAppId = '<%= settings.facebook_app_id %>';
+            $.getScript("//connect.facebook.net/en_US/all.js", function () {
+                FB.init({
+                    appId:facebookAppId, // App ID local
+                    status:true, // check login status
+                    cookie:false, // enable cookies to allow the server to access the session
+                    xfbml:true, // parse XFBML
+                    oauth:true
+                });
+                var title='            פוליטיקלי קורקט- כל מה שצריך לדעת לפני ששמים את הפתק בקלפי';
+                var body='            דרגו את העמדה שלכם, גלו באיזה צד אתם במפה הפוליטית ואת כל המידע על המועמד ומפלגתו';
+
+                FB.ui(
+                        {
+                            method: 'feed',
+                            name:title,
+                            link: 'http://www.uru.org.il/elections_game',
+                            picture: 'http://www.uru.org.il/images/logo_game.png',
+                            // caption: title,
+                            description: body
+                        },
+                        function(response) {
+                            if (response && response.post_id) {
+                                alert('Post was published.');
+                            } else {
+                                alert('Post was not published.');
+                            }
+                        }
+                );
+
+
+            });
+
+
+        }  );
+
+
+    } );
+
+
+</script>
+
+
 </body>
 </html>

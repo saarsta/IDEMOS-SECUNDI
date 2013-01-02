@@ -63,7 +63,7 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
                                 qoute_by_candidte[o.candidate.id].push(o);
                             }
                             else{
-                                console.log(o._id);
+                               // console.log(o._id);
                             }
                         });
                         final_results.objects = shuffle(quoteSelection (qoute_by_candidte,25,(played_quotes.length>=25?false:true)));
