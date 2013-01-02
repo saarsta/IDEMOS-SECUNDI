@@ -7,10 +7,9 @@
     <meta property="og:type" content="website" />
     <meta property="og:title" content="פוליטיקלי קורקט: כל מה שצריך לדעת לפני ששמים את הפתק בקלפי" />
     <meta property="og:description" content="דרגו אמירות של מועמדים לכנסת, גלו באיזה צד אתם במפה הפוליטית ואת כל המידע על המועמד ומפלגתו" />
-    <meta property="og:image" content="http://www.uru.org.il/images/icon1.png" />
+    <meta property="og:image" content="http://www.uru.org.il/images/logo_game.png" />
     <meta property="og:site_name" content="עורו" />
     <meta property="og:url" content="http://www.uru.org.il/elections_game" />
-
 
     <meta property="fb:admins" content="1096517123,569038621,775273695"/>
     <meta property="fb:app_id" content="375874372423704"/>
@@ -18,6 +17,8 @@
 
     <% include partials/head_min.ejs %>
     <style>
+
+
     body{
         margin: 0;
         font-family:arial;
@@ -497,7 +498,7 @@
         display: none;
         position:relative;
         margin:auto;
-        width:730px;
+        width:900px;
         height:60px;
         padding:15px 20px;
         font-size:16px;
@@ -536,13 +537,51 @@
         float:right;
     }
 
+    .button_end_game a{
+        float:left;
+        margin-top: 5px;
+        background:url(images/sprite.png) no-repeat -310px -650px;
+        width:154px;
+        height:52px;
+        display:block;
+        border:0px;
+        padding-left:20px;
+        cursor:pointer;
+    }
+
+    .button_end_game input{
+
+        float:left;
+        margin-top: 5px;
+        background:url(images/sprite.png) no-repeat -310px -458px;
+        width:154px;
+        height:52px;
+        display:block;
+        border:0px;
+        padding-left:20px;
+        cursor:pointer;
+    }
+
+    .button_end_game input:hover{                         /* -524 */
+        background:url(images/sprite.png) no-repeat -310px -524px;
+    }
+
+    .button_end_game input:active{
+        background:url(images/sprite.png) no-repeat -310px -589px;
+    }
+
+    .button_end_game input.disabled{
+        background:url(images/sprite.png) no-repeat -310px -650px;
+    }
+
     .game_progress{
         width:481px;
         height:20px;
         display:block;
         background:url(images/bg_game_progress_bar.png) 0 0 no-repeat;
-        float:left;
+        float:right;
         margin-top:20px;
+        margin-right:20px;
         position:relative;
     }
 
@@ -629,8 +668,13 @@
 <body>
 
 
-<script>
-</script>
+<script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=375874372423704";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
 <div id="wrapper">
     <img src="images/quote_photo.png" id="preload_img"  >
     <div id="header_wrapper">
@@ -644,7 +688,7 @@
 
 
             <div id="social_holder">
-
+                 <!--
                 <div class="social_item fb">
                     <div class="pluginButton pluginButtonSmall pluginButtonInline pluginConnectButtonDisconnected" title="">
                         <div>
@@ -654,7 +698,12 @@
                         </div>
                     </div>
                 </div>
-
+                   -->
+                <div class="social_item fb">
+                    <div  style="width:80px;height: 20px ;left: 20px; overflow: hidden;position:absolute;direction: ltr; ">
+                    <div class="fb-like" data-href="http://www.uru.org.il/elections_game" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false"></div>
+                    </div>
+                </div>
 
                 <!--
            <div class="social_item gp">
@@ -673,7 +722,7 @@
                     </script>
                 </div>
             -->
-                <div class="social_item tw">
+                <div class="social_item tw" style="margin-top: 40px">
                     <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://http://www.uru.org.il/elections_game" data-text="פוליטיקלי קורקט: כל מה שצריך לדעת לפני ששמים את הפתק בקלפי דרגו אמירות של מועמדים לכנסת, גלו באיזה צד אתם במפה הפוליטית ואת כל המידע על המועמד ומפלגתו">Tweet</a>
                     <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
                 </div>
@@ -703,14 +752,16 @@
         </div>
     </div>
     <div id="content_wrapper">
+
+
         <div id="game_progress_holder">
             <div class="text">
-                <h2>שחקו יותר</h2>
-                <span>וקבלו תוצאות אמינות יותר</span>
+                <h2>דרגו 25 ציטוטים</h2>
+                <span>כדי לקבל תוצאות ראשוניות</span>
             </div>
             <div class="game_progress">
                 <div class="game_progress_bar"></div>
-                <div class="game_progress_bar_indicator"><img src="images/indicator.png" /></div>
+                <div class="game_progress_bar_indicator"><img src="images/indicator.png"></div>
                 <div class="game_progress_percentage">
                     <span style="right:0%;">0</span>
                     <span style="right:25%;">25</span>
@@ -719,7 +770,13 @@
                     <span style="right:102%;">100</span>
                 </div>
             </div>
+            <div class="button_end_game">
+                <input type="button" style="display:none">
+                <a ></a>
+            </div>
         </div>
+
+
         <div id="how_to_play">
             <h2>
             איך אני יודע באיזה צד אני במפה הפוליטית?
@@ -742,11 +799,6 @@
                           <span id="total_qoute_count"> </span>
 
             </div> -->
-            <div id="goto_results">
-                 <a  href="elections_game/results">
-                     עבור לתוצאות
-                 >></a>
-            </div>
 
             <div id="current_quote_holder">
 
@@ -838,11 +890,25 @@
                 loadQoutes();
                 return ;
             }
-            if(current_qoute+1 + played_quotes-skipped > 25 ){
+            if(current_qoute+1 + played_quotes - skipped < 25 ){
+                $('#game_progress_holder .text h2').text('דרגו 25 ציטוטים');
+                $('#game_progress_holder .text span').text('כדי לקבל תוצאות ראשוניות');
+            }
+            if(current_qoute+1 + played_quotes - skipped >= 25 ){
                 $('#how_to_play').hide();
                 $('#game_progress_holder').show();
-                $('#goto_results').show();
-
+                $('.button_end_game a').hide();
+                $('.button_end_game input').show();
+                $('#game_progress_holder .text h2').text('דרגו 50 ציטוטים');
+                $('#game_progress_holder .text span').text('כדי לקבל תוצאות בסיסיות');
+            }
+            if(current_qoute+1 + played_quotes - skipped >= 50 ){
+                $('#game_progress_holder .text h2').text('דרגו 75 ציטוטים');
+                $('#game_progress_holder .text span').text('כדי לקבל תוצאות מבוססות');
+            }
+            if(current_qoute+1 + played_quotes - skipped >= 75 ){
+                $('#game_progress_holder .text h2').text('דרגו 100 ציטוטים');
+                $('#game_progress_holder .text span').text('כדי לקבל תוצאות אמינות');
             }
             $('#preload_img').attr('src',quotes[current_qoute].candidate.image_field_thumb.url);
             $("#current_qoute_count").text(current_qoute+1 + played_quotes-skipped)  ;
@@ -854,7 +920,7 @@
                 buttons_disabled=false;
             });
         }
-        $('.end_game').click(function () {
+        $('.button_end_game input').click(function () {
             completeGame();
         });
 
