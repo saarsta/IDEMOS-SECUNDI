@@ -126,7 +126,8 @@ module.exports = function(req, res){
                     candidate_page:candidate_page,
                     first_win_ratio: candidate_win_ratio ,
                     share_img:image_full_path ? image_full_path.replace('https', 'http'):null,
-                    quotes_count: quote_count
+                    quotes_count: quote_count ,
+                    user_logged: req.isAuthenticated()
                 });
             }) ;
         })

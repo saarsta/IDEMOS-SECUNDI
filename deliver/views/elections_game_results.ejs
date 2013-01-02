@@ -575,12 +575,52 @@
         var prev_party_name= ["<%=winners[0].party_18th_knesset.name%>","<%=winners[1].party_18th_knesset.name%>","<%=winners[2].party_18th_knesset.name%>"];
         var data_loaded= [false,false,false];
         var short_mage_link;
-        <% if(candidate_page==false) { %>
+        <% if(!user_logged &&  candidate_page==false) { %>
         dust.render('elections_game_disclaimer', null, function (err, out) {
             $.colorbox({
                 html:out,
-                onComplete:function(e){
+                onComplete:function (e) {
+                    $('#login_pop_form').submit(function() {
+                        // get all the inputs into an array.
+                        var $inputs = $('#login_pop_form :input');
 
+                        // get an associative array of just the values.
+                        var values = {};
+                        $inputs.each(function() {
+                            values[this.name] = $(this).val();
+                        });
+
+                        db_functions.login(values["email"], values["password"], function(err, result){
+                            if(err){
+                             //   callback(err);
+                                // $("#login_title").text("נסה שוב");
+                                $(".login-popup .noalert").hide();
+                                $(".login-popup .alert").show();
+                            }
+                            else{
+                                $(document).one('cbox_closed', function(){
+                                    window.location.reload() ;
+                              //      callback(err, result);
+                                });
+                            //    $.colorbox.close();
+                            }
+                        });
+                    });
+
+                    $("#fb_ajax_conncect").live('click', function(){
+                        facebookLogin(function(err, result){
+                            if(err) {
+                            /*
+                                $(document).one('cbox_closed', function(){
+                                    callback(err, result);
+                                }); */
+                                $.colorbox.close();
+
+                            }else{
+                                window.location.reload() ;
+                            }
+                        })
+                    })
                 },
                 onClosed:function(){
 
