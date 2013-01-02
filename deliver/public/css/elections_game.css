@@ -1393,6 +1393,7 @@ i.img u{position:absolute;top:-9999999px}
 }
 
 #content_right_holder .segment.about .social_holder{
+    display:none;
     margin-top: 20px;
     background: url(/images/bg_social_small.png) no-repeat 0 0;
     width: 190px;
