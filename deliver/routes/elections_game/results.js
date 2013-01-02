@@ -117,19 +117,22 @@ module.exports = function(req, res){
             var share_img="http://beta.url2png.com/v6/P503113E58ED4A/"+share_token+"/png/?"+share_query_string;
             var share_img_code=first._id+first.score+second._id+second.score+third._id+third.score;
             console.log (share_img);
+
+            var quote_count= (req.session.election_game) ?  _.keys(req.session.election_game).length -1 :0;
             download_file_httpget(share_img,share_img_code,game_code,candidate_page, function(err,image_full_path){
-                 var quote_count= (req.session.election_game) ?  _.keys(req.session.election_game).length -1 :0;
-                res.render('elections_game_results.ejs', {
-                    winners: [first, second,  third],
-                    second:second,
-                    third:  third,
-                    candidate_page:candidate_page,
-                    first_win_ratio: candidate_win_ratio ,
-                    share_img:image_full_path ? image_full_path.replace('https', 'http'):null,
-                    quotes_count: quote_count ,
-                    user_logged: req.isAuthenticated()
-                });
+
             }) ;
+            res.render('elections_game_results.ejs', {
+                winners: [first, second,  third],
+                second:second,
+                third:  third,
+                candidate_page:candidate_page,
+                first_win_ratio: candidate_win_ratio ,
+                share_img:'http://uru.s3.amazonaws.com/eg/'+share_img_code+'.png',
+                quotes_count: quote_count ,
+                user_logged: req.isAuthenticated()
+            });
+
         })
     });
 
