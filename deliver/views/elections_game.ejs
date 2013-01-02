@@ -847,7 +847,7 @@
 
         function loadQoutes(){
             db_functions.getQuoteGameQuotes(false,null,function (err, data) {
-                if(err || !data){
+                if(err != 'success'){
                     window.location.reload() ;
                 }
                 quotes=data.objects ;
