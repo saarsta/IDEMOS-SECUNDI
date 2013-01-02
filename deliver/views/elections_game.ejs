@@ -847,6 +847,9 @@
 
         function loadQoutes(){
             db_functions.getQuoteGameQuotes(false,null,function (err, data) {
+                if(err || !data){
+                    window.location.reload() ;
+                }
                 quotes=data.objects ;
                 current_qoute=-1;
                 played_quotes= data.meta.played_quotes||0;
