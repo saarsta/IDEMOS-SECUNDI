@@ -1884,7 +1884,7 @@
         var prev_party_sandtalk_id= ["<%=winners[0].party_18th_knesset.sandtalk_id%>","<%=winners[1].party_18th_knesset.sandtalk_id%>","<%=winners[2].party_18th_knesset.sandtalk_id%>"];
         var prev_party_name= ["<%=winners[0].party_18th_knesset.name%>","<%=winners[1].party_18th_knesset.name%>","<%=winners[2].party_18th_knesset.name%>"];
         var data_loaded= [false,false,false];
-
+        var short_mage_link;
         <% if(candidate_page==false) { %>
         dust.render('elections_game_disclaimer', null, function (err, out) {
             $.colorbox({
@@ -2083,6 +2083,11 @@
 
 
         }
+        $.getJSON("https://api-ssl.bitly.com/v3/shorten?login=uruisrael&apiKey=R_7929afdab1ef8768426adafd8c1542f3&longUrl="+encodeURIComponent( $(".fb_share").data('img_src'))+ "&callback=?", null,function(data) {
+            short_mage_link =data.data.url;
+        });
+
+
 
         $(".commit").click(function(){
 
@@ -2091,12 +2096,12 @@
 
 
         $(".mail_share").click(function(){
-            var body='<img src="'+$(this).data('img_src') +'" />'  ;
+            var body=encodeURIComponent(short_mage_link)  ;
             window.location.href = "mailto:"+"?subject=" +  encodeURIComponent( $(this).data('text_preview') )  + "&body=" +body;
             return false;
         });
         $(".tw_share").click(function(){
-            window.open('https://twitter.com/share?url=' + encodeURIComponent( $(this).data('img_src') ) + '&text=' +
+            window.open('https://twitter.com/share?url=' + encodeURIComponent( short_mage_link ) + '&text=' +
                 //    encodeURIComponent(global.share_messages.a) + '&via=URUisrael', 'share-twitter', 'status=0,scrollbars=0,location=0,height=320,width=660,resizable=1'
                     encodeURIComponent( $(this).data('text_preview') ) + '&via=URUisrael', 'share-twitter', 'status=0,scrollbars=0,location=0,height=320,width=660,resizable=1'
             );
@@ -2204,9 +2209,9 @@
                         },
                         function(response) {
                             if (response && response.post_id) {
-                                alert('Post was published.');
+                         //       alert('Post was published.');
                             } else {
-                                alert('Post was not published.');
+                         //       alert('Post was not published.');
                             }
                         }
                 );

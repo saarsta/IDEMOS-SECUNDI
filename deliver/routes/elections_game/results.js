@@ -112,7 +112,7 @@ module.exports = function(req, res){
 
             var share_url="uru-staging.herokuapp.com/elections_game/image?first_id="+first._id+"&first_score="+first.score+"&second_id="+second._id+"&second_score="+second.score+"&third_id="+third._id+"&third_score="+third.score;
             var share_url_encoded=encodeURIComponent(share_url);
-            var share_query_string="url="+share_url_encoded+"&viewport=870x447";
+            var share_query_string="url="+share_url_encoded+"&viewport=880x447";
             var share_token  = md5(share_query_string + req.app.settings.url2png_api_secret)
             var share_img="http://beta.url2png.com/v6/P503113E58ED4A/"+share_token+"/png/?"+share_query_string;
             var share_img_code=first._id+first.score+second._id+second.score+third._id+third.score;
@@ -125,7 +125,7 @@ module.exports = function(req, res){
                     third:  third,
                     candidate_page:candidate_page,
                     first_win_ratio: candidate_win_ratio ,
-                    share_img:image_full_path,
+                    share_img:image_full_path.replace('https', 'http'),
                     quotes_count: quote_count
                 });
             }) ;
@@ -139,11 +139,11 @@ module.exports = function(req, res){
         }
         models.QuoteGameGames.find({results_code: image_code}, function(err,count)
         {
-//            if(count.length>0) {
-//                callback(null,'https://uru.s3.amazonaws.com/eg/'+image_code+'.png');
-//            }
-//            else
-//            {
+            if(count.length>0) {
+                callback(null,'https://uru.s3.amazonaws.com/eg/'+image_code+'.png');
+            }
+            else
+            {
                 var target = 'deliver/public/images/eg/' + image_code + '.png' ;
                 var options = {
                     host: url.parse(file_url).host,
@@ -186,7 +186,7 @@ module.exports = function(req, res){
                             });
                         });
                 });
-         //   }
+            }
 
         })
 
