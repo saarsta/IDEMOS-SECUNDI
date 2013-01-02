@@ -84,7 +84,7 @@ module.exports = function(req, res){
             response.end();
           */
     models.QuoteGameCandidate.find({ _id:  {$in:[winners[0].candidate,winners[1].candidate, winners[2].candidate]}})
-        .populate('party_19th_knesset', { _id: 1, name: 1 , overview:1, wikipedia_link:1,open_knesset_id:1,sandtalk_id:1 })
+        .populate('party_19th_knesset', { _id: 1, name: 1 , overview:1, wikipedia_link:1,open_knesset_id:1,sandtalk_id:1,platform:1 })
         .populate('party_18th_knesset', { _id: 1, name:1, open_knesset_id:1,sandtalk_id:1})
         // .populate("proxy.user_id"/*,['id','_id','first_name','last_name','avatar','facebook_id','num_of_given_mandates', "followers",'score','num_of_proxies_i_represent']*/)
         .exec(function(err, candidates){
@@ -125,7 +125,7 @@ module.exports = function(req, res){
                     third:  third,
                     candidate_page:candidate_page,
                     first_win_ratio: candidate_win_ratio ,
-                    share_img:image_full_path.replace('https', 'http'),
+                    share_img:image_full_path ? image_full_path.replace('https', 'http'):null,
                     quotes_count: quote_count
                 });
             }) ;

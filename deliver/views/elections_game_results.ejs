@@ -1026,7 +1026,7 @@
     span.remark{
         font-style:italic;
         color:#7f7f7e;
-        font-size:15px;
+        font-size:17px;
         width:500px;
         display:block;
         margin:10px;
@@ -1665,7 +1665,7 @@
                         <div class="contact_detail_holder">
 
                             <div class="detail_value fb">
-                                <a href="<%= cand.facebook %>">
+                                <a  target="_blank"  href="<%= cand.facebook %>">
 
 פייסבוק
                                 </a>
@@ -1713,11 +1713,18 @@
             <div class="header">
                 <div class="item logo"><img src="../images/icon_hatnua.png" /></div>
                 <div class="item title">מבחן איכות השלטון</div>
-                <div class="item link"><a href="">לקריאה נוספת באתר התנועה לאיכות השלטון</a></div>
+
             </div>
             <div class="text">
                 <%=cand.governence_quality_text%>
+                <% if(cand.governence_quality_link) { %>
+                <br><div class="item link" style="float:left"><a  target="_blank"  href="  <%=cand.governence_quality_link%>">לקריאה נוספת באתר התנועה לאיכות השלטון</a></div>
+                <% } %>
             </div>
+
+
+
+
 
         </div>
 
@@ -1742,14 +1749,14 @@
 
            <div class="agendas" data-ind="<%=i%>">
                <div>
-                   <div  class="mishmar auto-scale"  style=" height:40px; overflow:hidden;margin-bottom: 10px; "  >
+                   <div  class="mishmar auto-scale"  style=" height:40px; width:47px;overflow:hidden;margin-bottom: 10px; "  >
                        <img  src="../images/hamishmar.jpg" alt="המשמר החברתי"/>
 
                    </div>
                    המדד החברתי
                </div>
                <div>
-               <div class="edu auto-scale"  style=" height:40px; overflow:hidden;margin-bottom: 10px; "  >
+               <div class="edu auto-scale"  style=" height:40px;width:40px; overflow:hidden;margin-bottom: 10px; "  >
                    <img  src="../images/mirsham.jpg" alt="מרשם"/>
 
 
@@ -1757,7 +1764,7 @@
                שיפור מערכת הבריאות
                </div>
                <div>
-               <div  class="mirsham auto-scale" style="margin-left:0;height:40px; overflow:hidden;margin-bottom: 10px; "  >
+               <div  class="mirsham auto-scale" style="margin-left:0;height:40px;width:65px; overflow:hidden;margin-bottom: 10px; "  >
                    <img  src="../images/hinuch.png" alt="חינוך ישראלי"/>
 
                </div>
@@ -1773,6 +1780,14 @@
                 <div class="item logo"><img src="../images/icon_kahol.png" /></div>
                 <div class="item title">מדדי כחול להסכמה ואמון</div>
                 <div class="item link"><a target="_blank" href="<%= cand.sandtalk_link %>">לאתר כחול</a></div>
+            </div>
+            <div class="text">
+
+                <span class="remark">
+כחול הינו אתר פוליטי חברתי המתעד הבטחות, תחזיות ואמירות של פוליטיקאים, אנשי ציבור, אנשי רוח, תרבות וספורט בישראל, ומאפשר לגולשים למיין אותן במבחר חיתוכים, להצביע על אמינות ההחלטות, ולהביע הסכמה או התנגדות על כל התבטאות בנפרד
+                </span>
+                <hr />
+
             </div>
             <div class="text" id="sandtalk<%=i%>">
 
@@ -1799,7 +1814,7 @@
                             <td> <%= cand.doners[c].nis %>
                                 ש"ח
                             </td>
-                            <td><% if (cand.doners[c].date) { %><%= cand.doners[c].date.format('dd/mm/yyyy') %>   <% }%></td>
+                            <td><% if (cand.doners[c].date) {var d= new Date(Date.parse( cand.doners[c].date)).format('dd/mm/yyyy') %><%= d %>   <% }%></td>
                             <td><%= cand.doners[c].location %></td>
                         </tr>
                     <% }}%>
@@ -1968,17 +1983,17 @@
 
         $('.agendas .mishmar').click(function(){
          //   $('.remark').html("            דירוג המועמד בהתאם להצבעותיו סביב הצעות החוק הרלוונטיות לאג'נדת                                            <b>             המדד החברתי                 </b>                  על פי ניתוח דפוסי הצבעה ונתוני \"כנסת פתוחה\".                ");
-            var ind=$(this).parent().data('ind');
+            var ind=$(this).parent().parent().data('ind');
             loadAgenda(ind,74)
         }) ;
         $('.agendas .edu').click(function(){
          //   $('.remark').html("            דירוג המועמד בהתאם להצבעותיו סביב הצעות החוק הרלוונטיות לאג'נדת                                            <b>             המדד החברתי                 </b>                  על פי ניתוח דפוסי הצבעה ונתוני \"כנסת פתוחה\".                ");
-            var ind=$(this).parent().data('ind');
+            var ind=$(this).parent().parent().data('ind');
             loadAgenda(ind,61)
         }) ;
         $('.agendas .mirsham').click(function(){
          //   $('.remark').html("            דירוג המועמד בהתאם להצבעותיו סביב הצעות החוק הרלוונטיות לאג'נדת                                            <b>             המדד החברתי                 </b>                  על פי ניתוח דפוסי הצבעה ונתוני \"כנסת פתוחה\".                ");
-            var ind=$(this).parent().data('ind');
+            var ind=$(this).parent().parent().data('ind');
             loadAgenda(ind,66)
 
         }) ;
@@ -2029,7 +2044,7 @@
 
 
         function loadAgenda(ind,agenda){
-            $('#openk_'+ind).attr('src','http://ydaniv.github.com/ok-agenda-viz/?agenda_id='+agenda);
+            $('#openk_'+ind).attr('src','http://ydaniv.github.com/ok-agenda-viz/?agenda_id='+agenda+"#member_"+open_knesset_id[ind]);
            // $('#openk_'+ind).attr('src','http://ydaniv.github.com/ok-agenda-viz/?agenda_id='+agenda+'#party_'+prev_party_open_knesset_id[ind]);
         }
         function getCandidateData(i){
