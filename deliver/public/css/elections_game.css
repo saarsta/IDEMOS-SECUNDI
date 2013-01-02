@@ -792,20 +792,22 @@ blockquote{
 }
 
 #content_right_holder .segment.about .bubble {
+    margin-top: 20px;
     background-color: #f8f3de;
     border-radius: 5px;
     box-shadow: 0 1px 1px rgba(255, 255, 255, 0.5) inset, 2px 2px 3px rgba(0, 0, 0, 0.1);
     color: #4d4d4d;
     display: inline-block;
     font-size:18px;
-    text-align:center;
-    padding: 15px 25px;
+    text-align:right;
+    padding: 13px 25px;
     position: relative;
-    width:500px;
-    margin-top: 20px;
+    width:330px;
     margin-bottom: 35px;
-    margin-right: 30px;
+    margin-right: 0px;
+
 }
+
 
 #content_right_holder .segment.about .bubble span{
     font-weight:bold;
@@ -826,6 +828,9 @@ blockquote{
     bottom: -25px;
     right: 22px;
 }​
+
+
+
 
 #content_right_holder .segment.about .text h2{
      font-size:18px;
@@ -1373,4 +1378,27 @@ i.img u{position:absolute;top:-9999999px}
 
     background: white url(/images/URU_sign.up_btn_sprite.png) 0 0 no-repeat;
 
+}
+
+.share_icon{
+    color:#3b63ef;
+    font-size:18px;
+    text-decoration:none;
+    margin: 0 2px;
+}
+
+.share_icon img{
+    position:relative;
+    top:3px;
+}
+
+#content_right_holder .segment.about .social_holder{
+    margin-top: 20px;
+    background: url(/images/bg_social_small.png) no-repeat 0 0;
+    width: 190px;
+    height: 38px;
+    display: block;
+    float: left;
+    padding-top: 12px;
+    padding-right: 16px;
 }

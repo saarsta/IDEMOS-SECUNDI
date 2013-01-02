@@ -252,6 +252,14 @@
                 <%= cand.name %>
             </div>
 
+
+            <div class="social_holder">
+                <a class="share_icon" href="javascript:void(0);">שתף דף מידע</a>
+                <a class="share_icon" id="candidate_mail" href="javascript:void(0);"><img src="/images/icon_email_small_blue.png"></a>
+                <a class="share_icon" id="candidate_tw" href="javascript:void(0);"><img src="/images/icon_tw_small_blue.png"></a>
+                <a class="share_icon" id="candidate_fb"  href="javascript:void(0);" data-id="<%= cand.id %>" data-name="<%= cand.name %>"><img src="/images/icon_fb_small_blue.png"></a>
+            </div>
+
             <div class="text">
                 <div class="col_right">
                     <div class="about_politician">
@@ -867,6 +875,27 @@
             );
             return false;
         });
+      /*
+        $("#candidate_fb").click(function(){
+            FB.ui(
+                    {
+                        method: 'feed',
+                        link: link,
+                        name: title,
+                        picture: image,
+                        caption: body,
+                        description: ' '
+                    },
+                    function(response) {
+                        if (response && response.post_id) {
+                            alert('Post was published.');
+                        } else {
+                            alert('Post was not published.');
+                        }
+                    }
+            );
+        } );
+       */
 
         $('.pluginButton').click(function () {
 
