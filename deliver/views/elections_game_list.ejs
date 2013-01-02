@@ -1400,7 +1400,14 @@
 
 </head>
 <body>
-
+<script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+</script>
 <div id="wrapper" class="politicians_page">
 <div id="header_wrapper">
     <div id="header_top">
@@ -1414,10 +1421,8 @@
             <div class="social_item fb">
 
 
+                <div class="fb-like" data-href="http://www.uru.org.il/elections_game" data-send="false" data-font='arial' data-layout="button_count" data-width="450" data-show-faces="false"></div>
 
-                <a id="fb-share" style='text-decoration:none;' type="icon_link" onClick="window.open('http://www.facebook.com/sharer.php?s=100&amp;p[title]=דרגו אמירות של מועמדים לכנסת, גלו באיזה צד אתם במפה הפוליטית ואת כל המידע על המועמד ומפלגתו&amp;p[summary]=דרגו את העמדה שלכם, גלו באיזה צד אתם במפה הפוליטית ואת כל המידע על המועמד ומפלגתו&amp;p[url]=http://www.uru.org.il/elections_game&amp;p[images][0]=http://www.uru.org.il/../images/icon1.png','sharer','toolbar=0,status=0,width=580,height=325');" href="javascript: void(0)">
-                    <img src="../../images/facebook-share.jpg" width="72"  alt="Share"/>
-                </a>
 
             </div>
             <!--

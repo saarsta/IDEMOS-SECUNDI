@@ -111,7 +111,7 @@ module.exports = function(req, res){
             var share_token  = md5(share_query_string + req.app.settings.url2png_api_secret)
             var share_img="http://beta.url2png.com/v6/P503113E58ED4A/"+share_token+"/png/?"+share_query_string;
             var share_img_code=first._id+first.score+second._id+second.score+third._id+third.score;
-            download_file_httpget(share_img,share_img_code,candidate_page, function(err,image_full_path){
+            download_file_httpget(share_img,share_img_code,game_code,candidate_page, function(err,image_full_path){
                  var quote_count= (req.session.election_game) ?  _.keys(req.session.election_game).length -1 :0;
                 res.render('elections_game_results.ejs', {
                     winners: [first, second,  third],
@@ -126,16 +126,16 @@ module.exports = function(req, res){
         })
     });
 
-    var download_file_httpget = function(file_url,code,candidate_page,callback) {
+    var download_file_httpget = function(file_url,image_code,game_code,candidate_page,callback) {
         if(candidate_page)   {
             callback(null,null);
         }
-        models.QuoteGameGames.find({results_code: code}, function(err,count)
+        models.QuoteGameGames.find({results_code: image_code,  game_code: { $ne: game_code }}, function(err,count)
         {
             if(count.length>0) {
-                callback(null,'http://uru.s3.amazonaws.com/'+code+'.png');
+                callback(null,'http://uru.s3.amazonaws.com/'+image_code+'.png');
             }   else  {
-                var target = 'deliver/public/images/eg/' + code + '.png' ;
+                var target = 'deliver/public/images/eg/' + image_code + '.png' ;
                 var options = {
                     host: url.parse(file_url).host,
                     port: 80,
@@ -213,7 +213,7 @@ module.exports = function(req, res){
         candidates_scors=[];
         _.each(candidates, function(element, index, list){
             var sum=_.reduce(element, function(memo, num){ return memo + num; }, 0);
-            var final_score = Math.floor( ((10* sum)/ element.length ) * Math.pow(0.95,(max_quotes-element.length)));
+            var final_score = Math.floor( ((10* sum)/ element.length ) * Math.pow(0.9,(max_quotes-element.length)));
             candidates_scors.push({candidate :index , score:final_score}) ;
         });
 

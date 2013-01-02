@@ -55,12 +55,15 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
                             played_quotes.push(propertyName);
                         }
                         _.each(results.objects,function(o){
-                            if(_.indexOf(played_quotes, o._id)==-1 && o.priority > 0 ) {
+                            if(_.indexOf(played_quotes, o.id)==-1 && o.priority > 0 ) {
                                 if( !qoute_by_candidte[o.candidate.id]) {
                                     qoute_by_candidte[o.candidate.id]=[];
                                 }
 
                                 qoute_by_candidte[o.candidate.id].push(o);
+                            }
+                            else{
+                                console.log(o._id);
                             }
                         });
                         final_results.objects = shuffle(quoteSelection (qoute_by_candidte,25,(played_quotes.length>=25?false:true)));

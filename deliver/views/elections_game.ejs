@@ -4,7 +4,6 @@
     <title>פוליטיקלי קורקט</title>
 
 
-
     <meta property="og:type" content="website" />
     <meta property="og:title" content="פוליטיקלי קורקט: כל מה שצריך לדעת לפני ששמים את הפתק בקלפי" />
     <meta property="og:description" content="דרגו אמירות של מועמדים לכנסת, גלו באיזה צד אתם במפה הפוליטית ואת כל המידע על המועמד ומפלגתו" />
@@ -12,7 +11,10 @@
     <meta property="og:site_name" content="עורו" />
     <meta property="og:url" content="http://www.uru.org.il/elections_game" />
 
-    <!-- Bootstrap -->
+
+    <meta property="fb:admins" content="1096517123,569038621,775273695"/>
+    <meta property="fb:app_id" content="375874372423704"/>
+    <!-- 375874372423704  175023072601087-->
 
     <% include partials/head_min.ejs %>
     <style>
@@ -583,17 +585,14 @@
 </head>
 <body>
 
-<script>
-    /*
-    (function(d, s, id) {
+
+<script>(function(d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0];
     if (d.getElementById(id)) return;
     js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/he_IL/all.js#xfbml=1";
+    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
-          */
-
 </script>
 <div id="wrapper">
     <img src="images/quote_photo.png" id="preload_img"  >
@@ -613,13 +612,9 @@
 
                 <div class="social_item fb">
 
+                    <div class="fb-like" data-href="http://www.uru.org.il/elections_game" data-send="false" data-font='arial' data-layout="button_count" data-width="450" data-show-faces="false"></div>
 
-
-                    <a id="fb-share" style='text-decoration:none;' type="icon_link" onClick="window.open('http://www.facebook.com/sharer.php?s=100&amp;p[title]=פוליטיקלי קורקט: כל מה שצריך לדעת לפני ששמים את הפתק בקלפי&amp;p[summary]=דרגו אמירות של מועמדים לכנסת, גלו באיזה צד אתם במפה הפוליטית ואת כל המידע על המועמד ומפלגתו&amp;p[url]=http://www.uru.org.il/elections_game&amp;p[images][0]=http://www.uru.org.il/images/icon1.png','sharer','toolbar=0,status=0,width=580,height=325');" href="javascript: void(0)">
-                        <img src="images/facebook-share.jpg" width="72" alt="Share"/>
-                    </a>
-
-                </div>
+               </div>
                 <!--
            <div class="social_item gp">
 
