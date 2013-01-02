@@ -119,7 +119,7 @@ var User = module.exports = new Schema({
     has_voted: [String] ,
     quote_game: {
         played: {type : Boolean, "default": false}  ,
-        games :[{type:ObjectId, ref:'QuoteGameGames'}] ,
+        games :[String] ,
         quotes_count: {type: Number, 'default': 0, editable: false},
         quotes:[{quote: {type:ObjectId, ref:'QuoteGameQuote'},selection: String}]
     }

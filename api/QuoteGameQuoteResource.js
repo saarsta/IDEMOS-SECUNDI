@@ -2,7 +2,10 @@
 var common = require('./common')
 models = require('../models'),
     async = require('async'),
-    _ = require('underscore');;
+    mongoose = require('mongoose'),
+    _ = require('underscore');
+
+
 
 var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
     {
@@ -108,17 +111,15 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
                     });
                 },
                 function(result, cbk){
-
-                   // var qu = quote_id+"_"+req.body.response;
                     qu={quote:quote_id ,selection:req.body.response}
                     if(user_id!="") {
-                        models.User.update({_id: user_id}, { $set:{ "quote_game.played": true} ,
-                                                            $inc:{"quote_game.quotes_count":1} ,
-                                                            $addToSet:{"quote_game.quotes" : qu } ,
-                                                            $addToSet:{"quote_game.games" : game_code }
-
-                        }, function(err,count)
-                        {
+                        models.User.update({_id: user_id}, {
+                            $set:       { "quote_game.played": true} ,
+                            $inc:       {"quote_game.quotes_count":1} ,
+                            $addToSet:  {"quote_game.quotes" : qu } ,
+                            $addToSet:  {"quote_game.games" : game_code }
+                        }, function(err,count)  {
+                            console.log(err);
                             cbk(err,count);
                         });
                      } else {
@@ -144,6 +145,7 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
 
                 } */
             ],function(err, result){
+                console.log('end');
                 var played_quotes=[];
 
                 for(var propertyName in req.session.election_game) {
