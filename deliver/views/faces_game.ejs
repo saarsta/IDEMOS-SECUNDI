@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
-    <title>uru</title>
-    <meta name="description" content="uru" />
-    <meta property="og:title" content="uru" />
+    <title>?איזה פרצוף יש לכם</title>
+    <meta name="description" content="הכינסו ורישמו על הפנים מה מפריע לכם" />
+    <meta property="og:title" content="איזה פרצוף יש לכם?" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://uru.herokuapp.com/faces_game" />
     <meta property="og:image" content="https://uru.herokuapp.com/faces_game/logo.jpg" />
@@ -39,13 +39,12 @@
     </script>
 	<style>
 	body{
-		margin:0;
-		panding:0;
+		margin: 0px;
 	}
 	
 </style>
 </head>
-<body>
+<body style="margin: 0px;">
 <div id="altContent">
 </div>
 <div id="fb-root"></div>
@@ -104,11 +103,11 @@
     function graphStreamPublish(img) {
         console.log('graphStreamPublish');
         FB.api('/me/feed', 'post', {
-                    message: "test of the testing",
+                    message: "איזה פרצוף יש לכם?",
                     link: 'https://uru.herokuapp.com/faces_game',
                     picture: img,
-                    name: 'test',
-                    description: 'test test test a test'
+                    name: 'איזה פרצוף יש לכם?',
+                    description: 'הכינסו ורישמו על הפנים מה מפריע לכם'
 
                 },
 
@@ -131,9 +130,9 @@
             redirect_uri: 'https://uru.herokuapp.com/faces_game',
             link: 'https://uru.herokuapp.com/faces_game',
             picture: 'https://uru.herokuapp.com/faces_game/logo.jpg',
-            name: 'Facebook Dialogs',
-            caption: 'Reference Documentation',
-            description: 'Using Dialogs to interact with users.'
+            name: 'איזה פרצוף יש לכם?',
+            caption: 'הכינסו ורישמו על הפנים מה מפריע לכם',
+            description: ''
         };
 
         function callback(response) {

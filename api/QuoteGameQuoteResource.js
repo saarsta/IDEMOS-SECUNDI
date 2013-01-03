@@ -190,24 +190,30 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
             var  secondaryCandidtes = ['50c468c9a17227020000011b','50c47ecea172270200000152','50c4810da172270200000158','50ca2e6f607aa2020000008f','50c47b3ba17227020000014e','50c45f7ea172270200000100'] ;
             //grab 3 quotes from each primary candidate
             _.each(primaryCandidtes,function(canditate_id){
-                quotes = _.union(quotes,weightedSelection(quotes_by_candidate[canditate_id],2));
+                var selected_qoutes=weightedSelection(quotes_by_candidate[canditate_id],2) ;
+                quotes = _.union(quotes,selected_qoutes.quotes);
+                for (var i=selected_qoutes.indexs.length-1;i>=0;i--)
+                {
+                    quotes_by_candidate[canditate_id].splice(selected_qoutes.indexs[i],1);
+                }
+
             })
             _.each(secondaryCandidtes,function(canditate_id){
-                quotes = _.union(quotes,weightedSelection(quotes_by_candidate[canditate_id],1));
+                var selected_qoutes=weightedSelection(quotes_by_candidate[canditate_id],1);
+                quotes = _.union(quotes,selected_qoutes.quotes);
+                for (var i=selected_qoutes.indexs.length-1;i>=0;i--)
+                {
+                    quotes_by_candidate[canditate_id].splice(selected_qoutes.indexs[i],1);
+                }
             })
 
-            for(var propertyName in quotes_by_candidate) {
-                if(_.indexOf(primaryCandidtes,propertyName)==-1 && _.indexOf(secondaryCandidtes,propertyName)==-1 ) {
-                    rest = _.union(rest,quotes_by_candidate[propertyName]);
-                }
-            }
-        }  else  {
-            for(var propertyName in quotes_by_candidate) {
-                    rest = _.union(rest,quotes_by_candidate[propertyName]);
-            }
         }
 
-        quotes = _.union(quotes,weightedSelection(rest,Math.min((amount-quotes.length),rest.length)  ));
+        for(var propertyName in quotes_by_candidate) {
+            rest = _.union(rest,quotes_by_candidate[propertyName]);
+        }
+        var selected_qoutes=weightedSelection(rest,Math.min((amount-quotes.length),rest.length))
+        quotes = _.union(quotes,selected_qoutes.quotes);
 
         return quotes;
     }
@@ -243,7 +249,7 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
 
             }
         }
-        return ret;
+        return {quotes:ret,indexs:selected_indexes};
     }
 
 

@@ -1,25 +1,40 @@
-var fs = require('fs')
+var fs = require('fs') ,
+common = require('../../../api/common');
 
 
 module.exports = function(req, res){
 
     var name= req.files.upload_file.name
-    fs.readFile(req.files.upload_file.path, function (err, data) {
-        var newPath = 'deliver/public/faces_game/uploads/'+name ;
-        fs.writeFile(newPath, data, function (err) {
-            if(err) {
-                res.write(err);
-                res.end();
-            }else {
-                res.write('http://www.uru.org.il/faces_game/uploads/'+name);
-                res.end();
-            }
-        });
+    common.uploadHandler(req,function(err,value) {
+        if(err) {
+            res.write(err);
+            res.end();
+        }
+        else {
+            res.write('http://www.uru.org.il/faces_game/uploads/'+name);
+            res.end();
+        }
     });
 
 };
 
+  /*
+      fs.readFile(req.files.upload_file.path, function (err, data) {
+          var newPath = 'deliver/public/faces_game/uploads/'+name ;
+          fs.writeFile(newPath, data, function (err) {
+              if(err) {
+                  res.write(err);
+                  res.end();
+              }else {
+                  res.write('http://www.uru.org.il/faces_game/uploads/'+name);
+                  res.end();
+              }
+          });
+      });
 
+
+
+      */
 /*
 <?php
 
