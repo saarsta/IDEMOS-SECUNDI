@@ -67,4 +67,6 @@ module.exports = function(app) {
 
     router.all('/faces_game/upload', require('./navigation/faces_game_upload'));
 
+    router.post('/faces_game',require('./navigation/faces_game'));
+
  };
