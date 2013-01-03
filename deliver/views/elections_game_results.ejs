@@ -228,16 +228,14 @@
 <div id="content_right_holder">
 <% for(i=0;i<3;i++) { var cand=winners[i]; %>
     <div class="candidate_container" id="info_<%=i%>" style="display:none" >
-        <div class="segment about">
+        <div class="segment about" style="margin-bottom: 5px">
             <h2 class="title">
 
-                קצת
-                על
+                מידע נוסף על פעילות
+
+
                 <%= cand.name %>
-
-                ומפלגת
-                <%= cand.party_19th_knesset.name %>
-
+                ו<%= cand.party_19th_knesset.name %>
             </h2>
 
             <div class="title_link">
@@ -260,138 +258,14 @@
                 <a class="share_icon" id="candidate_fb"  href="javascript:void(0);" data-id="<%= cand.id %>" data-name="<%= cand.name %>"><img src="/images/icon_fb_small_blue.png"></a>
             </div>
 
-            <div class="text">
-                <div class="col_right">
-                    <div class="about_politician">
-                        <h2>  <%= cand.name %></h2>
-                        <%= cand.biography || '' %>
-                        <br>
-                        <a class="read_more"  target="_blank" href="<%= cand.wikipedia_link %>">
-                        לערך המלא  בוויקיפדיה
-                    </a>
 
-                    </div>
-                    <div class="contact_info">
-                        <h3>פרטי התקשרות</h3>
-    <% if( cand.telephone) { %>
-                        <div class="contact_detail_holder">
-                            <div class="detail_name">
-                                טלפון:
-                            </div>
-                            <div class="detail_value">
-                                <%= cand.telephone %>
-                            </div>
-                        </div>
-    <% } %>
-    <% if( cand.fax) { %>
-                        <div class="contact_detail_holder">
-                            <div class="detail_name">
-                                פקס:
-                            </div>
-                            <div class="detail_value">
-                                <%= cand.fax %>
-                            </div>
-                        </div>
-    <% } %>
-    <% if( cand.email) { %>
-                        <div class="contact_detail_holder">
-                            <div class="detail_name">
-                                דוא"ל:
-                            </div>
-                            <div class="detail_value">
-                                <a href="mailto:<%= cand.email %>"><%= cand.email %></a>
-                            </div>
-                        </div>
-    <% } %>
-
-
-                    </div>
-                    <!--
-                    <div class="share_buttons">
-                        <span>שתף</span>
-                        <div class="share_button">
-                            <a href=""><img src="/images/icon_email_small.png" /></a>
-                        </div>
-                        <div class="share_button">
-                            <a href=""><img src="/images/icon_tw_small.png" /></a>
-                        </div>
-                        <div class="share_button">
-                            <a href=""><img src="/images/icon_fb_small.png" /></a>
-                        </div>
-                    </div>
-                    -->
-                </div>
-                <div class="col_left">
-                    <div class="about_party">
-                        <h2><%= cand.party_19th_knesset.name %></h2>
-
-                        <%= cand.party_19th_knesset.overview||'' %>
-                        <br>
-                        <a class="read_more"  target="_blank"  href=" <%= cand.party_19th_knesset.wikipedia_link %>">                            לערך המלא  בוויקיפדיה</a>
-                   <% if(cand.party_19th_knesset.platform) { %>
-                        <a class="read_more"  target="_blank"  href=" <%= cand.party_19th_knesset.platform %>">
-                            למצע המפלגה
-                        </a>
-                        <% } %>
-
-
-                    </div>
-                    <!--   <div class="map">
-                          <h3>מקום מגורים</h3>
-                         <iframe width="260" height="190" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.co.il/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=Amsterdam+20,+Tel+Aviv-Yafo&amp;aq=0&amp;oq=%D7%90%D7%9E&amp;sll=31.406252,35.081816&amp;sspn=7.085721,9.876709&amp;ie=UTF8&amp;hq=&amp;hnear=Amsterdam+20,+Tel+Aviv-Yafo&amp;t=m&amp;ll=32.086429,34.779882&amp;spn=0.013817,0.02223&amp;z=14&amp;iwloc=A&amp;output=embed"></iframe>
-                    </div>-->
-
-                    <div class="contact_info">
-                        <h3>&nbsp;</h3>
-
-                        <% if( cand.facebook) { %>
-                        <div class="contact_detail_holder">
-
-                            <div class="detail_value fb">
-                                <a  target="_blank"  href="<%= cand.facebook %>">
-
-פייסבוק
-                                </a>
-                            </div>
-                        </div>
-                        <% } %>
-                        <% if( cand.twitter) { %>
-                        <div class="contact_detail_holder">
-
-                            <div class="detail_value tw">
-                                <a  target="_blank"  href="<%= cand.twitter %>">
-
-                                    טוויטר
-                                </a>
-                            </div>
-                        </div>
-                        <% } %>
-                        <% if( cand.official_site) { %>
-                        <div class="contact_detail_holder">
-
-                            <div class="detail_value"><a  target="_blank" href="<%= cand.official_site %>">אתר רשמי</a></div>
-                        </div>
-                        <% } %>
-                    </div>
-                </div>
-            </div>
 
         </div>
 
-        <div class="segment">
 
-        <h2 class="title">
-
-            מידע נוסף על פעילות
-
-
-            <%= cand.name %>
-            ו<%= cand.party_19th_knesset.name %>
-        </h2>
-            </div>
         <% if(cand.governence_quality_text) { %>
 
-        <div class="segment more_stats">
+        <div class="segment more_stats" >
 
             <div class="header">
                 <div class="item logo"><img src="/images/icon_hatnua.png" /></div>
@@ -421,9 +295,9 @@
             <div class="text">
 
                 <span class="remark">
-
                     דירוג המועמד בהתאם להצבעותיו סביב הצעות החוק הרלוונטיות לאג'נדות
-                    על פי ניתוח דפוסי הצבעה ונתוני "כנסת פתוחה".
+                    על פי ניתוח דפוסי הצבעה ונתוני "כנסת פתוחה". לחצו על החץ שמשמאל למידע נוסף.
+
                 </span>
                 <hr />
 
@@ -510,6 +384,129 @@
 
     </div>
 <% } %>
+
+
+
+<div class="segment about">
+
+
+    <div class="text">
+        <div class="col_right">
+            <div class="about_politician">
+                <h2>  <%= cand.name %></h2>
+                <%= cand.biography || '' %>
+                <br>
+                <a class="read_more"  target="_blank" href="<%= cand.wikipedia_link %>">
+                    לערך המלא  בוויקיפדיה
+                </a>
+
+            </div>
+            <div class="contact_info">
+                <h3>פרטי התקשרות</h3>
+                <% if( cand.telephone) { %>
+                <div class="contact_detail_holder">
+                    <div class="detail_name">
+                        טלפון:
+                    </div>
+                    <div class="detail_value">
+                        <%= cand.telephone %>
+                    </div>
+                </div>
+                <% } %>
+                <% if( cand.fax) { %>
+                <div class="contact_detail_holder">
+                    <div class="detail_name">
+                        פקס:
+                    </div>
+                    <div class="detail_value">
+                        <%= cand.fax %>
+                    </div>
+                </div>
+                <% } %>
+                <% if( cand.email) { %>
+                <div class="contact_detail_holder">
+                    <div class="detail_name">
+                        דוא"ל:
+                    </div>
+                    <div class="detail_value">
+                        <a href="mailto:<%= cand.email %>"><%= cand.email %></a>
+                    </div>
+                </div>
+                <% } %>
+
+
+            </div>
+            <!--
+            <div class="share_buttons">
+                <span>שתף</span>
+                <div class="share_button">
+                    <a href=""><img src="/images/icon_email_small.png" /></a>
+                </div>
+                <div class="share_button">
+                    <a href=""><img src="/images/icon_tw_small.png" /></a>
+                </div>
+                <div class="share_button">
+                    <a href=""><img src="/images/icon_fb_small.png" /></a>
+                </div>
+            </div>
+            -->
+        </div>
+        <div class="col_left">
+            <div class="about_party">
+                <h2><%= cand.party_19th_knesset.name %></h2>
+
+                <%= cand.party_19th_knesset.overview||'' %>
+                <br>
+                <a class="read_more"  target="_blank"  href=" <%= cand.party_19th_knesset.wikipedia_link %>">                            לערך המלא  בוויקיפדיה</a>
+                <% if(cand.party_19th_knesset.platform) { %>
+                <a class="read_more"  target="_blank"  href=" <%= cand.party_19th_knesset.platform %>">
+                    למצע המפלגה
+                </a>
+                <% } %>
+
+
+            </div>
+            <!--   <div class="map">
+                  <h3>מקום מגורים</h3>
+                 <iframe width="260" height="190" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.co.il/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=Amsterdam+20,+Tel+Aviv-Yafo&amp;aq=0&amp;oq=%D7%90%D7%9E&amp;sll=31.406252,35.081816&amp;sspn=7.085721,9.876709&amp;ie=UTF8&amp;hq=&amp;hnear=Amsterdam+20,+Tel+Aviv-Yafo&amp;t=m&amp;ll=32.086429,34.779882&amp;spn=0.013817,0.02223&amp;z=14&amp;iwloc=A&amp;output=embed"></iframe>
+            </div>-->
+
+            <div class="contact_info">
+                <h3>&nbsp;</h3>
+
+                <% if( cand.facebook) { %>
+                <div class="contact_detail_holder">
+
+                    <div class="detail_value fb">
+                        <a  target="_blank"  href="<%= cand.facebook %>">
+
+                            פייסבוק
+                        </a>
+                    </div>
+                </div>
+                <% } %>
+                <% if( cand.twitter) { %>
+                <div class="contact_detail_holder">
+
+                    <div class="detail_value tw">
+                        <a  target="_blank"  href="<%= cand.twitter %>">
+
+                            טוויטר
+                        </a>
+                    </div>
+                </div>
+                <% } %>
+                <% if( cand.official_site) { %>
+                <div class="contact_detail_holder">
+
+                    <div class="detail_value"><a  target="_blank" href="<%= cand.official_site %>">אתר רשמי</a></div>
+                </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+</div>
     <div id="back_to_top">חזרה למעלה</div>
 </div>
 <div id="content_left_sidebar">

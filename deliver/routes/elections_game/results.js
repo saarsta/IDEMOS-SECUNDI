@@ -31,13 +31,13 @@ module.exports = function(req, res){
 
         },
         function(winners,cbk){ /// update game statistics
-            share_img_code= winners[0].candidate + winners[0].score + winners[1].candidate + winners[1].score + winners[2].candidate + winners[2].score ;
             models.QuoteGameGames.update({game_code: game_code}, { first :   winners[0].candidate, second :  winners[1].candidate,third :winners[2].candidate}, function(err,count)
             {
                 cbk(err,count);
             });
 
         },
+            /*
         function(count,cbk){    /// get winners portion
             candidate_win_ratio=0;
             models.QuoteGameGames.find({first: { $exists: true }}, function(err,games)
@@ -54,7 +54,7 @@ module.exports = function(req, res){
             }) ;
 
         },
-
+        */
 
     ],function(err, result){
 
@@ -75,7 +75,25 @@ module.exports = function(req, res){
             res.end();
             return;
         }
-    }   /*
+    }
+
+
+    candidate_win_ratio=0;
+    models.QuoteGameGames.find({first: { $exists: true }}, function(err,games)
+    {
+        var winner_count=0;
+        _.each(games, function(element, index, list){
+            if(element.first==winners[0].candidate)
+            {
+                winner_count++;
+            }
+        })
+        candidate_win_ratio= Math.round((100*winner_count)/games.length);
+
+
+
+
+     /*
 
             response.writeHead(302, {
                 'Location': 'your/404/path.html'
@@ -134,6 +152,7 @@ module.exports = function(req, res){
             });
 
         })
+    }) ;
     });
 
     var download_file_httpget = function(file_url,image_code,game_code,candidate_page,callback) {
