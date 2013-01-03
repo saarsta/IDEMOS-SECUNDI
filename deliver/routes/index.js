@@ -63,4 +63,6 @@ module.exports = function(app) {
 
     router.all('/health', require('./cycles/main'));//'507c39809cba93020000003d'
 
+    router.all('/faces', require('./navigation/faces'));
+
  };
