@@ -11,7 +11,7 @@ module.exports = function(req, res){
                 res.write(err);
                 res.end();
             }else {
-                res.write('http://www.uru.org.il/face_game/uploads/'+name);
+                res.write('http://www.uru.org.il/faces_game/uploads/'+name);
                 res.end();
             }
         });
