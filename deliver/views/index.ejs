@@ -3,6 +3,87 @@
 <html>
 <head>
     <% include partials/head.ejs %>
+    <style>
+        #bg_left{
+            background: url(/images/header_bg_2.png) left top repeat-x;
+            width:490px;
+            height:546px;
+            position:absolute;
+            left:0px;
+            top:0px;
+        }
+
+        #bg_right{
+            background: url(/images/header_bg_1.png) right top repeat-x;
+            width:490px;
+            height:546px;
+            position:absolute;
+            right:0px;
+            top:0px;
+        }
+
+        #main-menu{
+            padding:56px 100px 51px 0
+        }
+
+        .main-video{
+            background:url(/images/banner_top.jpg) no-repeat 0 0;
+            height:417px;
+        }
+
+        .main-video h2{
+            color:#000;
+            font-size:26px;
+            text-align:center;
+            margin-bottom:10px;
+        }
+
+        .main-video h3{
+            color:#000;
+            font-size:56px;
+            text-align:center;
+        }
+
+        .main-video .side-text{
+            position:relative;
+            top:185px;
+        }
+
+        .banner_main_text{
+            color:#4357f3;
+            font-size:24px;
+            position:absolute;
+            bottom: 55px;
+            line-height:20px;
+        }
+
+        .side-button{
+            position: absolute;
+
+            left: 0;
+            bottom: -18px;
+        }
+
+        .side-button a{
+            margin-left:5px;
+        }
+        .big-head {
+            background: #EDEDED url(/images/header_bg.png) 0 0 repeat-x;
+        }
+
+        #main-menu {
+            padding: 56px 100px 57px  0;
+        }
+
+        .big-head .search-box {
+            margin-top: -4px;
+        }
+        .search-box {
+            padding: 0px 0 29px 0;
+            height: 31px;
+            clear: both;
+        }
+    </style>
 </head>
 <body <%= user_logged? '' : 'class=big-head' %> >
 <% include partials/body_top.ejs %>
@@ -13,22 +94,29 @@
         <% include partials/failures.ejs %>
         <%if(!user_logged){%>
         <div class="main-video">
-            <div class="video-box">
-                <img class="video_img"   src="images/icon1.png" alt=""/>
+            <!-- <div class="video-box">
+
             </div>
 
-            <p class="side-text">
-                לא להצביע זה להגיד - הילדים שלי לא לומדים פה במערכת החינוך, אין לי חשבון בנק ואני אף פעם לא אצטרך בית חולים. לא להצביע זה לתת את קולך במתנה  למפלגה שבה יושבים בעלי דעות הכי מנוגדות לשלך.
-                <br>
-                לא להצביע זה להגיד - יש לי ארץ אחרת. יש לך?
-            </p>
+            <div class="side-text">
+                <h2>החינוך על הפנים. הבריאות על הפנים. יוקר המחיה על הפנים.</h2>
+                <h3>איזה פרצוף יש לכם לבקש שנבחר</h3>
+            </div>  -->
             <div class="side-button">
-                <a href="/cycles/5098eb8bc492d10200000024"><img src="/images/btn.png" alt="קרא עוד"/></a>
+                <a href="/faces">קראו עוד</a>
+                <a href="/account/register"><img src="images/button_join.png" alt="קרא עוד"></a>
             </div>
         </div>
-        <%}%>
-        <% include partials/tag_search.ejs %>
+
+        <!-- <div class="banner_main_text">
+            תנועת עורו היא הקול שלך ושל כולנו, אזרחים שרוצים לשנות את הקיים. לא נניח למנהיגינו להמשיך <br/>
+            ולהזניח את הנושאים החברתיים. זאת חובתם כלפינו. <strong>הצטרפו,	ויחד נהיה כוח ונגרום לשינוי</strong>
+        </div> -->
+
     </div>
+    <%}%>
+        <% include partials/tag_search.ejs %>
+
     <div id="content" class="cf">
         <div class="right-col">
             <h2>עוררו עניין</h2>
