@@ -58,13 +58,9 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
                         for(var propertyName in req.session.election_game) {
 
                             played_quotes.push(propertyName);
-                            if(
-                                req.session.election_game[propertyName].response &&
-                                req.session.election_game[propertyName].response=="skip"
-
-                                ){
-                                skipped_quotes++;
-                            }
+//                            if( req.session.election_game[propertyName].response=="skip"){
+//                                skipped_quotes++;
+//                            }
                         }
                         _.each(results.objects,function(o){
                             if(_.indexOf(played_quotes, o.id)==-1 && o.priority > 0 ) {
@@ -81,7 +77,7 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
 
                         final_results.objects = shuffle(quoteSelection (qoute_by_candidte,25,(played_quotes.length>=25?false:true)));
                         final_results.meta.total_count=final_results.objects.length;
-                        final_results.meta.played_quotes=Math.max(played_quotes.length -1 -skipped_quotes,0);
+                        final_results.meta.played_quotes=Math.max(((played_quotes.length -1) -skipped_quotes),0);
 
                     }
                     callback(err, final_results);
