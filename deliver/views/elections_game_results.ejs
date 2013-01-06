@@ -133,7 +133,7 @@
                rel="/elections_game"
                data-img_src="<%= share_img %>"
                data-text_preview="אלה המועמדים לבחירות 2013 שאני הזדהיתי איתם. בואו לגלות במי אתם תומכים."
-               data-text="אלה המועמדים לבחירות 2013 שאני הזדהיתי איתם. בואו לגלות במי אתם תומכים."
+               data-text="אלה המועמדים לבחירות 2013 שאני הזדהיתי איתם. בואו לגלות במי אתם תומכים!"
                data-title="פוליטיקלי קורקט"
                data-name="פוליטיקלי קורקט"
                href="javascript: void(0)">
@@ -857,23 +857,58 @@
                 body = $(this).data('text_preview'),
                 tag_name = "<% if (typeof tag_name !== "undefined") {%> <%= tag_name || '' %><% } %>";
             var current_section=null;
-            FB.ui(
-                {
-                    method: 'feed',
-                    link: link,
-                    name: title,
-                    picture: image,
-                    caption: body,
-                    description: ' '
-                },
-                function(response) {
-                    if (response && response.post_id) {
-                        alert('Post was published.');
-                    } else {
-                        alert('Post was not published.');
-                    }
-                }
-            );
+//            FB.ui(
+//                {
+//                    method: 'feed',
+//                    link: link,
+//                    name: title,
+//                    picture: image,
+//                    caption: body,
+//                    description: ' '
+//                },
+//                function(response) {
+//                    if (response && response.post_id) {
+//                        alert('Post was published.');
+//                    } else {
+//                        alert('Post was not published.');
+//                    }
+//                }
+//            );
+
+            facebookLogin(function(error) {
+                $.post('/elections/fbimage/' + FB.getUserID(), function(data) {
+                    dust.render('elections_game_share', {image:image,body:body+ ' '+link}, function (err, out) {
+                        $.colorbox({
+                            html:out,
+                            onComplete:function (e) {
+                                $('#share_bt').click(function() {
+                                    var obj = {
+                                        url : image,
+                                        message: body+" "+link
+                                    };
+                                    FB.api('/me/photos', 'post', obj , function(response) {
+                                        if (!response || response.error) {
+                                            alert('Error occured');
+                                        } else {
+                                            popupProvider.showOkPopup({message:'השיתוף הסתיים בהצלחה.'});
+                                        }
+                                        $.colorbox.close();
+                                    });
+                                });
+                            },
+                            onClosed:function(){
+
+                            }
+                        });
+                    } );
+
+                });
+            });
+
+
+
+
+
             return false;
         });
       /*

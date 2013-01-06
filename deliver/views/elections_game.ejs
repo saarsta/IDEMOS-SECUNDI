@@ -163,7 +163,7 @@
         position: relative;
 
     }
-
+    #play_progress,
     #how_to_play{
         position:relative;
         margin:auto;
@@ -188,7 +188,9 @@
         -webkit-box-shadow: 0px 2px 5px #000000;
         box-shadow: 0px 2px 5px #000000;
     }
-
+    #play_progress{
+        display: none;
+    }
     #how_to_play h2{
         color:#7c7763;
         margin:0 3px;
@@ -196,7 +198,7 @@
         font-weight:bold;
     }
 
-    #close_button{
+    .close_button{
         position:absolute;
         bottom:-15px;
         left:-15px;
@@ -792,8 +794,16 @@
             ותגלו מאחורי מי אתם עומדים בבחירות 2013
 
 
-            <div id="close_button"></div>
+            <div class="close_button"></div>
         </div>
+
+        <div id="play_progress">
+<b>
+        כל הכבוד! דירגתם 25 ציטוטים ועכשיו אתם יכולים לעבור לעמוד התוצאות". בקטן: "עם זאת, ברור לנו שציטוטים אינם מבטאים את מלוא השקפת העולם או העשייה של המועמדים. ככל שתדרגו יותר תקבלו מצג אמין יותר, אך זהו עדיין רק מבט חטוף. בתחתית עמוד התוצאות תמצאו הפניות למידע ולכלים שיעזרו לכם להשלים את התמונה, כך שתוכלו לבחור במפלגה שהכי קרובה לדעותיכם. בהצלחה!
+         </b>
+            <div class="close_button"></div>
+        </div>
+
         <div id="quotes_holder">
             <!--
                       <div id="quotes_counter">
@@ -888,6 +898,8 @@
 
                 });
             $('#how_to_play').hide();
+            $('#play_progress').hide();
+
             $('#game_progress_holder').show();
 
         });
@@ -903,8 +915,16 @@
                 $('#game_progress_holder .text h2').text('דרגו 25 ציטוטים');
                 $('#game_progress_holder .text span').text('כדי לקבל תוצאות ראשוניות');
             }
-            if(current_qoute+1 + played_quotes - skipped >= 25 ){
+            if(current_qoute+1 + played_quotes - skipped == 25 ){
                 $('#how_to_play').hide();
+                $('#play_progress').show();
+
+                $('#game_progress_holder').hide();
+            }
+            if(current_qoute+1 + played_quotes - skipped > 25 ){
+                $('#how_to_play').hide();
+                $('#play_progress').hide();
+
                 $('#game_progress_holder').show();
 
                 $('.button_end_game input').removeClass('disabled');
@@ -946,8 +966,9 @@
             $(".game_progress_bar").css('width',i+'%');
         }
 
-        $('#close_button').click(function () {
+        $('.close_button').click(function () {
             $('#how_to_play').hide();
+            $('#play_progress').hide();
             $('#game_progress_holder').show();
 
         });

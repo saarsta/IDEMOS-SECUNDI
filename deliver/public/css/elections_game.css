@@ -51,6 +51,7 @@ hr{
     height:86px;
     padding-top:10px;
     text-align:right;
+    position: relative;
 }
 
 #title_holder{
@@ -1271,7 +1272,7 @@ span.remark{
 #logo {
     position: absolute;
     top: 23px;
-    right: 301px;
+    right: 0;
     background: url(/images/logo.png) 0 0 no-repeat;
     width: 79px;
     height: 89px;
@@ -1402,4 +1403,10 @@ i.img u{position:absolute;top:-9999999px}
     float: left;
     padding-top: 12px;
     padding-right: 16px;
+}
+
+
+login-popup > div {
+
+    padding: 20px 40px 20px 40px;
 }
