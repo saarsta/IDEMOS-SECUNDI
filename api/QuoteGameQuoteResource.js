@@ -192,7 +192,7 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
         var quotes =    [];
         var rest=[];
         if(initial) {
-            var  primaryCandidtes =   ['50c0968895f1e90200000026','50c430b5d18ea20200000028','50c43377d18ea2020000002c','50c436bfd18ea20200000034','50c434f0d18ea20200000030','50c47ecea172270200000152']  ;
+            var  primaryCandidtes =   ['50c0968895f1e90200000026','50c430b5d18ea20200000028','50c43377d18ea2020000002c','50c436bfd18ea20200000034','50c47ecea172270200000152']  ;
             var  secondaryCandidtes = ['50c468c9a17227020000011b','50c47ecea172270200000152','50c4810da172270200000158','50ca2e6f607aa2020000008f','50c47b3ba17227020000014e','50c45f7ea172270200000100'] ;
             //grab 3 quotes from each primary candidate
             _.each(primaryCandidtes,function(canditate_id){
