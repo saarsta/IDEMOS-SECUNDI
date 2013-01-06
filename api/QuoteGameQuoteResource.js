@@ -58,7 +58,11 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
                         for(var propertyName in req.session.election_game) {
 
                             played_quotes.push(propertyName);
-                            if(req.session.election_game[propertyName].response=="skip"){
+                            if(
+                                req.session.election_game[propertyName].response &&
+                                req.session.election_game[propertyName].response=="skip"
+
+                                ){
                                 skipped_quotes++;
                             }
                         }
