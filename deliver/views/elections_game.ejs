@@ -622,38 +622,24 @@
         text-align:center;
     }
 
+    .list_button{
+        margin: 0 270px 10px;
+        display: inline-block;
+        float: left;
+        width: 275px;
+        height: 50px;
+        background: url(/images/sprite.png) no-repeat 0 -587px;
+    }
 
-   .pluginErrorLink{color:#f03d25}
-    .pluginButton{background:#eceef5;-webkit-border-radius:3px;border:1px solid #cad4e7;cursor:pointer;padding:2px 6px 4px;white-space:nowrap;color:#3b5998 ; font-size: 12px}
-    .pluginButtonInline{display:inline-block}
-    .pluginButtonX{cursor:default}
-    .pluginButton button{background:transparent;border:0;margin:-1px;padding:0;font:inherit;color:inherit;cursor:pointer}
-    .pluginButtonIcon{position:relative;top:3px;margin-right:3px}
-    .pluginButtonSmall{padding:1px 9px 2px 7px}
-    .pluginButtonSmall .pluginButtonIcon{margin-right:2px;}
-    .pluginButton:hover{border-color:#9dacce}
-    .pluginButtonPressed, .pluginButtonPressed:hover{background-color:#eee;border-color:#ddd;color:#aaa}
-    .pluginSkinDark .pluginButton{background-color:#c7c7c7;border-color:#999;color:#333}
-    .pluginSkinDark .pluginButton:hover{background-color:#d9d9d9;border-color:#ddd}
-    .pluginSkinDark .pluginButtonPressed, .pluginSkinDark .pluginButtonPressed:hover{background-color:#444;border-color:#555;color:#666}
-    .pluginButtonErrorLink{color:#a00;font-weight:bold}
-    .pluginButtonX .pluginButtonXOff, .pluginButtonX button:hover .pluginButtonXOn{display:inline-block}
-    .pluginButtonX .pluginButtonXOn, .pluginButtonX button:hover .pluginButtonXOff{display:none}
-    .pluginButton .pluginButtonThrobber, form.async_saving .pluginButtonIconWithThrobber{display:none}
-    form.async_saving .pluginButtonThrobber{display:inline-block;margin-top:2px;margin-bottom:1px;max-width:14px}.pluginCountButton{background:#fff;border:1px solid #c1c1c1;height:14px;line-height:14px;margin-left:6px;min-width:15px;padding:1px 2px;text-align:center;white-space:nowrap}
-    .pluginCountButtonNub{height:0;left:2px;position:relative;top:-14px;width:5px;z-index:2}
-    .pluginCountButtonNub s, .pluginCountButtonNub i{border-color:transparent #D7D7D7 transparent;border-style:solid;border-width:4px 5px 4px 0;display:block;position:relative;top:1px}
-    .pluginCountButtonNub i{border-right-color:#fff;left:2px;top:-7px}
-    .pluginCountButtonDark{background:#d7d7d7;border-color:#d7d7d7;color:#333}
-    .pluginCountButtonDarkNub i{display:none}.pluginCountTextConnected,
-                                             .pluginCountConnected .pluginCountTextDisconnected{display:none}
-    .pluginCountConnected .pluginCountTextConnected{display:inline}.sp_like{background-image:url(https://fbstatic-a.akamaihd.net/rsrc.php/v2/yI/x/1dQf_ATK831.png);background-repeat:no-repeat;display:inline-block;height:14px;width:14px}
-    .sx_like_fav{background-position:-0px -0px}
-    .sx_like_ch{background-position:-0px -15px}
-    .sx_like_x{background-position:-0px -30px}
-    .sx_like_thumb{background-position:-0px -45px}i.img{-ms-high-contrast-adjust:none;_overflow:hidden}
-    i.img u{position:absolute;top:-9999999px}
+    .list_button:hover{
 
+        background: url(/images/sprite.png) no-repeat 0 -460px;
+    }
+
+    .list_button:active{
+
+        background: url(/images/sprite.png) no-repeat 0 -522px;
+    }
     </style>
 
 
@@ -707,8 +693,8 @@
                     </div>
                 </div>
                    -->
-                <div class="social_item fb">
-                    <div  style="width:80px;height: 20px ;left: 20px; overflow: hidden;position:absolute;direction: ltr; ">
+                <div class="social_item fb" style="position: relative">
+                    <div  style="width:80px;height: 20px ;left:0; overflow: hidden;position:absolute;direction: ltr; ">
                     <div class="fb-like" data-href="http://www.uru.org.il/elections_game" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false"></div>
                     </div>
                 </div>
@@ -798,9 +784,14 @@
         </div>
 
         <div id="play_progress">
-<b>
-        כל הכבוד! דירגתם 25 ציטוטים ועכשיו אתם יכולים לעבור לעמוד התוצאות". בקטן: "עם זאת, ברור לנו שציטוטים אינם מבטאים את מלוא השקפת העולם או העשייה של המועמדים. ככל שתדרגו יותר תקבלו מצג אמין יותר, אך זהו עדיין רק מבט חטוף. בתחתית עמוד התוצאות תמצאו הפניות למידע ולכלים שיעזרו לכם להשלים את התמונה, כך שתוכלו לבחור במפלגה שהכי קרובה לדעותיכם. בהצלחה!
-         </b>
+            <h2>
+                עכשיו תוכלו לעבור לעמוד התוצאות
+            </h2>
+            כדי שתוכלו לקבל תמונה מלאה יותר על השקפת העולם של המועמדים, מעבר לאמירותיהם, בתחתית עמוד התוצאות תמצאו הפניות לרקע, מידע וכלים שישקפו את עשייתם. כך תוכלו לבחור במפלגה שהכי קרובה לדעותיכם. בהצלחה!
+
+          <a href="/elections_game/results" >
+              המשך לעמוד התוצאות >>
+          </a>
             <div class="close_button"></div>
         </div>
 
@@ -915,13 +906,8 @@
                 $('#game_progress_holder .text h2').text('דרגו 25 ציטוטים');
                 $('#game_progress_holder .text span').text('כדי לקבל תוצאות ראשוניות');
             }
-            if(current_qoute+1 + played_quotes - skipped == 25 ){
-                $('#how_to_play').hide();
-                $('#play_progress').show();
 
-                $('#game_progress_holder').hide();
-            }
-            if(current_qoute+1 + played_quotes - skipped > 25 ){
+            if(current_qoute+1 + played_quotes - skipped >= 25 ){
                 $('#how_to_play').hide();
                 $('#play_progress').hide();
 
@@ -948,6 +934,12 @@
                 $('#current_quote_holder').show();
                 buttons_disabled=false;
             });
+            if(current_qoute+1 + played_quotes - skipped == 25 ){
+                $('#how_to_play').hide();
+                $('#play_progress').show();
+
+                $('#game_progress_holder').hide();
+            }
         }
         $('.button_end_game input').click(function () {
             if(!$(this).hasClass('disabled')){

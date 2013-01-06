@@ -62,7 +62,7 @@ module.exports = function(req, res){
         console.log(err);
         if(req.params[0]){
             candidate_page=true;
-            candidate_win_ratio=50;
+
             winners=[];
             winners.push({candidate :req.params[0] , score:70}) ;
             winners.push({candidate :req.params[0] , score:70}) ;
@@ -77,18 +77,16 @@ module.exports = function(req, res){
         }
     }
 
+     var        winner_count=  [0,0,0];
 
-    candidate_win_ratio=0;
     models.QuoteGameGames.find({first: { $exists: true }}, function(err,games)
     {
-        var winner_count=0;
+
         _.each(games, function(element, index, list){
-            if(element.first==winners[0].candidate)
-            {
-                winner_count++;
-            }
+            if(element.first==winners[0].candidate) {winner_count[0]++;}
+            if(element.first==winners[1].candidate) {winner_count[1]++;}
+            if(element.first==winners[2].candidate) {winner_count[2]++;}
         })
-        candidate_win_ratio= Math.round((100*winner_count)/games.length);
 
 
 
@@ -128,6 +126,11 @@ module.exports = function(req, res){
                 }
             });
 
+
+            first.candidate_win_ratio= Math.round((100*winner_count[0])/games.length);
+            second.candidate_win_ratio= Math.round((100*winner_count[1])/games.length);
+            third.candidate_win_ratio= Math.round((100*winner_count[2])/games.length);
+
             var share_url="uru-staging.herokuapp.com/elections_game/image?first_id="+first._id+"&first_score="+first.score+"&second_id="+second._id+"&second_score="+second.score+"&third_id="+third._id+"&third_score="+third.score;
             var share_url_encoded=encodeURIComponent(share_url);
             var share_query_string="url="+share_url_encoded+"&viewport=880x447";
@@ -145,7 +148,7 @@ module.exports = function(req, res){
                 second:second,
                 third:  third,
                 candidate_page:candidate_page,
-                first_win_ratio: candidate_win_ratio ,
+
                 share_img:'http://uru.s3.amazonaws.com/eg/'+share_img_code+'.png',
                 quotes_count: quote_count ,
                 user_logged: req.isAuthenticated()

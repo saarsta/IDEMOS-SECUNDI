@@ -85,10 +85,10 @@
         <div id="sponsors_holder">
             <h2>שיתופי פעולה</h2>
             <div id="sponsors_logos">
-                <a class="sponsors_logo logo_1" target="_blank" href="http://oknesset.org/"></a>
-                <a class="sponsors_logo logo_2" target="_blank" href="http://hamishmar.org.il/"></a>
-                <a class="sponsors_logo logo_3" target="_blank" href="http://www.sandtalks.co.il/"></a>
-                <a class="sponsors_logo logo_4" target="_blank" href="http://www.mqg.org.il/"></a>
+                <a class="sponsors_logo logo_1"  href="#openk"></a>
+                <a class="sponsors_logo logo_2"  href="#openk"></a>
+                <a class="sponsors_logo logo_3"  href="#kahol"></a>
+                <a class="sponsors_logo logo_4"  href="#shilton"></a>
                 <div class="sponsors_logo logo_5"></div>
             </div>
         </div>
@@ -245,7 +245,7 @@
             </div>
 
             <div class="bubble">
-                <span> <%= first_win_ratio %>%</span>
+                <span> <%= cand.candidate_win_ratio %>%</span>
                  הזדהו עם
                 <%= cand.name %>
             </div>
@@ -264,7 +264,7 @@
 
 
         <% if(cand.governence_quality_text) { %>
-
+        <a name="shilton"></a>
         <div class="segment more_stats" >
 
             <div class="header">
@@ -287,6 +287,7 @@
 
         <% } %>
         <% if (cand.party_18th_knesset && cand.party_18th_knesset.open_knesset_id) { %>
+       <a name="openk"></a>
         <div class="segment more_stats">
 
              <div id="social_index<%=i%>"></div>
@@ -331,6 +332,7 @@
         </div>
         <% } %>
         <% if (cand.sandtalk_id) { %>
+        <a name="kahol"></a>
         <div class="segment more_stats kahol">
 
             <div class="header">
@@ -355,6 +357,7 @@
         <%  var donors=false;
             for (var c = 0; c <cand.doners.length ; c++) {  if(cand.doners[c].nis){ donors=true}}
             if(donors) { %>
+        <a name="donors"></a>
             <div class="segment more_stats donors">
 
             <div class="header">
@@ -579,6 +582,9 @@
         var prev_party_sandtalk_id= ["<%=winners[0].party_18th_knesset.sandtalk_id%>","<%=winners[1].party_18th_knesset.sandtalk_id%>","<%=winners[2].party_18th_knesset.sandtalk_id%>"];
         var prev_party_name= ["<%=winners[0].party_18th_knesset.name%>","<%=winners[1].party_18th_knesset.name%>","<%=winners[2].party_18th_knesset.name%>"];
         var data_loaded= [false,false,false];
+        var win_ratio= ["<%=winners[0].candidate_win_ratio%>","<%=winners[1].candidate_win_ratio%>","<%=winners[2].candidate_win_ratio%>"];
+
+
         var short_mage_link;
         <% if(!user_logged &&  candidate_page==false) { %>
         dust.render('elections_game_disclaimer', null, function (err, out) {
