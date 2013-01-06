@@ -1,8 +1,16 @@
+
+
+
+
+
 <!DOCTYPE html>
 <html>
 <head>
+<% include partials/head.ejs %>
     <title>משחק הבחירות</title>
     <!-- Bootstrap -->
+
+
    <style>
        @font-face {
            font-family: 'AdumaFOTBold';
@@ -92,7 +100,7 @@
        }
 
        #content_wrapper .subtitle{
-           font-size:25px;
+           font-size:24px;
            color:#010001;
            margin:10px 0px 0px 0px;
            font-family: 'AdumaFOTBold';
@@ -210,10 +218,29 @@
            font-family: 'AdumaFOTMedium';
        }
 
+   #header{
+       height: 193px;
+   }
+
+   body{
+       background-color: #9BA3B6;
+   }
+
    </style>
+
+
 </head>
 <body>
-<div id="wrapper">
+
+<% include partials/body_top.ejs %>
+<div id="wrap">
+    <div id="header">
+        <% include partials/menu.ejs %>
+        <% include partials/user_box.ejs %>
+        <% include partials/failures.ejs %>
+        <% include partials/tag_search.ejs %>
+    </div>
+
     <div id="header_wrapper"></div>
     <div id="content_wrapper">
         <h3 class="subtitle">החינוך על הפנים. הבריאות על הפנים. יוקר המחיה על הפנים.</h3>
@@ -228,9 +255,9 @@
  </span>
             <br/><br/>
         </p>
-
+       <% if(!user_logged) { %>
         <div id="form_holder">
-            <form id="register_form_full" action="/account/register" class="login-form cf" method="POST">
+            <form id="register_form_full" action="/account/register"  method="POST">
                 <div class="form_item title">התחברו לעורו באמצעות</div>
                 <div class="form_item">
                     <input id="full_name" name="full_name" class="text" type="text" value="שם + שם משפחה" />
@@ -247,10 +274,11 @@
             </div>
             <div class="form_item fb">
 
-                <a href="/account/facebooklogin"><img src="images/button_fb.png" /></a>
+                <a href="/account/facebooklogin?next=faces"><img src="images/button_fb.png" /></a>
 
             </div>
         </div>
+        <% } %>
 
         <div id="small_banners_holder">
             <h3>היכנסו עכשיו לתמיכה במאבק של כולנו לשיפור הבריאות, החינוך ויוקר המחיה </h3>

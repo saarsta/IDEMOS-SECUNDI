@@ -81,7 +81,7 @@ body {
 #main-menu {
     float: right;
     list-style: none;
-    padding: 56px 100px 58px 0;
+    padding: 56px 100px 50px 0;
 }
 
 #main-menu li.menu_item {
