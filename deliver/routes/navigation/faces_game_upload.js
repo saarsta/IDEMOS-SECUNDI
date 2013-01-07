@@ -122,7 +122,7 @@ function fu1(req,callback) {
             else {
 
 
-                console.log('success :' +'http://www.uru.org.il/faces_game/uploads/'+name)
+                //console.log('success :' +'http://www.uru.org.il/faces_game/uploads/'+name)
 
                 stream = fs.createReadStream(newPath);
                 var knoxClient = require('j-forms').fields.getKnoxClient();
@@ -139,13 +139,14 @@ function fu1(req,callback) {
                         //console.log(res.socket._httpMessage);
                         console.log( 'amazone upload success '+path);
 
-                        models.Face.insert( {url:path,status:'pending'} , function(err,count)
-                        {
+
+                        var img = new   models.Face( {url:path,status:'pending'} );
+                        img.save(function (err) {
+
                            if(err){
                                   console.log(err)
-                           } else
-                           {
-                               console.log(count)
+                           } else{
+                               console.log('added ' )
                            }
                         }) ;
 
