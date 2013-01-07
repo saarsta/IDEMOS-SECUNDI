@@ -8,8 +8,14 @@ module.exports = function(req, res){
     var name= req.files.Filedata.name
     common.uploadHandler(req,function(err,value) {
         console.log(value)      ;
-        if(err) {
-            console.log('error :' +err)      ;
+        if(err)
+        {
+            console.log('error :' )      ;
+            for(var propertyName in err) {
+
+                console.log(propertyName + ": "+ err[propertyName])  ;
+            }
+
             res.write(err);
             res.end();
         }
