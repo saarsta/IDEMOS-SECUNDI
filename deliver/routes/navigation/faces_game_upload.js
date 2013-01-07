@@ -63,8 +63,35 @@ function fu(req,callback) {
 
     function writeToFile(fName, stream, callback){
         var filename=  fName,
-            mypath =    path.join(__dirname,'..','deliver','public','cdn', fName);
-            os= fs.createWriteStream(mypath) ;
+            mypath =   '../deliver/public/faces_game/uploads/'+name ;// path.join(__dirname,'..','deliver','public','cdn', fName);
+
+        fs.exists('deliver/public/', function (exists) {
+            console.log('1');
+            console.log(exists?'yes':'no');
+        });
+        fs.exists('../deliver/public/', function (exists) {
+            console.log('2');
+            console.log(exists?'yes':'no');
+        });
+        fs.exists('../../deliver/public/', function (exists) {
+            console.log('3');
+            console.log(exists?'yes':'no');
+        });
+
+        fs.exists('../../../deliver/public/', function (exists) {
+            console.log('4');
+            console.log(exists?'yes':'no');
+        });
+
+        fs.exists('/deliver/public/', function (exists) {
+            console.log('5');
+            console.log(exists?'yes':'no');
+        });
+
+
+
+
+        os= fs.createWriteStream(mypath) ;
             stream.on('data',function(data) {
                 os.write(data);
             });
