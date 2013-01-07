@@ -420,7 +420,7 @@ blockquote{
     float:right;
     border-left: 1px solid #D5D5D5;
     height: 56px;
-    margin: 7px 0;
+    margin: 3px 0;
 }
 
 #sponsors_holder h2{
@@ -449,7 +449,14 @@ blockquote{
     margin: 0 4px;
 }
 
-.sponsors_logo{ margin: 0 8px; width:100px; height:70px; float:right; }
+.sponsors_logo{
+    height:48px;
+    float:right;
+    background-size:80px 48px;
+    width:80px  ;
+    margin-top: 10px;
+
+}
 
 .sponsors_logo.logo_1{ background:url(/images/logo_1.png) 0 0 no-repeat; }
 .sponsors_logo.logo_2{ background:url(/images/logo_2.png) 0 0 no-repeat; }

@@ -145,10 +145,9 @@ function fu1(req,callback) {
 
                            if(err){
                                   console.log(err)
-                           } else{
-                               console.log('added ' )
                            }
                         }) ;
+                        callback(null,path);
 
 
                     }
