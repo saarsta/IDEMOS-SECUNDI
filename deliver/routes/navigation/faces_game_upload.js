@@ -13,7 +13,7 @@ module.exports = function(req, res){
     fs.readFile(req.files.Filedata.path, function (err, data) {
         var newPath = 'deliver/public/faces_game/uploads/'+name ;
         fs.writeFile(newPath, data, function (err) {
-            console.log(value)      ;
+
             if(err)
             {
                 console.log('error :' + err )      ;
