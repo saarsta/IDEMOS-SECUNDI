@@ -3,11 +3,11 @@ common = require('../../../api/common');
 
 
 module.exports = function(req, res){
-    consoloe.log("Faces Game Upload")
-    consoloe.log(req.files)      ;
+    console.log("Faces Game Upload")
+    console.log(req.files)      ;
     for(var propertyName in req.files) {
 
-        consoloe.log(propertyName)
+        console.log(propertyName)
     }
     var name= req.files.upload_file.name
     common.uploadHandler(req,function(err,value) {
