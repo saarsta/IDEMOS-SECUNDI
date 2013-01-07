@@ -5,8 +5,8 @@ common = require('../../../api/common');
 
 
 module.exports = function(req, res){
-    console.log("Faces Game Upload")
-    console.log(req.files)      ;
+    //console.log("Faces Game Upload")
+   // console.log(req.files)      ;
     var name= req.files.Filedata.name
 
 
