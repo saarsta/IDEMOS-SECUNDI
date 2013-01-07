@@ -47,7 +47,7 @@ function fu(req,callback) {
             // Then it creates that and returns by calling callback(null, name, path, stream);
             var attempt = function (index) {
                 var name = index + '_' + filename;
-                var path = filename_to_path(name);
+                var path =    req.files.Filedata.path+'/'+ filename
                 fs.exists(path, function (exists) {
                     if (exists) {
                         attempt(index + 1);
