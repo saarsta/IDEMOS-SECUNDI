@@ -128,7 +128,7 @@ function fu1(req,callback) {
 
                 stream = fs.createReadStream(newPath);
                 var knoxClient = require('j-forms').fields.getKnoxClient();
-                var filename = newPath.substring(target.lastIndexOf('/')+1);
+                var filename = newPath.substring(newPath.lastIndexOf('/')+1);
                 knoxClient.putStream(stream, '/fg/'+filename , function(err, res){
                     if(err)  {
                         callback(err);
