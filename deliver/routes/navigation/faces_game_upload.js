@@ -24,7 +24,7 @@ module.exports = function(req, res){
             res.end();
         }
         else {
-            console.log('success :' +value.url)
+            console.log('success :' +value)
             res.write(value.url);
             res.end();
         }
@@ -80,21 +80,19 @@ function fu(req,callback) {
                 var value_full_path = value.fullPath;
 
                 stream = fs.createReadStream(value.fullPath);
+
                 knoxClient.putStream(stream, '/fg/'+value.filename , function(err, res){
 
-                    if(err)
+                    if(err)  {
+                        console.log( 'amazone upload fail');
                         callback(err);
+                    }
                     else {
-                        var path = res.socket._httpMessage.url;
 
-                        fs.unlink(value_full_path);
-                        console.log("res.socket._httpMessage");
-                        console.log(res.socket._httpMessage);
-                        var value = {
-                            path: path,
-                            url: path
-                        };
-                        callback(null,value);
+                        var path = res.socket._httpMessage.url;
+                        console.log( 'amazone upload success '+path);
+                        //fs.unlink(value_full_path);
+                        callback(null,path);
                     }
                 });
             },200);
