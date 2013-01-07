@@ -732,7 +732,7 @@
                     <% for (var c = 0; c < users_icons_count ; c++) { %>
                     <div class="img-box" style="overflow: hidden;float: right;margin-right: 5px">
                         <div style="width:42px; height:42px; overflow:hidden; " class='auto-scale' >
-                            <img  src="<%=users[c].avatar.url%>" alt="<%users[c].first_name%>"/>
+                            <img  src="<%=users[c].avatar_url()%>" alt="<%users[c].first_name%>"/>
                         </div>
                         <span></span>
                     </div>

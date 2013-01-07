@@ -448,6 +448,12 @@ var Schemas = exports.Schemas = {
         creation_date:{type:Date, 'default':Date.now},
         updated:  {type:Date, 'default':Date.now, editable:false},
         results_code:  {type:String}
+    }   ,
+
+    Face:{
+        url :  String ,
+        status:{type:String, "enum":["pending", "approved", "denied"]}
+
     }
 
 
@@ -522,6 +528,7 @@ var Models = module.exports = {
     QuoteGameParty:mongoose.model('QuoteGameParty', new Schema(Schemas.QuoteGameParty, {strict:true})),
     QuoteGameQuote:mongoose.model('QuoteGameQuote', new Schema(Schemas.QuoteGameQuote, {strict:true})),
     QuoteGameGames:mongoose.model('QuoteGameGames', new Schema(Schemas.QuoteGameGames, {strict:true})),
+    Face:mongoose.model('Face', new Schema(Schemas.Face, {strict:true})),
 
     Schemas:Schemas,
     setDefaultPublish:function (is_publish) {

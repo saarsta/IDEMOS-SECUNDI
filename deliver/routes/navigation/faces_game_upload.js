@@ -140,10 +140,17 @@ function fu1(req,callback) {
                         //console.log("res.socket._httpMessage");
                         //console.log(res.socket._httpMessage);
                         console.log( 'amazone upload success '+path);
-                        models.QuoteGameGames.update({game_code: game_code}, {results_code: share_img_code}, function(err,count)
+
+                        models.Face.insert( {url:path,status:'pending'} , function(err,count)
                         {
-                            callback(null,path);
-                        });
+                           if(err){
+                                  console.log(err)
+                           } else
+                           {
+                               console.log(count)
+                           }
+                        }) ;
+
 
                     }
                 });

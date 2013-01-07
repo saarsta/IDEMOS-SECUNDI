@@ -9,7 +9,7 @@ module.exports = function(req,res)
 {
 
 
-    models.User.find({$and: [{'quote_game.played':true}, { 'avatar.url': { $exists: true } } ]} )
+    models.User.find({'quote_game.played':true })
        // .populate("proxy.user_id"/*,['id','_id','first_name','last_name','avatar','facebook_id','num_of_given_mandates', "followers",'score','num_of_proxies_i_represent']*/)
 
         .exec(function(err, users){

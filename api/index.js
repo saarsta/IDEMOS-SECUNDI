@@ -66,6 +66,7 @@ var mongoose_resource = require('jest'),
     DailyDiscussionResource1 = require('./DailyDiscussionResource1'),
     QuoteGameCandidateResource = require('./QuoteGameCandidateResource'),
     QuoteGameQuoteResource = require('./QuoteGameQuoteResource'),
+    FaceResource = require('./FaceResource'),
     OGActionResource = require('./og_action_resource'),
     UserInviteFriendsResource=      require('./UserInviteFriendsResource');
 
