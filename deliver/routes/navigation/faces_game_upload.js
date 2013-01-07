@@ -10,7 +10,7 @@ module.exports = function(req, res){
     var name= req.files.Filedata.name
 
 
-    fu1(req,function(err,value) {
+    fu(req,function(err,value) {
         console.log(value)      ;
         if(err)
         {
