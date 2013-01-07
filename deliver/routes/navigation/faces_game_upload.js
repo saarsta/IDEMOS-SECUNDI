@@ -60,8 +60,6 @@ function fu(req,callback) {
      };
 
     var knoxClient = require('j-forms').fields.getKnoxClient();
-
-
     fName       =req.files.Filedata.name;
     var stream = req.queueStream || req;
 
@@ -74,13 +72,9 @@ function fu(req,callback) {
                 callback(err);
                 return;
             }
-
             setTimeout(function() {
-
                 var value_full_path = value.fullPath;
-
                 stream = fs.createReadStream(value.fullPath);
-
                 knoxClient.putStream(stream, '/fg/'+value.filename , function(err, res){
 
                     if(err)  {
@@ -110,5 +104,31 @@ function fu(req,callback) {
         });
     }
 };
+
+
+function fu1(req,callback) {
+    var name= req.files.Filedata.name
+    fs.readFile(req.files.Filedata.path, function (err, data) {
+        var newPath = 'deliver/public/faces_game/uploads/'+name ;
+        fs.writeFile(newPath, data, function (err) {
+
+            if(err)
+            {
+                console.log('error :' + err )      ;
+                for(var propertyName in err) {
+
+                    console.log(propertyName + ": "+ err[propertyName])  ;
+                }
+                callback(err);
+            }
+            else {
+                console.log('success :' +'http://www.uru.org.il/faces_game/uploads/'+name)
+                callback(null,'http://www.uru.org.il/faces_game/uploads/'+name);
+            }
+        });
+    });
+}
+
+
 
 
