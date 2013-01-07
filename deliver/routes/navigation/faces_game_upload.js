@@ -63,8 +63,8 @@ function fu(req,callback) {
 
     function writeToFile(fName, stream, callback){
         var filename=  fName,
-            path =    path.join(__dirname,'..','deliver','public','cdn', fName);
-            os= fs.createWriteStream(path) ;
+            mypath =    path.join(__dirname,'..','deliver','public','cdn', fName);
+            os= fs.createWriteStream(mypath) ;
             stream.on('data',function(data) {
                 os.write(data);
             });
