@@ -104,7 +104,7 @@
     <div id="results_header">
         <div id="results_title">
             <h2 class="title">
-                והרי התוצאות על פי אחוזי ההסכמה
+                והרי התוצאות
             </h2>
             <h3>
                 סה"כ דירגת
@@ -251,11 +251,11 @@
             </div>
 
 
-            <div class="social_holder" style="display: none">
+            <div class="social_holder" data-id="<%= cand.id %>" data-name="<%= cand.name %>"  data-pic="<%= cand.image_field.url %>">
                 <a class="share_icon" href="javascript:void(0);">שתף דף מידע</a>
-                <a class="share_icon" id="candidate_mail" href="javascript:void(0);"><img src="/images/icon_email_small_blue.png"></a>
-                <a class="share_icon" id="candidate_tw" href="javascript:void(0);"><img src="/images/icon_tw_small_blue.png"></a>
-                <a class="share_icon" id="candidate_fb"  href="javascript:void(0);" data-id="<%= cand.id %>" data-name="<%= cand.name %>"><img src="/images/icon_fb_small_blue.png"></a>
+                <a class="share_icon candidate_mail" href="javascript:void(0);"><img src="/images/icon_email_small_blue.png"></a>
+                <a class="share_icon candidate_tw" href="javascript:void(0);"><img src="/images/icon_tw_small_blue.png"></a>
+                <a class="share_icon candidate_fb"  href="javascript:void(0);" ><img src="/images/icon_fb_small_blue.png"></a>
             </div>
 
 
@@ -343,7 +343,8 @@
             <div class="text">
 
                 <span class="remark">
-כחול הינו אתר פוליטי חברתי המתעד הבטחות, תחזיות ואמירות של פוליטיקאים, אנשי ציבור, אנשי רוח, תרבות וספורט בישראל, ומאפשר לגולשים למיין אותן במבחר חיתוכים, להצביע על אמינות ההחלטות, ולהביע הסכמה או התנגדות על כל התבטאות בנפרד
+
+                    מדד כחול מתעד הבטחות, תחזיות ואמירות של אנשי ציבור, ומאפשר לגולשים להצביע על אמינות ההתבטאויות ולהביע הסכמה או התנגדות על כל התבטאות בנפרד
                 </span>
                 <hr />
 
@@ -384,132 +385,139 @@
         </div>
         <% } %>
 
+        <div class="segment about">
+            <h2 class="title">
+עוד קצת על
+                <%= cand.name %>
+                ו<%= cand.party_19th_knesset.name %>
+            </h2>
+            <br>
+
+            <div class="text">
+                <div class="col_right">
+                    <div class="about_politician">
+                        <h2>  <%= cand.name %></h2>
+                        <%= cand.biography || '' %>
+                        <br>
+                        <a class="read_more"  target="_blank" href="<%= cand.wikipedia_link %>">
+                            לערך המלא  בוויקיפדיה
+                        </a>
+
+                    </div>
+                    <div class="contact_info">
+                        <h3>פרטי התקשרות</h3>
+                        <% if( cand.telephone) { %>
+                        <div class="contact_detail_holder">
+                            <div class="detail_name">
+                                טלפון:
+                            </div>
+                            <div class="detail_value">
+                                <%= cand.telephone %>
+                            </div>
+                        </div>
+                        <% } %>
+                        <% if( cand.fax) { %>
+                        <div class="contact_detail_holder">
+                            <div class="detail_name">
+                                פקס:
+                            </div>
+                            <div class="detail_value">
+                                <%= cand.fax %>
+                            </div>
+                        </div>
+                        <% } %>
+                        <% if( cand.email) { %>
+                        <div class="contact_detail_holder">
+                            <div class="detail_name">
+                                דוא"ל:
+                            </div>
+                            <div class="detail_value">
+                                <a href="mailto:<%= cand.email %>"><%= cand.email %></a>
+                            </div>
+                        </div>
+                        <% } %>
+
+
+                    </div>
+                    <!--
+                    <div class="share_buttons">
+                        <span>שתף</span>
+                        <div class="share_button">
+                            <a href=""><img src="/images/icon_email_small.png" /></a>
+                        </div>
+                        <div class="share_button">
+                            <a href=""><img src="/images/icon_tw_small.png" /></a>
+                        </div>
+                        <div class="share_button">
+                            <a href=""><img src="/images/icon_fb_small.png" /></a>
+                        </div>
+                    </div>
+                    -->
+                </div>
+                <div class="col_left">
+                    <div class="about_party">
+                        <h2><%= cand.party_19th_knesset.name %></h2>
+
+                        <%= cand.party_19th_knesset.overview||'' %>
+                        <br>
+                        <a class="read_more"  target="_blank"  href=" <%= cand.party_19th_knesset.wikipedia_link %>">                            לערך המלא  בוויקיפדיה</a>
+                        <% if(cand.party_19th_knesset.platform) { %>
+                        <a class="read_more"  target="_blank"  href=" <%= cand.party_19th_knesset.platform %>">
+                            למצע המפלגה
+                        </a>
+                        <% } %>
+
+
+                    </div>
+                    <!--   <div class="map">
+                          <h3>מקום מגורים</h3>
+                         <iframe width="260" height="190" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.co.il/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=Amsterdam+20,+Tel+Aviv-Yafo&amp;aq=0&amp;oq=%D7%90%D7%9E&amp;sll=31.406252,35.081816&amp;sspn=7.085721,9.876709&amp;ie=UTF8&amp;hq=&amp;hnear=Amsterdam+20,+Tel+Aviv-Yafo&amp;t=m&amp;ll=32.086429,34.779882&amp;spn=0.013817,0.02223&amp;z=14&amp;iwloc=A&amp;output=embed"></iframe>
+                    </div>-->
+
+                    <div class="contact_info">
+                        <h3>&nbsp;</h3>
+
+                        <% if( cand.facebook) { %>
+                        <div class="contact_detail_holder">
+
+                            <div class="detail_value fb">
+                                <a  target="_blank"  href="<%= cand.facebook %>">
+
+                                    פייסבוק
+                                </a>
+                            </div>
+                        </div>
+                        <% } %>
+                        <% if( cand.twitter) { %>
+                        <div class="contact_detail_holder">
+
+                            <div class="detail_value tw">
+                                <a  target="_blank"  href="<%= cand.twitter %>">
+
+                                    טוויטר
+                                </a>
+                            </div>
+                        </div>
+                        <% } %>
+                        <% if( cand.official_site) { %>
+                        <div class="contact_detail_holder">
+
+                            <div class="detail_value"><a  target="_blank" href="<%= cand.official_site %>">אתר רשמי</a></div>
+                        </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
 
     </div>
 <% } %>
 
 
 
-<div class="segment about">
 
-
-    <div class="text">
-        <div class="col_right">
-            <div class="about_politician">
-                <h2>  <%= cand.name %></h2>
-                <%= cand.biography || '' %>
-                <br>
-                <a class="read_more"  target="_blank" href="<%= cand.wikipedia_link %>">
-                    לערך המלא  בוויקיפדיה
-                </a>
-
-            </div>
-            <div class="contact_info">
-                <h3>פרטי התקשרות</h3>
-                <% if( cand.telephone) { %>
-                <div class="contact_detail_holder">
-                    <div class="detail_name">
-                        טלפון:
-                    </div>
-                    <div class="detail_value">
-                        <%= cand.telephone %>
-                    </div>
-                </div>
-                <% } %>
-                <% if( cand.fax) { %>
-                <div class="contact_detail_holder">
-                    <div class="detail_name">
-                        פקס:
-                    </div>
-                    <div class="detail_value">
-                        <%= cand.fax %>
-                    </div>
-                </div>
-                <% } %>
-                <% if( cand.email) { %>
-                <div class="contact_detail_holder">
-                    <div class="detail_name">
-                        דוא"ל:
-                    </div>
-                    <div class="detail_value">
-                        <a href="mailto:<%= cand.email %>"><%= cand.email %></a>
-                    </div>
-                </div>
-                <% } %>
-
-
-            </div>
-            <!--
-            <div class="share_buttons">
-                <span>שתף</span>
-                <div class="share_button">
-                    <a href=""><img src="/images/icon_email_small.png" /></a>
-                </div>
-                <div class="share_button">
-                    <a href=""><img src="/images/icon_tw_small.png" /></a>
-                </div>
-                <div class="share_button">
-                    <a href=""><img src="/images/icon_fb_small.png" /></a>
-                </div>
-            </div>
-            -->
-        </div>
-        <div class="col_left">
-            <div class="about_party">
-                <h2><%= cand.party_19th_knesset.name %></h2>
-
-                <%= cand.party_19th_knesset.overview||'' %>
-                <br>
-                <a class="read_more"  target="_blank"  href=" <%= cand.party_19th_knesset.wikipedia_link %>">                            לערך המלא  בוויקיפדיה</a>
-                <% if(cand.party_19th_knesset.platform) { %>
-                <a class="read_more"  target="_blank"  href=" <%= cand.party_19th_knesset.platform %>">
-                    למצע המפלגה
-                </a>
-                <% } %>
-
-
-            </div>
-            <!--   <div class="map">
-                  <h3>מקום מגורים</h3>
-                 <iframe width="260" height="190" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.co.il/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=Amsterdam+20,+Tel+Aviv-Yafo&amp;aq=0&amp;oq=%D7%90%D7%9E&amp;sll=31.406252,35.081816&amp;sspn=7.085721,9.876709&amp;ie=UTF8&amp;hq=&amp;hnear=Amsterdam+20,+Tel+Aviv-Yafo&amp;t=m&amp;ll=32.086429,34.779882&amp;spn=0.013817,0.02223&amp;z=14&amp;iwloc=A&amp;output=embed"></iframe>
-            </div>-->
-
-            <div class="contact_info">
-                <h3>&nbsp;</h3>
-
-                <% if( cand.facebook) { %>
-                <div class="contact_detail_holder">
-
-                    <div class="detail_value fb">
-                        <a  target="_blank"  href="<%= cand.facebook %>">
-
-                            פייסבוק
-                        </a>
-                    </div>
-                </div>
-                <% } %>
-                <% if( cand.twitter) { %>
-                <div class="contact_detail_holder">
-
-                    <div class="detail_value tw">
-                        <a  target="_blank"  href="<%= cand.twitter %>">
-
-                            טוויטר
-                        </a>
-                    </div>
-                </div>
-                <% } %>
-                <% if( cand.official_site) { %>
-                <div class="contact_detail_holder">
-
-                    <div class="detail_value"><a  target="_blank" href="<%= cand.official_site %>">אתר רשמי</a></div>
-                </div>
-                <% } %>
-            </div>
-        </div>
-    </div>
-
-</div>
     <div id="back_to_top">חזרה למעלה</div>
 </div>
 <div id="content_left_sidebar">
@@ -834,11 +842,6 @@
 
 
 
-        $(".commit").click(function(){
-
-            window.open('http://www.uru.org.il/cycles/5098eb8bc492d10200000024','_blank');
-        });
-
 
         $(".mail_share").click(function(){
             var body=encodeURIComponent(short_mage_link)  ;
@@ -846,9 +849,16 @@
             return false;
         });
         $(".tw_share").click(function(){
+
+            var twit=  'אלה המועמדים לבחירות 2013 שאני הזדהיתי איתם:'                +
+                    short_mage_link+
+                    ' '+
+                    ' בואו גם לגלות במי אתם תומכים http://uru.org.il/elections_game. ';
+
+
             window.open('https://twitter.com/share?url=' + encodeURIComponent( short_mage_link ) + '&text=' +
                 //    encodeURIComponent(global.share_messages.a) + '&via=URUisrael', 'share-twitter', 'status=0,scrollbars=0,location=0,height=320,width=660,resizable=1'
-                    encodeURIComponent( $(this).data('text_preview') ) + '&via=URUisrael', 'share-twitter', 'status=0,scrollbars=0,location=0,height=320,width=660,resizable=1'
+                    encodeURIComponent(twit ) + '&via=URUisrael', 'share-twitter', 'status=0,scrollbars=0,location=0,height=320,width=660,resizable=1'
             );
             return false;
         });
@@ -917,15 +927,18 @@
 
             return false;
         });
-      /*
-        $("#candidate_fb").click(function(){
+
+        $(".candidate_fb").click(function(){
+           var cand_id= $(this).parent().data('id');
+            var cand_name= $(this).parent().data('name');
+            var cand_pic= $(this).parent().data('pic');
             FB.ui(
                     {
                         method: 'feed',
-                        link: link,
-                        name: title,
-                        picture: image,
-                        caption: body,
+                        link: 'http://www.uru.org.il/elections_game/' +cand_id ,
+                        name: cand_name+' - פוליטיקלי קורקט',
+                        picture: cand_pic,
+                        caption: 'רקע, מידע וכלים שמשקפים את העשייה של ' + cand_name + ' בפעילותו הציבורית.',
                         description: ' '
                     },
                     function(response) {
@@ -937,7 +950,25 @@
                     }
             );
         } );
-       */
+        $(".candidate_tw").click(function(){
+            var cand_id= $(this).parent().data('id');
+            var cand_name= $(this).parent().data('name');
+            var cand_pic= $(this).parent().data('pic');
+            window.open('https://twitter.com/share?url=' + encodeURIComponent('http://www.uru.org.il/elections_game/' +cand_id) + '&text=' +
+                //    encodeURIComponent(global.share_messages.a) + '&via=URUisrael', 'share-twitter', 'status=0,scrollbars=0,location=0,height=320,width=660,resizable=1'
+                    'פוליטיקלי קורקט - '+ 'רקע, מידע וכלים שמשקפים את העשייה של ' + cand_name + ' בפעילותו הציבורית.'+ '&via=URUisrael', 'share-twitter', 'status=0,scrollbars=0,location=0,height=320,width=660,resizable=1'
+            );
+        });
+
+
+        $(".candidate_mail").click(function(){
+            var cand_id= $(this).parent().data('id');
+            var cand_name= $(this).parent().data('name');
+            var cand_pic= $(this).parent().data('pic');
+            var subject =     cand_name+' - פוליטיקלי קורקט';
+            var body= encodeURIComponent('http://www.uru.org.il/elections_game/' +cand_id) + '  ' +      'רקע, מידע וכלים שמשקפים את העשייה של ' + cand_name + ' בפעילותו הציבורית.' ;
+            window.location.href = "mailto:?subject=" + subject+ "&body=" +body;
+        }   );
 
         $('.pluginButton').click(function () {
 
@@ -963,6 +994,25 @@
                         }
                 );
         }  );
+
+
+
+
+        $(".commit").click(function(e){
+            var item_id              = '5098eb8bc492d10200000024';
+            e.preventDefault();
+
+
+            facebookLogin(function(error) {
+                $.post('/elections/fbimage/' + FB.getUserID(), function(data) {
+                    db_functions.joinToCycleFollowers(item_id, true ,function(err,data){
+                        window.open('/cycles/5098eb8bc492d10200000024?share=true','_blank');
+                    })
+
+                });
+            });
+
+        });
 
 
 

@@ -350,7 +350,7 @@
             var item_id              = $(this).data('id');
             e.preventDefault();
             db_functions.joinToCycleFollowers(item_id, true ,function(err,data){
-                window.location.href = ' /cycles/'+item_id;
+                window.location.href = ' /cycles/'+item_id+'?share=true';
 
             })
         });
