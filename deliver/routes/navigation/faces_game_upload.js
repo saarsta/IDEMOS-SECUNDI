@@ -10,7 +10,7 @@ module.exports = function(req, res){
     var name= req.files.Filedata.name
 
 
-    fu(req,function(err,value) {
+    fu1(req,function(err,value) {
         console.log(value)      ;
         if(err)
         {
@@ -122,8 +122,31 @@ function fu1(req,callback) {
                 callback(err);
             }
             else {
+
+
                 console.log('success :' +'http://www.uru.org.il/faces_game/uploads/'+name)
-                callback(null,'http://www.uru.org.il/faces_game/uploads/'+name);
+
+                stream = fs.createReadStream(newPath);
+                var knoxClient = require('j-forms').fields.getKnoxClient();
+                var filename = newPath.substring(target.lastIndexOf('/')+1);
+                knoxClient.putStream(stream, '/fg/'+filename , function(err, res){
+                    if(err)  {
+                        callback(err);
+                        console.log( 'amazone upload fail');
+                    }
+                    else {
+                        var path = res.socket._httpMessage.url;
+                        fs.unlink(newPath);
+                        //console.log("res.socket._httpMessage");
+                        //console.log(res.socket._httpMessage);
+                        console.log( 'amazone upload success '+path);
+                        models.QuoteGameGames.update({game_code: game_code}, {results_code: share_img_code}, function(err,count)
+                        {
+                            callback(null,path);
+                        });
+
+                    }
+                });
             }
         });
     });
