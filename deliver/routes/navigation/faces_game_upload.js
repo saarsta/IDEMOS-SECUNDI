@@ -5,17 +5,16 @@ common = require('../../../api/common');
 module.exports = function(req, res){
     console.log("Faces Game Upload")
     console.log(req.files)      ;
-    for(var propertyName in req.files) {
-
-        console.log(propertyName)
-    }
-    var name= req.files.upload_file.name
+    var name= req.files.Filedata.name
     common.uploadHandler(req,function(err,value) {
+        console.log(value)      ;
         if(err) {
+            console.log('error :' +err)      ;
             res.write(err);
             res.end();
         }
         else {
+            console.log('success :' +'http://www.uru.org.il/faces_game/uploads/'+name)
             res.write('http://www.uru.org.il/faces_game/uploads/'+name);
             res.end();
         }
