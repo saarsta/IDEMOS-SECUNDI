@@ -20,13 +20,11 @@ module.exports = function(req, res){
                 console.log(propertyName + ": "+ err[propertyName])  ;
             }
 
-            res.write(err);
-            res.end();
+            res.json(400 ,{err:err});
         }
         else {
             console.log('success :' +value)
-            res.write(value.url);
-            res.end();
+            res.json({url:value});
         }
     });
 

@@ -146,4 +146,5 @@ module.exports = function(app)
     rest_api.register_resource('quote_game_candidate', new QuoteGameCandidateResource());
     rest_api.register_resource('quote_game_quote', new QuoteGameQuoteResource());
     rest_api.register_resource('quote_game_response', new QuoteGameQuoteResource());
+    rest_api.register_resource('face', new FaceResource());
 };
