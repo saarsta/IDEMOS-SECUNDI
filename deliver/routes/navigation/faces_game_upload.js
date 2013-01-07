@@ -1,5 +1,6 @@
 var fs = require('fs') ,
     knox = require('knox'),
+    path = require('path'),
 common = require('../../../api/common');
 
 
