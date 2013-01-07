@@ -79,7 +79,7 @@ function fu(req,callback) {
                 os.on('close', function () {
                     callback(null,{
                         filename: filename,
-                        fullPath: 'http://www.uru.org.il/faces_game/uploads/'+fName
+                        fullPath: mypath
                     });
                 });
 
