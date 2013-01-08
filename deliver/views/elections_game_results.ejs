@@ -94,10 +94,10 @@
                 <div style="top: 0;  color: #999;   position: absolute;right: 0;">
                     בשיתוף עם:
                 </div>
-                <a class="sponsors_logo logo_1"  href="#openk"></a>
-                <a class="sponsors_logo logo_2"  href="#openk"  ></a>
-                <a class="sponsors_logo logo_3"  href="#kahol"  ></a>
-                <a class="sponsors_logo logo_4"  href="#shilton" ></a>
+                <a class="sponsors_logo logo_1"  target="_blank"  href="http://oknesset.org/"></a>
+                <a class="sponsors_logo logo_2"  target="_blank" href="http://hamishmar.org.il/"  ></a>
+                <a class="sponsors_logo logo_3"  target="_blank" href="http://www.sandtalks.co.il/"  ></a>
+                <a class="sponsors_logo logo_4"  target="_blank" href="http://www.mqg.org.il/" ></a>
                 <div class="sponsors_logo logo_5"></div>
             </div>
         </div>
@@ -518,7 +518,21 @@
             </div>
 
         </div>
+        <% if( cand.additional_links && cand.additional_links.length>0 ) { %>
+        <div class="segment about">
+                    <h2 class="title">
+        לקריאה נוספת
+                    </h2>
+                    <br>
+            <div class="text">
 
+
+            <% for(j=0;j<cand.additional_links.length;j++) { %>
+                <a href="<%=cand.additional_links[j].link %>"><%=cand.additional_links[j].text %></a>    <br>
+            <% } %>
+            </div>
+        </div>
+        <% } %>
 
     </div>
 <% } %>
@@ -908,9 +922,10 @@
                             html:out,
                             onComplete:function (e) {
                                 $('#share_bt').click(function() {
+                                    var new_body= $('#fb_share_body').val();
                                     var obj = {
                                         url : image,
-                                        message: body+" "+link
+                                        message: new_body
                                     };
                                     FB.api('/me/photos', 'post', obj , function(response) {
                                         if (!response || response.error) {
@@ -948,7 +963,7 @@
                         link: 'http://www.uru.org.il/elections_game/' +cand_id ,
                         name: cand_name+' - פוליטיקלי קורקט',
                         picture: cand_pic,
-                        caption: 'רקע, מידע וכלים שמשקפים את העשייה של ' + cand_name + ' בפעילותו הציבורית.',
+                        caption: 'רקע, מידע וכלים שמשקפים את העשייה הציבורית של '+cand_name,
                         description: ' '
                     },
                     function(response) {
@@ -966,7 +981,7 @@
             var cand_pic= $(this).parent().data('pic');
             window.open('https://twitter.com/share?url=' + encodeURIComponent('http://www.uru.org.il/elections_game/' +cand_id) + '&text=' +
                 //    encodeURIComponent(global.share_messages.a) + '&via=URUisrael', 'share-twitter', 'status=0,scrollbars=0,location=0,height=320,width=660,resizable=1'
-                    'פוליטיקלי קורקט - '+ 'רקע, מידע וכלים שמשקפים את העשייה של ' + cand_name + ' בפעילותו הציבורית.'+ '&via=URUisrael', 'share-twitter', 'status=0,scrollbars=0,location=0,height=320,width=660,resizable=1'
+                    'רקע, מידע וכלים שמשקפים את העשייה הציבורית של '+cand_name+ '&via=URUisrael', 'share-twitter', 'status=0,scrollbars=0,location=0,height=320,width=660,resizable=1'
             );
         });
 
@@ -976,7 +991,7 @@
             var cand_name= $(this).parent().data('name');
             var cand_pic= $(this).parent().data('pic');
             var subject =     cand_name+' - פוליטיקלי קורקט';
-            var body= encodeURIComponent('http://www.uru.org.il/elections_game/' +cand_id) + '  ' +      'רקע, מידע וכלים שמשקפים את העשייה של ' + cand_name + ' בפעילותו הציבורית.' ;
+            var body= encodeURIComponent('http://www.uru.org.il/elections_game/' +cand_id) + '  ' +    'רקע, מידע וכלים שמשקפים את העשייה הציבורית של '+cand_name;
             window.location.href = "mailto:?subject=" + subject+ "&body=" +body;
         }   );
 

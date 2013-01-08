@@ -6,6 +6,7 @@ body{
 }
 
 hr{
+    clear: both;
     display: block;
     height: 1px;
     border: 0;
@@ -13,7 +14,7 @@ hr{
     margin: 1em auto;
     padding: 0;
     width: 93%;
-    clear: both;
+
 }
 
 #wrapper{

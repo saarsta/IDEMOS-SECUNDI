@@ -1,7 +1,8 @@
 module.exports = function(req, res){
-    res.render('elections_game_tmp.ejs', {
-        layout: false,
-        url: req.url,
-        user_logged: req.isAuthenticated()
+    res.writeHead(302, {
+        'Location': '/elections_game'
+        //add other headers here...
     });
+    res.end();
+
 };
