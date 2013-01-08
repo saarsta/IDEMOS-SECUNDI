@@ -1564,6 +1564,21 @@ var db_functions = {
             }
         });
     } ,
+    setQuoteGameUser:function (callback) {
+
+        $.ajax({
+            url:'/api/quote_game_response/' ,
+            type:"POST",
+            async:true,
+            success:function (data) {
+                console.log(data);
+                if(callback)callback(null, data);
+            },
+            error:function (err) {
+                if(callback)callback(err, null);
+            }
+        });
+    } ,
     counterIncrease:function (counter,callback) {
 
         $.ajax({

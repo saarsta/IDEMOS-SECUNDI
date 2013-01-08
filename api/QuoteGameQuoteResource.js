@@ -12,7 +12,7 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
         req_g: {},
         init:function () {
             this._super(models.QuoteGameQuote, null, null);
-            this.allowed_methods = ['get','put'];
+            this.allowed_methods = ['get','put','post'];
             //this.authentication = new common.SessionAuthentication();
             //this.filtering = {cycle: null};
             this.default_query = function (query) {
@@ -56,7 +56,7 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
                         final_results.meta.total_count=final_results.objects.length;
                     }else{
                         for(var propertyName in req.session.election_game) {
-
+                            if(propertyName=='game_code') continue;
                             played_quotes.push(propertyName);
                             if( req.session.election_game[propertyName].response=="skip"){
                                 skipped_quotes++;
@@ -104,6 +104,7 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
             req.session.save(function(calee,length){
                 var played_quotes=[];
                 for(var propertyName in req.session.election_game) {
+                    if(propertyName=='game_code') continue;
                     played_quotes.push(propertyName);
                 }
                console.log("session saved " +played_quotes.length);
@@ -155,6 +156,7 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
                 var played_quotes=[];
 
                 for(var propertyName in req.session.election_game) {
+                    if(propertyName=='game_code') continue;
                     played_quotes.push(propertyName);
                 }
                 callback(err, played_quotes);
@@ -165,6 +167,29 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
 
         }
 
+         ,
+        create_obj: function(req,fields,callback) {
+            var user_id         =req.session.user_id ||null;
+            var quote_counter =0;
+            for(var propertyName in req.session.election_game) {
+                if(propertyName=='game_code') continue;
+                quote_counter++;
+            }
+            if(user_id){
+                models.User.update({_id: user_id,"quote_game.played": false}, {
+                    $set:       { "quote_game.played": true,"quote_game.quotes_count":quote_counter} ,
+                    $addToSet:  {"quote_game.games" : req.session.election_game.game_code }
+                }, function(err,count)  {
+                    if(err) {
+                        callback(err);
+                    }  else{
+                        callback(count);
+                    }
+                });
+            }   else    callback(null);
+
+
+        }
     });
 
 

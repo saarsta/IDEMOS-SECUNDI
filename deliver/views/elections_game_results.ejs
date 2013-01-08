@@ -51,8 +51,10 @@
 
 
 
-            <div class="social_item fb">
-                <div  style="width:80px;height: 20px ;left: 323px; overflow: hidden;position:absolute;direction: ltr; ">
+            <div class="social_item fb" style="position: relative">
+
+
+                <div  style="width:80px;height: 20px ;left: 0px; overflow: hidden;position:absolute;direction: ltr; ">
                     <div class="fb-like" data-href="http://www.uru.org.il/elections_game" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false"></div>
                 </div>
             </div>
@@ -616,6 +618,10 @@
 
 
         var short_mage_link;
+
+
+        db_functions.setQuoteGameUser()
+
         <% if(!user_logged &&  candidate_page==false) { %>
         dust.render('elections_game_disclaimer', null, function (err, out) {
             $.colorbox({
@@ -639,6 +645,7 @@
                                 $(".login-popup .alert").show();
                             }
                             else{
+                                db_functions.setQuoteGameUser()
                                 $(document).one('cbox_closed', function(){
                                     window.location.reload() ;
                               //      callback(err, result);
@@ -658,6 +665,7 @@
                                 $.colorbox.close();
 
                             }else{
+                                db_functions.setQuoteGameUser()
                                 window.location.reload() ;
                             }
                         })
@@ -917,6 +925,7 @@
 
             facebookLogin(function(error) {
                 $.post('/elections/fbimage/' + FB.getUserID(), function(data) {
+                    db_functions.setQuoteGameUser();
                     dust.render('elections_game_share', {image:image,body:body+ ' '+link}, function (err, out) {
                         $.colorbox({
                             html:out,
@@ -1021,8 +1030,6 @@
         }  );
 
 
-
-
         $(".commit").click(function(e){
             var item_id              = '5098eb8bc492d10200000024';
             e.preventDefault();
@@ -1030,7 +1037,7 @@
 
             facebookLogin(function(error) {
                 $.post('/elections/fbimage/' + FB.getUserID(), function(data) {
-
+                    db_functions.setQuoteGameUser();
                     db_functions.counterIncrease('quote_game.join_cycle_click',function(err,data){
                         db_functions.joinToCycleFollowers(item_id, true ,function(err,data){
                             window.open('/cycles/5098eb8bc492d10200000024?share=true','_blank');

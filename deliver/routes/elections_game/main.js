@@ -18,7 +18,7 @@ module.exports = function(req,res)
                 .exec(function(err, hashes){
                         res.setHeader("Expires", "0");
                         res.render('elections_game.ejs',{
-                        users       :   users       ,
+                        users       :   shuffle(users)       ,
                         users_icons_count :   Math.min(11,users_count)  ,
                         hash        :   makeid(10)  ,
                         game_played :   hashes.length+320 ,
@@ -34,6 +34,11 @@ module.exports = function(req,res)
                     });
             });
         })
+
+    function shuffle (o){ //v1.0
+        for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+        return o;
+    }
 
     function makeid(len)
     {
