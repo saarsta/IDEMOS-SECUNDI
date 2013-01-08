@@ -9,7 +9,7 @@ module.exports = function(req,res)
 {
 
 
-    models.User.find({'quote_game.played':true })
+    models.User.find({'quote_game.played':true} )
        // .populate("proxy.user_id"/*,['id','_id','first_name','last_name','avatar','facebook_id','num_of_given_mandates', "followers",'score','num_of_proxies_i_represent']*/)
 
         .exec(function(err, users){
@@ -19,9 +19,9 @@ module.exports = function(req,res)
                         res.setHeader("Expires", "0");
                         res.render('elections_game.ejs',{
                         users       :   users       ,
-                        users_icons_count :   Math.min(14,users_count)  ,
+                        users_icons_count :   Math.min(11,users_count)  ,
                         hash        :   makeid(10)  ,
-                        game_played :   hashes.length ,
+                        game_played :   hashes.length+320 ,
                             /*meta: {
                              type: req.app.settings.facebook_app_name + ':discussion',
                              id: discussion.id,
