@@ -67,6 +67,7 @@ var mongoose_resource = require('jest'),
     QuoteGameCandidateResource = require('./QuoteGameCandidateResource'),
     QuoteGameQuoteResource = require('./QuoteGameQuoteResource'),
     FaceResource = require('./FaceResource'),
+    CounterResource = require('./CounterResource'),
     OGActionResource = require('./og_action_resource'),
     UserInviteFriendsResource=      require('./UserInviteFriendsResource');
 
@@ -147,4 +148,6 @@ module.exports = function(app)
     rest_api.register_resource('quote_game_quote', new QuoteGameQuoteResource());
     rest_api.register_resource('quote_game_response', new QuoteGameQuoteResource());
     rest_api.register_resource('face', new FaceResource());
+    rest_api.register_resource('counter', new CounterResource());
+
 };

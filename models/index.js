@@ -454,6 +454,15 @@ var Schemas = exports.Schemas = {
         url :  String ,
         status:{type:String, "enum":["pending", "approved", "denied"]}
 
+    } ,
+
+    Counter:{
+        type:    String ,
+        quote_game:{
+            popup_signup_click :    {type:Number, 'default':0,editable:false},
+            join_cycle_click :    {type:Number, 'default':0,editable:false},
+            facebook_joiners :    {type:Number, 'default':0,editable:false}
+        }
     }
 
 
@@ -529,6 +538,7 @@ var Models = module.exports = {
     QuoteGameQuote:mongoose.model('QuoteGameQuote', new Schema(Schemas.QuoteGameQuote, {strict:true})),
     QuoteGameGames:mongoose.model('QuoteGameGames', new Schema(Schemas.QuoteGameGames, {strict:true})),
     Face          :mongoose.model('Face', new Schema(Schemas.Face, {strict:true})),
+    Counter          :mongoose.model('Counter', new Schema(Schemas.Counter, {strict:true})),
 
     Schemas:Schemas,
     setDefaultPublish:function (is_publish) {

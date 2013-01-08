@@ -1563,8 +1563,23 @@ var db_functions = {
                 callback(err, null);
             }
         });
-    }
+    } ,
+    counterIncrease:function (counter,callback) {
 
+        $.ajax({
+            url:'/api/counter/',
+            type:"POST",
+            async:true,
+            data: {counter:counter },
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function (err) {
+                callback(err, null);
+            }
+        });
+    }
 
 
 };

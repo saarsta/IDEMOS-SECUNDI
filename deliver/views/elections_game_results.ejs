@@ -83,8 +83,7 @@
     </div>
     <div id="header_bottom">
         <div id="sponsors_holder">
-            <div style="padding-left:20px;padding-top: 15px;float: right;width:440px;font-size: 17px;
-font-weight: bold;">
+            <div style="padding-left:20px;padding-top: 14px;float: right;width:440px;font-size: 16px;">
             רוצים לדעת מה המועמדים שאיתם הזדהיתם עשו, ולא רק מה הם אמרו?
 
             מתחת לתוצאות תראו מידע עשיר ומגוון על פעילותם
@@ -168,10 +167,9 @@ font-weight: bold;">
         <div id="graph">
             <div id="commitment">
 							<span>
-עכשיו, כשהבנת באיזה צד של המפה אתה עומד ובמי אתה מאמין,
+עכשיו, כשהבנתם באיזה צד של המפה אתם עומדים,
                                 <br>
-                                יהיה לך הרבה יותר קל לבחור. לחץ ותהיה חלק מאיתנו.
-
+                                יהיה לכם קל יותר לבחור. לחצו כאן כדי לקחת חלק בקמפיין
 
 							</span>
                 <input class="commit" type="button" />
@@ -651,7 +649,9 @@ font-weight: bold;">
                         })
                     })
                     $(".register_btn").live('click', function(){
-                        window.open('http://www.uru.org.il/account/register','_blank');
+                        db_functions.counterIncrease('quote_game.popup_signup_click',function(err,data){
+                            window.open('http://www.uru.org.il/account/register','_blank');
+                        });
                     })
 
                 },
@@ -1015,10 +1015,12 @@ font-weight: bold;">
 
             facebookLogin(function(error) {
                 $.post('/elections/fbimage/' + FB.getUserID(), function(data) {
-                    db_functions.joinToCycleFollowers(item_id, true ,function(err,data){
-                        window.open('/cycles/5098eb8bc492d10200000024?share=true','_blank');
-                    })
 
+                    db_functions.counterIncrease('quote_game.join_cycle_click',function(err,data){
+                        db_functions.joinToCycleFollowers(item_id, true ,function(err,data){
+                            window.open('/cycles/5098eb8bc492d10200000024?share=true','_blank');
+                        })
+                    } );
                 });
             });
 

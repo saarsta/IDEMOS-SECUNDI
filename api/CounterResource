@@ -1,0 +1,32 @@
+var common = require('./common')
+    models = require('../models'),
+    _ = require('underscore');
+
+
+var CounterResource = module.exports = jest.MongooseResource.extend({
+        init:function () {
+            this._super(models.Counter, null, null);
+            this.allowed_methods = ['get','post'];
+            //this.authentication = new common.SessionAuthentication();
+            //this.filtering = {cycle: null};
+            this.default_query = function (query) {
+                return query
+            };
+        }   ,
+    create_obj: function(req,fields,callback) {
+        var counter         =req.body.counter;
+        var counter_obj={}     ;
+        counter_obj[counter]=1;
+        models.Counter.update({type: 'main'}, {  $inc:counter_obj }, {upsert: true}, function(err,count)
+        {
+            if(err){
+                callback(err);
+            }else{
+                callback(null,count);
+            }
+        });
+
+    }
+
+})
+

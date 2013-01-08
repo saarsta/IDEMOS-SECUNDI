@@ -13,6 +13,7 @@ hr{
     margin: 1em auto;
     padding: 0;
     width: 93%;
+    clear: both;
 }
 
 #wrapper{
@@ -1429,3 +1430,4 @@ login-popup > div {
 
     padding: 20px 40px 20px 40px;
 }
+
