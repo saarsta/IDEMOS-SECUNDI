@@ -103,10 +103,10 @@ body {
         });
     };
 
-    function graphStreamPublish(img) {
+    function graphStreamPublish(img,str) {
         console.log('graphStreamPublish');
         FB.api('/me/feed', 'post', {
-                    message: "איזה פרצוף יש לכם?",
+                    message: str,
                     link: 'https://uru.herokuapp.com/faces_game',
                     picture: img,
                     name: 'איזה פרצוף יש לכם?',
