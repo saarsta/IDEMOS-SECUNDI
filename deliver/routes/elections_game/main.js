@@ -19,7 +19,7 @@ module.exports = function(req,res)
                         res.setHeader("Expires", "0");
                         res.render('elections_game.ejs',{
                         users       :   shuffle(users)       ,
-                        users_icons_count :   Math.min(11,users_count)  ,
+                        users_icons_count :   Math.min(12,users_count)  ,
                         hash        :   makeid(10)  ,
                         game_played :   hashes.length+320 ,
                             /*meta: {
