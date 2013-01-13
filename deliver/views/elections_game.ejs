@@ -124,6 +124,10 @@
         padding: 10px 7px 10px 7px;
         margin: 4px 0;
     }
+    #participants_thumbs img{
+            cursor: pointer;
+    }
+
 
     .participant_thumb{
         float:right;
@@ -680,7 +684,9 @@
                 <a id="logo" href="/"></a>
             </div>
             <div id="title_holder">
-               <img src="/images/logo_game.png">
+                <a href="\elections_game" id="">
+                    <img src="/images/logo_game.png">
+                </a>
              </div>
 
 
@@ -735,7 +741,7 @@
                     <% for (var c = 0; c < users_icons_count ; c++) { %>
                     <div class="img-box" style="overflow: hidden;float: right;margin-right: 5px">
                         <div style="width:42px; height:42px; overflow:hidden; " class='auto-scale' >
-                            <img  src="<%=users[c].avatar_url()%>" alt="<%users[c].first_name%>"/>
+                            <img data-id="<%=users[c]._id%>" src="<%=users[c].avatar_url()%>" alt="<%users[c].first_name%>"/>
                         </div>
                         <span></span>
                     </div>
@@ -790,7 +796,10 @@
             <h2>
                 עכשיו תוכלו לעבור לעמוד התוצאות
             </h2>
-            כדי שתוכלו לקבל תמונה מלאה יותר על השקפת העולם של המועמדים, מעבר לאמירותיהם, בתחתית עמוד התוצאות תמצאו הפניות לרקע, מידע וכלים שישקפו את עשייתם. כך תוכלו לבחור במפלגה שהכי קרובה לדעותיכם
+
+            ציטוטים והבטחות אינם מבטאים את מלוא העשייה של המועמדים. כדי שתוכלו להשלים את התמונה, מתחת לתיבת התוצאות תמצאו הפניות למידע ולמגוון כלים שבאמצעותם תוכלו לדעת איזו מפלגה הכי קרובה לדעותיכם. (סגרו חלון זה להמשך המשחק)"
+
+
           <a href="/elections_game/results" >
               המשך לעמוד התוצאות >>
           </a>
@@ -956,9 +965,11 @@
           //  console.log("results");
         }
 
-        function progress(i){
-            $(".game_progress_bar_indicator").css('right',i+'%');
-            $(".game_progress_bar").css('width',i+'%');
+        function progress(xi){
+            var x =   Math.min(i,100);
+
+            $(".game_progress_bar_indicator").css('right',x+'%');
+            $(".game_progress_bar").css('width',x+'%');
         }
 
         $('.close_button').click(function () {
@@ -966,6 +977,10 @@
             $('#play_progress').hide();
             $('#game_progress_holder').show();
 
+        });
+
+        $('#participants_thumbs img').click(function () {
+            window.open('myuru/'+$(this).data('id'),'_blank');
         });
 
         $('.pluginButton').click(function () {

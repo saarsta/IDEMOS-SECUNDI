@@ -103,14 +103,14 @@ body {
         });
     };
 
-    function graphStreamPublish(img,str) {
+    function graphStreamPublish2(img,str) {
         console.log('graphStreamPublish');
         FB.api('/me/feed', 'post', {
                     message: str,
-                    link: 'https://uru.herokuapp.com/faces_game',
+                    link: 'https://www.facebook.com/URUisrael/app_313268118784632',
                     picture: img,
                     name: 'איזה פרצוף יש לכם?',
-                    description: 'הכינסו ורישמו על הפנים מה מפריע לכם'
+                    description: 'היכנסו ותכתבו לפוליטיקאי על הפנים מה מפריע לכם https://www.facebook.com/URUisrael/app_313268118784632'
 
                 },
 
@@ -124,17 +124,39 @@ body {
                     }
                 });
     }
-
+	
+	 function graphStreamPublish(img,str) {
+		 console.log('graphStreamPublish2');
+	FB.ui(
+  {
+   method: 'feed',
+   name: 'str,
+   caption: 'איזה פרצוף יש לכם?',
+   description: (
+      'היכנסו ותכתבו לפוליטיקאי על הפנים מה מפריע לכם https://www.facebook.com/URUisrael/app_313268118784632'
+   ),
+   link: 'https://www.facebook.com/URUisrael/app_313268118784632',
+   picture: img
+  },
+  function(response) {
+    if (response && response.post_id) {
+      console.log('Post was published.');
+    } else {
+      console.log('Post was not published.');
+    }
+  }
+);
+	 }
     function postToFeed() {
 
         // calling the API ...
         var obj = {
             method: 'feed',
-            redirect_uri: 'https://uru.herokuapp.com/faces_game',
-            link: 'https://uru.herokuapp.com/faces_game',
+            redirect_uri: 'https://www.facebook.com/URUisrael/app_313268118784632',
+            link: 'https://www.facebook.com/URUisrael/app_313268118784632',
             picture: 'https://uru.herokuapp.com/faces_game/logo.jpg',
             name: 'איזה פרצוף יש לכם?',
-            caption: 'הכינסו ורישמו על הפנים מה מפריע לכם',
+            caption: 'היכנסו ותכתבו לפוליטיקאי על הפנים מה מפריע לכם https://www.facebook.com/URUisrael/app_313268118784632',
             description: ''
         };
 

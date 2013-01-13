@@ -46,7 +46,10 @@
             <a id="logo" href="/"> </a>
         </div>
         <div id="title_holder">
-            <img src="/images/logo_game.png">
+            <a href="\elections_game" id="">
+                <img src="/images/logo_game.png">
+            </a>
+
         </div>
         <div id="social_holder">
 
@@ -134,17 +137,17 @@
             </a>
             <a class="results_share_icon mail_share"
                data-img_src="<%= share_img %>"
-               data-text_preview="אלה המועמדים לבחירות 2013 שאני הזדהיתי איתם. בואו לגלות במי אתם תומכים."
+               data-text_preview="אלה המועמדים לבחירות 2013 שאני הזדהיתי איתם. בואו לגלות במי אתם תומכים!"
                href="javascript: void(0)"><img src="/images/icon_email_white.png" /></a>
             <a class="results_share_icon tw_share"
                data-img_src="<%= share_img %>"
-               data-text_preview="אלה המועמדים לבחירות 2013 שאני הזדהיתי איתם. בואו לגלות במי אתם תומכים."
+               data-text_preview="אלה המועמדים לבחירות 2013 שאני הזדהיתי איתם. בואו לגלות במי אתם תומכים!"
                href="javascript: void(0)"><img src="/images/icon_tw_white.png" /></a>
 
             <a class="results_share_icon fb_share"
                rel="/elections_game"
                data-img_src="<%= share_img %>"
-               data-text_preview="אלה המועמדים לבחירות 2013 שאני הזדהיתי איתם. בואו לגלות במי אתם תומכים."
+               data-text_preview="אלה המועמדים לבחירות 2013 שאני הזדהיתי איתם. בואו לגלות במי אתם תומכים!"
                data-text="אלה המועמדים לבחירות 2013 שאני הזדהיתי איתם. בואו לגלות במי אתם תומכים!"
                data-title="פוליטיקלי קורקט"
                data-name="פוליטיקלי קורקט"
@@ -160,7 +163,7 @@
             </div>
 
 
-            <a class="results_share_icon" href="" id="fb-share" style='text-decoration:none;' type="icon_link" onClick="window.open('http://www.facebook.com/sharer.php?s=100&amp;p[title]=פוליטיקלי קורקט&amp;p[summary]=אלה המועמדים לבחירות 2013 שאני הזדהיתי איתם.         בואו לגלות במי אתם תומכים.&amp;p[url]=http://www.uru.org.il/elections_game&amp;p[images][0]=<%=share_img %>','sharer','toolbar=0,status=0,width=580,height=325');" href="javascript: void(0)">
+            <a class="results_share_icon" href="" id="fb-share" style='text-decoration:none;' type="icon_link" onClick="window.open('http://www.facebook.com/sharer.php?s=100&amp;p[title]=פוליטיקלי קורקט&amp;p[summary]=אלה המועמדים לבחירות 2013 שאני הזדהיתי איתם.         בואו לגלות במי אתם תומכים!&amp;p[url]=http://www.uru.org.il/elections_game&amp;p[images][0]=<%=share_img %>','sharer','toolbar=0,status=0,width=580,height=325');" href="javascript: void(0)">
 
             </a>
 
@@ -531,7 +534,7 @@
 
 
             <% for(j=0;j<cand.additional_links.length;j++) { %>
-                <a href="<%=cand.additional_links[j].link %>"><%=cand.additional_links[j].text %></a>    <br>
+                <a style="line-height: 30px" href="<%=cand.additional_links[j].link %>"><%=cand.additional_links[j].text %></a>    <br>
             <% } %>
             </div>
         </div>
