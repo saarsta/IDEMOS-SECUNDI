@@ -741,7 +741,7 @@
                     <% for (var c = 0; c < users_icons_count ; c++) { %>
                     <div class="img-box" style="overflow: hidden;float: right;margin-right: 5px">
                         <div style="width:42px; height:42px; overflow:hidden; " class='auto-scale' >
-                            <img data-id="<%=users[c]._id%>" src="<%=users[c].avatar_url()%>" alt="<%users[c].first_name%>"/>
+                            <img title="<%=users[c].first_name+' '+users[c].last_name%>" data-id="<%=users[c]._id%>" src="<%=users[c].avatar_url()%>" alt="<%users[c].first_name%>"/>
                         </div>
                         <span></span>
                     </div>
@@ -965,7 +965,7 @@
           //  console.log("results");
         }
 
-        function progress(xi){
+        function progress(i){
             var x =   Math.min(i,100);
 
             $(".game_progress_bar_indicator").css('right',x+'%');
