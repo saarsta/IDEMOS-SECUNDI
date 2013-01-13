@@ -69,4 +69,8 @@ module.exports = function(app) {
 
     router.post('/faces_game',require('./navigation/faces_game'));
 
+    router.all('/faces_admin',require('./navigation/faces_admin'));
+
+    router.get('/test',require('./navigation/test'));
+
  };

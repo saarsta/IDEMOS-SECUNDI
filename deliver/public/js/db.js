@@ -1594,7 +1594,38 @@ var db_functions = {
                 callback(err, null);
             }
         });
-    }
+    }  ,
+    getFaces:function (status ,callback) {
+        db_functions.loggedInAjax({
+            url:'/api/face/?limit=0',
+            type:"GET",
+            data: {status:status},
+            async:true,
+            success:function (data, err) {
+                callback(err, data);
+            },
+            error:function (err, data) {
+                callback(err, data);
+            }
+        });
+    }  ,
+    setFaceStatus:function (face_id,status,callback) {
+        $.ajax({
+            url:'/api/face/' + face_id ,
+            type:"PUT",
+            async:true,
+            data: {status: status},
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function (err) {
+                callback(err, null);
+            }
+        });
+    } ,
+
+
 
 
 };
