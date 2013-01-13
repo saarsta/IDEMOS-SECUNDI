@@ -93,7 +93,7 @@ function overwrite_file(amazon_url,callback) {
             }
             else {
                 var path = res.socket._httpMessage.url;
-                fs.unlink(newPath);
+
                 console.log( 'amazone upload success '+path);
                 callback(null,path);
 
