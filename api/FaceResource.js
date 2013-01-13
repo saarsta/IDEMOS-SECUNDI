@@ -1,7 +1,11 @@
 
 var common = require('./common')
-models = require('../models'),
-    async = require('async');
+    models = require('../models'),
+    async = require('async'),
+    fs = require('fs') ,
+    knox = require('knox'),
+    path = require('path');
+
 
 var FaceResource = module.exports = jest.MongooseResource.extend(
     {
@@ -59,7 +63,10 @@ var FaceResource = module.exports = jest.MongooseResource.extend(
             //var face_status        =req.body.status;
             object.status=   req.body.status;
             object.save(function(err, result){
-                callback(err, result);
+                overwrite_file(object.url,function(){
+                    callback(err, result);
+                });
+
             });
             /*
             models.Face.update({_id: face_id}, {  $set:{ status: face_status } },  function(err,count)
@@ -72,4 +79,27 @@ var FaceResource = module.exports = jest.MongooseResource.extend(
 
     }
 )
+
+function overwrite_file(amazon_url,callback) {
+
+        var newPath = 'deliver/public/faces_game/icon600x600.jpg';
+        stream = fs.createReadStream(newPath);
+        var knoxClient = require('j-forms').fields.getKnoxClient();
+        var filename = amazon_url.substring(amazon_url.lastIndexOf('/')+1);
+        knoxClient.putStream(stream, '/fg/'+filename , function(err, res){
+            if(err)  {
+                callback(err);
+                console.log( 'amazone upload fail');
+            }
+            else {
+                var path = res.socket._httpMessage.url;
+                fs.unlink(newPath);
+                console.log( 'amazone upload success '+path);
+                callback(null,path);
+
+
+            }
+        });
+}
+
 
