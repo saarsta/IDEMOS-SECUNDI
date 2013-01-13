@@ -150,6 +150,7 @@
 
     </div>
     <br class="clearfloat">
+    <input class="fltlft" data-status="skip" type="submit" value="דלג ">
     <input class="fltlft" data-status="approved" type="submit" value="אשר ">
     <input class="fltlft"  data-status="denied"     type="submit" value="הסר ">
     <div  class="fltlrt" id="total_face_count"></div>
@@ -176,10 +177,11 @@
 
         function    showNextFace()
         {   current_face++;
-            $("#total_face_count").text(faces.length-current_face) ;
+
             if(current_face>=faces.length){
 
             }else{
+                $("#total_face_count").text(faces.length-current_face) ;
                 dust.render('face_admin', faces[current_face], function (err, out) {
                     $('#content').html(out);
                 });
@@ -187,9 +189,14 @@
 
         }
         $('input').click(function(e){
-            db_functions.setFaceStatus(faces[current_face]._id ,$(this).data('status'),function (err, data) {
+            if($(this).data('status')=='skip'){
                 showNextFace();
-            });
+            }     else{
+                db_functions.setFaceStatus(faces[current_face]._id ,$(this).data('status'),function (err, data) {
+                    showNextFace();
+                });
+            }
+
         });
 
     });
