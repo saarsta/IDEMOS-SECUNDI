@@ -71,6 +71,6 @@ module.exports = function(app) {
 
     router.all('/faces_admin',require('./navigation/faces_admin'));
 
-    router.get('/test',require('./navigation/test'));
+    //router.get('/test',require('./navigation/test'));
 
  };
