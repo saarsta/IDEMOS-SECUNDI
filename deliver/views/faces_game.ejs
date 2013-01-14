@@ -6,8 +6,8 @@
     <meta name="description" content="הכינסו ורישמו על הפנים מה מפריע לכם" />
     <meta property="og:title" content="איזה פרצוף יש לכם?" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://uru.herokuapp.com/faces_game" />
-    <meta property="og:image" content="https://uru.herokuapp.com/faces_game/logo.jpg" />
+    <meta property="og:url" content= <script>('https:' == document.location.protocol ? 'https://' : 'http://')</script> + "uru.herokuapp.com/faces_game" />
+    <meta property="og:image" content=<script>('https:' == document.location.protocol ? 'https://' : 'http://')</script> + "uru.herokuapp.com/faces_game/logo.jpg" />
     <meta property="og:site_name" content="uru" />
     <script>
 
@@ -56,7 +56,7 @@ body {
         // init the FB JS SDK
         FB.init({
             appId: '313268118784632', // App ID from the App Dashboard
-            channelUrl: 'https://uru.herokuapp.com/channel.html', // Channel File for x-domain communication
+            channelUrl: ('https:' == document.location.protocol ? 'https://' : 'http://') + 'uru.herokuapp.com/channel.html', // Channel File for x-domain communication
             status: true, // check the login status upon init?
             cookie: true, // set sessions cookies to allow your server to access the session?
             xfbml: true // parse XFBML tags on this page?
@@ -133,9 +133,9 @@ body {
    name: str,
    caption: 'איזה פרצוף יש לכם?',
    description: (
-      'היכנסו ותכתבו לפוליטיקאי על הפנים מה מפריע לכם https://www.facebook.com/URUisrael/app_313268118784632'
+      'היכנסו ותכתבו לפוליטיקאי על הפנים מה מפריע לכם'
    ),
-   link: img,
+   link: ('https:' == document.location.protocol ? 'https://' : 'http://') + 'www.facebook.com/URUisrael/app_313268118784632',
    picture: img
   },
   function(response) {
@@ -156,7 +156,7 @@ body {
             link: 'https://www.facebook.com/URUisrael/app_313268118784632',
             picture: 'https://uru.herokuapp.com/faces_game/logo.jpg',
             name: 'איזה פרצוף יש לכם?',
-            caption: 'היכנסו ותכתבו לפוליטיקאי על הפנים מה מפריע לכם https://www.facebook.com/URUisrael/app_313268118784632',
+            caption: 'היכנסו ותכתבו לפוליטיקאי על הפנים מה מפריע לכם',
             description: ''
         };
 
