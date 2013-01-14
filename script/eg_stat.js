@@ -9,6 +9,6 @@ db.quotegamegames.find().forEach(function(can){
 })
 
 for(var i=0; i<stat.length; i++){
-   if(stat[i]) print(i+' - '+stat[i]);
+   if(stat[i]) print(i+','+stat[i]);
 };
 
