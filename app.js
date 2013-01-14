@@ -40,7 +40,11 @@ app.set('DB_URL',process.env.MONGOLAB_URI || 'mongodb://localhost/uru');
 app.set('url2png_api_key', process.env.url2png_api_key || 'P503113E58ED4A');
 app.set('url2png_api_secret', process.env.url2png_api_key || 'SF1BFA95A57BE4');
 
-express.logger.token('memory', function(){ return util.format('%dMb %dMb', (process.memoryUsage().rss / 1048576).toFixed(2), (process.memoryUsage().heapUsed / 1048576).toFixed(2)); });
+express.logger.token('memory', function(){
+    var rss_memory = (process.memoryUsage().rss / 1048576).toFixed(0);
+    if (rss_memory > 400) process.nextTick(process.exit);
+    return util.format('%dMb', rss_memory);
+});
 express.logger.format('default2', ':memory :response-time :res[content-length] :status ":method :url HTTP/:http-version"');
 
 app.configure('development', function(){
