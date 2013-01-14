@@ -21,9 +21,7 @@ require('./deliver/tools/compile_dust_templates');
 var app = module.exports = express();
 
 app.set('views', __dirname + '/deliver/views');
-app.set('old_views', __dirname + '/views');
 app.set('public_folder', __dirname + '/deliver/public');
-app.set('public_folder2', __dirname + '/public');
 
 app.set('port', process.env.PORT || 80);
 
@@ -43,7 +41,7 @@ app.set('url2png_api_key', process.env.url2png_api_key || 'P503113E58ED4A');
 app.set('url2png_api_secret', process.env.url2png_api_key || 'SF1BFA95A57BE4');
 
 express.logger.token('memory', function(){ return util.format('%dMb %dMb', (process.memoryUsage().rss / 1048576).toFixed(2), (process.memoryUsage().heapUsed / 1048576).toFixed(2)); });
-express.logger.format('default2', ':response-time :memory :res[content-length] :status ":method :url HTTP/:http-version"');
+express.logger.format('default2', ':memory :response-time :res[content-length] :status ":method :url HTTP/:http-version"');
 
 app.configure('development', function(){
     app.use(express.errorHandler());
