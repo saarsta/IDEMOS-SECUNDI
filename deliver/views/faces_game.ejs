@@ -72,7 +72,7 @@ body {
     // Please report such bugs using the bugs tool.
     (function (d, debug) {
         var js, id = 'facebook-jssdk',
-                ref = d.getElementsByTagName('script')[0];
+            ref = d.getElementsByTagName('script')[0];
         if (d.getElementById(id)) {
             return;
         }
@@ -103,51 +103,55 @@ body {
         });
     };
 
-    function graphStreamPublish2(img,str) {
+    function graphStreamPublish2(img, str) {
         console.log('graphStreamPublish');
         FB.api('/me/feed', 'post', {
-                    message: str,
-                    link: img,
-                    picture: img,
-                    name: 'איזה פרצוף יש לכם?',
-                    description: 'היכנסו ותכתבו לפוליטיקאי על הפנים מה מפריע לכם https://www.facebook.com/URUisrael/app_313268118784632'
+            message: str,
+            link: img,
+            picture: img,
+            name: 'איזה פרצוף יש לכם?',
+            description: 'היכנסו ותכתבו לפוליטיקאי על הפנים מה מפריע לכם https://www.facebook.com/URUisrael/app_313268118784632'
 
-                },
+        },
 
-                function (response) {
-                    // showLoader(false);
+        function (response) {
+            // showLoader(false);
 
-                    if (!response || response.error) {
-                        alert('Error occured');
-                    } else {
-                        alert('Post ID: ' + response.id);
-                    }
-                });
+            if (!response || response.error) {
+                alert('Error occured');
+            } else {
+                alert('Post ID: ' + response.id);
+            }
+        });
     }
-	
-	 function graphStreamPublish(img,str) {
-		 console.log('graphStreamPublish2');
-	FB.ui(
-  {
-   method: 'feed',
-   name: str,
-   caption: 'איזה פרצוף יש לכם?',
-   description: (
-      ' היכנסו ותכתבו לפוליטיקאי על הפנים מה מפריע לכם ' +
-	  ('https:' == document.location.protocol ? 'https://' : 'http://') + 'www.facebook.com/URUisrael/app_313268118784632'
-   ),
-   link: img,
-   picture: img
-  },
-  function(response) {
-    if (response && response.post_id) {
-      console.log('Post was published.');
-    } else {
-      console.log('Post was not published.');
+
+    function graphStreamPublish(img, str) {
+        console.log('graphStreamPublish2');
+		
+		FB.ui({
+              method: "stream.publish",
+              display: "iframe",
+              user_message_prompt: "Publish This!",
+              message: "I am so smart!  S M R T!",
+              attachment: {
+                  name: str,
+                  caption: 'איזה פרצוף יש לכם?',
+                  description: "היכנסו ותכתבו לפוליטיקאי על הפנים מה מפריע לכם",
+                  href: "https://www.facebook.com/URUisrael/app_313268118784632",
+                  media: [{ "type": "image", "src": img, "href": img}]
+                 
+              }
+		},
+
+        function (response) {
+            if (response && response.post_id) {
+                console.log('Post was published.');
+            } else {
+                console.log('Post was not published.');
+            }
+        });
     }
-  }
-);
-	 }
+
     function postToFeed() {
 
         // calling the API ...
