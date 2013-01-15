@@ -129,7 +129,7 @@ body {
         console.log('graphStreamPublish2');
 		
 		FB.ui({
-              method: "feed",
+		      method: "feed",
               display: "iframe",
               user_message_prompt: "Publish This!",
               message: "I am so smart!  S M R T!",
@@ -137,7 +137,9 @@ body {
                   name: str,
                   caption: 'איזה פרצוף יש לכם?',
                   description: "היכנסו ותכתבו לפוליטיקאי על הפנים מה מפריע לכם",
-                  href: "https://www.facebook.com/URUisrael/app_313268118784632",
+				  properties: {'למשחק הפרצופים':{ text: 'לחצו כאן', href: "https://www.facebook.com/URUisrael/app_313268118784632"}},
+				  actions: [{name: 'למשחק הפרצופים', link: 'https://www.facebook.com/URUisrael/app_313268118784632'}],
+                  href: img,
                   media: [{ "type": "image", "src": img, "href": img}]
                  
               }
