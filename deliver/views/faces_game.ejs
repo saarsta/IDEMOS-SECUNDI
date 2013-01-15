@@ -133,9 +133,10 @@ body {
    name: str,
    caption: 'איזה פרצוף יש לכם?',
    description: (
-      'היכנסו ותכתבו לפוליטיקאי על הפנים מה מפריע לכם'
+      ' היכנסו ותכתבו לפוליטיקאי על הפנים מה מפריע לכם ' +
+	  ('https:' == document.location.protocol ? 'https://' : 'http://') + 'www.facebook.com/URUisrael/app_313268118784632'
    ),
-   link: ('https:' == document.location.protocol ? 'https://' : 'http://') + 'www.facebook.com/URUisrael/app_313268118784632',
+   link: img,
    picture: img
   },
   function(response) {
@@ -167,7 +168,5 @@ body {
         FB.ui(obj, callback);
     }
 </script>
-
-
 </body>
 </html>
