@@ -1,9 +1,6 @@
 var models = require('../../../models')
     ,async = require('async')
     ,_ = require('underscore')
-    ,md5 = require('MD5')
-    ,http = require('http')
-    ,fs = require('fs')
     ,url = require('url')
     ,notifications = require('../../../api/notifications.js');
 

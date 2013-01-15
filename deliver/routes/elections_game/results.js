@@ -1,7 +1,8 @@
 var models = require('../../../models')
       ,async = require('async')
     ,_ = require('underscore')
-    ,md5 = require('MD5')
+   // ,md5 = require('MD5')
+    ,createHash = require('crypto').createHash
     ,http = require('http')
     ,fs = require('fs')
     ,url = require('url')
@@ -134,7 +135,9 @@ module.exports = function(req, res){
             var share_url="uru-staging.herokuapp.com/elections_game/image?first_id="+first._id+"&first_score="+first.score+"&second_id="+second._id+"&second_score="+second.score+"&third_id="+third._id+"&third_score="+third.score;
             var share_url_encoded=encodeURIComponent(share_url);
             var share_query_string="url="+share_url_encoded+"&viewport=880x447";
-            var share_token  = md5(share_query_string + req.app.settings.url2png_api_secret)
+
+            var share_token = createHash('md5').update(share_query_string + req.app.settings.url2png_api_secret).digest('hex');
+           // var share_token  = md5(share_query_string + req.app.settings.url2png_api_secret)
             var share_img="http://beta.url2png.com/v6/P503113E58ED4A/"+share_token+"/png/?"+share_query_string;
             var share_img_code=first._id+first.score+second._id+second.score+third._id+third.score;
             console.log (share_img);
