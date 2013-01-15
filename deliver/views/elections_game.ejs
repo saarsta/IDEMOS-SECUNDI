@@ -564,16 +564,16 @@
 
 
     .button_end_game input:hover{                         /* -524 */
-        background:url(/images/URU_game.results_btn_func_sprite.png) no-repeat 0 -52px;
+        background-position: 0 -52px;
     }
 
     .button_end_game input:active{
-        background:url(/images/URU_game.results_btn_func_sprite.png) no-repeat 0 -104px;
+        background-position:t 0 -104px;
     }
 
     .button_end_game input.disabled{
         cursor: default;
-        background:url(/images/URU_game.results_btn_func_sprite.png) no-repeat 0 -155px;
+        background-position: 0 -155px;
     }
 
     .game_progress{
@@ -642,12 +642,12 @@
 
     .list_button:hover{
 
-        background: url(/images/sprite.png) no-repeat 0 -460px;
+        background-position: 0 -460px;
     }
 
     .list_button:active{
 
-        background: url(/images/sprite.png) no-repeat 0 -522px;
+        background-position: 0 -522px;
     }
     </style>
 
@@ -985,7 +985,7 @@
         });
 
         $('#participants_thumbs img').click(function () {
-            window.open('myuru/'+$(this).data('id'),'_blank');
+            window.open('/myuru/'+$(this).data('id'),'_blank');
         });
 
         $('.pluginButton').click(function () {
