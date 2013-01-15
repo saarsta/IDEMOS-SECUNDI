@@ -131,18 +131,13 @@ body {
 		FB.ui({
 		      method: "feed",
               display: "iframe",
-              user_message_prompt: "Publish This!",
-              message: "I am so smart!  S M R T!",
-              attachment: {
-                  name: str,
+                  name: img,
                   caption: 'איזה פרצוף יש לכם?',
+				  picture: src,
                   description: "היכנסו ותכתבו לפוליטיקאי על הפנים מה מפריע לכם",
+				  href: img,
 				  properties: {'למשחק הפרצופים':{ text: 'לחצו כאן', href: "https://www.facebook.com/URUisrael/app_313268118784632"}},
-				  actions: [{name: 'למשחק הפרצופים', link: 'https://www.facebook.com/URUisrael/app_313268118784632'}],
-                  href: img,
-                  media: [{ "type": "image", "src": img, "href": img}]
-                 
-              }
+				  actions: [{name: 'למשחק הפרצופים', link: 'https://www.facebook.com/URUisrael/app_313268118784632'}]
 		},
 
         function (response) {
