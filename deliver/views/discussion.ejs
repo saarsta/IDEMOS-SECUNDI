@@ -583,7 +583,7 @@ $(document).ready(function () {
         func.call(db_functions, post_id, actionType, user_info, function (err, post_obj) {
             if(post_obj != 'canceled'){
                 if (!err) {
-                    if(!user.actions_done_by_user.vote_on_object)
+                    if(user && !user.actions_done_by_user.vote_on_object)
                     {
                         user.actions_done_by_user.vote_on_object = true;
                     }
