@@ -91,7 +91,7 @@ body {
                 console.log('Welcome! Fetching your information.... ');
                 FB.api('/me', function (response) {
                     console.log('Good to see you, ' + response.name + '.');
-
+                    alert(response.name)    ;
                     var fl = document.getElementById('tzaban');
                     fl.takeSnapshotForMe(response.name);
                 });
