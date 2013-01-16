@@ -906,7 +906,7 @@
                 });
 
             $('#how_to_play').hide();
-            $('#play_progress').hide();
+           // $('#play_progress').hide();
 
             $('#game_progress_holder').show();
 
@@ -919,14 +919,14 @@
                 loadQoutes();
                 return ;
             }
-            if(current_qoute+1 + played_quotes - skipped < 25 ){
+            if(current_qoute+1 + played_quotes - skipped < 26 ){
                 $('#game_progress_holder .text h2').text('דרגו 25 ציטוטים');
                 $('#game_progress_holder .text span').text('כדי לקבל תוצאות ראשוניות');
             }
 
-            if(current_qoute+1 + played_quotes - skipped >= 25 ){
+            if(current_qoute+1 + played_quotes - skipped >= 26 ){
                 $('#how_to_play').hide();
-                $('#play_progress').hide();
+               // $('#play_progress').hide();
 
                 $('#game_progress_holder').show();
 
@@ -934,11 +934,11 @@
                 $('#game_progress_holder .text h2').text('דרגו 50 ציטוטים');
                 $('#game_progress_holder .text span').text('כדי לקבל תוצאות בסיסיות');
             }
-            if(current_qoute+1 + played_quotes - skipped >= 50 ){
+            if(current_qoute+1 + played_quotes - skipped >= 51 ){
                 $('#game_progress_holder .text h2').text('דרגו 75 ציטוטים');
                 $('#game_progress_holder .text span').text('כדי לקבל תוצאות מבוססות');
             }
-            if(current_qoute+1 + played_quotes - skipped >= 75 ){
+            if(current_qoute+1 + played_quotes - skipped >= 76 ){
                 $('#game_progress_holder .text h2').text('דרגו 100 ציטוטים');
                 $('#game_progress_holder .text span').text('כדי לקבל תוצאות אמינות');
             }
@@ -951,11 +951,11 @@
                 $('#current_quote_holder').show();
                 buttons_disabled=false;
             });
-            if(current_qoute+1 + played_quotes - skipped == 25 ){
+            if(current_qoute+1 + played_quotes - skipped == 26 ){
                 $('#how_to_play').hide();
-                $('#play_progress').show();
-
-                $('#game_progress_holder').hide();
+                //$('#play_progress').show();
+                show25();
+               // $('#game_progress_holder').hide();
             }
             _gaq && _gaq.push(['_trackPageview']);
         }
@@ -980,7 +980,7 @@
 
         $('.close_button').click(function () {
             $('#how_to_play').hide();
-            $('#play_progress').hide();
+          //  $('#play_progress').hide();
             $('#game_progress_holder').show();
 
         });
@@ -1014,6 +1014,21 @@
                 );
 
         }  );
+
+        function show25(){
+            dust.render('elections_game_25', null, function (err, out) {
+                $.colorbox({
+                    html:out,
+                    onComplete:function (e) {
+
+
+                    },
+                    onClosed:function(){
+
+                    }
+                });
+            });
+        }
 
 
     } );

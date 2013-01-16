@@ -31,9 +31,9 @@ var FaceResource = module.exports = jest.MongooseResource.extend(
 
                     var final_results=JSON.parse(JSON.stringify(results));
                     var status           =req.query.status || null;
-
+                    final_results.objects=[];
                     if(status){
-                        final_results.objects=[];
+
                         _.each(results.objects,function(o){
 
                             if(o.status==status)  {
@@ -42,7 +42,7 @@ var FaceResource = module.exports = jest.MongooseResource.extend(
                         });
                     }
                     else{
-                        final_results.objects=[];
+
                         _.each(results.objects,function(o){
 
                             if(o.status!='denied')  {
