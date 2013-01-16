@@ -1,5 +1,5 @@
 
-var stat=new Array(200);
+var stat=new Array(300);
 db.quotegamegames.find().forEach(function(can){
 
     if  (!stat[can.quote_count]) {
