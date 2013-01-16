@@ -62,11 +62,13 @@ var FaceResource = module.exports = jest.MongooseResource.extend(
             //var face_id         =req.body.id;
             //var face_status        =req.body.status;
             object.status=   req.body.status;
-            object.save(function(err, result){
-                overwrite_file(object.url,function(){
-                    callback(err, result);
-                });
 
+            object.save(function(err, result){
+                if(object.status=='denied') {
+                    overwrite_file(object.url,function(){
+                        callback(err, result);
+                    });
+                 }
             });
             /*
             models.Face.update({_id: face_id}, {  $set:{ status: face_status } },  function(err,count)
