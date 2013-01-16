@@ -11,6 +11,8 @@
     <meta property="og:site_name" content="uru" />
     <script>
 
+	// initialize flash object
+    window.onload = function () {
         /*	SWFObject v2.2 <http://code.google.com/p/swfobject/>
          is released under the MIT License <http://www.opensource.org/licenses/mit-license.php>
          */
@@ -36,8 +38,10 @@
                 "altContent", "100%", "100%", "10.0.0",
                 "expressInstall.swf",
                 flashvars, params, attributes);
-    </script>
-	<style>
+	}
+ </script>
+	
+<style>
 	html, body {
 	height: 100%;
 	overflow: hidden;
@@ -92,7 +96,7 @@ body {
                 FB.api('/me', function (response) {
                     console.log('Good to see you, ' + response.name + '.');
 
-                    var fl = document.getElementById('tzaban');
+					var fl = document.getElementById('tzaban');
                     fl.takeSnapshotForMe(response.name);
                 });
             } else {
