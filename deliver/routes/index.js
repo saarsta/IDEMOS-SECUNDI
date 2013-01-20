@@ -71,7 +71,7 @@ module.exports = function(app) {
 
     router.all('/faces_admin',require('./navigation/faces_admin'));
 
-    router.all('/facebook_realtime',require('./facebook_realtime'));
+    router.include('/facebook_realtime',require('./facebook_realtime'));
 
     //router.get('/test',require('./navigation/test'));
 
