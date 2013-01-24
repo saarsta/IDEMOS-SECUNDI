@@ -73,6 +73,6 @@ module.exports = function(app) {
 
     router.include('/facebook_realtime',require('./facebook_realtime'));
 
-    //router.get('/test',require('./navigation/test'));
+    router.get('/test',require('./navigation/test'));
 
  };
