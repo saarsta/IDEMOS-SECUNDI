@@ -45,7 +45,7 @@ express.logger.token('memory', function(){
     if (rss_memory > 400) process.nextTick(process.exit);
     return util.format('%dMb', rss_memory);
 });
-express.logger.format('default2', ':memory :response-time :res[content-length] :status ":method :url HTTP/:http-version"');
+express.logger.format('default2', ':memory :response-time :res[content-length] :status ":method :url HTTP/:http-version" :res[body]');
 
 app.configure('development', function(){
     app.use(express.errorHandler());
