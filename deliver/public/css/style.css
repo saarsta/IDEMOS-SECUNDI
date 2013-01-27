@@ -9743,7 +9743,7 @@ body.search-active #header {
     margin-top: 15px;
 }
 .cycle_sub_branding  a{
-
+    display: inline-block;
     text-decoration: none;
     color: #7F7F7E;
     font: normal 16px/20px Arial; margin-top: -10px
