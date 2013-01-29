@@ -27,33 +27,38 @@ var RegisterResource = module.exports =  jest.Resource.extend({
         create_obj: function(req,fields,callback) {
             var user = new models.User();
 
-            if(req.body.fb){
-                facebook_register(req,function(err,is_new){
-                    if(err){
-                        callback({message:err});
-                    }else{
-                        models.User.update({_id:req.session.user._id}, {$addToSet:{cycles:{cycle_id:cycle_id, join_date:Date.now()}}}, function(err,count){
-                            if(err){
-                                callback({message:err});
-                            } else{
-                                models.Cycle.update({_id: cycle_id}, {$inc:{followers_count:1}},  function(err,count){
-                                    if(err){
-                                        callback({message:err});
-                                    }else
-                                    {
-                                        callback  (null,req.session.user);
-                                    }
-                                });
-                            }
-                        });
-                    }
-
-                });
-            } else{
+//            if(req.body.fb){
+//                facebook_register(req,function(err,is_new){
+//                    if(err){
+//                        callback({message:err});
+//                    }else{
+//                        models.User.update({_id:req.session.user._id}, {$addToSet:{cycles:{cycle_id:cycle_id, join_date:Date.now()}}}, function(err,count){
+//                            if(err){
+//                                callback({message:err});
+//                            } else{
+//                                models.Cycle.update({_id: cycle_id}, {$inc:{followers_count:1}},  function(err,count){
+//                                    if(err){
+//                                        callback({message:err});
+//                                    }else
+//                                    {
+//                                        callback  (null,req.session.user);
+//                                    }
+//                                });
+//                            }
+//                        });
+//                    }
+//
+//                });
+//            } else{
                 registerUser(req,fields,function(err,user){
-                    callback(err, user);
+                    if(err)       {
+                        callback({message:err}, user);
+                    }else
+                    {
+                        callback(err, user);
+                    }
                 });
-            }
+ //           }
 
         }
 });
@@ -107,13 +112,18 @@ var registerUser =module.exports.registerUser  = function(req,data,callback) {
             if (!user_obj) {
                 user.save(function(err) {
                     req.session.user = user;
-                    cbk({message:err});
+                    cbk(err);
                 });
             }
             else{
                 req.session.user = user_obj;
                 req.session.save(function(err, results){
-                    cbk(err || 'already_exists');
+                    if(cycle_id){
+                        cbk(null)
+                    }else{
+                        cbk(err || 'already_exists');
+                    }
+
                 })
             }
         },
@@ -123,11 +133,11 @@ var registerUser =module.exports.registerUser  = function(req,data,callback) {
              if(cycle_id){
                  models.User.update({_id:req.session.user._id}, {$addToSet:{cycles:{cycle_id:cycle_id, join_date:Date.now()}}}, function(err,count){
                     if(err){
-                        cbk({message:err},count);
+                        cbk(err,count);
                     } else{
                         models.Cycle.update({_id: cycle_id}, {$inc:{followers_count:1}},  function(err,count){
                             if(err){
-                                cbk({message:err},count);
+                                cbk(err,count);
                             }else
                             {
                                 sendActivationMail(user, '/cycles/'+cycle_id,'activation_smallgov',cbk);

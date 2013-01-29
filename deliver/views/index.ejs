@@ -87,6 +87,9 @@
             font-size: 20px;
             line-height: 35px;
         }
+        a    {
+            color: #fff;
+        }
 
          a.green-btn:hover
         {
@@ -97,12 +100,8 @@
             background: url(/images/Cycles_Pro_btn_sprite.png) -1px 0 no-repeat;
         }
 
-        input{
 
-            height: 37px;
-            width: 170px;
-            font-size: 23px;;
-
+        .main-video input{
 
             -moz-box-shadow: inset 3px 2px 5px #a7a7a7;
             -webkit-box-shadow: inset 3px 2px 5px #a7a7a7;
@@ -111,30 +110,70 @@
             -moz-border-radius: 5px;
             border-radius: 5px;
             -webkit-border-radius: 5px;
-              margin-right: 7px;;
-            padding: 0 5px;
+            height: 30px;
+            width: 145px;
+
             color: #4f4f4e;
+            margin-right: 7px;;
+            padding: 0 5px;
         }
 
-         a.facebook
-        {
+        a.fbbutton {
             position: absolute;
-            margin: 10px 130px 0 0;
+            margin: 10px 137px 0 0;
+            font-size: 20px;
+            line-height: 35px;
+            background: transparent url('images/fb_btn2.png') no-repeat scroll 0  0;
+            color: #FFF;
             display: inline-block;
-            background: url(../images/URU_FB_Connect_btn_sprite.png) 0 0 no-repeat;
+            float: left;
+            font: normal 20px 'AdumaFOTRegular';
             height: 42px;
-            width: 230px;
+            padding-left: 50px; /* sliding doors padding */
+            text-decoration: none;
+        }
+
+         a.fbbutton:hover {
+            background-position: 0 -42px ;
+            outline: none; /* hide dotted outline in Firefox */
+        }
+
+         a.fbbutton:active {
+            background-position:  0 -84px;
+            outline: none; /* hide dotted outline in Firefox */
+        }
+
+
+         a.fbbutton  span.button_inner {
+            background: transparent url('images/fb_btn1.png') right 0  no-repeat;
+            height:27px;
+            display: block;
+
+            padding: 10px 15px 5px 10px;
+            text-align: center;
+
+            color: #fff;
+
+            /*text-shadow: #686868 right -1px 0;*/
+            min-width: 75px;
+            line-height: 28px;
+
+             font: normal 20px 'AdumaFOTRegular';
 
         }
 
-         a.facebook:hover
-        {
-            background: url(../images/URU_FB_Connect_btn_sprite.png) 0 -42px no-repeat;
+         a.fbbutton:hover span.button_inner {
+            background-position: right -42px ;
+
         }
-         a.facebook:active
-        {
-            background: url(../images/URU_FB_Connect_btn_sprite.png) 0 -84px no-repeat;
+
+         a.fbbutton:active  span.button_inner {
+            background-position:right -84px;
+            outline: none; /* hide dotted outline in Firefox */
         }
+
+
+
     </style>
 </head>
 <body <%= user_logged? '' : 'class=big-head' %> >
@@ -157,7 +196,7 @@
             <p class="side-text">
 
                 36 שרים וסגני שרים  הפכו את הממשלה היוצאת למסורבלת ובלתי יעילה וגרמו לבזבוז של כספי ציבור. לקראת הקמת הממשלה הבאה אנחנו יוצאים בדרישה לראשי המפלגות הגדולות - אל תיתנו יד לעוד ממשלה מנופחת ובזבזנית!
-            <a href="#">
+            <a href="cycles/508026e8cb2276020000001f">
                 קרא  עוד
             </a>
             </p>
@@ -170,9 +209,16 @@
             <div style="margin-top: 20px;display: inline-block">
                 או
             </div>
+            <a  class="fbbutton"  href="/account/facebooklogin?next=cycles/508026e8cb2276020000001f?join=true"  >
+	<span class="button_inner">
+
+חתמו באמצעות פייסבוק
+
+	</span>
+            </a>
 
 
-            <a class="facebook" href=" http://dev.empeeric.com/account/facebooklogin?next=cycles/508026e8cb2276020000001f?join=true"></a>
+
 
         </div>
         <%}%>
@@ -229,11 +275,19 @@
 
         $(".green-btn").click( function(){
             db_functions.register( $('#name').val() ,  $('#email').val(),  '508026e8cb2276020000001f' ,function(err,data){
-                   var x=data;
-
-
+                  if (data.responseText== "סיסמא שגויה") {
+                      $("#login_button a").click();
+                  }  else
+                  {
+                      window.location.href = '/cycles/508026e8cb2276020000001f'    ;
+                  }
             })  ;
         });
+
+        window.vars={};
+        window.vars.afterLogin  =  function () {
+            window.location.href = '/cycles/508026e8cb2276020000001f?join=true'    ;
+        }
 
 
 

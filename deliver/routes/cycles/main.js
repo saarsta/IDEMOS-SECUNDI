@@ -22,6 +22,27 @@ module.exports = function(req, res){
     cycle_id= req.url=="/smallgov" ?'508026e8cb2276020000001f': cycle_id;
     cycle_id= req.url=="/health" ?'507c39809cba93020000003d': cycle_id;
 
+
+    var join_on_page =req.query.join?true:false;
+    /*
+    TODO:ADD code to join on server side if logged in
+
+    if(req.query.join){
+        if(req.isAuthenticated())  {
+            models.User.update({_id:req.session.user._id}, {$addToSet:{cycles:{cycle_id:cycle_id, join_date:Date.now()}}}, function(err,count){
+                 var t=9;
+            });
+//            models.Cycle.update({_id: cycle_id}, {$inc:{followers_count:1}},  function(err,count){
+//
+//            });
+        }
+        else
+        {
+            join_on_page=true;
+        }
+    }
+      */
+
     async.parallel([
         //1. find cycle by id
         function(cbk){
@@ -96,6 +117,8 @@ module.exports = function(req, res){
             g_cycle.is_user_follower_of_cycle = _.any(users, function(user){return user._id + "" == (req.session.user ? req.session.user._id : 0)});
             var description = g_cycle.text_field_preview || g_cycle.text_field;
             var no_tags_description = description.replace(/(<([^>]+?)>)/ig,"");
+
+
             res.render('cycle.ejs',{
                 cycle: g_cycle,
                 tab:'cycles',
@@ -104,7 +127,7 @@ module.exports = function(req, res){
                 social_popup_title: g_cycle.social_popup_title,
                 social_popup_text: g_cycle.social_popup_text,
                 share:req.query.share ? true:false,
-                join:req.query.join ? true:false,
+                join:join_on_page,
                 meta:{
                     type:req.app.settings.facebook_app_name + ':cycle',
                     title:g_cycle.title,
