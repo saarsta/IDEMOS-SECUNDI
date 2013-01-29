@@ -749,7 +749,7 @@ var current_section=2;
 
         if(join){
             if(my_id!='') {
-                db_functions.joinToCycleFollowers(cycle_id,true, function(err, result){ share()} );
+                db_functions.joinToCycleFollowers(cycle_id,true, function(err, result){minifyButton(); share()} );
             }  else  {
                 facebookLogin(function(err, result){
                     if(!err){

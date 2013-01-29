@@ -9,84 +9,97 @@ module.exports = function (req, res) {
         return;
     }
 //   facebook_login(req, res);
-    function go() {
 
-        req.authenticate("facebook", function (error, authenticated) {
-            var next = req.session['fb_next'];
-            var referred_by = req.session['referred_by'];
-            console.log(error);
-            if (!error && authenticated) {
-
-                var user_detailes = req.getAuthDetails().user;
-                var access_token = req.session["access_token"];
-                var user_fb_id = req.getAuthDetails().user.id;
-
-                isUserInDataBase(user_fb_id, function (is_user_in_db) {
-
-                    if (!is_user_in_db) {
-//                        req.session['fb_next'] = "/account/code_after_fb_connect";
-//                        next = req.session['fb_next'];
-                        user_detailes.invited_by = referred_by;
-                        createNewUser(user_detailes, access_token, function (_id) {
-                            req.session.user_id = _id;
-//                            req.session.auth.user._id = _id; i can delete this
-                            req.session.save(function (err, object) {
-                                if (err != null) {
-                                    console.log(err);
-                                } else {
-                                    console.log('user _id to session is ok');
-                                    redirectAfterLogin(req,res,next,true);
-                                }
-                            });
-                        });
-                    } else {
-                        updateUesrAccessToken(user_detailes, access_token, function (err,_id) {
-                            if(err){
-                                console.error(err);
-                                console.trace();
-                                res.send("error in registration", 500);
-                            }else{
-                                req.session.auth.user._id = _id;
-                                req.session.save(function (err, object) {
-                                    if (err != null) {
-                                        console.error(err);
-                                        console.trace();
-                                        res.send("error in registration", 500);
-                                    } else {
-                                        console.log('user _id to session is ok');
-                                        redirectAfterLogin(req,res,next);
-                                    }
-
-                                });
-                            }
-                        });
-                    }
-                });
-            }
-            else {
-                console.log('can\'t authenticate with facebook');
-            }
-        });
-    }
 
     if (req.query.next) {
         req.session['fb_next'] = req.query.next;
-
-        req.session.save(go);
+ //
+ //       req.session.save(facebook_register);
     }
-    else
-        go();
+ //   else  {
+
+        facebook_register(req,function(err,is_new){
+            if(err){
+                res.send({error:err}, 500);
+            }   else   {
+
+                redirectAfterLogin(req,res, req.session['fb_next'],is_new);
+            }
+        });
+  //  }
 
 };
+
+
+var facebook_register = module.exports.facebook_register =function (req,callback) {
+
+    req.authenticate("facebook", function (error, authenticated) {
+        var next = req.session['fb_next'];
+        var referred_by = req.session['referred_by'];
+        console.log(error);
+        if (!error && authenticated) {
+
+            var user_detailes = req.getAuthDetails().user;
+            var access_token = req.session["access_token"];
+            var user_fb_id = req.getAuthDetails().user.id;
+
+            isUserInDataBase(user_fb_id, function (is_user_in_db) {
+
+                if (!is_user_in_db) {
+//                        req.session['fb_next'] = "/account/code_after_fb_connect";
+//                        next = req.session['fb_next'];
+                    user_detailes.invited_by = referred_by;
+                    createNewUser(user_detailes, access_token, function (_id) {
+                        req.session.user_id = _id;
+//                            req.session.auth.user._id = _id; i can delete this
+                        req.session.save(function (err, object) {
+                            if (err != null) {
+                                console.log(err);
+                            } else {
+                                console.log('user _id to session is ok');
+                                callback(null,true);
+                            }
+                        });
+                    });
+                } else {
+                    updateUesrAccessToken(user_detailes, access_token, function (err,_id) {
+                        if(err){
+                            console.error(err);
+                            console.trace();
+                            callback(err);
+                        }else{
+                            req.session.auth.user._id = _id;
+                            req.session.save(function (err, object) {
+                                if (err != null) {
+                                    console.error(err);
+                                    console.trace();
+                                    callback(err);
+                                } else {
+                                    console.log('user _id to session is ok');
+                                    callback(null,false)
+                                }
+
+                            });
+                        }
+                    });
+                }
+            });
+        }
+        else {
+            console.log('can\'t authenticate with facebook');
+        }
+    });
+}
+
 
 function redirectAfterLogin(req,res,redirect_to,is_new) {
     if(!redirect_to || /^\/account\/register/.test(redirect_to))
         redirect_to = common.DEFAULT_LOGIN_REDIRECT;
     if(is_new) {
-        if(redirect_to.indexOf('?') > -1)
-            redirect_to += '&is_new=facebook';
-        else
-            redirect_to += '?is_new=facebook';
+ //       if(redirect_to.indexOf('?') > -1)
+ //           redirect_to += '&is_new=facebook';
+ //       else
+ //           redirect_to += '?is_new=facebook';
     }
     res.redirect(redirect_to);
 };
@@ -185,70 +198,3 @@ var updateUesrAccessToken = module.exports.updateUesrAccessToken = function(data
     });
 }
 
-
-function facebook_login(req, res){
-    function go() {
-
-        req.authenticate("facebook", function (error, authenticated) {
-            var next = req.session['fb_next'];
-            var referred_by = req.session['referred_by'];
-            console.log(error);
-            if (authenticated) {
-
-                var user_detailes = req.getAuthDetails().user;
-                var access_token = req.session["access_token"];
-                var user_fb_id = req.getAuthDetails().user.id;
-
-                isUserInDataBase(user_fb_id, function (is_user_in_db) {
-
-                    if (!is_user_in_db) {
-//                        req.session['fb_next'] = "/account/code_after_fb_connect";
-//                        next = req.session['fb_next'];
-                        user_detailes.invited_by = referred_by;
-                        createNewUser(user_detailes, access_token, function (_id) {
-                            req.session.user_id = _id;
-//                            req.session.auth.user._id = _id; i can delete this
-                            req.session.save(function (err, object) {
-                                if (err != null) {
-                                    console.log(err);
-                                } else {
-                                    console.log('user _id to session is ok');
-                                    redirectAfterLogin(req,res,next, true);
-                                }
-                            });
-                        });
-                    } else {
-                        updateUesrAccessToken(user_detailes, access_token, function (err,_id) {
-                            if(err){
-                                console.error(err);
-                                console.trace();
-                                res.send("error in registration", 500);
-                            }else{
-                                req.session.auth.user._id = _id;
-                                req.session.save(function (err, object) {
-                                    if (err != null) {
-                                        console.error(err);
-                                        console.trace();
-                                        res.send("error in registration", 500);
-                                    } else {
-                                        console.log('user _id to session is ok');
-                                        redirectAfterLogin(req,res,next);
-                                    }
-
-                                });
-                            }
-                        });
-                    }
-                });
-            }
-        });
-    }
-
-    if (req.query.next) {
-        req.session['fb_next'] = req.query.next;
-
-        req.session.save(go);
-    }
-    else
-        go();
-}

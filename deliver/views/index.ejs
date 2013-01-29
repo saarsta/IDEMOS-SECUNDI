@@ -41,6 +41,9 @@
         }
 
         .main-video .side-button {
+            font-size: 30px;
+            display: inline-block;
+            position: relative;
             margin-right: -11px; /* To account for transparent bit inside the actual image */
             float: right;
             height: 125px;
@@ -61,11 +64,77 @@
         }
 
         .main-video .side-title {
-            padding-top: 15px;
-            font: normal 30px/35px 'AdumaFOTRegular';
-            margin-bottom: 5px;
+
+            font: normal 35px/35px 'AdumaFOTRegular';
+            margin-bottom: 15px;
         }
 
+
+        a.green-btn {
+            position: absolute;
+            margin: -3px 20px 0 0;
+            width: 111px;
+            height: 42px;
+
+            border-radius: 2px;
+            -moz-border-radius: 2px;
+            -webkit-border-radius: 2px;
+            background: transparent url(/images/Cycles_Pro_btn_sprite.png) -225px 0 no-repeat;
+            text-decoration: none;
+            text-align: center;
+            color: #ffffff;
+            font-family: 'AdumaFOTRegular';
+            font-size: 20px;
+            line-height: 35px;
+        }
+
+         a.green-btn:hover
+        {
+            background: url(/images/Cycles_Pro_btn_sprite.png) -113px 0 no-repeat;
+        }
+          a.green-btn:active
+        {
+            background: url(/images/Cycles_Pro_btn_sprite.png) -1px 0 no-repeat;
+        }
+
+        input{
+
+            height: 37px;
+            width: 170px;
+            font-size: 23px;;
+
+
+            -moz-box-shadow: inset 3px 2px 5px #a7a7a7;
+            -webkit-box-shadow: inset 3px 2px 5px #a7a7a7;
+            box-shadow: inset 3px 2px 5px #a7a7a7;
+            border: none;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+            -webkit-border-radius: 5px;
+              margin-right: 7px;;
+            padding: 0 5px;
+            color: #4f4f4e;
+        }
+
+         a.facebook
+        {
+            position: absolute;
+            margin: 10px 130px 0 0;
+            display: inline-block;
+            background: url(../images/URU_FB_Connect_btn_sprite.png) 0 0 no-repeat;
+            height: 42px;
+            width: 230px;
+
+        }
+
+         a.facebook:hover
+        {
+            background: url(../images/URU_FB_Connect_btn_sprite.png) 0 -42px no-repeat;
+        }
+         a.facebook:active
+        {
+            background: url(../images/URU_FB_Connect_btn_sprite.png) 0 -84px no-repeat;
+        }
     </style>
 </head>
 <body <%= user_logged? '' : 'class=big-head' %> >
@@ -87,18 +156,24 @@
             </p>
             <p class="side-text">
 
-                36 שרים וסגני שרים בממשלה הנוכחית עולים לנו 116 מיליון שקל בשנה.
-                וזה כבד עלינו. במיוחד שחלקם מיותרים לגמרי.
-
-                אם גם לכם כבד, הצטרפו אלינו ויחד נוריד את העול הזה מעל הכתפיים שלנו.
-
+                36 שרים וסגני שרים  הפכו את הממשלה היוצאת למסורבלת ובלתי יעילה וגרמו לבזבוז של כספי ציבור. לקראת הקמת הממשלה הבאה אנחנו יוצאים בדרישה לראשי המפלגות הגדולות - אל תיתנו יד לעוד ממשלה מנופחת ובזבזנית!
+            <a href="#">
+                קרא  עוד
+            </a>
             </p>
-            <div class="side-button">
-                <a href="/cycles/508026e8cb2276020000001f"><img src="/images/greenbutton.png" alt="תנועת עורו - הצטרפו עכשיו"/></a>
+               <br>
+            חתמו על העצומה
+            <input type="text" id="name"  placeholder="שם">
+            <input type="text" id="email" placeholder="אימייל">
+            <a class="green-btn" href="javascript:void(0);"></a>
+            <br>
+            <div style="margin-top: 20px;display: inline-block">
+                או
             </div>
-            <div class="after-button">
-                והצביעו בעד!
-            </div>
+
+
+            <a class="facebook" href=" http://dev.empeeric.com/account/facebooklogin?next=cycles/508026e8cb2276020000001f?join=true"></a>
+
         </div>
         <%}%>
         <% include partials/tag_search.ejs %>
@@ -151,6 +226,16 @@
     $(function () {
 
         var user_logged = "<%= user_logged %>" == 'true';
+
+        $(".green-btn").click( function(){
+            db_functions.register( $('#name').val() ,  $('#email').val(),  '508026e8cb2276020000001f' ,function(err,data){
+                   var x=data;
+
+
+            })  ;
+        });
+
+
 
 
         $(".video-box").one('click', function(){

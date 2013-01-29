@@ -282,6 +282,38 @@ var db_functions = {
         });
     },
 
+    register:function (name, email ,cycle, callback) {
+        db_functions.loggedInAjax({
+            url:'/api/register',
+            type:"POST",
+            data: {full_name: name,email:email,cycle:cycle},
+            async:true,
+            success:function (data,err ) {
+                console.log(data);
+                callback(err, data);
+            },
+            error:function (data,err ) {
+                callback(err, data);
+            }
+        });
+    },
+
+    register_fb:function (cycle, callback) {
+        db_functions.loggedInAjax({
+            url:'/api/register',
+            type:"POST",
+            data: {fb:true,cycle:cycle},
+            async:true,
+            success:function (err, data) {
+                console.log(data);
+                callback(err, data);
+            },
+            error:function (err, data) {
+                callback(err, data);
+            }
+        });
+    },
+
     getHotObjects:function (callback) {
         db_functions.loggedInAjax({
             url:'/api/hot_objects',

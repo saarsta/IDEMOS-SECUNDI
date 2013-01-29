@@ -94,7 +94,7 @@ var registerUser = module.exports.registerUser = function(req,data,next,callback
 
         // 3) send activation mail
         function(cbk) {
-            sendActivationMail(user, next,cbk);
+            sendActivationMail(user, next,null,cbk);
         },
         // 4) authenticate to log user in
         function(temp_password,cbk) {

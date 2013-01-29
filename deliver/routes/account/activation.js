@@ -60,7 +60,7 @@ module.exports = {
         var email = (req.body.email  || req.query.email || (req.user && req.user.email) || '').toLowerCase().trim();
 
         var sendMail = function(user) {
-            sendActivationMail(user,next,function(err) {
+            sendActivationMail(user,next,null,function(err) {
                 if(err) {
                     console.error('can\'t send activation mail',err);
                     console.trace();
@@ -98,11 +98,11 @@ module.exports = {
 };
 
 
-var sendActivationMail = module.exports.sendActivationMail = function(user,next,callback)
+var sendActivationMail = module.exports.sendActivationMail = function(user,next,mail_template,callback)
 {
 
     var temp_password;
-
+    var template =mail_template || 'activation';
     /**
      * Waterfall:
      * 1) create random validation code
@@ -132,7 +132,7 @@ var sendActivationMail = module.exports.sendActivationMail = function(user,next,
             });
         },
         function(user,cbk) {
-            templates.renderTemplate('activation',{user:user, temp_password:temp_password,next:next},cbk);
+            templates.renderTemplate(template,{user:user, temp_password:temp_password,next:next},cbk);
         },
         function(body,cbk) {
             mail.sendMail(user.email, body, 'אימות חשבון באתר עוּרו', cbk);
