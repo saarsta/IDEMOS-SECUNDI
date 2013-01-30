@@ -252,6 +252,22 @@ var db_functions = {
             }
         });
     },
+    getUserbyEmail:function (email, callback) {
+        this.loggedInAjax({
+            url:'/api/users',
+            type:"GET",
+            async:true,
+            data:{email:email},
+
+            success:function (data) {
+                callback(null, data);
+            },
+
+            error:function (err) {
+                callback(err, null);
+            }
+        });
+    },
 
     getOrCreateUserByFBid:function (user_fb_id, access_token) {
         db_functions.loggedInAjax({

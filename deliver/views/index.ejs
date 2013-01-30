@@ -70,35 +70,15 @@
         }
 
 
-        a.green-btn {
+         #cycle a.iconbutton {
             position: absolute;
-            margin: -3px 20px 0 0;
-            width: 111px;
-            height: 42px;
+             left: 70px;
+             top: 368px;
 
-            border-radius: 2px;
-            -moz-border-radius: 2px;
-            -webkit-border-radius: 2px;
-            background: transparent url(/images/Cycles_Pro_btn_sprite.png) -225px 0 no-repeat;
-            text-decoration: none;
-            text-align: center;
-            color: #ffffff;
-            font-family: 'AdumaFOTRegular';
-            font-size: 20px;
-            line-height: 35px;
-        }
-        a    {
-            color: #fff;
+
+
         }
 
-         a.green-btn:hover
-        {
-            background: url(/images/Cycles_Pro_btn_sprite.png) -113px 0 no-repeat;
-        }
-          a.green-btn:active
-        {
-            background: url(/images/Cycles_Pro_btn_sprite.png) -1px 0 no-repeat;
-        }
 
 
         .main-video input{
@@ -171,7 +151,33 @@
             background-position:right -84px;
             outline: none; /* hide dotted outline in Firefox */
         }
+         .err{
+             display: none;
+             font-size:12px;
+             position: absolute;
+             color: yellow ;
+         }
+         #email_err{
 
+             right: 635px;
+             top: 348px;
+
+         }
+        #name_err{
+
+            right: 465px;
+            top: 348px;
+
+        }
+        #fb_err{
+
+            right: 465px;
+            top: 455px;
+
+        }
+        #pass{
+            display: none;
+        }
 
 
     </style>
@@ -184,10 +190,13 @@
         <% include partials/user_box.ejs %>
         <% include partials/failures.ejs %>
         <%if(!user_logged){%>
-        <div class="main-video">
+        <div class="main-video" id="cycle">
             <div class="video-box">
                 <img class="video_img"   src="images/voting.jpg" alt=""/>
             </div>
+            <div class="err" id="email_err">email</div>
+            <div class="err"  id="name_err">name</div>
+            <div class="err"  id="fb_err">fb</div>
             <p class="side-title">
                 "שרינו על כתפינו":
 
@@ -196,15 +205,18 @@
             <p class="side-text">
 
                 36 שרים וסגני שרים  הפכו את הממשלה היוצאת למסורבלת ובלתי יעילה וגרמו לבזבוז של כספי ציבור. לקראת הקמת הממשלה הבאה אנחנו יוצאים בדרישה לראשי המפלגות הגדולות - אל תיתנו יד לעוד ממשלה מנופחת ובזבזנית!
-            <a href="cycles/508026e8cb2276020000001f">
-                קרא  עוד
+            <a href="cycles/508026e8cb2276020000001f" style="font-size: 20px;padding-right: 10px;color:#fff">
+קראו עוד
             </a>
             </p>
                <br>
             חתמו על העצומה
             <input type="text" id="name"  placeholder="שם">
             <input type="text" id="email" placeholder="אימייל">
-            <a class="green-btn" href="javascript:void(0);"></a>
+            <input type="text" id="pass" placeholder="סיסמה">
+            <a  class="iconbutton" href="javascript:void(0)"  ><span class="button_inner"><span >
+שליחה
+</span></span></a>
             <br>
             <div style="margin-top: 20px;display: inline-block">
                 או
@@ -273,16 +285,80 @@
 
         var user_logged = "<%= user_logged %>" == 'true';
 
-        $(".green-btn").click( function(){
+        $(".iconbutton").click( function(){
+            $("#email_err").hide();
+            $("#name_err").hide();
+            $("#fb_err").hide();
+            var email =$('#email').val();
+            var name =$('#name').val();
+            var pass =$('#pass').val();
+            if(validateEmail(email))
+            {
+                db_functions.getUserbyEmail(email,function(err,data){
+                    var registered_fb=false;
+                    var registered_normal=false;
+                    $.each(data.objects, function(index, user) {
+                        if (user.identity_provider=="register") {
+                            registered_normal=true;
+                        }
+                        if (user.identity_provider=="facebook") {
+                            registered_fb=true;
+                        }
+                    });
+                    if(registered_fb)  {
+                        $("#fb_err").text("הנכם רשומים בעורו באמצעות פייסבוק אנא חתמו באמצעות כפתור זה").show();
+                    } else if(registered_normal) {
+                        if (pass==''){
+                            $("#email_err").text("הנכם משתמשים רשומים בעורו, אנא הקישו סיסמא לחתימה").show();
+                            $("#pass").show();
+                            $(".iconbutton").css('left','-100px');
+                        } else {
+                            db_functions.login(email,pass, function(err, result){
+                                if(err){
+                                    $("#email_err").text("מייל וססמה לא תואמים, נא נסה שנית").show();
+                                }
+                                else{
+                                    window.location.href = '/cycles/508026e8cb2276020000001f?join=true'    ;
+                                }
+                            });
+                        }
+                    } else{
+                        db_functions.register(name , email,  '508026e8cb2276020000001f' ,function(err,data){
+                                window.location.href = '/cycles/508026e8cb2276020000001f'    ;
+                        })  ;
+                    }
+
+                });
+            }else{
+               $("#email_err").text("נא להקיש מייל חוקי").show();
+            }
+        });
+
+        function validateEmail(email) {
+            var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(email);
+        }
+            /*
             db_functions.register( $('#name').val() ,  $('#email').val(),  '508026e8cb2276020000001f' ,function(err,data){
                   if (data.responseText== "סיסמא שגויה") {
-                      $("#login_button a").click();
+                      dust.render('enter_password', null, function (err, out) {
+                          $.colorbox({
+                                  html:out,
+                              onComplete:function (e) {
+
+                              },
+                              onClosed:function(){
+
+                              }
+                          });
+                      });
+                    // $("#login_button a").click();
                   }  else
                   {
                       window.location.href = '/cycles/508026e8cb2276020000001f'    ;
                   }
-            })  ;
-        });
+            })  ;     */
+
 
         window.vars={};
         window.vars.afterLogin  =  function () {
