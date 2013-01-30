@@ -156,6 +156,7 @@
              font-size:12px;
              position: absolute;
              color: yellow ;
+             font-family: arial;
          }
          #email_err{
 
@@ -306,16 +307,16 @@
                         }
                     });
                     if(registered_fb)  {
-                        $("#fb_err").text("הנכם רשומים בעורו באמצעות פייסבוק אנא חתמו באמצעות כפתור זה").show();
+                        $("#fb_err").text("כבר נרשמת בעבר לעורו באמצעות פייסבוק. לחץ כאן לחתימה").show();
                     } else if(registered_normal) {
                         if (pass==''){
-                            $("#email_err").text("הנכם משתמשים רשומים בעורו, אנא הקישו סיסמא לחתימה").show();
+                            $("#email_err").text("כבר נרשמת בעבר לעורו, אנא הקלד סיסמה לחתימה").show();
                             $("#pass").show();
                             $(".iconbutton").css('left','-100px');
                         } else {
                             db_functions.login(email,pass, function(err, result){
                                 if(err){
-                                    $("#email_err").text("מייל וססמה לא תואמים, נא נסה שנית").show();
+                                    $("#email_err").text("מייל וסיסמה לא תואמים, יש לנסות שוב").show();
                                 }
                                 else{
                                     window.location.href = '/cycles/508026e8cb2276020000001f?join=true'    ;
@@ -323,21 +324,23 @@
                             });
                         }
                     } else{
-                        db_functions.register(name , email,  '508026e8cb2276020000001f' ,function(err,data){
-                                window.location.href = '/cycles/508026e8cb2276020000001f'    ;
-                        })  ;
+                        if(validateName(name))
+                        {
+                            db_functions.register(name , email,  '508026e8cb2276020000001f' ,function(err,data){
+                                window.location.href = '/cycles/508026e8cb2276020000001f?share=true&new=true'    ;
+                            })
+                        } else{
+                            $("#name_err").text("נא להזין שם מלא").show();
+                        }
                     }
 
                 });
             }else{
-               $("#email_err").text("נא להקיש מייל חוקי").show();
+               $("#email_err").text("יש להקיש את כתובת המייל בפורמט user@example.com").show();
             }
         });
 
-        function validateEmail(email) {
-            var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            return re.test(email);
-        }
+
             /*
             db_functions.register( $('#name').val() ,  $('#email').val(),  '508026e8cb2276020000001f' ,function(err,data){
                   if (data.responseText== "סיסמא שגויה") {

@@ -86,39 +86,9 @@
                     <% if (cycle.id == '508026e8cb2276020000001f' && !user_logged){%>
                          <style>
 
-                             a.green-btn1 {
-                                 position: absolute;
-                                 margin: -3px 20px 0 0;
-                                 width: 111px;
-                                 height: 42px;
 
-                                 border-radius: 2px;
-                                 -moz-border-radius: 2px;
-                                 -webkit-border-radius: 2px;
-                                 background: transparent url(/images/Cycles_Pro_btn_sprite.png) -225px 0 no-repeat;
-                                 text-decoration: none;
-                                 text-align: center;
-                                 color: #ffffff;
-                                 font-family: 'AdumaFOTRegular';
-                                 font-size: 20px;
-                                 line-height: 35px;
-                             }
-
-                             a.green-btn1:hover
-                             {
-                                 background: url(/images/Cycles_Pro_btn_sprite.png) -113px 0 no-repeat;
-                             }
-                             a.green-btn1:active
-                             {
-                                 background: url(/images/Cycles_Pro_btn_sprite.png) -1px 0 no-repeat;
-                             }
 
                              .add-offer-bottom input{
-
-                                 height: 37px;
-                                 width: 140px;
-                                 font-size: 23px;;
-
 
                                  -moz-box-shadow: inset 3px 2px 5px #a7a7a7;
                                  -webkit-box-shadow: inset 3px 2px 5px #a7a7a7;
@@ -127,18 +97,24 @@
                                  -moz-border-radius: 5px;
                                  border-radius: 5px;
                                  -webkit-border-radius: 5px;
+                                 height: 30px;
+                                 width: 120px;
+
+                                 color: #4f4f4e;
                                  margin-right: 7px;;
                                  padding: 0 5px;
-                                 color: #4f4f4e;
                              }
 
 
 
-
+                             #cycle a.iconbutton1{
+                                 top:-4px;
+                                 left:140px
+                             }
 
                              a.fbbutton {
                                  position: absolute;
-                                 margin: 10px 117px 0 0;;
+                                 margin: 10px 31px 0 0;;
                                  font-size: 20px;
                                  line-height: 35px;
                                  background: transparent url('/images/fb_btn2.png') no-repeat scroll 0  0;
@@ -191,19 +167,54 @@
                              }
 
 
+                             .err{
+                                 display: none;
+                                 font-size:12px;
+                                 position: absolute;
+                                 color: red ;
+                                 font-family: arial;
+                             }
+                             #email_err{
+
+                                 right: 193px;
+                                 top: -32px;
+
+                             }
+                             #name_err{
+
+                                 right: 49px;
+                                 top: -32px;
+
+                             }
+                             #fb_err{
+
+                                 right: 49px;
+                                 top: 79px;
+
+                             }
+                             #pass{
+                                 display: none;
+                             }
+
+
 
                          </style>
                     <div class="add-offer-bottom ">
                         <div class="right" style="position: relative;font: normal 20px/35px 'AdumaFOTMedium';color: #50504f;height: 110px">
-                            חתמו על העצומה
+                            <div class="err" id="email_err">email</div>
+                            <div class="err"  id="name_err">name</div>
+                            <div class="err"  id="fb_err">fb</div>
+                            חתמו
                             <input type="text" id="name"  placeholder="שם">
                             <input type="text" id="email" placeholder="אימייל">
-                            <a class="green-btn1" href="javascript:void(0);"></a>
+                            <input type="text" id="pass" placeholder="סיסמה">
+                            <a  class="iconbutton iconbutton1" href="javascript:void(0)"  ><span class="button_inner"><span >
+שליחה
+</span></span></a>
                             <br>
                             <div style="margin-top: 20px;display: inline-block">
                                 או
                             </div>
-
                             <a  class="fbbutton"  href="/account/facebooklogin?next=cycles/508026e8cb2276020000001f?join=true"  >
 	<span class="button_inner">
 
@@ -221,9 +232,14 @@
                     <div class="add-offer-bottom ">
                         <div class="right">
                             <div class="followers">
-                                <p id="followers_count" ><div class="blue-box"> <%= cycle.followers_count %>  </div>
+                                <div id="followers_count" >
+                                    <div class="blue-box"> <%= cycle.followers_count %>  </div>
+                                     <span>
+
+
                                 עוקבים אחרי מעגל תנופה זה
-                                </p>
+                                   </span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -905,15 +921,7 @@ var current_section=2;
         <%= cycle.is_user_follower_of_cycle ? "minifyButton(1)":"" %>
 
 
-        $('#cycle .iconbutton').click(function(){
-             if (!button_minified)
-             {
-                 db_functions.joinToCycleFollowers(cycle_id,true, function(err, result){
-                     minifyButton(350);
-                     setTimeout(share,300) ;
-                 } );
-             }
-        });
+
 
         if(sharepop){
 
@@ -1002,17 +1010,71 @@ var current_section=2;
             $('#cycle .iconbutton').click();
         } );
 
+
+
+        if($(location).attr('href').indexOf('new')!=-1){
+            $(".sb-top .sb-title").text("שמחים על הצטרפותך לדרישה לממשלה קטנה ויעילה");
+            $(".sb-top .sb-text").text("כדי להשלים את המהלך, בתיבת המייל מחכה לך בקשה לאימות זהותך. בנוסף, כדי שנושא זה יקודם, אנו זקוקים לתמיכה ציבורית רחבה ככל הניתן. שיתוף ברשתות חברתיות, הזמנת חברים במייל ובאמצעים אחרים הם הדרך להשיג תמיכה שכזאת. תודה!");
+            var d=0;
+        }
+
+        <% if (cycle.id == '508026e8cb2276020000001f'){%>
+            $("#followers_count span").text("כבר חתמו והצטרפו לדרישה לממשלה קטנה ויעילה");
+        <% } %>
         <% if (cycle.id == '508026e8cb2276020000001f' && !user_logged){%>
 
-            $(".green-btn1").click( function(){
-                db_functions.register( $('#name').val() ,  $('#email').val(),  '508026e8cb2276020000001f' ,function(err,data){
-                    if (data.responseText== "סיסמא שגויה") {
-                        $("#login_button a").click();
-                    }  else
-                    {
-                        window.location.href = '/cycles/508026e8cb2276020000001f'    ;
-                    }
-                })  ;
+            $(".iconbutton1").click( function(){
+                $("#email_err").hide();
+                $("#name_err").hide();
+                $("#fb_err").hide();
+                var email =$('#email').val();
+                var name =$('#name').val();
+                var pass =$('#pass').val();
+                if(validateEmail(email))
+                {
+                    db_functions.getUserbyEmail(email,function(err,data){
+                        var registered_fb=false;
+                        var registered_normal=false;
+                        $.each(data.objects, function(index, user) {
+                            if (user.identity_provider=="register") {
+                                registered_normal=true;
+                            }
+                            if (user.identity_provider=="facebook") {
+                                registered_fb=true;
+                            }
+                        });
+                        if(registered_fb)  {
+                            $("#fb_err").text("כבר נרשמת בעבר לעורו באמצעות פייסבוק. לחץ כאן לחתימה").show();
+                        } else if(registered_normal) {
+                            if (pass==''){
+                                $("#email_err").text("כבר נרשמת בעבר לעורו, אנא הקלד סיסמה לחתימה").show();
+                                $("#pass").show();
+                                $(".iconbutton").css('left','-100px');
+                            } else {
+                                db_functions.login(email,pass, function(err, result){
+                                    if(err){
+                                        $("#email_err").text("מייל וסיסמה לא תואמים, יש לנסות שוב").show();
+                                    }
+                                    else{
+                                        window.location.href = '/cycles/508026e8cb2276020000001f?join=true'    ;
+                                    }
+                                });
+                            }
+                        } else{
+                            if(validateName(name))
+                            {
+                                db_functions.register(name , email,  '508026e8cb2276020000001f' ,function(err,data){
+                                    window.location.href = '/cycles/508026e8cb2276020000001f?share=true&new=true'    ;
+                                })
+                            } else{
+                                $("#name_err").text("נא להזין שם מלא").show();
+                            }
+                        }
+
+                    });
+                }else{
+                    $("#email_err").text("יש להקיש את כתובת המייל בפורמט user@example.com").show();
+                }
             });
 
             window.vars={};
@@ -1020,8 +1082,21 @@ var current_section=2;
                 window.location.href = '/cycles/508026e8cb2276020000001f?join=true'    ;
             }
             $(".iconbutton").hide();
+            $(".iconbutton1").show();
+
             $(".sharing").hide();
 
+        <% }else{ %>
+
+            $('#cycle .iconbutton').click(function(){
+                if (!button_minified)
+                {
+                    db_functions.joinToCycleFollowers(cycle_id,true, function(err, result){
+                        minifyButton(350);
+                        setTimeout(share,300) ;
+                    } );
+                }
+            });
         <% } %>
 
     });
