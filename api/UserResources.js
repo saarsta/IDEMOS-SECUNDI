@@ -22,6 +22,10 @@ var UserResource = module.exports =  mongoose_resource.MongooseResource.extend({
             'cycles.cycle_id': {
                 exact:true,
                 in:true
+            }   ,
+            'email': {
+                exact:true,
+                in:true
             }
         }
     }
