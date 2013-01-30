@@ -82,6 +82,142 @@
                         <p> <%- cycle.text_field %>   </p>
                         </div>
                         <p id="read_more"> <a class="read-more" href="javascript:void(0);"> קרא עוד </a> </p> </div>
+
+                    <% if (cycle.id == '508026e8cb2276020000001f' && !user_logged){%>
+                         <style>
+
+                             a.green-btn1 {
+                                 position: absolute;
+                                 margin: -3px 20px 0 0;
+                                 width: 111px;
+                                 height: 42px;
+
+                                 border-radius: 2px;
+                                 -moz-border-radius: 2px;
+                                 -webkit-border-radius: 2px;
+                                 background: transparent url(/images/Cycles_Pro_btn_sprite.png) -225px 0 no-repeat;
+                                 text-decoration: none;
+                                 text-align: center;
+                                 color: #ffffff;
+                                 font-family: 'AdumaFOTRegular';
+                                 font-size: 20px;
+                                 line-height: 35px;
+                             }
+
+                             a.green-btn1:hover
+                             {
+                                 background: url(/images/Cycles_Pro_btn_sprite.png) -113px 0 no-repeat;
+                             }
+                             a.green-btn1:active
+                             {
+                                 background: url(/images/Cycles_Pro_btn_sprite.png) -1px 0 no-repeat;
+                             }
+
+                             .add-offer-bottom input{
+
+                                 height: 37px;
+                                 width: 140px;
+                                 font-size: 23px;;
+
+
+                                 -moz-box-shadow: inset 3px 2px 5px #a7a7a7;
+                                 -webkit-box-shadow: inset 3px 2px 5px #a7a7a7;
+                                 box-shadow: inset 3px 2px 5px #a7a7a7;
+                                 border: none;
+                                 -moz-border-radius: 5px;
+                                 border-radius: 5px;
+                                 -webkit-border-radius: 5px;
+                                 margin-right: 7px;;
+                                 padding: 0 5px;
+                                 color: #4f4f4e;
+                             }
+
+
+
+
+
+                             a.fbbutton {
+                                 position: absolute;
+                                 margin: 10px 117px 0 0;;
+                                 font-size: 20px;
+                                 line-height: 35px;
+                                 background: transparent url('/images/fb_btn2.png') no-repeat scroll 0  0;
+                                 color: #FFF;
+                                 display: inline-block;
+                                 float: left;
+                                 font: normal 20px 'AdumaFOTRegular';
+                                 height: 42px;
+                                 padding-left: 50px; /* sliding doors padding */
+                                 text-decoration: none;
+                             }
+
+                             a.fbbutton:hover {
+                                 background-position: 0 -42px ;
+                                 outline: none; /* hide dotted outline in Firefox */
+                             }
+
+                             a.fbbutton:active {
+                                 background-position:  0 -84px;
+                                 outline: none; /* hide dotted outline in Firefox */
+                             }
+
+
+                             a.fbbutton  span.button_inner {
+                                 background: transparent url('/images/fb_btn1.png') right 0  no-repeat;
+                                 height:27px;
+                                 display: block;
+
+                                 padding: 10px 15px 5px 10px;
+                                 text-align: center;
+
+                                 color: #fff;
+
+                                 /*text-shadow: #686868 right -1px 0;*/
+                                 min-width: 75px;
+                                 line-height: 28px;
+
+                                 font: normal 20px 'AdumaFOTRegular';
+
+                             }
+
+                             a.fbbutton:hover span.button_inner {
+                                 background-position: right -42px ;
+
+                             }
+
+                             a.fbbutton:active  span.button_inner {
+                                 background-position:right -84px;
+                                 outline: none; /* hide dotted outline in Firefox */
+                             }
+
+
+
+                         </style>
+                    <div class="add-offer-bottom ">
+                        <div class="right" style="position: relative;font: normal 20px/35px 'AdumaFOTMedium';color: #50504f;height: 110px">
+                            חתמו על העצומה
+                            <input type="text" id="name"  placeholder="שם">
+                            <input type="text" id="email" placeholder="אימייל">
+                            <a class="green-btn1" href="javascript:void(0);"></a>
+                            <br>
+                            <div style="margin-top: 20px;display: inline-block">
+                                או
+                            </div>
+
+                            <a  class="fbbutton"  href="/account/facebooklogin?next=cycles/508026e8cb2276020000001f?join=true"  >
+	<span class="button_inner">
+
+חתמו באמצעות פייסבוק
+
+	</span>
+                            </a>
+                        </div>
+                    </div>
+
+
+
+                    <% } %>
+
                     <div class="add-offer-bottom ">
                         <div class="right">
                             <div class="followers">
@@ -865,6 +1001,28 @@ var current_section=2;
             $('.cycle_banner').hide();
             $('#cycle .iconbutton').click();
         } );
+
+        <% if (cycle.id == '508026e8cb2276020000001f' && !user_logged){%>
+
+            $(".green-btn1").click( function(){
+                db_functions.register( $('#name').val() ,  $('#email').val(),  '508026e8cb2276020000001f' ,function(err,data){
+                    if (data.responseText== "סיסמא שגויה") {
+                        $("#login_button a").click();
+                    }  else
+                    {
+                        window.location.href = '/cycles/508026e8cb2276020000001f'    ;
+                    }
+                })  ;
+            });
+
+            window.vars={};
+            window.vars.afterLogin  =  function () {
+                window.location.href = '/cycles/508026e8cb2276020000001f?join=true'    ;
+            }
+            $(".iconbutton").hide();
+            $(".sharing").hide();
+
+        <% } %>
 
     });
 
