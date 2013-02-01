@@ -15,7 +15,7 @@ var FooterLink = module.exports = new Schema({
     is_on_top:{type:Boolean,'default':false},
     is_on_footer:{type:Boolean},
     highlights: [{
-        img_field:{ type:mongoose_types.File, required:true},
+        img_field:{ type:types.File, required:true},
         text_field:String,
         img_text: String
     }],
