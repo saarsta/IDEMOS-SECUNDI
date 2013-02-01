@@ -18,7 +18,7 @@ app.set('DB_URL', process.env.MONGOLAB_URI || 'mongodb://localhost/uru');
 
 express.logger.token('memory', function(){
     var rss_memory = (process.memoryUsage().rss / 1048576).toFixed(0);
-    if (rss_memory > 400) process.nextTick(process.exit);
+    if (rss_memory > 250) process.nextTick(process.exit);
     return util.format('%dMb', rss_memory);
 });
 express.logger.format('default2', ':memory :response-time :res[content-length] :status ":method :url HTTP/:http-version" :res[body]');
@@ -90,7 +90,7 @@ app.configure(function(){
     app.use(express.bodyParser());
     app.use(express.methodOverride());
     app.use(express.cookieParser());
-    app.use(express.session({ secret: '8ntURg0WaIfUkWeQ8ONO' }));
+    app.use(express.cookieSession({ secret: '8ntURg0WaIfUkWeQ8ONO' }));
 
     app.set('view options', { layout: false });
 
