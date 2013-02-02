@@ -79,7 +79,6 @@ exports.auth_middleware = function (req, res, next) {
                                     user.unseen_notifications = 0;
                                 }
                                 user.unseen_notifications = count;
-                                req.session.user = user;
                                 req.session.save(function(err)
                                 {
                                     if(err)

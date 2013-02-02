@@ -21,7 +21,7 @@ var SimpleAuthentication = module.exports = function (options) {
                 } else {
                     if (common.check_password(result.password, password)) {
                         request.session.user_id = result._id;
-                        request.session.user = result;
+                        request.user = result;
                         successCallback(result.id);
                     } else {
                         failureCallback('סיסמא שגויה');

@@ -24,7 +24,7 @@ var url2png = function (req, url, viewport, fullpage, thumbnail_max_width) {
 
 module.exports = function(req, res) {
     if (req.method =='POST') {
-        var path = 'http://uru-staging.herokuapp.com/elections/fbimage/' + req.session.user.id;
+        var path = 'http://uru-staging.herokuapp.com/elections/fbimage/' + req.user.id;
         var target_url = url2png(req, path, '750x750', true, 750);
         res.send({target_url: target_url});
         return;

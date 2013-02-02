@@ -7,9 +7,6 @@ var models = require('../../../models')
 
 module.exports = function(req,res)
 {
-    var resource = new DailyDiscussionResource1();
-  //  var user = req.session.user;
-
     async.parallel([
         function(cbk)  {
             models.DailyDiscussion.findById(req.params[0], cbk)
