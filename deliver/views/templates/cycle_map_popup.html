@@ -1,0 +1,16 @@
+<div class="popup-event type-one" item-id="{_id}">
+    <div class="popup-text">
+        <h4 title="{title}">{title}</h4>
+        {?location}<p>{location.address}</p>{/location}
+        <p>{date|time_only}</p>
+        <p class="going_num">{num_of_going} משתתפים</p>
+
+        <a item-id="{_id}" class="join-btn" href="javascript:void(0); " >
+            {?is_going}
+            עזוב
+            {:else}
+            הצטרף
+            {/is_going}
+        </a>
+    </div>
+</div>
