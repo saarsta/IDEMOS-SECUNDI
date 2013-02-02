@@ -155,7 +155,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
     },
 
     create_obj:function (req, fields, callback) {
-        var user_id = req.session.user_id || req.session.user._id;
+        var user_id = req.session.user_id;
         var self = this;
         var object = new self.model();
         var user = req.user;

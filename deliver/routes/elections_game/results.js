@@ -12,9 +12,8 @@ module.exports = function(req, res){
 
     var winners,
         candidate_page=false,
-        candidate_win_ratio=0,
         share_img_code,
-        game_code       =req.session.election_game ? req.session.election_game.game_code:null;
+        game_cod = req.session.election_game ? req.session.election_game.game_code:null;
         async.waterfall([
 
         function(cbk){/// determine game results

@@ -27,7 +27,7 @@ module.exports = {
                 resources: results.resources,
                 categories: results.categories,
                 today: utils.dateFormat('yyyy-mm-dd'),
-                user:req.session.user,
+                user:req.user,
                 social_popup_title: "",
                 social_popup_text: ""
             });

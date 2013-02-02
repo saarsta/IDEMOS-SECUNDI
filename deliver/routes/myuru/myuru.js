@@ -5,12 +5,12 @@ var TokensBarModel= require('./tokensBarModel');
 module.exports = function (req, res) {
 
     var isHisuru=req.params[0]? true: false;
-    var pageUserID = isHisuru? req.params[0]: req.session.user._id;
-    var sessionUser = req.session.user;
+    var pageUserID = isHisuru ? req.params[0] : req.user.id;
+    var sessionUser = req.user;
     var curr_user_db;
 
-    if(!(isHisuru && !req.session.user)){
-        if(isHisuru &&  pageUserID === req.session.user._id){
+    if(!(isHisuru && !req.user)){
+        if(isHisuru && pageUserID === req.user.id){
             isHisuru=false;
         }
     }
@@ -54,8 +54,8 @@ module.exports = function (req, res) {
                         .populate("proxy.user_id"/*,['id','_id','first_name','last_name','avatar','facebook_id','num_of_given_mandates', "followers",'score','num_of_proxies_i_represent']*/)
 
                         .exec(function(err, user){
-                            if(req.session.user)
-                                req.session.user.biography = user && user.biography;
+                            if(req.user)
+                                req.user.biography = user && user.biography;
                             cbk1(err, user);
                         })
                 },
@@ -119,46 +119,40 @@ module.exports = function (req, res) {
             })
         }
 
-    ], function (err, user_obj) {
+    ], function (err, user_of_this_page) {
         //2
-        if(!user_obj.proxy)
+        if(!user_of_this_page.proxy)
             console.error("data curruption with user proxies");
-        var proxy =  user_obj.proxy || [];
+        var proxy =  user_of_this_page.proxy || [];
 
-        var num_of_extra_tokens = user_obj.num_of_extra_tokens;
-        var tokens =  user_obj.tokens;
+        var num_of_extra_tokens = user_of_this_page.num_of_extra_tokens;
+        var tokens =  user_of_this_page.tokens;
 
         var tokensBarModel = new TokensBarModel(9, num_of_extra_tokens, tokens, proxy);
-        var proxyToSerializ=proxyJson= isHisuru && req.session.user ? sessionUser.proxy:  proxy;
+        var proxyToSerializ = isHisuru && req.user ? sessionUser.proxy : proxy;
         for(var i=0 ;i<proxyToSerializ.length;i++){
             if( proxyToSerializ[i].user_id && !isHisuru){
                 proxyToSerializ[i].user_id.avatar=   proxyToSerializ[i].user_id.avatar_url();
             }
         }
         var proxyJson= JSON.stringify(proxyToSerializ);
-
-        var av=user_obj.avatar_url();
-
-        models.User.findOne({"_id":req.session.user_id}, function(err, user){
-            res.render('my_uru.ejs',
-                {
-                    layout:false,
-                    tag_name:req.query.tag_name,
-                    biographyReadonly:isHisuru,
-                    title:"אורו שלי",
-                    logged:req.isAuthenticated(),
-                    big_impressive_title:"",
-                    user: user,//current user
-                    pageUser:user_obj ,///  hisuru user
-                    //   avatar:user_obj.avatar_url(),
-                    curr_user_proxy: curr_user_db ? curr_user_db.proxy : null,
-                    user_logged:req.isAuthenticated(),
-                    url:req.url,
-                    tokensBarModel:tokensBarModel,
-                    tab:'',
-                    isHisUru:isHisuru,
-                    proxy:proxyJson
-                });
-        })
+        res.render('my_uru.ejs', {
+            layout: false,
+            tag_name: req.query.tag_name,
+            biographyReadonly: isHisuru,
+            title: "עורו שלי",
+            logged: req.isAuthenticated(),
+            big_impressive_title: "",
+            user: req.user,                 // logged user
+            pageUser: user_of_this_page ,   // page user
+            //   avatar:user_of_this_page.avatar_url(),
+            curr_user_proxy: curr_user_db ? curr_user_db.proxy : null,
+            user_logged: req.isAuthenticated(),
+            url: req.url,
+            tokensBarModel: tokensBarModel,
+            tab: '',
+            isHisUru: isHisuru,
+            proxy: proxyJson
+        });
     })
 };

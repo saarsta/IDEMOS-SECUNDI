@@ -24,7 +24,7 @@ module.exports = function(req,res)
                             if(req.isAuthenticated())
                             {
                                 var resource = new InformationItemResource();
-                                resource.add_user_likes(req.session.user._id,item,function(err,item){
+                                resource.add_user_likes(req.user.id, item, function(err,item) {
                                     console.log(item.user_like);
                                     if(err)
                                         res.render('500.ejs',{err:err});
@@ -52,7 +52,7 @@ function render_information_item_page(req,res,item) {
         tag_name:req.query.tag_name||'',
         layout: false,
         user_logged: req.isAuthenticated(),
-        user: req.session.user,
+        user: req.user,
         auth_user: req.session.auth.user,
         tab:'information_items',
         avatar_url: req.session.avatar_url,

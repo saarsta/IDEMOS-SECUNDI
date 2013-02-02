@@ -11,7 +11,7 @@ module.exports = function(req,res) {
             else
                 res.render('action_list_by_subject.ejs', {
                     subject:subject,
-                    user: req.session.user,
+                    user: req.user,
                     avatar: req.session.avatar_url,
                     user_logged: req.isAuthenticated(),
                     url: req.url,
