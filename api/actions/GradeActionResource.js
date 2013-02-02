@@ -4,7 +4,6 @@ var resources = require('jest'),
     models = require('../../models'),
     async = require('async'),
     common = require('./../common'),
-    calc_thresh = require('../../deliver/tools/calc_thresh.js'),
     GradeActionSuggestion = require('./grade_action_suggestion_resource.js'),
     ActionSuggestion = require('./ActionSuggestionResource.js'),
     og_action = require('../../og/og.js').doAction;
@@ -294,7 +293,7 @@ function calculateActionGrade(action_id, callback){
                 new_grade = grade_sum / count;
 
                 //calculate threshhold here
-                threshold = calc_thresh.calculating_thresh(count, new_grade) || 50;
+                threshold = 50;
 
                 models.Action.update({_id: action_id}, {$set: {grade: new_grade, evaluate_counter: count, threshold_for_accepting_change_suggestions: threshold}}, cbk);
             }else{

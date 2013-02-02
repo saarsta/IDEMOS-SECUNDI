@@ -9,8 +9,6 @@
 var config = require('./config');
 var save_response = require('./integration/save_response');
 var request = require('request');
-var SignedRequest = require('facebook-signed-request');
-SignedRequest.secret = config.FB_SECRET;
 
 /**
  * Perform an action of a given object in facebook open graph.
@@ -67,51 +65,8 @@ var doAction = function(data ,callback ){
  * @param data - the singed request object returned by facebook (before decode!)
  * @param callback
  */
-var actionLinkHandler = function(  data , callback ){
-
-    var signedRequest = new SignedRequest( data );
-
-    signedRequest.parse(function(errors, request){
-
-        if ( request.isValid() ){
-            var rData = request.data;
-            var user_data = {user_id:rData.user_id, email:rData.user.email};
-            var action = rData.action_link.split(":")[1];
-            if ( config.actions[ action ] ){
-
-                config.userFinder( user_data , function( err , user ){
-                    if ( err ){
-                        callback( err , false );
-                    }
-                    else {
-                        var aData = {
-                            object : rData.objects[0].url,
-                            user : user
-                        }
-                        config.actions[ action ].action_link_cb(  aData , function( err , suc ){
-                            if ( err ){
-                                callback( err , false );
-                            }
-                            else{
-                                if ( suc ) doAction({
-                                    action: action,
-                                    object_url : rData.objects[0].url,
-                                    fid : rData.user_id
-                                }, null);
-                                callback( null , suc);
-                            }
-                        } );
-                    }
-                });
-            }
-        }
-        else{
-            console.log("Action link signed request was invalid");
-            console.log(errors);
-        };
-
-    });
-
+var actionLinkHandler = function(  data , callback ) {
+    callback( err , false );
 }
 
 /**
