@@ -1,11 +1,3 @@
-require('nodetime').profile({
-    accountKey: '620cb6d10d2ea43fb3a8e9c0323f31efddb70a10',
-    appName: 'URU - ' + process.env.NODE_ENV
-});
-
-/**
- * Module dependencies.
- */
 var express = require('express');
 var mongoose = require('mongoose');
 var MongoStore = require('connect-mongo')(express);
@@ -236,7 +228,6 @@ app.configure(function(){
 //if(app.settings.env != 'production')
 //require('./routes')(app);
 require('./api')(app);
-require('./admin')(app);
 require('./og/config').load(app);
 require('./lib/templates').load(app);
 if(app.settings.send_mails)
