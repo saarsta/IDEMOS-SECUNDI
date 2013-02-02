@@ -23,45 +23,29 @@ express.logger.token('memory', function(){
 });
 express.logger.format('default2', ':memory :response-time :res[content-length] :status ":method :url HTTP/:http-version" :res[body]');
 
-app.configure('development', function(){
-    app.use(express.errorHandler());
-    require('j-forms').setAmazonCredentials({
-        key: 'AKIAJM4EPWE637IGDTQA',
-        secret: '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',
-        bucket: 'uru'
-    });
-
-    app.set('send_mails', false);
+app.use(express.errorHandler());
+require('j-forms').setAmazonCredentials({
+    key: 'AKIAJM4EPWE637IGDTQA',
+    secret: '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',
+    bucket: 'uru'
 });
 
+app.set('send_mails', false);
 
-app.configure('admin', function(){
-    app.use(express.errorHandler());
-    require('j-forms').setAmazonCredentials({
-        key: 'AKIAJM4EPWE637IGDTQA',
-        secret: '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',
-        bucket: 'uru'
-    });
-
-    app.set('send_mails', false);
-
-    process.on('uncaughtException', function(err) {
-        console.trace(err);
-    });
+process.on('uncaughtException', function(err) {
+    console.trace(err);
 });
 
 
 if(!mongoose.connection.host)
     mongoose.connect(app.settings.DB_URL);
 
-    
 mongoose.connection.on('error', function(err) {
-    console.error('db connection error: ',err);
+    console.error('db connection error: ', err);
 });
 
-
 mongoose.connection.on('disconnected', function(err){
-    console.error('DB disconnected',err);
+    console.error('DB disconnected', err);
     var reconnect = function(){
         mongoose.connect(app.settings.DB_URL, function(err) {
             if(err)
@@ -71,37 +55,38 @@ mongoose.connection.on('disconnected', function(err){
     setTimeout(reconnect, 200);
 });
 
-app.configure(function(){
-    app.use(express.static(app.settings.public_folder));
-    require('j-forms').serve_static(app, express);
-    app.use(express.logger('default2'));
 
-    // pause req stream in case we're uploading files
-    app.use(function(req,res,next) {
-        if(req.xhr && /api\/(avatar|image_upload)\/?$/.test(req.path)) {
-            req.queueStream = new utils.queueStream(req);
-            req.queueStream.pause();
-            req.pause();
-            console.log('request paused');
-        }
-        next();
-    });
 
-    app.use(express.bodyParser());
-    app.use(express.methodOverride());
-    app.use(express.cookieParser());
-    app.use(express.cookieSession({ secret: '8ntURg0WaIfUkWeQ8ONO' }));
+app.use(express.static(app.settings.public_folder));
+require('j-forms').serve_static(app, express);
 
-    app.set('view options', { layout: false });
+app.use(express.logger('default2'));
 
+// pause req stream in case we're uploading files
+app.use(function(req,res,next) {
+    if(req.xhr && /api\/(avatar|image_upload)\/?$/.test(req.path)) {
+        req.queueStream = new utils.queueStream(req);
+        req.queueStream.pause();
+        req.pause();
+        console.log('request paused');
+    }
+    next();
 });
+
+app.use(express.bodyParser());
+app.use(express.methodOverride());
+app.use(express.cookieParser());
+app.use(express.cookieSession({ secret: '8ntURg0WaIfUkWeQ8ONO' }));
+
+app.set('view options', { layout: false });
 
 require('./admin')(app);
 
 var server = app.listen(app.get('port'),function(err){
-    console.log("Express server listening on port %d in %s mode", (server.address()||{}).port, app.get('env'));
+    console.log("Express server listening on port %d in %s mode", (server.address() || {}).port, app.get('env'));
 });
 
 server.on('error', function(err) {
-    console.error('********* Server Is NOT Working !!!! ***************',err);
+    console.error('********* Server Is NOT Working !!!! ***************', err);
+    setTimeout(process.exit, 5000);
 });
