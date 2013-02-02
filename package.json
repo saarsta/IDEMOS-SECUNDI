@@ -4,6 +4,7 @@
     "private": true,
     "dependencies": {
         "express": "3.x.x",
+        "ejs": "0.8.1",
         "mongoose": "3.0.1",
         "jest": "0.1.30",
         "async": "0.1.22",
