@@ -1,2 +1,2 @@
 cd ..
-mongodump -d heroku_app2952775 -u heroku_app2952775 -p nuulb7icv8aafrr7n592uie793 -h ds031107.mongolab.com --port 31107
+mongodump -u heroku_app2952775 -p 7eho6cf7a8lhplggsufhrk1fpf -h ds051467.mongolab.com:51467 -d heroku_app2952775
