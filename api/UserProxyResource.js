@@ -149,7 +149,7 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
 
 
         }else{
-            //tokens will be removed once a day by a cron
+            //tokens will be removed once a day by a worker process
             proxy.number_of_tokens_to_get_back = proxy.number_of_tokens_to_get_back || 0;
             proxy.number_of_tokens_to_get_back += (Number(number_of_tokens) * -1);
         }
@@ -158,9 +158,9 @@ var UserProxyResource = module.exports = common.GamificationMongooseResource.ext
             object.proxy.push(proxy);
 
         if(proxy.number_of_tokens > 3)
-            callback({message:"אי אפשר לתת יותר משלושה מנדטים", code: 401}, null)
+            callback({message:"אי אפשר לתת יותר משלושה מנדטים", code: 401}, null);
         else if (proxy.number_of_tokens_to_get_back > proxy.number_of_tokens)
-            callback({message:"קרתה תקלה", code: 401}, null)
+            callback({message:"קרתה תקלה", code: 401}, null);
         else{
             //save user object
 

@@ -3,11 +3,12 @@ var j_forms = require('j-forms'),
     mongoose = require('mongoose'),
     Models = require('../models'),
     async = require('async'),
-    DiscussionResource = require('../api/discussions/DiscussionResource.js'),
     SuggestionResource = require('../api/suggestionResource'),
     ActionResource = require('../api/actions/ActionResource'),
-    locale = require('../locale'),
     models = require('../models');
+
+var action_form = require('./action');
+
 
 module.exports = function (app) {
     j_forms.forms.set_models(Models);
@@ -26,19 +27,20 @@ module.exports = function (app) {
     admin.ensureUserExists('Uruad', 'uruadmin!@#uruadmin');
     admin.ensureUserExists('ishai', 'istheadmin');
 
+
     admin.registerMongooseModel("User", Models.User, null, {
         form:require('./user'),
         list:['username', 'first_name', 'last_name'],
         filters:['email', 'gender', 'identity_provider'],
-        search:'/__value__/.test(this.first_name)',
-        search:'/__value__/.test(this.last_name)',
+        search:'/__value__/.test(this.first_name+this.last_name)'
     });
+
 
     admin.registerMongooseModel("InformationItem", Models.InformationItem, null, {
         list:['title'],
         order_by:['gui_order'],
         sortable:'gui_order',
-        filters:['status'],
+        filters: ['created_by', 'status', 'is_hidden', 'is_hot_object'],
         cloneable:true,
         actions:[
             {
@@ -48,32 +50,45 @@ module.exports = function (app) {
                     Models.InformationItem.update({_id:{$in:ids}}, {$set:{is_approved:true}}, {multi:true}, callback);
                 }
             }
-        ],
-        filters:['created_by', 'status', 'is_hidden', 'is_hot_object']
+        ]
     });
-    admin.registerMongooseModel("Subject", Models.Subject, null, {order_by:['gui_order'], sortable:'gui_order'});
+
+
+    admin.registerMongooseModel("Subject", Models.Subject, null, {
+        order_by:['gui_order'],
+        sortable:'gui_order'}
+    );
+
+
     admin.registerMongooseModel("Discussion", Models.Discussion, null, {
         list:['title'],
         cloneable:true,
         form:require('./discussion'),
         order_by:['-creation_date'],
         filters:['created_by', 'is_published', 'is_hidden', 'is_hot_object', 'is_cycle.flag']
-//        search:'/__value__/.test(this.title)'
     });
 
-    admin.registerSingleRowModel(Models.GamificationTokens, 'GamificationTokens', {form:require('./gamification_tokens')});
+
+    admin.registerSingleRowModel(Models.GamificationTokens, 'GamificationTokens', {
+        form:require('./gamification_tokens')}
+    );
+
 
     admin.registerMongooseModel("DiscussionHistory", Models.DiscussionHistory, null, {
         list:['discussion_id', 'date'],
         cloneable:true,
         filters:['discussion_id']
     });
+
+
     admin.registerMongooseModel("Cycle", Models.Cycle, null, {
         list:['title'],
         cloneable:true,
         form:require('./cycle'),
         filters:['created_by', 'is_hidden', 'is_hot_object']
     });
+
+
     admin.registerMongooseModel('Post', Models.Post, null, {
         list:['text', 'username', 'discussion_id.title'],
         list_populate:['discussion_id'],
@@ -81,12 +96,16 @@ module.exports = function (app) {
         filters:['discussion_id', 'creator_id'],
         search:'/__value__/.test(this.discussion_id)'
     });
+
+
     admin.registerMongooseModel('PostAction', Models.PostAction, null, {
         list:['text', 'username', 'discussion_id.title'],
         list_populate:['discussion_id'],
         order_by:['-creation_date'],
         filters:['discussion_id', 'creator_id']
     });
+
+
     admin.registerMongooseModel('Suggestion', Models.Suggestion, null, {
         list:['parts.0.text', 'discussion_id.title'],
         list_populate:['discussion_id'],
@@ -105,9 +124,12 @@ module.exports = function (app) {
         ],
         filters:['discussion_id', 'creator_id']
     });
+
+
     admin.registerMongooseModel('Vote', Models.Vote, null, {
         list:['post_id', 'user_id']
     });
+
 
     admin.registerMongooseModel('VoteSuggestion', Models.VoteSuggestion, null, {
         list:['suggestion_id', 'user_id']
@@ -134,7 +156,7 @@ module.exports = function (app) {
         list:['tag']
     });
     admin.registerMongooseModel('Action', Models.Action, null, {
-        form:require('./action'),
+        form: action_form,
         list:['title'],
         actions:[
             {
@@ -146,7 +168,6 @@ module.exports = function (app) {
                     }, callback);
                 }
             },
-
             {
                 value:'un approve',
                 label:'Un - Approve',
@@ -278,9 +299,7 @@ module.exports = function (app) {
 
 
 var unApproveAction = function (id, callback) {
-
     async.waterfall([
-
         function (cbk) {
             models.Action.update({_id:id}, {$set:{is_approved:false}}, function (err, num) {
                 if (err)
@@ -288,8 +307,5 @@ var unApproveAction = function (id, callback) {
                 cbk(err, num);
             })
         }
-    ],
-        function (err, num) {
-            callback(err, num);
-        })
-}
+    ], callback)
+};

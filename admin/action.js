@@ -1,8 +1,6 @@
 var _ = require('underscore');
-var j_forms = require('j-forms');
 var async = require('async');
 var models = require('../models');
-var notifications = require('../api/notifications');
 var AdminForm = require('admin-with-forms').AdminForm;
 
 module.exports = AdminForm.extend({

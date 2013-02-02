@@ -2,8 +2,7 @@
 var j_forms = require('j-forms');
 var async = require('async');
 var models = require('../models');
-var notifications = require('../api/notifications')
-    ,AdminForm = require('admin-with-forms').AdminForm;
+var AdminForm = require('admin-with-forms').AdminForm;
 
 module.exports = AdminForm.extend({
     init:function(request,options,model) {
@@ -136,11 +135,7 @@ module.exports = AdminForm.extend({
                                         $inc: {"gamification.approved_discussion_to_cycle": 1,
                                             "score": score}},
                                     cbk2);
-                            }/*,
-                             //TODO
-                             function(cbk2){
-                             notifications.create_user_notification(notification_type, cycle._id, creator_id, cbk);
-                             }*/
+                            }
 
                             //cycle shopping cart is all the discussions items
                             ,function(cbk2){

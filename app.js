@@ -12,7 +12,6 @@ var app = module.exports = express();
 app.set('port', process.env.PORT || 80);
 app.set('show_only_published', process.env.SHOW_ONLY_PUBLISHED == '1');
 
-app.set('public_folder', __dirname + '/deliver/public');
 app.set('root_path', process.env.ROOT_PATH || 'http://dev.empeeric.com');
 app.set('DB_URL', process.env.MONGOLAB_URI || 'mongodb://localhost/uru');
 
@@ -36,7 +35,6 @@ process.on('uncaughtException', function(err) {
     console.trace(err);
 });
 
-
 if(!mongoose.connection.host)
     mongoose.connect(app.settings.DB_URL);
 
@@ -55,9 +53,6 @@ mongoose.connection.on('disconnected', function(err){
     setTimeout(reconnect, 200);
 });
 
-
-
-app.use(express.static(app.settings.public_folder));
 require('j-forms').serve_static(app, express);
 
 app.use(express.logger('default2'));
