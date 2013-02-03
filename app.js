@@ -1,14 +1,14 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var async = require('async');
-var utils = require('./utils');
 var util = require('util');
 var auth = require("connect-auth");
-var fb_bot_middleware = require('./deliver/routes/fb_bot/middleware');
-var account = require('./deliver/routes/account');
-var j_forms = require('j-forms');
-var models = require('./models');
 var logout_handler = require("connect-auth/lib/events").redirectOnLogout("/");
+var j_forms = require('j-forms');
+var utils = require('./utils');
+var models = require('./models');
+var account = require('./deliver/routes/account');
+var fb_bot_middleware = require('./deliver/routes/fb_bot/middleware');
 
 
 express.logger.token('memory', function () {
@@ -20,8 +20,8 @@ express.logger.format('default2', ':memory :response-time :res[content-length] :
 
 // Static parameters
 var DB_URL = process.env.MONGOLAB_URI || 'mongodb://localhost/uru';
-var ROOT_PATH = process.env.ROOT_PATH || 'http://dev.empeeric.com'
-var is_process_cron = (argv[2] == 'cron');
+var ROOT_PATH = process.env.ROOT_PATH || 'http://dev.empeeric.com';
+var is_process_cron = (process.argv[2] == 'cron');
 var is_process_web = !is_process_cron;
 var s3_creds = {
     key: 'AKIAJM4EPWE637IGDTQA',
@@ -55,7 +55,7 @@ require('./deliver/tools/compile_dust_templates');
 
 // **** connect to DB ****
 if (!mongoose.connection.host) {
-    mongoose.connect(DB_URL, function (db) { console.log("connected to db %j", db); });
+    mongoose.connect(DB_URL, {safe: false}, function (db) { console.log("connected to db %s:%s/%s", mongoose.connection.host, mongoose.connection.port, mongoose.connection.name); });
     mongoose.connection.on('error', function (err) { console.error('db connection error: ', err); });
     mongoose.connection.on('disconnected', function (err) {
         console.error('DB disconnected', err);
@@ -66,6 +66,7 @@ if (!mongoose.connection.host) {
 
 
 var app = module.exports = express();
+app.settings['x-powered-by'] = 'Empeeric';
 app.set('views', __dirname + '/deliver/views');
 app.set('public_folder', __dirname + '/deliver/public');
 app.set('port', process.env.PORT || 80);
@@ -91,7 +92,7 @@ app.use(express.errorHandler());
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.cookieParser());
-app.use(express.sessionCookie());
+app.use(express.cookieSession({secret: 'Rafdo5L2iyhcsGoEcaBd', cookie: { path: '/', httpOnly: false, maxAge: 60 * 24 * 60 * 60 * 1000}}));
 // Add logger after 'static' folders
 app.use(express.logger('default2'));
 app.use(fb_bot_middleware);
