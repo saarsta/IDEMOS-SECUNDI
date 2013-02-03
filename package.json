@@ -16,6 +16,7 @@
         "logging": "2.x.x",
         "sendgrid": "0.2.x",
         "xml": "0.0.x",
+        "admin-with-forms": "git+https://github.com/Empeeric/admin-forms.git",
         "facebook-signed-request": "0.0.x",
         "knox": "0.0.11",
         "j-forms":"git+https://github.com/Empeeric/nodejs-forms.git"

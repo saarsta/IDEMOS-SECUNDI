@@ -145,6 +145,11 @@ app.locals({
 app.use(app.router);
 
 
+app.configure('development', function(){
+    require('./admin')(app);
+    app.set('send_mails', false);
+});
+
 
 require('./api')(app);
 require('./og/config').load(app);
