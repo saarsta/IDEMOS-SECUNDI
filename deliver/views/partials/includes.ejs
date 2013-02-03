@@ -41,7 +41,7 @@
 <script src="/js/proxy_common.js" type="text/javascript"></script>
 <script src="/js/maps.js" type="text/javascript"></script>
 <script src="/js/jquery.movingboxes.js" type="text/javascript"></script>
-
+<script src="/js/jquery.cookie.js" type="text/javascript"></script>
 
 
 <!--<script src="/js/js-webshim/minified/extras/modernizr-custom.js"></script>-->
@@ -81,3 +81,22 @@
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
     })();
 </script>
+
+
+<%if(user_logged && user){%>
+
+<%}else{%>
+<script type="text/javascript">
+if( $.cookie('fb_login')==1){
+facebookLogin(function(err, result){
+if(!err){
+window.location.href = window.location.href;
+
+}else{
+
+}
+}) ;
+}
+</script>
+
+<%}%>

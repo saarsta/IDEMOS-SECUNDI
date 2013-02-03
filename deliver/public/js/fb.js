@@ -52,8 +52,9 @@ function sendFacebookShare(_, title, src, text_preview,err_link, callback) {
 function facebookLogin(callback) {
     FB.getLoginStatus(function(response) {
         if (response.status === 'connected') {
-            db_functions.getUserAfterFbConnect(response.authResponse.accessToken, callback);
             $.cookie("fb_login", 1);
+            db_functions.getUserAfterFbConnect(response.authResponse.accessToken, callback);
+
         } else {
             fb_auth_and_persist(callback);
         }

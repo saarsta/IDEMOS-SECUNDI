@@ -20,22 +20,6 @@
         });
 
 
-        <%if(user_logged && user){%>
 
-        <%}else{%>
-
-            if( $.cookie('fb_login')==1){
-                facebookLogin(function(err, result){
-                    if(!err){
-                        window.location.href = window.location.href;
-
-                    }else{
-
-                    }
-                }) ;
-            }
-
-
-        <%}%>
     });
 </script>
