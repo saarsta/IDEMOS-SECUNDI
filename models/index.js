@@ -387,7 +387,7 @@ var Schemas = exports.Schemas = {
         twitter: {type:String},
         sandtalk_id:  {type:Number},
         governence_quality_link : {type:String},
-        wins:   {type:Number, 'default':0, editable:false},
+        wins: {type:Number, 'default':0, editable:false}
 
     }  ,
     QuoteGameCandidate:{
@@ -554,8 +554,6 @@ var Models = module.exports = {
     }
 };
 
-Models.GamificationTokens.get = function() {
+Models.GamificationTokens.get = function() {};
 
-}
-
-mongoose.connection.collections.notifications.ensureIndex({ entity_id:1, user_id:1, type:1 }, { unique:true, dropDups:true });
+mongoose.connection.collections.notifications.ensureIndex({ entity_id:1, user_id:1, type:1 }, { unique:true, dropDups:true }, console.log);
