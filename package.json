@@ -1,13 +1,13 @@
 {
-    "name": "application-name",
-    "version": "0.0.1",
+    "name": "URU",
+    "version": "1.0.0",
     "private": true,
     "dependencies": {
         "express": "3.x.x",
         "ejs": "0.x.x",
         "connect-auth": "0.x.x",
         "mongoose": "3.x.x",
-        "jest": "0.1.x",
+        "jest": "0.1.30",
         "async": "0.1.x",
         "jade": "0.27.x",
         "underscore": "1.x.x",
@@ -16,6 +16,7 @@
         "logging": "2.x.x",
         "sendgrid": "0.2.x",
         "xml": "0.0.x",
+        "admin-with-forms": "git+https://github.com/Empeeric/admin-forms.git",
         "facebook-signed-request": "0.0.x",
         "knox": "0.0.11",
         "j-forms":"git+https://github.com/Empeeric/nodejs-forms.git"
