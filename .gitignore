@@ -20,6 +20,7 @@ compiled_templates.js
 /public/js/compiled_templates.js
 /dump/
 /data/
+/.data/
 
 *.orig
 
