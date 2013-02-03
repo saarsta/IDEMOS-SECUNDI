@@ -1,0 +1,299 @@
+<%
+    var object_social_title = social_popup_title || "";
+    var object_social_text = social_popup_text || "";
+%>
+
+<div id="box-share">
+    <div class="sb-container">
+        <div class="sb-top">
+            <div class="sb-title" id="social-popup-title">
+
+                <% if(object_social_title) { %>
+                    <%=  object_social_title %>
+                <%  } else { %>
+   <% if(type == 'approved_action'){ %>
+                מצוין. שמחים שהצטרפת לפעולה!
+                <% } else if(type == 'pending_action'){ %>
+                כדי שזה יקרה אנחנו צריכים גם את חבריך!
+                <% } else { %>
+                תודה על תמיכתך במעגל התנופה!
+                <% } %>
+   <% } %>
+
+            </div>
+            <div class="sb-text" id="social-popup-text">
+            <% if(object_social_text) { %>
+                <%=  object_social_text %>
+            <%  } else { %>
+                <% if(type == 'approved_action'){ %>
+                ככל שיהיו יותר משתתפים לפעולה כך הסיכוי שלה להצליח גבוה יותר, לכן כדאי להזמין חברים להצטרף לפעולה ולהמשיך להעביר אותה הלאה.
+                <% } else if(type == 'pending_action'){ %>
+                ככל שיותר חברים יתמכו ברעיון זה כך יגדלו הסיכויים שהוא יהפוך לפעולה בשטח. לכן כדאי להזמין חברים נוספים להצטרף ולהפוך את הרעיון הזה למציאות.
+                <% } else { %>
+                עכשיו, כדי שנושא זה יקודם אנחנו זקוקים לתמיכה רחבה ככל הניתן, לכן כדאי להזמין חברים נוספים להשתתף ולתמוך בפעילות.                <% } %>
+                <% } %>
+            </div>
+        </div>
+        <div class="sb-bottom">
+            <div class="sb-title">
+                   &nbsp;
+            </div>
+            <div class="sb-text">
+                <div class="sb-icons">
+                    <div id="close"><img src="/images/elections/close.png" alt="עורו"/></div>
+                    <div class="icons">
+                        <a id="social-popup-mail" href="#"
+                           target="_blank"><img class="icon" src="/images/elections/enva.png" alt="עורו"/></a>
+
+                        <a href="javascript:void(0)" id="share-twitter"><img class="icon" src="/images/elections/tweet.png" alt="עורו"/></a>
+                        <a href="javascript:void(0)" id="share-facebook"><img class="icon" src="/images/elections/face.png" alt="עורו"/></a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="cloudsponge">
+                <!-- Include these scripts to import address books with CloudSponge -->
+
+                <script type="text/javascript" charset="utf-8">
+
+
+
+
+                    var csPageOptions = {
+
+
+                   <%if(process && process.NODE_ENV && process.NODE_ENV=='staging'){  %>
+                      //  domain_key:"HPZ65GELQ4UZMGFUSTRR",   // uru-staging.herokuapp.com
+                   <% } else  if(process && process.NODE_ENV && process.NODE_ENV=='production'){  %>
+                     //   domain_key:"G5XMTFDEGQNEND8A6YZB",     //uru.org.il
+                   <% }else { %>
+                     //   domain_key:"MEJVM6QW5TG7SQF4B8G3",     //dev.empeeric.com
+                   <% } %>
+                         domain_key:"G5XMTFDEGQNEND8A6YZB",
+                         textarea_id:"contact_list",
+                        include:['mailing_address','name','email'],
+                        afterSubmitContacts: function(contacts, source, owner) {
+
+
+                            var i, contact, name, email, phone, mailing_address ,emails=[];
+                            for (i = 0; i < contacts.length; i++) {
+                                contact = contacts[i];
+                                name = contact.fullName();
+                                email = contact.selectedEmail();
+
+                                console.log(email) ;
+                                emails.push(email);
+                            }
+                             window.location.href = "mailto:"+emails.join(',')+"?subject=" + window.vars.mail_subject + "&body=" + window.vars.mail_body;
+                            db_functions.submitInvitedFriends('action',window.vars.object_id,null,emails, function (data, err){
+
+                            } );
+                        }
+                    }
+
+                </script>
+
+                <!-- Any link with a class="cs_import" will start the import process -->
+                <div id="deep-link" style="">
+                    <span style="margin-right:-15px">
+
+                      <a id="source-yahoo" href="#" onclick="return cloudsponge.launch('yahoo');"><img alt="Yahoo" height="28" src="http://www.cloudsponge.com/images/address_books/yahoo.png?1349284367" width="28"></a>
+                       <a id="source-windowslive" href="#" onclick="return cloudsponge.launch('windowslive');"><img alt="Windows Live" height="28" src="http://www.cloudsponge.com/images/address_books/msn.png?1349284367" width="28"></a>
+
+                      <a id="source-outlook" href="#" onclick="return cloudsponge.launch('outlook');" style="display: inline; "><img alt="Microsoft Outlook" height="28" src="http://www.cloudsponge.com/images/address_books/microsoft.png?1349284367" width="28"></a>
+                      <a id="source-addressbook" href="#" onclick="return cloudsponge.launch('addressbook');" style="display:none"><img alt="Mac Address Book" height="28" src="http://www.cloudsponge.com/images/address_books/apple.png?1349284367" width="28"></a>
+                                    <a id="source-gmail" href="#" onclick="return cloudsponge.launch('gmail');"><img alt="Gmail" height="28" src="http://www.cloudsponge.com/images/address_books/google.png?1349284367" width="28"></a>
+
+                    </span>
+                </div>
+
+            </div>
+            <div class="mail-notifications-cancel sb-small-text">
+                <% if(user && user.no_mail_notifications && user.no_mail_notifications == "true"){ %>
+                לחץ כאן כדי לקבל עדכונים במייל
+                <% } else { %>
+                לחץ כאן כדי לא לקבל עדכונים במייל
+                <% } %>
+
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
+
+<div id="screen"></div>
+
+<script>
+    var global = global || {};
+    var type = '<%= type %>';
+
+    var button = $('.social-on-click');
+    var rel = button.data('rel');
+    var title = button.data('title');
+    var title_of_main_entity = button.data('main_title');
+    var img_src = button.data('img_src');
+    var prev = button.data('data-text_preview');
+    var text_preview=prev;
+    var new_title=title;
+    var twitter_msg = title;
+
+    /*
+
+    if(type == 'approved_action'){
+        twitter_msg = "הצטרפתי לפעולה כחלק מקמפיין לשינוי באתר תנועת עורו. גם אתם מוזמנים להצטרף ולתמוך במהלך";
+
+        new_title =
+                "גם אני אשתתף בפעולה "
+                        +   title;
+
+        text_preview =
+                "הצטרפתי לפעולה במטרה לקדם את המהלך "
+                        + title_of_main_entity
+                        + "."
+                        + " אם גם לך חשוב לקדם את הנושא אפשר להצטרף ולתמוך באתר עורו. "
+                        + "אשמח לראותך שם!";
+
+    }else if(type == 'pending_action'){
+        twitter_msg = "תמכתי ברעיון לפעולה כחלק מקמפיין לשינוי באתר תנועת עורו. גם אתם מוזמנים להצטרף ולתמוך במהלך";
+        new_title = "גם אני אתמוך ברעיון לפעולה"
+                + " " + title;
+        text_preview =
+                "הצטרפתי למהלך "
+                        + title_of_main_entity
+                        + ". אם גם לך חשוב לקדם את הנושא אפשר להצטרף ולתמוך באתר עורו. "
+                        + "אשמח לראותך שם!";
+    }else{
+        twitter_msg = "הצטרפתי לקמפיין לשינוי באתר תנועת עורו. גם אתם מוזמנים להצטרף ולתמוך במהלך";
+        new_title =
+                "הצטרפתי לקידום הפעילות בנושא "
+                        + title
+                        + "."
+                        + " מה איתך?";
+        text_preview =
+                "החלטתי לקחת חלק בפעילות של תנועת עורו בנושא "
+                        +  title
+                        + ". גם לך חשוב לקדם את הנושא? אם כן, אפשר לקבל פרטים נוספים, להצטרף ולתמוך באתר עורו."
+                        + " "
+                        + "אשמח לראותך שם!";
+    }
+    */
+
+    global.share_messages = {
+        'a': twitter_msg
+    };
+
+
+    $("#share-facebook").one('click', facebookShare)   ;
+
+    function facebookShare () {
+
+        var button = $('.social-on-click');
+        var rel = button.data('rel');
+        var title = button.data('title');
+        var title_of_main_entity = button.data('main_title');
+        var prev = button.data(text_preview).text_preview;
+        var img_src = button.data('img_src');
+        var text_preview;
+        var new_title;
+      /*
+        if(type == 'approved_action'){
+            new_title =
+                    "גם אני אשתתף בפעולה "
+                +   title;
+
+            text_preview =
+                    "הצטרפתי לפעולה במטרה לקדם את המהלך "
+                + title_of_main_entity
+                + "."
+                + " אם גם לך חשוב לקדם את הנושא אפשר להצטרף ולתמוך באתר עורו. "
+                + "אשמח לראותך שם!";
+
+        }else if(type == 'pending_action'){
+            new_title = "גם אני אתמוך ברעיון לפעולה"
+                + " " + title;
+            text_preview =
+                    "הצטרפתי למהלך "
+                + title_of_main_entity
+                + ". אם גם לך חשוב לקדם את הנושא אפשר להצטרף ולתמוך באתר עורו. "
+                + "אשמח לראותך שם!";
+        }else{
+            new_title =
+                    "הצטרפתי לקידום הפעילות בנושא "
+                + title
+                + "."
+                + " מה איתך?";
+            text_preview =
+                    "החלטתי לקחת חלק בפעילות של תנועת עורו בנושא "
+                +  title
+                + ". גם לך חשוב לקדם את הנושא? אם כן, אפשר לקבל פרטים נוספים, להצטרף ולתמוך באתר עורו."
+                + " "
+                + "אשמח לראותך שם!";
+        }
+
+         */
+        new_title =  title;
+        text_preview =prev;
+
+        sendFacebookShare(rel, title, img_src, text_preview, null,function(err){
+             if(err){
+                alert('Error occured');
+             }else{
+//                             popupProvider.showOkPopup({message: 'השיתוף הסתיים בהצלחה.'});
+            }
+         });
+
+    /*
+        sendFacebookInvite('Come see that great site', "/",function(err, data){
+            if(!err)
+            {
+                popupProvider.showOkPopup({message:"ההזמנה הצליחה!"});
+                console.log(data);
+                db_functions.submitInvitedFriends('action',action_id,data.response,null);
+            }
+        });
+      */
+
+    }
+
+    $('#share-twitter').on('click', twitterShare);
+
+    function twitterShare () {
+        button = $('.social-on-click');
+        rel = button.data('rel');
+
+        window.open('https://twitter.com/share?url=' + encodeURIComponent('http://www.uru.org.il' + rel) + '&text=' +
+            //    encodeURIComponent(global.share_messages.a) + '&via=URUisrael', 'share-twitter', 'status=0,scrollbars=0,location=0,height=320,width=660,resizable=1'
+                encodeURIComponent(button.data('title')) + '&via=URUisrael', 'share-twitter', 'status=0,scrollbars=0,location=0,height=320,width=660,resizable=1'
+        );
+        return false;
+    }
+
+    $('#share-google').on('click', function () {
+        button = $('.social-on-click');
+        rel = button.data('rel');
+
+        window.open('https://plusone.google.com/_/+1/confirm?hl=en&url=' + encodeURIComponent('http://www.uru.org.il' + rel),
+                'share-google', 'status=0,scrollbars=0,location=0,height=320,width=660,resizable=1');
+        return false;
+    });
+
+    $('.mail-notifications-cancel').on('click', function(){
+        var no_mail_notifications = user.no_mail_notifications ? false : true;
+        db_functions.startStopGettingEmailNotifications(user._id, no_mail_notifications, function(err, data){
+            if(!err)
+                $('.mail-notifications-cancel').text(user.no_mail_notifications ?  "לחץ כאן כדי לקבל עדכונים במייל": "לחץ כאן כדי לא לקבל עדכונים במייל");
+
+        })
+    })
+    //$('#social-popup-mail').attr("href", "mailto:?subject=" + mail_subject + "&body=" + mail_body);
+    $('#social-popup-mail').on('click', function () {
+        $("#cloudsponge").slideToggle();
+        return false;
+    });
+
+
+</script>
+
+
