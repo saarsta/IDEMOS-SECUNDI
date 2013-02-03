@@ -470,6 +470,10 @@
 
 <script type="text/javascript">
 var current_section=2;
+var fb_param = {};
+fb_param.pixel_id = '6005510697475';
+fb_param.value = '0.00';
+
     var _main=$(document).ready( function () {
         jQuery.easing.def = "easeOutCirc";
         var my_id = "<%=user_logged ? user._id : ''%>";
@@ -961,6 +965,22 @@ var current_section=2;
         {
             setTimeout(function(){
                 $('#box-share,#screen').show();
+
+
+         /////////////////pixel code
+
+
+                    var fpw = document.createElement('script');
+                    fpw.async = true;
+                    fpw.src = (location.protocol=='http:'?'http':'https')+'://connect.facebook.net/en_US/fp.js';
+                    var ref = document.getElementsByTagName('script')[0];
+                    ref.parentNode.insertBefore(fpw, ref);
+
+         /////////////////pixel code end
+
+
+
+
                 //$('#social-popup-mail').attr("href", "mailto:?subject=" + mail_subject + "&body=" + mail_body);
                 $('#close').click(function(){
                     $('#box-share,#screen').hide();
