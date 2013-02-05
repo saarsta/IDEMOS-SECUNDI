@@ -1,6 +1,7 @@
 var models = require('../../../models')
     ,url = require('url')
-    ,common = require('./common');
+    ,common = require('./common')
+    ,logout_handler = require('./logout');
 
 exports.referred_by_middleware = function(req,res,next)
 {
@@ -44,53 +45,42 @@ exports.referred_by_middleware = function(req,res,next)
     }
 };
 
+
 exports.auth_middleware = function (req, res, next) {
-
-//    if this request needs to be authenticated
-    if (common.DONT_NEED_LOGIN_PAGES.some(function(dont) { return dont.test(req.path); })) {
-        console.log('skipped auth for %s', req.url)
-        next();
-        return;
-    }
-
     if (req.isAuthenticated())
-    {
-        if(!req.session.user || !req.session.avatar_url) {
-                models.User.findById(req.session.auth.user._id || req.session.user_id ,function(err,user){
-                    if(err){
-                        console.log('couldn put user id' + err.message);
-                        next();
-                    }else{
-                        if(user){
-                            req.session.user_id = user._id;
-                            req.session.avatar_url = user.avatar_url();
+        return next();
 
-                            models.Notification.count({user_id: user._id, seen: false}, function(err, count){
-                                if(err){
-                                    console.error('error finding user notifications');
-                                    user.unseen_notifications = 0;
-                                }
-                                user.unseen_notifications = count;
-                                req.session.user = user;
-                                next();
-                            })
-                        }
-                        else{
-                            require('./logout')(req,res);
-                        }
-                    }
-                });
+    if (common.DONT_NEED_LOGIN_PAGES.some(req.path.search)) {
+        console.log('skipped auth for %s', req.url);
+        return next();
+    }
+
+    if (common.REDIRECT_FOR_LOGIN_PAGES.some(req.path.search)) {
+        return res.redirect(common.LOGIN_PATH + '?next=' + req.path);
+    }
+    return null;
+};
+
+
+exports.populate_user = function (req, res, next) {
+    var user_id = req.session.user_id || (req.session.auth && req.session.auth.user && req.session.auth.user._id);
+    models.User.findById(user_id, function (err, user) {
+        if (err) throw err;
+        if (!user) {
+            logout_handler(req, res);
+            return;
         }
-        else
+        req.user = user;
+        req.session.user = user;
+        req.session.user_id = user._id;
+        req.session.avatar_url = user.avatar_url();
+        models.Notification.count({user_id: user_id, seen: false}, function (err, count) {
+            if (err) {
+                console.error('error finding user notifications');
+                count = 0;
+            }
+            user.unseen_notifications = count;
             next();
-    }
-    else {
-        if(_.any(common.REDIRECT_FOR_LOGIN_PAGES,function(redirect_urls)
-        {
-            return redirect_urls.test(req.path);
-        }))
-            res.redirect(common.LOGIN_PATH + '?next=' + req.path);
-        else
-            next();
-    }
+        })
+    });
 };
