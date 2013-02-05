@@ -10156,5 +10156,8 @@ change .current class name using plugin option, currentPanel : 'current' */
     margin-bottom: 20px;
 }
 
+#my-timeline{
+    direction: ltr;
 
+}
 
