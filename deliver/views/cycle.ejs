@@ -374,6 +374,7 @@
 
 
      <a name="timeline" class="cycle_hidden_parts"></a>
+
 <div class="cycle_hidden_parts system-notice cycle-system-notice">
     <div class="extra">
         <a class="close" href="javascript:void(0);"></a>
@@ -382,6 +383,8 @@
 
     </div>
 </div>
+<div id="my-timeline"></div>
+
     <div class="cycle_hidden_parts followers-box cycle">
         <div class="extra holds_the_timeline">
             <div class="tabs-box">
@@ -483,6 +486,8 @@ fb_param.value = '0.00';
         var user = "<%=cycle.id%>";
         var sharepop = <%=share%>;
         var join = <%=join%>;
+
+        var timeline_src="<%=cycle.timeline_embed%>";
         //set mail subject for social popup
 
 
@@ -1118,6 +1123,24 @@ fb_param.value = '0.00';
                 }
             });
         <% } %>
+
+        if(timeline_src){
+            $(".followers-box").hide()
+            createStoryJS({
+                type:       'timeline',
+                width:      '980',
+                height:     '600',
+                lang:               'iw',                           //OPTIONAL LANGUAGE
+                source:    timeline_src,
+                css:                '/css/timeline.css',     //OPTIONAL PATH TO CSS
+                font:               'Arial',             //OPTIONAL FONT
+                embed_id:   'my-timeline'
+
+            });
+        }
+
+
+
 
     });
 
