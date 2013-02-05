@@ -117,14 +117,11 @@ var registerUser =module.exports.registerUser  = function(req,data,callback) {
             }
             else{
                 req.session.user = user_obj;
-                req.session.save(function(err, results){
-                    if(cycle_id){
-                        cbk(null)
-                    }else{
-                        cbk(err || 'already_exists');
-                    }
-
-                })
+                if(cycle_id){
+                    cbk(null)
+                }else{
+                    cbk(err || 'already_exists');
+                }
             }
         },
 

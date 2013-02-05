@@ -1,0 +1,172 @@
+var models = require('../../../models')
+    ,common = require('./common');
+
+
+module.exports = function (req, res) {
+
+    if(req.query['error']) {
+        res.redirect('/account/register');
+        return;
+    }
+
+    if (req.query.next) {
+        req.session['fb_next'] = req.query.next;
+    }
+        facebook_register(req,function(err,is_new){
+            if(err){
+                res.send({error:err}, 500);
+            }   else   {
+
+                redirectAfterLogin(req,res, req.session['fb_next'],is_new);
+            }
+        });
+};
+
+
+var facebook_register = module.exports.facebook_register =function (req,callback) {
+
+    req.authenticate("facebook", function (error, authenticated) {
+        var next = req.session['fb_next'];
+        var referred_by = req.session['referred_by'];
+        console.log(error);
+        if (!error && authenticated) {
+
+            var user_detailes = req.getAuthDetails().user;
+            var access_token = req.session["access_token"];
+            var user_fb_id = req.getAuthDetails().user.id;
+
+            isUserInDataBase(user_fb_id, function (is_user_in_db) {
+
+                if (!is_user_in_db) {
+                    user_detailes.invited_by = referred_by;
+                    createNewUser(user_detailes, access_token, function (_id) {
+                        req.session.user_id = _id;
+                        callback(null,true);
+                    });
+                } else {
+                    updateUesrAccessToken(user_detailes, access_token, function (err,_id) {
+                        if(err){
+                            console.error(err);
+                            console.trace();
+                            callback(err);
+                        }else{
+                            req.session.auth.user._id = _id;
+                            callback(null,false)
+                        }
+                    });
+                }
+            });
+        }
+        else {
+            console.log('can\'t authenticate with facebook');
+        }
+    });
+}
+
+
+function redirectAfterLogin(req,res,redirect_to,is_new) {
+    if(!redirect_to || /^\/account\/register/.test(redirect_to))
+        redirect_to = common.DEFAULT_LOGIN_REDIRECT;
+    if(is_new) {
+ //       if(redirect_to.indexOf('?') > -1)
+ //           redirect_to += '&is_new=facebook';
+ //       else
+ //           redirect_to += '?is_new=facebook';
+    }
+    res.redirect(redirect_to);
+};
+
+
+var isUserInDataBase = module.exports.isUserInDataBase = function(user_facebook_id, callback) {
+
+    var user_model = models.User,
+        flag = false, user;
+
+    user_model.find({facebook_id:user_facebook_id}, function (err, result) {
+        if (err == null) {
+            if (result.length == 1) { // its not a new user
+                //var user_id = result[0]._id;
+                //console.log("isUserInDataBase returns true")
+                flag = true;
+                user = result[0];
+            } else {
+                if (result.length == 0) { // its a new user
+                    callback(null,false);
+                    return;
+                } else { // handle error here
+                    flag = true;
+                    user = result[0];
+                    console.error("Error: Too many users with same user_facebook_id");
+                }
+            }
+        } else {
+            callback(err);
+        }
+        callback(err, flag, user);
+    });
+}
+
+var createNewUser = module.exports.createNewFacebookUser = function (data, access_token, callback) {
+
+    var email = (data.email || '').trim().toLowerCase();
+
+    models.User.findOne({email:new RegExp(email,'i')},function(err,user) {
+       if(err) {
+           console.error('get user failed',err);
+           callback(null);
+           return;
+       }
+
+       if(!user) {
+           user = new models.User();
+       }
+
+        user.is_activated = true;
+        user.username = user.username || data.username;
+        user.identity_provider = "facebook";
+        user.first_name = user.first_name || data.first_name;
+        user.last_name = user.last_name || data.last_name;
+        user.email = email;
+        if (data.hometown) {
+            user.address = data.hometown.name;
+        }
+        user.gender = user.gender || data.gender;
+        user.facebook_id = data.id;
+        if(data.invited_by)
+            user.invited_by = user.invited_by || data.invited_by;
+        user.access_token = access_token;
+        user.save(function (err, object) {
+            if (err != null) {
+                console.log(err);
+                callback(null);
+            } else {
+                callback(object.id,object);
+                console.log("done creating new user - " + user.first_name + " " + user.last_name);
+            }
+        });
+
+    });
+
+    var user = new models.User();
+}
+
+var updateUesrAccessToken = module.exports.updateUesrAccessToken = function(data, access_token, callback) {
+    var user_model = models.User;
+
+    user_model.findOne({facebook_id: data.id}, function (err, user) {
+        if (err) {
+            return next(err);
+        }
+        user.access_token = access_token;
+        user.is_activated = true;
+        user.save(function (err) {
+            if (err) {
+                console.error(err);
+                callback(err);
+            } else {
+                callback(null, user.id);
+            }
+        });
+    });
+}
+
