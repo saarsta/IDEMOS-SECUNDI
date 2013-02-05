@@ -8,16 +8,10 @@ module.exports = function (req, res) {
         res.redirect('/account/register');
         return;
     }
-//   facebook_login(req, res);
-
 
     if (req.query.next) {
         req.session['fb_next'] = req.query.next;
- //
- //       req.session.save(facebook_register);
     }
- //   else  {
-
         facebook_register(req,function(err,is_new){
             if(err){
                 res.send({error:err}, 500);
@@ -26,8 +20,6 @@ module.exports = function (req, res) {
                 redirectAfterLogin(req,res, req.session['fb_next'],is_new);
             }
         });
-  //  }
-
 };
 
 
@@ -46,20 +38,10 @@ var facebook_register = module.exports.facebook_register =function (req,callback
             isUserInDataBase(user_fb_id, function (is_user_in_db) {
 
                 if (!is_user_in_db) {
-//                        req.session['fb_next'] = "/account/code_after_fb_connect";
-//                        next = req.session['fb_next'];
                     user_detailes.invited_by = referred_by;
                     createNewUser(user_detailes, access_token, function (_id) {
                         req.session.user_id = _id;
-//                            req.session.auth.user._id = _id; i can delete this
-                        req.session.save(function (err, object) {
-                            if (err != null) {
-                                console.log(err);
-                            } else {
-                                console.log('user _id to session is ok');
-                                callback(null,true);
-                            }
-                        });
+                        callback(null,true);
                     });
                 } else {
                     updateUesrAccessToken(user_detailes, access_token, function (err,_id) {
@@ -69,17 +51,7 @@ var facebook_register = module.exports.facebook_register =function (req,callback
                             callback(err);
                         }else{
                             req.session.auth.user._id = _id;
-                            req.session.save(function (err, object) {
-                                if (err != null) {
-                                    console.error(err);
-                                    console.trace();
-                                    callback(err);
-                                } else {
-                                    console.log('user _id to session is ok');
-                                    callback(null,false)
-                                }
-
-                            });
+                            callback(null,false)
                         }
                     });
                 }

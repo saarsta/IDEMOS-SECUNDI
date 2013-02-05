@@ -75,7 +75,6 @@ module.exports = function(req, res) {
                 req.logout(cbk)
             } else {
                 delete req.session.user;
-                req.session.save(cbk);
             }
         }],
         // respond

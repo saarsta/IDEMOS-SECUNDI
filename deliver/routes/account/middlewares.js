@@ -7,10 +7,7 @@ exports.referred_by_middleware = function(req,res,next)
     if('referred_by' in req.query)
     {
         req.session.referred_by = req.query['referred_by'];
-        req.session.save(function(err,result)
-        {
-            next();
-        });
+        next();
     }
     else
     {
@@ -32,9 +29,7 @@ exports.referred_by_middleware = function(req,res,next)
                         }
 
                         req.session.referred_by = obj.creator + '';
-                        req.session.save(function() {
-                            next();
-                        });
+                        next();
                     }
                     else {
                         console.error('couldn\'t find fb_request_id ');
@@ -77,12 +72,7 @@ exports.auth_middleware = function (req, res, next) {
                                 }
                                 user.unseen_notifications = count;
                                 req.session.user = user;
-                                req.session.save(function(err)
-                                {
-                                    if(err)
-                                        console.log('couldnt put user id' + err.message);
-                                    next();
-                                });
+                                next();
                             })
                         }
                         else{

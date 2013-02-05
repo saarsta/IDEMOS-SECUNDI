@@ -64,7 +64,6 @@ module.exports = function (options) {
             // save user_id on session
             function(user_id, cbk){
                 request.session.user_id = user_id;
-                request.session.save(cbk);
             }
 
         ],
