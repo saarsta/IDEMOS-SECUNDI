@@ -109,6 +109,7 @@ app.use(function (req, res, next) {
 app.use(account.referred_by_middleware);
 app.use(auth_middleware);
 app.use(account.auth_middleware);
+app.use(account.populate_user);
 
 app.use(function (req, res, next) {
     res.locals({

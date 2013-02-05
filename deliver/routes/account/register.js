@@ -86,9 +86,7 @@ var registerUser = module.exports.registerUser = function(req,data,next,callback
             }
             else{
                 req.session.user = user_obj;
-                req.session.save(function(err, results){
-                    cbk(err || 'already_exists');
-                })
+                cbk('already_exists');
             }
         },
 

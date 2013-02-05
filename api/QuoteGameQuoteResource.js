@@ -31,7 +31,7 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
                     callback(err);
                 }
                 else {
-                   
+
                     var final_results=JSON.parse(JSON.stringify(results));
                     var played_quotes=[];
                     var skipped_quotes=0;
@@ -101,14 +101,11 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
 
             req.session.election_game.game_code=game_code;
             req.session.election_game[quote_id]={candidate:candidate_id,response: req.body.response};
-            req.session.save(function(calee,length){
-                var played_quotes=[];
-                for(var propertyName in req.session.election_game) {
-                    if(propertyName=='game_code') continue;
-                    played_quotes.push(propertyName);
-                }
-               console.log("session saved " +played_quotes.length);
-            });
+            var played_quotes=[];
+            for(var propertyName in req.session.election_game) {
+                if(propertyName=='game_code') continue;
+                played_quotes.push(propertyName);
+            }
             async.waterfall([
                 function(cbk){
                     var now= Date.now()
