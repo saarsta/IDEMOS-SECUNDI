@@ -306,6 +306,8 @@ var Schemas = exports.Schemas = {
 
     Founder:{
         name:String,
+        first_name:String,
+        last_name:String,
         duty:String,
         text_field:{type:mongoose_types.Html, required:true},
         img_field:{type:mongoose_types.File, required:true},
