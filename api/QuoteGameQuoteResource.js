@@ -31,7 +31,7 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
                     callback(err);
                 }
                 else {
-                   
+
                     var final_results=JSON.parse(JSON.stringify(results));
                     var played_quotes=[];
                     var skipped_quotes=0;
@@ -101,30 +101,27 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
 
             req.session.election_game.game_code=game_code;
             req.session.election_game[quote_id]={candidate:candidate_id,response: req.body.response};
-            req.session.save(function(calee,length){
-                var played_quotes=[];
-                for(var propertyName in req.session.election_game) {
-                    if(propertyName=='game_code') continue;
-                    played_quotes.push(propertyName);
-                }
-               console.log("session saved " +played_quotes.length);
-            });
+            var played_quotes=[];
+            for(var propertyName in req.session.election_game) {
+                if(propertyName == 'game_code') continue;
+                played_quotes.push(propertyName);
+            }
+           console.log("session saved " + played_quotes.length);
             async.waterfall([
                 function(cbk){
-                    var now= Date.now()
+                    var now= Date.now();
                     models.QuoteGameGames.update({game_code: game_code}, {  $set:{ game_code: game_code , updated :now }, $inc:{"quote_count":1} }, {upsert: true}, function(err,count)
                     {
                         cbk(err,count);
                     });
                 },
                 function(result, cbk){
-                    qu={quote:quote_id ,selection:req.body.response}
+                    qu={quote:quote_id ,selection:req.body.response};
                     if(user_id!="") {
                         models.User.update({_id: user_id}, {
                             $set:       { "quote_game.played": true} ,
                             $inc:       {"quote_game.quotes_count":1} ,
-                            $addToSet:  {"quote_game.quotes" : qu } ,
-                            $addToSet:  {"quote_game.games" : game_code }
+                            $addToSet:  {"quote_game.quotes" : qu, "quote_game.games" : game_code}
                         }, function(err,count)  {
                             console.log(err);
                             cbk(err,count);
