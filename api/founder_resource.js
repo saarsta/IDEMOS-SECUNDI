@@ -15,6 +15,10 @@ var FounderResource = module.exports = common.GamificationMongooseResource.exten
             this._super(models.Founder, null, null);
             this.allowed_methods = ['get'];
             this.authentication = new common.SessionAuthentication();
+
+            this.default_query = function (query) {
+                return query.sort({'last_name': 'ascending',tag:1});
+            };
         }
     }
 )
