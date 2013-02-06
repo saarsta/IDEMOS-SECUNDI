@@ -1,7 +1,7 @@
 var mongoose = require("mongoose"),
     Schema = mongoose.Schema,
     common = require('./common'),
-    mongoose_types = require('j-forms').types,
+
     ObjectId = Schema.ObjectId,
     utils = require('./../utils');
 
@@ -16,10 +16,10 @@ var InformationItem = module.exports = new Schema({
     tooltip:String,
     subject_id:[{type:ObjectId, ref:'Subject',required:true}],
     category:{type:String, "enum":['test', 'statistics', 'infographic', 'graph'], required:true},
-    text_field:{type:mongoose_types.Text, required:true},
-    text_field_preview:{type:mongoose_types.Html},
-    image_field: {type:mongoose_types.File,required:true},
-    image_field_preview: {type:mongoose_types.File},
+    text_field:{type:Schema.Types.Text, required:true},
+    text_field_preview:{type:Schema.Types.Html},
+    image_field: {type:Schema.Types.File,required:true},
+    image_field_preview: {type:Schema.Types.File},
     tags:{type:[String], index:true},
     users:{type:[ObjectId], ref:'User',query:common.FIND_USER_QUERY,editable:false},
     discussions:[{type:ObjectId, ref:'Discussion', index:true}],

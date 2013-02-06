@@ -2,7 +2,6 @@
 
 var mongoose = require('mongoose')
     ,Schema = mongoose.Schema
-    ,types = require('j-forms').types
     ,_ = require('underscore');
 
 var FooterLink = module.exports = new Schema({
@@ -10,12 +9,12 @@ var FooterLink = module.exports = new Schema({
     link:{type:String},
     name:{type:String, required:true},
     title:{type:String, required:false},
-    html:{type:types.Html,required:true},
+    html:{type:Schema.Types.Html,required:true},
     is_hidden:{type:Boolean,'default':true},
     is_on_top:{type:Boolean,'default':false},
     is_on_footer:{type:Boolean},
     highlights: [{
-        img_field:{ type:types.File, required:true},
+        img_field:{ type:Schema.Types.File, required:true},
         text_field:String,
         img_text: String
     }],

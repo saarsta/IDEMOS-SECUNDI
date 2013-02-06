@@ -4,7 +4,7 @@ var mongoose = require("mongoose"),
     ObjectId = Schema.ObjectId,
     async = require('async'),
     _ = require('underscore'),
-    mongoose_types = require('j-forms').types,
+
     utils = require('../utils');
 
 var ActionSuggestion = {
@@ -12,7 +12,7 @@ var ActionSuggestion = {
     parts:[
         {start:Number, end:Number, text:Schema.Types.Text}
     ],
-    explanation: {type:mongoose_types.Text},
+    explanation: {type:Schema.Types.Text},
     is_approved:{type:Boolean, 'default':false},
     evaluate_counter: {type: Number, 'default': 0},
     grade: {type: Number, 'default': 0},

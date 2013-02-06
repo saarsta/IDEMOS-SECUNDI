@@ -3,7 +3,7 @@ var mongoose = require("mongoose"),
     ObjectId = Schema.ObjectId,
     async = require('async'),
     common = require('./common'),
-    mongoose_types = require('j-forms').types,
+
     utils = require('../utils');
 
 var PostOrSuggestion = module.exports = {
@@ -11,7 +11,7 @@ var PostOrSuggestion = module.exports = {
     first_name:{type:String,editable:false},
     last_name:{type:String, editable:false },
 //        username:{type:String,editable:false},
-//        avatar : {type:mongoose_types.File, editable:false},
+//        avatar : {type:Schema.Types.File, editable:false},
     total_votes: {type: Number, 'default': 0},
     creation_date:{type:Date, 'default':Date.now},
     //for now there is no such thing as "tokens",

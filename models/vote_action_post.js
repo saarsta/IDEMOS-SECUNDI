@@ -3,7 +3,7 @@ var mongoose = require("mongoose"),
     ObjectId = Schema.ObjectId,
     async = require('async'),
     common = require('./common'),
-    mongoose_types = require('j-forms').types,
+
     utils = require('../utils');
 
 var VoteActionPost = module.exports = new Schema({
