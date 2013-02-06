@@ -86,7 +86,7 @@ function overwrite_file(amazon_url,callback) {
 
         var newPath = 'deliver/public/faces_game/icon600x600.jpg';
         stream = fs.createReadStream(newPath);
-        var knoxClient = require('j-forms').fields.getKnoxClient();
+        var knoxClient = require('formage-admin').forms.fields.getKnoxClient();
         var filename = amazon_url.substring(amazon_url.lastIndexOf('/')+1);
         knoxClient.putStream(stream, '/fg/'+filename , function(err, res){
             if(err)  {

@@ -18,7 +18,7 @@ express.logger.token('memory', function(){
 express.logger.format('default2', ':memory :response-time :res[content-length] :status ":method :url HTTP/:http-version" :res[body]');
 
 app.use(express.errorHandler());
-require('j-forms').setAmazonCredentials({
+require('formage-admin').forms.setAmazonCredentials({
     key: 'AKIAJM4EPWE637IGDTQA',
     secret: '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',
     bucket: 'uru'
@@ -48,7 +48,7 @@ mongoose.connection.on('disconnected', function(err){
     setTimeout(reconnect, 200);
 });
 
-require('j-forms').serve_static(app, express);
+require('formage-admin').forms.serve_static(app, express);
 
 app.use(express.logger('default2'));
 

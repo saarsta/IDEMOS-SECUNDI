@@ -352,7 +352,7 @@ var uploadHandler = exports.uploadHandler = function(req,callback) {
 			});
 		};
 
-    var knoxClient = require('j-forms').fields.getKnoxClient();
+    var knoxClient = require('formage-admin').forms.fields.getKnoxClient();
 
     var fName = req.header('x-file-name');
     var fType = req.header('x-file-type');
