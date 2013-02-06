@@ -14,6 +14,7 @@ exports.SimpleAuthentication = require('./authentication');
 exports.FbServerAuthentication = require('./fb_auth');
 exports.referred_by_middleware = middlewares.referred_by_middleware;
 exports.auth_middleware = middlewares.auth_middleware;
+exports.populate_user = middlewares.populate_user;
 
 exports.routing = function(router)
 {
