@@ -2,7 +2,8 @@
 var async = require('async');
 var models = require('../models');
 var notifications = require('../api/notifications')
-    ,AdminForm = require('formage-admin').AdminForm;
+    ,AdminForm = require('formage-admin').AdminForm,
+    j_forms = require('formage-admin').forms;
 
 module.exports = AdminForm.extend({
     init:function(request,options,model) {

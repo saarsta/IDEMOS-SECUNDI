@@ -142,13 +142,15 @@ app.locals({
         return app.get(attr);
     }
 });
-app.use(app.router);
-
 
 app.configure('development', function(){
     require('./admin')(app);
+    j_forms.serve_static(app, express);
     app.set('send_mails', false);
 });
+
+app.use(app.router);
+
 
 
 require('./api')(app);
