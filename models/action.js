@@ -1,17 +1,15 @@
 var mongoose = require("mongoose"),
     Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId,
-    common = require('./common'),
-    mongoose_types = require('j-forms').types;
-
+    common = require('./common');
 
 var Action = module.exports = new Schema({
     title:               {type: String, required: true},
     tooltip:             String,
-    text_field:          {type: mongoose_types.Text, required: true},
-    text_field_preview:  {type: mongoose_types.Text},
-    image_field:         mongoose_types.File,
-    image_field_preview: mongoose_types.File,
+    text_field:          {type: Schema.Types.Text, required: true},
+    text_field_preview:  {type: Schema.Types.Text},
+    image_field:         Schema.Types.File,
+    image_field_preview: Schema.Types.File,
     category: {type:ObjectId, ref:'Category', require: true},
     description: String,
     creator_id: {type:ObjectId, ref:'User', query:common.FIND_USER_QUERY, index:true, required:true},
@@ -69,7 +67,7 @@ var Action = module.exports = new Schema({
     is_approved:                                      {type: Boolean, 'default': false},
     is_hot_object:                                    {type: Boolean, 'default': false},
     gamification:                                     {approved_to_cycle: {type: Boolean, 'default': false}, editable: false},
-    location:                                         mongoose_types.GeoPoint,
+    location:                                         Schema.Types.GeoPoint,
     grade:                                            {type: Number, 'default': 0},
     evaluate_counter:                                 {type: Number, 'default': 0, editable: false},
     grade_sum:                                        {type: Number, 'default': 0, editable: false},

@@ -5,7 +5,7 @@ var mongoose = require("mongoose"),
     ObjectId = Schema.ObjectId,
     async = require('async'),
     _ = require('underscore'),
-    mongoose_types = require('j-forms').types,
+
     utils = require('../utils');
 
 

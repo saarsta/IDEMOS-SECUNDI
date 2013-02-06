@@ -2,7 +2,7 @@
 var mongoose = require("mongoose"),
     Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId,
-    mongoose_types = require('j-forms').types,
+
     common = require('./common'),
     utils = require('./../utils');
 
@@ -10,22 +10,22 @@ var mongoose = require("mongoose"),
 var Discussion = module.exports = new Schema({
     title:{type:String, required:true},
     tooltip:String,
-//        text_field:{type:mongoose_types.Html},
-//        text_field_preview:{type:mongoose_types.Html},
-    image_field: { type:mongoose_types.File, required:true},
-    image_field_preview: { type:mongoose_types.File, require:true},
+//        text_field:{type:Schema.Types.Html},
+//        text_field_preview:{type:Schema.Types.Html},
+    image_field: { type:Schema.Types.File, required:true},
+    image_field_preview: { type:Schema.Types.File, require:true},
     subject_id:[
         {type:ObjectId, ref:'Subject', index:true, required:true}
     ],
     subject_name: String,
-    system_message: {type:mongoose_types.Html},
+    system_message: {type:Schema.Types.Html},
     creation_date:{type:Date, 'default':Date.now},
     last_updated:{type:Date, 'default':Date.now},
     creator_id:{type:ObjectId, ref:'User', query:common.FIND_USER_QUERY},
     first_name:{type:String,editable:false},
     last_name:{type:String,editable:false},
-    text_field_preview: {type:mongoose_types.Text},//2-3 lines of the vision_text
-    text_field:{type:mongoose_types.Text, required:true},
+    text_field_preview: {type:Schema.Types.Text},//2-3 lines of the vision_text
+    text_field:{type:Schema.Types.Text, required:true},
     vision_text_history:{type:[String]},
     num_of_approved_change_suggestions: {type: Number, 'default': 0},
     is_hot_object: {type:Boolean,'default':false},

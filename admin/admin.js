@@ -1,8 +1,9 @@
 
-var j_forms = require('j-forms')
+var formage_admin = require('formage-admin')
+    ,j_forms = formage_admin.formage
     ,_ = require('underscore')
-    ,crypt = require('admin-with-forms').crypt
-    ,AdminForm = require('admin-with-forms').AdminForm
+    ,crypt = formage_admin.crypt
+    ,AdminForm = formage_admin.AdminForm
     ,mongoose = require('mongoose');
 
 
