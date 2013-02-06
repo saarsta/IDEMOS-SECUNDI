@@ -34,6 +34,7 @@ var user_public_fields = exports.user_public_fields = {
 var SessionAuthentication = exports.SessionAuthentication = jest.Authentication.extend({
     is_authenticated : function(req, callback){
 
+        //noinspection JSUnresolvedFunction
         var is_auth = req.isAuthenticated();
         if(is_auth)
         {
