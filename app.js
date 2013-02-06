@@ -1,8 +1,3 @@
-require('nodetime').profile({
-    accountKey: '620cb6d10d2ea43fb3a8e9c0323f31efddb70a10',
-    appName: 'URU - ' + process.env.NODE_ENV
-});
-
 var express = require('express');
 var mongoose = require('mongoose');
 var util = require('util');
