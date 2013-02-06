@@ -68,14 +68,6 @@ module.exports = function(req, res) {
             if ('entry.37.single' in req.body)
                 discussion_ids.push(req.body['entry.37.single']);
             models.User.findByIdAndUpdate(user._id, {has_voted: discussion_ids}, cbk);
-        },
-        // delete user from session to trigger reload of the user object or logout
-        function(cbk) {
-            if(req.session.delete) {
-                req.logout(cbk)
-            } else {
-                delete req.session.user;
-            }
         }],
         // respond
         function(err) {

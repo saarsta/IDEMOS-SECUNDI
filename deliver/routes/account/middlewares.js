@@ -50,12 +50,13 @@ exports.auth_middleware = function (req, res, next) {
     if (req.isAuthenticated())
         return next();
 
-    if (common.DONT_NEED_LOGIN_PAGES.some(req.path.search)) {
+    if (common.DONT_NEED_LOGIN_PAGES.some(req.path.search, req.path)) {
+        req.no_need_auth = true;
         console.log('skipped auth for %s', req.url);
         return next();
     }
 
-    if (common.REDIRECT_FOR_LOGIN_PAGES.some(req.path.search)) {
+    if (common.REDIRECT_FOR_LOGIN_PAGES.some(req.path.search, req.path)) {
         return res.redirect(common.LOGIN_PATH + '?next=' + req.path);
     }
     return null;
@@ -67,7 +68,10 @@ exports.populate_user = function (req, res, next) {
     models.User.findById(user_id, function (err, user) {
         if (err) throw err;
         if (!user) {
-            logout_handler(req, res);
+            if (req.no_need_auth)
+                next();
+            else
+                logout_handler(req, res);
             return;
         }
         req.user = user;
