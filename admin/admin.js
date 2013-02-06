@@ -1,5 +1,4 @@
 var formage_admin = require('formage-admin')
-    , Forms = formage_admin.forms
     , _ = require('underscore')
     , crypt = formage_admin.crypt
     , AdminForm = formage_admin.AdminForm
