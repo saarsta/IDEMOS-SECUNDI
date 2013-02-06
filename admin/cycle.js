@@ -1,8 +1,9 @@
-
 var async = require('async');
 var models = require('../models');
-var notifications = require('../api/notifications')
-    ,AdminForm = require('formage-admin').AdminForm;
+var notifications = require('../api/notifications');
+var formage_admin = require('formage-admin'),
+    Forms = formage_admin.forms,
+    AdminForm = formage_admin.AdminForm;
 
 module.exports = AdminForm.extend({
     init:function(request,options,model) {
@@ -85,15 +86,10 @@ module.exports = AdminForm.extend({
             });
 
         // create a checkbox field
-        this.fields['check_me'] = new j_forms.fields.BooleanField();
+        this.fields['check_me'] = new Forms.fields.BooleanField();
 
         // add the checkbox field to the upper level
         this.fieldsets[0].fields.push('check_me');
-
-//        async.forEach(this.data.actions, function(action){
-//            this.fields['action: ' + action.title] = new j_forms.fields.BooleanField();
-//            this.fieldsets[0].fields.push('action: ' + action.title);
-//        })
     },
 
     actual_save : function(callback)
