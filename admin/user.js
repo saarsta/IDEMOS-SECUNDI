@@ -1,6 +1,5 @@
 
-var j_forms = require('j-forms')
-    ,AdminForm = require('admin-with-forms').AdminForm;;
+var AdminForm = require('formage-admin').AdminForm;
 
 module.exports = AdminForm.extend({
     get_fields: function() {

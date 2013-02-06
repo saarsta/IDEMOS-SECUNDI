@@ -1,5 +1,5 @@
-var j_forms = require('j-forms'),
-    mongoose_admin = require('admin-with-forms'),
+var     mongoose_admin = require('formage-admin'),
+        j_forms = mongoose_admin.forms,
     mongoose = require('mongoose'),
     Models = require('../models'),
     async = require('async'),
@@ -25,13 +25,14 @@ module.exports = function (app) {
 
     admin.ensureUserExists('Uruad', 'uruadmin!@#uruadmin');
     admin.ensureUserExists('ishai', 'istheadmin');
+    admin.ensureUserExists('saar', '123qwe456');
 
     admin.registerMongooseModel("User", Models.User, null, {
         form:require('./user'),
         list:['username', 'first_name', 'last_name'],
         filters:['email', 'gender', 'identity_provider'],
         search:'/__value__/.test(this.first_name)',
-        search:'/__value__/.test(this.last_name)',
+        search:'/__value__/.test(this.last_name)'
     });
 
     admin.registerMongooseModel("InformationItem", Models.InformationItem, null, {

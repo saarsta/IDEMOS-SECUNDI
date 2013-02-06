@@ -6,7 +6,7 @@ var mongoose = require("mongoose"),
     ObjectId = Schema.ObjectId,
     async = require('async'),
     common = require('./common'),
-    mongoose_types = require('j-forms').types,
+
     utils = require('../utils');
 
 var Cycle = module.exports = new Schema({
@@ -21,12 +21,12 @@ var Cycle = module.exports = new Schema({
     title: {type:String, required:true},
     discussion_title: {type:String, required:true},
     tooltip:String,
-    text_field:{type:mongoose_types.Html},
-    text_field_preview:{type:mongoose_types.Html},
-    image_field: mongoose_types.File,
-    image_field_preview: mongoose_types.File,
+    text_field:{type:Schema.Types.Html},
+    text_field_preview:{type:Schema.Types.Html},
+    image_field: Schema.Types.File,
+    image_field_preview: Schema.Types.File,
     sub_branding:[ {
-                image: mongoose_types.File,
+                image: Schema.Types.File,
                 title: {type: String},
                 text: {type: String},
                 link: {type: String}
@@ -35,7 +35,7 @@ var Cycle = module.exports = new Schema({
     discussions:[
         {discussion: {type:ObjectId, ref:'Discussion', query:common.FIND_DISCUSSION_QUERY}, is_main: {type: Boolean, 'default': false}}
     ],
-    admin_updates: [{info: {type:mongoose_types.Text}, date: {type: Date,'default':Date.now}, is_displayed: {type: Boolean, 'default': false}}],
+    admin_updates: [{info: {type:Schema.Types.Text}, date: {type: Date,'default':Date.now}, is_displayed: {type: Boolean, 'default': false}}],
     document: String,
 //    shopping_cart: [
 //        {type:ObjectId, ref:'InformationItem'}
@@ -53,13 +53,13 @@ var Cycle = module.exports = new Schema({
     ], editable:false},
     opinion_shapers: [
 
-      // {user_id: {type:ObjectId, ref:'User', query:common.FIND_USER_QUERY}, text: {type:mongoose_types.Text}}
-      new Schema({user_id:{type:ObjectId, ref:'User', query:common.FIND_USER_QUERY}, text: {type:mongoose_types.Text}})
+      // {user_id: {type:ObjectId, ref:'User', query:common.FIND_USER_QUERY}, text: {type:Schema.Types.Text}}
+      new Schema({user_id:{type:ObjectId, ref:'User', query:common.FIND_USER_QUERY}, text: {type:Schema.Types.Text}})
     ],
     social_popup_title: {type: String},
     social_popup_text: {type: String},
     is_hidden:{type:Boolean,'default':true}    ,
-    timeline_embed: {type:mongoose_types.Text}
+    timeline_embed: {type:Schema.Types.Text}
 
 }, {strict: true});
 

@@ -4,7 +4,7 @@ var async = require('async');
 var util = require('util');
 var auth = require("connect-auth");
 var logout_handler = require("connect-auth/lib/events").redirectOnLogout("/");
-var j_forms = require('j-forms');
+var j_forms = require('formage-admin').forms;
 var utils = require('./utils');
 var models = require('./models');
 var account = require('./deliver/routes/account');
@@ -87,7 +87,6 @@ app.set('view options', { layout: false });
 
 
 app.use(express.static(app.settings.public_folder));
-j_forms.serve_static(app, express);
 app.use(express.errorHandler());
 app.use(express.bodyParser());
 app.use(express.methodOverride());

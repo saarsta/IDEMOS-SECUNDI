@@ -1,7 +1,7 @@
 var mongoose = require("mongoose"),
     Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId,
-    mongoose_types = require('j-forms').types,
+
     common = require('./common'),
     utils = require('./../utils');
 
@@ -95,15 +95,15 @@ var User = module.exports = new Schema({
     invited_by: {type: ObjectId, ref: 'User', query:common.FIND_USER_QUERY},
     has_been_invited : {type: Boolean, 'default': false, editable: false},
     tokens_achivements_to_user_who_invited_me: Schema.Types.Mixed,
-    num_of_extra_tokens: {type: mongoose_types.Integer, 'default': 0, max:6, min: 0},
+    num_of_extra_tokens: {type: Schema.Types.Integer, 'default': 0, max:6, min: 0},
     number_of_days_of_spending_all_tokens: {type: Number, 'default' : 0, editable: false},
     blog_popularity_counter: {type: Number, 'default': 0, editable: false},
-    avatar : mongoose_types.File,
+    avatar : Schema.Types.File,
     minisite_code : String,
     blog_title: String,
     blog_sub_titile: String,
     blog_text_1: String,
-    blog_text_2: {type:mongoose_types.Text},
+    blog_text_2: {type:Schema.Types.Text},
     blog_text_3: String,
 //    opinion_text: String,
     sent_mail: {type:Date},

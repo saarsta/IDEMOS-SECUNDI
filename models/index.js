@@ -2,12 +2,10 @@ var mongoose = require("mongoose"),
     Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId,
     common = require('./common'),
-    mongoose_types = require('j-forms').types,
     utils = require('../utils'),
     _ = require('underscore'),
     async = require('async');
 
-mongoose_types.loadTypes(mongoose);
 
 var Schemas = exports.Schemas = {
 
@@ -22,8 +20,8 @@ var Schemas = exports.Schemas = {
         title:{type:String, required:true},
         tooltip: String,
         type:{type:String, "enum":["from_the_news_paper", "daily_survey", "conclusion"]},
-        text_field:{type:mongoose_types.Html},
-        image_field:mongoose_types.File,
+        text_field:{type:Schema.Types.Html},
+        image_field:Schema.Types.File,
         link:String,
         tags:{type:[String], index:true},
         cycles:{type:[ObjectId], ref:'Cycles', index:true, editable:false},
@@ -37,10 +35,10 @@ var Schemas = exports.Schemas = {
     SuccessStory:new Schema({
         title:{type:String, required:true},
         tooltip:String,
-        text_field:{type:mongoose_types.Html},
-//        text_field_preview:{type:mongoose_types.Html},
-        image_field:mongoose_types.File,
-//        image_field_preview: mongoose_types.File,
+        text_field:{type:Schema.Types.Html},
+//        text_field_preview:{type:Schema.Types.Html},
+        image_field:Schema.Types.File,
+//        image_field_preview: Schema.Types.File,
         tags:{type:[String], index:true},
         cycles:{type:[ObjectId], ref:'Cycles', index:true, editable:false},
         actions:{type:[ObjectId], ref:'Action', index:true, editable:false},
@@ -54,9 +52,9 @@ var Schemas = exports.Schemas = {
     Update:new Schema({
         title:{type:String, required:true},
         tooltip:String,
-        text_field_preview:{type:mongoose_types.Html},
-        text_field:{type:mongoose_types.Html},
-        image_field:mongoose_types.File,
+        text_field_preview:{type:Schema.Types.Html},
+        text_field:{type:Schema.Types.Html},
+        image_field:Schema.Types.File,
         tags:{type:[String], index:true},
         cycle:{type:ObjectId, ref:'Cycle', index:true},
         is_visible:{type:Boolean, 'default':true},
@@ -79,9 +77,9 @@ var Schemas = exports.Schemas = {
         user_name:{type:String, editable:false},
         title:{type:String},
         tooltip:String,
-        text_field:{type:mongoose_types.Text},
-        text_field_preview:{type:mongoose_types.Html},
-        image_field:mongoose_types.File,
+        text_field:{type:Schema.Types.Text},
+        text_field_preview:{type:Schema.Types.Html},
+        image_field:Schema.Types.File,
         tags:{type:[String], index:true},
         is_visible:{type:Boolean, 'default':true},
         me_too_counter:{type:Number, 'default':0},
@@ -285,12 +283,12 @@ var Schemas = exports.Schemas = {
 
     AboutUruText:{
         title:{type:String, required:true},
-        text_field:{type:mongoose_types.Html, required:true},
+        text_field:{type:Schema.Types.Html, required:true},
         is_hidden:{type:Boolean, 'default':true}
     },
 
     AboutUruItem:{
-        img_field:{ type:mongoose_types.File, required:true},
+        img_field:{ type:Schema.Types.File, required:true},
         img_text:String,
         text_field:String,
         is_hidden:{type:Boolean, 'default':true}
@@ -299,8 +297,8 @@ var Schemas = exports.Schemas = {
     Team:{
         name:String,
         duty:String,
-        text_field:{type:mongoose_types.Html, required:true},
-        img_field:{type:mongoose_types.File, required:true},
+        text_field:{type:Schema.Types.Html, required:true},
+        img_field:{type:Schema.Types.File, required:true},
         is_hidden:{type:Boolean, 'default':true}
     },
 
@@ -309,25 +307,25 @@ var Schemas = exports.Schemas = {
         first_name:String,
         last_name:String,
         duty:String,
-        text_field:{type:mongoose_types.Html, required:true},
-        img_field:{type:mongoose_types.File, required:true},
+        text_field:{type:Schema.Types.Html, required:true},
+        img_field:{type:Schema.Types.File, required:true},
         is_hidden:{type:Boolean, 'default':true}
     },
 
     Qa:{
         title:{type:String, required:true},
-        text_field:{type:mongoose_types.Text},
+        text_field:{type:Schema.Types.Text},
         is_hidden:{type:Boolean, 'default':true}
     },
 
     ElectionsText:{
         title:{type:String, required:true},
-        text_field:{type: mongoose_types.Text},
+        text_field:{type: Schema.Types.Text},
         is_hidden:{type:Boolean, 'default':true}
     },
 
     ElectionsItem:{
-        img_field:{ type:mongoose_types.File, required:true},
+        img_field:{ type:Schema.Types.File, required:true},
         img_text:String,
         text_field:String,
         is_hidden:{type:Boolean, 'default':true}
@@ -336,7 +334,7 @@ var Schemas = exports.Schemas = {
     DiscussionHistory:{
         discussion_id:{type:ObjectId, ref:'Discussion'},
         date:{type:Date, 'default':Date.now},
-        text_field:{type:mongoose_types.Text},
+        text_field:{type:Schema.Types.Text},
         grade:Number
     },
 
@@ -361,13 +359,13 @@ var Schemas = exports.Schemas = {
 
     DailyDiscussion:{
         title:{type:String, required:true},
-        image_field: { type:mongoose_types.File, required:true},
+        image_field: { type:Schema.Types.File, required:true},
         subject:    {type:ObjectId, ref:'Subject'   , index:true, required:true},
         discussion: {type:ObjectId, ref:'Discussion',query:common.FIND_DISCUSSION_QUERY}  ,
         cycle:      {type:ObjectId, ref:'Cycle'     , index:true}  ,
-        text_field: {type:mongoose_types.Html, required:true},
+        text_field: {type:Schema.Types.Html, required:true},
         creation_date:{type:Date, 'default':Date.now},
-        system_message:{type:mongoose_types.Html},
+        system_message:{type:Schema.Types.Html},
         tags:[String],
         view_counter: {type:Number, 'default':0},
         is_visible:{type:Boolean, 'default':true},
@@ -376,10 +374,10 @@ var Schemas = exports.Schemas = {
     } ,
     QuoteGameParty:{
         name:{type:String, required:true},
-        image_field_thumb: { type:mongoose_types.File},
-        image_field: { type:mongoose_types.File},
+        image_field_thumb: { type:Schema.Types.File},
+        image_field: { type:Schema.Types.File},
         overview: {type:String},
-        platform:{type:mongoose_types.Text},
+        platform:{type:Schema.Types.Text},
         official_site: {type:String},
         open_knesset_id: {type:Number},
         open_knesset_link: {type:String},
@@ -394,8 +392,8 @@ var Schemas = exports.Schemas = {
     }  ,
     QuoteGameCandidate:{
         name:{type:String ,required:true},
-        image_field_thumb: { type:mongoose_types.File},
-        image_field: { type:mongoose_types.File },
+        image_field_thumb: { type:Schema.Types.File},
+        image_field: { type:Schema.Types.File },
         party_18th_knesset:{type:ObjectId, ref:'QuoteGameParty'   , index:true, required:true},
         party_19th_knesset:{type:ObjectId, ref:'QuoteGameParty'   , index:true, required:true},
         party_name:{type:String},

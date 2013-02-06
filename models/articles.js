@@ -2,7 +2,7 @@
 var mongoose = require("mongoose"),
     Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId,
-    mongoose_types = require('j-forms').types,
+
     common = require('./common'),
     utils = require('./../utils');
 
@@ -41,10 +41,10 @@ var Article = module.exports = new Schema({
     last_name: {type:String, editable:false},
     avatar : {type:String, editable:false},
     title : {type:String, required:true, required:true},
-    image_field: { type:mongoose_types.File},
-    image_field_preview: { type:mongoose_types.File},
+    image_field: { type:Schema.Types.File},
+    image_field_preview: { type:Schema.Types.File},
     tooltip:String,
-    text : {type:mongoose_types.Html, required:true},
+    text : {type:Schema.Types.Html, required:true},
     text_field_preview:String,
     tags: [String],
     view_counter: {type: Number, 'default': '0'},
