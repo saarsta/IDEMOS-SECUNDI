@@ -52,7 +52,7 @@
     <input type="hidden" name="<%= image_upload.input_name || 'image_upload' %>" value="" />
 </div>
 
-<% if (!image_upload.disabled) { %>
+
 <script>
     $(document).ready(function () {
         var image_box = $('.img-box #upload_image_container_<%=id%>');
@@ -73,7 +73,10 @@
             image.load(scaler);
         };
 
-
+        <% if (image_upload.current_value) { %>
+            setImageUrl('<%=image_upload.current_value%>');
+        <% } %>
+        <% if (!image_upload.disabled) { %>
         new qq.FileUploader({
             element: document.getElementById('upload_image_placeholder_<%=id%>'),
             action: '<%= image_upload.api_endpoint || '' %>',
@@ -118,13 +121,12 @@
                     '</div></span>'
             }
         );
-
-        <% if (image_upload.current_value) { %>
-            setImageUrl('<%=image_upload.current_value%>');
         <% } %>
+
+
     });
 </script>
-<% } %>
+
 <%
 	})(image_upload, global.image_upload_total_count++);
 %>
