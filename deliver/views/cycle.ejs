@@ -379,11 +379,18 @@
     <div class="extra">
         <a class="close" href="javascript:void(0);"></a>
 
-        כאן תוכלו לראות את הפעולות המתקיימות לקידום הנושא. לחצו על ציון התאריך או המיקום במפה כדי לקבל פרטים נוספים, לתמוך ולהשתתף.
+        על ציר הזמן תוכלו לראות את השתלשלות האירועים שהובילה לקמפיין, להצטרף לפעולות המתוכננות ולהציע פעולות משלכם לקידום הנושא.
 
     </div>
 </div>
-<div id="my-timeline"></div>
+<div id="my-timeline">
+</div>
+<div id="my-timeline-button">
+    <div class="btn-box">
+        <a href="/actions/create/<%= cycle.id %>" >+ הצע פעולה חדשה</a>
+    </div>
+</div>
+
 
     <div class="cycle_hidden_parts followers-box cycle">
         <div class="extra holds_the_timeline">
@@ -487,11 +494,9 @@ fb_param.value = '0.00';
         var sharepop = <%=share%>;
         var join = <%=join%>;
 
-       // var timeline_src="<%=cycle.timeline_embed%>";
+       var timeline_src="<%=cycle.timeline_embed%>";
 
-        <% if (cycle.id == '508026e8cb2276020000001f'){%>
-            var timeline_src="https://docs.google.com/spreadsheet/pub?key=0AsdrfW3R5lMtdGFqZGdHQ0hHeHZMcVRJcFVrbVNuY2c&output=html"
-        <%}%>
+
 
 
         //set mail subject for social popup
@@ -661,7 +666,7 @@ fb_param.value = '0.00';
 //                                item.text_field_preview = item.text_field.trim().substring(0, 300).split(" ").slice(0, -1).join(" ") + "... ";
 //                            }
 //                        });
-                        dust.renderArray('cycle_update', data.objects, function (err, out) {
+                        dust.renderArray('cycle_update', data.objects.splice(0,3), function (err, out) {
                             $('.updates').append(out);
 
                         });
@@ -1127,8 +1132,10 @@ fb_param.value = '0.00';
             });
         <% } %>
 
-        if(timeline_src){
-            $(".followers-box").hide()
+        if(timeline_src && timeline_src!='undefined' && timeline_src!=''){
+            $(".followers-box").hide() ;
+            $("#my-timeline-button").show() ;
+
             createStoryJS({
                 type:       'timeline',
                 width:      '980',
