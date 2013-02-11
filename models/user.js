@@ -115,13 +115,34 @@ var User = module.exports = new Schema({
         vote_on_object:false,
         join_to_object:false
     },
-    no_mail_notifications : {type : Boolean, "default": true},
+    no_mail_notifications: {type : Boolean, "default": true},
     has_voted: [String] ,
     quote_game: {
         played: {type : Boolean, "default": false}  ,
         games :[String] ,
         quotes_count: {type: Number, 'default': 0, editable: false},
         quotes:[{quote: {type:ObjectId, ref:'QuoteGameQuote'},selection: String}]
+    },
+    mail_notification_configuration: {
+        get_mails: {type: Boolean, 'default': true},
+        get_uru_updates: {type: Boolean, 'default': true},
+        get_weekly_mails: {type: Boolean, 'default': true},
+        new_discussion: [ new Schema(
+           {
+               subject_id: {type: ObjectId, ref: 'Subject'},
+               get_alert: {type: Boolean}
+           }
+        )],
+        new_daily_discussion: {type: Boolean, 'default': true},
+        new_discussion_comment: {type: Boolean, 'default': true},
+        new_discussion_suggestion: {type: Boolean, 'default': true},
+        //new_discussion_doc_change: {type: Boolean, 'default': true},
+        /*new_cycle: [ new Schema( i don't understand what kind of cycles will be here
+         {
+
+         }
+         )],*/
+        new_action_comment: { type: Boolean, 'default': true}
     }
 }, {strict:true});
 
