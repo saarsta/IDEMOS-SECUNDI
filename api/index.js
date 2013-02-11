@@ -69,8 +69,8 @@ var mongoose_resource = require('jest'),
     FaceResource = require('./FaceResource'),
     CounterResource = require('./CounterResource'),
     OGActionResource = require('./og_action_resource'),
-    UserInviteFriendsResource=      require('./UserInviteFriendsResource');
-
+    UserInviteFriendsResource=      require('./UserInviteFriendsResource'),
+    UserMailNotificationConfig = require('./user_mail_notification_config_resource');
 
 module.exports = function(app)
 {
@@ -132,6 +132,7 @@ module.exports = function(app)
     rest_api.register_resource('elections_items', new ElectionsItemResource());
     rest_api.register_resource('elections_texts', new ElectionsTextResource());
     rest_api.register_resource('user_chosen_discussions', new UserChosenDiscussionsResource());
+    rest_api.register_resource('user_mail_notification_config', new UserMailNotificationConfig());
 
     rest_api.register_resource('login', new LoginResource());
     rest_api.register('register',new RegisterResource());

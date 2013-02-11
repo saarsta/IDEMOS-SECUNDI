@@ -224,6 +224,7 @@ var create_new_notification = function (notification_type, entity_id, user_id, n
 var sendNotificationToUser = function (notification, last_update_date) {
     /**
      * Waterfall:
+     * 1) Check if user has visited the notification page since the last mail
      * 1) Get user email
      * 2) Checks if user should be notified, populate references by notification type
      * 3) create text message
@@ -235,6 +236,7 @@ var sendNotificationToUser = function (notification, last_update_date) {
 
     if (SEND_MAIL_NOTIFICATION)
         async.waterfall([
+            //1) had user visited the notification page since the last mail
             function (cbk) {
                 if (!notification.visited) {
                     console.log('user should not receive notification because he or she have not visited since');
@@ -243,18 +245,17 @@ var sendNotificationToUser = function (notification, last_update_date) {
                 } else
                     cbk();
             },
-            // 1) Get user email
+            // 2) Get user email
             function (cbk) {
                 models.User.findById(notification.user_id._doc ? notification.user_id.id : notification.user_id, cbk);
             },
-            // 2) populate references by notification type
+            // 3) populate references by notification type
             function (user, cbk) {
                 if (!user) {
                     cbk("user not found");
                     return;
                 }
 
-                // TODO check in account settings if sending mails is allowed
                 email = user.email;
                 notificationResource.populateNotifications({objects:[notification]}, user.id, cbk);
             },
