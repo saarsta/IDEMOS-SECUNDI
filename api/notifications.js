@@ -65,7 +65,7 @@ exports.create_user_notification = function (notification_type, entity_id, user_
                     noti.seen = false;
 
                     var date = Date.now();
-                    var last_update_date = noti.update_date;
+                    //var last_update_date = noti.update_date;
 
 
                     //TODO change it later to something prettier
@@ -100,7 +100,7 @@ exports.create_user_notification = function (notification_type, entity_id, user_
                             cbk(null, obj || noti);
                         });
                     }
-                    sendNotificationToUser(noti, last_update_date);
+                    sendNotificationToUser(noti);
                 } else {
                     create_new_notification(notification_type, entity_id, user_id, notificatior_id, sub_entity, url, function (err, obj) {
                         cbk(err, obj);
@@ -134,7 +134,7 @@ exports.create_user_proxy_vote_or_grade_notification = function (notification_ty
                 else
                     noti.notificators[0].ballance = grade_or_balance;
 
-                var last_update_date = noti.update_date;
+                //var last_update_date = noti.update_date;
                 noti.update_date = Date.now();
                 noti.seen = false;
 
@@ -145,7 +145,7 @@ exports.create_user_proxy_vote_or_grade_notification = function (notification_ty
                 } else {
                     noti.save(function (err, obj) {
                         cbk(err, obj);
-                        sendNotificationToUser(noti, last_update_date);
+                        sendNotificationToUser(noti);
                     });
                 }
 
@@ -172,8 +172,11 @@ exports.create_user_proxy_vote_or_grade_notification = function (notification_ty
                 notification.update_date = new Date();
 
                 notification.save(function (err, obj) {
-                    if (err)
+                    if (err){
                         console.error(err);
+                        console.log(notification.entity_id, "entity_id");
+                        console.log(notification.notificators[0].sub_entity_id, "sub_entity_id");
+                    }
                     cbk(null, obj || notification);
                     if (!err && obj)
                         sendNotificationToUser(obj);
@@ -201,6 +204,10 @@ var create_new_notification = function (notification_type, entity_id, user_id, n
     notification.seen = false;
     notification.update_date = new Date();
 
+
+    notification.visited = true;
+
+
     notification.save(function (err, obj) {
 
         if (err)
@@ -221,43 +228,68 @@ var create_new_notification = function (notification_type, entity_id, user_id, n
  * @param callback
  * function(err)
  */
-var sendNotificationToUser = function (notification, last_update_date) {
+var sendNotificationToUser = function (notification) {
     /**
      * Waterfall:
      * 1) Check if user has visited the notification page since the last mail
-     * 1) Get user email
-     * 2) Checks if user should be notified, populate references by notification type
-     * 3) create text message
-     * 4) send message
+     * 2) Get user email
+     * 3)
+     *  3.1) check for user notification configuration
+     *  3.2) notification populate references by notification typeChecks if user should be notified, populate references by notification type
+     * 4) create text message
+     * 5) send message
      */
 
     var email;
-    var  uru_group = ['saarsta@gmail.com', 'konfortydor@gmail.com', 'aharon@uru.org.il', 'liorur@gmail.com'];
+    var  uru_group = ['saarsta@gmail.com', 'konfortydor@gmail.com', 'aharon@uru.org.il', 'liorur@gmail.com', 'maya@uru.org.il', 'uri@uru.org.il', 'tahel@uru.org.il', 'yoni@uru.org.il', 'noa@uru.org.il'];
 
     if (SEND_MAIL_NOTIFICATION)
         async.waterfall([
             //1) had user visited the notification page since the last mail
             function (cbk) {
-                if (!notification.visited) {
-                    console.log('user should not receive notification because he or she have not visited since');
-                    cbk('break');
-                    return;
-                } else
-                    cbk();
+
+                // if any of the notifications of this entity and user id is false, user wont get the notification, when he enters the
+                // entity id page all notifications will be visited = true
+                models.Notification.findOne({user_id: notification.user_id + "", url: notification.url, visited: false}, function(err, noti) {
+                    if(err || noti){
+                        console.log('user should not receive notification because he or she have not visited since');
+                        cbk('break');
+                        return;
+                    }else{
+                        cbk();
+                    }
+                });
             },
             // 2) Get user email
             function (cbk) {
                 models.User.findById(notification.user_id._doc ? notification.user_id.id : notification.user_id, cbk);
             },
-            // 3) populate references by notification type
+            // 3.1) check for user notification configuration
+            // 3.2) notification populate references by notification type
             function (user, cbk) {
                 if (!user) {
                     cbk("user not found");
                     return;
                 }
 
+                //TODO just for debugging
                 email = user.email;
-                notificationResource.populateNotifications({objects:[notification]}, user.id, cbk);
+                if(!_.any(uru_group, function(mail) { return email === mail })) {
+                    cbk('we send mail only to uru_group for now');
+                    return
+                }
+                // 3.1) check for user notification configuration
+                if  (!isNotiInUserMailConfig(user.mail_notification_configuration, notification)){
+                    console.log('user should not receive notification because his/her notification mail configuration');
+                    cbk("break");
+                    return;
+                }
+
+                // 3.2) notification populate references by notification type
+                email = user.email;
+                notificationResource.populateNotifications({objects:[notification]}, user.id, function(err, result){
+                    cbk(err, result);
+                });
             },
             // 3) create text message
             function (results, cbk) {
@@ -357,12 +389,12 @@ exports.create_user_vote_or_grade_notification = function (notification_type, en
                         cbk(err, result);
                     })
                 } else {
-                    var last_update_date = noti.update_date;
+                    //var last_update_date = noti.update_date;
                     noti.update_date = date;
                     noti.save(function (err, obj) {
                         cbk(err, obj);
                         if (!err && obj)
-                            sendNotificationToUser(obj, last_update_date);
+                            sendNotificationToUser(obj);
                     })
                 }
             } else {
@@ -417,6 +449,14 @@ function isSubEntityExist(notification, sub_entity) {
     return _.any(notification.notificators, function (noti) {
         return noti.sub_entity_id + "" == sub_entity + ""
     });
+}
+
+function isNotiInUserMailConfig(mail_notification_configuration, noti){
+
+    // check main flag
+    if (!mail_notification_configuration.get_mails) return false;
+
+    return true;
 }
 
 /*

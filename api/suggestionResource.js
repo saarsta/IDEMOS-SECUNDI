@@ -146,16 +146,16 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
         var num_of_words;
 
 
-        var iterator = function (user_schema, itr_cbk) {
-            if (user_schema.user_id == user_id.id || !user_schema.user_id)
+        var iterator = function (unique_user, itr_cbk) {
+            if (unique_user == user_id.id || !unique_user)
                 itr_cbk(null, 0);
             else {
-                if (discussion_creator_id == user_schema.user_id) {
-                    notifications.create_user_notification("change_suggestion_on_discussion_you_created", suggestion_object._id, user_schema.user_id, user_id, discussion_id, '/discussions/' + discussion_id, function (err, results) {
+                if (discussion_creator_id == unique_user) {
+                    notifications.create_user_notification("change_suggestion_on_discussion_you_created", suggestion_object._id, unique_user, user_id, discussion_id, '/discussions/' + discussion_id, function (err, results) {
                         itr_cbk(err, results);
                     });
                 } else {
-                    notifications.create_user_notification("change_suggestion_on_discussion_you_are_part_of", suggestion_object._id, user_schema.user_id, user_id, discussion_id, '/discussions/' + discussion_id, function (err, results) {
+                    notifications.create_user_notification("change_suggestion_on_discussion_you_are_part_of", suggestion_object._id, unique_user, user_id, discussion_id, '/discussions/' + discussion_id, function (err, results) {
                         itr_cbk(err, results);
                     });
                 }
@@ -231,17 +231,24 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                             if (err)
                                 cbk2(err, null);
                             else {
-                                if (!_.any(disc_obj.users, function (user) {
-                                    return user.user_id + "" == req.user.id
-                                })) {
+
+                                var unique_users = [];
+
+                                // be sure that there are no duplicated users in discussion.users
+                                _.each(disc_obj.users, function(user){ unique_users.push(user.user_id + "")});
+                                unique_users = _.uniq(unique_users);
+
+                                if (!_.any(disc_obj.users, function (user) { return user.user_id + "" == req.user.id })) {
                                     var new_user = {user_id:req.user._id, join_date:Date.now()};
                                     models.Discussion.update({_id:disc_obj._id}, {$set:{last_updated: Date.now()}}, {$addToSet:{users:new_user}}, function (err, num) {
                                         discussion_creator_id = disc_obj.creator_id;
-                                        async.forEach(disc_obj.users, iterator, cbk2);
+
+                                        async.forEach(unique_users, iterator, cbk2);
                                     });
                                 } else {
                                     discussion_creator_id = disc_obj.creator_id;
-                                    async.forEach(disc_obj.users, iterator, cbk2);
+
+                                    async.forEach(unique_users, iterator, cbk2);
                                 }
                             }
                         })

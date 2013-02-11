@@ -31,8 +31,9 @@ var NotificationCategoryResource = module.exports = resources.MongooseResource.e
                 entity_id: null,
                 name: null,
                 update_date:null,
-                pic:null,
+                visited: null,
 
+                pic:null,
                 //text only
                 part_one: null,
                 //text with link
@@ -871,7 +872,9 @@ var populateNotifications = module.exports.populateNotifications = function(resu
         "been_quoted",
         "proxy_vote_to_post",
         "comment_on_discussion_you_are_part_of",
-        "comment_on_discussion_you_created"
+        "comment_on_discussion_you_created",
+        "change_suggestion_on_discussion_you_are_part_of",
+        "change_suggestion_on_discussion_you_created"
     ];
 
     var action_post_notification_types = [
@@ -989,6 +992,8 @@ var populateNotifications = module.exports.populateNotifications = function(resu
         "proxy_vote_to_post",
         "comment_on_discussion_you_are_part_of",
         "comment_on_discussion_you_created",
+        "change_suggestion_on_discussion_you_are_part_of",
+        "change_suggestion_on_discussion_you_created"
     ];
 
     var discussion_ids_as_sub_entity = _.chain(results.objects)
