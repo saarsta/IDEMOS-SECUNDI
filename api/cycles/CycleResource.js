@@ -20,7 +20,7 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
         this._super(models.Cycle, null, 0);
         this.authentication = new common.SessionAuthentication();
         this.allowed_methods = ['get', 'put'];
-        this.filtering = {
+        this.filtering = { is_private:null,
             'subject.id': {
                 exact:true,
                 in:true
@@ -222,15 +222,18 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
                 ], function (err, obj) {
 
                     // publish to facebook
-                    og_action({
-                        action: 'join',
-                        object_name:'cycle',
-                        object_url : '/cycles/' + cycle_id,
-                        callback_url:'/cycles/' + cycle_id,
-                        fid : req.user.facebook_id,
-                        access_token: req.user.access_token,
-                        user: req.user
-                    });
+                    if(!object.is_private) {
+                        og_action({
+                            action: 'join',
+                            object_name:'cycle',
+                            object_url : '/cycles/' + cycle_id,
+                            callback_url:'/cycles/' + cycle_id,
+                            fid : req.user.facebook_id,
+                            access_token: req.user.access_token,
+                            user: req.user
+                        });
+                    }
+
 
                     object.followers_count++;
                     object.is_follower = true;
