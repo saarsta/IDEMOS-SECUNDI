@@ -796,7 +796,6 @@ var db_functions = {
             data:{"discussion_id":discussion_id, "evaluation_grade":grade},
             user_info: user_info,
             success:function (data) {
-
                 callback(null, data);
             },
             error:function (err) {

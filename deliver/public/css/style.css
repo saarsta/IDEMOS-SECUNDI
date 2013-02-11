@@ -7034,13 +7034,21 @@ a.fraction-btn {
     padding: 4px;
 
 }
+#my-timeline-button {
+    display: none;
+}
+#my-timeline-button   .btn-box
+ {
+    padding-bottom: 17px;
+}
 
+#my-timeline-button   .btn-box,
 .followers-box .btn-box {
     border-top: 1px solid #b7b6b6;
     padding-top: 17px;
     text-align: center;
 }
-
+#my-timeline-button   .btn-box a,
 .followers-box .btn-box a {
     display: inline-block;
     background: #3b67e8 url(../images/search-submit.png) 0 0 repeat-x;

@@ -59,7 +59,10 @@ var Cycle = module.exports = new Schema({
     social_popup_title: {type: String},
     social_popup_text: {type: String},
     is_hidden:{type:Boolean,'default':true}    ,
-    timeline_embed: {type:Schema.Types.Text}
+    is_private:{type:Boolean,'default':false}    ,
+    timeline_embed: {type:Schema.Types.Text}   ,
+    timeline_zoom: {type: Number}    ,
+    timeline_default_item: {type: Number}
 
 }, {strict: true});
 
