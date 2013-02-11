@@ -33,7 +33,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
         this._super(models.Discussion, null, 0);
         this.allowed_methods = ['get', 'post', 'put', 'delete'];
         this.authentication = new common.SessionAuthentication();
-        this.filtering = {subject_id:null, users:null, is_published:null, tags:null,
+        this.filtering = {subject_id:null, users:null, is_published:null, is_private:null, tags:null,
             'users.user_id':{
                 exact:true,
                 in:true
@@ -460,14 +460,16 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                                 callback(err);
                             else {
                                 // publish to facebook
-                                og_action({
-                                    action: 'created',
-                                    object_name:'discussion',
-                                    object_url : '/discussions/' + object.id,
-                                    fid : user.facebook_id,
-                                    access_token:user.access_token,
-                                    user:user
-                                });
+                                if(!object.is_private) {
+                                    og_action({
+                                        action: 'created',
+                                        object_name:'discussion',
+                                        object_url : '/discussions/' + object.id,
+                                        fid : user.facebook_id,
+                                        access_token:user.access_token,
+                                        user:user
+                                    });
+                                }
                                 callback(err,object);
                             }
                         })
