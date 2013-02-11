@@ -291,7 +291,7 @@ var sendNotificationToUser = function (notification) {
                     cbk(err, result);
                 });
             },
-            // 3) create text message
+            // 4) create text message
             function (results, cbk) {
                 var notification = results.objects[0];
                 notification.entity_name = notification.name || '';
@@ -299,7 +299,7 @@ var sendNotificationToUser = function (notification) {
                 notification.message_of_notificators = notification.message_of_notificators || '';
                 templates.renderTemplate('notifications/' + notification.type, notification, cbk);
             },
-            // 4) send message
+            // 5) send message
             function (message, cbk) {
                 if (_.any(uru_group, function(mail) { return email === mail }))
                     mail.sendMailFromTemplate(email, message, cbk);
@@ -324,7 +324,6 @@ var sendNotificationToUser = function (notification) {
                             console.error('saving notification flag failed');
                         }
                     });
-
                 }
             });
 };
