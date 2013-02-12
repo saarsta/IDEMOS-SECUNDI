@@ -15,10 +15,17 @@ var models = require('../models'),
     _ = require('underscore');
 
 
-exports.create_user_notification = function (notification_type, entity_id, user_id, notificatior_id, sub_entity, url, callback) {
+exports.create_user_notification = function (notification_type, entity_id, user_id, notificatior_id, sub_entity, url, no_mail,callback) {
+
+
+    if(typeof no_mail === 'function'){
+        callback = no_mail;
+        no_mail = null;
+    }
 
     var single_notification_arr = [
         "been_quoted",
+        "new_discussion",
         "approved_info_item_i_created",
         "approved_change_suggestion_you_created",
         "approved_change_suggestion_you_graded",
@@ -111,7 +118,7 @@ exports.create_user_notification = function (notification_type, entity_id, user_
             callback(err, obj);
         })
     } else {
-        create_new_notification(notification_type, entity_id, user_id, notificatior_id, sub_entity, url, function (err, obj) {
+        create_new_notification(notification_type, entity_id, user_id, notificatior_id, sub_entity, url, no_mail,function (err, obj) {
             callback(err, obj);
         });
     }
@@ -185,7 +192,12 @@ exports.create_user_proxy_vote_or_grade_notification = function (notification_ty
     })
 };
 
-var create_new_notification = function (notification_type, entity_id, user_id, notificatior_id, sub_entity_id, url, callback) {
+var create_new_notification = function (notification_type, entity_id, user_id, notificatior_id, sub_entity_id, url, no_mail, callback) {
+
+    if(typeof no_mail === 'function'){
+        callback = no_mail;
+        no_mail = null;
+    }
 
     var notification = new models.Notification();
     var notificator = {
@@ -206,7 +218,7 @@ var create_new_notification = function (notification_type, entity_id, user_id, n
         if (err)
             console.error(err);
         callback(null, obj || notification);
-        if (!err && obj)
+        if (!err && obj && !no_mail)
             sendNotificationToUser(obj);
     });
 };
@@ -232,7 +244,7 @@ var sendNotificationToUser = function (notification, last_update_date) {
      */
 
     var email;
-    var  uru_group = ['saarsta@gmail.com', 'konfortydor@gmail.com', 'aharon@uru.org.il', 'liorur@gmail.com'];
+    var  uru_group = ['saarsta@gmail.com', 'konfortydor@gmail.com', 'aharon@uru.org.il', 'liorur@gmail.com', 'maya@uru.org.il', 'uri@uru.org.il', 'tahel@uru.org.il', 'yoni@uru.org.il', 'noa@uru.org.il'];
 
     if (SEND_MAIL_NOTIFICATION)
         async.waterfall([
@@ -256,18 +268,37 @@ var sendNotificationToUser = function (notification, last_update_date) {
                     return;
                 }
 
+                //TODO just for debugging
                 email = user.email;
-                notificationResource.populateNotifications({objects:[notification]}, user.id, cbk);
+                if(!_.any(uru_group, function(mail) { return email === mail })) {
+                    cbk('we send mail only to uru_group for now');
+                    return
+                }
+                // 3.1) check for user notification configuration
+                var mail_notification_configuration = user._doc.mail_notification_configuration;
+                if  (!isNotiInUserMailConfig(mail_notification_configuration, notification)){
+                    console.log('user should not receive notification because his/her notification mail configuration');
+                    cbk("break");
+                    return;
+                }else{
+                    // 3.2) notification populate references by notification type
+                    email = user.email;
+                    notificationResource.populateNotifications({objects:[notification]}, user.id, function(err, result){
+                        cbk(err, result);
+                    });
+                }
             },
-            // 3) create text message
+            // 4) create text message
             function (results, cbk) {
                 var notification = results.objects[0];
                 notification.entity_name = notification.name || '';
                 notification.description_of_notificators = notification.description_of_notificators || '';
                 notification.message_of_notificators = notification.message_of_notificators || '';
-                templates.renderTemplate('notifications/' + notification.type, notification, cbk);
+                templates.renderTemplate('notifications/' + notification.type, notification, function(err, result){
+                    cbk(err, result);
+                });
             },
-            // 4) send message
+            // 5) send message
             function (message, cbk) {
                 if (_.any(uru_group, function(mail) { return email === mail }))
                     mail.sendMailFromTemplate(email, message, cbk);
@@ -413,48 +444,24 @@ exports.updateVisited = function (user, url) {
     })
 };
 
-function isSubEntityExist(notification, sub_entity) {
-    return _.any(notification.notificators, function (noti) {
-        return noti.sub_entity_id + "" == sub_entity + ""
-    });
+function isNotiInUserMailConfig(mail_notification_configuration, noti){
+
+    if (noti.type === "comment_on_discussion_you_are_part_of" || noti.type === "comment_on_discussion_you_created")
+        return mail_notification_configuration.get_alert_of_comments;
+
+    if (noti.type === "change_suggestion_on_discussion_you_are_part_of" || noti.type === "change_suggestion_on_discussion_you_are_part_of")
+        return mail_notification_configuration.get_alert_of_suggestions;
+
+    if (noti.type === "approved_change_suggestion_you_graded")
+        return mail_notification_configuration.get_alert_of_approved_suggestions;
+
+    if (noti.type === "approved_change_suggestion_you_graded")
+        return mail_notification_configuration.get_alert_of_approved_suggestions;
+
+    if (noti.type === "new_discussion") return true;
+
+    return false;
 }
-
-/*
- if(/notifications\.js/.test(process.argv[1])) {
- var app = require('../app');
-
- console.log('testing');
- //function(notification_type, entity_id, user_id, notificatior_id, sub_entity_id, callback){
-
- setTimeout(function() {
- create_new_notification('comment_on_discussion_you_are_part_of',
- // '4fc5e851ed6e970100000311','4f7c53e9afe34d0100000006','4f45145968766b0100000002','4ffecd7c5600ec0100001757',function(err) {
- '4fe6db00f9e35fd00800146b','4ff1b29aabf64e440f00013a','4f45145968766b0100000002','4ffecd7c5600ec0100001757',function(err) {
-
- console.log(err);
- });
-
- //        models.Notification.find({})
- //            .sort({'update_date':-1})
- //            .populate('user_id')
- //            .limit(1)
- //            .exec(function(err,nots) {
- //                if(!nots[0].user_id.last_visit) {
- //                    nots[0].user_id.last_visit = Date.now();
- //                    nots[0].user_id.save();
- //                }
- //
- //                var first_update_date = new Date(Number(nots[0].user_id.last_visit || Date.now()) - 60000);
- //                var second_update_date = new Date(Number(first_update_date) + 1600000);
- //
- //                sendNotificationToUser(nots[0],first_update_date);
- //
- //                sendNotificationToUser(nots[0],second_update_date);
- //            });
-
- },1000);
- }*/
-
 
 //approved_info_item_i_created
 if (/notifications\.js/.test(process.argv[1])) {

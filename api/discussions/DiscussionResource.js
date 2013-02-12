@@ -314,8 +314,16 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                 async.parallel([
                     //find all information items and set notifications for their owners
                     function(cbk1){
-                        notifications_for_the_info_items_relvant(object._id, user_id,function(err) {
-                            cbk1(err);
+                        // first - continue
+                        cbk1();
+
+                        // second - create notifications and send mails
+                        notifications_for_the_info_items_relvant(object._id, user_id, object.subject_id[0], function(err) {
+                            if(err){
+                                console.error(err);
+                            }else{
+                                console.log("notification of new discussion were created successfully")
+                            }
                         });
                     },
 
@@ -381,7 +389,6 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                 return discussion.discussion_id + '' == object._id + '';
             });
             if (!disc) {
-
                 async.parallel([
                     //add user to followers in users.discussions
                     function (cbk2) {
@@ -455,7 +462,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                     object.is_published = true;
 
                     object.save(function (err, disc_obj) {
-                        notifications_for_the_info_items_relvant(disc_obj._id, user._id, function (err, args) {
+                        notifications_for_the_info_items_relvant(disc_obj._id, user._id, disc_obj.subject_id[0], function (err) {
                             if(err)
                                 callback(err);
                             else {
@@ -480,7 +487,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
     }
 });
 
-function notifications_for_the_info_items_relvant(discussion_id, notificator_id, callback) {
+function notifications_for_the_info_items_relvant(discussion_id, notificator_id, subject_id, callback) {
 
     var set_notification_for_liked_items = function (like, itr_cbk) {
         if (like.info_item_creator + "" != like.user_id + "" && like.info_item_creator != null) {
@@ -532,17 +539,58 @@ function notifications_for_the_info_items_relvant(discussion_id, notificator_id,
         })
     }
 
-    async.waterfall([
-        function (cbk) {
-            models.InformationItem.find({discussions:discussion_id}, cbk);
+    var new_discussion_notification_itr = function (user, itr_cbk) {
+
+        // check if user is not the notificator and if user chosen to get this notification in mail configuration
+        if ( user._id + "" != notificator_id + "" && _.any(user.mail_notification_configuration.new_discussion, function(discussion){
+            return discussion.subject_id + "" == subject_id + "" && discussion.get_alert  }))
+        {
+            notifications.create_user_notification("new_discussion",
+                discussion_id, user._id, notificator_id, null, '/discussions/' + discussion_id, itr_cbk);
+        }else{
+            itr_cbk();
+        }
+    }
+
+    async.parallel([
+
+        // notifications related to info items
+        function(par_cbk){
+            async.waterfall([
+                function (cbk) {
+                    models.InformationItem.find({discussions:discussion_id}, cbk);
+                },
+
+                function (info_items, cbk) {
+                    async.forEach(info_items, iterator, cbk);
+                }], function (err, arg) {
+                par_cbk(err, arg);
+            })
         },
 
-        function (info_items, cbk) {
-            async.forEach(info_items, iterator, cbk);
+        // notifications about new discussion
+        function(par_cbk){
+
+            async.waterfall([
+
+                // find users that chosen to get notifications about new discussions of this subject
+                function (cbk) {
+                    models.User.find({"mail_notification_configuration.get_mails" : true, "mail_notification_configuration.new_discussion.subject_id" : subject_id}, cbk);
+                },
+
+                // create site notifications and mail notifications
+                function (users, cbk) {
+                    async.forEach(users, new_discussion_notification_itr, cbk);
+                }
+            ], function (err) {
+                par_cbk(err);
+            })
         }
-    ], function (err, arg) {
-        callback(err, arg);
+    ], function(err){
+        callback(err);
     })
+
+
 }
 
 

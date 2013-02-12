@@ -333,6 +333,22 @@ var iterator = function (users_hash, discussions_hash, posts_hash, action_posts_
                     }
                     itr_cbk();
                     break;
+                case "new_discussion":
+                    if(discussion){
+                        notification.part_one = discussion.subject_name;
+                        notification.main_link = "/discussions/" + discussion._id;
+                        notification.pic = discussion.image_field_preview || discussion.image_field;
+                        notification.part_two = discussion.title;
+                        notification.link_two = "/discussions/" + discussion._id;
+
+                        notification.img_src = notification.pic;
+                        notification.title = 'דיון בחזון '
+                            +
+                            discussion.title;
+                        notification.text_preview = discussion.text_field_preview;
+                    }
+                    itr_cbk();
+                    break;
 
                 case "user_brings_resource_to_action_you_created":
                     if(user_obj){
@@ -958,8 +974,9 @@ var populateNotifications = module.exports.populateNotifications = function(resu
         .value();
 
     var discussion_notification_types = [
-        "change_suggestion_on_discussion_you_are_part_of",
-        "change_suggestion_on_discussion_you_created",
+        "new_discussion",
+       /* "change_suggestion_on_discussion_you_are_part_of",
+        "change_suggestion_on_discussion_you_created",*/
         "approved_change_suggestion_you_created",
         "approved_change_suggestion_you_graded",
         "been_quoted",
@@ -967,9 +984,8 @@ var populateNotifications = module.exports.populateNotifications = function(resu
         "a_dicussion_created_with_info_item_that_you_created",
         "proxy_created_new_discussion",
         "proxy_graded_discussion",
-      "comment_on_discussion_you_are_part_of",
-      "comment_on_discussion_you_created"
-//        "comment_on_discussion_you_are_part_of"
+       /* "comment_on_discussion_you_are_part_of",
+        "comment_on_discussion_you_created"*/
     ];
 
     var discussion_ids = _.chain(results.objects)
@@ -1084,7 +1100,7 @@ var populateNotifications = module.exports.populateNotifications = function(resu
                     .select({
                     'id':1,
                     'title':1,
-                        'image_field_preview':1, 'image_field':1, 'text_field_preview':1,'vision_text_history':1,'text_field':1})
+                        'image_field_preview':1, 'image_field':1, 'text_field_preview':1,'vision_text_history':1,'text_field':1, 'subject_name':1})
                     .exec(function (err, discussions) {
 
                         var got_ids = _.pluck(discussions,'id');
