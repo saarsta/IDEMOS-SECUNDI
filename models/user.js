@@ -36,13 +36,30 @@ var User = module.exports = new Schema({
     occupation: String,
     biography: String,
     invitation_code: String,
-    //followers
+    //followers - in the redesign it is the same as discussion.users
     discussions:[
-        new Schema({discussion_id:{type:ObjectId, ref:'Discussion'}, join_date: {type:Date, 'default':Date.now}})
+        new Schema({
+            discussion_id:{type:ObjectId, ref:'Discussion'},
+            join_date: {type:Date, 'default':Date.now}
+            /*,
+            when new design is here
+            get_alert: {type: Boolean, 'default': true},
+            get_alert_of_comments: {type: Boolean, 'default': true},
+            get_alert_of_suggestions: {type: Boolean, 'default': true},
+            get_alert_of_approved_suggestions: {type: Boolean, 'default': true}
+            */
+        })
     ],
-    //followers
+    //followers - - in the redesign it is the same as cycles.users
     cycles:[
-        new Schema({cycle_id:{type:ObjectId, ref:'Cycle'}, join_date: {type:Date, 'default':Date.now}})
+        new Schema({
+            cycle_id:{type:ObjectId, ref:'Cycle'},
+            join_date: {type:Date, 'default':Date.now},
+            get_alert_of_updates: {type: Boolean, 'default': true},
+            get_alert_of_new_action: {type: Boolean, 'default': true},
+            get_alert_of_approved_action: {type: Boolean, 'default': true},
+            get_reminder_of_action: {type: Boolean, 'default': true}
+        })
     ],
     //followers (site notifications)
     blogs:[
@@ -52,7 +69,7 @@ var User = module.exports = new Schema({
     blogs_email:[
         new Schema({blog_id:{type:ObjectId, ref:'User',query:common.FIND_USER_QUERY}, mail: String, join_date: {type:Date, 'default':Date.now}})
     ],
-    // i dont know what this fields is, this is not "going users", it might be duplication of "people that conected somehow to the action" for efficiency
+    // i dont know what this fields is, this is not "going users", it might be duplication of "people that connected somehow to the action" for efficiency
     actions:[
         new Schema( {action_id:{type:ObjectId, ref:'Action'}, join_date: {type:Date, 'default':Date.now}})
     ],
@@ -127,22 +144,17 @@ var User = module.exports = new Schema({
         get_mails: {type: Boolean, 'default': true},
         get_uru_updates: {type: Boolean, 'default': true},
         get_weekly_mails: {type: Boolean, 'default': true},
+        // by default no subject is selected
         new_discussion: [ new Schema(
            {
                subject_id: {type: ObjectId, ref: 'Subject'},
                get_alert: {type: Boolean}
            }
         )],
-        new_daily_discussion: {type: Boolean, 'default': true},
-        new_discussion_comment: {type: Boolean, 'default': true},
-        new_discussion_suggestion: {type: Boolean, 'default': true},
-        //new_discussion_doc_change: {type: Boolean, 'default': true},
-        /*new_cycle: [ new Schema( i don't understand what kind of cycles will be here
-         {
-
-         }
-         )],*/
-        new_action_comment: { type: Boolean, 'default': true}
+        get_alert_of_comments: {type: Boolean, 'default': true},
+        get_alert_of_suggestions: {type: Boolean, 'default': true},
+        get_alert_of_approved_suggestions: {type: Boolean, 'default': true}
+       // new_daily_discussion: {type: Boolean, 'default': true}
     }
 }, {strict:true});
 
