@@ -2701,7 +2701,7 @@ color: #ff00af;
 #read_more {
     text-align: left;
     position: relative;
-    top: 25px;
+    background-color: #fff;
 }
 
 .extended #read_more {
