@@ -1,10 +1,10 @@
-var mongoose_admin = require('formage-admin'),
-    mongoose = require('mongoose'),
-    Models = require('../models'),
-    async = require('async'),
-    SuggestionResource = require('../api/suggestionResource'),
-    ActionResource = require('../api/actions/ActionResource'),
-    models = require('../models');
+var mongoose_admin = require('formage-admin');
+var mongoose = require('mongoose');
+var Models = require('../models');
+var async = require('async');
+var SuggestionResource = require('../api/suggestionResource');
+var ActionResource = require('../api/actions/ActionResource');
+var models = require('../models');
 var ActionForm = require('./action');
 var GamificationForm = require('./gamification_tokens');
 var UserForm = require('./user');
@@ -17,14 +17,14 @@ var ChangePasswordForm = require('./admin');
 mongoose_admin.forms.register_models(Models);
 
 
+
 module.exports = function (app) {
-
-    var admin = mongoose_admin.createAdmin(app, {root: 'admin'});
-
+    var admin = mongoose_admin.createAdmin(app, {root: '/'});
     mongoose_admin.loadApi(app);
 
     admin.ensureUserExists('Uruad', 'uruadmin!@#uruadmin');
     admin.ensureUserExists('saar', '123qwe456');
+
 
     admin.registerMongooseModel("User", Models.User, null, {
         form: UserForm,
@@ -68,9 +68,7 @@ module.exports = function (app) {
     });
 
 
-    admin.registerSingleRowModel(Models.GamificationTokens, 'GamificationTokens', {
-            form: GamificationForm}
-    );
+    admin.registerSingleRowModel(Models.GamificationTokens, 'GamificationTokens', {form: GamificationForm});
 
 
     admin.registerMongooseModel("DiscussionHistory", Models.DiscussionHistory, null, {
@@ -115,9 +113,7 @@ module.exports = function (app) {
                 value: 'approve',
                 label: 'Approve',
                 func: function (user, ids, callback) {
-                    async.forEach(ids, function (id, cbk) {
-                        SuggestionResource.approveSuggestion(id, cbk);
-                    }, callback);
+                    async.forEach(ids, function (id, cbk) {SuggestionResource.approveSuggestion(id, cbk);}, callback);
                 }
             }
         ],
@@ -130,30 +126,18 @@ module.exports = function (app) {
     });
 
 
-    admin.registerMongooseModel('VoteSuggestion', Models.VoteSuggestion, null, {
-        list: ['suggestion_id', 'user_id']
-    });
-    admin.registerMongooseModel('Grade', Models.Grade, null, {
-        list: ['discussion_id', 'user_id']
-    });
-    admin.registerMongooseModel('Like', Models.Like, null, {
-        list: ['information_item_id', 'user_id']
-    });
-    admin.registerMongooseModel('Join', Models.Join, null, {
-        list: ['action_id', 'user_id']
-    });
-    admin.registerMongooseModel('Category', Models.Category, null, {
-        list: ['name']
-    });
-    admin.registerMongooseModel('Article', Models.Article, null, {
-        list: ['title', 'getLink']
-    });
-    admin.registerMongooseModel('PostArticle', Models.PostArticle, null, {
-        list: ['article_id', 'text']
-    });
-    admin.registerMongooseModel('Tag', Models.Tag, null, {
-        list: ['tag']
-    });
+    admin.registerMongooseModel('VoteSuggestion', Models.VoteSuggestion, null, {list: ['suggestion_id', 'user_id']});
+
+
+    admin.registerMongooseModel('Grade', Models.Grade, null, {list: ['discussion_id', 'user_id']});
+    admin.registerMongooseModel('Like', Models.Like, null, {list: ['information_item_id', 'user_id']});
+    admin.registerMongooseModel('Join', Models.Join, null, {list: ['action_id', 'user_id']});
+    admin.registerMongooseModel('Category', Models.Category, null, {list: ['name']});
+    admin.registerMongooseModel('Article', Models.Article, null, {list: ['title', 'getLink']});
+    admin.registerMongooseModel('PostArticle', Models.PostArticle, null, {list: ['article_id', 'text']});
+    admin.registerMongooseModel('Tag', Models.Tag, null, {list: ['tag']});
+
+
     admin.registerMongooseModel('Action', Models.Action, null, {
         form: ActionForm,
         list: ['title'],
@@ -171,73 +155,27 @@ module.exports = function (app) {
                 value: 'un approve',
                 label: 'Un - Approve',
                 func: function (user, ids, callback) {
-                    async.forEach(ids, function (id, cbk) {
-                        unApproveAction(id, cbk);
-                    }, callback);
+                    async.forEach(ids, function (id, cbk) {models.Action.update({_id: id}, {$set: {is_approved: false}}, cbk);}, callback);
                 }
             }
         ]
     });
 
-    admin.registerMongooseModel('ActionResource', Models.ActionResource, null, {
-        list: ['name', 'category']
-    });
+    admin.registerMongooseModel('ActionResource', Models.ActionResource, null, {list: ['name', 'category']});
+    admin.registerMongooseModel('SuccessStory', Models.SuccessStory, null, {list: ['title']});
+    admin.registerMongooseModel('Headline', Models.Headline, null, {list: ['title']});
+    admin.registerMongooseModel('Update', Models.Update, null, {list: ['title'], form: IdkunimForm});
+    admin.registerMongooseModel('Kilkul', Models.Kilkul, null, {list: ['title']});
+    admin.registerMongooseModel('AboutUruText', Models.AboutUruText, null, {list: ['title']});
+    admin.registerMongooseModel('AboutUruItem', Models.AboutUruItem, null, {list: ['text_field']});
+    admin.registerMongooseModel('Team', Models.Team, null, {list: ['name'], cloneable: true});
+    admin.registerMongooseModel('Founder', Models.Founder, null, {list: ['name'], cloneable: true});
+    admin.registerMongooseModel('Test', Models.Test, null, {list: ['action_resources'], cloneable: true});
+    admin.registerMongooseModel('Qa', Models.Qa, null, {list: ['title']});
+    admin.registerMongooseModel('ElectionsText', Models.ElectionsText, null, {list: ['title']});
+    admin.registerMongooseModel('ElectionsItem', Models.ElectionsItem, null, {list: ['title']});
+    admin.registerMongooseModel('ImageUpload', Models.ImageUpload, null, {list: ['image.url']});
 
-    admin.registerMongooseModel('SuccessStory', Models.SuccessStory, null, {
-        list: ['title']
-    });
-
-    admin.registerMongooseModel('Headline', Models.Headline, null, {
-        list: ['title']
-    });
-
-    admin.registerMongooseModel('Update', Models.Update, null, {
-        list: ['title'],
-        form: IdkunimForm
-    });
-
-    admin.registerMongooseModel('Kilkul', Models.Kilkul, null, {
-        list: ['title']
-    });
-
-    admin.registerMongooseModel('AboutUruText', Models.AboutUruText, null, {
-        list: ['title']
-    });
-
-    admin.registerMongooseModel('AboutUruItem', Models.AboutUruItem, null, {
-        list: ['text_field']
-    });
-
-    admin.registerMongooseModel('Team', Models.Team, null, {
-        list: ['name'],
-        cloneable: true
-    });
-
-    admin.registerMongooseModel('Founder', Models.Founder, null, {
-        list: ['name'],
-        cloneable: true
-    });
-
-    admin.registerMongooseModel('Test', Models.Test, null, {
-        list: ['action_resources'],
-        cloneable: true
-    });
-
-    admin.registerMongooseModel('Qa', Models.Qa, null, {
-        list: ['title']
-    });
-
-    admin.registerMongooseModel('ElectionsText', Models.ElectionsText, null, {
-        list: ['title']
-    });
-
-    admin.registerMongooseModel('ElectionsItem', Models.ElectionsItem, null, {
-        list: ['title']
-    });
-
-    admin.registerMongooseModel('ImageUpload', Models.ImageUpload, null, {
-        list: ['image.url']
-    });
 
     admin.registerMongooseModel('Notification', Models.Notification, null, {
         list: ['type'],
@@ -250,12 +188,10 @@ module.exports = function (app) {
         list: ['link', 'creator.first_name', 'creator.last_name']
     });
 
+
     admin.registerSingleRowModel(Models.ThresholdCalcVariables, 'ThresholdCalcVariables');
+    admin.registerMongooseModel('Admin_Users', mongoose.model('_MongooseAdminUser'), null, {list: ['username']});
 
-
-    admin.registerMongooseModel('Admin_Users', mongoose.model('_MongooseAdminUser'), null, {
-        list: ['username']
-    });
 
     admin.registerMongooseModel('FooterLink', mongoose.model('FooterLink'), null, {
         list: ['tab', 'name'],
@@ -263,11 +199,13 @@ module.exports = function (app) {
         sortable: 'gui_order'
     });
 
+
     admin.registerMongooseModel('Password Change Form', mongoose.model('_MongooseAdminUser'), null, {
         list: ['username'],
         form: ChangePasswordForm,
         createable: false
     });
+
 
     admin.registerMongooseModel('DailyDiscussion', mongoose.model('DailyDiscussion'), null, {
         list: ['title'],
@@ -275,16 +213,21 @@ module.exports = function (app) {
         order_by: ['gui_order'],
         sortable: 'gui_order'
     });
+
+
     admin.registerMongooseModel('QuoteGameParty', mongoose.model('QuoteGameParty'), null, {
         list: ['name'],
         order_by: ['gui_order'],
         sortable: 'gui_order'
     });
+
+
     admin.registerMongooseModel('QuoteGameCandidate', mongoose.model('QuoteGameCandidate'), null, {
         list: ['name'],
         order_by: ['gui_order'],
         sortable: 'gui_order'
     });
+
 
     admin.registerMongooseModel('QuoteGameQuote', mongoose.model('QuoteGameQuote'), null, {
         list: ['quote'],
@@ -292,15 +235,4 @@ module.exports = function (app) {
         order_by: ['gui_order'],
         sortable: 'gui_order'
     });
-
-
-};
-
-
-var unApproveAction = function (id, callback) {
-    models.Action.update({_id: id}, {$set: {is_approved: false}}, function (err, num) {
-        if (err)
-            console.error(err);
-        callback(err, num);
-    })
 };

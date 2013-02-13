@@ -1,82 +1,68 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var util = require('util');
+var formage_admin = require('formage-admin');
+formage_admin.load_types(mongoose);
+formage_admin.register_models(require('./models'));
 
-var app = module.exports = express();
+process.on('uncaughtException', function (err) { console.log(err.stack || err);});
 
-app.set('port', process.env.PORT || 80);
-app.set('show_only_published', process.env.SHOW_ONLY_PUBLISHED == '1');
-
-app.set('root_path', process.env.ROOT_PATH || 'http://dev.empeeric.com');
-app.set('DB_URL', process.env.MONGOLAB_URI || 'mongodb://localhost/uru');
-
-express.logger.token('memory', function(){
+express.logger.token('memory', function () {
     var rss_memory = (process.memoryUsage().rss / 1048576).toFixed(0);
     if (rss_memory > 250) process.nextTick(process.exit);
     return util.format('%dMb', rss_memory);
 });
 express.logger.format('default2', ':memory :response-time :res[content-length] :status ":method :url HTTP/:http-version" :res[body]');
 
-app.use(express.errorHandler());
-require('formage-admin').forms.setAmazonCredentials({
-    key: 'AKIAJM4EPWE637IGDTQA',
-    secret: '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',
-    bucket: 'uru'
-});
+var mongo_url = process.env.MONGOLAB_URI || 'mongodb://localhost/uru';
+var port = process.env.PORT || 80;
+var is_only_published = process.env.SHOW_ONLY_PUBLISHED == '1';
+var root_path = process.env.ROOT_PATH || 'http://dev.empeeric.com';
+var aws_creds = JSON.parse( process.env.AWS_JSON || '{"key": "AKIAJM4EPWE637IGDTQA", "secret": "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", "bucket": "uru"}')
 
-app.set('send_mails', false);
-
-process.on('uncaughtException', function(err) {
-    console.trace(err);
-});
-
-if(!mongoose.connection.host)
-    mongoose.connect(app.settings.DB_URL);
-
-mongoose.connection.on('error', function(err) {
-    console.error('db connection error: ', err);
-});
-
-mongoose.connection.on('disconnected', function(err){
+mongoose.connect(mongo_url);
+mongoose.connection.on('error', function (err) {console.error('db connection error: ', err);});
+mongoose.connection.on('disconnected', function (err) {
     console.error('DB disconnected', err);
-    var reconnect = function(){
-        mongoose.connect(app.settings.DB_URL, function(err) {
-            if(err)
+    var reconnect = function () {
+        mongoose.connect(app.settings.DB_URL, function (err) {
+            if (err) {
                 console.error(err);
+            }
         });
     };
     setTimeout(reconnect, 200);
 });
 
-require('formage-admin').forms.serve_static(app, express);
+formage_admin.set_amazon_credentials(aws_creds);
 
-app.use(express.logger('default2'));
-
-// pause req stream in case we're uploading files
-app.use(function(req,res,next) {
-    if(req.xhr && /api\/(avatar|image_upload)\/?$/.test(req.path)) {
-        req.queueStream = new utils.queueStream(req);
-        req.queueStream.pause();
-        req.pause();
-        console.log('request paused');
-    }
-    next();
-});
-
-app.use(express.bodyParser());
-app.use(express.methodOverride());
-app.use(express.cookieParser());
-app.use(express.cookieSession({ secret: '8ntURg0WaIfUkWeQ8ONO' }));
-
+var app = module.exports = express();
+app.set('port', port);
+app.set('show_only_published', is_only_published);
+app.set('root_path', root_path);
+app.set('DB_URL', mongo_url);
+app.set('send_mails', false);
 app.set('view options', { layout: false });
+
+formage_admin.serve_static(app, express);
+//noinspection JSUnresolvedFunction
+app.use('/', [
+    express.bodyParser(),
+    express.methodOverride(),
+    express.cookieParser(),
+    express.cookieSession({ secret: '8ntURg0WaIfUkWeQ8ONO' }),
+    express.errorHandler(),
+    express.logger('default2')
+]);
 
 require('./admin')(app);
 
-var server = app.listen(app.get('port'),function(err){
+var server = app.listen(app.get('port'), function (err) {
+    if (err) throw err;
     console.log("Express server listening on port %d in %s mode", (server.address() || {}).port, app.get('env'));
 });
 
-server.on('error', function(err) {
+server.on('error', function (err) {
     console.error('********* Server Is NOT Working !!!! ***************', err);
     setTimeout(process.exit, 5000);
 });
