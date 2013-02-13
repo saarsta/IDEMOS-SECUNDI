@@ -27,9 +27,12 @@
                 <span class="arrow">
 עדכון ממעגל התנופה
               </span>
+
+                    <% if(update.cycle){%>
                     <a style="background: none;" href="../cycles/<%=update.cycle._id%>">
                         <%=update.cycle.title%>
                     </a>
+                    <% } %>
                </h2>
                 <div class="text cf">
                     <h3><%=update.title%></h3>
