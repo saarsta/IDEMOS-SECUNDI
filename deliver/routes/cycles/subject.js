@@ -16,7 +16,7 @@ module.exports = function(req,res) {
                     title:"מעגלי תנופה",
                     logged: req.isAuthenticated(),
                     big_impressive_title: "",
-                    user: req.session.user,
+                    user: req.user,
                     avatar:req.session.avatar_url,
                     user_logged: req.isAuthenticated(),
                     url:req.url,

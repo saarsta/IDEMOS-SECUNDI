@@ -78,7 +78,7 @@ var RegisterResource = module.exports =  jest.Resource.extend({
  */
 var registerUser =module.exports.registerUser  = function(req,data,callback) {
     var user = new models.User();
-    var cycle_id=    req.body.cycle;
+    var cycle_id = req.body.cycle;
     user.email = (data.email || '').toLowerCase().trim();
     if ('full_name' in data) {
         var name_parts = data['full_name'].trim().split(' ');
@@ -114,8 +114,7 @@ var registerUser =module.exports.registerUser  = function(req,data,callback) {
                     req.session.user = user;
                     cbk(err);
                 });
-            }
-            else{
+            } else {
                 req.session.user = user_obj;
                 if(cycle_id){
                     cbk(null)

@@ -7,7 +7,7 @@ module.exports = function(req,res)
         tag_name:req.query.tag_name,
         layout: false,
         user_logged: req.isAuthenticated(),
-        user: req.session.user,
+        user: req.user,
         auth_user: req.session.auth.user,
         tab:'information_items',
         avatar_url: req.session.avatar_url

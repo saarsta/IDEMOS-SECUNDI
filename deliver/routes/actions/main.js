@@ -12,7 +12,7 @@ module.exports = function (req, res) {
      *
      * final - is curr user going
      * */
-    var user = req.session.user;
+    var user = req.user;
 
     models.Action.findById(req.params[0])
         .select({
@@ -78,17 +78,11 @@ module.exports = function (req, res) {
                 },
 
                 user: function (cbk) {
-                    _.each(action.what_users_bring, function(obj){obj.user_id.avatar = obj.user_id.avatar_url()})
-                    if (req.session.user)
-                        models.User.findById(req.session.user._id, cbk);
-                    else {
-                        cbk(null, null);
-                    }
+                    _.each(action.what_users_bring, function(obj){obj.user_id.avatar = obj.user_id.avatar_url()});
+                    cbk(null, req.user);
                 }
             }, function (err, args) {
-                if (err) {
-                    return res.render('500.ejs', {error:err});
-                }
+                if (err) throw err;
 
                 var proxyJson = args.user ? JSON.stringify(args.user.proxy) : null;
                 var going_users = action.going_users;
@@ -108,12 +102,10 @@ module.exports = function (req, res) {
                 }
                 action.is_going = is_going;
                 action.cycle_id = cycle;
-                var cycle_title = action.cycle_id[0].cycle.title;
-                var main_title = cycle_title;
-                main_title =  main_title + ' - ' +  (action && action.title);
+                var main_title = action.cycle_id[0].cycle.title + ' - ' +  (action && action.title);
                 var ejsFileName = action.is_approved ? 'action_approved.ejs' : 'action_append.ejs';
                 var type = action.is_approved ? 'approved_action' : 'pending_action';
-                res.render(ejsFileName,{
+                res.render(ejsFileName, {
                     action: action,
                     tab: 'actions',
                     type: type,

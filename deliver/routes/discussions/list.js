@@ -9,12 +9,11 @@ module.exports = function(req,res) {
             title:"דיונים",
             logged: req.isAuthenticated(),
             big_impressive_title: "",
-            user_id: req.session.user && req.session.user._id,
-            has_voted: Boolean(req.session.user && req.session.user.has_voted.length),
+            user_id: req.user && req.user.id,
             avatar:req.session.avatar_url,
             user_logged: req.isAuthenticated(),
             url:req.url,
             tab:'discussions',
-            user:req.session.user
+            user:req.user
         });
 };
