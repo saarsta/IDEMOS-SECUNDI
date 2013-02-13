@@ -12,9 +12,9 @@ var     mongoose_admin = require('formage-admin'),
 module.exports = function (app) {
     j_forms.forms.set_models(Models);
 
-    if (app.get('env') == 'production') {
+    if (app.get('env') == 'production' || app.get('env') == 'staging' ) {
         app.all(/^\/admin/, function (req, res) {
-            res.redirect('http://uru-staging.herokuapp.com/admin/');
+            res.redirect('http://uru-admin.herokuapp.com/admin/');
         });
         return;
     }
