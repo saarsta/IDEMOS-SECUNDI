@@ -939,13 +939,13 @@ var _main=$(document).ready( function () {
 
     if(join){
         if(my_id!='') {
-            db_functions.joinToCycleFollowers(cycle_id,true, function(err, result){minifyButton(); share()} );
+            db_functions.joinToCycleFollowers(cycle_id,true, function(err, result){  window.location.href = window.location.href.replace('join','share') ;} );
         }  else  {
             facebookLogin(function(err, result){
                 if(!err){
                     window.location.href = window.location.href.replace('join','share') ;
                 }else{
-                    db_functions.joinToCycleFollowers(cycle_id,true, function(err, result){ } );
+                    db_functions.joinToCycleFollowers(cycle_id,true, function(err, result){  window.location.href = window.location.href.replace('join','share') ; } );
                 }
             })
         }
