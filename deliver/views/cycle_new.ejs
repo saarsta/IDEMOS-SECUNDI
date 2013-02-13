@@ -85,7 +85,7 @@
     </div>
     <p id="read_more"> <a class="read-more" href="javascript:void(0);"> קרא עוד </a> </p> </div>
 
-<% if (!user_logged){%>
+<% if ( !user_logged || (user_logged && !cycle.is_user_follower_of_cycle) ){%>
 <style>
 
 
@@ -1063,7 +1063,7 @@ var _main=$(document).ready( function () {
     <% if (cycle.id == '508026e8cb2276020000001f'){%>
         $("#followers_count span").text("כבר חתמו והצטרפו לדרישה לממשלה קטנה ויעילה");
     <% } %>
-    <% if ( !user_logged){%>
+    <% if ( !user_logged || (user_logged && !cycle.is_user_follower_of_cycle) ){%>
 
         $(".iconbutton1").click( function(){
 
