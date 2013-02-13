@@ -31,8 +31,9 @@ var NotificationCategoryResource = module.exports = resources.MongooseResource.e
                 entity_id: null,
                 name: null,
                 update_date:null,
-                pic:null,
+                visited: null,
 
+                pic:null,
                 //text only
                 part_one: null,
                 //text with link
@@ -320,6 +321,22 @@ var iterator = function (users_hash, discussions_hash, posts_hash, action_posts_
                 case "a_dicussion_created_with_info_item_that_you_like":
                     notification.part_one = "פריט מידע שעשית לו לייק תוייג בדיון - ";
                     if(discussion){
+                        notification.main_link = "/discussions/" + discussion._id;
+                        notification.pic = discussion.image_field_preview || discussion.image_field;
+                        notification.part_two = discussion.title;
+                        notification.link_two = "/discussions/" + discussion._id;
+
+                        notification.img_src = notification.pic;
+                        notification.title = 'דיון בחזון '
+                            +
+                            discussion.title;
+                        notification.text_preview = discussion.text_field_preview;
+                    }
+                    itr_cbk();
+                    break;
+                case "new_discussion":
+                    if(discussion){
+                        notification.part_one = discussion.subject_name;
                         notification.main_link = "/discussions/" + discussion._id;
                         notification.pic = discussion.image_field_preview || discussion.image_field;
                         notification.part_two = discussion.title;
@@ -871,7 +888,9 @@ var populateNotifications = module.exports.populateNotifications = function(resu
         "been_quoted",
         "proxy_vote_to_post",
         "comment_on_discussion_you_are_part_of",
-        "comment_on_discussion_you_created"
+        "comment_on_discussion_you_created",
+        "change_suggestion_on_discussion_you_are_part_of",
+        "change_suggestion_on_discussion_you_created"
     ];
 
     var action_post_notification_types = [
@@ -958,8 +977,9 @@ var populateNotifications = module.exports.populateNotifications = function(resu
         .value();
 
     var discussion_notification_types = [
-        "change_suggestion_on_discussion_you_are_part_of",
-        "change_suggestion_on_discussion_you_created",
+        "new_discussion",
+       /* "change_suggestion_on_discussion_you_are_part_of",
+        "change_suggestion_on_discussion_you_created",*/
         "approved_change_suggestion_you_created",
         "approved_change_suggestion_you_graded",
         "been_quoted",
@@ -967,9 +987,8 @@ var populateNotifications = module.exports.populateNotifications = function(resu
         "a_dicussion_created_with_info_item_that_you_created",
         "proxy_created_new_discussion",
         "proxy_graded_discussion",
-      "comment_on_discussion_you_are_part_of",
-      "comment_on_discussion_you_created"
-//        "comment_on_discussion_you_are_part_of"
+       /* "comment_on_discussion_you_are_part_of",
+        "comment_on_discussion_you_created"*/
     ];
 
     var discussion_ids = _.chain(results.objects)
@@ -989,6 +1008,8 @@ var populateNotifications = module.exports.populateNotifications = function(resu
         "proxy_vote_to_post",
         "comment_on_discussion_you_are_part_of",
         "comment_on_discussion_you_created",
+        "change_suggestion_on_discussion_you_are_part_of",
+        "change_suggestion_on_discussion_you_created"
     ];
 
     var discussion_ids_as_sub_entity = _.chain(results.objects)
@@ -1084,7 +1105,7 @@ var populateNotifications = module.exports.populateNotifications = function(resu
                     .select({
                     'id':1,
                     'title':1,
-                        'image_field_preview':1, 'image_field':1, 'text_field_preview':1,'vision_text_history':1,'text_field':1})
+                        'image_field_preview':1, 'image_field':1, 'text_field_preview':1,'vision_text_history':1,'text_field':1, 'subject_name':1})
                     .exec(function (err, discussions) {
 
                         var got_ids = _.pluck(discussions,'id');

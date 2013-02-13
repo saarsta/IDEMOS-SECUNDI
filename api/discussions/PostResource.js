@@ -126,17 +126,17 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
         var discussion_creator_id;
         var post_id;
 
-        var iterator = function(user_schema, itr_cbk){
-            if(user_schema.user_id){
-                if (user_schema.user_id + "" == user_id)
+        var iterator = function(unique_user, itr_cbk){
+            if(unique_user){
+                if (unique_user + "" == user_id)
                     itr_cbk(null, 0);
                 else{
-                    if (discussion_creator_id + "" == user_schema.user_id + ""){
-                        notifications.create_user_notification("comment_on_discussion_you_created", post_id, user_schema.user_id + "", user_id, discussion_id, '/discussions/' + discussion_id, function(err, results){
+                    if (discussion_creator_id + "" == unique_user + ""){
+                        notifications.create_user_notification("comment_on_discussion_you_created", post_id, unique_user, user_id, discussion_id, '/discussions/' + discussion_id, function(err, results){
                             itr_cbk(err, results);
                         });
                     }else{
-                        notifications.create_user_notification("comment_on_discussion_you_are_part_of", post_id, user_schema.user_id + "", user_id, discussion_id, '/discussions/' + discussion_id, function(err, results){
+                        notifications.create_user_notification("comment_on_discussion_you_are_part_of", post_id, unique_user, user_id, discussion_id, '/discussions/' + discussion_id, function(err, results){
                             itr_cbk(err, results);
                         });
                     }
@@ -221,8 +221,14 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                              if (err)
                                 cbk2(err, null);
                              else{
+                                 var unique_users = [];
+
+                                 // be sure that there are no duplicated users in discussion.users
+                                 _.each(disc_obj.users, function(user){ unique_users.push(user.user_id + "")});
+                                 unique_users = _.uniq(unique_users);
+
                                 discussion_creator_id = disc_obj.creator_id;
-                                async.forEach(disc_obj.users, iterator, cbk2);
+                                async.forEach(unique_users, iterator, cbk2);
                              }
                         })
                     },
