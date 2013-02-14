@@ -473,7 +473,12 @@ function isNotiInUserMailConfig(mail_notification_configuration, noti){
     if (noti.type === "approved_change_suggestion_you_graded")
         return mail_notification_configuration.get_alert_of_approved_suggestions;
 
+    // in this case we created a site notification only if user set it in the config
     if (noti.type === "new_discussion") return true;
+
+    if (noti.type === "update_created_in_cycle_you_are_part_of")
+        return mail_notification_configuration.get_cycles_new_updates;
+
 
     return false;
 }

@@ -1,6 +1,7 @@
 
 var models = require('../../../models'),
-    async = require('async');
+    async = require('async'),
+    notifications = require('../../../api/notifications.js');
 
 /*
 *  1. find cycle by id
@@ -138,6 +139,10 @@ module.exports = function(req, res){
                     id:g_cycle.id
                 }
             });
+
+            //update all notifications of user that connected to this object
+            if(user)
+                notifications.updateVisited(user, req.path);
         }
     })
 };

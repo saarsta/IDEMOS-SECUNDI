@@ -141,9 +141,13 @@ var User = module.exports = new Schema({
         quotes:[{quote: {type:ObjectId, ref:'QuoteGameQuote'},selection: String}]
     },
     mail_notification_configuration: {
+
+        // general
         get_mails: {type: Boolean, 'default': true},
         get_uru_updates: {type: Boolean, 'default': true},
         get_weekly_mails: {type: Boolean, 'default': true},
+
+        // generl discussions notifications
         // by default no subject is selected
         new_discussion: [ new Schema(
            {
@@ -153,8 +157,12 @@ var User = module.exports = new Schema({
         )],
         get_alert_of_comments: {type: Boolean, 'default': true},
         get_alert_of_suggestions: {type: Boolean, 'default': true},
-        get_alert_of_approved_suggestions: {type: Boolean, 'default': true}
-       // new_daily_discussion: {type: Boolean, 'default': true}
+        get_alert_of_approved_suggestions: {type: Boolean, 'default': true},
+        // new_daily_discussion: {type: Boolean, 'default': true}
+
+        // general cycles notifications
+        get_cycles_new_updates: {type: Boolean, 'default': true},// update objects
+        get_cycles_system_information: {type: Boolean, 'default': true}
     }
 }, {strict:true});
 
