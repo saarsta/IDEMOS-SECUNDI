@@ -348,6 +348,9 @@ var iterator = function (users_hash, discussions_hash, posts_hash, action_posts_
                             discussion.title;
                         notification.text_preview = discussion.text_field_preview;
                     }
+                    if(user_obj){
+                        notification.user = user_obj.first_name + " " + user_obj.last_name;
+                    }
                     itr_cbk();
                     break;
 
