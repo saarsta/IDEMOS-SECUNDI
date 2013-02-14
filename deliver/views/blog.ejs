@@ -104,7 +104,7 @@
 
                         <% } %>
                         <div class="left">
-                            <h4><%=blogger.first_name %> <%=blogger.last_name %></h4>
+                            <h4 data-bablic-exclude><%=blogger.first_name %> <%=blogger.last_name %></h4>
 
                         <p>
                             <!--<a class="no_underline_cursor_when_hover" href='<% if (blogger.blog_text_2) { %>       <%=blogger.blog_text_2 %>     <% } %>'><% if (blogger.blog_text_1) { %>       <%=blogger.blog_text_1 %>     <% } %>&nbsp;</a>-->
@@ -168,9 +168,11 @@
                 </div>
                 <div class="left-search">
                     <form class="bolg-search"  action="#">
-                        <label>
+                        <label >
                            חיפוש בבלוג של
+                            <!-- bablic exclude -->
                             <%=blogger.first_name %>
+                            <!-- /bablic -->
                         </label>
                         <input class="search_term" type="text" value="" />
                         <input type="submit" value="חפש" />

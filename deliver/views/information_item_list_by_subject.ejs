@@ -25,7 +25,7 @@
     <h2>
         <a href="/information_items/subject/<%= subject.id %>"><%= subject.name %></a>  <% if(tag_name) { %> <a class="last_breadcrum" href="/information_items/subject/<%= subject.id %>?tag_name=<%= tag_name %>"><%= tag_name %></a><% } %>
     </h2>
-    <div class="main-text" id="info_items"></div>
+    <div class="main-text" id="info_items" data-bablic-index="false"></div>
 </div>
 <% include partials/shopping_cart.ejs %>
 </div>
