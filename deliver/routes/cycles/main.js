@@ -63,7 +63,8 @@ module.exports = function(req, res){
                 'sub_branding': 1,
                 'social_popup_title': 1,
                 'social_popup_text': 1    ,
-                    'timeline_embed':1
+                'timeline_embed':1,
+                'fb_page':1
 
             })
             .populate('opinion_shapers.user_id', {

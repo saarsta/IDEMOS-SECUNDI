@@ -1081,11 +1081,12 @@ var db_functions = {
         });
     },
 
-    getCyclesById:function (cycle_id, callback) {
+    getCyclesById:function (cycle_id,page_check, callback) {
         db_functions.loggedInAjax({
             url:'/api/cycles/' + cycle_id,
             type:"GET",
             async:true,
+            data:{fb_page_check:page_check},
             success:function (err, data) {
                 callback(err, data);
             },
@@ -1094,6 +1095,8 @@ var db_functions = {
             }
         });
     },
+
+
 
     getCycleUpdates:function (cycle_id, callback) {
         db_functions.loggedInAjax({

@@ -3,11 +3,24 @@ var util = require('util'),
     models = require('./models'),
     common = require('./api/common'),
     async = require('async');
+    og_get = require('./og/data.js').get,
 
     g_all_users = null;
 
+exports.run_main_thread = function(app)
+{
+    setInterval(function(){
+        ten_seconds_cron.fb_pages_likes(null,function(err, result){
+           // console.log(err || result);
+        })
+    }, 10*1000);
+}
+
 exports.run = function(app)
 {
+
+
+
     setInterval(function(){
         once_an_hour_cron.fillUsersTokens(function(err, result){
             console.log(err || result);
@@ -363,7 +376,36 @@ exports.Cron_func = {
         ], callback);
     }
 };
+var ten_seconds_cron =   exports.ten_seconds_cron = {
+    fb_pages_likes : function(cycle_id, callback){
+        var find_obj={'fb_page.url': { $exists: true}};
+        if (cycle_id) {
+            find_obj= {_id: cycle_id , 'fb_page.url' : { $exists: true}};
+        }
+        models.Cycle.find(find_obj ,function(err,cycles){
+            async.forEach(cycles,  function (cycle){
+                 var page=    cycle.fb_page;
+                 //console.log(page);
+                 og_get('http://graph.facebook.com/'+page.url,function(error, og_data){
+                    if(og_data.likes !=page.like_count){
+                        var now =Date.now();
+                        models.Cycle.update({_id: cycle._id}, {
+                            $set:       { "fb_page.like_count": og_data.likes,"fb_page.last_update":now}
+                        }, function(err,count)  {
+                            callback(err,page.like_count,now);
+                            //console.log(err);
+                        });
+                    }
+                     else {
+                        callback(error,page.like_count,page.last_update);
+                    }
 
+                });
+            });
+        });
+
+    }
+}
 var once_an_hour_cron =   exports.once_an_hour_cron = {
     fillUsersTokens : function(callback){
 
@@ -427,8 +469,6 @@ var once_an_hour_cron =   exports.once_an_hour_cron = {
     ], callback);
   },
 }
-
-
 var daily_cron =  exports.daily_cron = {
 
     //taking back mandates from proxy

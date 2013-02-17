@@ -15,9 +15,21 @@ var get = module.exports.get =  function(url ,callback ){
        // form : qs, //Maybe wrong way to transfer the data... //TODO check it!.
        // uri: 'https://www.pageonce.com/jsp/userLogin.jsp',
        //  headers: {}
+
+
+        //host: 'graph.facebook.com',
+
+        // secured port, for https
+        //port: 443,
+
+        // apiPath is the open graph api path
+        //path: apiPath + '?access_token=' + accessToken,
+
     };
 
     request( options , function (error, response, body) {
-        callback (error, response, body);
+
+
+        callback (error, JSON.parse(body));
     });
 }

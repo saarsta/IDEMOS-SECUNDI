@@ -216,14 +216,14 @@
         <br>
 
 
-        <% if (cycle.facebook_page){%>
+        <% if (cycle.fb_page.url){%>
         <div style="margin-top: 20px;display: inline-block">
             או הביעו תמיכה ע"י לייק
         </div>
 
         <div  style=";width:55px;height: 27px ; left: 340px; display: block;top: 55px; overflow: hidden;position:absolute;direction: ltr; ">
 
-            <div style="margin-top: -30px;  margin-left: -60px;" class="fb-like-box" data-href="<%= cycle.facebook_page %>" data-width="292" data-show-faces="false" data-stream="false" data-header="false"></div>
+            <div style="margin-top: -30px;  margin-left: -60px;" class="fb-like-box" data-href="https://www.facebook.com/<%= cycle.fb_page.url %>" data-width="292" data-show-faces="false" data-stream="false" data-header="false"></div>
 
         </div>
 
@@ -367,30 +367,7 @@
 </div>
 </div>
 </div>
-<% if(cycle._id=='5098eb8bc492d10200000024' &&  !cycle.is_user_follower_of_cycle) { %>
-<div class="cycle_banner" >
-    <div class="banner_content" >
-        <div class="img-box floatRight" style="overflow: hidden;">
-            <div style="width:450px; " class='auto-scale'>
-                <img src="/images/icon_vote.png" title=""/>
 
-            </div>
-        </div>
-        <div class="banner_text" >
-            להיות אדיש זה אקט של ייאוש וחידלון. אקט מוכר של כולנו. אבל לא להצביע זה כמו להצביע למפלגה עם הדעות הכי מנוגדות אליך. זה לתת לה את הקול שלך במתנה.
-            <br>
-            לא להצביע זה להגיד: אנחנו לא מעורבים. וזה, במציאות שלנו, בלתי אפשרי. כי אנחנו כן. מעורבים. הילדים שלנו מעורבים וחשבון הבנק שלנו מעורב. אנחנו מעורב כי אנחנו חיים פה. ואין לנו ארץ אחרת.
-            <br>
-            אז תצביעו. לטובת כולנו.
-            <a href="javascript:void(0);" id="readmore">קרא עוד</a>
-            <a href="javascript:void(0);" id="join"></a>
-
-            לחץ כאן כדי לקחת חלק בעתיד שלך. של כולנו.
-        </div>
-
-    </div>
-</div>
-<% }%>
 
 
 <a name="timeline" class="cycle_hidden_parts"></a>
@@ -515,9 +492,11 @@ var _main=$(document).ready( function () {
 
     var timeline_src="<%=cycle.timeline_embed%>";
 
+    var social_fb_liker_title = "<%= cycle.social_popup.fb_liker_title || 'שמחים על הצטרפותך למאבק' %>" ;
+    var social_fb_liker_text = "<%= cycle.social_popup.fb_liker_text || 'כדי לקבל עדכונים על קמפיין זה ועל מאבקים נוספים שמובילה תנועת עורו כדאי להירשם דרך חשבון הפייסבוק. כך גם תסייעו לנו ליצור את הגיבוי הציבורי הנדרש לעשייה זו. תמיכתכם חיונית!' %>"   ;
 
-
-
+    var social_new_atzuma_user_title = "<%= cycle.social_popup.new_atzuma_user_title || 'שמחים על הצטרפותך למאבק' %>" ;
+    var social_new_atzuma_user_text = "<%= cycle.social_popup.new_atzuma_user_text || 'להשלמת המהלך, נשאר לך רק לאשר את חתימתך במייל. אחרי האישור, כדאי לשתף ברשתות החברתיות ולהזמין חברים להצטרף למאבק - רק כך ניצור לחץ ציבורי רחב ואפקטיבי שיוביל לשינוי. שני קליקים מצדך יעשו את ההבדל!' %>"   ;
 
 
     //set mail subject for social popup
@@ -999,10 +978,6 @@ var _main=$(document).ready( function () {
     {
         setTimeout(function(){
             $('#box-share,#screen').show();
-
-
-
-
             //$('#social-popup-mail').attr("href", "mailto:?subject=" + mail_subject + "&body=" + mail_body);
             $('#close').click(function(){
                 $('#box-share,#screen').hide();
@@ -1053,15 +1028,17 @@ var _main=$(document).ready( function () {
     } );
 
 
-
-    if($(location).attr('href').indexOf('new')!=-1){
-        $(".sb-top .sb-title").text("שמחים על הצטרפותך לדרישה לממשלה קטנה ויעילה");
-        $(".sb-top .sb-text").text("עכשיו רק נשאר שתאשר את הרשמתך במייל ששלחנו לך. כדאי גם לשתף ברשתות החברתיות ולהזמין את חבריך להצטרף לדרישה. כך ניצור יחד לחץ ציבורי רחב ואפקטיבי ");
+    if( $(location).attr('href').indexOf('new')!=-1){
+        $(".sb-top .sb-title").text(social_new_atzuma_user_title);
+        $(".sb-top .sb-text").text(social_new_atzuma_user_text);
         var d=0;
     }
 
+
     <% if (cycle.id == '508026e8cb2276020000001f'){%>
         $("#followers_count span").text("כבר חתמו והצטרפו לדרישה לממשלה קטנה ויעילה");
+
+
     <% } %>
     <% if ( !user_logged || (user_logged && !cycle.is_user_follower_of_cycle) ){%>
 
@@ -1212,6 +1189,43 @@ var _main=$(document).ready( function () {
                 (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
         );
     }
+
+
+    $(".fb-like-box iframe").live('mouseout' ,function(){
+        setTimeout(function(){
+            db_functions.getCyclesById(cycle_id,true,function(object, err){
+                 var elapsed =   object.last_update_elapsed;
+                 console.log(elapsed);
+
+                if(elapsed<10){
+                    $(".sb-top .sb-title").text(social_fb_liker_title);
+                    $(".sb-top .sb-text").text(social_fb_liker_text);
+                    $(".sb-title .facebook_join").show();
+
+                    share();
+                }
+            });
+        },1500);
+     });
+
+
+
+    $("#fb_ajax_conncect").live('click', function(){
+        facebookLogin(function(err, result){
+            if(err) {
+                /*
+                 $(document).one('cbox_closed', function(){
+                 callback(err, result);
+                 });
+                $.colorbox.close();*/
+
+            }else{
+                window.location.reload() ;
+            }
+        })
+    })
+
+
 });
 
 </script>
