@@ -141,4 +141,5 @@ exports.facebook_register = function (req, callback) {
             });
         });
     };
+}
 
