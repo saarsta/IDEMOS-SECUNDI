@@ -1,6 +1,5 @@
 var mongoose = require('mongoose')
     ,Schema = mongoose.Schema
-    ,types = require('j-forms').types
     ,_ = require('underscore');
 
 var GamificationTokens = module.exports = {

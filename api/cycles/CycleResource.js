@@ -21,7 +21,8 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
         this._super(models.Cycle, null, 0);
         this.authentication = new common.SessionAuthentication();
         this.allowed_methods = ['get', 'put'];
-        this.filtering = { is_private:null,
+        this.filtering = {
+            is_private: null,
             'subject.id': {
                 exact:true,
                 in:true
@@ -272,7 +273,6 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
                             user: req.user
                         });
                     }
-
 
                     object.followers_count++;
                     object.is_follower = true;

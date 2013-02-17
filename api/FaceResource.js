@@ -5,6 +5,7 @@ var common = require('./common')
     fs = require('fs') ,
     knox = require('knox'),
     path = require('path');
+var formage = require('formage-admin').forms;
 
 
 var FaceResource = module.exports = jest.MongooseResource.extend(
@@ -86,7 +87,7 @@ function overwrite_file(amazon_url,callback) {
 
         var newPath = 'deliver/public/faces_game/icon600x600.jpg';
         stream = fs.createReadStream(newPath);
-        var knoxClient = require('j-forms').fields.getKnoxClient();
+        var knoxClient = formage.fields.getKnoxClient();
         var filename = amazon_url.substring(amazon_url.lastIndexOf('/')+1);
         knoxClient.putStream(stream, '/fg/'+filename , function(err, res){
             if(err)  {

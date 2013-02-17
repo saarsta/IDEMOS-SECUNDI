@@ -7,15 +7,12 @@ var models = require('../../../models')
 module.exports = function(req,res)
 {
     var resource = new DiscussionResource();
-    var user = req.session.user;
+    var user = req.user;
 
     async.parallel([
         // get the user object
         function(cbk) {
-            if(req.session.user)
-                models.User.findById(req.session.user._id, cbk);
-            else
-                cbk(null, null);
+            cbk(null, user);
         },
         // get the discussion object
         function(cbk)  {

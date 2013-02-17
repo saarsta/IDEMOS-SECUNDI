@@ -1,19 +1,11 @@
-/**
- * Created by JetBrains WebStorm.
- * User: saar
- * Date: 15/02/12
- * Time: 17:21
- * To change this template use File | Settings | File Templates.
- */
 var util = require('util');
-// Authentication
 
 var jest = require('jest'),
-    cron = require('../cron').cron,
     models = require('../models'),
     fs = require('fs'),
     path = require('path'),
     async = require('async');
+var formage = require('formage-admin').forms;
 
 var knox;
 try
@@ -43,6 +35,7 @@ var user_public_fields = exports.user_public_fields = {
 var SessionAuthentication = exports.SessionAuthentication = jest.Authentication.extend({
     is_authenticated : function(req, callback){
 
+        //noinspection JSUnresolvedFunction
         var is_auth = req.isAuthenticated();
         if(is_auth)
         {
@@ -189,18 +182,6 @@ function update_user_gamification(req, game_type, user, price, callback)
         });
 }
 
-/*
-
-//    בזבוז של כל הטוקנים במשך X ימים
-function check_user_runout_of_tokens_time(user, callback){
-
-    var X_DAYS_TIME = 1000*60*60*24* 3;
-    var date = new Date();
-    if(user.tokens == 0 && (date.getTime() - user.runout_of_tokens_time > ) ){
-        cron.addTokensToUserByEventAndSetGamificationBonus(user._id, "", event_bonus, callback)
-    }
-}
-*/
 function set_passive_user_updates(req, callback){
 
 //    req.update_type = req.update_type || {};
@@ -373,7 +354,7 @@ var uploadHandler = exports.uploadHandler = function(req,callback) {
 			});
 		};
 
-    var knoxClient = require('j-forms').fields.getKnoxClient();
+    var knoxClient = formage.fields.getKnoxClient();
 
     var fName = req.header('x-file-name');
     var fType = req.header('x-file-type');

@@ -88,6 +88,10 @@ app.set('view engine', 'jade');
 app.set('view options', { layout: false });
 
 
+process.on('uncaughtException', function(err) {
+    console.error(err.stack || err);
+});
+require('formage-admin').forms.serve_static(app, express);
 
 app.use(express.static(app.settings.public_folder));
 app.use(express.errorHandler());
