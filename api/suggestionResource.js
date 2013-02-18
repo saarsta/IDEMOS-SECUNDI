@@ -144,7 +144,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
         var discussion_id;
         var discussion_creator_id;
         var num_of_words;
-
+        var disc_obj;
 
         var iterator = function (unique_user, itr_cbk) {
             if (unique_user == user_id.id || !unique_user)
@@ -197,6 +197,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
             },
 
             function (discussion_obj, cbk) {
+                disc_obj = discussion_obj;
 
                 var word_count = suggestion_object.getCharCount();
                 suggestion_object.threshold_for_accepting_the_suggestion = calculate_sugg_threshold(word_count,
@@ -223,35 +224,37 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
 
             function (suggestion_obj, cbk) {
                 async.parallel([
+
+                    //add user that connected somehow to discussion
+                    function(cbk2){
+                        models.Discussion.update({_id: disc_obj._id, "users.user_id": {$ne: user_id}},
+                            {$addToSet: {users: {user_id: user_id, join_date: Date.now(), $set:{last_updated: Date.now()}}}}, function(err, num){
+                                cbk2(err);
+                            });
+                    },
+
+                    //add user that connected somehow to discussion
+                    function(cbk2)
+                    {
+                        models.User.update({_id: user_id, "discussions.discussion_id": {$ne: disc_obj._id}},
+                            {$addToSet: {discussions: {discussion_id:  disc_obj._id, join_date: Date.now()}}}, function(err, num){
+                                cbk2(err);
+                            });
+                    },
+
                     //add notification for the dicussion's participants or creator
-                    //add user to praticipants
-
                     function (cbk2) {
-                        models.Discussion.findById(suggestion_object.discussion_id, /*["users", "creator_id"],*/ function (err, disc_obj) {
-                            if (err)
-                                cbk2(err, null);
-                            else {
+                        var unique_users = [];
 
-                                var unique_users = [];
+                        discussion_creator_id = disc_obj.creator_id;
 
-                                // be sure that there are no duplicated users in discussion.users
-                                _.each(disc_obj.users, function(user){ unique_users.push(user.user_id + "")});
-                                unique_users = _.uniq(unique_users);
+                        // be sure that there are no duplicated users in discussion.users
+                        _.each(disc_obj.users, function(user){ unique_users.push(user.user_id + "")});
+                        unique_users = _.uniq(unique_users);
 
-                                if (!_.any(disc_obj.users, function (user) { return user.user_id + "" == req.user.id })) {
-                                    var new_user = {user_id:req.user._id, join_date:Date.now()};
-                                    models.Discussion.update({_id:disc_obj._id}, {$set:{last_updated: Date.now()}}, {$addToSet:{users:new_user}}, function (err, num) {
-                                        discussion_creator_id = disc_obj.creator_id;
-
-                                        async.forEach(unique_users, iterator, cbk2);
-                                    });
-                                } else {
-                                    discussion_creator_id = disc_obj.creator_id;
-
-                                    async.forEach(unique_users, iterator, cbk2);
-                                }
-                            }
-                        })
+                        async.forEach(unique_users, iterator, function(err){
+                            cbk2(err);
+                        });
                     },
 
                     //set notifications for users that i represent (proxy)

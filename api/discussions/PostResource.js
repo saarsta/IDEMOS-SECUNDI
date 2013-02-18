@@ -206,18 +206,14 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                 async.parallel([
                     function(cbk2)
                     {
-                        console.log('debugging waterfall 3 1');
-
                         //add user that connected somehow to discussion
                         models.Discussion.update({_id:object.discussion_id, "users.user_id": {$ne: user_id}},
                             {$addToSet: {users: {user_id: user_id, join_date: Date.now(), $set:{last_updated: Date.now()}}}}, cbk2);
                     },
 
+                    //add user that connected somehow to discussion
                     function(cbk2)
                     {
-                        console.log('debugging waterfall 3 1');
-
-                        //add user that connected somehow to discussion
                         models.User.update({_id: user_id, "discussions.discussion_id": {$ne: object.discussion_id}},
                             {$addToSet: {discussions: {discussion_id: object.discussion_id, join_date: Date.now()}}}, cbk2);
                     },
