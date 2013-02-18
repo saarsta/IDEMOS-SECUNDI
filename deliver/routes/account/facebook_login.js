@@ -33,55 +33,33 @@ module.exports = function (req, res) {
 
 module.exports.facebook_register = function (req, callback) {
     req.authenticate("facebook", function (error, authenticated) {
-        var next = req.session['fb_next'];
-        var referred_by = req.session['referred_by'];
-        console.log(error);
-        if (!(!error && authenticated)) {
-            console.log('can\'t authenticate with facebook');
-            return;
-        }
-        var user_detailes = req.getAuthDetails().user;
-        var access_token = req.session["access_token"];
-        var user_fb_id = req.getAuthDetails().user.id;
-        isUserInDataBase(user_fb_id, function (is_user_in_db) {
-            if (!is_user_in_db) {
-                user_detailes.invited_by = referred_by;
-                createNewUser(user_detailes, access_token, function (_id) {
-                    req.session.user_id = _id;
-                    req.session.save(function (err, object) {
-                        if (err != null) {
-                            console.log(err);
-                        } else {
-                            console.log('user _id to session is ok');
-                            callback(null, true);
-                        }
-                    });
-                });
-            } else {
-                updateUesrAccessToken(user_detailes, access_token, function (err, _id) {
-                    if (err) {
-                        console.error(err);
-                        console.trace();
-                        callback(err);
-                    } else {
-                        req.session.auth.user._id = _id;
-                        req.session.save(function (err, object) {
-                            if (err != null) {
-                                console.error(err);
-                                console.trace();
-                                callback(err);
-                            } else {
-                                console.log('user _id to session is ok');
-                                callback(null, false)
-                            }
-
-                        });
-                    }
-                });
+            var referred_by = req.session['referred_by'];
+            if (error || !authenticated) {
+                console.log('can\'t authenticate with facebook');
+                return;
             }
-        });
-    });
-}
+            var user_details = req.getAuthDetails().user;
+            var access_token = req.session["access_token"];
+            var user_fb_id = req.getAuthDetails().user.id;
+            module.exports.isUserInDataBase(user_fb_id, function (is_user_in_db) {
+                if (is_user_in_db) {
+                    var is_new_user = !is_user_in_db;
+                    module.exports.updateUesrAccessToken(user_details, access_token, function (err, _id) {
+                        if (err) throw err;
+                        req.session.user_id = _id;
+                        callback(null, is_new_user)
+                    });
+                } else {
+                    user_details.invited_by = referred_by;
+                    module.exports.createNewUser(user_details, access_token, function (_id) {
+                        req.session.user_id = _id;
+                        callback(null, is_new_user);
+                    });
+                }
+            });
+        }
+    );
+};
 
 
 module.exports.isUserInDataBase = function (user_facebook_id, callback) {
@@ -140,7 +118,7 @@ module.exports.updateUesrAccessToken = function (data, access_token, callback) {
         if (err) throw err;
         user.access_token = access_token;
         user.is_activated = true;
-        user.save(function (err) {
+        user.save(function (err, object) {
             if (err) throw err;
             console.log("done updating user - %s %s", user.first_name, user.last_name);
             callback(null, object.id);
