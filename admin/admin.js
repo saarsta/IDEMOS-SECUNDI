@@ -1,6 +1,6 @@
 
 var formage_admin = require('formage-admin')
-    ,j_forms = formage_admin.formage
+    ,Forms = formage_admin.forms
     ,_ = require('underscore')
     ,crypt = formage_admin.crypt
     ,AdminForm = formage_admin.AdminForm
@@ -21,11 +21,11 @@ module.exports = AdminForm.extend({
         delete fields['passwordHash'];
 
 
-        this.fields['current_password'] = new j_forms.fields.StringField({widget:j_forms.widgets.PasswordWidget,label:'Current Password'});
+        this.fields['current_password'] = new Forms.fields.StringField({widget:Forms.widgets.PasswordWidget,label:'Current Password'});
 
-        this.fields['password'] = new j_forms.fields.StringField({widget:j_forms.widgets.PasswordWidget,label:'New Password',required:true});
+        this.fields['password'] = new Forms.fields.StringField({widget:Forms.widgets.PasswordWidget,label:'New Password',required:true});
 
-        this.fields['password_again'] = new j_forms.fields.StringField({widget:j_forms.widgets.PasswordWidget,label:'Again',required:true});
+        this.fields['password_again'] = new Forms.fields.StringField({widget:Forms.widgets.PasswordWidget,label:'Again',required:true});
 
         this.fieldsets[0].fields = ['current_password','password','password_again'];
 

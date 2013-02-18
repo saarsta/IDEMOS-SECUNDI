@@ -20,7 +20,9 @@
                 <% } %>
    <% } %>
 
+
             </div>
+            <a id="fb_ajax_conncect" class="facebook_join" href="javascript:void(0)"></a>
             <div class="sb-text" id="social-popup-text">
             <% if(object_social_text) { %>
                 <%=  object_social_text %>
@@ -39,84 +41,16 @@
                    &nbsp;
             </div>
             <div class="sb-text">
-                <div class="sb-icons">
-                    <div id="close"><img src="/images/elections/close.png" alt="עורו"/></div>
-                    <div class="icons">
-                        <a id="social-popup-mail" href="#"
-                           target="_blank"><img class="icon" src="/images/elections/enva.png" alt="עורו"/></a>
 
-                        <a href="javascript:void(0)" id="share-twitter"><img class="icon" src="/images/elections/tweet.png" alt="עורו"/></a>
-                        <a href="javascript:void(0)" id="share-facebook"><img class="icon" src="/images/elections/face.png" alt="עורו"/></a>
-                    </div>
+            </div>
+            <div class="sb-icons">
+                <div id="close"><img src="/images/elections/close.png" alt="עורו"/></div>
+                <div class="icons">
+                    <a href="javascript:void(0)" id="social-popup-mail" ><img class="icon" src="/images/elections/enva.png" alt="עורו"/></a>
+                    <a href="javascript:void(0)" id="share-twitter"><img class="icon" src="/images/elections/tweet.png" alt="עורו"/></a>
+                    <a href="javascript:void(0)" id="share-facebook"><img class="icon" src="/images/elections/face.png" alt="עורו"/></a>
                 </div>
             </div>
-
-            <div id="cloudsponge">
-                <!-- Include these scripts to import address books with CloudSponge -->
-
-                <script type="text/javascript" charset="utf-8">
-
-
-
-
-                    var csPageOptions = {
-
-
-                   <%if(process && process.NODE_ENV && process.NODE_ENV=='staging'){  %>
-                      //  domain_key:"HPZ65GELQ4UZMGFUSTRR",   // uru-staging.herokuapp.com
-                   <% } else  if(process && process.NODE_ENV && process.NODE_ENV=='production'){  %>
-                     //   domain_key:"G5XMTFDEGQNEND8A6YZB",     //uru.org.il
-                   <% }else { %>
-                     //   domain_key:"MEJVM6QW5TG7SQF4B8G3",     //dev.empeeric.com
-                   <% } %>
-                         domain_key:"G5XMTFDEGQNEND8A6YZB",
-                         textarea_id:"contact_list",
-                        include:['mailing_address','name','email'],
-                        afterSubmitContacts: function(contacts, source, owner) {
-
-
-                            var i, contact, name, email, phone, mailing_address ,emails=[];
-                            for (i = 0; i < contacts.length; i++) {
-                                contact = contacts[i];
-                                name = contact.fullName();
-                                email = contact.selectedEmail();
-
-                                console.log(email) ;
-                                emails.push(email);
-                            }
-                             window.location.href = "mailto:"+emails.join(',')+"?subject=" + window.vars.mail_subject + "&body=" + window.vars.mail_body;
-                            db_functions.submitInvitedFriends('action',window.vars.object_id,null,emails, function (data, err){
-
-                            } );
-                        }
-                    }
-
-                </script>
-
-                <!-- Any link with a class="cs_import" will start the import process -->
-                <div id="deep-link" style="">
-                    <span style="margin-right:-15px">
-
-                      <a id="source-yahoo" href="#" onclick="return cloudsponge.launch('yahoo');"><img alt="Yahoo" height="28" src="http://www.cloudsponge.com/images/address_books/yahoo.png?1349284367" width="28"></a>
-                       <a id="source-windowslive" href="#" onclick="return cloudsponge.launch('windowslive');"><img alt="Windows Live" height="28" src="http://www.cloudsponge.com/images/address_books/msn.png?1349284367" width="28"></a>
-
-                      <a id="source-outlook" href="#" onclick="return cloudsponge.launch('outlook');" style="display: inline; "><img alt="Microsoft Outlook" height="28" src="http://www.cloudsponge.com/images/address_books/microsoft.png?1349284367" width="28"></a>
-                      <a id="source-addressbook" href="#" onclick="return cloudsponge.launch('addressbook');" style="display:none"><img alt="Mac Address Book" height="28" src="http://www.cloudsponge.com/images/address_books/apple.png?1349284367" width="28"></a>
-                                    <a id="source-gmail" href="#" onclick="return cloudsponge.launch('gmail');"><img alt="Gmail" height="28" src="http://www.cloudsponge.com/images/address_books/google.png?1349284367" width="28"></a>
-
-                    </span>
-                </div>
-
-            </div>
-            <div class="mail-notifications-cancel sb-small-text">
-                <% if(user && user.no_mail_notifications && user.no_mail_notifications == "true"){ %>
-                לחץ כאן כדי לקבל עדכונים במייל
-                <% } else { %>
-                לחץ כאן כדי לא לקבל עדכונים במייל
-                <% } %>
-
-            </div>
-
 
         </div>
     </div>
@@ -184,7 +118,7 @@
         'a': twitter_msg
     };
 
-
+    $("#social-popup-mail").one('click', function(){  window.location.href = "mailto:?subject=" + window.vars.mail_subject + "&body=" + window.vars.mail_body; })
     $("#share-facebook").one('click', facebookShare)   ;
 
     function facebookShare () {

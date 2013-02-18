@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <% include partials/head.ejs %>
+</head>
+<body>
+<% include partials/body_top.ejs %>
+
+
+<div id="wrap" >
+<div id="header">
+    <% include partials/menu.ejs %>
+    <% include partials/user_box.ejs %>
+    <% include partials/failures.ejs %>
+    <div  class="cf cycle_hidden_parts" >
+        <% include partials/tag_search.ejs %>
+    </div>
+    <% include partials/social_popup.ejs %>
+</div>
+
+
+
+<div id="content" class="cf cycle_hidden_parts" >
+
+<div class="right-add-offer">
+<div id="cycle" class="add-offer add-offer-small">
+<h2 class="cycle-title"><span class="arrow"> <%= cycle.subject_name %></span>
+    <br>
+    <%= cycle.title %>
+</h2>
+<div class="sharing">
+    <a    href="javascript:void(0)" class="facebook_sh"></a>
+    <a    href="javascript:void(0)" class="twitter"></a>
+    <a    href="javascript:void(0)" class="email"></a>
+</div>
+<% if(cycle._id=='5098eb8bc492d10200000024'){ %>
+
+<a  class="iconbutton social-on-click" data-text_preview="<%=cycle.text_field_preview%>" title="לקידום הנושא ולקבלת עדכונים על המשך הפעילות לחצו כאן"  data-title="<%=cycle.title%>"data-img_src="<%= cycle.image_field && cycle.image_field.url %>" data-rel="/cycles/<%= cycle.id %>" href="javascript:void(0)"  >
+                        <span class="button_inner">
+                            <span class="arrow" >
+אני מצביע לטובתי
+                            </span>
+                        </span>
+</a>
+<% }else{ %>
+<a  class="iconbutton social-on-click" data-text_preview="<%=cycle.text_field_preview%>" title="לקידום הנושא ולקבלת עדכונים על המשך הפעילות לחצו כאן"  data-title="<%=cycle.title%>"data-img_src="<%= cycle.image_field && cycle.image_field.url %>" data-rel="/cycles/<%= cycle.id %>" href="javascript:void(0)"  ><span class="button_inner"><span >
+אני בעד
+</span></span></a>
+<% } %>
+
+
+
+
+
+
+<div id="cloudsponge_2">
+    <div id="deep-link" style="">
+                                <span style="margin-right:-15px">
+                                    <a id="source-yahoo" href="#" onclick="return cloudsponge.launch('yahoo');"><img alt="Yahoo" height="28" src="http://www.cloudsponge.com/images/address_books/yahoo.png?1349284367" width="28"></a>
+                                    <a id="source-windowslive" href="#" onclick="return cloudsponge.launch('windowslive');"><img alt="Windows Live" height="28" src="http://www.cloudsponge.com/images/address_books/msn.png?1349284367" width="28"></a>
+
+                                    <a id="source-outlook" href="#" onclick="return cloudsponge.launch('outlook');" style="display: inline; "><img alt="Microsoft Outlook" height="28" src="http://www.cloudsponge.com/images/address_books/microsoft.png?1349284367" width="28"></a>
+                                    <a id="source-addressbook" href="#" onclick="return cloudsponge.launch('addressbook');" style="display:none"><img alt="Mac Address Book" height="28" src="http://www.cloudsponge.com/images/address_books/apple.png?1349284367" width="28"></a>
+                                    <a id="source-gmail" href="#" onclick="return cloudsponge.launch('gmail');"><img alt="Gmail" height="28" src="http://www.cloudsponge.com/images/address_books/google.png?1349284367" width="28"></a>
+                                </span>
+    </div>
+</div>
+
+<div class="text-box cf">
+    <div class="cycle-content">
+        <% if (cycle.image_field) { %>
+
+        <div class="img-box floatRight" style="overflow: hidden;">
+            <div style="width:260px; height:190px;" class='auto-scale'>
+                <img src="<%=cycle.image_field && cycle.image_field.url %>" title="<%= cycle.title %>"/>
+
+            </div>
+            <span></span>
+        </div>
+        <% } %>
+
+        <h3><%- cycle.discussion_title %></h3>
+        <p> <%- cycle.text_field %>   </p>
+    </div>
+    <p id="read_more"> <a class="read-more" href="javascript:void(0);"> קרא עוד </a> </p> </div>
+
+<% if ( !user_logged || (user_logged && !cycle.is_user_follower_of_cycle) ){%>
+<style>
+
+
+
+    .add-offer-bottom input{
+
+        -moz-box-shadow: inset 3px 2px 5px #a7a7a7;
+        -webkit-box-shadow: inset 3px 2px 5px #a7a7a7;
+        box-shadow: inset 3px 2px 5px #a7a7a7;
+        border: none;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        -webkit-border-radius: 5px;
+        height: 30px;
+        width: 120px;
+
+        color: #4f4f4e;
+        margin-right: 7px;;
+        padding: 0 5px;
+    }
+
+
+
+    #cycle a.iconbutton1{
+        top:-4px;
+        left:140px
+    }
+
+    a.fbbutton {
+        position: absolute;
+        margin: 10px 31px 0 0;;
+        font-size: 20px;
+        line-height: 35px;
+        background: transparent url('/images/fb_btn2.png') no-repeat scroll 0  0;
+        color: #FFF;
+        display: inline-block;
+        float: left;
+        font: normal 20px 'AdumaFOTRegular';
+        height: 42px;
+        padding-left: 50px; /* sliding doors padding */
+        text-decoration: none;
+    }
+
+    a.fbbutton:hover {
+        background-position: 0 -42px ;
+        outline: none; /* hide dotted outline in Firefox */
+    }
+
+    a.fbbutton:active {
+        background-position:  0 -84px;
+        outline: none; /* hide dotted outline in Firefox */
+    }
+
+
+    a.fbbutton  span.button_inner {
+        background: transparent url('/images/fb_btn1.png') right 0  no-repeat;
+        height:27px;
+        display: block;
+
+        padding: 10px 15px 5px 10px;
+        text-align: center;
+
+        color: #fff;
+
+        /*text-shadow: #686868 right -1px 0;*/
+        min-width: 75px;
+        line-height: 28px;
+
+        font: normal 20px 'AdumaFOTRegular';
+
+    }
+
+    a.fbbutton:hover span.button_inner {
+        background-position: right -42px ;
+
+    }
+
+    a.fbbutton:active  span.button_inner {
+        background-position:right -84px;
+        outline: none; /* hide dotted outline in Firefox */
+    }
+
+
+    .err{
+        display: none;
+        font-size:12px;
+        position: absolute;
+        color: red ;
+        font-family: arial;
+    }
+    #email_err{
+
+        right: 193px;
+        top: -32px;
+
+    }
+    #name_err{
+
+        right: 49px;
+        top: -32px;
+
+    }
+    #fb_err{
+
+        right: 49px;
+        top: 79px;
+
+    }
+    #pass{
+        display: none;
+    }
+
+
+
+</style>
+<div class="add-offer-bottom ">
+    <div class="right" style="position: relative;font: normal 20px/35px 'AdumaFOTMedium';color: #50504f;height: 110px;margin-top: -30px">
+        <div class="err" id="email_err">email</div>
+        <div class="err"  id="name_err">name</div>
+        <div class="err"  id="fb_err">fb</div>
+        חתמו
+        <input type="text" id="name"  placeholder="שם">
+        <input type="text" id="email" placeholder="אימייל">
+        <input type="password" id="pass" placeholder="סיסמה">
+        <a  class="iconbutton iconbutton1" href="javascript:void(0)"  ><span class="button_inner"><span >
+שליחה
+</span></span></a>
+        <br>
+
+
+        <% if (cycle.fb_page.url){%>
+        <div style="margin-top: 20px;display: inline-block">
+            או הביעו תמיכה ע"י לייק
+        </div>
+
+        <div  style=";width:55px;height: 27px ; left: 340px; display: block;top: 55px; overflow: hidden;position:absolute;direction: ltr; ">
+
+            <div style="margin-top: -30px;  margin-left: -60px;" class="fb-like-box" data-href="https://www.facebook.com/<%= cycle.fb_page.url %>" data-width="292" data-show-faces="false" data-stream="false" data-header="false"></div>
+
+        </div>
+
+
+        <% } else{%>
+
+                <div style="margin-top: 20px;display: inline-block">
+                    או
+                </div>
+                <a  class="fbbutton"  href="/account/facebooklogin?next=cycles/<%= cycle._id %>?join=true"  >
+            <span class="button_inner">
+
+        חתמו באמצעות פייסבוק
+
+            </span>
+        </a>
+        <% } %>
+
+    </div>
+</div>
+
+
+
+<% } %>
+
+<div class="add-offer-bottom ">
+    <div class="right">
+        <div class="followers">
+            <div id="followers_count" >
+                <div class="blue-box"> <%= cycle.followers_count %>  </div>
+                                     <span>
+
+
+                                עוקבים אחרי מעגל תנופה זה
+                                   </span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="add-offer-bottom ">
+    <div class="right">
+        <div class="tags">
+            תגיות:
+            <!--
+                <div class="info">
+                    <span class="talks">33</span>
+                    <span class="watched">151</span>
+                </div>
+                -->
+            <% if (cycle.tags) for (var c = 0; c < cycle.tags.length ; c++) { %>
+            <a href="?tag_name=<%=cycle.tags[c]%>"> <%=cycle.tags[c] %></a>
+            <% }%>
+        </div>
+    </div>
+</div>
+<div class="dots">
+
+
+</div>
+<div class="tabs">
+    <div class="tab left">
+        <div class="tab_icon">  </div>
+
+
+        פריטי מידע רלוונטים
+    </div>
+    <div class="tab right front">
+        <div class="tab_icon">  </div>
+
+
+        תגובות פופולריות מהדיונים
+    </div>
+</div>
+<div class="popular-comments cf">
+    <div class="hide-box">
+        <div id="comments" ></div>
+        <div id="info_items" class="info_items">
+
+
+
+
+
+            <!-- MovingBoxes Slider -->
+            <ul id="slider">
+
+
+
+            </ul><!-- end Slider #1 -->
+
+
+
+
+
+
+        </div>
+    </div>
+</div>
+</div>
+
+</div>
+<div class="card-left">
+
+    <% if (cycle.sub_branding){    %>
+    <div class="cycle_sub_branding">
+        <h3 >   בשיתוף עם </h3>
+        <%  for (var c = 0; c < cycle.sub_branding.length ; c++) { %>
+        <a target="_blank" href="<%= cycle.sub_branding[c].link %>">
+            <% if  (cycle.sub_branding[c].text) {%>
+
+            <%= cycle.sub_branding[c].text %>
+
+            <%} %>
+            <div style="width:238px;margin-top: 8px;" class='auto-scale'>
+                <img class="main_image" src="<%= cycle.sub_branding[c].image.url %>" style="">
+            </div>
+        </a>
+
+        <%} %>
+    </div>
+    <%} %>
+
+    <% if (cycle.id == '508026e8cb2276020000001f'){%>
+    <div class="cycle_buy_shirt">
+        <a href="/order_shirts">
+
+
+            להזמנת חולצה לחצו כאן
+
+            <br>
+            <div style="width:238px;height: 200px" class='auto-scale'>
+
+                <img src="../images/shirt.jpg" alt="name" />
+
+            </div>
+        </a>
+    </div>
+    <%} %>
+
+
+
+</div>
+</div>
+</div>
+
+
+
+<a name="timeline" class="cycle_hidden_parts"></a>
+
+<div class="cycle_hidden_parts system-notice cycle-system-notice">
+    <div class="extra">
+        <a class="close" href="javascript:void(0);"></a>
+
+        על ציר הזמן תוכלו לראות את השתלשלות האירועים שהובילה לקמפיין, להצטרף לפעולות המתוכננות ולהציע פעולות משלכם לקידום הנושא.
+
+    </div>
+</div>
+<div id="my-timeline">
+</div>
+<div id="my-timeline-button">
+    <div class="btn-box">
+        <a href="/actions/create/<%= cycle.id %>" >+ הצע פעולה חדשה</a>
+    </div>
+</div>
+
+
+<div class="cycle_hidden_parts followers-box cycle">
+    <div class="extra holds_the_timeline">
+        <div class="tabs-box">
+        </div>
+        <div class="btn-box">
+            <a href="/actions/create/<%= cycle.id %>" >+ הצע פעולה חדשה</a>
+        </div>
+    </div>
+</div>
+<div  class="cycle_hidden_parts comments-box">
+    <div class="extra cf">
+        <div class="updates-box cf">
+            <div class="right">
+                <h2>עדכונים</h2>
+                <div class="updates">
+                </div>
+            </div>
+            <div class="left">
+                <h2>פעולות הממתינות לאישור</h2>
+                <div class="anticipation-box">
+                    <a href="../actions/cycle/<%=cycle._id%>" class="btn">הראה לי את כולן</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="updates-box cf">
+            <div class="right" style="width: 642;overflow: hidden">
+
+                <div class="fb-comments"  data-href="http://www.uru.org.il/cycles/<%= cycle.id %>"  data-num-posts="3" data-width="642" colorscheme="light" > </div>
+            </div>
+            <div class="left">
+                <h2>מובילי דעת קהל</h2>
+
+
+                <% if (cycle.opinion_shapers) for (var c = 0; c<cycle.opinion_shapers.length && c<3 ; c++) { %>
+                <div class="one <% if (c==2) {%>last<% }%> ">
+
+                    <div class="img-box" style="overflow: hidden;">
+                        <a href="/myuru/<%=cycle.opinion_shapers[c].user_id._id%>">
+                            <div style="width:112px;height:120px; overflow:hidden; " class='auto-scale' >
+                                <img  src="<%=cycle.opinion_shapers[c].user_id.avatar_url %>" alt=""/>
+                                <span class="fillter"></span>
+                            </div>
+                            <span></span>
+                        </a>
+                    </div>
+                    <h4 class="opinion_shaper"><a href="/myuru/<%=cycle.opinion_shapers[c].user_id._id%>"><%=cycle.opinion_shapers[c].user_id.first_name %> <%=cycle.opinion_shapers[c].user_id.last_name %></a></h4>
+                    <p class="opinion_shaper"><% if (cycle.opinion_shapers[c].text) {%>  <%=cycle.opinion_shapers[c].text %>  <% } %></p>
+                    <div class="badges">
+                        <div class="proxy">
+                            <span><%=cycle.opinion_shapers[c].user_id.num_of_proxies_i_represent %></span>
+                        </div>
+                        <div class="respect">
+                            <span><%=cycle.opinion_shapers[c].user_id.score %></span>
+                        </div>
+                    </div>
+                </div>
+                <% }%>
+            </div>
+        </div>
+
+
+
+
+        <div class="followers-ppl cf" id="followers">
+            <h2>עוקבים</h2>
+
+        </div>
+
+    </div>
+
+</div>
+<!--<div class="cycle_join_tooltip">
+    <p class="cycle_tooltip_text">
+        לקידום הנושא ולקבלת עדכונים על המשך הפעילות לחצו כאן
+    </p>
+</div>-->
+
+
+
+
+
+
+<% include partials/footer.ejs %>
+
+
+<script type="text/javascript">
+
+//cycle new
+var current_section=2;
+
+var _main=$(document).ready( function () {
+    jQuery.easing.def = "easeOutCirc";
+    var my_id = "<%=user_logged ? user._id : ''%>";
+    var cycle_id = "<%=cycle.id%>";
+
+    var cycle_title = "<%=cycle.title%>";
+    var user = "<%=cycle.id%>";
+    var sharepop = <%=share%>;
+    var join = <%=join%>;
+
+    var timeline_src="<%=cycle.timeline_embed%>";
+
+    var social_fb_liker_title = "<%= cycle.social_popup.fb_liker_title || 'שמחים על הצטרפותך למאבק' %>" ;
+    var social_fb_liker_text = "<%= cycle.social_popup.fb_liker_text || 'כדי לקבל עדכונים על קמפיין זה ועל מאבקים נוספים שמובילה תנועת עורו כדאי להירשם דרך חשבון הפייסבוק. כך גם תסייעו לנו ליצור את הגיבוי הציבורי הנדרש לעשייה זו. תמיכתכם חיונית!' %>"   ;
+
+    var social_new_atzuma_user_title = "<%= cycle.social_popup.new_atzuma_user_title || 'שמחים על הצטרפותך למאבק' %>" ;
+    var social_new_atzuma_user_text = "<%= cycle.social_popup.new_atzuma_user_text || 'להשלמת המהלך, נשאר לך רק לאשר את חתימתך במייל. אחרי האישור, כדאי לשתף ברשתות החברתיות ולהזמין חברים להצטרף למאבק - רק כך ניצור לחץ ציבורי רחב ואפקטיבי שיוביל לשינוי. שני קליקים מצדך יעשו את ההבדל!' %>"   ;
+
+
+    //set mail subject for social popup
+    window.vars={};
+    window.vars.object_id = "<%=cycle.id%>";
+    window.vars.mail_subject = "הצטרפתי לקידום הפעילות בנושא "
+            + cycle_title
+            + ". מה איתך?"
+    window.vars.mail_subject = encodeURIComponent(window.vars.mail_subject);
+    window.vars.mail_body = "החלטתי לקחת חלק בפעילות של תנועת עורו בתחום"
+            + " "
+            + cycle_title
+            + ". גם לך חשוב לקדם את הנושא? אם כן, אפשר לקבל פרטים נוספים, להצטרף ולתמוך באתר עורו. אשמח לראות אותך שם! "
+            + "http://www.uru.org.il/cycles/"
+            + cycle_id;
+    window.vars.mail_body = encodeURIComponent(window.vars.mail_body);
+
+    <%
+    if (user_logged&&proxy) { %>
+        var proxy = JSON.parse('<%-proxy%>');
+    <%
+    } else { %>
+        var proxy = [];
+    <%
+    }
+    %>
+
+    $('#comments').on('click', '#add_or_remove_proxy', function (e) {
+        var userData = $(this).parents('.comment-one');
+        var proxyId = userData.data('creator_id');
+        var userName = userData.data('creator_name');
+        e.preventDefault();
+
+        if(!my_id){
+            popupProvider.showLoginPopup({}, function(err, result){
+                if(!err)
+                    window.location = window.location + '?user_name=' + userName + '&proxy_id=' + proxyId + '&post_id=' + post_id;
+            });
+        }else{
+            proxyCommon.addOrRemoveProxy(proxy, proxyId, userName, my_id, function(newProxy){
+                proxy = newProxy.proxy;
+            })
+        }
+
+
+    });
+
+    $(".tabs .right").click(function(){
+        $(".tabs .left").removeClass('front').removeClass('open');
+        if( $(this).hasClass('open'))
+        {
+            closeTabs();
+            $(this).removeClass('open')
+        }
+        else
+        {
+            $(this).addClass('open').addClass('front');
+
+            $('.popular-comments .hide-box').slideDown();
+            $(".popular-comments .hide-box #comments").show();
+            $(".popular-comments .hide-box #info_items").hide();
+        }
+
+    });
+
+    $(".tabs .left").click(function(){
+        $(".tabs .right").removeClass('front').removeClass('open');
+        if( $(this).hasClass('open'))
+        {
+            closeTabs();
+            $(this).removeClass('open')
+        }
+        else
+        {
+            $(this).addClass('open').addClass('front');
+            $(".tabs .right").removeClass('front');
+            $('.popular-comments .hide-box').slideDown();
+            $(".popular-comments .hide-box #comments").hide();
+            $(".popular-comments .hide-box #info_items").show();
+            $('.mb-left').click();
+        }
+    });
+
+
+    function   closeTabs(){
+        $(".tabs .tab").removeClass('active');
+        $('.popular-comments .hide-box').slideUp();
+    }
+
+    $('.mb-inside').live("click", function(){
+        window.location.href = '/information_items/'+$(this).parent().attr('item-id');
+    });
+
+
+    $(".inline").colorbox({ inline: true, width: "730" });
+
+    $('.popular-comments .user-right').hover(function () {
+        $(this).toggleClass('hover');
+    });
+    $('.comments-box .comment-one .user-right').hover(function () {
+        $(this).toggleClass('hover');
+    });
+
+    $('.hide-box').hide();
+    $('.popular-comments .top a').click(function () {
+        $(this).parents('.popular-comments').find('.hide-box').slideToggle();
+        $(this).parents('.popular-comments').toggleClass('hover');
+        return false;
+    });
+
+
+
+
+    db_functions.getCycleShoppingCart(cycle_id, function ( err,data) {
+
+        if( data.objects.length>0)
+        {
+            $(".add-offer-small .tab.left").show()
+        }
+        $.each(data.objects, function (index, item) {
+            dust.render('cycle_information_item', item, function (err, out) {
+                $('#slider').append(out);
+            });
+        });
+
+        $('#info_items #slider').movingBoxes({
+            /* width and panelWidth options deprecated, but still work to keep the plugin backwards compatible
+             width: 500,
+             panelWidth: 0.5,
+             */
+
+            initAnimation :false,
+            fixedHeight :true,
+            reducedSize :1,
+            startPanel   : 1,      // start with this panel
+            wrap         : true,   // if true, the panel will "wrap" (it really rewinds/fast forwards) at the ends
+            buildNav     : true,   // if true, navigation links will be added
+            navFormatter : function(){ return "&#9679;"; } // function which returns the navigation text for each panel
+
+
+
+        });
+
+        /*
+         $('.slide-c')
+         .after('<div id="nav2">')
+         .cycle({
+         fx: 'turnDown',
+         speed: 'fast',
+         timeout: 0,
+         pager: '#nav2',
+         next: '#next',
+         prev: '#prev'
+         });
+         if (data.objects.length < 2) {
+         $("#prev").hide();
+         $("#next").hide();
+         }
+         */
+
+    });
+
+    db_functions.getCycleUpdates(cycle_id, function (err, data) {
+
+//                        $.each(data.objects, function (index, item) {
+//                            if(!item.text_field_preivew){
+//                                item.text_field_preview = item.text_field.trim().substring(0, 300).split(" ").slice(0, -1).join(" ") + "... ";
+//                            }
+//                        });
+        dust.renderArray('cycle_update', data.objects.splice(0,3), function (err, out) {
+            $('.updates').append(out);
+
+        });
+    });
+
+    timeline.render(cycle_id, cycle_title, null);
+    //timeline.addTabEvents(cycle_title);
+
+    db_functions.getPendingActionsByCycle(cycle_id, 4, function ( data,err) {
+
+        dust.renderArray('cycle_pending_action', data.objects, function (err, out) {
+            $('.anticipation-box').prepend(out);
+
+        });
+    });
+
+    var killScroll = false;
+    var followersPage=0;
+    var pending = false;
+    getFollowers();
+
+    function getFollowers()
+    {
+        if(pending)
+        {
+            return;
+        }
+        pending=true;
+
+        db_functions.getCylceFollowers(cycle_id, followersPage,function ( data) {
+
+            followersPage++;
+            pending=false;
+
+            if(data.meta.total_count <= 21) {
+                killScroll = true;
+            } else {
+                killScroll = false;
+            }
+            dust.renderArray('cycle_follower', data.objects, function (err, out) {
+                $('#followers').append(out);
+            });
+        });
+    }
+    // Detect that we are at bottom of page, and call autoloading function
+    $(window).scroll(function(){
+        if  ($(window).scrollTop()+100 >= ($(document).height() - ($(window).height()))){
+            if (killScroll == false) { // - Keeps the loader from fetching more than once.
+                killScroll = true; // - Set killScroll to true, to make sure we do not trigger this code again before it's done running.
+                getFollowers();
+            }
+        }
+    });
+
+    $('#read_more').click(function () {
+        $(".cycle-content").height("auto");
+        $(this).hide();
+    });
+
+    $('.hide-box').on('mouseenter', ".side_menu",
+            function (e) {
+                $(this).addClass('hover');
+                $('.left', this).show().css({width:0}).animate({'width':87});
+
+            }).on('mouseleave', ".side_menu", function (e) {
+                var side = $(this);
+                side.removeClass('hover');
+                $('.left', this).animate({'width':0}, function () {
+                    $(this).hide();
+                });
+            });
+
+    db_functions.getCyclePosts(cycle_id, function (err,data) {
+
+        if( data.meta.total_count>0)
+        {
+            $(".add-offer-small .tab.right").show()
+        } else{
+            return;
+        }
+        for (i = 0; i < data.objects.length; i++) {
+            data.objects[i].isFirst = (i === 0);
+            data.objects[i].isEven = ((i % 2)== 0);
+            data.objects[i].voting = data.objects[i].votes_for - data.objects[i].votes_against;
+            if(i == data.objects.length-1 || data.objects[i].discussion_id != data.objects[i+1].discussion_id )
+            {
+                data.objects[i].discussion_button=true;
+            }
+        }
+        dust.renderArray('cycle_post', data.objects, function (err, out) {
+            $('.hide-box #comments').append(out);
+        });
+    });
+
+    $('.hide-box').on('click', '.vote_for', function () {
+        vote.apply($(this),['add']);
+    });
+
+    $('.hide-box').on('click', ".vote_against", function () {
+        vote.apply($(this),['remove']);
+    });
+
+
+    function vote(actionType){
+        var post_id = $(this).parents('.one').data("id");
+        var button = $(this);
+
+        var user_info = {
+            user_logged_in : user.first_name ? true : false,
+            action_done : (user.actions_done_by_user && user.actions_done_by_user.vote_on_object) ? true : false,
+            action_name : "vote_on_object",
+            tokens_owned : user.tokens ? user.tokens : 0,
+            price: gamification_price['vote_on_action_post']
+        }
+        db_functions.voteForPost(post_id, actionType, user_info, function (err, post_obj) {
+            if (!err) {
+                if(!user.actions_done_by_user.vote_on_object)
+                {
+                    user.actions_done_by_user.vote_on_object = true;
+                }
+                button.parents(".ratio").find(".count").text(Math.round(post_obj.votes_for-post_obj.votes_against ));
+                var down_arrow = button.parents(".ratio").find(".down");
+                var up_arrow =button.parents(".ratio").find(".up");
+                down_arrow.removeClass("balance0").removeClass("balance1").removeClass("balance2").removeClass("balance3").removeClass("balance-1").removeClass("balance-2").removeClass("balance-3").addClass("balance"+post_obj.voter_balance);
+                up_arrow.removeClass("balance0").removeClass("balance1").removeClass("balance2").removeClass("balance3").removeClass("balance-1").removeClass("balance-2").removeClass("balance-3").addClass("balance"+post_obj.voter_balance);
+            }
+            else {
+                if (err.responseText == 'Error: there is not enought tokens')
+                    popupProvider.showOkPopup( {message:     'אין לך מספיק אסימונים'});
+                if (err.responseText == 'user already voted for this post')
+                    popupProvider.showOkPopup( {message:     'באפשרותך לתת עד שלושה אסימונים לתגובה בדיון'});
+                if (err.responseText == 'soory, can\'t vote to your own post')
+                    popupProvider.showOkPopup( {message:     'מצטערים, לא ניתן להצביע לתגובה של עצמך'});
+            }
+        })
+    }
+
+    $('.followers-diagram .event .icon').live("hover", function(){
+        //  console.log('elip');
+        $(this).find('.popup-text').ellipsis();
+    });
+    $('.followers-diagram .event .green-icon .popup-event').live('click',function(){
+        window.location.href = '/updates/'+$(this).attr('item-id');
+    });
+
+    $('.followers-diagram .event .blue-icon .popup-event').live('click',function(){
+        window.location.href = '/actions/'+$(this).attr('item-id');
+    });
+
+    $('.infoBox').live('click',function(){
+        var box = $(this)[0].getElementsByClassName('popup-event')[0];
+        window.location.href = '/actions/' + box.getAttribute('item-id');
+    });
+
+    $('.holds_the_timeline').on("click",'.join-btn', function(e){
+        e.preventDefault();
+        var action_id = $(this).attr('item-id');
+
+        var user_info = {
+            user_logged_in : user.first_name ? true : false,
+            action_done : (user.actions_done_by_user && user.actions_done_by_user.join_to_object) ? true : false,
+            action_name : "join_to_object",
+            tokens_owned : user.tokens ? user.tokens : 0,
+            price: gamification_price['join_to_action']
+        }
+        db_functions.joinOrLeaveAction(action_id, user_info, function(err,data){
+            if(err){
+                console.log(err) ;
+            }
+        })
+    });
+
+
+
+    /*       $('.join-btn').click(function(e){
+     e.preventDefault();
+     var action_id = $(this).attr('item-id');
+     db_functions.joinOrLeaveAction(action_id,function(err,data){
+     if(err){
+     console.log(err) ;
+     }
+     else{
+     setJoinBT(data);
+     }
+     })
+     });
+     */
+
+    //click on the action blue icon goes to action
+    $('.holds_the_timeline').on("click",'.blue-icon', function(e){
+        e.preventDefault();
+        var action_id = $(this).find(".type-one").attr("item-id");
+        window.location.replace("/actions/" + action_id);
+    });
+
+    //click on the update green icon goes to action
+    $('.holds_the_timeline').on("click",'.green-icon', function(e){
+        e.preventDefault();
+        var update_id = $(this).find(".type-two").attr("item-id");
+        window.location.replace("/updates/" + update_id);
+    });
+
+    $('.followers-diagram').on("mouseenter", ".icon", function(e){
+        e.preventDefault();
+        var popup_event = $(this).children('.popup-event');
+        popup_event.stop(true, true);
+        popup_event.show();
+    });
+
+    $('.followers-diagram').on("mouseleave", ".icon", function(e){
+        e.preventDefault();
+        var popup_event = $(this).children('.popup-event');
+        popup_event.fadeOut(2000);
+    })
+
+    //
+    //.popup-event
+    //$('.popup-text').live("hover", function(){
+    //   alert("Goodbye!"); });
+    // $('.popup-text').ellipsis();
+    //.popup-event
+    /*
+     $('.green-btn').click(function(){
+     var button = $(this);
+     //button.text('...');
+
+     db_functions.joinToCycleFollowers(cycle_id, function(err, result){
+     //  button.text(result.is_follower ? "הפסק לעקוב" : "אני בעד");
+     //button.text('');
+     $('#followers_count strong').text(result.followers_count);
+     $(".green-btn").hide();
+     $(".share-btn").show();
+
+     // if(result.is_follower){
+     share() ;
+
+     // }
+     })
+     });
+
+     $('.share-btn').click(share);
+
+
+
+
+
+     $(".<%= cycle.is_user_follower_of_cycle ? "share-btn":"green-btn" %>").show();
+     */
+
+    if(join){
+        if(my_id!='') {
+            db_functions.joinToCycleFollowers(cycle_id,true, function(err, result){  window.location.href = window.location.href.replace('join','share') ;} );
+        }  else  {
+            facebookLogin(function(err, result){
+                if(!err){
+                    window.location.href = window.location.href.replace('join','share') ;
+                }else{
+                    db_functions.joinToCycleFollowers(cycle_id,true, function(err, result){  window.location.href = window.location.href.replace('join','share') ; } );
+                }
+            })
+        }
+
+
+
+    }
+
+
+    var button_minified=false;
+    <%= cycle.is_user_follower_of_cycle ? "minifyButton(1)":"" %>
+
+
+
+
+    if(sharepop){
+
+        //$('.blue-box').text(result.followers_count);
+        // minifyButton(350);
+        setTimeout(share,300) ;
+
+    }
+
+
+    function minifyButton(speed) {
+        button_minified=true;
+        var w =  $('a.iconbutton').width()-18;
+        $('a.iconbutton span.button_inner').css('min-width',w).css('position','relative');
+        $('a.iconbutton span.button_inner span').html('&nbsp;&nbsp;');
+        $('a.iconbutton span.button_inner span')
+                .css('position','absolute')
+                .css('width',w)
+                .css('right','0')
+                .css('top','6px');
+        $('a.iconbutton span.button_inner').animate({
+            'min-width': 15 ,
+
+        }, speed, function() {
+            $('a.iconbutton span.button_inner span').css('width',0);
+            $('a.iconbutton').addClass('minified') ;
+        });
+        $('a.iconbutton').removeAttr("title");
+        $('a.iconbutton').css("cursor","default");
+        $('a.iconbutton').animate({
+            left:150
+        },speed);
+
+    }
+
+    function share()
+    {
+        setTimeout(function(){
+            $('#box-share,#screen').show();
+            //$('#social-popup-mail').attr("href", "mailto:?subject=" + mail_subject + "&body=" + mail_body);
+            $('#close').click(function(){
+                $('#box-share,#screen').hide();
+                var aTag = $("a[name='timeline']");
+                $('html,body').animate({scrollTop: aTag.offset().top},'slow');
+            })
+        }, 100);
+        return false;
+    }
+    $("#cycle .sharing .facebook_sh").on('click', facebookShare)   ;
+    $('#cycle .sharing .twitter').on('click', twitterShare);
+    $('#cycle .sharing .email').on('click', function(){
+        $("#cloudsponge_2").slideToggle();
+    });
+
+    $('#cloudsponge_2 a').on('click', function(){
+        $("#cloudsponge_2").slideToggle();
+    });
+
+    $('a.mb-scrollButtons').dblclick(function(event) {
+        event.isPropagationStopped() ;
+    });
+
+    $('.system-notice .close').click(function () {
+
+        $(this).parents('.system-notice').fadeOut(800);
+    });
+
+    window.vars.afterLogin  =  function () {
+
+        console.log("loggedin");
+        //  window.location = window.location + '?user_name=' + userName + '&proxy_id=' + proxyId + '&post_id=' + post_id;
+        // window.location = window.location+ '?share=true'
+        window.location.href = window.location.href  + '?share=true'    ;
+
+    }
+
+            <%= (cycle._id=='5098eb8bc492d10200000024' &&  !cycle.is_user_follower_of_cycle)? "":"$('.cycle_hidden_parts').show();" %>
+            $('#readmore').click(function() {
+                $('.cycle_hidden_parts').show();
+                $('.cycle_banner').hide();
+            } );
+
+    $('#join').click(function() {
+        $('.cycle_hidden_parts').show();
+        $('.cycle_banner').hide();
+        $('#cycle .iconbutton').click();
+    } );
+
+
+    if( $(location).attr('href').indexOf('new')!=-1){
+        $(".sb-top .sb-title").text(social_new_atzuma_user_title);
+        $(".sb-top .sb-text").text(social_new_atzuma_user_text);
+        var d=0;
+    }
+
+
+    <% if (cycle.id == '508026e8cb2276020000001f'){%>
+        $("#followers_count span").text("כבר חתמו והצטרפו לדרישה לממשלה קטנה ויעילה");
+
+
+    <% } %>
+    <% if ( !user_logged || (user_logged && !cycle.is_user_follower_of_cycle) ){%>
+
+        $(".iconbutton1").click( function(){
+
+
+            var fb_param = {};
+            fb_param.pixel_id = '6005510697475';
+            fb_param.value = '0.00';
+            (function(){
+                var fpw = document.createElement('script');
+                fpw.async = true;
+                fpw.src = (location.protocol=='http:'?'http':'https')+'://connect.facebook.net/en_US/fp.js';
+                var ref = document.getElementsByTagName('script')[0];
+                ref.parentNode.insertBefore(fpw, ref);
+            })();
+
+
+            $("#email_err").hide();
+            $("#name_err").hide();
+            $("#fb_err").hide();
+            var email =$('#email').val();
+            var name =$('#name').val();
+            var pass =$('#pass').val();
+            if(validateEmail(email))
+            {
+                db_functions.getUserbyEmail(email,function(err,data){
+                    var registered_fb=false;
+                    var registered_normal=false;
+                    $.each(data.objects, function(index, user) {
+                        if (user.identity_provider=="register") {
+                            registered_normal=true;
+                        }
+                        if (user.identity_provider=="facebook") {
+                            registered_fb=true;
+                        }
+                    });
+                    if(registered_fb)  {
+                        $("#fb_err").text("כבר נרשמת בעבר לעורו באמצעות פייסבוק. לחץ כאן לחתימה").show();
+                    } else if(registered_normal) {
+                        if (pass==''){
+                            $("#email_err").text("כבר נרשמת בעבר לעורו, אנא הקלד סיסמה לחתימה").show();
+                            $("#pass").show();
+                            $(".iconbutton").css('left','-100px');
+                        } else {
+                            db_functions.login(email,pass, function(err, result){
+                                if(err){
+                                    $("#email_err").text("מייל וסיסמה לא תואמים, יש לנסות שוב").show();
+                                }
+                                else{
+                                    window.location.href = '/cycles/'+cycle_id+'?join=true'    ;
+                                }
+                            });
+                        }
+                    } else{
+                        if(validateName(name))
+                        {
+                            db_functions.register(name , email,  cycle_id ,function(err,data){
+                                window.location.href = '/cycles/'+cycle_id+'?share=true&new=true'    ;
+                            })
+                        } else{
+                            $("#name_err").text("נא להזין שם מלא").show();
+                        }
+                    }
+
+                });
+            }else{
+                $("#email_err").text("יש להקיש את כתובת המייל בפורמט user@example.com").show();
+            }
+        });
+
+        window.vars={};
+        window.vars.afterLogin  =  function () {
+            window.location.href = '/cycles/'+cycle_id+'?join=true';
+        }
+        $(".iconbutton").hide();
+        $(".iconbutton1").show();
+
+        $(".sharing").hide();
+
+    <% }else{ %>
+
+        $('#cycle .iconbutton').click(function(){
+            if (!button_minified)
+            {
+                db_functions.joinToCycleFollowers(cycle_id,true, function(err, result){
+                    minifyButton(350);
+                    setTimeout(share,300) ;
+                } );
+            }
+        });
+    <% } %>
+
+    if(timeline_src && timeline_src!='undefined' && timeline_src!=''){
+        $(".followers-box").hide() ;
+        $("#my-timeline-button").show() ;
+
+        var start_slide=getURLParameter('timeline_default_slide')|| 0;
+
+
+        createStoryJS({
+            type:       'timeline',
+            width:      '980',
+            height:     '500',
+            lang:               'iw',                           //OPTIONAL LANGUAGE
+            source:    timeline_src,
+            css:                '/css/timeline.css',     //OPTIONAL PATH TO CSS
+            font:               'Arial',             //OPTIONAL FONT
+            start_at_slide:     start_slide,                            //OPTIONAL START AT SPECIFIC SLIDE
+            start_zoom_adjust:  '-2',                            //OPTIONAL TWEAK THE DEFAULT ZOOM LEVEL
+            embed_id:   'my-timeline'
+
+            /*
+             https://github.com/VeriteCo/TimelineJS
+
+             width:              '100%',
+             height:             '600',
+             source:             'path_to_json/or_link_to_googlespreadsheet',
+             embed_id:           'timeline-embed',               //OPTIONAL USE A DIFFERENT DIV ID FOR EMBED
+             start_at_end:       false,                          //OPTIONAL START AT LATEST DATE
+             start_at_slide:     '4',                            //OPTIONAL START AT SPECIFIC SLIDE
+             start_zoom_adjust:  '3',                            //OPTIONAL TWEAK THE DEFAULT ZOOM LEVEL
+             hash_bookmark:      true,                           //OPTIONAL LOCATION BAR HASHES
+             font:               'Bevan-PotanoSans',             //OPTIONAL FONT
+             debug:              true,                           //OPTIONAL DEBUG TO CONSOLE
+             lang:               'fr',                           //OPTIONAL LANGUAGE
+             maptype:            'watercolor',                   //OPTIONAL MAP STYLE
+             css:                'path_to_css/timeline.css',     //OPTIONAL PATH TO CSS
+             js:                 'path_to_js/timeline-min.js'    //OPTIONAL PATH TO JS
+             */
+
+        });
+    }
+
+    $('#my-timeline a').live("click", function(){
+        var href = $(this).attr('href');
+        if(href.indexOf("<a")!=-1){
+            var tmp = document.createElement("DIV");
+            tmp.innerHTML = href;
+            href=  tmp.textContent || tmp.innerText;
+            window.location.href = href;
+            return false;
+        }
+    });
+
+    function getURLParameter(name) {
+        return decodeURI(
+                (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+        );
+    }
+
+
+    $(".fb-like-box iframe").live('mouseout' ,function(){
+        setTimeout(function(){
+            db_functions.getCyclesById(cycle_id,true,function(object, err){
+                 var elapsed =   object.last_update_elapsed;
+                 console.log(elapsed);
+
+                if(elapsed<10){
+                    $(".sb-top .sb-title").text(social_fb_liker_title);
+                    $(".sb-top .sb-text").text(social_fb_liker_text);
+                    $(".sb-title .facebook_join").show();
+
+                    share();
+                }
+            });
+        },1500);
+     });
+
+
+
+    $("#fb_ajax_conncect").live('click', function(){
+        facebookLogin(function(err, result){
+            if(err) {
+                /*
+                 $(document).one('cbox_closed', function(){
+                 callback(err, result);
+                 });
+                $.colorbox.close();*/
+
+            }else{
+                window.location.reload() ;
+            }
+        })
+    })
+
+
+});
+
+</script>
+</body>
+</html>

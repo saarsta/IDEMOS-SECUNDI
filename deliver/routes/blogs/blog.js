@@ -14,11 +14,7 @@ module.exports = function (req, res) {
 
                async.parallel([
                    function(cbk){
-                       if(req.user)
-                           models.User.findById(req.session.user._id, cbk);
-                       else
-                           cbk(null, null);
-
+                       cbk(null, req.user);
                    },
 
                     function(cbk){

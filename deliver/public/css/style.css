@@ -2701,7 +2701,7 @@ color: #ff00af;
 #read_more {
     text-align: left;
     position: relative;
-    top: 25px;
+    background-color: #fff;
 }
 
 .extended #read_more {
@@ -9521,7 +9521,7 @@ div.greenbutton a:hover {
 div.icons {
     position: absolute;
     left: 239px;
-    bottom: 21px;
+    bottom: -30px;
 }
 
 div.icons img {
@@ -9577,7 +9577,8 @@ div.icons img {
 
 .sb-text {
     text-align: center;
-
+    position: absolute;
+    top:140px;
     font: 14pt 'AdumaFOTRegular';
 }
 
@@ -10294,3 +10295,24 @@ change .current class name using plugin option, currentPanel : 'current' */
 
 /* Email Setings Page - End*/
 
+a.facebook_join
+{
+
+    background: url(../images/URU_FB_Connect_btn_sprite.png) 0 0 no-repeat;
+    height: 42px;
+    width: 230px;
+    margin: 0 auto;
+}
+
+a.facebook_join:hover
+{
+    background: url(../images/URU_FB_Connect_btn_sprite.png) 0 -42px no-repeat;
+}
+a.facebook_join:active
+{
+    background: url(../images/URU_FB_Connect_btn_sprite.png) 0 -84px no-repeat;
+}
+
+.sb-title   a.facebook_join{
+    display: none;
+}

@@ -10,8 +10,7 @@ module.exports = {
 
         var user_id = req.query.id;
         var code = req.query.code;
-        var next = req.query.next;
-        var email = req.session.user && req.session.user.email;
+        var email = req.user && req.user.email;
 
         async.waterfall([
             function(cbk) {

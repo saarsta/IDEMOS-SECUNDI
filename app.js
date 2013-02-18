@@ -23,6 +23,9 @@ var DB_URL = process.env.MONGOLAB_URI || 'mongodb://localhost/uru';
 var ROOT_PATH = process.env.ROOT_PATH || 'http://dev.empeeric.com';
 var is_process_cron = (process.argv[2] == 'cron');
 var is_process_web = !is_process_cron;
+
+
+
 var s3_creds = {
     key: 'AKIAJM4EPWE637IGDTQA',
     secret: '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',
@@ -85,6 +88,10 @@ app.set('view engine', 'jade');
 app.set('view options', { layout: false });
 
 
+process.on('uncaughtException', function(err) {
+    console.error(err.stack || err);
+});
+require('formage-admin').forms.serve_static(app, express);
 
 app.use(express.static(app.settings.public_folder));
 app.use(express.errorHandler());
@@ -168,6 +175,9 @@ utils.setShowOnlyPublished(app.settings.show_only_published);
 if (is_process_cron) {
     var cron = require('./cron');
     cron.run(app);
+} else{
+    var cron = require('./cron');
+    cron.run_main_thread(app);
 }
 
 

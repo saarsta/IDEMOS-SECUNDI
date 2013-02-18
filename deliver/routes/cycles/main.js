@@ -64,7 +64,8 @@ module.exports = function(req, res){
                 'sub_branding': 1,
                 'social_popup_title': 1,
                 'social_popup_text': 1    ,
-                    'timeline_embed':1
+                'timeline_embed':1,
+                'fb_page':1
 
             })
             .populate('opinion_shapers.user_id', {
@@ -89,11 +90,7 @@ module.exports = function(req, res){
 
         // get the user object
         function (cbk) {
-            if (req.session.user)
-                models.User.findById(req.session.user._id, cbk);
-            else {
-                cbk(null, null);
-            }
+            cbk(null, req.user);
         }
 
        //final - render the cycle page
@@ -109,19 +106,20 @@ module.exports = function(req, res){
             g_cycle = args[0];
             _.each(g_cycle.opinion_shapers, function(opinion_shaper){ if(opinion_shaper.user_id)  opinion_shaper.user_id.avatar_url = opinion_shaper.user_id.avatar_url();});
 
-            var users = args[1] || [];
+            var folowers = args[1] || [];
 
             var proxyJson = args[3] ? JSON.stringify(args[3].proxy) : null;
-            var user_id = req.session.user ?  req.session.user._id + "" : 0;
+            var user_id = req.user ? req.user.id : 0;
 
             if(g_cycle && g_cycle.main_subject)
                 g_cycle.subject_name = g_cycle.main_subject.name;
-            g_cycle.is_user_follower_of_cycle = _.any(users, function(user){return user._id + "" == (req.session.user ? req.session.user._id : 0)});
+            g_cycle.is_user_follower_of_cycle = folowers.some(function(folower) {return folower.id == user_id});
             var description = g_cycle.text_field_preview || g_cycle.text_field;
             var no_tags_description = description.replace(/(<([^>]+?)>)/ig,"");
 
-
-            res.render('cycle.ejs',{
+            var view =   g_cycle.id==   '5047023a9e56a502000014f5'?   'cycle_new.ejs' : 'cycle.ejs'  ;
+             console.log(view)  ;
+            res.render(view,{
                 cycle: g_cycle,
                 tab:'cycles',
                 type: 'cycle',

@@ -26,7 +26,7 @@ discussion_google_to_objid.mapping = {
 
 
 module.exports = function(req, res) {
-    var user = req.session.user;
+    var user = req.user;
     if (!user) {
         res.json(403 , "not_loged_in");
         return;

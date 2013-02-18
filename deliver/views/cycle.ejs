@@ -480,9 +480,7 @@
 
 <script type="text/javascript">
 var current_section=2;
-var fb_param = {};
-fb_param.pixel_id = '6005510697475';
-fb_param.value = '0.00';
+
 
     var _main=$(document).ready( function () {
         jQuery.easing.def = "easeOutCirc";
@@ -985,13 +983,16 @@ fb_param.value = '0.00';
          /////////////////pixel code
 
 
-                    var fpw = document.createElement('script');
-                    fpw.async = true;
-                    fpw.src = (location.protocol=='http:'?'http':'https')+'://connect.facebook.net/en_US/fp.js';
-                    var ref = document.getElementsByTagName('script')[0];
-                    ref.parentNode.insertBefore(fpw, ref);
+                $('<iframe id="contact_sent"/>')
+                        .attr('src', 'http://www.uru.org.il/pixel.html')
+                        .css('display', 'none')
+                        .load(function () {
+                            $('#contact_sent').remove();
+                        })
+                        .appendTo(document.body);
 
-         /////////////////pixel code end
+
+                /////////////////pixel code end
 
 
 
@@ -1047,14 +1048,16 @@ fb_param.value = '0.00';
 
 
 
-        if($(location).attr('href').indexOf('new')!=-1){
-            $(".sb-top .sb-title").text("שמחים על הצטרפותך לדרישה לממשלה קטנה ויעילה");
-            $(".sb-top .sb-text").text("עכשיו רק נשאר שתאשר את הרשמתך במייל ששלחנו לך. כדאי גם לשתף ברשתות החברתיות ולהזמין את חבריך להצטרף לדרישה. כך ניצור יחד לחץ ציבורי רחב ואפקטיבי ");
-            var d=0;
-        }
 
         <% if (cycle.id == '508026e8cb2276020000001f'){%>
             $("#followers_count span").text("כבר חתמו והצטרפו לדרישה לממשלה קטנה ויעילה");
+
+            if($(location).attr('href').indexOf('new')!=-1){
+                $(".sb-top .sb-title").text("שמחים על הצטרפותך לדרישה לממשלה קטנה ויעילה");
+                $(".sb-top .sb-text").text("עכשיו רק נשאר שתאשר את הרשמתך במייל ששלחנו לך. כדאי גם לשתף ברשתות החברתיות ולהזמין את חבריך להצטרף לדרישה. כך ניצור יחד לחץ ציבורי רחב ואפקטיבי ");
+                var d=0;
+            }
+
         <% } %>
         <% if (cycle.id == '508026e8cb2276020000001f' && !user_logged){%>
 
@@ -1138,6 +1141,9 @@ fb_param.value = '0.00';
             $(".followers-box").hide() ;
             $("#my-timeline-button").show() ;
 
+             var start_slide=getURLParameter('timeline_default_slide')|| 0;
+
+
             createStoryJS({
                 type:       'timeline',
                 width:      '980',
@@ -1146,12 +1152,12 @@ fb_param.value = '0.00';
                 source:    timeline_src,
                 css:                '/css/timeline.css',     //OPTIONAL PATH TO CSS
                 font:               'Arial',             //OPTIONAL FONT
+                start_at_slide:     start_slide,                            //OPTIONAL START AT SPECIFIC SLIDE
                 start_zoom_adjust:  '-2',                            //OPTIONAL TWEAK THE DEFAULT ZOOM LEVEL
                 embed_id:   'my-timeline'
 
-                /*
+/*
                  https://github.com/VeriteCo/TimelineJS
-
 
                  width:              '100%',
                  height:             '600',
@@ -1167,14 +1173,27 @@ fb_param.value = '0.00';
                  maptype:            'watercolor',                   //OPTIONAL MAP STYLE
                  css:                'path_to_css/timeline.css',     //OPTIONAL PATH TO CSS
                  js:                 'path_to_js/timeline-min.js'    //OPTIONAL PATH TO JS
-                 */
+*/
 
             });
         }
 
+        $('#my-timeline a').live("click", function(){
+            var href = $(this).attr('href');
+            if(href.indexOf("<a")!=-1){
+                var tmp = document.createElement("DIV");
+                tmp.innerHTML = href;
+                href=  tmp.textContent || tmp.innerText;
+                window.location.href = href;
+                return false;
+            }
+        });
 
-
-
+        function getURLParameter(name) {
+            return decodeURI(
+                    (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+            );
+        }
     });
 
 </script>

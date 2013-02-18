@@ -12,6 +12,7 @@ var jest = require('jest'),
     models = require('../../models'),
     common = require('../common.js'),
     async = require('async'),
+    cron = require('../../cron'),
     og_action = require('../../og/og.js').doAction,
     _ = require('underscore');
 
@@ -20,7 +21,8 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
         this._super(models.Cycle, null, 0);
         this.authentication = new common.SessionAuthentication();
         this.allowed_methods = ['get', 'put'];
-        this.filtering = { is_private:null,
+        this.filtering = {
+            is_private: null,
             'subject.id': {
                 exact:true,
                 in:true
@@ -91,7 +93,14 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
             is_follower:null,
             subject: null,
             social_popup_title: null,
-            social_popup_text: null
+            social_popup_text: null,
+            fb_page:{
+                url: null,
+                like_count:null,
+                last_update:null,
+                last_update_elapsed:null
+            }   ,
+            last_update_elapsed:null
         }
     },
 
@@ -111,28 +120,59 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
             if (object) {
                 object.is_follower = false;
                 object.discussion = object.discussions[0]; //for now we have only one discussion for cycle
-                models.User.find({"cycles.cycle_id":id}, {"_id":1, "username":1, "email":1, "first_name":1, "avatar":1, "facebook_id":1, "cycles":1}, function (err, objs) {
-                    var followers_users = [];
-                    if (!err) {
-                        object.followers_users = _.map(objs, function (user) {
-                            user.avatar = user.avatar_url();
-                            var curr_cycle = _.find(user.cycles, function (cycle) {
-                                return cycle.cycle_id == id;
-                            });
-                            return {
-                                user_id:{username:user.username, first_name:user.first_name, avatar:user.avatar, _id:user._id},
-                                join_date:curr_cycle.join_date
-                            };
+
+                async.parallel([
+                    function (cbk2) {
+                        if(req.query.fb_page_check){
+                            cron.ten_seconds_cron.fb_pages_likes(object._id, function(err, likes,last_update){
+                                var diff   = Date.now() - last_update
+                                object.last_update_elapsed = Math.floor(  diff/1000);
+                                cbk2(err)
+                            })
+                        }    else{
+                            var diff   = Date.now() - object.fb_page.last_update
+                            object.last_update_elapsed = Math.floor(  diff/1000);
+                            cbk2(null)
+                        }
+
+                    },
+
+                    function (cbk2) {
+                        models.User.find({"cycles.cycle_id":id}, {"_id":1, "username":1, "email":1, "first_name":1, "avatar":1, "facebook_id":1, "cycles":1}, function (err, objs) {
+                            var followers_users = [];
+                            if (!err) {
+                                object.followers_users = _.map(objs, function (user) {
+                                    user.avatar = user.avatar_url();
+                                    var curr_cycle = _.find(user.cycles, function (cycle) {
+                                        return cycle.cycle_id == id;
+                                    });
+                                    return {
+                                        user_id:{username:user.username, first_name:user.first_name, avatar:user.avatar, _id:user._id},
+                                        join_date:curr_cycle.join_date
+                                    };
+                                });
+                            }
+                            else
+                                object.followers_users = [];
+                            if (req.user)
+                                object.is_follower = _.any(req.user.cycles, function (cycle) {
+                                    cycle._id + "" == id + ""
+                                });
+                            cbk2(err, object);
                         });
-                    }
-                    else
-                        object.followers_users = [];
-                    if (req.user)
-                        object.is_follower = _.any(req.user.cycles, function (cycle) {
-                            cycle._id + "" == id + ""
-                        });
-                    callback(err, object);
+
+                    }], function (err, obj) {
+
+                      //  object.fb_page.last_update_elapsed =   diff/1000;
+                        callback(err, object);
+
+
                 });
+
+
+
+
+
 
             } else {
                 callback(err, object);
@@ -233,7 +273,6 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
                             user: req.user
                         });
                     }
-
 
                     object.followers_count++;
                     object.is_follower = true;
