@@ -27,56 +27,65 @@ exports = function (req, res) {
 };
 
 
-exports.facebook_register = function (req, callback) {
+var facebook_register = module.exports.facebook_register =function (req,callback) {
+
     req.authenticate("facebook", function (error, authenticated) {
         var next = req.session['fb_next'];
         var referred_by = req.session['referred_by'];
         console.log(error);
-        if (!(!error && authenticated)) {
-            console.log('can\'t authenticate with facebook');
-            return;
-        }
+        if (!error && authenticated) {
 
-        var user_detailes = req.getAuthDetails().user;
-        var access_token = req.session["access_token"];
-        var user_fb_id = req.getAuthDetails().user.id;
+            var user_detailes = req.getAuthDetails().user;
+            var access_token = req.session["access_token"];
+            var user_fb_id = req.getAuthDetails().user.id;
 
-        exports.isUserInDataBase(user_fb_id, function (is_user_in_db) {
-            if (!is_user_in_db) {
-                user_detailes.invited_by = referred_by;
-                createNewUser(user_detailes, access_token, function (_id) {
-                    req.session.user_id = _id;
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        console.log('user _id to session is ok');
-                        callback(null, true);
-                    }
-                });
-                return;
-            }
-            exports.updateUesrAccessToken(user_detailes, access_token, function (err, _id) {
-                if (err) {
-                    console.error(err);
-                    console.trace();
-                    callback(err);
+            isUserInDataBase(user_fb_id, function (is_user_in_db) {
+
+                if (!is_user_in_db) {
+//                        req.session['fb_next'] = "/account/code_after_fb_connect";
+//                        next = req.session['fb_next'];
+                    user_detailes.invited_by = referred_by;
+                    createNewUser(user_detailes, access_token, function (_id) {
+                        req.session.user_id = _id;
+//                            req.session.auth.user._id = _id; i can delete this
+                        req.session.save(function (err, object) {
+                            if (err != null) {
+                                console.log(err);
+                            } else {
+                                console.log('user _id to session is ok');
+                                callback(null,true);
+                            }
+                        });
+                    });
                 } else {
-                    req.session.auth.user._id = _id;
-                    req.session.save(function (err, object) {
-                        if (err != null) {
+                    updateUesrAccessToken(user_detailes, access_token, function (err,_id) {
+                        if(err){
                             console.error(err);
                             console.trace();
                             callback(err);
-                        } else {
-                            console.log('user _id to session is ok');
-                            callback(null, false)
-                        }
+                        }else{
+                            req.session.auth.user._id = _id;
+                            req.session.save(function (err, object) {
+                                if (err != null) {
+                                    console.error(err);
+                                    console.trace();
+                                    callback(err);
+                                } else {
+                                    console.log('user _id to session is ok');
+                                    callback(null,false)
+                                }
 
+                            });
+                        }
                     });
                 }
             });
-        });
+        }
+        else {
+            console.log('can\'t authenticate with facebook');
+        }
     });
+}
 
 
     exports.isUserInDataBase = function (user_facebook_id, callback) {
