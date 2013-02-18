@@ -490,7 +490,7 @@ function isNotiInUserMailConfig(user, noti){
         }
     }
 
-    if (noti.type === "approved_change_suggestion_on_discussion_you_are_part_of"){
+    if (noti.type === "approved_change_suggestion_on_discussion_you_are_part_of" || noti.type === "approved_change_suggestion_on_discussion_you_created"){
         // check if should get mail and when
         var discussion = _.find(user.discussions, function(discussion){ return discussion.discussion_id + "" == noti.notificators[0].sub_entity_id });
 
@@ -506,9 +506,11 @@ function isNotiInUserMailConfig(user, noti){
     // in this case we created a site notification only if user set it in the config
     if (noti.type === "new_discussion") return true;
 
-   /* if (noti.type === "update_created_in_cycle_you_are_part_of")
-        return mail_notification_configuration.get_cycles_new_updates;
-   */
+    if (noti.type === "approved_change_suggestion_you_created") return true;
+
+        /* if (noti.type === "update_created_in_cycle_you_are_part_of")
+             return mail_notification_configuration.get_cycles_new_updates;
+        */
     return false;
 }
 

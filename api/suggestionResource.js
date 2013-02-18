@@ -147,9 +147,12 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
         var disc_obj;
 
         var iterator = function (unique_user, itr_cbk) {
-            if (unique_user == user_id.id || !unique_user)
+            user_id = user_id || user_id.id;
+
+            if (unique_user  == user_id || !unique_user){
+                console.log("user should not get mail if he is the notificator");
                 itr_cbk(null, 0);
-            else {
+            } else {
                 if (discussion_creator_id == unique_user) {
                     notifications.create_user_notification("change_suggestion_on_discussion_you_created", suggestion_object._id, unique_user, user_id, discussion_id, '/discussions/' + discussion_id, function (err, results) {
                         itr_cbk(err, results);

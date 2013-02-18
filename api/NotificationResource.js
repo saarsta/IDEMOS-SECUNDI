@@ -968,8 +968,8 @@ var populateNotifications = module.exports.populateNotifications = function(resu
         "new_discussion",
        /* "change_suggestion_on_discussion_you_are_part_of",
         "change_suggestion_on_discussion_you_created",*/
-        "approved_change_suggestion_you_created",
-        "approved_change_suggestion_on_discussion_you_are_part_of",
+/*        "approved_change_suggestion_you_created",
+        "approved_change_suggestion_on_discussion_you_are_part_of",*/
         "been_quoted",
         "a_dicussion_created_with_info_item_that_you_like",
         "a_dicussion_created_with_info_item_that_you_created",
@@ -997,7 +997,10 @@ var populateNotifications = module.exports.populateNotifications = function(resu
         "comment_on_discussion_you_are_part_of",
         "comment_on_discussion_you_created",
         "change_suggestion_on_discussion_you_are_part_of",
-        "change_suggestion_on_discussion_you_created"
+        "change_suggestion_on_discussion_you_created",
+        "approved_change_suggestion_you_created",
+        "approved_change_suggestion_on_discussion_you_are_part_of"
+
     ];
 
     var discussion_ids_as_sub_entity = _.chain(results.objects)
