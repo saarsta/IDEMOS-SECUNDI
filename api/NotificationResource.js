@@ -966,10 +966,6 @@ var populateNotifications = module.exports.populateNotifications = function(resu
 
     var discussion_notification_types = [
         "new_discussion",
-       /* "change_suggestion_on_discussion_you_are_part_of",
-        "change_suggestion_on_discussion_you_created",*/
-/*        "approved_change_suggestion_you_created",
-        "approved_change_suggestion_on_discussion_you_are_part_of",*/
         "been_quoted",
         "a_dicussion_created_with_info_item_that_you_like",
         "a_dicussion_created_with_info_item_that_you_created",

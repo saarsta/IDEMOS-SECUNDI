@@ -154,14 +154,12 @@ var User = module.exports = new Schema({
            }
         )],
 
-       /* get_alert_of_comments: {type: Boolean, 'default': true},
-        get_alert_of_suggestions: {type: Boolean, 'default': true},
-        get_alert_of_approved_suggestions: {type: Boolean, 'default': true},
-        // new_daily_discussion: {type: Boolean, 'default': true}*/
-
         // general cycles notifications
         get_cycles_new_updates: {type: Boolean, 'default': true},// update objects
-        get_cycles_system_information: {type: Boolean, 'default': true}
+        get_cycles_system_information: {type: Boolean, 'default': true},
+
+        // actions
+        get_alert_of_new_posts_in_actions: {type: Boolean, 'default': true}
     },
 
     weekly_mails: [ {type: ObjectId, ref: 'Notification'}]

@@ -137,10 +137,6 @@ module.exports = function(req, res){
                     id:g_cycle.id
                 }
             });
-
-            //update all notifications of user that connected to this object
-            if(user)
-                notifications.updateVisited(user, req.path);
         }
     })
 };

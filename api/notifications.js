@@ -545,6 +545,9 @@ function isNotiInUserMailConfig(user, noti){
 
     if (noti.type === "action_you_created_was_approved") return true;
 
+    // actions
+
+    if(noti.type === "get_alert_of_new_posts_in_actions") return user.mail_notification_configuration.get_alert_of_new_posts_in_actions;
     return false;
 }
 
@@ -571,31 +574,10 @@ if (/notifications\.js/.test(process.argv[1])) {
 
     //501fcef1e6ae520017000662 --הצעה לשינוי שהתקבלה
     setTimeout(function () {
-
         create_new_notification('comment_on_discussion_you_created',
             '4fcdf7180a381201000005b3', '4ff1b29aabf64e440f00013a', '4f45145968766b0100000002', '501fcef1e6ae520017000662', function (err) {
-
-
                 console.log(err);
             });
-
-//        models.Notification.find({})
-//            .sort({'update_date':-1})
-//            .populate('user_id')
-//            .limit(1)
-//            .exec(function(err,nots) {
-//                if(!nots[0].user_id.last_visit) {
-//                    nots[0].user_id.last_visit = Date.now();
-//                    nots[0].user_id.save();
-//                }
-//
-//                var first_update_date = new Date(Number(nots[0].user_id.last_visit || Date.now()) - 60000);
-//                var second_update_date = new Date(Number(first_update_date) + 1600000);
-//
-//                sendNotificationToUser(nots[0],first_update_date);
-//
-//                sendNotificationToUser(nots[0],second_update_date);
-//            });
 
     }, 1000);
 }
