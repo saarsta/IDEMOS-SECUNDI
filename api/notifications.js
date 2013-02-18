@@ -529,6 +529,20 @@ function isNotiInUserMailConfig(user, noti){
         }
     }
 
+    if (noti.type === "action_added_in_cycle_you_are_part_of") {
+        // check if should get mail and when
+        var cycle = _.find(user.cycles, function(cycle){ return cycle.cycle_id + "" == noti.notificators[0].sub_entity_id });
+
+        if (!cycle || !cycle.get_alert_of_approved_action) return false;
+
+        if (cycle.time_of_alert === 'now') {
+            return true;
+        }else{
+            updateNotificationToSendMail(noti);
+            return false;
+        }
+    }
+
     if (noti.type === "action_you_created_was_approved") return true;
 
     return false;
