@@ -528,6 +528,9 @@ function isNotiInUserMailConfig(user, noti){
             return false;
         }
     }
+
+    if (noti.type === "action_you_created_was_approved") return true;
+
     return false;
 }
 
