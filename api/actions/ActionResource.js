@@ -409,7 +409,13 @@ module.exports.approveAction = function (id, callback) {
                     if (err){
                         callback(err);
                     } else {
-                        var notified_user_ids = _.map(followers, function(follower){return follower.id});
+
+                        // verifying unique  items
+                        var notified_user_ids = _.chain(followers)
+                            .map(function(follower){return follower.id})
+                            .compact()
+                            .uniq();
+
                         async.forEach(notified_user_ids, function(notified_user, itr_cbk){
                             if(creator_id == notified_user){
                                 notifications.create_user_notification("action_you_created_was_approved", g_action._id,

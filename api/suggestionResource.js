@@ -355,19 +355,11 @@ module.exports.approveSuggestion = function (id, callback) {
     var discussion_id;
     var suggestion_grade;
 
-    //set notifications
     //update discussion grade
     var iterator = function (sugg_grade, itr_cbk) {
 
         async.parallel([
-            function (cbk1) {
-                if (suggestion_creator != sugg_grade.user_id + "") {
-                    notifications.create_user_notification("approved_change_suggestion_you_graded",
-                        suggestion_object._id, sugg_grade.user_id + "", null, discussion_id, '/discussions/' + discussion_id, cbk1);
-                } else {
-                    cbk1(null, 0);
-                }
-            },
+
             //update discussion grade with the suggestion grade
             function (cbk1) {
                 models.Grade.update({user_id:sugg_grade.user_id, discussion_id:discussion_id},
@@ -380,7 +372,16 @@ module.exports.approveSuggestion = function (id, callback) {
         ], function (err, args) {
             itr_cbk(err, args);
         })
-    }
+    };
+
+    var noti_itr = function(user_id, itr_cbk){
+        if (suggestion_creator != user_id + "") {
+            notifications.create_user_notification("approved_change_suggestion_on_discussion_you_are_part_of",
+                suggestion_object._id, user_id + "", null, discussion_id, '/discussions/' + discussion_id, itr_cbk);
+        } else {
+            itr_cbk(null, 0);
+        }
+    };
 
     async.waterfall([
         function (cbk) {
@@ -526,7 +527,6 @@ module.exports.approveSuggestion = function (id, callback) {
                         });
                 },
 
-                //set notifications for graders
                 //for each suggestion grade - copy it to discussion grade
                 function (par_cbk) {
 
@@ -543,6 +543,28 @@ module.exports.approveSuggestion = function (id, callback) {
                     ], function (err, args) {
                         par_cbk(err, args);
                     });
+                },
+
+                // set notifications for discussion's participants
+                function (cbk2) {
+
+                    // first - response with cbk
+                    cbk2();
+
+                    // now set notifications
+                    models.Discussion.findById(discussion_id, function (err, disc_obj) {
+                        if (err){
+                            console.error(err);
+                        } else {
+                            var unique_users = [];
+
+                            // be sure that there are no duplicated users in discussion.users
+                            _.each(disc_obj.users, function(user){ unique_users.push(user.user_id + "")});
+                            unique_users = _.uniq(unique_users);
+
+                            async.forEach(unique_users, noti_itr, cbk2);
+                        }
+                    })
                 }
             ], function (err, args) {
                 cbk(err, 8);

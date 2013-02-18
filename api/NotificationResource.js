@@ -142,8 +142,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, action_posts_
 
                         //for fb share
                         notification.img_src = notification.pic;
-                        notification.title = 'דיון בחזון '
-                        + discussion.title;
+                        notification.title = discussion.title;
                         notification.text_preview = discussion.text_field_preview;
                     }
 
@@ -171,9 +170,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, action_posts_
 
                         notification.pic = discussion.image_field_preview || discussion.image_field;
                         notification.img_src = notification.pic;
-                        notification.title = 'דיון בחזון '
-                            +
-                            discussion.title;
+                        notification.title = discussion.title;
                         notification.text_preview = discussion.text_field_preview;
                     }
 
@@ -199,9 +196,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, action_posts_
                         notification.link_two = "/discussions/" + discussion._id + "";
 
                         notification.img_src = notification.pic;
-                        notification.title = 'דיון בחזון '
-                            +
-                            discussion.title;
+                        notification.title = discussion.title;
                         notification.text_preview = discussion.text_field_preview;
                     }
 
@@ -228,9 +223,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, action_posts_
                         notification.link_two = "/discussions/" + discussion._id + "";
 
                         notification.img_src = notification.pic;
-                        notification.title = 'דיון בחזון '
-                            +
-                            discussion.title;
+                        notification.title = discussion.title;
                         notification.text_preview = notification.text_field_preview;
                     }
                     if (num_of_comments > 1) {
@@ -255,9 +248,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, action_posts_
                         notification.pic = discussion.image_field_preview || discussion.image_field;
 
                         notification.img_src = notification.pic;
-                        notification.title = 'דיון בחזון '
-                            +
-                            discussion.title;
+                        notification.title = discussion.title;
                         notification.text_preview = discussion.text_field_preview;
 
                         //SAAR: is this still used?
@@ -267,7 +258,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, action_posts_
                     itr_cbk();
                     break;
 
-                case "approved_change_suggestion_you_graded":
+                case "approved_change_suggestion_on_discussion_you_are_part_of":
                     notification.part_one = "התקבלה הצעה לשינוי שדירגת בדיון - ";
                     if(discussion){
                         notification.main_link = "/discussions/" + discussion._id;
@@ -276,9 +267,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, action_posts_
                         notification.link_two = "/discussions/" + discussion._id;
 
                         notification.img_src = notification.pic;
-                        notification.title = 'דיון בחזון '
-                            +
-                            discussion.title;
+                        notification.title = discussion.title;
                         notification.text_preview = discussion.text_field_preview;
 
                         //SAAR: is this still used?
@@ -327,9 +316,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, action_posts_
                         notification.link_two = "/discussions/" + discussion._id;
 
                         notification.img_src = notification.pic;
-                        notification.title = 'דיון בחזון '
-                            +
-                            discussion.title;
+                        notification.title = discussion.title;
                         notification.text_preview = discussion.text_field_preview;
                     }
                     itr_cbk();
@@ -343,9 +330,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, action_posts_
                         notification.link_two = "/discussions/" + discussion._id;
 
                         notification.img_src = notification.pic;
-                        notification.title = 'דיון בחזון '
-                            +
-                            discussion.title;
+                        notification.title = discussion.title;
                         notification.text_preview = discussion.text_field_preview;
                     }
                     if(user_obj){
@@ -984,7 +969,7 @@ var populateNotifications = module.exports.populateNotifications = function(resu
        /* "change_suggestion_on_discussion_you_are_part_of",
         "change_suggestion_on_discussion_you_created",*/
         "approved_change_suggestion_you_created",
-        "approved_change_suggestion_you_graded",
+        "approved_change_suggestion_on_discussion_you_are_part_of",
         "been_quoted",
         "a_dicussion_created_with_info_item_that_you_like",
         "a_dicussion_created_with_info_item_that_you_created",

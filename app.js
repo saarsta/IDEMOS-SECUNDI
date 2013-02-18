@@ -146,7 +146,7 @@ app.locals({
 app.configure('development', function(){
     require('./admin')(app);
     j_forms.serve_static(app, express);
-    app.set('send_mails', false);
+    app.set('send_mails', true);
 });
 
 app.use(app.router);

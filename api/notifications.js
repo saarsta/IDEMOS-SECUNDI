@@ -28,7 +28,7 @@ exports.create_user_notification = function (notification_type, entity_id, user_
         "new_discussion",
         "approved_info_item_i_created",
         "approved_change_suggestion_you_created",
-        "approved_change_suggestion_you_graded",
+        "approved_change_suggestion_on_discussion_you_are_part_of",
         "proxy_created_new_discussion",
         "proxy_created_change_suggestion",
         "action_suggested_in_cycle_you_are_part_of",
@@ -291,8 +291,7 @@ var sendNotificationToUser = function (notification) {
                     return
                 }
                 // 3.1) check for user notification configuration
-                var mail_notification_configuration = user._doc.mail_notification_configuration;
-                if  (!isNotiInUserMailConfig(mail_notification_configuration, notification)){
+                if  (!isNotiInUserMailConfig(user, notification)){
                     console.log('user should not receive notification because his/her notification mail configuration');
                     cbk("break");
                     return;
@@ -334,6 +333,8 @@ var sendNotificationToUser = function (notification) {
                 else {
                     console.log('email ' + notification.type + ' sent to ' + email);
                     notification.visited = false;
+                    notification.mail_was_sent = true;
+
                     notification.save(function (err) {
                         if (err) {
                             console.error('saving notification flag failed');
@@ -459,28 +460,65 @@ exports.updateVisited = function (user, url) {
     })
 };
 
-function isNotiInUserMailConfig(mail_notification_configuration, noti){
+function isNotiInUserMailConfig(user, noti){
 
-    if (noti.type === "comment_on_discussion_you_are_part_of" || noti.type === "comment_on_discussion_you_created")
-        return mail_notification_configuration.get_alert_of_comments;
+    if (!user._doc.mail_notification_configuration.get_mails) return false;
 
-    if (noti.type === "change_suggestion_on_discussion_you_are_part_of" || noti.type === "change_suggestion_on_discussion_you_are_part_of")
-        return mail_notification_configuration.get_alert_of_suggestions;
+    if (noti.type === "comment_on_discussion_you_are_part_of" || noti.type === "comment_on_discussion_you_created"){
+        // check if should get mail and when
+        var discussion = _.find(user.discussions, function(discussion){ return discussion.discussion_id + "" == noti.notificators[0].sub_entity_id });
 
-    if (noti.type === "approved_change_suggestion_you_graded")
-        return mail_notification_configuration.get_alert_of_approved_suggestions;
+        if (!discussion || !discussion.get_alert_of_comments) return false;
 
-    if (noti.type === "approved_change_suggestion_you_graded")
-        return mail_notification_configuration.get_alert_of_approved_suggestions;
+        if (discussion.time_of_alert === 'now') {
+            return true;
+        }else{
+            updateNotificationToSendMail(noti);
+        }
+    }
+
+    if (noti.type === "change_suggestion_on_discussion_you_are_part_of" || noti.type === "change_suggestion_on_discussion_you_created"){
+        // check if should get mail and when
+        var discussion = _.find(user.discussions, function(discussion){ return discussion.discussion_id + "" == noti.notificators[0].sub_entity_id });
+
+        if (!discussion || !discussion.get_alert_of_suggestions) return false;
+
+        if (discussion.time_of_alert === 'now') {
+            return true;
+        }else{
+            updateNotificationToSendMail(noti);
+        }
+    }
+
+    if (noti.type === "approved_change_suggestion_on_discussion_you_are_part_of"){
+        // check if should get mail and when
+        var discussion = _.find(user.discussions, function(discussion){ return discussion.discussion_id + "" == noti.notificators[0].sub_entity_id });
+
+        if (!discussion || !discussion.get_alert_of_approved_suggestions) return false;
+
+        if (discussion.time_of_alert === 'now') {
+            return true;
+        }else{
+            updateNotificationToSendMail(noti);
+        }
+    }
 
     // in this case we created a site notification only if user set it in the config
     if (noti.type === "new_discussion") return true;
 
-    if (noti.type === "update_created_in_cycle_you_are_part_of")
+   /* if (noti.type === "update_created_in_cycle_you_are_part_of")
         return mail_notification_configuration.get_cycles_new_updates;
-
-
+   */
     return false;
+}
+
+function updateNotificationToSendMail(noti){
+    models.Notification.update({_id: noti._id}, {$set: {mail_was_sent: false}}, function(err, num){
+        if(err){
+            console.error("could not set notification mail_was_sent flag to false");
+            console.error(err);
+        }
+    })
 }
 
 //approved_info_item_i_created
