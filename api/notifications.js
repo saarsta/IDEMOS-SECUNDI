@@ -464,6 +464,7 @@ function isNotiInUserMailConfig(user, noti){
 
     if (!user._doc.mail_notification_configuration.get_mails) return false;
 
+    // discussions notification
     if (noti.type === "comment_on_discussion_you_are_part_of" || noti.type === "comment_on_discussion_you_created"){
         // check if should get mail and when
         var discussion = _.find(user.discussions, function(discussion){ return discussion.discussion_id + "" == noti.notificators[0].sub_entity_id });
@@ -474,6 +475,7 @@ function isNotiInUserMailConfig(user, noti){
             return true;
         }else{
             updateNotificationToSendMail(noti);
+            return false;
         }
     }
 
@@ -487,6 +489,7 @@ function isNotiInUserMailConfig(user, noti){
             return true;
         }else{
             updateNotificationToSendMail(noti);
+            return false;
         }
     }
 
@@ -500,6 +503,7 @@ function isNotiInUserMailConfig(user, noti){
             return true;
         }else{
             updateNotificationToSendMail(noti);
+            return false;
         }
     }
 
@@ -508,9 +512,22 @@ function isNotiInUserMailConfig(user, noti){
 
     if (noti.type === "approved_change_suggestion_you_created") return true;
 
-        /* if (noti.type === "update_created_in_cycle_you_are_part_of")
-             return mail_notification_configuration.get_cycles_new_updates;
-        */
+
+    // cycles notification
+
+    if (noti.type === "action_suggested_in_cycle_you_are_part_of") {
+        // check if should get mail and when
+        var cycle = _.find(user.cycles, function(cycle){ return cycle.cycle_id + "" == noti.notificators[0].sub_entity_id });
+
+        if (!cycle || !cycle.get_alert_of_new_action) return false;
+
+        if (cycle.time_of_alert === 'now') {
+            return true;
+        }else{
+            updateNotificationToSendMail(noti);
+            return false;
+        }
+    }
     return false;
 }
 

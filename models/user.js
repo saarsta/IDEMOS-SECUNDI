@@ -54,6 +54,7 @@ var User = module.exports = new Schema({
             cycle_id:{type:ObjectId, ref:'Cycle'},
             join_date: {type:Date, 'default':Date.now},
             get_alert_of_updates: {type: Boolean, 'default': true},
+            time_of_alert: {type:String, "enum":['now', 'today', 'this_week'], 'default': 'now'},
             get_alert_of_new_action: {type: Boolean, 'default': true},
             get_alert_of_approved_action: {type: Boolean, 'default': true},
             get_reminder_of_action: {type: Boolean, 'default': true}
