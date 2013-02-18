@@ -136,7 +136,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
     },
 
     create_obj:function (req, fields, callback) {
-        var user_id = req.user._id;
+        var user_id = req.user.id;
         var self = this;
         var suggestion_object = new self.model();
         var isNewFollower = false;

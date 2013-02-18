@@ -154,13 +154,19 @@ var GradeResource = module.exports = common.GamificationMongooseResource.extend(
 
                             //2.3 add user to be part of the discussion
                             function(cbk1){
-                                if (! _.any(discussion_obj.users, function(user){ return user.user_id + "" == req.user.id})){
-                                    var new_user = {user_id: req.user._id, join_date: Date.now()};
-                                    models.Discussion.update({_id: discussion_obj._id}, {$addToSet:{users: new_user}}, function(err, num){cbk1(err, num)});
-                                }else{
-                                    cbk1(null, null);
-                                }
-                            }
+                                //add user that connected somehow to discussion
+                                models.Discussion.update({_id: discussion_obj._id, "users.user_id": {$ne: req.user.id}},
+                                    {$addToSet: {users: {user_id: req.user.id, join_date: Date.now(), $set:{last_updated: Date.now()}}}}, cbk1);
+                            },
+
+                            //add user that connected somehow to discussion
+                            function(cbk2)
+                            {
+                                models.User.update({_id: req.user.id, "discussions.discussion_id": {$ne: discussion_obj._id}},
+                                    {$addToSet: {discussions: {discussion_id: discussion_obj._id, join_date: Date.now()}}}, cbk2);
+                            },
+
+
                         ],function(err, args){
                             cbk(err, args[1]);
                         })
