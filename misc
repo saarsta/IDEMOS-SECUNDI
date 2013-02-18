@@ -208,3 +208,6 @@ exes
 > db.posts.count({is_hidden: null})
 0
 >
+
+
+<!-- <a href="<%= settings.root_path %><%= main_link %>">-->

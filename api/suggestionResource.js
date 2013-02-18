@@ -382,7 +382,7 @@ module.exports.approveSuggestion = function (id, callback) {
 
     var noti_itr = function(user_id, itr_cbk){
         if (suggestion_creator != user_id + "") {
-            notifications.create_user_notification("approved_change_suggestion_on_discussion_you_are_part_of",
+s            notifications.create_user_notification("approved_change_suggestion_on_discussion_you_are_part_of",
                 suggestion_object._id, user_id + "", null, discussion_id, '/discussions/' + discussion_id, itr_cbk);
         } else {
             itr_cbk(null, 0);

@@ -490,7 +490,7 @@ function isNotiInUserMailConfig(user, noti){
         }
     }
 
-    if (noti.type === "approved_change_suggestion_on_discussion_you_are_part_of" || noti.type === "approved_change_suggestion_on_discussion_you_created"){
+    if (noti.type === "approved_change_suggestion_on_discussion_you_are_part_of"){
         // check if should get mail and when
         var discussion = _.find(user.discussions, function(discussion){ return discussion.discussion_id + "" == noti.notificators[0].sub_entity_id });
 
