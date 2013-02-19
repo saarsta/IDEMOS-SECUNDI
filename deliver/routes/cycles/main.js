@@ -119,7 +119,7 @@ module.exports = function(req, res){
 
          //  var  view =  'cycle.ejs' ;
            var view =   g_cycle.id==   '5047023a9e56a502000014f5'?   'cycle_new.ejs' : 'cycle.ejs'  ;
-          //  console.log(view)  ;
+           console.log(view)  ;
             res.render(view,{
                 cycle: g_cycle,
                 tab:'cycles',
