@@ -492,9 +492,7 @@ var current_section=2;
         var sharepop = <%=share%>;
         var join = <%=join%>;
 
-       var timeline_src="<%=cycle.timeline.source%>";
-       var timeline_zoom="<%=cycle.timeline.zoom || -2 %>";
-       var timeline_default_item="<%=cycle.timeline.default_item || 0 %>";
+
 
 
 
@@ -1137,6 +1135,10 @@ var current_section=2;
                 }
             });
         <% } %>
+
+        var timeline_src="<%=cycle.timeline.source%>";
+        var timeline_zoom="<%=cycle.timeline.zoom || -2 %>";
+        var timeline_default_item="<%=cycle.timeline.default_item || 0 %>";
 
         if(timeline_src && timeline_src!='undefined' && timeline_src!=''){
             $(".followers-box").hide() ;

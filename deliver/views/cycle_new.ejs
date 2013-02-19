@@ -1132,11 +1132,15 @@ var _main=$(document).ready( function () {
         });
     <% } %>
 
+    var timeline_src="<%=cycle.timeline.source%>";
+    var timeline_zoom="<%=cycle.timeline.zoom || -2 %>";
+    var timeline_default_item="<%=cycle.timeline.default_item || 0 %>";
+
     if(timeline_src && timeline_src!='undefined' && timeline_src!=''){
         $(".followers-box").hide() ;
         $("#my-timeline-button").show() ;
 
-        var start_slide=getURLParameter('timeline_default_slide')|| 0;
+        var start_slide=getURLParameter('timeline_default_slide')||timeline_default_item;
 
 
         createStoryJS({
@@ -1148,7 +1152,7 @@ var _main=$(document).ready( function () {
             css:                '/css/timeline.css',     //OPTIONAL PATH TO CSS
             font:               'Arial',             //OPTIONAL FONT
             start_at_slide:     start_slide,                            //OPTIONAL START AT SPECIFIC SLIDE
-            start_zoom_adjust:  '-2',                            //OPTIONAL TWEAK THE DEFAULT ZOOM LEVEL
+            start_zoom_adjust:  timeline_zoom,                            //OPTIONAL TWEAK THE DEFAULT ZOOM LEVEL
             embed_id:   'my-timeline'
 
             /*
