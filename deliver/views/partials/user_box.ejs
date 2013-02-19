@@ -93,7 +93,7 @@ var unseen_notifications = user_logged && user ? user.unseen_notifications || 0 
         $(".user-info-box .tokens").click(function(){ window.location = "/myuru";});
         $(".user-info-box .fame").click(function(){ window.location = "/myuru";});
         $(".user-info-box .logout").click(function(){
-            $.removeCookie("fb_login");
+            $.removeCookie("fb_login",{ path: '/' });
             window.location = "/account/logout";
         });
 
