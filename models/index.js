@@ -200,7 +200,7 @@ var Schemas = exports.Schemas = {
             "change_suggestion_on_discussion_you_are_part_of",
             "change_suggestion_on_discussion_you_created",
             "approved_change_suggestion_you_created",
-            "approved_change_suggestion_you_graded",
+            "approved_change_suggestion_on_discussion_you_are_part_of",
             "been_quoted",
             "new_discussion",
             "a_dicussion_created_with_info_item_that_you_like",
@@ -229,7 +229,8 @@ var Schemas = exports.Schemas = {
         seen:{type:Boolean, 'default':false},
         update_date:{type:Date, 'default':Date.now},
         url:String,
-        visited:{type:Boolean, 'default':true}
+        visited:{type:Boolean, 'default':true},
+        mail_was_sent: {type:Boolean, 'default':true}
     },
 
     Tag:{

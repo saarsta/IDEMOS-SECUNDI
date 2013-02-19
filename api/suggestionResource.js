@@ -136,7 +136,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
     },
 
     create_obj:function (req, fields, callback) {
-        var user_id = req.user._id;
+        var user_id = req.user.id;
         var self = this;
         var suggestion_object = new self.model();
         var isNewFollower = false;
@@ -144,12 +144,15 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
         var discussion_id;
         var discussion_creator_id;
         var num_of_words;
-
+        var disc_obj;
 
         var iterator = function (unique_user, itr_cbk) {
-            if (unique_user == user_id.id || !unique_user)
+            user_id = user_id || user_id.id;
+
+            if (unique_user  == user_id || !unique_user){
+                console.log("user should not get mail if he is the notificator");
                 itr_cbk(null, 0);
-            else {
+            } else {
                 if (discussion_creator_id == unique_user) {
                     notifications.create_user_notification("change_suggestion_on_discussion_you_created", suggestion_object._id, unique_user, user_id, discussion_id, '/discussions/' + discussion_id, function (err, results) {
                         itr_cbk(err, results);
@@ -197,6 +200,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
             },
 
             function (discussion_obj, cbk) {
+                disc_obj = discussion_obj;
 
                 var word_count = suggestion_object.getCharCount();
                 suggestion_object.threshold_for_accepting_the_suggestion = calculate_sugg_threshold(word_count,
@@ -223,35 +227,37 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
 
             function (suggestion_obj, cbk) {
                 async.parallel([
+
+                    //add user that connected somehow to discussion
+                    function(cbk2){
+                        models.Discussion.update({_id: disc_obj._id, "users.user_id": {$ne: user_id}},
+                            {$addToSet: {users: {user_id: user_id, join_date: Date.now(), $set:{last_updated: Date.now()}}}}, function(err, num){
+                                cbk2(err);
+                            });
+                    },
+
+                    //add user that connected somehow to discussion
+                    function(cbk2)
+                    {
+                        models.User.update({_id: user_id, "discussions.discussion_id": {$ne: disc_obj._id}},
+                            {$addToSet: {discussions: {discussion_id:  disc_obj._id, join_date: Date.now()}}}, function(err, num){
+                                cbk2(err);
+                            });
+                    },
+
                     //add notification for the dicussion's participants or creator
-                    //add user to praticipants
-
                     function (cbk2) {
-                        models.Discussion.findById(suggestion_object.discussion_id, /*["users", "creator_id"],*/ function (err, disc_obj) {
-                            if (err)
-                                cbk2(err, null);
-                            else {
+                        var unique_users = [];
 
-                                var unique_users = [];
+                        discussion_creator_id = disc_obj.creator_id;
 
-                                // be sure that there are no duplicated users in discussion.users
-                                _.each(disc_obj.users, function(user){ unique_users.push(user.user_id + "")});
-                                unique_users = _.uniq(unique_users);
+                        // be sure that there are no duplicated users in discussion.users
+                        _.each(disc_obj.users, function(user){ unique_users.push(user.user_id + "")});
+                        unique_users = _.uniq(unique_users);
 
-                                if (!_.any(disc_obj.users, function (user) { return user.user_id + "" == req.user.id })) {
-                                    var new_user = {user_id:req.user._id, join_date:Date.now()};
-                                    models.Discussion.update({_id:disc_obj._id}, {$set:{last_updated: Date.now()}}, {$addToSet:{users:new_user}}, function (err, num) {
-                                        discussion_creator_id = disc_obj.creator_id;
-
-                                        async.forEach(unique_users, iterator, cbk2);
-                                    });
-                                } else {
-                                    discussion_creator_id = disc_obj.creator_id;
-
-                                    async.forEach(unique_users, iterator, cbk2);
-                                }
-                            }
-                        })
+                        async.forEach(unique_users, iterator, function(err){
+                            cbk2(err);
+                        });
                     },
 
                     //set notifications for users that i represent (proxy)
@@ -355,19 +361,11 @@ module.exports.approveSuggestion = function (id, callback) {
     var discussion_id;
     var suggestion_grade;
 
-    //set notifications
     //update discussion grade
     var iterator = function (sugg_grade, itr_cbk) {
 
         async.parallel([
-            function (cbk1) {
-                if (suggestion_creator != sugg_grade.user_id + "") {
-                    notifications.create_user_notification("approved_change_suggestion_you_graded",
-                        suggestion_object._id, sugg_grade.user_id + "", null, discussion_id, '/discussions/' + discussion_id, cbk1);
-                } else {
-                    cbk1(null, 0);
-                }
-            },
+
             //update discussion grade with the suggestion grade
             function (cbk1) {
                 models.Grade.update({user_id:sugg_grade.user_id, discussion_id:discussion_id},
@@ -380,7 +378,16 @@ module.exports.approveSuggestion = function (id, callback) {
         ], function (err, args) {
             itr_cbk(err, args);
         })
-    }
+    };
+
+    var noti_itr = function(user_id, itr_cbk){
+        if (suggestion_creator != user_id + "") {
+            notifications.create_user_notification("approved_change_suggestion_on_discussion_you_are_part_of",
+                suggestion_object._id, user_id + "", null, discussion_id, '/discussions/' + discussion_id, itr_cbk);
+        } else {
+            itr_cbk(null, 0);
+        }
+    };
 
     async.waterfall([
         function (cbk) {
@@ -526,7 +533,6 @@ module.exports.approveSuggestion = function (id, callback) {
                         });
                 },
 
-                //set notifications for graders
                 //for each suggestion grade - copy it to discussion grade
                 function (par_cbk) {
 
@@ -543,6 +549,28 @@ module.exports.approveSuggestion = function (id, callback) {
                     ], function (err, args) {
                         par_cbk(err, args);
                     });
+                },
+
+                // set notifications for discussion's participants
+                function (cbk2) {
+
+                    // first - response with cbk
+                    cbk2();
+
+                    // now set notifications
+                    models.Discussion.findById(discussion_id, function (err, disc_obj) {
+                        if (err){
+                            console.error(err);
+                        } else {
+                            var unique_users = [];
+
+                            // be sure that there are no duplicated users in discussion.users
+                            _.each(disc_obj.users, function(user){ unique_users.push(user.user_id + "")});
+                            unique_users = _.uniq(unique_users);
+
+                            async.forEach(unique_users, noti_itr, cbk2);
+                        }
+                    })
                 }
             ], function (err, args) {
                 cbk(err, 8);

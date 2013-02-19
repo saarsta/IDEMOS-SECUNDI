@@ -1,6 +1,7 @@
 
 var models = require('../../../models'),
-    async = require('async');
+    async = require('async'),
+    notifications = require('../../../api/notifications.js');
 
 /*
 *  1. find cycle by id

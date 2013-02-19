@@ -16,13 +16,12 @@
         "logging": "2.x.x",
         "sendgrid": "0.2.x",
         "xml": "0.0.x",
-        "formage-admin": "",
+        "formage-admin": ">= 1.0.3",
         "facebook-signed-request": "0.0.x",
         "knox": "0.0.11"
-
     },
     "engines": {
-        "node": "0.8.x",
-        "npm": "1.x.x"
+        "node": ">= 0.8.14",
+        "npm": ">= 1.1.65"
     }
 }

@@ -104,7 +104,7 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
     },
 
     create_obj:function (req, fields, callback) {
-        var user_id = req.session.user_id;
+        var user_id = req.session.user_id + "";
         var self = this;
         var base = self._super;
         var action_object = new self.model();
@@ -258,7 +258,11 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
                         models.User.find({"cycles.cycle_id": cycle_id}, function(err, followers){
                             if (err) return cbk1(err);
 
-                            var notified_user_ids = _.map(followers, function(follower) { return follower.id });
+                            var notified_user_ids = _.chain(followers)
+                                .map(function(follower) { return follower.id })
+                                .compact()
+                                .uniq()
+                                .value();
                             async.forEach(notified_user_ids, function(notified_user, itr_cbk) {
                                 if (notified_user != user_id) {
                                     notifications.create_user_notification("action_suggested_in_cycle_you_are_part_of", action_obj._id,
@@ -409,7 +413,13 @@ module.exports.approveAction = function (id, callback) {
                     if (err){
                         callback(err);
                     } else {
-                        var notified_user_ids = _.map(followers, function(follower){return follower.id});
+
+                        // verifying unique  items
+                        var notified_user_ids = _.chain(followers)
+                            .map(function(follower){return follower.id})
+                            .compact()
+                            .uniq();
+
                         async.forEach(notified_user_ids, function(notified_user, itr_cbk){
                             if(creator_id == notified_user){
                                 notifications.create_user_notification("action_you_created_was_approved", g_action._id,

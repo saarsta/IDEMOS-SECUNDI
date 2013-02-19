@@ -34,6 +34,8 @@ exports.routing = function(router)
 
     router.all('/activation', require('./activation'));
 
+    router.all('/mail_settings', require('./mail_configuration'));
+
 };
 
 

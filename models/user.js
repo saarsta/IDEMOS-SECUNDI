@@ -40,14 +40,12 @@ var User = module.exports = new Schema({
     discussions:[
         new Schema({
             discussion_id:{type:ObjectId, ref:'Discussion'},
-            join_date: {type:Date, 'default':Date.now}
-            /*,
-            when new design is here
+            join_date: {type:Date, 'default':Date.now},
             get_alert: {type: Boolean, 'default': true},
+            time_of_alert: {type:String, "enum":['now', 'today', 'this_week'], 'default': 'now'},
             get_alert_of_comments: {type: Boolean, 'default': true},
             get_alert_of_suggestions: {type: Boolean, 'default': true},
             get_alert_of_approved_suggestions: {type: Boolean, 'default': true}
-            */
         })
     ],
     //followers - - in the redesign it is the same as cycles.users
@@ -56,6 +54,7 @@ var User = module.exports = new Schema({
             cycle_id:{type:ObjectId, ref:'Cycle'},
             join_date: {type:Date, 'default':Date.now},
             get_alert_of_updates: {type: Boolean, 'default': true},
+            time_of_alert: {type:String, "enum":['now', 'today', 'this_week'], 'default': 'now'},
             get_alert_of_new_action: {type: Boolean, 'default': true},
             get_alert_of_approved_action: {type: Boolean, 'default': true},
             get_reminder_of_action: {type: Boolean, 'default': true}
@@ -141,9 +140,12 @@ var User = module.exports = new Schema({
         quotes:[{quote: {type:ObjectId, ref:'QuoteGameQuote'},selection: String}]
     },
     mail_notification_configuration: {
+
+        // general
         get_mails: {type: Boolean, 'default': true},
         get_uru_updates: {type: Boolean, 'default': true},
         get_weekly_mails: {type: Boolean, 'default': true},
+
         // by default no subject is selected
         new_discussion: [ new Schema(
            {
@@ -151,11 +153,16 @@ var User = module.exports = new Schema({
                get_alert: {type: Boolean}
            }
         )],
-        get_alert_of_comments: {type: Boolean, 'default': true},
-        get_alert_of_suggestions: {type: Boolean, 'default': true},
-        get_alert_of_approved_suggestions: {type: Boolean, 'default': true}
-       // new_daily_discussion: {type: Boolean, 'default': true}
-    }
+
+        // general cycles notifications
+        get_cycles_new_updates: {type: Boolean, 'default': true},// update objects
+        get_cycles_system_information: {type: Boolean, 'default': true},
+
+        // actions
+        get_alert_of_new_posts_in_actions: {type: Boolean, 'default': true}
+    },
+
+    weekly_mails: [ {type: ObjectId, ref: 'Notification'}]
 }, {strict:true});
 
 User.methods.toString = function()

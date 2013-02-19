@@ -99,7 +99,7 @@ var PostActionResource = module.exports = common.GamificationMongooseResource.ex
 
     create_obj:function (req, fields, callback) {
 
-        var user_id = req.session.user_id;
+        var user_id = req.session.user_id + "";
         var self = this;
         var base = this._super;
         var post_object = new self.model();
@@ -158,7 +158,12 @@ var PostActionResource = module.exports = common.GamificationMongooseResource.ex
                         action_id = action_id + "";
                         models.Action.findById(action_id, {'_id': 1, 'going_users': 1, 'cycle_id': 1, 'creator_id': 1}, function(err, action){
                             var creator_id = action.creator_id + "";
-                            var notified_users = _.map(action.going_users, function(user){return user.user_id + ''});
+                            var notified_users = _.chain(action.going_users)
+                                .map(function(user){return user.user_id + ''})
+                                .compact()
+                                .uniq()
+                                .value();
+
                             async.forEach(notified_users, function(notified_user, itr_cbk){
                                 if(user_id != notified_user){
                                     if(creator_id == notified_user){
