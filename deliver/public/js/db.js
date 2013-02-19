@@ -139,7 +139,6 @@ var db_functions = {
             type:"POST",
             async:true,
             success:function (data, err) {
-                debugger
                 callback(err, data);
             },
             error:function (err, data) {
