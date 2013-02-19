@@ -7,7 +7,7 @@ var unseen_notifications = user_logged && user ? user.unseen_notifications || 0 
         <a class="notifications" href="/myuru#notifications"><%=unseen_notifications%></a>
     <%}%>
     <a class="icon" href="javascript:void(0)"></a>
-    <a class="name" href="/myuru"> <%=user.first_name%></a>
+    <a data-bablic-exclude class="name" href="/myuru"> <%=user.first_name%></a>
 </div>
 
         <div class="user-info-box-container">
