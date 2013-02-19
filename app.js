@@ -117,7 +117,7 @@ app.use(function (req, res, next) {
 
 
 // ######### general middleware #########
-formage_admin.serve_static(app, express);
+formage_admin.forms.serve_static(app, express);
 app.use(express.static(app.settings.public_folder));
 app.use(express.errorHandler());
 app.use(express.bodyParser());

@@ -14,7 +14,7 @@ var unseen_notifications = user_logged && user ? user.unseen_notifications || 0 
             <div class="user-info-box">
                 <div class="user-box-top">
                     <div class="messages">
-                        <div class="right">
+                        <div class="right reset_notification">
 
                         עדכונים
                         </div>
@@ -89,7 +89,7 @@ var unseen_notifications = user_logged && user ? user.unseen_notifications || 0 
         })
 
         $(".user-box.icon").click(function(){ window.location = "/myuru";});
-        $(".user-info-box .messages").click(function(){ window.location = "/myuru#notifications";});
+        $(".user-info-box .messages").click(function(){ window.location = "/myuru#notifications"; });
         $(".user-info-box .tokens").click(function(){ window.location = "/myuru";});
         $(".user-info-box .fame").click(function(){ window.location = "/myuru";});
         $(".user-info-box .logout").click(function(){

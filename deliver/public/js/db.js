@@ -139,6 +139,7 @@ var db_functions = {
             type:"POST",
             async:true,
             success:function (data, err) {
+                debugger
                 callback(err, data);
             },
             error:function (err, data) {
@@ -1540,7 +1541,6 @@ var db_functions = {
             url: '/api/users/' + user_id,
             data: JSON.stringify({no_mail_notifications: no_mail_notifications}),
             success: function (data) {
-                $.extend(user, data);
                 callback(null, data)
             },
             dataType: 'json',
