@@ -1144,7 +1144,7 @@ var current_section=2;
             $(".followers-box").hide() ;
             $("#my-timeline-button").show() ;
 
-             var start_slide=getURLParameter('timeline_default_slide')||timeline_default_item;
+            var start_slide=getURLParameter('timeline_default_slide')=='null' ?timeline_default_item : getURLParameter('timeline_default_slide'): timeline_default_item;
 
 
             createStoryJS({
