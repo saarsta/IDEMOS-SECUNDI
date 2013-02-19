@@ -1,40 +1,36 @@
+'use strict';
 var express = require('express');
 var mongoose = require('mongoose');
 var async = require('async');
 var util = require('util');
+var domain = require('domain');
 var auth = require("connect-auth");
+var formage_admin = require('formage-admin');
+formage_admin.forms.loadTypes(mongoose);
+
 var logout_handler = require("connect-auth/lib/events").redirectOnLogout("/");
-var j_forms = require('formage-admin').forms;
 var utils = require('./utils');
 var models = require('./models');
 var account = require('./deliver/routes/account');
 var fb_bot_middleware = require('./deliver/routes/fb_bot/middleware');
 
 
-express.logger.token('memory', function () {
-    var rss_memory = (process.memoryUsage().rss / 1048576).toFixed(0);
-    if (rss_memory > 400) process.nextTick(process.exit);
-    return util.format('%dMb', rss_memory);
-});
-express.logger.format('default2', ':memory :response-time :res[content-length] :status ":method :url HTTP/:http-version" :res[body]');
 
-// Static parameters
-var DB_URL = process.env.MONGOLAB_URI || 'mongodb://localhost/uru';
+// ########### Static parameters ###########
+var IS_ADMIN = ~process.env['NODE_ENV'].indexOf('admin');
+var DB_URL = process.env['MONGOLAB_URI'] || 'mongodb://localhost/uru';
 var ROOT_PATH = process.env.ROOT_PATH || 'http://dev.empeeric.com';
-var is_process_cron = (process.argv[2] == 'cron');
-var is_process_web = !is_process_cron;
-
-
-
+var IS_PROCESS_CRON = (process.argv[2] === 'cron');
+var IS_PROCESS_WEB = !IS_PROCESS_CRON;
 var s3_creds = {
     key: 'AKIAJM4EPWE637IGDTQA',
     secret: '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',
     bucket: 'uru'
 };
 var fb_auth_params = {
-    appId: process.env.FACEBOOK_APPID || '175023072601087',
-    appSecret: process.env.FACEBOOK_SECRET || '5ef7a37e8a09eca5ee54f6ae56aa003f',
-    appName: process.env.FACEBOOK_APPNAME || 'uru_dev',
+    appId: process.env['FACEBOOK_APPID'] || '175023072601087',
+    appSecret: process.env['FACEBOOK_SECRET'] || '5ef7a37e8a09eca5ee54f6ae56aa003f',
+    appName: process.env['FACEBOOK_APPNAME'] || 'uru_dev',
     callback: ROOT_PATH + '/account/facebooklogin',
     scope: 'email,publish_actions',
     failedUri: '/noauth'
@@ -48,7 +44,8 @@ var auth_middleware = auth({
     trace: true,
     logoutHandler: logout_handler
 });
-// end Static parameters
+// ########### Static parameters ###########
+
 
 
 // Run some compilations
@@ -56,7 +53,8 @@ require('./tools/compile_templates');
 require('./deliver/tools/compile_dust_templates');
 
 
-// **** connect to DB ****
+
+// ######### connect to DB #########
 if (!mongoose.connection.host) {
     mongoose.connect(DB_URL, {safe: false}, function (db) { console.log("connected to db %s:%s/%s", mongoose.connection.host, mongoose.connection.port, mongoose.connection.name); });
     mongoose.connection.on('error', function (err) { console.error('db connection error: ', err); });
@@ -65,9 +63,11 @@ if (!mongoose.connection.host) {
         setTimeout(function () {mongoose.connect(DB_URL, function (err) { if (err) console.error(err); });}, 200);
     });
 }
-// ***** end connect to DB *****
+// ######### end connect to DB #########
 
 
+
+// ######### settings #########
 var app = module.exports = express();
 app.settings['x-powered-by'] = 'Empeeric';
 app.set('views', __dirname + '/deliver/views');
@@ -86,38 +86,69 @@ app.set('url2png_api_secret', process.env.url2png_api_key || 'SF1BFA95A57BE4');
 app.set('send_mails', true);
 app.set('view engine', 'jade');
 app.set('view options', { layout: false });
+formage_admin.forms.setAmazonCredentials(s3_creds);
+models.setDefaultPublish(app.settings.show_only_published);
+utils.setShowOnlyPublished(app.settings.show_only_published);
+// ######### settings #########
 
 
+
+// ######### error handling #########
 process.on('uncaughtException', function(err) {
-    console.error(err.stack || err);
+    console.error("==== process exception ====\n%s\n==== end ====", err.stack || err);
 });
-require('formage-admin').forms.serve_static(app, express);
+app.use(function (req, res, next) {
+    var d = domain.create();
+    d.add(req);
+    d.add(res);
+    d.on('error', function (err) {
+        console.error("#### domain exception ####\n%s\n#### end ####", err.stack || err);
+        try {
+            res.send(500, err.stack || err);
+        } catch (e) {
+            res.end();
+        }
+    });
+    d.enter();
+    next();
+});
+// ######### error handling #########
 
+
+
+// ######### general middleware #########
+formage_admin.serve_static(app, express);
 app.use(express.static(app.settings.public_folder));
 app.use(express.errorHandler());
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.cookieParser());
 app.use(express.cookieSession({secret: 'Rafdo5L2iyhcsGoEcaBd', cookie: { path: '/', httpOnly: false, maxAge: 60 * 24 * 60 * 60 * 1000}}));
-// Add logger after 'static' folders
+// ######### general middleware #########
+
+
+
+// ########### Add request memory logger after 'static' folders ###########
+express.logger.token('mem', function () { var p = process, r_mem = (p.memoryUsage().rss / 1048576).toFixed(0); if (r_mem > 400) p.nextTick(p.exit); return util.format('%dMb', r_mem); });
+express.logger.format('default2', ':mem :response-time :res[content-length] :status ":method :url HTTP/:http-version" :res[body]');
 app.use(express.logger('default2'));
+// ########### setup memory logging ###########
+
+
+
+// ######### specific middleware #########
 app.use(fb_bot_middleware);
-// pause req stream in case we're uploading files
-app.use(function (req, res, next) {
-    if (req.xhr && /api\/(avatar|image_upload)\/?$/.test(req.path)) {
-        req.queueStream = new utils.queueStream(req);
-        req.queueStream.pause();
-        req.pause();
-        console.log('request paused');
-    }
-    next();
-});
 app.use(account.referred_by_middleware);
 app.use(auth_middleware);
 app.use(account.auth_middleware);
 app.use(account.populate_user);
+// ######### specific middleware #########
 
+
+
+// ######### locals #########
 app.use(function (req, res, next) {
+    //noinspection JSUnresolvedVariable
     res.locals({
         tag_name: req.query.tag_name,
         logged: req.isAuthenticated && req.isAuthenticated(),
@@ -129,7 +160,6 @@ app.use(function (req, res, next) {
     });
     next();
 });
-
 app.locals({
     footer_links: function (place) {
         var links = mongoose.model('FooterLink').getFooterLinks();
@@ -149,40 +179,38 @@ app.locals({
         return app.get(attr);
     }
 });
+// ######### locals #########
 
+
+
+// ######### environment specific settings #########
 app.configure('development', function(){
     require('./admin')(app);
-    j_forms.serve_static(app, express);
-    app.set('send_mails', true);
+    app.set('send_mails', false);
 });
-
-app.use(app.router);
-
-
-
-require('./api')(app);
-require('./og/config').load(app);
-require('./lib/templates').load(app);
-require('./deliver/routes')(app);
-require('./api/common');
-if (app.settings.send_mails) require('./lib/mail').load(app);
-j_forms.setAmazonCredentials(s3_creds);
-models.setDefaultPublish(app.settings.show_only_published);
-utils.setShowOnlyPublished(app.settings.show_only_published);
-
-
-
-if (is_process_cron) {
+if (IS_ADMIN) {
+    require('./admin')(app);
+}
+if (!IS_ADMIN && IS_PROCESS_WEB) {
+    require('./api')(app);
+    require('./og/config').load(app);
+    require('./lib/templates').load(app);
+    require('./deliver/routes')(app);
+    require('./api/common');
+}
+if (app.settings.send_mails) {
+    require('./lib/mail').load(app);
+}
+if (IS_PROCESS_CRON) {
     var cron = require('./cron');
     cron.run(app);
-} else{
-    var cron = require('./cron');
-    cron.run_main_thread(app);
 }
+// ######### environment specific settings #########
+
 
 
 // run web init
-if (is_process_web) {
+if (IS_PROCESS_WEB) {
     async.waterfall([
         function (cbk) {
             mongoose.model('FooterLink').load(cbk);
@@ -194,14 +222,14 @@ if (is_process_web) {
     ], function (err, gamification) {
         app.set('gamification_tokens', gamification);
         var server = app.listen(app.get('port'), function (err) {
-            if (err) throw err;
+            if (err) {
+                console.error(err.stack || err);
+                process.exit(1);
+            }
             console.log("Express server listening on port %d in %s mode", (server.address() || {}).port, app.get('env'));
         });
         server.on('error', function (err) {
             console.error('********* Server Is NOT Working !!!! ***************\n %s', err);
-        });
-        process.on('uncaughtException', function (err) {
-            console.error(err.stack || err);
         });
     });
 }
