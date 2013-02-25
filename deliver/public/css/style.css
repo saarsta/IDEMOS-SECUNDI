@@ -10278,7 +10278,7 @@ change .current class name using plugin option, currentPanel : 'current' */
 }
 
 .email_settings #button_holder .button_cancel{
-    background:url(images/button_cancel.png) no-repeat 0 0;
+    background:url(/images/button_cancel.png) no-repeat 0 0;
     width:126px;
     height:47px;
     border:0px;
@@ -10287,7 +10287,7 @@ change .current class name using plugin option, currentPanel : 'current' */
 
 .email_settings #button_holder .button_apply{
     margin-left:10px;
-    background:url(images/button_apply.png) no-repeat 0 0;
+    background:url(/images/button_apply.png) no-repeat 0 0;
     width:126px;
     height:47px;
     border:0px;

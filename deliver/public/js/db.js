@@ -1672,7 +1672,22 @@ var db_functions = {
                 callback(err, null);
             }
         });
-    } ,
+    },
+    updateMailNotification: function(user_id, data, callback){
+        $.ajax({
+            url:'/api/user_mail_notification_config/' + user_id,
+            type:"PUT",
+            async:true,
+            data: data,
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function (err) {
+                callback(err, null);
+            }
+        });
+    }
 
 
 

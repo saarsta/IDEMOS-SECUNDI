@@ -32,145 +32,250 @@
         <% include partials/tag_search.ejs %>
     </div>
     <div id="content" class="cf">
-
-    <div class="email_settings">
-        <div id="content_main_wrapper">
-            <div id="content_main_holder">
-                <h2>נהול עדכונים במייל</h2>
-                <h3>מערכת הדיונים</h3>
-
-                <div class="settings_box">
-                    <div class="settings_box_section">
-                        <span class="setting_section_title">קבל התראה על כל דיון חדש בתחום</span>
-                        <input type="checkbox" class="checkbox" /><label>חינוך</label>
-                        <input type="checkbox" class="checkbox" /><label>משק וכלכלה</label>
-                        <input type="checkbox" class="checkbox" /><label>תעסוקה וביטחון חברתי</label>
-                        <input type="checkbox" class="checkbox" /><label>ביטחון אישי</label>
-                        <input type="checkbox" class="checkbox" /><label>שוויון בזכויות וחובות</label>
-                        <input type="checkbox" class="checkbox" /><label>סביבה אנרגיה וקיימות</label>
-                    </div>
-                    <div class="sep"></div>
-                    <div class="settings_box_section">
-                        <input type="checkbox" class="checkbox" /><label class="title">קבל התראה על כל דיון יומי חדש</label>
-                    </div>
-                    <div class="sep"></div>
-                    <div class="settings_box_section">
-                        <span class="setting_section_title">קבל התראה על אירועים חדשים בדיון שאתה משתתף בו:</span>
-                        <input type="checkbox" class="checkbox" /><label>תגובות</label>
-                        <input type="checkbox" class="checkbox" /><label>הצעות לשינוי</label>
-                        <input type="checkbox" class="checkbox" /><label>שינויים למסמך</label>
-                        <select>
-                            <option>אפשרויות</option>
-                            <option>אפשרות 1</option>
-                            <option>אפשרות 2</option>
-                            <option>אפשרות 3</option>
-                        </select>
-                        <div class="remark">* תקבל רק עדכון אחד עבור פעילות בכל דיון עד שתיכנס אליו בפעם הבאה</div>
-                    </div>
-                </div>
-
-                <h3>מעגלי תנופה</h3>
-                <div class="settings_box">
-                    <div class="settings_box_section">
-                        <span class="setting_section_title">קבל עדכונים לגבי מעגלי תנופה:</span>
-                        <input type="checkbox" class="checkbox" /><label>כתבות חדשות בתקשורת</label>
-                        <input type="checkbox" class="checkbox" /><label>עדכונים למאבק</label>
-                    </div>
-                    <div class="sep"></div>
-                    <div class="settings_box_section">
-                        <span class="setting_section_title">קבל התראות לגבי פעולות במעגל התנופה:</span>
-                        <input type="checkbox" class="checkbox" /><label>פעולה חדשה</label>
-                        <input type="checkbox" class="checkbox" /><label>הצעה לפעולה אושרה</label>
-                    </div>
-                    <div class="sep"></div>
-                    <div class="settings_box_section">
-                        <input type="checkbox" class="checkbox" /><label class="title">קבל התראות על הצעות לפעולות של משתמשים</label>
-                    </div>
-                    <div class="sep"></div>
-                    <div class="settings_box_section">
-                        <input type="checkbox" class="checkbox" /><label class="title">קבל תזכורות לפני פעולות שהצטרפת אליהן</label>
-                    </div>
-                </div>
-
-                <h3>פעולות ואירועים</h3>
-                <div class="settings_box">
-                    <div class="settings_box_section">
-                        <input type="checkbox" class="checkbox" /><label class="title">קבל התראה על תגובות חדשות בפעולה שאתה משתתף בה</label>
-                    </div>
-                    <div class="remark">* תקבל רק עדכון אחד עבור פעילות בכל דיון עד שתיכנס אליו בפעם הבאה</div>
-                </div>
-
-                <h3>מאגר מידע</h3>
-                <div class="settings_box">
-                    <div class="settings_box_section">
-                        <input type="checkbox" class="checkbox" /><label class="title">קבל עדכונים על פרטי מידע שהתעניינת בהם</label>
-                    </div>
-                </div>
-
-                <h3>נמאס!</h3>
-                <div class="settings_box">
-                    <div class="settings_box_section">
-                        <input type="checkbox" class="checkbox" /><label class="title">סיפור "נמאס" שהתעניינת בו תויג בפריטים במערכת</label>
-                    </div>
-                </div>
-
-                <h3>חברים במערכת</h3>
-                <div class="settings_box">
-                    <div class="settings_box_section">
-                        <input type="checkbox" class="checkbox" /><label class="title">חבר יצר פעילות חדשה במערכת <span>(דיון, פעולה, דיווח "נמאס", פוסט בבלוג, העלה פריט מידע...)</span></label>
-                    </div>
-                </div>
-
-                <h3>נציגים במערכת</h3>
-                <div class="settings_box">
-                    <div class="settings_box_section">
-                        <input type="checkbox" class="checkbox" /><label class="title">נציגך יצר פעילות חדשה במערכת <span>(דיון, פעולה, דיווח "נמאס", פוסט בבלוג, העלה פריט מידע...)</span></label>
-                    </div>
-                    <div class="sep"></div>
-                    <div class="settings_box_section">
-                        <input type="checkbox" class="checkbox" /><label class="title">חבר עורו מינה אותך כנציג במערכת</label>
-                    </div>
-                    <div class="sep"></div>
-                    <div class="settings_box_section">
-                        <input type="checkbox" class="checkbox" /><label class="title">קבל מייל תמצות פעילות נציגיך במערכת</label>
-                    </div>
-                </div>
-
-                <h3>כללי</h3>
-                <div class="settings_box">
-                    <div class="settings_box_section">
-                        <input type="checkbox" class="checkbox" /><label class="title">קבל עדכונים על פעילות עורו</span></label>
-                        <div class="remark_red">* אין להסתמך על שלהלן כעצה משפטית, אלא כמידע כללי בלבד. כל העושה כן בלא להיוועץ בעו"ד, עושה כן על אחריותו בלבד. דוגמאות המסמכים הניתנים לך להלן נמסרים לך לשימוש כמות שהיא(**As Is**). לא תהיה לך כל טענה, תביעה או דרישה כלפי איגוד האינטרנט הישראלי(ע"ר) ו/או מי מטעמו, בגין תכונות המידע ו/או המסמכים, הוראותיהם וההסתמכות עליהם. החוק מאפשר לנמענים לחזור בהם בכל עת מהסכמתם לקבלת דברי פרסומת ממך.</div>
-                    </div>
-                    <div class="sep"></div>
-                    <div class="settings_box_section">
-                        <input type="checkbox" class="checkbox" /><label class="title">קבל מייל שבועי עם עדכונים מעניינים, תמצית פעילות חבריך ונציגיך במערכת, ודברים נוספים שעשויים לעניין אותך  לפי תחומי העניין שלך</label>
-                    </div>
-                    <div class="sep"></div>
-                    <div class="settings_box_section">
-                        <input type="checkbox" class="checkbox turn_off" /><label class="title">כבה את כל תקשורת האימייל מהאתר</label>
-                        <br/>
-                        <div class="free_text_box">
-                            <span style="float:right; margin:5px 0; font-size:12px;"><span style="color:#3b63ef; font-weight:bold;">למה ככה?</span> ספר לנו למה אתה מניאק</span><br/>
-                            <textarea></textarea>
+        <div class="email_settings">
+            <div id="content_main_wrapper">
+                <div id="content_main_holder">
+                    <h2>נהול עדכונים במייל</h2>
+                    <h3>מערכת הדיונים</h3>
+                    <div class="settings_box">
+                        <div id="new_discussion" class="settings_box_section">
+                            <span class="setting_section_title">קבל התראה על כל דיון חדש בתחום</span>
+                            <input id="check-1" data-subject-id="4f8a9a5d92ce9a010000001c" type="checkbox" class="checkbox" /><label for="check-1">חינוך</label>
+                            <input id="check-2" data-subject-id="4f4519836d35790100000020" type="checkbox" class="checkbox" /><label for="check-2">משק וכלכלה</label>
+                            <input id="check-3" data-subject-id="4f428ef5fdc4650100000005" type="checkbox" class="checkbox" /><label for="check-3" >תעסוקה וביטחון חברתי</label>
+                            <input id="check-4" data-subject-id="4f8d306fe0ddb4010000017c" type="checkbox" class="checkbox" /><label for="check-4">ביטחון אישי</label>
+                            <input id="check-5" data-subject-id="4f45195a6d3579010000001b" type="checkbox" class="checkbox" /><label for="check-5" >שוויון בזכויות וחובות</label>
+                            <input id="check-6" data-subject-id="4f6235c99e0042010000000c" type="checkbox" class="checkbox" /><label for="check-6">סביבה אנרגיה וקיימות</label>
+                        </div>
+                        <!--<div class="sep"></div>
+                        <div class="settings_box_section">
+                            <input type="checkbox" class="checkbox" /><label class="title">קבל התראה על כל דיון יומי חדש</label>
+                        </div>-->
+                        <div class="sep"></div>
+                        <div id="selected_discussion" class="settings_box_section">
+                            <div id="alerts_by_discussion">
+                                <select>
+                                </select>
+                            </div>
+                            <span class="setting_section_title">קבל התראה על אירועים חדשים בדיון שאתה משתתף בו:</span>
+                            <input id="discussion_comment" data-setting-type="get_alert_of_comments" type="checkbox" class="checkbox" /><label for="discussion_comment">תגובות</label>
+                            <input id="discussion_change_suggestion" data-setting-type="get_alert_of_suggestions" type="checkbox" class="checkbox" /><label for="discussion_change_suggestion">הצעות לשינוי</label>
+                            <input id="discussion_approved_suggestion" data-setting-type="get_alert_of_approved_suggestions" type="checkbox" class="checkbox" /><label for="discussion_approved_suggestion">שינויים למסמך</label>
+ <!--                           <select>
+                                <option>אפשרויות</option>
+                                <option>אפשרות 1</option>
+                                <option>אפשרות 2</option>
+                                <option>אפשרות 3</option>
+                            </select>-->
+                            <div class="remark">* תקבל רק עדכון אחד עבור פעילות בכל דיון עד שתיכנס אליו בפעם הבאה</div>
                         </div>
                     </div>
-                </div>
-                <div id="button_holder">
-                    <input type="button" class="button_apply" />
-                    <input type="button" class="button_cancel" />
+
+                    <h3>מעגלי תנופה</h3>
+                    <div class="settings_box">
+                        <div class="settings_box_section">
+                            <span class="setting_section_title">קבל עדכונים לגבי מעגלי תנופה:</span>
+                            <input type="checkbox" class="checkbox" /><label>כתבות חדשות בתקשורת</label>
+                            <input type="checkbox" class="checkbox" /><label>עדכונים למאבק</label>
+                        </div>
+                        <div class="sep"></div>
+                        <div class="settings_box_section">
+                            <span class="setting_section_title">קבל התראות לגבי פעולות במעגל התנופה:</span>
+                            <input type="checkbox" class="checkbox" /><label>פעולה חדשה</label>
+                            <input type="checkbox" class="checkbox" /><label>הצעה לפעולה אושרה</label>
+                        </div>
+                        <div class="sep"></div>
+                        <div class="settings_box_section">
+                            <input type="checkbox" class="checkbox" /><label class="title">קבל התראות על הצעות לפעולות של משתמשים</label>
+                        </div>
+                        <div class="sep"></div>
+                        <div class="settings_box_section">
+                            <input type="checkbox" class="checkbox" /><label class="title">קבל תזכורות לפני פעולות שהצטרפת אליהן</label>
+                        </div>
+                    </div>
+
+                    <h3>פעולות ואירועים</h3>
+                    <div class="settings_box">
+                        <div class="settings_box_section">
+                            <input type="checkbox" class="checkbox" /><label class="title">קבל התראה על תגובות חדשות בפעולה שאתה משתתף בה</label>
+                        </div>
+                        <div class="remark">* תקבל רק עדכון אחד עבור פעילות בכל דיון עד שתיכנס אליו בפעם הבאה</div>
+                    </div>
+
+                    <h3>מאגר מידע</h3>
+                    <div class="settings_box">
+                        <div class="settings_box_section">
+                            <input type="checkbox" class="checkbox" /><label class="title">קבל עדכונים על פרטי מידע שהתעניינת בהם</label>
+                        </div>
+                    </div>
+
+                    <h3>נמאס!</h3>
+                    <div class="settings_box">
+                        <div class="settings_box_section">
+                            <input type="checkbox" class="checkbox" /><label class="title">סיפור "נמאס" שהתעניינת בו תויג בפריטים במערכת</label>
+                        </div>
+                    </div>
+
+                    <h3>חברים במערכת</h3>
+                    <div class="settings_box">
+                        <div class="settings_box_section">
+                            <input type="checkbox" class="checkbox" /><label class="title">חבר יצר פעילות חדשה במערכת <span>(דיון, פעולה, דיווח "נמאס", פוסט בבלוג, העלה פריט מידע...)</span></label>
+                        </div>
+                    </div>
+
+                    <h3>נציגים במערכת</h3>
+                    <div class="settings_box">
+                        <div class="settings_box_section">
+                            <input type="checkbox" class="checkbox" /><label class="title">נציגך יצר פעילות חדשה במערכת <span>(דיון, פעולה, דיווח "נמאס", פוסט בבלוג, העלה פריט מידע...)</span></label>
+                        </div>
+                        <div class="sep"></div>
+                        <div class="settings_box_section">
+                            <input type="checkbox" class="checkbox" /><label class="title">חבר עורו מינה אותך כנציג במערכת</label>
+                        </div>
+                        <div class="sep"></div>
+                        <div class="settings_box_section">
+                            <input type="checkbox" class="checkbox" /><label class="title">קבל מייל תמצות פעילות נציגיך במערכת</label>
+                        </div>
+                    </div>
+
+                    <h3>כללי</h3>
+                    <div class="settings_box">
+                        <div class="settings_box_section">
+                            <input type="checkbox" class="checkbox" /><label class="title">קבל עדכונים על פעילות עורו</span></label>
+                            <div class="remark_red">* אין להסתמך על שלהלן כעצה משפטית, אלא כמידע כללי בלבד. כל העושה כן בלא להיוועץ בעו"ד, עושה כן על אחריותו בלבד. דוגמאות המסמכים הניתנים לך להלן נמסרים לך לשימוש כמות שהיא(**As Is**). לא תהיה לך כל טענה, תביעה או דרישה כלפי איגוד האינטרנט הישראלי(ע"ר) ו/או מי מטעמו, בגין תכונות המידע ו/או המסמכים, הוראותיהם וההסתמכות עליהם. החוק מאפשר לנמענים לחזור בהם בכל עת מהסכמתם לקבלת דברי פרסומת ממך.</div>
+                        </div>
+                        <div class="sep"></div>
+                        <div class="settings_box_section">
+                            <input type="checkbox" class="checkbox" /><label class="title">קבל מייל שבועי עם עדכונים מעניינים, תמצית פעילות חבריך ונציגיך במערכת, ודברים נוספים שעשויים לעניין אותך  לפי תחומי העניין שלך</label>
+                        </div>
+                        <div class="sep"></div>
+                        <div class="settings_box_section">
+                            <input type="checkbox" class="checkbox turn_off" /><label class="title">כבה את כל תקשורת האימייל מהאתר</label>
+                            <br/>
+                            <div class="free_text_box">
+                                <span style="float:right; margin:5px 0; font-size:12px;"><span style="color:#3b63ef; font-weight:bold;">למה ככה?</span> ספר לנו למה אתה מניאק</span><br/>
+                                <textarea></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="button_holder">
+                        <input type="button" class="button_apply" />
+                        <input type="button" class="button_cancel" />
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
-</div>
 </div>
 <% include partials/footer.ejs %>
 <script>
+
+
+    var user=<%- JSON.stringify(user) %>;
+    var user_id="<%=user._id %>";
+    var discussions = <%- JSON.stringify(discussions) %>;
+    var discussions_hash = <%- JSON.stringify(discussions_hash) %>;
+    var cycles = <%- JSON.stringify(cycles) %>;
+    var discussion_list = $('#alerts_by_discussion select');
+    var new_settings = {};
+
+    var populate = function(select, options) {
+        select.empty();
+        select.append($('<option>').text('בחר דיון').val(0));
+        options.map(function (option) {
+            if (option && option.title && option._id) {
+                select.append($('<option>').text(option.title).val(option._id));
+            }
+        })
+    };
+
+    // load user settings of specified discussion (in users.discussions)
+    discussion_list.change(function () {
+        var discussion_id = discussion_list.val();
+
+        var is_discussion_in_hash = (typeof discussions_hash[discussion_id] !== "undefined");
+
+        var input_arr = $('#selected_discussion input');
+        $.each(input_arr, function(index, val){
+            var setting_type = $(this).attr('data-setting-type');
+            var is_checked =  is_discussion_in_hash && (typeof discussions_hash[discussion_id][setting_type] !== "undefined")&& (discussions_hash[discussion_id][setting_type] == true);
+            $(input_arr[index]).prop('checked', is_checked);
+        })
+    });
+
+    populate(discussion_list, discussions);
+
     $('.turn_off').change(function(){
         $('.free_text_box').toggle('fade');
     });
+
+    $("#new_discussion input").click(function(){
+
+        new_settings =  {
+            mail_notification_configuration : {
+               new_discussion: [{
+                   subject_id: $(this).attr("data-subject-id"),
+                   get_alert: $(this).is(':checked')
+               }]
+            }
+        };
+
+        db_functions.updateMailNotification(user_id, new_settings, function(err, result){
+            console.log(err || result);
+        })
+    });
+
+    $("#selected_discussion input").click(function(){
+
+        var discussion_id = $("#alerts_by_discussion select").val();
+        var setting_type = $(this).attr('data-setting-type');
+        var is_checked = $(this).is(':checked');
+
+//        new_settings =  {
+//            discussions : [
+//                {
+//                    discussion_id: discussion_id,
+////                    get_alert_of_comments: is_checked
+//                }
+//            ]
+//        };
+
+        new_settings.discussions = [];
+        var obj = {};
+
+        obj["discussion_id"] = discussion_id;
+        obj[setting_type] = is_checked;
+
+        new_settings.discussions.push(obj);
+
+        db_functions.updateMailNotification(user_id, new_settings, function(err, result){
+            console.log(err || result);
+            if(!err){
+               if(typeof discussions_hash[discussion_id] === "undefined")  {
+                   discussions_hash[discussion_id] = {};
+               }
+
+               discussions_hash[discussion_id][setting_type] = is_checked;
+            }
+        })
+    });
+
+    $("#new_d.button_apply").click(function(){
+
+        new_settings.new_discussions = [];
+
+        $.each(new_discussion_list, function(discussion){
+            new_discussion = {
+                subject_id: $(discussion).attr("data-subject-id"),
+                get_alert: $(discussion).is(':checked')
+            }
+            new_settings.new_discussions.push(new_discussion);
+        });
+
+        db_functions.updateMailNotification(user_id, new_settings, function(err, result){
+            console.log(err || result);
+        })
+    })
 </script>
 
 </body>

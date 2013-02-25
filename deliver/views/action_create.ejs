@@ -460,6 +460,7 @@ var error_message = error_message || '';
 
             db_functions.createAction(data, user_info, function(err, data){
                 if(data != 'canceled'){
+
                     var url = data.redirect_link;
                     var created_action_id = data._id;
                     if(!user.actions_done_by_user.create_object)
