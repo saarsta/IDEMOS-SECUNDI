@@ -141,16 +141,16 @@
                     <h3>כללי</h3>
                     <div id="general_settings" class="settings_box">
                         <div class="settings_box_section">
-                            <input type="checkbox" class="checkbox" /><label class="title">קבל עדכונים על פעילות עורו</span></label>
+                            <input type="checkbox" id="get_uru_updates" class="checkbox" /><label class="title">קבל עדכונים על פעילות עורו</span></label>
                             <div class="remark_red">* אין להסתמך על שלהלן כעצה משפטית, אלא כמידע כללי בלבד. כל העושה כן בלא להיוועץ בעו"ד, עושה כן על אחריותו בלבד. דוגמאות המסמכים הניתנים לך להלן נמסרים לך לשימוש כמות שהיא(**As Is**). לא תהיה לך כל טענה, תביעה או דרישה כלפי איגוד האינטרנט הישראלי(ע"ר) ו/או מי מטעמו, בגין תכונות המידע ו/או המסמכים, הוראותיהם וההסתמכות עליהם. החוק מאפשר לנמענים לחזור בהם בכל עת מהסכמתם לקבלת דברי פרסומת ממך.</div>
                         </div>
                         <div class="sep"></div>
                         <div class="settings_box_section">
-                            <input type="checkbox" class="checkbox" /><label class="title">קבל מייל שבועי עם עדכונים מעניינים, תמצית פעילות חבריך ונציגיך במערכת, ודברים נוספים שעשויים לעניין אותך  לפי תחומי העניין שלך</label>
+                            <input type="checkbox" id="get_weekly_mails" class="checkbox" /><label class="title">קבל מייל שבועי עם עדכונים מעניינים, תמצית פעילות חבריך ונציגיך במערכת, ודברים נוספים שעשויים לעניין אותך  לפי תחומי העניין שלך</label>
                         </div>
                         <div class="sep"></div>
                         <div class="settings_box_section">
-                            <input type="checkbox" class="checkbox turn_off" /><label class="title">כבה את כל תקשורת האימייל מהאתר</label>
+                            <input type="checkbox" id="get_mails" class="checkbox turn_off" /><label class="title">כבה את כל תקשורת האימייל מהאתר</label>
                             <br/>
                             <div class="free_text_box">
                                 <span style="float:right; margin:5px 0; font-size:12px;"><span style="color:#3b63ef; font-weight:bold;">למה ככה?</span> ספר לנו למה אתה מניאק</span><br/>
@@ -186,13 +186,20 @@
     };
 
 
-    $.each(user.mail_notification_configuration.new_discussion, function(index, obj){
+    // set new_discussion settings
+    if(user.mail_notification_configuration && user.mail_notification_configuration.new_discussion)
+        $.each(user.mail_notification_configuration.new_discussion, function(index, obj){
 
-        var subject_id = obj.subject_id;
-        var is_checked = obj.get_alert;
+            var subject_id = obj.subject_id;
+            var is_checked = obj.get_alert;
 
-        $('#' + subject_id).prop('checked', is_checked);
-    });
+            $('#' + subject_id).prop('checked', is_checked);
+        });
+
+    // set general settings
+    $('#get_uru_updates').prop('checked', user.mail_notification_configuration.get_uru_updates);
+    $('#get_weekly_mails').prop('checked', user.mail_notification_configuration.get_weekly_mails);
+    $('#get_mails').prop('checked', user.mail_notification_configuration.get_mails);
 
     // load user settings of specified discussion (in users.discussions)
     discussion_list.change(function () {
@@ -258,38 +265,18 @@
 
     $("#general_settings input").click(function(){
 
-        new_settings =  {
-            mail_notification_configuration : {}
-        };
+        var new_settings = {};
+        new_settings.mail_notification_configuration = {};
+        var setting_type = $(this).attr('id');
+        var is_checked = $(this).is(':checked');
+
+        new_settings.mail_notification_configuration[setting_type] = is_checked;
 
         db_functions.updateMailNotification(user_id, new_settings, function(err, result){
             console.log(err || result);
-            if(!err){
-               if(typeof discussions_hash[discussion_id] === "undefined")  {
-                   discussions_hash[discussion_id] = {};
-               }
-
-               discussions_hash[discussion_id][setting_type] = is_checked;
-            }
         })
     });
 
-    /*$("#new_d.button_apply").click(function(){
-
-        new_settings.new_discussions = [];
-
-        $.each(new_discussion_list, function(discussion){
-            new_discussion = {
-                subject_id: $(discussion).attr("data-subject-id"),
-                get_alert: $(discussion).is(':checked')
-            }
-            new_settings.new_discussions.push(new_discussion);
-        });
-
-        db_functions.updateMailNotification(user_id, new_settings, function(err, result){
-            console.log(err || result);
-        })
-    })*/
 </script>
 
 </body>

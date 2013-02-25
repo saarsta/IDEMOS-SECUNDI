@@ -42,7 +42,7 @@ var UserMailNotificationConfig = module.exports = jest.MongooseResource.extend({
                 });
             }else{
 
-                if(mail_settings.mail_notification_configuration.new_discussion){
+                if(mail_settings.mail_notification_configuration && mail_settings.mail_notification_configuration.new_discussion){
                     var exist_new_discussion = _.find(user.mail_notification_configuration.new_discussion, function(new_discussion){ return (new_discussion.subject_id + "" == mail_settings.mail_notification_configuration.new_discussion[0].subject_id + "")});
 
                     if (exist_new_discussion){
@@ -57,8 +57,24 @@ var UserMailNotificationConfig = module.exports = jest.MongooseResource.extend({
                         callback(err, {});
                     });
                 }else{
+                    var path = {};
+
+                    if(mail_settings.mail_notification_configuration){
+                        if(typeof mail_settings.mail_notification_configuration.get_mails != "undefined")
+                            path =  {"mail_notification_configuration.get_mails" : mail_settings.mail_notification_configuration.get_mails === 'true'}
+
+                           // user.mail_notification_configuration.get_mails = mail_settings.mail_notification_configuration.get_mails === 'true';
+                        if(typeof mail_settings.mail_notification_configuration.get_uru_updates != "undefined")
+                                path =  {"mail_notification_configuration.get_uru_updates" : mail_settings.mail_notification_configuration.get_uru_updates === 'true'}
+
+                                //     user.mail_notification_configuration.get_uru_updates = mail_settings.mail_notification_configuration.get_uru_updates === 'true';
+                        if(typeof mail_settings.mail_notification_configuration.get_weekly_mails != "undefined")
+                                path =  {"mail_notification_configuration.get_weekly_mails" : mail_settings.mail_notification_configuration.get_weekly_mails === 'true'}
+
+                                //    user.mail_notification_configuration.get_weekly_mails = mail_settings.mail_notification_configuration.get_weekly_mails === 'true';
+                    }
                     // update user
-                    models.User.update({_id:object.id}, {$set: mail_settings}, function (err) {
+                    models.User.update({_id:object.id}, {$set: path}, function (err) {
                         callback(err, {});
                     });
                 }
