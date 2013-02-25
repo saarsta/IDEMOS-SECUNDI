@@ -53,7 +53,7 @@ function sendFacebookShare(_, title, src, text_preview,err_link, callback) {
 function facebookLogin(callback) {
     FB.getLoginStatus(function(response) {
         if (response.status === 'connected') {
-            $.cookie("fb_login", 1);
+            $.cookie("fb_login", 1, { path: '/' });
             db_functions.getUserAfterFbConnect(response.authResponse.accessToken, callback);
 
         } else {

@@ -47,10 +47,10 @@
                 </div>
             </div>
             <div class="user-links">
-                <h4><%=pageUser.first_name+' '+ pageUser.last_name%></h4>
+                <h4 data-bablic-exclude><%=pageUser.first_name+' '+ pageUser.last_name%></h4>
                 <ul>
-                    <li><%= pageUser.address || ""%></li>
-                    <li><%= pageUser.םccupation || ""%></li>
+                    <li data-bablic-exclude><%= pageUser.address || ""%></li>
+                    <li data-bablic-exclude><%= pageUser.םccupation || ""%></li>
                 </ul>
             </div>
             <form action="">
@@ -127,16 +127,16 @@
             <li><a href="#actions-tab">פעולות</a></li>
             <li><a href="#articles-tab">בלוג</a></li>
         </ul>
-        <div id="discussions-tab">
+        <div id="discussions-tab" data-bablic-index="false">
 
         </div>
-        <div id="cycles-tab">
+        <div id="cycles-tab" data-bablic-index="false">
 
         </div>
-        <div id="actions-tab">
+        <div id="actions-tab" data-bablic-index="false">
 
         </div>
-        <div id="articles-tab">
+        <div id="articles-tab" data-bablic-index="false">
 
         </div>
 
@@ -145,7 +145,7 @@
 <div class="myuru-bottom cf">
     <div class="right" id="notifications">
         <h2>עדכונים</h2>
-        <div id="renewal" class="renewal">
+        <div id="renewal" class="renewal" data-bablic-index="false">
 
 
         </div>
@@ -158,7 +158,7 @@
 אחרי מי עוקב
         <%} %>
       </h2>
-        <div id="users-list" class="users-list">
+        <div id="users-list" class="users-list" data-bablic-index="false">
 
 
         </div>

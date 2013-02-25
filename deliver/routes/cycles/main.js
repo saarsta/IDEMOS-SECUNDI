@@ -64,7 +64,7 @@ module.exports = function(req, res){
                 'sub_branding': 1,
                 'social_popup_title': 1,
                 'social_popup_text': 1    ,
-                'timeline_embed':1,
+                'timeline':1,
                 'fb_page':1
 
             })
@@ -117,8 +117,9 @@ module.exports = function(req, res){
             var description = g_cycle.text_field_preview || g_cycle.text_field;
             var no_tags_description = description.replace(/(<([^>]+?)>)/ig,"");
 
-            var view =   g_cycle.id==   '5047023a9e56a502000014f5'?   'cycle_new.ejs' : 'cycle.ejs'  ;
-             console.log(view)  ;
+         //  var  view =  'cycle.ejs' ;
+           var view =   g_cycle.id==   '5047023a9e56a502000014f5'?   'cycle_new.ejs' : 'cycle.ejs'  ;
+           console.log(view)  ;
             res.render(view,{
                 cycle: g_cycle,
                 tab:'cycles',

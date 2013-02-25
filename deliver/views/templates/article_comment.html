@@ -21,13 +21,13 @@
             <a href="/myuru/{creator_id.id}">
                 <div class="img-box transparent-img">
                     <div style="width:60px; height:64px;" class="auto-scale">
-                        <img alt="{title}" title="{creator_id.first_name} {creator_id.last_name}"
+                        <img data-bablic-exclude alt="{title}" title="{creator_id.first_name} {creator_id.last_name}"
                              src="{creator_id.avatar_url}">
                     </div>
                     <span></span>
                 </div>
             </a>
-            <h4>  {creator_id.first_name} {creator_id.last_name}</h4>
+            <h4 data-bablic-exclude>  {creator_id.first_name} {creator_id.last_name}</h4>
             <div class="date">13.3.12</div>
             <div class="proxy">
                 <span>{creator_id.num_of_proxies_i_represent}</span>

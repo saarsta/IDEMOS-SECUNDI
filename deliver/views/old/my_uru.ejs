@@ -16,20 +16,20 @@
         <div class="profile clearfix">
             <h2>פרופיל משתמש</h2>
             <div class="frame1">
-                <img  id="actionImg" src="<%=avatar%>" alt="<%=user.username%>" width="202" height="226" />
+                <img  data-bablic-exclude id="actionImg" src="<%=avatar%>" alt="<%=user.username%>" width="202" height="226" />
             </div>
 
 
             <div class="details">
                 <div class="information">
-                    <p><%=user.username || user.first_name%></p>
-                    <p><%=user.address || ""%></p>
+                    <p data-bablic-exclude><%=user.username || user.first_name%></p>
+                    <p data-bablic-exclude><%=user.address || ""%></p>
                     <p>
                         <% if(user.gender==='male'){ %>
                         זכר
                         <%} else{ %>נקבה<% } %> </p>
-                     <p><%= user.occupation || "" %></p>
-                    <p><%=user.biography || ""%></p>
+                     <p data-bablic-exclude><%= user.occupation || "" %></p>
+                    <p data-bablic-exclude><%=user.biography || ""%></p>
                 </div>
                 <div class="toucans">
                     <h4>כמות טוקנים</h4>

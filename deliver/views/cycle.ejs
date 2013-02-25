@@ -438,7 +438,7 @@
                                 <span></span>
                             </a>
                         </div>
-                        <h4 class="opinion_shaper"><a href="/myuru/<%=cycle.opinion_shapers[c].user_id._id%>"><%=cycle.opinion_shapers[c].user_id.first_name %> <%=cycle.opinion_shapers[c].user_id.last_name %></a></h4>
+                        <h4 class="opinion_shaper"><a data-bablic-exclude href="/myuru/<%=cycle.opinion_shapers[c].user_id._id%>"><%=cycle.opinion_shapers[c].user_id.first_name %> <%=cycle.opinion_shapers[c].user_id.last_name %></a></h4>
                         <p class="opinion_shaper"><% if (cycle.opinion_shapers[c].text) {%>  <%=cycle.opinion_shapers[c].text %>  <% } %></p>
                         <div class="badges">
                             <div class="proxy">
@@ -492,7 +492,6 @@ var current_section=2;
         var sharepop = <%=share%>;
         var join = <%=join%>;
 
-       var timeline_src="<%=cycle.timeline_embed%>";
 
 
 
@@ -1137,11 +1136,15 @@ var current_section=2;
             });
         <% } %>
 
+        var timeline_src="<%=cycle.timeline.source%>";
+        var timeline_zoom="<%=cycle.timeline.zoom || -2 %>";
+        var timeline_default_item="<%=cycle.timeline.default_item || 0 %>";
+
         if(timeline_src && timeline_src!='undefined' && timeline_src!=''){
             $(".followers-box").hide() ;
             $("#my-timeline-button").show() ;
 
-             var start_slide=getURLParameter('timeline_default_slide')|| 0;
+            var start_slide=getURLParameter('timeline_default_slide')=='null' ?timeline_default_item : getURLParameter('timeline_default_slide');
 
 
             createStoryJS({
@@ -1153,7 +1156,7 @@ var current_section=2;
                 css:                '/css/timeline.css',     //OPTIONAL PATH TO CSS
                 font:               'Arial',             //OPTIONAL FONT
                 start_at_slide:     start_slide,                            //OPTIONAL START AT SPECIFIC SLIDE
-                start_zoom_adjust:  '-2',                            //OPTIONAL TWEAK THE DEFAULT ZOOM LEVEL
+                start_zoom_adjust:  timeline_zoom,                            //OPTIONAL TWEAK THE DEFAULT ZOOM LEVEL
                 embed_id:   'my-timeline'
 
 /*

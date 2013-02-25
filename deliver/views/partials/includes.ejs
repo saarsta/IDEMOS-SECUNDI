@@ -87,7 +87,7 @@
 
 <%}else{%>
 <script type="text/javascript">
-if( $.cookie('fb_login')==1){
+if( $.cookie('fb_login',{ path: '/' })==1){
 facebookLogin(function(err, result){
 if(!err){
 window.location.href = window.location.href;
