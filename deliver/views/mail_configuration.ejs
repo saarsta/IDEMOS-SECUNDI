@@ -40,12 +40,12 @@
                     <div class="settings_box">
                         <div id="new_discussion" class="settings_box_section">
                             <span class="setting_section_title">קבל התראה על כל דיון חדש בתחום</span>
-                            <input id="check-1" data-subject-id="4f8a9a5d92ce9a010000001c" type="checkbox" class="checkbox" /><label for="check-1">חינוך</label>
-                            <input id="check-2" data-subject-id="4f4519836d35790100000020" type="checkbox" class="checkbox" /><label for="check-2">משק וכלכלה</label>
-                            <input id="check-3" data-subject-id="4f428ef5fdc4650100000005" type="checkbox" class="checkbox" /><label for="check-3" >תעסוקה וביטחון חברתי</label>
-                            <input id="check-4" data-subject-id="4f8d306fe0ddb4010000017c" type="checkbox" class="checkbox" /><label for="check-4">ביטחון אישי</label>
-                            <input id="check-5" data-subject-id="4f45195a6d3579010000001b" type="checkbox" class="checkbox" /><label for="check-5" >שוויון בזכויות וחובות</label>
-                            <input id="check-6" data-subject-id="4f6235c99e0042010000000c" type="checkbox" class="checkbox" /><label for="check-6">סביבה אנרגיה וקיימות</label>
+                            <input id="4f8a9a5d92ce9a010000001c" type="checkbox" class="checkbox" /><label for="4f8a9a5d92ce9a010000001c">חינוך</label>
+                            <input id="4f4519836d35790100000020" type="checkbox" class="checkbox" /><label for="4f4519836d35790100000020">משק וכלכלה</label>
+                            <input id="4f428ef5fdc4650100000005" type="checkbox" class="checkbox" /><label for="4f428ef5fdc4650100000005" >תעסוקה וביטחון חברתי</label>
+                            <input id="4f8d306fe0ddb4010000017c" type="checkbox" class="checkbox" /><label for="4f8d306fe0ddb4010000017c">ביטחון אישי</label>
+                            <input id="4f45195a6d3579010000001b" type="checkbox" class="checkbox" /><label for="4f45195a6d3579010000001b" >שוויון בזכויות וחובות</label>
+                            <input id="4f6235c99e0042010000000c" type="checkbox" class="checkbox" /><label for="4f6235c99e0042010000000c">סביבה אנרגיה וקיימות</label>
                         </div>
                         <!--<div class="sep"></div>
                         <div class="settings_box_section">
@@ -139,7 +139,7 @@
                     </div>
 
                     <h3>כללי</h3>
-                    <div class="settings_box">
+                    <div id="general_settings" class="settings_box">
                         <div class="settings_box_section">
                             <input type="checkbox" class="checkbox" /><label class="title">קבל עדכונים על פעילות עורו</span></label>
                             <div class="remark_red">* אין להסתמך על שלהלן כעצה משפטית, אלא כמידע כללי בלבד. כל העושה כן בלא להיוועץ בעו"ד, עושה כן על אחריותו בלבד. דוגמאות המסמכים הניתנים לך להלן נמסרים לך לשימוש כמות שהיא(**As Is**). לא תהיה לך כל טענה, תביעה או דרישה כלפי איגוד האינטרנט הישראלי(ע"ר) ו/או מי מטעמו, בגין תכונות המידע ו/או המסמכים, הוראותיהם וההסתמכות עליהם. החוק מאפשר לנמענים לחזור בהם בכל עת מהסכמתם לקבלת דברי פרסומת ממך.</div>
@@ -157,10 +157,6 @@
                                 <textarea></textarea>
                             </div>
                         </div>
-                    </div>
-                    <div id="button_holder">
-                        <input type="button" class="button_apply" />
-                        <input type="button" class="button_cancel" />
                     </div>
                 </div>
             </div>
@@ -189,6 +185,15 @@
         })
     };
 
+
+    $.each(user.mail_notification_configuration.new_discussion, function(index, obj){
+
+        var subject_id = obj.subject_id;
+        var is_checked = obj.get_alert;
+
+        $('#' + subject_id).prop('checked', is_checked);
+    });
+
     // load user settings of specified discussion (in users.discussions)
     discussion_list.change(function () {
         var discussion_id = discussion_list.val();
@@ -214,7 +219,7 @@
         new_settings =  {
             mail_notification_configuration : {
                new_discussion: [{
-                   subject_id: $(this).attr("data-subject-id"),
+                   subject_id: $(this).attr("id"),
                    get_alert: $(this).is(':checked')
                }]
             }
@@ -230,15 +235,6 @@
         var discussion_id = $("#alerts_by_discussion select").val();
         var setting_type = $(this).attr('data-setting-type');
         var is_checked = $(this).is(':checked');
-
-//        new_settings =  {
-//            discussions : [
-//                {
-//                    discussion_id: discussion_id,
-////                    get_alert_of_comments: is_checked
-//                }
-//            ]
-//        };
 
         new_settings.discussions = [];
         var obj = {};
@@ -260,7 +256,25 @@
         })
     });
 
-    $("#new_d.button_apply").click(function(){
+    $("#general_settings input").click(function(){
+
+        new_settings =  {
+            mail_notification_configuration : {}
+        };
+
+        db_functions.updateMailNotification(user_id, new_settings, function(err, result){
+            console.log(err || result);
+            if(!err){
+               if(typeof discussions_hash[discussion_id] === "undefined")  {
+                   discussions_hash[discussion_id] = {};
+               }
+
+               discussions_hash[discussion_id][setting_type] = is_checked;
+            }
+        })
+    });
+
+    /*$("#new_d.button_apply").click(function(){
 
         new_settings.new_discussions = [];
 
@@ -275,7 +289,7 @@
         db_functions.updateMailNotification(user_id, new_settings, function(err, result){
             console.log(err || result);
         })
-    })
+    })*/
 </script>
 
 </body>

@@ -41,13 +41,28 @@ var UserMailNotificationConfig = module.exports = jest.MongooseResource.extend({
                     callback(err, {});
                 });
             }else{
-                // update user
-                models.User.update({_id:object.id}, {$set: mail_settings}, function (err) {
-                    callback(err, {});
-                });
+
+                if(mail_settings.mail_notification_configuration.new_discussion){
+                    var exist_new_discussion = _.find(user.mail_notification_configuration.new_discussion, function(new_discussion){ return (new_discussion.subject_id + "" == mail_settings.mail_notification_configuration.new_discussion[0].subject_id + "")});
+
+                    if (exist_new_discussion){
+                        if(typeof mail_settings.mail_notification_configuration.new_discussion[0].get_alert != "undefined")
+                            exist_new_discussion._doc.get_alert = mail_settings.mail_notification_configuration.new_discussion[0].get_alert === 'true';
+                    } else{
+                        user.mail_notification_configuration.new_discussion.push(mail_settings.mail_notification_configuration.new_discussion[0]);
+                    }
+
+                    // update user
+                    models.User.update({_id:object.id}, {$set: {"mail_notification_configuration.new_discussion": user.mail_notification_configuration.new_discussion}}, function (err) {
+                        callback(err, {});
+                    });
+                }else{
+                    // update user
+                    models.User.update({_id:object.id}, {$set: mail_settings}, function (err) {
+                        callback(err, {});
+                    });
+                }
             }
         })
-
-
     }
 })
