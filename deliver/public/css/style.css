@@ -10172,6 +10172,10 @@ change .current class name using plugin option, currentPanel : 'current' */
 
 /* Email Setings Page - Start*/
 
+.email_settings {
+    font-family:arial
+}
+
 .email_settings #content_main_wrapper{
     margin: 0px auto 0px auto;
 }
@@ -10188,6 +10192,7 @@ change .current class name using plugin option, currentPanel : 'current' */
 .email_settings #content_main_holder h3{
     color:#3b63ef;
     font-size:18px;
+    margin-bottom: 20px;
 }
 
 .email_settings .sep{
@@ -10222,7 +10227,7 @@ change .current class name using plugin option, currentPanel : 'current' */
 .email_settings #content_main_holder .settings_box{
     background:#fff;
     color:#4c4c4c;
-    width:900px;
+    width:940px;
     padding:20px;
     float:right;
     margin-bottom:20px;
@@ -10273,7 +10278,7 @@ change .current class name using plugin option, currentPanel : 'current' */
 }
 
 .email_settings #button_holder .button_cancel{
-    background:url(images/button_cancel.png) no-repeat 0 0;
+    background:url(/images/button_cancel.png) no-repeat 0 0;
     width:126px;
     height:47px;
     border:0px;
@@ -10282,7 +10287,7 @@ change .current class name using plugin option, currentPanel : 'current' */
 
 .email_settings #button_holder .button_apply{
     margin-left:10px;
-    background:url(images/button_apply.png) no-repeat 0 0;
+    background:url(/images/button_apply.png) no-repeat 0 0;
     width:126px;
     height:47px;
     border:0px;

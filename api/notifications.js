@@ -469,7 +469,7 @@ function isNotiInUserMailConfig(user, noti){
         // check if should get mail and when
         var discussion = _.find(user.discussions, function(discussion){ return discussion.discussion_id + "" == noti.notificators[0].sub_entity_id });
 
-        if (!discussion || !discussion.get_alert_of_comments) return false;
+        if (!discussion || discussion.get_alert_of_comments !== true) return false;
 
         if (discussion.time_of_alert === 'now') {
             return true;
@@ -483,7 +483,7 @@ function isNotiInUserMailConfig(user, noti){
         // check if should get mail and when
         var discussion = _.find(user.discussions, function(discussion){ return discussion.discussion_id + "" == noti.notificators[0].sub_entity_id });
 
-        if (!discussion || !discussion.get_alert_of_suggestions) return false;
+        if (!discussion || discussion.get_alert_of_suggestions !== true) return false;
 
         if (discussion.time_of_alert === 'now') {
             return true;
@@ -497,7 +497,7 @@ function isNotiInUserMailConfig(user, noti){
         // check if should get mail and when
         var discussion = _.find(user.discussions, function(discussion){ return discussion.discussion_id + "" == noti.notificators[0].sub_entity_id });
 
-        if (!discussion || !discussion.get_alert_of_approved_suggestions) return false;
+        if (!discussion || discussion.get_alert_of_approved_suggestions !== true) return false;
 
         if (discussion.time_of_alert === 'now') {
             return true;
@@ -519,7 +519,7 @@ function isNotiInUserMailConfig(user, noti){
         // check if should get mail and when
         var cycle = _.find(user.cycles, function(cycle){ return cycle.cycle_id + "" == noti.notificators[0].sub_entity_id });
 
-        if (!cycle || !cycle.get_alert_of_new_action) return false;
+        if (!cycle || cycle.get_alert_of_new_action !== true) return false;
 
         if (cycle.time_of_alert === 'now') {
             return true;
@@ -533,7 +533,7 @@ function isNotiInUserMailConfig(user, noti){
         // check if should get mail and when
         var cycle = _.find(user.cycles, function(cycle){ return cycle.cycle_id + "" == noti.notificators[0].sub_entity_id });
 
-        if (!cycle || !cycle.get_alert_of_approved_action) return false;
+        if (!cycle || cycle.get_alert_of_approved_action !== true) return false;
 
         if (cycle.time_of_alert === 'now') {
             return true;
