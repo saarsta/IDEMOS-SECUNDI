@@ -18,7 +18,9 @@
         "xml": "0.0.x",
         "formage-admin": ">= 1.0.3",
         "facebook-signed-request": "0.0.x",
-        "knox": "0.0.11"
+        "knox": "0.0.11" ,
+        "jquery": "latest",
+        "zombie": "latest"
     },
     "engines": {
         "node": ">= 0.8.14",

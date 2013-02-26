@@ -64,7 +64,15 @@ var Cycle = module.exports = new Schema({
     is_private:{type:Boolean,'default':false}    ,
 
     timeline:{source:{type: String} , zoom :{type: Number},default_item: {type: Number} }  ,
-    fb_page: { url: {type: String}, like_count:{type: Number,default:0}, last_update:{type:Date} }
+    fb_page: {
+        fb_id: {type: String},
+        url: {type: String},
+        like_count:{type: Number,default:0},
+        last_update:{type:Date},
+        users:{type:[String], index:true}
+
+        // users1 : [ {fb_id:{type:String,unique: true}, name: {type:String}} ]
+    }
 }, {strict: true});
 
 Cycle.pre("save", function(next){
