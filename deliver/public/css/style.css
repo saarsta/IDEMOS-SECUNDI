@@ -2434,7 +2434,8 @@ color: #ff00af;
 .add-offer .text-box a {
     color: #3b63ef;
     margin-bottom: -15px;
-    top: -15px;
+    top: -18px;
+    background-color: #fff;
     display: inline-block;
 }
 
