@@ -73,10 +73,10 @@
 
                     <h3>מעגלי תנופה</h3>
                     <div class="settings_box">
-                        <div id="cycle_general" class="settings_box_section">
+                        <div id="cycle_general" class="settings_box_section general_settings">
                             <span class="setting_section_title">קבל עדכונים לגבי מעגלי תנופה:</span>
-                            <input id="cycle_new_updates" data-setting-type="get_cycles_new_updates" type="checkbox" class="checkbox" /><label for="cycle_new_updates">כתבות חדשות בתקשורת</label>
-                            <input id="cycle_system_information" data-setting-type="get_cycles_system_information" type="checkbox" class="checkbox" /><label for="cycle_system_information">עדכונים למאבק</label>
+                            <input id="cycle_new_updates" class="general" data-setting-type="get_cycles_new_updates" type="checkbox" class="checkbox" /><label for="cycle_new_updates">כתבות חדשות בתקשורת</label>
+                            <input id="cycle_system_information" class="general" data-setting-type="get_cycles_system_information" type="checkbox" class="checkbox" /><label for="cycle_system_information">עדכונים למאבק</label>
                         </div>
                         <div class="sep"></div>
                         <div id="selected_cycle" data-type="cycle" class="settings_box_section">
@@ -99,9 +99,9 @@
                     </div>
 
                     <h3>פעולות ואירועים</h3>
-                    <div class="settings_box">
+                    <div id="action_general" class="settings_box general_settings">
                         <div class="settings_box_section">
-                            <input type="checkbox" class="checkbox" /><label class="title">קבל התראה על תגובות חדשות בפעולה שאתה משתתף בה</label>
+                            <input id="action_comments" class="general" data-setting-type="get_alert_of_new_posts_in_actions" type="checkbox" class="checkbox" /><label for="action_comments" class="title">קבל התראה על תגובות חדשות בפעולה שאתה משתתף בה</label>
                         </div>
                         <div class="remark">* תקבל רק עדכון אחד עבור פעילות בכל דיון עד שתיכנס אליו בפעם הבאה</div>
                     </div>
@@ -142,18 +142,18 @@
                     </div>-->
 
                     <h3>כללי</h3>
-                    <div id="general_settings" class="settings_box">
+                    <div id="general_settings" class="settings_box general_settings">
                         <div class="settings_box_section">
-                            <input type="checkbox" id="get_uru_updates" class="checkbox" /><label class="title">קבל עדכונים על פעילות עורו</span></label>
+                            <input type="checkbox" class="general" data-setting-type="get_uru_updates" id="get_uru_updates" class="checkbox" /><label class="title">קבל עדכונים על פעילות עורו</span></label>
                             <div class="remark_red">* אין להסתמך על שלהלן כעצה משפטית, אלא כמידע כללי בלבד. כל העושה כן בלא להיוועץ בעו"ד, עושה כן על אחריותו בלבד. דוגמאות המסמכים הניתנים לך להלן נמסרים לך לשימוש כמות שהיא(**As Is**). לא תהיה לך כל טענה, תביעה או דרישה כלפי איגוד האינטרנט הישראלי(ע"ר) ו/או מי מטעמו, בגין תכונות המידע ו/או המסמכים, הוראותיהם וההסתמכות עליהם. החוק מאפשר לנמענים לחזור בהם בכל עת מהסכמתם לקבלת דברי פרסומת ממך.</div>
                         </div>
                         <div class="sep"></div>
                         <div class="settings_box_section">
-                            <input type="checkbox" id="get_weekly_mails" class="checkbox" /><label class="title">קבל מייל שבועי עם עדכונים מעניינים, תמצית פעילות חבריך ונציגיך במערכת, ודברים נוספים שעשויים לעניין אותך  לפי תחומי העניין שלך</label>
+                            <input type="checkbox" class="general" data-setting-type="get_weekly_mails" id="get_weekly_mails" class="checkbox" /><label class="title">קבל מייל שבועי עם עדכונים מעניינים, תמצית פעילות חבריך ונציגיך במערכת, ודברים נוספים שעשויים לעניין אותך  לפי תחומי העניין שלך</label>
                         </div>
                         <div class="sep"></div>
                         <div class="settings_box_section">
-                            <input type="checkbox" id="get_mails" class="checkbox turn_off" /><label class="title">כבה את כל תקשורת האימייל מהאתר</label>
+                            <input type="checkbox" class="general" data-setting-type="get_mails" id="get_mails" class="checkbox turn_off" /><label class="title">כבה את כל תקשורת האימייל מהאתר</label>
                             <br/>
                             <div class="free_text_box">
                                 <span style="float:right; margin:5px 0; font-size:12px;"><span style="color:#3b63ef; font-weight:bold;">למה ככה?</span> ספר לנו למה אתה מניאק</span><br/>
@@ -200,15 +200,26 @@
             $('#' + subject_id).prop('checked', is_checked);
         });
 
-    // set cycle general settings
+    // set all general settings
+    $.each($('.general'), function(index){
+        var setting_type = $(this).attr('data-setting-type');
+        var is_checked = user.mail_notification_configuration[setting_type];
+
+        $(this).prop('checked', is_checked);
+    });
+
+    /*// set cycle general settings
     $('#cycle_new_updates').prop('checked', user.mail_notification_configuration.get_cycles_new_updates);
     $('#cycle_system_information').prop('checked', user.mail_notification_configuration.get_cycles_system_information);
+
+    // set action general settings
+    $('#action_comments').prop('checked', user.mail_notification_configuration.get_alert_of_new_posts_in_actions);
 
     // set general settings
     $('#get_uru_updates').prop('checked', user.mail_notification_configuration.get_uru_updates);
     $('#get_weekly_mails').prop('checked', user.mail_notification_configuration.get_weekly_mails);
     $('#get_mails').prop('checked', user.mail_notification_configuration.get_mails);
-
+*/
 
     // load user settings of specified discussion (in users.discussions)
     discussion_list.change(function () {
@@ -261,7 +272,7 @@
         })
     });
 
-    $("#cycle_general input").click(function(){
+    /*$("#cycle_general input").click(function(){
 
         var setting_type = $(this).attr('data-setting-type');
         var is_checked = $(this).is(':checked');
@@ -273,7 +284,7 @@
         db_functions.updateMailNotification(user_id, new_settings, function(err, result){
             console.log(err || result);
         })
-    });
+    });*/
 
     // todo - implment it
     /*$("#selected_discussion input"*//*,#selected_cycle input"*//*).click(function(){
@@ -367,11 +378,12 @@
         })
     });
 
-    $("#general_settings input").click(function(){
+    $(".general_settings input").click(function(){
 
         var new_settings = {};
         new_settings.mail_notification_configuration = {};
-        var setting_type = $(this).attr('id');
+//        var setting_type = $(this).attr('id');
+        var setting_type = $(this).attr('data-setting-type');
         var is_checked = $(this).is(':checked');
 
         new_settings.mail_notification_configuration[setting_type] = is_checked;

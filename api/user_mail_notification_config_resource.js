@@ -83,13 +83,15 @@ var UserMailNotificationConfig = module.exports = jest.MongooseResource.extend({
                         if(typeof mail_settings.mail_notification_configuration.get_mails != "undefined")
                             path =  {"mail_notification_configuration.get_mails" : mail_settings.mail_notification_configuration.get_mails === 'true'}
                         if(typeof mail_settings.mail_notification_configuration.get_uru_updates != "undefined")
-                                path =  {"mail_notification_configuration.get_uru_updates" : mail_settings.mail_notification_configuration.get_uru_updates === 'true'}
+                            path =  {"mail_notification_configuration.get_uru_updates" : mail_settings.mail_notification_configuration.get_uru_updates === 'true'}
                         if(typeof mail_settings.mail_notification_configuration.get_weekly_mails != "undefined")
-                                path =  {"mail_notification_configuration.get_weekly_mails" : mail_settings.mail_notification_configuration.get_weekly_mails === 'true'}
+                            path =  {"mail_notification_configuration.get_weekly_mails" : mail_settings.mail_notification_configuration.get_weekly_mails === 'true'}
                         if(typeof mail_settings.mail_notification_configuration.get_cycles_new_updates != "undefined")
-                                path =  {"mail_notification_configuration.get_cycles_new_updates" : mail_settings.mail_notification_configuration.get_cycles_new_updates === 'true'}
+                            path =  {"mail_notification_configuration.get_cycles_new_updates" : mail_settings.mail_notification_configuration.get_cycles_new_updates === 'true'}
                         if(typeof mail_settings.mail_notification_configuration.get_cycles_system_information != "undefined")
-                                path =  {"mail_notification_configuration.get_cycles_system_information" : mail_settings.mail_notification_configuration.get_cycles_system_information === 'true'}
+                            path =  {"mail_notification_configuration.get_cycles_system_information" : mail_settings.mail_notification_configuration.get_cycles_system_information === 'true'}
+                        if(typeof mail_settings.mail_notification_configuration.get_alert_of_new_posts_in_actions != "undefined")
+                            path =  {"mail_notification_configuration.get_alert_of_new_posts_in_actions" : mail_settings.mail_notification_configuration.get_alert_of_new_posts_in_actions === 'true'}
                     }
                     // update user
                     models.User.update({_id:object.id}, {$set: path}, function (err) {
