@@ -52,7 +52,7 @@
                             <input type="checkbox" class="checkbox" /><label class="title">קבל התראה על כל דיון יומי חדש</label>
                         </div>-->
                         <div class="sep"></div>
-                        <div id="selected_discussion" class="settings_box_section">
+                        <div id="selected_discussion"  data-type="discussion" class="settings_box_section">
                             <div id="alerts_by_discussion">
                                 <select>
                                 </select>
@@ -73,24 +73,28 @@
 
                     <h3>מעגלי תנופה</h3>
                     <div class="settings_box">
-                        <div class="settings_box_section">
+                        <div id="cycle_general" class="settings_box_section">
                             <span class="setting_section_title">קבל עדכונים לגבי מעגלי תנופה:</span>
-                            <input type="checkbox" class="checkbox" /><label>כתבות חדשות בתקשורת</label>
-                            <input type="checkbox" class="checkbox" /><label>עדכונים למאבק</label>
+                            <input id="cycle_new_updates" data-setting-type="get_cycles_new_updates" type="checkbox" class="checkbox" /><label for="cycle_new_updates">כתבות חדשות בתקשורת</label>
+                            <input id="cycle_system_information" data-setting-type="get_cycles_system_information" type="checkbox" class="checkbox" /><label for="cycle_system_information">עדכונים למאבק</label>
                         </div>
                         <div class="sep"></div>
-                        <div class="settings_box_section">
+                        <div id="selected_cycle" data-type="cycle" class="settings_box_section">
+                            <div id="alerts_by_cycle">
+                                <select>
+                                </select>
+                            </div>
                             <span class="setting_section_title">קבל התראות לגבי פעולות במעגל התנופה:</span>
-                            <input type="checkbox" class="checkbox" /><label>פעולה חדשה</label>
-                            <input type="checkbox" class="checkbox" /><label>הצעה לפעולה אושרה</label>
+                            <input id="cycle_new_action" data-setting-type="get_alert_of_new_action" type="checkbox" class="checkbox" /><label for="cycle_new_action" >פעולה חדשה</label>
+                            <input id="cycle_approved_action" data-setting-type="get_alert_of_approved_action" type="checkbox" class="checkbox" /><label for="cycle_approved_action" >הצעה לפעולה אושרה</label>
                         </div>
-                        <div class="sep"></div>
+                        <!--<div class="sep"></div>
                         <div class="settings_box_section">
                             <input type="checkbox" class="checkbox" /><label class="title">קבל התראות על הצעות לפעולות של משתמשים</label>
-                        </div>
+                        </div>-->
                         <div class="sep"></div>
                         <div class="settings_box_section">
-                            <input type="checkbox" class="checkbox" /><label class="title">קבל תזכורות לפני פעולות שהצטרפת אליהן</label>
+                            <input data-setting-type="get_reminder_of_action" type="checkbox" class="checkbox" /><label class="title">קבל תזכורות לפני פעולות שהצטרפת אליהן</label>
                         </div>
                     </div>
 
@@ -108,22 +112,21 @@
                             <input type="checkbox" class="checkbox" /><label class="title">קבל עדכונים על פרטי מידע שהתעניינת בהם</label>
                         </div>
                     </div>
-
-                    <h3>נמאס!</h3>
+                    <!--<h3>נמאס!</h3>
                     <div class="settings_box">
                         <div class="settings_box_section">
                             <input type="checkbox" class="checkbox" /><label class="title">סיפור "נמאס" שהתעניינת בו תויג בפריטים במערכת</label>
                         </div>
-                    </div>
+                    </div>-->
 
-                    <h3>חברים במערכת</h3>
-                    <div class="settings_box">
-                        <div class="settings_box_section">
-                            <input type="checkbox" class="checkbox" /><label class="title">חבר יצר פעילות חדשה במערכת <span>(דיון, פעולה, דיווח "נמאס", פוסט בבלוג, העלה פריט מידע...)</span></label>
-                        </div>
-                    </div>
+                    <!--<h3>חברים במערכת</h3>-->
+                    <!--<div class="settings_box">-->
+                        <!--<div class="settings_box_section">-->
+                            <!--<input type="checkbox" class="checkbox" /><label class="title">חבר יצר פעילות חדשה במערכת <span>(דיון, פעולה, דיווח "נמאס", פוסט בבלוג, העלה פריט מידע...)</span></label>-->
+                        <!--</div>-->
+                    <!--</div>-->
 
-                    <h3>נציגים במערכת</h3>
+                    <!--<h3>נציגים במערכת</h3>
                     <div class="settings_box">
                         <div class="settings_box_section">
                             <input type="checkbox" class="checkbox" /><label class="title">נציגך יצר פעילות חדשה במערכת <span>(דיון, פעולה, דיווח "נמאס", פוסט בבלוג, העלה פריט מידע...)</span></label>
@@ -136,7 +139,7 @@
                         <div class="settings_box_section">
                             <input type="checkbox" class="checkbox" /><label class="title">קבל מייל תמצות פעילות נציגיך במערכת</label>
                         </div>
-                    </div>
+                    </div>-->
 
                     <h3>כללי</h3>
                     <div id="general_settings" class="settings_box">
@@ -170,21 +173,22 @@
     var user=<%- JSON.stringify(user) %>;
     var user_id="<%=user._id %>";
     var discussions = <%- JSON.stringify(discussions) %>;
-    var discussions_hash = <%- JSON.stringify(discussions_hash) %>;
     var cycles = <%- JSON.stringify(cycles) %>;
+    var discussions_hash = <%- JSON.stringify(discussions_hash) %>;
+    var cycles_hash = <%- JSON.stringify(cycles_hash) %>;
     var discussion_list = $('#alerts_by_discussion select');
+    var cycle_list = $('#alerts_by_cycle select');
     var new_settings = {};
 
-    var populate = function(select, options) {
+    var populate = function(select, text, options) {
         select.empty();
-        select.append($('<option>').text('בחר דיון').val(0));
+        select.append($('<option>').text(text).val(0));
         options.map(function (option) {
             if (option && option.title && option._id) {
                 select.append($('<option>').text(option.title).val(option._id));
             }
         })
     };
-
 
     // set new_discussion settings
     if(user.mail_notification_configuration && user.mail_notification_configuration.new_discussion)
@@ -196,10 +200,15 @@
             $('#' + subject_id).prop('checked', is_checked);
         });
 
+    // set cycle general settings
+    $('#cycle_new_updates').prop('checked', user.mail_notification_configuration.get_cycles_new_updates);
+    $('#cycle_system_information').prop('checked', user.mail_notification_configuration.get_cycles_system_information);
+
     // set general settings
     $('#get_uru_updates').prop('checked', user.mail_notification_configuration.get_uru_updates);
     $('#get_weekly_mails').prop('checked', user.mail_notification_configuration.get_weekly_mails);
     $('#get_mails').prop('checked', user.mail_notification_configuration.get_mails);
+
 
     // load user settings of specified discussion (in users.discussions)
     discussion_list.change(function () {
@@ -215,13 +224,28 @@
         })
     });
 
-    populate(discussion_list, discussions);
+    cycle_list.change(function () {
+        var cycle_id = cycle_list.val();
+
+        var is_cycle_in_hash = (typeof cycles_hash[cycle_id] !== "undefined");
+
+        var input_arr = $('#selected_cycle input');
+        $.each(input_arr, function(index, val){
+            var setting_type = $(this).attr('data-setting-type');
+            var is_checked =  is_cycle_in_hash && (typeof cycles_hash[cycle_id][setting_type] !== "undefined")&& (cycles_hash[cycle_id][setting_type] == true);
+            $(input_arr[index]).prop('checked', is_checked);
+        })
+    });
+
+    populate(discussion_list, 'בחר דיון', discussions);
+    populate(cycle_list, 'בחר מעגל', cycles);
 
     $('.turn_off').change(function(){
         $('.free_text_box').toggle('fade');
     });
 
     $("#new_discussion input").click(function(){
+        var new_settings = {};
 
         new_settings =  {
             mail_notification_configuration : {
@@ -236,6 +260,60 @@
             console.log(err || result);
         })
     });
+
+    $("#cycle_general input").click(function(){
+
+        var setting_type = $(this).attr('data-setting-type');
+        var is_checked = $(this).is(':checked');
+        var new_settings = {};
+        new_settings.mail_notification_configuration =  {};
+
+        new_settings.mail_notification_configuration[setting_type] = is_checked;
+
+        db_functions.updateMailNotification(user_id, new_settings, function(err, result){
+            console.log(err || result);
+        })
+    });
+
+    // todo - implment it
+    /*$("#selected_discussion input"*//*,#selected_cycle input"*//*).click(function(){
+
+        var type = $(this).parent().data('type');
+
+        var obj_id = $("#alerts_by_" + type +  " select").val();
+        var setting_type = $(this).attr('data-setting-type');
+        var is_checked = $(this).is(':checked');
+        var new_settings = {};
+
+        new_settings[type + 's'] = [];
+        var obj = {};
+
+        obj[type +"_id"] = obj_id;
+        obj[setting_type] = is_checked;
+
+        if(type === "discussion")
+            new_settings.discussions.push(obj);
+        if(type === "cycle")
+            new_settings.cycles.push(obj);
+
+        db_functions.updateMailNotification(user_id, new_settings, function(err, result){
+            console.log(err || result);
+            if(!err){
+                var obj_hash = {};
+
+                if(type === "discussion")
+                    obj_hash = discussions_hash;
+                if(type === "cycle")
+                    obj_hash = cycles_hash;
+
+                if(typeof obj_hash[obj_id] === "undefined")  {
+                    obj_hash[obj_id] = {};
+                }
+
+                obj_hash[obj_id][setting_type] = is_checked;
+            }
+        })
+    });*/
 
     $("#selected_discussion input").click(function(){
 
@@ -259,6 +337,32 @@
                }
 
                discussions_hash[discussion_id][setting_type] = is_checked;
+            }
+        })
+    });
+
+    $("#selected_cycle input").click(function(){
+
+        var cycle_id = $("#alerts_by_cycle select").val();
+        var setting_type = $(this).attr('data-setting-type');
+        var is_checked = $(this).is(':checked');
+
+        new_settings.cycles = [];
+        var obj = {};
+
+        obj["cycle_id"] = cycle_id;
+        obj[setting_type] = is_checked;
+
+        new_settings.cycles.push(obj);
+
+        db_functions.updateMailNotification(user_id, new_settings, function(err, result){
+            console.log(err || result);
+            if(!err){
+               if(typeof cycles_hash[cycle_id] === "undefined")  {
+                   cycles_hash[cycle_id] = {};
+               }
+
+                cycles_hash[cycle_id][setting_type] = is_checked;
             }
         })
     });

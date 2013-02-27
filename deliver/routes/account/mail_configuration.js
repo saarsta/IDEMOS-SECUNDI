@@ -25,22 +25,15 @@ module.exports = function(req, res){
                     discussions: 1,
                     cycles: 1
                 })
+                .populate("cycles.cycle_id", {
+                    "_id" : 1,
+                    "title":1})
                 .exec(cbk);
         },
 
         // get followed discussions
         function(cbk){
             models.Discussion.find({"users.user_id": user.id})
-                .select({
-                    id: 1,
-                    title: 1
-                }).
-                exec(cbk);
-        },
-
-        // get followed cycles
-        function(cbk){
-            models.Cycle.find({"users.user_id": user.id})
                 .select({
                     id: 1,
                     title: 1
@@ -53,19 +46,32 @@ module.exports = function(req, res){
         }else{
             var user_obj = args[0];
             var discussion_list = args[1];
-            var cycle_list = args[2];
+            var cycle_list;
             var user_discussions_hash = {};
+            var user_cycles_hash = {};
 
             _.each(user_obj.discussions, function (discussion) {
                 user_discussions_hash[discussion.discussion_id + ""] = discussion;
             });
+
+            var cycle_list = _.map(user_obj.cycles, function (cycle) {
+                return cycle.cycle_id
+            });
+
+
+             _.each(user_obj.cycles, function (cycle) {
+                 if(cycle.cycle_id)
+                    user_cycles_hash[cycle.cycle_id._id + ""] = cycle;
+             });
+
 
             res.render('mail_configuration.ejs',{
                 title:"הגדרות עדכונים",
                 user: user_obj,
                 discussions: discussion_list,
                 discussions_hash: user_discussions_hash,
-                cycles: cycle_list
+                cycles: cycle_list,
+                cycles_hash: user_cycles_hash
             });
         }
     })
