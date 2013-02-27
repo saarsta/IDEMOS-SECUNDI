@@ -106,12 +106,12 @@
                         <div class="remark">* תקבל רק עדכון אחד עבור פעילות בכל דיון עד שתיכנס אליו בפעם הבאה</div>
                     </div>
 
-                    <h3>מאגר מידע</h3>
+                    <!--<h3>מאגר מידע</h3>
                     <div class="settings_box">
                         <div class="settings_box_section">
                             <input type="checkbox" class="checkbox" /><label class="title">קבל עדכונים על פרטי מידע שהתעניינת בהם</label>
                         </div>
-                    </div>
+                    </div>-->
                     <!--<h3>נמאס!</h3>
                     <div class="settings_box">
                         <div class="settings_box_section">
@@ -207,19 +207,6 @@
 
         $(this).prop('checked', is_checked);
     });
-
-    /*// set cycle general settings
-    $('#cycle_new_updates').prop('checked', user.mail_notification_configuration.get_cycles_new_updates);
-    $('#cycle_system_information').prop('checked', user.mail_notification_configuration.get_cycles_system_information);
-
-    // set action general settings
-    $('#action_comments').prop('checked', user.mail_notification_configuration.get_alert_of_new_posts_in_actions);
-
-    // set general settings
-    $('#get_uru_updates').prop('checked', user.mail_notification_configuration.get_uru_updates);
-    $('#get_weekly_mails').prop('checked', user.mail_notification_configuration.get_weekly_mails);
-    $('#get_mails').prop('checked', user.mail_notification_configuration.get_mails);
-*/
 
     // load user settings of specified discussion (in users.discussions)
     discussion_list.change(function () {
