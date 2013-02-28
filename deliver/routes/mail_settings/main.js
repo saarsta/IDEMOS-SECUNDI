@@ -81,6 +81,7 @@ var getSettingsParams = module.exports.getSettingsParams = function(req,user,cal
                 user_cycles_hash[cycle.cycle_id._id + ""] = cycle;
         });
 
+        user_obj = _.extend(user_obj, user);
         callback(err, user_obj, discussion_list, cycle_list, user_discussions_hash, user_cycles_hash);
     })
 }
