@@ -253,7 +253,7 @@ var sendNotificationToUser = function (notification) {
      */
 
     var email;
-    var  uru_group = ['saarsta@gmail.com', 'konfortydor@gmail.com', 'poaharon@gmail.com', 'liorur@gmail.com', 'maya@uru.org.il', 'urip@uru.org.il', 'tahel@uru.org.il', 'yoni@uru.org.il', 'noa@uru.org.il'];
+    var  uru_group = ['saarsta@gmail.com', 'konfortydor@gmail.com', 'aharon@uru.org.il', 'poaharon@gmail.com', 'liorur@gmail.com', 'maya@uru.org.il', 'urip@uru.org.il', 'tahel@uru.org.il', 'yoni@uru.org.il', 'noa@uru.org.il'];
 
     if (SEND_MAIL_NOTIFICATION)
         async.waterfall([
@@ -286,7 +286,7 @@ var sendNotificationToUser = function (notification) {
 
                 //TODO just for debugging
                 email = user.email;
-                if(!_.any(uru_group, function(mail) { return email === mail })) {
+                 if(!_.any(uru_group, function(mail) { return email === mail })) {
                     cbk('we send mail only to uru_group for now');
                     return
                 }

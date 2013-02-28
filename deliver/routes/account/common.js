@@ -17,12 +17,10 @@ exports.DONT_NEED_LOGIN_PAGES = [
     /account\/afterSuccessFbConnect/,
     /account\/facebooklogin/,
     /api\/subjects/,
-    /^\/api\//
+    /^\/api\//,
 ];//regex
 
-
-//i removed this!! : /^\/discussions\/new/,
-exports.REDIRECT_FOR_LOGIN_PAGES = [/^\/myuru$/];
+exports.REDIRECT_FOR_LOGIN_PAGES = [/^\/myuru$/, /^\/mail_settings/];
 
 
 var hash_password = exports.hash_password = function (password) {
