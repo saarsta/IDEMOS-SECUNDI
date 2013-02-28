@@ -1,10 +1,9 @@
-/*
 'use strict';
 if (!module.parent) console.error('Please don\'t call me directly.I am just the main app\'s minion.') || process.process.exit(1);
 
 var util = require('util'),
     models = require('./models'),
-    common = require('./api/common'),
+    common = require('./api/common'),   
     async = require('async'),
     _ = require('underscore')
     ,$ = require('jquery')
@@ -628,4 +627,3 @@ exports.run = function () {
         })
     }, 60 * 1000 * 24 * 60);
 };
-*/
