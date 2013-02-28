@@ -53,11 +53,12 @@
                         </div>-->
                         <div class="sep"></div>
                         <div id="selected_discussion"  data-type="discussion" class="settings_box_section">
-                            <div id="alerts_by_discussion">
-                                <select>
-                                </select>
-                            </div>
+
                             <span class="setting_section_title">קבל התראה על אירועים חדשים בדיון שאתה משתתף בו:</span>
+                            <div id="alerts_by_discussion" class="selection">
+                                 <select>
+                                 </select>
+                            </div>
                             <input id="discussion_comment" data-setting-type="get_alert_of_comments" type="checkbox" class="checkbox" /><label for="discussion_comment">תגובות</label>
                             <input id="discussion_change_suggestion" data-setting-type="get_alert_of_suggestions" type="checkbox" class="checkbox" /><label for="discussion_change_suggestion">הצעות לשינוי</label>
                             <input id="discussion_approved_suggestion" data-setting-type="get_alert_of_approved_suggestions" type="checkbox" class="checkbox" /><label for="discussion_approved_suggestion">שינויים למסמך</label>
@@ -75,16 +76,16 @@
                     <div class="settings_box">
                         <div id="cycle_general" class="settings_box_section general_settings">
                             <span class="setting_section_title">קבל עדכונים לגבי מעגלי תנופה:</span>
-                            <input id="cycle_new_updates" class="general" data-setting-type="get_cycles_new_updates" type="checkbox" class="checkbox" /><label for="cycle_new_updates">כתבות חדשות בתקשורת</label>
-                            <input id="cycle_system_information" class="general" data-setting-type="get_cycles_system_information" type="checkbox" class="checkbox" /><label for="cycle_system_information">עדכונים למאבק</label>
+                            <input id="cycle_new_updates" data-setting-type="get_cycles_new_updates" type="checkbox" class="checkbox general" /><label for="cycle_new_updates">כתבות חדשות בתקשורת</label>
+                            <input id="cycle_system_information" data-setting-type="get_cycles_system_information" type="checkbox" class="checkbox general" /><label for="cycle_system_information">עדכונים למאבק</label>
                         </div>
                         <div class="sep"></div>
                         <div id="selected_cycle" data-type="cycle" class="settings_box_section">
-                            <div id="alerts_by_cycle">
+                            <span class="setting_section_title">קבל התראות לגבי פעולות במעגל התנופה:</span>
+                            <div id="alerts_by_cycle" class="selection">
                                 <select>
                                 </select>
                             </div>
-                            <span class="setting_section_title">קבל התראות לגבי פעולות במעגל התנופה:</span>
                             <input id="cycle_new_action" data-setting-type="get_alert_of_new_action" type="checkbox" class="checkbox" /><label for="cycle_new_action" >פעולה חדשה</label>
                             <input id="cycle_approved_action" data-setting-type="get_alert_of_approved_action" type="checkbox" class="checkbox" /><label for="cycle_approved_action" >הצעה לפעולה אושרה</label>
                         </div>
@@ -179,13 +180,14 @@
     var discussion_list = $('#alerts_by_discussion select');
     var cycle_list = $('#alerts_by_cycle select');
     var new_settings = {};
-
+    var specified_obj = specified_obj;
+    var selected_item = "<%=selected_item%>";
     var populate = function(select, text, options) {
         select.empty();
         select.append($('<option>').text(text).val(0));
         options.map(function (option) {
             if (option && option.title && option._id) {
-                select.append($('<option>').text(option.title).val(option._id));
+               select.append($('<option>').text(option.title).val(option._id));
             }
         })
     };
@@ -207,6 +209,7 @@
 
         $(this).prop('checked', is_checked);
     });
+
 
     // load user settings of specified discussion (in users.discussions)
     discussion_list.change(function () {
@@ -237,6 +240,12 @@
 
     populate(discussion_list, 'בחר דיון', discussions);
     populate(cycle_list, 'בחר מעגל', cycles);
+
+    // show selected item if there is one
+    if(selected_item != ""){
+        $('.selection option[value=' + selected_item + ']').prop('selected', true);
+        $('.selection select').change();
+    }
 
     $('.turn_off').change(function(){
         $('.free_text_box').toggle('fade');
