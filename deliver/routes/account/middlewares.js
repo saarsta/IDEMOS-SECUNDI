@@ -47,9 +47,16 @@ exports.referred_by_middleware = function(req,res,next)
 
 
 exports.auth_middleware = function (req, res, next) {
+    function isInArr(element, index, array) {
+        return (req.path.search(element) >= 0);
+    }
+
     if (req.isAuthenticated())
         return next();
 
+    if (isInArr("mail_settings")) return res.redirect(common.LOGIN_PATH + '?next=' + req.path);
+
+    // todo this always return true (search fails returns with -1)
     if (common.DONT_NEED_LOGIN_PAGES.some(req.path.search, req.path)) {
         req.no_need_auth = true;
         console.log('skipped auth for %s', req.url);
@@ -59,6 +66,7 @@ exports.auth_middleware = function (req, res, next) {
     if (common.REDIRECT_FOR_LOGIN_PAGES.some(req.path.search, req.path)) {
         return res.redirect(common.LOGIN_PATH + '?next=' + req.path);
     }
+
     return null;
 };
 
