@@ -56,22 +56,42 @@ var UserMailNotificationConfig = module.exports = jest.MongooseResource.extend({
                     models.User.update({_id:object.id}, {$set: {"mail_notification_configuration.new_discussion": user.mail_notification_configuration.new_discussion}}, function (err) {
                         callback(err, {});
                     });
-                }else{
+                }else if(req.body.cycles){
+
+                        var exist_cycle = _.find(user.cycles, function(cycle){ return (cycle.cycle_id + "" == mail_settings.cycles[0].cycle_id + "")});
+                        if (exist_cycle){
+                            if(typeof mail_settings.cycles[0].get_alert_of_updates != "undefined")
+                                exist_cycle._doc.get_alert_of_updates = mail_settings.cycles[0].get_alert_of_updates === 'true';
+                            if(typeof mail_settings.cycles[0].get_alert_of_new_action != "undefined")
+                                exist_cycle._doc.get_alert_of_new_action = mail_settings.cycles[0].get_alert_of_new_action === 'true';
+                            if(typeof mail_settings.cycles[0].get_alert_of_approved_action != "undefined")
+                                exist_cycle._doc.get_alert_of_approved_action = mail_settings.cycles[0].get_alert_of_approved_action === 'true';
+                            if(typeof mail_settings.cycles[0].get_reminder_of_action != "undefined")
+                                exist_cycle._doc.get_reminder_of_action = mail_settings.cycles[0].get_reminder_of_action === 'true';
+                        } else{
+                            user.cycles.push(mail_settings.cycles[0]);
+                        }
+
+                        // update user cycles
+                        models.User.update({_id:object.id}, {$set: {cycles: user.cycles}}, function (err) {
+                            callback(err, {});
+                        });
+                }else {
                     var path = {};
 
                     if(mail_settings.mail_notification_configuration){
                         if(typeof mail_settings.mail_notification_configuration.get_mails != "undefined")
                             path =  {"mail_notification_configuration.get_mails" : mail_settings.mail_notification_configuration.get_mails === 'true'}
-
-                           // user.mail_notification_configuration.get_mails = mail_settings.mail_notification_configuration.get_mails === 'true';
                         if(typeof mail_settings.mail_notification_configuration.get_uru_updates != "undefined")
-                                path =  {"mail_notification_configuration.get_uru_updates" : mail_settings.mail_notification_configuration.get_uru_updates === 'true'}
-
-                                //     user.mail_notification_configuration.get_uru_updates = mail_settings.mail_notification_configuration.get_uru_updates === 'true';
+                            path =  {"mail_notification_configuration.get_uru_updates" : mail_settings.mail_notification_configuration.get_uru_updates === 'true'}
                         if(typeof mail_settings.mail_notification_configuration.get_weekly_mails != "undefined")
-                                path =  {"mail_notification_configuration.get_weekly_mails" : mail_settings.mail_notification_configuration.get_weekly_mails === 'true'}
-
-                                //    user.mail_notification_configuration.get_weekly_mails = mail_settings.mail_notification_configuration.get_weekly_mails === 'true';
+                            path =  {"mail_notification_configuration.get_weekly_mails" : mail_settings.mail_notification_configuration.get_weekly_mails === 'true'}
+                        if(typeof mail_settings.mail_notification_configuration.get_cycles_new_updates != "undefined")
+                            path =  {"mail_notification_configuration.get_cycles_new_updates" : mail_settings.mail_notification_configuration.get_cycles_new_updates === 'true'}
+                        if(typeof mail_settings.mail_notification_configuration.get_cycles_system_information != "undefined")
+                            path =  {"mail_notification_configuration.get_cycles_system_information" : mail_settings.mail_notification_configuration.get_cycles_system_information === 'true'}
+                        if(typeof mail_settings.mail_notification_configuration.get_alert_of_new_posts_in_actions != "undefined")
+                            path =  {"mail_notification_configuration.get_alert_of_new_posts_in_actions" : mail_settings.mail_notification_configuration.get_alert_of_new_posts_in_actions === 'true'}
                     }
                     // update user
                     models.User.update({_id:object.id}, {$set: path}, function (err) {

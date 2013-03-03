@@ -90,6 +90,8 @@ module.exports = function (app) {
 
     router.include('/account', Account.routing);
 
+    router.include('/mail_settings', require('./mail_settings'));
+
     router.include('/app_error', AppError.routing);
 
     router.all('/facebook', require('./account/facebook'));

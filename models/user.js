@@ -160,9 +160,9 @@ var User = module.exports = new Schema({
 
         // actions
         get_alert_of_new_posts_in_actions: {type: Boolean, 'default': true}
-    },
+    }
 
-    weekly_mails: [ {type: ObjectId, ref: 'Notification'}]
+    //weekly_mails: [ {type: ObjectId, ref: 'Notification'}]
 }, {strict:true});
 
 User.methods.toString = function()

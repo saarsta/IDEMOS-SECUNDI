@@ -16,7 +16,6 @@ catch(e)
 {
 }
 
-
 var ACTION_PRICE = 2;
 
 var user_public_fields = exports.user_public_fields = {
