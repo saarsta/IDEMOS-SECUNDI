@@ -1202,6 +1202,19 @@ var db_functions = {
         });
     },
 
+    getLikedCyclePages:function ( callback) {
+        db_functions.loggedInAjax({
+            url:'/api/cycle_pages',
+            type:"GET",
+            async:true,
+            success:function (data) {
+                callback(null, data);
+            }
+        });
+    },
+
+
+
     //---------------------------------------------------//
 
 
@@ -1688,6 +1701,9 @@ var db_functions = {
             }
         });
     }
+
+
+
 
 
 
