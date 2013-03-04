@@ -1379,6 +1379,7 @@ span.remark{
 .discussions_page .segment h2.title{
     margin:0px;
     font-size:26px;
+    width: 550px;
 }
 
 .discussions_page .segment.main .social_holder{
