@@ -9,289 +9,681 @@ var error_message = error_message || '';
 
 
     <% include partials/head.ejs %>
+    <link href="/css/discussions.css" rel="stylesheet" />
 </head>
 <body>
 <% include partials/body_top.ejs %>
-<div id="wrap">
+<div id="wrap" class="discussions_page">
+
     <div id="header">
         <% include partials/menu.ejs %>
         <% include partials/user_box.ejs %>
         <% include partials/failures.ejs %>
         <% include partials/tag_search.ejs %>
     </div>
-    <div id="content" class="cf">
-        <div class="add-offer">
-            <h2><span class="arrow">
-<%=discussion.subject_name%>
-            </span>      <br>
-                <%=discussion.title%>
-            </h2>
-
-            <div class="text-box cf">
-                <div id="discussion_image" style="width: 212px;height: 164px; overflow:hidden;" class='auto-scale floatRight'>
-                    <img src="<%= discussion.image_field ? discussion.image_field.url ||'' : '' %>" title="<%= discussion.title %>"/>
-                </div>
-                <div class="discussion_content discussion content">
-                    <textarea id="discussion_content" class="hidden_textarea"><%=discussion.text_field%></textarea>
-                </div>
-
-                <p  id="read_more">
-                    <a href="javascript:void(0);">
-                        קרא עוד
-                    </a>
-                </p>
-
-
-            </div>
-            <div class="add-offer-bottom cf">
-                <div class="btn-box">
-                    <a class="btn-green" id="discussion_comment_reply_button" href="javascript:void(0);">
-                        הגב
-                    </a>
-
-                    <a class="btn-grey share" rel="/discussions/<%=discussion.id%>"
-                       data-img_src="<%= discussion.image_field ? discussion.image_field.url ||'' : '' %>" data-text_preview="<%=discussion.text_field_preview%>" data-title=" דיון בחזון <%=discussion.title%>"
-                       data-name="<%=discussion.text_field_preview%>"
-                       href="/facebookShare?link=/discussions/<%=discussion.id%>">
-                        שתף
-                    </a>
-
-                    <div class="btns-grey">
-                        <a class="gray_and_soon" href="">
-                            הצעה לשינוי
-                        </a>
-                        <a class="gray_and_soon" href="">
-                            היסטוריה
-                        </a>
-                    </div>
-                </div>
-                <div class="tags">
-                    <% for (var c = 0; c
-                    <discussion. tags.length
-                    ; c++) { %>
-                    <a href="?tag_name=<%=discussion.tags[c]%>"> <%=discussion. tags[c] %></a>
-                    <% }%>
-
-   <!--                 <div class="more">
-                        <span></span>
-                        <ul>
-                            <li><a href="">
-                                הצג עוד תגיות
-                            </a></li>
-                            <li><a href="">
-                                הוסף תגית
-                            </a></li>
-                        </ul>
-                    </div> -->
-
-                </div>
-                <div class="slide-box">
-                    <div class="summary">
-                        <input type="text" id="amount" value="<%= Math.round(discussion.grade*100)/100 %>"/>
-                        <span> <div class="inlinediv" id="graders"><%= Math.round(discussion.evaluate_counter) %>
-                        </div> דירוגים</span>
-                    </div>
-                    <div class="slider">
-                    </div>
-                    <div class="slider-numbers">
-                        <span>1</span>
-                        <span>2</span>
-                        <span>3</span>
-                        <span>4</span>
-                        <span>5</span>
-                        <span>6</span>
-                        <span>7</span>
-                        <span>8</span>
-                        <span>9</span>
-                        <span>10</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="card-left">
-            <h3><span>
-סל מידע
-            </span></h3>
-
-            <div class="comment-slide">
-                <a href="" id="prev"></a>
-                <a href="" id="next"></a>
-
-                <div class="slide-c">
-                </div>
-            </div>
-        </div>
-        <div id='write-comment' class="write-comment" style="display: none;">
-            <h3>
-                הצעה לשינוי
-            </h3>
-
-            <div class="text-box cf">
-                <div class="left">
-                    <p id='discussion_content_txt'><strong></strong>
-
-                    </p>
-                    <label>
-                        ההצעה לשינוי שלי:
-                    </label>
-                    <textarea id='discussion_suggest' class="five-col" cols="0" rows="0"></textarea>
-                    <label>
-                        טיעונים, הצדקות ונימוקים:
-                    </label>
-                    <textarea id="discussion_explanation" class="two-col" cols="0" rows="0"></textarea>
-                </div>
-                <div class="user-right">
-                    <div class="img-box" style="overflow: hidden;">
-                        <div   style="width:70px; height:70px;" class='auto-scale'>
-                            <% if(user_logged) { %>
-                            <img id="reload-img" src="<%=avatar%>" alt="אני"  style="width:70px; height:70px"/>
-                            <% } %>
+    <div >
+    <div id="content_wrapper">
+        <div id="content_main_wrapper">
+            <div id="content_main_holder">
+                <div id="content_right_holder">
+                    <div class="segment main">
+                        <h2 class="title topic">משק וכלכלה <img src="/images/arrow_left.png" /></h2>
+                        <h2 class="title">מורידים את עמלות הבנקים מהגב שלנו</h2>
+                        <div class="social_holder">
+                            <a class="share_icon" href=""><img src="/images/icon_fb.png"></a>
+                            <a class="share_icon" href=""><img src="/images/icon_tw.png"></a>
+                            <a class="share_icon" href=""><img src="/images/icon_gp.png"></a>
+                            <a class="share_icon" href=""><img src="/images/icon_email.png"></a>
                         </div>
-                        <span></span>
-                    </div>
-                    <h4>אני</h4>
+                        <div class="author">הדיון נפתח ע"י: <a href="">אריק בנדו</a></div>
+                        <hr />
+                        <div class="img_holder">
+                            <img src="/images/sample_img.png" />
+                        </div>
+                        <div class="text">
+                            <h3>אין הצדקה לכך שנשלם פעמיים. עמלות הבנקים בישראל מנופחות ולא הוגנות בכלל.</h3>
+                            עמלות הן בעצם דרך של הבנקים לגרום לנו לשלם פעמיים. אם אנחנו משלמים ריביות על הכסף שהפקדנו בבנק, אז למה כמעט על כל פעולה שאנחנו מבצעים היום בבנק אנחנו צריכים לשלם גם עמלה? ר
+                        </div>
+                        <a class="read_more" href="">המשך קריאה</a>
+                        <hr />
+                        <div class="content_credits">
+                            <div id="sponsors_holder">
+                                <h2>שותפי תוכן</h2>
+                                <div id="sponsors_logos">
+                                    <div class="sponsors_logo logo_1"></div>
+                                    <div class="sponsors_logo logo_2"></div>
+                                    <div class="sponsors_logo logo_3"></div>
+                                    <div class="sponsors_logo logo_4"></div>
+                                    <div class="sponsors_logo logo_5"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="tags">
+                            <span class="tags_title">תגיות:</span>
+                            <span class="tag"><a href="">הריכוזיות</a></span>
+                            <span class="tag"><a href="">עמלות הבנקים</a></span>
+                            <span class="tag"><a href="">יוקר המחיה</a></span>
+                        </div>
+                        <hr />
+                        <div class="segment_bottom">
+                            <!-- <div class="slide-box">
+                                    <div class="summary">
+                                        <input type="text" id="amount" value="6.15">
+                                        <span> <div class="inlinediv" id="graders">90
+                                        </div> דירוגים</span>
+                                    </div>
+                                    <div class="slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
+                                    <div class="ui-slider-range ui-widget-header ui-slider-range-min" style="width: 0%;"></div><a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 0%;"></a></div>
+                                    <div class="slider-numbers">
+                                        <span>1</span>
+                                        <span>2</span>
+                                        <span>3</span>
+                                        <span>4</span>
+                                        <span>5</span>
+                                        <span>6</span>
+                                        <span>7</span>
+                                        <span>8</span>
+                                        <span>9</span>
+                                        <span>10</span>
+                                    </div>
+                                </div> -->
+                            <div class="rating_box">
+                                <div class="rating_total">
+                                    8.74
+                                </div>
+                                <div class="raters">
+                                    296 דירוגים
+                                </div>
+                            </div>
+                            <div class="rating_holder">
+                                <div class="rating_bar_holder">
+                                    <div class="rating_bar" style="width:20%;"></div>
+                                    <div class="rating_bar_indicator"><img src="/images/indicator_2.png" /></div>
+                                    <div class="rating_marks">
+                                        <span style="left:100%;">10</span>
+                                        <span style="left:90%;">9</span>
+                                        <span style="left:80%;">8</span>
+                                        <span style="left:70%;">7</span>
+                                        <span style="left:60%;">6</span>
+                                        <span style="left:50%;">5</span>
+                                        <span style="left:40%;">4</span>
+                                        <span style="left:30%;">3</span>
+                                        <span style="left:20%;">2</span>
+                                        <span style="left:10%;">1</span>
+                                        <span style="left:0%;"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="button_add_comment">
+                                <input type="button" />
+                            </div>
+                            <div class="button_suggest_revisions">
+                                <input type="button" />
+                            </div>
+                        </div>
 
-                    <div class="date"><%=(new Date()).format('dd.mm.yy') %></div>
-                    <% if(user_logged){ %>
-                    <div class="proxy">
-                        <span>3</span>
                     </div>
-                    <div class="respect">
-                        <span>20</span>
+
+                    <div class="segment">
+                        <h2 class="title">סל מידע</h2>
+
+                        <div class="text">
+                            <img src="/images/placeholder_slider.png" />
+                        </div>
                     </div>
-                    <% } %>
+
+                </div>
+                <div id="content_left_sidebar">
+                    <div class="segment quotes">
+                        <h2>ציטוטים נוספים</h2>
+                        <div id="quotes_sidebar_holder">
+                            <div class="quotes_holder">
+                                <div class="status odd"><span class="positive"></span>העלאת מס חברות ל- 35%. זה נזק מיידי למשק. זה צעד שיגרום לאבטלת המונים יגרום לנזק</div>
+                                <div class="status even"><span class="negative"></span>העלאת מס חברות ל- 35%. זה נזק מיידי למשק. זה צעד שיגרום לאבטלת המונים יגרום לנזק</div>
+                                <div class="status odd"><span class="missing"></span>העלאת מס חברות ל- 35%. זה נזק מיידי למשק. זה צעד שיגרום לאבטלת המונים יגרום לנזק</div>
+                                <div class="status even"><span class="positive"></span>העלאת מס חברות ל- 35%. זה נזק מיידי למשק. זה צעד שיגרום לאבטלת המונים יגרום לנזק</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <a class="grey-btn" id="cancelWriteCommentBT" href="javascript:void(0);"><span>
-מתחרט
-            </span></a>
-            <a id="send_suggestion" class="green-btn" href="javascript:void(0);">
-                הצע
-            </a>
-        </div>
 
-        <div class="deals-box">
-            <h2>הצעות לשינוי
-                <small id="suggestion_number"></small>
-            </h2>
-            <div id="suggestion_list"></div>
-            <div class="more-deals" data-executing="false">
-                <a href="">עוד הצעות</a>
+        </div>
+    </div>
+
+    <div class="content_break">
+        <div class="content_break_content">
+            <h2>הצעות לשינוי (4)</h2>
+        </div>
+    </div>
+
+    <div id="content_wrapper_suggestions">
+    <div id="suggestions_wrapper">
+    <div id="suggestion_wrapper">
+        <div class="suggestion_holder button">
+            <div class="suggestion_details">
+                <div class="photo">
+                    <img src="/images/icon_person.png" />
+                </div>
+                <div class="name">
+                    אסף גרינברג
+                </div>
+                <div class="date_time">
+                    <span class="time">14:46</span>
+                    <span class="date">27.07.2012</span>
+                </div>
+                <div class="ratings">
+                    <span class="friends">1458</span>
+                    <span class="awards">3769</span>
+                </div>
+            </div>
+            <div class="button_edit_comment">
+                <input type="button" />
+            </div>
+            <div class="suggestion_content">
+                <div class="text_orig">
+                    <h3 class="title">טקסט מקורי:</h3>
+                    המדינה מממנת ישירות לא מעט גופים שנותרים עצמאיים בכל זאת, כמו בתי המשפט, מבקר המדינה, הרשות לניירות ערך ואפילו גלי צה"ל. בכל מקרה, בבואנו לבטל את האגרה ולמצוא מקור תקציבי חליפי, כמו הרשות לניירות ערך ואפילו גלי צה"ל. בבואנו לבטל את האגרה ולמצוא מקור תקציבי חליפי, ניתן להבטיח את עצמאות הרשות באמצעים אחרים. נגד האגרה: גביית האגרה גורמת לעגמת נפש רבה בקרב הציבור.
+                </div>
+                <div class="text">
+                    <h3 class="title">הצעה לשינוי:</h3>
+                    פשרה: בשלב ראשוני המטרה צריכה להיות להפחית בכמחצית את עלות זו - כנגד סובסידה של חציו השני של התשלום. מצב ביניים יהיה ריאלי יותר מול הכנסת הנוכחית מאשר ביטול הסכום כולו, וכמו כן ייתחם בזמן. בנוסף ייבחנו השפעות שונות על "מודל ההפחתה החלקי.
+                    <h3 class="title">נימוק:</h3>
+                    גישור הפער בין רצוי למצוי בדר"כ מביא לעמק ה*שווה* וכשלב ראשוני לחתירה לביטול אגרה זו צריך להסכים על פתרון ביניים.
+                </div>
+            </div>
+            <div class="suggestion_bottom">
+                <div class="suggestion_bottom_segment one">
+                    <div class="button button_pro">
+                        <input type="button" />
+                    </div>
+                    <div class="button button_against">
+                        <input type="button" />
+                    </div>
+                    <div class="button fb_like">
+                        <img src="/images/placeholder_fb.png" />
+                    </div>
+                </div>
+                <div class="suggestion_bottom_segment two">
+                    <div class="supporters_wanted">
+                        מספר תומכים דרוש <span>10</span>
+                    </div>
+                    <div class="supporters_current">
+                        מספר תומכים נוכחי <span>9</span>
+                    </div>
+                </div>
+                <div class="suggestion_bottom_segment three">
+                    <div class="comments_counter">
+                        <span>17</span> תגובות להצעה
+                        <div class="close">סגור</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="suggestion_comments_holder">
+            <div class="comment odd">
+                <div class="author">
+                    <img src="/images/icon_person.png" />
+                    <span>אסף גרינברג</span>
+                </div>
+                <div class="date_time">
+                    14:46 27.07.2012
+                </div>
+                <div class="content">
+                    הגיעה העת לבטל את אגרת הטלוויזיה. במקום לדחוף הצעות שאין להן סיכוי, מוצע כאן לבטל את גביית האגרה, להעביר חלק מן הנטל לתשלום שאנחנו משלמים ממילא בזמן חידוש רשיון הרכב, וכך לחסוך מיליונים רבים.
+                </div>
+            </div>
+            <div class="comment even">
+                <div class="author">
+                    <img src="/images/icon_person.png" />
+                    <span>אסף גרינברג</span>
+                </div>
+                <div class="date_time">
+                    14:46 27.07.2012
+                </div>
+                <div class="content">
+                    הגיעה העת לבטל את אגרת הטלוויזיה. במקום לדחוף הצעות שאין להן סיכוי, מוצע כאן לבטל את גביית האגרה, להעביר חלק מן הנטל לתשלום שאנחנו משלמים ממילא בזמן חידוש רשיון הרכב, וכך לחסוך מיליונים רבים.
+                </div>
+            </div>
+            <div class="add_comment">
+                <input type="text" value="כתוב תגובה..." />
             </div>
         </div>
     </div>
-</div>
-<% if(discussion.system_message) { %>
-<div class="system-notice">
-    <div class="extra">
-        <a class="close" href="javascript:void(0);"></a>
 
-        <%- discussion.system_message %>
-
-    </div>
-</div>
-<% } %>
-
-
-<div class="comments-box">
-    <div class="extra cf">
-
-        <select class="left-select" id="sorting_select">
-            <option value="-last_updated">
-                עדכון אחרון
-            </option>
-            <option value="-creation_date">
-                תאריך
-            </option>
-            <!-- <option id="first_name">
-                מיין לפי יוזר
-            </option>-->
-            <option value="-total_votes">
-                שנויים במחלוקת
-            </option>
-            <option value="-popularity">
-                פוסטים הכי טובים
-            </option>
-        </select>
-
-        <h2>
-            תגובות
-            <small id="comments_number"></small>
-        </h2>
-        <div id="comments">
-
-        </div>
-        <a href="javascript:void(0)" class="more_comments" style="display:none;">הראה עוד</a>
-        <div class="write-comment">
-            <h3>
-                כתיבת תגובה
-            </h3>
-
-            <div class="text-box cf"
-            <%if(user_logged){%> data-creator_id="<%=user._id%>" <%}%> >
-            <div class="left">
-                <textarea id="discussion_comment" dir="rtl" class="four-col" cols="0" rows="0"></textarea>
+    <div id="suggestion_wrapper">
+        <div class="suggestion_holder button">
+            <div class="suggestion_details">
+                <div class="photo">
+                    <img src="/images/icon_person.png" />
+                </div>
+                <div class="name">
+                    אסף גרינברג
+                </div>
+                <div class="date_time">
+                    <span class="time">14:46</span>
+                    <span class="date">27.07.2012</span>
+                </div>
+                <div class="ratings">
+                    <span class="friends">1458</span>
+                    <span class="awards">3769</span>
+                </div>
             </div>
-            <div class="user-right">
-                <div class="img-box" style="overflow: hidden;">
-                    <div style="width:70px; height:70px;" class='auto-scale'>
-                        <img src="<%=avatar%>" alt="אני"/>
+            <div class="button_edit_comment">
+                <input type="button" />
+            </div>
+            <div class="suggestion_content">
+                <div class="text_orig">
+                    <h3 class="title">טקסט מקורי:</h3>
+                    המדינה מממנת ישירות לא מעט גופים שנותרים עצמאיים בכל זאת, כמו בתי המשפט, מבקר המדינה, הרשות לניירות ערך ואפילו גלי צה"ל. בכל מקרה, בבואנו לבטל את האגרה ולמצוא מקור תקציבי חליפי, כמו הרשות לניירות ערך ואפילו גלי צה"ל. בבואנו לבטל את האגרה ולמצוא מקור תקציבי חליפי, ניתן להבטיח את עצמאות הרשות באמצעים אחרים. נגד האגרה: גביית האגרה גורמת לעגמת נפש רבה בקרב הציבור.
+                </div>
+                <div class="text">
+                    <h3 class="title">הצעה לשינוי:</h3>
+                    פשרה: בשלב ראשוני המטרה צריכה להיות להפחית בכמחצית את עלות זו - כנגד סובסידה של חציו השני של התשלום. מצב ביניים יהיה ריאלי יותר מול הכנסת הנוכחית מאשר ביטול הסכום כולו, וכמו כן ייתחם בזמן. בנוסף ייבחנו השפעות שונות על "מודל ההפחתה החלקי.
+                    <h3 class="title">נימוק:</h3>
+                    גישור הפער בין רצוי למצוי בדר"כ מביא לעמק ה*שווה* וכשלב ראשוני לחתירה לביטול אגרה זו צריך להסכים על פתרון ביניים.
+                </div>
+            </div>
+            <div class="suggestion_bottom">
+                <div class="suggestion_bottom_segment one">
+                    <div class="button button_pro">
+                        <input type="button" />
                     </div>
-                    <span></span>
+                    <div class="button button_against">
+                        <input type="button" />
+                    </div>
+                    <div class="button fb_like">
+                        <img src="/images/placeholder_fb.png" />
+                    </div>
                 </div>
-                <h4>אני</h4>
-
-                <div class="date"><%=(new Date()).format('dd.mm.yy') %></div>
-                <% if(user_logged){ %>
-                <div class="proxy">
-                    <span><%=user.num_of_proxies_i_represent%> </span>
+                <div class="suggestion_bottom_segment two">
+                    <div class="supporters_wanted">
+                        מספר תומכים דרוש <span>10</span>
+                    </div>
+                    <div class="supporters_current">
+                        מספר תומכים נוכחי <span>9</span>
+                    </div>
                 </div>
-                <div class="respect">
-                    <span class="score"><%=user.score%></span>
+                <div class="suggestion_bottom_segment three">
+                    <div class="comments_counter">
+                        <span>17</span> תגובות להצעה
+                        <div class="close">סגור</div>
+                    </div>
                 </div>
-                <% } %>
             </div>
         </div>
-        <a id="submit_post" class="green-btn" href="javascript:void(0);">
-            פרסם
-        </a>
+        <div class="suggestion_comments_holder">
+            <div class="add_comment">
+                <input type="text" value="כתוב תגובה..." />
+            </div>
+        </div>
     </div>
-</div>
-</div>
-<!--<div class="add-offer">
-<div class="text-box">
-<span class="edit-text">-->
-     <span class="popup-window">
-         <span class="arrow"></span>
-         <a class="close" href="javascript:void(0);"></a>
-        	 <a id="pop_post_bt" class="green-btn" href="javascript:void(0);">הגב</a>
-             <a id="pop_suggest_bt" class="grey-btn suggest" href="javascript:void(0);">
-                 הצע הצעה לשינוי
-             </a>
-     </span>
 
-<form id="proxy_form" style="display:none;">
-    <fieldset>
-        <label for="give_tokens">Tokens</label>
-        <select id="give_tokens" name="tokens" dir="ltr">
-            <option>-3</option>
-            <option>-2</option>
-            <option>-1</option>
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-        </select>
-    </fieldset>
-</form>
+    <div id="suggestion_wrapper">
+        <div class="suggestion_holder window">
+            <div class="suggestion_details">
+                <div class="photo">
+                    <img src="/images/icon_person.png" />
+                </div>
+                <div class="name">
+                    אסף גרינברג
+                </div>
+                <div class="date_time">
+                    <span class="time">14:46</span>
+                    <span class="date">27.07.2012</span>
+                </div>
+                <div class="ratings">
+                    <span class="friends">1458</span>
+                    <span class="awards">3769</span>
+                </div>
+            </div>
+            <div class="button_edit_comment">
+                <input type="button" />
+            </div>
+            <div class="edit_window">
+                <div class="text_top"></div>
+                <p>בשלב ראשוני המטרה צריכה להיות להפחית בכמחצית את עלות זו - כנגד סובסידה של חציtו השני של התשלום. מצב ביניים יהיה ריאלי יותר מול הכנסת הנוכחית מאשר ביטול הסכום כולו, וכמו כן ייתחם בזמן. בנוסף ייבחנו השפעות שונות על "מודל ההפחתה החלקי. כנגד סובסידה של חציtו השני של התשלום. מצב ביניים יהיה ריאלי יותר מול הכנסת הנוכחית מאשר ביטול הסכום כולו, וכמו כן ייתחם בזמן.</p>
+                <p class="focus">בשלב ראשוני המטרה צריכה להיות להפחית בכמחצית את עלות זו - כנגד סובסידה של חציtו השני של התשלום. מצב ביניים יהיה ריאלי יותר מול הכנסת הנוכחית מאשר ביטול הסכום כולו, וכמו כן ייתחם בזמן. בנוסף ייבחנו השפעות שונות על "מודל ההפחתה החלקי. כנגד סובסידה של חציtו השני של התשלום. מצב ביניים יהיה ריאלי יותר מול הכנסת הנוכחית מאשר ביטול הסכום כולו, וכמו כן ייתחם בזמן.</p>
+                <p>בשלב ראשוני המטרה צריכה להיות להפחית בכמחצית את עלות זו - כנגד סובסידה של חציtו השני של התשלום. מצב ביניים יהיה ריאלי יותר מול הכנסת הנוכחית מאשר ביטול הסכום כולו, וכמו כן ייתחם בזמן. בנוסף ייבחנו השפעות שונות על "מודל ההפחתה החלקי. כנגד סובסידה של חציtו השני של התשלום. מצב ביניים יהיה ריאלי יותר מול הכנסת הנוכחית מאשר ביטול הסכום כולו, וכמו כן ייתחם בזמן.</p>
+                <div class="text_bottom"></div>
+            </div>
+            <div class="suggestion_content">
+                <div class="text_orig">
+                    <h3 class="title">טקסט מקורי:</h3>
+                    המדינה מממנת ישירות לא מעט גופים שנותרים עצמאיים בכל זאת, כמו בתי המשפט, מבקר המדינה, הרשות לניירות ערך ואפילו גלי צה"ל. בכל מקרה, בבואנו לבטל את האגרה ולמצוא מקור תקציבי חליפי, כמו הרשות לניירות ערך ואפילו גלי צה"ל. בבואנו לבטל את האגרה ולמצוא מקור תקציבי חליפי, ניתן להבטיח את עצמאות הרשות באמצעים אחרים. נגד האגרה: גביית האגרה גורמת לעגמת נפש רבה בקרב הציבור.
+                </div>
+                <div class="text change_proposal">
+                    <h3 class="title">הצעה לשינוי:</h3>
+                    פשרה: בשלב ראשוני המטרה צריכה להיות להפחית בכמחצית את עלות זו - כנגד סובסידה של חציו השני של התשלום. מצב ביניים יהיה ריאלי יותר מול הכנסת הנוכחית מאשר ביטול הסכום כולו, וכמו כן ייתחם בזמן. בנוסף ייבחנו השפעות שונות על "מודל ההפחתה החלקי.
+                    <h3 class="title">נימוק:</h3>
+                    גישור הפער בין רצוי למצוי בדר"כ מביא לעמק ה*שווה* וכשלב ראשוני לחתירה לביטול אגרה זו צריך להסכים על פתרון ביניים.
+                </div>
+            </div>
+            <div class="suggestion_bottom">
+                <div class="suggestion_bottom_segment one">
+                    <div class="button button_pro">
+                        <input type="button" />
+                    </div>
+                    <div class="button button_against">
+                        <input type="button" />
+                    </div>
+                    <div class="button fb_like">
+                        <img src="/images/placeholder_fb.png" />
+                    </div>
+                </div>
+                <div class="suggestion_bottom_segment two">
+                    <div class="supporters_wanted">
+                        מספר תומכים דרוש <span>10</span>
+                    </div>
+                    <div class="supporters_current">
+                        מספר תומכים נוכחי <span>9</span>
+                    </div>
+                </div>
+                <div class="suggestion_bottom_segment three">
+                    <div class="comments_counter">
+                        <span>17</span> תגובות להצעה
+                        <div class="close">סגור</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="suggestion_comments_holder">
+            <div class="add_comment">
+                <input type="text" value="כתוב תגובה..." />
+            </div>
+        </div>
+    </div>
+    <input type="button" class="button_more_results" />
+    </div>
+    </div>
+
+    <div class="content_break comments">
+        <div class="content_break_content comments">
+            <h2>תגובות (32)</h2>
+            <div id="comments_filter">
+                <input class="button_order_chron" type="button" />
+                <input class="button_order_popular" type="button" />
+                <input class="button_order_contro" type="button" />
+            </div>
+        </div>
+    </div>
+
+    <div id="content_wrapper_comments">
+    <div id="comments_wrapper">
+    <div class="most_pop">
+        <h2 class="title">התגובה הפופולרית ביותר</h2>
+        <div class="comment_wrapper">
+            <div class="comment_details">
+                <div class="photo">
+                    <img src="/images/icon_person.png" />
+                </div>
+                <div class="name">
+                    אסף גרינברג
+                </div>
+                <div class="date_time">
+                    <span class="time">14:46</span>
+                    <span class="date">27.07.2012</span>
+                </div>
+                <div class="ratings">
+                    <span class="friends">1458</span>
+                    <span class="awards">3769</span>
+                </div>
+            </div>
+            <div class="content">
+                <div class="rating"><span>דירוג:</span><span class="good">458</span><span class="bad">2</span></div>
+                הגיעה העת לבטל את אגרת הטלוויזיה. במקום לדחוף הצעות שאין להן סיכוי, מוצע כאן לבטל את גביית האגרה, להעביר חלק מן הנטל לתשלום שאנחנו משלמים ממילא בזמן חידוש רשיון הרכב, וכך לחסוך מיליונים רבים.
+            </div>
+        </div>
+    </div>
+    <div class="most_contr">
+        <h2 class="title">התגובה השנויה במחלוקת</h2>
+        <div class="comment_wrapper">
+            <div class="comment_details">
+                <div class="photo">
+                    <img src="/images/icon_person.png" />
+                </div>
+                <div class="name">
+                    אסף גרינברג
+                </div>
+                <div class="date_time">
+                    <span class="time">14:46</span>
+                    <span class="date">27.07.2012</span>
+                </div>
+                <div class="ratings">
+                    <span class="friends">1458</span>
+                    <span class="awards">3769</span>
+                </div>
+            </div>
+            <div class="content">
+                <div class="rating"><span>דירוג:</span><span class="good">458</span><span class="bad">2</span></div>
+                הגיעה העת לבטל את אגרת הטלוויזיה. במקום לדחוף הצעות שאין להן סיכוי, מוצע כאן לבטל את גביית האגרה, להעביר חלק מן הנטל לתשלום שאנחנו משלמים ממילא בזמן חידוש רשיון הרכב, וכך לחסוך מיליונים רבים.
+            </div>
+        </div>
+    </div>
+
+    <div id="pagination_wrapper">
+        <div id="pagination">
+            <span class="title">עמודים (24):</span>
+            <a href=""><span class="last"></span></a>
+            <a href=""><span class="next"></span></a>
+            <span class="page current">1</span>
+            <span class="page"><a href="">2</a></span>
+            <span class="page"><a href="">3</a></span>
+            <span class="page"><a href="">4</a></span>
+            <span class="page"><a href="">5</a></span>
+            <span class="page"><a href="">6</a></span>
+            <span class="page"><a href="">7</a></span>
+            <span class="page">...</span>
+            <a href=""><span class="prev"></span></a>
+            <a href=""><span class="first"></span></a>
+        </div>
+    </div>
+
+    <div class="comment_wrapper odd">
+        <div class="comment_details">
+            <div class="photo">
+                <img src="/images/icon_person.png" />
+            </div>
+            <div class="name">
+                אסף גרינברג
+            </div>
+            <div class="date_time">
+                <span class="time">14:46</span>
+                <span class="date">27.07.2012</span>
+            </div>
+            <div class="ratings">
+                <span class="friends">1458</span>
+                <span class="awards">3769</span>
+            </div>
+        </div>
+        <div class="content">
+            <div class="quote">
+                <span class="credit">אלברט שמחוני כתב:</span>
+                לא הבנתי למה צריך ערוץ בלי פרסומות? עוד יותר לא הבנתי למה מישהו חושב שזה ריאלי בכלל? אפילו היום פרסומות נוזלות לערוץ הזה מכל החורים... קצת ריאליזם לא יזיק. תקשורת בלי פרסומות - אין דבר כזה בעולם קפיטליסטי. הסיבה היחידה שאני מבין לכך שיש כל כך הרבה מתנגדים לרעיון שלי הוא: שכתבתי שרק חלק מן האגרה ימומן על ידי פרסומות.
+            </div>
+            הגיעה העת לבטל את אגרת הטלוויזיה. במקום לדחוף הצעות שאין להן סיכוי, מוצע כאן לבטל את גביית האגרה, להעביר חלק מן הנטל לתשלום שאנחנו משלמים ממילא בזמן חידוש רשיון הרכב, וכך לחסוך מיליונים רבים.
+            <div class="quoted_by">צוטט ע"י: <span><a href="">שם לדוגמא</a></span>, <span><a href="">שם לדוגמא</a></span> </div>
+        </div>
+        <div class="comment_buttons">
+            <input class="button_quote" type="button" />
+            <input class="button_comment" type="button" />
+            <div class="button_fb"><img src="/images/placeholder_fb_2.png" /></div>
+        </div>
+        <div class="rating_small">
+            <a href=""><span class="good"></span></a>
+            <span class="counter">15</span>
+            <a href=""><span class="bad"></span></a>
+        </div>
+    </div>
+
+    <div class="comment_wrapper even">
+        <div class="comment_details">
+            <div class="photo">
+                <img src="/images/icon_person.png" />
+            </div>
+            <div class="name">
+                אסף גרינברג
+            </div>
+            <div class="date_time">
+                <span class="time">14:46</span>
+                <span class="date">27.07.2012</span>
+            </div>
+            <div class="ratings">
+                <span class="friends">1458</span>
+                <span class="awards">3769</span>
+            </div>
+        </div>
+        <div class="content">
+            הגיעה העת לבטל את אגרת הטלוויזיה. במקום לדחוף הצעות שאין להן סיכוי, מוצע כאן לבטל את גביית האגרה, להעביר חלק מן הנטל לתשלום שאנחנו משלמים ממילא בזמן חידוש רשיון הרכב, וכך לחסוך מיליונים רבים.
+        </div>
+        <div class="comment_buttons">
+            <input class="button_quote" type="button" />
+            <input class="button_comment" type="button" />
+            <div class="button_fb"><img src="/images/placeholder_fb_2.png" /></div>
+        </div>
+        <div class="rating_small">
+            <a href=""><span class="good"></span></a>
+            <span class="counter">15</span>
+            <a href=""><span class="bad"></span></a>
+        </div>
+    </div>
+
+    <div class="comment_wrapper odd">
+        <div class="comment_details">
+            <div class="photo">
+                <img src="/images/icon_person.png" />
+            </div>
+            <div class="name">
+                אסף גרינברג
+            </div>
+            <div class="date_time">
+                <span class="time">14:46</span>
+                <span class="date">27.07.2012</span>
+            </div>
+            <div class="ratings">
+                <span class="friends">1458</span>
+                <span class="awards">3769</span>
+            </div>
+        </div>
+        <div class="content">
+            הגיעה העת לבטל את אגרת הטלוויזיה. במקום לדחוף הצעות שאין להן סיכוי, מוצע כאן לבטל את גביית האגרה, להעביר חלק מן הנטל לתשלום שאנחנו משלמים ממילא בזמן חידוש רשיון הרכב, וכך לחסוך מיליונים רבים.
+        </div>
+        <div class="comment_buttons">
+            <input class="button_quote" type="button" />
+            <input class="button_comment" type="button" />
+            <div class="button_fb"><img src="/images/placeholder_fb_2.png" /></div>
+        </div>
+        <div class="rating_small">
+            <a href=""><span class="good"></span></a>
+            <span class="counter">15</span>
+            <a href=""><span class="bad"></span></a>
+        </div>
+    </div>
+
+    <div class="comment_wrapper even">
+        <div class="comment_details">
+            <div class="photo">
+                <img src="/images/icon_person.png" />
+            </div>
+            <div class="name">
+                אסף גרינברג
+            </div>
+            <div class="date_time">
+                <span class="time">14:46</span>
+                <span class="date">27.07.2012</span>
+            </div>
+            <div class="ratings">
+                <span class="friends">1458</span>
+                <span class="awards">3769</span>
+            </div>
+        </div>
+        <div class="content">
+            הגיעה העת לבטל את אגרת הטלוויזיה. במקום לדחוף הצעות שאין להן סיכוי, מוצע כאן לבטל את גביית האגרה, להעביר חלק מן הנטל לתשלום שאנחנו משלמים ממילא בזמן חידוש רשיון הרכב, וכך לחסוך מיליונים רבים.
+        </div>
+    </div>
+
+    <div id="pagination_wrapper">
+        <div id="pagination">
+            <span class="title">עמודים (24):</span>
+            <a href=""><span class="last"></span></a>
+            <a href=""><span class="next"></span></a>
+            <span class="page current">1</span>
+            <span class="page"><a href="">2</a></span>
+            <span class="page"><a href="">3</a></span>
+            <span class="page"><a href="">4</a></span>
+            <span class="page"><a href="">5</a></span>
+            <span class="page"><a href="">6</a></span>
+            <span class="page"><a href="">7</a></span>
+            <span class="page">...</span>
+            <a href=""><span class="prev"></span></a>
+            <a href=""><span class="first"></span></a>
+        </div>
+    </div>
+
+    <div id="add_comment_wrapper">
+        <h2 class="title">כתיבת תגובה</h2>
+        <div class="comment_wrapper">
+            <div class="comment_details">
+                <div class="photo">
+                    <img src="/images/icon_person.png" />
+                </div>
+                <div class="name">
+                    אסף גרינברג
+                </div>
+                <div class="date_time">
+                    <span class="time">14:46</span>
+                    <span class="date">27.07.2012</span>
+                </div>
+                <div class="ratings">
+                    <span class="friends">1458</span>
+                    <span class="awards">3769</span>
+                </div>
+            </div>
+            <div class="content">
+                <img src="/images/placeholder_txt_editor.png" />
+            </div>
+        </div>
+        <input type="button" class="button_submit_comment" />
+    </div>
+
+    </div>
 
 
+    </div>
 
+
+    </div>
 <% include partials/footer.ejs %>
+
+
 <script type="text/javascript">
+
+
+
+
+
+
+
 var current_section = 1;
 
 $(document).ready(function () {
 
+    $('.button_edit_comment').hover(function(){
+        $(this).parent().toggleClass('edit');
+    });
+
+    $('.suggestion_holder.button').hover(function(){
+        $(this).toggleClass('edit');
+    });
+
+    $('.edit_window').hover(function(){
+        $(this).parent().toggleClass('edit');
+    });
+
+    $('.suggestion_holder.window .text.change_proposal').hover(function(){
+        $('.edit_window').parent().toggleClass('edit');
+    });
 
     /***************************************************/
     var my_id = "<%=user_logged ? user._id : ''%>";
