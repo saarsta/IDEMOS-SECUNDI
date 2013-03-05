@@ -1199,10 +1199,9 @@ var _main=$(document).ready( function () {
         setTimeout(function(){
             db_functions.getCyclesById(cycle_id,true,function(object, err){
                  var elapsed =   object.last_update_elapsed;
-                 console.log("elapsed " + elapsed);
-                console.log("object.fb_page.like_count_prev " + object.fb_page.like_count_prev);
-                console.log("object.fb_page.like_count " + object.fb_page.like_count);
-                if((object.last_update_elapsed<10) && (object.fb_page.like_count_prev < object.fb_page.like_count) ){
+                 console.log("elapsed " + elapsed +" | count " + object.fb_page.like_count +" | prev " + object.fb_page.like_count_prev);
+                if((elapsed < 10 ) && (object.fb_page.like_count_prev < object.fb_page.like_count) ){
+                    console.log("popup");
                     $(".sb-top .sb-title").text(social_fb_liker_title);
                     $(".sb-top .sb-text").text(social_fb_liker_text);
                     $(".sb-title .facebook_join").show();
