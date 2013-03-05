@@ -58,11 +58,11 @@ var ten_seconds_cron = exports.ten_seconds_cron = {
                             models.Cycle.update({_id: cycle._id}, {
                                 $set: { "fb_page.like_count": og_data.likes, "fb_page.last_update": now , "fb_page.like_count_prev": page.like_count }
                             }, function (err) {
-                                callback(err, page.like_count, now);
+                                callback(err, og_data.likes,page.like_count, now);
                             });
                         } else {
                             console.log("page "+page.url +" "+ og_data.likes +" likes - no change") ;
-                            callback(error, page.like_count, page.last_update);
+                            callback(error, page.like_count,page.like_count_prev,  page.last_update);
                         }
                     });
                 }
