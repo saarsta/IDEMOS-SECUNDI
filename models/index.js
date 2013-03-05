@@ -465,9 +465,17 @@ var Schemas = exports.Schemas = {
             join_cycle_click :    {type:Number, 'default':0,editable:false},
             facebook_joiners :    {type:Number, 'default':0,editable:false}
         }
+    }  ,
+
+    PressItem:{
+        title:  {type:String, required:true},
+        abstract:  {type:String},
+        image_field: { type:Schema.Types.File},
+        link :  {type:String, required:true} ,
+        date:  {type:Date, required:true},
+        source:{type:String, "enum":["דה מרקר", "כלכליסט","גלובס", "ynet", "הארץ", "nrg", "walla", "mako",  "אחר"], required:true}    ,
+        alternative_source:{type:String}
     }
-
-
 };
 
 var schemas_with_tooltip = [require('./discussion'), require('./articles'), require('./cycle'), require('./information_item'), require('./action'), Schemas.Headline, Schemas.Update];
@@ -539,6 +547,7 @@ var Models = module.exports = {
     QuoteGameParty:mongoose.model('QuoteGameParty', new Schema(Schemas.QuoteGameParty, {strict:true})),
     QuoteGameQuote:mongoose.model('QuoteGameQuote', new Schema(Schemas.QuoteGameQuote, {strict:true})),
     QuoteGameGames:mongoose.model('QuoteGameGames', new Schema(Schemas.QuoteGameGames, {strict:true})),
+    PressItem:mongoose.model('PressItem', new Schema(Schemas.PressItem, {strict:true})),
     Face          :mongoose.model('Face', new Schema(Schemas.Face, {strict:true})),
     Counter          :mongoose.model('Counter', new Schema(Schemas.Counter, {strict:true})),
 

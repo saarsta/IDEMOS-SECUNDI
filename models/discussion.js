@@ -29,6 +29,20 @@ var Discussion = module.exports = new Schema({
     vision_text_history:{type:[String]},
     num_of_approved_change_suggestions: {type: Number, 'default': 0},
     is_hot_object: {type:Boolean,'default':false},
+    press_items: [ {press_item_id:{type:ObjectId, ref:'PressItem'}}],
+    links: [new Schema({
+        title: String,
+        link: String,
+        text: String
+    })],
+
+    sub_branding:[ {
+        image: Schema.Types.File,
+        title: {type: String},
+        text: {type: String},
+        link: {type: String}
+    }],
+
     is_cycle:{
         flag:{type:Boolean, 'default':false, editable:false},
         date:{type:Date, 'default':Date.now, editable:false}

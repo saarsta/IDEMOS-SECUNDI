@@ -16,7 +16,12 @@ module.exports = function(req,res)
         },
         // get the discussion object
         function(cbk)  {
-            models.Discussion.findById(req.params[0], cbk);
+            models.Discussion.findById(req.params[0])
+                .populate('creator_id', {
+                    '_id':1,
+                    'first_name':1,
+                    'last_name':1})
+                .exec(cbk);
         },
 
         function(cbk){

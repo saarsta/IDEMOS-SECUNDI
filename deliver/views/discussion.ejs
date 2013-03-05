@@ -21,7 +21,7 @@ var error_message = error_message || '';
         <% include partials/failures.ejs %>
         <% include partials/tag_search.ejs %>
     </div>
-    <div >
+
     <div id="content_wrapper">
         <div id="content_main_wrapper">
             <div id="content_main_holder">
@@ -35,14 +35,17 @@ var error_message = error_message || '';
                             <a class="share_icon" href=""><img src="/images/icon_gp.png"></a>
                             <a class="share_icon" href=""><img src="/images/icon_email.png"></a>
                         </div>
-                        <div class="author">הדיון נפתח ע"י: <a href="">אריק בנדו</a></div>
+                        <% if(discussion.creator_id){ %>
+                        <div class="author">הדיון נפתח ע"י: <a href="/myuru/<%=discussion.creator_id._id%>"> <%=discussion.creator_id.first_name+ " " +discussion.creator_id.last_name %> </a></div>
+                        <% } %>
                         <hr />
-                        <div class="img_holder">
-                            <img src="/images/sample_img.png" />
+
+                        <div id="discussion_image" style="width: 260px;height: 190px; overflow:hidden;" class='auto-scale  img_holder'>
+                            <img src="<%= discussion.image_field ? discussion.image_field.url ||'' : '' %>" title="<%= discussion.title %>"/>
                         </div>
-                        <div class="text">
-                            <h3>אין הצדקה לכך שנשלם פעמיים. עמלות הבנקים בישראל מנופחות ולא הוגנות בכלל.</h3>
-                            עמלות הן בעצם דרך של הבנקים לגרום לנו לשלם פעמיים. אם אנחנו משלמים ריביות על הכסף שהפקדנו בבנק, אז למה כמעט על כל פעולה שאנחנו מבצעים היום בבנק אנחנו צריכים לשלם גם עמלה? ר
+
+                        <div class="text main_text" style="max-height:180px">
+                            <%=discussion.text_field%>
                         </div>
                         <a class="read_more" href="">המשך קריאה</a>
                         <hr />
@@ -61,9 +64,12 @@ var error_message = error_message || '';
                         <hr />
                         <div class="tags">
                             <span class="tags_title">תגיות:</span>
-                            <span class="tag"><a href="">הריכוזיות</a></span>
-                            <span class="tag"><a href="">עמלות הבנקים</a></span>
-                            <span class="tag"><a href="">יוקר המחיה</a></span>
+                            <% for (var c = 0; c <discussion. tags.length; c++) { %>
+                                <span class="tag"><a href="?tag_name=<%=discussion.tags[c]%>"><%=discussion. tags[c] %></a></span>
+
+                            <% }%>
+
+
                         </div>
                         <hr />
                         <div class="segment_bottom">
@@ -125,11 +131,12 @@ var error_message = error_message || '';
 
                     </div>
 
-                    <div class="segment">
+                    <div class="segment info">
                         <h2 class="title">סל מידע</h2>
-
-                        <div class="text">
-                            <img src="/images/placeholder_slider.png" />
+                        <div id="info_items" class="info_items">
+                            <!-- MovingBoxes Slider -->
+                            <ul id="slider">
+                            </ul><!-- end Slider #1 -->
                         </div>
                     </div>
 
@@ -167,6 +174,7 @@ var error_message = error_message || '';
                     <img src="/images/icon_person.png" />
                 </div>
                 <div class="name">
+
                     אסף גרינברג
                 </div>
                 <div class="date_time">
@@ -653,7 +661,7 @@ var error_message = error_message || '';
     </div>
 
 
-    </div>
+
 <% include partials/footer.ejs %>
 
 
@@ -668,6 +676,8 @@ var error_message = error_message || '';
 var current_section = 1;
 
 $(document).ready(function () {
+    var my_id = "<%=user_logged ? user._id : ''%>";
+    var discussion_id = "<%=discussion_id%>";
 
     $('.button_edit_comment').hover(function(){
         $(this).parent().toggleClass('edit');
@@ -685,9 +695,40 @@ $(document).ready(function () {
         $('.edit_window').parent().toggleClass('edit');
     });
 
+
+    $(".main_text").dotdotdot({
+        //	configuration goes here
+    });
+
+
+
+    db_functions.getDiscussionShoppingCart(discussion_id, function (err, data) {
+
+        $.each(data.objects, function (index, item) {
+            dust.render('cycle_information_item', item, function (err, out) {
+                $('#slider').append(out);
+            });
+        });
+
+        $('#info_items #slider').movingBoxes({
+            /* width and panelWidth options deprecated, but still work to keep the plugin backwards compatible
+             width: 500,
+             panelWidth: 0.5,
+             */
+            initAnimation :false,
+            fixedHeight :true,
+            reducedSize :1,
+            startPanel   : 1,      // start with this panel
+            wrap         : true,   // if true, the panel will "wrap" (it really rewinds/fast forwards) at the ends
+            buildNav     : true,   // if true, navigation links will be added
+            navFormatter : function(){ return "&#9679;"; } // function which returns the navigation text for each panel
+        });
+
+
+    });
+
     /***************************************************/
-//    var my_id = "<%=user_logged ? user._id : ''%>";
-//    var discussion_id = "<%=discussion_id%>";
+
 //    <%
 //    if (user_logged) { %>
 //        var proxy = JSON.parse('<%-proxy%>');
@@ -820,31 +861,6 @@ $(document).ready(function () {
 //        $('#comments_number')[0].innerHTML = '(' + number + ')';
 //    }
 //
-//    db_functions.getDiscussionShoppingCart(discussion_id, function (err, data) {
-//
-//        $.each(data.objects, function (index, item) {
-//            dust.render('discussion_information_item', item, function (err, out) {
-//                $('.slide-c').append(out);
-//            });
-//        });
-//
-//        $('.slide-c')
-//                .after('<div id="nav2">')
-//                .cycle({
-//                    fx:'scrollHorz',
-//                    speed:'fast',
-//                    timeout:0,
-//                    pager:'#nav2',
-//                    next:'#prev',
-//                    prev:'#next'
-//                });
-//
-//        if (data.objects.length < 2) {
-//            $("#prev").hide();
-//            $("#next").hide();
-//        }
-//
-//    });
 //
 //    $('.discussion_content').on('mousedown', function (e) {
 //        mouseDown = e;
