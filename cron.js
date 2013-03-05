@@ -49,21 +49,23 @@ var ten_seconds_cron = exports.ten_seconds_cron = {
         models.Cycle.find(find_criteria, function (err, cycles) {
             async.forEach(cycles, function (cycle) {
                 var page = cycle.fb_page;
-                og_get('http://graph.facebook.com/' + page.url, function (error, og_data) {
+                if(page && page.url){
+                    og_get('http://graph.facebook.com/' + page.url, function (error, og_data) {
 
-                    if (og_data.likes !== page.like_count) {
-                        console.log("page "+page.url +" "+ og_data.likes +" likes - UPDATED") ;
-                        var now = Date.now();
-                        models.Cycle.update({_id: cycle._id}, {
-                            $set: { "fb_page.like_count": og_data.likes, "fb_page.last_update": now , "fb_page.like_count_prev": page.like_count }
-                        }, function (err) {
-                            callback(err, page.like_count, now);
-                        });
-                    } else {
-                        console.log("page "+page.url +" "+ og_data.likes +" likes - no change") ;
-                        callback(error, page.like_count, page.last_update);
-                    }
-                });
+                        if (og_data.likes !== page.like_count) {
+                            console.log("page "+page.url +" "+ og_data.likes +" likes - UPDATED") ;
+                            var now = Date.now();
+                            models.Cycle.update({_id: cycle._id}, {
+                                $set: { "fb_page.like_count": og_data.likes, "fb_page.last_update": now , "fb_page.like_count_prev": page.like_count }
+                            }, function (err) {
+                                callback(err, page.like_count, now);
+                            });
+                        } else {
+                            console.log("page "+page.url +" "+ og_data.likes +" likes - no change") ;
+                            callback(error, page.like_count, page.last_update);
+                        }
+                    });
+                }
             });
         });
     }
@@ -574,7 +576,7 @@ exports.run = function () {
             if(err)
                 console.log(err);
         })
-    }, 60 * 60  * 1000);
+    }, 10 * 60  * 1000);
 
     setInterval(function () {
         console.log('@@@@@@@@@@@ cron fillUsersTokens @@@@@@@@@@@');
