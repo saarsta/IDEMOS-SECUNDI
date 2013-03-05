@@ -1201,7 +1201,7 @@ var _main=$(document).ready( function () {
                  var elapsed =   object.last_update_elapsed;
                  console.log(elapsed);
 
-                if(object.last_update_elapsed<10 && object.like_count_prev < object.like_count ){
+                if(object.last_update_elapsed<10 && object.fb_page.like_count_prev < object.fb_page.like_count ){
                     $(".sb-top .sb-title").text(social_fb_liker_title);
                     $(".sb-top .sb-text").text(social_fb_liker_text);
                     $(".sb-title .facebook_join").show();
