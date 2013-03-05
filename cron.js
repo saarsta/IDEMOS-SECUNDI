@@ -50,14 +50,17 @@ var ten_seconds_cron = exports.ten_seconds_cron = {
             async.forEach(cycles, function (cycle) {
                 var page = cycle.fb_page;
                 og_get('http://graph.facebook.com/' + page.url, function (error, og_data) {
+
                     if (og_data.likes !== page.like_count) {
+                        console.log("page "+page.url +" "+ og_data.likes +" likes - UPDATED") ;
                         var now = Date.now();
                         models.Cycle.update({_id: cycle._id}, {
-                            $set: { "fb_page.like_count": og_data.likes, "fb_page.last_update": now}
+                            $set: { "fb_page.like_count": og_data.likes, "fb_page.last_update": now , "fb_page.like_count_prev": page.like_count }
                         }, function (err) {
                             callback(err, page.like_count, now);
                         });
                     } else {
+                        console.log("page "+page.url +" "+ og_data.likes +" likes - no change") ;
                         callback(error, page.like_count, page.last_update);
                     }
                 });
@@ -133,34 +136,28 @@ var once_an_hour_cron = exports.once_an_hour_cron = {
         }
 
         function doFBLogin (browser, callback){
-            console.log("doLogin");
+            console.log("Attempt Login");
             browser.visit("https://www.facebook.com/", function () {
-                console.log(browser.location.pathname);
                 var page = $(browser.html());
                 if(page.find("#u_0_4").length ==1 ){
-                    console.log("login to facebook");
-                    console.log(browser.location.pathname);
+
                     browser.
                         fill("email", "Daniella.geula@gmail.com").
                         fill("pass", "dani-ella").
                         pressButton("#u_0_4", function() {
-                            console.log(browser.location.pathname + " : " + browser.success);
                             callback(null);
                         })
                 }
                 else{
-                    console.log("facebook page not loaded");
+                    console.log("facebook login page not loaded");
                     callback("login failed");
                 }
-
             });
         }
 
         function getUsers(browser,page_id, callback){
-
-            console.log("getUsers " + page_id);
+            console.log("Get Users " + page_id);
             browser.visit("https://www.facebook.com/browse/?type=page_fans&page_id="+page_id, function () {
-                console.log(browser.location.pathname + " : " + browser.success);
                 if(browser.success) {
                     var p = $(browser.html());
                     var users =p.find('li.fbProfileBrowserListItem a');
@@ -179,12 +176,12 @@ var once_an_hour_cron = exports.once_an_hour_cron = {
                     });
 
                     if(users_arr.length==0) {
-                        console.log("no users found")  ;
+                        console.log("error  - no users found")  ;
                         if(p.find("#email").length ==1 ){
-                            console.log("no login")  ;
+                            console.log("error  - not logeed in")  ;
                             callback("no_login")
                         }else{
-                            console.log("unknown")  ;
+                            console.log("error  -  unknown")  ;
                             callback("unknown")
                         }
                         //res.send(browser.html());
@@ -574,9 +571,10 @@ exports.run = function () {
     setInterval(function () {
         console.log('@@@@@@@@@@@ cron scrapeFBPagesLikes @@@@@@@@@@@');
         once_an_hour_cron.scrapeFBPagesLikes(function (err, result) {
-            console.log(err || result);
+            if(err)
+                console.log(err);
         })
-    }, 60 * 60 * 1000);
+    }, 60 * 60  * 1000);
 
     setInterval(function () {
         console.log('@@@@@@@@@@@ cron fillUsersTokens @@@@@@@@@@@');

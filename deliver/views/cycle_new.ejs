@@ -253,7 +253,7 @@
     <div class="right">
         <div class="followers">
             <div id="followers_count" >
-                <div class="blue-box"> <%= cycle.followers_count %>  </div>
+                <div class="blue-box"> <%= cycle.followers_count+ (cycle.fb_page ? cycle.fb_page.like_count:0 )  %>  </div>
                                      <span>
 
 
@@ -1201,7 +1201,7 @@ var _main=$(document).ready( function () {
                  var elapsed =   object.last_update_elapsed;
                  console.log(elapsed);
 
-                if(elapsed<10){
+                if(object.last_update_elapsed<10 && object.like_count_prev < object.like_count ){
                     $(".sb-top .sb-title").text(social_fb_liker_title);
                     $(".sb-top .sb-text").text(social_fb_liker_text);
                     $(".sb-title .facebook_join").show();

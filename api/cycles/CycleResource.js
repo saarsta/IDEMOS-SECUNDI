@@ -97,6 +97,7 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
             fb_page:{
                 url: null,
                 like_count:null,
+                like_count_prev:null,
                 last_update:null,
                 last_update_elapsed:null
             }   ,

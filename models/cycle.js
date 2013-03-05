@@ -58,16 +58,28 @@ var Cycle = module.exports = new Schema({
     ],
     social_popup_title: {type: String},
     social_popup_text: {type: String},
-    social_popup:  { default_title: {type: String},default_text: {type: String},fb_liker_title: {type: String},fb_liker_text: {type: String},new_atzuma_user_title: {type: String},new_atzuma_user_text: {type: String}},
+    social_popup:  {
+        default_title: {type: String},
+        default_text: {type: String},
+        fb_liker_title: {type: String},
+        fb_liker_text: {type: String},
+        new_atzuma_user_title: {type: String},
+        new_atzuma_user_text: {type: String}},
+
     counter_text :   {type: String},
     is_hidden:{type:Boolean,'default':true}    ,
     is_private:{type:Boolean,'default':false}    ,
 
-    timeline:{source:{type: String} , zoom :{type: Number},default_item: {type: Number} }  ,
+    timeline:{
+        source:{type: String} ,
+        zoom :{type: Number},
+        default_item: {type: Number} }  ,
+
     fb_page: {
         fb_id: {type: String},
         url: {type: String},
         like_count:{type: Number,default:0},
+        like_count_prev:{type: Number,default:0},
         last_update:{type:Date},
         users:{type:[String], index:true}
 
