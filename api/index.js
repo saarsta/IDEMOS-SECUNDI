@@ -13,6 +13,7 @@ var mongoose_resource = require('jest'),
     SubjectResource = require('./SubjectResource'),
     DiscussionResource = require('./discussions/DiscussionResource.js'),
     PostResource = require('./discussions/PostResource.js'),
+    PostOnSuggestionResource = require('./discussions/post_on_suggestion_resource.js'),
     DiscussionHistoryResource = require('./discussions/DiscussionHistoryResource.js'),
     PostsActionResource = require('./actions/PostActionResource.js'),
     PostArticleResource = require('./blogs/PostArticleResource'),
@@ -20,7 +21,7 @@ var mongoose_resource = require('jest'),
     VoteArticlePostResource = require('./blogs/VoteArticlePostResource'),
     follow_blog_resource = require('./blogs/follow_blog_resource'),
     follow_blog_by_mail_resource = require('./blogs/follow_blog_by_mail_resource'),
-    VoteSuggestionResource = require('./VoteSuggestionResource'),
+    //VoteSuggestionResource = require('./VoteSuggestionResource'),
     VoteActionPostResource = require('./actions/VoteActionPostResource'),
     GradeResource = require('./discussions/GradeResource.js'),
     GradeSuggestionResource = require('./GradeSuggestionResource'),
@@ -89,6 +90,7 @@ module.exports = function(app)
     rest_api.register_resource('subjects', new SubjectResource());
     rest_api.register_resource('discussions', new DiscussionResource());
     rest_api.register_resource('posts', new PostResource());
+    rest_api.register_resource('suggestion_posts', new PostOnSuggestionResource());
     rest_api.register_resource('discussions_history', new DiscussionHistoryResource());
     rest_api.register_resource('posts_of_article', new PostArticleResource());
     rest_api.register_resource('posts_of_action', new PostsActionResource());
@@ -96,7 +98,7 @@ module.exports = function(app)
     rest_api.register_resource('votes_on_article_comment', new VoteArticlePostResource());
     rest_api.register_resource('follow_blog', new follow_blog_resource());
     rest_api.register_resource('follow_blog_by_mail', new follow_blog_by_mail_resource());
-    rest_api.register_resource('votes_on_suggestion', new VoteSuggestionResource());
+    //  rest_api.register_resource('votes_on_suggestion', new VoteSuggestionResource());
     rest_api.register_resource('votes_on_action_post', new VoteActionPostResource());
     rest_api.register_resource('grades', new GradeResource());
     rest_api.register_resource('grades_suggestion', new GradeSuggestionResource());

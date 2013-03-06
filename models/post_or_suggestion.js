@@ -10,8 +10,6 @@ var PostOrSuggestion = module.exports = {
     creator_id:{type:Schema.ObjectId, ref:'User', query:common.FIND_USER_QUERY},
     first_name:{type:String,editable:false},
     last_name:{type:String, editable:false },
-//        username:{type:String,editable:false},
-//        avatar : {type:Schema.Types.File, editable:false},
     total_votes: {type: Number, 'default': 0},
     creation_date:{type:Date, 'default':Date.now},
     //for now there is no such thing as "tokens",

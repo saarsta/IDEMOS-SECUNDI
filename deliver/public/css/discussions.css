@@ -1630,11 +1630,19 @@ span.remark{
 }
 
 #content_wrapper_suggestions input.button_more_results{
-    background:url(/images/button_more_results.png) no-repeat 0 0;
+    text-align: center;
+    background:url(/images/more-deals.png) no-repeat;
     width:980px;
     height:48px;
     border:none;
     cursor:pointer;
+    font: normal 16px/25px 'AdumaFOTMedium';
+    text-decoration: none;
+    margin: 0 auto;
+}
+
+#content_wrapper_suggestions input.flip{
+    background-position: 0 100%;
 }
 
 .suggestion_holder.button,

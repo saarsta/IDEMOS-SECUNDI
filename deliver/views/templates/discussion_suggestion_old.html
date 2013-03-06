@@ -1,0 +1,97 @@
+<div id="post_{id}" class="one discussion-item"
+     data-id="{id}"
+     data-creator_name="{creator_id.first_name} {creator_id.last_name}"
+     data-creator_id="{creator_id.id}">
+    <div class="top-box">
+        <div class="user-right side_menu">
+            <span class="arrow"></span>
+            <div class="left">
+                <!--id="add_or_remove_proxy"-->
+                <a id="add_or_remove_proxy" href="javascript:void(0);" disabled="disabled">
+                    תן מנדט
+                </a>
+                <a href="javascript:void(0);" class="follow_user gray_and_soon">עקוב</a>
+                <a class="gray_and_soon" href="javascript:void(0);" >שלח הודעה</a>
+            </div>
+            <div class="right">
+              <a href="/myuru/{creator_id.id}">
+                <div class="img-box transparent-img" >
+                    <div  style="width:60px; height:64px;" class="auto-scale" >
+                        <img data-bablic-exclude alt="{title}" title="{creator_id.first_name} {creator_id.last_name}"  src="{?creator_id}{creator_id.avatar_url}{:else}/images/default_user_img.gif{/creator_id}"/>
+                    </div>
+                    <span></span>
+                </div>
+              </a>
+                <h4 data-bablic-exclude>  {creator_id.first_name} {creator_id.last_name}</h4>
+                <div class="date">{creator_id.username} {?creation_date}{creation_date|time}{/creation_date}</div>
+                <div class="proxy">
+                    <span class="num">{creator_id.num_of_proxies_i_represent}</span>
+                </div>
+                <div class="respect">
+                    <span class="score">{creator_id.score}</span>
+                </div>
+            </div>
+        </div>
+        <div class="text-left">
+            <h4>
+                טקסט מקורי:
+&nbsp;{original_part}</h4>
+            <p class="change_text">
+                הצעה לשינוי:
+&nbsp;{alternative_part}
+            </p>
+            <p class="explanation">
+                נימוק:
+&nbsp;{explanation}
+            </p>
+
+        </div>
+        <a class="grey-btn" href="javascript:void(0);" >הגב</a>
+    </div>
+    <div class="bottom-box cf">
+            <div class="agree_disagree status {?grade_obj}{?grade_obj.does_support_the_suggestion}agree{:else}disagree{/grade_obj.does_support_the_suggestion}{/grade_obj}">
+            <div class="yes">
+                <div class="green"  >מסכים</div>
+                <div class="number" id="agrees_{id}"> {agrees|round}</div>
+            </div>
+            <div class="no">
+                <div class="red">לא מסכים</div>
+                <div class="number" id="not_agrees_{id}">{not_agrees|round}</div>
+            </div>
+        </div>
+        <div class="status">
+            <div class="yes">
+                <div class="white">
+                    מספר תומכים נוכחי
+                    </div>
+                <div class="number" dir="ltr" id="curr_amount_of_tokens_{id}">{curr_amount_of_tokens|round}</div>
+            </div>
+            <div class="no">
+                <div class="white">
+                    מספר תומכים דרוש
+                    </div>
+                <div class="number" id="wanted_amount_of_tokens_{id}">{wanted_amount_of_tokens}</div>
+            </div>
+        </div>
+        <div class="slide-box">
+            <div class="summary">
+                <input type="text" value="{grade|grade}" id="suggest_grade_{id}">
+                <span><div class="inlinediv" id="suggest_graders_{id}">{manual_counter}</div> מדרגים</span>
+            </div>
+            <div class="suggest_slider suggest_slider_{id}"></div>
+            <div class="slider-numbers">
+                <span>1</span>
+                <span>2</span>
+                <span>3</span>
+                <span>4</span>
+                <span>5</span>
+                <span>6</span>
+                <span>7</span>
+                <span>8</span>
+                <span>9</span>
+                <span>10</span>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,3 +1,4 @@
+/*
 var models = require('../../../models')
     ,async = require('async')
     ,_ = require('underscore')
@@ -138,4 +139,4 @@ function getUsers(browser,page_id, callback){
 
 
     }  );
-}
+}*/

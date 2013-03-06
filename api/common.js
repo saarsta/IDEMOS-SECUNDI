@@ -85,7 +85,6 @@ var SessionAuthentication = exports.SessionAuthentication = jest.Authentication.
             else
                 callback(null,true);
         }
-
     }
 });
 
