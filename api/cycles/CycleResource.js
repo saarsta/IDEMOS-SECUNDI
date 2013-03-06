@@ -97,6 +97,7 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
             fb_page:{
                 url: null,
                 like_count:null,
+                like_count_prev:null,
                 last_update:null,
                 last_update_elapsed:null
             }   ,
@@ -121,12 +122,14 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
                 object.is_follower = false;
                 object.discussion = object.discussions[0]; //for now we have only one discussion for cycle
 
-                async.parallel([
+                async.waterfall([
                     function (cbk2) {
                         if(req.query.fb_page_check){
-                            cron.ten_seconds_cron.fb_pages_likes(object._id, function(err, likes,last_update){
+                            cron.ten_seconds_cron.fb_pages_likes(object._id, function(err, likes,prev_likes,last_update){
                                 var diff   = Date.now() - last_update
                                 object.last_update_elapsed = Math.floor(  diff/1000);
+                                object.fb_page.like_count=   likes;
+                                object.fb_page.like_count_prev=   prev_likes;
                                 cbk2(err)
                             })
                         }    else{
@@ -134,7 +137,6 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
                             object.last_update_elapsed = Math.floor(  diff/1000);
                             cbk2(null)
                         }
-
                     },
 
                     function (cbk2) {

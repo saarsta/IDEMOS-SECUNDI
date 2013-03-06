@@ -293,6 +293,13 @@ module.exports = function (app) {
         sortable: 'gui_order'
     });
 
+    admin.registerMongooseModel('PressItem', mongoose.model('PressItem'), null, {
+        list: ['title'],
+        order_by: ['gui_order'],
+        sortable: 'gui_order'
+    });
+
+
 
 };
 

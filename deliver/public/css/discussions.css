@@ -1,4 +1,13 @@
 
+#wrap{
+    font-family: arial;
+    width: 100%;
+}
+
+#wrap #header{
+    width: 980px;
+    margin: 0 auto;
+}
 hr{
     display: block;
     height: 1px;
@@ -14,8 +23,23 @@ h3{
     font-weight: bold;
     line-height: 20px;
     color: #4a4a4b;
+    font-size: 1.17em;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
 }
 
+h2{
+    display: block;
+    font-size: 1.5em;
+
+    font-weight: bold;
+}
+
+.main_text{
+    max-height:180px
+}
 #social_holder{
     float:right;
     width:150px;
@@ -671,6 +695,16 @@ blockquote{
 
 #content_right_holder .segment{
 
+}
+#content_main_holder .segment.info{
+
+
+    background-color: #f6f6f6;
+}
+
+#info_items{
+    margin-top: 15px;
+    width:670px;
 }
 
 #content_right_holder .segment.about .text{
@@ -1379,7 +1413,7 @@ span.remark{
 .discussions_page .segment h2.title{
     margin:0px;
     font-size:26px;
-    width: 550px;
+    width: 525px;
 }
 
 .discussions_page .segment.main .social_holder{
