@@ -174,9 +174,9 @@ var error_message = error_message || '';
         <div class="content_break_content comments">
             <h2>תגובות (32)</h2>
             <div id="comments_filter">
-                <input class="button_order_chron" type="button" />
-                <input class="button_order_popular" type="button" />
-                <input class="button_order_contro" type="button" />
+                <input data-sort-by="-creation_date" class="button_order_chron" type="button" />
+                <input data-sort-by="-popularity" class="button_order_popular" type="button" />
+                <input data-sort-by="-total_votes" class="button_order_contro" type="button" />
             </div>
         </div>
     </div>
@@ -289,6 +289,7 @@ var error_message = error_message || '';
         </div>
     </div>
 
+<!--
     <div class="comment_wrapper even">
         <div class="comment_details">
             <div class="photo">
@@ -374,8 +375,9 @@ var error_message = error_message || '';
             הגיעה העת לבטל את אגרת הטלוויזיה. במקום לדחוף הצעות שאין להן סיכוי, מוצע כאן לבטל את גביית האגרה, להעביר חלק מן הנטל לתשלום שאנחנו משלמים ממילא בזמן חידוש רשיון הרכב, וכך לחסוך מיליונים רבים.
         </div>
     </div>
+-->
 
-    <div id="pagination_wrapper">
+    <div id="pagination_wrapper" class="second_pagination">
         <div id="pagination">
             <span class="title">עמודים (24):</span>
             <a href=""><span class="last"></span></a>
@@ -477,9 +479,9 @@ $(document).ready(function () {
 //    var new_post_ref_id = null;  //if not null =>the create new post is connected to anther post
 //    var my_discussion_grade = Number("<%= discussion.grade_obj ? discussion.grade_obj.value || 0 : 0 %>");
 //    var discussion_grade = Number("<%= discussion.grade%>");
-//    var discussion_title = "<%= discussion.title%>"
-//    var discussion_img_field_preview = "<%= discussion.image_field ? discussion.image_field.url ||'' : '' %>";
-//
+    var discussion_title = "<%= discussion.title%>"
+    var discussion_img_field_preview = "<%= discussion.image_field ? discussion.image_field.url ||'' : '' %>";
+
 //    var postsNumber = 0;
 //    var is_creator = (my_id == creator_id);
 //
@@ -1022,70 +1024,80 @@ $(document).ready(function () {
         }
     });
 
-//    function renderComments(comments) {
-//
-//        var i;
-//        for (i = 0; i < comments.length; i++) {
-//            comments[i].isFirst = (i === 0);
-//            comments[i].isEven = ((i % 2)== 0);
-//            comments[i].voting =      comments[i].votes_for - comments[i].votes_against;
-//        }
-//        dust.renderArray('discussion_comment', comments, null, function (err, out) {
-//            if (!err) {
-//                var comments = $("#comments");
-//                comments.append(out);
-//                var hash = window.location.hash;
-//                if (hash) {
-//                    if (!scrollTo(hash)) {
-//                        var match = /^#post_([0-9a-f]+)/.exec(hash);
-//                        if (match) {
-//                            var post_id = match[1];
-//
-//                            db_functions.getPostById(post_id, function (err, post) {
-//                                dust.render('discussion_comment', post, function (err, out) {
-//                                    if (!err)
-//                                        comments.append(out);
-//                                    scrollTo(hash);
-//                                });
-//                            });
-//                        }
-//                    }
-//                }
-//
-//                image_autoscale($('.auto-scale img', comments));
+    function renderComments(comments) {
+
+        var i;
+        for (i = 0; i < comments.length; i++) {
+            comments[i].isFirst = (i === 0);
+            comments[i].is_even = ((i % 2)== 0);
+            comments[i].voting = comments[i].votes_for - comments[i].votes_against;
+        }
+        dust.renderArray('discussion_comment', comments, null, function (err, out) {
+            if (!err) {
+                var pagination = $(".second_pagination");
+                pagination.before(out);
+                var hash = window.location.hash;
+                if (hash) {
+                    if (!scrollTo(hash)) {
+                        var match = /^#post_([0-9a-f]+)/.exec(hash);
+                        if (match) {
+                            var post_id = match[1];
+
+                            db_functions.getPostById(post_id, function (err, post) {
+                                dust.render('discussion_comment', post, function (err, out) {
+                                    if (!err)
+                                        pagination.append(out);
+                                    scrollTo(hash);
+                                });
+                            });
+                        }
+                    }
+                }
+
+                image_autoscale($('.auto-scale img', comments));
 //                initTooltipWithMessage($('#comments .right .respect'), 'מוניטין');
-//
-//            }
-//        });
-//    }
-//
-//    function loadPosts() {
-//        var selectedOption = $("#sorting_select").val();
-//        db_functions.getSortedPostByDiscussion(discussion_id, selectedOption,current_offset, function (err, data) {
-//            if (err) {
-//                console.log(err);
-//            } else {
-//                current_offset += data.objects.length;
-//
-//                $.each(data.objects, function (index, post) {
-//                    post.title = discussion_title;
-//                    post.image_field_preview = discussion_img_field_preview;
-//                });
-//
-//                renderComments(data.objects);
-//
-//                if(data.meta.total_count > current_offset )
-//                    $('.more_comments').show();
-//                else
-//                    $('.more_comments').hide();
-//                postsNumber = data.meta.total_count;
-//                setCommentNumber(postsNumber);
-//
-//                if(typeof(FB) != 'undefined')
-//                    FB.XFBML.parse();
-//            }
-//        })
-//    }
+
+            }
+        });
+    }
+
+    function loadPosts() {
+        var selectedOption = $("#comments_filter").data();
+
+        //for now
+        var current_offset = 0;
+
+        db_functions.getSortedPostByDiscussion(discussion_id, "-creation_date"/*selectedOption*/,current_offset, function (err, data) {
+            if (err) {
+                console.log(err);
+            } else {
+                current_offset += data.objects.length;
+
+                $.each(data.objects, function (index, post) {
+                    post.title = discussion_title;
+                    post.image_field_preview = discussion_img_field_preview;
+                });
+
+                renderComments(data.objects);
+
+                /*if(data.meta.total_count > current_offset )
+                    $('.more_comments').show();
+                else
+                    $('.more_comments').hide();
+                postsNumber = data.meta.total_count;
+                setCommentNumber(postsNumber);
+
+                if(typeof(FB) != 'undefined')
+                    FB.XFBML.parse();*/
+            }
+        })
+    }
+
+    // just focus
+    $("#content_wrapper_comments").on('click', 'button_comment', function (e) {
+
+        // TODO focus to add comment
+    });
 //
 //    var current_offset = 0;
 //
@@ -1115,7 +1127,7 @@ $(document).ready(function () {
 //        loadPosts();
 //    });
 //
-//    loadPosts();
+    loadPosts();
 //
 //    $("#cancelWriteCommentBT").live("click", function () {
 //        $('#write-comment').hide();

@@ -81,6 +81,19 @@ dust.filters['post'] = function(text) {
     return text;
 }
 
+dust.filters['new_post'] = function(text) {
+    var isHtml = text.indexOf('<p') == 0;
+    text = dust.filters['tags'](text);
+    text = text.replace(/\[(?:quote|ציטוט)=(?:"|&quot;)(.*?)(?:"|&quot;)\s*\]\n?((?:.|\n)*?)\n?\[\/(?:quote|ציטוט)\]\n?/g,
+        '<div class="quote" >' +
+            ' $1 כתב:' +
+            '$2' +
+            '</div>');
+    if(!isHtml)
+        text = text.replace(/\n/g,'<br>');
+    text = text + '</span></p>';
+    return text;
+}
 
 dust.filters['qa'] = function(text) {
     text = dust.filters['tags'](text);

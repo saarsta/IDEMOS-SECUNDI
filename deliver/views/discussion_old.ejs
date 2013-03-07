@@ -764,7 +764,7 @@ $(document).ready(function () {
 
             dust.render('discussion_suggestion_old', suggestion, function (err, out) {
                 $('#suggestion_list').prepend(out);
-                image_scale($('#suggestion_list .auto-scale img'));
+                image_autoscale($('#suggestion_list .auto-scale img'));
                 var suggestion_grade_val = suggestion.grade_obj ? suggestion.grade_obj.evalueation_grade : my_discussion_grade;
                 suggest_grade_id[suggestion.id] = suggestion.grade_obj ? suggestion.grade_obj._id : null;
                 $(".suggest_slider_" + suggestion.id).slider({
@@ -1017,7 +1017,7 @@ $(document).ready(function () {
                     if (my_id)
                         setUserScore(my_id, post.creator_id.score);
                     post.voting = post.votes_for - post.votes_against;
-                    dust.render('discussion_comment', post, function (err, out) {
+                    dust.render('discussion_comment_old', post, function (err, out) {
                         $("#comments").append(out);
                         $("textarea#discussion_comment").val('');
                         new_post_ref_id = null;
