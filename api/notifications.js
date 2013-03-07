@@ -483,7 +483,10 @@ function isNotiInUserMailConfig(user, noti){
         // check if should get mail and when
         var discussion = _.find(user.discussions, function(discussion){ return discussion.discussion_id + "" == noti.notificators[0].sub_entity_id });
 
-        if (!discussion || discussion.get_alert_of_suggestions !== true) return false;
+        if (!discussion) return false;
+
+        // this way i guarantee that by default this is true
+        if (discussion.get_alert_of_suggestions === false) return false;
 
         if (discussion.time_of_alert === 'now') {
             return true;
@@ -497,7 +500,9 @@ function isNotiInUserMailConfig(user, noti){
         // check if should get mail and when
         var discussion = _.find(user.discussions, function(discussion){ return discussion.discussion_id + "" == noti.notificators[0].sub_entity_id });
 
-        if (!discussion || discussion.get_alert_of_approved_suggestions !== true) return false;
+        if (!discussion) return false;
+
+        if (discussion.get_alert_of_approved_suggestions !== false) return false;
 
         if (discussion.time_of_alert === 'now') {
             return true;
@@ -519,7 +524,9 @@ function isNotiInUserMailConfig(user, noti){
         // check if should get mail and when
         var cycle = _.find(user.cycles, function(cycle){ return cycle.cycle_id + "" == noti.notificators[0].sub_entity_id });
 
-        if (!cycle || cycle.get_alert_of_new_action !== true) return false;
+        if (!cycle) return false;
+
+        if (cycle.get_alert_of_new_action !== false) return false;
 
         if (cycle.time_of_alert === 'now') {
             return true;
@@ -533,7 +540,9 @@ function isNotiInUserMailConfig(user, noti){
         // check if should get mail and when
         var cycle = _.find(user.cycles, function(cycle){ return cycle.cycle_id + "" == noti.notificators[0].sub_entity_id });
 
-        if (!cycle || cycle.get_alert_of_approved_action !== true) return false;
+        if (!cycle) return false;
+
+        if (cycle.get_alert_of_approved_action !== false) return false;
 
         if (cycle.time_of_alert === 'now') {
             return true;

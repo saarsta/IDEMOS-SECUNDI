@@ -225,7 +225,9 @@
         var input_arr = $('#selected_discussion input');
         $.each(input_arr, function(index, val){
             var setting_type = $(this).attr('data-setting-type');
-            var is_checked =  is_discussion_in_hash && (typeof discussions_hash[discussion_id][setting_type] !== "undefined")&& (discussions_hash[discussion_id][setting_type] == true);
+
+            // undefined means that it wasn't set yet, so it's true by default
+            var is_checked =  is_discussion_in_hash && ((typeof discussions_hash[discussion_id][setting_type] === "undefined") || (discussions_hash[discussion_id][setting_type] == true));
             $(input_arr[index]).prop('checked', is_checked);
         })
     });
@@ -238,7 +240,9 @@
         var input_arr = $('#selected_cycle input');
         $.each(input_arr, function(index, val){
             var setting_type = $(this).attr('data-setting-type');
-            var is_checked =  is_cycle_in_hash && (typeof cycles_hash[cycle_id][setting_type] !== "undefined")&& (cycles_hash[cycle_id][setting_type] == true);
+
+            // undefined means that it wasn't set yet, so it's true by default
+            var is_checked =  is_cycle_in_hash && ((typeof cycles_hash[cycle_id][setting_type] === "undefined")&& (cycles_hash[cycle_id][setting_type] == true));
             $(input_arr[index]).prop('checked', is_checked);
         })
     });
