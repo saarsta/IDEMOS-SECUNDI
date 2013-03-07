@@ -575,11 +575,19 @@ function notifications_for_the_info_items_relvant(discussion_id, notificator_id,
 
                 // find users that chosen to get notifications about new discussions of this subject
                 function (cbk) {
-                    models.User.find({"mail_notification_configuration.get_mails" : true, "mail_notification_configuration.new_discussion.subject_id" : subject_id}, cbk);
+                    models.User.find({"mail_notification_configuration.get_mails": true, "mail_notification_configuration.new_discussion" : {$elemMatch : { subject_id : subject_id + "", get_alert : true}}}, cbk);
+                   /* models.User.find()
+                    .where("mail_notification_configuration.new_discussion").elemMatch(function (elem) {
+                        elem.where('subject_id', subject_id+ "");
+                        elem.where('get_alert', true)
+                    })
+//                    .where("mail_notification_configuration.get_mails", true)
+                    .exec(cbk);*/
                 },
 
                 // create site notifications and mail notifications
                 function (users, cbk) {
+//                   users = _.each(users, ))
                     async.forEach(users, new_discussion_notification_itr, cbk);
                 }
             ], function (err) {
@@ -589,8 +597,6 @@ function notifications_for_the_info_items_relvant(discussion_id, notificator_id,
     ], function(err){
         callback(err);
     })
-
-
 }
 
 
