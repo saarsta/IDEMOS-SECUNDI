@@ -663,6 +663,23 @@ var db_functions = {
         });
     },
 
+    addCommentToSuggestion : function(suggestion_id, discussion_id, text, callback){
+        db_functions.loggedInAjax({
+            url:'/api/suggestion_posts',
+            type:"POST",
+            data: {suggestion_id: suggestion_id, discussion_id: discussion_id, text: text},
+            async:true,
+
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function (err) {
+                callback(err, null);
+            }
+        });
+    },
+
     getPostById:function (post_id, callback) {
         db_functions.loggedInAjax({
             url:'/api/posts/' + post_id,
