@@ -479,6 +479,12 @@
 
 
 <script type="text/javascript">
+
+var fb_param = {};
+fb_param.pixel_id = '6005988058533';
+fb_param.value = '0.00';
+
+
 var current_section=2;
 
 
@@ -986,14 +992,21 @@ var current_section=2;
 
          /////////////////pixel code
 
-
-                $('<iframe id="contact_sent"/>')
-                        .attr('src', 'http://www.uru.org.il/pixel.html')
-                        .css('display', 'none')
-                        .load(function () {
-                            $('#contact_sent').remove();
-                        })
-                        .appendTo(document.body);
+                (function(){
+                    var fpw = document.createElement('script');
+                    fpw.async = true;
+                    fpw.src = '//connect.facebook.net/en_US/fp.js';
+                    var ref = document.getElementsByTagName('script')[0];
+                    ref.parentNode.insertBefore(fpw, ref);
+                })();
+//
+//                $('<iframe id="contact_sent"/>')
+//                        .attr('src', 'http://www.uru.org.il/pixel.html')
+//                        .css('display', 'none')
+//                        .load(function () {
+//                            $('#contact_sent').remove();
+//                        })
+//                        .appendTo(document.body);
 
 
                 /////////////////pixel code end
@@ -1203,22 +1216,6 @@ var current_section=2;
             );
         }
     });
-
-</script>
-
-
-<script type="text/javascript">
-
-    var fb_param = {};
-    fb_param.pixel_id = '6005510697475';
-    fb_param.value = '0.00';
-    (function(){
-        var fpw = document.createElement('script');
-        fpw.async = true;
-        fpw.src = (location.protocol=='http:'?'http':'https')+'://connect.facebook.net/en_US/fp.js';
-        var ref = document.getElementsByTagName('script')[0];
-        ref.parentNode.insertBefore(fpw, ref);
-    })();
 
 </script>
 
