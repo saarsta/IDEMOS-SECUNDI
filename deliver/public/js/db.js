@@ -648,6 +648,20 @@ var db_functions = {
             }
         });
     },
+    getCommentsBySuggestion:function (suggestion_id, callback) {
+        db_functions.loggedInAjax({
+            url:'/api/suggestion_posts?suggestion_id=' + suggestion_id,
+            type:"GET",
+            async:true,
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function (err) {
+                callback(err, null);
+            }
+        });
+    },
 
     getPostById:function (post_id, callback) {
         db_functions.loggedInAjax({

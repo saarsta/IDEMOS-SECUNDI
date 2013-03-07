@@ -43,6 +43,7 @@ var PostOnSuggestionResource = module.exports = common.GamificationMongooseResou
                 _.each(results.objects, function(post){
                     post.avatar = post.creator_id.avatar_url();
                     post.username = post.creator_id.toString();
+                    post.creator_id = post.creator_id.id;
                 });
             }
 
@@ -51,22 +52,15 @@ var PostOnSuggestionResource = module.exports = common.GamificationMongooseResou
     },
 
     create_obj: function(req, fields, callback) {
-        var user_id = req.session.user_id;
+        var self = this;
         var user = req.session.user;
 
-        fields.creator_id = user_id;
+        fields.creator_id = req.session.user.id;
         fields.first_name = user.first_name;
         fields.last_name = user.last_name;
-        fields.avatar = user.avatar;
 
-        async.waterfall([
-
-            // call constructor and create post_suggestion object
-            function(cbk){
-                this._super(req, fields, function(err, post_suggestion){
-                    callback(err, post_suggestion);
-                });
-            }
-        ])
+        self._super(req, fields, function(err, post_suggestion){
+            callback(err, post_suggestion);
+        });
     }
 });

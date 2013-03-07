@@ -40,7 +40,7 @@ var error_message = error_message || '';
                         <div class="img_holder">
                             <img src="/images/sample_img.png" />
                         </div>
-                        <div class="text">
+                        <div>
                             <h3>אין הצדקה לכך שנשלם פעמיים. עמלות הבנקים בישראל מנופחות ולא הוגנות בכלל.</h3>
                             עמלות הן בעצם דרך של הבנקים לגרום לנו לשלם פעמיים. אם אנחנו משלמים ריביות על הכסף שהפקדנו בבנק, אז למה כמעט על כל פעולה שאנחנו מבצעים היום בבנק אנחנו צריכים לשלם גם עמלה? ר
                         </div>
@@ -911,12 +911,12 @@ $(document).ready(function () {
 //    });
 //
     var suggest_grade_id = new Object();
-//
+    var original = "<%=discussion.text_field%>";
+
     //render change suggestion
     function render_suggestion(suggestion) {
         // get original text and alternative text
         if (suggestion.parts && suggestion.parts.length) {
-            var original = $('.text').text();
             suggestion.original_part = function () {
                 var from = suggestion.parts[0].start;
                 var end = suggestion.parts[0].end;
@@ -932,7 +932,8 @@ $(document).ready(function () {
             });
         }
         return null;
-    }
+    };
+
 
     var first_suggestion;
 
@@ -940,6 +941,20 @@ $(document).ready(function () {
     db_functions.getSuggestionByDiscussion(discussion_id, 1, 0, function (err, data) {
         $.each(data.objects, function (index, suggestion) {
             render_suggestion(suggestion);
+
+            var curr_suggestion = $('#suggestions_wrapper').find('[data-id=' + suggestion.id + ']') ;
+
+            db_functions.getCommentsBySuggestion(suggestion.id, function(err, data){
+                $.each(data.objects, function (index, comment) {
+
+                    comment.is_even = (index % 2) == 0;
+                    dust.render('comment_on_suggestion', comment, function (err, out) {
+                        // append before "add_comment"
+                        curr_suggestion.find('.add_comment').before(out);
+                        image_autoscale(curr_suggestion.find('.auto-scale img'));
+                    });
+                });
+            })
         });
 
         $('#suggestion_number').text(' (' + data.meta.total_count + ')');

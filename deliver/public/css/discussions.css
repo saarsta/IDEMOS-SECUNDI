@@ -1899,12 +1899,26 @@ span.remark{
     margin-bottom:30px;
 }
 
-.suggestion_comments_holder .comment.odd{
+.suggestion_comments_holder .comment.even{
+    width: 490px;
+    clear: both;
     background:#f6f6f6;
 }
 
-.suggestion_comments_holder .comment.even{
+.suggestion_comments_holder .comment.odd{
+    width: 490px;
+    clear: both;
     background:#ededed;
+}
+
+.suggestion_comments_holder .comment.even span.photo-pattern {
+    background: url(../images/user-fillter-small-cofee.png) no-repeat;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: url(../images/user-fillter-small.png) no-repeat;
+    width: 100%;
+    height: 100%;
 }
 
 .suggestion_comments_holder .comment{
@@ -1916,7 +1930,7 @@ span.remark{
 .suggestion_comments_holder .comment .author{
     text-align:center;
     float:right;
-    width:90px;
+    /*width:90px;*/
     font-size:12px;
     font-weight:bold;
     color:#50504f;
