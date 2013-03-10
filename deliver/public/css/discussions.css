@@ -2391,7 +2391,14 @@ span.remark{
 
 #comments_wrapper #add_comment_wrapper .comment_wrapper{
     width:940px;
+    margin-top: 10px;
 }
+
+#comments_wrapper .comment_wrapper .content {
+    float: left;
+    width:805px;
+}
+
 
 input.button_submit_comment{
     background:url(/images/button_submit_comment.png) no-repeat 0 0;
@@ -2552,6 +2559,23 @@ input.button_submit_comment{
     margin-left:15px;
     padding-left:15px;
 }
+
+#full         {
+    display: none;
+}
+
+#full textarea{
+    width: 662px;
+    background: transparent;
+    height: 100%;
+    resize: none;
+    border: none;
+    color: #7F7F7E;
+    font: normal 13px/17px Arial;
+
+}
+
+
 
 /* Discussions Page 2 - end */
 
