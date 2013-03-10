@@ -87,27 +87,32 @@ var once_an_hour_cron = exports.once_an_hour_cron = {
         }
         console.log('---scrapeFBPagesLikes browser')
         models.Cycle.find({"fb_page.fb_id": {$exists: true} }).exec(function(err, cycles){
-            var func_arr =null;
-            console.log(cycles.length)
-            console.log(cycles)
-            func_arr =_.map(cycles,function(cycle){
-                return  function(callback) {
-                    getUsersLoop(5,browser,cycle.fb_page.fb_id,function(err,users){
-                        if(!err){
-                            console.log(users);
-                            models.Cycle.update({"fb_page.fb_id": cycle.fb_page.fb_id},{$addToSet:{"fb_page.users" :{ $each : users}}}, function(err,count)
-                            {
-                                callback(err, {'users':users});
-                            });
-                        }else{
-                            callback(err);
-                        }
+            if(!err){
+                console.log('---find error' +err )
 
-                    });
-                }
-            });
+            }else{
+                var func_arr =null;
+                console.log('---find success' +err )
+                console.log(cycles.length)
+                console.log(cycles)
+                func_arr =_.map(cycles,function(cycle){
+                    return  function(callback) {
+                        getUsersLoop(5,browser,cycle.fb_page.fb_id,function(err,users){
+                            if(!err){
+                                console.log(users);
+                                models.Cycle.update({"fb_page.fb_id": cycle.fb_page.fb_id},{$addToSet:{"fb_page.users" :{ $each : users}}}, function(err,count)
+                                {
+                                    callback(err, {'users':users});
+                                });
+                            }else{
+                                callback(err);
+                            }
 
-            async.series( func_arr ,main_callback);
+                        });
+                    }
+                });
+                async.series( func_arr ,main_callback);
+            }
 
         });
 
@@ -593,11 +598,13 @@ exports.run = function () {
         })
     }, 12 * 60 * 60   * 1000);
 
-    console.log('@@@@@@@@@@@ cron scrapeFBPagesLikes @@@@@@@@@@@');
-    once_an_hour_cron.scrapeFBPagesLikes(function (err, result) {
-        if(err)
-            console.log(err);
-    });
+    setTimeout(function () {
+        console.log('@@@@@@@@@@@ cron scrapeFBPagesLikes @@@@@@@@@@@');
+        once_an_hour_cron.scrapeFBPagesLikes(function (err, result) {
+            if(err)
+                console.log(err);
+        })
+    }, 20   * 1000);
 
 
     setInterval(function () {
