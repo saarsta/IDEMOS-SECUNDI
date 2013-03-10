@@ -74,6 +74,8 @@ app.set('port', process.env.PORT || 80);
 app.set('facebook_app_id', fb_auth_params.appId);
 app.set('facebook_secret', fb_auth_params.appSecret);
 app.set('facebook_app_name', fb_auth_params.appName);
+app.set('facebook_pages_admin_user', "uri@uru.org.il");
+app.set('facebook_pages_admin_pass', "uruuruuru");
 app.set('show_only_published', process.env.SHOW_ONLY_PUBLISHED == '1');
 app.set('sendgrid_user', process.env.SENDGRID_USER || 'app2952775@heroku.com');
 app.set('system_email', process.env.SYSTEM_EMAIL || 'info@uru.org.il');
