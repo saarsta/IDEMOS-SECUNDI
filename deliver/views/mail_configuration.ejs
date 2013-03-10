@@ -154,7 +154,7 @@
                         </div>
                         <div class="sep"></div>
                         <div class="settings_box_section">
-                            <input id="no_mails" type="checkbox" data-setting-type="get_mails" id="get_mails" class="checkbox turn_off" /><label for="no_mails" class="title general">כיבוי כל העדכונים מהאתר</label>
+                            <input id="no_mails" type="checkbox" data-setting-type="get_mails" id="get_mails" class="checkbox general turn_off" /><label for="no_mails" class="title general">כיבוי כל העדכונים מהאתר</label>
                             <br/>
                             <div class="free_text_box">
                                 <span style="float:right; margin:5px 0; font-size:12px;"><span style="color:#3b63ef; font-weight:bold;">למה ככה?</span> ספר לנו למה אתה מניאק</span><br/>
@@ -207,6 +207,11 @@
         var setting_type = $(this).attr('data-setting-type');
         var is_checked = user.mail_notification_configuration[setting_type];
 
+        // flip the get_mail setting causes it dont_get_mail actually
+        if(setting_type === 'get_mails'){
+            is_checked = !is_checked;
+        }
+
         $(this).prop('checked', is_checked);
     });
 
@@ -220,7 +225,9 @@
         var input_arr = $('#selected_discussion input');
         $.each(input_arr, function(index, val){
             var setting_type = $(this).attr('data-setting-type');
-            var is_checked =  is_discussion_in_hash && (typeof discussions_hash[discussion_id][setting_type] !== "undefined")&& (discussions_hash[discussion_id][setting_type] == true);
+
+            // undefined means that it wasn't set yet, so it's true by default
+            var is_checked =  is_discussion_in_hash && ((typeof discussions_hash[discussion_id][setting_type] === "undefined") || (discussions_hash[discussion_id][setting_type] == true));
             $(input_arr[index]).prop('checked', is_checked);
         })
     });
@@ -233,7 +240,9 @@
         var input_arr = $('#selected_cycle input');
         $.each(input_arr, function(index, val){
             var setting_type = $(this).attr('data-setting-type');
-            var is_checked =  is_cycle_in_hash && (typeof cycles_hash[cycle_id][setting_type] !== "undefined")&& (cycles_hash[cycle_id][setting_type] == true);
+
+            // undefined means that it wasn't set yet, so it's true by default
+            var is_checked =  is_cycle_in_hash && ((typeof cycles_hash[cycle_id][setting_type] === "undefined")&& (cycles_hash[cycle_id][setting_type] == true));
             $(input_arr[index]).prop('checked', is_checked);
         })
     });
@@ -382,7 +391,13 @@
         var setting_type = $(this).attr('data-setting-type');
         var is_checked = $(this).is(':checked');
 
+        // flip the get_mail setting causes it dont_get_mail actually
+        if(setting_type === 'get_mails'){
+            is_checked = !is_checked;
+        }
+
         new_settings.mail_notification_configuration[setting_type] = is_checked;
+
 
         db_functions.updateMailNotification(user_id, new_settings, function(err, result){
             console.log(err || result);

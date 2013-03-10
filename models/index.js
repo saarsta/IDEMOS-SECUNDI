@@ -98,8 +98,7 @@ var Schemas = exports.Schemas = {
     VoteSuggestion:{
         user_id:{type:ObjectId, ref:'User',query:common.FIND_USER_QUERY, index:true, required:true},
         suggestion_id:{type:ObjectId, ref:'Suggestion', index:true, required:true},
-//        tokens:Number,
-        method:{type:String, "enum":['add', 'remove']},
+        balance:{type:Number, 'default':0},
         creation_date:{type:Date, 'default':Date.now}
     },
 
@@ -504,6 +503,7 @@ var Models = module.exports = {
 
     Subject:mongoose.model('Subject', require('./subject')),
     Post:require('./post'),
+    PostSuggestion:require('./post_suggestion'),
     PostArticle:mongoose.model('PostArticle', require('./post_article')),
     PostAction:require('./post_action'),
     Suggestion:require('./suggestion'),

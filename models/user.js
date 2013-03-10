@@ -41,11 +41,11 @@ var User = module.exports = new Schema({
         new Schema({
             discussion_id:{type:ObjectId, ref:'Discussion'},
             join_date: {type:Date, 'default':Date.now},
-            get_alert: {type: Boolean},
+            get_alert: {type: Boolean, 'default': true},
             time_of_alert: {type:String, "enum":['now', 'today', 'this_week'], 'default': 'now'},
-            get_alert_of_comments: {type: Boolean},
-            get_alert_of_suggestions: {type: Boolean},
-            get_alert_of_approved_suggestions: {type: Boolean}
+            get_alert_of_comments: {type: Boolean, 'default': true},
+            get_alert_of_suggestions: {type: Boolean, 'default': true},
+            get_alert_of_approved_suggestions: {type: Boolean, 'default': true}
         })
     ],
     //followers - - in the redesign it is the same as cycles.users
@@ -53,11 +53,11 @@ var User = module.exports = new Schema({
         new Schema({
             cycle_id:{type:ObjectId, ref:'Cycle'},
             join_date: {type:Date},
-            get_alert_of_updates: {type: Boolean},
+            get_alert_of_updates: {type: Boolean, 'default': true},
             time_of_alert: {type:String, "enum":['now', 'today', 'this_week'], 'default': 'now'},
-            get_alert_of_new_action: {type: Boolean},
-            get_alert_of_approved_action: {type: Boolean},
-            get_reminder_of_action: {type: Boolean}
+            get_alert_of_new_action: {type: Boolean, 'default': true},
+            get_alert_of_approved_action: {type: Boolean, 'default': true},
+            get_reminder_of_action: {type: Boolean, 'default': true}
         })
     ],
     //followers (site notifications)

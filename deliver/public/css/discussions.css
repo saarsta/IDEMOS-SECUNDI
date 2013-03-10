@@ -1664,11 +1664,19 @@ span.remark{
 }
 
 #content_wrapper_suggestions input.button_more_results{
-    background:url(/images/button_more_results.png) no-repeat 0 0;
+    text-align: center;
+    background:url(/images/more-deals.png) no-repeat;
     width:980px;
     height:48px;
     border:none;
     cursor:pointer;
+    font: normal 16px/25px 'AdumaFOTMedium';
+    text-decoration: none;
+    margin: 0 auto;
+}
+
+#content_wrapper_suggestions input.flip{
+    background-position: 0 100%;
 }
 
 .suggestion_holder.button,
@@ -1891,12 +1899,26 @@ span.remark{
     margin-bottom:30px;
 }
 
-.suggestion_comments_holder .comment.odd{
+.suggestion_comments_holder .comment.even{
+    width: 490px;
+    clear: both;
     background:#f6f6f6;
 }
 
-.suggestion_comments_holder .comment.even{
+.suggestion_comments_holder .comment.odd{
+    width: 490px;
+    clear: both;
     background:#ededed;
+}
+
+.suggestion_comments_holder .comment.even span.photo-pattern {
+    background: url(../images/user-fillter-small-cofee.png) no-repeat;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: url(../images/user-fillter-small.png) no-repeat;
+    width: 100%;
+    height: 100%;
 }
 
 .suggestion_comments_holder .comment{
@@ -1908,7 +1930,7 @@ span.remark{
 .suggestion_comments_holder .comment .author{
     text-align:center;
     float:right;
-    width:90px;
+    /*width:90px;*/
     font-size:12px;
     font-weight:bold;
     color:#50504f;

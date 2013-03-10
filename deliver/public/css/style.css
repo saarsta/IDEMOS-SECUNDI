@@ -3905,9 +3905,13 @@ h2 small {
 }
 
 .more-deals {
+    clear: both;
     border-top: 6px solid #d6dbde;
     margin-bottom: -25px;
     display: none;
+    padding-bottom: 30px;
+    width: 980px;
+    margin: 0 auto;
 }
 
 .more-deals a {
