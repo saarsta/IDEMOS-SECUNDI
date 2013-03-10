@@ -76,19 +76,20 @@ var ten_seconds_cron = exports.ten_seconds_cron = {
 var once_an_hour_cron = exports.once_an_hour_cron = {
 
     scrapeFBPagesLikes: function (main_callback) {
+        console.log('---scrapeFBPagesLikes start')
         var fb_user ='uri@uru.org.il';
         var fb_pass = 'uruuruuru';
         var browser=null;
         if(GLOBAL.zombie) {
             browser = GLOBAL.zombie
-
         } else{
             browser = GLOBAL.zombie = new zombie()  ;
         }
-
+        console.log('---scrapeFBPagesLikes browser')
         models.Cycle.find({"fb_page.fb_id": {$exists: true} }).exec(function(err, cycles){
             var func_arr =null;
-
+            console.log(cycles.length)
+            console.log(cycles)
             func_arr =_.map(cycles,function(cycle){
                 return  function(callback) {
                     getUsersLoop(5,browser,cycle.fb_page.fb_id,function(err,users){
@@ -112,12 +113,12 @@ var once_an_hour_cron = exports.once_an_hour_cron = {
 
 
         function getUsersLoop(repeat,browser,page_id, callback){
-            console.log('getUsersLoop - '+repeat)
+            console.log('---getUsersLoop - '+repeat + ' - ' +page_id)
             if(repeat==0){
                 return;
             } else{
                 getUsers(browser,page_id,function(err,users){
-                    console.log('getUsers - '+err +' - '+ users)
+                    console.log('---getUsers - '+err +' - '+ users)
                     if(err=="no_login"){
                         doFBLogin(browser,function(err){
                             if(err){
