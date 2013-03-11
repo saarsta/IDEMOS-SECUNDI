@@ -777,9 +777,9 @@ var db_functions = {
         });
     },
 
-    getSortedPostByDiscussion:function (discussion_id, sort_by, offset, callback) {
+    getSortedPostByDiscussion:function (discussion_id, sort_by, offset, limit, callback) {
         db_functions.loggedInAjax({
-            url:'/api/posts?discussion_id=' + discussion_id + "&order_by=" + sort_by + '&offset=' + offset,
+            url:'/api/posts?discussion_id=' + discussion_id + "&order_by=" + sort_by + '&limit=' + limit + '&offset=' + offset,
             type:"GET",
             async:true,
             success:function (data) {
