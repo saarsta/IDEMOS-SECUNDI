@@ -21,7 +21,7 @@ var error_message = error_message || '';
         <% include partials/failures.ejs %>
         <% include partials/tag_search.ejs %>
     </div>
-    <div >
+
     <div id="content_wrapper">
         <div id="content_main_wrapper">
             <div id="content_main_holder">
@@ -35,7 +35,9 @@ var error_message = error_message || '';
                             <a class="share_icon" href=""><img src="/images/icon_gp.png"></a>
                             <a class="share_icon" href=""><img src="/images/icon_email.png"></a>
                         </div>
-                        <div class="author">הדיון נפתח ע"י: <a href="">אריק בנדו</a></div>
+                        <% if(discussion.creator_id){ %>
+                        <div class="author">הדיון נפתח ע"י: <a href="/myuru/<%=discussion.creator_id._id%>"> <%=discussion.creator_id.first_name+ " " +discussion.creator_id.last_name %> </a></div>
+                        <% } %>
                         <hr />
 
 
@@ -61,36 +63,52 @@ var error_message = error_message || '';
 
                         </div>
 
+                        <% if( discussion.sub_branding && discussion.sub_branding.length>0) { %>
 
+                            <hr />
+                            <div class="content_credits">
+                                <div id="sponsors_holder">
+                                    <h2>שותפי תוכן</h2>
+                                    <div id="sponsors_logos">
 
-                        <hr />
-                        <div class="content_credits">
-                            <div id="sponsors_holder">
-                                <h2>שותפי תוכן</h2>
-                                <div id="sponsors_logos">
-                                    <div class="sponsors_logo logo_1"></div>
-                                    <div class="sponsors_logo logo_2"></div>
-                                    <div class="sponsors_logo logo_3"></div>
-                                    <div class="sponsors_logo logo_4"></div>
-                                    <div class="sponsors_logo logo_5"></div>
+                                        <% for (var c = 0; c <discussion.sub_branding.length; c++) { %>
+                                         <a target="_blank" href="<%= discussion.sub_branding[c].link %>">
+                                             <div id="sub_branding_image" style="width: 100px;height: 70px; overflow:hidden;" class='auto-scale floatRight'>
+                                                 <img src="<%= discussion.sub_branding[c].image ? discussion.sub_branding[c].image.url ||'' : '' %>" title="<%= discussion.sub_branding[c].title %>"/>
+                                             </div>
+                                         </a>
+                                        <% }%>
+
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        <% } %>
                         <hr />
                         <div class="tags">
                             <span class="tags_title">תגיות:</span>
-                            <span class="tag"><a href="">הריכוזיות</a></span>
-                            <span class="tag"><a href="">עמלות הבנקים</a></span>
-                            <span class="tag"><a href="">יוקר המחיה</a></span>
+                            <% for (var c = 0; c <discussion. tags.length; c++) { %>
+                                <span class="tag"><a href="?tag_name=<%=discussion.tags[c]%>"><%=discussion. tags[c] %></a></span>
+
+                            <% }%>
+
+
                         </div>
                         <hr />
+
                         <div class="segment_bottom">
-                            <!-- <div class="slide-box">
-                                    <div class="summary">
-                                        <input type="text" id="amount" value="6.15">
-                                        <span> <div class="inlinediv" id="graders">90
-                                        </div> דירוגים</span>
-                                    </div>
+
+
+                            <div class="rating_box">
+                                <div class="rating_total">
+                                    <%= Math.round(discussion.grade*100)/100 %>
+                                </div>
+                                <div class="raters">
+                                    <%= Math.round(discussion.evaluate_counter) %>
+                                    דירוגים
+                                </div>
+                            </div>
+                            <div class="slide-box">
+
                                     <div class="slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
                                     <div class="ui-slider-range ui-widget-header ui-slider-range-min" style="width: 0%;"></div><a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 0%;"></a></div>
                                     <div class="slider-numbers">
@@ -105,50 +123,25 @@ var error_message = error_message || '';
                                         <span>9</span>
                                         <span>10</span>
                                     </div>
-                                </div> -->
-                            <div class="rating_box">
-                                <div class="rating_total">
-                                    <%= Math.round(discussion.grade*100)/100 %>
                                 </div>
-                                <div class="raters">
-                                    <%= Math.round(discussion.evaluate_counter) %>
-                                    דירוגים
-                                </div>
-                            </div>
-                            <div class="rating_holder">
-                                <div class="rating_bar_holder">
-                                    <div class="rating_bar" style="width:20%;"></div>
-                                    <div class="rating_bar_indicator"><img src="/images/indicator_2.png" /></div>
-                                    <div class="rating_marks">
-                                        <span style="left:100%;">10</span>
-                                        <span style="left:90%;">9</span>
-                                        <span style="left:80%;">8</span>
-                                        <span style="left:70%;">7</span>
-                                        <span style="left:60%;">6</span>
-                                        <span style="left:50%;">5</span>
-                                        <span style="left:40%;">4</span>
-                                        <span style="left:30%;">3</span>
-                                        <span style="left:20%;">2</span>
-                                        <span style="left:10%;">1</span>
-                                        <span style="left:0%;"></span>
-                                    </div>
-                                </div>
-                            </div>
+
                             <div class="button_add_comment">
                                 <input type="button" />
                             </div>
                             <div class="button_suggest_revisions">
                                 <input type="button" />
                             </div>
-                        </div>
 
+
+                        </div>
                     </div>
 
-                    <div class="segment">
+                    <div class="segment info">
                         <h2 class="title">סל מידע</h2>
-
-                        <div class="text">
-                            <img src="/images/placeholder_slider.png" />
+                        <div id="info_items" class="info_items">
+                            <!-- MovingBoxes Slider -->
+                            <ul id="slider">
+                            </ul><!-- end Slider #1 -->
                         </div>
                     </div>
 
@@ -185,21 +178,250 @@ var error_message = error_message || '';
 
     <div class="content_break">
         <div class="content_break_content">
-            <h2>            הצעות לשינוי<small id="suggestion_number"></small>
-            </h2>
+            <h2>הצעות לשינוי (4)</h2>
         </div>
     </div>
 
     <div id="content_wrapper_suggestions">
-        <div id="suggestions_wrapper">
+    <div id="suggestions_wrapper">
+    <div id="suggestion_wrapper">
+        <div class="suggestion_holder button">
+            <div class="suggestion_details">
+                <div class="photo">
+                    <img src="/images/icon_person.png" />
+                </div>
+                <div class="name">
 
+                    אסף גרינברג
+                </div>
+                <div class="date_time">
+                    <span class="time">14:46</span>
+                    <span class="date">27.07.2012</span>
+                </div>
+                <div class="ratings">
+                    <span class="friends">1458</span>
+                    <span class="awards">3769</span>
+                </div>
+            </div>
+            <div class="button_edit_comment">
+                <input type="button" />
+            </div>
+            <div class="suggestion_content">
+                <div class="text_orig">
+                    <h3 class="title">טקסט מקורי:</h3>
+                    המדינה מממנת ישירות לא מעט גופים שנותרים עצמאיים בכל זאת, כמו בתי המשפט, מבקר המדינה, הרשות לניירות ערך ואפילו גלי צה"ל. בכל מקרה, בבואנו לבטל את האגרה ולמצוא מקור תקציבי חליפי, כמו הרשות לניירות ערך ואפילו גלי צה"ל. בבואנו לבטל את האגרה ולמצוא מקור תקציבי חליפי, ניתן להבטיח את עצמאות הרשות באמצעים אחרים. נגד האגרה: גביית האגרה גורמת לעגמת נפש רבה בקרב הציבור.
+                </div>
+                <div class="text">
+                    <h3 class="title">הצעה לשינוי:</h3>
+                    פשרה: בשלב ראשוני המטרה צריכה להיות להפחית בכמחצית את עלות זו - כנגד סובסידה של חציו השני של התשלום. מצב ביניים יהיה ריאלי יותר מול הכנסת הנוכחית מאשר ביטול הסכום כולו, וכמו כן ייתחם בזמן. בנוסף ייבחנו השפעות שונות על "מודל ההפחתה החלקי.
+                    <h3 class="title">נימוק:</h3>
+                    גישור הפער בין רצוי למצוי בדר"כ מביא לעמק ה*שווה* וכשלב ראשוני לחתירה לביטול אגרה זו צריך להסכים על פתרון ביניים.
+                </div>
+            </div>
+            <div class="suggestion_bottom">
+                <div class="suggestion_bottom_segment one">
+                    <div class="button button_pro">
+                        <input type="button" />
+                    </div>
+                    <div class="button button_against">
+                        <input type="button" />
+                    </div>
+                    <div class="button fb_like">
+                        <img src="/images/placeholder_fb.png" />
+                    </div>
+                </div>
+                <div class="suggestion_bottom_segment two">
+                    <div class="supporters_wanted">
+                        מספר תומכים דרוש <span>10</span>
+                    </div>
+                    <div class="supporters_current">
+                        מספר תומכים נוכחי <span>9</span>
+                    </div>
+                </div>
+                <div class="suggestion_bottom_segment three">
+                    <div class="comments_counter">
+                        <span>17</span> תגובות להצעה
+                        <div class="close">סגור</div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="more-deals" data-executing="false">
-            <a href="">עוד הצעות</a>
+        <div class="suggestion_comments_holder">
+            <div class="comment odd">
+                <div class="author">
+                    <img src="/images/icon_person.png" />
+                    <span>אסף גרינברג</span>
+                </div>
+                <div class="date_time">
+                    14:46 27.07.2012
+                </div>
+                <div class="content">
+                    הגיעה העת לבטל את אגרת הטלוויזיה. במקום לדחוף הצעות שאין להן סיכוי, מוצע כאן לבטל את גביית האגרה, להעביר חלק מן הנטל לתשלום שאנחנו משלמים ממילא בזמן חידוש רשיון הרכב, וכך לחסוך מיליונים רבים.
+                </div>
+            </div>
+            <div class="comment even">
+                <div class="author">
+                    <img src="/images/icon_person.png" />
+                    <span>אסף גרינברג</span>
+                </div>
+                <div class="date_time">
+                    14:46 27.07.2012
+                </div>
+                <div class="content">
+                    הגיעה העת לבטל את אגרת הטלוויזיה. במקום לדחוף הצעות שאין להן סיכוי, מוצע כאן לבטל את גביית האגרה, להעביר חלק מן הנטל לתשלום שאנחנו משלמים ממילא בזמן חידוש רשיון הרכב, וכך לחסוך מיליונים רבים.
+                </div>
+            </div>
+            <div class="add_comment">
+                <input type="text" value="כתוב תגובה..." />
+            </div>
         </div>
     </div>
 
+    <div id="suggestion_wrapper">
+        <div class="suggestion_holder button">
+            <div class="suggestion_details">
+                <div class="photo">
+                    <img src="/images/icon_person.png" />
+                </div>
+                <div class="name">
+                    אסף גרינברג
+                </div>
+                <div class="date_time">
+                    <span class="time">14:46</span>
+                    <span class="date">27.07.2012</span>
+                </div>
+                <div class="ratings">
+                    <span class="friends">1458</span>
+                    <span class="awards">3769</span>
+                </div>
+            </div>
+            <div class="button_edit_comment">
+                <input type="button" />
+            </div>
+            <div class="suggestion_content">
+                <div class="text_orig">
+                    <h3 class="title">טקסט מקורי:</h3>
+                    המדינה מממנת ישירות לא מעט גופים שנותרים עצמאיים בכל זאת, כמו בתי המשפט, מבקר המדינה, הרשות לניירות ערך ואפילו גלי צה"ל. בכל מקרה, בבואנו לבטל את האגרה ולמצוא מקור תקציבי חליפי, כמו הרשות לניירות ערך ואפילו גלי צה"ל. בבואנו לבטל את האגרה ולמצוא מקור תקציבי חליפי, ניתן להבטיח את עצמאות הרשות באמצעים אחרים. נגד האגרה: גביית האגרה גורמת לעגמת נפש רבה בקרב הציבור.
+                </div>
+                <div class="text">
+                    <h3 class="title">הצעה לשינוי:</h3>
+                    פשרה: בשלב ראשוני המטרה צריכה להיות להפחית בכמחצית את עלות זו - כנגד סובסידה של חציו השני של התשלום. מצב ביניים יהיה ריאלי יותר מול הכנסת הנוכחית מאשר ביטול הסכום כולו, וכמו כן ייתחם בזמן. בנוסף ייבחנו השפעות שונות על "מודל ההפחתה החלקי.
+                    <h3 class="title">נימוק:</h3>
+                    גישור הפער בין רצוי למצוי בדר"כ מביא לעמק ה*שווה* וכשלב ראשוני לחתירה לביטול אגרה זו צריך להסכים על פתרון ביניים.
+                </div>
+            </div>
+            <div class="suggestion_bottom">
+                <div class="suggestion_bottom_segment one">
+                    <div class="button button_pro">
+                        <input type="button" />
+                    </div>
+                    <div class="button button_against">
+                        <input type="button" />
+                    </div>
+                    <div class="button fb_like">
+                        <img src="/images/placeholder_fb.png" />
+                    </div>
+                </div>
+                <div class="suggestion_bottom_segment two">
+                    <div class="supporters_wanted">
+                        מספר תומכים דרוש <span>10</span>
+                    </div>
+                    <div class="supporters_current">
+                        מספר תומכים נוכחי <span>9</span>
+                    </div>
+                </div>
+                <div class="suggestion_bottom_segment three">
+                    <div class="comments_counter">
+                        <span>17</span> תגובות להצעה
+                        <div class="close">סגור</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="suggestion_comments_holder">
+            <div class="add_comment">
+                <input type="text" value="כתוב תגובה..." />
+            </div>
+        </div>
+    </div>
 
+    <div id="suggestion_wrapper">
+        <div class="suggestion_holder window">
+            <div class="suggestion_details">
+                <div class="photo">
+                    <img src="/images/icon_person.png" />
+                </div>
+                <div class="name">
+                    אסף גרינברג
+                </div>
+                <div class="date_time">
+                    <span class="time">14:46</span>
+                    <span class="date">27.07.2012</span>
+                </div>
+                <div class="ratings">
+                    <span class="friends">1458</span>
+                    <span class="awards">3769</span>
+                </div>
+            </div>
+            <div class="button_edit_comment">
+                <input type="button" />
+            </div>
+            <div class="edit_window">
+                <div class="text_top"></div>
+                <p>בשלב ראשוני המטרה צריכה להיות להפחית בכמחצית את עלות זו - כנגד סובסידה של חציtו השני של התשלום. מצב ביניים יהיה ריאלי יותר מול הכנסת הנוכחית מאשר ביטול הסכום כולו, וכמו כן ייתחם בזמן. בנוסף ייבחנו השפעות שונות על "מודל ההפחתה החלקי. כנגד סובסידה של חציtו השני של התשלום. מצב ביניים יהיה ריאלי יותר מול הכנסת הנוכחית מאשר ביטול הסכום כולו, וכמו כן ייתחם בזמן.</p>
+                <p class="focus">בשלב ראשוני המטרה צריכה להיות להפחית בכמחצית את עלות זו - כנגד סובסידה של חציtו השני של התשלום. מצב ביניים יהיה ריאלי יותר מול הכנסת הנוכחית מאשר ביטול הסכום כולו, וכמו כן ייתחם בזמן. בנוסף ייבחנו השפעות שונות על "מודל ההפחתה החלקי. כנגד סובסידה של חציtו השני של התשלום. מצב ביניים יהיה ריאלי יותר מול הכנסת הנוכחית מאשר ביטול הסכום כולו, וכמו כן ייתחם בזמן.</p>
+                <p>בשלב ראשוני המטרה צריכה להיות להפחית בכמחצית את עלות זו - כנגד סובסידה של חציtו השני של התשלום. מצב ביניים יהיה ריאלי יותר מול הכנסת הנוכחית מאשר ביטול הסכום כולו, וכמו כן ייתחם בזמן. בנוסף ייבחנו השפעות שונות על "מודל ההפחתה החלקי. כנגד סובסידה של חציtו השני של התשלום. מצב ביניים יהיה ריאלי יותר מול הכנסת הנוכחית מאשר ביטול הסכום כולו, וכמו כן ייתחם בזמן.</p>
+                <div class="text_bottom"></div>
+            </div>
+            <div class="suggestion_content">
+                <div class="text_orig">
+                    <h3 class="title">טקסט מקורי:</h3>
+                    המדינה מממנת ישירות לא מעט גופים שנותרים עצמאיים בכל זאת, כמו בתי המשפט, מבקר המדינה, הרשות לניירות ערך ואפילו גלי צה"ל. בכל מקרה, בבואנו לבטל את האגרה ולמצוא מקור תקציבי חליפי, כמו הרשות לניירות ערך ואפילו גלי צה"ל. בבואנו לבטל את האגרה ולמצוא מקור תקציבי חליפי, ניתן להבטיח את עצמאות הרשות באמצעים אחרים. נגד האגרה: גביית האגרה גורמת לעגמת נפש רבה בקרב הציבור.
+                </div>
+                <div class="text change_proposal">
+                    <h3 class="title">הצעה לשינוי:</h3>
+                    פשרה: בשלב ראשוני המטרה צריכה להיות להפחית בכמחצית את עלות זו - כנגד סובסידה של חציו השני של התשלום. מצב ביניים יהיה ריאלי יותר מול הכנסת הנוכחית מאשר ביטול הסכום כולו, וכמו כן ייתחם בזמן. בנוסף ייבחנו השפעות שונות על "מודל ההפחתה החלקי.
+                    <h3 class="title">נימוק:</h3>
+                    גישור הפער בין רצוי למצוי בדר"כ מביא לעמק ה*שווה* וכשלב ראשוני לחתירה לביטול אגרה זו צריך להסכים על פתרון ביניים.
+                </div>
+            </div>
+            <div class="suggestion_bottom">
+                <div class="suggestion_bottom_segment one">
+                    <div class="button button_pro">
+                        <input type="button" />
+                    </div>
+                    <div class="button button_against">
+                        <input type="button" />
+                    </div>
+                    <div class="button fb_like">
+                        <img src="/images/placeholder_fb.png" />
+                    </div>
+                </div>
+                <div class="suggestion_bottom_segment two">
+                    <div class="supporters_wanted">
+                        מספר תומכים דרוש <span>10</span>
+                    </div>
+                    <div class="supporters_current">
+                        מספר תומכים נוכחי <span>9</span>
+                    </div>
+                </div>
+                <div class="suggestion_bottom_segment three">
+                    <div class="comments_counter">
+                        <span>17</span> תגובות להצעה
+                        <div class="close">סגור</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="suggestion_comments_holder">
+            <div class="add_comment">
+                <input type="text" value="כתוב תגובה..." />
+            </div>
+        </div>
+    </div>
+    <input type="button" class="button_more_results" />
+    </div>
+    </div>
 
     <div class="content_break comments">
         <div class="content_break_content comments">
@@ -457,7 +679,7 @@ var error_message = error_message || '';
     </div>
 
 
-    </div>
+
 <% include partials/footer.ejs %>
 
 
@@ -472,7 +694,13 @@ var error_message = error_message || '';
 var current_section = 1;
 
 $(document).ready(function () {
-
+    var my_id = "<%=user_logged ? user._id : ''%>";
+    var discussion_id = "<%=discussion_id%>";
+    var creator_id = "<%=discussion.creator_id%>";
+    var is_creator = (my_id == creator_id);
+    var my_discussion_grade = Number("<%= discussion.grade_obj ? discussion.grade_obj.value || 0 : 0 %>");
+    var discussion_grade = Number("<%= discussion.grade%>");
+    var grade_id = "<%= discussion.grade_obj ? discussion.grade_obj.grade_id : 0 %>";
     $('.button_edit_comment').hover(function(){
         $(this).parent().toggleClass('edit');
     });
@@ -487,6 +715,38 @@ $(document).ready(function () {
 
     $('.suggestion_holder.window .text.change_proposal').hover(function(){
         $('.edit_window').parent().toggleClass('edit');
+    });
+
+
+    $(".main_text").dotdotdot({
+        //	configuration goes here
+    });
+
+
+
+    db_functions.getDiscussionShoppingCart(discussion_id, function (err, data) {
+
+        $.each(data.objects, function (index, item) {
+            dust.render('cycle_information_item', item, function (err, out) {
+                $('#slider').append(out);
+            });
+        });
+
+        $('#info_items #slider').movingBoxes({
+            /* width and panelWidth options deprecated, but still work to keep the plugin backwards compatible
+             width: 500,
+             panelWidth: 0.5,
+             */
+            initAnimation :false,
+            fixedHeight :true,
+            reducedSize :1,
+            startPanel   : 1,      // start with this panel
+            wrap         : true,   // if true, the panel will "wrap" (it really rewinds/fast forwards) at the ends
+            buildNav     : true,   // if true, navigation links will be added
+            navFormatter : function(){ return "&#9679;"; } // function which returns the navigation text for each panel
+        });
+
+
     });
 
 
@@ -558,48 +818,48 @@ $(document).ready(function () {
 
 
     $(".slider").slider({
-//        disabled:is_creator,
-//        value:my_discussion_grade,
-//        range:"min",
-//        min:0,
-//        max:10,
-//        step:0.10,
-//        change:function (event, ui) {
-//
-//            if (event.originalEvent) {      //ugly hack because of slider api bug
-//                var my_prev_grade = my_discussion_grade;
-//                my_discussion_grade = ui.value;
-//
-//                var user_info = {
-//                    user_logged_in : user.first_name ? true : false,
-//                    action_done : (user.actions_done_by_user && user.actions_done_by_user.grade_object) ? true : false,
-//                    action_name : "grade_object",
-//                    tokens_owned : user.tokens ? user.tokens : 0,
-//                    price: gamification_price['grade_discussion']
-//                }
-//
-//                db_functions.addDiscussionGrade(discussion_id, my_discussion_grade, grade_id, user_info, function (err, data) {
-//
-//                    if (!err) {
-//                        if(data == 'canceled'){
-//                            $(".slider").slider('value',my_prev_grade);
-//                        } else {
-//    //                    if(!(user.actions_done_by_user && user.actions_done_by_user.grade_object))
-//    //                    {
-//    //                        user.actions_done_by_user.grade_object = true;
-//    //                    }
-//                            $("#amount").val(Math.round(data.new_grade * 100) / 100);
-//                            $("#graders").text(Math.round(data.evaluate_counter));
-//                            $(".dark_bar").css('width', (my_discussion_grade * 10) + '%');
-//                            grade_id = data.grade_id;
-//                        }
-//                    }
-//                    else
-//                        console.log(err);
-//                });
-//            }
-//        }
-//    });
+        disabled:is_creator,
+        value:my_discussion_grade,
+        range:"min",
+        min:0,
+        max:10,
+        step:0.10 ,
+        change:function (event, ui) {
+
+            if (event.originalEvent) {      //ugly hack because of slider api bug
+                var my_prev_grade = my_discussion_grade;
+                my_discussion_grade = ui.value;
+
+                var user_info = {
+                    user_logged_in : user.first_name ? true : false,
+                    action_done : (user.actions_done_by_user && user.actions_done_by_user.grade_object) ? true : false,
+                    action_name : "grade_object",
+                    tokens_owned : user.tokens ? user.tokens : 0,
+                    price: gamification_price['grade_discussion']
+                }
+
+                db_functions.addDiscussionGrade(discussion_id, my_discussion_grade, grade_id, user_info, function (err, data) {
+
+                    if (!err) {
+                        if(data == 'canceled'){
+                            $(".slider").slider('value',my_prev_grade);
+                        } else {
+    //                    if(!(user.actions_done_by_user && user.actions_done_by_user.grade_object))
+    //                    {
+    //                        user.actions_done_by_user.grade_object = true;
+    //                    }
+                            $(".rating_total").text(Math.round(data.new_grade * 100) / 100);
+                            $(".raters").text(Math.round(data.evaluate_counter) + " דירוגים   ");
+                           // $(".dark_bar").css('width', (my_discussion_grade * 10) + '%');
+                            grade_id = data.grade_id;
+                        }
+                    }
+                    else
+                        console.log(err);
+                });
+            }
+       }
+   });
 
 
     $( '#discussion_comment' ).ckeditor(            {
@@ -675,8 +935,7 @@ $(document).ready(function () {
 
 
     /***************************************************/
-//    var my_id = "<%=user_logged ? user._id : ''%>";
-    var discussion_id = "<%=discussion_id%>";
+
 //    <%
 //    if (user_logged) { %>
 //        var proxy = JSON.parse('<%-proxy%>');
@@ -687,18 +946,16 @@ $(document).ready(function () {
 //    }
 //    %>
 //
-//    var creator_id = "<%=discussion.creator_id%>";
-//
-//    var grade_id = "<%= discussion.grade_obj ? discussion.grade_obj.grade_id : 0 %>";
+
+
 //    var sugg_grade_id;
 //    var new_post_ref_id = null;  //if not null =>the create new post is connected to anther post
-//    var my_discussion_grade = Number("<%= discussion.grade_obj ? discussion.grade_obj.value || 0 : 0 %>");
-//    var discussion_grade = Number("<%= discussion.grade%>");
+
 //    var discussion_title = "<%= discussion.title%>"
 //    var discussion_img_field_preview = "<%= discussion.image_field ? discussion.image_field.url ||'' : '' %>";
 //
 //    var postsNumber = 0;
-//    var is_creator = (my_id == creator_id);
+
 //
 //    var vision = $('#discussion_content').text();
 //
@@ -767,41 +1024,7 @@ $(document).ready(function () {
 //        $('#comments_number')[0].innerHTML = '(' + number + ')';
 //    }
 //
-//    db_functions.getDiscussionShoppingCart(discussion_id, function (err, data) {
 //
-//        $.each(data.objects, function (index, item) {
-//            dust.render('discussion_information_item', item, function (err, out) {
-//                $('.slide-c').append(out);
-//            });
-//        });
-//
-//        $('.slide-c')
-//                .after('<div id="nav2">')
-//                .cycle({
-//                    fx:'scrollHorz',
-//                    speed:'fast',
-//                    timeout:0,
-//                    pager:'#nav2',
-//                    next:'#prev',
-//                    prev:'#next'
-//                });
-//
-//        if (data.objects.length < 2) {
-//            $("#prev").hide();
-//            $("#next").hide();
-//        }
-//
-//    });
-//
-//    $('.discussion_content').on('mousedown', function (e) {
-//        mouseDown = e;
-//        console.log(e);
-//    })
-//            .on('mouseup',
-//            function (e) {
-//                mouseUp = e;
-//                var err = false;
-//                var range = $(this).find('textarea').getSelection();
 //
 //
 //    $('#pop_suggest_bt').on("click", function (e) {
@@ -1036,89 +1259,141 @@ $(document).ready(function () {
 //        focusOnCommentBox();
 //    });
 //
-    var suggest_grade_id = new Object();
-    var original = "<%=discussion.text_field%>";
-
-    //render change suggestion
-    function render_suggestion(suggestion) {
-        // get original text and alternative text
-        if (suggestion.parts && suggestion.parts.length) {
-            suggestion.original_part = function () {
-                var from = suggestion.parts[0].start;
-                var end = suggestion.parts[0].end;
-                return original.substr(from, end - from);
-            };
-            suggestion.alternative_part = function () {
-                return suggestion.parts[0].text;
-            };
-
-            dust.render('discussion_suggestion', suggestion, function (err, out) {
-                $('#suggestions_wrapper').prepend(out);
-                image_autoscale($('#suggestions_wrapper .auto-scale img'));
-            });
-        }
-        return null;
-    };
-
-
-    var first_suggestion;
-
-    // get change suggestions and render
-    db_functions.getSuggestionByDiscussion(discussion_id, 1, 0, function (err, data) {
-        $.each(data.objects, function (index, suggestion) {
-            render_suggestion(suggestion);
-
-            var curr_suggestion = $('#suggestions_wrapper').find('[data-id=' + suggestion.id + ']') ;
-
-            db_functions.getCommentsBySuggestion(suggestion.id, function(err, data){
-                $.each(data.objects, function (index, comment) {
-
-                    comment.is_even = (index % 2) == 0;
-                    dust.render('comment_on_suggestion', comment, function (err, out) {
-                        // append before "add_comment"
-                        curr_suggestion.find('.add_comment').before(out);
-                        image_autoscale(curr_suggestion.find('.auto-scale img'));
-                    });
-                });
-            })
-        });
-
-        $('#suggestion_number').text(' (' + data.meta.total_count + ')');
-        if (data.objects.length > 0) {
-            first_suggestion = data.objects[0];
-            $(".content_break_content").show();
-            if (data.meta.total_count >= 2) {
-                $(".more-deals").show();
-
-                $(".more-deals a").on('click', function (e) {
-                    var self = $(this);
-                    if($(this).data('executing')){
-                        $('#suggestions_wrapper').empty();
-                        render_suggestion(first_suggestion);
-                        self.text('עוד הצעות');
-                        $(this).removeClass('flip');
-
-                        $(this).data('executing', false);
-                        return false;
-                    }else{
-                        db_functions.getSuggestionByDiscussion(discussion_id, null, 1, function (err, data) {
-                            $.each(data.objects, function (index, suggestion) {
-                                render_suggestion(suggestion);
-                            });
-                        });
-
-                        self.text('סגור הצעות ');
-                        $(this).addClass('flip');
-                        $(this).data('executing', true);
-                        return false;
-                    }
-                });
-            }
-        }
-        else {
-            $(".content_break_content").hide();
-        }
-    });
+//    var suggest_grade_id = new Object();
+//
+//    function render_suggestion(suggestion) {
+//        if (suggestion.parts && suggestion.parts.length) {
+//            var original = $('#discussion_content').val();
+//            suggestion.original_part = function () {
+//                var from = suggestion.parts[0].start;
+//                var end = suggestion.parts[0].end;
+//                return original.substr(from, end - from);
+//            };
+//            suggestion.alternative_part = function () {
+//                return suggestion.parts[0].text;
+//            };
+//
+//            var depress_event = false;
+//
+//            dust.render('discussion_suggestion', suggestion, function (err, out) {
+//                $('#suggestion_list').prepend(out);
+//                image_autoscale($('#suggestion_list .auto-scale img'));
+//                var suggestion_grade_val = suggestion.grade_obj ? suggestion.grade_obj.evalueation_grade : my_discussion_grade;
+//                suggest_grade_id[suggestion.id] = suggestion.grade_obj ? suggestion.grade_obj._id : null;
+//                $(".suggest_slider_" + suggestion.id).slider({
+//                    value:suggestion_grade_val,
+//                    range:"min",
+//                    min:0,
+//                    max:10,
+//                    step:0.10,
+//                    slide:function (event, ui) {
+//                        var rating = ui.value;
+//                        var grade = is_creator ? discussion_grade : my_discussion_grade;
+//                        if (rating >= grade) {
+//                            $(this).parents(".bottom-box").find(".agree_disagree").removeClass("disagree").addClass("agree")
+//                        } else {
+//                            $(this).parents(".bottom-box").find(".agree_disagree").removeClass("agree").addClass("disagree");
+//
+//                        }
+//                    },
+//                    change:function (event, ui) {
+//                        if (event.originalEvent) {
+//                            var my_prev_grade = suggestion_grade_val;
+//                            if(depress_event)
+//                                return;
+//                            var rating = ui.value;
+//                            var user_info = {
+//                                user_logged_in : user.first_name ? true : false,
+//                                action_done : (user.actions_done_by_user && user.actions_done_by_user.grade_object) ? true : false,
+//                                action_name : "grade_object",
+//                                tokens_owned : user.tokens ? user.tokens : 0,
+//                                price: gamification_price['grade_suggestion']
+//                            }
+//                            db_functions.addSuggestionGrade(suggestion.id, discussion_id, rating, suggest_grade_id[suggestion.id], user_info, function (err, data) {
+//                                if (!err) {
+//                                    if(data == 'canceled'){
+//                                        $(".suggest_slider_" + suggestion.id).slider('value',my_prev_grade);
+//                                    } else {
+//                                        //                                if(!(user.actions_done_by_user && user.actions_done_by_user.grade_object))
+//    //                                {
+//    //                                    user.actions_done_by_user.grade_object = true;
+//    //                                }
+//                                        $("#suggest_grade_" + suggestion.id).val(Math.round(data.new_grade * 100) / 100);
+//                                        $("#suggest_graders_" + suggestion.id).text(Math.round(data.agrees) + Math.round(data.not_agrees));
+//                                        $("#agrees_" + suggestion.id).text(Math.round(data.agrees));
+//                                        $("#not_agrees_" + suggestion.id).text(Math.round(data.not_agrees));
+//                                        $("#wanted_amount_of_tokens_" + suggestion.id).text(data.wanted_amount_of_tokens);
+//                                        $("#curr_amount_of_tokens_" + suggestion.id).text(Math.round(data.curr_amount_of_tokens));
+//                                        suggest_grade_id[suggestion.id] = data.grade_id;
+//
+//                                        //already_graded
+//                                    }
+//                                }
+//                                else
+//                                {
+//                                    depress_event = true;
+//                                    $(".suggest_slider_" + suggestion.id).slider("value", suggestion_grade_val || 0);
+//                                    depress_event = false;
+//                                    console.log(err);
+//                                }
+//                            });
+//                        }
+//                    }
+//                });
+//
+//                initTooltipWithMessage($('#suggestion_list .right .respect'), 'מוניטין');
+//                $(".suggest_slider_" + suggestion.id).prepend($("<div>").addClass("dark_bar").css('width', (my_discussion_grade * 10) + '%'));
+//            });
+//        }
+//        return null;
+//
+//    }
+//
+//    var first_suggestion;
+//    db_functions.getSuggestionByDiscussion(discussion_id, 1, 0, function (err, data) {
+//        $.each(data.objects, function (index, suggestion) {
+//            render_suggestion(suggestion);
+//        });
+//
+//        $('#suggestion_number').text('(' + data.meta.total_count + ')');
+//        if (data.objects.length > 0) {
+//            first_suggestion = data.objects[0];
+//            $(".deals-box").show();
+//            if (data.meta.total_count >= 2) {
+//                $(".more-deals").show();
+//
+//                $(".more-deals a").on('click', function (e) {
+//                    var self = $(this);
+//                    if($(this).data('executing')){
+//                        $('#suggestion_list').empty();
+//                        render_suggestion(first_suggestion);
+//                        self.text('עוד הצעות');
+//                        $(this).removeClass('flip');
+//
+//                        $(this).data('executing', false);
+//                        return false;
+//                    }else{
+//                        db_functions.getSuggestionByDiscussion(discussion_id, null, 1, function (err, data) {
+//                            $.each(data.objects, function (index, suggestion) {
+//                                render_suggestion(suggestion);
+//                            });
+//                        });
+//
+//                        self.text('סגור הצעות ');
+//                        $(this).addClass('flip');
+//                        $(this).data('executing', true);
+//
+////                    $(".more-deals").hide();
+//
+//                        return false;
+//                    }
+//                });
+//            }
+//        }
+//        else {
+//            $(".deals-box").hide();
+//        }
+//    });
 //
 //
 //    function renderComments(comments) {
