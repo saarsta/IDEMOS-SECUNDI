@@ -2227,17 +2227,17 @@ span.remark{
     padding-right:26px;
 }
 
-#pagination_wrapper{
+.pagination_wrapper{
     float:right;
     width:100%;
 }
 
-#pagination{
+.pagination{
     float:right;
     margin:15px 0;
 }
 
-#pagination span{
+.pagination span{
     width:28px;
     height:28px;
     display:block;
@@ -2248,40 +2248,40 @@ span.remark{
     line-height:28px;
 }
 
-#pagination span a{
+.pagination span a{
     text-decoration:none;
     color:#60605f;
 }
 
-#pagination span.page{
+.pagination span.page{
     text-align:center;
     font-size:13px;
 }
 
-#pagination span.page.current{
+.pagination span.page.current{
     background:#fff;
     font-size:18px;
     color:#3b63ef;
 }
 
-#pagination span.title{
+.pagination span.title{
     width:100px;
 }
 
-#pagination span.last{
-    background:url(/images/button_pagination_last.png) no-repeat 0 0;
+.pagination span.last{
+    background:url(/images/button_pagination_first.png) no-repeat 0 0;
 }
 
-#pagination span.next{
-    background:url(/images/button_pagination_next.png) no-repeat 0 0;
-}
-
-#pagination span.prev{
+.pagination span.next{
     background:url(/images/button_pagination_prev.png) no-repeat 0 0;
 }
 
-#pagination span.first{
-    background:url(/images/button_pagination_first.png) no-repeat 0 0;
+.pagination span.prev{
+    background:url(/images/button_pagination_next.png) no-repeat 0 0;
+}
+
+.pagination span.first{
+    background:url(/images/button_pagination_last.png) no-repeat 0 0;
 }
 
 #comments_wrapper .comment_wrapper.odd{
