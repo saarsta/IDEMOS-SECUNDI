@@ -87,12 +87,12 @@ var once_an_hour_cron = exports.once_an_hour_cron = {
         }
         console.log('---scrapeFBPagesLikes browser')
         models.Cycle.find({"fb_page.fb_id": {$exists: true} }).exec(function(err, cycles){
-            if(!err){
-                console.log('---find error' +err )
-
+            if(err){
+                console.log('---find error ' +err ) ;
+                callback(err);
             }else{
+                console.log('---find cycles ' +cycles.length )
                 var func_arr =null;
-                console.log('---find success' +err )
                 console.log(cycles.length)
                 console.log(cycles)
                 func_arr =_.map(cycles,function(cycle){
