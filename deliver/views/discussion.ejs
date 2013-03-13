@@ -14,14 +14,13 @@ var error_message = error_message || '';
 <body>
 <% include partials/body_top.ejs %>
 <div id="wrap" class="discussions_page">
-
     <div id="header">
         <% include partials/menu.ejs %>
         <% include partials/user_box.ejs %>
         <% include partials/failures.ejs %>
         <% include partials/tag_search.ejs %>
     </div>
-    <div >
+    <!--<div >-->
     <div id="content_wrapper">
         <div id="content_main_wrapper">
             <div id="content_main_holder">
@@ -151,14 +150,12 @@ var error_message = error_message || '';
 
         </div>
     </div>
-
     <div class="content_break">
         <div class="content_break_content">
             <h2>            הצעות לשינוי<small id="suggestion_number"></small>
             </h2>
         </div>
     </div>
-
     <div id="content_wrapper_suggestions">
         <div id="suggestions_wrapper">
 
@@ -167,9 +164,6 @@ var error_message = error_message || '';
             <a href="">עוד הצעות</a>
         </div>
     </div>
-
-
-
     <div class="content_break comments">
         <div class="content_break_content comments">
             <h2>תגובות (32)</h2>
@@ -180,9 +174,8 @@ var error_message = error_message || '';
             </div>
         </div>
     </div>
-
     <div id="content_wrapper_comments">
-    <div id="comments_wrapper">
+        <div id="comments_wrapper">
     <!--<div class="most_pop">
         <h2 class="title">התגובה הפופולרית ביותר</h2>
         <div class="comment_wrapper">
@@ -208,75 +201,69 @@ var error_message = error_message || '';
             </div>
         </div>
     </div>-->
-    <div class="most_contr">
-        <h2 class="title">התגובה השנויה במחלוקת</h2>
-        <div class="comment_wrapper">
-            <div class="comment_details">
-                <div class="photo">
-                    <img src="/images/icon_person.png" />
+        <div class="most_contr">
+            <h2 class="title">התגובה השנויה במחלוקת</h2>
+            <div class="comment_wrapper">
+                <div class="comment_details">
+                    <div class="photo">
+                        <img src="/images/icon_person.png" />
+                    </div>
+                    <div class="name">
+                        אסף גרינברג
+                    </div>
+                    <div class="date_time">
+                        <span class="time">14:46</span>
+                        <span class="date">27.07.2012</span>
+                    </div>
+                    <div class="ratings">
+                        <span class="friends">1458</span>
+                        <span class="awards">3769</span>
+                    </div>
                 </div>
-                <div class="name">
-                    אסף גרינברג
-                </div>
-                <div class="date_time">
-                    <span class="time">14:46</span>
-                    <span class="date">27.07.2012</span>
-                </div>
-                <div class="ratings">
-                    <span class="friends">1458</span>
-                    <span class="awards">3769</span>
-                </div>
-            </div>
-            <div class="content">
-                <div class="rating"><span>דירוג:</span><span class="good">458</span><span class="bad">2</span></div>
-                הגיעה העת לבטל את אגרת הטלוויזיה. במקום לדחוף הצעות שאין להן סיכוי, מוצע כאן לבטל את גביית האגרה, להעביר חלק מן הנטל לתשלום שאנחנו משלמים ממילא בזמן חידוש רשיון הרכב, וכך לחסוך מיליונים רבים.
-            </div>
-        </div>
-    </div>
-
-    <div class="pagination_wrapper">
-        <div class="pagination">
-        </div>
-    </div>
-
-    <div class="pagination_wrapper second_pagination">
-        <div class="pagination">
-        </div>
-    </div>
-
-    <div id="add_comment_wrapper">
-        <h2 class="title">כתיבת תגובה</h2>
-        <div class="comment_wrapper">
-            <div class="comment_details">
-                <div class="photo">
-                    <img src="images/icon_person.png">
-                </div>
-                <div class="name">
-                    אסף גרינברג
-                </div>
-                <div class="date_time">
-                    <span class="time">14:46</span>
-                    <span class="date">27.07.2012</span>
-                </div>
-                <div class="ratings">
-                    <span class="friends">1458</span>
-                    <span class="awards">3769</span>
+                <div class="content">
+                    <div class="rating"><span>דירוג:</span><span class="good">458</span><span class="bad">2</span></div>
+                    הגיעה העת לבטל את אגרת הטלוויזיה. במקום לדחוף הצעות שאין להן סיכוי, מוצע כאן לבטל את גביית האגרה, להעביר חלק מן הנטל לתשלום שאנחנו משלמים ממילא בזמן חידוש רשיון הרכב, וכך לחסוך מיליונים רבים.
                 </div>
             </div>
-            <div class="content">
-                <img src="images/placeholder_txt_editor.png">
+        </div>
+        <div class="pagination_wrapper first_pagination">
+            <div class="pagination">
             </div>
         </div>
-        <input type="button" class="button_submit_comment">
-    </div>
+        <div class="pagination_wrapper second_pagination">
+            <div class="pagination">
+            </div>
+        </div>
+
+        <div id="add_comment_wrapper">
+            <h2 class="title">כתיבת תגובה</h2>
+            <div class="comment_wrapper">
+                <div class="comment_details">
+                    <div class="photo">
+                        <img src="images/icon_person.png">
+                    </div>
+                    <div class="name">
+                        אסף גרינברג
+                    </div>
+                    <div class="date_time">
+                        <span class="time">14:46</span>
+                        <span class="date">27.07.2012</span>
+                    </div>
+                    <div class="ratings">
+                        <span class="friends">1458</span>
+                        <span class="awards">3769</span>
+                    </div>
+                </div>
+                <div class="content">
+                    <img src="images/placeholder_txt_editor.png">
+                </div>
+            </div>
+            <input type="button" class="button_submit_comment">
+        </div>
 
     </div>
-
-
     </div>
-
-
-    </div>
+</div>
 <% include partials/footer.ejs %>
 
 
@@ -881,8 +868,7 @@ $(document).ready(function () {
     function renderComments(comments) {
 
         //first clear existing comments
-        $('.comment_wrapper').remove();
-
+        $('.comment_wrapper.even, .comment_wrapper.odd').remove();
 
         var i;
         for (i = 0; i < comments.length; i++) {
@@ -966,8 +952,8 @@ $(document).ready(function () {
                     if (pagination_action === 'move_up'){
                         var paging_up = Math.min(Math.floor(num_of_pages_in_section / 2), num_of_pages - page_number);
 
-                        $.each($('.pagination .page'), function(index, page){
-                            var a = $(page).find('a');
+                        $.each($('.pagination .page a'), function(index, page){
+                            var a = $(this);
                             a.text(parseInt(a.text()) + paging_up);
                         });
 
@@ -979,9 +965,42 @@ $(document).ready(function () {
                     if (pagination_action === 'move_down'){
                         var paging_down = Math.min(Math.floor(num_of_pages_in_section / 2), page_number - 1);
 
-                        $.each($('.pagination .page'), function(index, page){
-                            var a = $(page).find('a');
+                        $.each($('.pagination .page a'), function(index, page){
+                            var a = $(this);
                             a.text(parseInt(a.text()) - paging_down);
+                        });
+                    }
+                    if (pagination_action === 'first' || pagination_action === 'last'){
+                        var pages = Math.min(num_of_pages_in_section, num_of_pages);
+                        var page_counter;
+
+                        if (pagination_action === 'first'){
+                            page_counter = 1;
+
+                            //remove 3 dots
+                            $('.pagination .down-dots').remove();
+                        }else{
+                            if(num_of_pages_in_section === num_of_pages){
+                                // no need to change page numbers
+                                page_counter = 0;
+                            }else{
+                                page_counter = num_of_pages - num_of_pages_in_section + 1;
+                            }
+
+                            //remove 3 dots
+                            $('.pagination .up-dots').remove();
+                        }
+
+                        var temp_counter = page_counter;
+                        $.each($('.first_pagination .pagination .page a'), function(index, page){
+                            var a = $(this);
+                            a.text(temp_counter++);
+                        });
+
+                        temp_counter = page_counter;
+                        $.each($('.second_pagination .pagination .page a'), function(index, page){
+                            var a = $(this);
+                            a.text(temp_counter++);
                         });
                     }
 
@@ -1024,8 +1043,8 @@ $(document).ready(function () {
             page_number =  parseInt($(current_page_link).text());
             action = $(this).find('span').attr('class');
 
-            if (page_number === 1) return false;
-            if (page_number === num_of_pages) return false;
+            if (page_number === 1 && action === 'prev') return false;
+            if (page_number === num_of_pages && action === 'next') return false;
             if (is_last && action === 'next'){
                 action = 'move_up';
             }
@@ -1035,7 +1054,7 @@ $(document).ready(function () {
 
             if (action === 'prev') --page_number;
             if (action === 'next') ++page_number;
-            if (action === 'last') page_number = 0;
+            if (action === 'first') page_number = 1;
             if (action === 'last') page_number = num_of_pages;
         }
 

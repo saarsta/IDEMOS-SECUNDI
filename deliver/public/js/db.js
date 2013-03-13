@@ -778,6 +778,11 @@ var db_functions = {
     },
 
     getSortedPostByDiscussion:function (discussion_id, sort_by, offset, limit, callback) {
+        if(typeof limit === 'function'){
+            callback = limit;
+            limit = 0;
+        }
+
         db_functions.loggedInAjax({
             url:'/api/posts?discussion_id=' + discussion_id + "&order_by=" + sort_by + '&limit=' + limit + '&offset=' + offset,
             type:"GET",
@@ -1340,7 +1345,8 @@ var db_functions = {
         });
     },
 
-    getSortedPostByAction:function (action_id, sort_by, offset, callback) {
+    getSortedPostByAction:function (action_id, sort_by, offset, limit, callback) {
+
         db_functions.loggedInAjax({
             url:'/api/posts_of_action?action_id=' + action_id + "&order_by=" + sort_by + '&offset=' + offset,
             type:"GET",
