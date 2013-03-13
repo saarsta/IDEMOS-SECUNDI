@@ -103,7 +103,7 @@
             if(selectedSubject){
                 query = query+'&subject_id='+selectedSubject;
             }
-            query = query+'&is_private='+false;
+            query = query+'&is_private__ne='+true;
             return query;
         }
 
