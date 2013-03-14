@@ -18,7 +18,7 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
     init:function () {
 
         this._super(models.Post, 'post', null);
-        this.allowed_methods = ['get', 'post'];
+        this.allowed_methods = ['get', 'post', 'put'];
         this.authorization = new common.TokenAuthorization();
         this.authentication = new common.SessionAuthentication();
         this.filtering = {discussion_id:null};
@@ -41,6 +41,7 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
             discussion_id:null,
             is_user_follower: null
         };
+        this.update_fields = {text: null, discussion_id: null};
 //    this.validation = new resources.Validation();=
         this.default_limit = 50;
     },
@@ -311,6 +312,17 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
             rsp.creator_id = req.user;
             callback(err, rsp);
         });
+    },
+
+    // user can update his post in the first 15 min after publish
+    update_obj: function(req, object, callback){
+        var update_legit_time = 60 * 1000 * 15;
+        //first check if its in 15 min range after publish
+        if(new Date() - object.creation_date > update_legit_time){
+            callback({message: 'to late to update comment', code: 404})
+        }else{
+            this._super(req, object, callback);
+        }
     }
 });
 
