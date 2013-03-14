@@ -14,8 +14,6 @@ var models = require('./models');
 var account = require('./deliver/routes/account');
 var fb_bot_middleware = require('./deliver/routes/fb_bot/middleware');
 
-
-
 // ########### Static parameters ###########
 var IS_ADMIN = ~process.env['NODE_ENV'].indexOf('admin');
 var DB_URL = process.env['MONGOLAB_URI'] || 'mongodb://localhost/uru';
@@ -93,7 +91,9 @@ utils.setShowOnlyPublished(app.settings.show_only_published);
 
 // ######### error handling #########
 process.on('uncaughtException', function(err) {
-    console.error("==== process exception ====\n%s\n==== end ====", err.stack || err);
+    console.error('*************************  unhandled exception !!!!! ********************************');
+    console.error(err);
+    console.error(err.stack);
 });
 app.use(function (req, res, next) {
     var d = domain.create();
