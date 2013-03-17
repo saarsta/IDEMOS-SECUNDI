@@ -1237,15 +1237,13 @@ var _main=$(document).ready( function () {
                     console.log("popup");
                     $(".sb-top .sb-title").text(social_fb_liker_title);
                     $(".sb-top .sb-text").text(social_fb_liker_text);
-                    $(".sb-title .facebook_join").show();
-
+                    $(".sb-top .facebook_join").css('display', 'block');
+//                    $(".sb-top .facebook_join").show();
                     share();
                 }
             });
         },1500);
      });
-
-
 
     $("#fb_ajax_conncect").live('click', function(){
         facebookLogin(function(err, result){
