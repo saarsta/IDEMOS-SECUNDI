@@ -75,50 +75,53 @@ var ten_seconds_cron = exports.ten_seconds_cron = {
 
 var once_an_hour_cron = exports.once_an_hour_cron = {
 
-    scrapeFBPagesLikes: function (callback) {
+    scrapeFBPagesLikes: function (main_callback) {
+        console.log('---scrapeFBPagesLikes start')
+        var fb_user ='daniella.geula@gmail.com';
+        var fb_pass = 'dz5274046';
         var browser=null;
         if(GLOBAL.zombie) {
             browser = GLOBAL.zombie
-
         } else{
             browser = GLOBAL.zombie = new zombie()  ;
         }
-
+        console.log('---scrapeFBPagesLikes browser')
         models.Cycle.find({"fb_page.fb_id": {$exists: true} }).exec(function(err, cycles){
-            var func_arr =null;
+            if(err){
+                console.log('---find error ' +err ) ;
+                main_callback(err);
+            }else{
+                console.log('---find cycles ' +cycles.length )
+                var func_arr =null;
+                func_arr =_.map(cycles,function(cycle){
+                    return  function(callback) {
+                        getUsersLoop(5,browser,cycle.fb_page.fb_id,function(err,users){
+                            if(!err){
+                                console.log(users);
+                                models.Cycle.update({"fb_page.fb_id": cycle.fb_page.fb_id},{$addToSet:{"fb_page.users" :{ $each : users}}}, function(err,count)
+                                {
+                                    callback(err, {'users':users});
+                                });
+                            }else{
+                                callback(err);
+                            }
 
-            func_arr =_.map(cycles,function(cycle){
-                return  function(callback) {
-                    getUsersLoop(5,browser,cycle.fb_page.fb_id,function(err,users){
-                        if(!err){
-                            models.Cycle.update({"fb_page.fb_id": cycle.fb_page.fb_id},{$addToSet:{"fb_page.users" :{ $each : users}}}, function(err,count)
-                            {
-                                callback(err, users);
-                            });
-                        }else{
-                            callback(err);
-                        }
-
-                    });
-                }
-            });
-
-            async.series( func_arr ,function(err, results){
-                if(err){
-                    callback(err);//browser.html()
-                }else{
-                    callback(results);
-                }
-            });
+                        });
+                    }
+                });
+                async.series( func_arr ,main_callback);
+            }
 
         });
 
 
         function getUsersLoop(repeat,browser,page_id, callback){
+            console.log('---getUsersLoop - '+repeat + ' - ' +page_id)
             if(repeat==0){
                 return;
             } else{
                 getUsers(browser,page_id,function(err,users){
+                    console.log('---getUsers - '+err +' - '+ users)
                     if(err=="no_login"){
                         doFBLogin(browser,function(err){
                             if(err){
@@ -138,24 +141,39 @@ var once_an_hour_cron = exports.once_an_hour_cron = {
         }
 
         function doFBLogin (browser, callback){
-            console.log("Attempt Login");
+            console.log("doLogin");
             browser.visit("https://www.facebook.com/", function () {
+                //console.log(browser.location.pathname);
                 var page = $(browser.html());
                 if(page.find("#u_0_4").length ==1 ){
-
+                    console.log("login to facebook");
+                    //console.log(browser.location.pathname);
                     browser.
-                        fill("email", "Daniella.geula@gmail.com").
-                        fill("pass", "dani-ella").
+                        fill("email",fb_user).
+                        fill("pass", fb_pass).
                         pressButton("#u_0_4", function() {
+                            //console.log(browser.location.pathname + " : " + browser.success);
+                            callback(null);
+                        })
+                }
+                else if(page.find("#u_0_1").length ==1){
+                    console.log("recognized login to facebook");
+                    //console.log(browser.location.pathname);
+                    browser.
+                        fill("pass", fb_pass).
+                        pressButton("#u_0_1", function() {
+                            //console.log(browser.location.pathname + " : " + browser.success);
                             callback(null);
                         })
                 }
                 else{
-                    console.log("facebook login page not loaded");
+                    console.log("facebook page not loaded");
                     callback("login failed");
                 }
+
             });
         }
+
 
         function getUsers(browser,page_id, callback){
             console.log("Get Users " + page_id);
@@ -576,7 +594,16 @@ exports.run = function () {
             if(err)
                 console.log(err);
         })
-    }, 10 * 60  * 1000);
+    }, 12 * 60 * 60   * 1000);
+
+    setTimeout(function () {
+        console.log('@@@@@@@@@@@ cron scrapeFBPagesLikes @@@@@@@@@@@');
+        once_an_hour_cron.scrapeFBPagesLikes(function (err, result) {
+            if(err)
+                console.log(err);
+        })
+    }, 20   * 1000);
+
 
     setInterval(function () {
         console.log('@@@@@@@@@@@ cron fillUsersTokens @@@@@@@@@@@');

@@ -34,44 +34,78 @@ var error_message = error_message || '';
                             <a class="share_icon" href=""><img src="/images/icon_gp.png"></a>
                             <a class="share_icon" href=""><img src="/images/icon_email.png"></a>
                         </div>
-                        <div class="author">הדיון נפתח ע"י: <a href="">אריק בנדו</a></div>
+                        <% if(discussion.creator_id){ %>
+                        <div class="author">הדיון נפתח ע"י: <a href="/myuru/<%=discussion.creator_id._id%>"> <%=discussion.creator_id.first_name+ " " +discussion.creator_id.last_name %> </a></div>
+                        <% } %>
                         <hr />
-                        <div class="img_holder">
-                            <img src="/images/sample_img.png" />
+
+
+                        <div id="short">
+
+                            <div id="discussion_image" style="width: 260px;height: 190px; overflow:hidden;" class='auto-scale  img_holder'>
+                                <img src="<%= discussion.image_field ? discussion.image_field.url ||'' : '' %>" title="<%= discussion.title %>"/>
+                            </div>
+
+                            <div class="text main_text" style="max-height:180px">
+                                <%- discussion.text_field.replace(/\n/g, '<br />') %>
+                            </div>
+                            <a class="read_more" href="javascript:void(0);">המשך קריאה</a>
                         </div>
-                        <div>
-                            <h3>אין הצדקה לכך שנשלם פעמיים. עמלות הבנקים בישראל מנופחות ולא הוגנות בכלל.</h3>
-                            עמלות הן בעצם דרך של הבנקים לגרום לנו לשלם פעמיים. אם אנחנו משלמים ריביות על הכסף שהפקדנו בבנק, אז למה כמעט על כל פעולה שאנחנו מבצעים היום בבנק אנחנו צריכים לשלם גם עמלה? ר
+
+                        <div id="full">
+                            <div class="msg">בחר בעזרת הסמן איזורים בטקסט שברצונך להציע לשנותם</div>
+                            <div id="discussion_content" class=""><%- discussion.text_field.replace(/\n/g, '<br />') %></div>
+                            <a class="read_more" href="javascript:void(0);">סגור מאמר</a>
+
+
                         </div>
-                        <a class="read_more" href="">המשך קריאה</a>
-                        <hr />
-                        <div class="content_credits">
-                            <div id="sponsors_holder">
-                                <h2>שותפי תוכן</h2>
-                                <div id="sponsors_logos">
-                                    <div class="sponsors_logo logo_1"></div>
-                                    <div class="sponsors_logo logo_2"></div>
-                                    <div class="sponsors_logo logo_3"></div>
-                                    <div class="sponsors_logo logo_4"></div>
-                                    <div class="sponsors_logo logo_5"></div>
+
+                        <% if( discussion.sub_branding && discussion.sub_branding.length>0) { %>
+
+                            <hr />
+                            <div class="content_credits">
+                                <div id="sponsors_holder">
+                                    <h2>שותפי תוכן</h2>
+                                    <div id="sponsors_logos">
+
+                                        <% for (var c = 0; c <discussion.sub_branding.length; c++) { %>
+                                         <a target="_blank" href="<%= discussion.sub_branding[c].link %>">
+                                             <div id="sub_branding_image" style="width: 100px;height: 70px; overflow:hidden;" class='auto-scale floatRight'>
+                                                 <img src="<%= discussion.sub_branding[c].image ? discussion.sub_branding[c].image.url ||'' : '' %>" title="<%= discussion.sub_branding[c].title %>"/>
+                                             </div>
+                                         </a>
+                                        <% }%>
+
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        <% } %>
                         <hr />
                         <div class="tags">
                             <span class="tags_title">תגיות:</span>
-                            <span class="tag"><a href="">הריכוזיות</a></span>
-                            <span class="tag"><a href="">עמלות הבנקים</a></span>
-                            <span class="tag"><a href="">יוקר המחיה</a></span>
+                            <% for (var c = 0; c <discussion. tags.length; c++) { %>
+                                <span class="tag"><a href="?tag_name=<%=discussion.tags[c]%>"><%=discussion. tags[c] %></a></span>
+
+                            <% }%>
+
+
                         </div>
                         <hr />
+
                         <div class="segment_bottom">
-                            <!-- <div class="slide-box">
-                                    <div class="summary">
-                                        <input type="text" id="amount" value="6.15">
-                                        <span> <div class="inlinediv" id="graders">90
-                                        </div> דירוגים</span>
-                                    </div>
+
+
+                            <div class="rating_box">
+                                <div class="rating_total">
+                                    <%= Math.round(discussion.grade*100)/100 %>
+                                </div>
+                                <div class="raters">
+                                    <%= Math.round(discussion.evaluate_counter) %>
+                                    דירוגים
+                                </div>
+                            </div>
+                            <div class="slide-box">
+
                                     <div class="slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
                                     <div class="ui-slider-range ui-widget-header ui-slider-range-min" style="width: 0%;"></div><a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 0%;"></a></div>
                                     <div class="slider-numbers">
@@ -86,49 +120,44 @@ var error_message = error_message || '';
                                         <span>9</span>
                                         <span>10</span>
                                     </div>
-                                </div> -->
-                            <div class="rating_box">
-                                <div class="rating_total">
-                                    8.74
                                 </div>
-                                <div class="raters">
-                                    296 דירוגים
-                                </div>
-                            </div>
-                            <div class="rating_holder">
-                                <div class="rating_bar_holder">
-                                    <div class="rating_bar" style="width:20%;"></div>
-                                    <div class="rating_bar_indicator"><img src="/images/indicator_2.png" /></div>
-                                    <div class="rating_marks">
-                                        <span style="left:100%;">10</span>
-                                        <span style="left:90%;">9</span>
-                                        <span style="left:80%;">8</span>
-                                        <span style="left:70%;">7</span>
-                                        <span style="left:60%;">6</span>
-                                        <span style="left:50%;">5</span>
-                                        <span style="left:40%;">4</span>
-                                        <span style="left:30%;">3</span>
-                                        <span style="left:20%;">2</span>
-                                        <span style="left:10%;">1</span>
-                                        <span style="left:0%;"></span>
-                                    </div>
-                                </div>
-                            </div>
+
                             <div class="button_add_comment">
                                 <input type="button" />
                             </div>
                             <div class="button_suggest_revisions">
                                 <input type="button" />
                             </div>
-                        </div>
 
+
+
+                            <div class="history_details_holder">
+
+                                <hr />
+                                <div class="item">
+                                    <input  class="history" type="button" />
+                                </div>
+                                <div class="item draft_no">
+                                    טיוטה מספר: <span>8</span>
+                                </div>
+                                <div class="item last">
+                                    עדכון אחרון: <span>15.03.12</span>
+                                </div>
+                                <div class="item by">
+                                    על ידי: <span>אברהם אבוחצירא השלישי</span>
+                                </div>
+                            </div>
+
+
+                        </div>
                     </div>
 
-                    <div class="segment">
+                    <div class="segment info">
                         <h2 class="title">סל מידע</h2>
-
-                        <div class="text">
-                            <img src="/images/placeholder_slider.png" />
+                        <div id="info_items" class="info_items">
+                            <!-- MovingBoxes Slider -->
+                            <ul id="slider">
+                            </ul><!-- end Slider #1 -->
                         </div>
                     </div>
 
@@ -150,15 +179,74 @@ var error_message = error_message || '';
 
         </div>
     </div>
+
+
+<span class="popup-window">
+    <div class="tooltip_2">
+        <input id="pop_suggest_bt" value="הוסף הצעה" class="button_add_suggestion" type="text" />
+        <input id="pop_post_bt" value="הגב" class="button_respond" type="text" />
+    </div>
+</span>
+
+
+    <div id='write-comment' class="write-comment" style="display: none;">
+        <h3>
+            הצעה לשינוי
+        </h3>
+
+        <div class="text-box cf">
+            <div class="left">
+                <p id='discussion_content_txt'><strong></strong>
+
+                </p>
+                <label>
+                    ההצעה לשינוי שלי:
+                </label>
+                <textarea id='discussion_suggest' class="five-col" cols="0" rows="0"></textarea>
+                <label>
+                    טיעונים, הצדקות ונימוקים:
+                </label>
+                <textarea id="discussion_explanation" class="two-col" cols="0" rows="0"></textarea>
+            </div>
+            <div class="user-right">
+                <div class="img-box" style="overflow: hidden;">
+                    <div   style="width:70px; height:70px;" class='auto-scale'>
+                        <% if(user_logged) { %>
+                        <img id="reload-img" src="<%=avatar%>" alt="אני"  style="width:70px; height:70px"/>
+                        <% } %>
+                    </div>
+                    <span></span>
+                </div>
+                <h4>אני</h4>
+
+                <div class="date"><%=(new Date()).format('dd.mm.yy') %></div>
+                <% if(user_logged){ %>
+                <div class="proxy">
+                    <span>3</span>
+                </div>
+                <div class="respect">
+                    <span>20</span>
+                </div>
+                <% } %>
+            </div>
+        </div>
+        <a class="grey-btn" id="cancelWriteCommentBT" href="javascript:void(0);"><span>
+מתחרט
+            </span></a>
+        <a id="send_suggestion" class="green-btn" href="javascript:void(0);">
+            הצע
+        </a>
+    </div>
+
+
+
     <div class="content_break">
         <div class="content_break_content">
-            <h2>            הצעות לשינוי<small id="suggestion_number"></small>
-            </h2>
+            <h2>הצעות לשינוי (4)</h2>
         </div>
     </div>
     <div id="content_wrapper_suggestions">
         <div id="suggestions_wrapper">
-
         </div>
         <div class="more-deals" data-executing="false">
             <a href="">עוד הצעות</a>
@@ -258,27 +346,37 @@ var error_message = error_message || '';
                     <img src="images/placeholder_txt_editor.png">
                 </div>
             </div>
-            <input type="button" class="button_submit_comment">
+
+            <div class="content">
+                <textarea id="discussion_comment" dir="rtl" class="four-col" cols="0" rows="0"></textarea>
+            </div>
         </div>
+        <input id="submit_post" type="button" class="button_submit_comment" />
+    </div>
 
     </div>
     </div>
-</div>
-<% include partials/footer.ejs %>
+
+
+
+
+
+    <% include partials/footer.ejs %>
 
 
 <script type="text/javascript">
 
-
-
-
-
-
-
 var current_section = 1;
 
 $(document).ready(function () {
-
+    var my_id = "<%=user_logged ? user._id : ''%>";
+    var discussion_id = "<%=discussion_id%>";
+    var creator_id = "<%=discussion.creator_id%>";
+    var is_creator = (my_id == creator_id);
+    var my_discussion_grade = Number("<%= discussion.grade_obj ? discussion.grade_obj.value || 0 : 0 %>");
+    var discussion_grade = Number("<%= discussion.grade%>");
+    var grade_id = "<%= discussion.grade_obj ? discussion.grade_obj.grade_id : 0 %>";
+    var suggestions_list=null;
     $('.button_edit_comment').hover(function(){
         $(this).parent().toggleClass('edit');
     });
@@ -295,9 +393,316 @@ $(document).ready(function () {
         $('.edit_window').parent().toggleClass('edit');
     });
 
+    $('.button_suggest_revisions').click(function(){
+        $(this).toggleClass('active');
+        $('#change_proposal').toggleClass('active');
+    });
+
+    $('input.history').click(function(){
+        $(this).toggleClass('active');
+    });
+
+    $(".main_text").dotdotdot({
+        //	configuration goes here
+    });
+
+
+
+    db_functions.getDiscussionShoppingCart(discussion_id, function (err, data) {
+
+        $.each(data.objects, function (index, item) {
+            dust.render('cycle_information_item', item, function (err, out) {
+                $('#slider').append(out);
+            });
+        });
+
+        $('#info_items #slider').movingBoxes({
+            /* width and panelWidth options deprecated, but still work to keep the plugin backwards compatible
+             width: 500,
+             panelWidth: 0.5,
+             */
+            initAnimation :false,
+            fixedHeight :true,
+            reducedSize :1,
+            startPanel   : 1,      // start with this panel
+            wrap         : true,   // if true, the panel will "wrap" (it really rewinds/fast forwards) at the ends
+            buildNav     : true,   // if true, navigation links will be added
+            navFormatter : function(){ return "&#9679;"; } // function which returns the navigation text for each panel
+        });
+
+
+    });
+
+
+
+
+    $('.read_more').on('click', function () {
+        $('#short').toggle();
+        $('#full').toggle();
+        var h=  $("textarea").get(0).scrollHeight;
+        $("#full").height(h);
+    });
+
+
+    var mouseDown, mouseUp, top, left;
+
+    $('#full')
+        .on('mousedown', function (e) {
+            mouseDown = e;
+            console.log(e);})
+        .on('mouseup',function (e) {
+            mouseUp = e;
+            var err = false;
+            var range = $(this).find('textarea').getSelection();
+            left = Math.ceil((mouseDown.clientX + mouseUp.clientX) / 2 - ($(".popup-window").width() / 2));
+            top = Math.min(mouseDown.clientY, mouseUp.clientY) - $(".popup-window").height() - 40 + $(window).scrollTop();})
+        .on('keydown', function (e) {
+            console.log(e.keyCode == 27);
+            if (!(e.shiftKey && (e.keyCode <= 40 && e.keyCode >= 37) || (e.ctrlKey && e.keyCode == 65))) e.preventDefault();})
+        .on('dragstart', function (e) {
+            e.preventDefault();
+    });
+
+
+
+    $('#discussion_content').blur(function(){
+      //  $(".popup-window").hide();
+    });
+
+    $('#discussion_content1').click(function(){
+        range =$('#discussion_content').getSelection();
+       if(range.start == range.end){
+          // $(".popup-window").hide();
+       }
+    });
+
+    db_functions.getSuggestionByDiscussion(discussion_id, null, null, function(err, suggestions){
+        suggestions_list =suggestions.objects ;
+        $.each(suggestions_list, function (index, suggestion) {
+            if ((suggestion.parts[0].start >= range.start && suggestion.parts[0].start <= range.end)
+                    || (suggestion.parts[0].end >= range.start && suggestion.parts[0].end <= range.end)) {
+                flag = true;
+            }
+        })
+    });
+
+
+
+
+
+
+    $('#discussion_content').select(function (e) {
+        console.log('select')
+        range = $(this).getSelection();
+        console.log(range);
+        flag = false;
+        $.each(suggestions_list, function (index, suggestion) {
+            if ((suggestion.parts[0].start >= range.start && suggestion.parts[0].start <= range.end)
+                    || (suggestion.parts[0].end >= range.start && suggestion.parts[0].end <= range.end)) {
+                flag = true;
+            }
+        })
+        if(flag) {
+            popupProvider.showOkPopup({message:"הטקסט סומן כבר בהצעה לשינוי קיימת"});
+        }else{
+            $(".popup-window")
+                    .css({ top:top+38, left:left, opacity:0 })
+                    .show()
+                    .animate({ top:'-=20px', opacity:1 }, 100, 'linear');
+        }
+    });
+
+        // focus and copy the selected text of discussion
+    $('#pop_post_bt').click( function (e) {
+        e.preventDefault();
+        new_post_ref_id = null;
+        $(".popup-window").hide();
+        $("textarea#discussion_comment").val('"' + range.text + '"');
+        focusOnCommentBox();
+    });
+
+    $('#pop_suggest_bt').click( function (e) {
+        e.preventDefault();
+        $('#discussion_content_txt').text('"' + range.text + '"');
+        $('#write-comment').show();
+        $('textarea#discussion_suggest').focus();
+        $('#reload-img').attr('src', $('#reload-img').attr('src'));
+        $(".popup-window").hide();
+    });
+
+    $('#send_suggestion').click(function () {
+        var part = {start:range.start, end:range.end, text:$("textarea#discussion_suggest").val()};
+        //arrange spaces
+        if (vision[part.end - 1] == " " && part.text[part.text.length - 1] != " ")
+
+            part.text += " ";
+        var explanation = $("#discussion_explanation").val();
+
+        var user_info = {
+            user_logged_in : user.first_name ? true : false,
+            action_done : (user.actions_done_by_user && user.actions_done_by_user.suggestion_on_object) ? true : false,
+            action_name : "suggestion_on_object",
+            tokens_owned : user.tokens ? user.tokens : 0,
+            price: gamification_price['suggestion_on_discussion']
+        }
+
+        db_functions.addSuggestionToDiscussion(discussion_id, [part], explanation, user_info, function (err, data) {
+            if (!err) {
+                if(data != 'canceled'){
+                    if(!user.actions_done_by_user.suggestion_on_object)
+                    {
+                        user.actions_done_by_user.suggestion_on_object = true;
+                    }
+                    $('#write-comment').hide();
+                    /*
+                     $("textarea#discussion_suggest").val('');
+                     $("#user_tokens").text(data.updated_user_tokens);*/
+                    render_suggestion(data)
+                    $(".deals-box").show();
+                }
+            } else {
+                var err = err;
+                if(err.responseText == "a suggestion with this indexes already exist")
+                    popupProvider.showOkPopup({message:"????? ???? ??? ????? ?????? ?????"});
+            }
+        });
+
+
+    });
+
+    $("#cancelWriteCommentBT").live("click", function () {
+        $('#write-comment').hide();
+    });
+
+
+
+    $('.button_add_comment').on("click", function (e) {
+        e.preventDefault();
+        focusOnCommentBox();
+    });
+
+
+    $(".slider").slider({
+        disabled:is_creator,
+        value:my_discussion_grade,
+        range:"min",
+        min:0,
+        max:10,
+        step:0.10 ,
+        change:function (event, ui) {
+
+            if (event.originalEvent) {      //ugly hack because of slider api bug
+                var my_prev_grade = my_discussion_grade;
+                my_discussion_grade = ui.value;
+
+                var user_info = {
+                    user_logged_in : user.first_name ? true : false,
+                    action_done : (user.actions_done_by_user && user.actions_done_by_user.grade_object) ? true : false,
+                    action_name : "grade_object",
+                    tokens_owned : user.tokens ? user.tokens : 0,
+                    price: gamification_price['grade_discussion']
+                }
+
+                db_functions.addDiscussionGrade(discussion_id, my_discussion_grade, grade_id, user_info, function (err, data) {
+
+                    if (!err) {
+                        if(data == 'canceled'){
+                            $(".slider").slider('value',my_prev_grade);
+                        } else {
+    //                    if(!(user.actions_done_by_user && user.actions_done_by_user.grade_object))
+    //                    {
+    //                        user.actions_done_by_user.grade_object = true;
+    //                    }
+                            $(".rating_total").text(Math.round(data.new_grade * 100) / 100);
+                            $(".raters").text(Math.round(data.evaluate_counter) + " דירוגים   ");
+                           // $(".dark_bar").css('width', (my_discussion_grade * 10) + '%');
+                            grade_id = data.grade_id;
+                        }
+                    }
+                    else
+                        console.log(err);
+                });
+            }
+       }
+   });
+
+    var editor;
+    $( '#discussion_comment' ).ckeditor(            {
+        height: 100,
+        'line-height':10,
+        language:'he',
+        removePlugins : 'elementspath',
+        on :
+        {
+            instanceReady : function( ev )
+            {
+                editor = this;
+            }
+        }
+    });
+
+    $("#submit_post").on('click', function (e) {
+        e.preventDefault();
+        var $this = $(this);
+
+        if ($this.data('executing')){
+            return;
+        }
+
+        $this.data('executing', true);
+        $this.addClass('disable');
+
+        var user_info = {
+            user_logged_in : user.first_name ? true : false,
+            action_done : (user.actions_done_by_user && user.actions_done_by_user.post_on_object) ? true : false,
+            action_name : "post_on_object",
+            tokens_owned : user.tokens ? user.tokens : 0,
+            price: gamification_price['post_on_discussion']
+        }
+
+        db_functions.addPostToDiscussion(discussion_id, $("textarea#discussion_comment").val(), new_post_ref_id, user_info, function (err, post) {
+            // $("#user_tokens").text(post.updated_user_tokens);
+            if (!err) {
+                if(post == 'canceled'){
+                    $this.data('executing', false);
+                    $this.removeClass('disable');
+                }
+                else
+                {
+                    if(!user.actions_done_by_user.post_on_object)
+                    {
+                        user.actions_done_by_user.post_on_object = true;
+                    }
+                    if (my_id)
+                        setUserScore(my_id, post.creator_id.score);
+                    post.voting = post.votes_for - post.votes_against;
+                    dust.render('discussion_comment', post, function (err, out) {
+                        $("#comments").append(out);
+                        $("textarea#discussion_comment").val('');
+                        new_post_ref_id = null;
+                        postsNumber++;
+                        setCommentNumber(postsNumber);
+                        $this.data('executing', false);
+                        $this.removeClass('disable')
+                    });
+                }
+            }
+        })
+    });
+
+
+
+//    $('.popup-window .close').on('click', function () {
+//        $('.popup-window').hide();
+//    });
+//
+//    $('.popup-window').on('focus', function (e) {
+//        e.preventDefault();
+//    });
+
+
     /***************************************************/
-//    var my_id = "<%=user_logged ? user._id : ''%>";
-    var discussion_id = "<%=discussion_id%>";
+
 //    <%
 //    if (user_logged) { %>
 //        var proxy = JSON.parse('<%-proxy%>');
@@ -308,24 +713,22 @@ $(document).ready(function () {
 //    }
 //    %>
 //
-//    var creator_id = "<%=discussion.creator_id%>";
-//    var mouseDown, mouseUp, top, left;
-//    var grade_id = "<%= discussion.grade_obj ? discussion.grade_obj.grade_id : 0 %>";
+
+
 //    var sugg_grade_id;
 //    var new_post_ref_id = null;  //if not null =>the create new post is connected to anther post
-//    var my_discussion_grade = Number("<%= discussion.grade_obj ? discussion.grade_obj.value || 0 : 0 %>");
-//    var discussion_grade = Number("<%= discussion.grade%>");
+
     var discussion_title = "<%= discussion.title%>"
     var discussion_img_field_preview = "<%= discussion.image_field ? discussion.image_field.url ||'' : '' %>";
 
 //    var postsNumber = 0;
-//    var is_creator = (my_id == creator_id);
+
 //
 //    var vision = $('#discussion_content').text();
 //
 //    var onGiveProxy;
 //
-//    var editor;
+
 //
 //    $( '#discussion_comment' ).ckeditor(            {
 //        height: 100,
@@ -371,49 +774,7 @@ $(document).ready(function () {
 //
 //    $("#discussion_content").val($("#discussion_content").text());
 //
-//    $(".slider").slider({
-//        disabled:is_creator,
-//        value:my_discussion_grade,
-//        range:"min",
-//        min:0,
-//        max:10,
-//        step:0.10,
-//        change:function (event, ui) {
 //
-//            if (event.originalEvent) {      //ugly hack because of slider api bug
-//                var my_prev_grade = my_discussion_grade;
-//                my_discussion_grade = ui.value;
-//
-//                var user_info = {
-//                    user_logged_in : user.first_name ? true : false,
-//                    action_done : (user.actions_done_by_user && user.actions_done_by_user.grade_object) ? true : false,
-//                    action_name : "grade_object",
-//                    tokens_owned : user.tokens ? user.tokens : 0,
-//                    price: gamification_price['grade_discussion']
-//                }
-//
-//                db_functions.addDiscussionGrade(discussion_id, my_discussion_grade, grade_id, user_info, function (err, data) {
-//
-//                    if (!err) {
-//                        if(data == 'canceled'){
-//                            $(".slider").slider('value',my_prev_grade);
-//                        } else {
-//    //                    if(!(user.actions_done_by_user && user.actions_done_by_user.grade_object))
-//    //                    {
-//    //                        user.actions_done_by_user.grade_object = true;
-//    //                    }
-//                            $("#amount").val(Math.round(data.new_grade * 100) / 100);
-//                            $("#graders").text(Math.round(data.evaluate_counter));
-//                            $(".dark_bar").css('width', (my_discussion_grade * 10) + '%');
-//                            grade_id = data.grade_id;
-//                        }
-//                    }
-//                    else
-//                        console.log(err);
-//                });
-//            }
-//        }
-//    });
 //
 //    $(".inline").colorbox({ inline:true, width:"730" });
 //
@@ -430,92 +791,10 @@ $(document).ready(function () {
 //        $('#comments_number')[0].innerHTML = '(' + number + ')';
 //    }
 //
-//    db_functions.getDiscussionShoppingCart(discussion_id, function (err, data) {
-//
-//        $.each(data.objects, function (index, item) {
-//            dust.render('discussion_information_item', item, function (err, out) {
-//                $('.slide-c').append(out);
-//            });
-//        });
-//
-//        $('.slide-c')
-//                .after('<div id="nav2">')
-//                .cycle({
-//                    fx:'scrollHorz',
-//                    speed:'fast',
-//                    timeout:0,
-//                    pager:'#nav2',
-//                    next:'#prev',
-//                    prev:'#next'
-//                });
-//
-//        if (data.objects.length < 2) {
-//            $("#prev").hide();
-//            $("#next").hide();
-//        }
-//
-//    });
-//
-//    $('.discussion_content').on('mousedown', function (e) {
-//        mouseDown = e;
-//        console.log(e);
-//    })
-//            .on('mouseup',
-//            function (e) {
-//                mouseUp = e;
-//                var err = false;
-//                var range = $(this).find('textarea').getSelection();
-//
-//                left = Math.ceil((mouseDown.clientX + mouseUp.clientX) / 2 - ($(".popup-window").width() / 2));
-//                top = Math.min(mouseDown.clientY, mouseUp.clientY) - $(".popup-window").height() - 40 + $(window).scrollTop();
-//
-//            }).on('keydown',
-//            function (e) {
-//                console.log(e.keyCode == 27);
-//                if (!(e.shiftKey && (e.keyCode <= 40 && e.keyCode >= 37) || (e.ctrlKey && e.keyCode == 65))) e.preventDefault();
-//            }).on('dragstart', function (e) {
-//                e.preventDefault();
-//            });
-//
-//    $('.popup-window .close').on('click', function () {
-//        $('.popup-window').hide();
-//    });
-//
-//    $('.popup-window').on('focus', function (e) {
-//        e.preventDefault();
-//    });
-//
-//    $("#discussion_content").select(function () {
-//        range = $(this).getSelection();
-//        flag = false;
-//        db_functions.getSuggestionByDiscussion(discussion_id, null, null, function(err, suggestions){
-//            $.each(suggestions.objects, function (index, suggestion) {
-//                if ((suggestion.parts[0].start >= range.start && suggestion.parts[0].start <= range.end)
-//                        || (suggestion.parts[0].end >= range.start && suggestion.parts[0].end <= range.end)) {
-//                    flag = true;
-//                }
-//            })
-//            if(flag)
-//                popupProvider.showOkPopup({message:"הטקסט סומן כבר בהצעה לשינוי קיימת"});
-//            else
-//                $(".popup-window")
-//                    .css({ top:top + 20, left:left, opacity:0 })
-//                    .show()
-//                    .animate({ top:'-=20px', opacity:1 }, 100, 'linear');
-//        });
-//
-//        console.log(range);
-//    });
 //
 //
-//    $('#pop_suggest_bt').on("click", function (e) {
-//        e.preventDefault();
-//        $('#discussion_content_txt').text('"' + range.text + '"');
-//        $('#write-comment').show();
-//        $('textarea#discussion_suggest').focus();
-//        $('#reload-img').attr('src', $('#reload-img').attr('src'));
-//        $(".popup-window").hide();
-//    });
+//
+
 //
 //
 //    $('#comments-box').on('hover', '.date', function (e) {
@@ -730,15 +1009,7 @@ $(document).ready(function () {
 //        });
 //    });
 //
-//    // focus and copy the selected text of discussion
-//    $('#pop_post_bt').on("click", function (e) {
-//        e.preventDefault();
-//        new_post_ref_id = null;
-//        $(".popup-window").hide();
-//        $("textarea#discussion_comment").val('"' + range.text + '"').focus();
-//
-//
-//    });
+
 //
 //    // just focus
 //    $("#discussion_comment_reply_button").on('click', function (e) {
@@ -1139,58 +1410,8 @@ $(document).ready(function () {
 //
     loadPosts();
     //
-//    $("#cancelWriteCommentBT").live("click", function () {
-//        $('#write-comment').hide();
-//    });
+
 //
-//    $("#submit_post").on('click', function (e) {
-//        e.preventDefault();
-//        var $this = $(this);
-//
-//        if ($this.data('executing')){
-//            return;
-//        }
-//
-//        $this.data('executing', true);
-//        $this.addClass('disable');
-//
-//        var user_info = {
-//            user_logged_in : user.first_name ? true : false,
-//            action_done : (user.actions_done_by_user && user.actions_done_by_user.post_on_object) ? true : false,
-//            action_name : "post_on_object",
-//            tokens_owned : user.tokens ? user.tokens : 0,
-//            price: gamification_price['post_on_discussion']
-//        }
-//
-//        db_functions.addPostToDiscussion(discussion_id, $("textarea#discussion_comment").val(), new_post_ref_id, user_info, function (err, post) {
-//            // $("#user_tokens").text(post.updated_user_tokens);
-//            if (!err) {
-//                if(post == 'canceled'){
-//                    $this.data('executing', false);
-//                    $this.removeClass('disable');
-//                }
-//                else
-//                {
-//                    if(!user.actions_done_by_user.post_on_object)
-//                    {
-//                        user.actions_done_by_user.post_on_object = true;
-//                    }
-//                    if (my_id)
-//                        setUserScore(my_id, post.creator_id.score);
-//                    post.voting = post.votes_for - post.votes_against;
-//                    dust.render('discussion_comment', post, function (err, out) {
-//                        $("#comments").append(out);
-//                        $("textarea#discussion_comment").val('');
-//                        new_post_ref_id = null;
-//                        postsNumber++;
-//                        setCommentNumber(postsNumber);
-//                        $this.data('executing', false);
-//                        $this.removeClass('disable')
-//                    });
-//                }
-//            }
-//        })
-//    });
 //
 //
 ////            $('.sugg_rating_button').click(function(){
@@ -1231,45 +1452,6 @@ $(document).ready(function () {
 //        $("textarea#discussion_suggest").val('');
 //    });
 //
-//    $('#send_suggestion').click(function () {
-//        var part = {start:range.start, end:range.end, text:$("textarea#discussion_suggest").val()};
-//        //arrange spaces
-//        if (vision[part.end - 1] == " " && part.text[part.text.length - 1] != " ")
-//
-//            part.text += " ";
-//        var explanation = $("#discussion_explanation").val();
-//
-//        var user_info = {
-//            user_logged_in : user.first_name ? true : false,
-//            action_done : (user.actions_done_by_user && user.actions_done_by_user.suggestion_on_object) ? true : false,
-//            action_name : "suggestion_on_object",
-//            tokens_owned : user.tokens ? user.tokens : 0,
-//            price: gamification_price['suggestion_on_discussion']
-//        }
-//
-//        db_functions.addSuggestionToDiscussion(discussion_id, [part], explanation, user_info, function (err, data) {
-//            if (!err) {
-//                if(data != 'canceled'){
-//                    if(!user.actions_done_by_user.suggestion_on_object)
-//                    {
-//                        user.actions_done_by_user.suggestion_on_object = true;
-//                    }
-//                    $('#write-comment').hide();
-//                    /*
-//                     $("textarea#discussion_suggest").val('');
-//                     $("#user_tokens").text(data.updated_user_tokens);*/
-//                    render_suggestion(data)
-//                    $(".deals-box").show();
-//                }
-//            } else {
-//                var err = err;
-//                if(err.responseText == "a suggestion with this indexes already exist")
-//                    popupProvider.showOkPopup({message:"הטקסט סומן כבר בהצעה לשינוי קיימת"});
-//            }
-//        });
-//
-//
-//    });
 //
 //
 //    $('.system-notice .close').click(function () {
@@ -1284,19 +1466,35 @@ $(document).ready(function () {
 //        $(".discussion_content").height(h);
 //    });
 //
-//    function focusOnCommentBox(){
-//        editor.focus();
-//        editor.focusManager.focus();
-//
-//        setTimeout(function(){
-//            var s =  CKEDITOR.instances.discussion_comment.getSelection();
-//            var b = CKEDITOR.instances.discussion_comment.document.getBody();
-//            s.selectElement(b);
-//            var selected_ranges = s.getRanges();
-//            selected_ranges[0].collapse(false);  //  false collapses the range to the end of the selected node, true before the node.
-//            s.selectRanges(selected_ranges);
-//        },100);
-//    };
+    function focusOnCommentBox(){
+        editor.focus();
+        editor.focusManager.focus();
+
+        setTimeout(function(){
+            var s =  CKEDITOR.instances.discussion_comment.getSelection();
+            var b = CKEDITOR.instances.discussion_comment.document.getBody();
+            s.selectElement(b);
+            var selected_ranges = s.getRanges();
+            selected_ranges[0].collapse(false);  //  false collapses the range to the end of the selected node, true before the node.
+            s.selectRanges(selected_ranges);
+        },100);
+    };
+
+
+    $('#discussion_content').mouseup(function(){
+        var t = '';
+        if(window.getSelection){
+            t = window.getSelection();
+        }else if(document.getSelection){
+            t = document.getSelection();
+        }else if(document.selection){
+            t = document.selection.createRange();
+        }
+
+
+        console.log(t);
+    });
+
 });
 
 
