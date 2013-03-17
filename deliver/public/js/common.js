@@ -394,8 +394,6 @@ function image_autoscale(obj, params) {
     $(obj).autoscale(params);
 };
 
-
-
 //animateCluster([$('#d1'),$('#d2')]);
 //animateCluster([$('#a1'),$('#a2'),$('#a3'),$('#a4')]);
 function animateCluster  (items)

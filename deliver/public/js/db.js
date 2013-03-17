@@ -648,6 +648,20 @@ var db_functions = {
             }
         });
     },
+    getPostByTypeByDiscussion:function (discussion_id, type, callback) {
+        db_functions.loggedInAjax({
+            url:'/api/posts?discussion_id=' + discussion_id + '&order_by=-' + type + '&limit=1',
+            type:"GET",
+            async:true,
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function (err) {
+                callback(err, null);
+            }
+        });
+    },
     getCommentsBySuggestion:function (suggestion_id, callback) {
         db_functions.loggedInAjax({
             url:'/api/suggestion_posts?suggestion_id=' + suggestion_id,
