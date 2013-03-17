@@ -26,13 +26,23 @@ module.exports = function (app) {
     admin.ensureUserExists('Uruad', 'uruadmin!@#uruadmin');
     admin.ensureUserExists('saar', '123qwe456');
 
+
+    admin.registerMongooseModel("Subject", Models.Subject, null, {
+        list: ['name'],
+        order_by: ['gui_order'],
+        sortable: 'gui_order'
+    });
+
+    admin.registerMongooseModel('Headline', Models.Headline, null, {
+        list: ['title']
+    });
+
     admin.registerMongooseModel("User", Models.User, null, {
         form: UserForm,
         list: ['username', 'first_name', 'last_name'],
         filters: ['email', 'gender', 'identity_provider'],
         search: '/__value__/.test(this.first_name+this.last_name)'
     });
-
 
     admin.registerMongooseModel("InformationItem", Models.InformationItem, null, {
         list: ['title'],
@@ -51,14 +61,6 @@ module.exports = function (app) {
         ]
     });
 
-
-    admin.registerMongooseModel("Subject", Models.Subject, null, {
-        list: ['name'],
-        order_by: ['gui_order'],
-        sortable: 'gui_order'
-    });
-
-
     admin.registerMongooseModel("Discussion", Models.Discussion, null, {
         list: ['title'],
         cloneable: true,
@@ -67,27 +69,6 @@ module.exports = function (app) {
         filters: ['created_by', 'is_published', 'is_hidden', 'is_hot_object', 'is_cycle.flag']
     });
 
-
-    admin.registerSingleRowModel(Models.GamificationTokens, 'GamificationTokens', {
-            form: GamificationForm}
-    );
-
-
-    admin.registerMongooseModel("DiscussionHistory", Models.DiscussionHistory, null, {
-        list: ['discussion_id', 'date'],
-        cloneable: true,
-        filters: ['discussion_id']
-    });
-
-
-    admin.registerMongooseModel("Cycle", Models.Cycle, null, {
-        list: ['title'],
-        cloneable: true,
-        form: CycleForm,
-        filters: ['created_by', 'is_hidden', 'is_hot_object']
-    });
-
-
     admin.registerMongooseModel('Post', Models.Post, null, {
         list: ['text', 'username', 'discussion_id.title'],
         list_populate: ['discussion_id'],
@@ -95,15 +76,6 @@ module.exports = function (app) {
         filters: ['discussion_id', 'creator_id'],
         search: '/__value__/.test(this.discussion_id)'
     });
-
-
-    admin.registerMongooseModel('PostAction', Models.PostAction, null, {
-        list: ['text', 'username', 'discussion_id.title'],
-        list_populate: ['discussion_id'],
-        order_by: ['-creation_date'],
-        filters: ['discussion_id', 'creator_id']
-    });
-
 
     admin.registerMongooseModel('Suggestion', Models.Suggestion, null, {
         list: ['parts.0.text', 'discussion_id.title'],
@@ -124,36 +96,24 @@ module.exports = function (app) {
         filters: ['discussion_id', 'creator_id']
     });
 
-
-    admin.registerMongooseModel('Vote', Models.Vote, null, {
-        list: ['post_id', 'user_id']
+    admin.registerMongooseModel('PressItem', mongoose.model('PressItem'), null, {
+        list: ['title'],
+        order_by: ['gui_order'],
+        sortable: 'gui_order'
     });
 
+    admin.registerMongooseModel("Cycle", Models.Cycle, null, {
+        list: ['title'],
+        cloneable: true,
+        form: CycleForm,
+        filters: ['created_by', 'is_hidden', 'is_hot_object']
+    });
 
-    admin.registerMongooseModel('VoteSuggestion', Models.VoteSuggestion, null, {
-        list: ['suggestion_id', 'user_id']
+    admin.registerMongooseModel('Update', Models.Update, null, {
+        list: ['title'],
+        form: IdkunimForm
     });
-    admin.registerMongooseModel('Grade', Models.Grade, null, {
-        list: ['discussion_id', 'user_id']
-    });
-    admin.registerMongooseModel('Like', Models.Like, null, {
-        list: ['information_item_id', 'user_id']
-    });
-    admin.registerMongooseModel('Join', Models.Join, null, {
-        list: ['action_id', 'user_id']
-    });
-    admin.registerMongooseModel('Category', Models.Category, null, {
-        list: ['name']
-    });
-    admin.registerMongooseModel('Article', Models.Article, null, {
-        list: ['title', 'getLink']
-    });
-    admin.registerMongooseModel('PostArticle', Models.PostArticle, null, {
-        list: ['article_id', 'text']
-    });
-    admin.registerMongooseModel('Tag', Models.Tag, null, {
-        list: ['tag']
-    });
+
     admin.registerMongooseModel('Action', Models.Action, null, {
         form: ActionForm,
         list: ['title'],
@@ -183,20 +143,57 @@ module.exports = function (app) {
         list: ['name', 'category']
     });
 
-    admin.registerMongooseModel('SuccessStory', Models.SuccessStory, null, {
-        list: ['title']
+    admin.registerMongooseModel('PostAction', Models.PostAction, null, {
+        list: ['text', 'username', 'discussion_id.title'],
+        list_populate: ['discussion_id'],
+        order_by: ['-creation_date'],
+        filters: ['discussion_id', 'creator_id']
     });
 
-    admin.registerMongooseModel('Headline', Models.Headline, null, {
-        list: ['title']
+    admin.registerMongooseModel('Article', Models.Article, null, {
+        list: ['title', 'getLink']
     });
 
-    admin.registerMongooseModel('Update', Models.Update, null, {
-        list: ['title'],
-        form: IdkunimForm
+    admin.registerMongooseModel('PostArticle', Models.PostArticle, null, {
+        list: ['article_id', 'text']
+    });
+
+
+
+
+
+
+
+
+
+
+
+    admin.registerSingleRowModel(Models.GamificationTokens, 'GamificationTokens', {
+            form: GamificationForm}
+    );
+
+    admin.registerMongooseModel("DiscussionHistory", Models.DiscussionHistory, null, {
+        list: ['discussion_id', 'date'],
+        cloneable: true,
+        filters: ['discussion_id']
     });
 
     admin.registerMongooseModel('Kilkul', Models.Kilkul, null, {
+        list: ['title']
+    });
+
+    admin.registerMongooseModel('DailyDiscussion', mongoose.model('DailyDiscussion'), null, {
+        list: ['title'],
+        list_populate: ['discussion_id'],
+        order_by: ['gui_order'],
+        sortable: 'gui_order'
+    });
+
+    admin.registerMongooseModel('Category', Models.Category, null, {
+        list: ['name']
+    });
+
+    admin.registerMongooseModel('SuccessStory', Models.SuccessStory, null, {
         list: ['title']
     });
 
@@ -218,14 +215,59 @@ module.exports = function (app) {
         cloneable: true
     });
 
+    admin.registerMongooseModel('Qa', Models.Qa, null, {
+        list: ['title']
+    });
+
+    admin.registerMongooseModel('FooterLink', mongoose.model('FooterLink'), null, {
+        list: ['tab', 'name'],
+        order_by: ['gui_order'],
+        sortable: 'gui_order'
+    });
+
+/*
+    admin.registerMongooseModel('Vote', Models.Vote, null, {
+        list: ['post_id', 'user_id']
+    });
+
+    admin.registerMongooseModel('VoteSuggestion', Models.VoteSuggestion, null, {
+        list: ['suggestion_id', 'user_id']
+    });
+    admin.registerMongooseModel('Grade', Models.Grade, null, {
+        list: ['discussion_id', 'user_id']
+    });
+    admin.registerMongooseModel('Like', Models.Like, null, {
+        list: ['information_item_id', 'user_id']
+    });
+    admin.registerMongooseModel('Join', Models.Join, null, {
+        list: ['action_id', 'user_id']
+    });
+
+
+
+    admin.registerMongooseModel('Tag', Models.Tag, null, {
+        list: ['tag']
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     admin.registerMongooseModel('Test', Models.Test, null, {
         list: ['action_resources'],
         cloneable: true
     });
 
-    admin.registerMongooseModel('Qa', Models.Qa, null, {
-        list: ['title']
-    });
+
 
     admin.registerMongooseModel('ElectionsText', Models.ElectionsText, null, {
         list: ['title']
@@ -257,11 +299,7 @@ module.exports = function (app) {
         list: ['username']
     });
 
-    admin.registerMongooseModel('FooterLink', mongoose.model('FooterLink'), null, {
-        list: ['tab', 'name'],
-        order_by: ['gui_order'],
-        sortable: 'gui_order'
-    });
+
 
     admin.registerMongooseModel('Password Change Form', mongoose.model('_MongooseAdminUser'), null, {
         list: ['username'],
@@ -269,12 +307,7 @@ module.exports = function (app) {
         createable: false
     });
 
-    admin.registerMongooseModel('DailyDiscussion', mongoose.model('DailyDiscussion'), null, {
-        list: ['title'],
-        list_populate: ['discussion_id'],
-        order_by: ['gui_order'],
-        sortable: 'gui_order'
-    });
+
     admin.registerMongooseModel('QuoteGameParty', mongoose.model('QuoteGameParty'), null, {
         list: ['name'],
         order_by: ['gui_order'],
@@ -293,11 +326,9 @@ module.exports = function (app) {
         sortable: 'gui_order'
     });
 
-    admin.registerMongooseModel('PressItem', mongoose.model('PressItem'), null, {
-        list: ['title'],
-        order_by: ['gui_order'],
-        sortable: 'gui_order'
-    });
+
+*/
+
 
 
 
