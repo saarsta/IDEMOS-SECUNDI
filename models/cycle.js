@@ -67,8 +67,8 @@ var Cycle = module.exports = new Schema({
         new_atzuma_user_text: {type: String}},
 
     counter_text :   {type: String},
-    is_hidden:{type:Boolean,'default':true}    ,
-    is_private:{type:Boolean,'default':false}    ,
+    is_hidden:{type:Boolean,'default':true},
+    is_private:{type:Boolean,'default':false},
 
     timeline:{
         source:{type: String} ,

@@ -18,13 +18,14 @@ var models = require('../../../models'),
 module.exports = function(req, res){
 
     var g_cycle;
-    var cycle_id=req.params[0]||null;
-    cycle_id= req.url=="/vote" ?'5098eb8bc492d10200000024': cycle_id;
-    cycle_id= req.url=="/smallgov" ?'508026e8cb2276020000001f': cycle_id;
-    cycle_id= req.url=="/health" ?'507c39809cba93020000003d': cycle_id;
+    var cycle_id = req.params || null;
+    cycle_id = req.url == "/vote" ?'5098eb8bc492d10200000024' : cycle_id;
+    cycle_id = req.url == "/smallgov" ?'508026e8cb2276020000001f' : cycle_id;
+    cycle_id = req.url == "/health" ?'507c39809cba93020000003d' : cycle_id;
+    cycle_id = req.url == "/agra" ?'5047023a9e56a502000014f5' : cycle_id;
 
 
-    var join_on_page =req.query.join?true:false;
+    var join_on_page = req.query.join ? true : false;
     /*
     TODO:ADD code to join on server side if logged in
 

@@ -170,12 +170,6 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
 
 
                 });
-
-
-
-
-
-
             } else {
                 callback(err, object);
             }
@@ -216,7 +210,6 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
 
                         itr_cbk(err);
                     });
-
             }, function(err, obj){
                 callback(err, results);
             });
