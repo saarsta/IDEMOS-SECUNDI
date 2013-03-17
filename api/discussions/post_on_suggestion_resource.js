@@ -60,6 +60,9 @@ var PostOnSuggestionResource = module.exports = common.GamificationMongooseResou
         fields.last_name = user.last_name;
 
         self._super(req, fields, function(err, post_suggestion){
+            post_suggestion.avatar = req.user.avatar_url();
+            post_suggestion.username = req.user + "";
+
             callback(err, post_suggestion);
         });
     }

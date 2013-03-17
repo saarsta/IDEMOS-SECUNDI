@@ -166,11 +166,11 @@ var error_message = error_message || '';
     </div>
     <div class="content_break comments">
         <div class="content_break_content comments">
-            <h2>תגובות (32)</h2>
+            <h2 id="comments-title">תגובות <small id="comments_number"></small></h2>
             <div id="comments_filter">
-                <input data-sort-by="-creation_date" class="button_order_chron" type="button" />
-                <input data-sort-by="-popularity" class="button_order_popular" type="button" />
-                <input data-sort-by="-total_votes" class="button_order_contro" type="button" />
+                <input data-selected="true" data-sort-by="-creation_date" class="button_order_chron" type="button" />
+                <input data-selected="false" data-sort-by="-popularity" class="button_order_popular" type="button" />
+                <input data-selected="false" data-sort-by="-total_votes" class="button_order_contro" type="button" />
             </div>
         </div>
     </div>
@@ -836,31 +836,48 @@ $(document).ready(function () {
         }
     });
 
-    $('.add_comment input').bind("enterKey",function(e){
-        var text = $(this).val();
-        var suggestion_id = $(this).parent('suggestion_wrapper').data('id');
-        var add_comment = $(this).parent('.add_comment');
-        var can_continue = $(this).parent().data('can-add');
+//    $('.add_comment input').bind("enterKey",function(e){
+//        var text = $(this).val();
+//        var suggestion_id = $(this).parent('suggestion_wrapper').data('id');
+//        var add_comment = $(this).parent('.add_comment');
+//        var can_continue = $(this).parent().data('can-add');
+//
+//        if (can_continue){
+//            $(this).parent().attr('data-can-add', false);
+//            db_functions.addCommentToSuggestion(suggestion_id, discussion_id, text, function(err, comment){
+//                $(this).parent().attr('data-can-add', true);
+//
+////                comment.is_even = (index % 2) == 0;
+//                dust.render('comment_on_suggestion', comment, function (err, out) {
+//                    // append before "add_comment"
+//                    add_comment.before(out);
+////                    image_autoscale(curr_suggestion.find('.auto-scale img'));
+//                });
+//            });
+//        }
+//    });
 
-        if (can_continue){
-            $(this).parent().attr('data-can-add', false);
-            db_functions.addCommentToSuggestion(suggestion_id, discussion_id, text, function(err, comment){
-                $(this).parent().attr('data-can-add', true);
-
-//                comment.is_even = (index % 2) == 0;
-                dust.render('comment_on_suggestion', comment, function (err, out) {
-                    // append before "add_comment"
-                    add_comment.before(out);
-//                    image_autoscale(curr_suggestion.find('.auto-scale img'));
-                });
-            });
-        }
-    });
-
-    $('.add_comment input').keyup(function(e){
+    $('#suggestions_wrapper').on('keyup', '.add_comment input', function(e){
         if(e.keyCode == 13)
         {
-            $(this).trigger("enterKey");
+            var text = $(this).val();
+            var suggestion_id = $(this).parents('#suggestion_wrapper').data('id');
+            var add_comment = $(this).parent('.add_comment');
+            var can_continue = $(this).parent().data('can-add');
+
+            if (can_continue){
+                $(this).parent().attr('data-can-add', false);
+                db_functions.addCommentToSuggestion(suggestion_id, discussion_id, text, function(err, comment){
+                    $(this).parent().attr('data-can-add', true);
+
+//                comment.is_even = (index % 2) == 0;
+                    dust.render('comment_on_suggestion', comment, function (err, out) {
+                        // append before "add_comment"
+                        add_comment.before(out);
+                        image_autoscale(add_comment.parent('.suggestion_comments_holder').find('.auto-scale img'));
+                    });
+                });
+            }
         }
     });
 
@@ -934,16 +951,17 @@ $(document).ready(function () {
     }
 
     function loadPosts(page_number, pagination_action) {
-        var selectedOption = $("#comments_filter").data();
+        var selectedOption = $("#comments_filter [data-selected=true]").data('sort-by');
         current_offset = page_number ? (page_number - 1) * limit : 0;
 
         // get posts with current offset
-        db_functions.getSortedPostByDiscussion(discussion_id, "-creation_date"/*selectedOption*/, current_offset, limit, function (err, data) {
+        db_functions.getSortedPostByDiscussion(discussion_id, "-creation_date", selectedOption, limit, function (err, data) {
             if (err) {
                 console.log(err);
             } else {
                 total_post_count = data.meta.total_count;
                 num_of_pages = Math.ceil(total_post_count / limit);
+                $('#comments_number').text(' (' + data.meta.total_count + ')');
 
                 if(!page_number){
                     setPagination();
@@ -1086,7 +1104,12 @@ $(document).ready(function () {
         // TODO focus to add comment
     });
 
+    $("#comments_filter input").click(function(){
+        $(this).parent().find("input").data('selected', false);
+        $(this).data('selected', true);
 
+        loadPosts(1);
+    });
 //
 //    $('.more_comments').click(function() {
 //        loadPosts();
