@@ -4,9 +4,7 @@ var mongoose = require("mongoose"),
     ObjectId = Schema.ObjectId,
     async = require('async'),
     _ = require('underscore'),
-
     utils = require('../utils');
-
 
 var Suggestion = {
     discussion_id:{type:Schema.ObjectId, ref:'Discussion', index:true, required:true, onDelete:'delete'},
