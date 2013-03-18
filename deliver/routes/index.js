@@ -138,6 +138,8 @@ module.exports = function (app) {
 
     router.all('/health', require('./cycles/main'));//'507c39809cba93020000003d'
 
+    router.all('/agra', require('./cycles/main'));
+
     router.all('/faces', require('./navigation/faces'));
 
     router.all('/faces_game/upload', require('./navigation/faces_game_upload'));
