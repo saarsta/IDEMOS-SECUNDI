@@ -444,24 +444,7 @@ $(document).ready(function () {
     });
 
 
-    var mouseDown, mouseUp, top, left;
 
-    $('#full')
-        .on('mousedown', function (e) {
-            mouseDown = e;
-            console.log(e);})
-        .on('mouseup',function (e) {
-            mouseUp = e;
-            var err = false;
-            var range = $(this).find('textarea').getSelection();
-            left = Math.ceil((mouseDown.clientX + mouseUp.clientX) / 2 - ($(".popup-window").width() / 2));
-            top = Math.min(mouseDown.clientY, mouseUp.clientY) - $(".popup-window").height() - 40 + $(window).scrollTop();})
-        .on('keydown', function (e) {
-            console.log(e.keyCode == 27);
-            if (!(e.shiftKey && (e.keyCode <= 40 && e.keyCode >= 37) || (e.ctrlKey && e.keyCode == 65))) e.preventDefault();})
-        .on('dragstart', function (e) {
-            e.preventDefault();
-    });
 
 
 
@@ -1019,7 +1002,7 @@ $(document).ready(function () {
 //    });
 //
     var suggest_grade_id = new Object();
-    var original = "<%=discussion.text_field%>";
+    var original = "<%=discussion.text_field.replace(/\r\n/g, '\\')%>";
     var current_offset = 0;
     var limit = 2;
     var num_of_pages;
@@ -1481,18 +1464,38 @@ $(document).ready(function () {
     };
 
 
-    $('#discussion_content').mouseup(function(){
-        var t = '';
+
+    var mouseDown, mouseUp, top, left;
+
+    $('#full')
+            .on('mousedown', function (e) {
+                mouseDown = e;
+                console.log(e);})
+            .on('mouseup',function (e) {
+                mouseUp = e;
+                var err = false;
+             //   var range = $(this).find('textarea').getSelection();
+                left = Math.ceil((mouseDown.clientX + mouseUp.clientX) / 2 - ($(".popup-window").width() / 2));
+                top = Math.min(mouseDown.clientY, mouseUp.clientY) - $(".popup-window").height() - 40 + $(window).scrollTop();})
+            .on('keydown', function (e) {
+                console.log(e.keyCode == 27);
+                if (!(e.shiftKey && (e.keyCode <= 40 && e.keyCode >= 37) || (e.ctrlKey && e.keyCode == 65))) e.preventDefault();})
+            .on('dragstart', function (e) {
+                e.preventDefault();
+            });
+
+    $('#discussion_content').mouseup(function(e){
+
         if(window.getSelection){
-            t = window.getSelection();
+            range = window.getSelection();
         }else if(document.getSelection){
-            t = document.getSelection();
+            range = document.getSelection();
         }else if(document.selection){
-            t = document.selection.createRange();
+            range = document.selection.createRange();
         }
 
 
-        console.log(t);
+        console.log(range);
     });
 
 });
