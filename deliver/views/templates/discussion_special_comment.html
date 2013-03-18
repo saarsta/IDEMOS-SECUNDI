@@ -1,0 +1,25 @@
+<div class="{class_type}">
+    <h2 class="title">{title}</h2>
+    <div class="comment_wrapper">
+        <div class="comment_details">
+            <div class="photo auto-scale"  style="height:64px; swidth:60px">
+                <img src="{?creator_id}{creator_id.avatar_url}{:else}/images/default_user_img.gif{/creator_id}" />
+            </div>
+            <div class="name">
+                {creator_id.first_name} {creator_id.last_name}
+            </div>
+            <div class="date_time">
+                <span class="time">{creator_id.username} {?creation_date}{creation_date|time_only}{/creation_date}</span>
+                <span class="date">{?creation_date}{creation_date|date}{/creation_date}</span>
+            </div>
+            <div class="ratings">
+                <span class="friends">{creator_id.num_of_proxies_i_represent}</span>
+                <span class="awards">{creator_id.score}</span>
+            </div>
+        </div>
+        <div class="content">
+            <div class="rating"><span>דירוג:</span><span class="good">{votes_for}</span><span class="bad">{votes_against}</span></div>
+            {text|s|new_post}
+        </div>
+    </div>
+</div>

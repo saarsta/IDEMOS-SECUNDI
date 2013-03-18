@@ -262,101 +262,46 @@ var error_message = error_message || '';
     </div>
     <div id="content_wrapper_comments">
         <div id="comments_wrapper">
-    <!--<div class="most_pop">-->
-        <!--<h2 class="title">התגובה הפופולרית ביותר</h2>-->
-        <!--<div class="comment_wrapper">-->
-            <!--<div class="comment_details">-->
-                <!--<div class="photo">-->
-                    <!--<img src="/images/icon_person.png" />-->
-                <!--</div>-->
-                <!--<div class="name">-->
-                    <!--אסף גרינברג-->
-                <!--</div>-->
-                <!--<div class="date_time">-->
-                    <!--<span class="time">14:46</span>-->
-                    <!--<span class="date">27.07.2012</span>-->
-                <!--</div>-->
-                <!--<div class="ratings">-->
-                    <!--<span class="friends">1458</span>-->
-                    <!--<span class="awards">3769</span>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div class="content">-->
-                <!--<div class="rating"><span>דירוג:</span><span class="good">458</span><span class="bad">2</span></div>-->
-                <!--הגיעה העת לבטל את אגרת הטלוויזיה. במקום לדחוף הצעות שאין להן סיכוי, מוצע כאן לבטל את גביית האגרה, להעביר חלק מן הנטל לתשלום שאנחנו משלמים ממילא בזמן חידוש רשיון הרכב, וכך לחסוך מיליונים רבים.-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
-        <!--<div class="most_contr">-->
-            <!--<h2 class="title">התגובה השנויה במחלוקת</h2>-->
-            <!--<div class="comment_wrapper">-->
-                <!--<div class="comment_details">-->
-                    <!--<div class="photo">-->
-                        <!--<img src="/images/icon_person.png" />-->
-                    <!--</div>-->
-                    <!--<div class="name">-->
-                        <!--אסף גרינברג-->
-                    <!--</div>-->
-                    <!--<div class="date_time">-->
-                        <!--<span class="time">14:46</span>-->
-                        <!--<span class="date">27.07.2012</span>-->
-                    <!--</div>-->
-                    <!--<div class="ratings">-->
-                        <!--<span class="friends">1458</span>-->
-                        <!--<span class="awards">3769</span>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="content">-->
-                    <!--<div class="rating"><span>דירוג:</span><span class="good">458</span><span class="bad">2</span></div>-->
-                    <!--הגיעה העת לבטל את אגרת הטלוויזיה. במקום לדחוף הצעות שאין להן סיכוי, מוצע כאן לבטל את גביית האגרה, להעביר חלק מן הנטל לתשלום שאנחנו משלמים ממילא בזמן חידוש רשיון הרכב, וכך לחסוך מיליונים רבים.-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-        <div class="pagination_wrapper first_pagination">
-            <div class="pagination">
+            <div class="pagination_wrapper first_pagination">
+                <div class="pagination">
+                </div>
             </div>
-        </div>
-        <div class="pagination_wrapper second_pagination">
-            <div class="pagination">
+            <div class="pagination_wrapper second_pagination">
+                <div class="pagination">
+                </div>
             </div>
-        </div>
-
-        <div id="add_comment_wrapper">
-            <h2 class="title">כתיבת תגובה</h2>
-            <div class="comment_wrapper">
-                <div class="comment_details">
-                    <div class="photo">
-                        <img src="images/icon_person.png">
+            <div id="add_comment_wrapper">
+                <h2 class="title">כתיבת תגובה</h2>
+                <div class="comment_wrapper">
+                    <div class="comment_details">
+                        <div class="photo">
+                            <img src="images/icon_person.png">
+                        </div>
+                        <div class="name">
+                            אסף גרינברג
+                        </div>
+                        <div class="date_time">
+                            <span class="time">14:46</span>
+                            <span class="date">27.07.2012</span>
+                        </div>
+                        <div class="ratings">
+                            <span class="friends">1458</span>
+                            <span class="awards">3769</span>
+                        </div>
                     </div>
-                    <div class="name">
-                        אסף גרינברג
-                    </div>
-                    <div class="date_time">
-                        <span class="time">14:46</span>
-                        <span class="date">27.07.2012</span>
-                    </div>
-                    <div class="ratings">
-                        <span class="friends">1458</span>
-                        <span class="awards">3769</span>
+                    <div class="content">
+                        <img src="images/placeholder_txt_editor.png">
                     </div>
                 </div>
                 <div class="content">
-                    <img src="images/placeholder_txt_editor.png">
+                    <textarea id="discussion_comment" dir="rtl" class="four-col" cols="0" rows="0"></textarea>
                 </div>
             </div>
-
-            <div class="content">
-                <textarea id="discussion_comment" dir="rtl" class="four-col" cols="0" rows="0"></textarea>
-            </div>
+            <input id="submit_post" type="button" class="button_submit_comment" />
         </div>
-        <input id="submit_post" type="button" class="button_submit_comment" />
     </div>
-
-    </div>
-    </div>
-    <% include partials/footer.ejs %>
-
-
+</div>
+<% include partials/footer.ejs %>
 <script type="text/javascript">
 
 var current_section = 1;
@@ -492,7 +437,7 @@ $(document).ready(function () {
         }
     });
 
-        // focus and copy the selected text of discussion
+    // focus and copy the selected text of discussion
     $('#pop_post_bt').click( function (e) {
         e.preventDefault();
         new_post_ref_id = null;
@@ -554,11 +499,14 @@ $(document).ready(function () {
         $('#write-comment').hide();
     });
 
-
-
     $('.button_add_comment').on("click", function (e) {
         e.preventDefault();
         focusOnCommentBox();
+    });
+
+    $('#comments_wrapper').on("click", ".button_comment",function (e) {
+            e.preventDefault();
+            focusOnCommentBox();
     });
 
 
@@ -891,36 +839,34 @@ $(document).ready(function () {
 //                });
 //            });
 //
-//    // copy the post text+ user to   discussion_comment
-//    $('#comments').on('click', ".quote_button", function (e) {
-//
-//
-//        var userName,
-//                text;
-//        var postDiv = $(this).parents('.comment-one');
-//        var text_height = $(this).parents('div').find('.post_text').height();
-//
-//        e.preventDefault();
-//       // $("textarea#discussion_comment").focus();
-//        userName = postDiv.data('creator_name');
-//        new_post_ref_id = postDiv.data('id');
-//
-//        var text_to_quote = $('.actual_text', postDiv).length ? $('.actual_text', postDiv).text() : $('.post_text', postDiv).text();
-//
-//        text = "[ציטוט=" + '"' + userName + '"' + " " + "]\n"
-//                + text_to_quote
-//                + '\n'
-//                + "[/ציטוט]"
-//                + '<p>&nbsp;</p>';
-//
-//        $("textarea#discussion_comment").val($("textarea#discussion_comment").val() + text).focus();
-//        focusOnCommentBox();
-//
-//        $('#cke_contents_discussion_comment').height($('#cke_contents_discussion_comment').height() + text_height)
-//
-//    });
-//
-//
+    // copy the post text+ user to   discussion_comment
+    $('#comments_wrapper').on('click', ".button_quote", function (e) {
+        var userName;
+        var text;
+        var postDiv = $(this).parents('.comment_wrapper');
+        // TODO chnge this text height
+        var text_height = $(this).parents('div').find('.post_text').height();
+        var new_post_ref_id;
+        e.preventDefault();
+        userName = postDiv.data('creator_name');
+        new_post_ref_id = postDiv.data('id');
+
+        // TODO replace actual_text selector
+        var text_to_quote = $('.actual_text', postDiv).length ? $('.actual_text', postDiv).text() : $('.content', postDiv).text();
+
+        text = "[ציטוט=" + '"' + userName + '"' + " " + "]\n"
+                + text_to_quote
+                + '\n'
+                + "[/ציטוט]"
+                + '<p>&nbsp;</p>';
+
+        $("textarea#discussion_comment").val($("textarea#discussion_comment").val() + text).focus();
+        focusOnCommentBox();
+
+        $('#cke_contents_discussion_comment').height($('#cke_contents_discussion_comment').height() + text_height);
+    });
+
+
 //    $('#comments').on('click', ".post_quote a", function (e) {
 //
 //        var post_id = $(this).parents(".comment-one").data("id");
