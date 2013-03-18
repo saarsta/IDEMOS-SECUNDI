@@ -138,7 +138,9 @@ module.exports = function (app) {
 
     router.all('/health', require('./cycles/main'));//'507c39809cba93020000003d'
 
-    router.all('/agra', require('./cycles/main'));
+    router.get('/agra', require('./cycles/main'));
+
+    router.post('/agra', require('./cycles/main'));
 
     router.all('/faces', require('./navigation/faces'));
 
