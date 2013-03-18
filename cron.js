@@ -77,8 +77,8 @@ var once_an_hour_cron = exports.once_an_hour_cron = {
 
     scrapeFBPagesLikes: function (main_callback) {
         console.log('---scrapeFBPagesLikes start')
-        var fb_user ='uri@uru.org.il';
-        var fb_pass = 'uruuruuru';
+        var fb_user ='daniella.geula@gmail.com';
+        var fb_pass = 'dz5274046';
         var browser=null;
         if(GLOBAL.zombie) {
             browser = GLOBAL.zombie
@@ -89,12 +89,10 @@ var once_an_hour_cron = exports.once_an_hour_cron = {
         models.Cycle.find({"fb_page.fb_id": {$exists: true} }).exec(function(err, cycles){
             if(err){
                 console.log('---find error ' +err ) ;
-                callback(err);
+                main_callback(err);
             }else{
                 console.log('---find cycles ' +cycles.length )
                 var func_arr =null;
-                console.log(cycles.length)
-                console.log(cycles)
                 func_arr =_.map(cycles,function(cycle){
                     return  function(callback) {
                         getUsersLoop(5,browser,cycle.fb_page.fb_id,function(err,users){
