@@ -1692,16 +1692,16 @@ span.remark{
     border-bottom: 1px solid #dbdcde;
 }
 
-.suggestion_holder.window.edit .edit_window{
+.suggestion_holder.window.show_focus.edit .edit_window{
     display:block;
 }
 
-.suggestion_holder.window.edit .edit_window p{
+.suggestion_holder.window.show_focus.edit .edit_window p{
     opacity:1;
 }
 
-.suggestion_holder.window.edit .button_edit_comment{
-    display:none;
+.suggestion_holder.window.edit_suggestion.edit .button_edit_comment{
+    display:block;
 }
 
 .suggestion_details{
@@ -1766,16 +1766,20 @@ span.remark{
     opacity: 1;
 }
 
+/*
 .suggestion_holder.edit.window .edit_window p{
-    /* -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+    */
+/* -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
     filter: alpha(opacity=50);
     -moz-opacity: 0.5;
     -khtml-opacity: 0.5;
-    opacity: 0.5; */
-}
+    opacity: 0.5; *//*
 
-.suggestion_holder.edit .button_edit_comment{
-    display:block;
+}
+*/
+
+.suggestion_holder.edit_suggestion .button_edit_comment{
+    display:none;
 }
 
 .suggestion_content .text_orig h3{
@@ -2285,6 +2289,15 @@ span.remark{
     background:url(/images/button_pagination_last.png) no-repeat 0 0;
 }
 
+.comment_wrapper.edit_comment.edit .button_edit_comment{
+    display: inline-block;
+    position: absolute;
+}
+
+.comment_wrapper.edit_comment .button_edit_comment{
+    display: none;
+}
+
 #comments_wrapper .comment_wrapper.odd{
     background:#f6f6f6;
     border-top:1px solid #d2d1d1;
@@ -2431,6 +2444,21 @@ input.button_submit_comment{
     cursor:pointer;
     float:left;
     margin-top:20px;
+}
+
+input.button_submit_comment_no_text{
+    background:url(/images/button_add_comment_no_text.png) no-repeat 0 0;
+    height:42px;
+    width:140px;
+    border:none;
+    cursor:pointer;
+    float:left;
+    margin-top:20px;
+    color: #50504f;
+    font-size: 21px;
+    line-height: 20px;
+    font-family: 'AdumaFOTRegular';
+    text-decoration: none;
 }
 
 .slide-box {

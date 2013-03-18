@@ -14,6 +14,8 @@ var resources = require('jest'),
     _ = require('underscore'),
     notifications = require('../notifications.js');
 
+var EDIT_TEXT_LEGIT_TIME = 60 * 1000 * 15;
+
 var PostResource = module.exports = common.GamificationMongooseResource.extend({
     init:function () {
 
@@ -39,7 +41,8 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
             _id:null,
             ref_to_post_id: null,
             discussion_id:null,
-            is_user_follower: null
+            is_user_follower: null,
+            is_editable: null
         };
         this.update_fields = {text: null, discussion_id: null};
 //    this.validation = new resources.Validation();=
@@ -56,16 +59,16 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
         this._super(req, filters, sorts, limit, offset, function(err, results){
            var user_id;
             if(req.user){
-                user_id = req.user._id;
+                user_id = req.user._id + "";
 
-                        async.waterfall([
-                            function(cbk){
-                                models.User.findById(user_id, cbk);
-                            },
+                    async.waterfall([
+                        function(cbk){
+                            models.User.findById(user_id, cbk);
+                        },
 
-                            function(user_obj, cbk){
+                        function(user_obj, cbk){
 
-                                var proxies = user_obj.proxy;
+                            var proxies = user_obj.proxy;
 
 //                                _.each(results.objects, function(post){
 //                                    var flag = false;
@@ -82,33 +85,38 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
 //                                    post.is_user_follower = flag;
 //                                })
 
-                                async.forEach(results.objects, function(post, itr_cbk){
-                                    //update each post creator if he is a follower or not
-                                    var flag = false;
+                            async.forEach(results.objects, function(post, itr_cbk){
+                                // set is_editable flag
+                                if (user_id === post.creator_id.id && new Date() - post.creation_date <= EDIT_TEXT_LEGIT_TIME){
+                                    post.is_editable = true
+                                }
 
-                                    var proxy = _.find(proxies, function(proxy){
-                                        if(!post.creator_id)
-                                            return null;
-                                        else
-                                            return proxy.user_id + "" == post.creator_id._id + ""});
-                                    if(proxy)
-                                        post.mandates_curr_user_gave_creator = proxy.number_of_tokens;
-                                    if(post.creator_id)
-                                        flag =  _.any(post.creator_id.followers, function(follower){return follower.follower_id + "" == user_id + ""});
-                                    post.is_user_follower = flag;
+                                //update each post creator if he is a follower or not
+                                var flag = false;
 
-                                    //update each post creator with his vote balance
-                                    models.Vote.findOne({user_id: user_id, post_id: post._id}, function(err, vote){
-                                        post.voter_balance = vote ? (vote.ballance || 0) : 0;
-                                        itr_cbk(err);
-                                    })
-                                }, function(err, obj){
-                                    cbk(err, results);
-                                });
-                            }
-                        ], function(err, results){
-                            callback(err, results);
-                        })
+                                var proxy = _.find(proxies, function(proxy){
+                                    if(!post.creator_id)
+                                        return null;
+                                    else
+                                        return proxy.user_id + "" == post.creator_id._id + ""});
+                                if(proxy)
+                                    post.mandates_curr_user_gave_creator = proxy.number_of_tokens;
+                                if(post.creator_id)
+                                    flag =  _.any(post.creator_id.followers, function(follower){return follower.follower_id + "" == user_id + ""});
+                                post.is_user_follower = flag;
+
+                                //update each post creator with his vote balance
+                                models.Vote.findOne({user_id: user_id, post_id: post._id}, function(err, vote){
+                                    post.voter_balance = vote ? (vote.ballance || 0) : 0;
+                                    itr_cbk(err);
+                                })
+                            }, function(err, obj){
+                                cbk(err, results);
+                            });
+                        }
+                    ], function(err, results){
+                        callback(err, results);
+                    })
             }else{
                 _.each(results.objects, function(post){ post.is_user_follower = false; })
                 callback(err, results);
@@ -316,9 +324,8 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
 
     // user can update his post in the first 15 min after publish
     update_obj: function(req, object, callback){
-        var update_legit_time = 60 * 1000 * 15;
         //first check if its in 15 min range after publish
-        if(new Date() - object.creation_date > update_legit_time){
+        if(new Date() - object.creation_date > EDIT_TEXT_LEGIT_TIME){
             callback({message: 'to late to update comment', code: 404})
         }else{
             this._super(req, object, callback);

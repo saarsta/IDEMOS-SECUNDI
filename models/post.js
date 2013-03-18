@@ -3,7 +3,6 @@ var mongoose = require("mongoose"),
     common = require('./common'),
     ObjectId = Schema.ObjectId,
     async = require('async'),
-
     utils = require('../utils');
 
 var Post = {
