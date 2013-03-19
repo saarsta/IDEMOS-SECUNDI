@@ -1,4 +1,4 @@
-<div id="suggestion_wrapper" data-id="{id}"
+<div id="suggestion_wrapper {?is_editable}edit_suggestion{:else}show_focus{/is_editable}" data-id="{id}"
      data-creator_name="{creator_id.first_name} {creator_id.last_name}"
      data-creator_id="{creator_id.id}">
     <div class="suggestion_holder window">
