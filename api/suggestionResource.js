@@ -59,8 +59,8 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
         var self = this;
         var discussion_id = req.query.discussion_id;
         var discussion_threshold;
-        var discussion_text;
-        var user_id = req.user._id + "";
+
+        var user_id = req.user && req.user._id + "";
 
         var iterator = function (suggestion, itr_cbk) {
             // set is_editable flag if user is the creator and its 15 min after publish
