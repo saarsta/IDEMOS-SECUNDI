@@ -323,35 +323,47 @@ var error_message = error_message || '';
             </div>
         </div>
 
-        <div id="add_comment_wrapper">
-            <h2 class="title">כתיבת תגובה</h2>
-            <div class="comment_wrapper">
-                <div class="comment_details">
-                    <div class="photo">
-                        <img src="images/icon_person.png">
+
+            <div id="add_comment_wrapper" <%if(user_logged){%> data-creator_id="<%=user._id%>" <%}%> >
+                <h2 class="title">כתיבת תגובה</h2>
+                <div class="comment_wrapper">
+                    <div class="comment_details">
+                        <div class="img-box" style="overflow: hidden;">
+                            <div style="height:64px" class='auto-scale'>
+                                <img src="<%=avatar%>" alt="אני"/>
+                            </div>
+                            <span></span>
+                        </div>
+                        <div class="name">
+                            <%if(user_logged){%>
+                            <%=user.first_name + ' '+ user.last_name%>
+                            <%}else{%>
+                            אני
+                            <%}%>
+
+                        </div>
+                        <div class="date_time">
+                            <span class="time"><%=(new Date()).format('H:MM') %></span>
+                            <span class="date"><%=(new Date()).format('dd.mm.yy') %></span>
+                        </div>
+                        <% if(user_logged){ %>
+                        <div class="ratings">
+                            <span class="friends"><%=user.num_of_proxies_i_represent%></span>
+                            <span class="awards"><%=user.score%></span>
+                        </div>
+                        <% } %>
                     </div>
-                    <div class="name">
-                        אסף גרינברג
-                    </div>
-                    <div class="date_time">
-                        <span class="time">14:46</span>
-                        <span class="date">27.07.2012</span>
-                    </div>
-                    <div class="ratings">
-                        <span class="friends">1458</span>
-                        <span class="awards">3769</span>
+                    <div class="content">
+                        <textarea id="discussion_comment" dir="rtl" class="four-col" cols="0" rows="0"></textarea>
                     </div>
                 </div>
-                <div class="content">
-                    <img src="images/placeholder_txt_editor.png">
-                </div>
+                <input id="submit_post" type="button" class="button_submit_comment" />
             </div>
 
-            <div class="content">
-                <textarea id="discussion_comment" dir="rtl" class="four-col" cols="0" rows="0"></textarea>
-            </div>
-        </div>
-        <input id="submit_post" type="button" class="button_submit_comment" />
+
+
+
+
     </div>
 
     </div>
@@ -459,41 +471,6 @@ $(document).ready(function () {
        }
     });
 
-    db_functions.getSuggestionByDiscussion(discussion_id, null, null, function(err, suggestions){
-        suggestions_list =suggestions.objects ;
-        $.each(suggestions_list, function (index, suggestion) {
-            if ((suggestion.parts[0].start >= range.start && suggestion.parts[0].start <= range.end)
-                    || (suggestion.parts[0].end >= range.start && suggestion.parts[0].end <= range.end)) {
-                flag = true;
-            }
-        })
-    });
-
-
-
-
-
-
-    $('#discussion_content').select(function (e) {
-        console.log('select')
-        range = $(this).getSelection();
-        console.log(range);
-        flag = false;
-        $.each(suggestions_list, function (index, suggestion) {
-            if ((suggestion.parts[0].start >= range.start && suggestion.parts[0].start <= range.end)
-                    || (suggestion.parts[0].end >= range.start && suggestion.parts[0].end <= range.end)) {
-                flag = true;
-            }
-        })
-        if(flag) {
-            popupProvider.showOkPopup({message:"הטקסט סומן כבר בהצעה לשינוי קיימת"});
-        }else{
-            $(".popup-window")
-                    .css({ top:top+38, left:left, opacity:0 })
-                    .show()
-                    .animate({ top:'-=20px', opacity:1 }, 100, 'linear');
-        }
-    });
 
         // focus and copy the selected text of discussion
     $('#pop_post_bt').click( function (e) {
@@ -611,7 +588,8 @@ $(document).ready(function () {
 
     var editor;
     $( '#discussion_comment' ).ckeditor(            {
-        height: 100,
+        height: 70,
+        width: 810,
         'line-height':10,
         language:'he',
         removePlugins : 'elementspath',
@@ -1002,7 +980,7 @@ $(document).ready(function () {
 //    });
 //
     var suggest_grade_id = new Object();
-    var original = "<%=discussion.text_field.replace(/\r\n/g, '\\')%>";
+    var original = "<%=discussion.text_field.replace(/\s{2,}/g, ' ')%>";
     var current_offset = 0;
     var limit = 2;
     var num_of_pages;
@@ -1035,6 +1013,7 @@ $(document).ready(function () {
 
     // get change suggestions and render
     db_functions.getSuggestionByDiscussion(discussion_id, 1, 0, function (err, data) {
+        suggestions_list =data.objects ;
         $.each(data.objects, function (index, suggestion) {
             render_suggestion(suggestion);
 
@@ -1464,19 +1443,32 @@ $(document).ready(function () {
     };
 
 
+//    db_functions.getSuggestionByDiscussion(discussion_id, null, null, function(err, suggestions){
+//        suggestions_list =suggestions.objects ;
+//        $.each(suggestions_list, function (index, suggestion) {
+//            if ((suggestion.parts[0].start >= range.start && suggestion.parts[0].start <= range.end)
+//                    || (suggestion.parts[0].end >= range.start && suggestion.parts[0].end <= range.end)) {
+//                flag = true;
+//            }
+//        })
+//    });
+
+
+
 
     var mouseDown, mouseUp, top, left;
 
     $('#full')
             .on('mousedown', function (e) {
                 mouseDown = e;
-                console.log(e);})
+                console.log("mouseDown"+e);})
             .on('mouseup',function (e) {
                 mouseUp = e;
                 var err = false;
              //   var range = $(this).find('textarea').getSelection();
                 left = Math.ceil((mouseDown.clientX + mouseUp.clientX) / 2 - ($(".popup-window").width() / 2));
-                top = Math.min(mouseDown.clientY, mouseUp.clientY) - $(".popup-window").height() - 40 + $(window).scrollTop();})
+                top = Math.min(mouseDown.clientY, mouseUp.clientY) - $(".popup-window").height() - 40 + $(window).scrollTop();
+                console.log("mouseUp top ="+top +" | left="+left);})
             .on('keydown', function (e) {
                 console.log(e.keyCode == 27);
                 if (!(e.shiftKey && (e.keyCode <= 40 && e.keyCode >= 37) || (e.ctrlKey && e.keyCode == 65))) e.preventDefault();})
@@ -1485,14 +1477,48 @@ $(document).ready(function () {
             });
 
     $('#discussion_content').mouseup(function(e){
-
+        var range_txt;
+        original = $('<div />').html(original).text();
         if(window.getSelection){
             range = window.getSelection();
+//            if(range.toString().indexOf('\r')==-1) {
+//                range_txt=range.toString().replace(/\n/g, ' ')
+//            } else{
+//                range_txt=range.toString().replace(/\r\n/g, ' ')
+//            }
+            range_txt=range.toString().replace(/\s{2,}/g, ' ')
+
+            range.start= original.indexOf(range_txt);
+            range.end=  range.start+  range_txt.length;
         }else if(document.getSelection){
             range = document.getSelection();
         }else if(document.selection){
             range = document.selection.createRange();
         }
+
+        //////////////////  show pop up   /////////////////
+       // console.log('select')
+       // range = $(this).getSelection();
+       // console.log(range);
+        flag = false;
+        $.each(suggestions_list, function (index, suggestion) {
+            if ((suggestion.parts[0].start >= range.start && suggestion.parts[0].start <= range.end)
+                    || (suggestion.parts[0].end >= range.start && suggestion.parts[0].end <= range.end)) {
+                flag = true;
+            }
+        })
+        if(flag) {
+            popupProvider.showOkPopup({message:"הטקסט סומן כבר בהצעה לשינוי קיימת"});
+        }else{
+            $(".popup-window")
+                    .css({ top:top, left:left, opacity:0 })
+                    .show()
+                    .animate({ top:'-=20px', opacity:1 }, 100, 'linear');
+        }
+        //////////////////////////////////////////////////
+
+
+
 
 
         console.log(range);
