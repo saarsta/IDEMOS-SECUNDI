@@ -165,14 +165,68 @@ var error_message = error_message || '';
 
                 </div>
                 <div id="content_left_sidebar">
-                    <div class="segment quotes">
-                        <h2>ציטוטים נוספים</h2>
-                        <div id="quotes_sidebar_holder">
-                            <div class="quotes_holder">
-                                <div class="status odd"><span class="positive"></span>העלאת מס חברות ל- 35%. זה נזק מיידי למשק. זה צעד שיגרום לאבטלת המונים יגרום לנזק</div>
-                                <div class="status even"><span class="negative"></span>העלאת מס חברות ל- 35%. זה נזק מיידי למשק. זה צעד שיגרום לאבטלת המונים יגרום לנזק</div>
-                                <div class="status odd"><span class="missing"></span>העלאת מס חברות ל- 35%. זה נזק מיידי למשק. זה צעד שיגרום לאבטלת המונים יגרום לנזק</div>
-                                <div class="status even"><span class="positive"></span>העלאת מס חברות ל- 35%. זה נזק מיידי למשק. זה צעד שיגרום לאבטלת המונים יגרום לנזק</div>
+                    <div class="segment press">
+                        <h2>מן העיתונות</h2>
+                        <div id="press_sidebar_holder">
+                            <div class="item">
+                                <div class="title">
+                                    <img class="logo" src="/images/logo_sample_1.png" />
+                                    <span class="date">29.04.12</span>
+										<span class="text">
+											המאבק בריכוזיות במשק הישראלי כמו גם נושאים נוספים
+										</span>
+                                </div>
+                                <div class="photo">
+                                    <img src="/images/placeholder_img_1.png" />
+                                </div>
+                                <div class="text">
+                                    לשלוט על כמעט כל תחום בחיינו, מהקורנפלקס בבוקר, עמלות הבנקים בצהרים והחדשות בערב. איך מתמודדים עם המצב.
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="title">
+                                    <img class="logo" src="/images/logo_sample_1.png" />
+                                    <span class="date">29.04.12</span>
+										<span class="text">
+											המאבק בריכוזיות במשק הישראלי כמו גם נושאים נוספים
+										</span>
+                                </div>
+                                <div class="photo">
+                                    <img src="/images/placeholder_img_1.png" />
+                                </div>
+                                <div class="text">
+                                    לשלוט על כמעט כל תחום בחיינו, מהקורנפלקס בבוקר, עמלות הבנקים בצהרים והחדשות בערב. איך מתמודדים עם המצב.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="segment links">
+                        <h2>קישורים מועילים</h2>
+                        <div id="press_sidebar_holder">
+                            <div class="item">
+                                <div class="title">
+                                    <a href="">החזית העממית לשחרור השחרור</a>
+                                </div>
+                                <div class="text">
+                                    הריכוזיות במשק מאפשרת למעטים לשלוט על כמעט כל תחום בחיינו, מהקורנפלקס...
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="title">
+                                    <a href="">החזית העממית לשחרור השחרור</a>
+                                </div>
+                                <div class="text">
+                                    הריכוזיות במשק מאפשרת למעטים לשלוט על כמעט כל תחום בחיינו, מהקורנפלקס...
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="title">
+                                    <a href="">החזית העממית לשחרור השחרור</a>
+                                </div>
+                                <div class="text">
+                                    הריכוזיות במשק מאפשרת למעטים לשלוט על כמעט כל תחום בחיינו, מהקורנפלקס...
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1495,8 +1549,9 @@ $(document).ready(function () {
                 discoverRange (range_txt)  ;
                 flag = false;
                 $.each(suggestions_list, function (index, suggestion) {
-                    if ((suggestion.parts[0].start >= range.start && suggestion.parts[0].start <= range.end)
-                            || (suggestion.parts[0].end >= range.start && suggestion.parts[0].end <= range.end)) {
+                    if (        (suggestion.parts[0].start >= range.start && suggestion.parts[0].start <= range.end)
+                            ||  (suggestion.parts[0].end >= range.start && suggestion.parts[0].end <= range.end)
+                            ||  (range.start >= suggestion.parts[0].start && range.end  <= suggestion.parts[0].end )) {
                         flag = true;
                     }
                 })
@@ -1515,11 +1570,28 @@ $(document).ready(function () {
             });
 
     function discoverRange(text){
-        if(original.indexOf(range_txt)!=-1){
-            range.start= original.indexOf(range_txt);
-            range.end=  range.start+  range_txt.length;
-        }  else{
-
+        var t=text;
+        if(original.indexOf(text)!=-1){//no linebreaks
+            range.start= original.indexOf(text);
+            range.end=  range.start+  text.length;
+        }  else{//chrome
+            t=text.replace(" \n","\n");
+            if(original.indexOf(t)!=-1){
+                range.start= original.indexOf(t);
+                range.end=  range.start+  t.length;
+            }else
+            {
+                t=text.replace(/\r/g,"");
+                if(original.indexOf(t)!=-1){
+                    range.start= original.indexOf(t);
+                    range.end=  range.start+  t.length;
+                }else
+                {
+                    range.start= 0;
+                    range.end=  0;
+                   console.log("error");
+                }
+            }
         }
         console.log("start="+range.start +" | end=" +range.end )    ;
     }
