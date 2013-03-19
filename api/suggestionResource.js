@@ -13,6 +13,9 @@ var resources = require('jest'),
     async = require('async'),
     notifications = require('./notifications');
 
+var EDIT_TEXT_LEGIT_TIME = 60 * 1000 * 15;
+
+
 var SuggestionResource = module.exports = common.GamificationMongooseResource.extend({
     init:function () {
         this._super(models.Suggestion, 'suggestion', common.getGamificationTokenPrice('suggestion_on_discussion') > -1 ? common.getGamificationTokenPrice('suggestion') : 0);
@@ -45,7 +48,8 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                 does_support_the_suggestion:null
             },
             wanted_amount_of_tokens:null,
-            curr_amount_of_tokens:null
+            curr_amount_of_tokens:null,
+            is_editable: null
         };
     },
 
@@ -54,8 +58,14 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
         var self = this;
         var discussion_id = req.query.discussion_id;
         var discussion_threshold;
+        var user_id = req.user._id + "";
 
         var iterator = function (suggestion, itr_cbk) {
+
+            // set is_editable flag if user is the creator and its 15 min after publish
+            if (user_id === suggestion.creator_id.id && new Date() - suggestion.creation_date <= EDIT_TEXT_LEGIT_TIME){
+                suggestion.is_editable = true
+            }
 
             //set counter og graders manually
             suggestion.manual_counter = Math.round(suggestion.agrees) + Math.round(suggestion.not_agrees);

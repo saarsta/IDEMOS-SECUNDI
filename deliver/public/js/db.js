@@ -648,10 +648,40 @@ var db_functions = {
             }
         });
     },
+    getPostByTypeByDiscussion:function (discussion_id, type, callback) {
+        db_functions.loggedInAjax({
+            url:'/api/posts?discussion_id=' + discussion_id + '&order_by=-' + type + '&limit=1',
+            type:"GET",
+            async:true,
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function (err) {
+                callback(err, null);
+            }
+        });
+    },
     getCommentsBySuggestion:function (suggestion_id, callback) {
         db_functions.loggedInAjax({
             url:'/api/suggestion_posts?suggestion_id=' + suggestion_id,
             type:"GET",
+            async:true,
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function (err) {
+                callback(err, null);
+            }
+        });
+    },
+
+    editDiscussionPost: function(post_id, text, callback){
+        db_functions.loggedInAjax({
+            url:'/api/posts/' + post_id,
+            type:"PUT",
+            data: {text: text},
             async:true,
             success:function (data) {
                 console.log(data);
@@ -1329,7 +1359,6 @@ var db_functions = {
         });
     },
 
-
     getPostByAction:function (action_id, callback) {
         db_functions.loggedInAjax({
             url:'/api/posts_of_action?action_id=' + action_id,
@@ -1346,7 +1375,6 @@ var db_functions = {
     },
 
     getSortedPostByAction:function (action_id, sort_by, offset, limit, callback) {
-
         db_functions.loggedInAjax({
             url:'/api/posts_of_action?action_id=' + action_id + "&order_by=" + sort_by + '&offset=' + offset,
             type:"GET",
