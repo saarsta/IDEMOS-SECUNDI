@@ -47,6 +47,7 @@ var error_message = error_message || '';
                             </div>
 
                             <div class="text main_text" style="max-height:180px">
+
                                 <%- discussion.text_field.replace(/\n/g, '<br />') %>
                             </div>
                             <a class="read_more" href="javascript:void(0);">המשך קריאה</a>
@@ -55,6 +56,7 @@ var error_message = error_message || '';
                         <div id="full">
                             <div class="msg">בחר בעזרת הסמן איזורים בטקסט שברצונך להציע לשנותם</div>
                             <div id="discussion_content" class=""><%- discussion.text_field.replace(/\n/g, '<br />') %></div>
+                            <textarea id="discussion_content_textarea" class="hidden_textarea"><%=discussion.text_field%></textarea>
                             <a class="read_more" href="javascript:void(0);">סגור מאמר</a>
 
 
@@ -338,12 +340,15 @@ $(document).ready(function () {
     var discussion_grade = Number("<%= discussion.grade%>");
     var grade_id = "<%= discussion.grade_obj ? discussion.grade_obj.grade_id : 0 %>";
     var suggestions_list=null;
-    
+    var original = $('#discussion_content_textarea').val() ;
+    var range={}
 	$('#suggestions_wrapper').on('mouseenter', '.text.change_proposal', function(){
         $(this).parents('.suggestion_holder').toggleClass('edit');
     }).on('mouseleave', '.text.change_proposal', function(){
         $(this).parents('.suggestion_holder').toggleClass('edit');
     });
+
+
 
 //    $('#suggestions_wrapper').on('mouseenter', '.suggestion_holder.button', function(){
 //        debugger
@@ -468,35 +473,7 @@ $(document).ready(function () {
 
 
 
-    $('#discussion_content').blur(function(){
-      //  $(".popup-window").hide();
-    });
 
-    $('#discussion_content1').click(function(){
-        range =$('#discussion_content').getSelection();
-       if(range.start == range.end){
-          // $(".popup-window").hide();
-       }
-    });
-
-
-        // focus and copy the selected text of discussion
-    $('#pop_post_bt').click( function (e) {
-        e.preventDefault();
-        new_post_ref_id = null;
-        $(".popup-window").hide();
-        $("textarea#discussion_comment").val('"' + range.text + '"');
-        focusOnCommentBox();
-    });
-
-    $('#pop_suggest_bt').click( function (e) {
-        e.preventDefault();
-        $('#discussion_content_txt').text('"' + range.text + '"');
-        $('#write-comment').show();
-        $('textarea#discussion_suggest').focus();
-        $('#reload-img').attr('src', $('#reload-img').attr('src'));
-        $(".popup-window").hide();
-    });
 
     $('#send_suggestion').click(function () {
         var part = {start:range.start, end:range.end, text:$("textarea#discussion_suggest").val()};
@@ -990,7 +967,7 @@ $(document).ready(function () {
 //    });
 //
     var suggest_grade_id = new Object();
-    var original = "<%=discussion.text_field.replace(/\s{2,}/g, ' ')%>";
+
     var current_offset = 0;
     var limit = 2;
     var num_of_pages;
@@ -1024,6 +1001,7 @@ $(document).ready(function () {
     // get change suggestions and render
     db_functions.getSuggestionByDiscussion(discussion_id, 1, 0, function (err, data) {
         suggestions_list =data.objects ;
+        displaySuggestionsRanges();
         $.each(data.objects, function (index, suggestion) {
             render_suggestion(suggestion);
 
@@ -1469,88 +1447,113 @@ $(document).ready(function () {
     };
 
 
-//    db_functions.getSuggestionByDiscussion(discussion_id, null, null, function(err, suggestions){
-//        suggestions_list =suggestions.objects ;
-//        $.each(suggestions_list, function (index, suggestion) {
-//            if ((suggestion.parts[0].start >= range.start && suggestion.parts[0].start <= range.end)
-//                    || (suggestion.parts[0].end >= range.start && suggestion.parts[0].end <= range.end)) {
-//                flag = true;
-//            }
-//        })
-//    });
 
 
+    function displaySuggestionsRanges(){
+        $.each(suggestions_list, function (index, suggestion) {
+           var text =  original.substr(suggestion.parts[0].start,suggestion.parts[0].end - suggestion.parts[0].start);
+           console.log(text);
+           text=text.replace(/\r\n/g, '<br />');
+            console.log(text);
+          //  <span class="marker_1">ללחצים פוליטיים דרך מערכת המינויים. מצד שני, המדינה מממנת ישירות לא מעט גופים שנותרים עצמאיים בכל זאת, כמו בתי המשפט, מבקר המדינה, </span>
+           var html =    $('#discussion_content').html();
+            html=html.replace(text,'<span data-id="'+suggestion.id+'" class="marker_1">'+text+'</span>');
+           $('#discussion_content').html(html);
+
+        })
+    }
 
 
     var mouseDown, mouseUp, top, left;
-
-    $('#full')
-            .on('mousedown', function (e) {
-                mouseDown = e;
-                console.log("mouseDown"+e);})
+    var range_txt;
+    $('#discussion_content')
+            .on('mousedown', function (e) {mouseDown = e;})
+            .on('keydown', function (e) {                if (!(e.shiftKey && (e.keyCode <= 40 && e.keyCode >= 37) || (e.ctrlKey && e.keyCode == 65))) e.preventDefault();})
+            .on('dragstart', function (e) {                e.preventDefault();               })
             .on('mouseup',function (e) {
+
+
+                e.stopPropagation();
                 mouseUp = e;
                 var err = false;
-             //   var range = $(this).find('textarea').getSelection();
-                left = Math.ceil((mouseDown.clientX + mouseUp.clientX) / 2 - ($(".popup-window").width() / 2));
-                top = Math.min(mouseDown.clientY, mouseUp.clientY) - $(".popup-window").height() - 40 + $(window).scrollTop();
-                console.log("mouseUp top ="+top +" | left="+left);})
-            .on('keydown', function (e) {
-                console.log(e.keyCode == 27);
-                if (!(e.shiftKey && (e.keyCode <= 40 && e.keyCode >= 37) || (e.ctrlKey && e.keyCode == 65))) e.preventDefault();})
-            .on('dragstart', function (e) {
-                e.preventDefault();
+
+                left = Math.ceil((mouseDown.clientX + mouseUp.clientX) / 2 - 97);
+                top = Math.min(mouseDown.clientY, mouseUp.clientY) - $(".popup-window").height() - 40 + $(window).scrollTop() + 40;
+
+               // original = $('<div />').html(original).text();
+//                if(window.getSelection){
+                range_txt = window.getSelection().toString();
+                    //range_txt=range.toString();//.replace(/\s{2,}/g, ' ')
+
+//                }else if(document.getSelection){
+//                    range = document.getSelection();
+//                }else if(document.selection){
+//                    range = document.selection.createRange();
+//                }
+
+                //////////////////  show pop up   /////////////////
+                discoverRange (range_txt)  ;
+                flag = false;
+                $.each(suggestions_list, function (index, suggestion) {
+                    if ((suggestion.parts[0].start >= range.start && suggestion.parts[0].start <= range.end)
+                            || (suggestion.parts[0].end >= range.start && suggestion.parts[0].end <= range.end)) {
+                        flag = true;
+                    }
+                })
+                if(flag) {
+                    popupProvider.showOkPopup({message:"הטקסט סומן כבר בהצעה לשינוי קיימת"});
+                }else if(range_txt.length >0){
+                    $(".popup-window")
+                            .css({ top:top, left:left, opacity:0 })
+                            .show()
+                            .animate({ top:'-=20px', opacity:1 }, 100, 'linear');
+                } else{
+                    $(".popup-window").hide();
+                }
+                //////////////////////////////////////////////////
+                console.log(range_txt.length+'  '+range_txt);
             });
 
-    $('#discussion_content').mouseup(function(e){
-        var range_txt;
-        original = $('<div />').html(original).text();
-        if(window.getSelection){
-            range = window.getSelection();
-//            if(range.toString().indexOf('\r')==-1) {
-//                range_txt=range.toString().replace(/\n/g, ' ')
-//            } else{
-//                range_txt=range.toString().replace(/\r\n/g, ' ')
-//            }
-            range_txt=range.toString().replace(/\s{2,}/g, ' ')
-
+    function discoverRange(text){
+        if(original.indexOf(range_txt)!=-1){
             range.start= original.indexOf(range_txt);
             range.end=  range.start+  range_txt.length;
-        }else if(document.getSelection){
-            range = document.getSelection();
-        }else if(document.selection){
-            range = document.selection.createRange();
+        }  else{
+
         }
-
-        //////////////////  show pop up   /////////////////
-       // console.log('select')
-       // range = $(this).getSelection();
-       // console.log(range);
-        flag = false;
-        $.each(suggestions_list, function (index, suggestion) {
-            if ((suggestion.parts[0].start >= range.start && suggestion.parts[0].start <= range.end)
-                    || (suggestion.parts[0].end >= range.start && suggestion.parts[0].end <= range.end)) {
-                flag = true;
-            }
-        })
-        if(flag) {
-            popupProvider.showOkPopup({message:"הטקסט סומן כבר בהצעה לשינוי קיימת"});
-        }else{
-            $(".popup-window")
-                    .css({ top:top, left:left, opacity:0 })
-                    .show()
-                    .animate({ top:'-=20px', opacity:1 }, 100, 'linear');
-        }
-        //////////////////////////////////////////////////
+        console.log("start="+range.start +" | end=" +range.end )    ;
+    }
 
 
-
-
-
-        console.log(range);
+    $('body').mouseup(function(){
+        $(".popup-window").hide();
     });
 
+
+    // focus and copy the selected text of discussion
+    $('#pop_post_bt').click( function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        new_post_ref_id = null;
+        $(".popup-window").hide();
+        $("textarea#discussion_comment").val('"' + range_txt + '"');
+        focusOnCommentBox();
+    });
+
+    $('#pop_suggest_bt').click( function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        $('#discussion_content_txt').text('"' + range_txt + '"');
+        $('#write-comment').show();
+        $('textarea#discussion_suggest').focus();
+        $('#reload-img').attr('src', $('#reload-img').attr('src'));
+        $(".popup-window").hide();
+    });
+
+
 });
+
+
 
 
 </script>

@@ -58,7 +58,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
         var self = this;
         var discussion_id = req.query.discussion_id;
         var discussion_threshold;
-        var user_id = req.user._id + "";
+        var user_id = req.user && req.user._id + "";
 
         var iterator = function (suggestion, itr_cbk) {
 

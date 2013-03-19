@@ -1134,6 +1134,19 @@ var db_functions = {
         });
     },
 
+
+    getDiscussionsById:function (discussion_id, callback) {
+        db_functions.loggedInAjax({
+            url:'/api/discussions/' + discussion_id,
+            type:"GET",
+            async:true,
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            }
+        });
+    },
+
     //---------------------cycles-----------------------//
     getCyclesByTagName:function (tag_name, callback) {
         db_functions.loggedInAjax({

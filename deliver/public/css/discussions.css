@@ -2603,6 +2603,7 @@ input.button_submit_comment_no_text{
 }
 
 #full textarea{
+    display: none;
     width: 662px;
     background: transparent;
     height: 100%;
