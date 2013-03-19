@@ -44,28 +44,33 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
             updated_user_tokens:null,
             grade_obj:{
                 _id:null,
-                evalueation_grade:null,
+                evaluation_grade:null,
                 does_support_the_suggestion:null
             },
             wanted_amount_of_tokens:null,
             curr_amount_of_tokens:null,
-            is_editable: null
+            is_editable: null,
+            context_before: null,
+            context_after: null
         };
     },
 
-    get_objects:function (req, filters, sorts, limit, offset, callback) {
-
+    get_objects: function (req, filters, sorts, limit, offset, callback) {
         var self = this;
         var discussion_id = req.query.discussion_id;
         var discussion_threshold;
+        var discussion_text;
         var user_id = req.user._id + "";
 
         var iterator = function (suggestion, itr_cbk) {
-
             // set is_editable flag if user is the creator and its 15 min after publish
             if (user_id === suggestion.creator_id.id && new Date() - suggestion.creation_date <= EDIT_TEXT_LEGIT_TIME){
                 suggestion.is_editable = true
             }
+
+            //get discussion text before and after the suggestions
+            suggestion.context_before = discussion_text.substring(0, suggestion.parts[0].start);
+            suggestion.context_after = discussion_text.substring(suggestion.parts[0].end, discussion_text.length);
 
             //set counter og graders manually
             suggestion.manual_counter = Math.round(suggestion.agrees) + Math.round(suggestion.not_agrees);
@@ -85,7 +90,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                     if (!err && grade_sugg_obj) {
                         curr_grade_obj = {
                             _id:grade_sugg_obj._id,
-                            evalueation_grade:grade_sugg_obj.evaluation_grade,
+                            evaluation_grade:grade_sugg_obj.evaluation_grade,
                             does_support_the_suggestion:grade_sugg_obj.does_support_the_suggestion
                         }
                         suggestion.grade_obj = curr_grade_obj;
@@ -97,7 +102,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                                 if (!err)
                                     if (req.user._id + "" == discussion.creator_id + "") {
 //                                        suggestion.grade_obj = {};
-//                                        suggestion.grade_obj["evalueation_grade"] = discussion.grade;
+//                                        suggestion.grade_obj["evaluation_grade"] = discussion.grade;
                                     }
                                 itr_cbk(err, suggestion);
                             })
@@ -120,10 +125,10 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
             //arrange objects only if the request is from discussion page
             if (!discussion_id)
                 callback(err, results);
-            else
-            //for each object add grade_obj that reflects the user's grade for the suggestion,
-            //if the user is the disvcussion creator - grade_obj contains the discussion evaluate grade
-            //if the user is ofline grade_obj is {}
+            else {
+                //for each object add grade_obj that reflects the user's grade for the suggestion,
+                //if the user is the disvcussion creator - grade_obj contains the discussion evaluate grade
+                //if the user is ofline grade_obj is {}
 
                 async.waterfall([
                     function (cbk) {
@@ -132,8 +137,11 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
 
                     function (discussion_obj, cbk) {
                         discussion_threshold = discussion_obj.threshold_for_accepting_change_suggestions;
-                        if (discussion_obj.admin_threshold_for_accepting_change_suggestions > 0)
+                        discussion_text = discussion_obj.text_field;
+
+                        if (discussion_obj.admin_threshold_for_accepting_change_suggestions > 0){
                             discussion_threshold = discussion_obj.admin_threshold_for_accepting_change_suggestions;
+                        }
 
                         async.forEach(results.objects, iterator, function (err, objs) {
                             cbk(err, results);
@@ -142,6 +150,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                 ], function (err, results) {
                     callback(err, results);
                 })
+            }
         });
     },
 

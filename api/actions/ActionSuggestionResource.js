@@ -34,7 +34,7 @@ ActionSuggestionResource = module.exports = common.GamificationMongooseResource.
             updated_user_tokens:null,
             grade_obj:{
                 _id:null,
-                evalueation_grade:null,
+                evaluation_grade:null,
                 does_support_the_suggestion:null
             },
             wanted_amount_of_tokens:null,
@@ -67,7 +67,7 @@ ActionSuggestionResource = module.exports = common.GamificationMongooseResource.
                     if (!err && grade_sugg_obj) {
                         curr_grade_obj = {
                             _id:grade_sugg_obj._id,
-                            evalueation_grade:grade_sugg_obj.evaluation_grade,
+                            evaluation_grade:grade_sugg_obj.evaluation_grade,
                             does_support_the_suggestion:grade_sugg_obj.does_support_the_suggestion
                         }
                         suggestion.grade_obj = curr_grade_obj;
@@ -79,7 +79,7 @@ ActionSuggestionResource = module.exports = common.GamificationMongooseResource.
 //                                if (!err)
 //                                    if (req.user._id + "" == action.creator_id + "") {
 ////                                        suggestion.grade_obj = {};
-////                                        suggestion.grade_obj["evalueation_grade"] = discussion.grade;
+////                                        suggestion.grade_obj["evaluation_grade"] = discussion.grade;
 //                                    }
 //                                itr_cbk(err, suggestion);
 //                            })
