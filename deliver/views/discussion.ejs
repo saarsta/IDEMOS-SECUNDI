@@ -1188,8 +1188,6 @@ $(document).ready(function () {
             '<a href="javascript: void(0)"><span class="last"></span></a>');
     }
 
-    function loadSpecialPost(type, class_type, title){
-	
 	 function loadSpecialPost(type, class_type, title){
         db_functions.getPostByTypeByDiscussion(discussion_id, type, function(err, data){
             if (!err){
@@ -1351,12 +1349,6 @@ $(document).ready(function () {
         }
 
         loadPosts(page_number, action);
-    });
-
-    // just focus
-    $("#content_wrapper_comments").on('click', 'button_comment', function (e) {
-
-        // TODO focus to add comment
     });
 
     $("#comments_filter input").click(function(){
@@ -1539,17 +1531,9 @@ $(document).ready(function () {
                     .animate({ top:'-=20px', opacity:1 }, 100, 'linear');
         }
         //////////////////////////////////////////////////
-
-
-
-
-
         console.log(range);
     });
-
 });
-
-
 </script>
 </body>
 </html>
