@@ -318,11 +318,6 @@ var error_message = error_message || '';
 
   </div>
 
-
-
-
-
-
     <% include partials/footer.ejs %>
 
 
@@ -340,13 +335,16 @@ $(document).ready(function () {
     var grade_id = "<%= discussion.grade_obj ? discussion.grade_obj.grade_id : 0 %>";
     var suggestions_list=null;
     var original = $('#discussion_content_textarea').val() ;
-    var range={}
+    var range={};
 
-        $(this).parents('.suggestion_wrapper').toggleClass('edit');
+    $('#suggestions_wrapper').on('mouseenter', '.text.change_proposal', function(){
+        debugger
         var edit_window = $(this).find('.edit_window');
         var window_height = edit_window.height();
         var window_padding = parseInt(edit_window.css("padding-top"));
         var window_border = parseInt(edit_window.css("border-top-width"));
+
+        $(this).parents('.suggestion_wrapper').toggleClass('edit');
 
         //set window top
         edit_window.css('top', 0 - window_height - (window_padding * 2 + window_border * 2));
@@ -437,7 +435,6 @@ $(document).ready(function () {
     });
 
     db_functions.getDiscussionShoppingCart(discussion_id, function (err, data) {
-
         $.each(data.objects, function (index, item) {
             dust.render('cycle_information_item', item, function (err, out) {
                 $('#slider').append(out);
@@ -457,12 +454,7 @@ $(document).ready(function () {
             buildNav     : true,   // if true, navigation links will be added
             navFormatter : function(){ return "&#9679;"; } // function which returns the navigation text for each panel
         });
-
-
     });
-
-
-
 
     $('.read_more').on('click', function () {
         $('#short').toggle();
@@ -470,13 +462,6 @@ $(document).ready(function () {
         var h=  $("textarea").get(0).scrollHeight;
         $("#full").height(h);
     });
-
-
-
-
-
-
-
 
     $('#send_suggestion').click(function () {
         var part = {start:range.start, end:range.end, text:$("textarea#discussion_suggest").val()};
@@ -520,8 +505,6 @@ $(document).ready(function () {
         $('#write-comment').hide();
     });
 
-
-
     $('.button_add_comment').on("click", function (e) {
         e.preventDefault();
         focusOnCommentBox();
@@ -532,7 +515,6 @@ $(document).ready(function () {
         focusOnCommentBox();
     });
 
-
     $(".slider").slider({
         disabled:is_creator,
         value:my_discussion_grade,
@@ -541,7 +523,6 @@ $(document).ready(function () {
         max:10,
         step:0.10 ,
         change:function (event, ui) {
-
             if (event.originalEvent) {      //ugly hack because of slider api bug
                 var my_prev_grade = my_discussion_grade;
                 my_discussion_grade = ui.value;
@@ -1001,7 +982,7 @@ $(document).ready(function () {
 
     // get change suggestions and render
     db_functions.getSuggestionByDiscussion(discussion_id, 1, 0, function (err, data) {
-        suggestions_list =data.objects ;
+        suggestions_list = data.objects ;
         displaySuggestionsRanges();
         $.each(data.objects, function (index, suggestion) {
             render_suggestion(suggestion);
