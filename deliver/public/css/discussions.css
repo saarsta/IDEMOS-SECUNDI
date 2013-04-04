@@ -2917,6 +2917,61 @@ input.button_submit_comment_no_text{
     height: 100%;
 }
 
+
+#content_left_sidebar .segment.links,
+#content_left_sidebar .segment.press{
+    background:transparent;
+    padding: 0;
+    width:240px;
+}
+
+#content_left_sidebar .segment.press img.logo{
+    float:right;
+}
+
+#content_left_sidebar .segment.press .item{
+    float:right;
+    margin-bottom:15px;
+}
+
+#content_left_sidebar .segment.links h2,
+#content_left_sidebar .segment.press h2{
+    font-weight:normal;
+    font-size:24px;
+    color:#50504f;
+    font-family:'AdumaFOTRegular';
+}
+
+#content_left_sidebar .segment.links .title span.date,
+#content_left_sidebar .segment.press .title span.date{
+    font-size:11px;
+    line-height: 24px;
+    height: 33px;
+    margin-right: 5px;
+}
+
+#content_left_sidebar .segment.links .title span.text,
+#content_left_sidebar .segment.press .title span.text{
+    float:right;
+    width:100%;
+    margin-top:5px;
+    font-weight:bold;
+    font-size:16px;
+    margin-bottom:4px;
+}
+
+#content_left_sidebar .segment.links .item .title a{
+    color:#3b63ef;
+}
+
+#content_left_sidebar .segment.links .item{
+    float:right;
+    margin-bottom:10px;
+    border-bottom:1px solid #e0e0e0;
+    padding-bottom:10px;
+}
+
+
 /*
 
 
