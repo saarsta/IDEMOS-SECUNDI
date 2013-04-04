@@ -1917,11 +1917,9 @@ span.remark{
 }
 
 .suggestion_comments_holder .comment.even span.photo-pattern {
-    background: url(../images/user-fillter-small-cofee.png) no-repeat;
     position: absolute;
     left: 0;
     top: 0;
-    background: url(../images/user-fillter-small.png) no-repeat;
     width: 100%;
     height: 100%;
 }
@@ -1935,7 +1933,7 @@ span.remark{
 .suggestion_comments_holder .comment .author{
     text-align:center;
     float:right;
-    /*width:90px;*/
+    width:90px;
     font-size:12px;
     font-weight:bold;
     color:#50504f;
@@ -2898,8 +2896,7 @@ input.button_submit_comment_no_text{
     cursor: auto;
 }
 
-
-#add_comment_wrapper .img-box{
+#add_comment_wrapper .img-box {
     position: relative;
     width: 60px;
     height: 64px;
@@ -2908,15 +2905,44 @@ input.button_submit_comment_no_text{
 
 #add_comment_wrapper .img-box span {
     background: url(../images/user-fillter-small-white.png) no-repeat;
-
     position: absolute;
     right: 0;
     top: 0;
-
     width: 100%;
     height: 100%;
 }
 
+#suggestions_wrapper .img-box{
+    position: relative;
+    width: 60px;
+    height: 64px;
+    margin: 0 auto;
+}
+
+#suggestions_wrapper .img-box span {
+    background: url(../images/user-fillter-small-white.png) no-repeat;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#comments_wrapper .img-box{
+    position: relative;
+    width: 60px;
+    height: 64px;
+    margin: 0 auto;
+}
+
+#comments_wrapper .img-box span {
+    background: url(../images/user-fillter-small-white.png) no-repeat;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
 
 #content_left_sidebar .segment.links,
 #content_left_sidebar .segment.press{

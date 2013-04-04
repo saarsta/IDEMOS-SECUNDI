@@ -2,8 +2,11 @@
     <h2 class="title">{title}</h2>
     <div class="comment_wrapper">
         <div class="comment_details">
-            <div class="photo auto-scale"  style="height:64px; swidth:60px">
-                <img src="{?creator_id}{creator_id.avatar_url}{:else}/images/default_user_img.gif{/creator_id}" />
+            <div class="img-box" style="overflow: hidden;">
+                <div class="photo auto-scale" style="height:64px">
+                    <img src="{?creator_id}{creator_id.avatar_url}{:else}/images/default_user_img.gif{/creator_id}" />
+                </div>
+                <span></span>
             </div>
             <div class="name">
                 {creator_id.first_name} {creator_id.last_name}

@@ -2,9 +2,12 @@
      data-creator_name="{creator_id.first_name} {creator_id.last_name}" data-creator_id="{creator_id.id}"
      data-num_of_proxies="{creator_id.num_of_proxies_i_represent}">
     <div class="comment_details">
-        <div class="photo auto-scale">
-            <img data-bablic-exclude alt="{title}" title="{creator_id.first_name} {creator_id.last_name}"
-                 src="{?creator_id}{creator_id.avatar_url}{:else}/images/default_user_img.gif{/creator_id}" />
+        <div class="img-box" style="overflow: hidden;">
+            <div class="photo auto-scale" style="height:64px">
+                <img data-bablic-exclude alt="{title}" title="{creator_id.first_name} {creator_id.last_name}"
+                     src="{?creator_id}{creator_id.avatar_url}{:else}/images/default_user_img.gif{/creator_id}" />
+            </div>
+            <span></span>
         </div>
         <div class="name" data-bablic-exclude>
             {creator_id.first_name} {creator_id.last_name}
