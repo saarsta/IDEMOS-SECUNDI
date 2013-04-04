@@ -30,7 +30,6 @@ var FbConnectResource = module.exports =  jest.Resource.extend({
         }
     },
 
-
     create_obj: function(req, fields, callback){
         req.authenticate('fb_server', function(err, is_authenticated){
             if(err) throw err;

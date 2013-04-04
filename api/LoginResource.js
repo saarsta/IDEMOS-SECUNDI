@@ -26,8 +26,13 @@ var LoginResource = module.exports =  jest.Resource.extend({
             req.body['email'] = fields.email;
             req.body['password'] = fields.password;
             req.authenticate('simple',function(err,is_authenticated) {
-                if(err)
-                    callback(err);
+                if(err){
+                    if(err === "אימייל לא קיים"){
+                        callback({message: err, code:401})
+                    }else{
+                        callback(err);
+                    }
+                }
                 else {
                     if(!is_authenticated)
                         callback({message:"",code:401}, null);
