@@ -100,7 +100,7 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
                 like_count_prev:null,
                 last_update:null,
                 last_update_elapsed:null
-            }   ,
+            },
             total_count:null,
             last_update_elapsed:null
         }
@@ -196,7 +196,7 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
 
 
                 cycle.participants_count = cycle.followers_count;
-                cycle.total_count =   cycle.followers_count + cycle.fb_page.like_count ;
+                cycle.total_count = cycle.followers_count + cycle.fb_page.like_count ;
                 cycle.is_follower = false;
                 if (user_cycles) {
                     if (_.find(user_cycles, function (user_cycle) {

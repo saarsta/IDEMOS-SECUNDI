@@ -363,16 +363,10 @@ var error_message = error_message || '';
                 </div>
                 <input id="submit_post" type="button" class="button_submit_comment" />
             </div>
-
-
-
-
-
     </div>
-
   </div>
 
-    <% include partials/footer.ejs %>
+   <% include partials/footer.ejs %>
 
 
 <script type="text/javascript">
@@ -612,7 +606,7 @@ $(document).ready(function () {
    });
 
     var editor;
-    $( '#discussion_comment' ).ckeditor(            {
+    $( '#discussion_comment' ).ckeditor({
         height: 70,
         width: 810,
         'line-height':10,
@@ -1044,7 +1038,6 @@ $(document).ready(function () {
 
             db_functions.getCommentsBySuggestion(suggestion.id, function(err, data){
                 $.each(data.objects, function (index, comment) {
-
                     comment.is_even = (index % 2) == 0;
                     dust.render('comment_on_suggestion', comment, function (err, out) {
                         // append before "add_comment"
@@ -1057,6 +1050,7 @@ $(document).ready(function () {
 
         $('#suggestion_number').text(' (' + data.meta.total_count + ')');
         if (data.objects.length > 0) {
+            var curr_suggestion;
             first_suggestion = data.objects[0];
             $(".content_break_content").show();
             if (data.meta.total_count >= 2) {
@@ -1067,6 +1061,18 @@ $(document).ready(function () {
                     if($(this).data('executing')){
                         $('#suggestions_wrapper').empty();
                         render_suggestion(first_suggestion);
+                        curr_suggestion = $('#suggestions_wrapper').find('[data-id=' + first_suggestion.id + ']') ;
+                        db_functions.getCommentsBySuggestion(first_suggestion.id, function(err, data){
+                            $.each(data.objects, function (index, comment) {
+
+                                comment.is_even = (index % 2) == 0;
+                                dust.render('comment_on_suggestion', comment, function (err, out) {
+                                    // append before "add_comment"
+                                    curr_suggestion.find('.add_comment').before(out);
+                                    image_autoscale(curr_suggestion.find('.auto-scale img'));
+                                });
+                            });
+                        })
                         self.text('עוד הצעות');
                         $(this).removeClass('flip');
 
@@ -1076,6 +1082,18 @@ $(document).ready(function () {
                         db_functions.getSuggestionByDiscussion(discussion_id, null, 1, function (err, data) {
                             $.each(data.objects, function (index, suggestion) {
                                 render_suggestion(suggestion);
+                                curr_suggestion = $('#suggestions_wrapper').find('[data-id=' + suggestion.id + ']') ;
+                                db_functions.getCommentsBySuggestion(suggestion.id, function(err, data){
+                                    $.each(data.objects, function (index, comment) {
+
+                                        comment.is_even = (index % 2) == 0;
+                                        dust.render('comment_on_suggestion', comment, function (err, out) {
+                                            // append before "add_comment"
+                                            curr_suggestion.find('.add_comment').before(out);
+                                            image_autoscale(curr_suggestion.find('.auto-scale img'));
+                                        });
+                                    });
+                                })
                             });
                         });
 
@@ -1125,7 +1143,7 @@ $(document).ready(function () {
                 $(this).parent().attr('data-can-add', false);
                 db_functions.addCommentToSuggestion(suggestion_id, discussion_id, text, function(err, comment){
                     $(this).parent().attr('data-can-add', true);
-
+                    add_comment.find('input').val('');
 //                comment.is_even = (index % 2) == 0;
                     dust.render('comment_on_suggestion', comment, function (err, out) {
                         // append before "add_comment"
@@ -1403,7 +1421,7 @@ $(document).ready(function () {
 //        loadPosts();
 //    });
 
-        loadSpecialPost('total_votes', 'most_contr', 'התגובה השנויה במחלוקת');
+    loadSpecialPost('total_votes', 'most_contr', 'התגובה השנויה במחלוקת');
     loadSpecialPost('popularity', 'most_pop', 'התגובה הפופולרית ביותר');
     loadPosts();
 

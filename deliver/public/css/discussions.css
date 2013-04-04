@@ -1700,7 +1700,10 @@ span.remark{
     opacity:1;
 }
 
-.suggestion_wrapper.window.edit_suggestion.edit .button_edit_comment{
+/*.suggestion_wrapper.window.edit_suggestion.edit .button_edit_comment{
+    display:block;
+}*/
+.suggestion_wrapper.edit_suggestion.edit .button_edit_comment{
     display:block;
 }
 

@@ -65,7 +65,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
         var iterator = function (suggestion, itr_cbk) {
             // set is_editable flag if user is the creator and its 15 min after publish
             if (user_id === suggestion.creator_id.id && new Date() - suggestion.creation_date <= EDIT_TEXT_LEGIT_TIME){
-                suggestion.is_editable = true
+                suggestion.is_editable = true;
             }
 
             //get discussion text before and after the suggestions
