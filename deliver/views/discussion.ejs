@@ -310,7 +310,7 @@ var error_message = error_message || '';
         <div class="content_break_content comments">
             <h2 id="comments-title">תגובות <small id="comments_number"></small></h2>
             <div id="comments_filter">
-                <input data-selected="true" data-sort-by="-creation_date" class="button_order_chron" type="button" />
+                <input data-selected="true" data-sort-by="-creation_date" class="button_order_chron selected" type="button" />
                 <input data-selected="false" data-sort-by="-popularity" class="button_order_popular" type="button" />
                 <input data-selected="false" data-sort-by="-total_votes" class="button_order_contro" type="button" />
             </div>
@@ -617,6 +617,7 @@ $(document).ready(function () {
         {
             instanceReady : function( ev )
             {
+                editor = this;
                 editor = this;
             }
         }
@@ -1408,10 +1409,25 @@ $(document).ready(function () {
     });
 
     $("#comments_filter input").click(function(){
-        $(this).parent().find("input").data('selected', false);
+
+        var inputs = $(this).parent().find("input");
+        // set the sepecified filter as selected for api sorting query
+        inputs.data('selected', false);
         $(this).data('selected', true);
 
+        //set selected class to the selected
+        inputs.removeClass('selected');
+        inputs.removeClass('hover');
+        $(this).addClass('selected');
         loadPosts(1);
+    });
+
+    $("#comments_filter input").hover(function(){
+        var inputs = $(this).parent().find("input");
+
+        //set hover class to the selected
+        inputs.removeClass('been_hover');
+        $(this).addClass('been_hover');
     });
 //
 //    $('.more_comments').click(function() {

@@ -2071,7 +2071,29 @@ span.remark{
 }
 
 #comments_filter input.button_order_chron{
-    background:url(/images/button_order_chron.png) no-repeat 0 0;
+    /*background:url(/images/button_order_chron.png) no-repeat 0 0;*/
+    background:url(/images/uru_sort_menu.png) no-repeat 100% 33%;
+    width:66px;
+    height:32px;
+    cursor:pointer;
+    border:none;
+    margin:6px 0px;
+}
+
+#comments_filter input.button_order_chron.been_hover{
+    /*background:url(/images/button_order_chron.png) no-repeat 0 0;*/
+    background:url(/images/uru_sort_menu.png) no-repeat 100% 100%;
+    width:66px;
+    height:32px;
+    cursor:pointer;
+    border:none;
+    margin:6px 0px;
+}
+
+#comments_filter input.button_order_chron.selected{
+    /*background:url(/images/button_order_chron.png) no-repeat 0 0;*/
+    background:url(/images/uru_sort_menu.png) no-repeat 100% 0;
+
     width:66px;
     height:32px;
     cursor:pointer;
@@ -2080,7 +2102,31 @@ span.remark{
 }
 
 #comments_filter input.button_order_popular {
-    background:url(/images/button_order_popular.png) no-repeat 0 0;
+    /*background:url(/images/button_order_popular.png) no-repeat 0 0;*/
+    background:url(/images/uru_sort_menu.png) no-repeat 63% 0;
+
+    width:114px;
+    height:32px;
+    cursor:pointer;
+    border:none;
+    margin:6px 0px;
+}
+
+#comments_filter input.button_order_popular.been_hover {
+    /*background:url(/images/button_order_popular.png) no-repeat 0 0;*/
+    background:url(/images/uru_sort_menu.png) no-repeat 63% 100%;
+
+    width:114px;
+    height:32px;
+    cursor:pointer;
+    border:none;
+    margin:6px 0px;
+}
+
+#comments_filter input.button_order_popular.selected {
+    /*background:url(/images/button_order_popular.png) no-repeat 0 0;*/
+    background:url(/images/uru_sort_menu.png) no-repeat 63% 33%;
+
     width:114px;
     height:32px;
     cursor:pointer;
@@ -2089,7 +2135,31 @@ span.remark{
 }
 
 #comments_filter input.button_order_contro{
-    background:url(/images/button_order_contro.png) no-repeat 0 0;
+    /*background:url(/images/button_order_contro.png) no-repeat 0 0;*/
+    background:url(/images/uru_sort_menu.png) no-repeat 0 0;
+
+    width:112px;
+    height:32px;
+    cursor:pointer;
+    border:none;
+    margin:6px 0px;
+}
+
+#comments_filter input.button_order_contro.been_hover{
+    /*background:url(/images/button_order_contro.png) no-repeat 0 0;*/
+    background:url(/images/uru_sort_menu.png) no-repeat 0 100%;
+
+    width:112px;
+    height:32px;
+    cursor:pointer;
+    border:none;
+    margin:6px 0px;
+}
+
+#comments_filter input.button_order_contro.selected{
+    /*background:url(/images/button_order_contro.png) no-repeat 0 0;*/
+    background:url(/images/uru_sort_menu.png) no-repeat 0 67%;
+
     width:112px;
     height:32px;
     cursor:pointer;
