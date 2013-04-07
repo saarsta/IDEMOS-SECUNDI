@@ -451,6 +451,7 @@ $(document).ready(function () {
                 }
             }
         });
+
         // add click listener to update_button
         $('#update_post').click(function(){
             var updated_text = $(this).siblings('#discussion_edit_comment').val();
@@ -602,11 +603,11 @@ $(document).ready(function () {
                         console.log(err);
                 });
             }
-       }
-   });
+        }
+    });
 
     var editor;
-    $( '#discussion_comment' ).ckeditor({
+    $('#discussion_comment').ckeditor({
         height: 70,
         width: 810,
         'line-height':10,
@@ -1037,6 +1038,10 @@ $(document).ready(function () {
             var curr_suggestion = $('#suggestions_wrapper').find('[data-id=' + suggestion.id + ']') ;
 
             db_functions.getCommentsBySuggestion(suggestion.id, function(err, data){
+
+                // set comments counter
+                curr_suggestion.find('.comments_counter span').text(data.objects.length);
+
                 $.each(data.objects, function (index, comment) {
                     comment.is_even = (index % 2) == 0;
                     dust.render('comment_on_suggestion', comment, function (err, out) {
@@ -1061,10 +1066,13 @@ $(document).ready(function () {
                     if($(this).data('executing')){
                         $('#suggestions_wrapper').empty();
                         render_suggestion(first_suggestion);
-                        curr_suggestion = $('#suggestions_wrapper').find('[data-id=' + first_suggestion.id + ']') ;
-                        db_functions.getCommentsBySuggestion(first_suggestion.id, function(err, data){
-                            $.each(data.objects, function (index, comment) {
+                        curr_suggestion = $('#suggestions_wrapper').find('[data-id=' + first_suggestion.id + ']');
 
+                        db_functions.getCommentsBySuggestion(first_suggestion.id, function(err, data){
+                            // set comments counter
+                            curr_suggestion.find('.comments_counter span').text(data.objects.length);
+
+                            $.each(data.objects, function (index, comment) {
                                 comment.is_even = (index % 2) == 0;
                                 dust.render('comment_on_suggestion', comment, function (err, out) {
                                     // append before "add_comment"
@@ -1082,8 +1090,13 @@ $(document).ready(function () {
                         db_functions.getSuggestionByDiscussion(discussion_id, null, 1, function (err, data) {
                             $.each(data.objects, function (index, suggestion) {
                                 render_suggestion(suggestion);
-                                curr_suggestion = $('#suggestions_wrapper').find('[data-id=' + suggestion.id + ']') ;
+
                                 db_functions.getCommentsBySuggestion(suggestion.id, function(err, data){
+                                    curr_suggestion = $('#suggestions_wrapper').find('[data-id=' + suggestion.id + ']') ;
+
+                                    // set comments counter
+                                    curr_suggestion.find('.comments_counter span').text(data.objects.length);
+
                                     $.each(data.objects, function (index, comment) {
 
                                         comment.is_even = (index % 2) == 0;
@@ -1153,6 +1166,12 @@ $(document).ready(function () {
                 });
             }
         }
+    });
+
+    // close/open suggestion comments
+    $('#suggestions_wrapper').on('click', '.suggestion_bottom .close', function(){
+        $(this).hide();
+        $(this).parents('.suggestion_wrapper').find('.comment').hide();
     });
 
     function renderComments(comments) {
