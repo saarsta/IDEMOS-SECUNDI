@@ -385,6 +385,7 @@ $(document).ready(function () {
     var original = $('#discussion_content_textarea').val() ;
     var range={};
 
+    // toggle edit class to open/close contxt popup window or edit suggestion button
     $('#suggestions_wrapper').on('mouseenter', '.text.change_proposal', function(){
         var edit_window = $(this).find('.edit_window');
         var window_height = edit_window.height();
@@ -392,11 +393,30 @@ $(document).ready(function () {
         var window_border = parseInt(edit_window.css("border-top-width"));
 
         $(this).parents('.suggestion_wrapper').toggleClass('edit');
+        $(this).parents('.suggestion_wrapper').toggleClass('show_edit_button');
 
         //set window top
         edit_window.css('top', 0 - window_height - (window_padding * 2 + window_border * 2));
     }).on('mouseleave', '.text.change_proposal', function(){
         $(this).parents('.suggestion_wrapper').toggleClass('edit');
+    });
+
+    // when clicking the edit_comment popup show go to creatw suggestion window
+    $('#suggestions_wrapper').on('click', '.button_edit_comment', function(){
+//        var text = $(this).parent('.content').text();
+//        var post_id = $(this).parents('.comment_wrapper').data('id');
+//        var content = $(this).parent('.content');
+        var $suggestion_content = $(this).next();
+        var orig_text = $suggestion_content.find('.explanation').text();
+        var alternative_part = $suggestion_content.find('.alternative_part').text();
+        var explanation =  $suggestion_content.find('.explanation').text();
+
+        $('#discussion_content_txt').text('"' + orig_text + '"');
+        $('#write-comment').show();
+        $('textarea#discussion_suggest').focus();
+        $('#reload-img').attr('src', $('#reload-img').attr('src'));
+        $('textarea#discussion_suggest').text(alternative_part);
+        $('textarea#discussion_explanation').text(explanation);
     });
 
 

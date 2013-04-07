@@ -1703,7 +1703,7 @@ span.remark{
 /*.suggestion_wrapper.window.edit_suggestion.edit .button_edit_comment{
     display:block;
 }*/
-.suggestion_wrapper.edit_suggestion.edit .button_edit_comment{
+.suggestion_wrapper.edit_suggestion.show_edit_button .button_edit_comment{
     display:block;
 }
 
