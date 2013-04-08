@@ -296,7 +296,9 @@ var error_message = error_message || '';
 
     <div class="content_break">
         <div class="content_break_content">
-            <h2>הצעות לשינוי (4)</h2>
+            <h2>הצעות לשינוי
+                <small id="suggestion_number"></small>
+            </h2>
         </div>
     </div>
     <div id="content_wrapper_suggestions">
@@ -401,22 +403,30 @@ $(document).ready(function () {
         $(this).parents('.suggestion_wrapper').toggleClass('edit');
     });
 
-    // when clicking the edit_comment popup show go to creatw suggestion window
+    // when clicking the edit_comment popup show go to creatק suggestion window
     $('#suggestions_wrapper').on('click', '.button_edit_comment', function(){
 //        var text = $(this).parent('.content').text();
 //        var post_id = $(this).parents('.comment_wrapper').data('id');
 //        var content = $(this).parent('.content');
         var $suggestion_content = $(this).next();
-        var orig_text = $suggestion_content.find('.explanation').text();
+        var orig_text = $suggestion_content.find('.original_part').text();
         var alternative_part = $suggestion_content.find('.alternative_part').text();
         var explanation =  $suggestion_content.find('.explanation').text();
 
+        // set text and then focus
         $('#discussion_content_txt').text('"' + orig_text + '"');
         $('#write-comment').show();
-        $('textarea#discussion_suggest').focus();
         $('#reload-img').attr('src', $('#reload-img').attr('src'));
         $('textarea#discussion_suggest').text(alternative_part);
         $('textarea#discussion_explanation').text(explanation);
+        $('textarea#discussion_suggest').focus();
+
+        // change button text and set it to edit instead of creating new suggestion
+        $('#send_suggestion').text('ערוך');
+        $('#send_suggestion').data('edit', true);
+
+        var sug_id =  $(this).parents('.suggestion_wrapper').data('id');
+        $('#send_suggestion').data('suggestion-id', sug_id);
     });
 
 
@@ -533,40 +543,63 @@ $(document).ready(function () {
 
     $('#send_suggestion').click(function () {
         var part = {start:range.start, end:range.end, text:$("textarea#discussion_suggest").val()};
+
+        // todo i have replaced vision with original, see that it works
         //arrange spaces
-        if (vision[part.end - 1] == " " && part.text[part.text.length - 1] != " ")
+        if (original[part.end - 1] == " " && part.text[part.text.length - 1] != " ")
 
             part.text += " ";
-        var explanation = $("#discussion_explanation").val();
 
-        var user_info = {
-            user_logged_in : user.first_name ? true : false,
-            action_done : (user.actions_done_by_user && user.actions_done_by_user.suggestion_on_object) ? true : false,
-            action_name : "suggestion_on_object",
-            tokens_owned : user.tokens ? user.tokens : 0,
-            price: gamification_price['suggestion_on_discussion']
-        }
+        // in case of editing existing suggestion
+        if ($('#send_suggestion').data('edit') === true){
+            $('#send_suggestion').data('edit', false);
 
-        db_functions.addSuggestionToDiscussion(discussion_id, [part], explanation, user_info, function (err, data) {
-            if (!err) {
-                if(data != 'canceled'){
-                    if(!user.actions_done_by_user.suggestion_on_object)
-                    {
-                        user.actions_done_by_user.suggestion_on_object = true;
-                    }
+            var sugg_id = $('#send_suggestion').data('suggestion-id');
+
+            db_functions.editSuggestion(sugg_id, part.text, function(err, data){
+                if(!err){
+                    // hide edit box
                     $('#write-comment').hide();
-                    /*
-                     $("textarea#discussion_suggest").val('');
-                     $("#user_tokens").text(data.updated_user_tokens);*/
-                    render_suggestion(data)
-                    $(".deals-box").show();
+
+                    // change text of suggestion
+                    $('#suggestions_wrapper').find('[data-id=' + sugg_id + ']').find('.alternative_part').text(part.text);
+
+                    // edit button text back t what it used to be
+                    $('#send_suggestion').text('הצע');
                 }
-            } else {
-                var err = err;
-                if(err.responseText == "a suggestion with this indexes already exist")
-                    popupProvider.showOkPopup({message:"????? ???? ??? ????? ?????? ?????"});
+            })
+        }else{
+            // create new suggestion
+            var explanation = $("#discussion_explanation").val();
+            var user_info = {
+                user_logged_in : user.first_name ? true : false,
+                action_done : (user.actions_done_by_user && user.actions_done_by_user.suggestion_on_object) ? true : false,
+                action_name : "suggestion_on_object",
+                tokens_owned : user.tokens ? user.tokens : 0,
+                price: gamification_price['suggestion_on_discussion']
             }
-        });
+
+            db_functions.addSuggestionToDiscussion(discussion_id, [part], explanation, user_info, function (err, data) {
+                if (!err) {
+                    if(data != 'canceled'){
+                        if(!user.actions_done_by_user.suggestion_on_object)
+                        {
+                            user.actions_done_by_user.suggestion_on_object = true;
+                        }
+                        $('#write-comment').hide();
+                        /*
+                         $("textarea#discussion_suggest").val('');
+                         $("#user_tokens").text(data.updated_user_tokens);*/
+                        render_suggestion(data)
+                        $(".deals-box").show();
+                    }
+                } else {
+                    var err = err;
+                    if(err.responseText == "a suggestion with this indexes already exist")
+                        popupProvider.showOkPopup({message:"????? ???? ??? ????? ?????? ?????"});
+                }
+            });
+        }
     });
 
     $("#cancelWriteCommentBT").live("click", function () {
@@ -1056,7 +1089,7 @@ $(document).ready(function () {
         $.each(data.objects, function (index, suggestion) {
             render_suggestion(suggestion);
 
-            var curr_suggestion = $('#suggestions_wrapper').find('[data-id=' + suggestion.id + ']') ;
+            var curr_suggestion = $('#suggestions_wrapper').find('[data-id=' + suggestion.id + ']');
 
             db_functions.getCommentsBySuggestion(suggestion.id, function(err, data){
 

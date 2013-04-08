@@ -615,6 +615,23 @@ var db_functions = {
         });
     },
 
+    editSuggestion: function(suggestion_id, text, callback) {
+        db_functions.loggedInAjax({
+            url:'/api/suggestions/' + suggestion_id,
+            type:"PUT",
+            async:true,
+            data:{"text":text},
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function (err) {
+                callback(err);
+            }
+        });
+    },
+
+
     addFacebookRequest:function (link, response, callback) {
         var request_ids =response ? response.request :null;
         var to  =response ? response.to :null;
