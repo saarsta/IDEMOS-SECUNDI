@@ -2260,6 +2260,7 @@ span.remark{
     background:#fff;
     padding:20px;
     height: 153px;
+    display: table;
 }
 
 #comments_wrapper .comment_wrapper .content {
@@ -2829,7 +2830,7 @@ input.button_submit_comment_no_text{
     position: absolute;
     top: -74px;
     right: -13px;
-    width: 68px;
+    width: 60px;
     height: 64px;
     padding: 10px 0 0 8px;
     text-align: left;
