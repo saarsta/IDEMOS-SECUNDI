@@ -1254,8 +1254,9 @@ $(document).ready(function () {
 
                             db_functions.getPostById(post_id, function (err, post) {
                                 dust.render('discussion_comment', post, function (err, out) {
-                                    if (!err)
+                                    if (!err){
                                         pagination.append(out);
+                                    }
                                     scrollTo(hash);
                                 });
                             });
@@ -1264,8 +1265,8 @@ $(document).ready(function () {
                 }
 
                 image_autoscale($('.auto-scale img', comments));
-//                initTooltipWithMessage($('#comments .right .respect'), 'מוניטין');
 
+//             initTooltipWithMessage($('#comments .right .respect'), 'מוניטין');
             }
         });
     }
@@ -1415,6 +1416,7 @@ $(document).ready(function () {
                 });
 
                 renderComments(data.objects);
+
 
                 /*if(data.meta.total_count > current_offset )
                     $('.more_comments').show();

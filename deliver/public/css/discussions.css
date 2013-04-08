@@ -2267,6 +2267,10 @@ span.remark{
     max-height:  153px;
 }
 
+#comments_wrapper .regular_comment.comment_wrapper .content {
+    max-height:  none;
+}
+
 #comments_wrapper .most_contr h2.title,
 #comments_wrapper .most_pop h2.title{
     font-size:24px;

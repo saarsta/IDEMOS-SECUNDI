@@ -1,4 +1,4 @@
-<div class="comment_wrapper {?is_even}even{:else}odd{/is_even} {?is_editable}edit_comment{/is_editable}" id="post_{_id}" data-id="{_id}" data-ref-id="{ref_to_post_id}" data-num-given-mandates="{mandates_curr_user_gave_creator}"
+<div class="comment_wrapper regular_comment {?is_even}even{:else}odd{/is_even} {?is_editable}edit_comment{/is_editable}" id="post_{_id}" data-id="{_id}" data-ref-id="{ref_to_post_id}" data-num-given-mandates="{mandates_curr_user_gave_creator}"
      data-creator_name="{creator_id.first_name} {creator_id.last_name}" data-creator_id="{creator_id.id}"
      data-num_of_proxies="{creator_id.num_of_proxies_i_represent}">
     <div class="comment_details">
@@ -30,8 +30,9 @@
     <div class="comment_buttons">
         <input class="button_quote" type="button" />
         <input class="button_comment" type="button" />
-        <div class="button_fb"data-href="http://www.uru.org.il/discussions/{discussion_id}/posts/{_id}"
-             data-send="false" data-layout="button_count" data-width="450" data-show-faces="false"><img src="/images/placeholder_fb_2.png" /></div>
+        <div class="button_fb fb-like" data-href="http://www.uru.org.il/discussions/{discussion_id}/posts/{_id}"
+             data-send="false" data-layout="button_count" data-width="450" data-show-faces="false"><img src="/images/placeholder_fb_2.png" />
+        </div>
     </div>
     <div class="rating_small">
         <a href="javascript:void(0)"><span class="good"></span></a>
