@@ -936,7 +936,7 @@ $(document).ready(function () {
         var text;
         var postDiv = $(this).parents('.comment_wrapper');
         // TODO chnge this text height
-        var text_height = $(this).parents('div').find('.post_text').height();
+        var text_height = $(this).parents('.comment_wrapper ').find('.content').height();
         var new_post_ref_id;
         e.preventDefault();
         userName = postDiv.data('creator_name');
@@ -952,7 +952,7 @@ $(document).ready(function () {
                 + '<p>&nbsp;</p>';
 
         $("textarea#discussion_comment").val($("textarea#discussion_comment").val() + text).focus();
-        focusOnCommentBox();
+        focusOnCommentBox(text_height);
 
         $("textarea#discussion_comment").height($("textarea#discussion_comment").height() + text_height);
     });
@@ -1516,7 +1516,7 @@ $(document).ready(function () {
     loadSpecialPost('popularity', 'most_pop', 'התגובה הפופולרית ביותר');
     loadPosts();
 
-    function focusOnCommentBox(){
+    function focusOnCommentBox(text_height){
         editor.focus();
         editor.focusManager.focus();
 
@@ -1527,6 +1527,12 @@ $(document).ready(function () {
             var selected_ranges = s.getRanges();
             selected_ranges[0].collapse(false);  //  false collapses the range to the end of the selected node, true before the node.
             s.selectRanges(selected_ranges);
+
+            if(text_height){
+                CKEDITOR.instances.discussion_comment.resize(755, 100 + text_height);
+                $('#comments_wrapper #add_comment_wrapper .comment_wrapper').height(100 + text_height);
+            }
+
         },100);
     };
 
