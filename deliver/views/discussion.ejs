@@ -312,9 +312,9 @@ var error_message = error_message || '';
         <div class="content_break_content comments">
             <h2 id="comments-title">תגובות <small id="comments_number"></small></h2>
             <div id="comments_filter">
-                <input data-selected="true" data-sort-by="-creation_date" class="button_order_chron selected" type="button" />
-                <input data-selected="false" data-sort-by="-popularity" class="button_order_popular" type="button" />
-                <input data-selected="false" data-sort-by="-total_votes" class="button_order_contro" type="button" />
+                <input data-sort-by="-creation_date" class="button_order_chron selected" type="button" />
+                <input data-sort-by="-popularity" class="button_order_popular" type="button" />
+                <input data-sort-by="-total_votes" class="button_order_contro" type="button" />
             </div>
         </div>
     </div>
@@ -1316,11 +1316,11 @@ $(document).ready(function () {
 
 
     function loadPosts(page_number, pagination_action) {
-        var selectedOption = $("#comments_filter [data-selected=true]").data('sort-by');
+        var selectedOption = $("#comments_filter .selected").data('sort-by');
         current_offset = page_number ? (page_number - 1) * limit : 0;
 
         // get posts with current offset
-        db_functions.getSortedPostByDiscussion(discussion_id, selectedOption, current_offset, limit, function (err, data) {
+        db_functions.getSortedPostByDiscussion(discussion_id, selectedOption || '-creation_date', current_offset, limit, function (err, data) {
             if (err) {
                 console.log(err);
             } else {
@@ -1467,14 +1467,12 @@ $(document).ready(function () {
     $("#comments_filter input").click(function(){
 
         var inputs = $(this).parent().find("input");
-        // set the sepecified filter as selected for api sorting query
-        inputs.data('selected', false);
-        $(this).data('selected', true);
 
         //set selected class to the selected
         inputs.removeClass('selected');
         inputs.removeClass('hover');
         $(this).addClass('selected');
+        
         loadPosts(1);
     });
 
