@@ -891,7 +891,7 @@ $(document).ready(function () {
             comments[i].isEven = ((i % 2)== 0);
             comments[i].voting =      comments[i].votes_for - comments[i].votes_against;
         }
-        dust.renderArray('discussion_comment', comments, null, function (err, out) {
+        dust.renderArray('discussion_comment_old', comments, null, function (err, out) {
             if (!err) {
                 var comments = $("#comments");
                 comments.append(out);
@@ -903,7 +903,7 @@ $(document).ready(function () {
                             var post_id = match[1];
 
                             db_functions.getPostById(post_id, function (err, post) {
-                                dust.render('discussion_comment', post, function (err, out) {
+                                dust.render('discussion_comment_old', post, function (err, out) {
                                     if (!err)
                                         comments.append(out);
                                     scrollTo(hash);
