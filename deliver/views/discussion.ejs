@@ -386,6 +386,7 @@ $(document).ready(function () {
     var suggestions_list=null;
     var original = $('#discussion_content_textarea').val() ;
     var range={};
+    var editor;
 
     // toggle edit class to open/close contxt popup window or edit suggestion button
     $('#suggestions_wrapper').on('mouseenter', '.text.change_proposal', function(){
@@ -655,23 +656,6 @@ $(document).ready(function () {
                     else
                         console.log(err);
                 });
-            }
-        }
-    });
-
-    var editor;
-    $('#discussion_comment').ckeditor({
-        height: 70,
-        width: 810,
-        'line-height':10,
-        language:'he',
-        removePlugins : 'elementspath',
-        on :
-        {
-            instanceReady : function( ev )
-            {
-                editor = this;
-                editor = this;
             }
         }
     });
@@ -970,7 +954,7 @@ $(document).ready(function () {
         $("textarea#discussion_comment").val($("textarea#discussion_comment").val() + text).focus();
         focusOnCommentBox();
 
-        $('#cke_contents_discussion_comment').height($('#cke_contents_discussion_comment').height() + text_height);
+        $("textarea#discussion_comment").height($("textarea#discussion_comment").height() + text_height);
     });
 
 //    $('#comments').on('click', ".post_quote a", function (e) {
@@ -1266,6 +1250,22 @@ $(document).ready(function () {
 
                 image_autoscale($('.auto-scale img', comments));
 
+                // i paste it here to prevent the weird bug "cannot insertBefore null"
+                $('#discussion_comment').ckeditor({
+                    height: 70,
+                    width: 810,
+                    'line-height':10,
+                    language:'he',
+                    removePlugins : 'elementspath',
+                    on :
+                    {
+                        instanceReady : function( ev )
+                        {
+                            editor = this;
+                            editor = this;
+                        }
+                    }
+                });
 //             initTooltipWithMessage($('#comments .right .respect'), 'מוניטין');
             }
         });
@@ -1313,6 +1313,7 @@ $(document).ready(function () {
             }
         })
     };
+
 
     function loadPosts(page_number, pagination_action) {
         var selectedOption = $("#comments_filter [data-selected=true]").data('sort-by');
@@ -1515,61 +1516,6 @@ $(document).ready(function () {
     loadSpecialPost('popularity', 'most_pop', 'התגובה הפופולרית ביותר');
     loadPosts();
 
-//
-//
-//
-////            $('.sugg_rating_button').click(function(){
-//    $('#suggestion_list').on('click', '.sugg_rating_button', function () {
-//        var rating = Number($(this).parent().find($(".sugg_rating_select")).val());
-//        sugg_grade_id = $(this).parent().data('grade');
-//
-//        var suggestion_id = $(this).parent().attr('id');
-//        var self = this;
-//        var user_info = {
-//            user_logged_in : user.first_name ? true : false,
-//            action_done : (user.actions_done_by_user && user.actions_done_by_user.grade_object) ? true : false,
-//            action_name : "grade_object",
-//            tokens_owned : user.tokens ? user.tokens : 0,
-//            price: gamification_price['grade_suggestion']
-//        }
-//        db_functions.addSuggestionGrade(suggestion_id, discussion_id, rating, sugg_grade_id, user_info, function (err, data) {
-//            if (!err) {
-////                if(!(user.actions_done_by_user && user.actions_done_by_user.grade_object))
-////                {
-////                    user.actions_done_by_user.grade_object = true;
-////                }
-//                db_functions.getSuggestionByDiscussion(discussion_id, function (err, data) {
-//                    $.each(data.objects, function (index, suggestion) {
-//                        render_suggestion(suggestion);
-//                    });
-//                })
-//            }
-//        });
-//    });
-//
-//    $('#suggest_button').click(function () {
-//        $('#suggest_div').show();
-//    });
-//
-//    $('#close_suggest').click(function () {
-//        $('#suggest_div').hide();
-//        $("textarea#discussion_suggest").val('');
-//    });
-//
-//
-//
-//    $('.system-notice .close').click(function () {
-//
-//        $(this).parents('.system-notice').fadeOut(800);
-//    });
-//
-//    $('#read_more').click(function () {
-//
-//        $(this).parents('.text-box').addClass('extended');
-//        var h=  $(".hidden_textarea").get(0).scrollHeight;
-//        $(".discussion_content").height(h);
-//    });
-//
     function focusOnCommentBox(){
         editor.focus();
         editor.focusManager.focus();
@@ -1584,9 +1530,6 @@ $(document).ready(function () {
         },100);
     };
 
-
-
-
     function displaySuggestionsRanges(){
         $.each(suggestions_list, function (index, suggestion) {
            var text =  original.substr(suggestion.parts[0].start,suggestion.parts[0].end - suggestion.parts[0].start);
@@ -1600,7 +1543,6 @@ $(document).ready(function () {
 
         })
     }
-
 
     var mouseDown, mouseUp, top, left;
     var range_txt;
@@ -1705,7 +1647,6 @@ $(document).ready(function () {
         $('#reload-img').attr('src', $('#reload-img').attr('src'));
         $(".popup-window").hide();
     });
-
 });
 
 
