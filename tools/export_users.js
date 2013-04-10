@@ -1,16 +1,9 @@
-
-
-
-
 var mongoose = require('mongoose');
 
-mongoose.connect('mongodb://heroku_app2952775:nuulb7icv8aafrr7n592uie793@ds031107.mongolab.com:31107/heroku_app2952775');
+mongoose.connect('mongodb://heroku_app2952775:7eho6cf7a8lhplggsufhrk1fpf@ds051467.mongolab.com:51467/heroku_app2952775');
 
-var app = require('../app'),
+var formage = require('formage'),
     models = require('../models'),
-    common = require('../deliver/routes/account/common'),
-    templates = require('../lib/templates'),
-    mail = require('../lib/mail'),
     async = require('async'),
     fs = require('fs');
 
