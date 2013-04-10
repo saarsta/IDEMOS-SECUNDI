@@ -50,7 +50,7 @@ var ten_seconds_cron = exports.ten_seconds_cron = {
             async.forEach(cycles, function (cycle) {
                 var page = cycle.fb_page;
                 if(page && page.url){
-                    og_get('https://graph.facebook.com/' + page.url + '/access_token=' + 'BAACEdEose0cBANw4rfZAuMGfL6QAxmnDUiZBEHhRoslJNj7fOvprXb7pe25hWJitSAsCgIqzkp5z4cH6iXzY4hKZBfFHT83SFzYKbFT5ZABZBJqtTWKF50OqiQe1ZCdiZANjcMkVvhHLbvqNSWjKylTBBKkcPT1Aox70wkOIAzF0ZCXMLWCB7ZBQHiAZAjnD9DbhyPpfZB3kgwnXtPhcmpO6IBX', function (error, og_data) {
+                    og_get('https://graph.facebook.com/' + page.url + '?access_token=' + 'BAACEdEose0cBANw4rfZAuMGfL6QAxmnDUiZBEHhRoslJNj7fOvprXb7pe25hWJitSAsCgIqzkp5z4cH6iXzY4hKZBfFHT83SFzYKbFT5ZABZBJqtTWKF50OqiQe1ZCdiZANjcMkVvhHLbvqNSWjKylTBBKkcPT1Aox70wkOIAzF0ZCXMLWCB7ZBQHiAZAjnD9DbhyPpfZB3kgwnXtPhcmpO6IBX', function (error, og_data) {
 
                         if (og_data.likes !== page.like_count) {
                             console.log("og_data:");
