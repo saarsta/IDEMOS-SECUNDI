@@ -1379,7 +1379,9 @@ color: #ff00af;
     text-align: center;
     text-decoration: none;
     padding: 0 23px;
-    position: relative;
+    display:table;
+    overflow:hidden;
+    position:relative;
 }
 
 .services-blue a:first-child {
@@ -1387,7 +1389,8 @@ color: #ff00af;
 }
 
 .services-blue a span.text {
-    position: relative;
+    display:table-cell;
+    vertical-align: middle;
     z-index: 5;
 }
 

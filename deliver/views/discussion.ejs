@@ -696,7 +696,9 @@ $(document).ready(function () {
                         setUserScore(my_id, post.creator_id.score);
                     post.voting = post.votes_for - post.votes_against;
                     dust.render('discussion_comment', post, function (err, out) {
-                        $("#comments").append(out);
+                        var pagination = $(".second_pagination");
+
+                        pagination.before(out);
                         $("textarea#discussion_comment").val('');
                         new_post_ref_id = null;
                         postsNumber++;
@@ -801,14 +803,14 @@ $(document).ready(function () {
 //    /***************************************************/
 //
 //
-//    function setUserScore(userID, score) {
-//        $('[ data-creator_id=' + userID + ']').find('.score').empty().append(score);
-//    }
-//
-//    function setCommentNumber(number) {
-//
-//        $('#comments_number')[0].innerHTML = '(' + number + ')';
-//    }
+    function setUserScore(userID, score) {
+        $('[ data-creator_id=' + userID + ']').find('.score').empty().append(score);
+    }
+
+    function setCommentNumber(number) {
+
+        $('#comments_number')[0].innerHTML = '(' + number + ')';
+    }
 //
 //
 //
@@ -937,6 +939,7 @@ $(document).ready(function () {
         var postDiv = $(this).parents('.comment_wrapper');
         // TODO chnge this text height
         var text_height = $(this).parents('.comment_wrapper ').find('.content').height();
+        new_post_ref_id;
         e.preventDefault();
         userName = postDiv.data('creator_name');
         new_post_ref_id = postDiv.data('id');
@@ -1036,7 +1039,7 @@ $(document).ready(function () {
     var suggest_grade_id = new Object();
 
     var current_offset = 0;
-    var limit = 2;
+    var limit = 20;
     var num_of_pages;
     var num_of_pages_in_section = 7;
     var total_post_count;
