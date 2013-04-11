@@ -485,11 +485,11 @@ body {
 
 #login_button a:hover
 {
-    background: url(../images/URU_Connect_btn_sprite.png) -120px 0 no-repeat;
+    background-position:-120px 0;
 }
 #login_button a:active
 {
-    background: url(../images/URU_Connect_btn_sprite.png) 0 0 no-repeat;
+    background-position:0 0;
 }
 
 .user-box {
@@ -512,11 +512,11 @@ body {
 
 .user-box a.icon:hover
 {
-    background: url(../images/URU_User.btn_sprite.png) -45px 0 no-repeat;
+    background-position:-45px 0;
 }
 .user-box a.icon:active
 {
-    background: url(../images/URU_User.btn_sprite.png) -1px 0 no-repeat;
+    background-position:-1px 0;
 }
 
 .user-box a.name{
@@ -6683,11 +6683,11 @@ a.fraction-btn {
 
 .add-offer  a.green-btn:hover
 {
-    background: url(../images/Cycles_Pro_btn_sprite.png) -113px 0 no-repeat;
+    background-position:-113px 0;
 }
 .add-offer  a.green-btn:active
 {
-    background: url(../images/Cycles_Pro_btn_sprite.png) -1px 0 no-repeat;
+    background-position:-1px 0;
 }
 
 /*------------------------*/
@@ -10305,11 +10305,11 @@ a.facebook_join
 
 a.facebook_join:hover
 {
-    background: url(../images/URU_FB_Connect_btn_sprite.png) 0 -42px no-repeat;
+    background-position:0 -42px;
 }
 a.facebook_join:active
 {
-    background: url(../images/URU_FB_Connect_btn_sprite.png) 0 -84px no-repeat;
+    background-position:0 -84px;
 }
 
 .sb-title   a.facebook_join{
