@@ -1379,31 +1379,19 @@ color: #ff00af;
     text-align: center;
     text-decoration: none;
     padding: 0 23px;
-    position: relative;
+    display:table;
+    overflow:hidden;
+    position:relative;
 }
 
 .services-blue a:first-child {
     margin-right: 0;
 }
 
-.services-blue a span.text {
-    position: relative;
+.services-blue a div {
+    display:table-cell;
+    vertical-align: middle;
     z-index: 5;
-}
-
-.services-blue a.service-2 span.text {
-    display: block;
-    padding-top: 50px;
-}
-
-.services-blue a.service-1 span.text {
-    display: block;
-    padding-top: 58px;
-}
-
-.services-blue a.service-3 span.text {
-    display: block;
-    padding-top: 38px;
 }
 
 .services-blue a span.icon {
