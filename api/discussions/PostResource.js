@@ -127,6 +127,8 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
     create_obj:function (req, fields, callback) {
 
         var user_id = req.session.user_id;
+        console.log('********************user_id******************');
+        console.log(user_id);
         var self = this;
         var post_object = new self.model();
         var user = req.user;
