@@ -735,7 +735,7 @@ $(document).ready(function () {
 
 
 //    var sugg_grade_id;
-//    var new_post_ref_id = null;  //if not null =>the create new post is connected to anther post
+    var new_post_ref_id = null;  //if not null =>the create new post is connected to anther post
 
     var discussion_title = "<%= discussion.title%>"
     var discussion_img_field_preview = "<%= discussion.image_field ? discussion.image_field.url ||'' : '' %>";
@@ -937,7 +937,6 @@ $(document).ready(function () {
         var postDiv = $(this).parents('.comment_wrapper');
         // TODO chnge this text height
         var text_height = $(this).parents('.comment_wrapper ').find('.content').height();
-        var new_post_ref_id;
         e.preventDefault();
         userName = postDiv.data('creator_name');
         new_post_ref_id = postDiv.data('id');
