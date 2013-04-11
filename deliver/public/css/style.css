@@ -1370,7 +1370,7 @@ color: #ff00af;
 /*------------------------*/
 .services-blue a {
     background: url(../images/services-blue.png) no-repeat;
-    width: 84px;
+    width: 130px;;
     height: 139px;
     float: right;
     margin-right: 11px;
@@ -1378,35 +1378,100 @@ color: #ff00af;
     font: normal 22px/22px 'AdumaFOTMedium';
     text-align: center;
     text-decoration: none;
-    padding: 0 23px;
+    padding: 0;
     display:table;
     overflow:hidden;
     position:relative;
 }
 
-.services-blue a:first-child {
-    margin-right: 0;
-}
+/*.services-blue a:first-child {*/
+    /*margin-right: 0;*/
+/*}*/
 
-.services-blue a span.text {
+/*.services-blue a span.text {*/
+    /*display:table-cell;*/
+    /*vertical-align: middle;*/
+    /*z-index: 5;*/
+/*}*/
+
+/*.services-blue a.service-2 span.text {*/
+    /*display: block;*/
+    /*padding-top: 50px;*/
+/*}*/
+
+/*.services-blue a.service-1 span.text {*/
+    /*display: block;*/
+    /*padding-top: 58px;*/
+/*}*/
+
+/*.services-blue a.service-3 span.text {*/
+    /*display: block;*/
+    /*padding-top: 38px;*/
+/*}*/
+
+/*.services-blue a span.icon {*/
+    /*width: 130px;*/
+    /*height: 139px;*/
+    /*background-position: 50% 50%;*/
+    /*background-repeat: no-repeat;*/
+    /*position: absolute;*/
+    /*z-index: 1;*/
+    /*left: 0;*/
+    /*top: 0;*/
+    /*opacity: 0.2;*/
+/*}*/
+
+/*.services-blue a.service-1 span.icon {*/
+    /*background-image: url(../images/icon-1.png);*/
+/*}*/
+
+/*.services-blue a.service-2 span.icon {*/
+    /*background-image: url(../images/icon-2.png);*/
+/*}*/
+
+/*.services-blue a.service-3 span.icon {*/
+    /*background-image: url(../images/icon-3.png);*/
+/*}*/
+
+/*.services-blue a.service-4 span.icon {*/
+    /*background-image: url(../images/icon-4.png);*/
+/*}*/
+
+/*.services-blue a.service-5 span.icon {*/
+    /*background-image: url(../images/icon-5.png);*/
+/*}*/
+
+/*.services-blue a.service-6 span.icon {*/
+    /*background-image: url(../images/icon-6.png);*/
+/*}*/
+
+/*.services-blue a.service-7 span.icon {*/
+    /*background-image: url(../images/icon-7.png);*/
+/*}*/
+
+/*.services-blue a:hover span.icon {*/
+    /*opacity: 1;*/
+/*}*/
+
+/*.services-blue a:hover {*/
+    /*text-indent: -9999px;*/
+    /*z-index: 5;*/
+/*}*/
+
+/*.services-blue .selected-subject span.icon {*/
+    /*opacity: 1;*/
+/*}*/
+
+/*.services-blue .selected-subject {*/
+    /*text-indent: -9999px;*/
+    /*z-index: 5;*/
+/*}*/
+
+.services-blue a div {
     display:table-cell;
     vertical-align: middle;
+    width:130px;
     z-index: 5;
-}
-
-.services-blue a.service-2 span.text {
-    display: block;
-    padding-top: 50px;
-}
-
-.services-blue a.service-1 span.text {
-    display: block;
-    padding-top: 58px;
-}
-
-.services-blue a.service-3 span.text {
-    display: block;
-    padding-top: 38px;
 }
 
 .services-blue a span.icon {
