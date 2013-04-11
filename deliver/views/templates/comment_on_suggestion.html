@@ -1,16 +1,16 @@
 <div class="comment {?is_even}even{:else}odd{/is_even}">
-    <div class="author img-box-suggsestion-comment" style="overflow: hidden;">
-        <div style="height: 64px; opacity: 1; overflow: hidden;" class="auto-scale">
+    <div class="author img-box suggsestion-comment" style="overflow: hidden;">
+        <div class="auto-scale" style="height: 64px; width: 60px" >
             <img src="{avatar}">
         </div>
-        <span>{username}</span>
+        <span></span>
+        <div>{username}</div>
     </div>
-    <span class="photo-pattern"></span>
+    <!--<span class="photo-pattern"></span>-->
     <div class="date_time">
         {creation_date|time}
     </div>
     <div class="content">
         {text}
     </div>
-</div>
 </div>

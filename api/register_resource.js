@@ -119,7 +119,7 @@ var registerUser =module.exports.registerUser  = function(req,data,callback) {
                 if(cycle_id){
                     cbk(null)
                 }else{
-                    cbk(err || 'already_exists');
+                    cbk('already_exists');
                 }
             }
         },
