@@ -1084,7 +1084,7 @@ $(document).ready(function () {
                     comment.is_even = (index % 2) == 0;
                     dust.render('comment_on_suggestion', comment, function (err, out) {
                         // append before "add_comment"
-                        curr_suggestion.find('.add_comment').before(out);
+                        curr_suggestion.find('.suggestion_comments_holder .add_comment').before(out);
                         image_autoscale(curr_suggestion.find('.auto-scale img'));
                     });
                 });
@@ -1160,27 +1160,6 @@ $(document).ready(function () {
             $(".content_break_content").hide();
         }
     });
-
-//    $('.add_comment input').bind("enterKey",function(e){
-//        var text = $(this).val();
-//        var suggestion_id = $(this).parent('suggestion_wrapper').data('id');
-//        var add_comment = $(this).parent('.add_comment');
-//        var can_continue = $(this).parent().data('can-add');
-//
-//        if (can_continue){
-//            $(this).parent().attr('data-can-add', false);
-//            db_functions.addCommentToSuggestion(suggestion_id, discussion_id, text, function(err, comment){
-//                $(this).parent().attr('data-can-add', true);
-//
-////                comment.is_even = (index % 2) == 0;
-//                dust.render('comment_on_suggestion', comment, function (err, out) {
-//                    // append before "add_comment"
-//                    add_comment.before(out);
-////                    image_autoscale(curr_suggestion.find('.auto-scale img'));
-//                });
-//            });
-//        }
-//    });
 
     $('#suggestions_wrapper').on('keyup', '.add_comment input', function(e){
         if(e.keyCode == 13)
