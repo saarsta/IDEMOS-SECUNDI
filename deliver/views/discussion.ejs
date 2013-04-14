@@ -1291,7 +1291,7 @@ $(document).ready(function () {
 
 	 function loadSpecialPost(type, class_type, title){
         db_functions.getPostByTypeByDiscussion(discussion_id, type, function(err, data){
-            if (!err){
+            if (!err  && data.objects.length != 0){
                 var special_post = data.objects[0];
                 special_post.class_type = class_type;
                 special_post.title = title;
@@ -1312,8 +1312,25 @@ $(document).ready(function () {
 
         // get posts with current offset
         db_functions.getSortedPostByDiscussion(discussion_id, selectedOption || '-creation_date', current_offset, limit, function (err, data) {
-            if (err) {
+            if (err || data.objects.length === 0) {
                 console.log(err);
+                if(!err){
+                    $('#discussion_comment').ckeditor({
+                        height: 70,
+                        width: 810,
+                        'line-height':10,
+                        language:'he',
+                        removePlugins : 'elementspath',
+                        on :
+                        {
+                            instanceReady : function( ev )
+                            {
+                                editor = this;
+                                editor = this;
+                            }
+                        }
+                    });
+                }
             } else {
                 total_post_count = data.meta.total_count;
                 num_of_pages = Math.ceil(total_post_count / limit);
