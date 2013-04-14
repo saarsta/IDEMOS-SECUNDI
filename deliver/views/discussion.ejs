@@ -1045,7 +1045,7 @@ $(document).ready(function () {
     var suggest_grade_id = new Object();
 
     var current_offset = 0;
-    var limit = 20;
+    var limit = 3;
     var num_of_pages;
     var num_of_pages_in_section = 7;
     var total_post_count;
@@ -1336,7 +1336,7 @@ $(document).ready(function () {
                         }
 
                         //removeing 3 dots
-                        if ((parseInt($('.first_pagination .pagination .page[data-last=true]').text()) === num_of_pages)){
+                        if ((parseInt($($('.first_pagination .pagination .page[data-last=true]')[0]).text()) === num_of_pages)){
                             //remove 3 dots
                             $('.pagination .up-dots').remove();
                         }
@@ -1349,13 +1349,13 @@ $(document).ready(function () {
                             a.text(parseInt(a.text()) - paging_down);
                         });
 
-                        if ($('.first_pagination .pagination .page[data-first=true]').text() === "1"){
+                        if ($($('.first_pagination .pagination .page[data-first=true]')[0]).text() === "1"){
                             //remove 3 dots
                             $('.pagination .down-dots').remove();
                         }
                         // addinnd 3 dots
-                        if ($('.pagination .up-dots').length === 0 && parseInt($('.first_pagination .pagination .page[data-last=true]').text()) < num_of_pages ){
-                            $('.pagination .next').before('<span class="page up-dots">...</span>');
+                        if ($('.pagination .up-dots').length === 0 && parseInt($($('.first_pagination .pagination [data-first=true]')[0]).text()) < num_of_pages ){
+                            $('.pagination .next').parent().before('<span class="page up-dots">...</span>');
                         }
                     }
                     if (pagination_action === 'first' || pagination_action === 'last'){
@@ -1368,9 +1368,9 @@ $(document).ready(function () {
                             //remove 3 dots
                             $('.pagination .down-dots').remove();
                         }else{
-                            if(num_of_pages_in_section === num_of_pages){
+                            if(num_of_pages_in_section >= num_of_pages){
                                 // no need to change page numbers
-                                page_counter = 0;
+                                page_counter = 1;
                             }else{
                                 page_counter = num_of_pages - num_of_pages_in_section + 1;
                             }
@@ -1392,8 +1392,13 @@ $(document).ready(function () {
                         });
 
                         // addinnd 3 dots
-                        if ($('.pagination .down-dots').length === 0 && parseInt($('.first_pagination .pagination [data-first=true]').text()) > 1){
+                        if ($('.pagination .down-dots').length === 0 && parseInt($($('.first_pagination .pagination [data-first=true]')[0]).text()) > 1){
                             $('.pagination').find("[data-first=true]").before('<span class="page down-dots">...</span>');
+                        }
+
+                        // addinnd 3 dots
+                        if ($('.pagination .up-dots').length === 0 && parseInt($($('.first_pagination .pagination [data-last=true]')[0]).text()) < num_of_pages ){
+                            $('.pagination .next').parent().before('<span class="page up-dots">...</span>');
                         }
                     }
 
@@ -1438,7 +1443,7 @@ $(document).ready(function () {
             action = $(this).find('span').attr('class');
 
             if (page_number === 1 && action === 'prev') return false;
-            if (page_number === num_of_pages && action === 'next') return false;
+            if ((page_number === num_of_pages && action === 'next') || (page_number === num_of_pages && action === 'last')) return false;
             if (is_last && action === 'next'){
                 action = 'move_up';
             }
