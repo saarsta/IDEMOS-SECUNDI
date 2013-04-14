@@ -695,14 +695,19 @@ $(document).ready(function () {
                     if (my_id)
                         setUserScore(my_id, post.creator_id.score);
                     post.voting = post.votes_for - post.votes_against;
+
+                    //is new comment even or not
+                    var num_of_comments = $('.comment_wrapper.regular_comment').length;
+                    if (num_of_comments % 2 === 0) post. is_even = true;
+
                     dust.render('discussion_comment', post, function (err, out) {
                         var pagination = $(".second_pagination");
 
                         pagination.before(out);
                         $("textarea#discussion_comment").val('');
                         new_post_ref_id = null;
-                        postsNumber++;
-                        setCommentNumber(postsNumber);
+//                        postsNumber++;
+//                        setCommentNumber(postsNumber);
                         $this.data('executing', false);
                         $this.removeClass('disable')
                     });
@@ -951,7 +956,8 @@ $(document).ready(function () {
                 + text_to_quote
                 + '\n'
                 + "[/ציטוט]"
-                + '<p>&nbsp;</p>';
+                + '<p>&nbsp;</p>'
+                + '\n';
 
         $("textarea#discussion_comment").val($("textarea#discussion_comment").val() + text).focus();
         focusOnCommentBox(text_height);
@@ -1173,13 +1179,17 @@ $(document).ready(function () {
 
             if (can_continue){
                 $(this).parent().attr('data-can-add', false);
+
                 db_functions.addCommentToSuggestion(suggestion_id, discussion_id, text, function(err, comment){
                     $(this).parent().attr('data-can-add', true);
                     add_comment.find('input').val('');
-//                comment.is_even = (index % 2) == 0;
+                    var num_of_comments = $('.suggestion_comments_holder .comment').length;
+                    if (num_of_comments % 2 === 0) comment.is_even =  true;
+
                     dust.render('comment_on_suggestion', comment, function (err, out) {
                         // append before "add_comment"
                         add_comment.before(out);
+                        $('.comments_counter span').text(num_of_comments + 1);
                         image_autoscale(add_comment.parent('.suggestion_comments_holder').find('.auto-scale img'));
                     });
                 });
