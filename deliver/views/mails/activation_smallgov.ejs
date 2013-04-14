@@ -7,7 +7,7 @@
         <tr>
             <td><p><br></p>
 
-                <p>שלום,
+                <p> שלום <%= user.first_name %>,
                 </p>
 
                 <p></p>
@@ -15,8 +15,8 @@
                 <p>
 
 
-                    תודה שהצטרפת למאבק לממשלה קטנה ויעילה ולדרישה מראשי המפלגות שיפסיקו את בזבוז כספי הציבור.
-     <br>
+                    שמחים שהצטרפת למאבק לביטול אגרת הטלוויזיה.
+                    <br>
                     לקבלת עדכונים על המשך המאבק ועל קמפיינים נוספים שמובילה תנועת עורו
 
                     <a href="<%= settings.root_path %>/account/activation?code=<%= user.validation_code %>&id=<%= user.id %>&next=<%= encodeURIComponent(next || '') %>">
@@ -46,7 +46,7 @@
                 <p></p><a href="http://www.pulseem.com/Pulseem/LinkRedirect.axd?LinkID=333985&amp;ClientID=33924123"
                           target="_blank"><img alt=""
                                                src="http://www.uru.org.il/images/logo%20(2).png"
-                                              ></a>
+                        ></a>
 
                 <p>
                     &nbsp;&nbsp;<a
