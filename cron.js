@@ -3,7 +3,7 @@ if (!module.parent) console.error('Please don\'t call me directly.I am just the 
 
 var util = require('util'),
     models = require('./models'),
-    common = require('./api/common'),   
+    common = require('./api/common'),
     async = require('async'),
     _ = require('underscore')
     ,$ = require('jquery')
