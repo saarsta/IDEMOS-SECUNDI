@@ -59,7 +59,6 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
         var self = this;
         var discussion_id = req.query.discussion_id;
         var discussion_threshold;
-        var discussion_text;
 
         var user_id = req.user && req.user._id + "";
 
@@ -70,10 +69,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
             }
 
             //get discussion text before and after the suggestions
-            suggestion.context_before = discussion_text.substring(Math.max(suggestion.parts[0].start - 400, 0), suggestion.parts[0].start);
-            console.log(discussion_text);
-            console.log('******************************************************');
-            console.log(suggestion.context_before);
+            suggestion.context_before = discussion_text.substring(Math.max(suggestion.parts[0].start - 400, 0), suggestion.parts[0].start, suggestion.parts[0].start);
             suggestion.context_after = discussion_text.substring(suggestion.parts[0].end, Math.min(discussion_text.length, suggestion.parts[0].end + 400));
 
             //set counter og graders manually

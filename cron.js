@@ -6,10 +6,20 @@ var util = require('util'),
     common = require('./api/common'),
     async = require('async'),
     _ = require('underscore')
-    ,$ = require('jquery')
-    ,zombie = require('zombie')
+    ,$
+    ,zombie
     ,og_get = require('./og/data.js').get;
 
+try{
+    $ = require('jquery');
+} catch(e){
+    console.error('cant load jquery');
+}
+try{
+    zombie = require('zombie');
+} catch(e) {
+    console.error('cant load zombie');
+}
 
 function addTokensToUserByEventAndSetGamificationBonus(user_id, event, event_bonus, bonus_type, callback) {
     var set_gamification_bonus = {};

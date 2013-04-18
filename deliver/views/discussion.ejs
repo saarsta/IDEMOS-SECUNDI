@@ -312,9 +312,9 @@ var error_message = error_message || '';
         <div class="content_break_content comments">
             <h2 id="comments-title">תגובות <small id="comments_number"></small></h2>
             <div id="comments_filter">
-                <input data-sort-by="-creation_date" class="button_order_chron selected" type="button" />
-                <input data-sort-by="-popularity" class="button_order_popular" type="button" />
-                <input data-sort-by="-total_votes" class="button_order_contro" type="button" />
+                <input data-selected="true" data-sort-by="-creation_date" class="button_order_chron selected" type="button" />
+                <input data-selected="false" data-sort-by="-popularity" class="button_order_popular" type="button" />
+                <input data-selected="false" data-sort-by="-total_votes" class="button_order_contro" type="button" />
             </div>
         </div>
     </div>
@@ -386,7 +386,6 @@ $(document).ready(function () {
     var suggestions_list=null;
     var original = $('#discussion_content_textarea').val() ;
     var range={};
-    var editor;
 
     // toggle edit class to open/close contxt popup window or edit suggestion button
     $('#suggestions_wrapper').on('mouseenter', '.text.change_proposal', function(){
@@ -660,6 +659,23 @@ $(document).ready(function () {
         }
     });
 
+    var editor;
+    $('#discussion_comment').ckeditor({
+        height: 70,
+        width: 810,
+        'line-height':10,
+        language:'he',
+        removePlugins : 'elementspath',
+        on :
+        {
+            instanceReady : function( ev )
+            {
+                editor = this;
+                editor = this;
+            }
+        }
+    });
+
     $("#submit_post").on('click', function (e) {
         e.preventDefault();
         var $this = $(this);
@@ -695,19 +711,12 @@ $(document).ready(function () {
                     if (my_id)
                         setUserScore(my_id, post.creator_id.score);
                     post.voting = post.votes_for - post.votes_against;
-
-                    //is new comment even or not
-                    var num_of_comments = $('.comment_wrapper.regular_comment').length;
-                    if (num_of_comments % 2 === 0) post. is_even = true;
-
                     dust.render('discussion_comment', post, function (err, out) {
-                        var pagination = $(".second_pagination");
-
-                        pagination.before(out);
+                        $("#comments").append(out);
                         $("textarea#discussion_comment").val('');
                         new_post_ref_id = null;
-//                        postsNumber++;
-//                        setCommentNumber(postsNumber);
+                        postsNumber++;
+                        setCommentNumber(postsNumber);
                         $this.data('executing', false);
                         $this.removeClass('disable')
                     });
@@ -742,7 +751,7 @@ $(document).ready(function () {
 
 
 //    var sugg_grade_id;
-    var new_post_ref_id = null;  //if not null =>the create new post is connected to anther post
+//    var new_post_ref_id = null;  //if not null =>the create new post is connected to anther post
 
     var discussion_title = "<%= discussion.title%>"
     var discussion_img_field_preview = "<%= discussion.image_field ? discussion.image_field.url ||'' : '' %>";
@@ -808,14 +817,14 @@ $(document).ready(function () {
 //    /***************************************************/
 //
 //
-    function setUserScore(userID, score) {
-        $('[ data-creator_id=' + userID + ']').find('.score').empty().append(score);
-    }
-
-    function setCommentNumber(number) {
-
-        $('#comments_number')[0].innerHTML = '(' + number + ')';
-    }
+//    function setUserScore(userID, score) {
+//        $('[ data-creator_id=' + userID + ']').find('.score').empty().append(score);
+//    }
+//
+//    function setCommentNumber(number) {
+//
+//        $('#comments_number')[0].innerHTML = '(' + number + ')';
+//    }
 //
 //
 //
@@ -943,8 +952,8 @@ $(document).ready(function () {
         var text;
         var postDiv = $(this).parents('.comment_wrapper');
         // TODO chnge this text height
-        var text_height = $(this).parents('.comment_wrapper ').find('.content').height();
-        new_post_ref_id;
+        var text_height = $(this).parents('div').find('.post_text').height();
+        var new_post_ref_id;
         e.preventDefault();
         userName = postDiv.data('creator_name');
         new_post_ref_id = postDiv.data('id');
@@ -956,13 +965,12 @@ $(document).ready(function () {
                 + text_to_quote
                 + '\n'
                 + "[/ציטוט]"
-                + '<p>&nbsp;</p>'
-                + '\n';
+                + '<p>&nbsp;</p>';
 
         $("textarea#discussion_comment").val($("textarea#discussion_comment").val() + text).focus();
-        focusOnCommentBox(text_height);
+        focusOnCommentBox();
 
-        $("textarea#discussion_comment").height($("textarea#discussion_comment").height() + text_height);
+        $('#cke_contents_discussion_comment').height($('#cke_contents_discussion_comment').height() + text_height);
     });
 
 //    $('#comments').on('click', ".post_quote a", function (e) {
@@ -1045,7 +1053,7 @@ $(document).ready(function () {
     var suggest_grade_id = new Object();
 
     var current_offset = 0;
-    var limit = 3;
+    var limit = 2;
     var num_of_pages;
     var num_of_pages_in_section = 7;
     var total_post_count;
@@ -1092,7 +1100,7 @@ $(document).ready(function () {
                     comment.is_even = (index % 2) == 0;
                     dust.render('comment_on_suggestion', comment, function (err, out) {
                         // append before "add_comment"
-                        curr_suggestion.find('.suggestion_comments_holder .add_comment').before(out);
+                        curr_suggestion.find('.add_comment').before(out);
                         image_autoscale(curr_suggestion.find('.auto-scale img'));
                     });
                 });
@@ -1169,6 +1177,27 @@ $(document).ready(function () {
         }
     });
 
+//    $('.add_comment input').bind("enterKey",function(e){
+//        var text = $(this).val();
+//        var suggestion_id = $(this).parent('suggestion_wrapper').data('id');
+//        var add_comment = $(this).parent('.add_comment');
+//        var can_continue = $(this).parent().data('can-add');
+//
+//        if (can_continue){
+//            $(this).parent().attr('data-can-add', false);
+//            db_functions.addCommentToSuggestion(suggestion_id, discussion_id, text, function(err, comment){
+//                $(this).parent().attr('data-can-add', true);
+//
+////                comment.is_even = (index % 2) == 0;
+//                dust.render('comment_on_suggestion', comment, function (err, out) {
+//                    // append before "add_comment"
+//                    add_comment.before(out);
+////                    image_autoscale(curr_suggestion.find('.auto-scale img'));
+//                });
+//            });
+//        }
+//    });
+
     $('#suggestions_wrapper').on('keyup', '.add_comment input', function(e){
         if(e.keyCode == 13)
         {
@@ -1179,17 +1208,13 @@ $(document).ready(function () {
 
             if (can_continue){
                 $(this).parent().attr('data-can-add', false);
-
                 db_functions.addCommentToSuggestion(suggestion_id, discussion_id, text, function(err, comment){
                     $(this).parent().attr('data-can-add', true);
                     add_comment.find('input').val('');
-                    var num_of_comments = $('.suggestion_comments_holder .comment').length;
-                    if (num_of_comments % 2 === 0) comment.is_even =  true;
-
+//                comment.is_even = (index % 2) == 0;
                     dust.render('comment_on_suggestion', comment, function (err, out) {
                         // append before "add_comment"
                         add_comment.before(out);
-                        $('.comments_counter span').text(num_of_comments + 1);
                         image_autoscale(add_comment.parent('.suggestion_comments_holder').find('.auto-scale img'));
                     });
                 });
@@ -1241,22 +1266,6 @@ $(document).ready(function () {
 
                 image_autoscale($('.auto-scale img', comments));
 
-                // i paste it here to prevent the weird bug "cannot insertBefore null"
-                $('#discussion_comment').ckeditor({
-                    height: 70,
-                    width: 810,
-                    'line-height':10,
-                    language:'he',
-                    removePlugins : 'elementspath',
-                    on :
-                    {
-                        instanceReady : function( ev )
-                        {
-                            editor = this;
-                            editor = this;
-                        }
-                    }
-                });
 //             initTooltipWithMessage($('#comments .right .respect'), 'מוניטין');
             }
         });
@@ -1291,7 +1300,7 @@ $(document).ready(function () {
 
 	 function loadSpecialPost(type, class_type, title){
         db_functions.getPostByTypeByDiscussion(discussion_id, type, function(err, data){
-            if (!err  && data.objects.length != 0){
+            if (!err){
                 var special_post = data.objects[0];
                 special_post.class_type = class_type;
                 special_post.title = title;
@@ -1305,32 +1314,14 @@ $(document).ready(function () {
         })
     };
 
-
     function loadPosts(page_number, pagination_action) {
-        var selectedOption = $("#comments_filter .selected").data('sort-by');
+        var selectedOption = $("#comments_filter [data-selected=true]").data('sort-by');
         current_offset = page_number ? (page_number - 1) * limit : 0;
 
         // get posts with current offset
-        db_functions.getSortedPostByDiscussion(discussion_id, selectedOption || '-creation_date', current_offset, limit, function (err, data) {
-            if (err || data.objects.length === 0) {
+        db_functions.getSortedPostByDiscussion(discussion_id, selectedOption, current_offset, limit, function (err, data) {
+            if (err) {
                 console.log(err);
-                if(!err){
-                    $('#discussion_comment').ckeditor({
-                        height: 70,
-                        width: 810,
-                        'line-height':10,
-                        language:'he',
-                        removePlugins : 'elementspath',
-                        on :
-                        {
-                            instanceReady : function( ev )
-                            {
-                                editor = this;
-                                editor = this;
-                            }
-                        }
-                    });
-                }
             } else {
                 total_post_count = data.meta.total_count;
                 num_of_pages = Math.ceil(total_post_count / limit);
@@ -1353,7 +1344,7 @@ $(document).ready(function () {
                         }
 
                         //removeing 3 dots
-                        if ((parseInt($($('.first_pagination .pagination .page[data-last=true]')[0]).text()) === num_of_pages)){
+                        if ((parseInt($('.first_pagination .pagination .page[data-last=true]').text()) === num_of_pages)){
                             //remove 3 dots
                             $('.pagination .up-dots').remove();
                         }
@@ -1366,13 +1357,13 @@ $(document).ready(function () {
                             a.text(parseInt(a.text()) - paging_down);
                         });
 
-                        if ($($('.first_pagination .pagination .page[data-first=true]')[0]).text() === "1"){
+                        if ($('.first_pagination .pagination .page[data-first=true]').text() === "1"){
                             //remove 3 dots
                             $('.pagination .down-dots').remove();
                         }
                         // addinnd 3 dots
-                        if ($('.pagination .up-dots').length === 0 && parseInt($($('.first_pagination .pagination [data-first=true]')[0]).text()) < num_of_pages ){
-                            $('.pagination .next').parent().before('<span class="page up-dots">...</span>');
+                        if ($('.pagination .up-dots').length === 0 && parseInt($('.first_pagination .pagination .page[data-last=true]').text()) < num_of_pages ){
+                            $('.pagination .next').before('<span class="page up-dots">...</span>');
                         }
                     }
                     if (pagination_action === 'first' || pagination_action === 'last'){
@@ -1385,9 +1376,9 @@ $(document).ready(function () {
                             //remove 3 dots
                             $('.pagination .down-dots').remove();
                         }else{
-                            if(num_of_pages_in_section >= num_of_pages){
+                            if(num_of_pages_in_section === num_of_pages){
                                 // no need to change page numbers
-                                page_counter = 1;
+                                page_counter = 0;
                             }else{
                                 page_counter = num_of_pages - num_of_pages_in_section + 1;
                             }
@@ -1409,13 +1400,8 @@ $(document).ready(function () {
                         });
 
                         // addinnd 3 dots
-                        if ($('.pagination .down-dots').length === 0 && parseInt($($('.first_pagination .pagination [data-first=true]')[0]).text()) > 1){
+                        if ($('.pagination .down-dots').length === 0 && parseInt($('.first_pagination .pagination [data-first=true]').text()) > 1){
                             $('.pagination').find("[data-first=true]").before('<span class="page down-dots">...</span>');
-                        }
-
-                        // addinnd 3 dots
-                        if ($('.pagination .up-dots').length === 0 && parseInt($($('.first_pagination .pagination [data-last=true]')[0]).text()) < num_of_pages ){
-                            $('.pagination .next').parent().before('<span class="page up-dots">...</span>');
                         }
                     }
 
@@ -1460,7 +1446,7 @@ $(document).ready(function () {
             action = $(this).find('span').attr('class');
 
             if (page_number === 1 && action === 'prev') return false;
-            if ((page_number === num_of_pages && action === 'next') || (page_number === num_of_pages && action === 'last')) return false;
+            if (page_number === num_of_pages && action === 'next') return false;
             if (is_last && action === 'next'){
                 action = 'move_up';
             }
@@ -1480,12 +1466,14 @@ $(document).ready(function () {
     $("#comments_filter input").click(function(){
 
         var inputs = $(this).parent().find("input");
+        // set the sepecified filter as selected for api sorting query
+        inputs.data('selected', false);
+        $(this).data('selected', true);
 
         //set selected class to the selected
         inputs.removeClass('selected');
         inputs.removeClass('hover');
         $(this).addClass('selected');
-
         loadPosts(1);
     });
 
@@ -1527,7 +1515,62 @@ $(document).ready(function () {
     loadSpecialPost('popularity', 'most_pop', 'התגובה הפופולרית ביותר');
     loadPosts();
 
-    function focusOnCommentBox(text_height){
+//
+//
+//
+////            $('.sugg_rating_button').click(function(){
+//    $('#suggestion_list').on('click', '.sugg_rating_button', function () {
+//        var rating = Number($(this).parent().find($(".sugg_rating_select")).val());
+//        sugg_grade_id = $(this).parent().data('grade');
+//
+//        var suggestion_id = $(this).parent().attr('id');
+//        var self = this;
+//        var user_info = {
+//            user_logged_in : user.first_name ? true : false,
+//            action_done : (user.actions_done_by_user && user.actions_done_by_user.grade_object) ? true : false,
+//            action_name : "grade_object",
+//            tokens_owned : user.tokens ? user.tokens : 0,
+//            price: gamification_price['grade_suggestion']
+//        }
+//        db_functions.addSuggestionGrade(suggestion_id, discussion_id, rating, sugg_grade_id, user_info, function (err, data) {
+//            if (!err) {
+////                if(!(user.actions_done_by_user && user.actions_done_by_user.grade_object))
+////                {
+////                    user.actions_done_by_user.grade_object = true;
+////                }
+//                db_functions.getSuggestionByDiscussion(discussion_id, function (err, data) {
+//                    $.each(data.objects, function (index, suggestion) {
+//                        render_suggestion(suggestion);
+//                    });
+//                })
+//            }
+//        });
+//    });
+//
+//    $('#suggest_button').click(function () {
+//        $('#suggest_div').show();
+//    });
+//
+//    $('#close_suggest').click(function () {
+//        $('#suggest_div').hide();
+//        $("textarea#discussion_suggest").val('');
+//    });
+//
+//
+//
+//    $('.system-notice .close').click(function () {
+//
+//        $(this).parents('.system-notice').fadeOut(800);
+//    });
+//
+//    $('#read_more').click(function () {
+//
+//        $(this).parents('.text-box').addClass('extended');
+//        var h=  $(".hidden_textarea").get(0).scrollHeight;
+//        $(".discussion_content").height(h);
+//    });
+//
+    function focusOnCommentBox(){
         editor.focus();
         editor.focusManager.focus();
 
@@ -1538,14 +1581,11 @@ $(document).ready(function () {
             var selected_ranges = s.getRanges();
             selected_ranges[0].collapse(false);  //  false collapses the range to the end of the selected node, true before the node.
             s.selectRanges(selected_ranges);
-
-            if(text_height){
-                CKEDITOR.instances.discussion_comment.resize(755, 100 + text_height);
-                $('#comments_wrapper #add_comment_wrapper .comment_wrapper').height(100 + text_height);
-            }
-
         },100);
     };
+
+
+
 
     function displaySuggestionsRanges(){
         $.each(suggestions_list, function (index, suggestion) {
@@ -1560,6 +1600,7 @@ $(document).ready(function () {
 
         })
     }
+
 
     var mouseDown, mouseUp, top, left;
     var range_txt;
@@ -1664,6 +1705,7 @@ $(document).ready(function () {
         $('#reload-img').attr('src', $('#reload-img').attr('src'));
         $(".popup-window").hide();
     });
+
 });
 
 

@@ -1943,7 +1943,7 @@ span.remark{
     color:#50504f;
     border-left: 1px solid #dbdcde;
     padding-left: 10px;
-    margin-left: 15px!important;
+    margin-left: 15px;
 }
 
 .suggestion_comments_holder .comment .author span{
@@ -1954,8 +1954,6 @@ span.remark{
 .suggestion_comments_holder .comment .author img{
     margin:auto;
     float:none;
-    position: absolute;
-    right: 15px;
 }
 
 .suggestion_comments_holder .comment .date_time{
@@ -2069,60 +2067,104 @@ span.remark{
 }
 
 #comments_filter input{
-    background:url(/images/uru_sort_menu.png) no-repeat 100% 33%;
     float:right;
+}
+
+#comments_filter input.button_order_chron{
+    /*background:url(/images/button_order_chron.png) no-repeat 0 0;*/
+    background:url(/images/uru_sort_menu.png) no-repeat 100% 33%;
+    width:66px;
     height:32px;
     cursor:pointer;
     border:none;
     margin:6px 0px;
 }
 
-#comments_filter input.button_order_chron{
-    /*background:url(/images/button_order_chron.png) no-repeat 0 0;*/
-    background-position: 100% 33%;
-    width:66px;
-}
-
 #comments_filter input.button_order_chron.been_hover{
     /*background:url(/images/button_order_chron.png) no-repeat 0 0;*/
-    background-position: 100% 100%;
+    background:url(/images/uru_sort_menu.png) no-repeat 100% 100%;
+    width:66px;
+    height:32px;
+    cursor:pointer;
+    border:none;
+    margin:6px 0px;
 }
 
 #comments_filter input.button_order_chron.selected{
     /*background:url(/images/button_order_chron.png) no-repeat 0 0;*/
-    background-position: 100% 0;
+    background:url(/images/uru_sort_menu.png) no-repeat 100% 0;
+
+    width:66px;
+    height:32px;
+    cursor:pointer;
+    border:none;
+    margin:6px 0px;
 }
 
 #comments_filter input.button_order_popular {
     /*background:url(/images/button_order_popular.png) no-repeat 0 0;*/
-    background-position: 63% 0;
+    background:url(/images/uru_sort_menu.png) no-repeat 63% 0;
+
     width:114px;
+    height:32px;
+    cursor:pointer;
+    border:none;
+    margin:6px 0px;
 }
 
 #comments_filter input.button_order_popular.been_hover {
     /*background:url(/images/button_order_popular.png) no-repeat 0 0;*/
-    background-position: 63% 100%;
+    background:url(/images/uru_sort_menu.png) no-repeat 63% 100%;
+
+    width:114px;
+    height:32px;
+    cursor:pointer;
+    border:none;
+    margin:6px 0px;
 }
 
 #comments_filter input.button_order_popular.selected {
     /*background:url(/images/button_order_popular.png) no-repeat 0 0;*/
-    background-position: 63% 33%;
+    background:url(/images/uru_sort_menu.png) no-repeat 63% 33%;
+
+    width:114px;
+    height:32px;
+    cursor:pointer;
+    border:none;
+    margin:6px 0px;
 }
 
 #comments_filter input.button_order_contro{
     /*background:url(/images/button_order_contro.png) no-repeat 0 0;*/
-    background-position: 0 0;
+    background:url(/images/uru_sort_menu.png) no-repeat 0 0;
+
     width:112px;
+    height:32px;
+    cursor:pointer;
+    border:none;
+    margin:6px 0px;
 }
 
 #comments_filter input.button_order_contro.been_hover{
     /*background:url(/images/button_order_contro.png) no-repeat 0 0;*/
-    background-position: 0% 100%;
+    background:url(/images/uru_sort_menu.png) no-repeat 0 100%;
+
+    width:112px;
+    height:32px;
+    cursor:pointer;
+    border:none;
+    margin:6px 0px;
 }
 
 #comments_filter input.button_order_contro.selected{
     /*background:url(/images/button_order_contro.png) no-repeat 0 0;*/
-    background-position: 0 67%;
+    background:url(/images/uru_sort_menu.png) no-repeat 0 67%;
+
+    width:112px;
+    height:32px;
+    cursor:pointer;
+    border:none;
+    margin:6px 0px;
 }
 
 #content_wrapper_comments{
@@ -2956,35 +2998,13 @@ input.button_submit_comment_no_text{
     margin: 0 auto;
 }
 
-#suggestions_wrapper .comment .img-box{
-    width: 90px;
-    height: 82px;
-}
-
 #suggestions_wrapper .img-box span {
     background: url(../images/user-fillter-small-white.png) no-repeat;
     position: absolute;
-    top: 0;
     right: 0;
-    width: 60px;
-    height: 100%;
-}
-
-#suggestions_wrapper .comment .img-box span {
-    background: url(../images/user-fillter-small-white.png) no-repeat;
-    position: absolute;
-    right: 15px;
     top: 0;
-    width: 60px;
+    width: 100%;
     height: 100%;
-}
-
-#suggestions_wrapper .suggestion_wrapper  .comment.even .img-box span {
-    background: url(../images/user-fillter-small-cofee.png) no-repeat;
-}
-
-#suggestions_wrapper .suggestion_wrapper  .comment.odd .img-box span {
-    background: url(../images/user-fillter-small-grey.png) no-repeat;
 }
 
 #comments_wrapper .img-box{
@@ -3001,14 +3021,6 @@ input.button_submit_comment_no_text{
     top: 0;
     width: 100%;
     height: 100%;
-}
-
-#comments_wrapper .regular_comment.odd .img-box span {
-    background: url(../images/user-fillter-small-cofee.png) no-repeat;
-}
-
-#comments_wrapper .regular_comment.even .img-box span {
-    background: url(../images/user-fillter-small-grey.png) no-repeat;
 }
 
 #content_left_sidebar .segment.links,
