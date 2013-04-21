@@ -1818,6 +1818,7 @@ span.remark{
     float:right;
     padding:15px 15px 10px 15px;
     min-height: 48px;
+    position: relative;
 }
 
 .suggestion_bottom_segment.one{	width:260px; border-left:5px solid #fff; }
@@ -2220,12 +2221,6 @@ span.remark{
     height: 153px;
     display: table;
 }
-
-/*#comments_wrapper .comment_wrapper .fb_edge_widget_with_comment {
-    position: relative;
-    top: 10px;
-    left: 30px;
-}*/
 
 #comments_wrapper .comment_wrapper .content {
     max-height:  153px;
@@ -2962,6 +2957,12 @@ input.button_submit_comment_no_text{
     height: 64px;
     margin: 0 auto;
 }
+
+#suggestions_wrapper .fb_edge_widget_with_comment {
+    top: 0px;
+    left: 8px;
+}
+
 
 #suggestions_wrapper .comment .img-box{
     width: 90px;
