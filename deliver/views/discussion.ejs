@@ -88,14 +88,9 @@ var error_message = error_message || '';
                                 <span class="tag"><a href="?tag_name=<%=discussion.tags[c]%>"><%=discussion. tags[c] %></a></span>
 
                             <% }%>
-
-
                         </div>
                         <hr />
-
                         <div class="segment_bottom">
-
-
                             <div class="rating_box">
                                 <div class="rating_total">
                                     <%= Math.round(discussion.grade*100)/100 %>
@@ -106,7 +101,6 @@ var error_message = error_message || '';
                                 </div>
                             </div>
                             <div class="slide-box">
-
                                     <div class="slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
                                     <div class="ui-slider-range ui-widget-header ui-slider-range-min" style="width: 0%;"></div><a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 0%;"></a></div>
                                     <div class="slider-numbers">
@@ -122,16 +116,12 @@ var error_message = error_message || '';
                                         <span>10</span>
                                     </div>
                                 </div>
-
                             <div class="button_add_comment">
                                 <input type="button" />
                             </div>
                             <div class="button_suggest_revisions">
                                 <input type="button" />
                             </div>
-
-
-
                             <div class="history_details_holder">
 
                                 <hr />
@@ -1070,6 +1060,12 @@ $(document).ready(function () {
             dust.render('discussion_suggestion', suggestion, function (err, out) {
                 $('#suggestions_wrapper').prepend(out);
                 image_autoscale($('#suggestions_wrapper .auto-scale img'));
+
+                try{
+                    FB.XFBML.parse();
+                }catch(ex){
+                    console.log('fb parse didnt work');
+                }
             });
         }
         return null;
@@ -1261,6 +1257,19 @@ $(document).ready(function () {
                         }
                     }
                 });
+
+
+                try{
+                    FB.XFBML.parse($('#comments_wrapper').get(0));
+                }catch(ex){
+                    console.log('fb parse didnt work');
+                }
+//                setTimeout(function(){
+//                    if(typeof(FB) != 'undefined'){
+//                        FB.XFBML.parse();
+//                    }
+//                }, 1000);
+
 //             initTooltipWithMessage($('#comments .right .respect'), 'מוניטין');
             }
         });
@@ -1436,15 +1445,14 @@ $(document).ready(function () {
                 renderComments(data.objects);
 
 
-                /*if(data.meta.total_count > current_offset )
-                    $('.more_comments').show();
-                else
-                    $('.more_comments').hide();
-                postsNumber = data.meta.total_count;
-                setCommentNumber(postsNumber);
+//                if(data.meta.total_count > current_offset )
+//                    $('.more_comments').show();
+//                else
+//                    $('.more_comments').hide();
+//                postsNumber = data.meta.total_count;
+//                setCommentNumber(postsNumber);
 
-                if(typeof(FB) != 'undefined')
-                    FB.XFBML.parse();*/
+
             }
         })
     }

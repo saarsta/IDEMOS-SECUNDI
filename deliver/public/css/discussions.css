@@ -2213,13 +2213,19 @@ span.remark{
     height:292px;
 }
 
-#comments_wrapper .comment_wrapper{
+#comments_wrapper .comment_wrapper {
     float:right;
     background:#fff;
     padding:20px;
     height: 153px;
     display: table;
 }
+
+/*#comments_wrapper .comment_wrapper .fb_edge_widget_with_comment {
+    position: relative;
+    top: 10px;
+    left: 30px;
+}*/
 
 #comments_wrapper .comment_wrapper .content {
     max-height:  153px;
@@ -2381,6 +2387,7 @@ span.remark{
     float:left;
     padding-right:10px;
     width:42px;
+    position: relative;
 }
 
 #comments_wrapper .comment_wrapper .comment_buttons input{
@@ -3064,11 +3071,7 @@ input.button_submit_comment_no_text{
     padding-bottom:10px;
 }
 
-
 /*
-
-
-
 .popup-window {
     position: absolute;
     left: 38px;
