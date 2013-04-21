@@ -49,9 +49,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
             },
             wanted_amount_of_tokens:null,
             curr_amount_of_tokens:null,
-            is_editable: null,
-            context_before: null,
-            context_after: null
+            is_editable: null
         };
     },
 
@@ -67,10 +65,6 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
             if (user_id === suggestion.creator_id.id && new Date() - suggestion.creation_date <= EDIT_TEXT_LEGIT_TIME){
                 suggestion.is_editable = true;
             }
-
-            //get discussion text before and after the suggestions
-            suggestion.context_before = discussion_text.substring(Math.max(suggestion.parts[0].start - 400, 0), suggestion.parts[0].start, suggestion.parts[0].start);
-            suggestion.context_after = discussion_text.substring(suggestion.parts[0].end, Math.min(discussion_text.length, suggestion.parts[0].end + 400));
 
             //set counter og graders manually
             suggestion.manual_counter = Math.round(suggestion.agrees) + Math.round(suggestion.not_agrees);

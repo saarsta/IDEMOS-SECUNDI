@@ -20,7 +20,6 @@ var error_message = error_message || '';
         <% include partials/failures.ejs %>
         <% include partials/tag_search.ejs %>
     </div>
-    <!--<div >-->
     <div id="content_wrapper">
         <div id="content_main_wrapper">
             <div id="content_main_holder">
@@ -1059,6 +1058,11 @@ $(document).ready(function () {
                 var end = suggestion.parts[0].end;
                 return original.substr(from, end - from);
             };
+
+            // set text for context popup
+            suggestion.context_before = original.substring(Math.max(suggestion.parts[0].start - 400, 0), suggestion.parts[0].start, suggestion.parts[0].start);
+            suggestion.context_after = original.substring(suggestion.parts[0].end, Math.min(original.length, suggestion.parts[0].end + 400));
+
             suggestion.alternative_part = function () {
                 return suggestion.parts[0].text;
             };
