@@ -1079,9 +1079,14 @@ $(document).ready(function () {
 
     // get change suggestions and render
     db_functions.getSuggestionByDiscussion(discussion_id, 0, 0, function (err, data) {
+        $.each(data.objects, function(index, suggestion){
+            suggestion.my_discussion_grade = my_discussion_grade;
+            suggestion.my_grade_val = suggestion.grade_obj ? suggestion.grade_obj.evaluation_grade : my_discussion_grade;
+        })
+
         suggestions_list = data.objects ;
         displaySuggestionsRanges();
-        suggestion=   suggestions_list[0];
+        suggestion = suggestions_list[0];
 
             // set title and img for fb share
             suggestion.title = discussion_title;
@@ -1434,6 +1439,9 @@ $(document).ready(function () {
                             a.text(temp_counter++);
                         });
 
+
+                        // TODO add remove dots here and remove it from other parts
+
                         // addinnd 3 dots
                         if ($('.pagination .down-dots').length === 0 && parseInt($($('.first_pagination .pagination [data-first=true]')[0]).text()) > 1){
                             $('.pagination').find("[data-first=true]").before('<span class="page down-dots">...</span>');
@@ -1690,10 +1698,15 @@ $(document).ready(function () {
     }
 
 
-    $('body').mouseup(function(){
+    $('body').mouseup(function(e){
         $(".popup-window").hide();
-    });
 
+        var container = $(".arrow_box_container");
+
+        if (container.has(e.target).length === 0) {
+            container.hide();
+        }
+    });
 
     // focus and copy the selected text of discussion
     $('#pop_post_bt').click( function (e) {
@@ -1714,56 +1727,93 @@ $(document).ready(function () {
         $('#reload-img').attr('src', $('#reload-img').attr('src'));
         $(".popup-window").hide();
     });
-});
 
+    var depress_event = false;
 
-$(".suggestion_bottom_segment input").live("click", function () {
+    $(".suggestion_bottom_segment input").live("click", function (e) {
 
-    var slider_box=$(this).parent().parent().parent().find(".arrow_box_container");
-    slider_box.show();
-    slider_box.find(".slider").slider({
-        disabled:false,
-        value:5,
-        range:"min",
-        min:0,
-        max:10,
-        step:0.10 ,
-        change:function (event, ui) {
-            console.log("change");
-           /* if (event.originalEvent) {      //ugly hack because of slider api bug
-                var my_prev_grade = my_discussion_grade;
-                my_discussion_grade = ui.value;
+        var suggestion_grade_val = $(this).parents(".suggestion_wrapper").data('my_grade');
+        var slider_box = $(this).parent().parent().parent().find(".arrow_box_container");
+        var grade_against = $(this).parent().hasClass('button_against');
 
-                var user_info = {
-                    user_logged_in : user.first_name ? true : false,
-                    action_done : (user.actions_done_by_user && user.actions_done_by_user.grade_object) ? true : false,
-                    action_name : "grade_object",
-                    tokens_owned : user.tokens ? user.tokens : 0,
-                    price: gamification_price['grade_discussion']
-                }
-
-                db_functions.addDiscussionGrade(discussion_id, my_discussion_grade, grade_id, user_info, function (err, data) {
-
-                    if (!err) {
-                        if(data == 'canceled'){
-                            $(".slider").slider('value',my_prev_grade);
-                        } else {
-                            //                    if(!(user.actions_done_by_user && user.actions_done_by_user.grade_object))
-                            //                    {
-                            //                        user.actions_done_by_user.grade_object = true;
-                            //                    }
-                            $(".rating_total").text(Math.round(data.new_grade * 100) / 100);
-                            $(".raters").text(Math.round(data.evaluate_counter) + " דירוגים   ");
-                            // $(".dark_bar").css('width', (my_discussion_grade * 10) + '%');
-                            grade_id = data.grade_id;
-                        }
-                    }
-                    else
-                        console.log(err);
-                });
-            }
-            */
+        slider_box.removeClass('against').removeClass('pro');
+        if(grade_against){
+            slider_box.addClass('against');
+        }else{
+            slider_box.addClass('pro');
         }
+
+        slider_box.show();
+        slider_box.find(".slider").slider({
+            disabled: is_creator,
+            value: suggestion_grade_val,
+            range:"min",
+            min: 0,
+            max: 10,
+            step:0.10,
+            slide: function(event, ui){
+
+                // prevent slider to go under discussion_grade
+                var current = ui.value;
+                if (grade_against){
+                    if(current > my_discussion_grade){
+                        current = my_discussion_grade;
+                        return false;
+                    }
+                }else{
+                    if(current < my_discussion_grade){
+                        current = my_discussion_grade;
+                        return false;
+                    }
+                }
+            },
+            change:function (event, ui) {
+                if (event.originalEvent) {
+                    var my_prev_grade = suggestion_grade_val;
+                    if(depress_event)
+                        return;
+                    var rating = ui.value;
+                    var user_info = {
+                        user_logged_in : user.first_name ? true : false,
+                        action_done : (user.actions_done_by_user && user.actions_done_by_user.grade_object) ? true : false,
+                        action_name : "grade_object",
+                        tokens_owned : user.tokens ? user.tokens : 0,
+                        price: gamification_price['grade_suggestion']
+                    }
+                    db_functions.addSuggestionGrade(suggestion.id, discussion_id, rating, suggest_grade_id[suggestion.id], user_info, function (err, data) {
+                        if (!err) {
+                            if(data == 'canceled'){
+                                $(".suggest_slider_" + suggestion.id).slider('value',my_prev_grade);
+                            } else {
+                                //                                if(!(user.actions_done_by_user && user.actions_done_by_user.grade_object))
+                                //                                {
+                                //                                    user.actions_done_by_user.grade_object = true;
+                                //                                }
+
+//                                $("#suggest_grade_" + suggestion.id).val(Math.round(data.new_grade * 100) / 100);
+//                                $("#suggest_graders_" + suggestion.id).text(Math.round(data.agrees) + Math.round(data.not_agrees));
+//                                $("#agrees_" + suggestion.id).text(Math.round(data.agrees));
+//                                $("#not_agrees_" + suggestion.id).text(Math.round(data.not_agrees));
+
+                                var $suggestion = $('#suggestions_wrapper').find(["data-id=" + suggestion.id]);
+                                $suggestion.find('.supporters_wanted span').text(data.wanted_amount_of_tokens);
+                                $suggestion.find('.supporters_current span').text(Math.round(data.curr_amount_of_tokens));
+                                suggest_grade_id[suggestion.id] = data.grade_id;
+
+                                //already_graded
+                            }
+                        }
+                        else
+                        {
+                            depress_event = true;
+                            $(".suggest_slider_" + suggestion.id).slider("value", suggestion_grade_val || 0);
+                            depress_event = false;
+                            console.log(err);
+                        }
+                    });
+                }
+            }
+        });
     });
 });
 

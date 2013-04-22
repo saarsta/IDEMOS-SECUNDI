@@ -3077,11 +3077,19 @@ input.button_submit_comment_no_text{
 
 .arrow_box_container{
     position: absolute;
-    right: 119px;
     z-index: 4;
     top: 203px;
     display: none;
 }
+
+.arrow_box_container.against {
+    right: 218px;
+}
+
+.arrow_box_container.pro {
+    right: 119px;
+}
+
 .arrow_box {
     position: relative;
     background: #fff;
