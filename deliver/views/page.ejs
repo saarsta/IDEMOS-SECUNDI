@@ -19,11 +19,10 @@
 
             <div class="main-text" style="margin-bottom: 50px">
                 <div class="about-one" <%= page.tab == 'english' || page.tab == 'русский' || page.tab == 'Arabic' ? 'bablic-exclude' : '' %>>
-
                     <% if(page.title) { %>
-                        <h4>
-                            <%= page.title %>
-                        </h4>
+                    <h4>
+                        <%= page.title %>
+                    </h4>
                     <% } %>
                     <p>
                         <%- page.html %>

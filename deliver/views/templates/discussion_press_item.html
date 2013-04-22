@@ -1,0 +1,17 @@
+<div class="item">
+    <div class="title">
+        {?source_image}
+        <img class="logo" src="/images/media/{source_image}" />
+        {/source_image}
+        <span class="date">	{date|date}</span>
+										<span class="text">
+										{title}
+										</span>
+    </div>
+    {?image_field}
+    <div class="photo">
+        <img src="{image_field.url}" />
+    </div>
+    {/image_field}
+    <div class="text">{abstract} </div>
+</div>

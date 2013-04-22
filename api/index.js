@@ -73,6 +73,8 @@ var mongoose_resource = require('jest'),
     OGActionResource = require('./og_action_resource'),
     UserInviteFriendsResource=      require('./UserInviteFriendsResource'),
     UserMailNotificationConfig = require('./user_mail_notification_config_resource');
+    PressItemResource = require('./PressItemResource'),
+
 
 module.exports = function(app)
 {
@@ -154,5 +156,5 @@ module.exports = function(app)
     rest_api.register_resource('quote_game_response', new QuoteGameQuoteResource());
     rest_api.register_resource('face', new FaceResource());
     rest_api.register_resource('counter', new CounterResource());
-
+    rest_api.register_resource('press_item', new PressItemResource());
 };
