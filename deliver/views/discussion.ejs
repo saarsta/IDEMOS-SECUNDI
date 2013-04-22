@@ -237,13 +237,16 @@ var error_message = error_message || '';
     </div>
 
 
-<span class="popup-window">
+<span class="popup-window" id="new_suggestion_popup">
     <div class="tooltip_2">
         <input id="pop_suggest_bt" value="הוסף הצעה" class="button_add_suggestion" type="text" />
         <input id="pop_post_bt" value="הגב" class="button_respond" type="text" />
     </div>
 </span>
 
+ <span class="popup-window"  id="old_suggestion_popup">
+    <div class="tooltip_1"><a id="jump_to_suggestion" data-id="" href="javascript:void(0);">לחץ להצבעה בהצעה לשינוי</a></div>
+</span>
 
     <div id='write-comment' class="write-comment" style="display: none;">
         <h3>
@@ -1075,10 +1078,11 @@ $(document).ready(function () {
     var first_suggestion;
 
     // get change suggestions and render
-    db_functions.getSuggestionByDiscussion(discussion_id, 1, 0, function (err, data) {
+    db_functions.getSuggestionByDiscussion(discussion_id, 0, 0, function (err, data) {
         suggestions_list = data.objects ;
         displaySuggestionsRanges();
-        $.each(data.objects, function (index, suggestion) {
+        suggestion=   suggestions_list[0];
+
             render_suggestion(suggestion);
 
             var curr_suggestion = $('#suggestions_wrapper').find('[data-id=' + suggestion.id + ']');
@@ -1097,7 +1101,7 @@ $(document).ready(function () {
                     });
                 });
             })
-        });
+
 
         $('#suggestion_number').text(' (' + data.meta.total_count + ')');
         if (data.objects.length > 0) {
@@ -1108,9 +1112,10 @@ $(document).ready(function () {
                 $(".more-deals").show();
 
                 $(".more-deals a").on('click', function (e) {
+                    $('#suggestions_wrapper').empty();
                     var self = $(this);
                     if($(this).data('executing')){
-                        $('#suggestions_wrapper').empty();
+
                         render_suggestion(first_suggestion);
                         curr_suggestion = $('#suggestions_wrapper').find('[data-id=' + first_suggestion.id + ']');
 
@@ -1133,33 +1138,8 @@ $(document).ready(function () {
                         $(this).data('executing', false);
                         return false;
                     }else{
-                        db_functions.getSuggestionByDiscussion(discussion_id, null, 1, function (err, data) {
-                            $.each(data.objects, function (index, suggestion) {
-                                render_suggestion(suggestion);
+                         return displayAllSuggestions(self) ;
 
-                                db_functions.getCommentsBySuggestion(suggestion.id, function(err, data){
-                                    curr_suggestion = $('#suggestions_wrapper').find('[data-id=' + suggestion.id + ']') ;
-
-                                    // set comments counter
-                                    curr_suggestion.find('.comments_counter span').text(data.objects.length);
-
-                                    $.each(data.objects, function (index, comment) {
-
-                                        comment.is_even = (index % 2) == 0;
-                                        dust.render('comment_on_suggestion', comment, function (err, out) {
-                                            // append before "add_comment"
-                                            curr_suggestion.find('.add_comment').before(out);
-                                            image_autoscale(curr_suggestion.find('.auto-scale img'));
-                                        });
-                                    });
-                                })
-                            });
-                        });
-
-                        self.text('סגור הצעות ');
-                        $(this).addClass('flip');
-                        $(this).data('executing', true);
-                        return false;
                     }
                 });
             }
@@ -1168,6 +1148,36 @@ $(document).ready(function () {
             $(".content_break_content").hide();
         }
     });
+
+
+    function displayAllSuggestions(self){
+        $.each(suggestions_list, function (index, suggestion) {
+            render_suggestion(suggestion);
+
+            db_functions.getCommentsBySuggestion(suggestion.id, function(err, data){
+                curr_suggestion = $('#suggestions_wrapper').find('[data-id=' + suggestion.id + ']') ;
+
+                // set comments counter
+                curr_suggestion.find('.comments_counter span').text(data.objects.length);
+
+                $.each(data.objects, function (index, comment) {
+
+                    comment.is_even = (index % 2) == 0;
+                    dust.render('comment_on_suggestion', comment, function (err, out) {
+                        // append before "add_comment"
+                        curr_suggestion.find('.add_comment').before(out);
+                        image_autoscale(curr_suggestion.find('.auto-scale img'));
+                    });
+                });
+            })
+        });
+
+
+        self.text('סגור הצעות ');
+        self.addClass('flip');
+        self.data('executing', true);
+        return false;
+    }
 
     $('#suggestions_wrapper').on('keyup', '.add_comment input', function(e){
         if(e.keyCode == 13)
@@ -1575,7 +1585,7 @@ $(document).ready(function () {
                 var err = false;
 
                 left = Math.ceil((mouseDown.clientX + mouseUp.clientX) / 2 - 97);
-                top = Math.min(mouseDown.clientY, mouseUp.clientY) - $(".popup-window").height() - 40 + $(window).scrollTop() + 40;
+                top = Math.min(mouseDown.clientY, mouseUp.clientY) - $("#new_suggestion_popup").height() - 40 + $(window).scrollTop() + 40;
 
                // original = $('<div />').html(original).text();
 //                if(window.getSelection){
@@ -1601,16 +1611,40 @@ $(document).ready(function () {
                 if(flag) {
                     popupProvider.showOkPopup({message:"הטקסט סומן כבר בהצעה לשינוי קיימת"});
                 }else if(range_txt.length >0){
-                    $(".popup-window")
+                    $("#new_suggestion_popup")
                             .css({ top:top, left:left, opacity:0 })
                             .show()
                             .animate({ top:'-=20px', opacity:1 }, 100, 'linear');
                 } else{
-                    $(".popup-window").hide();
+                    $("#new_suggestion_popup").hide();
                 }
                 //////////////////////////////////////////////////
                 console.log(range_txt.length+'  '+range_txt);
             });
+
+    var old_suggestion_popup_visible=false;
+    $(".marker_1").live("mouseenter", function () {
+        if(old_suggestion_popup_visible==false)   {
+            old_suggestion_popup_visible=true;
+            $("#old_suggestion_popup a").data('id', $(this).data('id'));
+            var left =$(this).offset().left +($(this).width() /2) - 80;
+            var top = $(this).offset().top-60;
+            $("#old_suggestion_popup")
+                    .css({ top:top, left:left, opacity:1 })
+                    .show()
+                  //  .animate({ top:'-=20px', opacity:1 }, 100, 'linear');
+        }
+    }).live("mouseleave", function () {
+                old_suggestion_popup_visible=false;
+      //  $("#old_suggestion_popup").hide();
+    });
+    $("#old_suggestion_popup a").live("click", function () {
+        $(".more-deals a").click();
+        var id= $(this).data('id')  ;
+        $('html, body').animate({
+            scrollTop: $("div[data-id=" +id+ "]").offset().top
+        }, 500);
+    }  );
 
     function discoverRange(text){
         var t=text;
@@ -1666,6 +1700,56 @@ $(document).ready(function () {
     });
 });
 
+
+$(".suggestion_bottom_segment input").live("click", function () {
+
+    var slider_box=$(this).parent().parent().parent().find(".arrow_box_container");
+    slider_box.show();
+    slider_box.find(".slider").slider({
+        disabled:false,
+        value:5,
+        range:"min",
+        min:0,
+        max:10,
+        step:0.10 ,
+        change:function (event, ui) {
+            console.log("change");
+           /* if (event.originalEvent) {      //ugly hack because of slider api bug
+                var my_prev_grade = my_discussion_grade;
+                my_discussion_grade = ui.value;
+
+                var user_info = {
+                    user_logged_in : user.first_name ? true : false,
+                    action_done : (user.actions_done_by_user && user.actions_done_by_user.grade_object) ? true : false,
+                    action_name : "grade_object",
+                    tokens_owned : user.tokens ? user.tokens : 0,
+                    price: gamification_price['grade_discussion']
+                }
+
+                db_functions.addDiscussionGrade(discussion_id, my_discussion_grade, grade_id, user_info, function (err, data) {
+
+                    if (!err) {
+                        if(data == 'canceled'){
+                            $(".slider").slider('value',my_prev_grade);
+                        } else {
+                            //                    if(!(user.actions_done_by_user && user.actions_done_by_user.grade_object))
+                            //                    {
+                            //                        user.actions_done_by_user.grade_object = true;
+                            //                    }
+                            $(".rating_total").text(Math.round(data.new_grade * 100) / 100);
+                            $(".raters").text(Math.round(data.evaluate_counter) + " דירוגים   ");
+                            // $(".dark_bar").css('width', (my_discussion_grade * 10) + '%');
+                            grade_id = data.grade_id;
+                        }
+                    }
+                    else
+                        console.log(err);
+                });
+            }
+            */
+        }
+    });
+});
 
 </script>
 </body>
