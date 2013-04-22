@@ -67,11 +67,11 @@
 
 .login-popup a.facebook:hover
 {
-    background-position:0 -42px;
+    background: url(../images/URU_FB_Connect_btn_sprite.png) 0 -42px no-repeat;
 }
 .login-popup a.facebook:active
 {
-    background-position:0 -84px;
+    background: url(../images/URU_FB_Connect_btn_sprite.png) 0 -84px no-repeat;
 }
 .login-popup input[type=password],
 .login-popup input[type=text]
@@ -156,11 +156,11 @@
 
 .login-popup input[type=submit]:hover
 {
-    background-position:-121px 0;
+    background:#fff url(../images/URU_Connect_btn_sprite.png)  -121px 0 no-repeat;
 }
 .login-popup input[type=submit]:active
 {
-    background-position:-1px 0;
+    background:#fff url(../images/URU_Connect_btn_sprite.png) -1px 0 no-repeat;
 }
 
 .register{

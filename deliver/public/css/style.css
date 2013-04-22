@@ -485,11 +485,11 @@ body {
 
 #login_button a:hover
 {
-    background-position:-120px 0;
+    background: url(../images/URU_Connect_btn_sprite.png) -120px 0 no-repeat;
 }
 #login_button a:active
 {
-    background-position:0 0;
+    background: url(../images/URU_Connect_btn_sprite.png) 0 0 no-repeat;
 }
 
 .user-box {
@@ -512,11 +512,11 @@ body {
 
 .user-box a.icon:hover
 {
-    background-position:-45px 0;
+    background: url(../images/URU_User.btn_sprite.png) -45px 0 no-repeat;
 }
 .user-box a.icon:active
 {
-    background-position:-1px 0;
+    background: url(../images/URU_User.btn_sprite.png) -1px 0 no-repeat;
 }
 
 .user-box a.name{
@@ -1370,7 +1370,7 @@ color: #ff00af;
 /*------------------------*/
 .services-blue a {
     background: url(../images/services-blue.png) no-repeat;
-    width: 130px;
+    width: 130px;;
     height: 139px;
     float: right;
     margin-right: 11px;
@@ -1384,9 +1384,88 @@ color: #ff00af;
     position:relative;
 }
 
-.services-blue a:first-child {
-    margin-right: 0;
-}
+/*.services-blue a:first-child {*/
+    /*margin-right: 0;*/
+/*}*/
+
+/*.services-blue a span.text {*/
+    /*display:table-cell;*/
+    /*vertical-align: middle;*/
+    /*z-index: 5;*/
+/*}*/
+
+/*.services-blue a.service-2 span.text {*/
+    /*display: block;*/
+    /*padding-top: 50px;*/
+/*}*/
+
+/*.services-blue a.service-1 span.text {*/
+    /*display: block;*/
+    /*padding-top: 58px;*/
+/*}*/
+
+/*.services-blue a.service-3 span.text {*/
+    /*display: block;*/
+    /*padding-top: 38px;*/
+/*}*/
+
+/*.services-blue a span.icon {*/
+    /*width: 130px;*/
+    /*height: 139px;*/
+    /*background-position: 50% 50%;*/
+    /*background-repeat: no-repeat;*/
+    /*position: absolute;*/
+    /*z-index: 1;*/
+    /*left: 0;*/
+    /*top: 0;*/
+    /*opacity: 0.2;*/
+/*}*/
+
+/*.services-blue a.service-1 span.icon {*/
+    /*background-image: url(../images/icon-1.png);*/
+/*}*/
+
+/*.services-blue a.service-2 span.icon {*/
+    /*background-image: url(../images/icon-2.png);*/
+/*}*/
+
+/*.services-blue a.service-3 span.icon {*/
+    /*background-image: url(../images/icon-3.png);*/
+/*}*/
+
+/*.services-blue a.service-4 span.icon {*/
+    /*background-image: url(../images/icon-4.png);*/
+/*}*/
+
+/*.services-blue a.service-5 span.icon {*/
+    /*background-image: url(../images/icon-5.png);*/
+/*}*/
+
+/*.services-blue a.service-6 span.icon {*/
+    /*background-image: url(../images/icon-6.png);*/
+/*}*/
+
+/*.services-blue a.service-7 span.icon {*/
+    /*background-image: url(../images/icon-7.png);*/
+/*}*/
+
+/*.services-blue a:hover span.icon {*/
+    /*opacity: 1;*/
+/*}*/
+
+/*.services-blue a:hover {*/
+    /*text-indent: -9999px;*/
+    /*z-index: 5;*/
+/*}*/
+
+/*.services-blue .selected-subject span.icon {*/
+    /*opacity: 1;*/
+/*}*/
+
+/*.services-blue .selected-subject {*/
+    /*text-indent: -9999px;*/
+    /*z-index: 5;*/
+/*}*/
 
 .services-blue a div {
     display:table-cell;
@@ -6683,11 +6762,11 @@ a.fraction-btn {
 
 .add-offer  a.green-btn:hover
 {
-    background-position:-113px 0;
+    background: url(../images/Cycles_Pro_btn_sprite.png) -113px 0 no-repeat;
 }
 .add-offer  a.green-btn:active
 {
-    background-position:-1px 0;
+    background: url(../images/Cycles_Pro_btn_sprite.png) -1px 0 no-repeat;
 }
 
 /*------------------------*/
@@ -10305,11 +10384,11 @@ a.facebook_join
 
 a.facebook_join:hover
 {
-    background-position:0 -42px;
+    background: url(../images/URU_FB_Connect_btn_sprite.png) 0 -42px no-repeat;
 }
 a.facebook_join:active
 {
-    background-position:0 -84px;
+    background: url(../images/URU_FB_Connect_btn_sprite.png) 0 -84px no-repeat;
 }
 
 .sb-title   a.facebook_join{
