@@ -2995,6 +2995,15 @@ input.button_submit_comment_no_text{
     background: url(../images/user-fillter-small-grey.png) no-repeat;
 }
 
+#suggestions_wrapper .suggestion_wrapper .share {
+    background: url(../images/placeholder_fb.png) 0 100% no-repeat;
+    position: absolute;
+    width: 80px;
+    height: 20px;
+    left: 8px;
+    top: 43px;
+}
+
 #comments_wrapper .img-box{
     position: relative;
     width: 60px;

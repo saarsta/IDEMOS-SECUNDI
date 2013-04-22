@@ -1079,6 +1079,10 @@ $(document).ready(function () {
         suggestions_list = data.objects ;
         displaySuggestionsRanges();
         $.each(data.objects, function (index, suggestion) {
+            // set title and img for fb share
+            suggestion.title = discussion_title;
+            suggestion.image_field_preview = discussion_img_field_preview;
+
             render_suggestion(suggestion);
 
             var curr_suggestion = $('#suggestions_wrapper').find('[data-id=' + suggestion.id + ']');
@@ -1135,6 +1139,10 @@ $(document).ready(function () {
                     }else{
                         db_functions.getSuggestionByDiscussion(discussion_id, null, 1, function (err, data) {
                             $.each(data.objects, function (index, suggestion) {
+                                // set title and img for fb share
+                                suggestion.title = discussion_title;
+                                suggestion.image_field_preview = discussion_img_field_preview;
+
                                 render_suggestion(suggestion);
 
                                 db_functions.getCommentsBySuggestion(suggestion.id, function(err, data){
@@ -1264,11 +1272,6 @@ $(document).ready(function () {
                 }catch(ex){
                     console.log('fb parse didnt work');
                 }
-//                setTimeout(function(){
-//                    if(typeof(FB) != 'undefined'){
-//                        FB.XFBML.parse();
-//                    }
-//                }, 1000);
 
 //             initTooltipWithMessage($('#comments .right .respect'), 'מוניטין');
             }
