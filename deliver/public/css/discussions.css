@@ -1872,6 +1872,7 @@ span.remark{
     color:#60605f;
     font-size:14px;
     font-weight:bold;
+    direction: ltr;
 }
 
 .comments_counter{
@@ -2449,6 +2450,7 @@ span.remark{
     border-radius:3px;
     color:#fff;
     font-weight:bold;
+    direction: ltr;
 }
 
 #add_comment_wrapper{
