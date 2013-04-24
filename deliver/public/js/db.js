@@ -1795,7 +1795,22 @@ var db_functions = {
                 callback(err, null);
             }
         });
-    }
+    }   ,
+    getPressItemsByDiscussion: function(discussion_id, callback) {
+        db_functions.loggedInAjax({
+            url:'/api/press_item',
+            type:"GET",
+            async:true,
+            data:{"discussion_id":discussion_id, "limit":0},
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function (err) {
+                callback(err);
+            }
+        });
+    },
 
 
 

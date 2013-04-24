@@ -147,65 +147,31 @@ var error_message = error_message || '';
                     <div class="segment press">
                         <h2>מן העיתונות</h2>
                         <div id="press_sidebar_holder">
-                            <div class="item">
-                                <div class="title">
-                                    <img class="logo" src="/images/logo_sample_1.png" />
-                                    <span class="date">29.04.12</span>
-										<span class="text">
-											המאבק בריכוזיות במשק הישראלי כמו גם נושאים נוספים
-										</span>
-                                </div>
-                                <div class="photo">
-                                    <img src="/images/placeholder_img_1.png" />
-                                </div>
-                                <div class="text">
-                                    לשלוט על כמעט כל תחום בחיינו, מהקורנפלקס בבוקר, עמלות הבנקים בצהרים והחדשות בערב. איך מתמודדים עם המצב.
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="title">
-                                    <img class="logo" src="/images/logo_sample_1.png" />
-                                    <span class="date">29.04.12</span>
-										<span class="text">
-											המאבק בריכוזיות במשק הישראלי כמו גם נושאים נוספים
-										</span>
-                                </div>
-                                <div class="photo">
-                                    <img src="/images/placeholder_img_1.png" />
-                                </div>
-                                <div class="text">
-                                    לשלוט על כמעט כל תחום בחיינו, מהקורנפלקס בבוקר, עמלות הבנקים בצהרים והחדשות בערב. איך מתמודדים עם המצב.
-                                </div>
-                            </div>
+
+
                         </div>
                     </div>
                     <div class="segment links">
                         <h2>קישורים מועילים</h2>
-                        <div id="press_sidebar_holder">
+                        <div >
+
+                            <% for (var c = 0; c <discussion.links.length; c++) { %>
                             <div class="item">
                                 <div class="title">
-                                    <a href="">החזית העממית לשחרור השחרור</a>
+                                    <a href="<%= discussion.links[c].link %>"><%= discussion.links[c].title %></a>
                                 </div>
+                                <%if(discussion.links[c].text){ %>
                                 <div class="text">
-                                    הריכוזיות במשק מאפשרת למעטים לשלוט על כמעט כל תחום בחיינו, מהקורנפלקס...
+                                    <%= discussion.links[c].text %>
                                 </div>
+                                <%} %>
                             </div>
-                            <div class="item">
-                                <div class="title">
-                                    <a href="">החזית העממית לשחרור השחרור</a>
-                                </div>
-                                <div class="text">
-                                    הריכוזיות במשק מאפשרת למעטים לשלוט על כמעט כל תחום בחיינו, מהקורנפלקס...
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="title">
-                                    <a href="">החזית העממית לשחרור השחרור</a>
-                                </div>
-                                <div class="text">
-                                    הריכוזיות במשק מאפשרת למעטים לשלוט על כמעט כל תחום בחיינו, מהקורנפלקס...
-                                </div>
-                            </div>
+
+
+                            <% }%>
+
+
+
                         </div>
                     </div>
                 </div>
@@ -1479,9 +1445,11 @@ $(document).ready(function () {
         $(".popup-window").hide();
     });
 
+
     var depress_event = false;
 
-    $(".suggestion_bottom_segment input").live("click", function (e) {
+
+$(".suggestion_bottom_segment input").live("click", function (e) {
 
         var $suggestion_wrapper = $(this).parents(".suggestion_wrapper");
         var suggestion_grade_val = $suggestion_wrapper.data('my_grade');
@@ -1568,8 +1536,7 @@ $(document).ready(function () {
             }
         });
     });
-
-    $('#facebook_share').one('click', function(event){
+ $('#facebook_share').one('click', function(event){
         sendFacebookShare("/facebookShare?link=/discussions/" + discussion_id, discussion_title, discussion_img_field_preview, discussion_text_field_preview, null, function(err){
             if(err){
                 alert('Error occured');
@@ -1578,6 +1545,7 @@ $(document).ready(function () {
             }
         });
     })
+
     $('#twitter_share').one('click', function(event){
         function twitterShare () {
             window.open('https://twitter.com/share?url=' + encodeURIComponent('http://www.uru.org.il/discussions/' + discussion_id) + '&text=' +
@@ -1598,8 +1566,53 @@ $(document).ready(function () {
         return false;
     });
 
+    db_functions.getPressItemsByDiscussion(discussion_id, function (err, data) {
+        $.each(data.objects, function (index, press_item) {
+            switch(press_item.source){
+                case "הארץ":
+                    press_item.source_image=  "haaretz.gif";
+                    break;
+                case "כלכליסט":
+                    press_item.source_image=  "calcalist.png";
+                    break;
+                case "גלובס":
+                    press_item.source_image=  "globes.jpg";
+                    break;
+                case "mako":
+                    press_item.source_image=  "mako.png";
+                    break;
+                case "nrg":
+                    press_item.source_image=  "nrg.jpg";
+                    break;
+                case "walla":
+                    press_item.source_image=  "walla.jpg";
+                    break;
+                case "ynet":
+                    press_item.source_image=  "ynet.gif";
+                    break;
+                case "דה מרקר":
+                    press_item.source_image=  "themarker.png";
+                    break;
+            }
+            dust.render('discussion_press_item', press_item, function (err, out) {
+               $('#press_sidebar_holder').append(out);
+            });
+        });
+    });
 });
 
+    $('#google_plus_share').one('click', function () {
+        window.open('https://plusone.google.com/_/+1/confirm?hl=en&url=' + encodeURIComponent('http://www.uru.org.il/discussions/' + discussion_id),
+                'share-google', 'status=0,scrollbars=0,location=0,height=320,width=660,resizable=1');
+        return false;
+    });
+
+    $('#mail_share').on('click', function () {
+        $("#cloudsponge").slideToggle();
+        return false;
+    });
+
+});
 </script>
 </body>
 </html>
