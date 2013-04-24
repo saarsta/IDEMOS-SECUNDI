@@ -179,6 +179,33 @@ app.locals({
         return app.get(attr);
     }
 });
+
+/*app.locals({
+    writeHead: function(name) {
+        var isDev = app.settings.env == 'development' || app.settings.env == 'staging';
+        function headFromSrc(src, type) {
+            switch (type) {
+                case 'js':
+                    return '<script src="' + src + '" type="text/javascript"></script>';
+                case 'css':
+                    return '<link href="' + src + '" rel="stylesheet" type="text/css"/>';
+                default:
+                    throw new Error('unknown type ' + type);
+            }
+        }
+        var conf = require('./conf.js').headConfigs[name];
+        var type = conf.type;
+        if (isDev)
+            return _.map(conf.src,
+                function (src) {
+                    return headFromSrc(src, type);
+                }).join('\n');
+        else {
+            var final = conf.final || ( conf.min === false ? '/dist/' + type + '/' + conf.name + '.' + type : '/dist/' + type + '/' + conf.name + '.min.' + type);
+            return headFromSrc(final, type);
+        }
+    }
+});*/
 // ######### locals #########
 
 
