@@ -783,6 +783,9 @@ $(document).ready(function () {
 
     // get change suggestions and render
     db_functions.getSuggestionByDiscussion(discussion_id, 0, 0, function (err, data) {
+
+        if(err || data.object.length === 0) return false;
+
         $.each(data.objects, function(index, suggestion){
             suggestion.my_discussion_grade = my_discussion_grade;
             suggestion.my_grade_val = suggestion.grade_obj ? suggestion.grade_obj.evaluation_grade : my_discussion_grade;
