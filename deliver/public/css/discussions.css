@@ -1873,6 +1873,7 @@ span.remark{
     color:#60605f;
     font-size:14px;
     font-weight:bold;
+    direction: ltr;
 }
 
 .comments_counter{
@@ -2452,6 +2453,7 @@ span.remark{
     border-radius:3px;
     color:#fff;
     font-weight:bold;
+    direction: ltr;
 }
 
 #add_comment_wrapper{
@@ -2997,6 +2999,15 @@ input.button_submit_comment_no_text{
     background: url(../images/user-fillter-small-grey.png) no-repeat;
 }
 
+#suggestions_wrapper .suggestion_wrapper .share {
+    background: url(../images/placeholder_fb.png) 0 100% no-repeat;
+    position: absolute;
+    width: 80px;
+    height: 20px;
+    left: 8px;
+    top: 43px;
+}
+
 #comments_wrapper .img-box{
     position: relative;
     width: 60px;
@@ -3078,11 +3089,19 @@ input.button_submit_comment_no_text{
 
 .arrow_box_container{
     position: absolute;
-    right: 119px;
     z-index: 4;
     top: 203px;
     display: none;
 }
+
+.arrow_box_container.against {
+    right: 218px;
+}
+
+.arrow_box_container.pro {
+    right: 119px;
+}
+
 .arrow_box {
     position: relative;
     background: #fff;

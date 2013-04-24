@@ -1,6 +1,7 @@
 <div class="suggestion_wrapper {?is_editable}edit_suggestion{:else}show_context{/is_editable}" data-id="{id}"
      data-creator_name="{creator_id.first_name} {creator_id.last_name}"
-     data-creator_id="{creator_id.id}">
+     data-creator_id="{creator_id.id}" id="post_{id}"
+     data-my_grade="{my_grade_val}" data-my_grade_id="{my_grade_id}">
     <div class="suggestion_holder window">
         <div class="suggestion_details person" data-id="{creator_id.id}" data-name="{creator_id.first_name} {creator_id.last_name}">
             <div class="img-box" style="overflow: hidden;">
@@ -62,16 +63,19 @@
 
                 <div class="button" style= "width: 80px; height: 20px; left: 0; top: 19px; overflow: hidden;
                         position: absolute; direction: ltr;">
-                    <div class="fb-like" data-href="http://www.uru.org.il/discussions/{discussion_id}/posts/{_id}"
+                    <div class="fb-like" data-href="http://www.uru.org.il/discussions{discussion_id}/posts/{id}"
                          data-send="false" data-layout="button_count" data-width="450" data-show-faces="false">
                     </div>
                 </div>
+                <a class="share" ata-img_src="{image_field_preview}" data-text_preview="{text|comment}" data-title="הצעה לשינוי מתוך דיון על החזון {title}" rel="/discussions/{discussion_id}#post_{id}"
+                   data-text_preview="{text|comment}" href="/facebookShare?link=/discussions/{discussion_id}#post{id}"  target="_blank">
+                </a>
             </div>
             <div class="arrow_box_container">
                 <div class="arrow_box">
                     <div  class="arrow_box_content">
                         <div class="slider_title">
-                        אנא דרג את ההצעה לשינוי במידה ותתקבל כעדכון
+                            אנא דרג את ההצעה לשינוי במידה ותתקבל כעדכון
                         </div>
 
                         <div class="slide-box">
@@ -96,6 +100,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="suggestion_bottom_segment two">
                 <div class="supporters_wanted">
                     מספר תומכים דרוש <span>{wanted_amount_of_tokens}</span>
@@ -114,7 +119,7 @@
     </div>
     <div class="suggestion_comments_holder">
         <div class="add_comment" data-can-add="true">
-            <input type="text" placeholder="כתוב תגובה..." />
+            <input type="text" placeholder="כתוב הצעה לשינוי..." />
         </div>
     </div>
 </div>

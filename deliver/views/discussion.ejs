@@ -20,7 +20,6 @@ var error_message = error_message || '';
         <% include partials/failures.ejs %>
         <% include partials/tag_search.ejs %>
     </div>
-    <!--<div >-->
     <div id="content_wrapper">
         <div id="content_main_wrapper">
             <div id="content_main_holder">
@@ -29,17 +28,15 @@ var error_message = error_message || '';
                         <h2 class="title topic"><%=discussion.subject_name%> <img src="/images/arrow_left.png" /></h2>
                         <h2 class="title">  <%=discussion.title%> </h2>
                         <div class="social_holder">
-                            <a class="share_icon" href=""><img src="/images/icon_fb.png"></a>
-                            <a class="share_icon" href=""><img src="/images/icon_tw.png"></a>
-                            <a class="share_icon" href=""><img src="/images/icon_gp.png"></a>
-                            <a class="share_icon" href=""><img src="/images/icon_email.png"></a>
+                            <a id="facebook_share" class="share_icon" href="javascript: void(0)"><img src="/images/icon_fb.png"></a>
+                            <a id="twitter_share" class="share_icon" href="javascript: void(0)"><img src="/images/icon_tw.png"></a>
+                            <a id="google_plus_share" class="share_icon" href="javascript: void(0)"><img src="/images/icon_gp.png"></a>
+                            <a class="share_icon" href="javascript: void(0)"><img src="/images/icon_email.png"></a>
                         </div>
                         <% if(discussion.creator_id){ %>
                         <div class="author">הדיון נפתח ע"י: <a href="/myuru/<%=discussion.creator_id._id%>"> <%=discussion.creator_id.first_name+ " " +discussion.creator_id.last_name %> </a></div>
                         <% } %>
                         <hr />
-
-
                         <div id="short">
 
                             <div id="discussion_image" style="width: 260px;height: 190px; overflow:hidden;" class='auto-scale  img_holder'>
@@ -58,8 +55,6 @@ var error_message = error_message || '';
                             <div id="discussion_content" class=""><%- discussion.text_field.replace(/\n/g, '<br />') %></div>
                             <textarea id="discussion_content_textarea" class="hidden_textarea"><%=discussion.text_field%></textarea>
                             <a class="read_more" href="javascript:void(0);">סגור מאמר</a>
-
-
                         </div>
 
                         <% if( discussion.sub_branding && discussion.sub_branding.length>0) { %>
@@ -87,16 +82,10 @@ var error_message = error_message || '';
                             <span class="tags_title">תגיות:</span>
                             <% for (var c = 0; c <discussion. tags.length; c++) { %>
                                 <span class="tag"><a href="?tag_name=<%=discussion.tags[c]%>"><%=discussion. tags[c] %></a></span>
-
                             <% }%>
-
-
                         </div>
                         <hr />
-
                         <div class="segment_bottom">
-
-
                             <div class="rating_box">
                                 <div class="rating_total">
                                     <%= Math.round(discussion.grade*100)/100 %>
@@ -107,7 +96,6 @@ var error_message = error_message || '';
                                 </div>
                             </div>
                             <div class="slide-box">
-
                                     <div class="slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
                                     <div class="ui-slider-range ui-widget-header ui-slider-range-min" style="width: 0%;"></div><a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 0%;"></a></div>
                                     <div class="slider-numbers">
@@ -123,18 +111,13 @@ var error_message = error_message || '';
                                         <span>10</span>
                                     </div>
                                 </div>
-
                             <div class="button_add_comment">
                                 <input type="button" />
                             </div>
                             <div class="button_suggest_revisions">
                                 <input type="button" />
                             </div>
-
-
-
                             <div class="history_details_holder">
-
                                 <hr />
                                 <div class="item">
                                     <input  class="history" type="button" />
@@ -149,11 +132,8 @@ var error_message = error_message || '';
                                     על ידי: <span>אברהם אבוחצירא השלישי</span>
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
-
                     <div class="segment info">
                         <h2 class="title">סל מידע</h2>
                         <div id="info_items" class="info_items">
@@ -162,7 +142,6 @@ var error_message = error_message || '';
                             </ul><!-- end Slider #1 -->
                         </div>
                     </div>
-
                 </div>
                 <div id="content_left_sidebar">
                     <div class="segment press">
@@ -172,7 +151,6 @@ var error_message = error_message || '';
 
                         </div>
                     </div>
-
                     <div class="segment links">
                         <h2>קישורים מועילים</h2>
                         <div >
@@ -198,11 +176,8 @@ var error_message = error_message || '';
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
-
-
 <span class="popup-window" id="new_suggestion_popup">
     <div class="tooltip_2">
         <input id="pop_suggest_bt" value="הוסף הצעה" class="button_add_suggestion" type="text" />
@@ -685,89 +660,11 @@ $(document).ready(function () {
         })
     });
 
-
-
-//    $('.popup-window .close').on('click', function () {
-//        $('.popup-window').hide();
-//    });
-//
-//    $('.popup-window').on('focus', function (e) {
-//        e.preventDefault();
-//    });
-
-
-    /***************************************************/
-
-
-
-
-//    var sugg_grade_id;
     var new_post_ref_id = null;  //if not null =>the create new post is connected to anther post
-
     var discussion_title = "<%= discussion.title%>"
     var discussion_img_field_preview = "<%= discussion.image_field ? discussion.image_field.url ||'' : '' %>";
+    var discussion_text_field_preview = "<%= discussion.text_field_preview ? discussion.text_field_preview : discussion.text_field %>";
 
-//    var postsNumber = 0;
-
-//
-//    var vision = $('#discussion_content').text();
-//
-//    var onGiveProxy;
-//
-
-//
-//    $( '#discussion_comment' ).ckeditor(            {
-//        height: 100,
-//        'line-height':10,
-//        language:'he',
-//        removePlugins : 'elementspath',
-//        on :
-//        {
-//            instanceReady : function( ev )
-//            {
-//                editor = this;
-//            }
-//        }
-//    });
-//
-//    $("#proxy_form").dialog({
-//        autoOpen:false,
-//        height:300,
-//        width:350,
-//        modal:true,
-//        buttons:{
-//            "תן/קח אסימונים":function () {
-//
-//                var self = this;
-//
-//                $(self).dialog("disable");
-//                var bValid = true;
-//                if (onGiveProxy) {
-//
-//                    onGiveProxy(Number($('#give_tokens', this).val()), function () {
-//                        $(self).dialog("close");
-//                    });
-//                }
-//            },
-//            'בטל':function () {
-//                $(this).dialog("close");
-//            }
-//        },
-//        open:function () {
-//            $(this).dialog('enable');
-//        }
-//    });
-//
-//    $("#discussion_content").val($("#discussion_content").text());
-//
-//
-//
-//    $(".inline").colorbox({ inline:true, width:"730" });
-//
-//
-//    /***************************************************/
-//
-//
     function setUserScore(userID, score) {
         $('[ data-creator_id=' + userID + ']').find('.score').empty().append(score);
     }
@@ -821,23 +718,6 @@ $(document).ready(function () {
         vote.apply($(this),['remove']);
     });
 
-//    /*      $('.comments-box .comment-one .user-right').hover(function () {
-//     $(this).toggleClass('hover');
-//     });*/
-//
-//    $('#comments,#suggestion_list').on('mouseenter', ".side_menu",
-//            function (e) {
-//                $(this).addClass('hover');
-//                $('.left', this).show().css({width:0}).animate({'width':87});
-//
-//            }).on('mouseleave', ".side_menu", function (e) {
-//                var side = $(this);
-//                side.removeClass('hover');
-//                $('.left', this).animate({'width':0}, function () {
-//                    $(this).hide();
-//                });
-//            });
-//
     // copy the post text+ user to   discussion_comment
     $('#comments_wrapper').on('click', ".button_quote", function (e) {
         var userName;
@@ -866,75 +746,8 @@ $(document).ready(function () {
         $("textarea#discussion_comment").height($("textarea#discussion_comment").height() + text_height);
     });
 
-//    $('#comments').on('click', ".post_quote a", function (e) {
-//
-//        var post_id = $(this).parents(".comment-one").data("id");
-//        var ref_to_post_id = $(this).parents(".comment-one").data("ref-id");
-////        var link = window.location.href;
-////
-////        //remove hash if exist
-////        if(window.location.hash){
-////            link = link.slice(0, link.indexOf("#"));
-////        }
-////        var post_ref_id;
-////        link = link + "#post_id" + post_ref_id;
-//
-//        scrollTo("#post_" + ref_to_post_id);
-//    })
-//
-//
-//    $('#suggestion_list').on('click', ".grey-btn", function (e) {
-//
-//        var userName,
-//                text;
-//
-//        var postDiv = $(this).parents('.one');
-//
-//        e.preventDefault();
-//        $("textarea#discussion_comment").focus();
-//        focusOnCommentBox();
-//        userName = postDiv.data('creator_name');
-//        new_post_ref_id = postDiv.data('id');
-//
-//        var change_text = $('.change_text', postDiv).text();
-//        var explanation = $('.explanation', postDiv).text();
-//
-//
-//        if ($('.explanation', postDiv).text().trim() == "נימוק:") {
-//
-//            text = "[quote=" + '"' + userName + '"' + " " + "]\n"
-//                    + change_text
-//                    + '\n'
-//                    + "[/quote]"
-//                    + '\n';
-//        } else {
-//            text = "[quote=" + '"' + userName + '"' + " " + "]\n"
-//                    + change_text
-//                    + '\n'
-//                    + explanation
-//                    + '\n'
-//                    + "[/quote]"
-//                    + '\n';
-//        }
-//        $("textarea#discussion_comment").val(text).focus();
-//        focusOnCommentBox();
-//    });
-//
-
-//
-
-//
-//    // just focus
-//    $("#discussion_comment_reply_button").on('click', function (e) {
-//        e.preventDefault();
-//        var discussionComment = $("textarea#discussion_comment").focus();
-//        focusOnCommentBox();
-//    });
-//
-    var suggest_grade_id = new Object();
-
     var current_offset = 0;
-    var limit = 3;
+    var limit = 20;
     var num_of_pages;
     var num_of_pages_in_section = 7;
     var total_post_count;
@@ -948,6 +761,11 @@ $(document).ready(function () {
                 var end = suggestion.parts[0].end;
                 return original.substr(from, end - from);
             };
+
+            // set text for context popup
+            suggestion.context_before = original.substring(Math.max(suggestion.parts[0].start - 400, 0), suggestion.parts[0].start, suggestion.parts[0].start);
+            suggestion.context_after = original.substring(suggestion.parts[0].end, Math.min(original.length, suggestion.parts[0].end + 400));
+
             suggestion.alternative_part = function () {
                 return suggestion.parts[0].text;
             };
@@ -965,9 +783,19 @@ $(document).ready(function () {
 
     // get change suggestions and render
     db_functions.getSuggestionByDiscussion(discussion_id, 0, 0, function (err, data) {
+        $.each(data.objects, function(index, suggestion){
+            suggestion.my_discussion_grade = my_discussion_grade;
+            suggestion.my_grade_val = suggestion.grade_obj ? suggestion.grade_obj.evaluation_grade : my_discussion_grade;
+            suggestion.my_grade_id = suggestion.grade_obj ? suggestion.grade_obj._id : null;
+        })
+
         suggestions_list = data.objects ;
         displaySuggestionsRanges();
-        suggestion=   suggestions_list[0];
+        suggestion = suggestions_list[0];
+
+            // set title and img for fb share
+            suggestion.title = discussion_title;
+            suggestion.image_field_preview = discussion_img_field_preview;
 
             render_suggestion(suggestion);
 
@@ -1038,6 +866,10 @@ $(document).ready(function () {
 
     function displayAllSuggestions(self){
         $.each(suggestions_list, function (index, suggestion) {
+ 			// set title and img for fb share
+            suggestion.title = discussion_title;
+            suggestion.image_field_preview = discussion_img_field_preview;
+
             render_suggestion(suggestion);
 
             db_functions.getCommentsBySuggestion(suggestion.id, function(err, data){
@@ -1153,6 +985,14 @@ $(document).ready(function () {
                         }
                     }
                 });
+
+
+                try{
+                    FB.XFBML.parse($('#comments_wrapper').get(0));
+                }catch(ex){
+                    console.log('fb parse didnt work');
+                }
+
 //             initTooltipWithMessage($('#comments .right .respect'), 'מוניטין');
             }
         });
@@ -1303,6 +1143,9 @@ $(document).ready(function () {
                             var a = $(this);
                             a.text(temp_counter++);
                         });
+
+
+                        // TODO add remove dots here and remove it from other parts
 
                         // addinnd 3 dots
                         if ($('.pagination .down-dots').length === 0 && parseInt($($('.first_pagination .pagination [data-first=true]')[0]).text()) > 1){
@@ -1560,10 +1403,15 @@ $(document).ready(function () {
     }
 
 
-    $('body').mouseup(function(){
+    $('body').mouseup(function(e){
         $(".popup-window").hide();
-    });
 
+        var container = $(".arrow_box_container");
+
+        if (container.has(e.target).length === 0) {
+            container.hide();
+        }
+    });
 
     // focus and copy the selected text of discussion
     $('#pop_post_bt').click( function (e) {
@@ -1585,6 +1433,127 @@ $(document).ready(function () {
         $(".popup-window").hide();
     });
 
+
+    var depress_event = false;
+
+
+$(".suggestion_bottom_segment input").live("click", function (e) {
+
+        var $suggestion_wrapper = $(this).parents(".suggestion_wrapper");
+        var suggestion_grade_val = $suggestion_wrapper.data('my_grade');
+        var suggest_grade_id = $suggestion_wrapper.data('my_grade_id');
+        var slider_box = $(this).parent().parent().parent().find(".arrow_box_container");
+        var grade_against = $(this).parent().hasClass('button_against');
+
+        slider_box.removeClass('against').removeClass('pro');
+        if(grade_against){
+            slider_box.addClass('against');
+        }else{
+            slider_box.addClass('pro');
+        }
+
+        slider_box.show();
+        slider_box.find(".slider").slider({
+            disabled: is_creator,
+            value: my_discussion_grade, // dmy_discussion_grades instead of my_suggestion grade to prevent deadlock in slider
+            range:"min",
+            min: 0,
+            max: 10,
+            step:0.10,
+            slide: function(event, ui){
+
+                // prevent slider to go under discussion_grade
+                var current = ui.value;
+                if (grade_against){
+                    if(current > my_discussion_grade){
+                        current = my_discussion_grade;
+                        return false;
+                    }
+                }else{
+                    if(current < my_discussion_grade){
+                        current = my_discussion_grade;
+                        return false;
+                    }
+                }
+            },
+            change:function (event, ui) {
+                if (event.originalEvent) {
+                    var my_prev_grade = suggestion_grade_val;
+                    if(depress_event)
+                        return;
+                    var rating = ui.value;
+                    var user_info = {
+                        user_logged_in : user.first_name ? true : false,
+                        action_done : (user.actions_done_by_user && user.actions_done_by_user.grade_object) ? true : false,
+                        action_name : "grade_object",
+                        tokens_owned : user.tokens ? user.tokens : 0,
+                        price: gamification_price['grade_suggestion']
+                    }
+                    db_functions.addSuggestionGrade(suggestion.id, discussion_id, rating, suggest_grade_id, user_info, function (err, data) {
+                        if (!err) {
+                            if(data == 'canceled'){
+                                $(".suggest_slider_" + suggestion.id).slider('value',my_prev_grade);
+                            } else {
+                                //                                if(!(user.actions_done_by_user && user.actions_done_by_user.grade_object))
+                                //                                {
+                                //                                    user.actions_done_by_user.grade_object = true;
+                                //                                }
+
+//                                $("#suggest_grade_" + suggestion.id).val(Math.round(data.new_grade * 100) / 100);
+//                                $("#suggest_graders_" + suggestion.id).text(Math.round(data.agrees) + Math.round(data.not_agrees));
+//                                $("#agrees_" + suggestion.id).text(Math.round(data.agrees));
+//                                $("#not_agrees_" + suggestion.id).text(Math.round(data.not_agrees));
+
+                                var $suggestion = $("div[data-id=" + suggestion.id + "]");
+                                $suggestion.find('.supporters_wanted span').text(data.wanted_amount_of_tokens);
+                                $suggestion.find('.supporters_current span').text(Math.round(data.curr_amount_of_tokens));
+                                suggest_grade_id[suggestion.id] = data.grade_id;
+
+                                //already_graded
+                            }
+                        }
+                        else
+                        {
+                            depress_event = true;
+                            $(".suggest_slider_" + suggestion.id).slider("value", suggestion_grade_val || 0);
+                            depress_event = false;
+                            console.log(err);
+                        }
+                    });
+                }
+            }
+        });
+    });
+
+    $('#facebook_share').one('click', function(event){
+        sendFacebookShare("/facebookShare?link=/discussions/" + discussion_id, discussion_title, discussion_img_field_preview, discussion_text_field_preview, null, function(err){
+            if(err){
+                alert('Error occured');
+            }else{
+
+            }
+        });
+    })
+
+    $('#twitter_share').one('click', function(event){
+        function twitterShare () {
+            window.open('https://twitter.com/share?url=' + encodeURIComponent('http://www.uru.org.il/discussions/' + discussion_id) + '&text=' +
+                    encodeURIComponent(discussion_title) + '&via=URUisrael', 'share-twitter', 'status=0,scrollbars=0,location=0,height=320,width=660,resizable=1'
+            );
+            return false;
+        }
+    });
+
+    $('#google_plus_share').one('click', function () {
+        window.open('https://plusone.google.com/_/+1/confirm?hl=en&url=' + encodeURIComponent('http://www.uru.org.il/discussions/' + discussion_id),
+                'share-google', 'status=0,scrollbars=0,location=0,height=320,width=660,resizable=1');
+        return false;
+    });
+
+    $('#mail_share').on('click', function () {
+        $("#cloudsponge").slideToggle();
+        return false;
+    });
 
     db_functions.getPressItemsByDiscussion(discussion_id, function (err, data) {
         $.each(data.objects, function (index, press_item) {
@@ -1617,56 +1586,6 @@ $(document).ready(function () {
             dust.render('discussion_press_item', press_item, function (err, out) {
                $('#press_sidebar_holder').append(out);
             });
-        });
-    });
-
-    $(".suggestion_bottom_segment input").live("click", function () {
-
-        var slider_box=$(this).parent().parent().parent().find(".arrow_box_container");
-        slider_box.show();
-        slider_box.find(".slider").slider({
-            disabled:false,
-            value:5,
-            range:"min",
-            min:0,
-            max:10,
-            step:0.10 ,
-            change:function (event, ui) {
-                console.log("change");
-               /* if (event.originalEvent) {      //ugly hack because of slider api bug
-                    var my_prev_grade = my_discussion_grade;
-                    my_discussion_grade = ui.value;
-
-                    var user_info = {
-                        user_logged_in : user.first_name ? true : false,
-                        action_done : (user.actions_done_by_user && user.actions_done_by_user.grade_object) ? true : false,
-                        action_name : "grade_object",
-                        tokens_owned : user.tokens ? user.tokens : 0,
-                        price: gamification_price['grade_discussion']
-                    }
-
-                    db_functions.addDiscussionGrade(discussion_id, my_discussion_grade, grade_id, user_info, function (err, data) {
-
-                        if (!err) {
-                            if(data == 'canceled'){
-                                $(".slider").slider('value',my_prev_grade);
-                            } else {
-                                //                    if(!(user.actions_done_by_user && user.actions_done_by_user.grade_object))
-                                //                    {
-                                //                        user.actions_done_by_user.grade_object = true;
-                                //                    }
-                                $(".rating_total").text(Math.round(data.new_grade * 100) / 100);
-                                $(".raters").text(Math.round(data.evaluate_counter) + " דירוגים   ");
-                                // $(".dark_bar").css('width', (my_discussion_grade * 10) + '%');
-                                grade_id = data.grade_id;
-                            }
-                        }
-                        else
-                            console.log(err);
-                    });
-                }
-                */
-            }
         });
     });
 
@@ -1762,6 +1681,7 @@ $(document).ready(function () {
 
 
 });
+
 </script>
 </body>
 </html>
