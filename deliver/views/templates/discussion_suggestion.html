@@ -2,7 +2,7 @@
      data-creator_name="{creator_id.first_name} {creator_id.last_name}"
      data-creator_id="{creator_id.id}">
     <div class="suggestion_holder window">
-        <div class="suggestion_details">
+        <div class="suggestion_details person" data-id="{creator_id.id}" data-name="{creator_id.first_name} {creator_id.last_name}">
             <div class="img-box" style="overflow: hidden;">
                 <div class="photo auto-scale" style="height:64px">
                     <img src="{?creator_id}{creator_id.avatar_url}{:else}/images/default_user_img.gif{/creator_id}" />
@@ -11,8 +11,14 @@
             </div>
 
             <div class="name">
-                {creator_id.username}
+                {creator_id.first_name} {creator_id.last_name}
             </div>
+            <div class="actions_box_container"><div class="actions_box">
+
+               <div id="add_or_remove_proxy" class="action">תן מנדט</div>
+                <div class="action gray_and_soon">שלח הודעה</div>
+                <div class="action gray_and_soon">עקוב</div>
+            </div> </div>
             <div class="date_time">
                 <span class="time">{?creation_date}{creation_date|time}{/creation_date}</span>
             </div>

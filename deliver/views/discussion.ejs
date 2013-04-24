@@ -698,16 +698,7 @@ $(document).ready(function () {
 
     /***************************************************/
 
-//    <%
-//    if (user_logged) { %>
-//        var proxy = JSON.parse('<%-proxy%>');
-//    <%
-//    } else { %>
-//        var proxy = [];
-//    <%
-//    }
-//    %>
-//
+
 
 
 //    var sugg_grade_id;
@@ -785,66 +776,7 @@ $(document).ready(function () {
 
         $('#comments_number')[0].innerHTML = '(' + number + ')';
     }
-//
-//
-//
-//
 
-//
-//
-//    $('#comments-box').on('hover', '.date', function (e) {
-//        alert('dsfdsf');
-//    })
-//
-//    $('#suggestion_list').on('click', '#add_or_remove_proxy', function (e) {
-//        var userData = $(this).parents('.discussion-item');
-//        var proxyId = userData.data('creator_id');
-//        var userName = userData.data('creator_name');
-//        var post_id = $(this).parents('.comment-one').attr('id');
-//
-//        e.preventDefault();
-//
-//        if(!my_id){
-//            popupProvider.showLoginPopup({}, function(err, result){
-//                if(!err)
-//                    window.location = window.location + '?user_name=' + userName + '&proxy_id=' + proxyId + '&post_id=' + post_id;
-//            });
-//        }else{
-//            proxyCommon.addOrRemoveProxy(proxy, proxyId, userName, my_id, function(newProxy){
-//                proxy = newProxy.proxy;
-//            })
-//        }
-//    });
-//
-//    var user_name = getURLParameter('user_name');
-//    var proxy_id = getURLParameter('proxy_id');
-//    var post_id = getURLParameter('post_id');
-//
-//    if(user_name  && proxy_id && user_name !== 'null' && proxy_id != 'null'){
-//        proxyCommon.addOrRemoveProxy(proxy, proxy_id, user_name, my_id, function(newProxy){
-//            proxy = newProxy.proxy;
-//            window.location = window.location.pathname+ '#' + post_id;
-//        })
-//    }
-//
-//    $('#comments').on('click', '#add_or_remove_proxy', function (e) {
-//        var userData = $(this).parents('.comment-one');
-//        var proxyId = userData.data('creator_id');
-//        var userName = userData.data('creator_name');
-//        var post_id = $(this).parents('.comment-one').attr('id');
-//        e.preventDefault();
-//        if(!my_id){
-//            popupProvider.showLoginPopup({}, function(err, result){
-//                if(!err)
-//                    window.location = window.location + '?user_name=' + userName + '&proxy_id=' + proxyId + '&post_id=' + post_id;
-//            });
-//        }else{
-//            proxyCommon.addOrRemoveProxy(proxy, proxyId, userName, my_id, function(newProxy){
-//                proxy = newProxy.proxy;
-//            })
-//        }
-//    });
-//
     function vote(actionType){
         var post_id = $(this).parents('.comment_wrapper').data("id");
         var button = $(this);
@@ -988,19 +920,7 @@ $(document).ready(function () {
 //        focusOnCommentBox();
 //    });
 //
-//    $('#comments,#suggestion_list').on('click', ".follow_user", function (e) {
-//        var creator_id = $(this).parents('.comment-one,.one').data("creator_id");
-//        var self = this;
-//
-//        db_functions.joinOrLeaveUserFollowers(creator_id, function (err, user) {
-//            if (user.is_follower)
-//                $(self).text("עקוב");
-//            else
-//                $(self).text("עזוב");
-//
-//
-//        });
-//    });
+
 //
 
 //
@@ -1749,6 +1669,98 @@ $(document).ready(function () {
             }
         });
     });
+
+
+    <%
+    if (user_logged) { %>
+        var proxy = JSON.parse('<%-proxy%>');
+    <%
+    } else { %>
+        var proxy = [];
+    <%
+    }
+    %>
+
+
+    $('#suggestions_wrapper').on('click', '#add_or_remove_proxy', function (e) {
+        var userData = $(this).parents('.person');
+        var proxyId = userData.data('id');
+        var userName = userData.data('name');
+        var post_id = $(this).parents('.suggestion_wrapper').data('id');
+
+        e.preventDefault();
+
+        if(!my_id){
+            popupProvider.showLoginPopup({}, function(err, result){
+                if(!err)
+                    window.location = window.location + '?user_name=' + userName + '&proxy_id=' + proxyId + '&post_id=' + post_id;
+            });
+        }else{
+            proxyCommon.addOrRemoveProxy(proxy, proxyId, userName, my_id, function(newProxy){
+                proxy = newProxy.proxy;
+            })
+        }
+    });
+    $(".person .actions_box_container ,.person .img-box ,.person .name").live("mouseover",function(){
+        $(this).parent().find(".name").css("background-image","none")
+        $(this).parent().find(".actions_box_container").slideDown()
+
+    }) ;
+
+    $(".person").live("mouseleave",function(){
+        $(this).find(".actions_box_container").slideUp(function(){
+            $(this).parent().find(".name").css("background-image","url(/images/sep_photo.png)")
+        })
+
+    }) ;
+
+
+
+//    var user_name = getURLParameter('user_name');
+//    var proxy_id = getURLParameter('proxy_id');
+//    var post_id = getURLParameter('post_id');
+//
+//    if(user_name  && proxy_id && user_name !== 'null' && proxy_id != 'null'){
+//        proxyCommon.addOrRemoveProxy(proxy, proxy_id, user_name, my_id, function(newProxy){
+//            proxy = newProxy.proxy;
+//            window.location = window.location.pathname+ '#' + post_id;
+//        })
+//    }
+
+    $('#comments_wrapper').on('click', '#add_or_remove_proxy', function (e) {
+        var userData = $(this).parents('.person');
+        var proxyId = userData.data('id');
+        var userName = userData.data('name');
+        var post_id = $(this).parents('.comment_wrapper').data('id');
+        e.preventDefault();
+        if(!my_id){
+            popupProvider.showLoginPopup({}, function(err, result){
+                if(!err)
+                    window.location = window.location + '?user_name=' + userName + '&proxy_id=' + proxyId + '&post_id=' + post_id;
+            });
+        }else{
+            proxyCommon.addOrRemoveProxy(proxy, proxyId, userName, my_id, function(newProxy){
+                proxy = newProxy.proxy;
+            })
+        }
+    });
+
+
+    //    $('#comments,#suggestion_list').on('click', ".follow_user", function (e) {
+//        var creator_id = $(this).parents('.comment-one,.one').data("creator_id");
+//        var self = this;
+//
+//        db_functions.joinOrLeaveUserFollowers(creator_id, function (err, user) {
+//            if (user.is_follower)
+//                $(self).text("עקוב");
+//            else
+//                $(self).text("עזוב");
+//
+//
+//        });
+//    });
+
+
 });
 </script>
 </body>
