@@ -50,9 +50,9 @@ module.exports = function(req,res)
                         {
                             res.setHeader("Expires", "0");
 
-                            var ejs =  req.query.new ? 'discussion.ejs' : 'discussion_old.ejs';
+//                            var ejs =  req.query.new ? 'discussion.ejs' : 'discussion_old.ejs';
 
-                            res.render(ejs,{
+                            res.render('discussion.ejs',{
                                 title:"דיון",
                                 discussion_id: req.params[0],
                                 subject_id: req.query.subject_id,

@@ -718,23 +718,6 @@ $(document).ready(function () {
         vote.apply($(this),['remove']);
     });
 
-//    /*      $('.comments-box .comment-one .user-right').hover(function () {
-//     $(this).toggleClass('hover');
-//     });*/
-//
-//    $('#comments,#suggestion_list').on('mouseenter', ".side_menu",
-//            function (e) {
-//                $(this).addClass('hover');
-//                $('.left', this).show().css({width:0}).animate({'width':87});
-//
-//            }).on('mouseleave', ".side_menu", function (e) {
-//                var side = $(this);
-//                side.removeClass('hover');
-//                $('.left', this).animate({'width':0}, function () {
-//                    $(this).hide();
-//                });
-//            });
-//
     // copy the post text+ user to   discussion_comment
     $('#comments_wrapper').on('click', ".button_quote", function (e) {
         var userName;
@@ -778,6 +761,11 @@ $(document).ready(function () {
                 var end = suggestion.parts[0].end;
                 return original.substr(from, end - from);
             };
+
+            // set text for context popup
+            suggestion.context_before = original.substring(Math.max(suggestion.parts[0].start - 400, 0), suggestion.parts[0].start, suggestion.parts[0].start);
+            suggestion.context_after = original.substring(suggestion.parts[0].end, Math.min(original.length, suggestion.parts[0].end + 400));
+
             suggestion.alternative_part = function () {
                 return suggestion.parts[0].text;
             };
@@ -1536,7 +1524,8 @@ $(".suggestion_bottom_segment input").live("click", function (e) {
             }
         });
     });
- $('#facebook_share').one('click', function(event){
+
+    $('#facebook_share').one('click', function(event){
         sendFacebookShare("/facebookShare?link=/discussions/" + discussion_id, discussion_title, discussion_img_field_preview, discussion_text_field_preview, null, function(err){
             if(err){
                 alert('Error occured');
@@ -1601,18 +1590,6 @@ $(".suggestion_bottom_segment input").live("click", function (e) {
     });
 });
 
-    $('#google_plus_share').one('click', function () {
-        window.open('https://plusone.google.com/_/+1/confirm?hl=en&url=' + encodeURIComponent('http://www.uru.org.il/discussions/' + discussion_id),
-                'share-google', 'status=0,scrollbars=0,location=0,height=320,width=660,resizable=1');
-        return false;
-    });
-
-    $('#mail_share').on('click', function () {
-        $("#cloudsponge").slideToggle();
-        return false;
-    });
-
-});
 </script>
 </body>
 </html>
