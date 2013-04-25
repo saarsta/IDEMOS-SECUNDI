@@ -459,7 +459,7 @@ $(document).ready(function () {
 
     db_functions.getDiscussionShoppingCart(discussion_id, function (err, data) {
         $.each(data.objects, function (index, item) {
-            dust.render('cycle_information_item', item, function (err, out) {
+            dust.render('discussion_information_item', item, function (err, out) {
                 $('#slider').append(out);
             });
         });
