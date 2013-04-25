@@ -461,7 +461,7 @@ $(document).ready(function () {
         if (err || data.objects.length === 0) {
             $('.segment.info').hide();
         }
-        
+
         $.each(data.objects, function (index, item) {
             dust.render('discussion_information_item', item, function (err, out) {
                 $('#slider').append(out);
@@ -928,13 +928,14 @@ $(document).ready(function () {
                 db_functions.addCommentToSuggestion(suggestion_id, discussion_id, text, function(err, comment){
                     $(this).parent().attr('data-can-add', true);
                     add_comment.find('input').val('');
-                    var num_of_comments = $('.suggestion_comments_holder .comment').length;
+                    var $suggestion = $('[data-id=' + suggestion_id + ']');
+                    var num_of_comments = $suggestion.find('.suggestion_comments_holder .comment').length;
                     if (num_of_comments % 2 === 0) comment.is_even =  true;
 
                     dust.render('comment_on_suggestion', comment, function (err, out) {
                         // append before "add_comment"
                         add_comment.before(out);
-                        $('.comments_counter span').text(num_of_comments + 1);
+                        $suggestion.find('.comments_counter span').text(num_of_comments + 1);
                         image_autoscale(add_comment.parent('.suggestion_comments_holder').find('.auto-scale img'));
                     });
                 });
