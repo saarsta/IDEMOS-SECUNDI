@@ -663,7 +663,6 @@ $(document).ready(function () {
     var new_post_ref_id = null;  //if not null =>the create new post is connected to anther post
     var discussion_title = "<%= discussion.title%>"
     var discussion_img_field_preview = "<%= discussion.image_field ? discussion.image_field.url ||'' : '' %>";
-    var discussion_text_field_preview = "<%= discussion.text_field_preview ? discussion.text_field_preview : discussion.text_field %>";
 
     function setUserScore(userID, score) {
         $('[ data-creator_id=' + userID + ']').find('.score').empty().append(score);
@@ -773,6 +772,17 @@ $(document).ready(function () {
             dust.render('discussion_suggestion', suggestion, function (err, out) {
                 $('#suggestions_wrapper').prepend(out);
                 image_autoscale($('#suggestions_wrapper .auto-scale img'));
+
+                // check if got here after not logged user tryed to grade suggestion
+                var action = getURLParameter('action');
+                if (action !== "null") {
+                    var id = window.location.hash;
+                    action = ".button_" + action;
+
+                    if (!id) return false;
+
+                    $(id).find('.suggestion_bottom_segment ' + action + ' input').click();
+                }
             });
         }
         return null;
@@ -784,7 +794,7 @@ $(document).ready(function () {
     // get change suggestions and render
     db_functions.getSuggestionByDiscussion(discussion_id, 0, 0, function (err, data) {
 
-        if(err || data.object.length === 0) return false;
+        if(err || data.objects.length === 0) return false;
 
         $.each(data.objects, function(index, suggestion){
             suggestion.my_discussion_grade = my_discussion_grade;
@@ -1440,13 +1450,24 @@ $(document).ready(function () {
     var depress_event = false;
 
 
-$(".suggestion_bottom_segment input").live("click", function (e) {
+    $(".suggestion_bottom_segment input").live("click", function (e) {
 
+        var self = this;
         var $suggestion_wrapper = $(this).parents(".suggestion_wrapper");
+        var grade_against = $(this).parent().hasClass('button_against');
+
+        if (!my_id){
+            //open popup window
+            popupProvider.showLoginPopup({}, function(err){
+                if (!err) {
+                    var set_query = grade_against ? "?action=against" : "?action=pro";
+                    window.location = window.location + set_query + '#' + $suggestion_wrapper.attr('id');
+                }
+            });
+        }
         var suggestion_grade_val = $suggestion_wrapper.data('my_grade');
         var suggest_grade_id = $suggestion_wrapper.data('my_grade_id');
         var slider_box = $(this).parent().parent().parent().find(".arrow_box_container");
-        var grade_against = $(this).parent().hasClass('button_against');
 
         slider_box.removeClass('against').removeClass('pro');
         if(grade_against){
@@ -1529,11 +1550,9 @@ $(".suggestion_bottom_segment input").live("click", function (e) {
     });
 
     $('#facebook_share').one('click', function(event){
-        sendFacebookShare("/facebookShare?link=/discussions/" + discussion_id, discussion_title, discussion_img_field_preview, discussion_text_field_preview, null, function(err){
+        sendFacebookShare("/facebookShare?link=/discussions/" + discussion_id, discussion_title, discussion_img_field_preview, original, null, function(err){
             if(err){
                 alert('Error occured');
-            }else{
-
             }
         });
     })
