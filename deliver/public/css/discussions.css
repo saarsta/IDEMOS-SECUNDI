@@ -1813,6 +1813,7 @@ span.remark{
     background:#eff1f2;
     margin:5px;
     margin-top:20px;
+    position: relative;
 }
 
 .suggestion_bottom_segment{
@@ -3081,21 +3082,19 @@ input.button_submit_comment_no_text{
     padding-bottom:10px;
 }
 
-
-
 .arrow_box_container{
     position: absolute;
     z-index: 4;
-    top: 203px;
+    top: -14px;
     display: none;
 }
 
 .arrow_box_container.against {
-    right: 218px;
+    right: 214px;
 }
 
 .arrow_box_container.pro {
-    right: -281px;
+    right: -285px;
 }
 
 .arrow_box {
