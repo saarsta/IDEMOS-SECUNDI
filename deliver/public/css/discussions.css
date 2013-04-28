@@ -2490,6 +2490,9 @@ input.button_submit_comment{
     float:left;
     margin-top:20px;
 }
+input.button_submit_comment.disable{
+    background:url(/images/button_submit_comment_d.png) no-repeat 0 0;
+}
 
 input.button_submit_comment_no_text{
     background:url(/images/button_add_comment_no_text.png) no-repeat 0 0;

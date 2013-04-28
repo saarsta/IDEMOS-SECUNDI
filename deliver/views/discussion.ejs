@@ -278,7 +278,7 @@ var error_message = error_message || '';
                 </div>
             </div>
 
-            <div id="add_comment_wrapper" <%if(user_logged){%> data-creator_id="<%=user._id%>" <%}%> >
+                <div id="add_comment_wrapper" <%if(user_logged){%> data-creator_id="<%=user._id%>" <%}%> >
                 <h2 class="title">כתיבת תגובה</h2>
                 <div class="comment_wrapper">
                     <div class="comment_details">
@@ -656,6 +656,9 @@ $(document).ready(function () {
                         var pagination = $(".second_pagination");
 
                         pagination.before(out);
+                        var bgc =$('.regular_comment').last().css('background-color');
+                        $('.regular_comment').last().css('background-color', 'pink');
+                        $('.regular_comment').last().animate({backgroundColor: bgc}, 2000);
                         $("textarea#discussion_comment").val('');
                         new_post_ref_id = null;
 //                        postsNumber++;
@@ -1003,7 +1006,6 @@ $(document).ready(function () {
                         instanceReady : function( ev )
                         {
                             editor = this;
-                            editor = this;
                         }
                     }
                 });
@@ -1083,7 +1085,7 @@ $(document).ready(function () {
                         {
                             instanceReady : function( ev )
                             {
-                                editor = this;
+
                                 editor = this;
                             }
                         }
@@ -1426,7 +1428,10 @@ $(document).ready(function () {
 
 
     $('body').mouseup(function(e){
-        $(".popup-window").hide();
+        var target =$(e.target).get(0) ;
+        if(target!=  $('#pop_post_bt').get(0) && target !=  $('#pop_suggest_bt').get(0) ) {
+            $(".popup-window").hide();
+        }
 
         var container = $(".arrow_box_container");
 
@@ -1437,15 +1442,21 @@ $(document).ready(function () {
 
     // focus and copy the selected text of discussion
     $('#pop_post_bt').click( function (e) {
+        console.log("pop_post_bt");
         e.preventDefault();
         e.stopPropagation();
         new_post_ref_id = null;
         $(".popup-window").hide();
         $("textarea#discussion_comment").val('"' + range_txt + '"');
         focusOnCommentBox();
+        $('html, body').animate({
+            scrollTop: $("#add_comment_wrapper").offset().top
+        }, 500);
+
     });
 
     $('#pop_suggest_bt').click(function (e) {
+        console.log("pop_suggest_bt");
         e.stopPropagation();
         e.preventDefault();
         $('#discussion_content_txt').text('"' + range_txt + '"');
@@ -1453,6 +1464,10 @@ $(document).ready(function () {
         $('textarea#discussion_suggest').focus();
         $('#reload-img').attr('src', $('#reload-img').attr('src'));
         $(".popup-window").hide();
+        $('html, body').animate({
+            scrollTop: $("#write-comment").offset().top
+        }, 500);
+
     });
 
     var depress_event = false;
