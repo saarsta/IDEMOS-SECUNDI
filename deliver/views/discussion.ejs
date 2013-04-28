@@ -1047,16 +1047,10 @@ $(document).ready(function () {
             '<a href="javascript: void(0)"><span class="last"></span></a>');
     }
 
-//	 function loadSpecialPosts(type, class_type, title){
-//        db_functions.getSpecialPostsByDiscussion(discussion_id, type, function(err, data){
-    function loadSpecialPost(type, class_type, title){
-        db_functions.getPostByTypeByDiscussion(discussion_id, type, function(err, data){
+	 function loadSpecialPosts(){
+        db_functions.getSpecialPostsByDiscussion(discussion_id, function(err, data){
             if (!err  && data.objects.length != 0){
-                var special_post = data.objects[0];
-                special_post.class_type = class_type;
-                special_post.title = title;
-
-                dust.render('discussion_special_comment', special_post, function (err, out) {
+                dust.renderArray('discussion_special_comment', data.objects, null, function (err, out) {
                     $('#comments_wrapper').prepend(out);
                     $('.comment_wrapper .content').dotdotdot({});
                     image_autoscale($('#comments_wrapper .auto-scale img'));
@@ -1286,8 +1280,9 @@ $(document).ready(function () {
 //        loadPosts();
 //    });
 
-    loadSpecialPost('total_votes', 'most_contr', 'התגובה השנויה במחלוקת');
-    loadSpecialPost('popularity', 'most_pop', 'התגובה הפופולרית ביותר');
+    loadSpecialPosts();
+//    loadSpecialPost('total_votes', 'most_contr', 'התגובה השנויה במחלוקת');
+//    loadSpecialPost('popularity', 'most_pop', 'התגובה הפופולרית ביותר');
     loadPosts();
 
     function focusOnCommentBox(text_height){
