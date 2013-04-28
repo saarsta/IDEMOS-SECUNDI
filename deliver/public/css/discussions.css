@@ -3220,6 +3220,9 @@ input.button_submit_comment_no_text{
     cursor: pointer;
 }
 
+#press_sidebar_holder .item{
+    cursor: pointer;
+}
 /*
 .popup-window {
     position: absolute;
