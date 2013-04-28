@@ -1,4 +1,4 @@
-<div class="item">
+<div class="item" data-source="{link}">
     <div class="title">
         {?source_image}
         <img class="logo" src="/images/media/{source_image}" />
@@ -9,7 +9,8 @@
 										</span>
     </div>
     {?image_field}
-    <div class="photo">
+
+    <div id="discussion_image" style="width: 190px;height: 131px; overflow:hidden;" class=' photo auto-scale  img_holder'>
         <img src="{image_field.url}" />
     </div>
     {/image_field}

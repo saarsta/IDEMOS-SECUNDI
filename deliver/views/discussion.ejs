@@ -144,6 +144,7 @@ var error_message = error_message || '';
                     </div>
                 </div>
                 <div id="content_left_sidebar">
+                    <% if (discussion.press_items && discussion.press_items.length>0) { %>
                     <div class="segment press">
                         <h2>מן העיתונות</h2>
                         <div id="press_sidebar_holder">
@@ -151,6 +152,8 @@ var error_message = error_message || '';
 
                         </div>
                     </div>
+                    <%} %>
+                    <% if (discussion.links && discussion.links.length>0) { %>
                     <div class="segment links">
                         <h2>קישורים מועילים</h2>
                         <div >
@@ -174,6 +177,7 @@ var error_message = error_message || '';
 
                         </div>
                     </div>
+                    <%} %>
                 </div>
             </div>
         </div>
@@ -1704,7 +1708,9 @@ $(document).ready(function () {
 //
 //        });
 //    });
-
+    $("#press_sidebar_holder .item").live("click",function(){
+        window.open($(this).data('source'));
+    });
 
 });
 
