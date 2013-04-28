@@ -1049,7 +1049,9 @@ $(document).ready(function () {
             '<a href="javascript: void(0)"><span class="last"></span></a>');
     }
 
-	 function loadSpecialPost(type, class_type, title){
+//	 function loadSpecialPosts(type, class_type, title){
+//        db_functions.getSpecialPostsByDiscussion(discussion_id, type, function(err, data){
+    function loadSpecialPost(type, class_type, title){
         db_functions.getPostByTypeByDiscussion(discussion_id, type, function(err, data){
             if (!err  && data.objects.length != 0){
                 var special_post = data.objects[0];
