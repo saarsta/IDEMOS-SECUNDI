@@ -6,11 +6,13 @@ var mongoose = require("mongoose"),
     utils = require('../utils');
 
 var Post = {
-    discussion_id:{type:Schema.ObjectId, ref:'Discussion', query:common.FIND_USER_QUERY,index:true, required:true, onDelete:'delete'},
+    discussion_id:{type:Schema.ObjectId, ref:'Discussion', query:common.FIND_DISCUSSION_QUERY,index:true, required:true, onDelete:'delete'},
     text:{type:Schema.Types.Html},
     votes_for: {type: Number, 'default': 0},
     votes_against: {type: Number, 'default': 0},
     is_comment_on_vision:{type:Boolean, 'default':false},
+    is_editor_choice:{type:Boolean, 'default':false},
+    is_expert_opinion:{type:Boolean, 'default':false},
     ref_to_post_id:{type:Schema.ObjectId,ref:'Post',onDelete:'setNull'}
 };
 
