@@ -3039,11 +3039,11 @@ input.button_submit_comment_no_text{
     height: 100%;
 }
 
-#comments_wrapper .regular_comment.odd .img-box span {
+#comments_wrapper .regular_comment.even .img-box span {
     background: url(../images/user-fillter-small-cofee.png) no-repeat;
 }
 
-#comments_wrapper .regular_comment.even .img-box span {
+#comments_wrapper .regular_comment.odd .img-box span {
     background: url(../images/user-fillter-small-grey.png) no-repeat;
 }
 
