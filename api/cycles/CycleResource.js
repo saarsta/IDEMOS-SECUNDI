@@ -205,8 +205,8 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
                         cycle.is_follower = true;
                     }
                 }
-
-                models.Action.find({'cycle_id.cycle': cycle_id, is_approved: true})
+                var today =new Date();
+                models.Action.find({'cycle_id.cycle': cycle_id, is_approved: true,'execution_date.date': {$gte: today}})
                     .sort({'execution_date.date': 'descending'})
                     .limit(1)
                     .exec(function(err, actions){

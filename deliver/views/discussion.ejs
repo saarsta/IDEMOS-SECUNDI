@@ -282,7 +282,7 @@ var error_message = error_message || '';
                 </div>
             </div>
 
-            <div id="add_comment_wrapper" <%if(user_logged){%> data-creator_id="<%=user._id%>" <%}%> >
+                <div id="add_comment_wrapper" <%if(user_logged){%> data-creator_id="<%=user._id%>" <%}%> >
                 <h2 class="title">כתיבת תגובה</h2>
                 <div class="comment_wrapper">
                     <div class="comment_details">
@@ -317,8 +317,8 @@ var error_message = error_message || '';
                 </div>
                 <input id="submit_post" type="button" class="button_submit_comment" />
             </div>
-    </div>
-  </div>
+        </div>
+      </div>
 
    <% include partials/footer.ejs %>
 
@@ -468,6 +468,7 @@ $(document).ready(function () {
     db_functions.getDiscussionShoppingCart(discussion_id, function (err, data) {
         if (err || data.objects.length === 0) {
             $('.segment.info').hide();
+            return;
         }
 
         $.each(data.objects, function (index, item) {
@@ -660,6 +661,9 @@ $(document).ready(function () {
                         var pagination = $(".second_pagination");
 
                         pagination.before(out);
+                        var bgc =$('.regular_comment').last().css('background-color');
+                        $('.regular_comment').last().css('background-color', 'pink');
+                        $('.regular_comment').last().animate({backgroundColor: bgc}, 2000);
                         $("textarea#discussion_comment").val('');
                         new_post_ref_id = null;
 //                        postsNumber++;
@@ -831,6 +835,10 @@ $(document).ready(function () {
                 // set comments counter
                 curr_suggestion.find('.comments_counter span').text(data.objects.length);
 
+                if (data.objects.length===0){
+                    curr_suggestion.find('.close').hide();
+                }
+
                 $.each(data.objects, function (index, comment) {
                     comment.is_even = (index % 2) == 0;
                     dust.render('comment_on_suggestion', comment, function (err, out) {
@@ -957,6 +965,12 @@ $(document).ready(function () {
         $(this).parents('.suggestion_wrapper').find('.comment').hide();
     });
 
+    $(".comments_counter a").live("click",function(){
+        $(this).parents('.suggestion_wrapper').find('.comment').show();
+        $(this).parents('.suggestion_wrapper').find('.close').show();
+    });
+
+
     function renderComments(comments) {
 
         //first clear existing comments
@@ -1006,7 +1020,6 @@ $(document).ready(function () {
                     {
                         instanceReady : function( ev )
                         {
-                            editor = this;
                             editor = this;
                         }
                     }
@@ -1083,7 +1096,7 @@ $(document).ready(function () {
                         {
                             instanceReady : function( ev )
                             {
-                                editor = this;
+
                                 editor = this;
                             }
                         }
@@ -1427,7 +1440,10 @@ $(document).ready(function () {
 
 
     $('body').mouseup(function(e){
-        $(".popup-window").hide();
+        var target =$(e.target).get(0) ;
+        if(target!=  $('#pop_post_bt').get(0) && target !=  $('#pop_suggest_bt').get(0) ) {
+            $(".popup-window").hide();
+        }
 
         var container = $(".arrow_box_container");
 
@@ -1438,15 +1454,21 @@ $(document).ready(function () {
 
     // focus and copy the selected text of discussion
     $('#pop_post_bt').click( function (e) {
+        console.log("pop_post_bt");
         e.preventDefault();
         e.stopPropagation();
         new_post_ref_id = null;
         $(".popup-window").hide();
         $("textarea#discussion_comment").val('"' + range_txt + '"');
         focusOnCommentBox();
+        $('html, body').animate({
+            scrollTop: $("#add_comment_wrapper").offset().top
+        }, 500);
+
     });
 
     $('#pop_suggest_bt').click(function (e) {
+        console.log("pop_suggest_bt");
         e.stopPropagation();
         e.preventDefault();
         $('#discussion_content_txt').text('"' + range_txt + '"');
@@ -1454,6 +1476,10 @@ $(document).ready(function () {
         $('textarea#discussion_suggest').focus();
         $('#reload-img').attr('src', $('#reload-img').attr('src'));
         $(".popup-window").hide();
+        $('html, body').animate({
+            scrollTop: $("#write-comment").offset().top
+        }, 500);
+
     });
 
     var depress_event = false;
@@ -1712,6 +1738,8 @@ $(document).ready(function () {
     $("#press_sidebar_holder .item").live("click",function(){
         window.open($(this).data('source'));
     });
+
+
 
 });
 

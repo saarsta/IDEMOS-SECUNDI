@@ -1899,6 +1899,12 @@ span.remark{
     line-height:10px;
     cursor: pointer;
 }
+.comments_counter a{
+    text-decoration: none;
+}
+.comments_counter a:hover{
+    text-decoration: underline;
+}
 
 .suggestion_comments_holder{
     float:right;
@@ -2507,6 +2513,9 @@ input.button_submit_comment{
     float:left;
     margin-top:20px;
 }
+input.button_submit_comment.disable{
+    background:url(/images/button_submit_comment_d.png) no-repeat 0 0;
+}
 
 input.button_submit_comment_no_text{
     background:url(/images/button_add_comment_no_text.png) no-repeat 0 0;
@@ -3103,7 +3112,7 @@ input.button_submit_comment_no_text{
 .arrow_box_container{
     position: absolute;
     z-index: 4;
-    top: -14px;
+    top: -23px;
     display: none;
 }
 
@@ -3313,3 +3322,21 @@ input.button_submit_comment_no_text{
 
  */
 
+#info_items .mb-inside p {
+    font: normal 13px/20px 'arial';
+    color: #7f7f7e;
+}
+#info_items .mb-inside h2 {
+    color: #3b63ef;
+    font: bold 13px/20px 'arial';
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+#info_items .mb-inside {
+     padding: 20px;
+     cursor: pointer;
+ }
+#info_items .mb-inside a{
+    text-decoration: none;
+}
