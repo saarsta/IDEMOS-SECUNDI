@@ -29,7 +29,8 @@ var SpecialPostsResource = module.exports = jest.MongooseResource.extend({
             ref_to_post_id: null,
             discussion_id:null,
             is_user_follower: null,
-            type: null
+            type: null,
+            title: null
         };
     },
 
@@ -39,6 +40,7 @@ var SpecialPostsResource = module.exports = jest.MongooseResource.extend({
 
         models.Post.find({discussion_id: req.query.discussion_id}).sort({votes_for: -1}).populate('creator_id').exec(function(err, data){
             data[0].type = 'most_pop';
+            data[0].title = 'התגובה הפופולרית ביותר';
             special_objects.push(data[0]);
 
             var most_contr = _.max(data, function(post){
@@ -47,6 +49,7 @@ var SpecialPostsResource = module.exports = jest.MongooseResource.extend({
 
             if (most_contr) {
                 most_contr.type = 'most_contr';
+                most_contr.title = 'התגובה השנויה במחלוקת';
                 special_objects.push(most_contr);
             }
 
@@ -56,6 +59,7 @@ var SpecialPostsResource = module.exports = jest.MongooseResource.extend({
 
             if (editor_choice) {
                 editor_choice.type = 'editor_choice';
+                editor_choice.title = 'דבר העורך';
                 special_objects.push(editor_choice);
             }
 
@@ -64,7 +68,8 @@ var SpecialPostsResource = module.exports = jest.MongooseResource.extend({
             })
 
             if (expert_opinion) {
-                expert_opinion.type = 'editor_choice';
+                expert_opinion.type = 'expert_opinion';
+                expert_opinion.title = 'דעת מומחה';
                 special_objects.push(expert_opinion);
             }
 

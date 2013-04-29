@@ -2199,6 +2199,7 @@ span.remark{
 }
 
 .most_pop #comments_wrapper  .content,
+.expert_opinion #comments_wrapper  .content,
 .most_contr #comments_wrapper  .content {
     color: #50504F;
     font-size: 12px;
@@ -2212,6 +2213,7 @@ span.remark{
 }
 
 #comments_wrapper .most_contr,
+#comments_wrapper .expert_opinion,
 #comments_wrapper .most_pop{
     width:480px;
     float:right;
@@ -2235,6 +2237,7 @@ span.remark{
 }
 
 #comments_wrapper .most_contr h2.title,
+#comments_wrapper .expert_opinion h2.title,
 #comments_wrapper .most_pop h2.title{
     font-size:24px;
     padding-right:24px;
@@ -2357,6 +2360,10 @@ span.remark{
 }
 
 #comments_wrapper .most_pop .comment_wrapper .content{
+    width:309px;
+}
+
+#comments_wrapper .expert_opinion .comment_wrapper .content{
     width:309px;
 }
 
