@@ -956,6 +956,12 @@ $(document).ready(function () {
         $(this).parents('.suggestion_wrapper').find('.comment').hide();
     });
 
+    $(".comments_counter a").live("click",function(){
+        $(this).parents('.suggestion_wrapper').find('.comment').show();
+        $(this).parents('.suggestion_wrapper').find('.close').show();
+    });
+
+
     function renderComments(comments) {
 
         //first clear existing comments
@@ -1728,6 +1734,8 @@ $(document).ready(function () {
     $("#press_sidebar_holder .item").live("click",function(){
         window.open($(this).data('source'));
     });
+
+
 
 });
 
