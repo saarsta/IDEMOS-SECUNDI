@@ -267,6 +267,11 @@ var error_message = error_message || '';
         </div>
     </div>
     <div id="content_wrapper_comments">
+        <div id="special_post_wrapper_background">
+            <div id="special_post_wrapper">
+
+            </div>
+        </div>
         <div id="comments_wrapper">
 			<div class="pagination_wrapper first_pagination">
                 <div class="pagination">
@@ -1050,9 +1055,9 @@ $(document).ready(function () {
         db_functions.getSpecialPostsByDiscussion(discussion_id, function(err, data){
             if (!err  && data.objects.length != 0){
                 dust.renderArray('discussion_special_comment', data.objects, null, function (err, out) {
-                    $('#comments_wrapper').prepend(out);
-                    $('.comment_wrapper .content').dotdotdot({});
-                    image_autoscale($('#comments_wrapper .auto-scale img'));
+                    $('#special_post_wrapper').prepend(out);
+                    $('#special_post_wrapper .content').dotdotdot({});
+                    image_autoscale($('#special_post_wrapper .auto-scale img'));
                 });
             }
         })
