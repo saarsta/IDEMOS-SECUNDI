@@ -313,8 +313,8 @@ var error_message = error_message || '';
                 </div>
                 <input id="submit_post" type="button" class="button_submit_comment" />
             </div>
-    </div>
-  </div>
+        </div>
+      </div>
 
    <% include partials/footer.ejs %>
 
@@ -464,6 +464,7 @@ $(document).ready(function () {
     db_functions.getDiscussionShoppingCart(discussion_id, function (err, data) {
         if (err || data.objects.length === 0) {
             $('.segment.info').hide();
+            return;
         }
 
         $.each(data.objects, function (index, item) {
@@ -829,6 +830,10 @@ $(document).ready(function () {
 
                 // set comments counter
                 curr_suggestion.find('.comments_counter span').text(data.objects.length);
+
+                if (data.objects.length===0){
+                    curr_suggestion.find('.close').hide();
+                }
 
                 $.each(data.objects, function (index, comment) {
                     comment.is_even = (index % 2) == 0;
