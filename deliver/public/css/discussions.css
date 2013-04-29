@@ -2354,13 +2354,13 @@ span.remark{
     display: none;
 }
 
-#comments_wrapper .comment_wrapper.odd{
+#comments_wrapper .comment_wrapper.even{
     background:#f6f6f6;
     border-top:1px solid #d2d1d1;
     border-bottom:1px solid #d2d1d1;
 }
 
-#comments_wrapper .comment_wrapper.even{
+#comments_wrapper .comment_wrapper.odd{
     background:#ededed;
 }
 
