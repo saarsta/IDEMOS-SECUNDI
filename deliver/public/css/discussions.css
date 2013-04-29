@@ -2138,7 +2138,6 @@ span.remark{
     width:980px;
     margin:auto;
     direction:rtl;
-    padding:30px 0;
 }
 
 #special_post_wrapper_background {
@@ -2214,12 +2213,17 @@ span.remark{
 
 #special_post_wrapper .most_pop{
     margin-left:20px;
+    margin-top: 20px;
+}
+
+#special_post_wrapper .most_contr{
+    margin-top: 20px;
 }
 
 #special_post_wrapper .special_comment {
     width:480px;
     float:right;
-    margin-bottom: 25px;
+    margin-bottom: 30px;
 }
 
 #comments_wrapper .comment_wrapper,
@@ -2228,6 +2232,9 @@ span.remark{
     background:#fff;
     padding:20px;
     height: 153px;
+}
+
+#comments_wrapper .comment_wrapper {
     display: table;
 }
 
