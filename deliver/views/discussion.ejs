@@ -1448,7 +1448,7 @@ $(document).ready(function () {
         var container = $(".arrow_box_container");
 
         if (container.has(e.target).length === 0) {
-            container.hide();
+         //   container.hide();
         }
     });
 
@@ -1502,16 +1502,18 @@ $(document).ready(function () {
         }
         var suggestion_grade_val = $suggestion_wrapper.data('my_grade');
         var suggest_grade_id = $suggestion_wrapper.data('my_grade_id');
-        var slider_box = $(this).parent().parent().parent().find(".arrow_box_container");
-
+        var slider_box = $(this).parents(".suggestion_wrapper").find(".arrow_box_container");
+         /*
         slider_box.removeClass('against').removeClass('pro');
         if(grade_against){
             slider_box.addClass('against');
+        }else if ( slider_box.offset().left+ slider_box.width() >  $('body').innerWidth())  {
+            slider_box.addClass('pro_narrow');
         }else{
             slider_box.addClass('pro');
         }
-
-        slider_box.show();
+           */
+        slider_box.slideDown();
         slider_box.find(".slider").slider({
             disabled: is_creator,
             value: my_discussion_grade, // dmy_discussion_grades instead of my_suggestion grade to prevent deadlock in slider

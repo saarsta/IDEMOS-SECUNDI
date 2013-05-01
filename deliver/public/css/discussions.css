@@ -1907,10 +1907,10 @@ span.remark{
 }
 
 .suggestion_comments_holder{
-    float:right;
+    float:left;
     width:510px;
     position:relative;
-    right:390px;
+    left:80px;
     background:url(/images/bg_comments_top.png) repeat-x 0 0;
     padding-top: 10px;
     border-right:1px solid #e0e0e0;
@@ -2551,7 +2551,7 @@ input.button_submit_comment_no_text{
 }
 
 .slide-box .slider, .slide-box .suggest_slider {
-    background: url(/images/bg_rating_bar.png) 0 0 repeat-x;
+   /* background: url(/images/bg_rating_bar.png) 0 0 repeat-x;    */
     border-radius: 3px;
     width: 240px;
     position: relative;
@@ -2573,6 +2573,13 @@ input.button_submit_comment_no_text{
     left: -39px;
 }
 
+.arrow_box .slide-box {
+
+    -moz-border-radius: 3px 3px 3px 3px;
+    -webkit-border-radius: 3px 3px 3px 3px;
+    border-radius: 3px 3px 3px 3px;
+
+}
 /* Discussions Page - end*/
 
 /* Discussions Page 2 - start */
@@ -3110,10 +3117,16 @@ input.button_submit_comment_no_text{
 }
 
 .arrow_box_container{
-    position: absolute;
+    float:right;
+
+    position:relative;
+    right:14px;
+    display: none;
+  /*  position: absolute;
     z-index: 4;
     top: -23px;
-    display: none;
+
+    */
 }
 
 .arrow_box_container.against {
@@ -3123,16 +3136,22 @@ input.button_submit_comment_no_text{
 .arrow_box_container.pro {
     right: -285px;
 }
+.arrow_box_container.pro_narrow {
+    right: 114px;
+}
+
 
 .arrow_box {
+    padding-left: 5px;
     position: relative;
     background: #fff;
     border: 2px solid #d6dbde;
+    border-top: none;
     display: inline-block;
-    -webkit-box-shadow:0px 0px 3px 1px #444;
-    box-shadow: 0px 0px 3px 1px #444        ;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
+    -webkit-box-shadow:3px 4px 5px -2px #222;
+    box-shadow: 3px 4px 5px -2px #222        ;
+    -webkit-border-radius:   0 0 5px 5px;
+    border-radius:  0 0 5px 5px;
 }
 
 
@@ -3154,6 +3173,7 @@ input.button_submit_comment_no_text{
     border-right-color: #fff;
 }
 
+.arrow_box_container.pro_narrow .arrow_box:after,
 .arrow_box_container.against .arrow_box:after {
     border-left-color: #fff;
 }
@@ -3168,7 +3188,7 @@ input.button_submit_comment_no_text{
 .arrow_box_container.pro .arrow_box:before {
     border-right-color: #d6dbde;
 }
-
+.arrow_box_container.pro_narrow .arrow_box:before,
 .arrow_box_container.against .arrow_box:before {
     border-left-color: #d6dbde;
 }

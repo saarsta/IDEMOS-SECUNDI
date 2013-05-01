@@ -1165,7 +1165,7 @@ var current_section=2;
             var start_slide=getURLParameter('timeline_default_slide')=='null' ?timeline_default_item : getURLParameter('timeline_default_slide');
 
 
-            createStoryJS({
+            var timeline_obj = createStoryJS({
                 type:       'timeline',
                 width:      '980',
                 height:     '500',
