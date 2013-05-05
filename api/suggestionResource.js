@@ -116,10 +116,12 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
             if (err)
                 callback(err, null);
             else          {
-                results.objects=results.objects.sort(likelihood) ;
+
                 //arrange objects only if the request is from discussion page
-                if (!discussion_id)
+                if (!discussion_id)  {
+                    results.objects=results.objects.sort(likelihood) ;
                     callback(err, results);
+                }
                 else {
                     //for each object add grade_obj that reflects the user's grade for the suggestion,
                     //if the user is the disvcussion creator - grade_obj contains the discussion evaluate grade
@@ -143,6 +145,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                             });
                         }
                     ], function (err, results) {
+                        results.objects=results.objects.sort(likelihood) ;
                         callback(err, results);
                     })
                 }
@@ -569,10 +572,11 @@ var calculate_sugg_threshold = function (factor, discussion_threshold) {
 }
 
 function likelihood(a,b) {
-    var a_lh = a.threshold_for_accepting_the_suggestion+ a.agrees - a.not_agrees;
-    var b_lh = b.threshold_for_accepting_the_suggestion+ b.agrees - b.not_agrees;
 
-    return b_lh-a_lh;
+    var a_lh = (a.wanted_amount_of_tokens || a.threshold_for_accepting_the_suggestion)- a.agrees + a.not_agrees;
+    var b_lh = (b.wanted_amount_of_tokens || b.threshold_for_accepting_the_suggestion)- b.agrees + b.not_agrees;
+
+    return a_lh-b_lh;
 }
 
 
