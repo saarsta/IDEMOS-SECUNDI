@@ -3354,9 +3354,27 @@ input.button_submit_comment_no_text{
     border: 0;
 }
 #info_items .mb-inside {
-     padding: 20px;
+    padding: 20px 20px 17px 20px;
      cursor: pointer;
+    direction: rtl;
  }
+
 #info_items .mb-inside a{
     text-decoration: none;
 }
+
+#info_items .mb-inside img{
+    max-height: 130px;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+#info_items .mb-inside div{
+    overflow: hidden;
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+
+
+
