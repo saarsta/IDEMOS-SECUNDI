@@ -66,22 +66,30 @@
                     </div>
 
                     <div class="text-box cf">
-                    <div class="cycle-content">
-                    <% if (cycle.image_field) { %>
-
-                      <div class="img-box floatRight" style="overflow: hidden;">
-                                <div style="width:260px; height:190px;" class='auto-scale'>
-                                      <img src="<%=cycle.image_field && cycle.image_field.url %>" title="<%= cycle.title %>"/>
-
-                                </div>
-                                <span></span>
-                       </div>
-                    <% } %>
-
+                        <div class="cycle-content main_text" style="max-height:250px">
+                        <% if (cycle.image_field) { %>
+                          <div class="img-box floatRight" style="overflow: hidden;">
+                                    <div style="width:260px; height:190px;" class='auto-scale'>
+                                          <img src="<%=cycle.image_field && cycle.image_field.url %>" title="<%= cycle.title %>"/>
+                                    </div>
+                                    <span></span>
+                           </div>
+                        <% } %>
+                            <h3><%- cycle.discussion_title %></h3>
+                    <!--
+                            <p> <%- cycle.text_field %>   </p>
+                         </div>
+                            <p id="read_more"> <a class="read-more" href="javascript:void(0);"> קרא עוד </a> </p> </div>
+                     -->
+                            <p> <%- cycle.text_field %>   </p>
+                        </div>
+                    <a class="read_more" href="javascript:void(0);">המשך קריאה</a>
+                    </div>
+                    <div class="text-box text-full">
                         <h3><%- cycle.discussion_title %></h3>
                         <p> <%- cycle.text_field %>   </p>
-                        </div>
-                        <p id="read_more"> <a class="read-more" href="javascript:void(0);"> קרא עוד </a> </p> </div>
+                    </div>
+
 
                     <% if (cycle.id == '508026e8cb2276020000001f' && !user_logged){%>
                          <style>
@@ -726,9 +734,10 @@ var current_section=2;
                 }
             });
 
-            $('#read_more').click(function () {
-                $(".cycle-content").height("auto");
-                 $(this).hide();
+            $('.read_more').click(function () {
+
+                $(".text-box").hide();
+                $(".text-full").show();
             });
 
             $('.hide-box').on('mouseenter', ".side_menu",
@@ -1215,6 +1224,10 @@ var current_section=2;
                     (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
             );
         }
+
+        $(".main_text").dotdotdot({
+            //	configuration goes here
+        });
     });
 
 </script>
