@@ -1366,13 +1366,16 @@ $(document).ready(function () {
                 //////////////////  show pop up   /////////////////
                 discoverRange (range_txt)  ;
                 flag = false;
-                $.each(suggestions_list, function (index, suggestion) {
-                    if (        (suggestion.parts[0].start >= range.start && suggestion.parts[0].start <= range.end)
-                            ||  (suggestion.parts[0].end >= range.start && suggestion.parts[0].end <= range.end)
-                            ||  (range.start >= suggestion.parts[0].start && range.end  <= suggestion.parts[0].end )) {
-                        flag = true;
-                    }
-                })
+                if(suggestions_list){
+                    $.each(suggestions_list, function (index, suggestion) {
+                        if (        (suggestion.parts[0].start >= range.start && suggestion.parts[0].start <= range.end)
+                                ||  (suggestion.parts[0].end >= range.start && suggestion.parts[0].end <= range.end)
+                                ||  (range.start >= suggestion.parts[0].start && range.end  <= suggestion.parts[0].end )) {
+                            flag = true;
+                        }
+                    })
+                }
+
                 if(flag) {
                     popupProvider.showOkPopup({message:"הטקסט סומן כבר בהצעה לשינוי קיימת"});
                 }else if(range_txt.length >0){
