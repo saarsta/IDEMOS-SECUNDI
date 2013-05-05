@@ -786,7 +786,7 @@ $(document).ready(function () {
             };
 
             dust.render('discussion_suggestion', suggestion, function (err, out) {
-                $('#suggestions_wrapper').prepend(out);
+                $('#suggestions_wrapper').append(out);
                 image_autoscale($('#suggestions_wrapper .auto-scale img'));
 
                 // check if got here after not logged user tryed to grade suggestion
