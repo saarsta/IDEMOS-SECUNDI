@@ -7,7 +7,7 @@ var _ = require('underscore');
 var UserResource = module.exports =  mongoose_resource.MongooseResource.extend({
     init: function() {
         this._super(Model.User, null);
-        this.fields = _.extend(common.user_public_fields, {cycles : null}, {discussions: null});
+        this.fields = _.extend(common.user_public_fields, {cycles : null}, {discussions: null}, {email: null});
         this.update_fields = {
             biography: null,
             no_mail_notifications: null
@@ -26,6 +26,10 @@ var UserResource = module.exports =  mongoose_resource.MongooseResource.extend({
             'email': {
                 exact:true,
                 in:true
+            },
+            'first_name' : {
+                exact: true,
+                in: true
             }
         }
     }

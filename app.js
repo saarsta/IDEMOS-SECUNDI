@@ -156,7 +156,8 @@ app.use(function (req, res, next) {
         user: req.user,
         avatar: (req.session && req.session.avatar_url) || "/images/default_user_img.gif",
         url: req.url,
-        meta: {}
+        meta: {},
+        is_dev: app.settings.env == 'development' /*|| app.settings.env == 'staging'*/
     });
     next();
 });
@@ -182,7 +183,7 @@ app.locals({
 
 /*app.locals({
     writeHead: function(name) {
-        var isDev = app.settings.env == 'development' || app.settings.env == 'staging';
+        var isDev = false; app.settings.env == 'development' || app.settings.env == 'staging';
         function headFromSrc(src, type) {
             switch (type) {
                 case 'js':
@@ -202,7 +203,8 @@ app.locals({
                 }).join('\n');
         else {
             var final = conf.final || ( conf.min === false ? '/dist/' + type + '/' + conf.name + '.' + type : '/dist/' + type + '/' + conf.name + '.min.' + type);
-            return headFromSrc(final, type);
+//            return headFromSrc(final, type);
+            return  '<script src="deliver/public/dist/js/built.min.js" type="text/javascript"></script>';
         }
     }
 });*/
@@ -215,6 +217,7 @@ app.configure('development', function(){
     require('./admin')(app);
     app.set('send_mails', true);
 });
+
 if (IS_ADMIN) {
     require('./admin')(app);
 }
@@ -232,6 +235,8 @@ if (IS_PROCESS_CRON) {
     var cron = require('./cron');
     cron.run(app);
 }
+
+
 // ######### environment specific settings #########
 
 

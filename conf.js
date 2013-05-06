@@ -1,6 +1,6 @@
 
-
 var headConfigs = module.exports.headConfigs = {
+/*
     js_engine:{
         src: [
             '/js/engine/hash.js'
@@ -60,6 +60,57 @@ var headConfigs = module.exports.headConfigs = {
             ,'/js/site/wizard/wizard.js'
         ]
     },
+*/
+
+    js_includes:{
+        type:'js',
+        name:'includes',
+        min:false,
+        final:'/dist/js/built.js',
+        src:[
+            'deliver/public/js/jquerypp/jquery-1.8.2.min.js',
+            'deliver/public/js/jquerypp/jquery-ui-1.9.1.custom.min.js',
+            'deliver/public/js/lib/dust-full-0.3.0.js',
+            'deliver/public/js/InfoBox.js',
+            'deliver/public/js/lib/fileuploader.js',
+            'deliver/public/js/imgscale.jquery.min.js',
+            'deliver/public/js/jquerypp/jqtouch.min.js',
+            'deliver/public/js/jquerypp/jquery-fieldselection.js',
+            'deliver/public/js/jquerypp/jquery.autoellipsis-1.0.8.min.js',
+            'deliver/public/js/jquerypp/jquery.colorbox-min.js',
+            'deliver/public/js/jquerypp/jquery.cycle.all.js',
+            'deliver/public/js/jquerypp/jquery.easing.1.3.js',
+            'deliver/public/js/jquerypp/jquery.placeholder.min.js',
+            'deliver/public/js/jquerypp/jquery.tools.min.js',
+            'deliver/public/js/jquerypp/jquery.tooltip.min.js',
+            'deliver/public/js/jquerypp/jquery.validate.min.js',
+            'deliver/public/js/jquerypp/jquery.compare.js',
+            'deliver/public/js/jquerypp/jquery.range.js',
+            'deliver/public/js/jquerypp/jquery.selection.js',
+            'deliver/public/js/lib/date.format.js',
+            'deliver/public/js/select2.js',
+            /*'/plugins/ckeditor/ckeditor.js',
+            '/plugins/ckeditor/adapters/jquery.js',*/
+
+            'deliver/public/js/compiled_templates.js',
+            'deliver/public/js/common.js',
+            'deliver/public/js/db.js',
+            'deliver/public/js/fb.js',
+            'deliver/public/js/lib/search.js',
+            'deliver/public/js/timeline.js',
+            'deliver/public/js/tokensbar_model.js',
+            'deliver/public/js/listCommon.js',
+            'deliver/public/js/popupProvider.js',
+            'deliver/public/js/proxy_common.js',
+            'deliver/public/js/lib/maps.js',
+
+            '/js/jquerypp/jquery.movingboxes.js',
+            '/js/jquery.cookie.js',
+            '/js/storyjs-embed.js',
+            /*'/js/jquerypp/jquery.dotdotdot-1.5.6-packed.js'*/
+        ]
+    },
+  /*
     css_wizard:{
         type:'css',
         name:'wizard',
@@ -79,7 +130,7 @@ var headConfigs = module.exports.headConfigs = {
         name:'site',
         min:false,
         src:[
-            /*'/js/lib/jquery-site.js'
+            *//*'/js/lib/jquery-site.js'
             ,'/js/lib/jquery-ui-1.10.1.custom.min.js'
             ,'/js/lib/response.min.js'
             ,'/js/lib/file-uploader.js'
@@ -105,7 +156,7 @@ var headConfigs = module.exports.headConfigs = {
             ,'/js/site/site.js'
             ,'/js/script.js'
             ,'/js/site/new-site.js'
-            ,'/js/site/signup.js'*/
+            ,'/js/site/signup.js'*//*
             '\js\common.js',
             '\js\db.js',
             '\js\fb.js',
@@ -176,7 +227,7 @@ var headConfigs = module.exports.headConfigs = {
             '/css/widget.css'
         ]
     }
-
+*/
 };
 
 module.exports.WARNING_QUOTA_FACTOR = 0.9;

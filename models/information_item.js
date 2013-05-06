@@ -22,7 +22,7 @@ var InformationItem = module.exports = new Schema({
     image_field_preview: {type:Schema.Types.File},
     tags:{type:[String], index:true},
     users:{type:[ObjectId], ref:'User',query:common.FIND_USER_QUERY,editable:false},
-    discussions:[{type:ObjectId, ref:'Discussion', query:common.FIND_DISCUSSION_QUERY, index:true}],
+    discussions:[{type:ObjectId, ref:'Discussion', index:true}],
     cycles:{type:[ObjectId], ref:'Cycle', index:true},
     actions:{type:[ObjectId], ref:'Action'},
     is_visible:{type:Boolean, 'default':true},

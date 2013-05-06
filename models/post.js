@@ -6,7 +6,7 @@ var mongoose = require("mongoose"),
     utils = require('../utils');
 
 var Post = {
-    discussion_id:{type:Schema.ObjectId, ref:'Discussion', query:common.FIND_DISCUSSION_QUERY,index:true, required:true, onDelete:'delete'},
+    discussion_id:{type:Schema.ObjectId, ref:'Discussion', query:common.FIND_USER_QUERY,index:true, required:true, onDelete:'delete'},
     text:{type:Schema.Types.Html},
     votes_for: {type: Number, 'default': 0},
     votes_against: {type: Number, 'default': 0},
