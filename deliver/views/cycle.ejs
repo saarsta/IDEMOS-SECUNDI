@@ -600,7 +600,7 @@ var current_section=2;
             }
 
             $('.mb-inside').live("click", function(){
-                window.location.href = '/information_items/'+$(this).parent().attr('item-id');
+                window.open('/information_items/'+$(this).parent().attr('item-id'), '_target');
             });
 
 
