@@ -157,7 +157,7 @@ app.use(function (req, res, next) {
         avatar: (req.session && req.session.avatar_url) || "/images/default_user_img.gif",
         url: req.url,
         meta: {},
-        is_dev: app.settings.env == 'development' /*|| app.settings.env == 'staging'*/
+        is_dev: true /*app.settings.env == 'development' || app.settings.env == 'staging'*/
     });
     next();
 });
