@@ -2074,6 +2074,12 @@ span.remark{
     margin: 20px 0;
 }
 
+.edit_window span.focus{
+    color:#50504f;
+    font-weight:bold;
+    margin: 20px 0;
+}
+
 #comments_filter{
     float:left;
 }
