@@ -73,16 +73,16 @@
                         </div>
                     </div>
 
-                    <h3>מעגלי תנופה</h3>
+                    <h3>קמפיינים</h3>
                     <div class="settings_box">
                         <div id="cycle_general" class="settings_box_section general_settings">
-                            <span class="setting_section_title">עדכונים מכל מעגלי תנופה:</span>
+                            <span class="setting_section_title">עדכונים מכל הקמפיינים:</span>
                             <input id="cycle_new_updates" data-setting-type="get_cycles_new_updates" type="checkbox" class="checkbox general" /><label for="cycle_new_updates">עדכונים שוטפים</label>
                             <input id="cycle_system_information" data-setting-type="get_cycles_system_information" type="checkbox" class="checkbox general" /><label for="cycle_system_information">עדכונים מיוחדים (בתדירות נמוכה)</label>
                         </div>
                         <div class="sep"></div>
                         <div id="selected_cycle" data-type="cycle" class="settings_box_section">
-                            <span class="setting_section_title">התראות לגבי פעולות במעגל התנופה:</span>
+                            <span class="setting_section_title">התראות לגבי פעולות בקמפיין:</span>
                             <div id="alerts_by_cycle" class="selection">
                                 <select>
                                 </select>
@@ -252,7 +252,7 @@
     });
 
     populate(discussion_list, 'בחר דיון', discussions);
-    populate(cycle_list, 'בחר מעגל', cycles);
+    populate(cycle_list, 'בחר קמפיין', cycles);
 
     // show selected item if there is one
     if(selected_item != ""){

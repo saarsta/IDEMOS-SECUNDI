@@ -120,7 +120,8 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
     get_object: function (req, id, callback) {
         this._super(req, id, function (err, object) {
             if (object) {
-                object.total_count=   object.participants_count+object.fb_page.like_count ;
+
+                object.total_count = object.participants_count+object.fb_page.like_count ;
                 object.is_follower = false;
                 object.discussion = object.discussions[0]; //for now we have only one discussion for cycle
 

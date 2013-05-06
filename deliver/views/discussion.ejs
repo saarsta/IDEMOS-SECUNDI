@@ -190,7 +190,7 @@ var error_message = error_message || '';
 </span>
 
  <span class="popup-window"  id="old_suggestion_popup">
-    <div class="tooltip_1"><a id="jump_to_suggestion" data-id="" href="javascript:void(0);">לחץ להצבעה בהצעה לשינוי</a></div>
+    <div class="tooltip_1"><a id="jump_to_suggestion" data-id="" href="javascript:void(0);">ראה הצעה לשינוי הטקסט</a></div>
 </span>
 
     <div id='write-comment' class="write-comment" style="display: none;">
@@ -488,8 +488,13 @@ $(document).ready(function () {
             startPanel   : 1,      // start with this panel
             wrap         : true,   // if true, the panel will "wrap" (it really rewinds/fast forwards) at the ends
             buildNav     : true,   // if true, navigation links will be added
-            navFormatter : function(){ return "&#9679;"; } // function which returns the navigation text for each panel
+            navFormatter : function(){ return "&#9679;"; }, // function which returns the navigation text for each panel
+            completed       : function(e, slider, tar){
+                $('#info_items #slider li').dotdotdot({});
+            }
         });
+
+
     });
 
     $('.read_more').on('click', function () {
@@ -786,7 +791,7 @@ $(document).ready(function () {
             };
 
             dust.render('discussion_suggestion', suggestion, function (err, out) {
-                $('#suggestions_wrapper').prepend(out);
+                $('#suggestions_wrapper').append(out);
                 image_autoscale($('#suggestions_wrapper .auto-scale img'));
 
                 // check if got here after not logged user tryed to grade suggestion
@@ -1366,13 +1371,16 @@ $(document).ready(function () {
                 //////////////////  show pop up   /////////////////
                 discoverRange (range_txt)  ;
                 flag = false;
-                $.each(suggestions_list, function (index, suggestion) {
-                    if (        (suggestion.parts[0].start >= range.start && suggestion.parts[0].start <= range.end)
-                            ||  (suggestion.parts[0].end >= range.start && suggestion.parts[0].end <= range.end)
-                            ||  (range.start >= suggestion.parts[0].start && range.end  <= suggestion.parts[0].end )) {
-                        flag = true;
-                    }
-                })
+                if(suggestions_list){
+                    $.each(suggestions_list, function (index, suggestion) {
+                        if (        (suggestion.parts[0].start >= range.start && suggestion.parts[0].start <= range.end)
+                                ||  (suggestion.parts[0].end >= range.start && suggestion.parts[0].end <= range.end)
+                                ||  (range.start >= suggestion.parts[0].start && range.end  <= suggestion.parts[0].end )) {
+                            flag = true;
+                        }
+                    })
+                }
+
                 if(flag) {
                     popupProvider.showOkPopup({message:"הטקסט סומן כבר בהצעה לשינוי קיימת"});
                 }else if(range_txt.length >0){
@@ -1448,7 +1456,7 @@ $(document).ready(function () {
         var container = $(".arrow_box_container");
 
         if (container.has(e.target).length === 0) {
-            container.hide();
+         //   container.hide();
         }
     });
 
@@ -1502,16 +1510,18 @@ $(document).ready(function () {
         }
         var suggestion_grade_val = $suggestion_wrapper.data('my_grade');
         var suggest_grade_id = $suggestion_wrapper.data('my_grade_id');
-        var slider_box = $(this).parent().parent().parent().find(".arrow_box_container");
-
+        var slider_box = $(this).parents(".suggestion_wrapper").find(".arrow_box_container");
+         /*
         slider_box.removeClass('against').removeClass('pro');
         if(grade_against){
             slider_box.addClass('against');
+        }else if ( slider_box.offset().left+ slider_box.width() >  $('body').innerWidth())  {
+            slider_box.addClass('pro_narrow');
         }else{
             slider_box.addClass('pro');
         }
-
-        slider_box.show();
+           */
+        slider_box.slideDown();
         slider_box.find(".slider").slider({
             disabled: is_creator,
             value: my_discussion_grade, // dmy_discussion_grades instead of my_suggestion grade to prevent deadlock in slider
@@ -1578,6 +1588,7 @@ $(document).ready(function () {
                             depress_event = false;
                             console.log(err);
                         }
+                        slider_box.slideUp();
                     });
                 }
             }

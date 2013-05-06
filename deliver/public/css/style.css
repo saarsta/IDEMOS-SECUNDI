@@ -6063,9 +6063,23 @@ div.action_list::-webkit-scrollbar-button {
 }
 
 .cycle-content {
-    height: 250px;
+ /*   height: 250px;
     overflow: hidden;
+*/
 }
+.add-offer .text-box a.read_more{
+    text-decoration: underline;
+    float: right;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-family: arial;
+    font-size: 13px;
+ }
+
+.add-offer .text-box.text-full{
+    display: none;
+}
+
 
 #search_form {
     position: relative;

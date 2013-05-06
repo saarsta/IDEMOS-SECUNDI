@@ -64,6 +64,9 @@ var ten_seconds_cron = exports.ten_seconds_cron = {
                     og_get('http://graph.facebook.com/' + page.url, function (error, og_data) {
 
                         if (og_data.likes !== page.like_count) {
+                            console.log("og_data:");
+                            console.log(og_data);
+                            console.error(og_data.error);
                             console.log("page "+page.url +" "+ og_data.likes +" likes - UPDATED") ;
                             var now = Date.now();
                             models.Cycle.update({_id: cycle._id}, {

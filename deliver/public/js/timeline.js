@@ -34,7 +34,7 @@ var timeline = {
 					name: 'יצירת דיון'
 				},
 				cycle_creation: {
-					name: 'יצירת מעגל תנופה',
+					name: 'יצירת קמפיין',
 					text: function (item) { return ctitle; },
 					link: function (item) { return '/cycles/' + cid; }
 				},
