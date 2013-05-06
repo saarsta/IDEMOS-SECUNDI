@@ -42,7 +42,7 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
                     if(!req.session.election_game || reset=='true')
                     {
                         req.session.election_game={};
-                        callback(err, {});
+                      //  callback(err, {});
                     }
 
                     if(candidate_id){
@@ -171,7 +171,7 @@ var QuoteGameQuoteResource = module.exports = jest.MongooseResource.extend(
                 if(propertyName=='game_code') continue;
                 quote_counter++;
             }
-            if(user_id){
+            if(user_id && req.session.election_game && req.session.election_game.game_code){
                 models.User.update({_id: user_id,"quote_game.played": false}, {
                     $set:       { "quote_game.played": true,"quote_game.quotes_count":quote_counter} ,
                     $addToSet:  {"quote_game.games" : req.session.election_game.game_code }
