@@ -1371,6 +1371,17 @@ var db_functions = {
         });
     },
 
+    getApprovedActionsByCycle:function (cycle_id, limit, callback) {
+        db_functions.loggedInAjax({
+            url:'/api/actions/?cycle_id.cycle=' + cycle_id + '&is_approved=true' + (limit ? '&limit=' + limit : ''),
+            type:"GET",
+            async:true,
+            success:function (data, err) {
+                callback(data);
+            }
+        });
+    },
+
     joinOrLeaveAction:function (action_id, callback) {
         db_functions.loggedInAjax({
             url:'/api/join/',
