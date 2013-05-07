@@ -56,8 +56,9 @@ var Cycle = module.exports = new Schema({
       // {user_id: {type:ObjectId, ref:'User', query:common.FIND_USER_QUERY}, text: {type:Schema.Types.Text}}
       new Schema({user_id:{type:ObjectId, ref:'User', query:common.FIND_USER_QUERY}, text: {type:Schema.Types.Text}})
     ],
-    social_popup_title: {type: String},
+ /*   social_popup_title: {type: String},
     social_popup_text: {type: String},
+    */
     social_popup:  {
         default_title: {type: String},
         default_text: {type: String},

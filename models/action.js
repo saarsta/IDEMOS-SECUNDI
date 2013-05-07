@@ -73,9 +73,11 @@ var Action = module.exports = new Schema({
     grade_sum:                                        {type: Number, 'default': 0, editable: false},
     threshold_for_accepting_change_suggestions:       {type: Number, min: 0, max: 501, 'default': 2},
     admin_threshold_for_accepting_change_suggestions: {type: Number, max: 500, 'default': 0},
-    social_popup_title: {type: String},
-    social_popup_text: {type: String},
-    is_hidden:                                        {type: Boolean, 'default': true}
+    social_popup:  {
+            default_title: {type: String},
+            default_text: {type: String}},
+
+        is_hidden:                                        {type: Boolean, 'default': true}
 },
     {strict: true}
 );

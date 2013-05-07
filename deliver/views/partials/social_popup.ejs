@@ -1,15 +1,10 @@
-<%
-    var object_social_title = social_popup_title || "";
-    var object_social_text = social_popup_text || "";
-%>
-
 <div id="box-share">
     <div class="sb-container">
         <div class="sb-top">
             <div class="sb-title" id="social-popup-title">
 
-                <% if(object_social_title) { %>
-                    <%=  object_social_title %>
+                <% if(social_popup && social_popup.default_title) { %>
+                    <%=  social_popup.default_title %>
                 <%  } else { %>
    <% if(type == 'approved_action'){ %>
                 מצוין. שמחים שהצטרפת לפעולה!
@@ -24,8 +19,8 @@
             </div>
             <a id="fb_ajax_conncect" class="facebook_join" href="javascript:void(0)"></a>
             <div class="sb-text" id="social-popup-text">
-            <% if(object_social_text) { %>
-                <%=  object_social_text %>
+                <% if(social_popup && social_popup.default_text) { %>
+                <%=  social_popup.default_text %>
             <%  } else { %>
                 <% if(type == 'approved_action'){ %>
                 ככל שיהיו יותר משתתפים לפעולה כך הסיכוי שלה להצליח גבוה יותר, לכן כדאי להזמין חברים להצטרף לפעולה ולהמשיך להעביר אותה הלאה.

@@ -18,7 +18,6 @@ module.exports = function(req,res)
             url:req.url,
             tab:'cycles',
             type: 'cycle',
-            social_popup_title: "",
-            social_popup_text: ""
+            social_popup: null
         });
 };
