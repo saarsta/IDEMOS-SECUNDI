@@ -1988,7 +1988,8 @@ span.remark{
     border-bottom:1px solid #e0e0e0;
 }
 
-.suggestion_comments_holder .add_comment input{
+.suggestion_comments_holder .add_comment textarea{
+    height: 40px;
     width: 475px;
     padding:0 5px;
     color:#a3a3a3;

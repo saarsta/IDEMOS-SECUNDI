@@ -253,7 +253,28 @@ var sendNotificationToUser = function (notification) {
      */
 
     var email;
-    var  uru_group = ['saarsta@gmail.com', 'konfortydor@gmail.com', 'aharon@uru.org.il', 'poaharon@gmail.com', 'aharon.porath@gmail.com', 'liorur@gmail.com', 'maya@uru.org.il', 'urip@uru.org.il', 'tahel@uru.org.il', 'yoni@uru.org.il', 'noa@uru.org.il'];
+    var  uru_group = [
+        'saarsta@gmail.com',
+        'konfortydor@gmail.com',
+        'aharon@uru.org.il',
+        'poaharon@gmail.com',
+        'aharon.porath@gmail.com',
+        'liorur@gmail.com',
+        'maya@uru.org.il',
+        'urip@uru.org.il',
+        'tahel@uru.org.il',
+        'yoni@uru.org.il',
+        'noa@uru.org.il',
+        'uri@uru.org.il',
+        'noa@uru.org.il',
+        'yoni@uru.org.il',
+        'tahel@uru.org.il',
+        'maya@uru.org.il',
+        'Adi@uru.org.il',
+        'aya@uru.org.il',
+        'shay@uru.org.il',
+        'liat@uru.org.il'
+    ];
 
     if (SEND_MAIL_NOTIFICATION)
         async.waterfall([
