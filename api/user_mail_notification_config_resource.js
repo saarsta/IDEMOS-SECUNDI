@@ -134,6 +134,19 @@ var UserMailNotificationConfig = module.exports = jest.MongooseResource.extend({
                             });
                             path =  {"mail_notification_configuration.get_alert_of_approved_suggestions_for_all_discussions" : mail_settings.mail_notification_configuration.get_alert_of_approved_suggestions_for_all_discussions === 'true', discussions: user.discussions}
                         }
+
+                        if(typeof mail_settings.mail_notification_configuration.get_alert_of_new_action_for_all_cycles != "undefined"){
+                            _.each(user.cycles, function(cycle){
+                                cycle._doc.get_alert_of_new_action = mail_settings.mail_notification_configuration.get_alert_of_new_action_for_all_cycles === 'true';
+                            });
+                            path =  {"mail_notification_configuration.get_alert_of_new_action_for_all_cycles" : mail_settings.mail_notification_configuration.get_alert_of_new_action_for_all_cycles === 'true', cycles: user.cycles}
+                        }
+                        if(typeof mail_settings.mail_notification_configuration.get_alert_of_approved_action_for_all_cycles != "undefined"){
+                            _.each(user.cycles, function(cycle){
+                                cycle._doc.get_alert_of_approved_action = mail_settings.mail_notification_configuration.get_alert_of_approved_action_for_all_cycles === 'true';
+                            });
+                            path =  {"mail_notification_configuration.get_alert_of_approved_action_for_all_cycles" : mail_settings.mail_notification_configuration.get_alert_of_approved_action_for_all_cycles === 'true', cycles: user.cycles}
+                        }
                     }
                     // update user
                     models.User.update({_id:object.id}, {$set: path}, function (err) {

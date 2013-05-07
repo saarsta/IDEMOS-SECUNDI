@@ -162,6 +162,9 @@ var User = module.exports = new Schema({
         // general cycles notifications
         get_cycles_new_updates: {type: Boolean, 'default': true},// update objects
         get_cycles_system_information: {type: Boolean, 'default': true},
+        get_alert_of_new_action_for_all_cycles: {type: Boolean, 'default': true},
+        get_alert_of_approved_action_for_all_cycles: {type: Boolean, 'default': true},
+
 
         // actions
         get_alert_of_new_posts_in_actions: {type: Boolean, 'default': true}

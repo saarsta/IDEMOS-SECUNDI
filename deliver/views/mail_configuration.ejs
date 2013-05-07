@@ -60,7 +60,9 @@
                         </div>
                         <div id="selected_discussion"  data-type="discussion" class="settings_box_section">
 
-                            <span class="setting_section_title">התראות על אירועים חדשים בדיונים ספציפיים בהשתתפותך:</span>
+                            <span class="setting_section_title">התראות על אירועים חדשים בדיונים ספציפיים:
+
+</span>
                             <div id="alerts_by_discussion" class="selection">
                                  <select>
                                  </select>
@@ -87,8 +89,13 @@
                             <input id="cycle_system_information" data-setting-type="get_cycles_system_information" type="checkbox" class="checkbox general" /><label for="cycle_system_information">עדכונים מיוחדים (בתדירות נמוכה)</label>
                         </div>
                         <div class="sep"></div>
+                        <div id="all_cycles" data-type="cycle" class="settings_box_section general_settings">
+                            <span class="setting_section_title">התראות לגבי פעולות בקמפיינים:</span>
+                            <input id="cycle_new_action_for_all_cycles" data-setting-type="get_alert_of_new_action_for_all_cycles" type="checkbox" class="checkbox general" /><label for="cycle_new_action" >פעולה חדשה</label>
+                            <input id="cycle_approved_action_for_all_cycles" data-setting-type="get_alert_of_approved_action_for_all_cycles" type="checkbox" class="checkbox general" /><label for="cycle_approved_action" >הצעה לפעולה אושרה</label>
+                        </div>
                         <div id="selected_cycle" data-type="cycle" class="settings_box_section">
-                            <span class="setting_section_title">התראות לגבי פעולות בקמפיין:</span>
+                            <span class="setting_section_title">התראות לגבי פעולות בקמפיין ספציפי:</span>
                             <div id="alerts_by_cycle" class="selection">
                                 <select>
                                 </select>
@@ -272,7 +279,7 @@
             var setting_type = $(this).attr('data-setting-type');
 
             // undefined means that it wasn't set yet, so it's true by default
-            var is_checked =  is_cycle_in_hash && ((typeof cycles_hash[cycle_id][setting_type] === "undefined")&& (cycles_hash[cycle_id][setting_type] == true));
+            var is_checked =  is_cycle_in_hash && ((typeof cycles_hash[cycle_id][setting_type] === "undefined") || (cycles_hash[cycle_id][setting_type] == true));
             $(input_arr[index]).prop('checked', is_checked);
         })
     });
