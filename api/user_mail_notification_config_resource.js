@@ -42,6 +42,28 @@ var UserMailNotificationConfig = module.exports = jest.MongooseResource.extend({
                 });
             }else{
 
+                /*if (req.body.all_discussions){
+                    if(typeof mail_settings.all_discussions.get_alert_of_comments != "undefined") {
+                        _.each(user.discussions, function(discussion) {
+                            exist_discussion._doc.get_alert_of_comments = mail_settings.discussions[0].get_alert_of_comments === 'true';
+                        })
+                    }
+                    if(typeof mail_settings.all_discussions.get_alert_of_suggestions != "undefined") {
+                        _.each(user.discussions, function(discussion) {
+                            exist_discussion._doc.get_alert_of_suggestions = mail_settings.discussions[0].get_alert_of_suggestions === 'true';
+                        })
+                    }
+                    if(typeof mail_settings.all_discussions.get_alert_of_approved_suggestions != "undefined") {
+                        _.each(user.discussions, function(discussion) {
+                            exist_discussion._doc.get_alert_of_approved_suggestions = mail_settings.discussions[0].get_alert_of_approved_suggestions === 'true';
+                        })
+                    }
+
+                    // update user
+                    models.User.update({_id:object.id}, {$set: {discussions: user.discussions}}, function (err) {
+                        callback(err, {});
+                    });
+                }*/
                 if(mail_settings.mail_notification_configuration && mail_settings.mail_notification_configuration.new_discussion){
                     var exist_new_discussion = _.find(user.mail_notification_configuration.new_discussion, function(new_discussion){ return (new_discussion.subject_id + "" == mail_settings.mail_notification_configuration.new_discussion[0].subject_id + "")});
 
@@ -86,16 +108,36 @@ var UserMailNotificationConfig = module.exports = jest.MongooseResource.extend({
                             path =  {"mail_notification_configuration.get_uru_updates" : mail_settings.mail_notification_configuration.get_uru_updates === 'true'}
                         if(typeof mail_settings.mail_notification_configuration.get_weekly_mails != "undefined")
                             path =  {"mail_notification_configuration.get_weekly_mails" : mail_settings.mail_notification_configuration.get_weekly_mails === 'true'}
-                        if(typeof mail_settings.mail_notification_configuration.get_cycles_new_updates != "undefined")
+                       if(typeof mail_settings.mail_notification_configuration.get_cycles_new_updates != "undefined")
                             path =  {"mail_notification_configuration.get_cycles_new_updates" : mail_settings.mail_notification_configuration.get_cycles_new_updates === 'true'}
                         if(typeof mail_settings.mail_notification_configuration.get_cycles_system_information != "undefined")
                             path =  {"mail_notification_configuration.get_cycles_system_information" : mail_settings.mail_notification_configuration.get_cycles_system_information === 'true'}
                         if(typeof mail_settings.mail_notification_configuration.get_alert_of_new_posts_in_actions != "undefined")
                             path =  {"mail_notification_configuration.get_alert_of_new_posts_in_actions" : mail_settings.mail_notification_configuration.get_alert_of_new_posts_in_actions === 'true'}
+
+
+                        if(typeof mail_settings.mail_notification_configuration.get_alert_of_comments_for_all_discussions != "undefined"){
+                            _.each(user.discussions, function(discussion){
+                                discussion._doc.get_alert_of_comments = mail_settings.mail_notification_configuration.get_alert_of_comments_for_all_discussions === 'true';
+                            });
+                            path =  {"mail_notification_configuration.get_alert_of_comments_for_all_discussions" : mail_settings.mail_notification_configuration.get_alert_of_comments_for_all_discussions === 'true', discussions: user.discussions}
+                        }
+                        if(typeof mail_settings.mail_notification_configuration.get_alert_of_suggestions_for_all_discussions != "undefined"){
+                            _.each(user.discussions, function(discussion){
+                                discussion._doc.get_alert_of_suggestions = mail_settings.mail_notification_configuration.get_alert_of_suggestions_for_all_discussions === 'true';
+                            });
+                            path =  {"mail_notification_configuration.get_alert_of_suggestions_for_all_discussions" : mail_settings.mail_notification_configuration.get_alert_of_suggestions_for_all_discussions === 'true', discussions: user.discussions}
+                        }
+                        if(typeof mail_settings.mail_notification_configuration.get_alert_of_approved_suggestions_for_all_discussions != "undefined"){
+                            _.each(user.discussions, function(discussion){
+                                discussion._doc.get_alert_of_approved_suggestions = mail_settings.mail_notification_configuration.get_alert_of_approved_suggestions_for_all_discussions === 'true';
+                            });
+                            path =  {"mail_notification_configuration.get_alert_of_approved_suggestions_for_all_discussions" : mail_settings.mail_notification_configuration.get_alert_of_approved_suggestions_for_all_discussions === 'true', discussions: user.discussions}
+                        }
                     }
                     // update user
                     models.User.update({_id:object.id}, {$set: path}, function (err) {
-                        callback(err, {});
+                        callback(err, {discussions: user.discussions});
                     });
                 }
             }

@@ -154,6 +154,11 @@ var User = module.exports = new Schema({
            }
         )],
 
+        //general discussions
+        get_alert_of_comments_for_all_discussions: {type: Boolean, 'default': true},
+        get_alert_of_suggestions_for_all_discussions: {type: Boolean, 'default': true},
+        get_alert_of_approved_suggestions_for_all_discussions: {type: Boolean, 'default': true},
+
         // general cycles notifications
         get_cycles_new_updates: {type: Boolean, 'default': true},// update objects
         get_cycles_system_information: {type: Boolean, 'default': true},

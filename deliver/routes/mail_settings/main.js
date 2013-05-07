@@ -64,10 +64,16 @@ var getSettingsParams = module.exports.getSettingsParams = function(req,user,cal
     ], function(err, args){
         var user_obj = args[0];
         var discussion_list = args[1];
+        var discussion_list_of_discussions_in_user_discussions = [];
         var cycle_list;
         var user_discussions_hash = {};
         var user_cycles_hash = {};
 
+        _.each(discussion_list, function(discussion){
+            if(_.any(user_obj.discussions, function(user_discussion){ return user_discussion.discussion_id  + "" ===  discussion.id})){
+                discussion_list_of_discussions_in_user_discussions.push(discussion);
+            }
+        })
         _.each(user_obj.discussions, function (discussion) {
             user_discussions_hash[discussion.discussion_id + ""] = discussion;
         });
@@ -82,6 +88,6 @@ var getSettingsParams = module.exports.getSettingsParams = function(req,user,cal
         });
 
         user_obj = _.extend(user_obj, user);
-        callback(err, user_obj, discussion_list, cycle_list, user_discussions_hash, user_cycles_hash);
+        callback(err, user_obj, discussion_list_of_discussions_in_user_discussions, cycle_list, user_discussions_hash, user_cycles_hash);
     })
 }

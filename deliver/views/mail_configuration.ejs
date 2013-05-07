@@ -52,9 +52,15 @@
                             <input type="checkbox" class="checkbox" /><label class="title">קבל התראה על כל דיון יומי חדש</label>
                         </div>-->
                         <div class="sep"></div>
+                        <div id="all_discussions"  data-type="discussion" class="settings_box_section general_settings">
+                            <span class="setting_section_title">התראות על אירועים חדשים בדיונים בהשתתפותך:</span>
+                            <input id="all_discussions_comment" data-refresh-discussions="true" data-setting-type="get_alert_of_comments_for_all_discussions" type="checkbox" class="checkbox general" /><label for="discussion_comment">תגובות</label>
+                            <input id="all_discussions_change_suggestion" data-refresh-discussions="true" data-setting-type="get_alert_of_suggestions_for_all_discussions" type="checkbox" class="checkbox general" /><label for="discussion_change_suggestion">הצעות לשינוי</label>
+                            <input id="all_discussion_approved_suggestion" data-refresh-discussions="true" data-setting-type="get_alert_of_approved_suggestions_for_all_discussions" type="checkbox" class="checkbox general" /><label for="discussion_approved_suggestion">שינויים למסמך</label>
+                        </div>
                         <div id="selected_discussion"  data-type="discussion" class="settings_box_section">
 
-                            <span class="setting_section_title">התראה על אירועים חדשים בדיונים בהשתתפותך:</span>
+                            <span class="setting_section_title">התראות על אירועים חדשים בדיונים ספציפיים בהשתתפותך:</span>
                             <div id="alerts_by_discussion" class="selection">
                                  <select>
                                  </select>
@@ -195,6 +201,26 @@
             }
         })
     };
+
+    function notifSuccess(notif){
+        notif.find('.spinner').hide();
+        notif.text("עודכן");
+        notif.css('color','green');
+        notif.animate({color: '#fff'}, 2000,function() {
+            notif.hide();
+            notif.find('.spinner').show();
+        });
+    }
+
+    function notifFail(notif){
+        notif.find('.spinner').hide();
+        notif.text("עדכון נכשל");
+        notif.css('color','green');
+        notif.animate({color: '#fff'}, 2000,function() {
+            notif.hide();
+            notif.find('.spinner').show();
+        });
+    }
 
     // set new_discussion settings
     if(user.mail_notification_configuration && user.mail_notification_configuration.new_discussion)
@@ -403,7 +429,7 @@
 //        var setting_type = $(this).attr('id');
         var setting_type = $(this).attr('data-setting-type');
         var is_checked = $(this).is(':checked');
-
+        var refresh_discussion_hash_list = $(this).attr('data-refresh-discussions') === "true";
         // flip the get_mail setting causes it dont_get_mail actually
         if(setting_type === 'get_mails'){
             is_checked = !is_checked;
@@ -415,31 +441,18 @@
         db_functions.updateMailNotification(user_id, new_settings, function(err, result){
             console.log(err || result);
             if(!err){
+                if (refresh_discussion_hash_list){
+                    // set discussions settings again
+                    $.each(result.discussions, function (index, discussion) {
+                        discussions_hash[discussion.discussion_id + ""] = discussion;
+                    });
+                }
                 notifSuccess(notif);
+
             } else{
                 notifFail(notif);
             }
         })
-
-        function notifSuccess(notif){
-            notif.find('.spinner').hide();
-            notif.text("עודכן");
-            notif.css('color','green');
-            notif.animate({color: '#fff'}, 2000,function() {
-                notif.hide();
-                notif.find('.spinner').show();
-            });
-        }
-
-        function notifFail(notif){
-            notif.find('.spinner').hide();
-            notif.text("עדכון נכשל");
-            notif.css('color','green');
-            notif.animate({color: '#fff'}, 2000,function() {
-                notif.hide();
-                notif.find('.spinner').show();
-            });
-        }
     });
 
 </script>
