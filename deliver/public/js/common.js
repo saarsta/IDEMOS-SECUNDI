@@ -110,6 +110,11 @@ dust.filters['comment'] = function(text) {
     return text;
 };
 
+dust.filters['link'] = function replaceURLWithHTMLLinks(text) {
+    var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+    return text.replace(exp,"<a href='$1'>$1</a>");
+}
+
 dust.renderArray = function(template,arr,callback,endCallback)
 {
     var out_arr = [];
