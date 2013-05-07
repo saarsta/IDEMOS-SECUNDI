@@ -17,8 +17,7 @@ module.exports = function(req,res) {
                     url: req.url,
                     tab: 'actions',
                     type: 'approved_action',
-                    social_popup_title: "",
-                    social_popup_text: ""
+                    social_popup: null
                 });
         }
     });

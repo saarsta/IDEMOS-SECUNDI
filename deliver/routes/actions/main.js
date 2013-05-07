@@ -39,8 +39,7 @@ module.exports = function (req, res) {
             what_users_bring: 1,
             going_users: 1,
             cycle_id: 1,
-            social_popup_title: 1,
-            social_popup_text: 1
+            social_popup: 1
         })
         .populate('action_resources.resource')
         .populate('category', { _id: 1, name: 1 })
@@ -110,8 +109,8 @@ module.exports = function (req, res) {
                     tab: 'actions',
                     type: type,
                     proxy: proxyJson,
-                    social_popup_title: action.social_popup_title,
-                    social_popup_text: action.social_popup_text,
+                    social_popup: action.social_popup,
+
                     meta: {
                         type: req.app.settings.facebook_app_name + ':activity',
                         id: action.id,
