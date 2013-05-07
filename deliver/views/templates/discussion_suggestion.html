@@ -46,11 +46,9 @@
                 <h3 class="title">נימוק:</h3>
                     <span class="explanation">{explanation}</span>
                 <div class="edit_window">
-                    <div class="text_top"></div>
-                    <p>{context_before}</p>
-                    <p class="focus">{alternative_part}</p>
-                    <p>{context_after}</p>
-                    <div class="text_bottom"></div>
+                  <!--  <div class="text_top"></div>-->
+                    <p>{context_before}<span class="focus">{alternative_part}</span>{context_after}</p>
+                    <!--<div class="text_bottom"></div>-->
                 </div>
             </div>
         </div>
@@ -95,7 +93,7 @@
     </div>
     <div class="suggestion_comments_holder">
         <div class="add_comment" data-can-add="true">
-            <input type="text" placeholder="כתוב תגובה..." />
+            <textarea type="text" placeholder="כתוב תגובה..." />
         </div>
     </div>
     <div class="arrow_box_container">

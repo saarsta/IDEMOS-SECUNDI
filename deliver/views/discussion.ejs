@@ -939,6 +939,8 @@ $(document).ready(function () {
         if(e.keyCode == 13)
         {
             var text = $(this).val();
+            if (text.trim() == '') return false;
+
             var suggestion_id = $(this).parents('.suggestion_wrapper').data('id');
             var add_comment = $(this).parent('.add_comment');
             var can_continue = $(this).parent().data('can-add');
