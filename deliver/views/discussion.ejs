@@ -341,7 +341,7 @@ $(document).ready(function () {
     var editor;
 
     // toggle edit class to open/close contxt popup window or edit suggestion button
-    $('#suggestions_wrapper').on('mouseenter', '.text.change_proposal', function(){
+    $('#suggestions_wrapper').on('mouseenter', '.text.change_proposal', function(e){
         var edit_window = $(this).find('.edit_window');
         var window_height = edit_window.height();
         var window_padding = parseInt(edit_window.css("padding-top"));
@@ -351,9 +351,32 @@ $(document).ready(function () {
         $(this).parents('.suggestion_wrapper').toggleClass('show_edit_button');
 
         //set window top
-        edit_window.css('top', 0 - window_height - (window_padding * 2 + window_border * 2));
+//        edit_window.css('top', 0 - window_height - (window_padding * 2 + window_border * 2));
+
     }).on('mouseleave', '.text.change_proposal', function(){
         $(this).parents('.suggestion_wrapper').toggleClass('edit');
+    });
+
+    $('#suggestions_wrapper').on('mousemove', '.change_proposal', function(e){
+         var edit_window = $(this).find('.edit_window');
+         var change_proposal =  edit_window.parents('.change_proposal');
+         var window_height = edit_window.height();
+         var window_padding = parseInt(edit_window.css("padding-top"));
+         var window_border = parseInt(edit_window.css("border-top-width"));
+
+        var distance_from_top = $(change_proposal).offset().top;
+
+        console.log('yyyyyyyyyyy');
+        console.log(e.pageY);
+        console.log('distance_from_top');
+        console.log(distance_from_top);
+        console.log('window_height - (window_padding * 2 + window_border * 2)');
+        console.log(window_height - (window_padding * 2 + window_border * 2));
+
+
+        console.log(e.pageY);
+        edit_window.css('top', e.pageY - distance_from_top - window_height - (window_padding * 2 + window_border * 2));
+
     });
 
     // when clicking the edit_comment popup show go to creatק suggestion window
