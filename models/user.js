@@ -39,7 +39,7 @@ var User = module.exports = new Schema({
     //followers - in the redesign it is the same as discussion.users
     discussions:[
         new Schema({
-            discussion_id:{type:ObjectId, ref:'Discussion'},
+            discussion_id:{type:ObjectId, ref:'Discussion', limit: 1000},
             join_date: {type:Date, 'default':Date.now},
             get_alert: {type: Boolean, 'default': true},
             time_of_alert: {type:String, "enum":['now', 'today', 'this_week'], 'default': 'now'},
