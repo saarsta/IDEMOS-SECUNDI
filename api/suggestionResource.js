@@ -418,8 +418,11 @@ module.exports.approveSuggestion = function (id, callback) {
 
 
                     var str = vision.substr(0, Number(parts[0].start)) + parts[0].text + vision.substr(Number(parts[0].end));
+                    var replaced_text = vision.substr(Number(parts[0].start), Number(parts[0].end));
+                    var new_text = parts[0].text;
 
                     discussion_object.vision_text_history.push(discussion_object.text_field);
+                    discussion_object.replaced_text_history.push({old_text: replaced_text, new_text: new_text});
                     discussion_object.text_field = str;
 
                     //suggestion grade is the new discussion grade
