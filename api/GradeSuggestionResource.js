@@ -536,7 +536,21 @@ var calculateSuggestionGrade = GradeSuggestionResource.calculateSuggestionGrade 
 
                                 function (sugg_obj, cbk1) {
                                     var num_of_words_to_calc_sugg_threshold;
-                                    num_of_words_to_calc_sugg_threshold = sugg_obj.getCharCount();
+
+                                    // this doesn't work so i i have copied the function
+//                                    num_of_words_to_calc_sugg_threshold = sugg_obj.getCharCount();
+
+                                    var sug_char_count = _.reduce(sugg_obj.parts,function(sum,part) {
+                                        if(part.text == null)
+                                            part.text = "";
+                                        return sum + part.text.trim().length;
+                                    },0);
+                                    var disc_marked_text_char_count = _.reduce(this.parts,function(sum,part) {
+                                        return sum + (part.end - part.start);
+                                    },0);
+
+                                    num_of_words_to_calc_sugg_threshold =  Math.max(sug_char_count, disc_marked_text_char_count);
+
                                     var sugg_thresh = calculate_sugg_threshold(num_of_words_to_calc_sugg_threshold, discussion_thresh);
 
                                     models.Suggestion.update({_id:suggestion_id}, {$set:{threshold_for_accepting_the_suggestion:sugg_thresh}}, cbk1);
