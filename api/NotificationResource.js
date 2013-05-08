@@ -258,9 +258,12 @@ var iterator = function (users_hash, discussions_hash, posts_hash, action_posts_
                         notification.title = discussion.title;
                         notification.text_preview = discussion.text_field_preview;
 
-                        //SAAR: is this still used?
+                        /*//SAAR: is this still used?
                         notification.old_text= discussion.vision_text_history == undefined?'': discussion.vision_text_history[discussion.vision_text_history.length - 1];
-                        notification.new_text= discussion.text_field;
+                        notification.new_text= discussion.text_field;*/
+
+                        notification.old_text = discussion.replaced_text_history == undefined?'': discussion.replaced_text_history[discussion.replaced_text_history.length - 1].old_text;
+                        notification.new_text = discussion.replaced_text_history == undefined?'': discussion.replaced_text_history[discussion.replaced_text_history.length - 1].new_text;
                         notification.mail_settings_link = "/mail_settings/discussion/" + discussion.id;
                     }
                     itr_cbk();
@@ -278,9 +281,12 @@ var iterator = function (users_hash, discussions_hash, posts_hash, action_posts_
                         notification.title = discussion.title;
                         notification.text_preview = discussion.text_field_preview;
 
-                        //SAAR: is this still used?
+                       /* //SAAR: is this still used?
                         notification.old_text= discussion.vision_text_history==undefined?'': discussion.vision_text_history[discussion.vision_text_history.length - 1];
-                        notification.new_text= discussion.text_field;
+                        notification.new_text= discussion.text_field;*/
+
+                        notification.old_text = discussion.replaced_text_history == undefined?'': discussion.replaced_text_history[discussion.replaced_text_history.length - 1].old_text;
+                        notification.new_text = discussion.replaced_text_history == undefined?'': discussion.replaced_text_history[discussion.replaced_text_history.length - 1].new_text;
                         notification.mail_settings_link = "/mail_settings/discussion/" + discussion.id;
                     }
                     itr_cbk();
