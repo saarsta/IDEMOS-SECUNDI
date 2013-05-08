@@ -12,7 +12,7 @@ var tag_suggestions =  {
 var InformationItem = module.exports = new Schema({
     title: {type: String, required: true},
     tooltip:String,
-    subject_id:{type:[ObjectId], ref:'Subject',required:true},
+    subject_id:[{type:ObjectId, ref:'Subject',required:true}],
     category:{type:String, "enum":['test', 'statistics', 'infographic', 'graph'], required:true},
     text_field:{type:Schema.Types.Text, required:true},
     text_field_preview:{type:Schema.Types.Html},
@@ -20,7 +20,7 @@ var InformationItem = module.exports = new Schema({
     image_field_preview: {type:Schema.Types.File},
     tags:{type:[String], index:true},
     users:{type:[ObjectId], ref:'User',query:common.FIND_USER_QUERY,editable:false},
-    discussions:{type:[ObjectId],  limit: 1000, ref:'Discussion', index:true},
+    discussions:[{type:ObjectId,  limit: 1000, ref:'Discussion', index:true}],
     cycles:{type:[ObjectId], ref:'Cycle', index:true},
     actions:{type:[ObjectId], ref:'Action'},
     is_visible:{type:Boolean, 'default':true},
