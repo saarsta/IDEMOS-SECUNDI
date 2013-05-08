@@ -1069,6 +1069,14 @@ $(document).ready(function () {
 
     //set pagination
     function setPagination(){
+
+        // in case there is only one page hide pagiation
+        if (num_of_pages <= 1){
+            $('.pagination').empty();
+            $('.pagination').append('<span class="title">עמודים (' + num_of_pages + '):</span>');
+            return
+        }
+
         var new_span;
         var pages = Math.min(num_of_pages_in_section, num_of_pages);
         $('.pagination').append('' +
