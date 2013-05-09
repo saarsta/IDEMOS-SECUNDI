@@ -96,12 +96,12 @@ module.exports = function (app) {
         filters: ['discussion_id', 'creator_id']
     });
 
-     /*admin.registerMongooseModel('PostSuggestion', Models.PostSuggestion, null, {
+     admin.registerMongooseModel('PostSuggestion', Models.PostSuggestion, null, {
          list: ['text', 'discussion_id.title'],
          list_populate: ['discussion_id'],
          order_by: ['-creation_date'],
          filters: ['discussion_id', 'creator_id']
-        });*/
+        });
 
     admin.registerMongooseModel('PressItem', mongoose.model('PressItem'), null, {
         list: ['title'],
