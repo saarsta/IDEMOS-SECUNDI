@@ -85,8 +85,9 @@ dust.filters['new_post'] = function(text) {
     var isHtml = text.indexOf('<p') == 0;
     text = dust.filters['tags'](text);
     text = text.replace(/\[(?:quote|ציטוט)=(?:"|&quot;)(.*?)(?:"|&quot;)\s*\]\n?((?:.|\n)*?)\n?\[\/(?:quote|ציטוט)\]\n?/g,
-        '<div class="quote" >' +
-            ' $1 כתב:' +
+        '<div class="quote" ><a class="ref_link" href="javascript:void(0);" style="display: block; margin-bottom: 8px; text-decoration: underline;">' +
+            ' $1:' +
+            '</a>' +
             '$2' +
             '</div>');
     if(!isHtml)

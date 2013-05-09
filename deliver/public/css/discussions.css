@@ -2465,6 +2465,14 @@ span.remark{
     text-decoration:none;
 }
 
+#comments_wrapper .comment_wrapper .ref_link {
+    text-decoration:none !important;
+}
+
+#comments_wrapper .comment_wrapper .ref_link:hover {
+    text-decoration: underline !important;
+}
+
 #comments_wrapper .comment_wrapper .rating_small span.good{
     background:url(/images/icon_rate_good.png) no-repeat center right;
     width:24px;
