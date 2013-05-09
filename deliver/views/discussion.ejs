@@ -760,7 +760,12 @@ $(document).ready(function () {
     $('#comments_wrapper').on('click', ".bad", function () {
         vote.apply($(this),['remove']);
     });
+    // click on  quoted-by take you to comment
+    $('#comments_wrapper').on('click', '.quote-ref', function () {
+        var post_id = $(this).data('ref-id');
+        scrollTo(window[post_id]);
 
+    });
     // copy the post text+ user to   discussion_comment
     $('#comments_wrapper').on('click', ".button_quote", function (e) {
         var userName;

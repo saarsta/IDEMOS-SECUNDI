@@ -2245,6 +2245,7 @@ span.remark{
     background:#fff;
     padding:20px;
     height: 153px;
+    position: relative;
 }
 
 #comments_wrapper .comment_wrapper {
@@ -2455,6 +2456,8 @@ span.remark{
 #comments_wrapper .comment_wrapper .quoted_by{
     color:#898888;
     font-size:11px;
+    position: absolute;
+    bottom: 15px;
 }
 
 #comments_wrapper .comment_wrapper .quoted_by a{

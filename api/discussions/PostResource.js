@@ -40,11 +40,12 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
             votes_for:null,
             _id:null,
             ref_to_post_id: null,
+            quoted_by: null,
             discussion_id:null,
             is_user_follower: null,
             is_editable: null
         };
-        this.update_fields = {text: null, discussion_id: null};
+        this.update_fields = {text: null, discussion_id: null, ref_to_post_id: null};
 //    this.validation = new resources.Validation();=
         this.default_limit = 50;
     },
@@ -178,8 +179,12 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                 fields.first_name = user.first_name;
                 fields.last_name = user.last_name;
                 fields.avatar = user.avatar;
-                if(!fields.ref_to_post_id || fields.ref_to_post_id == "null" || fields.ref_to_post_id == "undefined")
+                if(!fields.ref_to_post_id || fields.ref_to_post_id == "null" || fields.ref_to_post_id == "undefined"){
                     delete fields.ref_to_post_id;
+                }else{
+                    setQuotedPost(post_object._id, fields.ref_to_post_id, req.user.toString());
+                }
+
 
                 // TODO add better sanitizer
              //   fields.text = sanitizer.sanitize(fields.text);
@@ -333,3 +338,15 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
     }
 });
 
+function setQuotedPost(post_id, quoted_post_id, user_name){
+
+    var quoted_by = {
+        post_id: post_id,
+        user_name: user_name
+    }
+    models.Post.update({_id: quoted_post_id}, {$addToSet : {quoted_by : quoted_by}}, function(err, num){
+        if(err){
+            console.error(err);
+        }
+    });
+}
