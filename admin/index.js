@@ -232,109 +232,110 @@ module.exports = function (app) {
         sortable: 'gui_order'
     });
 
-/*
-    admin.registerMongooseModel('Vote', Models.Vote, null, {
-        list: ['post_id', 'user_id']
-    });
-
-    admin.registerMongooseModel('VoteSuggestion', Models.VoteSuggestion, null, {
-        list: ['suggestion_id', 'user_id']
-    });
-    admin.registerMongooseModel('Grade', Models.Grade, null, {
-        list: ['discussion_id', 'user_id']
-    });
-    admin.registerMongooseModel('Like', Models.Like, null, {
-        list: ['information_item_id', 'user_id']
-    });
-    admin.registerMongooseModel('Join', Models.Join, null, {
-        list: ['action_id', 'user_id']
-    });
-
-
-
-    admin.registerMongooseModel('Tag', Models.Tag, null, {
-        list: ['tag']
-    });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    admin.registerMongooseModel('Test', Models.Test, null, {
-        list: ['action_resources'],
-        cloneable: true
-    });
-
-
-
-    admin.registerMongooseModel('ElectionsText', Models.ElectionsText, null, {
-        list: ['title']
-    });
-
-    admin.registerMongooseModel('ElectionsItem', Models.ElectionsItem, null, {
-        list: ['title']
-    });
-
     admin.registerMongooseModel('ImageUpload', Models.ImageUpload, null, {
         list: ['image.url']
     });
 
-    admin.registerMongooseModel('Notification', Models.Notification, null, {
-        list: ['type'],
-        order_by: ['-on_date'],
-        filters: ['type']
-    });
+    /*
+        admin.registerMongooseModel('Vote', Models.Vote, null, {
+            list: ['post_id', 'user_id']
+        });
 
-    admin.registerMongooseModel('FBRequest', Models.FBRequest, null, {
-        list_populate: ['creator'],
-        list: ['link', 'creator.first_name', 'creator.last_name']
-    });
-
-    admin.registerSingleRowModel(Models.ThresholdCalcVariables, 'ThresholdCalcVariables');
-
-
-    admin.registerMongooseModel('Admin_Users', mongoose.model('_MongooseAdminUser'), null, {
-        list: ['username']
-    });
-
-
-
-    admin.registerMongooseModel('Password Change Form', mongoose.model('_MongooseAdminUser'), null, {
-        list: ['username'],
-        form: ChangePasswordForm,
-        createable: false
-    });
+        admin.registerMongooseModel('VoteSuggestion', Models.VoteSuggestion, null, {
+            list: ['suggestion_id', 'user_id']
+        });
+        admin.registerMongooseModel('Grade', Models.Grade, null, {
+            list: ['discussion_id', 'user_id']
+        });
+        admin.registerMongooseModel('Like', Models.Like, null, {
+            list: ['information_item_id', 'user_id']
+        });
+        admin.registerMongooseModel('Join', Models.Join, null, {
+            list: ['action_id', 'user_id']
+        });
 
 
-    admin.registerMongooseModel('QuoteGameParty', mongoose.model('QuoteGameParty'), null, {
-        list: ['name'],
-        order_by: ['gui_order'],
-        sortable: 'gui_order'
-    });
-    admin.registerMongooseModel('QuoteGameCandidate', mongoose.model('QuoteGameCandidate'), null, {
-        list: ['name'],
-        order_by: ['gui_order'],
-        sortable: 'gui_order'
-    });
 
-    admin.registerMongooseModel('QuoteGameQuote', mongoose.model('QuoteGameQuote'), null, {
-        list: ['quote'],
-        list_populate: ['QuoteGameCandidate'],
-        order_by: ['gui_order'],
-        sortable: 'gui_order'
-    });
+        admin.registerMongooseModel('Tag', Models.Tag, null, {
+            list: ['tag']
+        });
 
 
-*/
+
+
+
+
+
+
+
+
+
+
+
+
+        admin.registerMongooseModel('Test', Models.Test, null, {
+            list: ['action_resources'],
+            cloneable: true
+        });
+
+
+
+        admin.registerMongooseModel('ElectionsText', Models.ElectionsText, null, {
+            list: ['title']
+        });
+
+        admin.registerMongooseModel('ElectionsItem', Models.ElectionsItem, null, {
+            list: ['title']
+        });
+
+
+        admin.registerMongooseModel('Notification', Models.Notification, null, {
+            list: ['type'],
+            order_by: ['-on_date'],
+            filters: ['type']
+        });
+
+        admin.registerMongooseModel('FBRequest', Models.FBRequest, null, {
+            list_populate: ['creator'],
+            list: ['link', 'creator.first_name', 'creator.last_name']
+        });
+
+        admin.registerSingleRowModel(Models.ThresholdCalcVariables, 'ThresholdCalcVariables');
+
+
+        admin.registerMongooseModel('Admin_Users', mongoose.model('_MongooseAdminUser'), null, {
+            list: ['username']
+        });
+
+
+
+        admin.registerMongooseModel('Password Change Form', mongoose.model('_MongooseAdminUser'), null, {
+            list: ['username'],
+            form: ChangePasswordForm,
+            createable: false
+        });
+
+
+        admin.registerMongooseModel('QuoteGameParty', mongoose.model('QuoteGameParty'), null, {
+            list: ['name'],
+            order_by: ['gui_order'],
+            sortable: 'gui_order'
+        });
+        admin.registerMongooseModel('QuoteGameCandidate', mongoose.model('QuoteGameCandidate'), null, {
+            list: ['name'],
+            order_by: ['gui_order'],
+            sortable: 'gui_order'
+        });
+
+        admin.registerMongooseModel('QuoteGameQuote', mongoose.model('QuoteGameQuote'), null, {
+            list: ['quote'],
+            list_populate: ['QuoteGameCandidate'],
+            order_by: ['gui_order'],
+            sortable: 'gui_order'
+        });
+
+
+    */
 
 
 

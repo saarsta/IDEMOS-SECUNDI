@@ -760,6 +760,8 @@ $(document).ready(function () {
     $('#comments_wrapper').on('click', ".bad", function () {
         vote.apply($(this),['remove']);
     });
+
+    /* *** scroll to qoutes *** */
     // click on  quoted-by take you to comment
     $('#comments_wrapper').on('click', '.quote-ref', '.quote', function () {
         var post_id = $(this).data('ref-id');
@@ -770,6 +772,7 @@ $(document).ready(function () {
         var post_id = "post_" + $(this).parents('.comment_wrapper ').data('ref-id');
         scrollTo(window[post_id]);
     });
+    /* *** end of scroll to qoutes *** */
 
     // copy the post text+ user to   discussion_comment
     $('#comments_wrapper').on('click', ".button_quote", function (e) {
