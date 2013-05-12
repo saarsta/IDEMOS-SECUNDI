@@ -50,7 +50,8 @@ module.exports = function(req,res)
                         {
                             res.setHeader("Expires", "0");
 
-                            var ejs =  req.query.new || req.params[0]=='51163023533d920200000025' ? 'discussion.ejs' : 'discussion_old.ejs';
+                           // var ejs =  req.query.new || req.params[0]=='51163023533d920200000025' ? 'discussion.ejs' : 'discussion_old.ejs';
+                            var ejs =  'discussion.ejs';
 
                             res.render(ejs,{
                                 title:"דיון",

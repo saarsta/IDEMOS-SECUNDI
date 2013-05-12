@@ -1,7 +1,6 @@
 var mongoose = require("mongoose"),
     Schema = mongoose.Schema,
     common = require('./common'),
-
     ObjectId = Schema.ObjectId,
     utils = require('./../utils');
 
@@ -9,7 +8,6 @@ var tag_suggestions =  {
     tag_name: String,
     tag_offers: {type:[ObjectId], ref:'User',query:common.FIND_USER_QUERY}
 };
-
 
 var InformationItem = module.exports = new Schema({
     title: {type: String, required: true},
@@ -22,7 +20,7 @@ var InformationItem = module.exports = new Schema({
     image_field_preview: {type:Schema.Types.File},
     tags:{type:[String], index:true},
     users:{type:[ObjectId], ref:'User',query:common.FIND_USER_QUERY,editable:false},
-    discussions:[{type:ObjectId, ref:'Discussion', index:true}],
+    discussions:[{type:ObjectId,  limit: 1000, ref:'Discussion', index:true}],
     cycles:{type:[ObjectId], ref:'Cycle', index:true},
     actions:{type:[ObjectId], ref:'Action'},
     is_visible:{type:Boolean, 'default':true},

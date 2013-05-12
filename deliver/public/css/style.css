@@ -10222,6 +10222,10 @@ change .current class name using plugin option, currentPanel : 'current' */
     line-height:18px;
 }
 
+.email_settings #all_discussions label{
+    margin-bottom: 5px;
+}
+
 .email_settings label.title{
     font-size:14px;
     font-weight:bold;

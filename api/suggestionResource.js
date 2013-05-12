@@ -80,7 +80,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
             else
                 suggestion.wanted_amount_of_tokens = Number(suggestion.threshold_for_accepting_the_suggestion) || calculate_sugg_threshold(suggestion.getCharCount(), discussion_threshold);
             if (req.user) {
-                models.GradeSuggestion.findOne({user_id:req.user._id, suggestion_id:suggestion._id}, {"_id":1, "evaluation_grade":1, "does_support_the_suggestion":1}, function (err, grade_sugg_obj) {
+                models.GradeSuggestion.findOne({user_id:req.user._id, suggestion_id:suggestion._id + ""}, {"_id":1, "evaluation_grade":1, "does_support_the_suggestion":1}, function (err, grade_sugg_obj) {
                     if (!err && grade_sugg_obj) {
                         curr_grade_obj = {
                             _id:grade_sugg_obj._id,
@@ -418,8 +418,11 @@ module.exports.approveSuggestion = function (id, callback) {
 
 
                     var str = vision.substr(0, Number(parts[0].start)) + parts[0].text + vision.substr(Number(parts[0].end));
+                    var replaced_text = vision.substr(Number(parts[0].start), Number(parts[0].end));
+                    var new_text = parts[0].text;
 
                     discussion_object.vision_text_history.push(discussion_object.text_field);
+                    discussion_object.replaced_text_history.push({old_text: replaced_text, new_text: new_text});
                     discussion_object.text_field = str;
 
                     //suggestion grade is the new discussion grade
