@@ -1085,7 +1085,8 @@ span.remark{
 }
 
 .text .about_party a.read_more,
-.text .about_politician a.read_more{
+.text .about_politician a.read_more
+{
     width:260px;
     margin-top:5px;
     display:block;
@@ -1384,7 +1385,8 @@ span.remark{
     width:100%;
 }
 
-.discussions_page .segment.main a.read_more{
+.discussions_page .segment.main a.read_more,
+.discussions_page .segment.main a.read_less{
     text-decoration:underline;
     float:right;
     margin-top:10px;
@@ -2714,6 +2716,10 @@ input.button_submit_comment_no_text{
     background:#ffff97;
 }
 
+#content_right_holder .segment.main .marker_1.off{
+    background:none;
+}
+
 .tooltip_1{
     background:url(../images/bg_tooltip_1.png) no-repeat 0 0;
     text-align:center;
@@ -2723,14 +2729,49 @@ input.button_submit_comment_no_text{
     height:48px;
 }
 
-.tooltip_2{
-    background:url(../images/bg_tooltip_2.png) no-repeat 0 0;
+
+.tooltip_2 {
+    -webkit-border-radius: 7px;
+    border-radius: 7px;
+    display: inline-block;
+    position: relative;
+    background: #fff;
+    border: 2px solid #d6dbde;
     text-align:center;
     line-height:36px;
     font-size:12px;
-    width:172px;
-    height:58px;
+    width:106px;
+    -webkit-box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.4);
+    box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.4);
+
 }
+.tooltip_2:after, .tooltip_2:before {
+    top: 100%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+
+.tooltip_2:after {
+    border-color: rgba(255, 255, 255, 0);
+    border-top-color: #fff;
+    border-width: 7px;
+    left: 50%;
+    margin-left: -7px;
+}
+.tooltip_2:before {
+    border-color: rgba(214, 219, 222, 0);
+    border-top-color: #d6dbde;
+    border-width: 10px;
+    left: 50%;
+    margin-left: -10px;
+}
+
+
+
 
 .tooltip_1 a{
     text-decoration:none;
@@ -2754,27 +2795,51 @@ input.button_submit_comment_no_text{
     font-family: 'AdumaFOTRegular';
     font-size: 16px;
     padding-left: 8px;
-    margin-top:9px;
+    padding-bottom: 3px;
+    margin:5px 5px 0 0 ;
+    float: right;
 }
 
-.tooltip_2 input.button_respond{
-    background:url(../images/button_respond_small.png) no-repeat 0 0;
+.tooltip_2 a.button_respond{
+   /* background:url(../images/button_respond_small.png) no-repeat 0 0;     */
     line-height:28px;
     font-size:12px;
-    width:46px;
+    /*width:46px;*/
     height:29px;
     border:none;
     cursor: pointer;
     color: #616161;
     font-family: 'AdumaFOTRegular';
     font-size: 16px;
-    padding-left: 8px;
-    margin-top:9px;
+
+    margin:5px 5px 4px 5px ;
+    float: right;
 }
 
 
 
+.tooltip_2 a.button_respond .left {
+    float: left;
+    width: 5px;
+    height:29px;
 
+    background: url("../images/button_respond_small_left.png") left center no-repeat;
+
+}
+
+.tooltip_2 a.button_respond .right {
+    float: left;
+    width: 23px;
+    height:29px;
+    background: url("../images/button_respond_small_right.png") left center no-repeat;
+}
+
+.tooltip_2 a.button_respond .middle {
+    padding: 2px 3px 0 3px;
+    float: left;
+    height:29px;
+    background: url("../images/button_respond_small_center.png") repeat-x;
+}
 
 
 .popup-window {
