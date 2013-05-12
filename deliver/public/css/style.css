@@ -830,7 +830,7 @@ color: #ff00af;
 
 #content .add-offer h2 ,
 #content #cycle h2 {
-
+    max-width: 411px;
     border-top: 0;
     color: #50504f;
     font: normal 20px/35px 'AdumaFOTMedium';
