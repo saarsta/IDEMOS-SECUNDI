@@ -146,7 +146,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, action_posts_
                         //for fb share
                         notification.img_src = notification.pic;
                         notification.title = discussion.title;
-                        notification.mail_settings_link = "/mail_settings/discussion/" + discussion.id;
+                        notification.mail_settings_link = "/mail_settings/discussion/" + discussion.id + '?force_login=1';
                         notification.text_preview = discussion.text_field_preview;
                     }
 
@@ -176,7 +176,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, action_posts_
                         notification.img_src = notification.pic;
                         notification.title = discussion.title;
                         notification.text_preview = discussion.text_field_preview;
-                        notification.mail_settings_link = "/mail_settings/discussion/" + discussion.id;
+                        notification.mail_settings_link = "/mail_settings/discussion/" + discussion.id + '?force_login=1';
                     }
 
                     if (num_of_comments > 1) {
@@ -203,7 +203,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, action_posts_
                         notification.img_src = notification.pic;
                         notification.title = discussion.title;
                         notification.text_preview = discussion.text_field_preview;
-                        notification.mail_settings_link = "/mail_settings/discussion/" + discussion.id;
+                        notification.mail_settings_link = "/mail_settings/discussion/" + discussion.id + '?force_login=1';
                     }
 
                     if (num_of_comments > 1) {
@@ -231,7 +231,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, action_posts_
                         notification.img_src = notification.pic;
                         notification.title = discussion.title;
                         notification.text_preview = notification.text_field_preview;
-                        notification.mail_settings_link = "/mail_settings/discussion/" + discussion.id;
+                        notification.mail_settings_link = "/mail_settings/discussion/" + discussion.id + '?force_login=1';
                     }
                     if (num_of_comments > 1) {
                         notification.user = num_of_comments + " " + "אנשים";
@@ -264,7 +264,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, action_posts_
 
                         notification.old_text = discussion.replaced_text_history == undefined?'': discussion.replaced_text_history[discussion.replaced_text_history.length - 1].old_text;
                         notification.new_text = discussion.replaced_text_history == undefined?'': discussion.replaced_text_history[discussion.replaced_text_history.length - 1].new_text;
-                        notification.mail_settings_link = "/mail_settings/discussion/" + discussion.id;
+                        notification.mail_settings_link = "/mail_settings/discussion/" + discussion.id + '?force_login=1';
                     }
                     itr_cbk();
                     break;
@@ -287,7 +287,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, action_posts_
 
                         notification.old_text = discussion.replaced_text_history == undefined?'': discussion.replaced_text_history[discussion.replaced_text_history.length - 1].old_text;
                         notification.new_text = discussion.replaced_text_history == undefined?'': discussion.replaced_text_history[discussion.replaced_text_history.length - 1].new_text;
-                        notification.mail_settings_link = "/mail_settings/discussion/" + discussion.id;
+                        notification.mail_settings_link = "/mail_settings/discussion/" + discussion.id + '?force_login=1';
                     }
                     itr_cbk();
                     break;
@@ -308,7 +308,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, action_posts_
                         //SAAR: is this still used?
                         notification.quote_link  = "/discussions/" + discussion._id + '#post_' + post_id;
                         notification.discussion_link = "/discussions/" + discussion._id;
-                        notification.mail_settings_link = "/mail_settings/discussion/" + discussion.id;
+                        notification.mail_settings_link = "/mail_settings/discussion/" + discussion.id + '?force_login=1';
                     }
                     if(user_obj){
                          notification.user = user_obj.first_name + " " + user_obj.last_name;

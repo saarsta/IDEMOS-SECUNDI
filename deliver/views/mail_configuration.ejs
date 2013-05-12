@@ -298,6 +298,8 @@
     });
 
     $("#new_discussion input").click(function(){
+        var notif=$(this).parents('.settings_box').find('.notification');s
+        notif.show();
         var new_settings = {};
 
         new_settings =  {
@@ -311,6 +313,11 @@
 
         db_functions.updateMailNotification(user_id, new_settings, function(err, result){
             console.log(err || result);
+            if(err){
+                notifFail(notif);
+            }else{
+                notifSuccess(notif)
+            }
         })
     });
 
@@ -422,6 +429,7 @@
                }
 
                 cycles_hash[cycle_id][setting_type] = is_checked;
+                notifSuccess(notif)
             } else{
                 notifFail(notif);
             }

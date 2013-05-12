@@ -99,7 +99,8 @@
 
 <%}else{%>
 <script type="text/javascript">
-if( $.cookie('fb_login',{ path: '/' })==1){
+var force_login = getURLParameter('force_login');
+if( $.cookie('fb_login',{ path: '/' })==1 || force_login){
 facebookLogin(function(err, result){
 if(!err){
 window.location.href = window.location.href;
