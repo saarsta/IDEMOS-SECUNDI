@@ -247,7 +247,10 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                                  unique_users = _.uniq(unique_users);
 
                                 discussion_creator_id = disc_obj.creator_id;
-                                async.forEach(unique_users, iterator, cbk2);
+                                 cbk2();
+                                async.forEach(unique_users, iterator, function(err){
+                                    if (err) console.log(err);
+                                });
                              }
                         })
                     },
