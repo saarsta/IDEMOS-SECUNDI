@@ -922,6 +922,7 @@ $(document).ready(function () {
                         $(this).removeClass('flip');
 
                         $(this).data('executing', false);
+                        scrollTo('#content_wrapper_suggestions')
                         return false;
                     }else{
                          return displayAllSuggestions(self) ;
@@ -962,7 +963,6 @@ $(document).ready(function () {
             })
         });
 
-
         self.text('סגור הצעות ');
         self.addClass('flip');
         self.data('executing', true);
@@ -972,6 +972,7 @@ $(document).ready(function () {
     $('#suggestions_wrapper').on('keyup', '.add_comment textarea', function(e){
         if(e.keyCode == 13)
         {
+            var self = $(this);
             var text = $(this).val();
             if (text.trim() == '') return false;
 
@@ -984,7 +985,7 @@ $(document).ready(function () {
 
                 db_functions.addCommentToSuggestion(suggestion_id, discussion_id, text, function(err, comment){
                     $(this).parent().attr('data-can-add', true);
-                    add_comment.find('input').val('');
+                    add_comment.find('textarea').val('');
                     var $suggestion = $('[data-id=' + suggestion_id + ']');
                     var num_of_comments = $suggestion.find('.suggestion_comments_holder .comment').length;
                     if (num_of_comments % 2 === 0) comment.is_even =  true;
@@ -993,6 +994,8 @@ $(document).ready(function () {
                         // append before "add_comment"
                         add_comment.before(out);
                         $suggestion.find('.comments_counter span').text(num_of_comments + 1);
+                        self.parents('.suggestion_wrapper').find('.comment').show();
+                        self.parents('.suggestion_wrapper').find('.close').show();
                         image_autoscale(add_comment.parent('.suggestion_comments_holder').find('.auto-scale img'));
                     });
                 });

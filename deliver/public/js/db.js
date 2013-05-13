@@ -1839,6 +1839,22 @@ var db_functions = {
         });
     },
 
+    sendMailFromUserToSystem: function(explanation, callback) {
+        db_functions.loggedInAjax({
+            url:'/api/send_mail',
+            type:"POST",
+            async:true,
+            data:{"body":explanation},
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function (err) {
+                callback(err);
+            }
+        });
+    },
+
 
 
 

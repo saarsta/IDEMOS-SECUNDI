@@ -75,7 +75,7 @@ var mongoose_resource = require('jest'),
     UserInviteFriendsResource=      require('./UserInviteFriendsResource'),
     UserMailNotificationConfig = require('./user_mail_notification_config_resource');
     PressItemResource = require('./PressItemResource'),
-
+    SendMailResource =  require('./send_mail_resource'),
 
 module.exports = function(app)
 {
@@ -159,4 +159,5 @@ module.exports = function(app)
     rest_api.register_resource('face', new FaceResource());
     rest_api.register_resource('counter', new CounterResource());
     rest_api.register_resource('press_item', new PressItemResource());
+    rest_api.register_resource('send_mail', new SendMailResource());
 };

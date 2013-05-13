@@ -60,7 +60,7 @@
                         </div>
                         <div id="selected_discussion"  data-type="discussion" class="settings_box_section">
 
-                            <span class="setting_section_title">התראות על אירועים חדשים בדיונים ספציפיים:
+                            <span class="setting_section_title">הגדר עדכונים לדיונים ספציפיים:
 
 </span>
                             <div id="alerts_by_discussion" class="selection">
@@ -170,11 +170,12 @@
                         </div>
                         <div class="sep"></div>
                         <div class="settings_box_section">
-                            <input id="no_mails" type="checkbox" data-setting-type="get_mails" id="get_mails" class="checkbox general turn_off" /><label for="no_mails" class="title general">כיבוי כל העדכונים מהאתר</label>
+                            <input id="no_mails" type="checkbox" data-setting-type="get_mails" id="get_mails" class="checkbox general turn_off" data-first_click="true" /><label for="no_mails" class="title general">כיבוי כל העדכונים מהאתר</label>
                             <br/>
                             <div class="free_text_box">
-                                <span style="float:right; margin:5px 0; font-size:12px;"><span style="color:#3b63ef; font-weight:bold;">למה ככה?</span> ספר לנו למה אתה מניאק</span><br/>
-                                <textarea></textarea>
+                                <span style="float:right; margin:5px 0; font-size:12px;"><span style="color:#3b63ef; font-weight:bold;">למה ככה?</span> ספר לנו </span><br/>
+                                <textarea id="stop_mail_explanation"></textarea>
+                                <input id="close_noti_mail" type="image" src="/images/send-btn.png" />
                             </div>
                         </div>
                         <div class="notification"> <div class="spinner"></div> </div>
@@ -294,7 +295,15 @@
     }
 
     $('.turn_off').change(function(){
-        $('.free_text_box').toggle('fade');
+        var is_first_click = $(this).data('first_click');
+
+        var is_checked = $(this).is(':checked');
+        if (!is_checked && (is_first_click === true)){
+            return false;
+        } else {
+            $('.free_text_box').toggle('fade');
+        }
+        $(this).data('first_click', false);
     });
 
     $("#new_discussion input").click(function(){
@@ -470,6 +479,15 @@
         })
     });
 
+    $('#close_noti_mail').click(function(e){
+        var explanation = $('#stop_mail_explanation').val();
+
+        if(explanation.trim() == "") return false;
+
+        db_functions.sendMailFromUserToSystem(explanation, function(err){
+            if (err) console.log(err);
+        })
+    })
 </script>
 
 </body>
