@@ -879,10 +879,14 @@ $(document).ready(function () {
                 }
 
                 $.each(data.objects, function (index, comment) {
+                    var is_first_comment = (index == 0);
                     comment.is_even = (index % 2) == 0;
                     dust.render('comment_on_suggestion', comment, function (err, out) {
                         // append before "add_comment"
                         curr_suggestion.find('.suggestion_comments_holder .add_comment').before(out);
+                        if (is_first_comment) {
+                            $(curr_suggestion).find('.suggestion_comments_holder .comment').show();
+                        }
                         image_autoscale(curr_suggestion.find('.auto-scale img'));
                     });
                 });
@@ -910,10 +914,15 @@ $(document).ready(function () {
                             curr_suggestion.find('.comments_counter span').text(data.objects.length);
 
                             $.each(data.objects, function (index, comment) {
+                                var is_first_comment = (index == 0);
                                 comment.is_even = (index % 2) == 0;
+
                                 dust.render('comment_on_suggestion', comment, function (err, out) {
                                     // append before "add_comment"
                                     curr_suggestion.find('.add_comment').before(out);
+                                    if (is_first_comment) {
+                                        $(curr_suggestion).find('.suggestion_comments_holder .comment').show();
+                                    }
                                     image_autoscale(curr_suggestion.find('.auto-scale img'));
                                 });
                             });
@@ -950,13 +959,17 @@ $(document).ready(function () {
 
                 // set comments counter
                 curr_suggestion.find('.comments_counter span').text(data.objects.length);
+                var is_first_comment;
 
                 $.each(data.objects, function (index, comment) {
-
+                    is_first_comment = (index == 0);
                     comment.is_even = (index % 2) == 0;
                     dust.render('comment_on_suggestion', comment, function (err, out) {
                         // append before "add_comment"
                         curr_suggestion.find('.add_comment').before(out);
+                        if (is_first_comment) {
+                            $(curr_suggestion).find('.suggestion_comments_holder .comment').show();
+                        }
                         image_autoscale(curr_suggestion.find('.auto-scale img'));
                     });
                 });
@@ -1012,6 +1025,7 @@ $(document).ready(function () {
     $(".comments_counter a").live("click",function(){
         $(this).parents('.suggestion_wrapper').find('.comment').show();
         $(this).parents('.suggestion_wrapper').find('.close').show();
+        image_autoscale('.auto-scale img');
     });
 
 
