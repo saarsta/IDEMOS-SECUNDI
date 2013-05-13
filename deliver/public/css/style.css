@@ -10310,6 +10310,10 @@ change .current class name using plugin option, currentPanel : 'current' */
     display:none;
 }
 
+#close_noti_mail{
+    float: left;
+    margin-left: 345px;
+}
 /* Email Setings Page - End*/
 
 a.facebook_join
