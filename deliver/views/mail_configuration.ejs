@@ -211,10 +211,18 @@
     };
 
     function notifSuccess(notif){
+        if (notif.data('finish') == false){
+            notif.stop();
+        }
         notif.find('.spinner').hide();
         notif.text("עודכן");
         notif.css('color','green');
-        notif.animate({color: '#fff'}, 2000,function() {
+        notif.css("fontSize", "20px");
+        notif.css('font-weight', 'bold');
+        notif.data('finish', false);
+        s
+        notif.animate({color: '#fff'}, 2200,function() {
+            notif.data('finish', true);
             notif.hide();
             notif.find('.spinner').show();
         });
