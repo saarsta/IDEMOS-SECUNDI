@@ -119,7 +119,7 @@ var error_message = error_message || '';
                             </div>
                             <div class="history_details_holder">
                                 <hr />
-                                <div class="item">
+                                <div class="item history_button" >
                                     <input  class="history" type="button" />
                                 </div>
                                 <div class="item draft_no">
@@ -1428,8 +1428,8 @@ $(document).ready(function () {
                 }
 
                 if(flag) {
-                    popupProvider.showOkPopup({message:"הטקסט סומן כבר בהצעה לשינוי קיימת"});
-                }else if(range_txt.length >0){
+             //       popupProvider.showOkPopup({message:"הטקסט סומן כבר בהצעה לשינוי קיימת"});
+                }else if(range_txt.length >0 ){
                     $("#new_suggestion_popup")
                             .css({ top:top, left: (e.pageX-97), opacity:0 })
                             .show()
@@ -1443,17 +1443,20 @@ $(document).ready(function () {
 
     var old_suggestion_popup_visible=false;
     $(".marker_1").live("mouseenter", function (e) {
-        if(old_suggestion_popup_visible==false)   {
-            old_suggestion_popup_visible=true;
-            $("#old_suggestion_popup a").data('id', $(this).data('id'));
-            //var left =$(this).offset().left +($(this).width() /2) - 80;
-            var left = e.pageX-85;
-            var top = $(this).offset().top-60;
-            $("#old_suggestion_popup")
-                    .css({ top:top, left:left, opacity:1 })
-                    .show()
-                  //  .animate({ top:'-=20px', opacity:1 }, 100, 'linear');
+        if( $('.button_suggest_revisions').hasClass('active') ){
+            if(old_suggestion_popup_visible==false)   {
+                old_suggestion_popup_visible=true;
+                $("#old_suggestion_popup a").data('id', $(this).data('id'));
+                //var left =$(this).offset().left +($(this).width() /2) - 80;
+                var left = e.pageX-85;
+                var top = $(this).offset().top-60;
+                $("#old_suggestion_popup")
+                        .css({ top:top, left:left, opacity:1 })
+                        .show()
+                //  .animate({ top:'-=20px', opacity:1 }, 100, 'linear');
+            }
         }
+
     }).live("mouseleave", function () {
                 old_suggestion_popup_visible=false;
       //  $("#old_suggestion_popup").hide();
@@ -1827,14 +1830,17 @@ $(document).ready(function () {
     $('.read_more').on('click',showFullText);
     $('.read_less').on('click',hideFullText);
 
+
+
     $('.button_suggest_revisions').click(function(){
         $('.marker_1').toggleClass('off');
         $(this).toggleClass('active');
-        $('#change_proposal').toggleClass('active');
-        showFullText();
+        //$('#change_proposal').toggleClass('active');
+
     });
 
     function showFullText(){
+        $('.button_suggest_revisions').show();
         $('#short').hide();
         $('#full').show();
         var h=  $("textarea").get(0).scrollHeight;
@@ -1842,6 +1848,7 @@ $(document).ready(function () {
     }
 
     function hideFullText(){
+        $('.button_suggest_revisions').hide();
         $('#short').show();
         $('#full').hide();
         var h=  $("textarea").get(0).scrollHeight;
@@ -1857,10 +1864,6 @@ $(document).ready(function () {
     $(".friends").live("hover", function () {
         initTooltipWithMessage($(this),  'מוניטין');
     });
-
-
-
-
 });
 
 </script>
