@@ -45,7 +45,7 @@ var error_message = error_message || '';
 
                             <div class="text main_text" style="max-height:180px">
 
-                                <%- discussion.text_field.replace(/\n/g, '<br />') %>
+                                <%- discussion.text_field.replace(/\n/g, '<br>') %>
                             </div>
                             <a class="read_more" href="javascript:void(0);">המשך קריאה</a>
                         </div>
@@ -54,7 +54,7 @@ var error_message = error_message || '';
                             <div class="msg">בחר בעזרת הסמן איזורים בטקסט שברצונך להציע לשנותם</div>
                             <div id="discussion_content" class=""><%- discussion.text_field.replace(/\n/g, '<br />') %></div>
                             <textarea id="discussion_content_textarea" class="hidden_textarea"><%=discussion.text_field%></textarea>
-                            <a class="read_more" href="javascript:void(0);">סגור מאמר</a>
+                            <a class="read_less" href="javascript:void(0);">סגור מאמר</a>
                         </div>
 
                         <% if( discussion.sub_branding && discussion.sub_branding.length>0) { %>
@@ -114,7 +114,7 @@ var error_message = error_message || '';
                             <div class="button_add_comment">
                                 <input type="button" />
                             </div>
-                            <div class="button_suggest_revisions">
+                            <div class="button_suggest_revisions active">
                                 <input type="button" />
                             </div>
                             <div class="history_details_holder">
@@ -185,7 +185,13 @@ var error_message = error_message || '';
 <span class="popup-window" id="new_suggestion_popup">
     <div class="tooltip_2">
         <input id="pop_suggest_bt" value="הוסף הצעה" class="button_add_suggestion" type="text" />
-        <input id="pop_post_bt" value="הגב" class="button_respond" type="text" />
+        <!--
+        <a id="pop_post_bt"  href="#" class="button_respond">
+            <div class="left"></div>
+            <div class="middle">העתק</div>
+            <div class="right"></div>
+        </a>
+        -->
     </div>
 </span>
 
@@ -475,10 +481,7 @@ $(document).ready(function () {
         $(this).parent().toggleClass('edit');
     });*/
 
-    $('.button_suggest_revisions').click(function(){
-        $(this).toggleClass('active');
-        $('#change_proposal').toggleClass('active');
-    });
+
 
     $('input.history').click(function(){
         $(this).toggleClass('active');
@@ -520,12 +523,7 @@ $(document).ready(function () {
 
     });
 
-    $('.read_more').on('click', function () {
-        $('#short').toggle();
-        $('#full').toggle();
-        var h=  $("textarea").get(0).scrollHeight;
-        $("#full").height(h);
-    });
+
 
     $('#send_suggestion').click(function () {
         var part = {start:range.start, end:range.end, text:$("textarea#discussion_suggest").val()};
@@ -1375,13 +1373,12 @@ $(document).ready(function () {
 
     function displaySuggestionsRanges(){
         $.each(suggestions_list, function (index, suggestion) {
-           var text =  original.substr(suggestion.parts[0].start,suggestion.parts[0].end - suggestion.parts[0].start);
-           console.log(text);
-           text=text.replace(/\r\n/g, '<br />');
-            console.log(text);
-          //  <span class="marker_1">ללחצים פוליטיים דרך מערכת המינויים. מצד שני, המדינה מממנת ישירות לא מעט גופים שנותרים עצמאיים בכל זאת, כמו בתי המשפט, מבקר המדינה, </span>
            var html =    $('#discussion_content').html();
-            html=html.replace(text,'<span data-id="'+suggestion.id+'" class="marker_1">'+text+'</span>');
+           var text =  original.substr(suggestion.parts[0].start,suggestion.parts[0].end - suggestion.parts[0].start);
+         //  console.log(text);
+           text=text.replace(/\r\n/g, '\r\n<br>');
+           text=text.replace(/\n/g, '\n<br>') ;
+           html =  html.substring(0, suggestion.parts[0].start) +html.substring(suggestion.parts[0].start).replace(text,'<span data-id="'+suggestion.id+'" class="marker_1">'+text+'</span>');;
            $('#discussion_content').html(html);
 
         })
@@ -1401,7 +1398,7 @@ $(document).ready(function () {
                 var err = false;
 
                 left = Math.ceil((mouseDown.clientX + mouseUp.clientX) / 2 - 97);
-                top = Math.min(mouseDown.clientY, mouseUp.clientY) - $("#new_suggestion_popup").height() - 40 + $(window).scrollTop() + 40;
+                top = Math.min(mouseDown.clientY, mouseUp.clientY) - $("#new_suggestion_popup").height() - 40 + $(window).scrollTop() +35;
 
                // original = $('<div />').html(original).text();
 //                if(window.getSelection){
@@ -1431,7 +1428,7 @@ $(document).ready(function () {
                     popupProvider.showOkPopup({message:"הטקסט סומן כבר בהצעה לשינוי קיימת"});
                 }else if(range_txt.length >0){
                     $("#new_suggestion_popup")
-                            .css({ top:top, left:left, opacity:0 })
+                            .css({ top:top, left: (e.pageX-97), opacity:0 })
                             .show()
                             .animate({ top:'-=20px', opacity:1 }, 100, 'linear');
                 } else{
@@ -1442,11 +1439,12 @@ $(document).ready(function () {
             });
 
     var old_suggestion_popup_visible=false;
-    $(".marker_1").live("mouseenter", function () {
+    $(".marker_1").live("mouseenter", function (e) {
         if(old_suggestion_popup_visible==false)   {
             old_suggestion_popup_visible=true;
             $("#old_suggestion_popup a").data('id', $(this).data('id'));
-            var left =$(this).offset().left +($(this).width() /2) - 80;
+            //var left =$(this).offset().left +($(this).width() /2) - 80;
+            var left = e.pageX-85;
             var top = $(this).offset().top-60;
             $("#old_suggestion_popup")
                     .css({ top:top, left:left, opacity:1 })
@@ -1508,19 +1506,22 @@ $(document).ready(function () {
     });
 
     // focus and copy the selected text of discussion
-    $('#pop_post_bt').click( function (e) {
-        console.log("pop_post_bt");
-        e.preventDefault();
-        e.stopPropagation();
-        new_post_ref_id = null;
-        $(".popup-window").hide();
-        $("textarea#discussion_comment").val('"' + range_txt + '"');
-        focusOnCommentBox();
-        $('html, body').animate({
-            scrollTop: $("#add_comment_wrapper").offset().top
-        }, 500);
+//    $('#pop_post_bt').click( function (e) {
+//        console.log("pop_post_bt");
+//        e.preventDefault();
+//        e.stopPropagation();
+//        new_post_ref_id = null;
+//        $(".popup-window").hide();
+//
+//        /*
+//        $("textarea#discussion_comment").val('"' + range_txt + '"');
+//        focusOnCommentBox();
+//        $('html, body').animate({
+//            scrollTop: $("#add_comment_wrapper").offset().top
+//        }, 500);
+//        */
+//    });
 
-    });
 
     $('#pop_suggest_bt').click(function (e) {
         console.log("pop_suggest_bt");
@@ -1820,6 +1821,29 @@ $(document).ready(function () {
         window.open($(this).data('source'));
     });
 
+    $('.read_more').on('click',showFullText);
+    $('.read_less').on('click',hideFullText);
+
+    $('.button_suggest_revisions').click(function(){
+        $('.marker_1').toggleClass('off');
+        $(this).toggleClass('active');
+        $('#change_proposal').toggleClass('active');
+        showFullText();
+    });
+
+    function showFullText(){
+        $('#short').hide();
+        $('#full').show();
+        var h=  $("textarea").get(0).scrollHeight;
+        $("#full").height(h);
+    }
+
+    function hideFullText(){
+        $('#short').show();
+        $('#full').hide();
+        var h=  $("textarea").get(0).scrollHeight;
+        $("#full").height(h);
+    }
 
 
 });
