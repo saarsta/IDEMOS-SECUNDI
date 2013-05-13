@@ -492,7 +492,12 @@
         if(explanation.trim() == "") return false;
 
         db_functions.sendMailFromUserToSystem(explanation, function(err){
-            if (err) console.log(err);
+            if (err) {
+                console.log(err);
+            }else {
+                $('.free_text_box').toggle('fade');
+            }
+
         })
     })
 </script>
