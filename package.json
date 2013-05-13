@@ -16,7 +16,7 @@
     "logging": "2.x.x",
     "sendgrid": "0.2.x",
     "xml": "0.0.x",
-    "formage": "https://github.com/IshaiJaffe/formage003fix.git",
+    "formage": "git://github.com/IshaiJaffe/formage003fix.git",
     "formage-admin": "1.0.3",
     "facebook-signed-request": "0.0.x",
     "knox": "0.0.11",
