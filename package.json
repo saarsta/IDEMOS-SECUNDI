@@ -20,8 +20,8 @@
     "formage-admin": "1.0.3",
     "facebook-signed-request": "0.0.x",
     "knox": "0.0.11",
-    "jquery": "latest",
-    "zombie": "latest",
+  //  "jquery": "latest",
+  //  "zombie": "latest",
     "grunt": "~0.4.1",
       "grunt-contrib-concat": "~0.3.0",
       "grunt-contrib-uglify": "~0.2.0"

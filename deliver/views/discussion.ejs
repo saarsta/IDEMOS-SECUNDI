@@ -1076,7 +1076,7 @@ $(document).ready(function () {
                     console.log('fb parse didnt work');
                 }
 
-//             initTooltipWithMessage($('#comments .right .respect'), 'מוניטין');
+
             }
         });
     }
@@ -1327,21 +1327,7 @@ $(document).ready(function () {
 //        loadPosts();
 //    });
 //
-//    $('#comments').on('hover', ".right .proxy", function (e) {
-//
-//        var name = $(this).parents(".comment-one").data("creator_name");
-//        var num_of_proxies = $(this).parents(".comment-one").data("num_of_proxies");
-//        var text = "מנדטים: " + name + " מייצג " + num_of_proxies + " חברי עורו ";
-//        initTooltipWithMessage($('#comments .right .proxy'), text);
-//    })
-//
-//    $('#suggestion_list').on('hover', ".right .proxy", function (e) {
-//
-//        var name = $(this).parents(".comment-one").data("creator_name");
-//        var num_of_proxies = $(this).parents(".comment-one").data("num_of_proxies");
-//        var text = "מנדטים: " + name + " מייצג " + num_of_proxies + " חברי עורו ";
-//        initTooltipWithMessage($('#comments .right .proxy'), text);
-//    })
+
 //
 //    $('#sorting_select').change(function() {
 //        $("#comments").empty();
@@ -1847,6 +1833,18 @@ $(document).ready(function () {
         var h=  $("textarea").get(0).scrollHeight;
         $("#full").height(h);
     }
+
+    $(".awards").live("hover", function () {
+        var name = $(this).parents(".person").data("name");
+        var num_of_proxies = $(this).text();
+        var text = "מנדטים: " + name + " מייצג " + num_of_proxies + " חברי עורו ";
+        initTooltipWithMessage($(this), text);
+    });
+    $(".friends").live("hover", function () {
+        initTooltipWithMessage($(this),  'מוניטין');
+    });
+
+
 
 
 });
