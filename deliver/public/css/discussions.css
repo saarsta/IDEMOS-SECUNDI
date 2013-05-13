@@ -1900,6 +1900,7 @@ span.remark{
     padding-left:15px;
     line-height:10px;
     cursor: pointer;
+    display: none;
 }
 .comments_counter a{
     text-decoration: none;
@@ -1944,6 +1945,7 @@ span.remark{
     float:right;
     padding:10px;
     border-bottom:1px solid #e0e0e0;
+    display: none;
 }
 
 .suggestion_comments_holder .comment .author{

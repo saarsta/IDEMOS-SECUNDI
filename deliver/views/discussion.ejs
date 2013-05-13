@@ -922,6 +922,7 @@ $(document).ready(function () {
                         $(this).removeClass('flip');
 
                         $(this).data('executing', false);
+                        scrollTo('#content_wrapper_suggestions')
                         return false;
                     }else{
                          return displayAllSuggestions(self) ;
