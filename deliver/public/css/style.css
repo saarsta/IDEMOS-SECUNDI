@@ -532,21 +532,21 @@ body {
 
 .user-box a.notifications{
     position: absolute;
-    left: -7px;
-    top: -7px;
+    left: -8px;
+    top: -8px;
    /* background: url(../images/URU_User.btn_sprite.png)   -89px 1px  no-repeat; */
     background-color: #ff00af;
     display:     block;
-    width:20px;
-    height:20px;
+    width:23px;
+    height:22px;
 
-    border-radius:10px;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
+    border-radius:11px;
+    -moz-border-radius: 11px;
+    -webkit-border-radius: 11px;
     font-size:13px;
     font-weight: bold;
     color:#fff;
-    line-height: 20px;
+    line-height: 22px;
     text-align:center;
     text-decoration:none;
 
