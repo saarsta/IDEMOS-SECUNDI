@@ -1905,6 +1905,7 @@ span.remark{
 .comments_counter a{
     text-decoration: none;
 }
+
 .comments_counter a:hover{
     text-decoration: underline;
 }
