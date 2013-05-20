@@ -102,17 +102,16 @@
 
 <%}else{%>
 <script type="text/javascript">
-var force_login = getURLParameter('force_login');
-if( $.cookie('fb_login',{ path: '/' })==1 || force_login){
-facebookLogin(function(err, result){
-if(!err){
-window.location.href = window.location.href;
+    var force_login = getURLParameter('force_login');
+    if( $.cookie('fb_login',{ path: '/' })==1 || force_login!='null'){
+        facebookLogin(function(err, result){
+            if(!err){
+                window.location.href = window.location.href;
+            }else{
 
-}else{
-
-}
-}) ;
-}
+            }
+        }) ;
+    }
 </script>
 
 <%}%>
