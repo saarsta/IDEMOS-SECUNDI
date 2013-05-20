@@ -2251,6 +2251,10 @@ span.remark{
     margin-bottom: 30px;
 }
 
+#special_post_wrapper .special_comment:hover {
+cursor: pointer;
+}
+
 #comments_wrapper .comment_wrapper,
 #special_post_wrapper .comment_wrapper{
     float:right;

@@ -1894,6 +1894,22 @@ $(document).ready(function () {
     $(".friends").live("hover", function () {
         initTooltipWithMessage($(this),  'מוניטין');
     });
+    $('#content_wrapper_comments ').on('click', '.special_comment', function(e){
+        var comment_id = $(this).find('.comment_wrapper').data('id');
+        var scroll_id = 'post_' + comment_id;
+        scroll_id = window[scroll_id];
+        if(!scrollTo(scroll_id)){
+            db_functions.getPostById(comment_id, function (err, post) {
+                dust.render('discussion_comment', post, function (err, out) {
+                    if (!err){
+                        $(".second_pagination").append(out);
+                        scrollTo(scroll_id);
+                    }
+                });
+            });
+        }
+    })
+
 });
 
 </script>
