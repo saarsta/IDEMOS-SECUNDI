@@ -2736,6 +2736,10 @@ input.button_submit_comment_no_text{
 #content_right_holder .segment.main .marker_1{
     background:#ffff97;
 }
+#content_right_holder .segment.main .marker_1:hover{
+    cursor: pointer;
+    background:#ffff07;
+}
 
 #content_right_holder .segment.main .marker_1.off{
     background:none;
