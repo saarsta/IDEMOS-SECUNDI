@@ -11,7 +11,8 @@ var resources = require('jest'),
     models = require('../models'),
     common = require('./common'),
     async = require('async'),
-    notifications = require('./notifications');
+    notifications = require('./notifications'),
+    mail = require('../lib/mail');
 
 var EDIT_TEXT_LEGIT_TIME = 60 * 1000 * 15;
 
@@ -20,7 +21,6 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
     init:function () {
         this._super(models.Suggestion, 'suggestion', common.getGamificationTokenPrice('suggestion_on_discussion') > -1 ? common.getGamificationTokenPrice('suggestion') : 0);
         this.allowed_methods = ['get', 'post', 'put'];
-//        this.authorization = new Authoriztion();
         this.authentication = new common.SessionAuthentication();
         this.filtering = {discussion_id:null, is_approved:null};
         this.default_query = function (query) {
@@ -160,7 +160,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
         var suggestion_object = new self.model();
         var isNewFollower = false;
         var user = req.user;
-        var discussion_id;
+        var discussion_id = fields.discussion_id;
         var discussion_creator_id;
         var num_of_words;
         var disc_obj;
@@ -212,10 +212,25 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                         sug = suggestion._id;
                     }
                 })
-                if (err)
-                    cbk({message:"a suggestion with this indexes already exist"});
-                else
-                    models.Discussion.findById(fields.discussion_id, cbk);
+                if (err){
+                    var to = 'aharon@uru.org.il';
+                    var subject = "הועלתה הצעה לשינוי לטקסט שכבר סומן בדיון";
+                    var body = "<a href='dev.empeeric.com/discussions/" + discussion_id + "#post_" + sug + "'>"
+                        + "existing suggestion with same indexes"
+                        + "</a>"
+                        + "<br>"
+                        + "<a href='dev.empeeric.com/discussions/" + discussion_id + "#post_" + suggestion_object.id + "'>"
+                        + "new suggestion"
+                        + "</a>";
+
+                    mail.sendMail(to, body, subject, function(err){
+                        if(err) {console.error(err)};
+                    })
+
+                    console.error("a suggestion with this indexes already exist");
+                }
+
+                models.Discussion.findById(fields.discussion_id, cbk);
             },
 
             function (discussion_obj, cbk) {

@@ -345,6 +345,7 @@ $(document).ready(function () {
     var original = $('#discussion_content_textarea').val() ;
     var range={};
     var editor;
+    var on_load = true;
 
     // toggle edit class to open/close contxt popup window or edit suggestion button
     $('#suggestions_wrapper').on('mouseenter', '.text.change_proposal', function(e){
@@ -935,10 +936,25 @@ $(document).ready(function () {
                         return false;
                     }else{
                          return displayAllSuggestions(self) ;
-
                     }
                 });
             }
+
+             // if needs to scroll to suggestion that is not shown, open list of suggestions and scroll to suggestion
+             var hash = window.location.hash;
+             if(hash){
+                 if (!scrollTo(hash)) {
+                 var match = /^#post_([0-9a-f]+)/.exec(hash);
+
+                 if (!match) return false;
+
+                 var is_suggestion = false;
+                 $.each(suggestions_list, function(index, suggestion){ if ("#post_" + suggestion.id + "" == hash) is_suggestion = true });
+                     if (is_suggestion){
+                        $(".more-deals a").click();
+                     }
+                 }
+             }
         }
         else {
             $(".content_break_content").hide();
@@ -947,14 +963,17 @@ $(document).ready(function () {
 
 
     function displayAllSuggestions(self){
+        var XHRs = [];
+
         $.each(suggestions_list, function (index, suggestion) {
+
  			// set title and img for fb share
             suggestion.title = discussion_title;
             suggestion.image_field_preview = discussion_img_field_preview;
 
             render_suggestion(suggestion);
 
-            db_functions.getCommentsBySuggestion(suggestion.id, function(err, data){
+            XHRs.push(db_functions.getCommentsBySuggestion(suggestion.id, function(err, data){
                 curr_suggestion = $('#suggestions_wrapper').find('[data-id=' + suggestion.id + ']') ;
 
                 // set comments counter
@@ -973,7 +992,17 @@ $(document).ready(function () {
                         image_autoscale(curr_suggestion.find('.auto-scale img'));
                     });
                 });
-            })
+            }))
+
+            //run a function when all deferred objects resolve
+            $.when(XHRs).then(function (){
+                // if needs to scroll to suggestion that is not shown, open list of suggestions and scroll to suggestion
+                var hash = window.location.hash;
+                if(hash && on_load){
+                   scrollTo(hash);
+                   on_load = false;
+                }
+            });
         });
 
         self.text('סגור הצעות ');
@@ -1047,7 +1076,7 @@ $(document).ready(function () {
                 var pagination = $(".second_pagination");
                 pagination.before(out);
                 var hash = window.location.hash;
-                if (hash) {
+                    if (hash) {
                     if (!scrollTo(hash)) {
                         var match = /^#post_([0-9a-f]+)/.exec(hash);
                         if (match) {
@@ -1461,6 +1490,7 @@ $(document).ready(function () {
                 old_suggestion_popup_visible=false;
       //  $("#old_suggestion_popup").hide();
     });
+
     $("#old_suggestion_popup a").live("click", function () {
         $(".more-deals a").click();
         var id= $(this).data('id')  ;
