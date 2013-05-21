@@ -2302,7 +2302,12 @@ cursor: pointer;
 }
 
 #special_post_wrapper .expert_opinion h2.title{
-    background:url(/images/icon_flame.png) no-repeat center right;
+    background:url(/images/expert_icon.png) no-repeat center right;
+    padding-right:31px;
+}
+
+#special_post_wrapper .editor_choice h2.title{
+    background:url(/images/editor_icon.png) no-repeat center right;
 }
 
 #special_post_wrapper .content .rating{
