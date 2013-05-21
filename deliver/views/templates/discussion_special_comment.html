@@ -2,17 +2,18 @@
     <h2 class="title">{title}</h2>
     <div class="comment_wrapper" data-id="{_id}">
         <div class="comment_details person" data-id="{creator_id.id}" data-name="{creator_id.first_name} {creator_id.last_name}">
-            <div class="img-box" style="overflow: hidden;">
-                <div class="photo auto-scale" style="height:64px">
-                    <img src="{?creator_id}{creator_id.avatar_url}{:else}/images/default_user_img.gif{/creator_id}" />
+            <a href="/myuru/{creator_id.id}">
+                <div class="img-box" style="overflow: hidden;">
+                    <div class="photo auto-scale" style="height:64px">
+                        <img src="{?creator_id}{creator_id.avatar_url}{:else}/images/default_user_img.gif{/creator_id}" />
+                    </div>
+                    <span></span>
                 </div>
-                <span></span>
-            </div>
+            </a>
             <div class="name">
                 {creator_id.first_name} {creator_id.last_name}
             </div>
             <div class="actions_box_container"><div class="actions_box">
-
                 <div id="add_or_remove_proxy" class="action">תן מנדט</div>
                 <div class="action gray_and_soon">שלח הודעה</div>
                 <div class="action gray_and_soon">עקוב</div>

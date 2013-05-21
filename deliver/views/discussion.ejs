@@ -358,13 +358,13 @@ $(document).ready(function () {
         $(this).parents('.suggestion_wrapper').toggleClass('show_edit_button');
 
         //set window top
-//        edit_window.css('top', 0 - window_height - (window_padding * 2 + window_border * 2));
+        edit_window.css('top', 0 - window_height - (window_padding * 2 + window_border * 2));
 
     }).on('mouseleave', '.text.change_proposal', function(){
         $(this).parents('.suggestion_wrapper').toggleClass('edit');
     });
 
-    $('#suggestions_wrapper').on('mousemove', '.change_proposal', function(e){
+    /*$('#suggestions_wrapper').on('mousemove', '.change_proposal', function(e){
          var edit_window = $(this).find('.edit_window');
          var change_proposal =  edit_window.parents('.change_proposal');
          var window_height = edit_window.height();
@@ -384,13 +384,10 @@ $(document).ready(function () {
         console.log(e.pageY);
         edit_window.css('top', e.pageY - distance_from_top - window_height - (window_padding * 2 + window_border * 2));
 
-    });
+    });*/
 
     // when clicking the edit_comment popup show go to creatק suggestion window
     $('#suggestions_wrapper').on('click', '.button_edit_comment', function(){
-//        var text = $(this).parent('.content').text();
-//        var post_id = $(this).parents('.comment_wrapper').data('id');
-//        var content = $(this).parent('.content');
         var $suggestion_content = $(this).next();
         var orig_text = $suggestion_content.find('.original_part').text();
         var alternative_part = $suggestion_content.find('.alternative_part').text();
@@ -527,6 +524,15 @@ $(document).ready(function () {
 
 
     $('#send_suggestion').click(function () {
+        var $this = $(this);
+
+        if ($this.data('executing')){
+            return;
+        }
+
+        $this.data('executing', true);
+        $this.addClass('disable');
+
         var part = {start:range.start, end:range.end, text:$("textarea#discussion_suggest").val()};
 
         // todo i have replaced vision with original, see that it works
@@ -543,6 +549,9 @@ $(document).ready(function () {
 
             db_functions.editSuggestion(sugg_id, part.text, function(err, data){
                 if(!err){
+                    $this.data('executing', false);
+                    $this.removeClass('disable');
+
                     // hide edit box
                     $('#write-comment').hide();
 
@@ -566,6 +575,9 @@ $(document).ready(function () {
 
             db_functions.addSuggestionToDiscussion(discussion_id, [part], explanation, user_info, function (err, data) {
                 if (!err) {
+                    $this.data('executing', false);
+                    $this.removeClass('disable');
+
                     if(data != 'canceled'){
                         if(!user.actions_done_by_user.suggestion_on_object)
                         {
@@ -575,13 +587,14 @@ $(document).ready(function () {
                         /*
                          $("textarea#discussion_suggest").val('');
                          $("#user_tokens").text(data.updated_user_tokens);*/
-                        render_suggestion(data)
+                        render_suggestion(data, true);
                         $(".deals-box").show();
                     }
                 } else {
                     var err = err;
-                    if(err.responseText == "a suggestion with this indexes already exist")
+                    if(err.responseText == "a suggestion with this indexes already exist"){
                         popupProvider.showOkPopup({message:"????? ???? ??? ????? ?????? ?????"});
+                    }
                 }
             });
         }
@@ -808,7 +821,7 @@ $(document).ready(function () {
     var total_post_count;
 
     //render change suggestion
-    function render_suggestion(suggestion) {
+    function render_suggestion(suggestion, use_animation) {
         // get original text and alternative text
         if (suggestion.parts && suggestion.parts.length) {
             suggestion.original_part = function () {
@@ -829,6 +842,11 @@ $(document).ready(function () {
                 $('#suggestions_wrapper').append(out);
                 image_autoscale($('#suggestions_wrapper .auto-scale img'));
 
+                if(use_animation == true){
+                    var bgc =$('.suggestion_holder').last().css('background-color');
+                    $('.suggestion_holder ').last().css('background-color', 'pink');
+                    $('.suggestion_holder ').last().animate({backgroundColor: bgc}, 3000);
+                }
                 // check if got here after not logged user tryed to grade suggestion
                 var action = getURLParameter('action');
                 if (action !== "null") {
@@ -1914,6 +1932,25 @@ $(document).ready(function () {
     });
     $(".friends").live("hover", function () {
         initTooltipWithMessage($(this),  'מוניטין');
+    });
+    $('#content_wrapper_comments ').on('click', '.special_comment', function(e){
+        var comment_id = $(this).find('.comment_wrapper').data('id');
+        var scroll_id = 'post_' + comment_id;
+        scroll_id = window[scroll_id];
+        if(!scrollTo(scroll_id)){
+            db_functions.getPostById(comment_id, function (err, post) {
+                dust.render('discussion_comment', post, function (err, out) {
+                    if (!err){
+                        $(".second_pagination").append(out);
+                        scrollTo(scroll_id);
+                    }
+                });
+            });
+        }
+    })
+    $('#suggestions_wrapper').on('click', '.edit_window', function(e){
+        $('.read_more').click();
+        scrollTo('#discussion_content');
     });
 });
 

@@ -2046,6 +2046,9 @@ span.remark{
     padding:10px;
 }
 
+.edit_window:hover {
+    cursor: pointer;
+}
 .edit_window .text_top{
     width:100%;
     height:20px;
@@ -2091,6 +2094,14 @@ span.remark{
     color:#50504f;
     font-weight:bold;
     margin: 20px 0;
+}
+
+.edit_window p.title {
+    color: #50504f;
+    margin: 2px 0px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 10px
 }
 
 #comments_filter{
@@ -2249,6 +2260,10 @@ span.remark{
     width:480px;
     float:right;
     margin-bottom: 30px;
+}
+
+#special_post_wrapper .special_comment:hover {
+cursor: pointer;
 }
 
 #comments_wrapper .comment_wrapper,
@@ -3058,6 +3073,10 @@ input.button_submit_comment_no_text{
     margin-right: 8px;
     text-align: center;
     text-decoration: none;
+}
+
+.write-comment .green-btn.disable {
+    background: #2fd43b#B7B6F9;
 }
 
 .write-comment .disable {
