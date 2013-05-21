@@ -2097,11 +2097,10 @@ span.remark{
 }
 
 .edit_window p.title {
-    color: #50504f;
     margin: 2px 0px;
-    font-size: 12px;
-    font-weight: bold;
-    margin-bottom: 10px
+    font-size: 11px;
+    margin-bottom: 10px;
+    font-style: italic;
 }
 
 #comments_filter{
