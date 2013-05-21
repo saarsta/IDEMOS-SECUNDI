@@ -39,7 +39,7 @@ var User = module.exports = new Schema({
     //followers - in the redesign it is the same as discussion.users
     discussions:[
         new Schema({
-            discussion_id:{type:ObjectId, ref:'Discussion'},
+            discussion_id:{type:ObjectId, ref:'Discussion', limit: 1000},
             join_date: {type:Date, 'default':Date.now},
             get_alert: {type: Boolean, 'default': true},
             time_of_alert: {type:String, "enum":['now', 'today', 'this_week'], 'default': 'now'},
@@ -154,9 +154,17 @@ var User = module.exports = new Schema({
            }
         )],
 
+        //general discussions
+        get_alert_of_comments_for_all_discussions: {type: Boolean, 'default': true},
+        get_alert_of_suggestions_for_all_discussions: {type: Boolean, 'default': true},
+        get_alert_of_approved_suggestions_for_all_discussions: {type: Boolean, 'default': true},
+
         // general cycles notifications
         get_cycles_new_updates: {type: Boolean, 'default': true},// update objects
         get_cycles_system_information: {type: Boolean, 'default': true},
+        get_alert_of_new_action_for_all_cycles: {type: Boolean, 'default': true},
+        get_alert_of_approved_action_for_all_cycles: {type: Boolean, 'default': true},
+
 
         // actions
         get_alert_of_new_posts_in_actions: {type: Boolean, 'default': true}

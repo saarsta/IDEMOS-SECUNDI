@@ -1,16 +1,18 @@
 <div class="comment {?is_even}even{:else}odd{/is_even}">
-    <div class="author img-box suggsestion-comment" style="overflow: hidden;">
-        <div class="auto-scale" style="height: 64px; width: 60px" >
-            <img src="{avatar}">
+    <a href="/myuru/{creator_id.id}">
+        <div class="author img-box suggsestion-comment" style="overflow: hidden;">
+            <div class="auto-scale" style="height: 64px; width: 60px" >
+                <img src="{avatar}">
+            </div>
+            <span></span>
+            <div>{username}</div>
         </div>
-        <span></span>
-        <div>{username}</div>
-    </div>
+    </a>
     <!--<span class="photo-pattern"></span>-->
     <div class="date_time">
         {creation_date|time}
     </div>
     <div class="content">
-        {text}
+        {text|link|s}
     </div>
 </div>

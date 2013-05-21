@@ -665,7 +665,23 @@ var db_functions = {
             }
         });
     },
-    getPostByTypeByDiscussion:function (discussion_id, type, callback) {
+
+    getSpecialPostsByDiscussion: function(discussion_id, callback){
+        db_functions.loggedInAjax({
+            url:'/api/special_posts?discussion_id=' + discussion_id,
+            type:"GET",
+            async:true,
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function (err) {
+                callback(err, null);
+            }
+        });
+    },
+
+    getPostByTypeByDiscussion:function(discussion_id, type, callback) {
         db_functions.loggedInAjax({
             url:'/api/posts?discussion_id=' + discussion_id + '&order_by=-' + type + '&limit=1',
             type:"GET",
@@ -1355,6 +1371,17 @@ var db_functions = {
         });
     },
 
+    getApprovedActionsByCycle:function (cycle_id, limit, callback) {
+        db_functions.loggedInAjax({
+            url:'/api/actions/?cycle_id.cycle=' + cycle_id + '&is_approved=true' + (limit ? '&limit=' + limit : ''),
+            type:"GET",
+            async:true,
+            success:function (data, err) {
+                callback(data);
+            }
+        });
+    },
+
     joinOrLeaveAction:function (action_id, callback) {
         db_functions.loggedInAjax({
             url:'/api/join/',
@@ -1795,7 +1822,38 @@ var db_functions = {
                 callback(err, null);
             }
         });
-    }
+    }   ,
+    getPressItemsByDiscussion: function(discussion_id, callback) {
+        db_functions.loggedInAjax({
+            url:'/api/press_item',
+            type:"GET",
+            async:true,
+            data:{"discussion_id":discussion_id, "limit":0},
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function (err) {
+                callback(err);
+            }
+        });
+    },
+
+    sendMailFromUserToSystem: function(explanation, callback) {
+        db_functions.loggedInAjax({
+            url:'/api/send_mail',
+            type:"POST",
+            async:true,
+            data:{"body":explanation},
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function (err) {
+                callback(err);
+            }
+        });
+    },
 
 
 

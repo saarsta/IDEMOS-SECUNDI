@@ -29,7 +29,7 @@ var extension = utils.extend_model('ActionSuggestion', require('./post_or_sugges
         var sug_char_count = _.reduce(this.parts,function(sum,part) {
             if(part.text == null)
                 part.text = "";
-        return sum + part.text.trim().length;
+            return sum + part.text.trim().length;
         },0);
         var disc_marked_text_char_count = _.reduce(this.parts,function(sum,part) {
             return sum + (part.end - part.start);

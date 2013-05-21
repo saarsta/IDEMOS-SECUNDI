@@ -52,9 +52,17 @@
                             <input type="checkbox" class="checkbox" /><label class="title">קבל התראה על כל דיון יומי חדש</label>
                         </div>-->
                         <div class="sep"></div>
+                        <div id="all_discussions"  data-type="discussion" class="settings_box_section general_settings">
+                            <span class="setting_section_title">התראות על אירועים חדשים בדיונים בהשתתפותך:</span>
+                            <input id="all_discussions_comment" data-refresh-discussions="true" data-setting-type="get_alert_of_comments_for_all_discussions" type="checkbox" class="checkbox general" /><label for="discussion_comment">תגובות</label>
+                            <input id="all_discussions_change_suggestion" data-refresh-discussions="true" data-setting-type="get_alert_of_suggestions_for_all_discussions" type="checkbox" class="checkbox general" /><label for="discussion_change_suggestion">הצעות לשינוי</label>
+                            <input id="all_discussion_approved_suggestion" data-refresh-discussions="true" data-setting-type="get_alert_of_approved_suggestions_for_all_discussions" type="checkbox" class="checkbox general" /><label for="discussion_approved_suggestion">שינויים למסמך</label>
+                        </div>
                         <div id="selected_discussion"  data-type="discussion" class="settings_box_section">
 
-                            <span class="setting_section_title">התראה על אירועים חדשים בדיונים בהשתתפותך:</span>
+                            <span class="setting_section_title">הגדר עדכונים לדיונים ספציפיים:
+
+</span>
                             <div id="alerts_by_discussion" class="selection">
                                  <select>
                                  </select>
@@ -69,19 +77,25 @@
                                 <option>אפשרות 3</option>
                             </select>-->
                             <div class="remark">* יישלח רק עדכון אחד עבור כל דיון עד הביקור הבא בו</div>
+                            <div class="notification"> <div class="spinner"></div> </div>
                         </div>
                     </div>
 
-                    <h3>מעגלי תנופה</h3>
+                    <h3>קמפיינים</h3>
                     <div class="settings_box">
                         <div id="cycle_general" class="settings_box_section general_settings">
-                            <span class="setting_section_title">עדכונים מכל מעגלי תנופה:</span>
+                            <span class="setting_section_title">עדכונים מכל הקמפיינים:</span>
                             <input id="cycle_new_updates" data-setting-type="get_cycles_new_updates" type="checkbox" class="checkbox general" /><label for="cycle_new_updates">עדכונים שוטפים</label>
                             <input id="cycle_system_information" data-setting-type="get_cycles_system_information" type="checkbox" class="checkbox general" /><label for="cycle_system_information">עדכונים מיוחדים (בתדירות נמוכה)</label>
                         </div>
                         <div class="sep"></div>
+                        <div id="all_cycles" data-type="cycle" class="settings_box_section general_settings">
+                            <span class="setting_section_title">התראות לגבי פעולות בקמפיינים:</span>
+                            <input id="cycle_new_action_for_all_cycles" data-setting-type="get_alert_of_new_action_for_all_cycles" type="checkbox" class="checkbox general" /><label for="cycle_new_action" >פעולה חדשה</label>
+                            <input id="cycle_approved_action_for_all_cycles" data-setting-type="get_alert_of_approved_action_for_all_cycles" type="checkbox" class="checkbox general" /><label for="cycle_approved_action" >הצעה לפעולה אושרה</label>
+                        </div>
                         <div id="selected_cycle" data-type="cycle" class="settings_box_section">
-                            <span class="setting_section_title">התראות לגבי פעולות במעגל התנופה:</span>
+                            <span class="setting_section_title">התראות לגבי פעולות בקמפיין ספציפי:</span>
                             <div id="alerts_by_cycle" class="selection">
                                 <select>
                                 </select>
@@ -97,6 +111,7 @@
                         <div class="settings_box_section">
                             <input data-setting-type="get_reminder_of_action" type="checkbox" class="checkbox" /><label class="title">תזכורת לקראת פעולה שהצטרפת אליה</label>
                         </div>
+                        <div class="notification"> <div class="spinner"></div> </div>
                     </div>
 
                     <h3>פעולות ואירועים</h3>
@@ -105,6 +120,7 @@
                             <input id="action_comments" data-setting-type="get_alert_of_new_posts_in_actions" type="checkbox" class="checkbox general" /><label for="action_comments" class="title">התראה על תגובות חדשות בפעולה בהשתתפותך</label>
                         </div>
                         <div class="remark">* יישלח רק עדכון אחד עבור כל פעולה עד הביקור הבא בה</div>
+                        <div class="notification"> <div class="spinner"></div> </div>
                     </div>
 
                     <!--<h3>מאגר מידע</h3>
@@ -146,7 +162,7 @@
                     <div id="general_settings" class="settings_box general_settings">
                         <div class="settings_box_section">
                             <input id="general_updates" type="checkbox" data-setting-type="get_uru_updates" id="get_uru_updates" class="checkbox general" /><label for="general_updates" class="title">עדכונים על פעילות עורו</span></label>
-                            <div class="remark_red">* אין להסתמך על שלהלן כעצה משפטית, אלא כמידע כללי בלבד. כל העושה כן בלא להיוועץ בעו"ד, עושה כן על אחריותו בלבד. דוגמאות המסמכים הניתנים לך להלן נמסרים לך לשימוש כמות שהיא(**As Is**). לא תהיה לך כל טענה, תביעה או דרישה כלפי איגוד האינטרנט הישראלי(ע"ר) ו/או מי מטעמו, בגין תכונות המידע ו/או המסמכים, הוראותיהם וההסתמכות עליהם. החוק מאפשר לנמענים לחזור בהם בכל עת מהסכמתם לקבלת דברי פרסומת ממך.</div>
+                           <!-- <div class="remark_red">* אין להסתמך על שלהלן כעצה משפטית, אלא כמידע כללי בלבד. כל העושה כן בלא להיוועץ בעו"ד, עושה כן על אחריותו בלבד. דוגמאות המסמכים הניתנים לך להלן נמסרים לך לשימוש כמות שהיא(**As Is**). לא תהיה לך כל טענה, תביעה או דרישה כלפי איגוד האינטרנט הישראלי(ע"ר) ו/או מי מטעמו, בגין תכונות המידע ו/או המסמכים, הוראותיהם וההסתמכות עליהם. החוק מאפשר לנמענים לחזור בהם בכל עת מהסכמתם לקבלת דברי פרסומת ממך.</div>-->
                         </div>
                         <div class="sep"></div>
                         <div class="settings_box_section">
@@ -154,13 +170,15 @@
                         </div>
                         <div class="sep"></div>
                         <div class="settings_box_section">
-                            <input id="no_mails" type="checkbox" data-setting-type="get_mails" id="get_mails" class="checkbox general turn_off" /><label for="no_mails" class="title general">כיבוי כל העדכונים מהאתר</label>
+                            <input id="no_mails" type="checkbox" data-setting-type="get_mails" id="get_mails" class="checkbox general turn_off" data-first_click="true" /><label for="no_mails" class="title general">כיבוי כל העדכונים מהאתר</label>
                             <br/>
                             <div class="free_text_box">
-                                <span style="float:right; margin:5px 0; font-size:12px;"><span style="color:#3b63ef; font-weight:bold;">למה ככה?</span> ספר לנו למה אתה מניאק</span><br/>
-                                <textarea></textarea>
+                                <span style="float:right; margin:5px 0; font-size:12px;"><span style="color:#3b63ef; font-weight:bold;">למה ככה?</span> ספר לנו </span><br/>
+                                <textarea id="stop_mail_explanation"></textarea>
+                                <input id="close_noti_mail" type="image" src="/images/send-btn.png" />
                             </div>
                         </div>
+                        <div class="notification"> <div class="spinner"></div> </div>
                     </div>
                 </div>
             </div>
@@ -191,6 +209,33 @@
             }
         })
     };
+
+    function notifSuccess(notif){
+        if (notif.data('finish') == false){
+            notif.stop();
+        }
+        notif.find('.spinner').hide();
+        notif.text("עודכן");
+        notif.css('color','green');
+        notif.css("fontSize", "20px");
+        notif.css('font-weight', 'bold');
+        notif.data('finish', false);
+        notif.animate({color: '#fff'}, 2200,function() {
+            notif.data('finish', true);
+            notif.hide();
+            notif.find('.spinner').show();
+        });
+    }
+
+    function notifFail(notif){
+        notif.find('.spinner').hide();
+        notif.text("עדכון נכשל");
+        notif.css('color','green');
+        notif.animate({color: '#fff'}, 2000,function() {
+            notif.hide();
+            notif.find('.spinner').show();
+        });
+    }
 
     // set new_discussion settings
     if(user.mail_notification_configuration && user.mail_notification_configuration.new_discussion)
@@ -242,13 +287,13 @@
             var setting_type = $(this).attr('data-setting-type');
 
             // undefined means that it wasn't set yet, so it's true by default
-            var is_checked =  is_cycle_in_hash && ((typeof cycles_hash[cycle_id][setting_type] === "undefined")&& (cycles_hash[cycle_id][setting_type] == true));
+            var is_checked =  is_cycle_in_hash && ((typeof cycles_hash[cycle_id][setting_type] === "undefined") || (cycles_hash[cycle_id][setting_type] == true));
             $(input_arr[index]).prop('checked', is_checked);
         })
     });
 
     populate(discussion_list, 'בחר דיון', discussions);
-    populate(cycle_list, 'בחר מעגל', cycles);
+    populate(cycle_list, 'בחר קמפיין', cycles);
 
     // show selected item if there is one
     if(selected_item != ""){
@@ -257,10 +302,20 @@
     }
 
     $('.turn_off').change(function(){
-        $('.free_text_box').toggle('fade');
+        var is_first_click = $(this).data('first_click');
+
+        var is_checked = $(this).is(':checked');
+        if (!is_checked && (is_first_click === true)){
+            return false;
+        } else {
+            $('.free_text_box').toggle('fade');
+        }
+        $(this).data('first_click', false);
     });
 
     $("#new_discussion input").click(function(){
+        var notif=$(this).parents('.settings_box').find('.notification');
+        notif.show();
         var new_settings = {};
 
         new_settings =  {
@@ -274,6 +329,11 @@
 
         db_functions.updateMailNotification(user_id, new_settings, function(err, result){
             console.log(err || result);
+            if(err){
+                notifFail(notif);
+            }else{
+                notifSuccess(notif)
+            }
         })
     });
 
@@ -333,6 +393,8 @@
 
     $("#selected_discussion input").click(function(){
 
+        var notif=$(this).parents('.settings_box').find('.notification');
+        notif.show();
         var discussion_id = $("#alerts_by_discussion select").val();
         var setting_type = $(this).attr('data-setting-type');
         var is_checked = $(this).is(':checked');
@@ -353,12 +415,16 @@
                }
 
                discussions_hash[discussion_id][setting_type] = is_checked;
+                notifSuccess(notif);
+            }    else{
+                notifFail(notif);
             }
         })
     });
 
     $("#selected_cycle input").click(function(){
-
+        var notif=$(this).parents('.settings_box').find('.notification');
+        notif.show();
         var cycle_id = $("#alerts_by_cycle select").val();
         var setting_type = $(this).attr('data-setting-type');
         var is_checked = $(this).is(':checked');
@@ -379,18 +445,22 @@
                }
 
                 cycles_hash[cycle_id][setting_type] = is_checked;
+                notifSuccess(notif)
+            } else{
+                notifFail(notif);
             }
         })
     });
 
     $(".general_settings input").click(function(){
-
+        var notif=$(this).parents('.settings_box').find('.notification');
+        notif.show();
         var new_settings = {};
         new_settings.mail_notification_configuration = {};
 //        var setting_type = $(this).attr('id');
         var setting_type = $(this).attr('data-setting-type');
         var is_checked = $(this).is(':checked');
-
+        var refresh_discussion_hash_list = $(this).attr('data-refresh-discussions') === "true";
         // flip the get_mail setting causes it dont_get_mail actually
         if(setting_type === 'get_mails'){
             is_checked = !is_checked;
@@ -401,9 +471,35 @@
 
         db_functions.updateMailNotification(user_id, new_settings, function(err, result){
             console.log(err || result);
+            if(!err){
+                if (refresh_discussion_hash_list){
+                    // set discussions settings again
+                    $.each(result.discussions, function (index, discussion) {
+                        discussions_hash[discussion.discussion_id + ""] = discussion;
+                    });
+                }
+                notifSuccess(notif);
+
+            } else{
+                notifFail(notif);
+            }
         })
     });
 
+    $('#close_noti_mail').click(function(e){
+        var explanation = $('#stop_mail_explanation').val();
+
+        if(explanation.trim() == "") return false;
+
+        db_functions.sendMailFromUserToSystem(explanation, function(err){
+            if (err) {
+                console.log(err);
+            }else {
+                $('.free_text_box').toggle('fade');
+            }
+
+        })
+    })
 </script>
 
 </body>

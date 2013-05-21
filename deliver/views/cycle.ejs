@@ -66,22 +66,30 @@
                     </div>
 
                     <div class="text-box cf">
-                    <div class="cycle-content">
-                    <% if (cycle.image_field) { %>
-
-                      <div class="img-box floatRight" style="overflow: hidden;">
-                                <div style="width:260px; height:190px;" class='auto-scale'>
-                                      <img src="<%=cycle.image_field && cycle.image_field.url %>" title="<%= cycle.title %>"/>
-
-                                </div>
-                                <span></span>
-                       </div>
-                    <% } %>
-
+                        <div class="cycle-content main_text" style="max-height:250px">
+                        <% if (cycle.image_field) { %>
+                          <div class="img-box floatRight" style="overflow: hidden;">
+                                    <div style="width:260px; height:190px;" class='auto-scale'>
+                                          <img src="<%=cycle.image_field && cycle.image_field.url %>" title="<%= cycle.title %>"/>
+                                    </div>
+                                    <span></span>
+                           </div>
+                        <% } %>
+                            <h3><%- cycle.discussion_title %></h3>
+                    <!--
+                            <p> <%- cycle.text_field %>   </p>
+                         </div>
+                            <p id="read_more"> <a class="read-more" href="javascript:void(0);"> קרא עוד </a> </p> </div>
+                     -->
+                            <p> <%- cycle.text_field %>   </p>
+                        </div>
+                    <a class="read_more" href="javascript:void(0);">המשך קריאה</a>
+                    </div>
+                    <div class="text-box text-full">
                         <h3><%- cycle.discussion_title %></h3>
                         <p> <%- cycle.text_field %>   </p>
-                        </div>
-                        <p id="read_more"> <a class="read-more" href="javascript:void(0);"> קרא עוד </a> </p> </div>
+                    </div>
+
 
                     <% if (cycle.id == '508026e8cb2276020000001f' && !user_logged){%>
                          <style>
@@ -233,11 +241,11 @@
                         <div class="right">
                             <div class="followers">
                                 <div id="followers_count" >
-                                    <div class="blue-box"> <%= cycle.followers_count %>  </div>
+                                    <div class="blue-box"><%= cycle.followers_count+ (cycle.fb_page ? cycle.fb_page.like_count:0 )  %> </div>
                                      <span>
 
 
-                                עוקבים אחרי מעגל תנופה זה
+                                עוקבים אחרי קמפיין זה
                                    </span>
                                 </div>
                             </div>
@@ -306,7 +314,7 @@
             </div>
             <div class="card-left">
 
-  <% if (cycle.sub_branding){    %>
+  <% if (cycle.sub_branding && cycle.sub_branding.length>0){    %>
          <div class="cycle_sub_branding">
              <h3 >   בשיתוף עם </h3>
          <%  for (var c = 0; c < cycle.sub_branding.length ; c++) { %>
@@ -592,7 +600,7 @@ var current_section=2;
             }
 
             $('.mb-inside').live("click", function(){
-                window.location.href = '/information_items/'+$(this).parent().attr('item-id');
+                window.open('/information_items/'+$(this).parent().attr('item-id'), '_target');
             });
 
 
@@ -677,7 +685,7 @@ var current_section=2;
                         });
            });
 
-            timeline.render(cycle_id, cycle_title, null);
+            //timeline.render(cycle_id, cycle_title, null);
             //timeline.addTabEvents(cycle_title);
 
             db_functions.getPendingActionsByCycle(cycle_id, 4, function ( data,err) {
@@ -726,9 +734,10 @@ var current_section=2;
                 }
             });
 
-            $('#read_more').click(function () {
-                $(".cycle-content").height("auto");
-                 $(this).hide();
+            $('.read_more').click(function () {
+
+                $(".text-box").hide();
+                $(".text-full").show();
             });
 
             $('.hide-box').on('mouseenter', ".side_menu",
@@ -1165,7 +1174,7 @@ var current_section=2;
             var start_slide=getURLParameter('timeline_default_slide')=='null' ?timeline_default_item : getURLParameter('timeline_default_slide');
 
 
-            createStoryJS({
+            var timeline_obj = createStoryJS({
                 type:       'timeline',
                 width:      '980',
                 height:     '500',
@@ -1175,26 +1184,28 @@ var current_section=2;
                 font:               'Arial',             //OPTIONAL FONT
                 start_at_slide:     start_slide,                            //OPTIONAL START AT SPECIFIC SLIDE
                 start_zoom_adjust:  timeline_zoom,                            //OPTIONAL TWEAK THE DEFAULT ZOOM LEVEL
-                embed_id:   'my-timeline'
+                embed_id:   'my-timeline',
+                js: '/js/timeline-min.js'
 
-/*
-                 https://github.com/VeriteCo/TimelineJS
 
-                 width:              '100%',
-                 height:             '600',
-                 source:             'path_to_json/or_link_to_googlespreadsheet',
-                 embed_id:           'timeline-embed',               //OPTIONAL USE A DIFFERENT DIV ID FOR EMBED
-                 start_at_end:       false,                          //OPTIONAL START AT LATEST DATE
-                 start_at_slide:     '4',                            //OPTIONAL START AT SPECIFIC SLIDE
-                 start_zoom_adjust:  '3',                            //OPTIONAL TWEAK THE DEFAULT ZOOM LEVEL
-                 hash_bookmark:      true,                           //OPTIONAL LOCATION BAR HASHES
-                 font:               'Bevan-PotanoSans',             //OPTIONAL FONT
-                 debug:              true,                           //OPTIONAL DEBUG TO CONSOLE
-                 lang:               'fr',                           //OPTIONAL LANGUAGE
-                 maptype:            'watercolor',                   //OPTIONAL MAP STYLE
-                 css:                'path_to_css/timeline.css',     //OPTIONAL PATH TO CSS
-                 js:                 'path_to_js/timeline-min.js'    //OPTIONAL PATH TO JS
-*/
+                /*
+                                 https://github.com/VeriteCo/TimelineJS
+
+                                 width:              '100%',
+                                 height:             '600',
+                                 source:             'path_to_json/or_link_to_googlespreadsheet',
+                                 embed_id:           'timeline-embed',               //OPTIONAL USE A DIFFERENT DIV ID FOR EMBED
+                                 start_at_end:       false,                          //OPTIONAL START AT LATEST DATE
+                                 start_at_slide:     '4',                            //OPTIONAL START AT SPECIFIC SLIDE
+                                 start_zoom_adjust:  '3',                            //OPTIONAL TWEAK THE DEFAULT ZOOM LEVEL
+                                 hash_bookmark:      true,                           //OPTIONAL LOCATION BAR HASHES
+                                 font:               'Bevan-PotanoSans',             //OPTIONAL FONT
+                                 debug:              true,                           //OPTIONAL DEBUG TO CONSOLE
+                                 lang:               'fr',                           //OPTIONAL LANGUAGE
+                                 maptype:            'watercolor',                   //OPTIONAL MAP STYLE
+                                 css:                'path_to_css/timeline.css',     //OPTIONAL PATH TO CSS
+                                 js:                 'path_to_js/timeline-min.js'    //OPTIONAL PATH TO JS
+                */
 
             });
         }
@@ -1215,6 +1226,10 @@ var current_section=2;
                     (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
             );
         }
+
+        $(".main_text").dotdotdot({
+            //	configuration goes here
+        });
     });
 
 </script>

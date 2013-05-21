@@ -1,0 +1,17 @@
+<div class="one">
+    <a href="/information_items/{_id}">
+        {?image_field_preview.url}
+        <div style="width:238px; height:155px;" class="auto-scale">
+            <img src="{image_field_preview.url}" alt="{title}" title="{title}"/>
+        </div>
+        {/image_field_preview.url}
+    </a>
+    {?title}
+    <h4>{title}</h4>
+    {/title}
+    <div item_id="{_id}" class="item_text_preview">
+        {?text_field_preview}
+           {text_field_preview|s}
+        {/text_field_preview}
+    </div>
+</div>

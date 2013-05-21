@@ -532,21 +532,21 @@ body {
 
 .user-box a.notifications{
     position: absolute;
-    left: -7px;
-    top: -7px;
+    left: -8px;
+    top: -8px;
    /* background: url(../images/URU_User.btn_sprite.png)   -89px 1px  no-repeat; */
     background-color: #ff00af;
     display:     block;
-    width:20px;
-    height:20px;
+    width:23px;
+    height:22px;
 
-    border-radius:10px;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
+    border-radius:11px;
+    -moz-border-radius: 11px;
+    -webkit-border-radius: 11px;
     font-size:13px;
     font-weight: bold;
     color:#fff;
-    line-height: 20px;
+    line-height: 22px;
     text-align:center;
     text-decoration:none;
 
@@ -830,7 +830,7 @@ color: #ff00af;
 
 #content .add-offer h2 ,
 #content #cycle h2 {
-
+    max-width: 411px;
     border-top: 0;
     color: #50504f;
     font: normal 20px/35px 'AdumaFOTMedium';
@@ -6063,9 +6063,23 @@ div.action_list::-webkit-scrollbar-button {
 }
 
 .cycle-content {
-    height: 250px;
+ /*   height: 250px;
     overflow: hidden;
+*/
 }
+.add-offer .text-box a.read_more{
+    text-decoration: underline;
+    float: right;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-family: arial;
+    font-size: 13px;
+ }
+
+.add-offer .text-box.text-full{
+    display: none;
+}
+
 
 #search_form {
     position: relative;
@@ -10208,6 +10222,10 @@ change .current class name using plugin option, currentPanel : 'current' */
     line-height:18px;
 }
 
+.email_settings #all_discussions label{
+    margin-bottom: 5px;
+}
+
 .email_settings label.title{
     font-size:14px;
     font-weight:bold;
@@ -10292,6 +10310,10 @@ change .current class name using plugin option, currentPanel : 'current' */
     display:none;
 }
 
+#close_noti_mail{
+    float: left;
+    margin-left: 345px;
+}
 /* Email Setings Page - End*/
 
 a.facebook_join
@@ -10314,4 +10336,19 @@ a.facebook_join:active
 
 .sb-title   a.facebook_join{
     display: none;
+}
+
+.settings_box{
+    position: relative;
+}
+.spinner{
+    height:16px;
+    padding-right: 16px;
+    background: url(../images/select2/spinner.gif) 0 0 no-repeat;
+}
+.settings_box .notification{
+    display: none;
+    position: absolute;
+    bottom: 10px;
+    left:10px;
 }

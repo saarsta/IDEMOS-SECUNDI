@@ -20,7 +20,6 @@ var error_message = error_message || '';
         <% include partials/failures.ejs %>
         <% include partials/tag_search.ejs %>
     </div>
-    <!--<div >-->
     <div id="content_wrapper">
         <div id="content_main_wrapper">
             <div id="content_main_holder">
@@ -29,17 +28,15 @@ var error_message = error_message || '';
                         <h2 class="title topic"><%=discussion.subject_name%> <img src="/images/arrow_left.png" /></h2>
                         <h2 class="title">  <%=discussion.title%> </h2>
                         <div class="social_holder">
-                            <a class="share_icon" href=""><img src="/images/icon_fb.png"></a>
-                            <a class="share_icon" href=""><img src="/images/icon_tw.png"></a>
-                            <a class="share_icon" href=""><img src="/images/icon_gp.png"></a>
-                            <a class="share_icon" href=""><img src="/images/icon_email.png"></a>
+                            <a id="facebook_share" class="share_icon" href="javascript: void(0)"><img src="/images/icon_fb.png"></a>
+                            <a id="twitter_share" class="share_icon" href="javascript: void(0)"><img src="/images/icon_tw.png"></a>
+                            <a id="google_plus_share" class="share_icon" href="javascript: void(0)"><img src="/images/icon_gp.png"></a>
+                            <a class="share_icon" href="javascript: void(0)"><img src="/images/icon_email.png"></a>
                         </div>
                         <% if(discussion.creator_id){ %>
                         <div class="author">הדיון נפתח ע"י: <a href="/myuru/<%=discussion.creator_id._id%>"> <%=discussion.creator_id.first_name+ " " +discussion.creator_id.last_name %> </a></div>
                         <% } %>
                         <hr />
-
-
                         <div id="short">
 
                             <div id="discussion_image" style="width: 260px;height: 190px; overflow:hidden;" class='auto-scale  img_holder'>
@@ -48,7 +45,7 @@ var error_message = error_message || '';
 
                             <div class="text main_text" style="max-height:180px">
 
-                                <%- discussion.text_field.replace(/\n/g, '<br />') %>
+                                <%- discussion.text_field.replace(/\n/g, '<br>') %>
                             </div>
                             <a class="read_more" href="javascript:void(0);">המשך קריאה</a>
                         </div>
@@ -57,9 +54,7 @@ var error_message = error_message || '';
                             <div class="msg">בחר בעזרת הסמן איזורים בטקסט שברצונך להציע לשנותם</div>
                             <div id="discussion_content" class=""><%- discussion.text_field.replace(/\n/g, '<br />') %></div>
                             <textarea id="discussion_content_textarea" class="hidden_textarea"><%=discussion.text_field%></textarea>
-                            <a class="read_more" href="javascript:void(0);">סגור מאמר</a>
-
-
+                            <a class="read_less" href="javascript:void(0);">סגור מאמר</a>
                         </div>
 
                         <% if( discussion.sub_branding && discussion.sub_branding.length>0) { %>
@@ -87,16 +82,10 @@ var error_message = error_message || '';
                             <span class="tags_title">תגיות:</span>
                             <% for (var c = 0; c <discussion. tags.length; c++) { %>
                                 <span class="tag"><a href="?tag_name=<%=discussion.tags[c]%>"><%=discussion. tags[c] %></a></span>
-
                             <% }%>
-
-
                         </div>
                         <hr />
-
                         <div class="segment_bottom">
-
-
                             <div class="rating_box">
                                 <div class="rating_total">
                                     <%= Math.round(discussion.grade*100)/100 %>
@@ -107,7 +96,6 @@ var error_message = error_message || '';
                                 </div>
                             </div>
                             <div class="slide-box">
-
                                     <div class="slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
                                     <div class="ui-slider-range ui-widget-header ui-slider-range-min" style="width: 0%;"></div><a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 0%;"></a></div>
                                     <div class="slider-numbers">
@@ -123,20 +111,15 @@ var error_message = error_message || '';
                                         <span>10</span>
                                     </div>
                                 </div>
-
                             <div class="button_add_comment">
                                 <input type="button" />
                             </div>
-                            <div class="button_suggest_revisions">
+                            <div class="button_suggest_revisions active">
                                 <input type="button" />
                             </div>
-
-
-
                             <div class="history_details_holder">
-
                                 <hr />
-                                <div class="item">
+                                <div class="item history_button" >
                                     <input  class="history" type="button" />
                                 </div>
                                 <div class="item draft_no">
@@ -149,11 +132,8 @@ var error_message = error_message || '';
                                     על ידי: <span>אברהם אבוחצירא השלישי</span>
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
-
                     <div class="segment info">
                         <h2 class="title">סל מידע</h2>
                         <div id="info_items" class="info_items">
@@ -162,88 +142,62 @@ var error_message = error_message || '';
                             </ul><!-- end Slider #1 -->
                         </div>
                     </div>
-
                 </div>
                 <div id="content_left_sidebar">
+                    <% if (discussion.press_items && discussion.press_items.length>0) { %>
                     <div class="segment press">
                         <h2>מן העיתונות</h2>
                         <div id="press_sidebar_holder">
-                            <div class="item">
-                                <div class="title">
-                                    <img class="logo" src="/images/logo_sample_1.png" />
-                                    <span class="date">29.04.12</span>
-										<span class="text">
-											המאבק בריכוזיות במשק הישראלי כמו גם נושאים נוספים
-										</span>
-                                </div>
-                                <div class="photo">
-                                    <img src="/images/placeholder_img_1.png" />
-                                </div>
-                                <div class="text">
-                                    לשלוט על כמעט כל תחום בחיינו, מהקורנפלקס בבוקר, עמלות הבנקים בצהרים והחדשות בערב. איך מתמודדים עם המצב.
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="title">
-                                    <img class="logo" src="/images/logo_sample_1.png" />
-                                    <span class="date">29.04.12</span>
-										<span class="text">
-											המאבק בריכוזיות במשק הישראלי כמו גם נושאים נוספים
-										</span>
-                                </div>
-                                <div class="photo">
-                                    <img src="/images/placeholder_img_1.png" />
-                                </div>
-                                <div class="text">
-                                    לשלוט על כמעט כל תחום בחיינו, מהקורנפלקס בבוקר, עמלות הבנקים בצהרים והחדשות בערב. איך מתמודדים עם המצב.
-                                </div>
-                            </div>
+
+
                         </div>
                     </div>
-
+                    <%} %>
+                    <% if (discussion.links && discussion.links.length>0) { %>
                     <div class="segment links">
                         <h2>קישורים מועילים</h2>
-                        <div id="press_sidebar_holder">
+                        <div >
+
+                            <% for (var c = 0; c <discussion.links.length; c++) { %>
                             <div class="item">
                                 <div class="title">
-                                    <a href="">החזית העממית לשחרור השחרור</a>
+                                    <a href="<%= discussion.links[c].link %>"><%= discussion.links[c].title %></a>
                                 </div>
+                                <%if(discussion.links[c].text){ %>
                                 <div class="text">
-                                    הריכוזיות במשק מאפשרת למעטים לשלוט על כמעט כל תחום בחיינו, מהקורנפלקס...
+                                    <%= discussion.links[c].text %>
                                 </div>
+                                <%} %>
                             </div>
-                            <div class="item">
-                                <div class="title">
-                                    <a href="">החזית העממית לשחרור השחרור</a>
-                                </div>
-                                <div class="text">
-                                    הריכוזיות במשק מאפשרת למעטים לשלוט על כמעט כל תחום בחיינו, מהקורנפלקס...
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="title">
-                                    <a href="">החזית העממית לשחרור השחרור</a>
-                                </div>
-                                <div class="text">
-                                    הריכוזיות במשק מאפשרת למעטים לשלוט על כמעט כל תחום בחיינו, מהקורנפלקס...
-                                </div>
-                            </div>
+
+
+                            <% }%>
+
+
+
                         </div>
                     </div>
+                    <%} %>
                 </div>
             </div>
-
         </div>
     </div>
-
-
-<span class="popup-window">
+<span class="popup-window" id="new_suggestion_popup">
     <div class="tooltip_2">
         <input id="pop_suggest_bt" value="הוסף הצעה" class="button_add_suggestion" type="text" />
-        <input id="pop_post_bt" value="הגב" class="button_respond" type="text" />
+        <!--
+        <a id="pop_post_bt"  href="#" class="button_respond">
+            <div class="left"></div>
+            <div class="middle">העתק</div>
+            <div class="right"></div>
+        </a>
+        -->
     </div>
 </span>
 
+ <span class="popup-window"  id="old_suggestion_popup">
+    <div class="tooltip_1"><a id="jump_to_suggestion" data-id="" href="javascript:void(0);">ראה הצעה לשינוי הטקסט</a></div>
+</span>
 
     <div id='write-comment' class="write-comment" style="display: none;">
         <h3>
@@ -319,8 +273,12 @@ var error_message = error_message || '';
         </div>
     </div>
     <div id="content_wrapper_comments">
+        <div id="special_post_wrapper_background">
+            <div id="special_post_wrapper">
+
+            </div>
+        </div>
         <div id="comments_wrapper">
-            <div class="pagination_wrapper first_pagination">
 			<div class="pagination_wrapper first_pagination">
                 <div class="pagination">
                 </div>
@@ -330,7 +288,7 @@ var error_message = error_message || '';
                 </div>
             </div>
 
-            <div id="add_comment_wrapper" <%if(user_logged){%> data-creator_id="<%=user._id%>" <%}%> >
+                <div id="add_comment_wrapper" <%if(user_logged){%> data-creator_id="<%=user._id%>" <%}%> >
                 <h2 class="title">כתיבת תגובה</h2>
                 <div class="comment_wrapper">
                     <div class="comment_details">
@@ -365,8 +323,8 @@ var error_message = error_message || '';
                 </div>
                 <input id="submit_post" type="button" class="button_submit_comment" />
             </div>
-    </div>
-  </div>
+        </div>
+      </div>
 
    <% include partials/footer.ejs %>
 
@@ -387,9 +345,10 @@ $(document).ready(function () {
     var original = $('#discussion_content_textarea').val() ;
     var range={};
     var editor;
+    var on_load = true;
 
     // toggle edit class to open/close contxt popup window or edit suggestion button
-    $('#suggestions_wrapper').on('mouseenter', '.text.change_proposal', function(){
+    $('#suggestions_wrapper').on('mouseenter', '.text.change_proposal', function(e){
         var edit_window = $(this).find('.edit_window');
         var window_height = edit_window.height();
         var window_padding = parseInt(edit_window.css("padding-top"));
@@ -400,15 +359,35 @@ $(document).ready(function () {
 
         //set window top
         edit_window.css('top', 0 - window_height - (window_padding * 2 + window_border * 2));
+
     }).on('mouseleave', '.text.change_proposal', function(){
         $(this).parents('.suggestion_wrapper').toggleClass('edit');
     });
 
+    /*$('#suggestions_wrapper').on('mousemove', '.change_proposal', function(e){
+         var edit_window = $(this).find('.edit_window');
+         var change_proposal =  edit_window.parents('.change_proposal');
+         var window_height = edit_window.height();
+         var window_padding = parseInt(edit_window.css("padding-top"));
+         var window_border = parseInt(edit_window.css("border-top-width"));
+
+        var distance_from_top = $(change_proposal).offset().top;
+
+        console.log('yyyyyyyyyyy');
+        console.log(e.pageY);
+        console.log('distance_from_top');
+        console.log(distance_from_top);
+        console.log('window_height - (window_padding * 2 + window_border * 2)');
+        console.log(window_height - (window_padding * 2 + window_border * 2));
+
+
+        console.log(e.pageY);
+        edit_window.css('top', e.pageY - distance_from_top - window_height - (window_padding * 2 + window_border * 2));
+
+    });*/
+
     // when clicking the edit_comment popup show go to creatק suggestion window
     $('#suggestions_wrapper').on('click', '.button_edit_comment', function(){
-//        var text = $(this).parent('.content').text();
-//        var post_id = $(this).parents('.comment_wrapper').data('id');
-//        var content = $(this).parent('.content');
         var $suggestion_content = $(this).next();
         var orig_text = $suggestion_content.find('.original_part').text();
         var alternative_part = $suggestion_content.find('.alternative_part').text();
@@ -500,10 +479,7 @@ $(document).ready(function () {
         $(this).parent().toggleClass('edit');
     });*/
 
-    $('.button_suggest_revisions').click(function(){
-        $(this).toggleClass('active');
-        $('#change_proposal').toggleClass('active');
-    });
+
 
     $('input.history').click(function(){
         $(this).toggleClass('active');
@@ -514,8 +490,13 @@ $(document).ready(function () {
     });
 
     db_functions.getDiscussionShoppingCart(discussion_id, function (err, data) {
+        if (err || data.objects.length === 0) {
+            $('.segment.info').hide();
+            return;
+        }
+
         $.each(data.objects, function (index, item) {
-            dust.render('cycle_information_item', item, function (err, out) {
+            dust.render('discussion_information_item', item, function (err, out) {
                 $('#slider').append(out);
             });
         });
@@ -531,18 +512,27 @@ $(document).ready(function () {
             startPanel   : 1,      // start with this panel
             wrap         : true,   // if true, the panel will "wrap" (it really rewinds/fast forwards) at the ends
             buildNav     : true,   // if true, navigation links will be added
-            navFormatter : function(){ return "&#9679;"; } // function which returns the navigation text for each panel
+            navFormatter : function(){ return "&#9679;"; }, // function which returns the navigation text for each panel
+            completed       : function(e, slider, tar){
+                $('#info_items #slider li').dotdotdot({});
+            }
         });
+
+
     });
 
-    $('.read_more').on('click', function () {
-        $('#short').toggle();
-        $('#full').toggle();
-        var h=  $("textarea").get(0).scrollHeight;
-        $("#full").height(h);
-    });
+
 
     $('#send_suggestion').click(function () {
+        var $this = $(this);
+
+        if ($this.data('executing')){
+            return;
+        }
+
+        $this.data('executing', true);
+        $this.addClass('disable');
+
         var part = {start:range.start, end:range.end, text:$("textarea#discussion_suggest").val()};
 
         // todo i have replaced vision with original, see that it works
@@ -559,6 +549,9 @@ $(document).ready(function () {
 
             db_functions.editSuggestion(sugg_id, part.text, function(err, data){
                 if(!err){
+                    $this.data('executing', false);
+                    $this.removeClass('disable');
+
                     // hide edit box
                     $('#write-comment').hide();
 
@@ -582,6 +575,9 @@ $(document).ready(function () {
 
             db_functions.addSuggestionToDiscussion(discussion_id, [part], explanation, user_info, function (err, data) {
                 if (!err) {
+                    $this.data('executing', false);
+                    $this.removeClass('disable');
+
                     if(data != 'canceled'){
                         if(!user.actions_done_by_user.suggestion_on_object)
                         {
@@ -591,13 +587,14 @@ $(document).ready(function () {
                         /*
                          $("textarea#discussion_suggest").val('');
                          $("#user_tokens").text(data.updated_user_tokens);*/
-                        render_suggestion(data)
+                        render_suggestion(data, true);
                         $(".deals-box").show();
                     }
                 } else {
                     var err = err;
-                    if(err.responseText == "a suggestion with this indexes already exist")
+                    if(err.responseText == "a suggestion with this indexes already exist"){
                         popupProvider.showOkPopup({message:"????? ???? ??? ????? ?????? ?????"});
+                    }
                 }
             });
         }
@@ -695,12 +692,22 @@ $(document).ready(function () {
                     if (my_id)
                         setUserScore(my_id, post.creator_id.score);
                     post.voting = post.votes_for - post.votes_against;
+
+                    //is new comment even or not
+                    var num_of_comments = $('.comment_wrapper.regular_comment').length;
+                    if (num_of_comments % 2 === 0) post. is_even = true;
+
                     dust.render('discussion_comment', post, function (err, out) {
-                        $("#comments").append(out);
+                        var pagination = $(".second_pagination");
+
+                        pagination.before(out);
+                        var bgc =$('.regular_comment').last().css('background-color');
+                        $('.regular_comment').last().css('background-color', 'pink');
+                        $('.regular_comment').last().animate({backgroundColor: bgc}, 2000);
                         $("textarea#discussion_comment").val('');
                         new_post_ref_id = null;
-                        postsNumber++;
-                        setCommentNumber(postsNumber);
+//                        postsNumber++;
+//                        setCommentNumber(postsNumber);
                         $this.data('executing', false);
                         $this.removeClass('disable')
                     });
@@ -709,166 +716,19 @@ $(document).ready(function () {
         })
     });
 
-
-
-//    $('.popup-window .close').on('click', function () {
-//        $('.popup-window').hide();
-//    });
-//
-//    $('.popup-window').on('focus', function (e) {
-//        e.preventDefault();
-//    });
-
-
-    /***************************************************/
-
-//    <%
-//    if (user_logged) { %>
-//        var proxy = JSON.parse('<%-proxy%>');
-//    <%
-//    } else { %>
-//        var proxy = [];
-//    <%
-//    }
-//    %>
-//
-
-
-//    var sugg_grade_id;
     var new_post_ref_id = null;  //if not null =>the create new post is connected to anther post
-
     var discussion_title = "<%= discussion.title%>"
     var discussion_img_field_preview = "<%= discussion.image_field ? discussion.image_field.url ||'' : '' %>";
 
-//    var postsNumber = 0;
+    function setUserScore(userID, score) {
+        $('[ data-creator_id=' + userID + ']').find('.score').empty().append(score);
+    }
 
-//
-//    var vision = $('#discussion_content').text();
-//
-//    var onGiveProxy;
-//
+    function setCommentNumber(number) {
 
-//
-//    $( '#discussion_comment' ).ckeditor(            {
-//        height: 100,
-//        'line-height':10,
-//        language:'he',
-//        removePlugins : 'elementspath',
-//        on :
-//        {
-//            instanceReady : function( ev )
-//            {
-//                editor = this;
-//            }
-//        }
-//    });
-//
-//    $("#proxy_form").dialog({
-//        autoOpen:false,
-//        height:300,
-//        width:350,
-//        modal:true,
-//        buttons:{
-//            "תן/קח אסימונים":function () {
-//
-//                var self = this;
-//
-//                $(self).dialog("disable");
-//                var bValid = true;
-//                if (onGiveProxy) {
-//
-//                    onGiveProxy(Number($('#give_tokens', this).val()), function () {
-//                        $(self).dialog("close");
-//                    });
-//                }
-//            },
-//            'בטל':function () {
-//                $(this).dialog("close");
-//            }
-//        },
-//        open:function () {
-//            $(this).dialog('enable');
-//        }
-//    });
-//
-//    $("#discussion_content").val($("#discussion_content").text());
-//
-//
-//
-//    $(".inline").colorbox({ inline:true, width:"730" });
-//
-//
-//    /***************************************************/
-//
-//
-//    function setUserScore(userID, score) {
-//        $('[ data-creator_id=' + userID + ']').find('.score').empty().append(score);
-//    }
-//
-//    function setCommentNumber(number) {
-//
-//        $('#comments_number')[0].innerHTML = '(' + number + ')';
-//    }
-//
-//
-//
-//
+        $('#comments_number')[0].innerHTML = '(' + number + ')';
+    }
 
-//
-//
-//    $('#comments-box').on('hover', '.date', function (e) {
-//        alert('dsfdsf');
-//    })
-//
-//    $('#suggestion_list').on('click', '#add_or_remove_proxy', function (e) {
-//        var userData = $(this).parents('.discussion-item');
-//        var proxyId = userData.data('creator_id');
-//        var userName = userData.data('creator_name');
-//        var post_id = $(this).parents('.comment-one').attr('id');
-//
-//        e.preventDefault();
-//
-//        if(!my_id){
-//            popupProvider.showLoginPopup({}, function(err, result){
-//                if(!err)
-//                    window.location = window.location + '?user_name=' + userName + '&proxy_id=' + proxyId + '&post_id=' + post_id;
-//            });
-//        }else{
-//            proxyCommon.addOrRemoveProxy(proxy, proxyId, userName, my_id, function(newProxy){
-//                proxy = newProxy.proxy;
-//            })
-//        }
-//    });
-//
-//    var user_name = getURLParameter('user_name');
-//    var proxy_id = getURLParameter('proxy_id');
-//    var post_id = getURLParameter('post_id');
-//
-//    if(user_name  && proxy_id && user_name !== 'null' && proxy_id != 'null'){
-//        proxyCommon.addOrRemoveProxy(proxy, proxy_id, user_name, my_id, function(newProxy){
-//            proxy = newProxy.proxy;
-//            window.location = window.location.pathname+ '#' + post_id;
-//        })
-//    }
-//
-//    $('#comments').on('click', '#add_or_remove_proxy', function (e) {
-//        var userData = $(this).parents('.comment-one');
-//        var proxyId = userData.data('creator_id');
-//        var userName = userData.data('creator_name');
-//        var post_id = $(this).parents('.comment-one').attr('id');
-//        e.preventDefault();
-//        if(!my_id){
-//            popupProvider.showLoginPopup({}, function(err, result){
-//                if(!err)
-//                    window.location = window.location + '?user_name=' + userName + '&proxy_id=' + proxyId + '&post_id=' + post_id;
-//            });
-//        }else{
-//            proxyCommon.addOrRemoveProxy(proxy, proxyId, userName, my_id, function(newProxy){
-//                proxy = newProxy.proxy;
-//            })
-//        }
-//    });
-//
     function vote(actionType){
         var post_id = $(this).parents('.comment_wrapper').data("id");
         var button = $(this);
@@ -913,23 +773,19 @@ $(document).ready(function () {
         vote.apply($(this),['remove']);
     });
 
-//    /*      $('.comments-box .comment-one .user-right').hover(function () {
-//     $(this).toggleClass('hover');
-//     });*/
-//
-//    $('#comments,#suggestion_list').on('mouseenter', ".side_menu",
-//            function (e) {
-//                $(this).addClass('hover');
-//                $('.left', this).show().css({width:0}).animate({'width':87});
-//
-//            }).on('mouseleave', ".side_menu", function (e) {
-//                var side = $(this);
-//                side.removeClass('hover');
-//                $('.left', this).animate({'width':0}, function () {
-//                    $(this).hide();
-//                });
-//            });
-//
+    /* *** scroll to qoutes *** */
+    // click on  quoted-by take you to comment
+    $('#comments_wrapper').on('click', '.quote-ref', '.quote', function () {
+        var post_id = $(this).data('ref-id');
+        scrollTo(window[post_id]);
+    });
+    // click on  quoted take you to comment
+    $('#comments_wrapper').on('click', '.quote', function () {
+        var post_id = "post_" + $(this).parents('.comment_wrapper ').data('ref-id');
+        scrollTo(window[post_id]);
+    });
+    /* *** end of scroll to qoutes *** */
+
     // copy the post text+ user to   discussion_comment
     $('#comments_wrapper').on('click', ".button_quote", function (e) {
         var userName;
@@ -937,6 +793,7 @@ $(document).ready(function () {
         var postDiv = $(this).parents('.comment_wrapper');
         // TODO chnge this text height
         var text_height = $(this).parents('.comment_wrapper ').find('.content').height();
+        new_post_ref_id;
         e.preventDefault();
         userName = postDiv.data('creator_name');
         new_post_ref_id = postDiv.data('id');
@@ -948,7 +805,8 @@ $(document).ready(function () {
                 + text_to_quote
                 + '\n'
                 + "[/ציטוט]"
-                + '<p>&nbsp;</p>';
+                + '<p>&nbsp;</p>'
+                + '\n';
 
         $("textarea#discussion_comment").val($("textarea#discussion_comment").val() + text).focus();
         focusOnCommentBox(text_height);
@@ -956,93 +814,14 @@ $(document).ready(function () {
         $("textarea#discussion_comment").height($("textarea#discussion_comment").height() + text_height);
     });
 
-//    $('#comments').on('click', ".post_quote a", function (e) {
-//
-//        var post_id = $(this).parents(".comment-one").data("id");
-//        var ref_to_post_id = $(this).parents(".comment-one").data("ref-id");
-////        var link = window.location.href;
-////
-////        //remove hash if exist
-////        if(window.location.hash){
-////            link = link.slice(0, link.indexOf("#"));
-////        }
-////        var post_ref_id;
-////        link = link + "#post_id" + post_ref_id;
-//
-//        scrollTo("#post_" + ref_to_post_id);
-//    })
-//
-//
-//    $('#suggestion_list').on('click', ".grey-btn", function (e) {
-//
-//        var userName,
-//                text;
-//
-//        var postDiv = $(this).parents('.one');
-//
-//        e.preventDefault();
-//        $("textarea#discussion_comment").focus();
-//        focusOnCommentBox();
-//        userName = postDiv.data('creator_name');
-//        new_post_ref_id = postDiv.data('id');
-//
-//        var change_text = $('.change_text', postDiv).text();
-//        var explanation = $('.explanation', postDiv).text();
-//
-//
-//        if ($('.explanation', postDiv).text().trim() == "נימוק:") {
-//
-//            text = "[quote=" + '"' + userName + '"' + " " + "]\n"
-//                    + change_text
-//                    + '\n'
-//                    + "[/quote]"
-//                    + '\n';
-//        } else {
-//            text = "[quote=" + '"' + userName + '"' + " " + "]\n"
-//                    + change_text
-//                    + '\n'
-//                    + explanation
-//                    + '\n'
-//                    + "[/quote]"
-//                    + '\n';
-//        }
-//        $("textarea#discussion_comment").val(text).focus();
-//        focusOnCommentBox();
-//    });
-//
-//    $('#comments,#suggestion_list').on('click', ".follow_user", function (e) {
-//        var creator_id = $(this).parents('.comment-one,.one').data("creator_id");
-//        var self = this;
-//
-//        db_functions.joinOrLeaveUserFollowers(creator_id, function (err, user) {
-//            if (user.is_follower)
-//                $(self).text("עקוב");
-//            else
-//                $(self).text("עזוב");
-//
-//
-//        });
-//    });
-//
-
-//
-//    // just focus
-//    $("#discussion_comment_reply_button").on('click', function (e) {
-//        e.preventDefault();
-//        var discussionComment = $("textarea#discussion_comment").focus();
-//        focusOnCommentBox();
-//    });
-//
-    var suggest_grade_id = new Object();
-
     var current_offset = 0;
-    var limit = 2;
+    var limit = 20;
     var num_of_pages;
     var num_of_pages_in_section = 7;
     var total_post_count;
 
     //render change suggestion
-    function render_suggestion(suggestion) {
+    function render_suggestion(suggestion, use_animation) {
         // get original text and alternative text
         if (suggestion.parts && suggestion.parts.length) {
             suggestion.original_part = function () {
@@ -1050,13 +829,34 @@ $(document).ready(function () {
                 var end = suggestion.parts[0].end;
                 return original.substr(from, end - from);
             };
+
+            // set text for context popup
+            suggestion.context_before = original.substring(Math.max(suggestion.parts[0].start - 400, 0), suggestion.parts[0].start, suggestion.parts[0].start);
+            suggestion.context_after = original.substring(suggestion.parts[0].end, Math.min(original.length, suggestion.parts[0].end + 400));
+
             suggestion.alternative_part = function () {
                 return suggestion.parts[0].text;
             };
 
             dust.render('discussion_suggestion', suggestion, function (err, out) {
-                $('#suggestions_wrapper').prepend(out);
+                $('#suggestions_wrapper').append(out);
                 image_autoscale($('#suggestions_wrapper .auto-scale img'));
+
+                if(use_animation == true){
+                    var bgc =$('.suggestion_holder').last().css('background-color');
+                    $('.suggestion_holder ').last().css('background-color', 'pink');
+                    $('.suggestion_holder ').last().animate({backgroundColor: bgc}, 3000);
+                }
+                // check if got here after not logged user tryed to grade suggestion
+                var action = getURLParameter('action');
+                if (action !== "null") {
+                    var id = window.location.hash;
+                    action = ".button_" + action;
+
+                    if (!id) return false;
+
+                    $(id).find('.suggestion_bottom_segment ' + action + ' input').click();
+                }
             });
         }
         return null;
@@ -1066,10 +866,24 @@ $(document).ready(function () {
     var first_suggestion;
 
     // get change suggestions and render
-    db_functions.getSuggestionByDiscussion(discussion_id, 1, 0, function (err, data) {
+    db_functions.getSuggestionByDiscussion(discussion_id, 0, 0, function (err, data) {
+
+        if(err || data.objects.length === 0) return false;
+
+        $.each(data.objects, function(index, suggestion){
+            suggestion.my_discussion_grade = my_discussion_grade;
+            suggestion.my_grade_val = suggestion.grade_obj ? suggestion.grade_obj.evaluation_grade : my_discussion_grade;
+            suggestion.my_grade_id = suggestion.grade_obj ? suggestion.grade_obj._id : null;
+        })
+
         suggestions_list = data.objects ;
         displaySuggestionsRanges();
-        $.each(data.objects, function (index, suggestion) {
+        suggestion = suggestions_list[0];
+
+            // set title and img for fb share
+            suggestion.title = discussion_title;
+            suggestion.image_field_preview = discussion_img_field_preview;
+
             render_suggestion(suggestion);
 
             var curr_suggestion = $('#suggestions_wrapper').find('[data-id=' + suggestion.id + ']');
@@ -1079,16 +893,24 @@ $(document).ready(function () {
                 // set comments counter
                 curr_suggestion.find('.comments_counter span').text(data.objects.length);
 
+                if (data.objects.length===0){
+                    curr_suggestion.find('.close').hide();
+                }
+
                 $.each(data.objects, function (index, comment) {
+                    var is_first_comment = (index == 0);
                     comment.is_even = (index % 2) == 0;
                     dust.render('comment_on_suggestion', comment, function (err, out) {
                         // append before "add_comment"
                         curr_suggestion.find('.suggestion_comments_holder .add_comment').before(out);
+                        if (is_first_comment) {
+                            $(curr_suggestion).find('.suggestion_comments_holder .comment').show();
+                        }
                         image_autoscale(curr_suggestion.find('.auto-scale img'));
                     });
                 });
             })
-        });
+
 
         $('#suggestion_number').text(' (' + data.meta.total_count + ')');
         if (data.objects.length > 0) {
@@ -1099,9 +921,10 @@ $(document).ready(function () {
                 $(".more-deals").show();
 
                 $(".more-deals a").on('click', function (e) {
+                    $('#suggestions_wrapper').empty();
                     var self = $(this);
                     if($(this).data('executing')){
-                        $('#suggestions_wrapper').empty();
+
                         render_suggestion(first_suggestion);
                         curr_suggestion = $('#suggestions_wrapper').find('[data-id=' + first_suggestion.id + ']');
 
@@ -1110,10 +933,15 @@ $(document).ready(function () {
                             curr_suggestion.find('.comments_counter span').text(data.objects.length);
 
                             $.each(data.objects, function (index, comment) {
+                                var is_first_comment = (index == 0);
                                 comment.is_even = (index % 2) == 0;
+
                                 dust.render('comment_on_suggestion', comment, function (err, out) {
                                     // append before "add_comment"
                                     curr_suggestion.find('.add_comment').before(out);
+                                    if (is_first_comment) {
+                                        $(curr_suggestion).find('.suggestion_comments_holder .comment').show();
+                                    }
                                     image_autoscale(curr_suggestion.find('.auto-scale img'));
                                 });
                             });
@@ -1122,61 +950,112 @@ $(document).ready(function () {
                         $(this).removeClass('flip');
 
                         $(this).data('executing', false);
+                        scrollTo('#content_wrapper_suggestions')
                         return false;
                     }else{
-                        db_functions.getSuggestionByDiscussion(discussion_id, null, 1, function (err, data) {
-                            $.each(data.objects, function (index, suggestion) {
-                                render_suggestion(suggestion);
-
-                                db_functions.getCommentsBySuggestion(suggestion.id, function(err, data){
-                                    curr_suggestion = $('#suggestions_wrapper').find('[data-id=' + suggestion.id + ']') ;
-
-                                    // set comments counter
-                                    curr_suggestion.find('.comments_counter span').text(data.objects.length);
-
-                                    $.each(data.objects, function (index, comment) {
-
-                                        comment.is_even = (index % 2) == 0;
-                                        dust.render('comment_on_suggestion', comment, function (err, out) {
-                                            // append before "add_comment"
-                                            curr_suggestion.find('.add_comment').before(out);
-                                            image_autoscale(curr_suggestion.find('.auto-scale img'));
-                                        });
-                                    });
-                                })
-                            });
-                        });
-
-                        self.text('סגור הצעות ');
-                        $(this).addClass('flip');
-                        $(this).data('executing', true);
-                        return false;
+                         return displayAllSuggestions(self) ;
                     }
                 });
             }
+
+             // if needs to scroll to suggestion that is not shown, open list of suggestions and scroll to suggestion
+             var hash = window.location.hash;
+             if(hash){
+                 if (!scrollTo(hash)) {
+                 var match = /^#post_([0-9a-f]+)/.exec(hash);
+
+                 if (!match) return false;
+
+                 var is_suggestion = false;
+                 $.each(suggestions_list, function(index, suggestion){ if ("#post_" + suggestion.id + "" == hash) is_suggestion = true });
+                     if (is_suggestion){
+                        $(".more-deals a").click();
+                     }
+                 }
+             }
         }
         else {
             $(".content_break_content").hide();
         }
     });
 
-    $('#suggestions_wrapper').on('keyup', '.add_comment input', function(e){
+
+    function displayAllSuggestions(self){
+        var XHRs = [];
+
+        $.each(suggestions_list, function (index, suggestion) {
+
+ 			// set title and img for fb share
+            suggestion.title = discussion_title;
+            suggestion.image_field_preview = discussion_img_field_preview;
+
+            render_suggestion(suggestion);
+
+            XHRs.push(db_functions.getCommentsBySuggestion(suggestion.id, function(err, data){
+                curr_suggestion = $('#suggestions_wrapper').find('[data-id=' + suggestion.id + ']') ;
+
+                // set comments counter
+                curr_suggestion.find('.comments_counter span').text(data.objects.length);
+                var is_first_comment;
+
+                $.each(data.objects, function (index, comment) {
+                    is_first_comment = (index == 0);
+                    comment.is_even = (index % 2) == 0;
+                    dust.render('comment_on_suggestion', comment, function (err, out) {
+                        // append before "add_comment"
+                        curr_suggestion.find('.add_comment').before(out);
+                        if (is_first_comment) {
+                            $(curr_suggestion).find('.suggestion_comments_holder .comment').show();
+                        }
+                        image_autoscale(curr_suggestion.find('.auto-scale img'));
+                    });
+                });
+            }))
+
+            //run a function when all deferred objects resolve
+            $.when(XHRs).then(function (){
+                // if needs to scroll to suggestion that is not shown, open list of suggestions and scroll to suggestion
+                var hash = window.location.hash;
+                if(hash && on_load){
+                   scrollTo(hash);
+                   on_load = false;
+                }
+            });
+        });
+
+        self.text('סגור הצעות ');
+        self.addClass('flip');
+        self.data('executing', true);
+        return false;
+    }
+
+    $('#suggestions_wrapper').on('keyup', '.add_comment textarea', function(e){
         if(e.keyCode == 13)
         {
+            var self = $(this);
             var text = $(this).val();
+            if (text.trim() == '') return false;
+
             var suggestion_id = $(this).parents('.suggestion_wrapper').data('id');
             var add_comment = $(this).parent('.add_comment');
             var can_continue = $(this).parent().data('can-add');
 
             if (can_continue){
                 $(this).parent().attr('data-can-add', false);
+
                 db_functions.addCommentToSuggestion(suggestion_id, discussion_id, text, function(err, comment){
                     $(this).parent().attr('data-can-add', true);
-                    add_comment.find('input').val('');
-//                comment.is_even = (index % 2) == 0;
+                    add_comment.find('textarea').val('');
+                    var $suggestion = $('[data-id=' + suggestion_id + ']');
+                    var num_of_comments = $suggestion.find('.suggestion_comments_holder .comment').length;
+                    if (num_of_comments % 2 === 0) comment.is_even =  true;
+
                     dust.render('comment_on_suggestion', comment, function (err, out) {
                         // append before "add_comment"
                         add_comment.before(out);
+                        $suggestion.find('.comments_counter span').text(num_of_comments + 1);
+                        self.parents('.suggestion_wrapper').find('.comment').show();
+                        self.parents('.suggestion_wrapper').find('.close').show();
                         image_autoscale(add_comment.parent('.suggestion_comments_holder').find('.auto-scale img'));
                     });
                 });
@@ -1190,6 +1069,13 @@ $(document).ready(function () {
         $(this).parents('.suggestion_wrapper').find('.comment').hide();
     });
 
+    $(".comments_counter a").live("click",function(){
+        $(this).parents('.suggestion_wrapper').find('.comment').show();
+        $(this).parents('.suggestion_wrapper').find('.close').show();
+        image_autoscale('.auto-scale img');
+    });
+
+
     function renderComments(comments) {
 
         //first clear existing comments
@@ -1198,7 +1084,7 @@ $(document).ready(function () {
         var i;
         for (i = 0; i < comments.length; i++) {
             comments[i].isFirst = (i === 0);
-            comments[i].is_even = ((i % 2)== 0);
+            comments[i].is_even = ((i % 2) == 0);
             comments[i].voting = comments[i].votes_for - comments[i].votes_against;
         };
 
@@ -1208,7 +1094,7 @@ $(document).ready(function () {
                 var pagination = $(".second_pagination");
                 pagination.before(out);
                 var hash = window.location.hash;
-                if (hash) {
+                    if (hash) {
                     if (!scrollTo(hash)) {
                         var match = /^#post_([0-9a-f]+)/.exec(hash);
                         if (match) {
@@ -1240,17 +1126,32 @@ $(document).ready(function () {
                         instanceReady : function( ev )
                         {
                             editor = this;
-                            editor = this;
                         }
                     }
                 });
-//             initTooltipWithMessage($('#comments .right .respect'), 'מוניטין');
+
+
+                try{
+                    FB.XFBML.parse($('#comments_wrapper').get(0));
+                }catch(ex){
+                    console.log('fb parse didnt work');
+                }
+
+
             }
         });
     }
 
     //set pagination
     function setPagination(){
+
+        // in case there is only one page hide pagiation
+        if (num_of_pages <= 1){
+            $('.pagination').empty();
+            $('.pagination').append('<span class="title">עמודים (' + num_of_pages + '):</span>');
+            return
+        }
+
         var new_span;
         var pages = Math.min(num_of_pages_in_section, num_of_pages);
         $('.pagination').append('' +
@@ -1276,17 +1177,13 @@ $(document).ready(function () {
             '<a href="javascript: void(0)"><span class="last"></span></a>');
     }
 
-	 function loadSpecialPost(type, class_type, title){
-        db_functions.getPostByTypeByDiscussion(discussion_id, type, function(err, data){
-            if (!err){
-                var special_post = data.objects[0];
-                special_post.class_type = class_type;
-                special_post.title = title;
-
-                dust.render('discussion_special_comment', special_post, function (err, out) {
-                    $('#comments_wrapper').prepend(out);
-                    $('.comment_wrapper .content').dotdotdot({});
-                    image_autoscale($('#comments_wrapper .auto-scale img'));
+	 function loadSpecialPosts(){
+        db_functions.getSpecialPostsByDiscussion(discussion_id, function(err, data){
+            if (!err  && data.objects.length != 0){
+                dust.renderArray('discussion_special_comment', data.objects, null, function (err, out) {
+                    $('#special_post_wrapper').prepend(out);
+                    $('#special_post_wrapper .content').dotdotdot({});
+                    image_autoscale($('#special_post_wrapper .auto-scale img'));
                 });
             }
         })
@@ -1299,8 +1196,25 @@ $(document).ready(function () {
 
         // get posts with current offset
         db_functions.getSortedPostByDiscussion(discussion_id, selectedOption || '-creation_date', current_offset, limit, function (err, data) {
-            if (err) {
+            if (err || data.objects.length === 0) {
                 console.log(err);
+                if(!err){
+                    $('#discussion_comment').ckeditor({
+                        height: 70,
+                        width: 810,
+                        'line-height':10,
+                        language:'he',
+                        removePlugins : 'elementspath',
+                        on :
+                        {
+                            instanceReady : function( ev )
+                            {
+
+                                editor = this;
+                            }
+                        }
+                    });
+                }
             } else {
                 total_post_count = data.meta.total_count;
                 num_of_pages = Math.ceil(total_post_count / limit);
@@ -1323,7 +1237,7 @@ $(document).ready(function () {
                         }
 
                         //removeing 3 dots
-                        if ((parseInt($('.first_pagination .pagination .page[data-last=true]').text()) === num_of_pages)){
+                        if ((parseInt($($('.first_pagination .pagination .page[data-last=true]')[0]).text()) === num_of_pages)){
                             //remove 3 dots
                             $('.pagination .up-dots').remove();
                         }
@@ -1336,13 +1250,13 @@ $(document).ready(function () {
                             a.text(parseInt(a.text()) - paging_down);
                         });
 
-                        if ($('.first_pagination .pagination .page[data-first=true]').text() === "1"){
+                        if ($($('.first_pagination .pagination .page[data-first=true]')[0]).text() === "1"){
                             //remove 3 dots
                             $('.pagination .down-dots').remove();
                         }
                         // addinnd 3 dots
-                        if ($('.pagination .up-dots').length === 0 && parseInt($('.first_pagination .pagination .page[data-last=true]').text()) < num_of_pages ){
-                            $('.pagination .next').before('<span class="page up-dots">...</span>');
+                        if ($('.pagination .up-dots').length === 0 && parseInt($($('.first_pagination .pagination [data-first=true]')[0]).text()) < num_of_pages ){
+                            $('.pagination .next').parent().before('<span class="page up-dots">...</span>');
                         }
                     }
                     if (pagination_action === 'first' || pagination_action === 'last'){
@@ -1355,9 +1269,9 @@ $(document).ready(function () {
                             //remove 3 dots
                             $('.pagination .down-dots').remove();
                         }else{
-                            if(num_of_pages_in_section === num_of_pages){
+                            if(num_of_pages_in_section >= num_of_pages){
                                 // no need to change page numbers
-                                page_counter = 0;
+                                page_counter = 1;
                             }else{
                                 page_counter = num_of_pages - num_of_pages_in_section + 1;
                             }
@@ -1378,9 +1292,17 @@ $(document).ready(function () {
                             a.text(temp_counter++);
                         });
 
+
+                        // TODO add remove dots here and remove it from other parts
+
                         // addinnd 3 dots
-                        if ($('.pagination .down-dots').length === 0 && parseInt($('.first_pagination .pagination [data-first=true]').text()) > 1){
+                        if ($('.pagination .down-dots').length === 0 && parseInt($($('.first_pagination .pagination [data-first=true]')[0]).text()) > 1){
                             $('.pagination').find("[data-first=true]").before('<span class="page down-dots">...</span>');
+                        }
+
+                        // addinnd 3 dots
+                        if ($('.pagination .up-dots').length === 0 && parseInt($($('.first_pagination .pagination [data-last=true]')[0]).text()) < num_of_pages ){
+                            $('.pagination .next').parent().before('<span class="page up-dots">...</span>');
                         }
                     }
 
@@ -1425,7 +1347,7 @@ $(document).ready(function () {
             action = $(this).find('span').attr('class');
 
             if (page_number === 1 && action === 'prev') return false;
-            if (page_number === num_of_pages && action === 'next') return false;
+            if ((page_number === num_of_pages && action === 'next') || (page_number === num_of_pages && action === 'last')) return false;
             if (is_last && action === 'next'){
                 action = 'move_up';
             }
@@ -1466,21 +1388,7 @@ $(document).ready(function () {
 //        loadPosts();
 //    });
 //
-//    $('#comments').on('hover', ".right .proxy", function (e) {
-//
-//        var name = $(this).parents(".comment-one").data("creator_name");
-//        var num_of_proxies = $(this).parents(".comment-one").data("num_of_proxies");
-//        var text = "מנדטים: " + name + " מייצג " + num_of_proxies + " חברי עורו ";
-//        initTooltipWithMessage($('#comments .right .proxy'), text);
-//    })
-//
-//    $('#suggestion_list').on('hover', ".right .proxy", function (e) {
-//
-//        var name = $(this).parents(".comment-one").data("creator_name");
-//        var num_of_proxies = $(this).parents(".comment-one").data("num_of_proxies");
-//        var text = "מנדטים: " + name + " מייצג " + num_of_proxies + " חברי עורו ";
-//        initTooltipWithMessage($('#comments .right .proxy'), text);
-//    })
+
 //
 //    $('#sorting_select').change(function() {
 //        $("#comments").empty();
@@ -1488,8 +1396,9 @@ $(document).ready(function () {
 //        loadPosts();
 //    });
 
-    loadSpecialPost('total_votes', 'most_contr', 'התגובה השנויה במחלוקת');
-    loadSpecialPost('popularity', 'most_pop', 'התגובה הפופולרית ביותר');
+    loadSpecialPosts();
+//    loadSpecialPost('total_votes', 'most_contr', 'התגובה השנויה במחלוקת');
+//    loadSpecialPost('popularity', 'most_pop', 'התגובה הפופולרית ביותר');
     loadPosts();
 
     function focusOnCommentBox(text_height){
@@ -1514,13 +1423,12 @@ $(document).ready(function () {
 
     function displaySuggestionsRanges(){
         $.each(suggestions_list, function (index, suggestion) {
-           var text =  original.substr(suggestion.parts[0].start,suggestion.parts[0].end - suggestion.parts[0].start);
-           console.log(text);
-           text=text.replace(/\r\n/g, '<br />');
-            console.log(text);
-          //  <span class="marker_1">ללחצים פוליטיים דרך מערכת המינויים. מצד שני, המדינה מממנת ישירות לא מעט גופים שנותרים עצמאיים בכל זאת, כמו בתי המשפט, מבקר המדינה, </span>
            var html =    $('#discussion_content').html();
-            html=html.replace(text,'<span data-id="'+suggestion.id+'" class="marker_1">'+text+'</span>');
+           var text =  original.substr(suggestion.parts[0].start,suggestion.parts[0].end - suggestion.parts[0].start);
+         //  console.log(text);
+           text=text.replace(/\r\n/g, '\r\n<br>');
+           text=text.replace(/\n/g, '\n<br>') ;
+           html =  html.substring(0, suggestion.parts[0].start) +html.substring(suggestion.parts[0].start).replace(text,'<span data-id="'+suggestion.id+'" class="marker_1">'+text+'</span>');;
            $('#discussion_content').html(html);
 
         })
@@ -1540,7 +1448,7 @@ $(document).ready(function () {
                 var err = false;
 
                 left = Math.ceil((mouseDown.clientX + mouseUp.clientX) / 2 - 97);
-                top = Math.min(mouseDown.clientY, mouseUp.clientY) - $(".popup-window").height() - 40 + $(window).scrollTop() + 40;
+                top = Math.min(mouseDown.clientY, mouseUp.clientY) - $("#new_suggestion_popup").height() - 40 + $(window).scrollTop() +35;
 
                // original = $('<div />').html(original).text();
 //                if(window.getSelection){
@@ -1556,26 +1464,58 @@ $(document).ready(function () {
                 //////////////////  show pop up   /////////////////
                 discoverRange (range_txt)  ;
                 flag = false;
-                $.each(suggestions_list, function (index, suggestion) {
-                    if (        (suggestion.parts[0].start >= range.start && suggestion.parts[0].start <= range.end)
-                            ||  (suggestion.parts[0].end >= range.start && suggestion.parts[0].end <= range.end)
-                            ||  (range.start >= suggestion.parts[0].start && range.end  <= suggestion.parts[0].end )) {
-                        flag = true;
-                    }
-                })
+                if(suggestions_list){
+                    $.each(suggestions_list, function (index, suggestion) {
+                        if (        (suggestion.parts[0].start >= range.start && suggestion.parts[0].start <= range.end)
+                                ||  (suggestion.parts[0].end >= range.start && suggestion.parts[0].end <= range.end)
+                                ||  (range.start >= suggestion.parts[0].start && range.end  <= suggestion.parts[0].end )) {
+                            flag = true;
+                        }
+                    })
+                }
+
                 if(flag) {
-                    popupProvider.showOkPopup({message:"הטקסט סומן כבר בהצעה לשינוי קיימת"});
-                }else if(range_txt.length >0){
-                    $(".popup-window")
-                            .css({ top:top, left:left, opacity:0 })
+             //       popupProvider.showOkPopup({message:"הטקסט סומן כבר בהצעה לשינוי קיימת"});
+                }else if(range_txt.length >0 ){
+                    $("#new_suggestion_popup")
+                            .css({ top:top, left: (e.pageX-97), opacity:0 })
                             .show()
                             .animate({ top:'-=20px', opacity:1 }, 100, 'linear');
                 } else{
-                    $(".popup-window").hide();
+                    $("#new_suggestion_popup").hide();
                 }
                 //////////////////////////////////////////////////
                 console.log(range_txt.length+'  '+range_txt);
             });
+
+    var old_suggestion_popup_visible=false;
+    $(".marker_1").live("mouseenter", function (e) {
+        if( $('.button_suggest_revisions').hasClass('active') ){
+            if(old_suggestion_popup_visible==false)   {
+                old_suggestion_popup_visible=true;
+                $("#old_suggestion_popup a").data('id', $(this).data('id'));
+                //var left =$(this).offset().left +($(this).width() /2) - 80;
+                var left = e.pageX-85;
+                var top = $(this).offset().top-60;
+                $("#old_suggestion_popup")
+                        .css({ top:top, left:left, opacity:1 })
+                        .show()
+                //  .animate({ top:'-=20px', opacity:1 }, 100, 'linear');
+            }
+        }
+
+    }).live("mouseleave", function () {
+                old_suggestion_popup_visible=false;
+      //  $("#old_suggestion_popup").hide();
+    });
+
+    $("#old_suggestion_popup a").live("click", function () {
+        $(".more-deals a").click();
+        var id= $(this).data('id')  ;
+        $('html, body').animate({
+            scrollTop: $("div[data-id=" +id+ "]").offset().top
+        }, 500);
+    }  );
 
     function discoverRange(text){
         var t=text;
@@ -1605,22 +1545,40 @@ $(document).ready(function () {
     }
 
 
-    $('body').mouseup(function(){
-        $(".popup-window").hide();
-    });
+    $('body').mouseup(function(e){
+        var target =$(e.target).get(0) ;
+        if(target!=  $('#pop_post_bt').get(0) && target !=  $('#pop_suggest_bt').get(0) ) {
+            $(".popup-window").hide();
+        }
 
+        var container = $(".arrow_box_container");
+
+        if ((container.has(e.target).length === 0) && (!$(e.target).hasClass('grading_button'))){
+            container.hide();
+            $('.slider-is-open').removeClass('slider-is-open');
+        }
+    });
 
     // focus and copy the selected text of discussion
-    $('#pop_post_bt').click( function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        new_post_ref_id = null;
-        $(".popup-window").hide();
-        $("textarea#discussion_comment").val('"' + range_txt + '"');
-        focusOnCommentBox();
-    });
+//    $('#pop_post_bt').click( function (e) {
+//        console.log("pop_post_bt");
+//        e.preventDefault();
+//        e.stopPropagation();
+//        new_post_ref_id = null;
+//        $(".popup-window").hide();
+//
+//        /*
+//        $("textarea#discussion_comment").val('"' + range_txt + '"');
+//        focusOnCommentBox();
+//        $('html, body').animate({
+//            scrollTop: $("#add_comment_wrapper").offset().top
+//        }, 500);
+//        */
+//    });
 
-    $('#pop_suggest_bt').click( function (e) {
+
+    $('#pop_suggest_bt').click(function (e) {
+        console.log("pop_suggest_bt");
         e.stopPropagation();
         e.preventDefault();
         $('#discussion_content_txt').text('"' + range_txt + '"');
@@ -1628,9 +1586,352 @@ $(document).ready(function () {
         $('textarea#discussion_suggest').focus();
         $('#reload-img').attr('src', $('#reload-img').attr('src'));
         $(".popup-window").hide();
+        $('html, body').animate({
+            scrollTop: $("#write-comment").offset().top
+        }, 500);
+
+    });
+
+    var depress_event = false;
+
+
+    $(".suggestion_bottom_segment input").live("click", function (e) {
+
+        var slider_box = $(this).parents(".suggestion_wrapper").find(".arrow_box_container");
+
+        // first check if sliding popup is already open, if so close it
+        if ($(this).parent().hasClass('slider-is-open')){
+            slider_box.slideUp();
+            $('.slider-is-open').removeClass('slider-is-open');
+            return false;
+        }
+
+        var self = this;
+        var $suggestion_wrapper = $(this).parents(".suggestion_wrapper");
+        var grade_against = $(this).parent().hasClass('button_against');
+
+
+        if (!my_id){
+            //open popup window
+            popupProvider.showLoginPopup({}, function(err){
+                if (!err) {
+                    var set_query = grade_against ? "?action=against" : "?action=pro";
+                    window.location = window.location + set_query + '#' + $suggestion_wrapper.attr('id');
+                }
+            });
+        }
+
+
+        var suggestion_id = $suggestion_wrapper.data('id');
+        var suggestion_grade_val = $suggestion_wrapper.data('my_grade');
+        var suggest_grade_id = $suggestion_wrapper.data('my_grade_id');
+
+        // first add default grade and then user can change it
+        var default_rating = grade_against ? Math.max(my_discussion_grade - 0.1, 0) : Math.min(my_discussion_grade + 0.1, 10);
+        var user_info = {
+            user_logged_in : user.first_name ? true : false,
+            action_done : (user.actions_done_by_user && user.actions_done_by_user.grade_object) ? true : false,
+            action_name : "grade_object",
+            tokens_owned : user.tokens ? user.tokens : 0,
+            price: gamification_price['grade_suggestion']
+        }
+
+        db_functions.addSuggestionGrade(suggestion_id, discussion_id, default_rating, suggest_grade_id, user_info, function (err, data) {
+            if (!err) {
+                var $suggestion = $("div[data-id=" + suggestion_id + "]");
+                $suggestion.find('.supporters_wanted span').text(data.wanted_amount_of_tokens);
+                $suggestion.find('.supporters_current span').text(Math.round(data.curr_amount_of_tokens));
+
+                suggest_grade_id = data.grade_id;
+                $suggestion_wrapper.data('my_grade_id', data.grade_id);
+            }
+            else
+            {
+                depress_event = true;
+                $(".suggest_slider_" + suggestion_id).slider("value", suggestion_grade_val || 0);
+                depress_event = false;
+                console.log(err);
+            }
+        });
+
+        slider_box.slideDown();
+        $('.slider-is-open').removeClass('slider-is-open');
+        $(this).parent().addClass('slider-is-open');
+
+        slider_box.find(".slider").slider({
+            disabled: is_creator,
+            value: my_discussion_grade, // dmy_discussion_grades instead of my_suggestion grade to prevent deadlock in slider
+            range:"min",
+            min: 0,
+            max: 10,
+            step:0.10,
+            slide: function(event, ui){
+
+                // prevent slider to go under discussion_grade
+                var current = ui.value;
+                if (grade_against){
+                    if(current > my_discussion_grade){
+                        current = my_discussion_grade;
+                        return false;
+                    }
+                }else{
+                    if(current < my_discussion_grade){
+                        current = my_discussion_grade;
+                        return false;
+                    }
+                }
+            },
+            change:function (event, ui) {
+                if (event.originalEvent) {
+                    var my_prev_grade = suggestion_grade_val;
+                    if(depress_event)
+                        return;
+                    var rating = ui.value;
+                    var user_info = {
+                        user_logged_in : user.first_name ? true : false,
+                        action_done : (user.actions_done_by_user && user.actions_done_by_user.grade_object) ? true : false,
+                        action_name : "grade_object",
+                        tokens_owned : user.tokens ? user.tokens : 0,
+                        price: gamification_price['grade_suggestion']
+                    }
+                    db_functions.addSuggestionGrade(suggestion_id, discussion_id, rating, suggest_grade_id, user_info, function (err, data) {
+                        if (!err) {
+                            if(data == 'canceled'){
+                                $(".suggest_slider_" + suggestion_id).slider('value',my_prev_grade);
+                            } else {
+                                var $suggestion = $("div[data-id=" + suggestion_id + "]");
+                                $suggestion.find('.supporters_wanted span').text(data.wanted_amount_of_tokens);
+                                $suggestion.find('.supporters_current span').text(Math.round(data.curr_amount_of_tokens));
+                                $suggestion_wrapper.data('my_grade_id', data.grade_id);
+                            }
+                        }
+                        else
+                        {
+                            depress_event = true;
+                            $(".suggest_slider_" + suggestion_id).slider("value", suggestion_grade_val || 0);
+                            depress_event = false;
+                            console.log(err);
+                        }
+                        slider_box.slideUp();
+                        $(this).parent().removeClass('slider-is-open');
+                    });
+                }
+            }
+        });
+    });
+
+    $('#facebook_share').one('click', function(event){
+        sendFacebookShare("/facebookShare?link=/discussions/" + discussion_id, discussion_title, discussion_img_field_preview, original, null, function(err){
+            if(err){
+                alert('Error occured');
+            }
+        });
+    })
+
+    $('#twitter_share').one('click', function(event){
+        function twitterShare () {
+            window.open('https://twitter.com/share?url=' + encodeURIComponent('http://www.uru.org.il/discussions/' + discussion_id) + '&text=' +
+                    encodeURIComponent(discussion_title) + '&via=URUisrael', 'share-twitter', 'status=0,scrollbars=0,location=0,height=320,width=660,resizable=1'
+            );
+            return false;
+        }
+    });
+
+    $('#google_plus_share').one('click', function () {
+        window.open('https://plusone.google.com/_/+1/confirm?hl=en&url=' + encodeURIComponent('http://www.uru.org.il/discussions/' + discussion_id),
+                'share-google', 'status=0,scrollbars=0,location=0,height=320,width=660,resizable=1');
+        return false;
+    });
+
+    $('#mail_share').on('click', function () {
+        $("#cloudsponge").slideToggle();
+        return false;
+    });
+
+    db_functions.getPressItemsByDiscussion(discussion_id, function (err, data) {
+        $.each(data.objects, function (index, press_item) {
+            switch(press_item.source){
+                case "הארץ":
+                    press_item.source_image=  "haaretz.gif";
+                    break;
+                case "כלכליסט":
+                    press_item.source_image=  "calcalist.png";
+                    break;
+                case "גלובס":
+                    press_item.source_image=  "globes.jpg";
+                    break;
+                case "mako":
+                    press_item.source_image=  "mako.png";
+                    break;
+                case "nrg":
+                    press_item.source_image=  "nrg.jpg";
+                    break;
+                case "walla":
+                    press_item.source_image=  "walla.jpg";
+                    break;
+                case "ynet":
+                    press_item.source_image=  "ynet.gif";
+                    break;
+                case "דה מרקר":
+                    press_item.source_image=  "themarker.png";
+                    break;
+            }
+            dust.render('discussion_press_item', press_item, function (err, out) {
+               $('#press_sidebar_holder').append(out);
+            });
+        });
+    });
+
+
+    <%
+    if (user_logged) { %>
+        var proxy = JSON.parse('<%-proxy%>');
+    <%
+    } else { %>
+        var proxy = [];
+    <%
+    }
+    %>
+
+
+    $('#suggestions_wrapper').on('click', '#add_or_remove_proxy', function (e) {
+        var userData = $(this).parents('.person');
+        var proxyId = userData.data('id');
+        var userName = userData.data('name');
+        var post_id = $(this).parents('.suggestion_wrapper').data('id');
+
+        e.preventDefault();
+
+        if(!my_id){
+            popupProvider.showLoginPopup({}, function(err, result){
+                if(!err)
+                    window.location = window.location + '?user_name=' + userName + '&proxy_id=' + proxyId + '&post_id=' + post_id;
+            });
+        }else{
+            proxyCommon.addOrRemoveProxy(proxy, proxyId, userName, my_id, function(newProxy){
+                proxy = newProxy.proxy;
+            })
+        }
+    });
+    $(".person .actions_box_container ,.person .img-box ,.person .name").live("mouseover",function(){
+        $(this).parent().find(".name").css("background-image","none")
+        $(this).parent().find(".actions_box_container").slideDown()
+
+    }) ;
+
+    $(".person").live("mouseleave",function(){
+        $(this).find(".actions_box_container").slideUp(function(){
+            $(this).parent().find(".name").css("background-image","url(/images/sep_photo.png)")
+        })
+
+    }) ;
+
+
+
+//    var user_name = getURLParameter('user_name');
+//    var proxy_id = getURLParameter('proxy_id');
+//    var post_id = getURLParameter('post_id');
+//
+//    if(user_name  && proxy_id && user_name !== 'null' && proxy_id != 'null'){
+//        proxyCommon.addOrRemoveProxy(proxy, proxy_id, user_name, my_id, function(newProxy){
+//            proxy = newProxy.proxy;
+//            window.location = window.location.pathname+ '#' + post_id;
+//        })
+//    }
+
+    $('#comments_wrapper').on('click', '#add_or_remove_proxy', function (e) {
+        var userData = $(this).parents('.person');
+        var proxyId = userData.data('id');
+        var userName = userData.data('name');
+        var post_id = $(this).parents('.comment_wrapper').data('id');
+        e.preventDefault();
+        if(!my_id){
+            popupProvider.showLoginPopup({}, function(err, result){
+                if(!err)
+                    window.location = window.location + '?user_name=' + userName + '&proxy_id=' + proxyId + '&post_id=' + post_id;
+            });
+        }else{
+            proxyCommon.addOrRemoveProxy(proxy, proxyId, userName, my_id, function(newProxy){
+                proxy = newProxy.proxy;
+            })
+        }
+    });
+
+
+    //    $('#comments,#suggestion_list').on('click', ".follow_user", function (e) {
+//        var creator_id = $(this).parents('.comment-one,.one').data("creator_id");
+//        var self = this;
+//
+//        db_functions.joinOrLeaveUserFollowers(creator_id, function (err, user) {
+//            if (user.is_follower)
+//                $(self).text("עקוב");
+//            else
+//                $(self).text("עזוב");
+//
+//
+//        });
+//    });
+    $("#press_sidebar_holder .item").live("click",function(){
+        window.open($(this).data('source'));
+    });
+
+    $('.read_more').on('click',showFullText);
+    $('.read_less').on('click',hideFullText);
+
+
+
+    $('.button_suggest_revisions').click(function(){
+        $('.marker_1').toggleClass('off');
+        $(this).toggleClass('active');
+        //$('#change_proposal').toggleClass('active');
+
+    });
+
+    function showFullText(){
+        $('.button_suggest_revisions').show();
+        $('#short').hide();
+        $('#full').show();
+        var h=  $("textarea").get(0).scrollHeight;
+        $("#full").height(h);
+    }
+
+    function hideFullText(){
+        $('.button_suggest_revisions').hide();
+        $('#short').show();
+        $('#full').hide();
+        var h=  $("textarea").get(0).scrollHeight;
+        $("#full").height(h);
+    }
+
+    $(".awards").live("hover", function () {
+        var name = $(this).parents(".person").data("name");
+        var num_of_proxies = $(this).text();
+        var text = "מנדטים: " + name + " מייצג " + num_of_proxies + " חברי עורו ";
+        initTooltipWithMessage($(this), text);
+    });
+    $(".friends").live("hover", function () {
+        initTooltipWithMessage($(this),  'מוניטין');
+    });
+    $('#content_wrapper_comments ').on('click', '.special_comment', function(e){
+        var comment_id = $(this).find('.comment_wrapper').data('id');
+        var scroll_id = 'post_' + comment_id;
+        scroll_id = window[scroll_id];
+        if(!scrollTo(scroll_id)){
+            db_functions.getPostById(comment_id, function (err, post) {
+                dust.render('discussion_comment', post, function (err, out) {
+                    if (!err){
+                        $(".second_pagination").append(out);
+                        scrollTo(scroll_id);
+                    }
+                });
+            });
+        }
+    })
+    $('#suggestions_wrapper').on('click', '.edit_window', function(e){
+        $('.read_more').click();
+        scrollTo('#discussion_content');
     });
 });
-
 
 </script>
 </body>

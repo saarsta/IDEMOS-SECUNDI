@@ -431,7 +431,7 @@ $(document).ready(function () {
     db_functions.getDiscussionShoppingCart(discussion_id, function (err, data) {
 
         $.each(data.objects, function (index, item) {
-            dust.render('discussion_information_item', item, function (err, out) {
+            dust.render('discussion_information_item_old', item, function (err, out) {
                 $('.slide-c').append(out);
             });
         });
@@ -764,8 +764,8 @@ $(document).ready(function () {
 
             dust.render('discussion_suggestion_old', suggestion, function (err, out) {
                 $('#suggestion_list').prepend(out);
-                image_autoscale($('#suggestion_list .auto-scale img'));
-                var suggestion_grade_val = suggestion.grade_obj ? suggestion.grade_obj.evaluation_grade : my_discussion_grade;
+                image_autoscale($('#suggestion_list .auto-scale img'));        
+				var suggestion_grade_val = suggestion.grade_obj ? suggestion.grade_obj.evalueation_grade : my_discussion_grade;
                 suggest_grade_id[suggestion.id] = suggestion.grade_obj ? suggestion.grade_obj._id : null;
                 $(".suggest_slider_" + suggestion.id).slider({
                     value:suggestion_grade_val,

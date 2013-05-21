@@ -15,8 +15,11 @@ var Discussion = module.exports = new Schema({
     image_field: { type:Schema.Types.File, required:true},
     image_field_preview: { type:Schema.Types.File, require:true},
     subject_id:[
-        {type:ObjectId, ref:'Subject', index:true, required:true}
+        {type:ObjectId, ref:'Subject', index:true, required:true, editable: false}
     ],
+/*
+    subject_id: {type:[ObjectId], ref:'Subject',required:true},
+*/
     subject_name: String,
     system_message: {type:Schema.Types.Html},
     creation_date:{type:Date, 'default':Date.now},
@@ -27,6 +30,10 @@ var Discussion = module.exports = new Schema({
     text_field_preview: {type:Schema.Types.Text},//2-3 lines of the vision_text
     text_field:{type:Schema.Types.Text, required:true},
     vision_text_history:{type:[String]},
+    replaced_text_history:[ new Schema({
+        old_text: {type:String},
+        new_text: {type: String}
+    })],
     num_of_approved_change_suggestions: {type: Number, 'default': 0},
     is_hot_object: {type:Boolean,'default':false},
     press_items: [ {press_item_id:{type:ObjectId, ref:'PressItem'}}],

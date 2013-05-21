@@ -3,23 +3,24 @@ if (!module.parent) console.error('Please don\'t call me directly.I am just the 
 
 var util = require('util'),
     models = require('./models'),
-    common = require('./api/common'),   
+    common = require('./api/common'),
     async = require('async'),
     _ = require('underscore')
-    ,$
-    ,zombie
+//   ,$
+//    ,zombie
     ,og_get = require('./og/data.js').get;
+//
+//try{
+//    $ = require('jquery');
+//} catch(e){
+//    console.error('cant load jquery');
+//}
+//try{
+//    zombie = require('zombie');
+//} catch(e) {
+//    console.error('cant load zombie');
+//}
 
-try{
-    $ = require('jquery');
-} catch(e){
-    console.error('cant load jquery');
-}
-try{
-    zombie = require('zombie');
-} catch(e) {
-    console.error('cant load zombie');
-}
 
 function addTokensToUserByEventAndSetGamificationBonus(user_id, event, event_bonus, bonus_type, callback) {
     var set_gamification_bonus = {};
@@ -63,13 +64,21 @@ var ten_seconds_cron = exports.ten_seconds_cron = {
                     og_get('http://graph.facebook.com/' + page.url, function (error, og_data) {
 
                         if (og_data.likes !== page.like_count) {
-                            console.log("page "+page.url +" "+ og_data.likes +" likes - UPDATED") ;
-                            var now = Date.now();
-                            models.Cycle.update({_id: cycle._id}, {
-                                $set: { "fb_page.like_count": og_data.likes, "fb_page.last_update": now , "fb_page.like_count_prev": page.like_count }
-                            }, function (err) {
-                                callback(err, og_data.likes,page.like_count, now);
-                            });
+                           //
+                           //
+                            if(!og_data.likes){
+                                console.log("og_data error:");
+                                console.log(og_data);
+                                console.error(og_data.error);
+                            } else{
+                                var now = Date.now();
+                                models.Cycle.update({_id: cycle._id}, {
+                                    $set: { "fb_page.like_count": og_data.likes, "fb_page.last_update": now , "fb_page.like_count_prev": page.like_count }
+                                }, function (err) {
+                                    console.log("page "+page.url +" "+ og_data.likes +" likes - UPDATED") ;
+                                    callback(err, og_data.likes,page.like_count, now);
+                                });
+                            }
                         } else {
                             console.log("page "+page.url +" "+ og_data.likes +" likes - no change") ;
                             callback(error, page.like_count,page.like_count_prev,  page.last_update);
@@ -86,6 +95,7 @@ var ten_seconds_cron = exports.ten_seconds_cron = {
 var once_an_hour_cron = exports.once_an_hour_cron = {
 
     scrapeFBPagesLikes: function (main_callback) {
+        return;
         console.log('---scrapeFBPagesLikes start')
         var fb_user ='daniella.geula@gmail.com';
         var fb_pass = 'dz5274046';

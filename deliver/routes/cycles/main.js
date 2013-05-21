@@ -63,8 +63,7 @@ module.exports = function(req, res){
                 'opinion_shapers': 1,
                 'followers_count': 1,
                 'sub_branding': 1,
-                'social_popup_title': 1,
-                'social_popup_text': 1    ,
+                'social_popup': 1,
                 'timeline':1,
                 'fb_page':1
 
@@ -126,8 +125,7 @@ module.exports = function(req, res){
                 tab:'cycles',
                 type: 'cycle',
                 proxy:proxyJson,
-                social_popup_title: g_cycle.social_popup_title,
-                social_popup_text: g_cycle.social_popup_text,
+                social_popup: g_cycle.social_popup,
                 share:req.query.share ? true:false,
                 join:join_on_page,
                 meta:{

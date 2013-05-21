@@ -45,7 +45,7 @@
                 עוקבים
             </option>
         </select>
-        <h2>כל מעגלי התנופה במערכת</h2>
+        <h2>כל הקמפיינים במערכת</h2>
         <div id="cycles_list" data-bablic-index="false">
 
         </div>
@@ -69,7 +69,8 @@
             if(selectedSubject){
                 query =query+'&subject.id='+selectedSubject;
             }
-            query = query+'&is_private='+false;
+/           query = query+'&is_private='+false;
+       //     query = query+'&is_private__ne='+true;
             return query;
         }
 

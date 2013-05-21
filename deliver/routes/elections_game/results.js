@@ -13,7 +13,7 @@ module.exports = function(req, res){
     var winners,
         candidate_page=false,
         share_img_code,
-        game_cod = req.session.election_game ? req.session.election_game.game_code:null;
+        game_code = req.session.election_game ? req.session.election_game.game_code:null;
         async.waterfall([
 
         function(cbk){/// determine game results
@@ -131,20 +131,25 @@ module.exports = function(req, res){
             second.candidate_win_ratio= Math.round((100*winner_count[1])/games.length);
             third.candidate_win_ratio= Math.round((100*winner_count[2])/games.length);
 
-            var share_url="uru-staging.herokuapp.com/elections_game/image?first_id="+first._id+"&first_score="+first.score+"&second_id="+second._id+"&second_score="+second.score+"&third_id="+third._id+"&third_score="+third.score;
-            var share_url_encoded=encodeURIComponent(share_url);
-            var share_query_string="url="+share_url_encoded+"&viewport=880x447";
 
-            var share_token = createHash('md5').update(share_query_string + req.app.settings.url2png_api_secret).digest('hex');
-           // var share_token  = md5(share_query_string + req.app.settings.url2png_api_secret)
-            var share_img="http://beta.url2png.com/v6/P503113E58ED4A/"+share_token+"/png/?"+share_query_string;
-            var share_img_code=first._id+first.score+second._id+second.score+third._id+third.score;
-            console.log (share_img);
 
+
+            if(!candidate_page){
+
+                var share_url="uru-staging.herokuapp.com/elections_game/image?first_id="+first._id+"&first_score="+first.score+"&second_id="+second._id+"&second_score="+second.score+"&third_id="+third._id+"&third_score="+third.score;
+                var share_url_encoded=encodeURIComponent(share_url);
+                var share_query_string="url="+share_url_encoded+"&viewport=880x447";
+
+                var share_token = createHash('md5').update(share_query_string + req.app.settings.url2png_api_secret).digest('hex');
+                // var share_token  = md5(share_query_string + req.app.settings.url2png_api_secret)
+                var share_img="http://beta.url2png.com/v6/P503113E58ED4A/"+share_token+"/png/?"+share_query_string;
+                var share_img_code=first._id+first.score+second._id+second.score+third._id+third.score;
+                console.log (share_img);
+                download_file_httpget(share_img,share_img_code,game_code,candidate_page, function(err,image_full_path){
+
+                }) ;
+            }
             var quote_count= (req.session.election_game) ?  _.keys(req.session.election_game).length -1 :0;
-            download_file_httpget(share_img,share_img_code,game_code,candidate_page, function(err,image_full_path){
-
-            }) ;
             res.render('elections_game_results.ejs', {
                 winners: [first, second,  third],
                 second:second,

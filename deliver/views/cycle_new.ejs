@@ -257,7 +257,7 @@
                                      <span>
 
 
-                                עוקבים אחרי מעגל תנופה זה
+                                עוקבים אחרי קמפיין זה
                                    </span>
             </div>
         </div>
@@ -678,7 +678,7 @@ var _main=$(document).ready( function () {
         });
     });
 
-    timeline.render(cycle_id, cycle_title, null);
+    //timeline.render(cycle_id, cycle_title, null);
     //timeline.addTabEvents(cycle_title);
 
     db_functions.getPendingActionsByCycle(cycle_id, 4, function ( data,err) {
@@ -1186,8 +1186,8 @@ var _main=$(document).ready( function () {
             font:               'Arial',             //OPTIONAL FONT
             start_at_slide:     start_slide,                            //OPTIONAL START AT SPECIFIC SLIDE
             start_zoom_adjust:  timeline_zoom,                            //OPTIONAL TWEAK THE DEFAULT ZOOM LEVEL
-            embed_id:   'my-timeline'
-
+            embed_id:   'my-timeline',
+            js: '/js/timeline-min.js'
             /*
              https://github.com/VeriteCo/TimelineJS
 

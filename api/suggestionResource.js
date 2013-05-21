@@ -11,7 +11,8 @@ var resources = require('jest'),
     models = require('../models'),
     common = require('./common'),
     async = require('async'),
-    notifications = require('./notifications');
+    notifications = require('./notifications'),
+    mail = require('../lib/mail');
 
 var EDIT_TEXT_LEGIT_TIME = 60 * 1000 * 15;
 
@@ -20,7 +21,6 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
     init:function () {
         this._super(models.Suggestion, 'suggestion', common.getGamificationTokenPrice('suggestion_on_discussion') > -1 ? common.getGamificationTokenPrice('suggestion') : 0);
         this.allowed_methods = ['get', 'post', 'put'];
-//        this.authorization = new Authoriztion();
         this.authentication = new common.SessionAuthentication();
         this.filtering = {discussion_id:null, is_approved:null};
         this.default_query = function (query) {
@@ -49,9 +49,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
             },
             wanted_amount_of_tokens:null,
             curr_amount_of_tokens:null,
-            is_editable: null,
-            context_before: null,
-            context_after: null
+            is_editable: null
         };
     },
 
@@ -68,10 +66,6 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                 suggestion.is_editable = true;
             }
 
-            //get discussion text before and after the suggestions
-            suggestion.context_before = discussion_text.substring(Math.max(suggestion.parts[0].start - 400, 0), suggestion.parts[0].start, suggestion.parts[0].start);
-            suggestion.context_after = discussion_text.substring(suggestion.parts[0].end, Math.min(discussion_text.length, suggestion.parts[0].end + 400));
-
             //set counter og graders manually
             suggestion.manual_counter = Math.round(suggestion.agrees) + Math.round(suggestion.not_agrees);
 
@@ -86,7 +80,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
             else
                 suggestion.wanted_amount_of_tokens = Number(suggestion.threshold_for_accepting_the_suggestion) || calculate_sugg_threshold(suggestion.getCharCount(), discussion_threshold);
             if (req.user) {
-                models.GradeSuggestion.findOne({user_id:req.user._id, suggestion_id:suggestion._id}, {"_id":1, "evaluation_grade":1, "does_support_the_suggestion":1}, function (err, grade_sugg_obj) {
+                models.GradeSuggestion.findOne({user_id:req.user._id, suggestion_id:suggestion._id + ""}, {"_id":1, "evaluation_grade":1, "does_support_the_suggestion":1}, function (err, grade_sugg_obj) {
                     if (!err && grade_sugg_obj) {
                         curr_grade_obj = {
                             _id:grade_sugg_obj._id,
@@ -121,36 +115,42 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
 
             if (err)
                 callback(err, null);
-            else
-            //arrange objects only if the request is from discussion page
-            if (!discussion_id)
-                callback(err, results);
-            else {
-                //for each object add grade_obj that reflects the user's grade for the suggestion,
-                //if the user is the disvcussion creator - grade_obj contains the discussion evaluate grade
-                //if the user is ofline grade_obj is {}
+            else          {
 
-                async.waterfall([
-                    function (cbk) {
-                        models.Discussion.findById(discussion_id, cbk);
-                    },
-
-                    function (discussion_obj, cbk) {
-                        discussion_threshold = discussion_obj.threshold_for_accepting_change_suggestions;
-                        discussion_text = discussion_obj.text_field;
-
-                        if (discussion_obj.admin_threshold_for_accepting_change_suggestions > 0){
-                            discussion_threshold = discussion_obj.admin_threshold_for_accepting_change_suggestions;
-                        }
-
-                        async.forEach(results.objects, iterator, function (err, objs) {
-                            cbk(err, results);
-                        });
-                    }
-                ], function (err, results) {
+                //arrange objects only if the request is from discussion page
+                if (!discussion_id)  {
+                    results.objects=results.objects.sort(likelihood) ;
                     callback(err, results);
-                })
+                }
+                else {
+                    //for each object add grade_obj that reflects the user's grade for the suggestion,
+                    //if the user is the disvcussion creator - grade_obj contains the discussion evaluate grade
+                    //if the user is ofline grade_obj is {}
+
+                    async.waterfall([
+                        function (cbk) {
+                            models.Discussion.findById(discussion_id, cbk);
+                        },
+
+                        function (discussion_obj, cbk) {
+                            discussion_threshold = discussion_obj.threshold_for_accepting_change_suggestions;
+                            discussion_text = discussion_obj.text_field;
+
+                            if (discussion_obj.admin_threshold_for_accepting_change_suggestions > 0){
+                                discussion_threshold = discussion_obj.admin_threshold_for_accepting_change_suggestions;
+                            }
+
+                            async.forEach(results.objects, iterator, function (err, objs) {
+                                cbk(err, results);
+                            });
+                        }
+                    ], function (err, results) {
+                        results.objects=results.objects.sort(likelihood) ;
+                        callback(err, results);
+                    })
+                }
             }
+
         });
     },
 
@@ -160,7 +160,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
         var suggestion_object = new self.model();
         var isNewFollower = false;
         var user = req.user;
-        var discussion_id;
+        var discussion_id = fields.discussion_id;
         var discussion_creator_id;
         var num_of_words;
         var disc_obj;
@@ -212,10 +212,25 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                         sug = suggestion._id;
                     }
                 })
-                if (err)
-                    cbk({message:"a suggestion with this indexes already exist"});
-                else
-                    models.Discussion.findById(fields.discussion_id, cbk);
+                if (err){
+                    var to = 'aharon@uru.org.il';
+                    var subject = "הועלתה הצעה לשינוי לטקסט שכבר סומן בדיון";
+                    var body = "<a href='dev.empeeric.com/discussions/" + discussion_id + "#post_" + sug + "'>"
+                        + "existing suggestion with same indexes"
+                        + "</a>"
+                        + "<br>"
+                        + "<a href='dev.empeeric.com/discussions/" + discussion_id + "#post_" + suggestion_object.id + "'>"
+                        + "new suggestion"
+                        + "</a>";
+
+                    mail.sendMail(to, body, subject, function(err){
+                        if(err) {console.error(err)};
+                    })
+
+                    console.error("a suggestion with this indexes already exist");
+                }
+
+                models.Discussion.findById(fields.discussion_id, cbk);
             },
 
             function (discussion_obj, cbk) {
@@ -418,8 +433,11 @@ module.exports.approveSuggestion = function (id, callback) {
 
 
                     var str = vision.substr(0, Number(parts[0].start)) + parts[0].text + vision.substr(Number(parts[0].end));
+                    var replaced_text = vision.substr(Number(parts[0].start), Number(parts[0].end));
+                    var new_text = parts[0].text;
 
                     discussion_object.vision_text_history.push(discussion_object.text_field);
+                    discussion_object.replaced_text_history.push({old_text: replaced_text, new_text: new_text});
                     discussion_object.text_field = str;
 
                     //suggestion grade is the new discussion grade
@@ -570,3 +588,13 @@ var calculate_sugg_threshold = function (factor, discussion_threshold) {
     return Math.round(result);
 
 }
+
+function likelihood(a,b) {
+
+    var a_lh = (a.wanted_amount_of_tokens || a.threshold_for_accepting_the_suggestion)- a.agrees + a.not_agrees;
+    var b_lh = (b.wanted_amount_of_tokens || b.threshold_for_accepting_the_suggestion)- b.agrees + b.not_agrees;
+
+    return a_lh-b_lh;
+}
+
+

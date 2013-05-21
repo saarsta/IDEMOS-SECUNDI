@@ -1,20 +1,32 @@
 <div class="comment_wrapper regular_comment {?is_even}even{:else}odd{/is_even} {?is_editable}edit_comment{/is_editable}" id="post_{_id}" data-id="{_id}" data-ref-id="{ref_to_post_id}" data-num-given-mandates="{mandates_curr_user_gave_creator}"
      data-creator_name="{creator_id.first_name} {creator_id.last_name}" data-creator_id="{creator_id.id}"
      data-num_of_proxies="{creator_id.num_of_proxies_i_represent}">
-    <div class="comment_details">
-        <div class="img-box" style="overflow: hidden;">
-            <div class="photo auto-scale" style="height:64px">
-                <img data-bablic-exclude alt="{title}" title="{creator_id.first_name} {creator_id.last_name}"
-                     src="{?creator_id}{creator_id.avatar_url}{:else}/images/default_user_img.gif{/creator_id}" />
+    <div class="comment_details person" data-id="{creator_id.id}" data-name="{creator_id.first_name} {creator_id.last_name}">
+        <a href="/myuru/{creator_id.id}">
+            <div class="img-box" style="overflow: hidden;">
+                <div class="photo auto-scale" style="height:64px">
+                    <img data-bablic-exclude alt="{title}" title="{creator_id.first_name} {creator_id.last_name}"
+                         src="{?creator_id}{creator_id.avatar_url}{:else}/images/default_user_img.gif{/creator_id}" />
+                </div>
+                <span></span>
             </div>
-            <span></span>
-        </div>
+        </a>
+
         <div class="name" data-bablic-exclude>
             {creator_id.first_name} {creator_id.last_name}
         </div>
+
+        <div class="actions_box_container"><div class="actions_box">
+
+            <div id="add_or_remove_proxy" class="action">תן מנדט</div>
+            <div class="action gray_and_soon">שלח הודעה</div>
+            <div class="action gray_and_soon">עקוב</div>
+        </div> </div>
         <div class="date_time">
-            <span class="date">{?creation_date}{creation_date|date}{/creation_date}</span>
-            <span class="time">{creator_id.username} {?creation_date}{creation_date|time_only}{/creation_date}</span>
+            <a style="text-decoration: none; color: grey" class="no_underline_cursor_when_hover" href="/discussions/{discussion_id}#post_{_id}">
+                <span class="date">{?creation_date}{creation_date|date}{/creation_date}</span>
+                <span class="time">{creator_id.username} {?creation_date}{creation_date|time_only}{/creation_date}</span>
+            </a>
         </div>
         <div class="ratings">
             <span class="friends">{creator_id.num_of_proxies_i_represent}</span>
@@ -26,12 +38,22 @@
         <div class="button_edit_comment">
             <input type="button">
         </div>
+        {?quoted_by}
+        <div class="quoted_by"> צוטט ע"י:
+            {#quoted_by}
+            <span class="quote-ref" data-ref-id="post_{post_id}"><a href="javascript:void(0)"> {user_name}</a></span>
+            {/quoted_by}
+        </div>
+        {/quoted_by}
     </div>
     <div class="comment_buttons">
         <input class="button_quote" type="button" />
         <input class="button_comment" type="button" />
-        <div class="button_fb fb-like" data-href="http://www.uru.org.il/discussions/{discussion_id}/posts/{_id}"
-             data-send="false" data-layout="button_count" data-width="450" data-show-faces="false"><img src="/images/placeholder_fb_2.png" />
+        <div style= "width: 80px; height: 20px; left: 0; bottom: -22px; overflow: hidden;
+            position: absolute; direction: ltr;">
+            <div class="fb-like" data-href="http://www.uru.org.il/discussions/{discussion_id}/posts/{_id}"
+                 data-send="false" data-layout="button_count" data-width="450" data-show-faces="false">
+            </div>
         </div>
     </div>
     <div class="rating_small">

@@ -1,20 +1,30 @@
 <div class="suggestion_wrapper {?is_editable}edit_suggestion{:else}show_context{/is_editable}" data-id="{id}"
      data-creator_name="{creator_id.first_name} {creator_id.last_name}"
-     data-creator_id="{creator_id.id}">
+     data-creator_id="{creator_id.id}" id="post_{id}"
+     data-my_grade="{my_grade_val}" data-my_grade_id="{my_grade_id}">
     <div class="suggestion_holder window">
-        <div class="suggestion_details">
-            <div class="img-box" style="overflow: hidden;">
-                <div class="photo auto-scale" style="height:64px">
-                    <img src="{?creator_id}{creator_id.avatar_url}{:else}/images/default_user_img.gif{/creator_id}" />
+        <div class="suggestion_details person" data-id="{creator_id.id}" data-name="{creator_id.first_name} {creator_id.last_name}">
+            <a href="/myuru/{creator_id.id}">
+                <div class="img-box" style="overflow: hidden;">
+                    <div class="photo auto-scale" style="height:64px">
+                        <img src="{?creator_id}{creator_id.avatar_url}{:else}/images/default_user_img.gif{/creator_id}" />
+                    </div>
+                    <span></span>
                 </div>
-                <span></span>
-            </div>
-
+            </a>
             <div class="name">
-                {creator_id.username}
+                {creator_id.first_name} {creator_id.last_name}
             </div>
+            <div class="actions_box_container"><div class="actions_box">
+
+               <div id="add_or_remove_proxy" class="action">תן מנדט</div>
+                <div class="action gray_and_soon">שלח הודעה</div>
+                <div class="action gray_and_soon">עקוב</div>
+            </div> </div>
             <div class="date_time">
-                <span class="time">{?creation_date}{creation_date|time}{/creation_date}</span>
+                <a style="text-decoration: none; color: grey" class="no_underline_cursor_when_hover" href="/discussions/{discussion_id}#post_{_id}">
+                    <span class="time">{?creation_date}{creation_date|time}{/creation_date}</span>
+                </a>
             </div>
             <div class="ratings">
                 <span class="awards">{creator_id.score}</span>
@@ -27,36 +37,48 @@
         </div>
 
         <div class="suggestion_content">
+             {?original_part}
             <div class="text_orig">
                 <h3 class="title">טקסט מקורי:</h3>
                 <span class="original_part">{original_part}</span>
             </div>
+            {/original_part}
             <div class="text change_proposal">
                 <h3 class="title">הצעה לשינוי:</h3>
                 <span class="alternative_part">{alternative_part}</span>
                 <h3 class="title">נימוק:</h3>
                     <span class="explanation">{explanation}</span>
                 <div class="edit_window">
-                    <div class="text_top"></div>
-                    <p>{context_before}</p>
-                    <p class="focus">{alternative_part}</p>
-                    <p>{context_after}</p>
-                    <div class="text_bottom"></div>
+                    <p class="title">
+                        טקסט החזון הנוכחי בשילוב ההצעה לשינוי מודגשת. לחץ כדי לחזור לחזון
+                    </p>
+                  <!--  <div class="text_top"></div>-->
+                    <p>{context_before}<span class="focus">{alternative_part}</span>{context_after}</p>
+                    <!--<div class="text_bottom"></div>-->
                 </div>
             </div>
         </div>
         <div class="suggestion_bottom">
             <div class="suggestion_bottom_segment one">
                 <div class="button button_pro">
-                    <input type="button" />
+                    <input class="grading_button" type="button" />
                 </div>
                 <div class="button button_against">
-                    <input type="button" />
+                    <input class="grading_button" type="button" />
                 </div>
-                <div class="button fb_like">
-                    <img src="/images/placeholder_fb.png" />
+
+                <div class="button" style= "width: 80px; height: 20px; left: 0; top: 19px; overflow: hidden;
+                        position: absolute; direction: ltr;">
+                    <div class="fb-like" data-href="http://www.uru.org.il/discussions{discussion_id}/posts/{id}"
+                         data-send="false" data-layout="button_count" data-width="450" data-show-faces="false">
+                    </div>
                 </div>
+                <a class="share" ata-img_src="{image_field_preview}" data-text_preview="{text|comment}" data-title="הצעה לשינוי מתוך דיון על החזון {title}" rel="/discussions/{discussion_id}#post_{id}"
+                   data-text_preview="{text|comment}" href="/facebookShare?link=/discussions/{discussion_id}#post{id}"  target="_blank">
+                </a>
             </div>
+
+
             <div class="suggestion_bottom_segment two">
                 <div class="supporters_wanted">
                     מספר תומכים דרוש <span>{wanted_amount_of_tokens}</span>
@@ -67,7 +89,9 @@
             </div>
             <div class="suggestion_bottom_segment three">
                 <div class="comments_counter">
-                    <span>17</span> תגובות להצעה
+                    <a  href="javascript: void(0)" >
+                        <span>17</span> תגובות להצעה
+                    </a>
                     <div class="close">סגור</div>
                 </div>
             </div>
@@ -75,7 +99,39 @@
     </div>
     <div class="suggestion_comments_holder">
         <div class="add_comment" data-can-add="true">
-            <input type="text" placeholder="כתוב תגובה..." />
+            <textarea type="text" placeholder="כתוב תגובה..." />
         </div>
     </div>
+    <div class="arrow_box_container">
+        <div class="arrow_box">
+            <div  class="arrow_box_content">
+                <div class="slider_title">
+                    אם ההצעה תתקבל,
+                    <br>
+                    מה הציון החדש שמגיע למסמך החזון בעיניך?
+                </div>
+
+                <div class="slide-box">
+
+                    <div class="slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
+                        <div class="ui-slider-range ui-widget-header ui-slider-range-min" style="width: 0%;"></div><a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 0%;"></a></div>
+                    <div class="slider-numbers">
+                        <span>1</span>
+                        <span>2</span>
+                        <span>3</span>
+                        <span>4</span>
+                        <span>5</span>
+                        <span>6</span>
+                        <span>7</span>
+                        <span>8</span>
+                        <span>9</span>
+                        <span>10</span>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
 </div>

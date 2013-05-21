@@ -28,8 +28,7 @@ module.exports = {
                 categories: results.categories,
                 today: utils.dateFormat('yyyy-mm-dd'),
                 user:req.user,
-                social_popup_title: "",
-                social_popup_text: ""
+                social_popup_title: null
             });
         });
     }
