@@ -358,13 +358,13 @@ $(document).ready(function () {
         $(this).parents('.suggestion_wrapper').toggleClass('show_edit_button');
 
         //set window top
-//        edit_window.css('top', 0 - window_height - (window_padding * 2 + window_border * 2));
+        edit_window.css('top', 0 - window_height - (window_padding * 2 + window_border * 2));
 
     }).on('mouseleave', '.text.change_proposal', function(){
         $(this).parents('.suggestion_wrapper').toggleClass('edit');
     });
 
-    $('#suggestions_wrapper').on('mousemove', '.change_proposal', function(e){
+    /*$('#suggestions_wrapper').on('mousemove', '.change_proposal', function(e){
          var edit_window = $(this).find('.edit_window');
          var change_proposal =  edit_window.parents('.change_proposal');
          var window_height = edit_window.height();
@@ -384,7 +384,7 @@ $(document).ready(function () {
         console.log(e.pageY);
         edit_window.css('top', e.pageY - distance_from_top - window_height - (window_padding * 2 + window_border * 2));
 
-    });
+    });*/
 
     // when clicking the edit_comment popup show go to creatק suggestion window
     $('#suggestions_wrapper').on('click', '.button_edit_comment', function(){
@@ -1927,7 +1927,10 @@ $(document).ready(function () {
             });
         }
     })
-
+    $('#suggestions_wrapper').on('click', '.edit_window', function(e){
+        $('.read_more').click();
+        scrollTo('#discussion_content');
+    });
 });
 
 </script>

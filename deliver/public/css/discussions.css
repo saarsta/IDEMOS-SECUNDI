@@ -2046,6 +2046,9 @@ span.remark{
     padding:10px;
 }
 
+.edit_window:hover {
+    cursor: pointer;
+}
 .edit_window .text_top{
     width:100%;
     height:20px;
@@ -2091,6 +2094,14 @@ span.remark{
     color:#50504f;
     font-weight:bold;
     margin: 20px 0;
+}
+
+.edit_window p.title {
+    color: #50504f;
+    margin: 2px 0px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 10px
 }
 
 #comments_filter{
