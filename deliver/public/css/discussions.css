@@ -3060,6 +3060,10 @@ input.button_submit_comment_no_text{
     text-decoration: none;
 }
 
+.write-comment .green-btn.disable {
+    background: #2fd43b#B7B6F9;
+}
+
 .write-comment .disable {
     opacity: 0.3;
     cursor: auto;
