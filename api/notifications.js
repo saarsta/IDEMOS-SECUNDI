@@ -303,11 +303,18 @@ var sendNotificationToUser = function (notification) {
                 if (!user) {
                     cbk("user not found");
                     return;
+                }else{
+                    models.User.find({"discussions.discussion_id" : "51163023533d920200000025"}, function(err, users){
+                        cbk(err, user, users);
+                    });
                 }
+            },
 
+            function(user, users, cbk){
                 //TODO just for debugging
                 email = user.email;
-                 if(!_.any(uru_group, function(mail) { return email === mail })) {
+
+                if(!_.any(uru_group, function(mail) { return email === mail }) && !_.any(users, function(user) { return email === user.email })) {
                     cbk('we send mail only to uru_group for now');
                     return
                 }

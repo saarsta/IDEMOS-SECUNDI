@@ -2097,11 +2097,10 @@ span.remark{
 }
 
 .edit_window p.title {
-    color: #50504f;
     margin: 2px 0px;
-    font-size: 12px;
-    font-weight: bold;
-    margin-bottom: 10px
+    font-size: 11px;
+    margin-bottom: 10px;
+    font-style: italic;
 }
 
 #comments_filter{
@@ -2303,7 +2302,12 @@ cursor: pointer;
 }
 
 #special_post_wrapper .expert_opinion h2.title{
-    background:url(/images/icon_flame.png) no-repeat center right;
+    background:url(/images/expert_icon.png) no-repeat center right;
+    padding-right:31px;
+}
+
+#special_post_wrapper .editor_choice h2.title{
+    background:url(/images/editor_icon.png) no-repeat center right;
 }
 
 #special_post_wrapper .content .rating{
@@ -2750,6 +2754,10 @@ input.button_submit_comment_no_text{
 
 #content_right_holder .segment.main .marker_1{
     background:#ffff97;
+}
+#content_right_holder .segment.main .marker_1:hover{
+    cursor: pointer;
+    background:#ffff07;
 }
 
 #content_right_holder .segment.main .marker_1.off{
