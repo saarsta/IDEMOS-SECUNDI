@@ -39,6 +39,10 @@ var SpecialPostsResource = module.exports = jest.MongooseResource.extend({
         var special_objects = [];
 
         models.Post.find({discussion_id: req.query.discussion_id}).sort({votes_for: -1}).populate('creator_id').exec(function(err, data){
+            if(data.length() < 8) {
+                callback(null, {});
+                return;
+            }
             data[0].type = 'most_pop';
             data[0].title = 'התגובה הפופולרית ביותר';
             special_objects.push(data[0]);
