@@ -39,7 +39,7 @@ var SpecialPostsResource = module.exports = jest.MongooseResource.extend({
         var special_objects = [];
 
         models.Post.find({discussion_id: req.query.discussion_id}).sort({votes_for: -1}).populate('creator_id').exec(function(err, data){
-            if(data.length() < 8) {
+            if(data.length < 8) {
                 callback(null, {});
                 return;
             }
