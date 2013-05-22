@@ -49,7 +49,8 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
             },
             wanted_amount_of_tokens:null,
             curr_amount_of_tokens:null,
-            is_editable: null
+            is_editable: null,
+            is_my_suggestion: null
         };
     },
 
@@ -61,6 +62,9 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
         var user_id = req.user && req.user._id + "";
 
         var iterator = function (suggestion, itr_cbk) {
+            //set is_my_suggestion flag
+            suggestion.is_my_suggestion = (user_id === suggestion.creator_id.id);
+
             // set is_editable flag if user is the creator and its 15 min after publish
             if (user_id === suggestion.creator_id.id && new Date() - suggestion.creation_date <= EDIT_TEXT_LEGIT_TIME){
                 suggestion.is_editable = true;
@@ -213,13 +217,21 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                     }
                 })
                 if (err){
-                    var to = 'aharon@uru.org.il';
+                    var to = 'saar@uru.org.il';
                     var subject = "הועלתה הצעה לשינוי לטקסט שכבר סומן בדיון";
-                    var body = "<a href='dev.empeeric.com/discussions/" + discussion_id + "#post_" + sug + "'>"
+                    /*var body = "<a href='" + req.app.settings.root_path  +  "'/discussions/" + discussion_id + "#post_" + sug + "'>"
                         + "existing suggestion with same indexes"
                         + "</a>"
                         + "<br>"
-                        + "<a href='dev.empeeric.com/discussions/" + discussion_id + "#post_" + suggestion_object.id + "'>"
+                        + "<a href='" + req.app.settings.root_path  +  "'/discussions/" + discussion_id + "#post_" + suggestion_object.id + "'>"
+                        + "new suggestion"
+                        + "</a>";*/
+
+                    var body = "<a href='uru.org.il/discussions/" + discussion_id + "#post_" + sug + "'>"
+                        + "existing suggestion with same indexes"
+                        + "</a>"
+                        + "<br>"
+                        + "<a href='uru.org.il/discussions/" + discussion_id + "#post_" + suggestion_object.id + "'>"
                         + "new suggestion"
                         + "</a>";
 
