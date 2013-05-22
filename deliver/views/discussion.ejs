@@ -1602,11 +1602,18 @@ $(document).ready(function () {
         console.log("pop_suggest_bt");
         e.stopPropagation();
         e.preventDefault();
+
+        $("#send_suggestion").data('executing', false);
+        $("#send_suggestion").removeClass('disable');
+        $('#discussion_suggest').val('');
+        $('#discussion_explanation').val('');
+
         $('#discussion_content_txt').text('"' + range_txt + '"');
         $('#write-comment').show();
         $('textarea#discussion_suggest').focus();
         $('#reload-img').attr('src', $('#reload-img').attr('src'));
         $(".popup-window").hide();
+
         $('html, body').animate({
             scrollTop: $("#write-comment").offset().top
         }, 500);
