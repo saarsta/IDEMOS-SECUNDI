@@ -60,13 +60,14 @@
         </div>
         <div class="suggestion_bottom">
             <div class="suggestion_bottom_segment one">
+                {^is_my_suggestion}
                 <div class="button button_pro">
-                    <input class="grading_button" type="button" />
+                    <input class="grading_button  {?grade_obj} {?grade_obj.does_support_the_suggestion} active {/grade_obj.does_support_the_suggestion} {/grade_obj}" type="button" />
                 </div>
                 <div class="button button_against">
-                    <input class="grading_button" type="button" />
+                    <input class="grading_button  {?grade_obj} {^grade_obj.does_support_the_suggestion} active {/grade_obj.does_support_the_suggestion} {/grade_obj}" type="button" />
                 </div>
-
+                {/is_my_suggestion}
                 <div class="button" style= "width: 80px; height: 20px; left: 0; top: 19px; overflow: hidden;
                         position: absolute; direction: ltr;">
                     <div class="fb-like" data-href="http://www.uru.org.il/discussions{discussion_id}/posts/{id}"

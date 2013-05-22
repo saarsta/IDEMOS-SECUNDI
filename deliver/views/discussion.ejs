@@ -1473,8 +1473,12 @@ $(document).ready(function () {
                             .css({ top:top, left: (e.pageX-97), opacity:0 })
                             .show()
                             .animate({ top:'-=20px', opacity:1 }, 100, 'linear');
+                    setTimeout(function (){  mouseDown=null;},500)
+                }else  {
+                    mouseDown=null
                 }
-                setTimeout(function (){  mouseDown=null;},500)
+
+
 
                 /*
                 flag = false;
@@ -1639,20 +1643,6 @@ $(document).ready(function () {
 
     $(".suggestion_bottom_segment input").live("click", function (e) {
 
-        var slider_box = $(this).parents(".suggestion_wrapper").find(".arrow_box_container");
-
-        // first check if sliding popup is already open, if so close it
-        if ($(this).parent().hasClass('slider-is-open')){
-            slider_box.slideUp();
-            $('.slider-is-open').removeClass('slider-is-open');
-            return false;
-        }
-
-        var self = this;
-        var $suggestion_wrapper = $(this).parents(".suggestion_wrapper");
-        var grade_against = $(this).parent().hasClass('button_against');
-
-
         if (!my_id){
             //open popup window
             popupProvider.showLoginPopup({}, function(err){
@@ -1662,6 +1652,24 @@ $(document).ready(function () {
                 }
             });
         }
+         var self =$(this);
+        if(self.hasClass('active')){
+            return
+        }
+        var slider_box = $(this).parents(".suggestion_wrapper").find(".arrow_box_container");
+
+        // first check if sliding popup is already open, if so close it
+        if ($(this).parent().hasClass('slider-is-open')){
+            slider_box.slideUp();
+            $('.slider-is-open').removeClass('slider-is-open');
+            return false;
+        }
+
+
+        var $suggestion_wrapper = $(this).parents(".suggestion_wrapper");
+        var grade_against = $(this).parent().hasClass('button_against');
+
+
 
 
         var suggestion_id = $suggestion_wrapper.data('id');
@@ -1686,6 +1694,74 @@ $(document).ready(function () {
 
                 suggest_grade_id = data.grade_id;
                 $suggestion_wrapper.data('my_grade_id', data.grade_id);
+
+                slider_box.slideDown();
+                $('.slider-is-open').removeClass('slider-is-open');
+                $(this).parent().addClass('slider-is-open');
+                self.parent().parent().parent().find(".suggestion_bottom_segment input").removeClass('active');
+                self.addClass('active');
+                slider_box.find(".slider").slider({
+                    disabled: is_creator,
+                    value: my_discussion_grade, // dmy_discussion_grades instead of my_suggestion grade to prevent deadlock in slider
+                    range:"min",
+                    min: 0,
+                    max: 10,
+                    step:0.10,
+                    slide: function(event, ui){
+
+                        // prevent slider to go under discussion_grade
+                        var current = ui.value;
+                        if (grade_against){
+                            if(current > my_discussion_grade){
+                                current = my_discussion_grade;
+                                return false;
+                            }
+                        }else{
+                            if(current < my_discussion_grade){
+                                current = my_discussion_grade;
+                                return false;
+                            }
+                        }
+                    },
+                    change:function (event, ui) {
+                        if (event.originalEvent) {
+                            var my_prev_grade = suggestion_grade_val;
+                            if(depress_event)
+                                return;
+                            var rating = ui.value;
+                            var user_info = {
+                                user_logged_in : user.first_name ? true : false,
+                                action_done : (user.actions_done_by_user && user.actions_done_by_user.grade_object) ? true : false,
+                                action_name : "grade_object",
+                                tokens_owned : user.tokens ? user.tokens : 0,
+                                price: gamification_price['grade_suggestion']
+                            }
+                            db_functions.addSuggestionGrade(suggestion_id, discussion_id, rating, suggest_grade_id, user_info, function (err, data) {
+                                if (!err) {
+                                    if(data == 'canceled'){
+                                        $(".suggest_slider_" + suggestion_id).slider('value',my_prev_grade);
+                                    } else {
+                                        var $suggestion = $("div[data-id=" + suggestion_id + "]");
+                                        $suggestion.find('.supporters_wanted span').text(data.wanted_amount_of_tokens);
+                                        $suggestion.find('.supporters_current span').text(Math.round(data.curr_amount_of_tokens));
+                                        $suggestion_wrapper.data('my_grade_id', data.grade_id);
+                                    }
+                                }
+                                else
+                                {
+                                    depress_event = true;
+                                    $(".suggest_slider_" + suggestion_id).slider("value", suggestion_grade_val || 0);
+                                    depress_event = false;
+                                    console.log(err);
+                                }
+                                slider_box.slideUp();
+                                $(this).parent().removeClass('slider-is-open');
+                            });
+                        }
+                    }
+                });
+
+
             }
             else
             {
@@ -1696,70 +1772,6 @@ $(document).ready(function () {
             }
         });
 
-        slider_box.slideDown();
-        $('.slider-is-open').removeClass('slider-is-open');
-        $(this).parent().addClass('slider-is-open');
-
-        slider_box.find(".slider").slider({
-            disabled: is_creator,
-            value: my_discussion_grade, // dmy_discussion_grades instead of my_suggestion grade to prevent deadlock in slider
-            range:"min",
-            min: 0,
-            max: 10,
-            step:0.10,
-            slide: function(event, ui){
-
-                // prevent slider to go under discussion_grade
-                var current = ui.value;
-                if (grade_against){
-                    if(current > my_discussion_grade){
-                        current = my_discussion_grade;
-                        return false;
-                    }
-                }else{
-                    if(current < my_discussion_grade){
-                        current = my_discussion_grade;
-                        return false;
-                    }
-                }
-            },
-            change:function (event, ui) {
-                if (event.originalEvent) {
-                    var my_prev_grade = suggestion_grade_val;
-                    if(depress_event)
-                        return;
-                    var rating = ui.value;
-                    var user_info = {
-                        user_logged_in : user.first_name ? true : false,
-                        action_done : (user.actions_done_by_user && user.actions_done_by_user.grade_object) ? true : false,
-                        action_name : "grade_object",
-                        tokens_owned : user.tokens ? user.tokens : 0,
-                        price: gamification_price['grade_suggestion']
-                    }
-                    db_functions.addSuggestionGrade(suggestion_id, discussion_id, rating, suggest_grade_id, user_info, function (err, data) {
-                        if (!err) {
-                            if(data == 'canceled'){
-                                $(".suggest_slider_" + suggestion_id).slider('value',my_prev_grade);
-                            } else {
-                                var $suggestion = $("div[data-id=" + suggestion_id + "]");
-                                $suggestion.find('.supporters_wanted span').text(data.wanted_amount_of_tokens);
-                                $suggestion.find('.supporters_current span').text(Math.round(data.curr_amount_of_tokens));
-                                $suggestion_wrapper.data('my_grade_id', data.grade_id);
-                            }
-                        }
-                        else
-                        {
-                            depress_event = true;
-                            $(".suggest_slider_" + suggestion_id).slider("value", suggestion_grade_val || 0);
-                            depress_event = false;
-                            console.log(err);
-                        }
-                        slider_box.slideUp();
-                        $(this).parent().removeClass('slider-is-open');
-                    });
-                }
-            }
-        });
     });
 
     $('#facebook_share').one('click', function(event){
