@@ -473,7 +473,7 @@ var Schemas = exports.Schemas = {
         link :  {type:String, required:true} ,
         date:  {type:Date, required:true},
         source:{type:String, "enum":["דה מרקר", "כלכליסט","גלובס", "ynet", "הארץ", "nrg", "walla", "mako",  "אחר"], required:true}    ,
-        alternative_source:{type:String}     ,
+        alternative_source:{type:String},
 
         discussions:{type:[ObjectId], limit: 1000, ref:'Discussion'  , index:true},
         cycles:     {type:[ObjectId], limit: 1000, ref:'Cycle', index:true}
