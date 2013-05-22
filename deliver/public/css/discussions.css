@@ -1841,13 +1841,18 @@ span.remark{
 }
 
 .button_pro input{
-    background:url(/images/button_pro.png) no-repeat 0 0;
-    width:88px;
-    height:42px;
-    border:0px;
-    cursor:pointer;
-    margin-left:10px;
-    margin-top: 3px;
+     background:url(/images/button_pro.png) no-repeat 0 0;
+     width:88px;
+     height:42px;
+     border:0px;
+     cursor:pointer;
+     margin-left:10px;
+     margin-top: 3px;
+ }
+
+.button_pro input.grey{
+    background:url(/images/button_pro_grey.png) no-repeat 0 0;
+    cursor: default;
 }
 
 .button_against input{
@@ -1858,6 +1863,11 @@ span.remark{
     cursor:pointer;
     margin-left:10px;
     margin-top: 3px;
+}
+
+.button_against input.grey{
+    background:url(/images/button_against_grey.png) no-repeat 0 0;
+    cursor: default;
 }
 
 .supporters_wanted{
