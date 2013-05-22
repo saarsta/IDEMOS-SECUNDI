@@ -1653,7 +1653,7 @@ $(document).ready(function () {
             });
         }
          var self =$(this);
-        if(self.hasClass('grey')){
+        if(self.hasClass('active')){
             return
         }
         var slider_box = $(this).parents(".suggestion_wrapper").find(".arrow_box_container");
@@ -1698,8 +1698,8 @@ $(document).ready(function () {
                 slider_box.slideDown();
                 $('.slider-is-open').removeClass('slider-is-open');
                 $(this).parent().addClass('slider-is-open');
-                $(".suggestion_bottom_segment input").removeClass('grey');
-                self.addClass('grey');
+                self.parent().parent().parent().find(".suggestion_bottom_segment input").removeClass('active');
+                self.addClass('active');
                 slider_box.find(".slider").slider({
                     disabled: is_creator,
                     value: my_discussion_grade, // dmy_discussion_grades instead of my_suggestion grade to prevent deadlock in slider

@@ -1841,7 +1841,7 @@ span.remark{
 }
 
 .button_pro input{
-     background:url(/images/button_pro.png) no-repeat 0 0;
+     background:url(/images/URU_pro.con_btns_sprite.png) no-repeat -87px 0;
      width:88px;
      height:42px;
      border:0px;
@@ -1850,13 +1850,17 @@ span.remark{
      margin-top: 3px;
  }
 
-.button_pro input.grey{
-    background:url(/images/button_pro_grey.png) no-repeat 0 0;
+.button_pro input:hover{
+    background:url(/images/URU_pro.con_btns_sprite.png) no-repeat -87px -43px;
+    cursor: default;
+}
+.button_pro input.active,.button_pro input:active{
+    background:url(/images/URU_pro.con_btns_sprite.png) no-repeat -87px -87px;
     cursor: default;
 }
 
 .button_against input{
-    background:url(/images/button_against.png) no-repeat 0 0;
+    background:url(/images/URU_pro.con_btns_sprite.png) no-repeat 0 0;
     width:88px;
     height:42px;
     border:0px;
@@ -1864,9 +1868,12 @@ span.remark{
     margin-left:10px;
     margin-top: 3px;
 }
-
-.button_against input.grey{
-    background:url(/images/button_against_grey.png) no-repeat 0 0;
+.button_against input:hover{
+    background:url(/images/URU_pro.con_btns_sprite.png) no-repeat 0 -43px;
+    cursor: default;
+}
+.button_against input.active,.button_against input:active{
+    background:url(/images/URU_pro.con_btns_sprite.png) no-repeat 0 -87px;
     cursor: default;
 }
 
