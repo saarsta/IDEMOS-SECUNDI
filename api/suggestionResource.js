@@ -213,13 +213,21 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                     }
                 })
                 if (err){
-                    var to = 'aharon@uru.org.il';
+                    var to = 'saar@uru.org.il';
                     var subject = "הועלתה הצעה לשינוי לטקסט שכבר סומן בדיון";
-                    var body = "<a href='dev.empeeric.com/discussions/" + discussion_id + "#post_" + sug + "'>"
+                    /*var body = "<a href='" + req.app.settings.root_path  +  "'/discussions/" + discussion_id + "#post_" + sug + "'>"
                         + "existing suggestion with same indexes"
                         + "</a>"
                         + "<br>"
-                        + "<a href='dev.empeeric.com/discussions/" + discussion_id + "#post_" + suggestion_object.id + "'>"
+                        + "<a href='" + req.app.settings.root_path  +  "'/discussions/" + discussion_id + "#post_" + suggestion_object.id + "'>"
+                        + "new suggestion"
+                        + "</a>";*/
+
+                    var body = "<a href='uru.org.il/discussions/" + discussion_id + "#post_" + sug + "'>"
+                        + "existing suggestion with same indexes"
+                        + "</a>"
+                        + "<br>"
+                        + "<a href='uru.org.il/discussions/" + discussion_id + "#post_" + suggestion_object.id + "'>"
                         + "new suggestion"
                         + "</a>";
 
