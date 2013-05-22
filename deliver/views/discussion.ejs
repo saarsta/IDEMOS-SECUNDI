@@ -612,6 +612,7 @@ $(document).ready(function () {
 	$('#comments_wrapper').on("click", ".button_comment",function (e) {
         e.preventDefault();
         focusOnCommentBox();
+        scrollTo('#add_comment_wrapper');
     });
 
     $(".slider").slider({
