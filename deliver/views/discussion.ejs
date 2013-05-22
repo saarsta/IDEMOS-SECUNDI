@@ -921,7 +921,7 @@ $(document).ready(function () {
                 $(".more-deals").show();
 
                 $(".more-deals a").on('click', function (e) {
-
+                     $('#suggestions_wrapper').empty();
                     var self = $(this);
                     if(self.data('executing')){
 
@@ -929,7 +929,7 @@ $(document).ready(function () {
                         curr_suggestion = $('#suggestions_wrapper').find('[data-id=' + first_suggestion.id + ']');
 
                         db_functions.getCommentsBySuggestion(first_suggestion.id, function(err, data){
-                            $('#suggestions_wrapper').empty();
+
                             // set comments counter
                             curr_suggestion.find('.comments_counter span').text(data.objects.length);
 
@@ -1180,7 +1180,7 @@ $(document).ready(function () {
 
 	 function loadSpecialPosts(){
         db_functions.getSpecialPostsByDiscussion(discussion_id, function(err, data){
-            if (!err  && data.objects.length != 0){
+            if (!err  && data.length != 0){
                 dust.renderArray('discussion_special_comment', data.objects, null, function (err, out) {
                     $('#special_post_wrapper').prepend(out);
                     $('#special_post_wrapper .content').dotdotdot({});
