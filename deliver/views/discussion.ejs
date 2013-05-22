@@ -1438,7 +1438,10 @@ $(document).ready(function () {
     var mouseDown, mouseUp, top, left;
     var range_txt;
     $('#discussion_content')
-            .on('mousedown', function (e) {mouseDown = e;   $("#old_suggestion_popup").hide();})
+            .on('mousedown', function (e) {
+                mouseDown = e;
+                $("#old_suggestion_popup").hide();
+            })
             .on('keydown', function (e) {                if (!(e.shiftKey && (e.keyCode <= 40 && e.keyCode >= 37) || (e.ctrlKey && e.keyCode == 65))) e.preventDefault();})
             .on('dragstart', function (e) {                e.preventDefault();               })
             .on('mouseup',function (e) {
@@ -1471,7 +1474,8 @@ $(document).ready(function () {
                             .show()
                             .animate({ top:'-=20px', opacity:1 }, 100, 'linear');
                 }
-                mouseDown=null;
+                setTimeout(function (){  mouseDown=null;},500)
+
                 /*
                 flag = false;
                 if(suggestions_list){
@@ -1531,11 +1535,14 @@ $(document).ready(function () {
     */
 
     $(".marker_1").live("click", function () {
-        displayAllSuggestions();
-        var id= $(this).data('id')  ;
-        $('html, body').animate({
-            scrollTop: $("div[data-id=" +id+ "]").offset().top
-        }, 500);
+        if(!mouseDown){
+            displayAllSuggestions();
+            var id= $(this).data('id')  ;
+            $('html, body').animate({
+                scrollTop: $("div[data-id=" +id+ "]").offset().top
+            }, 500);
+        }
+
     }  );
 
     function discoverRange(text){
@@ -1602,21 +1609,28 @@ $(document).ready(function () {
         console.log("pop_suggest_bt");
         e.stopPropagation();
         e.preventDefault();
+        if(!my_id){
+            popupProvider.showLoginPopup({}, function(err, result){
+                if(!err)
+                    window.location = window.location
+            });
+        }  else{
 
-        $("#send_suggestion").data('executing', false);
+		$("#send_suggestion").data('executing', false);
         $("#send_suggestion").removeClass('disable');
         $('#discussion_suggest').val('');
         $('#discussion_explanation').val('');
 
-        $('#discussion_content_txt').text('"' + range_txt + '"');
-        $('#write-comment').show();
-        $('textarea#discussion_suggest').focus();
-        $('#reload-img').attr('src', $('#reload-img').attr('src'));
-        $(".popup-window").hide();
+            $('#discussion_content_txt').text('"' + range_txt + '"');
+            $('#write-comment').show();
+            $('textarea#discussion_suggest').focus();
+            $('#reload-img').attr('src', $('#reload-img').attr('src'));
+            $(".popup-window").hide();
+            $('html, body').animate({
+                scrollTop: $("#write-comment").offset().top
+            }, 500);
+        }
 
-        $('html, body').animate({
-            scrollTop: $("#write-comment").offset().top
-        }, 500);
 
     });
 
