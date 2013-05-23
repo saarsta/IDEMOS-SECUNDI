@@ -666,6 +666,21 @@ var db_functions = {
         });
     },
 
+    removePost: function(post_id, callback){
+        db_functions.loggedInAjax({
+            url:'/api/posts/' +post_id,
+            type:"delete",
+            async:true,
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function (err) {
+                callback(err);
+            }
+        });
+    },
+
     getSpecialPostsByDiscussion: function(discussion_id, callback){
         db_functions.loggedInAjax({
             url:'/api/special_posts?discussion_id=' + discussion_id,

@@ -20,7 +20,7 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
     init:function () {
 
         this._super(models.Post, 'post', null);
-        this.allowed_methods = ['get', 'post', 'put'];
+        this.allowed_methods = ['get', 'post', 'put', 'delete'];
         this.authorization = new common.TokenAuthorization();
         this.authentication = new common.SessionAuthentication();
         this.filtering = {discussion_id:null};
@@ -43,7 +43,8 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
             quoted_by: null,
             discussion_id:null,
             is_user_follower: null,
-            is_editable: null
+            is_editable: null,
+            is_my_comment: null
         };
         this.update_fields = {text: null, discussion_id: null, ref_to_post_id: null};
 //    this.validation = new resources.Validation();=
@@ -87,11 +88,13 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
 //                                })
 
                             async.forEach(results.objects, function(post, itr_cbk){
-                                // set is_editable flag
-                                if (user_id === post.creator_id.id && new Date() - post.creation_date <= EDIT_TEXT_LEGIT_TIME){
-                                    post.is_editable = true
-                                }
+                                //set is_my_comment flag
+                                post.is_my_comment = (user_id === (post.creator_id && post.creator_id.id));
 
+                                // set is_editable flag
+                                if (user_id === (post.creator_id && post.creator_id.id) && new Date() - post.creation_date <= EDIT_TEXT_LEGIT_TIME){
+                                    post.is_editable = true;
+                                }
                                 //update each post creator if he is a follower or not
                                 var flag = false;
 
@@ -337,6 +340,16 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
             callback({message: 'to late to update comment', code: 404})
         }else{
             this._super(req, object, callback);
+        }
+    },
+
+    delete_obj: function(req,object,callback){
+        if (object.creator_id && (req.user.id === object.creator_id.id)){
+            object.remove(function(err){
+                callback(err);
+            })
+        }else{
+            callback({err: 401, message :"user can't delete others posts"});
         }
     }
 });

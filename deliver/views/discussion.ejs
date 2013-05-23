@@ -1098,7 +1098,6 @@ $(document).ready(function () {
         image_autoscale('.auto-scale img');
     });
 
-
     function renderComments(comments) {
 
         //first clear existing comments
@@ -2006,7 +2005,20 @@ $(document).ready(function () {
     $('#suggestions_wrapper').on('click', '.edit_window', function(e){
         $('.read_more').click();
         scrollTo('#discussion_content');
+    })
+
+
+    $('#content_wrapper_comments').on('mouseenter', '.comment_wrapper', function(e){
+        $(this).find('.close').addClass('show');
+    }).on('mouseleave', '.comment_wrapper', function(){
+        $(this).find('.close').removeClass('show');
     });
+
+    $('#content_wrapper_comments').on('click', '.comment_wrapper .close', function(e){
+        var popupConfig = {};
+        popupConfig.post_id = $(this).parents('.comment_wrapper').data('id');
+        popupProvider.showDeletePostPopup(popupConfig);
+    })
 });
 
 </script>
