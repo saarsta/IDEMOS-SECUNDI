@@ -2008,7 +2008,7 @@ $(document).ready(function () {
         scrollTo('#discussion_content');
     })
 
-
+    // toggle delete comment button
     $('#content_wrapper_comments').on('mouseenter', '.comment_wrapper', function(e){
         $(this).find('.close').addClass('show');
     }).on('mouseleave', '.comment_wrapper', function(){
@@ -2017,7 +2017,62 @@ $(document).ready(function () {
 
     $('#content_wrapper_comments').on('click', '.comment_wrapper .close', function(e){
         var popupConfig = {};
+        popupConfig.popup_text = "" +
+                "למחוק תגובה זו? יחד איתה יימחקו גם התגובות שפורסמו לה על ידי משתמשים אחרים" ;
+        popupConfig.onOkCilcked = function(e){
+            e.preventDefault();
+            clicked = 'ok';
+            db_functions.removePost(popupConfig.post_id, function(err){
+                if (err){
+                    console.log(err);
+                }else{
+                    var $this = $('#post_' + popupConfig.post_id);
+                    var bgc =$this.css('background-color');
+                    $this.css('background-color', 'pink');
+                    $this.animate({backgroundColor: bgc}, 1200, "swing", function(e){
+                        $this.remove();
+                    });
+                }
+            });
+            $.colorbox.close();
+        },
         popupConfig.post_id = $(this).parents('.comment_wrapper').data('id');
+        popupProvider.showDeletePostPopup(popupConfig);
+    });
+
+    // toggle delete suggestion button
+    $('#content_wrapper_suggestions').on('mouseenter', '.suggestion_wrapper', function(e){
+        $(this).find('.close').addClass('show');
+    }).on('mouseleave', '.suggestion_wrapper', function(){
+                $(this).find('.close').removeClass('show');
+            });
+
+    $('#content_wrapper_suggestions').on('click', '.suggestion_wrapper .close', function(e){
+        var popupConfig = {};
+        popupConfig.popup_text = "ha gi ga !!";
+        popupConfig.onOkCilcked = function(e){
+            e.preventDefault();
+            clicked = 'ok';
+            db_functions.removeSuggestion(popupConfig.post_id, function(err){
+                if (err){
+                    console.log(err);
+                }else{
+                    var $this = $('#post_' + popupConfig.post_id);
+                    var bgc =$this.css('background-color');
+                    $this.css('background-color', 'pink');
+                    $this.animate({backgroundColor: bgc}, 1200, "swing", function(e){
+                        $this.remove();
+                        $.each(suggestions_list, function(index, object){
+                            if(object.id == popupConfig.post_id){
+                                suggestions_list.splice(index, i);
+                            }
+                        });
+                    });
+                }
+            });
+            $.colorbox.close();
+        },
+        popupConfig.post_id = $(this).parents('.suggestion_wrapper').data('id');
         popupProvider.showDeletePostPopup(popupConfig);
     })
 });

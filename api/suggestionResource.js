@@ -20,7 +20,7 @@ var EDIT_TEXT_LEGIT_TIME = 60 * 1000 * 15;
 var SuggestionResource = module.exports = common.GamificationMongooseResource.extend({
     init:function () {
         this._super(models.Suggestion, 'suggestion', common.getGamificationTokenPrice('suggestion_on_discussion') > -1 ? common.getGamificationTokenPrice('suggestion') : 0);
-        this.allowed_methods = ['get', 'post', 'put'];
+        this.allowed_methods = ['get', 'post', 'put', 'delete'];
         this.authentication = new common.SessionAuthentication();
         this.filtering = {discussion_id:null, is_approved:null};
         this.default_query = function (query) {
@@ -354,6 +354,32 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                     callback(err, {});
                 }
             });
+        }
+    },
+
+    delete_obj: function(req,object,callback){
+        if (object.creator_id && (req.user.id === object.creator_id.id)){
+
+            async.waterfall([
+                //  delete suggestion's posts
+                function(cbk){
+                    models.PostSuggestion.remove({suggestion_id: object.id},function(err){
+                        cbk(err);
+                    })
+                },
+
+                // delete suggestion
+                function(cbk){
+                    object.remove(function(err){
+                        callback(err);
+                    })
+                }
+            ], function(err){
+                callback(err);
+            })
+
+        }else{
+            callback({err: 401, message :"user can't delete others posts"});
         }
     }
 });

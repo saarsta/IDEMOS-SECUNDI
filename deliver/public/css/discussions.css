@@ -1671,6 +1671,7 @@ span.remark{
     width: 980px;
     padding-top: 30px;
     margin: auto;
+    position: relative;
 }
 
 #content_wrapper_suggestions input.button_more_results{
@@ -2321,6 +2322,22 @@ cursor: pointer;
 
 #comments_wrapper .regular_comment.comment_wrapper .close.show{
     display: block;
+}
+
+#suggestions_wrapper .suggestion_wrapper > .close{
+    display: none;
+    background: url(/images/icon_x.png) no-repeat 0 0;
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    right: -7px;
+    top: 36px;
+    cursor: pointer;
+    z-index: 1;
+}
+
+#suggestions_wrapper .suggestion_wrapper > .close.show{
+    display: block!important;
 }
 
 #special_post_wrapper .special_comment h2.title {

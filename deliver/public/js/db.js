@@ -680,6 +680,21 @@ var db_functions = {
             }
         });
     },
+    
+    removeSuggestion: function(suggestion_id, callback){
+        db_functions.loggedInAjax({
+            url:'/api/suggestions/' +suggestion_id,
+            type:"delete",
+            async:true,
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function (err) {
+                callback(err);
+            }
+        });
+    },
 
     getSpecialPostsByDiscussion: function(discussion_id, callback){
         db_functions.loggedInAjax({

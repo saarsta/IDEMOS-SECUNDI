@@ -111,23 +111,6 @@ var popupProvider={
             okButtonText:'אישור',
             cancelButtonText: 'ביטול',
             callback: $.noop,
-            onOkCilcked:function(e){
-                e.preventDefault();
-                clicked = 'ok';
-                db_functions.removePost(popupConfig.post_id, function(err){
-                    if (err){
-                        console.log(err);
-                    }else{
-                        var $this = $('#post_' + popupConfig.post_id);
-                        var bgc =$this.css('background-color');
-                        $this.css('background-color', 'pink');
-                        $this.animate({backgroundColor: bgc}, 2000, "swing", function(e){
-                            $this.remove();
-                        });
-                    }
-                });
-                $.colorbox.close();
-            },
             onCancelClicked:function(e){
                 e.preventDefault();
                 clicked = 'cancel';
