@@ -968,7 +968,7 @@ $(document).ready(function () {
                                 });
                             });
                         })
-                        self.text('??? ?????');
+                        self.text('עוד הצעות');
                         $(this).removeClass('flip');
 
                         $(this).data('executing', false);
@@ -1462,6 +1462,7 @@ $(document).ready(function () {
             .on('mousedown', function (e) {
                 mouseDown = e;
                 $("#old_suggestion_popup").hide();
+                console.log(mouseDown) ;
             })
             .on('keydown', function (e) {                if (!(e.shiftKey && (e.keyCode <= 40 && e.keyCode >= 37) || (e.ctrlKey && e.keyCode == 65))) e.preventDefault();})
             .on('dragstart', function (e) {                e.preventDefault();               })

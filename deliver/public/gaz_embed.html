@@ -1,0 +1,46 @@
+<html>
+  <head>
+<link rel="stylesheet" type="text/css" href="http://www.uru.org.il/css/timeline.css" />
+<style>
+#uru_logo
+{
+position: absolute;
+top: 47px;
+left: 60px;
+z-index: 200;
+}
+
+#uru_img
+{
+width: 50px;
+height: 50px;
+}
+</style>
+
+        <!-- jQuery -->
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <!-- BEGIN TimelineJS -->
+        <script type="text/javascript" src="js/storyjs-embed.js"></script>
+        <script>
+            $(document).ready(function() {
+                createStoryJS({
+                    type:       'timeline',
+                    width:      '960',
+                    height:     '480',
+                    lang:               'iw',                           //OPTIONAL LANGUAGE
+                    source:     'https://docs.google.com/spreadsheet/pub?key=0AsdrfW3R5lMtdFAwU2Fuam5nSXI0UWhXRHZvdjdkUkE&output=html',
+css:                'css/timeline.css',     //OPTIONAL PATH TO CSS
+font:               'Arial',             //OPTIONAL FONT
+                    embed_id:   'my-timeline'
+
+                });
+            });
+        </script>
+        <!-- END TimelineJS -->
+    </head>
+    <body>  
+<div id="uru_logo"><a href="http://www.uru.org.il/cycles/507d805a5c6c2f020000001e" target="_blank"><img id="uru_img" alt="לעמוד הקמפיין באתר עורו" src="http://uru.s3.amazonaws.com/uru_logo_s_763.png"/></a></div>
+        <div id="my-timeline"></div>
+
+    </body>
+</html>
