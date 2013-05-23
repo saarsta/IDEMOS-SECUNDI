@@ -10362,3 +10362,6 @@ a.facebook_join:active
     bottom: 10px;
     left:10px;
 }
+body a#fdbk_tab {
+    background-image: url(../images/support_trans_tab.png);
+}

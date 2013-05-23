@@ -2272,6 +2272,10 @@ span.remark{
     margin-top: 20px;
 }
 
+#special_post_wrapper .editor_choice{
+    margin-left: 20px;
+}
+
 #special_post_wrapper .special_comment {
     width:480px;
     float:right;
@@ -2325,6 +2329,7 @@ cursor: pointer;
 
 #special_post_wrapper .editor_choice h2.title{
     background:url(/images/editor_icon.png) no-repeat center right;
+    padding-right:31px;
 }
 
 #special_post_wrapper .content .rating{
