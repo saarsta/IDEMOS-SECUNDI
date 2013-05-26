@@ -2324,19 +2324,35 @@ cursor: pointer;
     display: block;
 }
 
-#suggestions_wrapper .suggestion_wrapper > .close{
+#suggestions_wrapper .suggestion_holder > .close{
     display: none;
     background: url(/images/icon_x.png) no-repeat 0 0;
     width: 24px;
     height: 24px;
     position: absolute;
     right: -7px;
-    top: 36px;
+    top: 7px;
     cursor: pointer;
     z-index: 1;
 }
 
-#suggestions_wrapper .suggestion_wrapper > .close.show{
+#suggestions_wrapper .suggestion_holder > .close.show{
+    display: block!important;
+}
+
+#suggestions_wrapper .comment > .close{
+    display: none;
+    background: url(/images/icon_x.png) no-repeat 0 0;
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    right: -7px;
+    top: 10px;
+    cursor: pointer;
+    z-index: 1;
+}
+
+#suggestions_wrapper .comment > .close.show{
     display: block!important;
 }
 

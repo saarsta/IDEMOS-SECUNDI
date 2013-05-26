@@ -696,6 +696,21 @@ var db_functions = {
         });
     },
 
+    removeSuggestionComment: function(comment_id, callback){
+        db_functions.loggedInAjax({
+            url:'/api/suggestion_posts/' +comment_id,
+            type:"delete",
+            async:true,
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function (err) {
+                callback(err);
+            }
+        });
+    },
+
     getSpecialPostsByDiscussion: function(discussion_id, callback){
         db_functions.loggedInAjax({
             url:'/api/special_posts?discussion_id=' + discussion_id,

@@ -1094,7 +1094,7 @@ $(document).ready(function () {
 
     $(".comments_counter a").live("click",function(){
         $(this).parents('.suggestion_wrapper').find('.comment').show();
-        $(this).parents('.suggestion_wrapper').find('.close').show();
+        $(this).parents('.suggestion_wrapper .comments_counter').find('.close').show();
         image_autoscale('.auto-scale img');
     });
 
@@ -2027,11 +2027,7 @@ $(document).ready(function () {
                     console.log(err);
                 }else{
                     var $this = $('#post_' + popupConfig.post_id);
-                    var bgc =$this.css('background-color');
-                    $this.css('background-color', 'pink');
-                    $this.animate({backgroundColor: bgc}, 1200, "swing", function(e){
-                        $this.remove();
-                    });
+                    $this.slideUp(600, "swing");
                 }
             });
             $.colorbox.close();
@@ -2041,15 +2037,17 @@ $(document).ready(function () {
     });
 
     // toggle delete suggestion button
-    $('#content_wrapper_suggestions').on('mouseenter', '.suggestion_wrapper', function(e){
+    $('#suggestions_wrapper').on('mouseenter', '.suggestion_wrapper .suggestion_holder', function(e){
         $(this).find('.close').addClass('show');
-    }).on('mouseleave', '.suggestion_wrapper', function(){
-                $(this).find('.close').removeClass('show');
-            });
+    }).on('mouseleave', '.suggestion_wrapper .suggestion_holder' , function(){
+        $(this).find('.close').removeClass('show');
+    });
 
-    $('#content_wrapper_suggestions').on('click', '.suggestion_wrapper .close', function(e){
+    $('#content_wrapper_suggestions').on('click', '.suggestion_holder > .close', function(e){
         var popupConfig = {};
-        popupConfig.popup_text = "ha gi ga !!";
+        popupConfig.popup_text = "" +
+                "למחוק הצעה זו? יחד איתה יימחקו גם התגובות שפורסמו לה על ידי משתמשים אחרים" ;
+        ;
         popupConfig.onOkCilcked = function(e){
             e.preventDefault();
             clicked = 'ok';
@@ -2058,10 +2056,7 @@ $(document).ready(function () {
                     console.log(err);
                 }else{
                     var $this = $('#post_' + popupConfig.post_id);
-                    var bgc =$this.css('background-color');
-                    $this.css('background-color', 'pink');
-                    $this.animate({backgroundColor: bgc}, 1200, "swing", function(e){
-                        $this.remove();
+                    $this.slideUp(1200, "swing", function(e){
                         $.each(suggestions_list, function(index, object){
                             if(object.id == popupConfig.post_id){
                                 suggestions_list.splice(index, i);
@@ -2073,6 +2068,35 @@ $(document).ready(function () {
             $.colorbox.close();
         },
         popupConfig.post_id = $(this).parents('.suggestion_wrapper').data('id');
+        popupProvider.showDeletePostPopup(popupConfig);
+    })
+
+    // toggle delete comment on suggestion button
+    $('#content_wrapper_suggestions').on('mouseenter', '.suggestion_comments_holder .comment', function(e){
+        $(this).find('.close').addClass('show');
+    }).on('mouseleave', '.suggestion_comments_holder .comment', function(){
+        $(this).find('.close').removeClass('show');
+    });
+
+    $('#content_wrapper_suggestions').on('click', '.suggestion_comments_holder .comment>.close', function(e){
+        var popupConfig = {};
+        popupConfig.popup_text = "" +
+                "למחוק תגובה זו? יחד איתה יימחקו גם התגובות שפורסמו לה על ידי משתמשים אחרים" ;
+        ;
+        popupConfig.onOkCilcked = function(e){
+            e.preventDefault();
+            clicked = 'ok';
+            db_functions.removeSuggestionComment(popupConfig.post_id, function(err){
+                if (err){
+                    console.log(err);
+                }else{
+                    var $this = $('#' + popupConfig.post_id);
+                    $this.slideUp(1200, "swing");
+                }
+            });
+            $.colorbox.close();
+        },
+        popupConfig.post_id = $(this).parent('.comment').attr('id');
         popupProvider.showDeletePostPopup(popupConfig);
     })
 });
