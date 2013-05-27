@@ -336,6 +336,8 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                 console.error(err);
                 console.trace();
             }
+            //set is_my_suggestion flag
+            result.is_my_suggestion = true;
             callback(err, result);
         });
     },
