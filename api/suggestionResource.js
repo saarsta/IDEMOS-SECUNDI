@@ -217,7 +217,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                     }
                 })
                 if (err){
-                    var to = 'saar@uru.org.il';
+                    var to = 'aharon@uru.org.il';
                     var subject = "הועלתה הצעה לשינוי לטקסט שכבר סומן בדיון";
                     /*var body = "<a href='" + req.app.settings.root_path  +  "'/discussions/" + discussion_id + "#post_" + sug + "'>"
                         + "existing suggestion with same indexes"
