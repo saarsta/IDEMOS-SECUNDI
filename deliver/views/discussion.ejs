@@ -775,8 +775,8 @@ $(document).ready(function () {
 
     /* *** scroll to qoutes *** */
     // click on  quoted-by take you to comment
-    $('#comments_wrapper').on('click', '.quote-ref', '.quote', function () {
-        var id = $(this).parents('.comment_wrapper ').data('ref-id');
+    $('#comments_wrapper').on('click', '.quote-ref', function () {
+        var id = $(this).data('ref-id');
         var post_id = "post_" + id;
         if(!scrollTo(window[post_id])) {
             db_functions.getPostById(id, function (err, post) {
