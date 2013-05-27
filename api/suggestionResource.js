@@ -20,7 +20,7 @@ var EDIT_TEXT_LEGIT_TIME = 60 * 1000 * 15;
 var SuggestionResource = module.exports = common.GamificationMongooseResource.extend({
     init:function () {
         this._super(models.Suggestion, 'suggestion', common.getGamificationTokenPrice('suggestion_on_discussion') > -1 ? common.getGamificationTokenPrice('suggestion') : 0);
-        this.allowed_methods = ['get', 'post', 'put'];
+        this.allowed_methods = ['get', 'post', 'put', 'delete'];
         this.authentication = new common.SessionAuthentication();
         this.filtering = {discussion_id:null, is_approved:null};
         this.default_query = function (query) {
@@ -49,7 +49,8 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
             },
             wanted_amount_of_tokens:null,
             curr_amount_of_tokens:null,
-            is_editable: null
+            is_editable: null,
+            is_my_suggestion: null
         };
     },
 
@@ -61,6 +62,9 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
         var user_id = req.user && req.user._id + "";
 
         var iterator = function (suggestion, itr_cbk) {
+            //set is_my_suggestion flag
+            suggestion.is_my_suggestion = (user_id === suggestion.creator_id.id);
+
             // set is_editable flag if user is the creator and its 15 min after publish
             if (user_id === suggestion.creator_id.id && new Date() - suggestion.creation_date <= EDIT_TEXT_LEGIT_TIME){
                 suggestion.is_editable = true;
@@ -215,11 +219,19 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                 if (err){
                     var to = 'aharon@uru.org.il';
                     var subject = "הועלתה הצעה לשינוי לטקסט שכבר סומן בדיון";
-                    var body = "<a href='dev.empeeric.com/discussions/" + discussion_id + "#post_" + sug + "'>"
+                    /*var body = "<a href='" + req.app.settings.root_path  +  "'/discussions/" + discussion_id + "#post_" + sug + "'>"
                         + "existing suggestion with same indexes"
                         + "</a>"
                         + "<br>"
-                        + "<a href='dev.empeeric.com/discussions/" + discussion_id + "#post_" + suggestion_object.id + "'>"
+                        + "<a href='" + req.app.settings.root_path  +  "'/discussions/" + discussion_id + "#post_" + suggestion_object.id + "'>"
+                        + "new suggestion"
+                        + "</a>";*/
+
+                    var body = "<a href='uru.org.il/discussions/" + discussion_id + "#post_" + sug + "'>"
+                        + "existing suggestion with same indexes"
+                        + "</a>"
+                        + "<br>"
+                        + "<a href='uru.org.il/discussions/" + discussion_id + "#post_" + suggestion_object.id + "'>"
                         + "new suggestion"
                         + "</a>";
 
@@ -286,7 +298,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                         discussion_creator_id = disc_obj.creator_id;
 
                         // be sure that there are no duplicated users in discussion.users
-                        _.each(disc_obj.users, function(user){ unique_users.push(user.user_id + "")});
+                        _.each(disc_obj.users, function(user){ unique_users.push(user.id || user.user_id + "")});
                         unique_users = _.uniq(unique_users);
 
                         async.forEach(unique_users, iterator, function(err){
@@ -342,6 +354,32 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                     callback(err, {});
                 }
             });
+        }
+    },
+
+    delete_obj: function(req,object,callback){
+        if (object.creator_id && (req.user.id === object.creator_id.id)){
+
+            async.waterfall([
+                //  delete suggestion's posts
+                function(cbk){
+                    models.PostSuggestion.remove({suggestion_id: object.id},function(err){
+                        cbk(err);
+                    })
+                },
+
+                // delete suggestion
+                function(cbk){
+                    object.remove(function(err){
+                        callback(err);
+                    })
+                }
+            ], function(err){
+                callback(err);
+            })
+
+        }else{
+            callback({err: 401, message :"user can't delete others posts"});
         }
     }
 });

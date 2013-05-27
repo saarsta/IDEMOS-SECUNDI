@@ -3,6 +3,9 @@
      data-creator_id="{creator_id.id}" id="post_{id}"
      data-my_grade="{my_grade_val}" data-my_grade_id="{my_grade_id}">
     <div class="suggestion_holder window">
+        {?is_my_suggestion}
+        <div class="close"></div>
+        {/is_my_suggestion}
         <div class="suggestion_details person" data-id="{creator_id.id}" data-name="{creator_id.first_name} {creator_id.last_name}">
             <a href="/myuru/{creator_id.id}">
                 <div class="img-box" style="overflow: hidden;">
@@ -22,7 +25,7 @@
                 <div class="action gray_and_soon">עקוב</div>
             </div> </div>
             <div class="date_time">
-                <a style="text-decoration: none; color: grey" class="no_underline_cursor_when_hover" href="/discussions/{discussion_id}#post_{_id}">
+                <a class="underline_and_cursor_when_hover" href="/discussions/{discussion_id}#post_{id}" title="לינק ישיר להצעה">
                     <span class="time">{?creation_date}{creation_date|time}{/creation_date}</span>
                 </a>
             </div>
@@ -60,13 +63,14 @@
         </div>
         <div class="suggestion_bottom">
             <div class="suggestion_bottom_segment one">
+                {^is_my_suggestion}
                 <div class="button button_pro">
-                    <input class="grading_button" type="button" />
+                    <input class="grading_button  {?grade_obj} {?grade_obj.does_support_the_suggestion} active {/grade_obj.does_support_the_suggestion} {/grade_obj}" type="button" />
                 </div>
                 <div class="button button_against">
-                    <input class="grading_button" type="button" />
+                    <input class="grading_button  {?grade_obj} {^grade_obj.does_support_the_suggestion} active {/grade_obj.does_support_the_suggestion} {/grade_obj}" type="button" />
                 </div>
-
+                {/is_my_suggestion}
                 <div class="button" style= "width: 80px; height: 20px; left: 0; top: 19px; overflow: hidden;
                         position: absolute; direction: ltr;">
                     <div class="fb-like" data-href="http://www.uru.org.il/discussions{discussion_id}/posts/{id}"

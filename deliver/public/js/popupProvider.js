@@ -105,6 +105,36 @@ var popupProvider={
         });
     },
 
+    showDeletePostPopup:function(popupConfig){
+        var clicked;
+        var defaults = {
+            okButtonText:'אישור',
+            cancelButtonText: 'ביטול',
+            callback: $.noop,
+            onCancelClicked:function(e){
+                e.preventDefault();
+                clicked = 'cancel';
+                $.colorbox.close();
+            }
+        };
+
+        popupConfig = $.extend(defaults,popupConfig);
+
+        dust.render('delete_post_popup',popupConfig,function(err,out){
+            if(!err){
+                $.colorbox({ html:out,
+                    onComplete:function(e){
+                        $('.ok-button').click(popupConfig.onOkCilcked);
+                        $('.cancel-button').click(popupConfig.onCancelClicked);
+                    },
+                    onClosed:function(){
+                        popupConfig.callback(clicked);
+                    }
+                });
+            }
+        });
+    },
+
     showGiveMandatPopup:function(popupConfig){
 
         this.self = this;

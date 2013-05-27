@@ -9336,8 +9336,18 @@ a.menu-elections:hover {
     text-decoration: none;
 }
 
-.no_underline_cursor_when_hover: hover {
+.no_underline_cursor_when_hover:hover {
     cursor: pointer;
+}
+
+.underline_and_cursor_when_hover {
+    text-decoration: none;
+    color: grey
+}
+
+.underline_and_cursor_when_hover:hover {
+    cursor: pointer;
+    text-decoration:underline;
 }
 
 .register_link {
@@ -10351,4 +10361,7 @@ a.facebook_join:active
     position: absolute;
     bottom: 10px;
     left:10px;
+}
+body a#fdbk_tab {
+    background-image: url(../images/support_trans_tab.png);
 }

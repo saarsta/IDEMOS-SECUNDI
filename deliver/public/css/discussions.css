@@ -1671,6 +1671,7 @@ span.remark{
     width: 980px;
     padding-top: 30px;
     margin: auto;
+    position: relative;
 }
 
 #content_wrapper_suggestions input.button_more_results{
@@ -1841,7 +1842,26 @@ span.remark{
 }
 
 .button_pro input{
-    background:url(/images/button_pro.png) no-repeat 0 0;
+     background:url(/images/URU_pro.con_btns_sprite.png) no-repeat -87px 0;
+     width:88px;
+     height:42px;
+     border:0px;
+     cursor:pointer;
+     margin-left:10px;
+     margin-top: 3px;
+ }
+
+.button_pro input:hover{
+    background:url(/images/URU_pro.con_btns_sprite.png) no-repeat -87px -43px;
+    cursor: default;
+}
+.button_pro input.active,.button_pro input:active{
+    background:url(/images/URU_pro.con_btns_sprite.png) no-repeat -87px -87px;
+    cursor: default;
+}
+
+.button_against input{
+    background:url(/images/URU_pro.con_btns_sprite.png) no-repeat 0 0;
     width:88px;
     height:42px;
     border:0px;
@@ -1849,15 +1869,13 @@ span.remark{
     margin-left:10px;
     margin-top: 3px;
 }
-
-.button_against input{
-    background:url(/images/button_against.png) no-repeat 0 0;
-    width:88px;
-    height:42px;
-    border:0px;
-    cursor:pointer;
-    margin-left:10px;
-    margin-top: 3px;
+.button_against input:hover{
+    background:url(/images/URU_pro.con_btns_sprite.png) no-repeat 0 -43px;
+    cursor: default;
+}
+.button_against input.active,.button_against input:active{
+    background:url(/images/URU_pro.con_btns_sprite.png) no-repeat 0 -87px;
+    cursor: default;
 }
 
 .supporters_wanted{
@@ -2255,6 +2273,10 @@ span.remark{
     margin-top: 20px;
 }
 
+#special_post_wrapper .editor_choice{
+    margin-left: 20px;
+}
+
 #special_post_wrapper .special_comment {
     width:480px;
     float:right;
@@ -2287,6 +2309,53 @@ cursor: pointer;
     max-height:  none;
 }
 
+#comments_wrapper .regular_comment.comment_wrapper .close{
+    display: none;
+    background:url(/images/icon_x.png) no-repeat 0 0;
+    width:24px;
+    height:24px;
+    position:absolute;
+    right: -6px;
+    top: 7px;
+    cursor:pointer;
+}
+
+#comments_wrapper .regular_comment.comment_wrapper .close.show{
+    display: block;
+}
+
+#suggestions_wrapper .suggestion_holder > .close{
+    display: none;
+    background: url(/images/icon_x.png) no-repeat 0 0;
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    right: -7px;
+    top: 7px;
+    cursor: pointer;
+    z-index: 1;
+}
+
+#suggestions_wrapper .suggestion_holder > .close.show{
+    display: block!important;
+}
+
+#suggestions_wrapper .comment > .close{
+    display: none;
+    background: url(/images/icon_x.png) no-repeat 0 0;
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    right: -7px;
+    top: 10px;
+    cursor: pointer;
+    z-index: 1;
+}
+
+#suggestions_wrapper .comment > .close.show{
+    display: block!important;
+}
+
 #special_post_wrapper .special_comment h2.title {
     font-size:24px;
     padding-right:24px;
@@ -2308,6 +2377,7 @@ cursor: pointer;
 
 #special_post_wrapper .editor_choice h2.title{
     background:url(/images/editor_icon.png) no-repeat center right;
+    padding-right:31px;
 }
 
 #special_post_wrapper .content .rating{
@@ -2704,6 +2774,7 @@ input.button_submit_comment_no_text{
 #change_proposal_top .details .date_time{
     font-style:italic;
 }
+
 
 #change_proposal_top .to_prev{
     width:120px;
