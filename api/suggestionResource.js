@@ -42,6 +42,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
             id:null,
             explanation:null,
             updated_user_tokens:null,
+            discussion_id:null,
             grade_obj:{
                 _id:null,
                 evaluation_grade:null,
