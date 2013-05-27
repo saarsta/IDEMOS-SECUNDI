@@ -726,7 +726,6 @@ $(document).ready(function () {
     }
 
     function setCommentNumber(number) {
-
         $('#comments_number')[0].innerHTML = '(' + number + ')';
     }
 
@@ -883,7 +882,6 @@ $(document).ready(function () {
         return null;
     };
 
-
     var first_suggestion;
 
     // get change suggestions and render
@@ -901,37 +899,36 @@ $(document).ready(function () {
         displaySuggestionsRanges();
         suggestion = suggestions_list[0];
 
-            // set title and img for fb share
-            suggestion.title = discussion_title;
-            suggestion.image_field_preview = discussion_img_field_preview;
+        // set title and img for fb share
+        suggestion.title = discussion_title;
+        suggestion.image_field_preview = discussion_img_field_preview;
 
-            render_suggestion(suggestion);
+        render_suggestion(suggestion);
 
-            var curr_suggestion = $('#suggestions_wrapper').find('[data-id=' + suggestion.id + ']');
+        var curr_suggestion = $('#suggestions_wrapper').find('[data-id=' + suggestion.id + ']');
 
-            db_functions.getCommentsBySuggestion(suggestion.id, function(err, data){
+        db_functions.getCommentsBySuggestion(suggestion.id, function(err, data){
 
-                // set comments counter
-                curr_suggestion.find('.comments_counter span').text(data.objects.length);
+            // set comments counter
+            curr_suggestion.find('.comments_counter span').text(data.objects.length);
 
-                if (data.objects.length===0){
-                    curr_suggestion.find('.close').hide();
-                }
+            if (data.objects.length===0){
+                curr_suggestion.find('.close').hide();
+            }
 
-                $.each(data.objects, function (index, comment) {
-                    var is_first_comment = (index == 0);
-                    comment.is_even = (index % 2) == 0;
-                    dust.render('comment_on_suggestion', comment, function (err, out) {
-                        // append before "add_comment"
-                        curr_suggestion.find('.suggestion_comments_holder .add_comment').before(out);
-                        if (is_first_comment) {
-                            $(curr_suggestion).find('.suggestion_comments_holder .comment').show();
-                        }
-                        image_autoscale(curr_suggestion.find('.auto-scale img'));
-                    });
+            $.each(data.objects, function (index, comment) {
+                var is_first_comment = (index == 0);
+                comment.is_even = (index % 2) == 0;
+                dust.render('comment_on_suggestion', comment, function (err, out) {
+                    // append before "add_comment"
+                    curr_suggestion.find('.suggestion_comments_holder .add_comment').before(out);
+                    if (is_first_comment) {
+                        $(curr_suggestion).find('.suggestion_comments_holder .comment').show();
+                    }
+                    image_autoscale(curr_suggestion.find('.auto-scale img'));
                 });
-            })
-
+            });
+        })
 
         $('#suggestion_number').text(' (' + data.meta.total_count + ')');
         if (data.objects.length > 0) {
@@ -1158,8 +1155,6 @@ $(document).ready(function () {
                 }catch(ex){
                     console.log('fb parse didnt work');
                 }
-
-
             }
         });
     }
@@ -1211,7 +1206,6 @@ $(document).ready(function () {
         })
     };
 
-
     function loadPosts(page_number, pagination_action) {
         var selectedOption = $("#comments_filter .selected").data('sort-by');
         current_offset = page_number ? (page_number - 1) * limit : 0;
@@ -1231,7 +1225,6 @@ $(document).ready(function () {
                         {
                             instanceReady : function( ev )
                             {
-
                                 editor = this;
                             }
                         }
@@ -1339,17 +1332,6 @@ $(document).ready(function () {
                 });
 
                 renderComments(data.objects);
-
-
-                /*if(data.meta.total_count > current_offset )
-                    $('.more_comments').show();
-                else
-                    $('.more_comments').hide();
-                postsNumber = data.meta.total_count;
-                setCommentNumber(postsNumber);
-
-                if(typeof(FB) != 'undefined')
-                    FB.XFBML.parse();*/
             }
         })
     }
@@ -1361,7 +1343,6 @@ $(document).ready(function () {
         var action;
         var is_first = $(current_page).data('first');
         var is_last = $(current_page).data('last');
-
 
         // in case clicking one of the prev/next etc
         if (isNaN(page_number)){
@@ -1405,22 +1386,8 @@ $(document).ready(function () {
         inputs.removeClass('been_hover');
         $(this).addClass('been_hover');
     });
-//
-//    $('.more_comments').click(function() {
-//        loadPosts();
-//    });
-//
-
-//
-//    $('#sorting_select').change(function() {
-//        $("#comments").empty();
-//        current_offset = 0;
-//        loadPosts();
-//    });
 
     loadSpecialPosts();
-//    loadSpecialPost('total_votes', 'most_contr', 'התגובה השנויה במחלוקת');
-//    loadSpecialPost('popularity', 'most_pop', 'התגובה הפופולרית ביותר');
     loadPosts();
 
     function focusOnCommentBox(text_height){
@@ -1568,8 +1535,7 @@ $(document).ready(function () {
                 scrollTop: $("div[data-id=" +id+ "]").offset().top
             }, 500);
         }
-
-    }  );
+    });
 
     function discoverRange(text){
         var t=text;
@@ -1690,10 +1656,6 @@ $(document).ready(function () {
 
         var $suggestion_wrapper = $(this).parents(".suggestion_wrapper");
         var grade_against = $(this).parent().hasClass('button_against');
-
-
-
-
         var suggestion_id = $suggestion_wrapper.data('id');
         var suggestion_grade_val = $suggestion_wrapper.data('my_grade');
         var suggest_grade_id = $suggestion_wrapper.data('my_grade_id');
