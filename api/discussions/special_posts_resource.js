@@ -63,7 +63,7 @@ var SpecialPostsResource = module.exports = jest.MongooseResource.extend({
 
             if (editor_choice) {
                 editor_choice.type = 'editor_choice';
-                editor_choice.title = 'דבר העורך';
+                editor_choice.title = 'בחירת העורך';
                 special_objects.push(editor_choice);
             }
 
