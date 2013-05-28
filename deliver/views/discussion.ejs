@@ -1434,8 +1434,6 @@ $(document).ready(function () {
             .on('keydown', function (e) {                if (!(e.shiftKey && (e.keyCode <= 40 && e.keyCode >= 37) || (e.ctrlKey && e.keyCode == 65))) e.preventDefault();})
             .on('dragstart', function (e) {                e.preventDefault();               })
             .on('mouseup',function (e) {
-
-
                 e.stopPropagation();
                 mouseUp = e;
                 var err = false;
@@ -1457,75 +1455,20 @@ $(document).ready(function () {
                 //////////////////  show pop up   /////////////////
                 discoverRange (range_txt)  ;
                 if(range_txt.length >0 ){
-                    $("#old_suggestion_popup").hide();
-                    $("#new_suggestion_popup")
-                            .css({ top:top, left: (e.pageX-97), opacity:0 })
-                            .show()
-                            .animate({ top:'-=20px', opacity:1 }, 100, 'linear');
-                    setTimeout(function (){  mouseDown=null;},500)
+                    if(navigator.appName === "Microsoft Internet Explorer"){
+                        $("#pop_suggest_bt").click();
+                    }else{
+                        $("#old_suggestion_popup").hide();
+                        $("#new_suggestion_popup")
+                                .css({ top:top, left: (e.pageX-97), opacity:0 })
+                                .show()
+                                .animate({ top:'-=20px', opacity:1 }, 100, 'linear');
+                        setTimeout(function (){  mouseDown=null;},500)
+                    }
                 }else  {
                     mouseDown=null
                 }
-
-
-
-                /*
-                flag = false;
-                if(suggestions_list){
-                    $.each(suggestions_list, function (index, suggestion) {
-                        if (        (suggestion.parts[0].start >= range.start && suggestion.parts[0].start <= range.end)
-                                ||  (suggestion.parts[0].end >= range.start && suggestion.parts[0].end <= range.end)
-                                ||  (range.start >= suggestion.parts[0].start && range.end  <= suggestion.parts[0].end )) {
-                            flag = true;
-                        }
-                    })
-                }
-
-                if(flag) {
-             //       popupProvider.showOkPopup({message:"הטקסט סומן כבר בהצעה לשינוי קיימת"});
-                }else if(range_txt.length >0 ){
-                    $("#new_suggestion_popup")
-                            .css({ top:top, left: (e.pageX-97), opacity:0 })
-                            .show()
-                            .animate({ top:'-=20px', opacity:1 }, 100, 'linear');
-                } else{
-                    $("#new_suggestion_popup").hide();
-                }
-                //////////////////////////////////////////////////
-                console.log(range_txt.length+'  '+range_txt);
-                */
             });
-    /*
-    var old_suggestion_popup_visible=false;
-    $(".marker_1").live("mouseenter", function (e) {
-        if(mouseDown) return;
-        if( $('.button_suggest_revisions').hasClass('active') ){
-            if(old_suggestion_popup_visible==false)   {
-                old_suggestion_popup_visible=true;
-                $("#old_suggestion_popup a").data('id', $(this).data('id'));
-                //var left =$(this).offset().left +($(this).width() /2) - 80;
-                var left = e.pageX-85;
-                var top = $(this).offset().top-25;
-                $("#old_suggestion_popup")
-                        .css({ top:top, left:left, opacity:1 })
-                        .show()
-                //  .animate({ top:'-=20px', opacity:1 }, 100, 'linear');
-            }
-        }
-
-    }).live("mouseleave", function () {
-                old_suggestion_popup_visible=false;
-      //  $("#old_suggestion_popup").hide();
-    });
-
-    $("#old_suggestion_popup a").live("click", function () {
-        $(".more-deals a").click();
-        var id= $(this).data('id')  ;
-        $('html, body').animate({
-            scrollTop: $("div[data-id=" +id+ "]").offset().top
-        }, 500);
-    }  );
-    */
 
     $(".marker_1").live("click", function () {
         if(!mouseDown){
