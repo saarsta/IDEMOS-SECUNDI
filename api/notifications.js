@@ -350,9 +350,9 @@ var sendNotificationToUser = function (notification) {
             function (err) {
                 if (err) {
                     if (err != 'break') {
-                        console.error('failed sending notification to user');
+                        /*console.error('failed sending notification to user');
                         console.error(err);
-                        console.trace();
+                        console.trace();*/
                     }
                 }
                 else {
