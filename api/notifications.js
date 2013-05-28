@@ -254,7 +254,7 @@ var sendNotificationToUser = function (notification) {
 
     var email;
     var  uru_group = [
-        'saarsta@gmail.com',
+        /*'saarsta@gmail.com',*/
         'konfortydor@gmail.com',
         'aharon@uru.org.il',
         'poaharon@gmail.com',
@@ -343,10 +343,7 @@ var sendNotificationToUser = function (notification) {
             },
             // 5) send message
             function (message, cbk) {
-                if (_.any(uru_group, function(mail) { return email === mail }))
-                    mail.sendMailFromTemplate(email, message, cbk);
-                else
-                    cbk(null);
+                mail.sendMailFromTemplate(email, message, cbk);
             }
         ],
             // Final
