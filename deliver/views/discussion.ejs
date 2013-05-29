@@ -169,12 +169,7 @@ var error_message = error_message || '';
                                 </div>
                                 <%} %>
                             </div>
-
-
                             <% }%>
-
-
-
                         </div>
                     </div>
                     <%} %>
@@ -185,13 +180,6 @@ var error_message = error_message || '';
 <span class="popup-window" id="new_suggestion_popup">
     <div class="tooltip_2">
         <input id="pop_suggest_bt" value="הוסף הצעה" class="button_add_suggestion" type="text" />
-        <!--
-        <a id="pop_post_bt"  href="#" class="button_respond">
-            <div class="left"></div>
-            <div class="middle">העתק</div>
-            <div class="right"></div>
-        </a>
-        -->
     </div>
 </span>
 
@@ -287,7 +275,6 @@ var error_message = error_message || '';
                 <div class="pagination">
                 </div>
             </div>
-
                 <div id="add_comment_wrapper" <%if(user_logged){%> data-creator_id="<%=user._id%>" <%}%> >
                 <h2 class="title">כתיבת תגובה</h2>
                 <div class="comment_wrapper">
@@ -304,7 +291,6 @@ var error_message = error_message || '';
                             <%}else{%>
                             אני
                             <%}%>
-
                         </div>
                         <div class="date_time">
                             <span class="time"><%=(new Date()).format('H:MM') %></span>
@@ -325,9 +311,7 @@ var error_message = error_message || '';
             </div>
         </div>
       </div>
-
    <% include partials/footer.ejs %>
-
 
 <script type="text/javascript">
 
@@ -364,28 +348,6 @@ $(document).ready(function () {
         $(this).parents('.suggestion_wrapper').toggleClass('edit');
     });
 
-    /*$('#suggestions_wrapper').on('mousemove', '.change_proposal', function(e){
-         var edit_window = $(this).find('.edit_window');
-         var change_proposal =  edit_window.parents('.change_proposal');
-         var window_height = edit_window.height();
-         var window_padding = parseInt(edit_window.css("padding-top"));
-         var window_border = parseInt(edit_window.css("border-top-width"));
-
-        var distance_from_top = $(change_proposal).offset().top;
-
-        console.log('yyyyyyyyyyy');
-        console.log(e.pageY);
-        console.log('distance_from_top');
-        console.log(distance_from_top);
-        console.log('window_height - (window_padding * 2 + window_border * 2)');
-        console.log(window_height - (window_padding * 2 + window_border * 2));
-
-
-        console.log(e.pageY);
-        edit_window.css('top', e.pageY - distance_from_top - window_height - (window_padding * 2 + window_border * 2));
-
-    });*/
-
     // when clicking the edit_comment popup show go to creatק suggestion window
     $('#suggestions_wrapper').on('click', '.button_edit_comment', function(){
         var $suggestion_content = $(this).next();
@@ -408,26 +370,6 @@ $(document).ready(function () {
         var sug_id =  $(this).parents('.suggestion_wrapper').data('id');
         $('#send_suggestion').data('suggestion-id', sug_id);
     });
-
-
-//    $('#suggestions_wrapper').on('mouseenter', '.suggestion_holder.button', function(){
-//        debugger
-//        $(this).toggleClass('edit');
-//    }).on('mouseleave', '.suggestion_holder.button', function(){
-//        $(this).toggleClass('edit');
-//    });
-
-//    $('#suggestions_wrapper').on('mouseenter', '.edit_window', function(){
-//        $(this).parent().toggleClass('edit');
-//    }).on('mouseleave', '.edit_window', function() {
-//        $(this).parent().toggleClass('edit');
-//    });
-//
-//    $('#suggestions_wrapper').on('mouseenter', '.suggestion_holder.window .text.change_proposal', function(){
-//        $('.edit_window').parent().toggleClass('edit');
-//    }).on('mouseleave', '.edit_window', function() {
-//        $(this).parent().toggleClass('edit');
-//    });
 
     // edit comment popup when hover in comment text (only if user is the comment creator and hovering in the first 15 min after published)
     $('#comments_wrapper').on('mouseenter', '.edit_comment .content', function(){
@@ -473,14 +415,6 @@ $(document).ready(function () {
         });
     });
 
-    /*$('#comments_wrapper').on('mouseenter', '.suggestion_holder.window .text.change_proposal', function(){
-        $('.edit_window').parent().toggleClass('edit');
-    }).on('mouseleave', '.edit_window', function() {
-        $(this).parent().toggleClass('edit');
-    });*/
-
-
-
     $('input.history').click(function(){
         $(this).toggleClass('active');
     });
@@ -517,11 +451,7 @@ $(document).ready(function () {
                 $('#info_items #slider li').dotdotdot({});
             }
         });
-
-
     });
-
-
 
     $('#send_suggestion').click(function () {
         var $this = $(this);
@@ -994,6 +924,12 @@ $(document).ready(function () {
         }
         else {
             $(".content_break_content").hide();
+        }
+    });
+
+    db_functions.getApprovedSuggestionsByDiscussion(discussion_id, 0, 0, function(err, data){
+        if (data.objects.length > 0){
+            $('.history_details_holder').show();
         }
     });
 

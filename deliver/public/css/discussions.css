@@ -1580,15 +1580,17 @@ span.remark{
 }
 
 .history_details_holder{
-    /*display: none;*/
+    display: none;
      width:100%;
      float:right;
      color:#808080;
  }
 
+/*
 .history_details_holder .history_button{
     display: none;
 }
+*/
 
 .history_details_holder .item{
     float:right;
