@@ -19,9 +19,9 @@ var Schemas = exports.Schemas = {
     Headline:new Schema({
         title:{type:String, required:true},
         tooltip: String,
-        type:{type:String, "enum":["from_the_news_paper", "daily_survey", "conclusion"]},
-        text_field:{type:Schema.Types.Html},
-        image_field:Schema.Types.File,
+        type: {type:String, "enum":["from_the_news_paper", "daily_survey", "conclusion"]},
+        text_field: {type:Schema.Types.Html},
+        image_field: Schema.Types.File,
         link:String,
         tags:{type:[String], index:true},
         cycles:{type:[ObjectId], ref:'Cycles', index:true, editable:false},
@@ -336,7 +336,12 @@ var Schemas = exports.Schemas = {
         discussion_id:{type:ObjectId, ref:'Discussion'},
         date:{type:Date, 'default':Date.now},
         text_field:{type:Schema.Types.Text},
-        grade:Number
+        // replaced part is the text that has been changed in the new version
+        // so this and grade fields are being updated only when a new discussion history is created
+        replaced_part:[
+            {start:Number, end:Number, text:Schema.Types.Text}
+        ],
+        grade: Number
     },
 
     Test:{

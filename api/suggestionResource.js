@@ -28,6 +28,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
         };
 
         this.fields = {
+            _id: null,
             creator_id:common.user_public_fields,
             mandates_curr_user_gave_creator:null,
             parts:null,
@@ -51,7 +52,9 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
             wanted_amount_of_tokens:null,
             curr_amount_of_tokens:null,
             is_editable: null,
-            is_my_suggestion: null
+            is_my_suggestion: null,
+            is_approved: null,
+            approve_date: null
         };
     },
 
@@ -468,11 +471,12 @@ module.exports.approveSuggestion = function (id, callback) {
 
                 //set latest discussionHistory with discussion grade
                 function (cbk1) {
-                    models.DiscussionHistory.find({dicussion_id:discussion_object._id})
+                    models.DiscussionHistory.find({discussion_id: discussion_object._id})
                         .sort({'date':'descending'})
                         .limit(1)
                         .exec(function (err, histories) {
                             if (histories.length) {
+                                histories[0].replaced_part = suggestion_object.parts[0];
                                 histories[0].grade = discussion_object.grade;
                                 histories[0].save(cbk1);
                             }
@@ -529,23 +533,26 @@ module.exports.approveSuggestion = function (id, callback) {
                     discussion_history.date = Date.now();
                     discussion_history.text_field = disc_obj.text_field;
 
-                    discussion_history.save(cbk1);
-                },
-
-                function (cbk1) {
-                    suggestion_object.is_approved = true;
-                    suggestion_object.save(cbk1);
+                    discussion_history.save(function(err, history_obj){
+                        if(err){
+                            cbk1(err);
+                        }else{
+                            suggestion_object.is_approved = true;
+                            suggestion_object.approve_date = Date.now();
+                            suggestion_object.history_version_id = history_obj.id;
+                            suggestion_object.save(cbk1);
+                        }
+                    });
                 },
 
                 function (cbk1) {
                     models.Suggestion.find({discussion_id:disc_obj, is_approved:false}, cbk1);
                 }
 
-
             ], function (err, args) {
 
                 //update indexes of all other suggestions
-                var suggestions = args[2];
+                var suggestions = args[1];
                 var index_balance = suggestion_object.parts[0].text.length - (suggestion_object.parts[0].end - suggestion_object.parts[0].start);
 
                 console.log("index_balance");
