@@ -1592,6 +1592,10 @@ span.remark{
 }
 */
 
+.content_break.approved_suggestions {
+    display: none;
+}
+
 .history_details_holder .item{
     float:right;
     line-height:42px;

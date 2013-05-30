@@ -129,7 +129,8 @@ var error_message = error_message || '';
                                     עדכון אחרון: <span>15.03.12</span>
                                 </div>
                                 <div class="item by">
-                                    על ידי: <span>אברהם אבוחצירא השלישי</span>
+                                    על ידי:
+                                    <a href="#"></a>
                                 </div>
                             </div>
                         </div>
@@ -236,6 +237,13 @@ var error_message = error_message || '';
         </a>
     </div>
 
+    <div class="content_break approved_suggestions">
+        <div class="content_break_content">
+            <h2>הצעות שאושרו
+                <small id="approved_suggestion_number"></small>
+            </h2>
+        </div>
+    </div>
     <div class="content_break">
         <div class="content_break_content">
             <h2>הצעות לשינוי
@@ -929,7 +937,17 @@ $(document).ready(function () {
 
     db_functions.getApprovedSuggestionsByDiscussion(discussion_id, 0, 0, function(err, data){
         if (data.objects.length > 0){
+            // set vision version details
+            $('.draft_no span').text(data.objects.length + 1);
+            $('.history_details_holder .item.last span').text($.datepicker.formatDate('dd.mm.yy', new Date(Date.parse(data.objects[0].approve_date))));
+            $('.history_details_holder .item.by a').text(data.objects[0].creator_id.first_name + " " + data.objects[0].creator_id.last_name);
+            $('.history_details_holder .item.by a').attr('href', '../myuru/' + data.objects[0].creator_id.id);
+
+            $('.content_break.approved_suggestions').show();
+
+
             $('.history_details_holder').show();
+
         }
     });
 
