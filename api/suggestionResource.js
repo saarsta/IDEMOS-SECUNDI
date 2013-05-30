@@ -54,6 +54,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
             is_editable: null,
             is_my_suggestion: null,
             is_approved: null,
+            replaced_text: null,
             approve_date: null
         };
     },
@@ -497,8 +498,8 @@ module.exports.approveSuggestion = function (id, callback) {
                     vision = vision.replace(/\r/g, '');
 
 
-                    var str = vision.substr(0, Number(parts[0].start)) + parts[0].text + vision.substr(Number(parts[0].end));
-                    var replaced_text = vision.substr(Number(parts[0].start), Number(parts[0].end));
+                    var str = vision.substring(0, Number(parts[0].start)) + parts[0].text + vision.substring(Number(parts[0].end));
+                    var replaced_text = vision.substring(Number(parts[0].start), Number(parts[0].end));
                     var new_text = parts[0].text;
 
                     discussion_object.vision_text_history.push(discussion_object.text_field);
@@ -539,6 +540,7 @@ module.exports.approveSuggestion = function (id, callback) {
                         }else{
                             suggestion_object.is_approved = true;
                             suggestion_object.approve_date = Date.now();
+                            suggestion_object.replaced_text = disc_obj.replaced_text_history[disc_obj.replaced_text_history.length -1];
                             suggestion_object.history_version_id = history_obj.id;
                             suggestion_object.save(cbk1);
                         }

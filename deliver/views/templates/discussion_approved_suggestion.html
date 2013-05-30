@@ -1,0 +1,59 @@
+<div class="suggestion_wrapper {?is_editable}edit_suggestion{:else}show_context{/is_editable}" data-id="{id}"
+     data-creator_name="{creator_id.first_name} {creator_id.last_name}"
+     data-creator_id="{creator_id.id}" id="post_{id}"
+     data-my_grade="{my_grade_val}" data-my_grade_id="{my_grade_id}">
+    <div class="suggestion_holder window">
+        <div class="suggestion_details person" data-id="{creator_id.id}" data-name="{creator_id.first_name} {creator_id.last_name}">
+            <a href="/myuru/{creator_id.id}">
+                <div class="img-box" style="overflow: hidden;">
+                    <div class="photo auto-scale" style="height:64px">
+                        <img src="{?creator_id}{creator_id.avatar_url}{:else}/images/default_user_img.gif{/creator_id}" />
+                    </div>
+                    <span></span>
+                </div>
+            </a>
+            <div class="name">
+                {creator_id.first_name} {creator_id.last_name}
+            </div>
+            <div class="actions_box_container"><div class="actions_box">
+                <div id="add_or_remove_proxy" class="action">תן מנדט</div>
+                <div class="action gray_and_soon">שלח הודעה</div>
+                <div class="action gray_and_soon">עקוב</div>
+            </div> </div>
+            <div class="date_time">
+                <a class="underline_and_cursor_when_hover" href="/discussions/{discussion_id}#post_{id}" title="לינק ישיר להצעה">
+                    <span class="time">{?creation_date}{creation_date|time}{/creation_date}</span>
+                </a>
+            </div>
+            <div class="ratings">
+                <span class="awards">{creator_id.score}</span>
+                &nbsp;
+                <span class="friends">{creator_id.num_of_proxies_i_represent}</span>
+            </div>
+        </div>
+        <div class="button_edit_comment">
+            <input type="button" />
+        </div>
+
+        <div class="suggestion_content">
+            {?original_part}
+            <div class="text_orig">
+                <h3 class="title">טקסט מקורי:</h3>
+                <span class="original_part">{original_part}</span>
+            </div>
+            {/original_part}
+            <div class="text change_proposal">
+                <h3 class="title">הצעה לשינוי:</h3>
+                <span class="alternative_part">{alternative_part}</span>
+                <h3 class="title">נימוק:</h3>
+                <span class="explanation">{explanation}</span>
+                <div class="edit_window">
+                    <p class="title">
+                        טקסט החזון הנוכחי בשילוב ההצעה לשינוי מודגשת. לחץ כדי לחזור לחזון
+                    </p>
+                    <p>{context_before}<span class="focus">{alternative_part}</span>{context_after}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -245,6 +245,11 @@ var error_message = error_message || '';
             </h2>
         </div>
     </div>
+    <div id="content_wrapper_approved_suggestions">
+        <div id="approved_suggestions_wrapper">
+        </div>
+    </div>
+
     <div class="content_break">
         <div class="content_break_content">
             <h2>הצעות לשינוי
@@ -526,7 +531,7 @@ $(document).ready(function () {
                         /*
                          $("textarea#discussion_suggest").val('');
                          $("#user_tokens").text(data.updated_user_tokens);*/
-                        render_suggestion(data, true);
+                        render_suggestion(data,true);
                         $(".deals-box").show();
                     }
                 } else {
@@ -821,6 +826,14 @@ $(document).ready(function () {
         return null;
     };
 
+    function render_approved_suggestion(suggestion){
+        suggestion.original_part = suggestion.replaced_text;
+        suggestion.alternative_part = suggestion.parts[0].text;
+
+        dust.render('discussion_approved_suggestion', suggestion, function (err, out) {
+            $('#approved_suggestions_wrapper').append(out);
+        });
+    }
     var first_suggestion;
 
     // get change suggestions and render
@@ -936,6 +949,10 @@ $(document).ready(function () {
         }
     });
 
+    $('.history_button').click(function(e){
+        $('#content_wrapper_approved_suggestions').toggleClass('active');
+    })
+
     db_functions.getApprovedSuggestionsByDiscussion(discussion_id, 0, 0, function(err, data){
         if (data.objects.length > 0){
             // set vision version details
@@ -943,12 +960,14 @@ $(document).ready(function () {
             $('.history_details_holder .item.last span').text($.datepicker.formatDate('dd.mm.yy', new Date(Date.parse(data.objects[0].approve_date))));
             $('.history_details_holder .item.by a').text(data.objects[0].creator_id.first_name + " " + data.objects[0].creator_id.last_name);
             $('.history_details_holder .item.by a').attr('href', '../myuru/' + data.objects[0].creator_id.id);
-
-            $('.content_break.approved_suggestions').show();
-
-
             $('.history_details_holder').show();
 
+            $('#approved_suggestion_number').text(' (' + data.meta.total_count + ')');
+
+            $.each(data.objects, function(index, sugg){
+                render_approved_suggestion(sugg);
+            })
+            image_autoscale($('#approved_suggestions_wrapper .auto-scale img'));
         }
     });
 

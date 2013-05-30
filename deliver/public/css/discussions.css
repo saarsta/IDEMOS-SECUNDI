@@ -1433,7 +1433,12 @@ span.remark{
     color:#808080;
 }
 
+#content_wrapper_approved_suggestions {
+    padding-bottom: 30px;
+}
+
 .discussions_page #content_wrapper_suggestions,
+.discussions_page #content_wrapper_approved_suggestions,
 .discussions_page #content_wrapper{
     direction:rtl;
     margin-top: 0px;
@@ -1592,8 +1597,20 @@ span.remark{
 }
 */
 
-.content_break.approved_suggestions {
+/*.content_break.approved_suggestions {
     display: none;
+}
+
+.content_break.approved_suggestions.flip{
+    display: block;
+}*/
+
+#content_wrapper_approved_suggestions {
+    display: none;
+}
+
+#content_wrapper_approved_suggestions.active{
+    display: block;
 }
 
 .history_details_holder .item{
@@ -1668,7 +1685,7 @@ span.remark{
     margin:6px 0px;
 }
 
-#suggestions_wrapper{
+#suggestions_wrapper, #approved_suggestions_wrapper{
     width:980px;
     margin:auto;
 }
@@ -3182,7 +3199,7 @@ input.button_submit_comment_no_text{
     height: 100%;
 }
 
-#suggestions_wrapper .img-box{
+#suggestions_wrapper .img-box, #approved_suggestions_wrapper .img-box{
     position: relative;
     width: 60px;
     height: 64px;
@@ -3200,7 +3217,7 @@ input.button_submit_comment_no_text{
     height: 82px;
 }
 
-#suggestions_wrapper .img-box span {
+#suggestions_wrapper .img-box span, #approved_suggestions_wrapper .img-box span{
     background: url(../images/user-fillter-small-white.png) no-repeat;
     position: absolute;
     top: 0;
