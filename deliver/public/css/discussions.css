@@ -1850,16 +1850,29 @@ span.remark{
     position: relative;
 }
 
+#approved_suggestions_wrapper .suggestion_bottom_segment {
+    min-height: 35px;
+}
+
 .suggestion_bottom_segment{
     float:right;
     padding:15px 15px 10px 15px;
     min-height: 48px;
     position: relative;
 }
+.suggestion_bottom .date_time {
+    margin-top: 6px;
+    margin-right: 10px;
+}
+
+.suggestion_bottom .date_time .time {
+    margin: 10px;
+}
 
 .suggestion_bottom_segment.one{	width:260px; border-left:5px solid #fff; }
 .suggestion_bottom_segment.two{	width:150px; border-left:5px solid #fff; color:#757d7e; }
 .suggestion_bottom_segment.three{	width:420px; }
+.suggestion_bottom_segment.wide{	width:900px; }
 
 .suggestion_bottom_segment .button{
     float:right;
