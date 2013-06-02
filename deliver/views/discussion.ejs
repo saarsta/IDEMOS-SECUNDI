@@ -644,12 +644,17 @@ $(document).ready(function () {
                     if (num_of_comments % 2 === 0) post. is_even = true;
 
                     dust.render('discussion_comment', post, function (err, out) {
-                        var pagination = $(".second_pagination");
+                        var pagination = $(".first_pagination");
 
-                        pagination.before(out);
-                        var bgc =$('.regular_comment').last().css('background-color');
-                        $('.regular_comment').last().css('background-color', 'pink');
-                        $('.regular_comment').last().animate({backgroundColor: bgc}, 2000);
+                        pagination.after(out);
+                        var new_comment =$('.regular_comment').first();
+                        new_comment.addClass('odd');
+                        var bgc  =new_comment.css('background-color')
+                        new_comment.css('background-color', 'pink')
+                        new_comment.animate({backgroundColor: bgc}, 3000);
+                        $('html, body').animate({
+                            scrollTop: new_comment.offset().top -50
+                        }, 500);
                         $("textarea#discussion_comment").val('');
                         new_post_ref_id = null;
 //                        postsNumber++;
