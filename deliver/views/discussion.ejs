@@ -281,6 +281,40 @@ var error_message = error_message || '';
             </div>
         </div>
         <div id="comments_wrapper">
+            <div id="add_comment_wrapper" <%if(user_logged){%> data-creator_id="<%=user._id%>" <%}%> >
+            <h2 class="title">כתיבת תגובה</h2>
+            <div class="comment_wrapper">
+                <div class="comment_details">
+                    <div class="img-box" style="overflow: hidden;">
+                        <div style="height:64px" class='auto-scale'>
+                            <img src="<%=avatar%>" alt="אני"/>
+                        </div>
+                        <span></span>
+                    </div>
+                    <div class="name">
+                        <%if(user_logged){%>
+                        <%=user.first_name + ' '+ user.last_name%>
+                        <%}else{%>
+                        אני
+                        <%}%>
+                    </div>
+                    <div class="date_time">
+                        <span class="time"><%=(new Date()).format('H:MM') %></span>
+                        <span class="date"><%=(new Date()).format('dd.mm.yy') %></span>
+                    </div>
+                    <% if(user_logged){ %>
+                    <div class="ratings">
+                        <span class="friends"><%=user.num_of_proxies_i_represent%></span>
+                        <span class="awards"><%=user.score%></span>
+                    </div>
+                    <% } %>
+                </div>
+                <div class="content">
+                    <textarea id="discussion_comment" dir="rtl" class="four-col" cols="0" rows="0"></textarea>
+                </div>
+            </div>
+            <input id="submit_post" type="button" class="button_submit_comment" />
+        </div>
 			<div class="pagination_wrapper first_pagination">
                 <div class="pagination">
                 </div>
@@ -289,40 +323,7 @@ var error_message = error_message || '';
                 <div class="pagination">
                 </div>
             </div>
-                <div id="add_comment_wrapper" <%if(user_logged){%> data-creator_id="<%=user._id%>" <%}%> >
-                <h2 class="title">כתיבת תגובה</h2>
-                <div class="comment_wrapper">
-                    <div class="comment_details">
-                        <div class="img-box" style="overflow: hidden;">
-                            <div style="height:64px" class='auto-scale'>
-                                <img src="<%=avatar%>" alt="אני"/>
-                            </div>
-                            <span></span>
-                        </div>
-                        <div class="name">
-                            <%if(user_logged){%>
-                            <%=user.first_name + ' '+ user.last_name%>
-                            <%}else{%>
-                            אני
-                            <%}%>
-                        </div>
-                        <div class="date_time">
-                            <span class="time"><%=(new Date()).format('H:MM') %></span>
-                            <span class="date"><%=(new Date()).format('dd.mm.yy') %></span>
-                        </div>
-                        <% if(user_logged){ %>
-                        <div class="ratings">
-                            <span class="friends"><%=user.num_of_proxies_i_represent%></span>
-                            <span class="awards"><%=user.score%></span>
-                        </div>
-                        <% } %>
-                    </div>
-                    <div class="content">
-                        <textarea id="discussion_comment" dir="rtl" class="four-col" cols="0" rows="0"></textarea>
-                    </div>
-                </div>
-                <input id="submit_post" type="button" class="button_submit_comment" />
-            </div>
+
         </div>
       </div>
    <% include partials/footer.ejs %>
