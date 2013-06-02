@@ -1433,7 +1433,12 @@ span.remark{
     color:#808080;
 }
 
+#content_wrapper_approved_suggestions {
+    padding-bottom: 30px;
+}
+
 .discussions_page #content_wrapper_suggestions,
+.discussions_page #content_wrapper_approved_suggestions,
 .discussions_page #content_wrapper{
     direction:rtl;
     margin-top: 0px;
@@ -1554,6 +1559,7 @@ span.remark{
 .button_suggest_revisions{
     display: none;
 }
+
 .button_add_comment input{
     background:url(/images/button_add_comment.png) no-repeat 0 0;
     width:140px;
@@ -1585,8 +1591,26 @@ span.remark{
      color:#808080;
  }
 
+/*
 .history_details_holder .history_button{
-              display: none;
+    display: none;
+}
+*/
+
+/*.content_break.approved_suggestions {
+    display: none;
+}
+
+.content_break.approved_suggestions.flip{
+    display: block;
+}*/
+
+#content_wrapper_approved_suggestions {
+    display: none;
+}
+
+#content_wrapper_approved_suggestions.active{
+    display: block;
 }
 
 .history_details_holder .item{
@@ -1661,7 +1685,7 @@ span.remark{
     margin:6px 0px;
 }
 
-#suggestions_wrapper{
+#suggestions_wrapper, #approved_suggestions_wrapper{
     width:980px;
     margin:auto;
 }
@@ -1826,16 +1850,29 @@ span.remark{
     position: relative;
 }
 
+#approved_suggestions_wrapper .suggestion_bottom_segment {
+    min-height: 35px;
+}
+
 .suggestion_bottom_segment{
     float:right;
     padding:15px 15px 10px 15px;
     min-height: 48px;
     position: relative;
 }
+.suggestion_bottom .date_time {
+    margin-top: 6px;
+    margin-right: 10px;
+}
+
+.suggestion_bottom .date_time .time {
+    margin: 10px;
+}
 
 .suggestion_bottom_segment.one{	width:260px; border-left:5px solid #fff; }
 .suggestion_bottom_segment.two{	width:150px; border-left:5px solid #fff; color:#757d7e; }
 .suggestion_bottom_segment.three{	width:420px; }
+.suggestion_bottom_segment.wide{	width:900px; }
 
 .suggestion_bottom_segment .button{
     float:right;
@@ -3175,7 +3212,7 @@ input.button_submit_comment_no_text{
     height: 100%;
 }
 
-#suggestions_wrapper .img-box{
+#suggestions_wrapper .img-box, #approved_suggestions_wrapper .img-box{
     position: relative;
     width: 60px;
     height: 64px;
@@ -3193,7 +3230,7 @@ input.button_submit_comment_no_text{
     height: 82px;
 }
 
-#suggestions_wrapper .img-box span {
+#suggestions_wrapper .img-box span, #approved_suggestions_wrapper .img-box span{
     background: url(../images/user-fillter-small-white.png) no-repeat;
     position: absolute;
     top: 0;

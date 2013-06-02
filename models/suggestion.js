@@ -12,7 +12,10 @@ var Suggestion = {
         {start:Number, end:Number, text:Schema.Types.Text}
     ],
     explanation: {type:Schema.Types.Text},
-    is_approved:{type:Boolean, 'default':false},
+    is_approved: {type:Boolean, 'default':false},
+    approve_date: {type: Date},
+    replaced_text: String,
+    history_version_id:{type:Schema.ObjectId, ref:'DiscussionHistory'},
     evaluate_counter: {type: Number, 'default': 0},
     grade: {type: Number, 'default': 0},
     agrees: {type: Number, 'default': 0},

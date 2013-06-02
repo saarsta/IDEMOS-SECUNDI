@@ -28,6 +28,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
         };
 
         this.fields = {
+            _id: null,
             creator_id:common.user_public_fields,
             mandates_curr_user_gave_creator:null,
             parts:null,
@@ -51,7 +52,10 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
             wanted_amount_of_tokens:null,
             curr_amount_of_tokens:null,
             is_editable: null,
-            is_my_suggestion: null
+            is_my_suggestion: null,
+            is_approved: null,
+            replaced_text: null,
+            approve_date: null
         };
     },
 
@@ -82,8 +86,10 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
             //wanted amount of tokens is either what admin has entered to the specific suggestion, or the discussion threshold...
             if (suggestion.admin_threshold_for_accepting_the_suggestion > 0)
                 suggestion.wanted_amount_of_tokens = suggestion.admin_threshold_for_accepting_the_suggestion;
-            else
+            else{
+                if (Number(suggestion.threshold_for_accepting_the_suggestion) === Infinity) suggestion.threshold_for_accepting_the_suggestion = null;
                 suggestion.wanted_amount_of_tokens = Number(suggestion.threshold_for_accepting_the_suggestion) || calculate_sugg_threshold(suggestion.getCharCount(), discussion_threshold);
+            }
             if (req.user) {
                 models.GradeSuggestion.findOne({user_id:req.user._id, suggestion_id:suggestion._id + ""}, {"_id":1, "evaluation_grade":1, "does_support_the_suggestion":1}, function (err, grade_sugg_obj) {
                     if (!err && grade_sugg_obj) {
@@ -272,7 +278,14 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                 });
             },
 
-            function (suggestion_obj, cbk) {
+            function(suggestion_obj, cbk){
+                // find all users that has this discussion in their discussion list (for notifications)
+                models.User.find({'discussions.discussion_id': discussion_id}, function(err, users){
+                    cbk(err, suggestion_obj, users);
+                });
+            },
+
+            function (suggestion_obj, users, cbk) {
                 async.parallel([
 
                     //add user that connected somehow to discussion
@@ -294,31 +307,42 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
 
                     //add notification for the dicussion's participants or creator
                     function (cbk2) {
-                        var unique_users = [];
+                        // first return the cbk
+                        cbk2();
 
+                        var unique_users = [];
                         discussion_creator_id = disc_obj.creator_id;
 
                         // be sure that there are no duplicated users in discussion.users
                         _.each(disc_obj.users, function(user){ unique_users.push(user.id || user.user_id + "")});
+                        _.each(users, function(user){ unique_users.push(user.id)});
                         unique_users = _.uniq(unique_users);
 
                         async.forEach(unique_users, iterator, function(err){
-                            cbk2(err);
+                            if(err){
+                                console.error(err);
+                                err.trace();
+                            }
                         });
                     },
 
                     //set notifications for users that i represent (proxy)
                     function (cbk2) {
+                        // first return the cbk
+                        cbk2();
+
                         models.User.find({"proxy.user_id":user_id}, function (err, slaves_users) {
                             async.forEach(slaves_users, function (slave, itr_cbk) {
                                 notifications.create_user_notification("proxy_created_change_suggestion", suggestion_obj._id, slave._id, user_id, discussion_id, '/discussions/' + discussion_id, function (err, result) {
                                     itr_cbk(err);
                                 })
                             }, function (err) {
-                                cbk2(err);
+                                if(err){
+                                    console.error(err);
+                                    err.trace();
+                                }
                             })
                         })
-
                     },
 
                     // update actions done by user
@@ -448,11 +472,12 @@ module.exports.approveSuggestion = function (id, callback) {
 
                 //set latest discussionHistory with discussion grade
                 function (cbk1) {
-                    models.DiscussionHistory.find({dicussion_id:discussion_object._id})
+                    models.DiscussionHistory.find({discussion_id: discussion_object._id})
                         .sort({'date':'descending'})
                         .limit(1)
                         .exec(function (err, histories) {
                             if (histories.length) {
+                                histories[0].replaced_part = suggestion_object.parts[0];
                                 histories[0].grade = discussion_object.grade;
                                 histories[0].save(cbk1);
                             }
@@ -473,8 +498,8 @@ module.exports.approveSuggestion = function (id, callback) {
                     vision = vision.replace(/\r/g, '');
 
 
-                    var str = vision.substr(0, Number(parts[0].start)) + parts[0].text + vision.substr(Number(parts[0].end));
-                    var replaced_text = vision.substr(Number(parts[0].start), Number(parts[0].end));
+                    var str = vision.substring(0, Number(parts[0].start)) + parts[0].text + vision.substring(Number(parts[0].end));
+                    var replaced_text = vision.substring(Number(parts[0].start), Number(parts[0].end));
                     var new_text = parts[0].text;
 
                     discussion_object.vision_text_history.push(discussion_object.text_field);
@@ -509,23 +534,27 @@ module.exports.approveSuggestion = function (id, callback) {
                     discussion_history.date = Date.now();
                     discussion_history.text_field = disc_obj.text_field;
 
-                    discussion_history.save(cbk1);
-                },
-
-                function (cbk1) {
-                    suggestion_object.is_approved = true;
-                    suggestion_object.save(cbk1);
+                    discussion_history.save(function(err, history_obj){
+                        if(err){
+                            cbk1(err);
+                        }else{
+                            suggestion_object.is_approved = true;
+                            suggestion_object.approve_date = Date.now();
+                            suggestion_object.replaced_text = disc_obj.replaced_text_history[disc_obj.replaced_text_history.length -1];
+                            suggestion_object.history_version_id = history_obj.id;
+                            suggestion_object.save(cbk1);
+                        }
+                    });
                 },
 
                 function (cbk1) {
                     models.Suggestion.find({discussion_id:disc_obj, is_approved:false}, cbk1);
                 }
 
-
             ], function (err, args) {
 
                 //update indexes of all other suggestions
-                var suggestions = args[2];
+                var suggestions = args[1];
                 var index_balance = suggestion_object.parts[0].text.length - (suggestion_object.parts[0].end - suggestion_object.parts[0].start);
 
                 console.log("index_balance");

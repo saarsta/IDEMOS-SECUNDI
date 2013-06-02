@@ -10,6 +10,7 @@ var error_message = error_message || '';
 
     <% include partials/head.ejs %>
     <link href="/css/discussions.css" rel="stylesheet" />
+    <script type="text/javascript">(function() {var walkme = document.createElement('script'); walkme.type = 'text/javascript'; walkme.async = true; walkme.src = 'http://cdn.walkme.com/users/fbe41f50a09e4a8ba45f62f7c62bf9e2/walkme_fbe41f50a09e4a8ba45f62f7c62bf9e2.js'; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(walkme, s);})();</script>
 </head>
 <body>
 <% include partials/body_top.ejs %>
@@ -129,7 +130,8 @@ var error_message = error_message || '';
                                     עדכון אחרון: <span>15.03.12</span>
                                 </div>
                                 <div class="item by">
-                                    על ידי: <span>אברהם אבוחצירא השלישי</span>
+                                    על ידי:
+                                    <a href="#"></a>
                                 </div>
                             </div>
                         </div>
@@ -169,12 +171,7 @@ var error_message = error_message || '';
                                 </div>
                                 <%} %>
                             </div>
-
-
                             <% }%>
-
-
-
                         </div>
                     </div>
                     <%} %>
@@ -185,13 +182,6 @@ var error_message = error_message || '';
 <span class="popup-window" id="new_suggestion_popup">
     <div class="tooltip_2">
         <input id="pop_suggest_bt" value="הוסף הצעה" class="button_add_suggestion" type="text" />
-        <!--
-        <a id="pop_post_bt"  href="#" class="button_respond">
-            <div class="left"></div>
-            <div class="middle">העתק</div>
-            <div class="right"></div>
-        </a>
-        -->
     </div>
 </span>
 
@@ -248,6 +238,18 @@ var error_message = error_message || '';
         </a>
     </div>
 
+    <div class="content_break approved_suggestions">
+        <div class="content_break_content">
+            <h2>הצעות שאושרו
+                <small id="approved_suggestion_number"></small>
+            </h2>
+        </div>
+    </div>
+    <div id="content_wrapper_approved_suggestions">
+        <div id="approved_suggestions_wrapper">
+        </div>
+    </div>
+
     <div class="content_break">
         <div class="content_break_content">
             <h2>הצעות לשינוי
@@ -287,7 +289,6 @@ var error_message = error_message || '';
                 <div class="pagination">
                 </div>
             </div>
-
                 <div id="add_comment_wrapper" <%if(user_logged){%> data-creator_id="<%=user._id%>" <%}%> >
                 <h2 class="title">כתיבת תגובה</h2>
                 <div class="comment_wrapper">
@@ -304,7 +305,6 @@ var error_message = error_message || '';
                             <%}else{%>
                             אני
                             <%}%>
-
                         </div>
                         <div class="date_time">
                             <span class="time"><%=(new Date()).format('H:MM') %></span>
@@ -325,9 +325,7 @@ var error_message = error_message || '';
             </div>
         </div>
       </div>
-
    <% include partials/footer.ejs %>
-
 
 <script type="text/javascript">
 
@@ -364,28 +362,6 @@ $(document).ready(function () {
         $(this).parents('.suggestion_wrapper').toggleClass('edit');
     });
 
-    /*$('#suggestions_wrapper').on('mousemove', '.change_proposal', function(e){
-         var edit_window = $(this).find('.edit_window');
-         var change_proposal =  edit_window.parents('.change_proposal');
-         var window_height = edit_window.height();
-         var window_padding = parseInt(edit_window.css("padding-top"));
-         var window_border = parseInt(edit_window.css("border-top-width"));
-
-        var distance_from_top = $(change_proposal).offset().top;
-
-        console.log('yyyyyyyyyyy');
-        console.log(e.pageY);
-        console.log('distance_from_top');
-        console.log(distance_from_top);
-        console.log('window_height - (window_padding * 2 + window_border * 2)');
-        console.log(window_height - (window_padding * 2 + window_border * 2));
-
-
-        console.log(e.pageY);
-        edit_window.css('top', e.pageY - distance_from_top - window_height - (window_padding * 2 + window_border * 2));
-
-    });*/
-
     // when clicking the edit_comment popup show go to creatק suggestion window
     $('#suggestions_wrapper').on('click', '.button_edit_comment', function(){
         var $suggestion_content = $(this).next();
@@ -408,26 +384,6 @@ $(document).ready(function () {
         var sug_id =  $(this).parents('.suggestion_wrapper').data('id');
         $('#send_suggestion').data('suggestion-id', sug_id);
     });
-
-
-//    $('#suggestions_wrapper').on('mouseenter', '.suggestion_holder.button', function(){
-//        debugger
-//        $(this).toggleClass('edit');
-//    }).on('mouseleave', '.suggestion_holder.button', function(){
-//        $(this).toggleClass('edit');
-//    });
-
-//    $('#suggestions_wrapper').on('mouseenter', '.edit_window', function(){
-//        $(this).parent().toggleClass('edit');
-//    }).on('mouseleave', '.edit_window', function() {
-//        $(this).parent().toggleClass('edit');
-//    });
-//
-//    $('#suggestions_wrapper').on('mouseenter', '.suggestion_holder.window .text.change_proposal', function(){
-//        $('.edit_window').parent().toggleClass('edit');
-//    }).on('mouseleave', '.edit_window', function() {
-//        $(this).parent().toggleClass('edit');
-//    });
 
     // edit comment popup when hover in comment text (only if user is the comment creator and hovering in the first 15 min after published)
     $('#comments_wrapper').on('mouseenter', '.edit_comment .content', function(){
@@ -473,14 +429,6 @@ $(document).ready(function () {
         });
     });
 
-    /*$('#comments_wrapper').on('mouseenter', '.suggestion_holder.window .text.change_proposal', function(){
-        $('.edit_window').parent().toggleClass('edit');
-    }).on('mouseleave', '.edit_window', function() {
-        $(this).parent().toggleClass('edit');
-    });*/
-
-
-
     $('input.history').click(function(){
         $(this).toggleClass('active');
     });
@@ -517,11 +465,7 @@ $(document).ready(function () {
                 $('#info_items #slider li').dotdotdot({});
             }
         });
-
-
     });
-
-
 
     $('#send_suggestion').click(function () {
         var $this = $(this);
@@ -587,7 +531,7 @@ $(document).ready(function () {
                         /*
                          $("textarea#discussion_suggest").val('');
                          $("#user_tokens").text(data.updated_user_tokens);*/
-                        render_suggestion(data, true);
+                        render_suggestion(data,true);
                         $(".deals-box").show();
                     }
                 } else {
@@ -882,6 +826,14 @@ $(document).ready(function () {
         return null;
     };
 
+    function render_approved_suggestion(suggestion){
+        suggestion.original_part = suggestion.replaced_text;
+        suggestion.alternative_part = suggestion.parts[0].text;
+
+        dust.render('discussion_approved_suggestion', suggestion, function (err, out) {
+            $('#approved_suggestions_wrapper').append(out);
+        });
+    }
     var first_suggestion;
 
     // get change suggestions and render
@@ -994,6 +946,28 @@ $(document).ready(function () {
         }
         else {
             $(".content_break_content").hide();
+        }
+    });
+
+    $('.history_button').click(function(e){
+        $('#content_wrapper_approved_suggestions').toggleClass('active');
+    })
+
+    db_functions.getApprovedSuggestionsByDiscussion(discussion_id, 0, 0, function(err, data){
+        if (data.objects.length > 0){
+            // set vision version details
+            $('.draft_no span').text(data.objects.length + 1);
+            $('.history_details_holder .item.last span').text($.datepicker.formatDate('dd.mm.yy', new Date(Date.parse(data.objects[0].approve_date))));
+            $('.history_details_holder .item.by a').text(data.objects[0].creator_id.first_name + " " + data.objects[0].creator_id.last_name);
+            $('.history_details_holder .item.by a').attr('href', '../myuru/' + data.objects[0].creator_id.id);
+            $('.history_details_holder').show();
+
+            $('#approved_suggestion_number').text(' (' + data.meta.total_count + ')');
+
+            $.each(data.objects, function(index, sugg){
+                render_approved_suggestion(sugg);
+            })
+            image_autoscale($('#approved_suggestions_wrapper .auto-scale img'));
         }
     });
 
@@ -1434,8 +1408,6 @@ $(document).ready(function () {
             .on('keydown', function (e) {                if (!(e.shiftKey && (e.keyCode <= 40 && e.keyCode >= 37) || (e.ctrlKey && e.keyCode == 65))) e.preventDefault();})
             .on('dragstart', function (e) {                e.preventDefault();               })
             .on('mouseup',function (e) {
-
-
                 e.stopPropagation();
                 mouseUp = e;
                 var err = false;
@@ -1457,75 +1429,20 @@ $(document).ready(function () {
                 //////////////////  show pop up   /////////////////
                 discoverRange (range_txt)  ;
                 if(range_txt.length >0 ){
-                    $("#old_suggestion_popup").hide();
-                    $("#new_suggestion_popup")
-                            .css({ top:top, left: (e.pageX-97), opacity:0 })
-                            .show()
-                            .animate({ top:'-=20px', opacity:1 }, 100, 'linear');
-                    setTimeout(function (){  mouseDown=null;},500)
+                    if(navigator.appName === "Microsoft Internet Explorer"){
+                        $("#pop_suggest_bt").click();
+                    }else{
+                        $("#old_suggestion_popup").hide();
+                        $("#new_suggestion_popup")
+                                .css({ top:top, left: (e.pageX-97), opacity:0 })
+                                .show()
+                                .animate({ top:'-=20px', opacity:1 }, 100, 'linear');
+                        setTimeout(function (){  mouseDown=null;},500)
+                    }
                 }else  {
                     mouseDown=null
                 }
-
-
-
-                /*
-                flag = false;
-                if(suggestions_list){
-                    $.each(suggestions_list, function (index, suggestion) {
-                        if (        (suggestion.parts[0].start >= range.start && suggestion.parts[0].start <= range.end)
-                                ||  (suggestion.parts[0].end >= range.start && suggestion.parts[0].end <= range.end)
-                                ||  (range.start >= suggestion.parts[0].start && range.end  <= suggestion.parts[0].end )) {
-                            flag = true;
-                        }
-                    })
-                }
-
-                if(flag) {
-             //       popupProvider.showOkPopup({message:"הטקסט סומן כבר בהצעה לשינוי קיימת"});
-                }else if(range_txt.length >0 ){
-                    $("#new_suggestion_popup")
-                            .css({ top:top, left: (e.pageX-97), opacity:0 })
-                            .show()
-                            .animate({ top:'-=20px', opacity:1 }, 100, 'linear');
-                } else{
-                    $("#new_suggestion_popup").hide();
-                }
-                //////////////////////////////////////////////////
-                console.log(range_txt.length+'  '+range_txt);
-                */
             });
-    /*
-    var old_suggestion_popup_visible=false;
-    $(".marker_1").live("mouseenter", function (e) {
-        if(mouseDown) return;
-        if( $('.button_suggest_revisions').hasClass('active') ){
-            if(old_suggestion_popup_visible==false)   {
-                old_suggestion_popup_visible=true;
-                $("#old_suggestion_popup a").data('id', $(this).data('id'));
-                //var left =$(this).offset().left +($(this).width() /2) - 80;
-                var left = e.pageX-85;
-                var top = $(this).offset().top-25;
-                $("#old_suggestion_popup")
-                        .css({ top:top, left:left, opacity:1 })
-                        .show()
-                //  .animate({ top:'-=20px', opacity:1 }, 100, 'linear');
-            }
-        }
-
-    }).live("mouseleave", function () {
-                old_suggestion_popup_visible=false;
-      //  $("#old_suggestion_popup").hide();
-    });
-
-    $("#old_suggestion_popup a").live("click", function () {
-        $(".more-deals a").click();
-        var id= $(this).data('id')  ;
-        $('html, body').animate({
-            scrollTop: $("div[data-id=" +id+ "]").offset().top
-        }, 500);
-    }  );
-    */
 
     $(".marker_1").live("click", function () {
         if(!mouseDown){

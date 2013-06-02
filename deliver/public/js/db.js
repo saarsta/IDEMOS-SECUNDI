@@ -26,7 +26,6 @@ var db_functions = {
                             {
                                 if(typeof window.vars === "undefined"  || typeof window.vars.afterLogin === "undefined") {
                                     window.location.href = window.location.href;
-
                                 }
                                 else
                                 {
@@ -1090,6 +1089,21 @@ var db_functions = {
     getSuggestionByDiscussion:function (discussion_id, limit, offset, callback) {
         db_functions.loggedInAjax({
             url:'/api/suggestions?discussion_id=' + discussion_id + "&is_approved=false" + (limit ? '&limit=' + limit : '') + (offset ? '&offset=' + offset : ''),
+            type:"GET",
+            async:true,
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function (err) {
+                callback(err, null);
+            }
+        });
+    },
+
+    getApprovedSuggestionsByDiscussion:function (discussion_id, limit, offset, callback) {
+        db_functions.loggedInAjax({
+            url:'/api/suggestions?discussion_id=' + discussion_id + "&is_approved=true&order_by=-approve_date" + (limit ? '&limit=' + limit : '') + (offset ? '&offset=' + offset : ''),
             type:"GET",
             async:true,
             success:function (data) {
