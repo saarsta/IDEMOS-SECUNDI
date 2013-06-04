@@ -362,8 +362,25 @@ $(document).ready(function () {
         $(this).parents('.suggestion_wrapper').toggleClass('edit');
     });
 
+    // toggle edit class to open/close contxt popup window or edit suggestion button
+    $('#approved_suggestions_wrapper').on('mouseenter', '.text.change_proposal', function(e){
+        var edit_window = $(this).find('.edit_window');
+        var window_height = edit_window.height();
+        var window_padding = parseInt(edit_window.css("padding-top"));
+        var window_border = parseInt(edit_window.css("border-top-width"));
+
+        $(this).parents('.suggestion_wrapper').toggleClass('edit');
+        $(this).parents('.suggestion_wrapper').toggleClass('show_edit_button');
+
+        //set window top
+        edit_window.css('top', -69 - window_height - (window_padding * 2 + window_border * 2));
+
+    }).on('mouseleave', '.text.change_proposal', function(){
+        $(this).parents('.suggestion_wrapper').toggleClass('edit');
+    });
+
     // when clicking the edit_comment popup show go to creatק suggestion window
-    $('#suggestions_wrapper').on('click', '.button_edit_comment', function(){
+    $('#suggestions_wrapper, #approved_suggestions_wrapper').on('click', '.button_edit_comment', function(){
         var $suggestion_content = $(this).next();
         var orig_text = $suggestion_content.find('.original_part').text();
         var alternative_part = $suggestion_content.find('.alternative_part').text();
@@ -829,6 +846,10 @@ $(document).ready(function () {
     function render_approved_suggestion(suggestion){
         suggestion.original_part = suggestion.replaced_text;
         suggestion.alternative_part = suggestion.parts[0].text;
+
+        // set text for context popup
+        suggestion.context_before = original.substring(Math.max(suggestion.parts[0].start - 400, 0), suggestion.parts[0].start, suggestion.parts[0].start);
+        suggestion.context_after = original.substring(suggestion.parts[0].start + suggestion.parts[0].text.length, Math.min(original.length, suggestion.parts[0].start + suggestion.parts[0].text.length + 400));
 
         dust.render('discussion_approved_suggestion', suggestion, function (err, out) {
             $('#approved_suggestions_wrapper').append(out);

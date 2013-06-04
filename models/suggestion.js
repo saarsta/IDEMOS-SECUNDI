@@ -15,6 +15,7 @@ var Suggestion = {
     is_approved: {type:Boolean, 'default':false},
     approve_date: {type: Date},
     replaced_text: String,
+
     history_version_id:{type:Schema.ObjectId, ref:'DiscussionHistory'},
     evaluate_counter: {type: Number, 'default': 0},
     grade: {type: Number, 'default': 0},

@@ -540,7 +540,7 @@ module.exports.approveSuggestion = function (id, callback) {
                         }else{
                             suggestion_object.is_approved = true;
                             suggestion_object.approve_date = Date.now();
-                            suggestion_object.replaced_text = disc_obj.replaced_text_history[disc_obj.replaced_text_history.length -1];
+                            suggestion_object.replaced_text = disc_obj.replaced_text_history[disc_obj.replaced_text_history.length -1].old_text;
                             suggestion_object.history_version_id = history_obj.id;
                             suggestion_object.save(cbk1);
                         }
