@@ -68,10 +68,10 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
 
         var iterator = function (suggestion, itr_cbk) {
             //set is_my_suggestion flag
-            suggestion.is_my_suggestion = (user_id === suggestion.creator_id.id);
+            suggestion.is_my_suggestion = suggestion.creator_id && (user_id === suggestion.creator_id.id);
 
             // set is_editable flag if user is the creator and its 15 min after publish
-            if (user_id === suggestion.creator_id.id && new Date() - suggestion.creation_date <= EDIT_TEXT_LEGIT_TIME){
+            if (user_id === suggestion.creator_id && suggestion.creator_id.id && new Date() - suggestion.creation_date <= EDIT_TEXT_LEGIT_TIME){
                 suggestion.is_editable = true;
             }
 
@@ -179,7 +179,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
         var iterator = function (unique_user, itr_cbk) {
             user_id = user_id || user_id.id;
 
-            if (unique_user  == user_id || !unique_user){
+            if (unique_user  == user_id || !unique_user || unique_user === "undefined"){
                 console.log("user should not get mail if he is the notificator");
                 itr_cbk(null, 0);
             } else {
