@@ -37,6 +37,11 @@
 
         <div class="suggestion_content">
             {?original_part}
+            <div class="edit_window">
+                <p class="title">
+                    מסמך החזון המקורי בשילוב הטקסט שהשתנה. לחצו כדי לחזור לחזון                </p>
+                <p>{context_before}<span class="focus">{replaced_text}</span>{context_after}</p>
+            </div>
             <div class="text_orig">
                 <h3 class="title">טקסט מקורי:</h3>
                 <span class="original_part">{original_part}</span>
@@ -47,12 +52,6 @@
                 <span class="alternative_part">{alternative_part}</span>
                 <h3 class="title">נימוק:</h3>
                 <span class="explanation">{explanation}</span>
-                <div class="edit_window">
-                    <p class="title">
-                        טקסט החזון הנוכחי בשילוב ההצעה לשינוי מודגשת. לחץ כדי לחזור לחזון
-                    </p>
-                    <p>{context_before}<span class="focus">{replaced_text}</span>{context_after}</p>
-                </div>
             </div>
         </div>
 

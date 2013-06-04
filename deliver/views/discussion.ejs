@@ -240,7 +240,7 @@ var error_message = error_message || '';
 
     <div class="content_break approved_suggestions">
         <div class="content_break_content">
-            <h2>הצעות שאושרו
+            <h2>הצעות שהתקבלו
                 <small id="approved_suggestion_number"></small>
             </h2>
         </div>
@@ -365,7 +365,7 @@ $(document).ready(function () {
 
     // toggle edit class to open/close contxt popup window or edit suggestion button
     $('#approved_suggestions_wrapper').on('mouseenter', '.text.change_proposal', function(e){
-        var edit_window = $(this).find('.edit_window');
+        var edit_window = $(this).parents('.suggestion_wrapper').find('.edit_window');
         var window_height = edit_window.height();
         var window_padding = parseInt(edit_window.css("padding-top"));
         var window_border = parseInt(edit_window.css("border-top-width"));
@@ -374,11 +374,12 @@ $(document).ready(function () {
         $(this).parents('.suggestion_wrapper').toggleClass('show_edit_button');
 
         //set window top
-        edit_window.css('top', -69 - window_height - (window_padding * 2 + window_border * 2));
-
-    }).on('mouseleave', '.text.change_proposal', function(){
-        $(this).parents('.suggestion_wrapper').toggleClass('edit');
+        edit_window.css('top', 35 - window_height - (window_padding * 2 + window_border * 2));
+        edit_window.css('right', 66);
+    }).on('mouseleave', '.suggestion_wrapper .edit_window, .suggestion_wrapper .suggestion_holder', function(){
+        $(this).parents('.suggestion_wrapper').removeClass('edit');
     });
+
 
     // when clicking the edit_comment popup show go to creatק suggestion window
     $('#suggestions_wrapper, #approved_suggestions_wrapper').on('click', '.button_edit_comment', function(){
@@ -447,9 +448,7 @@ $(document).ready(function () {
         });
     });
 
-    $('input.history').click(function(){
-        $(this).toggleClass('active');
-    });
+
 
     $(".main_text").dotdotdot({
         //	configuration goes here
@@ -976,9 +975,13 @@ $(document).ready(function () {
         }
     });
 
-    $('.history_button').click(function(e){
+    $('.history_button, .approved_suggestions h2').click(function(e){
+        $('input.history').toggleClass('active');
         $('#content_wrapper_approved_suggestions').toggleClass('active');
-    })
+        if ($('#content_wrapper_approved_suggestions').hasClass('active')){
+            scrollTo('.approved_suggestions');
+        }
+    });
 
     db_functions.getApprovedSuggestionsByDiscussion(discussion_id, 0, 0, function(err, data){
         if (data.objects.length > 0){
@@ -1909,7 +1912,7 @@ $(document).ready(function () {
             });
         }
     })
-    $('#suggestions_wrapper').on('click', '.edit_window', function(e){
+    $('#suggestions_wrapper, #approved_suggestions_wrapper').on('click', '.edit_window', function(e){
         $('.read_more').click();
         scrollTo('#discussion_content');
     })

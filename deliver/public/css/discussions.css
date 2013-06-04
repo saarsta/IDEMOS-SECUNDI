@@ -2104,6 +2104,11 @@ span.remark{
 .edit_window:hover {
     cursor: pointer;
 }
+
+.approved_suggestions h2:hover{
+    cursor: pointer;
+}
+
 .edit_window .text_top{
     width:100%;
     height:20px;
