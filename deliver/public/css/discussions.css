@@ -1597,13 +1597,9 @@ span.remark{
 }
 */
 
-/*.content_break.approved_suggestions {
+.content_break.approved_suggestions {
     display: none;
 }
-
-.content_break.approved_suggestions.flip{
-    display: block;
-}*/
 
 #content_wrapper_approved_suggestions {
     display: none;

@@ -991,6 +991,7 @@ $(document).ready(function () {
             $('.history_details_holder .item.by a').text(data.objects[0].creator_id.first_name + " " + data.objects[0].creator_id.last_name);
             $('.history_details_holder .item.by a').attr('href', '../myuru/' + data.objects[0].creator_id.id);
             $('.history_details_holder').show();
+            $('.content_break.approved_suggestions').show();
 
             $('#approved_suggestion_number').text(' (' + data.meta.total_count + ')');
 
