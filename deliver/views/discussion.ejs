@@ -341,10 +341,12 @@ $(document).ready(function () {
     var discussion_grade = Number("<%= discussion.grade%>");
     var grade_id = "<%= discussion.grade_obj ? discussion.grade_obj.grade_id : 0 %>";
     var suggestions_list=null;
+    var approved_suggestions_list=null;
     var original = $('#discussion_content_textarea').val() ;
     var range={};
     var editor;
     var on_load = true;
+    var global_hash = null;
 
     // toggle edit class to open/close contxt popup window or edit suggestion button
     $('#suggestions_wrapper').on('mouseenter', '.text.change_proposal', function(e){
@@ -978,13 +980,20 @@ $(document).ready(function () {
     $('.history_button, .approved_suggestions h2').click(function(e){
         $('input.history').toggleClass('active');
         $('#content_wrapper_approved_suggestions').toggleClass('active');
-        if ($('#content_wrapper_approved_suggestions').hasClass('active')){
-            scrollTo('.approved_suggestions');
+        if (on_load) {
+            scrollTo(global_hash);
+            on_load = false;
+        }else{
+            if ($('#content_wrapper_approved_suggestions').hasClass('active')){
+                scrollTo('.approved_suggestions');
+            }
         }
+
     });
 
     db_functions.getApprovedSuggestionsByDiscussion(discussion_id, 0, 0, function(err, data){
         if (data.objects.length > 0){
+            approved_suggestions_list = data.objects;
             // set vision version details
             $('.draft_no span').text(data.objects.length + 1);
             $('.history_details_holder .item.last span').text($.datepicker.formatDate('dd.mm.yy', new Date(Date.parse(data.objects[0].approve_date))));
@@ -997,8 +1006,26 @@ $(document).ready(function () {
 
             $.each(data.objects, function(index, sugg){
                 render_approved_suggestion(sugg);
-            })
+            });
             image_autoscale($('#approved_suggestions_wrapper .auto-scale img'));
+
+            var hash = window.location.hash;
+
+            if(hash){
+                var match = /^#post_([0-9a-f]+)/.exec(hash);
+                if (match) {
+                    var post_id = match[1];
+                    var is_hash_to_approved_suggestion = false;
+                    $.each(approved_suggestions_list, function(index, app_sugg){
+                        if(app_sugg._id == post_id) is_hash_to_approved_suggestion = true;
+                    })
+
+                    if(is_hash_to_approved_suggestion){
+                        global_hash = hash;
+                        $('.approved_suggestions h2').click();
+                    }
+                }
+            }
         }
     });
 
