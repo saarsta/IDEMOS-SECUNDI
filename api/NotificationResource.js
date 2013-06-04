@@ -251,7 +251,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, action_posts_
                     if(discussion){
                         notification.part_two = discussion.title;
                         notification.link_two = "/discussions/" + discussion._id;
-                        notification.main_link = "/discussions/" + discussion._id;
+                        notification.main_link = "/discussions/" + discussion._id + '#post_' + post_id;
                         notification.pic = discussion.image_field_preview || discussion.image_field;
 
                         notification.img_src = notification.pic;
@@ -272,7 +272,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, action_posts_
                 case "approved_change_suggestion_on_discussion_you_are_part_of":
                     notification.part_one = "התקבלה הצעה לשינוי שדירגת בדיון - ";
                     if(discussion){
-                        notification.main_link = "/discussions/" + discussion._id;
+                        notification.main_link = "/discussions/" + discussion._id + "#post_" +  post_id;
                         notification.pic = discussion.image_field_preview || discussion.image_field;
                         notification.part_two = discussion.title;
                         notification.link_two = "/discussions/" + discussion._id;
