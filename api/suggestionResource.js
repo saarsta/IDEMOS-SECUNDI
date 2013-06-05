@@ -55,7 +55,9 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
             is_my_suggestion: null,
             is_approved: null,
             replaced_text: null,
-            approve_date: null
+            approve_date: null,
+            context_before: null,
+            context_after: null
         };
     },
 
@@ -491,6 +493,9 @@ module.exports.approveSuggestion = function (id, callback) {
                     var new_string = "";
                     var curr_position = 0;
                     var parts = suggestion_object.parts;
+
+                    suggestion_object.context_before =  vision.substring(0, suggestion_object.parts[0].start);
+                    suggestion_object.context_after = vision.substring(suggestion_object.parts[0].end, vision.length);
 
                     //this is to fix null text in vision when the suggestion is to delete text - (261 Bug הצעה ריקה לשינוי עולה בתור null)
                     if (parts[0].text == null)
