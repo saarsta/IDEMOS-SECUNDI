@@ -851,6 +851,8 @@ $(document).ready(function () {
     };
 
     function render_approved_suggestion(suggestion){
+        if(!suggestion.context_before || suggestion.context_before === "undefined") return false;
+
         suggestion.original_part = suggestion.replaced_text;
         suggestion.alternative_part = suggestion.parts[0].text;
 
