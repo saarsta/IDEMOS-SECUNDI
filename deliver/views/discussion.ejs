@@ -980,7 +980,7 @@ $(document).ready(function () {
     $('.history_button, .approved_suggestions h2').click(function(e){
         $('input.history').toggleClass('active');
         $('#content_wrapper_approved_suggestions').toggleClass('active');
-        if (on_load) {
+        if (on_load && global_hash) {
             scrollTo(global_hash);
             on_load = false;
         }else{
