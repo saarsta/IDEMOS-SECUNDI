@@ -2005,6 +2005,7 @@ span.remark{
     padding:10px;
     border-bottom:1px solid #e0e0e0;
     display: none;
+    position: relative;
 }
 
 .suggestion_comments_holder .comment .author{
@@ -2390,7 +2391,7 @@ cursor: pointer;
     z-index: 1;
 }
 
-#suggestions_wrapper .comment > .close.show{
+#suggestions_wrapper .comment .close.show{
     display: block!important;
 }
 
