@@ -894,7 +894,9 @@ var populateNotifications = module.exports.populateNotifications = function(resu
         "comment_on_discussion_you_are_part_of",
         "comment_on_discussion_you_created",
         "change_suggestion_on_discussion_you_are_part_of",
-        "change_suggestion_on_discussion_you_created"
+        "change_suggestion_on_discussion_you_created",
+        "approved_change_suggestion_you_created",
+        "approved_change_suggestion_on_discussion_you_are_part_of",
     ];
 
     var action_post_notification_types = [
