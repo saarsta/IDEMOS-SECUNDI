@@ -1477,6 +1477,11 @@ $(document).ready(function () {
                 mouseUp = e;
                 var err = false;
 
+                if (!my_discussion_grade && !is_creator){
+                    popupProvider.showOkPopup({message:'אנא דרג קודם את החזון בראש העמוד.'});
+                    return false;
+                }
+
                 left = Math.ceil((mouseDown.clientX + mouseUp.clientX) / 2 - 97);
                 top = Math.min(mouseDown.clientY, mouseUp.clientY) - $("#new_suggestion_popup").height() - 40 + $(window).scrollTop() +35;
 
