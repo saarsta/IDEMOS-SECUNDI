@@ -1761,6 +1761,10 @@ color: #ff00af;
     cursor: pointer;
 }
 
+.discussion-main .bottom input[type=submit].disable{
+    color: #DADADA;
+}
+
 .discussion-main .bottom label {
     display: inline-block;
     color: #50504f;

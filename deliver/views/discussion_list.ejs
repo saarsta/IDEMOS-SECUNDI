@@ -175,7 +175,22 @@
 
         $('#new_discussion_bt').on('click',function(e){
             e.preventDefault();
-            if(selectedSubject){
+
+            if(!user_id){
+                connectPopup(function (err, data) {
+                    if (!err){
+                        if(selectedSubject){
+                            window.location = 'discussions/new/' + selectedSubject;
+                        } else {
+                            var config = {
+                                message:'בחר נושא בבקשה'
+                                ,okButtonText:'סגור'
+                            };
+                            popupProvider.showOkPopup(config);
+                        }
+                    }
+                });
+            }else if(selectedSubject){
                 window.location = 'discussions/new/' + selectedSubject;
             } else {
                 var config = {

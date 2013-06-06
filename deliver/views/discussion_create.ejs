@@ -284,6 +284,11 @@
          		    $(element).removeClass('error').addClass('valid');
          	    },
            		submitHandler: function(form) {
+
+                   if ($('.discussion-main .bottom input[type=submit]').hasClass('disable')) return false;
+
+                   $('.discussion-main .bottom input[type=submit]').addClass('disable');
+
                      var title = $("#title").val(),
                      vision = $("#vision").val(),
                      first_post = $("#first_post").val();
@@ -336,7 +341,6 @@
                                          {
                                             window.location.replace("/discussions/" + created_discussion_id);
                                          }
-
                                      }
                                  });
                              }else{

@@ -33,7 +33,7 @@
                 <br />
                 <%- subject.description %>
             </h2>
-            <a  id="new_discussion_bt"  class="green-btn" href="/discussions/new/<%= subject.id %>">צור דיון חדש</a>
+            <a  id="new_discussion_bt"  class="green-btn" href="javascript: void(0)">צור דיון חדש</a>
         </div>
         <select id="sorting_select" class="left-select">
             <option value="-last_updated">
@@ -64,6 +64,8 @@
 
         var selectedTag='<%=tag_name? tag_name:'' %>';
         var selectedSubject = '<%= subject.id %>';
+        var user_logged = '<%=user_logged%>';
+
         function createDiscussionsQuery(){
             var sortby=  $('#sorting_select').find(':selected').data('sortby');
             var query='order_by='+sortby;
@@ -99,6 +101,36 @@
 
         $('#sorting_select').change(loadDiscussionsListToPage);
         loadDiscussionsListToPage();
+
+        $('#new_discussion_bt').on('click',function(e){
+            e.preventDefault();
+
+            if(!user_logged || user_logged === "false"){
+                connectPopup(function (err, data) {
+                    if (!err){
+                        if(selectedSubject){
+                            window.location = '../new/' + selectedSubject;
+                        } else {
+                            var config = {
+                                message:'בחר נושא בבקשה'
+                                ,okButtonText:'סגור'
+                            };
+                            popupProvider.showOkPopup(config);
+                        }
+                    }
+                });
+            }else if(selectedSubject){
+                window.location = '../new/' + selectedSubject;
+            } else {
+                var config = {
+                    message:'בחר נושא בבקשה'
+                    ,okButtonText:'סגור'
+                };
+                popupProvider.showOkPopup(config);
+            }
+        })
+
     })  ;
+
 
 </script>
