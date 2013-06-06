@@ -856,7 +856,7 @@ $(document).ready(function () {
         suggestion.alternative_part = suggestion.parts[0].text;
 
         // set text for context popup
-        if (suggestion.context_before suggestion.context_after && suggestion.context_before !== "undefined") {
+        if (suggestion.context_before && suggestion.context_after && suggestion.context_before !== "undefined") {
             suggestion.context_before = suggestion.context_before.substring(Math.max(suggestion.context_before.length - 400, 0), suggestion.context_before.length);
             suggestion.context_after = suggestion.context_after.substring(0, Math.min(suggestion.context_after.length, 400));
         }
