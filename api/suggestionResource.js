@@ -65,7 +65,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
         var self = this;
         var discussion_id = req.query.discussion_id;
         var discussion_threshold;
-
+        var discussion_participants_count = 0;
         var user_id = req.user && req.user._id + "";
 
         var iterator = function (suggestion, itr_cbk) {
@@ -92,6 +92,10 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                 if (Number(suggestion.threshold_for_accepting_the_suggestion) === Infinity) suggestion.threshold_for_accepting_the_suggestion = null;
                 suggestion.wanted_amount_of_tokens = Number(suggestion.threshold_for_accepting_the_suggestion) || calculate_sugg_threshold(suggestion.getCharCount(), discussion_threshold);
             }
+
+            if (Number(suggestion.wanted_amount_of_tokens) > discussion_participants_count)
+                suggestion.wanted_amount_of_tokens = discussion_participants_count - 1;
+
             if (req.user) {
                 models.GradeSuggestion.findOne({user_id:req.user._id, suggestion_id:suggestion._id + ""}, {"_id":1, "evaluation_grade":1, "does_support_the_suggestion":1}, function (err, grade_sugg_obj) {
                     if (!err && grade_sugg_obj) {
@@ -146,6 +150,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                         },
 
                         function (discussion_obj, cbk) {
+                            discussion_participants_count = discussion_obj.users.length;
                             discussion_threshold = discussion_obj.threshold_for_accepting_change_suggestions;
                             discussion_text = discussion_obj.text_field;
 
@@ -275,6 +280,9 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                         data.creator_id.num_of_given_mandates = user.num_of_given_mandates;
                         data.creator_id.num_of_proxies_i_represent = user.num_of_proxies_i_represent;
                         suggestion_obj.wanted_amount_of_tokens = suggestion_obj.threshold_for_accepting_the_suggestion;
+
+                        if (Number(suggestion_obj.wanted_amount_of_tokens) > disc_obj.users.length)
+                            suggestion_obj.wanted_amount_of_tokens = disc_obj.users.length - 1;
                     }
                     cbk(err, data);
                 });
