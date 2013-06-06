@@ -855,7 +855,7 @@ $(document).ready(function () {
         return null;
     };
 
-    function render_approved_suggestion(suggestion){
+    function render_approved_suggestion(suggestion, animate){
         suggestion.original_part = suggestion.replaced_text;
         suggestion.alternative_part = suggestion.parts[0].text;
 
@@ -867,6 +867,14 @@ $(document).ready(function () {
 
         dust.render('discussion_approved_suggestion', suggestion, function (err, out) {
             $('#approved_suggestions_wrapper').append(out);
+
+            image_autoscale($('#suggestions_wrapper .auto-scale img'));
+
+            if(animate == true){
+                var bgc =$('.suggestion_holder').last().css('background-color');
+                $('.suggestion_holder ').last().css('background-color', 'pink');
+                $('.suggestion_holder ').last().animate({backgroundColor: bgc}, 3000);
+            }
         });
     }
     var first_suggestion;
@@ -1659,6 +1667,22 @@ $(document).ready(function () {
 
         db_functions.addSuggestionGrade(suggestion_id, discussion_id, default_rating, suggest_grade_id, user_info, function (err, data) {
             if (!err) {
+                // if grading approved the suggestion, move suggestion to approved section
+                if(data.is_approved){
+                    var $this = $('#post_' + suggestion_id);
+                    $this.slideUp(1200, "swing", function(e){
+                        $('.approved_suggestions h2').click();
+                        $.each(suggestions_list, function(index, object){
+                            if(object.id == suggestion_id){
+                                approved_suggestions_list.push(suggestions_list[index]);
+                                suggestions_list.splice(index, 1);
+                            }
+                        })
+
+                        render_approved_suggestion(approved_suggestions_list[approved_suggestions_list.length - 1], true);
+                    });
+                }
+
                 var $suggestion = $("div[data-id=" + suggestion_id + "]");
                 $suggestion.find('.supporters_wanted span').text(data.wanted_amount_of_tokens);
                 $suggestion.find('.supporters_current span').text(Math.round(data.curr_amount_of_tokens));

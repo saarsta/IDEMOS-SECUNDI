@@ -71,7 +71,8 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
             grade_id:null,
 
 //            wanted_amount_of_tokens: null,
-            curr_amount_of_tokens:null
+            curr_amount_of_tokens:null,
+            is_approved: null
         }
     },
 
@@ -82,6 +83,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
         var counter = 0;
         var g_suggestion_obj;
         var is_agree;
+        var is_approved;
         var discussion_evaluation_grade;
         var agrees;
         var not_agrees;
@@ -176,6 +178,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
 
                         if (curr_tokens_amout >= real_threshold) {
                             Suggestion.approveSuggestion(suggestion_obj._id, function (err, obj1) {
+                                if (!err) is_approved = true;
                                 cbk1(err, obj1);
                             })
                         } else {
@@ -242,7 +245,8 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                 agrees: agrees,
                 not_agrees:not_agrees,
 //                    wanted_amount_of_tokens: real_threshold,
-                curr_amount_of_tokens:curr_tokens_amout
+                curr_amount_of_tokens:curr_tokens_amout,
+                is_approved: is_approved
             });
         })
     },
