@@ -879,6 +879,9 @@ var db_functions = {
                 callback(null, data);
             },
             error:function (err) {
+                if (err.responseText != "not authenticated")
+                    if (err.responseText == "must grade discussion first")
+                        popupProvider.showOkPopup({message:'אנא דרג קודם את החזון בראש העמוד.'})
                 callback(err, null);
             }
         });

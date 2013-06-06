@@ -681,6 +681,11 @@ $(document).ready(function () {
                         $this.removeClass('disable')
                     });
                 }
+            }else{
+                if(err.responseText == "must grade discussion first"){
+                    $this.data('executing', false);
+                    $this.removeClass('disable');
+                }
             }
         })
     });
@@ -851,7 +856,6 @@ $(document).ready(function () {
     };
 
     function render_approved_suggestion(suggestion){
-
         suggestion.original_part = suggestion.replaced_text;
         suggestion.alternative_part = suggestion.parts[0].text;
 
