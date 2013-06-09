@@ -1383,6 +1383,17 @@ span.remark{
 .discussions_page .segment.main .segment_bottom{
     float:right;
     width:100%;
+    position: relative;
+}
+
+.discussions_page .segment.main .segment_bottom .statement{
+    position: absolute;
+    right: 100px;
+    top: 53px;
+}
+
+.discussions_page .segment.main .segment_bottom .statement .first{
+    color: #0000ff;
 }
 
 .discussions_page .segment.main a.read_more,
@@ -2691,7 +2702,6 @@ input.button_submit_comment_no_text{
 }
 
 .slide-box {
-    margin-top: 10px;
     float: right;
     width: 134px;
     background: #d6dbde;

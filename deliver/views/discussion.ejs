@@ -97,21 +97,29 @@ var error_message = error_message || '';
                                 </div>
                             </div>
                             <div class="slide-box">
-                                    <div class="slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
-                                    <div class="ui-slider-range ui-widget-header ui-slider-range-min" style="width: 0%;"></div><a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 0%;"></a></div>
-                                    <div class="slider-numbers">
-                                        <span>1</span>
-                                        <span>2</span>
-                                        <span>3</span>
-                                        <span>4</span>
-                                        <span>5</span>
-                                        <span>6</span>
-                                        <span>7</span>
-                                        <span>8</span>
-                                        <span>9</span>
-                                        <span>10</span>
-                                    </div>
+                                <div class="slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
+                                <div class="ui-slider-range ui-widget-header ui-slider-range-min" style="width: 0%;"></div><a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 0%;"></a></div>
+                                <div class="slider-numbers">
+                                    <span>1</span>
+                                    <span>2</span>
+                                    <span>3</span>
+                                    <span>4</span>
+                                    <span>5</span>
+                                    <span>6</span>
+                                    <span>7</span>
+                                    <span>8</span>
+                                    <span>9</span>
+                                    <span>10</span>
                                 </div>
+                            </div>
+                            <div class="statement">
+                                <span class="first">
+                                    גרור את הסמן!
+                                </span>
+                                <span class="second">
+                                תן ציון למסמך החזון
+                                </span>
+                            </div>
                             <div class="button_add_comment">
                                 <input type="button" />
                             </div>
@@ -581,6 +589,29 @@ $(document).ready(function () {
         scrollTo('#add_comment_wrapper');
     });
 
+    //set slider text according to user grade
+    if(my_discussion_grade){
+        $('.discussions_page .segment.main .segment_bottom .statement span').text('');
+
+        if(my_discussion_grade >= 0 && my_discussion_grade < 2){
+            $('.discussions_page .segment.main .segment_bottom .statement .second').text('מתנגד נחרצות');
+        }else{
+            if(my_discussion_grade >= 2 && my_discussion_grade < 5){
+                $('.discussions_page .segment.main .segment_bottom .statement .second').text('מתנגד');
+            }else {
+                if(my_discussion_grade >= 5 && my_discussion_grade < 6){
+                    $('.discussions_page .segment.main .segment_bottom .statement .second').text('תומך בעיקרון, אך נדרש שיפור');
+                }else {
+                    if(my_discussion_grade >= 6 && my_discussion_grade < 8){
+                        $('.discussions_page .segment.main .segment_bottom .statement .second').text('תומך');
+                    }else{
+                        $('.discussions_page .segment.main .segment_bottom .statement .second').text('תומך נלהב');
+                    }
+                }
+            }
+        }
+    }
+
     $(".slider").slider({
         disabled:is_creator,
         value:my_discussion_grade,
@@ -588,6 +619,30 @@ $(document).ready(function () {
         min:0,
         max:10,
         step:0.10 ,
+        slide: function(event, ui){
+            $('.discussions_page .segment.main .segment_bottom .statement span').text('');
+
+            // change slider text according to grade
+            var current = ui.value;
+
+            if(current >= 0 && current < 2){
+                $('.discussions_page .segment.main .segment_bottom .statement .second').text('מתנגד נחרצות');
+            }else{
+                if(current >= 2 && current < 5){
+                    $('.discussions_page .segment.main .segment_bottom .statement .second').text('מתנגד');
+                }else {
+                    if(current >= 5 && current < 6){
+                        $('.discussions_page .segment.main .segment_bottom .statement .second').text('תומך בעיקרון, אך נדרש שיפור');
+                    }else {
+                        if(current >= 6 && current < 8){
+                            $('.discussions_page .segment.main .segment_bottom .statement .second').text('תומך');
+                        }else{
+                            $('.discussions_page .segment.main .segment_bottom .statement .second').text('תומך נלהב');
+                        }
+                    }
+                }
+            }
+        },
         change:function (event, ui) {
             if (event.originalEvent) {      //ugly hack because of slider api bug
                 var my_prev_grade = my_discussion_grade;
@@ -1626,6 +1681,12 @@ $(document).ready(function () {
             $("#send_suggestion").removeClass('disable');
 
 
+            $('#discussion_content_txt').text('"' + range_txt + '"');
+            $('#write-comment').show();
+
+            $('#reload-img').attr('src', $('#reload-img').attr('src'));
+            $(".popup-window").hide();
+
             $('#discussion_suggest').val('');
             $('textarea#discussion_suggest').focus();
 
@@ -1634,13 +1695,12 @@ $(document).ready(function () {
                 $('#discussion_explanation').val(' ');
                 $('#discussion_explanation').attr('readonly','readonly');
                 $('textarea#discussion_explanation').focus();
+            }else{
+                if ($(this).hasClass('add')){
+                    $('#discussion_suggest').val(range_txt + ' ');
+                }
             }
 
-            $('#discussion_content_txt').text('"' + range_txt + '"');
-            $('#write-comment').show();
-
-            $('#reload-img').attr('src', $('#reload-img').attr('src'));
-            $(".popup-window").hide();
             $('html, body').animate({
                 scrollTop: $("#write-comment").offset().top
             }, 500);
