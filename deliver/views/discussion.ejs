@@ -250,7 +250,7 @@ var error_message = error_message || '';
         </div>
     </div>
 
-    <div class="content_break">
+    <div class="content_break suggestions">
         <div class="content_break_content">
             <h2>הצעות לשינוי
                 <small id="suggestion_number"></small>
@@ -867,13 +867,21 @@ $(document).ready(function () {
 
         dust.render('discussion_approved_suggestion', suggestion, function (err, out) {
             $('#approved_suggestions_wrapper').append(out);
-
-            image_autoscale($('#suggestions_wrapper .auto-scale img'));
+            image_autoscale($('#approved_suggestions_wrapper .auto-scale img'));
 
             if(animate == true){
-                var bgc =$('.suggestion_holder').last().css('background-color');
-                $('.suggestion_holder ').last().css('background-color', 'pink');
-                $('.suggestion_holder ').last().animate({backgroundColor: bgc}, 3000);
+                db_functions.getDiscussionTextField(discussion_id, function(err, text_field){
+                    $('#discussion_content_textarea').val(text_field);
+                    $('#discussion_content').text(text_field.replace(/\n/g, '<br />'));
+                    original = $('#discussion_content_textarea').val();
+                    $('.read_more').click();
+                });
+//                var $this = $('#post_' + suggestion_id);
+//                scrollTo('.content_break.suggestions');
+//
+//                var bgc =$('.suggestion_holder').last().css('background-color');
+//                $('.suggestion_holder ').last().css('background-color', 'pink');
+//                $('.suggestion_holder ').last().animate({backgroundColor: bgc}, 3000);
             }
         });
     }
@@ -1486,7 +1494,15 @@ $(document).ready(function () {
                 var err = false;
 
                 if (!my_discussion_grade && !is_creator){
-                    popupProvider.showOkPopup({message:'אנא דרג קודם את החזון בראש העמוד.'});
+                    var popupConfig = {};
+                    popupConfig.message = 'אנא דרג קודם את החזון בראש העמוד.'
+                    popupConfig.onOkCilcked = function(e){
+                        e.preventDefault();
+                        clicked = 'ok';
+                        $.colorbox.close();
+                        scrollTo('.segment.main .tags')
+                    },
+                    popupProvider.showOkPopup(popupConfig);
                     return false;
                 }
 
@@ -1671,15 +1687,16 @@ $(document).ready(function () {
                 if(data.is_approved){
                     var $this = $('#post_' + suggestion_id);
                     $this.slideUp(1200, "swing", function(e){
-                        $('.approved_suggestions h2').click();
+//                        $('.approved_suggestions h2').click();
                         $.each(suggestions_list, function(index, object){
                             if(object.id == suggestion_id){
                                 approved_suggestions_list.push(suggestions_list[index]);
                                 suggestions_list.splice(index, 1);
+
+                                render_approved_suggestion(approved_suggestions_list[approved_suggestions_list.length - 1], true);
+                                return false;
                             }
                         })
-
-                        render_approved_suggestion(approved_suggestions_list[approved_suggestions_list.length - 1], true);
                     });
                 }
 

@@ -565,6 +565,22 @@ var db_functions = {
 		});
 	},
 
+    getDiscussionTextField: function(discussion_id, callback){
+        db_functions.loggedInAjax({
+            url:'/api/discussions/' + discussion_id,
+            type:"GET",
+            async:true,
+            success:function (data) {
+                data = data.text_field;
+                callback(null, data);
+            },
+
+            error:function (err) {
+                callback(err, null);
+            }
+        });
+    },
+
     createDiscussion: function(subject_id, vision, title, tags, image, user_info, callback) {
         db_functions.loggedInAjax({
             url:'/api/discussions/',
@@ -880,8 +896,17 @@ var db_functions = {
             },
             error:function (err) {
                 if (err.responseText != "not authenticated")
-                    if (err.responseText == "must grade discussion first")
-                        popupProvider.showOkPopup({message:'אנא דרג קודם את החזון בראש העמוד.'})
+                    if (err.responseText == "must grade discussion first"){
+                        var popupConfig = {};
+                        popupConfig.message = 'אנא דרג קודם את החזון בראש העמוד.'
+                        popupConfig.onOkCilcked = function(e){
+                            e.preventDefault();
+                            clicked = 'ok';
+                            $.colorbox.close();
+                            scrollTo('.segment.main .tags')
+                        },
+                            popupProvider.showOkPopup(popupConfig);
+                    }
                 callback(err, null);
             }
         });
