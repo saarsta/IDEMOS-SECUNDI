@@ -995,9 +995,19 @@ var db_functions = {
                 callback(null, data);
             },
             error:function (err) {
-                if (err.responseText != "not authenticated")
-                    if (err.responseText == "must grade discussion first")
-                        popupProvider.showOkPopup({message:'אנא דרג קודם את החזון בראש העמוד.'})
+                if (err.responseText != "not authenticated"){
+                    if (err.responseText == "must grade discussion first"){
+                        var popupConfig = {};
+                        popupConfig.message = 'אנא דרג קודם את החזון בראש העמוד.'
+                        popupConfig.onOkCilcked = function(e){
+                            e.preventDefault();
+                            clicked = 'ok';
+                            $.colorbox.close();
+                            scrollTo('.segment.main .tags')
+                        },
+                        popupProvider.showOkPopup(popupConfig);
+                    }
+                }
                 callback(err, null);
             }
         });
