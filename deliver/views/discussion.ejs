@@ -181,7 +181,10 @@ var error_message = error_message || '';
     </div>
 <span class="popup-window" id="new_suggestion_popup">
     <div class="tooltip_2">
-        <input id="pop_suggest_bt" value="הוסף הצעה" class="button_add_suggestion" type="text" />
+        <span> מה ברצונך לעשות עם טקסט זה?</span>
+        <input id="pop_suggest_bt" value="לשנות" class="button_add_suggestion change pop_suggest_bt" type="text" />
+        <input id="pop_suggest_bt_delete" value="למחוק" class="button_add_suggestion delete pop_suggest_bt" type="text" />
+        <input id="pop_suggest_bt_add" value="להוסיף" class="button_add_suggestion add pop_suggest_bt" type="text" />
     </div>
 </span>
 
@@ -571,7 +574,7 @@ $(document).ready(function () {
         e.preventDefault();
         focusOnCommentBox();
     });
-	
+
 	$('#comments_wrapper').on("click", ".button_comment",function (e) {
         e.preventDefault();
         focusOnCommentBox();
@@ -1609,8 +1612,7 @@ $(document).ready(function () {
 //    });
 
 
-    $('#pop_suggest_bt').click(function (e) {
-        console.log("pop_suggest_bt");
+    $('#pop_suggest_bt, .pop_suggest_bt').click(function (e) {
         e.stopPropagation();
         e.preventDefault();
         if(!my_id){
@@ -1622,20 +1624,27 @@ $(document).ready(function () {
 
             $("#send_suggestion").data('executing', false);
             $("#send_suggestion").removeClass('disable');
+
+
             $('#discussion_suggest').val('');
+            $('textarea#discussion_suggest').focus();
+
             $('#discussion_explanation').val('');
+            if ($(this).hasClass('delete')){
+                $('#discussion_explanation').val(' ');
+                $('#discussion_explanation').attr('readonly','readonly');
+                $('textarea#discussion_explanation').focus();
+            }
 
             $('#discussion_content_txt').text('"' + range_txt + '"');
             $('#write-comment').show();
-            $('textarea#discussion_suggest').focus();
+
             $('#reload-img').attr('src', $('#reload-img').attr('src'));
             $(".popup-window").hide();
             $('html, body').animate({
                 scrollTop: $("#write-comment").offset().top
             }, 500);
         }
-
-
     });
 
     var depress_event = false;

@@ -2883,7 +2883,6 @@ input.button_submit_comment_no_text{
     height:48px;
 }
 
-
 .tooltip_2 {
     -webkit-border-radius: 7px;
     border-radius: 7px;
@@ -2894,11 +2893,17 @@ input.button_submit_comment_no_text{
     text-align:center;
     line-height:36px;
     font-size:12px;
-    width:106px;
+    width: 227px;
     -webkit-box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.4);
     box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.4);
-
 }
+
+.tooltip_2 span {
+    color: blue;
+    font-family: 'AdumaFOTRegular';
+    font-size: 16px;
+}
+
 .tooltip_2:after, .tooltip_2:before {
     top: 100%;
     border: solid transparent;
@@ -2924,9 +2929,6 @@ input.button_submit_comment_no_text{
     margin-left: -10px;
 }
 
-
-
-
 .tooltip_1 a{
     text-decoration:none;
     color:#3b63ef;
@@ -2936,11 +2938,11 @@ input.button_submit_comment_no_text{
     background:#3b63ef;
     color:#fff;
 }
+/*
 
 .tooltip_2 input.button_add_suggestion{
-    background:url(../images/button_add_suggestion_small.png) no-repeat 0 0;
+    background: url("../images/URU_icons_new_sprite.png") no-repeat scroll 515% -17% #F4F4F4;
     line-height:28px;
-    font-size:12px;
     width:89px;
     height:29px;
     border:none;
@@ -2953,6 +2955,51 @@ input.button_submit_comment_no_text{
     margin:5px 5px 0 0 ;
     float: right;
 }
+
+*/
+
+.tooltip_2 input.button_add_suggestion{
+    background: url("../images/URU_icons_new_sprite.png") no-repeat scroll 515% -17% #F4F4F4;
+    border: 1px solid #DADADA;
+    border-radius: 4px 4px 4px 4px;
+    color: #616161;
+    cursor: pointer;
+    float: right;
+    font-family: 'AdumaFOTRegular';
+    font-size: 16px;
+    height: 16px;
+    line-height: 28px;
+    margin: 0 4px 5px 0;
+    padding: 5px 5px 3px 8px;
+    width: 55px;
+}
+
+.tooltip_2 input.button_add_suggestion.delete {
+    background-position: 515% -17%;
+}
+
+.tooltip_2 input.button_add_suggestion.change {
+    background-position: 515% 49% ;
+    background-size: 59px 68px;
+}
+
+.tooltip_2 input.button_add_suggestion.add {
+    background-position: 497% 109%;
+    width: 56px;
+}
+
+/*.tooltip_2 input#pop_suggest_bt_change.button_add_suggestion{
+    background:url(../images/URU_icons_new_sprite.png) no-repeat 0 0;
+}
+
+.tooltip_2 input#pop_suggest_bt_delete.button_add_suggestion{
+    background:url(../images/URU_icons_new_sprite.png) no-repeat 0 0;
+}
+
+.tooltip_2 input#pop_suggest_bt_add.button_add_suggestion{
+    background:url(../images/URU_icons_new_sprite.png) no-repeat 0 0;
+}*/
+
 
 .tooltip_2 a.button_respond{
    /* background:url(../images/button_respond_small.png) no-repeat 0 0;     */
