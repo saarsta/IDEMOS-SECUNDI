@@ -1681,6 +1681,12 @@ $(document).ready(function () {
             $("#send_suggestion").removeClass('disable');
 
 
+            $('#discussion_content_txt').text('"' + range_txt + '"');
+            $('#write-comment').show();
+
+            $('#reload-img').attr('src', $('#reload-img').attr('src'));
+            $(".popup-window").hide();
+
             $('#discussion_suggest').val('');
             $('textarea#discussion_suggest').focus();
 
@@ -1689,13 +1695,12 @@ $(document).ready(function () {
                 $('#discussion_explanation').val(' ');
                 $('#discussion_explanation').attr('readonly','readonly');
                 $('textarea#discussion_explanation').focus();
+            }else{
+                if ($(this).hasClass('add')){
+                    $('#discussion_suggest').val(range_txt + ' ');
+                }
             }
 
-            $('#discussion_content_txt').text('"' + range_txt + '"');
-            $('#write-comment').show();
-
-            $('#reload-img').attr('src', $('#reload-img').attr('src'));
-            $(".popup-window").hide();
             $('html, body').animate({
                 scrollTop: $("#write-comment").offset().top
             }, 500);
