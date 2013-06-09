@@ -658,7 +658,7 @@ module.exports.approveSuggestion = function (id, callback) {
             })
         }
     ], function (err, arg) {
-        callback(err, arg);
+        callback(err, arg, suggestion_object);
     });
 }
 

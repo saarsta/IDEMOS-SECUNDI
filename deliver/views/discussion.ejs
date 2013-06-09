@@ -872,9 +872,10 @@ $(document).ready(function () {
             if(animate == true){
                 db_functions.getDiscussionTextField(discussion_id, function(err, text_field){
                     $('#discussion_content_textarea').val(text_field);
-                    $('#discussion_content').text(text_field.replace(/\n/g, '<br />'));
+                    $('#discussion_content').html(text_field.replace(/\n/g, '<br />'));
                     original = $('#discussion_content_textarea').val();
                     $('.read_more').click();
+                    scrollTo('#discussion_content');
                 });
 //                var $this = $('#post_' + suggestion_id);
 //                scrollTo('.content_break.suggestions');
@@ -1690,6 +1691,8 @@ $(document).ready(function () {
 //                        $('.approved_suggestions h2').click();
                         $.each(suggestions_list, function(index, object){
                             if(object.id == suggestion_id){
+                                suggestions_list[index].replaced_text = data.replaced_text;
+                                suggestions_list[index].approve_date = data.approve_date;
                                 approved_suggestions_list.push(suggestions_list[index]);
                                 suggestions_list.splice(index, 1);
 
