@@ -2958,8 +2958,8 @@ input.button_submit_comment_no_text{
 
 */
 
-.tooltip_2 input.button_add_suggestion{
-    background: url("../images/URU_icons_new_sprite.png") no-repeat scroll 515% -17% #F4F4F4;
+.tooltip_2 .button_add_suggestion{
+
     border: 1px solid #DADADA;
     border-radius: 4px 4px 4px 4px;
     color: #616161;
@@ -2968,24 +2968,33 @@ input.button_submit_comment_no_text{
     font-family: 'AdumaFOTRegular';
     font-size: 16px;
     height: 16px;
-    line-height: 28px;
+    line-height: 17px;
     margin: 0 4px 5px 0;
-    padding: 5px 5px 3px 8px;
-    width: 55px;
+    padding:5px 25px 3px 9px;
+   position: relative;
+
 }
 
-.tooltip_2 input.button_add_suggestion.delete {
-    background-position: 515% -17%;
+
+.tooltip_2 .button_add_suggestion:before{
+    background: url("../images/URU_icons_new_sprite.png") no-repeat scroll  top left transparent;
+    width: 20px;
+    height: 17px;
+    position: absolute;
+    content: "";
+    right: 1px        ;
+    top :3px;
+}
+.tooltip_2 .button_add_suggestion.delete:before {
+    background-position: 0 0;
 }
 
-.tooltip_2 input.button_add_suggestion.change {
-    background-position: 515% 49% ;
-    background-size: 59px 68px;
+.tooltip_2 .button_add_suggestion.change:before {
+    background-position: 0 -16px ;
 }
 
-.tooltip_2 input.button_add_suggestion.add {
-    background-position: 497% 109%;
-    width: 56px;
+.tooltip_2 .button_add_suggestion.add:before {
+    background-position: 0 -33px;
 }
 
 /*.tooltip_2 input#pop_suggest_bt_change.button_add_suggestion{
