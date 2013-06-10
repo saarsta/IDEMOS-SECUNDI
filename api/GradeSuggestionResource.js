@@ -96,6 +96,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
         var grade_id;
         var proxy_power = req.user.num_of_given_mandates ? 1 + req.user.num_of_given_mandates * 1 / 9 : 1;
         var discussion_obj;
+        var discussion_participants_count;
 
         async.waterfall([
 
@@ -106,6 +107,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
 
             //user can grade suggestion only if he grade the discussion
             function (disc_obj, cbk) {
+                discussion_participants_count = discussion_obj.users.length;
                 discussion_obj = disc_obj;
                 models.Grade.findOne({user_id:req.user._id, discussion_id:fields.discussion_id}, cbk);
             },
@@ -177,6 +179,8 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                         //if there is an admin threshokd specified for the suggestion - it wins
 
                         real_threshold = Number(suggestion_obj.admin_threshold_for_accepting_the_suggestion) || suggestion_obj.threshold_for_accepting_the_suggestion;
+                        if (Number(suggestion_obj.wanted_amount_of_tokens) > discussion_participants_count)
+                            real_threshold = discussion_participants_count - 1;
 
                         if (curr_tokens_amout >= real_threshold) {
                             Suggestion.approveSuggestion(suggestion_obj._id, function (err, obj1, suggestion_object) {
@@ -277,6 +281,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
         var g_sugg_obj;
         var proxy_power = req.user.num_of_given_mandates ? 1 + req.user.num_of_given_mandates * 1 / 9 : 1;
         var previous_proxy_power = object.proxy_power || proxy_power;
+        var discussion_participants_count;
 
         async.waterfall([
 
@@ -286,6 +291,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
             },
 
             function (discussion_obj, cbk) {
+                discussion_participants_count = discussion_obj.users.length;
                 real_threshold = Number(discussion_obj.admin_threshold_for_accepting_change_suggestions) || discussion_obj.threshold_for_accepting_change_suggestions;
 
                 if (discussion_obj.creator_id + "" == req.user._id + "") {
@@ -404,8 +410,9 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                             //if there is an admin threshokd specified for the suggestion - it wins
 
                             real_threshold = Number(g_sugg_obj.admin_threshold_for_accepting_the_suggestion) || g_sugg_obj.threshold_for_accepting_the_suggestion;
-
-                            if (curr_tokens_amout >= real_threshold) {
+                            if (Number(g_sugg_obj.wanted_amount_of_tokens) > discussion_participants_count)
+                                real_threshold = discussion_participants_count - 1;
+                            if (s >= real_threshold) {
                                 Suggestion.approveSuggestion(g_sugg_obj._id, function (err, obj1) {
                                     cbk(err, obj1);
                                 })
