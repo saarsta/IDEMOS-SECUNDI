@@ -798,8 +798,6 @@ $(document).ready(function () {
                         popupProvider.showOkPopup( {message:     'מצטערים, לא ניתן להצביע לתגובה של עצמך'});
                 }
             }
-
-
         })
     }
 
@@ -2097,7 +2095,8 @@ $(document).ready(function () {
     $('#content_wrapper_comments').on('click', '.comment_wrapper .close', function(e){
         var popupConfig = {};
         popupConfig.popup_text = "" +
-                "למחוק תגובה זו? יחד איתה יימחקו גם התגובות שפורסמו לה על ידי משתמשים אחרים" ;
+                'למחוק תגובה זו? יחד איתה יימחקו תגובות שפורסמו לה ע"י משתמשים אחרים'
+
         popupConfig.onOkCilcked = function(e){
             e.preventDefault();
             clicked = 'ok';
@@ -2125,7 +2124,8 @@ $(document).ready(function () {
     $('#content_wrapper_suggestions').on('click', '.suggestion_holder > .close', function(e){
         var popupConfig = {};
         popupConfig.popup_text = "" +
-                "למחוק הצעה זו? יחד איתה יימחקו גם התגובות שפורסמו לה על ידי משתמשים אחרים" ;
+
+        'למחוק הצעה זו? יחד איתה יימחקו תגובות שפורסמו לה ע"י משתמשים אחרים'
         ;
         popupConfig.onOkCilcked = function(e){
             e.preventDefault();
@@ -2157,12 +2157,10 @@ $(document).ready(function () {
         $(this).find('.close').removeClass('show');
     });
 
-    $('#content_wrapper_suggestions').on('click','.suggestion_comments_holder .comment>.close', function(e){confirmPopup('למחוק תגובה זו? יחד איתה יימחקו תגובות שפורסמו לה ע"י משתמשים אחרים')});
-
-    function  confirmPopup(text){
+    $('#content_wrapper_suggestions').on('click', '.suggestion_comments_holder .comment>.close', function(e){
         var popupConfig = {};
-        popupConfig.popup_text = text
-
+        popupConfig.popup_text = "" +
+"למחוק תגובה זו?"
         ;
         popupConfig.onOkCilcked = function(e){
             e.preventDefault();
@@ -2179,7 +2177,7 @@ $(document).ready(function () {
         },
         popupConfig.post_id = $(this).parent('.comment').attr('id');
         popupProvider.showDeletePostPopup(popupConfig);
-    };
+    })
 });
 
 </script>
