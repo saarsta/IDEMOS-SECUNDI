@@ -1548,7 +1548,8 @@ $(document).ready(function () {
 
     var mouseDown, mouseUp, top, left;
     var range_txt;
-    $('#discussion_content')
+
+    $('#discussion_content,#discussion_content_textarea')
             .on('mousedown', function (e) {
                 mouseDown = e;
                 $("#old_suggestion_popup").hide();
@@ -1564,21 +1565,32 @@ $(document).ready(function () {
                 left = Math.ceil((mouseDown.clientX + mouseUp.clientX) / 2 - 97);
                 top = Math.min(mouseDown.clientY, mouseUp.clientY) - $("#new_suggestion_popup").height() - 40 + $(window).scrollTop() +35;
 
-               // original = $('<div />').html(original).text();
-//                if(window.getSelection){
                 range_txt = window.getSelection().toString();
-                    //range_txt=range.toString();//.replace(/\s{2,}/g, ' ')
 
-//                }else if(document.getSelection){
-//                    range = document.getSelection();
-//                }else if(document.selection){
-//                    range = document.selection.createRange();
-//                }
+                // if we got here after flipping the discussion content to textarea get range easily
+                if ($(this).attr('id') === "discussion_content_textarea"){
+                    range = $(this).getSelection();
+                    range_txt = range.text;
+                }else if (!discoverRange (range_txt)) {
 
-                //////////////////  show pop up   /////////////////
-                discoverRange (range_txt)  ;
-                if(range_txt.length > 0 ){
+                    var popupConfig = {};
+                    popupConfig.message = "קרתה תקלה, נסה שנית";
+                    popupConfig.onOkCilcked = function(e){
+                        e.preventDefault();
+                        clicked = 'ok';
+                        $('#discussion_content').hide();
+                        $('#discussion_content_textarea').show();
+                        $('.read_less').click();
+                        $('.read_more').click();
 
+                        $.colorbox.close();
+                    },
+                    popupProvider.showOkPopup(popupConfig);
+
+                    return false;
+                }
+
+                if(range.length > 0 || range_txt.length > 0 ){
                     if(!my_id){
                         popupProvider.showLoginPopup({}, function(err, result){
                             if(!err)
@@ -1625,8 +1637,33 @@ $(document).ready(function () {
         }
     });
 
+//    $('#discussion_content_textxarea').on('mousedown', function (e) {
+//        mouseDown = e;
+//        console.log(e);
+//    })
+//        .on('mouseup',
+//        function (e) {
+//            mouseUp = e;
+//            var err = false;
+//            var range = $(this).find('textarea').getSelection();
+//
+//            left = Math.ceil((mouseDown.clientX + mouseUp.clientX) / 2 - ($(".popup-window").width() / 2));
+//            top = Math.min(mouseDown.clientY, mouseUp.clientY) - $(".popup-window").height() - 40 + $(window).scrollTop();
+//
+//        }).on('keydown',
+//        function (e) {
+//            console.log(e.keyCode == 27);
+//            if (!(e.shiftKey && (e.keyCode <= 40 && e.keyCode >= 37) || (e.ctrlKey && e.keyCode == 65))) e.preventDefault();
+//        }).on('dragstart', function (e) {
+//            e.preventDefault();
+//    });
+
     function discoverRange(text){
         var t=text;
+        var occurences = original.split(text).length - 1;
+
+        if (occurences > 1) return false;
+
         if(original.indexOf(text)!=-1){//no linebreaks
             range.start= original.indexOf(text);
             range.end=  range.start+  text.length;
