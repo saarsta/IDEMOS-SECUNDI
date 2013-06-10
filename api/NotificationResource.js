@@ -1132,7 +1132,7 @@ var populateNotifications = module.exports.populateNotifications = function(resu
 
         function(cbk){
             if(post_ids.length)
-                models.Post.find({},{'id':1, 'text':1})
+                models.PostOrSuggestion.find({},{'id':1, 'text':1})
                     .where('_id').in(post_ids)
                     .exec(function (err, posts_items) {
 
