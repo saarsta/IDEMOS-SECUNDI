@@ -1393,9 +1393,17 @@ span.remark{
 }
 
 .discussions_page .segment.main .segment_bottom .statement .first{
-    color: #0000ff;
+    color: #5171eb;
+    margin-right: -4px;
 }
 
+.discussions_page .segment.main .segment_bottom .statement .second{
+    color: #515151;
+    font-family: arial;
+    font-size: 12px;
+    line-height: 24px;
+
+}
 .discussions_page .segment.main a.read_more,
 .discussions_page .segment.main a.read_less{
     text-decoration:underline;
@@ -2903,13 +2911,13 @@ input.button_submit_comment_no_text{
     text-align:center;
     line-height:36px;
     font-size:12px;
-    width: 227px;
+    width: 232px;
     -webkit-box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.4);
     box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.4);
 }
 
 .tooltip_2 span {
-    color: blue;
+    color: #3b63ef;
     font-family: 'AdumaFOTRegular';
     font-size: 16px;
 }
