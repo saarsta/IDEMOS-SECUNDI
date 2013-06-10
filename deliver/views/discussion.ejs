@@ -1561,19 +1561,6 @@ $(document).ready(function () {
                 mouseUp = e;
                 var err = false;
 
-                if (!my_discussion_grade && !is_creator){
-                    var popupConfig = {};
-                    popupConfig.message = 'אנא דרג קודם את החזון בראש העמוד.'
-                    popupConfig.onOkCilcked = function(e){
-                        e.preventDefault();
-                        clicked = 'ok';
-                        $.colorbox.close();
-                        scrollTo('.segment.main .tags')
-                    },
-                    popupProvider.showOkPopup(popupConfig);
-                    return false;
-                }
-
                 left = Math.ceil((mouseDown.clientX + mouseUp.clientX) / 2 - 97);
                 top = Math.min(mouseDown.clientY, mouseUp.clientY) - $("#new_suggestion_popup").height() - 40 + $(window).scrollTop() +35;
 
@@ -1590,7 +1577,29 @@ $(document).ready(function () {
 
                 //////////////////  show pop up   /////////////////
                 discoverRange (range_txt)  ;
-                if(range_txt.length >0 ){
+                if(range_txt.length > 0 ){
+
+                    if(!my_id){
+                        popupProvider.showLoginPopup({}, function(err, result){
+                            if(!err)
+                                window.location = window.location
+                        });
+                        return false;
+                    }
+
+                    if (!my_discussion_grade && !is_creator){
+                        var popupConfig = {};
+                        popupConfig.message = 'אנא דרג קודם את החזון בראש העמוד.'
+                        popupConfig.onOkCilcked = function(e){
+                            e.preventDefault();
+                            clicked = 'ok';
+                            $.colorbox.close();
+                            scrollTo('.segment.main .tags')
+                        },
+                                popupProvider.showOkPopup(popupConfig);
+                        return false;
+                    }
+
                     if(navigator.appName === "Microsoft Internet Explorer"){
                         $("#pop_suggest_bt").click();
                     }else{
@@ -1679,41 +1688,36 @@ $(document).ready(function () {
     $('#pop_suggest_bt, .pop_suggest_bt').click(function (e) {
         e.stopPropagation();
         e.preventDefault();
-        if(!my_id){
-            popupProvider.showLoginPopup({}, function(err, result){
-                if(!err)
-                    window.location = window.location
-            });
-        }  else{
 
-            $("#send_suggestion").data('executing', false);
-            $("#send_suggestion").removeClass('disable');
+        $("#send_suggestion").data('executing', false);
+        $("#send_suggestion").removeClass('disable');
 
 
-            $('#discussion_content_txt').text('"' + range_txt + '"');
-            $('#write-comment').show();
+        $('#discussion_content_txt').text('"' + range_txt + '"');
+        $('#write-comment').show();
 
-            $('#reload-img').attr('src', $('#reload-img').attr('src'));
-            $(".popup-window").hide();
+        $('#reload-img').attr('src', $('#reload-img').attr('src'));
+        $(".popup-window").hide();
 
-            $('#discussion_suggest').val('');
-            $('textarea#discussion_suggest').focus();
+        $('#discussion_suggest').val('');
+        $('#discussion_suggest').attr('disabled',false);
+        $('textarea#discussion_suggest').focus();
 
-            $('#discussion_explanation').val('');
-            if ($(this).hasClass('delete')){
-                $('#discussion_suggest').val(' ');
-                $('#discussion_suggest').attr('disabled','disabled');
-                $('#discussion_explanation').focus();
-            }else{
-                if ($(this).hasClass('add')){
-                    $('#discussion_suggest').val(range_txt + ' ');
-                }
+        $('#discussion_explanation').val('');
+        if ($(this).hasClass('delete')){
+            $('#discussion_suggest').val(' ');
+            $('#discussion_suggest').attr('disabled','disabled');
+            $('#discussion_explanation').focus();
+        }else{
+            if ($(this).hasClass('add')){
+                $('#discussion_suggest').val(range_txt + ' ');
             }
-
-            $('html, body').animate({
-                scrollTop: $("#write-comment").offset().top
-            }, 500);
         }
+
+        $('html, body').animate({
+            scrollTop: $("#write-comment").offset().top
+        }, 500);
+
     });
 
     var depress_event = false;
