@@ -190,7 +190,9 @@ var error_message = error_message || '';
     </div>
 <span class="popup-window" id="new_suggestion_popup">
     <div class="tooltip_2">
-        <span> מה ברצונך לעשות עם טקסט זה?</span>
+        <span>
+            ?מה ברצונך לעשות עם טקסט זה
+        </span>
         <a id="pop_suggest_bt" value="" class="button_add_suggestion change pop_suggest_bt" type="text" > לשנות </a>
         <a id="pop_suggest_bt_delete" value="" class="button_add_suggestion delete pop_suggest_bt" type="text" > למחוק</a>
         <a id="pop_suggest_bt_add" value="" class="button_add_suggestion add pop_suggest_bt" type="text" >   להוסיף </a>
@@ -1699,9 +1701,9 @@ $(document).ready(function () {
 
             $('#discussion_explanation').val('');
             if ($(this).hasClass('delete')){
-                $('#discussion_explanation').val(' ');
-                $('#discussion_explanation').attr('readonly','readonly');
-                $('textarea#discussion_explanation').focus();
+                $('#discussion_suggest').val(' ');
+                $('#discussion_suggest').attr('disabled','disabled');
+                $('#discussion_explanation').focus();
             }else{
                 if ($(this).hasClass('add')){
                     $('#discussion_suggest').val(range_txt + ' ');
