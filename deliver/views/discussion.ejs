@@ -1573,23 +1573,32 @@ $(document).ready(function () {
                 if ($(this).attr('id') === "discussion_content_textarea"){
                     range = $(this).getSelection();
                     range_txt = range.text;
-                }else if (!discoverRange (range_txt)) {
+                }else {
 
-                    var popupConfig = {};
-                    popupConfig.message = "קרתה תקלה, נסה שנית";
-                    popupConfig.onOkCilcked = function(e){
-                        e.preventDefault();
-                        clicked = 'ok';
-                        $('#discussion_content').hide();
-                        $('#discussion_content_textarea').show();
-                        $('.read_less').click();
-                        $('.read_more').click();
+                    var flag = discoverRange (range_txt);
 
-                        $.colorbox.close();
-                    },
-                    popupProvider.showOkPopup(popupConfig);
+                    if (range_txt.length == 0){
+                        mouseDown=null
+                        return false;
+                    }
 
-                    return false;
+                    if(flag === false || (range.start == 0 && range.end == 0)){
+                        var popupConfig = {};
+                        popupConfig.message = "קרתה תקלה, נסה שנית";
+                        popupConfig.onOkCilcked = function(e){
+                            e.preventDefault();
+                            clicked = 'ok';
+                            if (flag === false){
+                                $('#discussion_content').hide();
+                                $('#discussion_content_textarea').show();
+                                $('.read_less').click();
+                                $('.read_more').click();
+                            }
+                            $.colorbox.close();
+                        },
+                        popupProvider.showOkPopup(popupConfig);
+                        return false;
+                    }
                 }
 
                 if(range.length > 0 || range_txt.length > 0 ){
@@ -1684,10 +1693,11 @@ $(document).ready(function () {
                 {
                     range.start= 0;
                     range.end=  0;
-                   console.log("error");
+                    console.log("error");
                 }
             }
         }
+
         console.log("start="+range.start +" | end=" +range.end )    ;
     }
 
