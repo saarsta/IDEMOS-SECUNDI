@@ -1078,7 +1078,13 @@ $(document).ready(function () {
             approved_suggestions_list = data.objects;
             // set vision version details
             $('.draft_no span').text(data.objects.length + 1);
-            $('.history_details_holder .item.last span').text($.datepicker.formatDate('dd.mm.yy', new Date(Date.parse(data.objects[0].approve_date))));
+
+            if (data.objects[0].approve_date)
+                $('.history_details_holder .item.last span').text($.datepicker.formatDate('dd.mm.yy', new Date(Date.parse(data.objects[0].approve_date))));
+            else {
+                $('.history_details_holder .item.last').hide();
+                $('.history_details_holder .item.by').hide();
+            }
             $('.history_details_holder .item.by a').text(data.objects[0].creator_id.first_name + " " + data.objects[0].creator_id.last_name);
             $('.history_details_holder .item.by a').attr('href', '../myuru/' + data.objects[0].creator_id.id);
             $('.history_details_holder').show();
