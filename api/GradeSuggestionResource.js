@@ -107,7 +107,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
 
             //user can grade suggestion only if he grade the discussion
             function (disc_obj, cbk) {
-                discussion_participants_count = discussion_obj.users.length;
+                discussion_participants_count = disc_obj.users.length;
                 discussion_obj = disc_obj;
                 models.Grade.findOne({user_id:req.user._id, discussion_id:fields.discussion_id}, cbk);
             },
