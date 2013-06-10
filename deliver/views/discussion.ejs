@@ -48,14 +48,16 @@ var error_message = error_message || '';
 
                                 <%- discussion.text_field.replace(/\n/g, '<br>') %>
                             </div>
-                            <a class="read_more" href="javascript:void(0);">המשך קריאה</a>
+                            <a class="read_more" href="javascript:void(0);">להמשך קריאה ולהשתתפות בעריכת המסמך</a>
                         </div>
 
                         <div id="full">
-                            <div class="msg">בחר בעזרת הסמן איזורים בטקסט שברצונך להציע לשנותם</div>
+                            <div class="msg">
+                                בחר בעזרת הסמן קטעי טקסט שברצונך לשנות. לחץ על קטעים מסומנים כדי לראות הצעות שהעלו אחרים
+                            </div>
                             <div id="discussion_content" class=""><%- discussion.text_field.replace(/\n/g, '<br />') %></div>
                             <textarea id="discussion_content_textarea" class="hidden_textarea"><%=discussion.text_field%></textarea>
-                            <a class="read_less" href="javascript:void(0);">סגור מאמר</a>
+                            <a class="read_less" href="javascript:void(0);">סגור</a>
                         </div>
 
                         <% if( discussion.sub_branding && discussion.sub_branding.length>0) { %>
@@ -2130,7 +2132,8 @@ $(document).ready(function () {
     $('#content_wrapper_comments').on('click', '.comment_wrapper .close', function(e){
         var popupConfig = {};
         popupConfig.popup_text = "" +
-                "למחוק תגובה זו? יחד איתה יימחקו גם התגובות שפורסמו לה על ידי משתמשים אחרים" ;
+                'למחוק תגובה זו? יחד איתה יימחקו תגובות שפורסמו לה ע"י משתמשים אחרים'
+
         popupConfig.onOkCilcked = function(e){
             e.preventDefault();
             clicked = 'ok';
@@ -2158,7 +2161,8 @@ $(document).ready(function () {
     $('#content_wrapper_suggestions').on('click', '.suggestion_holder > .close', function(e){
         var popupConfig = {};
         popupConfig.popup_text = "" +
-                "למחוק הצעה זו? יחד איתה יימחקו גם התגובות שפורסמו לה על ידי משתמשים אחרים" ;
+
+        'למחוק הצעה זו? יחד איתה יימחקו תגובות שפורסמו לה ע"י משתמשים אחרים'
         ;
         popupConfig.onOkCilcked = function(e){
             e.preventDefault();
