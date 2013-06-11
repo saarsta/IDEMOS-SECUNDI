@@ -1823,7 +1823,7 @@ $(document).ready(function () {
         db_functions.addSuggestionGrade(suggestion_id, discussion_id, default_rating, suggest_grade_id, user_info, function (err, data) {
             if (!err) {
                 // if grading approved the suggestion, move suggestion to approved section
-
+                var   is_approved;
                 if(data.is_approved){
                     var $this = $('#post_' + suggestion_id);
 
@@ -1923,7 +1923,7 @@ $(document).ready(function () {
                                 }
                                 slider_box.slideUp();
                                 $(this).parent().removeClass('slider-is-open');
-                                if(data.is_approved){
+                                if(is_approved){
                                     $this.find('.suggestion_bottom')
                                             .empty()
                                             .append('<div class="suggestion_bottom_segment wide"><div class="date_time"><span>ההצעה התקבלה, </span><a class="underline_and_cursor_when_hover" class="back_to_doc" href="javascript:void(0);" title="לצפייה במסמך המעודכן">לצפייה במסמך המעודכן</a></div></div>')
