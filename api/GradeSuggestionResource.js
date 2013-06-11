@@ -98,6 +98,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
         var discussion_obj;
         var discussion_participants_count;
 
+
         async.waterfall([
 
             //find discussion
@@ -282,6 +283,9 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
         var proxy_power = req.user.num_of_given_mandates ? 1 + req.user.num_of_given_mandates * 1 / 9 : 1;
         var previous_proxy_power = object.proxy_power || proxy_power;
         var discussion_participants_count;
+        var is_approved;
+        var approve_date;
+        var replaced_text;
 
         async.waterfall([
 
@@ -412,8 +416,13 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                             real_threshold = Number(g_sugg_obj.admin_threshold_for_accepting_the_suggestion) || g_sugg_obj.threshold_for_accepting_the_suggestion;
                             if (Number(g_sugg_obj.wanted_amount_of_tokens) > discussion_participants_count)
                                 real_threshold = discussion_participants_count - 1;
-                            if (s >= real_threshold) {
-                                Suggestion.approveSuggestion(g_sugg_obj._id, function (err, obj1) {
+                            if (curr_tokens_amout >= real_threshold) {
+                                Suggestion.approveSuggestion(g_sugg_obj._id, function (err, obj1, suggestion_object) {
+                                    if (!err) {
+                                        is_approved = true;
+                                        replaced_text = suggestion_object.replaced_text;
+                                        approve_date = suggestion_object.approve_date;
+                                    }
                                     cbk(err, obj1);
                                 })
                             } else {
@@ -438,7 +447,10 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                         agrees:agrees,
                         not_agrees:not_agrees,
 //                wanted_amount_of_tokens: real_threshold,
-                        curr_amount_of_tokens:curr_tokens_amout
+                        curr_amount_of_tokens:curr_tokens_amout,
+                        is_approved: is_approved,
+                        replaced_text: replaced_text,
+                        approve_date: approve_date
                     }
                 )
         })

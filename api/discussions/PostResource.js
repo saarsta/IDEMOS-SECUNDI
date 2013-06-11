@@ -193,12 +193,8 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
             {
                 var grade_discussion = args[0];
                 var discussion_obj = args[1];
-                if (!grade_discussion) {
-                    if (user_id != discussion_obj.creator_id + ""){
-                        cbk({code:401, message:"must grade discussion first"}, null);
-                    } else {
-                        cbk();
-                    }
+                if (!grade_discussion && (user_id != discussion_obj.creator_id + "")) {
+                    cbk({code:401, message:"must grade discussion first"}, null);
                 }else{
                     console.log('debugging waterfall 1');
                     fields.creator_id = user_id;

@@ -1806,6 +1806,10 @@ $(document).ready(function () {
         var suggestion_grade_val = $suggestion_wrapper.data('my_grade');
         var suggest_grade_id = $suggestion_wrapper.data('my_grade_id');
 
+        if (is_creator){
+            my_discussion_grade = discussion_grade;
+        }
+
         // first add default grade and then user can change it
         var default_rating = grade_against ? Math.max(my_discussion_grade - 0.1, 0) : Math.min(my_discussion_grade + 0.1, 10);
         var user_info = {
