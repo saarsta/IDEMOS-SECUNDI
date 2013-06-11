@@ -180,7 +180,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                         //if there is an admin threshokd specified for the suggestion - it wins
 
                         real_threshold = Number(suggestion_obj.admin_threshold_for_accepting_the_suggestion) || suggestion_obj.threshold_for_accepting_the_suggestion;
-                        if (Number(suggestion_obj.wanted_amount_of_tokens) > discussion_participants_count)
+                        if (Number(suggestion_obj.threshold_for_accepting_the_suggestion) > discussion_participants_count)
                             real_threshold = discussion_participants_count - 1;
 
                         if (curr_tokens_amout >= real_threshold) {
@@ -414,7 +414,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                             //if there is an admin threshokd specified for the suggestion - it wins
 
                             real_threshold = Number(g_sugg_obj.admin_threshold_for_accepting_the_suggestion) || g_sugg_obj.threshold_for_accepting_the_suggestion;
-                            if (Number(g_sugg_obj.wanted_amount_of_tokens) > discussion_participants_count)
+                            if (Number(g_sugg_obj.threshold_for_accepting_the_suggestion) > discussion_participants_count)
                                 real_threshold = discussion_participants_count - 1;
                             if (curr_tokens_amout >= real_threshold) {
                                 Suggestion.approveSuggestion(g_sugg_obj._id, function (err, obj1, suggestion_object) {

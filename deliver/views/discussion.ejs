@@ -1083,7 +1083,7 @@ $(document).ready(function () {
 
     db_functions.getApprovedSuggestionsByDiscussion(discussion_id, 0, 0, function(err, data){
         if (data.objects.length > 0){
-            approved_suggestions_list = data.objects;
+            approved_suggestions_list = data.objects || {};
             // set vision version details
             $('.draft_no span').text(data.objects.length + 1);
 
@@ -1823,8 +1823,8 @@ $(document).ready(function () {
         db_functions.addSuggestionGrade(suggestion_id, discussion_id, default_rating, suggest_grade_id, user_info, function (err, data) {
             if (!err) {
                 // if grading approved the suggestion, move suggestion to approved section
-                var   is_approved;
-                if(data.is_approved){
+                var   is_approved=data.is_approved;
+                if(is_approved){
                     var $this = $('#post_' + suggestion_id);
 
 
@@ -1926,7 +1926,7 @@ $(document).ready(function () {
                                 if(is_approved){
                                     $this.find('.suggestion_bottom')
                                             .empty()
-                                            .append('<div class="suggestion_bottom_segment wide"><div class="date_time"><span>ההצעה התקבלה, </span><a class="underline_and_cursor_when_hover" class="back_to_doc" href="javascript:void(0);" title="לצפייה במסמך המעודכן">לצפייה במסמך המעודכן</a></div></div>')
+                                            .append('<div class="suggestion_bottom_segment wide"><div class="date_time"><span>ההצעה התקבלה, </span><a class="underline_and_cursor_when_hover back_to_doc"  href="javascript:void(0);" title="לצפייה במסמך המעודכן">לצפייה במסמך המעודכן</a></div></div>')
 
                                 }
 
@@ -1951,7 +1951,8 @@ $(document).ready(function () {
 
     $('.back_to_doc').live('click', function(event){
         showFullText();
-        scrollTo('#full');
+        scrollTo("#full");
+        scrollTo("#short");
         return false;
     });
     $('#facebook_share').one('click', function(event){
