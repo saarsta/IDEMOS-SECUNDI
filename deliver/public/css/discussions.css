@@ -38,7 +38,12 @@ h2{
 }
 
 .main_text{
-    max-height:180px
+    max-height:180px   ;
+    color:#FFF;
+
+}
+#short .read_more{
+                 display: none;
 }
 #social_holder{
     float:right;
@@ -1061,6 +1066,7 @@ span.remark{
     border-top: 5px solid #d6dbde;
     float: right;
     margin-bottom: 35px;
+    overflow: hidden;
 }
 
 #content_left_sidebar{
@@ -2863,7 +2869,7 @@ input.button_submit_comment_no_text{
     height: 100%;
     resize: none;
     border: none;
-    color: #7F7F7E;
+    color: #50504f;
     font: normal 13px/17px Arial;
 
 }

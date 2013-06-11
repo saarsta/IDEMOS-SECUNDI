@@ -469,7 +469,10 @@ $(document).ready(function () {
 
 
     $(".main_text").dotdotdot({
-        //	configuration goes here
+        callback	: function( isTruncated, orgContent ) {
+                 $(".main_text").css('color','#4a4a4b')  ;
+                $("#short .read_more").show()  ;
+        }
     });
 
     db_functions.getDiscussionShoppingCart(discussion_id, function (err, data) {
@@ -1588,12 +1591,12 @@ $(document).ready(function () {
                         popupConfig.onOkCilcked = function(e){
                             e.preventDefault();
                             clicked = 'ok';
-                            if (flag === false){
+                         //   if (flag === false){
                                 $('#discussion_content').hide();
                                 $('#discussion_content_textarea').show();
                                 $('.read_less').click();
                                 $('.read_more').click();
-                            }
+                        //    }
                             $.colorbox.close();
                         },
                         popupProvider.showOkPopup(popupConfig);
