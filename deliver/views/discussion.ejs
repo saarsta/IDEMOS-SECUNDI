@@ -1823,11 +1823,11 @@ $(document).ready(function () {
         db_functions.addSuggestionGrade(suggestion_id, discussion_id, default_rating, suggest_grade_id, user_info, function (err, data) {
             if (!err) {
                 // if grading approved the suggestion, move suggestion to approved section
+
                 if(data.is_approved){
                     var $this = $('#post_' + suggestion_id);
-                    $this.find('.suggestion_bottom')
-                        .empty()
-                        .append('<div class="suggestion_bottom_segment wide"><div class="date_time"><span>ההצעה התקבלה, </span><a class="underline_and_cursor_when_hover" class="back_to_doc" href="$" title="לצפייה במסמך המעודכן">לצפייה במסמך המעודכן</a></div></div>')
+
+
                     $.each(suggestions_list, function(index, object){
                         if(object.id == suggestion_id){
                             suggestions_list[index].replaced_text = data.replaced_text;
@@ -1923,6 +1923,13 @@ $(document).ready(function () {
                                 }
                                 slider_box.slideUp();
                                 $(this).parent().removeClass('slider-is-open');
+                                if(data.is_approved){
+                                    $this.find('.suggestion_bottom')
+                                            .empty()
+                                            .append('<div class="suggestion_bottom_segment wide"><div class="date_time"><span>ההצעה התקבלה, </span><a class="underline_and_cursor_when_hover" class="back_to_doc" href="javascript:void(0);" title="לצפייה במסמך המעודכן">לצפייה במסמך המעודכן</a></div></div>')
+
+                                }
+
                             });
                         }
                     }
@@ -1945,6 +1952,7 @@ $(document).ready(function () {
     $('.back_to_doc').live('click', function(event){
         showFullText();
         scrollTo('#full');
+        return false;
     });
     $('#facebook_share').one('click', function(event){
         sendFacebookShare("/facebookShare?link=/discussions/" + discussion_id, discussion_title, discussion_img_field_preview, original, null, function(err){
