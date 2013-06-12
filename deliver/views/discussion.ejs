@@ -1083,7 +1083,7 @@ $(document).ready(function () {
 
     db_functions.getApprovedSuggestionsByDiscussion(discussion_id, 0, 0, function(err, data){
         if (data.objects.length > 0){
-            approved_suggestions_list = data.objects;
+            approved_suggestions_list = data.objects || {};
             // set vision version details
             $('.draft_no span').text(data.objects.length + 1);
 
@@ -1823,8 +1823,21 @@ $(document).ready(function () {
         db_functions.addSuggestionGrade(suggestion_id, discussion_id, default_rating, suggest_grade_id, user_info, function (err, data) {
             if (!err) {
                 // if grading approved the suggestion, move suggestion to approved section
-                if(data.is_approved){
+                var   is_approved=data.is_approved;
+                if(is_approved){
                     var $this = $('#post_' + suggestion_id);
+
+
+                    $.each(suggestions_list, function(index, object){
+                        if(object.id == suggestion_id){
+                            suggestions_list[index].replaced_text = data.replaced_text;
+                            suggestions_list[index].approve_date = data.approve_date;
+                            approved_suggestions_list.push(suggestions_list[index]);
+                            suggestions_list.splice(index, 1);
+                            return false;
+                        }
+                    })
+                    /*
                     $this.slideUp(1200, "swing", function(e){
 //                        $('.approved_suggestions h2').click();
                         $.each(suggestions_list, function(index, object){
@@ -1839,6 +1852,7 @@ $(document).ready(function () {
                             }
                         })
                     });
+                    */
                 }
 
                 var $suggestion = $("div[data-id=" + suggestion_id + "]");
@@ -1909,6 +1923,13 @@ $(document).ready(function () {
                                 }
                                 slider_box.slideUp();
                                 $(this).parent().removeClass('slider-is-open');
+                                if(is_approved){
+                                    $this.find('.suggestion_bottom')
+                                            .empty()
+                                            .append('<div class="suggestion_bottom_segment wide"><div class="date_time"><span>ההצעה התקבלה, </span><a class="underline_and_cursor_when_hover back_to_doc"  href="javascript:void(0);" title="לצפייה במסמך המעודכן">לצפייה במסמך המעודכן</a></div></div>')
+
+                                }
+
                             });
                         }
                     }
@@ -1927,6 +1948,13 @@ $(document).ready(function () {
 
     });
 
+
+    $('.back_to_doc').live('click', function(event){
+        showFullText();
+        scrollTo("#full");
+        scrollTo("#short");
+        return false;
+    });
     $('#facebook_share').one('click', function(event){
         sendFacebookShare("/facebookShare?link=/discussions/" + discussion_id, discussion_title, discussion_img_field_preview, original, null, function(err){
             if(err){
