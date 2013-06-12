@@ -921,7 +921,7 @@ $(document).ready(function () {
         return null;
     };
 
-    function render_approved_suggestion(suggestion, animate){
+    function render_approved_suggestion(suggestion){
         suggestion.original_part = suggestion.replaced_text;
         suggestion.alternative_part = suggestion.parts[0].text;
 
@@ -935,21 +935,13 @@ $(document).ready(function () {
             $('#approved_suggestions_wrapper').append(out);
             image_autoscale($('#approved_suggestions_wrapper .auto-scale img'));
 
-            if(animate == true){
-                db_functions.getDiscussionTextField(discussion_id, function(err, text_field){
-                    $('#discussion_content_textarea').val(text_field);
-                    $('#discussion_content').html(text_field.replace(/\n/g, '<br />'));
-                    original = $('#discussion_content_textarea').val();
-                    $('.read_more').click();
-                    scrollTo('#discussion_content');
-                });
+
 //                var $this = $('#post_' + suggestion_id);
 //                scrollTo('.content_break.suggestions');
 //
 //                var bgc =$('.suggestion_holder').last().css('background-color');
 //                $('.suggestion_holder ').last().css('background-color', 'pink');
 //                $('.suggestion_holder ').last().animate({backgroundColor: bgc}, 3000);
-            }
         });
     }
     var first_suggestion;
@@ -1823,20 +1815,29 @@ $(document).ready(function () {
         db_functions.addSuggestionGrade(suggestion_id, discussion_id, default_rating, suggest_grade_id, user_info, function (err, data) {
             if (!err) {
                 // if grading approved the suggestion, move suggestion to approved section
-                var   is_approved=data.is_approved;
+                var is_approved=data.is_approved;
                 if(is_approved){
                     var $this = $('#post_' + suggestion_id);
 
 
-                    $.each(suggestions_list, function(index, object){
-                        if(object.id == suggestion_id){
-                            suggestions_list[index].replaced_text = data.replaced_text;
-                            suggestions_list[index].approve_date = data.approve_date;
-                            approved_suggestions_list.push(suggestions_list[index]);
-                            suggestions_list.splice(index, 1);
-                            return false;
-                        }
-                    })
+//                    $.each(suggestions_list, function(index, object){
+//                        if(object.id == suggestion_id){
+//                            suggestions_list[index].replaced_text = data.replaced_text;
+//                            suggestions_list[index].approve_date = data.approve_date;
+//                            approved_suggestions_list.push(suggestions_list[index]);
+//                            suggestions_list.splice(index, 1);
+//                            return false;
+//                        }
+//                    })
+
+                    db_functions.getDiscussionTextField(discussion_id, function(err, text_field){
+                        $('#discussion_content_textarea').val(text_field);
+                        $('#discussion_content').html(text_field.replace(/\n/g, '<br />'));
+                        original = $('#discussion_content_textarea').val();
+//                        $('.read_more').click();
+//                        scrollTo('#discussion_content');
+                    });
+
                     /*
                     $this.slideUp(1200, "swing", function(e){
 //                        $('.approved_suggestions h2').click();
@@ -1927,15 +1928,11 @@ $(document).ready(function () {
                                     $this.find('.suggestion_bottom')
                                             .empty()
                                             .append('<div class="suggestion_bottom_segment wide"><div class="date_time"><span>ההצעה התקבלה, </span><a class="underline_and_cursor_when_hover back_to_doc"  href="javascript:void(0);" title="לצפייה במסמך המעודכן">לצפייה במסמך המעודכן</a></div></div>')
-
                                 }
-
                             });
                         }
                     }
                 });
-
-
             }
             else
             {
@@ -1952,7 +1949,7 @@ $(document).ready(function () {
     $('.back_to_doc').live('click', function(event){
         showFullText();
         scrollTo("#full");
-        scrollTo("#short");
+//        scrollTo("#short");
         return false;
     });
     $('#facebook_share').one('click', function(event){
