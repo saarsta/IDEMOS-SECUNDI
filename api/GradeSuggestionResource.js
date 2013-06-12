@@ -286,6 +286,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
         var is_approved;
         var approve_date;
         var replaced_text;
+        var g_discussion_obj;
 
         async.waterfall([
 
@@ -295,6 +296,8 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
             },
 
             function (discussion_obj, cbk) {
+                g_discussion_obj = discussion_obj;
+
                 discussion_participants_count = discussion_obj.users.length;
                 real_threshold = Number(discussion_obj.admin_threshold_for_accepting_change_suggestions) || discussion_obj.threshold_for_accepting_change_suggestions;
 
@@ -398,17 +401,19 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                         new_grade = _new_grade;
                         evaluate_counter = _evaluate_counter;
 
-                        if (did_user_change_his_agree) {
-                            if (is_agree) {
-                                agrees = g_sugg_obj.agrees + (1 * proxy_power);
-                                not_agrees = g_sugg_obj.not_agrees - (1 * previous_proxy_power);
-                                curr_tokens_amout = Math.round(agrees) - Math.round(not_agrees);
+                        if (did_user_change_his_agree || g_sugg_obj.is_approved) {
+                            if (did_user_change_his_agree){
+                                if (is_agree) {
+                                    agrees = g_sugg_obj.agrees + (1 * proxy_power);
+                                    not_agrees = g_sugg_obj.not_agrees - (1 * previous_proxy_power);
+                                    curr_tokens_amout = Math.round(agrees) - Math.round(not_agrees);
 
-                            }
-                            else {
-                                agrees = g_sugg_obj.agrees - (1 * previous_proxy_power);
-                                not_agrees = g_sugg_obj.not_agrees + (1 * proxy_power);
-                                curr_tokens_amout = Math.round(agrees) - Math.round(not_agrees);
+                                }
+                                else {
+                                    agrees = g_sugg_obj.agrees - (1 * previous_proxy_power);
+                                    not_agrees = g_sugg_obj.not_agrees + (1 * proxy_power);
+                                    curr_tokens_amout = Math.round(agrees) - Math.round(not_agrees);
+                                }
                             }
 
                             //if there is an admin threshokd specified for the suggestion - it wins
@@ -417,14 +422,29 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                             if (Number(g_sugg_obj.threshold_for_accepting_the_suggestion) > discussion_participants_count)
                                 real_threshold = discussion_participants_count - 1;
                             if (curr_tokens_amout >= real_threshold) {
-                                Suggestion.approveSuggestion(g_sugg_obj._id, function (err, obj1, suggestion_object) {
-                                    if (!err) {
-                                        is_approved = true;
-                                        replaced_text = suggestion_object.replaced_text;
-                                        approve_date = suggestion_object.approve_date;
-                                    }
-                                    cbk(err, obj1);
-                                })
+                                if(g_sugg_obj.is_approved){
+                                    is_approved = true;
+                                    g_sugg_obj.grade = new_grade;
+                                    g_discussion_obj.grade = new_grade;
+                                    g_sugg_obj.save(function(err){
+                                        if (err){
+                                            cbk(err);
+                                        }else{
+                                            g_discussion_obj.save(function(err){
+                                                cbk(err);
+                                            })
+                                        }
+                                    })
+                                }else{
+                                    Suggestion.approveSuggestion(g_sugg_obj._id, function (err, obj1, suggestion_object) {
+                                        if (!err) {
+                                            is_approved = true;
+                                            replaced_text = suggestion_object.replaced_text;
+                                            approve_date = suggestion_object.approve_date;
+                                        }
+                                        cbk(err, obj1);
+                                    })
+                                }
                             } else {
                                 cbk();
                             }
@@ -440,7 +460,6 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
 
 
                 callback(err, {
-
                         grade_id:grade_id,
                         new_grade:new_grade,
                         evaluate_counter:evaluate_counter,

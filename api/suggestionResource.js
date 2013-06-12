@@ -468,7 +468,7 @@ module.exports.approveSuggestion = function (id, callback) {
             suggestion_object = _suggestion_object;
             suggestion_grade = suggestion_object.grade;
             if (suggestion_object.is_approved) {
-                callback({message:"this suggestion is already published", code:401}, null);
+                cbk({message:"this suggestion is already published", code:401}, null);
             } else {
                 discussion_id = suggestion_object.discussion_id;
                 var vision_changes_array = [];
