@@ -350,6 +350,7 @@ var current_section = 1;
 
 $(document).ready(function () {
     var my_id = "<%=user_logged ? user._id : ''%>";
+    var my_name = "<%= user && user.first_name + ' '+ user.last_name%>";
     var discussion_id = "<%=discussion_id%>";
     var creator_id = "<%=discussion.creator_id%>";
     var is_creator = (my_id == creator_id);
@@ -1819,6 +1820,11 @@ $(document).ready(function () {
                 if(is_approved){
                     var $this = $('#post_' + suggestion_id);
 
+                    //update history segment
+                    $('.item.draft_no span').text(Number($('.item.draft_no span').text()) + 1);
+                    $('.history_details_holder .item.last span').text($.datepicker.formatDate('dd.mm.yy', new Date()));
+                    $('.history_details_holder .item.by a').text(my_name);
+                    $('.history_details_holder .item.by a').attr('href', '../myuru/' + my_id);
 
 //                    $.each(suggestions_list, function(index, object){
 //                        if(object.id == suggestion_id){
@@ -1925,6 +1931,9 @@ $(document).ready(function () {
                                 slider_box.slideUp();
                                 $(this).parent().removeClass('slider-is-open');
                                 if(is_approved){
+                                    $(".slider").slider('value',rating);
+                                    $('#content_right_holder .rating_box .rating_total').text(Math.round(data.new_grade*100)/100);
+
                                     $this.find('.suggestion_bottom')
                                             .empty()
                                             .append('<div class="suggestion_bottom_segment wide"><div class="date_time"><span>ההצעה התקבלה, </span><a class="underline_and_cursor_when_hover back_to_doc"  href="javascript:void(0);" title="לצפייה במסמך המעודכן">לצפייה במסמך המעודכן</a></div></div>')
