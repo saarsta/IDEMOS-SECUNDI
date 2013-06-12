@@ -520,6 +520,7 @@ module.exports.approveSuggestion = function (id, callback) {
                     discussion_object.text_field = str;
 
                     //suggestion grade is the new discussion grade
+                    discussion_object.grade = suggestion_grade;
 //                    models.Discussion.update({_id:discussion_object._id},
 //                        {
 //                            $set:{text_field: str, grade: suggestion_grade},
