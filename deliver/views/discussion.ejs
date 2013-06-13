@@ -147,12 +147,57 @@ var error_message = error_message || '';
                             </div>
                         </div>
                     </div>
-                    <div class="segment info">
+                    <div class="segment info services-box">
                         <h2 class="title">סל מידע</h2>
                         <div id="info_items" class="info_items">
                             <!-- MovingBoxes Slider -->
                             <ul id="slider">
                             </ul><!-- end Slider #1 -->
+                        </div>
+                        <div class="underline_and_cursor_when_hover service-8">
+                            לחץ כדי להוסיף פריט
+                        </div>
+                        <div class="upload-popup">
+                            <span class="arrow"></span>
+                            <div class="upload-top">
+                                <a class="close-popup" href=""></a>
+                                <textarea cols="0" rows="0" placeholder="שיתוף מידע משלך..."></textarea>
+                                <div class="upload-tabs">
+                                    <ul>
+                                        <li><a class="pic" href="#image"><span></span>תמונה</a></li>
+                                        <li><a class="video" href="#video"><span></span>וידאו</a></li>
+                                        <li><a class="link" href="#link"><span></span>קישור</a></li>
+                                    </ul>
+                                    <div id="image" class="tab">
+                                        <%
+                                        var image_upload = {
+                                        background_color: '#f5f5f5',
+                                        default_image: '/images/add-image.png',
+                                        api_endpoint: '/api/image_upload',
+                                        input_name: 'image_field'
+                                        };
+                                        %>
+                                        <% include partials/image_upload.ejs %>
+                                    </div>
+                                    <div id="video" class="tab">
+                                        <%
+                                        image_upload = {
+                                        default_image: '/images/add-image.png',
+                                        api_endpoint: '/api/image_upload',
+                                        input_name: 'video_field'
+                                        };
+                                        %>
+                                        <% include partials/image_upload.ejs %>
+                                        <input type="url" value="" placeholder="http://www.youtube.com/watch?v=......."/>
+                                    </div>
+                                    <div id="link" class="tab">
+                                        <input type="url" value="" placeholder="http://www.uru.org.il/" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="upload-bottom">
+                                <input type="submit" value="העלה" />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -2270,6 +2315,58 @@ $(document).ready(function () {
         popupConfig.post_id = $(this).parent('.comment').attr('id');
         popupProvider.showDeletePostPopup(popupConfig);
     })
+
+    $('.service-8, .upload-popup .close-popup').click(function () {
+        $(this).parents('.services-box').toggleClass('upload-active');
+
+        return false;
+    });
+
+    $(".upload-tabs").tabs();
+
+    $('.upload-popup .upload-bottom input').click(function () {
+        var form = $('.upload-popup');
+        var saveData = {
+            title: form.find('textarea').val(),
+            text_field: form.find('textarea').val(),
+            category: 'statistics'
+        };
+
+        var selectedTab = form.find('.upload-tabs').tabs('option', 'selected');
+        var image, link;
+        switch (selectedTab) {
+            case 0: // image
+                image = form.find('input[name="image_field"]');
+                break;
+
+            case 1: // video
+                image = form.find('input[name="video_field"]');
+                link = form.find('#video input[type=url]');
+                break;
+
+            case 2: // link
+                link = form.find('#link input[type=url]');
+                break;
+        };
+
+        if (image && image.val()) {
+            saveData.image_field = image.val();
+        }
+        if (link && link.val()) {
+            saveData.text_field += '\n\n' + link.val();
+        }
+
+        db_functions.createInformationItem(saveData, function (error) {
+            if (error) {
+                popupProvider.showOkPopup({ message: 'קרתה תקלה בעת שמירת פריט המידע' });
+            } else {
+                popupProvider.showOkPopup({ message: 'פריט המידע נשמר' });
+                $('.upload-popup').hide();
+            }
+        });
+        event.preventDefault();
+        return false;
+    });
 });
 
 </script>
