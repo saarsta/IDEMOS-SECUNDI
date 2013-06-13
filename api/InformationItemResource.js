@@ -96,7 +96,7 @@ var InformationItemResource = module.exports = common.GamificationMongooseResour
         var mail_to = 'saar@uru.org.il';
         var mail_subject = 'new information item';
         var mail_body =
-            'YO! a new information item is waiting for you.. the title is: ' + '<a href="http://uru-admin.herokuapp.com/admin/model/InformationItem/document/' + fields.id + '" + '>' + fields.title + '</a>';
+            'YO! a new information item is waiting for you.. the title is: ' + '<a href="http://uru-admin.herokuapp.com/admin/model/InformationItem/document/' + fields.id + '">' + fields.title + '</a>';
 
 
         fields.created_by = {creator_id:user_id, did_user_created_this_item: true};
