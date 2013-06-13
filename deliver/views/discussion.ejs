@@ -352,7 +352,7 @@ $(document).ready(function () {
     var my_id = "<%=user_logged ? user._id : ''%>";
     var my_name = "<%= user && user.first_name + ' '+ user.last_name%>";
     var discussion_id = "<%=discussion_id%>";
-    var creator_id = "<%=discussion.creator_id%>";
+    var creator_id = "<%=discussion.creator_id.id%>";
     var is_creator = (my_id == creator_id);
     var my_discussion_grade = Number("<%= discussion.grade_obj ? discussion.grade_obj.value || 0 : 0 %>");
     var discussion_grade = Number("<%= discussion.grade%>");
