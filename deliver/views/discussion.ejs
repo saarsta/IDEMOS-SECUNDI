@@ -1879,7 +1879,7 @@ $(document).ready(function () {
                 self.parent().parent().parent().find(".suggestion_bottom_segment input").removeClass('active');
                 self.addClass('active');
                 slider_box.find(".slider").slider({
-                    disabled: is_creator,
+//                    disabled: is_creator,
                     value: my_discussion_grade, // dmy_discussion_grades instead of my_suggestion grade to prevent deadlock in slider
                     range:"min",
                     min: 0,
