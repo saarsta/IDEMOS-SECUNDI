@@ -215,7 +215,7 @@ app.locals({
 // ######### environment specific settings #########
 app.configure('development', function(){
     require('./admin')(app);
-    app.set('send_mails', false);
+    app.set('send_mails', true);
 });
 
 if (IS_ADMIN) {

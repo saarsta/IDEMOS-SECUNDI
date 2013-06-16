@@ -147,12 +147,57 @@ var error_message = error_message || '';
                             </div>
                         </div>
                     </div>
-                    <div class="segment info">
+                    <div class="segment info services-box">
                         <h2 class="title">סל מידע</h2>
                         <div id="info_items" class="info_items">
                             <!-- MovingBoxes Slider -->
                             <ul id="slider">
                             </ul><!-- end Slider #1 -->
+                        </div>
+                        <div class="underline_and_cursor_when_hover service-8">
+                            לחץ כדי להוסיף פריט
+                        </div>
+                        <div class="upload-popup">
+                            <span class="arrow"></span>
+                            <div class="upload-top">
+                                <a class="close-popup" href=""></a>
+                                <textarea cols="0" rows="0" placeholder="שיתוף מידע משלך..."></textarea>
+                                <div class="upload-tabs">
+                                    <ul>
+                                        <li><a class="pic" href="#image"><span></span>תמונה</a></li>
+                                        <li><a class="video" href="#video"><span></span>וידאו</a></li>
+                                        <li><a class="link" href="#link"><span></span>קישור</a></li>
+                                    </ul>
+                                    <div id="image" class="tab">
+                                        <%
+                                        var image_upload = {
+                                        background_color: '#f5f5f5',
+                                        default_image: '/images/add-image.png',
+                                        api_endpoint: '/api/image_upload',
+                                        input_name: 'image_field'
+                                        };
+                                        %>
+                                        <% include partials/image_upload.ejs %>
+                                    </div>
+                                    <div id="video" class="tab">
+                                        <%
+                                        image_upload = {
+                                        default_image: '/images/add-image.png',
+                                        api_endpoint: '/api/image_upload',
+                                        input_name: 'video_field'
+                                        };
+                                        %>
+                                        <% include partials/image_upload.ejs %>
+                                        <input type="url" value="" placeholder="http://www.youtube.com/watch?v=......."/>
+                                    </div>
+                                    <div id="link" class="tab">
+                                        <input type="url" value="" placeholder="http://www.uru.org.il/" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="upload-bottom">
+                                <input type="submit" value="העלה" />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -350,8 +395,9 @@ var current_section = 1;
 
 $(document).ready(function () {
     var my_id = "<%=user_logged ? user._id : ''%>";
+    var my_name = "<%= user && user.first_name + ' '+ user.last_name%>";
     var discussion_id = "<%=discussion_id%>";
-    var creator_id = "<%=discussion.creator_id%>";
+    var creator_id = "<%=discussion.creator_id && discussion.creator_id.id%>";
     var is_creator = (my_id == creator_id);
     var my_discussion_grade = Number("<%= discussion.grade_obj ? discussion.grade_obj.value || 0 : 0 %>");
     var discussion_grade = Number("<%= discussion.grade%>");
@@ -363,6 +409,10 @@ $(document).ready(function () {
     var editor;
     var on_load = true;
     var global_hash = null;
+
+    if (is_creator){
+        my_discussion_grade = discussion_grade;
+    }
 
     // toggle edit class to open/close contxt popup window or edit suggestion button
     $('#suggestions_wrapper').on('mouseenter', '.text.change_proposal', function(e){
@@ -921,7 +971,7 @@ $(document).ready(function () {
         return null;
     };
 
-    function render_approved_suggestion(suggestion, animate){
+    function render_approved_suggestion(suggestion){
         suggestion.original_part = suggestion.replaced_text;
         suggestion.alternative_part = suggestion.parts[0].text;
 
@@ -935,21 +985,13 @@ $(document).ready(function () {
             $('#approved_suggestions_wrapper').append(out);
             image_autoscale($('#approved_suggestions_wrapper .auto-scale img'));
 
-            if(animate == true){
-                db_functions.getDiscussionTextField(discussion_id, function(err, text_field){
-                    $('#discussion_content_textarea').val(text_field);
-                    $('#discussion_content').html(text_field.replace(/\n/g, '<br />'));
-                    original = $('#discussion_content_textarea').val();
-                    $('.read_more').click();
-                    scrollTo('#discussion_content');
-                });
+
 //                var $this = $('#post_' + suggestion_id);
 //                scrollTo('.content_break.suggestions');
 //
 //                var bgc =$('.suggestion_holder').last().css('background-color');
 //                $('.suggestion_holder ').last().css('background-color', 'pink');
 //                $('.suggestion_holder ').last().animate({backgroundColor: bgc}, 3000);
-            }
         });
     }
     var first_suggestion;
@@ -1806,9 +1848,9 @@ $(document).ready(function () {
         var suggestion_grade_val = $suggestion_wrapper.data('my_grade');
         var suggest_grade_id = $suggestion_wrapper.data('my_grade_id');
 
-        if (is_creator){
-            my_discussion_grade = discussion_grade;
-        }
+//        if (is_creator){
+//            my_discussion_grade = discussion_grade;
+//        }
 
         // first add default grade and then user can change it
         var default_rating = grade_against ? Math.max(my_discussion_grade - 0.1, 0) : Math.min(my_discussion_grade + 0.1, 10);
@@ -1823,20 +1865,34 @@ $(document).ready(function () {
         db_functions.addSuggestionGrade(suggestion_id, discussion_id, default_rating, suggest_grade_id, user_info, function (err, data) {
             if (!err) {
                 // if grading approved the suggestion, move suggestion to approved section
-                var   is_approved=data.is_approved;
+                var is_approved=data.is_approved;
                 if(is_approved){
                     var $this = $('#post_' + suggestion_id);
 
+                    //update history segment
+                    $('.item.draft_no span').text(Number($('.item.draft_no span').text()) + 1);
+                    $('.history_details_holder .item.last span').text($.datepicker.formatDate('dd.mm.yy', new Date()));
+                    $('.history_details_holder .item.by a').text(my_name);
+                    $('.history_details_holder .item.by a').attr('href', '../myuru/' + my_id);
 
-                    $.each(suggestions_list, function(index, object){
-                        if(object.id == suggestion_id){
-                            suggestions_list[index].replaced_text = data.replaced_text;
-                            suggestions_list[index].approve_date = data.approve_date;
-                            approved_suggestions_list.push(suggestions_list[index]);
-                            suggestions_list.splice(index, 1);
-                            return false;
-                        }
-                    })
+//                    $.each(suggestions_list, function(index, object){
+//                        if(object.id == suggestion_id){
+//                            suggestions_list[index].replaced_text = data.replaced_text;
+//                            suggestions_list[index].approve_date = data.approve_date;
+//                            approved_suggestions_list.push(suggestions_list[index]);
+//                            suggestions_list.splice(index, 1);
+//                            return false;
+//                        }
+//                    })
+
+                    db_functions.getDiscussionTextField(discussion_id, function(err, text_field){
+                        $('#discussion_content_textarea').val(text_field);
+                        $('#discussion_content').html(text_field.replace(/\n/g, '<br />'));
+                        original = $('#discussion_content_textarea').val();
+//                        $('.read_more').click();
+//                        scrollTo('#discussion_content');
+                    });
+
                     /*
                     $this.slideUp(1200, "swing", function(e){
 //                        $('.approved_suggestions h2').click();
@@ -1868,7 +1924,7 @@ $(document).ready(function () {
                 self.parent().parent().parent().find(".suggestion_bottom_segment input").removeClass('active');
                 self.addClass('active');
                 slider_box.find(".slider").slider({
-                    disabled: is_creator,
+//                    disabled: is_creator,
                     value: my_discussion_grade, // dmy_discussion_grades instead of my_suggestion grade to prevent deadlock in slider
                     range:"min",
                     min: 0,
@@ -1924,18 +1980,17 @@ $(document).ready(function () {
                                 slider_box.slideUp();
                                 $(this).parent().removeClass('slider-is-open');
                                 if(is_approved){
+                                    $(".slider").slider('value',rating);
+                                    $('#content_right_holder .rating_box .rating_total').text(Math.round(data.new_grade*100)/100);
+
                                     $this.find('.suggestion_bottom')
                                             .empty()
                                             .append('<div class="suggestion_bottom_segment wide"><div class="date_time"><span>ההצעה התקבלה, </span><a class="underline_and_cursor_when_hover back_to_doc"  href="javascript:void(0);" title="לצפייה במסמך המעודכן">לצפייה במסמך המעודכן</a></div></div>')
-
                                 }
-
                             });
                         }
                     }
                 });
-
-
             }
             else
             {
@@ -1952,7 +2007,7 @@ $(document).ready(function () {
     $('.back_to_doc').live('click', function(event){
         showFullText();
         scrollTo("#full");
-        scrollTo("#short");
+//        scrollTo("#short");
         return false;
     });
     $('#facebook_share').one('click', function(event){
@@ -2260,6 +2315,58 @@ $(document).ready(function () {
         popupConfig.post_id = $(this).parent('.comment').attr('id');
         popupProvider.showDeletePostPopup(popupConfig);
     })
+
+    $('.service-8, .upload-popup .close-popup').click(function () {
+        $(this).parents('.services-box').toggleClass('upload-active');
+
+        return false;
+    });
+
+    $(".upload-tabs").tabs();
+
+    $('.upload-popup .upload-bottom input').click(function () {
+        var form = $('.upload-popup');
+        var saveData = {
+            title: form.find('textarea').val(),
+            text_field: form.find('textarea').val(),
+            category: 'statistics'
+        };
+
+        var selectedTab = form.find('.upload-tabs').tabs('option', 'selected');
+        var image, link;
+        switch (selectedTab) {
+            case 0: // image
+                image = form.find('input[name="image_field"]');
+                break;
+
+            case 1: // video
+                image = form.find('input[name="video_field"]');
+                link = form.find('#video input[type=url]');
+                break;
+
+            case 2: // link
+                link = form.find('#link input[type=url]');
+                break;
+        };
+
+        if (image && image.val()) {
+            saveData.image_field = image.val();
+        }
+        if (link && link.val()) {
+            saveData.text_field += '\n\n' + link.val();
+        }
+
+        db_functions.createInformationItem(saveData, function (error) {
+            if (error) {
+                popupProvider.showOkPopup({ message: 'קרתה תקלה בעת שמירת פריט המידע' });
+            } else {
+                popupProvider.showOkPopup({ message: 'פריט המידע נשמר' });
+                $('.upload-popup').hide();
+            }
+        });
+        event.preventDefault();
+        return false;
+    });
 });
 
 </script>

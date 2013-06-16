@@ -1069,6 +1069,14 @@ span.remark{
     overflow: hidden;
 }
 
+#content_main_holder .segment.upload-active{
+    overflow: visible;
+}
+
+#content_main_holder .segment.upload-active .upload-popup{
+    top: 469px;
+}
+
 #content_left_sidebar{
     width:280px;
     float:right;
