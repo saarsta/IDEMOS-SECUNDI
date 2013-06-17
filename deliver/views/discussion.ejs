@@ -1875,40 +1875,11 @@ $(document).ready(function () {
                     $('.history_details_holder .item.by a').text(my_name);
                     $('.history_details_holder .item.by a').attr('href', '../myuru/' + my_id);
 
-//                    $.each(suggestions_list, function(index, object){
-//                        if(object.id == suggestion_id){
-//                            suggestions_list[index].replaced_text = data.replaced_text;
-//                            suggestions_list[index].approve_date = data.approve_date;
-//                            approved_suggestions_list.push(suggestions_list[index]);
-//                            suggestions_list.splice(index, 1);
-//                            return false;
-//                        }
-//                    })
-
                     db_functions.getDiscussionTextField(discussion_id, function(err, text_field){
                         $('#discussion_content_textarea').val(text_field);
                         $('#discussion_content').html(text_field.replace(/\n/g, '<br />'));
                         original = $('#discussion_content_textarea').val();
-//                        $('.read_more').click();
-//                        scrollTo('#discussion_content');
                     });
-
-                    /*
-                    $this.slideUp(1200, "swing", function(e){
-//                        $('.approved_suggestions h2').click();
-                        $.each(suggestions_list, function(index, object){
-                            if(object.id == suggestion_id){
-                                suggestions_list[index].replaced_text = data.replaced_text;
-                                suggestions_list[index].approve_date = data.approve_date;
-                                approved_suggestions_list.push(suggestions_list[index]);
-                                suggestions_list.splice(index, 1);
-
-                                render_approved_suggestion(approved_suggestions_list[approved_suggestions_list.length - 1], true);
-                                return false;
-                            }
-                        })
-                    });
-                    */
                 }
 
                 var $suggestion = $("div[data-id=" + suggestion_id + "]");
@@ -1924,7 +1895,7 @@ $(document).ready(function () {
                 self.parent().parent().parent().find(".suggestion_bottom_segment input").removeClass('active');
                 self.addClass('active');
                 slider_box.find(".slider").slider({
-//                    disabled: is_creator,
+                    disabled: false,
                     value: my_discussion_grade, // dmy_discussion_grades instead of my_suggestion grade to prevent deadlock in slider
                     range:"min",
                     min: 0,
