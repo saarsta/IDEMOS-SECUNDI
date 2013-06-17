@@ -422,6 +422,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                         new_grade = _new_grade;
                         evaluate_counter = _evaluate_counter;
 
+                        // if user grades his
                         if (did_user_change_his_agree || g_sugg_obj.is_approved) {
                             if (did_user_change_his_agree) {
                                 if (is_agree) {
