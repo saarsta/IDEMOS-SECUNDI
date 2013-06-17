@@ -424,7 +424,6 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
 module.exports.approveSuggestion = function (id, callback) {
     //if suggestion approved we change the discussion vision
     // + save the ealier version of vison as parts in vison_changes
-
     //+ suggestion grade becomes the discussion grade
     var suggestion_object;
     var suggestion_creator;
@@ -433,7 +432,6 @@ module.exports.approveSuggestion = function (id, callback) {
 
     //update discussion grade
     var iterator = function (sugg_grade, itr_cbk) {
-
         async.parallel([
 
             //update discussion grade with the suggestion grade
@@ -531,6 +529,10 @@ module.exports.approveSuggestion = function (id, callback) {
 //                            cbk1(err, discussion_object);
 //                        });
                     discussion_object.save(cbk1);
+                },
+
+                function(cbk1){
+                    cbk1();
                 }
 
             ], function (err, args) {
