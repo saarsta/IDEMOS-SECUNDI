@@ -1423,6 +1423,10 @@ span.remark{
     text-decoration:underline;
     float:right;
     margin-top:10px;
+
+    font-size: 16px;
+    font-weight: bold;
+
 }
 
 .discussions_page .segment .content_credits h2{
