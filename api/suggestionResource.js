@@ -12,7 +12,8 @@ var resources = require('jest'),
     common = require('./common'),
     async = require('async'),
     notifications = require('./notifications'),
-    mail = require('../lib/mail');
+    mail = require('../lib/mail'),
+    templates = require('../lib/templates');
 
 var EDIT_TEXT_LEGIT_TIME = 60 * 1000 * 15;
 
@@ -570,32 +571,53 @@ module.exports.approveSuggestion = function (id, callback) {
             ], function (err, args) {
 
                 //update indexes of all other suggestions
+                // find ovelaps in indexes and send mail
                 var suggestions = args[1];
                 var index_balance = suggestion_object.parts[0].text.length - (suggestion_object.parts[0].end - suggestion_object.parts[0].start);
 
                 console.log("index_balance");
                 console.log(index_balance);
-                if (index_balance != 0) {
                     async.forEach(suggestions, function (suggestion, itr_cbk) {
+                        var save_suggestion = false;
                         console.log("suugstion_id:");
                         console.log(suggestion._id);
-                        if (suggestion.parts[0].start > suggestion_object.parts[0].end) {
-                            console.log("start");
+                        if (index_balance != 0) {
+                            // update indexes
+                            if (suggestion.parts[0].start > suggestion_object.parts[0].end) {
+                                console.log("start");
 
-                            suggestion.parts[0].start += index_balance;
-                            suggestion.parts[0].end += index_balance;
-                            console.log(suggestion.parts[0].start);
-                            console.log("end");
-                            console.log(suggestion.parts[0].end);
+                                suggestion.parts[0].start += index_balance;
+                                suggestion.parts[0].end += index_balance;
+                                console.log(suggestion.parts[0].start);
+                                console.log("end");
+                                console.log(suggestion.parts[0].end);
+                                save_suggestion = true;
+                            }
+                        }
+
+                        // check for overlaps
+                        var range_1 = {};
+                        var range_2 = {};
+                        range_1.start = suggestion_object.parts[0].start;
+                        range_1.end = suggestion_object.parts[0].end;
+                        range_2.start = suggestion.parts[0].start;
+                        range_2.end = suggestion.parts[0].end;
+                        if (isOverlap(range_1, range_2)){
+                            suggestion.is_hidden = true;
+                            save_suggestion = true;
+                            sendUserOverlapMail(disc_obj, suggestion, suggestion_object);
+                        }
+
+                        if (save_suggestion) {
                             suggestion.save(function (err, result) {
                                 itr_cbk(err, result)
                             })
-                        } else
+                        }else{
                             itr_cbk();
+                        }
                     }, cbk(err, args[1][0]));
-                }
-                else
-                    cbk(err, args[1][0]);
+//                else
+//                    cbk(err, args[1][0]);
             })
         },
 
@@ -683,4 +705,44 @@ function likelihood(a,b) {
     return a_lh-b_lh;
 }
 
+function isOverlap(range_1, range_2){
+      var is_overlaping =
+        ((range_1.start >= range_2.start && range_1.start <= range_2.end)
+        || (range_1.end >= range_2.start && range_1.end <= range_2.end)
+        || (range_2.start >= range_1.start && range_2.start <= range_1.end)
+        || (range_2.end >= range_1.start && range_2.end <= range_1.end));
 
+    return is_overlaping
+}
+
+function sendUserOverlapMail(discussion, suggestion, approved_suggestion){
+    var s = suggestion;
+    s.discussion_name = discussion.title;
+    // the original text that was suggested to rplace
+    s.original_text = discussion.vision_text_history[discussion.vision_text_history.length - 1].substring(s.parts[0].start, s.parts[0].end);
+    // text that was approved now
+    s.accepted_text = approved_suggestion.parts[0].text;
+    // what user suggested
+    s.user_suggestion = s.parts[0].text;
+
+
+   async.waterfall([
+        function(cbk){
+            templates.renderTemplate("suggestion_overlap", s, function(err, result){
+                cbk(err, result);
+            });
+        },
+
+       function (message, cbk){
+           models.User.findById(suggestion.creator_id, function(err, user){
+               cbk(err, user, message);
+           });
+       },
+
+       function(user, message, cbk){
+           mail.sendMailFromTemplate(user.email, message, cbk);
+       }
+   ], function(err){
+       if (err) console.error(err);
+   })
+}

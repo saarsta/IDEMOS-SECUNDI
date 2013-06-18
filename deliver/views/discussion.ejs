@@ -1951,12 +1951,11 @@ $(document).ready(function () {
                                 slider_box.slideUp();
                                 $(this).parent().removeClass('slider-is-open');
                                 if(is_approved){
-//                                    $(".slider").slider('value',rating);
                                     $('#content_right_holder .rating_box .rating_total').text(Math.round(data.new_grade*100)/100);
-
                                     $this.find('.suggestion_bottom')
                                             .empty()
                                             .append('<div class="suggestion_bottom_segment wide"><div class="date_time"><span>ההצעה התקבלה, </span><a class="underline_and_cursor_when_hover back_to_doc"  href="javascript:void(0);" title="לצפייה במסמך המעודכן">לצפייה במסמך המעודכן</a></div></div>')
+//                                    $(".slider").slider('value',rating);
                                 }
                             });
                         }
