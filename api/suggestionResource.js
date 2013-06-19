@@ -58,7 +58,11 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
             replaced_text: null,
             approve_date: null,
             context_before: null,
-            context_after: null
+            context_after: null,
+
+            cancel: null,
+            text_field: null,
+            discussion_vision_text_history: null
         };
     },
 
@@ -261,8 +265,14 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
             },
 
             function (discussion_obj, cbk) {
+
                 disc_obj = discussion_obj;
 
+                // check if vision was changed while user suggested new text
+                if (Number(req.body.vision_history_count) < disc_obj.vision_text_history.length){
+                    cbk({message: "discussion's vision was updated", code: "401"});
+                    return;
+                }
                 var word_count = suggestion_object.getCharCount();
                 suggestion_object.threshold_for_accepting_the_suggestion = calculate_sugg_threshold(word_count,
                     Number(discussion_obj.admin_threshold_for_accepting_change_suggestions) || Number(discussion_obj.threshold_for_accepting_change_suggestions));
@@ -369,11 +379,18 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
             }
         ], function (err, result) {
             if (err) {
-                console.error(err);
-                console.trace();
+                if(err.message === "discussion's vision was updated"){
+                    err = null;
+                    result = {cancel: true, text_field: disc_obj.text_field, discussion_vision_text_history: disc_obj.vision_text_history};
+                }else{
+                    console.error(err);
+                    console.trace();
+                }
+            }else{
+                //set is_my_suggestion flag
+                result.is_my_suggestion = true;
             }
-            //set is_my_suggestion flag
-            result.is_my_suggestion = true;
+
             callback(err, result);
         });
     },
@@ -565,7 +582,7 @@ module.exports.approveSuggestion = function (id, callback) {
                 },
 
                 function (cbk1) {
-                    models.Suggestion.find({discussion_id:disc_obj, is_approved:false}, cbk1);
+                    models.Suggestion.find({discussion_id:disc_obj, is_approved:false, _id: {$ne: id}}, cbk1);
                 }
 
             ], function (err, args) {
@@ -622,11 +639,15 @@ module.exports.approveSuggestion = function (id, callback) {
         },
 
         function (sug_obj, cbk) {
-            suggestion_creator = sug_obj.creator_id;
+
+            // dont understan why is this
+//            suggestion_creator = sug_obj.creator_id;
+            //changed to :
+            suggestion_creator = suggestion_object.creator_id;
             async.parallel([
                 //set gamification
                 function (par_cbk) {
-                    models.User.update({_id:sug_obj.creator_id}, {$inc:{"gamification.approved_suggestion":1}}, function (err, obj) {
+                    models.User.update({_id:suggestion_creator}, {$inc:{"gamification.approved_suggestion":1}}, function (err, obj) {
                         par_cbk(err, obj);
                     });
                 },
@@ -634,7 +655,7 @@ module.exports.approveSuggestion = function (id, callback) {
                 //set notifications for creator
                 function (par_cbk) {
                     notifications.create_user_notification("approved_change_suggestion_you_created",
-                        sug_obj._id, sug_obj.creator_id, null, discussion_id, '/discussions/' + discussion_id, function (err, obj) {
+                        id, suggestion_creator, null, discussion_id, '/discussions/' + discussion_id, function (err, obj) {
                             par_cbk(err, obj);
                         });
                 },
@@ -644,7 +665,7 @@ module.exports.approveSuggestion = function (id, callback) {
 
                     async.waterfall([
                         function (wtr_cbk) {
-                            models.GradeSuggestion.find({suggestion_id:sug_obj._id}, wtr_cbk);
+                            models.GradeSuggestion.find({suggestion_id: id}, wtr_cbk);
                         },
 
                         function (sugg_grades, wtr_cbk) {

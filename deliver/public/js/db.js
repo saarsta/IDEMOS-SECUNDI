@@ -613,19 +613,19 @@ var db_functions = {
             }
         });
     },
-    addSuggestionToDiscussion: function(discussion_id, parts, explanation, user_info, callback) {
+    addSuggestionToDiscussion: function(discussion_id, vision_history_count, parts, explanation, user_info, callback) {
         db_functions.loggedInAjax({
             url:'/api/suggestions/',
             type:"POST",
             async:true,
-            data:{"discussion_id":discussion_id, "parts":parts, "explanation":explanation},
+            data:{"discussion_id":discussion_id, "parts":parts, "explanation":explanation, "vision_history_count": vision_history_count},
             user_info: user_info,
             success:function (data) {
                 console.log(data);
                 callback(null, data);
             },
-            error:function (err) {
-                callback(err);
+            error:function (err, data) {
+                callback(err, data);
             }
         });
     },
