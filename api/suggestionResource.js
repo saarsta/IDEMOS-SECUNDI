@@ -745,8 +745,7 @@ function sendUserOverlapMail(discussion, suggestion, approved_suggestion){
     s.accepted_text = approved_suggestion.parts[0].text;
     // what user suggested
     s.user_suggestion = s.parts[0].text;
-
-
+    s.main_link = "/discussions/" + discussion.id;
    async.waterfall([
         function(cbk){
             templates.renderTemplate("suggestion_overlap", s, function(err, result){
@@ -761,7 +760,7 @@ function sendUserOverlapMail(discussion, suggestion, approved_suggestion){
        },
 
        function(user, message, cbk){
-           mail.sendMailFromTemplate(user.email, message, cbk);
+           mail.sendMailFromTemplate(/*user.email*/"movilim@uru.org.il", message, cbk);
        }
    ], function(err){
        if (err) console.error(err);
