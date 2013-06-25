@@ -528,6 +528,18 @@ function isNotiInUserMailConfig(user, noti){
         if (!discussion) return false;
 
         console.log('*******');
+        console.log(discussion.discussion_id);
+        console.log('*******');
+
+        console.log('*******');
+        console.log(user.first_name);
+        console.log('*******');
+
+        console.log('*******');
+        console.log(discussion);
+        console.log('*******');
+
+        console.log('*******');
         console.log(discussion.get_alert_of_approved_suggestions);
         console.log('*******');
 
