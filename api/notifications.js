@@ -527,6 +527,14 @@ function isNotiInUserMailConfig(user, noti){
 
         if (!discussion) return false;
 
+        console.log('**********');
+        console.log('discussion.get_alert_of_approved_suggestions');
+        console.log('**********');
+
+        console.log('**********');
+        console.log(discussion.get_alert_of_approved_suggestions === false);
+        console.log('**********');
+
         if (discussion.get_alert_of_approved_suggestions === false) return false;
 
         if (discussion.time_of_alert === 'now') {
