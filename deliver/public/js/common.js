@@ -252,7 +252,6 @@ $(function(){
             popupProvider.showOkPopup({
                 message:'הסיסמא שונתה בהצלחה.'
             });
-
     }
 
 
@@ -303,8 +302,8 @@ $(function(){
                 console.error(err);
                 $("#login_head").text("קרתה תקלה");
             }
-        })
-    })
+        });
+    });
 
 
     var host = window.location.protocol + '//' + window.location.host;

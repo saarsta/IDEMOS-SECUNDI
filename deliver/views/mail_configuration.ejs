@@ -487,11 +487,11 @@
     });
 
     $('#close_noti_mail').click(function(e){
-        var explanation = $('#stop_mail_explanation').val();
+        var mail_config = {};
+        mail_config.explanation = $('#stop_mail_explanation').val();
+        if(mail_config.explanation.trim() == "") return false;
 
-        if(explanation.trim() == "") return false;
-
-        db_functions.sendMailFromUserToSystem(explanation, function(err){
+        db_functions.sendMailFromUserToSystem(mail_config, function(err){
             if (err) {
                 console.log(err);
             }else {

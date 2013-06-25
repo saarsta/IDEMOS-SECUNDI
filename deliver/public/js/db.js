@@ -1936,12 +1936,12 @@ var db_functions = {
         });
     },
 
-    sendMailFromUserToSystem: function(explanation, callback) {
+    sendMailFromUserToSystem: function(mail_config, callback) {
         db_functions.loggedInAjax({
             url:'/api/send_mail',
             type:"POST",
             async:true,
-            data:{"body":explanation},
+            data:{"mail_config":mail_config},
             success:function (data) {
                 console.log(data);
                 callback(null, data);
@@ -1951,13 +1951,6 @@ var db_functions = {
             }
         });
     },
-
-
-
-
-
-
-
 };
 
 
