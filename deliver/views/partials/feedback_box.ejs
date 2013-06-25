@@ -30,7 +30,7 @@
 
         $('#submit_feedback').click(function() {
             var mail_config = {};
-            mail_config.to = "saarsta@gmail.com";
+            mail_config.to = "movilim@uru.org.il";
             mail_config.subject = "feedback";
             mail_config.explanation = $('#feedback-form textarea').val();
             db_functions.sendMailFromUserToSystem(mail_config, function(err, data){
