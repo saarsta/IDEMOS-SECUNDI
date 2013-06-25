@@ -527,7 +527,7 @@ function isNotiInUserMailConfig(user, noti){
 
         if (!discussion) return false;
 
-        if (discussion.get_alert_of_approved_suggestions !== false) return true;
+        if (discussion.get_alert_of_approved_suggestions === false) return false;
 
         if (discussion.time_of_alert === 'now') {
             return true;
