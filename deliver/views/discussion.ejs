@@ -1593,7 +1593,7 @@ $(document).ready(function () {
            var html =  $('#discussion_content').html();
            var text =  original.substr(suggestion.parts[0].start,suggestion.parts[0].end - suggestion.parts[0].start);
          //  console.log(text);
-            if (suggestion.parts[0].start > text.length) {
+            if (suggestion.parts[0].start > original.length) {
                console.log('range problem |' + suggestion.id);
                return
             }
