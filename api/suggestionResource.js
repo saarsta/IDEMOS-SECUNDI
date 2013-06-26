@@ -25,7 +25,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
         this.authentication = new common.SessionAuthentication();
         this.filtering = {discussion_id:null, is_approved:null};
         this.default_query = function (query) {
-            return query.sort({'creation_date':'descending'}).populate('creator_id');
+            return query.sort({'creation_date':'descending'}).populate('creator_id').where('under_moderation').ne('true');
         };
 
         this.fields = {
@@ -621,6 +621,7 @@ module.exports.approveSuggestion = function (id, callback) {
                         range_2.end = suggestion.parts[0].end;
                         if (isOverlap(range_1, range_2)){
                             suggestion.is_hidden = true;
+                            suggestion.under_moderation = true;
                             save_suggestion = true;
                             sendUserOverlapMail(disc_obj, suggestion, suggestion_object);
                         }

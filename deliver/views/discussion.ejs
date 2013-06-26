@@ -1590,9 +1590,13 @@ $(document).ready(function () {
 
     function displaySuggestionsRanges(){
         $.each(suggestions_list, function (index, suggestion) {
-           var html =    $('#discussion_content').html();
+           var html =  $('#discussion_content').html();
            var text =  original.substr(suggestion.parts[0].start,suggestion.parts[0].end - suggestion.parts[0].start);
          //  console.log(text);
+            if (suggestion.parts[0].start > text.length) {
+               console.log('range problem |' + suggestion.id);
+               return
+            }
            text=text.replace(/\r\n/g, '\r\n<br>');
            text=text.replace(/\n/g, '\n<br>') ;
            html =  html.substring(0, suggestion.parts[0].start) +html.substring(suggestion.parts[0].start).replace(text,'<span data-id="'+suggestion.id+'" class="marker_1">'+text+'</span>');;
