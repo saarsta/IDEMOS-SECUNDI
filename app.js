@@ -76,7 +76,7 @@ app.set('facebook_pages_admin_user', "uri@uru.org.il");
 app.set('facebook_pages_admin_pass', "uruuruuru");
 app.set('show_only_published', process.env.SHOW_ONLY_PUBLISHED == '1');
 app.set('sendgrid_user', process.env.SENDGRID_USER || 'app2952775@heroku.com');
-app.set('system_email', process.env.SYSTEM_EMAIL || 'info@uru.org.il');
+app.set('system_email', process.env.SYSTEM_EMAIL || 'admin@uru.org.il');
 app.set('sendgrid_key',process.env.SENDGRID_KEY || 'a0oui08x');
 app.set('root_path', ROOT_PATH);
 app.set('url2png_api_key', process.env.url2png_api_key || 'P503113E58ED4A');

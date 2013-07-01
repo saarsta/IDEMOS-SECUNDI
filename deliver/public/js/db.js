@@ -1765,7 +1765,7 @@ var db_functions = {
             }
         });
     },
-
+        /*
     startStopGettingEmailNotifications: function (user_id, no_mail_notifications, callback) {
         db_functions.loggedInAjax({
             type: 'PUT',
@@ -1780,6 +1780,7 @@ var db_functions = {
         });
     } ,
 
+       */
 
     submitInvitedFriends: function (object_type,object_id,facebook_ids,emails, callback) {
 
@@ -1920,6 +1921,21 @@ var db_functions = {
             }
         });
     }   ,
+    activateMailNotification: function (user_id, callback) {
+        db_functions.loggedInAjax({
+            type: 'PUT',
+            async:true,
+            url: '/api/user_mail_notification_config/' + user_id,
+            data: {activate: true},
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function (err) {
+                callback(err, null);
+            }
+        });
+    } ,
     getPressItemsByDiscussion: function(discussion_id, callback) {
         db_functions.loggedInAjax({
             url:'/api/press_item',
