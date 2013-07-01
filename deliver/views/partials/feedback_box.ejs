@@ -31,12 +31,13 @@
         $('#submit_feedback').click(function() {
 
             var popupConfig = {};
-            popupConfig.message = "הודעתך נשלך. תודה";
+            popupConfig.message = "הודעתך נשלחה. תודה";
             popupConfig.onOkCilcked = function(e){
                 e.preventDefault();
                 clicked = 'ok';
                 $.colorbox.close();
                 $('.lower-segment').slideToggle('slow');
+                $('#feedback-form textarea').val('');
             },
             popupProvider.showOkPopup(popupConfig);
 
