@@ -15,11 +15,7 @@ var account = require('./deliver/routes/account');
 var fb_bot_middleware = require('./deliver/routes/fb_bot/middleware');
 
 // ########### Static parameters ###########
-<<<<<<< HEAD
-var IS_ADMIN = (~process.env['NODE_ENV'] || '').indexOf('admin');
-=======
 var IS_ADMIN = ~(process.env['NODE_ENV'] || []).indexOf('admin');
->>>>>>> e141154c645a086caa0cffdc0755e8f37a443b98
 var DB_URL = process.env['MONGOLAB_URI'] || 'mongodb://localhost/uru';
 var ROOT_PATH = process.env.ROOT_PATH || 'http://dev.empeeric.com';
 var IS_PROCESS_CRON = (process.argv[2] === 'cron');
