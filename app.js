@@ -118,6 +118,7 @@ app.use(function (req, res, next) {
 
 // ######### general middleware #########
 formage_admin.serve_static(app, express);
+app.use(express.compress());
 app.use(express.static(app.settings.public_folder));
 app.use(express.errorHandler());
 app.use(express.bodyParser());
@@ -181,9 +182,9 @@ app.locals({
     }
 });
 
-/*app.locals({
+app.locals({
     writeHead: function(name) {
-        var isDev = false; app.settings.env == 'development' || app.settings.env == 'staging';
+        var isDev = app.settings.env == 'development' || app.settings.env == 'staging';
         function headFromSrc(src, type) {
             switch (type) {
                 case 'js':
@@ -202,12 +203,11 @@ app.locals({
                     return headFromSrc(src, type);
                 }).join('\n');
         else {
-            var final = conf.final || ( conf.min === false ? '/dist/' + type + '/' + conf.name + '.' + type : '/dist/' + type + '/' + conf.name + '.min.' + type);
-//            return headFromSrc(final, type);
-            return  '<script src="deliver/public/dist/js/built.min.js" type="text/javascript"></script>';
+            var final = conf.final || ( conf.min === false || type == 'css' ? '/dist/' + type + '/' + conf.name + '.' + type : '/dist/' + type + '/' + conf.name + '.min.' + type);
+            return headFromSrc(final, type);
         }
     }
-});*/
+});
 // ######### locals #########
 
 

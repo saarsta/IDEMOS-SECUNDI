@@ -13,27 +13,15 @@
 <meta property="og:site_name" content="עורו" />
  
 
-<link href="/css/reset.css" rel="stylesheet" />
-<link href="/css/jquery.tooltip.css" rel="stylesheet" />
-<link href="/css/colorbox.css" rel="stylesheet" />
-<link href="/css/style.css" rel="stylesheet" />
-<link href="/css/feedback.css" rel="stylesheet" />
+<%- writeHead('css_includes') %>
 <!--[if lte IE 7]><link href="/css/ie.css" rel="stylesheet" type="text/css"/><![endif]-->
 <!--[if lt IE 8]><style type="text/css">.ie7_message { display:block} #wrap,#footer { display:none }</style><![endif]-->
 
-<!--todo: remove loginpop.css-->
-<link href="/css/loginpop.css" rel="stylesheet" type="text/css"/>
-<!--todo: remove loginpop.css-->
 
-<link href="/css/myuruproxy.css" rel="stylesheet" type="text/css"/>
-<link href="/css/select2.css" rel="stylesheet"/>
-
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
-
-<!-- start Bablic
-<meta name='google' value='notranslate' /><script type='text/javascript'>   var bablic=bablic||{};bablic.Site='5117693d57b177020000078d';</script><script type='text/javascript' src='//api.bablic.com/js/bablic.js'></script>
- end Bablic -->
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&language=he&libraries=places&key=AIzaSyCmNLGdcM_OYwPwmedDsECk9O6ashE-rjg"></script>
+<!-- Include JS -->
+<%- writeHead('js_includes') %>
+<!-- /Include JS -->
 
 <% include facebook.ejs %>
 <% include feedback_box.ejs %>
