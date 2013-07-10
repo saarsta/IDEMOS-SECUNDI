@@ -8,7 +8,7 @@
     "connect-auth": "0.x.x",
     "mongoose": "3.x.x",
     "jest": "0.1.30",
-    "async": "0.1.x",
+    "async": "0.2.x",
     "jade": "0.27.x",
     "underscore": "1.x.x",
     "dustjs-linkedin": "1.x.x",
@@ -19,8 +19,7 @@
     "formage": "git://github.com/IshaiJaffe/formage003fix.git",
     "formage-admin": "1.0.3",
     "facebook-signed-request": "0.0.x",
-    "knox": "0.0.11",
-    "webkit-devtools-agent":""
+    "knox": "0.0.11"
   },
   "devDependencies": {
   },
