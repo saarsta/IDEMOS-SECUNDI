@@ -19,8 +19,7 @@
     "formage": "git://github.com/IshaiJaffe/formage003fix.git",
     "formage-admin": "1.0.3",
     "facebook-signed-request": "0.0.x",
-    "knox": "0.0.11",
-    "webkit-devtools-agent":""
+    "knox": "0.0.11"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
