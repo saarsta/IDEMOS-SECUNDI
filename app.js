@@ -14,10 +14,12 @@ var models = require('./models');
 var account = require('./deliver/routes/account');
 var fb_bot_middleware = require('./deliver/routes/fb_bot/middleware');
 
-
-
 // ########### Static parameters ###########
+<<<<<<< HEAD
 var IS_ADMIN = (~process.env['NODE_ENV'] || '').indexOf('admin');
+=======
+var IS_ADMIN = ~(process.env['NODE_ENV'] || []).indexOf('admin');
+>>>>>>> e141154c645a086caa0cffdc0755e8f37a443b98
 var DB_URL = process.env['MONGOLAB_URI'] || 'mongodb://localhost/uru';
 var ROOT_PATH = process.env.ROOT_PATH || 'http://dev.empeeric.com';
 var IS_PROCESS_CRON = (process.argv[2] === 'cron');
@@ -54,7 +56,7 @@ require('./deliver/tools/compile_dust_templates');
 
 // ######### connect to DB #########
 if (!mongoose.connection.host) {
-    mongoose.connect(DB_URL, {safe: false}, function (db) { console.log("connected to db %s:%s/%s", mongoose.connection.host, mongoose.connection.port, mongoose.connection.name); });
+    mongoose.connect(DB_URL, {safe: true}, function (db) { console.log("connected to db %s:%s/%s", mongoose.connection.host, mongoose.connection.port, mongoose.connection.name); });
     mongoose.connection.on('error', function (err) { console.error('db connection error: ', err); });
     mongoose.connection.on('disconnected', function (err) {
         console.error('DB disconnected', err);
@@ -78,7 +80,7 @@ app.set('facebook_pages_admin_user', "uri@uru.org.il");
 app.set('facebook_pages_admin_pass', "uruuruuru");
 app.set('show_only_published', process.env.SHOW_ONLY_PUBLISHED == '1');
 app.set('sendgrid_user', process.env.SENDGRID_USER || 'app2952775@heroku.com');
-app.set('system_email', process.env.SYSTEM_EMAIL || 'info@uru.org.il');
+app.set('system_email', process.env.SYSTEM_EMAIL || 'admin@uru.org.il');
 app.set('sendgrid_key',process.env.SENDGRID_KEY || 'a0oui08x');
 app.set('root_path', ROOT_PATH);
 app.set('url2png_api_key', process.env.url2png_api_key || 'P503113E58ED4A');
@@ -95,7 +97,9 @@ utils.setShowOnlyPublished(app.settings.show_only_published);
 
 // ######### error handling #########
 process.on('uncaughtException', function(err) {
-    console.error("==== process exception ====\n%s\n==== end ====", err.stack || err);
+    console.error('*************************  unhandled exception !!!!! ********************************');
+    console.error(err);
+    console.error(err.stack);
 });
 app.use(function (req, res, next) {
     var d = domain.create();
@@ -156,7 +160,8 @@ app.use(function (req, res, next) {
         user: req.user,
         avatar: (req.session && req.session.avatar_url) || "/images/default_user_img.gif",
         url: req.url,
-        meta: {}
+        meta: {},
+        is_dev: true /*app.settings.env == 'development' || app.settings.env == 'staging'*/
     });
     next();
 });
@@ -179,6 +184,34 @@ app.locals({
         return app.get(attr);
     }
 });
+
+/*app.locals({
+    writeHead: function(name) {
+        var isDev = false; app.settings.env == 'development' || app.settings.env == 'staging';
+        function headFromSrc(src, type) {
+            switch (type) {
+                case 'js':
+                    return '<script src="' + src + '" type="text/javascript"></script>';
+                case 'css':
+                    return '<link href="' + src + '" rel="stylesheet" type="text/css"/>';
+                default:
+                    throw new Error('unknown type ' + type);
+            }
+        }
+        var conf = require('./conf.js').headConfigs[name];
+        var type = conf.type;
+        if (isDev)
+            return _.map(conf.src,
+                function (src) {
+                    return headFromSrc(src, type);
+                }).join('\n');
+        else {
+            var final = conf.final || ( conf.min === false ? '/dist/' + type + '/' + conf.name + '.' + type : '/dist/' + type + '/' + conf.name + '.min.' + type);
+//            return headFromSrc(final, type);
+            return  '<script src="deliver/public/dist/js/built.min.js" type="text/javascript"></script>';
+        }
+    }
+});*/
 // ######### locals #########
 
 
@@ -188,6 +221,7 @@ app.configure('development', function(){
     require('./admin')(app);
     app.set('send_mails', false);
 });
+
 if (IS_ADMIN) {
     require('./admin')(app);
 }
@@ -205,6 +239,8 @@ if (IS_PROCESS_CRON) {
     var cron = require('./cron');
     cron.run(app);
 }
+
+
 // ######### environment specific settings #########
 
 

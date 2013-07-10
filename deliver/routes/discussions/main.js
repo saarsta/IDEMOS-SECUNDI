@@ -50,7 +50,8 @@ module.exports = function(req,res)
                         {
                             res.setHeader("Expires", "0");
 
-                            var ejs =  req.query.new ? 'discussion.ejs' : 'discussion_old.ejs';
+                           // var ejs =  req.query.new || req.params[0]=='51163023533d920200000025' ? 'discussion.ejs' : 'discussion_old.ejs';
+                            var ejs =  'discussion.ejs';
 
                             res.render(ejs,{
                                 title:"דיון",
@@ -62,7 +63,7 @@ module.exports = function(req,res)
                                 fb_description: discussion.text_field_preview,
                                 fb_title: discussion.title,
                                 fb_image:discussion.image_field && discussion.image_field.url,
-                                user:user,
+                                user: user,
                                 meta: {
                                     type: req.app.settings.facebook_app_name + ':discussion',
                                     id: discussion.id,

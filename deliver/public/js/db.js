@@ -26,7 +26,6 @@ var db_functions = {
                             {
                                 if(typeof window.vars === "undefined"  || typeof window.vars.afterLogin === "undefined") {
                                     window.location.href = window.location.href;
-
                                 }
                                 else
                                 {
@@ -566,6 +565,22 @@ var db_functions = {
 		});
 	},
 
+    getDiscussionTextField: function(discussion_id, callback){
+        db_functions.loggedInAjax({
+            url:'/api/discussions/' + discussion_id,
+            type:"GET",
+            async:true,
+            success:function (data) {
+                data = data.text_field;
+                callback(null, data);
+            },
+
+            error:function (err) {
+                callback(err, null);
+            }
+        });
+    },
+
     createDiscussion: function(subject_id, vision, title, tags, image, user_info, callback) {
         db_functions.loggedInAjax({
             url:'/api/discussions/',
@@ -598,13 +613,29 @@ var db_functions = {
             }
         });
     },
-    addSuggestionToDiscussion: function(discussion_id, parts, explanation, user_info, callback) {
+    addSuggestionToDiscussion: function(discussion_id, vision_history_count, parts, explanation, user_info, callback) {
         db_functions.loggedInAjax({
             url:'/api/suggestions/',
             type:"POST",
             async:true,
-            data:{"discussion_id":discussion_id, "parts":parts, "explanation":explanation},
+            data:{"discussion_id":discussion_id, "parts":parts, "explanation":explanation, "vision_history_count": vision_history_count},
             user_info: user_info,
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function (err, data) {
+                callback(err, data);
+            }
+        });
+    },
+
+    editSuggestion: function(suggestion_id, text, callback) {
+        db_functions.loggedInAjax({
+            url:'/api/suggestions/' + suggestion_id,
+            type:"PUT",
+            async:true,
+            data:{"text":text},
             success:function (data) {
                 console.log(data);
                 callback(null, data);
@@ -614,6 +645,7 @@ var db_functions = {
             }
         });
     },
+
 
     addFacebookRequest:function (link, response, callback) {
         var request_ids =response ? response.request :null;
@@ -648,11 +680,119 @@ var db_functions = {
             }
         });
     },
+
+    removePost: function(post_id, callback){
+        db_functions.loggedInAjax({
+            url:'/api/posts/' +post_id,
+            type:"delete",
+            async:true,
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function (err) {
+                callback(err);
+            }
+        });
+    },
+    
+    removeSuggestion: function(suggestion_id, callback){
+        db_functions.loggedInAjax({
+            url:'/api/suggestions/' +suggestion_id,
+            type:"delete",
+            async:true,
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function (err) {
+                callback(err);
+            }
+        });
+    },
+
+    removeSuggestionComment: function(comment_id, callback){
+        db_functions.loggedInAjax({
+            url:'/api/suggestion_posts/' +comment_id,
+            type:"delete",
+            async:true,
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function (err) {
+                callback(err);
+            }
+        });
+    },
+
+    getSpecialPostsByDiscussion: function(discussion_id, callback){
+        db_functions.loggedInAjax({
+            url:'/api/special_posts?discussion_id=' + discussion_id,
+            type:"GET",
+            async:true,
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function (err) {
+                callback(err, null);
+            }
+        });
+    },
+
+    getPostByTypeByDiscussion:function(discussion_id, type, callback) {
+        db_functions.loggedInAjax({
+            url:'/api/posts?discussion_id=' + discussion_id + '&order_by=-' + type + '&limit=1',
+            type:"GET",
+            async:true,
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function (err) {
+                callback(err, null);
+            }
+        });
+    },
     getCommentsBySuggestion:function (suggestion_id, callback) {
         db_functions.loggedInAjax({
             url:'/api/suggestion_posts?suggestion_id=' + suggestion_id,
             type:"GET",
             async:true,
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function (err) {
+                callback(err, null);
+            }
+        });
+    },
+
+    editDiscussionPost: function(post_id, text, callback){
+        db_functions.loggedInAjax({
+            url:'/api/posts/' + post_id,
+            type:"PUT",
+            data: {text: text},
+            async:true,
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function (err) {
+                callback(err, null);
+            }
+        });
+    },
+
+    addCommentToSuggestion : function(suggestion_id, discussion_id, text, callback){
+        db_functions.loggedInAjax({
+            url:'/api/suggestion_posts',
+            type:"POST",
+            data: {suggestion_id: suggestion_id, discussion_id: discussion_id, text: text},
+            async:true,
+
             success:function (data) {
                 console.log(data);
                 callback(null, data);
@@ -755,14 +895,31 @@ var db_functions = {
                 callback(null, data);
             },
             error:function (err) {
+                if (err.responseText != "not authenticated")
+                    if (err.responseText == "must grade discussion first"){
+                        var popupConfig = {};
+                        popupConfig.message = 'אנא דרג קודם את החזון בראש העמוד.'
+                        popupConfig.onOkCilcked = function(e){
+                            e.preventDefault();
+                            clicked = 'ok';
+                            $.colorbox.close();
+                            scrollTo('.segment.main .tags')
+                        },
+                            popupProvider.showOkPopup(popupConfig);
+                    }
                 callback(err, null);
             }
         });
     },
 
-    getSortedPostByDiscussion:function (discussion_id, sort_by, offset, callback) {
+    getSortedPostByDiscussion:function (discussion_id, sort_by, offset, limit, callback) {
+        if(typeof limit === 'function'){
+            callback = limit;
+            limit = 0;
+        }
+
         db_functions.loggedInAjax({
-            url:'/api/posts?discussion_id=' + discussion_id + "&order_by=" + sort_by + '&offset=' + offset,
+            url:'/api/posts?discussion_id=' + discussion_id + "&order_by=" + sort_by + '&limit=' + limit + '&offset=' + offset,
             type:"GET",
             async:true,
             success:function (data) {
@@ -838,9 +995,19 @@ var db_functions = {
                 callback(null, data);
             },
             error:function (err) {
-                if (err.responseText != "not authenticated")
-                    if (err.responseText == "must grade discussion first")
-                        popupProvider.showOkPopup({message:'אנא דרג קודם את החזון בראש העמוד.'})
+                if (err.responseText != "not authenticated"){
+                    if (err.responseText == "must grade discussion first"){
+                        var popupConfig = {};
+                        popupConfig.message = 'אנא דרג קודם את החזון בראש העמוד.'
+                        popupConfig.onOkCilcked = function(e){
+                            e.preventDefault();
+                            clicked = 'ok';
+                            $.colorbox.close();
+                            scrollTo('.segment.main .tags')
+                        },
+                        popupProvider.showOkPopup(popupConfig);
+                    }
+                }
                 callback(err, null);
             }
         });
@@ -971,6 +1138,21 @@ var db_functions = {
             }
         });
     },
+
+    getApprovedSuggestionsByDiscussion:function (discussion_id, limit, offset, callback) {
+        db_functions.loggedInAjax({
+            url:'/api/suggestions?discussion_id=' + discussion_id + "&is_approved=true&order_by=-approve_date" + (limit ? '&limit=' + limit : '') + (offset ? '&offset=' + offset : ''),
+            type:"GET",
+            async:true,
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function (err) {
+                callback(err, null);
+            }
+        });
+    },
     //actionType = follower or leave
     joinToDiscussionFollowers:function (discussion_id, actionType, callback) {
         db_functions.loggedInAjax({
@@ -1073,6 +1255,19 @@ var db_functions = {
     getDiscussionsByTagName:function (tag_name, callback) {
         db_functions.loggedInAjax({
             url:'/api/discussions' + (tag_name ? '?tags=' + tag_name : ''),
+            type:"GET",
+            async:true,
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            }
+        });
+    },
+
+
+    getDiscussionsById:function (discussion_id, callback) {
+        db_functions.loggedInAjax({
+            url:'/api/discussions/' + discussion_id,
             type:"GET",
             async:true,
             success:function (data) {
@@ -1273,6 +1468,17 @@ var db_functions = {
         });
     },
 
+    getApprovedActionsByCycle:function (cycle_id, limit, callback) {
+        db_functions.loggedInAjax({
+            url:'/api/actions/?cycle_id.cycle=' + cycle_id + '&is_approved=true' + (limit ? '&limit=' + limit : ''),
+            type:"GET",
+            async:true,
+            success:function (data, err) {
+                callback(data);
+            }
+        });
+    },
+
     joinOrLeaveAction:function (action_id, callback) {
         db_functions.loggedInAjax({
             url:'/api/join/',
@@ -1307,7 +1513,6 @@ var db_functions = {
         });
     },
 
-
     getPostByAction:function (action_id, callback) {
         db_functions.loggedInAjax({
             url:'/api/posts_of_action?action_id=' + action_id,
@@ -1323,7 +1528,7 @@ var db_functions = {
         });
     },
 
-    getSortedPostByAction:function (action_id, sort_by, offset, callback) {
+    getSortedPostByAction:function (action_id, sort_by, offset, limit, callback) {
         db_functions.loggedInAjax({
             url:'/api/posts_of_action?action_id=' + action_id + "&order_by=" + sort_by + '&offset=' + offset,
             type:"GET",
@@ -1560,7 +1765,7 @@ var db_functions = {
             }
         });
     },
-
+        /*
     startStopGettingEmailNotifications: function (user_id, no_mail_notifications, callback) {
         db_functions.loggedInAjax({
             type: 'PUT',
@@ -1575,6 +1780,7 @@ var db_functions = {
         });
     } ,
 
+       */
 
     submitInvitedFriends: function (object_type,object_id,facebook_ids,emails, callback) {
 
@@ -1714,14 +1920,53 @@ var db_functions = {
                 callback(err, null);
             }
         });
-    }
+    }   ,
+    activateMailNotification: function (user_id, callback) {
+        db_functions.loggedInAjax({
+            type: 'PUT',
+            async:true,
+            url: '/api/user_mail_notification_config/' + user_id,
+            data: {activate: true},
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function (err) {
+                callback(err, null);
+            }
+        });
+    } ,
+    getPressItemsByDiscussion: function(discussion_id, callback) {
+        db_functions.loggedInAjax({
+            url:'/api/press_item',
+            type:"GET",
+            async:true,
+            data:{"discussion_id":discussion_id, "limit":0},
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function (err) {
+                callback(err);
+            }
+        });
+    },
 
-
-
-
-
-
-
+    sendMailFromUserToSystem: function(mail_config, callback) {
+        db_functions.loggedInAjax({
+            url:'/api/send_mail',
+            type:"POST",
+            async:true,
+            data:{"mail_config":mail_config},
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function (err) {
+                callback(err);
+            }
+        });
+    },
 };
 
 

@@ -100,7 +100,8 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
                 like_count_prev:null,
                 last_update:null,
                 last_update_elapsed:null
-            }   ,
+            },
+            total_count:null,
             last_update_elapsed:null
         }
     },
@@ -119,6 +120,8 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
     get_object: function (req, id, callback) {
         this._super(req, id, function (err, object) {
             if (object) {
+
+                object.total_count = object.participants_count+object.fb_page.like_count ;
                 object.is_follower = false;
                 object.discussion = object.discussions[0]; //for now we have only one discussion for cycle
 
@@ -170,12 +173,6 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
 
 
                 });
-
-
-
-
-
-
             } else {
                 callback(err, object);
             }
@@ -197,7 +194,10 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
             async.forEach(results.objects, function (cycle, itr_cbk) {
                 var cycle_id = cycle.id;
 
+
+
                 cycle.participants_count = cycle.followers_count;
+                cycle.total_count = cycle.followers_count + cycle.fb_page.like_count ;
                 cycle.is_follower = false;
                 if (user_cycles) {
                     if (_.find(user_cycles, function (user_cycle) {
@@ -206,8 +206,8 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
                         cycle.is_follower = true;
                     }
                 }
-
-                models.Action.find({'cycle_id.cycle': cycle_id, is_approved: true})
+                var today =new Date();
+                models.Action.find({'cycle_id.cycle': cycle_id, is_approved: true,'execution_date.date': {$gte: today}})
                     .sort({'execution_date.date': 'descending'})
                     .limit(1)
                     .exec(function(err, actions){
@@ -216,7 +216,6 @@ var CycleResource = module.exports = common.GamificationMongooseResource.extend(
 
                         itr_cbk(err);
                     });
-
             }, function(err, obj){
                 callback(err, results);
             });

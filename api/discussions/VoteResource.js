@@ -59,7 +59,7 @@ var VoteResource = module.exports = common.GamificationMongooseResource.extend({
                     var ballance = vote_object ? vote_object.ballance || 0 : 0;
                     var ballance_delta = method == 'add' ? 1 : -1;
                     var new_ballance = ballance + ballance_delta;
-                    var limit = total_tokens > 15 ? 5 : ( total_tokens > 12 ? 4 : 3);
+                    var limit = /*total_tokens > 15 ? 5 : ( total_tokens > 12 ? 4 : 3)*/ 1;
                     //Math.abs(new_ballance)
                     if (Math.abs(new_ballance) > limit) {
                         //if(votes.length > 2 && !(votes.length == 3 && total_tokens > 12) || (votes.length == 4 && total_tokens > 15)){

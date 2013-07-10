@@ -485,11 +485,11 @@ body {
 
 #login_button a:hover
 {
-    background: url(../images/URU_Connect_btn_sprite.png) -120px 0 no-repeat;
+    background-position:-120px 0;
 }
 #login_button a:active
 {
-    background: url(../images/URU_Connect_btn_sprite.png) 0 0 no-repeat;
+    background-position:0 0;
 }
 
 .user-box {
@@ -512,11 +512,11 @@ body {
 
 .user-box a.icon:hover
 {
-    background: url(../images/URU_User.btn_sprite.png) -45px 0 no-repeat;
+    background-position:-45px 0;
 }
 .user-box a.icon:active
 {
-    background: url(../images/URU_User.btn_sprite.png) -1px 0 no-repeat;
+    background-position:-1px 0;
 }
 
 .user-box a.name{
@@ -532,21 +532,21 @@ body {
 
 .user-box a.notifications{
     position: absolute;
-    left: -7px;
-    top: -7px;
+    left: -8px;
+    top: -8px;
    /* background: url(../images/URU_User.btn_sprite.png)   -89px 1px  no-repeat; */
     background-color: #ff00af;
     display:     block;
-    width:20px;
-    height:20px;
+    width:23px;
+    height:22px;
 
-    border-radius:10px;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
+    border-radius:11px;
+    -moz-border-radius: 11px;
+    -webkit-border-radius: 11px;
     font-size:13px;
     font-weight: bold;
     color:#fff;
-    line-height: 20px;
+    line-height: 22px;
     text-align:center;
     text-decoration:none;
 
@@ -830,7 +830,7 @@ color: #ff00af;
 
 #content .add-offer h2 ,
 #content #cycle h2 {
-
+    max-width: 411px;
     border-top: 0;
     color: #50504f;
     font: normal 20px/35px 'AdumaFOTMedium';
@@ -1370,7 +1370,7 @@ color: #ff00af;
 /*------------------------*/
 .services-blue a {
     background: url(../images/services-blue.png) no-repeat;
-    width: 84px;
+    width: 130px;
     height: 139px;
     float: right;
     margin-right: 11px;
@@ -1378,32 +1378,21 @@ color: #ff00af;
     font: normal 22px/22px 'AdumaFOTMedium';
     text-align: center;
     text-decoration: none;
-    padding: 0 23px;
-    position: relative;
+    padding: 0;
+    display:table;
+    overflow:hidden;
+    position:relative;
 }
 
 .services-blue a:first-child {
     margin-right: 0;
 }
 
-.services-blue a span.text {
-    position: relative;
+.services-blue a div {
+    display:table-cell;
+    vertical-align: middle;
+    width:130px;
     z-index: 5;
-}
-
-.services-blue a.service-2 span.text {
-    display: block;
-    padding-top: 50px;
-}
-
-.services-blue a.service-1 span.text {
-    display: block;
-    padding-top: 58px;
-}
-
-.services-blue a.service-3 span.text {
-    display: block;
-    padding-top: 38px;
 }
 
 .services-blue a span.icon {
@@ -1770,6 +1759,10 @@ color: #ff00af;
     width: 304px;
     font: normal 18px/37px "AdumaFOTRegular";
     cursor: pointer;
+}
+
+.discussion-main .bottom input[type=submit].disable{
+    color: #DADADA;
 }
 
 .discussion-main .bottom label {
@@ -6074,9 +6067,23 @@ div.action_list::-webkit-scrollbar-button {
 }
 
 .cycle-content {
-    height: 250px;
+ /*   height: 250px;
     overflow: hidden;
+*/
 }
+.add-offer .text-box a.read_more{
+    text-decoration: underline;
+    float: right;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-family: arial;
+    font-size: 13px;
+ }
+
+.add-offer .text-box.text-full{
+    display: none;
+}
+
 
 #search_form {
     position: relative;
@@ -6694,11 +6701,11 @@ a.fraction-btn {
 
 .add-offer  a.green-btn:hover
 {
-    background: url(../images/Cycles_Pro_btn_sprite.png) -113px 0 no-repeat;
+    background-position:-113px 0;
 }
 .add-offer  a.green-btn:active
 {
-    background: url(../images/Cycles_Pro_btn_sprite.png) -1px 0 no-repeat;
+    background-position:-1px 0;
 }
 
 /*------------------------*/
@@ -9333,8 +9340,18 @@ a.menu-elections:hover {
     text-decoration: none;
 }
 
-.no_underline_cursor_when_hover: hover {
+.no_underline_cursor_when_hover:hover {
     cursor: pointer;
+}
+
+.underline_and_cursor_when_hover {
+    text-decoration: none;
+    color: grey
+}
+
+.underline_and_cursor_when_hover:hover {
+    cursor: pointer;
+    text-decoration:underline;
 }
 
 .register_link {
@@ -10219,6 +10236,10 @@ change .current class name using plugin option, currentPanel : 'current' */
     line-height:18px;
 }
 
+.email_settings #all_discussions label{
+    margin-bottom: 5px;
+}
+
 .email_settings label.title{
     font-size:14px;
     font-weight:bold;
@@ -10303,6 +10324,10 @@ change .current class name using plugin option, currentPanel : 'current' */
     display:none;
 }
 
+#close_noti_mail{
+    float: left;
+    margin-left: 345px;
+}
 /* Email Setings Page - End*/
 
 a.facebook_join
@@ -10316,13 +10341,31 @@ a.facebook_join
 
 a.facebook_join:hover
 {
-    background: url(../images/URU_FB_Connect_btn_sprite.png) 0 -42px no-repeat;
+    background-position:0 -42px;
 }
 a.facebook_join:active
 {
-    background: url(../images/URU_FB_Connect_btn_sprite.png) 0 -84px no-repeat;
+    background-position:0 -84px;
 }
 
 .sb-title   a.facebook_join{
     display: none;
+}
+
+.settings_box{
+    position: relative;
+}
+.spinner{
+    height:16px;
+    padding-right: 16px;
+    background: url(../images/select2/spinner.gif) 0 0 no-repeat;
+}
+.settings_box .notification{
+    display: none;
+    position: absolute;
+    bottom: 10px;
+    left:10px;
+}
+body a#fdbk_tab {
+    background-image: url(../images/support_trans_tab.png);
 }

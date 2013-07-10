@@ -65,7 +65,10 @@ var NotificationCategoryResource = module.exports = resources.MongooseResource.e
                 //for the share part
                 img_src: null,
                 title: null,
-                text_preview: null
+                text_preview: null,
+
+                //for mail_settings part
+                mail_settings_link: null
 
             }
         },
@@ -143,6 +146,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, action_posts_
                         //for fb share
                         notification.img_src = notification.pic;
                         notification.title = discussion.title;
+                        notification.mail_settings_link = "/mail_settings/discussion/" + discussion.id + '?force_login=1';
                         notification.text_preview = discussion.text_field_preview;
                     }
 
@@ -172,6 +176,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, action_posts_
                         notification.img_src = notification.pic;
                         notification.title = discussion.title;
                         notification.text_preview = discussion.text_field_preview;
+                        notification.mail_settings_link = "/mail_settings/discussion/" + discussion.id + '?force_login=1';
                     }
 
                     if (num_of_comments > 1) {
@@ -198,6 +203,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, action_posts_
                         notification.img_src = notification.pic;
                         notification.title = discussion.title;
                         notification.text_preview = discussion.text_field_preview;
+                        notification.mail_settings_link = "/mail_settings/discussion/" + discussion.id + '?force_login=1';
                     }
 
                     if (num_of_comments > 1) {
@@ -225,6 +231,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, action_posts_
                         notification.img_src = notification.pic;
                         notification.title = discussion.title;
                         notification.text_preview = notification.text_field_preview;
+                        notification.mail_settings_link = "/mail_settings/discussion/" + discussion.id + '?force_login=1';
                     }
                     if (num_of_comments > 1) {
                         notification.user = num_of_comments + " " + "אנשים";
@@ -244,16 +251,20 @@ var iterator = function (users_hash, discussions_hash, posts_hash, action_posts_
                     if(discussion){
                         notification.part_two = discussion.title;
                         notification.link_two = "/discussions/" + discussion._id;
-                        notification.main_link = "/discussions/" + discussion._id;
+                        notification.main_link = "/discussions/" + discussion._id + '#post_' + post_id;
                         notification.pic = discussion.image_field_preview || discussion.image_field;
 
                         notification.img_src = notification.pic;
                         notification.title = discussion.title;
                         notification.text_preview = discussion.text_field_preview;
 
-                        //SAAR: is this still used?
+                        /*//SAAR: is this still used?
                         notification.old_text= discussion.vision_text_history == undefined?'': discussion.vision_text_history[discussion.vision_text_history.length - 1];
-                        notification.new_text= discussion.text_field;
+                        notification.new_text= discussion.text_field;*/
+
+                        notification.old_text = discussion.replaced_text_history == undefined?'': discussion.replaced_text_history[discussion.replaced_text_history.length - 1].old_text;
+                        notification.new_text = discussion.replaced_text_history == undefined?'': discussion.replaced_text_history[discussion.replaced_text_history.length - 1].new_text;
+                        notification.mail_settings_link = "/mail_settings/discussion/" + discussion.id + '?force_login=1';
                     }
                     itr_cbk();
                     break;
@@ -261,7 +272,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, action_posts_
                 case "approved_change_suggestion_on_discussion_you_are_part_of":
                     notification.part_one = "התקבלה הצעה לשינוי שדירגת בדיון - ";
                     if(discussion){
-                        notification.main_link = "/discussions/" + discussion._id;
+                        notification.main_link = "/discussions/" + discussion._id + "#post_" +  post_id;
                         notification.pic = discussion.image_field_preview || discussion.image_field;
                         notification.part_two = discussion.title;
                         notification.link_two = "/discussions/" + discussion._id;
@@ -270,9 +281,13 @@ var iterator = function (users_hash, discussions_hash, posts_hash, action_posts_
                         notification.title = discussion.title;
                         notification.text_preview = discussion.text_field_preview;
 
-                        //SAAR: is this still used?
+                       /* //SAAR: is this still used?
                         notification.old_text= discussion.vision_text_history==undefined?'': discussion.vision_text_history[discussion.vision_text_history.length - 1];
-                        notification.new_text= discussion.text_field;
+                        notification.new_text= discussion.text_field;*/
+
+                        notification.old_text = discussion.replaced_text_history == undefined?'': discussion.replaced_text_history[discussion.replaced_text_history.length - 1].old_text;
+                        notification.new_text = discussion.replaced_text_history == undefined?'': discussion.replaced_text_history[discussion.replaced_text_history.length - 1].new_text;
+                        notification.mail_settings_link = "/mail_settings/discussion/" + discussion.id + '?force_login=1';
                     }
                     itr_cbk();
                     break;
@@ -293,6 +308,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, action_posts_
                         //SAAR: is this still used?
                         notification.quote_link  = "/discussions/" + discussion._id + '#post_' + post_id;
                         notification.discussion_link = "/discussions/" + discussion._id;
+                        notification.mail_settings_link = "/mail_settings/discussion/" + discussion.id + '?force_login=1';
                     }
                     if(user_obj){
                          notification.user = user_obj.first_name + " " + user_obj.last_name;
@@ -352,7 +368,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, action_posts_
                         notification.img_src = notification.pic;
                         notification.link_two = "/actions/" + action._id;
                         notification.part_two = action.title;
-                        notification.part_three = " במסגרת מעגל התנופה ";
+                        notification.part_three = " במסגרת הקמפיין ";
                         notification.link_four = "/cycles/" + action.cycle_id[0].cycle;
                         notification.main_link = "/actions/" + action._id;
                         models.Cycle.findById(action.cycle_id[0].cycle, {title : 1}, function(err, cycle){
@@ -378,7 +394,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, action_posts_
                         }
 
                     }
-                    notification.part_three = " שיצרת במעגל התנופה ";
+                    notification.part_three = " שיצרת בקמפיין ";
 
                     if(action){
                         notification.link_two = "/actions/" + action._id;
@@ -408,7 +424,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, action_posts_
                             notification.user_link = "/myuru/" + user_obj._id + "";
                         }
                     }
-                    notification.part_three = " שבמעגל התנופה ";
+                    notification.part_three = " שבקמפיין ";
 
                     if(action){
                         notification.link_two = "/actions/" + action._id;
@@ -427,7 +443,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, action_posts_
                     break;
 
                 case "action_suggested_in_cycle_you_are_part_of":
-                    notification.part_one = "למעגל התנופה ";
+                    notification.part_one = "לקמפיין ";
                     notification.part_three = " נוסף רעיון לפעולה: "
                     if(cycle){
                         notification.link_two = "/cycles/" + cycle.id;
@@ -453,7 +469,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, action_posts_
                     break;
 
                 case "action_you_created_was_approved":
-                    notification.part_one = "הרעיון שהעלית לפעולה במעגל התנופה ";
+                    notification.part_one = "הרעיון שהעלית לפעולה בקמפיין ";
                     notification.part_three = " התקבל ויוצא לדרך!";
                     if(cycle){
                         notification.link_two = "/cycles/" + cycle.id;
@@ -472,11 +488,11 @@ var iterator = function (users_hash, discussions_hash, posts_hash, action_posts_
                     var num_of_joined = notification.notificators.length;
                     if(num_of_joined > 1) {
                         notification.user = num_of_joined + " חברי עורו";
-                        notification.part_one = " הביעו תמיכה ברעיון לפעולה שהעלית במעגל התנופה ";
+                        notification.part_one = " הביעו תמיכה ברעיון לפעולה שהעלית בקמפיין ";
                     } else {
                         if(user_obj)
                         notification.user = user_obj.first_name + " " + user_obj.last_name;
-                        notification.part_one = " הביע תמיכה ברעיון לפעולה שהעלית במעגל התנופה "
+                        notification.part_one = " הביע תמיכה ברעיון לפעולה שהעלית בקמפיין "
                         notification.user_link = "/myuru/" + user_obj._id + '';
                     }
                     if(action){
@@ -493,7 +509,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, action_posts_
                     break;
 
                 case "action_you_are_participating_in_was_approved":
-                    notification.part_one = "הרעיון לפעולה שהשתתפת בו במעגל התנופה ";
+                    notification.part_one = "הרעיון לפעולה שהשתתפת בו בקמפיין ";
                     notification.part_three = " התקבל ויוצא לדרך!";
                     if(cycle){
                         notification.link_two = "/cycles/" + cycle.id;
@@ -508,7 +524,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, action_posts_
                     itr_cbk();
                     break;
                 case "action_added_in_cycle_you_are_part_of":
-                    notification.part_one = "למעגל התנופה ";
+                    notification.part_one = "לקמפיין ";
                     notification.part_three = " שבהשתתפותך נוספה פעולה חדשה - "
                     if(cycle){
                         notification.link_two = "/cycles/" + cycle.id;
@@ -533,7 +549,7 @@ var iterator = function (users_hash, discussions_hash, posts_hash, action_posts_
                     break;
                 case "update_created_in_cycle_you_are_part_of":
                     notification.html_version = true;
-                    notification.part_one = "פריט מידע חדש נוסף למעגל תנופה ";
+                    notification.part_one = "פריט מידע חדש נוסף לקמפיין ";
                     notification.part_three = " שבהשתתפותך - ";
                     if(cycle){
                         notification.link_two = "/cycles/" + cycle.id;
@@ -878,7 +894,9 @@ var populateNotifications = module.exports.populateNotifications = function(resu
         "comment_on_discussion_you_are_part_of",
         "comment_on_discussion_you_created",
         "change_suggestion_on_discussion_you_are_part_of",
-        "change_suggestion_on_discussion_you_created"
+        "change_suggestion_on_discussion_you_created",
+        "approved_change_suggestion_you_created",
+        "approved_change_suggestion_on_discussion_you_are_part_of",
     ];
 
     var action_post_notification_types = [
@@ -1114,7 +1132,7 @@ var populateNotifications = module.exports.populateNotifications = function(resu
 
         function(cbk){
             if(post_ids.length)
-                models.Post.find({},{'id':1, 'text':1})
+                models.PostOrSuggestion.find({},{'id':1, 'text':1})
                     .where('_id').in(post_ids)
                     .exec(function (err, posts_items) {
 

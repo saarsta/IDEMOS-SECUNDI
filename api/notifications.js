@@ -253,7 +253,28 @@ var sendNotificationToUser = function (notification) {
      */
 
     var email;
-    var  uru_group = ['saarsta@gmail.com', 'konfortydor@gmail.com', 'aharon@uru.org.il', 'poaharon@gmail.com', 'aharon.porath@gmail.com', 'liorur@gmail.com', 'maya@uru.org.il', 'urip@uru.org.il', 'tahel@uru.org.il', 'yoni@uru.org.il', 'noa@uru.org.il'];
+    var  uru_group = [
+        /*'saarsta@gmail.com',*/
+        'konfortydor@gmail.com',
+        'aharon@uru.org.il',
+        'poaharon@gmail.com',
+        'aharon.porath@gmail.com',
+        'liorur@gmail.com',
+        'maya@uru.org.il',
+        'urip@uru.org.il',
+        'tahel@uru.org.il',
+        'yoni@uru.org.il',
+        'noa@uru.org.il',
+        'uri@uru.org.il',
+        'noa@uru.org.il',
+        'yoni@uru.org.il',
+        'tahel@uru.org.il',
+        'maya@uru.org.il',
+        'Adi@uru.org.il',
+        'aya@uru.org.il',
+        'shay@uru.org.il',
+        'liat@uru.org.il'
+    ];
 
     if (SEND_MAIL_NOTIFICATION)
         async.waterfall([
@@ -282,11 +303,18 @@ var sendNotificationToUser = function (notification) {
                 if (!user) {
                     cbk("user not found");
                     return;
+                }else{
+                    models.User.find({"discussions.discussion_id" : "51163023533d920200000025"}, function(err, users){
+                        cbk(err, user, users);
+                    });
                 }
+            },
 
+            function(user, users, cbk){
                 //TODO just for debugging
                 email = user.email;
-                 if(!_.any(uru_group, function(mail) { return email === mail })) {
+
+                if(!_.any(uru_group, function(mail) { return email === mail }) && !_.any(users, function(user) { return email === user.email })) {
                     cbk('we send mail only to uru_group for now');
                     return
                 }
@@ -315,19 +343,16 @@ var sendNotificationToUser = function (notification) {
             },
             // 5) send message
             function (message, cbk) {
-                if (_.any(uru_group, function(mail) { return email === mail }))
-                    mail.sendMailFromTemplate(email, message, cbk);
-                else
-                    cbk(null);
+                mail.sendMailFromTemplate(email, message, cbk);
             }
         ],
             // Final
             function (err) {
                 if (err) {
                     if (err != 'break') {
-                        console.error('failed sending notification to user');
+                        /*console.error('failed sending notification to user');
                         console.error(err);
-                        console.trace();
+                        console.trace();*/
                     }
                 }
                 else {
@@ -502,7 +527,27 @@ function isNotiInUserMailConfig(user, noti){
 
         if (!discussion) return false;
 
-        if (discussion.get_alert_of_approved_suggestions !== false) return false;
+        console.log('*******');
+        console.log(discussion.discussion_id);
+        console.log('*******');
+
+        console.log('*******');
+        console.log(user.first_name);
+        console.log('*******');
+
+        console.log('*******');
+        console.log(discussion);
+        console.log('*******');
+
+        console.log('*******');
+        console.log(discussion.get_alert_of_approved_suggestions);
+        console.log('*******');
+
+        console.log('**********');
+        console.log(discussion.get_alert_of_approved_suggestions === false);
+        console.log('**********');
+
+        if (discussion.get_alert_of_approved_suggestions === false) return false;
 
         if (discussion.time_of_alert === 'now') {
             return true;

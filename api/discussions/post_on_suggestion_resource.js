@@ -10,7 +10,7 @@ var PostOnSuggestionResource = module.exports = common.GamificationMongooseResou
     init:function () {
 
         this._super(models.PostSuggestion, null, 0);
-        this.allowed_methods = ['get', 'post'];
+        this.allowed_methods = ['get', 'post', 'delete'];
         this.authorization = new common.TokenAuthorization();
         this.authentication = new common.SessionAuthentication();
         this.filtering = {suggestion_id: null};
@@ -25,7 +25,8 @@ var PostOnSuggestionResource = module.exports = common.GamificationMongooseResou
             creation_date: null,
             _id:null,
             discussion_id:null,
-            suggestion_id: null
+            suggestion_id: null,
+            is_my_comment: null
         };
         this.default_limit = 50;
     },
@@ -44,6 +45,9 @@ var PostOnSuggestionResource = module.exports = common.GamificationMongooseResou
                     post.avatar = post.creator_id.avatar_url();
                     post.username = post.creator_id.toString();
                     post.creator_id = post.creator_id.id;
+
+                    //set is_my_comment flag
+                    post.is_my_comment = (req.user.id + "" === (post.creator_id && post.creator_id + ""));
                 });
             }
 
@@ -60,7 +64,20 @@ var PostOnSuggestionResource = module.exports = common.GamificationMongooseResou
         fields.last_name = user.last_name;
 
         self._super(req, fields, function(err, post_suggestion){
+            post_suggestion.avatar = req.user.avatar_url();
+            post_suggestion.username = req.user + "";
+
             callback(err, post_suggestion);
         });
+    },
+
+    delete_obj: function(req,object,callback){
+        if (object.creator_id && (req.user.id === object.creator_id.id)){
+            object.remove(function(err){
+                callback(err);
+            })
+        }else{
+            callback({err: 401, message :"user can't delete posts of others"});
+        }
     }
 });

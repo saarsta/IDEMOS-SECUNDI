@@ -1,0 +1,69 @@
+<div id="post_{_id}" class="comment-one {#isFirst} noBorder{:else}{/isFirst} {#isEven} comment-one-even{:else}{/isEven}"
+     data-id="{_id}" data-ref-id="{ref_to_post_id}" data-num-given-mandates="{mandates_curr_user_gave_creator}"
+     data-creator_name="{creator_id.first_name} {creator_id.last_name}"
+     data-creator_id="{creator_id.id}"
+     data-num_of_proxies="{creator_id.num_of_proxies_i_represent}">
+
+    <div class="user-right user-right-small side_menu">
+        <span class="arrow"></span>
+        <div class="left">
+            <a id="add_or_remove_proxy" href="javascript:void(0);" disabled="disabled">
+                תן מנדט
+            </a>
+            <a href="javascript:void(0);" class="follow_user gray_and_soon">
+                עקוב
+            </a>
+            <a href="javascript:void(0);"  class="gray_and_soon">
+                שלח הודעה
+            </a>
+        </div>
+        <div class="right">
+
+            <a href="/myuru/{creator_id.id}">
+                <div class="img-box transparent-img">
+                    <div style="width:60px; height:64px;" class="auto-scale">
+                        <img data-bablic-exclude alt="{title}" title="{creator_id.first_name} {creator_id.last_name}"
+                             src="{?creator_id}{creator_id.avatar_url}{:else}/images/default_user_img.gif{/creator_id}">
+                    </div>
+                    <span></span>
+                </div>
+            </a>
+
+            <h4 data-bablic-exclude>  {creator_id.first_name} {creator_id.last_name}</h4>
+            <div class="proxy">
+                <span>{creator_id.num_of_proxies_i_represent}</span>
+            </div>
+            <div class="respect">
+                <span>{creator_id.score}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="text">
+        <a style="text-decoration: none" href="/discussions/{discussion_id}#post_{_id}" class="date">{creator_id.username} {?creation_date}{creation_date|time}{/creation_date}</a>
+        <div class="post_text">                 {text|s|post}           </div>
+    </div>
+    <div class="btn-box">
+        <a class="quote_button" href="javascript:void(0);">
+            צטט
+        </a>
+        <a class="share" data-img_src="{image_field_preview}" data-text_preview="{text|comment}" data-title="תגובה מתוך דיון על החזון {title}" rel="/discussions/{discussion_id}#post_{_id}"
+           data-text_preview="{text|comment}"  href="/facebookShare?link=/discussions/{discussion_id}#post_{_id}" target="_blank">
+            שתף
+        </a>
+        <div class="like-btn fb-like"
+             data-href="http://www.uru.org.il/discussions/{discussion_id}/posts/{_id}"
+             data-send="false" data-layout="button_count" data-width="450" data-show-faces="false">
+        </div>
+    </div>
+    <div class="ratio">
+        <div class="ratio-spacer"></div>
+        <div class="ratio-content">
+            <a href="javascript:void(0);" class="up vote_for {?voter_balance}balance{voter_balance}{/voter_balance}"></a>
+            <div class="count">{voting|round}</div>
+            <a href="javascript:void(0);" class="down vote_against {?voter_balance}balance{voter_balance}{/voter_balance}"></a>
+        </div>
+
+    </div>
+
+</div>

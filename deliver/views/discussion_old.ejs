@@ -431,7 +431,7 @@ $(document).ready(function () {
     db_functions.getDiscussionShoppingCart(discussion_id, function (err, data) {
 
         $.each(data.objects, function (index, item) {
-            dust.render('discussion_information_item', item, function (err, out) {
+            dust.render('discussion_information_item_old', item, function (err, out) {
                 $('.slide-c').append(out);
             });
         });
@@ -483,7 +483,7 @@ $(document).ready(function () {
         e.preventDefault();
     });
 
-    $("#discussion_content").select(function () {
+/*    $("#discussion_content").select(function () {
         range = $(this).getSelection();
         flag = false;
         db_functions.getSuggestionByDiscussion(discussion_id, null, null, function(err, suggestions){
@@ -503,7 +503,7 @@ $(document).ready(function () {
         });
 
         console.log(range);
-    });
+    });*/
 
 
     $('#pop_suggest_bt').on("click", function (e) {
@@ -764,8 +764,8 @@ $(document).ready(function () {
 
             dust.render('discussion_suggestion_old', suggestion, function (err, out) {
                 $('#suggestion_list').prepend(out);
-                image_scale($('#suggestion_list .auto-scale img'));
-                var suggestion_grade_val = suggestion.grade_obj ? suggestion.grade_obj.evalueation_grade : my_discussion_grade;
+                image_autoscale($('#suggestion_list .auto-scale img'));        
+				var suggestion_grade_val = suggestion.grade_obj ? suggestion.grade_obj.evalueation_grade : my_discussion_grade;
                 suggest_grade_id[suggestion.id] = suggestion.grade_obj ? suggestion.grade_obj._id : null;
                 $(".suggest_slider_" + suggestion.id).slider({
                     value:suggestion_grade_val,
@@ -891,7 +891,7 @@ $(document).ready(function () {
             comments[i].isEven = ((i % 2)== 0);
             comments[i].voting =      comments[i].votes_for - comments[i].votes_against;
         }
-        dust.renderArray('discussion_comment', comments, null, function (err, out) {
+        dust.renderArray('discussion_comment_old', comments, null, function (err, out) {
             if (!err) {
                 var comments = $("#comments");
                 comments.append(out);
@@ -903,7 +903,7 @@ $(document).ready(function () {
                             var post_id = match[1];
 
                             db_functions.getPostById(post_id, function (err, post) {
-                                dust.render('discussion_comment', post, function (err, out) {
+                                dust.render('discussion_comment_old', post, function (err, out) {
                                     if (!err)
                                         comments.append(out);
                                     scrollTo(hash);
@@ -1017,7 +1017,7 @@ $(document).ready(function () {
                     if (my_id)
                         setUserScore(my_id, post.creator_id.score);
                     post.voting = post.votes_for - post.votes_against;
-                    dust.render('discussion_comment', post, function (err, out) {
+                    dust.render('discussion_comment_old', post, function (err, out) {
                         $("#comments").append(out);
                         $("textarea#discussion_comment").val('');
                         new_post_ref_id = null;

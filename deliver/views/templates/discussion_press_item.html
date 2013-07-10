@@ -1,0 +1,18 @@
+<div class="item" data-source="{link}">
+    <div class="title">
+        {?source_image}
+        <img class="logo" src="/images/media/{source_image}" />
+        {/source_image}
+        <span class="date">	{date|date}</span>
+										<span class="text">
+										{title}
+										</span>
+    </div>
+    {?image_field}
+
+    <div id="discussion_image" style="width: 190px;height: 131px; overflow:hidden;" class=' photo auto-scale  img_holder'>
+        <img src="{image_field.url}" />
+    </div>
+    {/image_field}
+    <div class="text">{abstract} </div>
+</div>

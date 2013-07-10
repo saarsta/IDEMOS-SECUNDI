@@ -81,6 +81,20 @@ dust.filters['post'] = function(text) {
     return text;
 }
 
+dust.filters['new_post'] = function(text) {
+    var isHtml = text.indexOf('<p') == 0;
+    text = dust.filters['tags'](text);
+    text = text.replace(/\[(?:quote|ציטוט)=(?:"|&quot;)(.*?)(?:"|&quot;)\s*\]\n?((?:.|\n)*?)\n?\[\/(?:quote|ציטוט)\]\n?/g,
+        '<div class="quote" ><a class="ref_link" href="javascript:void(0);" style="display: block; margin-bottom: 8px; text-decoration: underline;">' +
+            ' $1:' +
+            '</a>' +
+            '$2' +
+            '</div>');
+    if(!isHtml)
+        text = text.replace(/\n/g,'<br>');
+    text = text + '</span></p>';
+    return text;
+}
 
 dust.filters['qa'] = function(text) {
     text = dust.filters['tags'](text);
@@ -96,6 +110,11 @@ dust.filters['comment'] = function(text) {
     text = text.replace(/\[(?:quote|ציטוט)=(?:"|&quot;)([^"&]*)(?:"|&quot;)\s*\]\n?((?:.|\n)*)?\n?\[\/(?:quote|ציטוט)\]\n?/g,'');
     return text;
 };
+
+dust.filters['link'] = function replaceURLWithHTMLLinks(text) {
+    var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+    return text.replace(exp,"<a href='$1'>$1</a>");
+}
 
 dust.renderArray = function(template,arr,callback,endCallback)
 {
@@ -233,7 +252,6 @@ $(function(){
             popupProvider.showOkPopup({
                 message:'הסיסמא שונתה בהצלחה.'
             });
-
     }
 
 
@@ -284,8 +302,8 @@ $(function(){
                 console.error(err);
                 $("#login_head").text("קרתה תקלה");
             }
-        })
-    })
+        });
+    });
 
 
     var host = window.location.protocol + '//' + window.location.host;
@@ -380,8 +398,6 @@ $.fn.autoscale = $.fn.imgscale;
 function image_autoscale(obj, params) {
     $(obj).autoscale(params);
 };
-
-
 
 //animateCluster([$('#d1'),$('#d2')]);
 //animateCluster([$('#a1'),$('#a2'),$('#a3'),$('#a4')]);

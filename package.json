@@ -1,29 +1,36 @@
 {
-    "name": "URU",
-    "version": "1.0.0",
-    "private": true,
-    "dependencies": {
-        "express": "3.x.x",
-        "ejs": "0.x.x",
-        "connect-auth": "0.x.x",
-        "mongoose": "3.x.x",
-        "jest": "0.1.30",
-        "async": "0.1.x",
-        "jade": "0.27.x",
-        "underscore": "1.x.x",
-        "dustjs-linkedin": "1.x.x",
-        "request": "2.x.x",
-        "logging": "2.x.x",
-        "sendgrid": "0.2.x",
-        "xml": "0.0.x",
-        "formage-admin": ">= 1.0.3",
-        "facebook-signed-request": "0.0.x",
-        "knox": "0.0.11" ,
-        "jquery": "latest",
-        "zombie": "latest"
-    },
-    "engines": {
-        "node": "0.8.x",
-        "npm": ">= 1.1.65"
-    }
+  "name": "URU",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "express": "3.x.x",
+    "ejs": "0.x.x",
+    "connect-auth": "0.x.x",
+    "mongoose": "3.x.x",
+    "jest": "0.1.30",
+    "async": "0.1.x",
+    "jade": "0.27.x",
+    "underscore": "1.x.x",
+    "dustjs-linkedin": "1.x.x",
+    "request": "2.x.x",
+    "logging": "2.x.x",
+    "sendgrid": "0.2.x",
+    "xml": "0.0.x",
+    "formage": "git://github.com/IshaiJaffe/formage003fix.git",
+    "formage-admin": "1.0.3",
+    "facebook-signed-request": "0.0.x",
+    "knox": "0.0.11",
+    "grunt": "~0.4.1",
+      "grunt-contrib-concat": "~0.3.0",
+      "grunt-contrib-uglify": "~0.2.0"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-uglify": "~0.2.0",
+    "grunt-contrib-concat": "~0.3.0"
+  },
+  "engines": {
+    "node": "0.8.x",
+    "npm": ">= 1.1.65"
+  }
 }

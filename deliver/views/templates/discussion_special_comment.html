@@ -1,0 +1,35 @@
+<div class="{type}  special_comment">
+    <h2 class="title">{title}</h2>
+    <div class="comment_wrapper" data-id="{_id}">
+        <div class="comment_details person" data-id="{creator_id.id}" data-name="{creator_id.first_name} {creator_id.last_name}">
+            <a href="/myuru/{creator_id.id}">
+                <div class="img-box" style="overflow: hidden;">
+                    <div class="photo auto-scale" style="height:64px">
+                        <img src="{?creator_id}{creator_id.avatar_url}{:else}/images/default_user_img.gif{/creator_id}" />
+                    </div>
+                    <span></span>
+                </div>
+            </a>
+            <div class="name">
+                {creator_id.first_name} {creator_id.last_name}
+            </div>
+            <div class="actions_box_container"><div class="actions_box">
+                <div id="add_or_remove_proxy" class="action">תן מנדט</div>
+                <div class="action gray_and_soon">שלח הודעה</div>
+                <div class="action gray_and_soon">עקוב</div>
+            </div> </div>
+            <div class="date_time">
+                <span class="time">{creator_id.username} {?creation_date}{creation_date|time_only}{/creation_date}</span>
+                <span class="date">{?creation_date}{creation_date|date}{/creation_date}</span>
+            </div>
+            <div class="ratings">
+                <span class="friends">{creator_id.num_of_proxies_i_represent}</span>
+                <span class="awards">{creator_id.score}</span>
+            </div>
+        </div>
+        <div class="content">
+            <div class="rating"><span>דירוג:</span><span class="good">{votes_for|round}</span><span class="bad">{votes_against|round}</span></div>
+            {text|s|new_post}
+        </div>
+    </div>
+</div>

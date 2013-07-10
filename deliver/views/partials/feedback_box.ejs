@@ -1,0 +1,60 @@
+<div class="feedback-box closed">
+    <div class="upper-segment">
+        לדיווח על תקלות והצעות לשיפור
+    </div>
+    <div class="lower-segment">
+        <form id="feedback-form">
+            <textarea></textarea>
+            <input id="submit_feedback" type="submit" value="שלח"> </input>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var is_logged = "<%=user_logged ? true : ''%>";
+
+        $('.upper-segment').click(function() {
+            if (!is_logged){
+                //open popup window
+                connectPopup(function(err){
+                    if (!err) {
+                        window.location = window.location;
+                    }
+                });
+            }else{
+                $('.lower-segment').slideToggle('slow');
+            }
+        });
+
+        $('#submit_feedback').click(function() {
+
+            var popupConfig = {};
+            popupConfig.message = "הודעתך נשלחה. תודה";
+            popupConfig.onOkCilcked = function(e){
+                e.preventDefault();
+                clicked = 'ok';
+                $.colorbox.close();
+                $('.lower-segment').slideToggle('slow');
+                $('#feedback-form textarea').val('');
+            },
+            popupProvider.showOkPopup(popupConfig);
+
+
+            var mail_config = {};
+            mail_config.to = "movilim@uru.org.il";
+            mail_config.subject = "feedback";
+            mail_config.explanation = $('#feedback-form textarea').val();
+            db_functions.sendMailFromUserToSystem(mail_config, function(err, data){
+                if(err){
+                    console.log(err);
+                }else{
+                  //  $('.lower-segment').slideToggle('slow');
+                }
+            });
+            return false;
+        });
+    });
+
+</script>

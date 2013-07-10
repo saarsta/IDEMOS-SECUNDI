@@ -29,7 +29,10 @@
 
 
                 </div>
+                <% if(item.subject_id[0]) { %>
                 <h2><a href="/information_items/subject/<%= item.subject_id[0].id %>"><%= item.subject_id[0].name %></a>  <% if(tag_name) { %> <a class="last_breadcrum" href="/information_items/subject/<%= item.subject_id[0].id %>?tag_name=<%= tag_name %>"><%= tag_name %></a><% } %></h2>
+                <% } %>
+
                 <div class="text cf">
                     <h3><%=item.title%></h3>
                     <div class="tags-wrap">
@@ -64,7 +67,9 @@
                     </div>
                 </div>
             </div>
+            <% if(item.subject_id[0]) { %>
             <% subject= item.subject_id[0] %>
+            <% } %>
             <% include partials/shopping_cart.ejs %>
         </div>
     </div>

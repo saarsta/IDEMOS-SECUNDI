@@ -9,7 +9,7 @@
 <head>
     <% include partials/head.ejs %>
     <% include partials/facebook.ejs %>
-    <script src="/js/autocompleteTag.js"></script>
+    <script src="/js/lib/autocompleteTag.js"></script>
 </head>
 <body>
 <% include partials/body_top.ejs %>
@@ -223,13 +223,13 @@
         var is_logged = <%= user_logged %>;
         var is_cup_for_create_discussion = <%= is_cup_for_create_discussion %>;
 
-        if(!(is_logged && is_cup_for_create_discussion)){
+        // no ned for that for now (till tokens issue is ready)
+        /*if(!(is_logged && is_cup_for_create_discussion)){
             var message = is_logged ? "כדי לפתוח דיון חדש עליך לצבור קודם 10 אסימונים" : 
                     "כדי לפתוח דיון חדש עליך להיות מחובר למערכת ולצבור קודם 10 אסימונים" +
                             "<p><a href='../../account/login'>לחץ כאן כדי להירשם</a></p>";
             popupProvider.showOkPopup({message: message});
-        }
-
+        }*/
 
         var discussion_image = {};
 
@@ -284,6 +284,11 @@
          		    $(element).removeClass('error').addClass('valid');
          	    },
            		submitHandler: function(form) {
+
+                   if ($('.discussion-main .bottom input[type=submit]').hasClass('disable')) return false;
+
+                   $('.discussion-main .bottom input[type=submit]').addClass('disable');
+
                      var title = $("#title").val(),
                      vision = $("#vision").val(),
                      first_post = $("#first_post").val();
@@ -336,7 +341,6 @@
                                          {
                                             window.location.replace("/discussions/" + created_discussion_id);
                                          }
-
                                      }
                                  });
                              }else{

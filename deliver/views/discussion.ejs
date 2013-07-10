@@ -10,18 +10,17 @@ var error_message = error_message || '';
 
     <% include partials/head.ejs %>
     <link href="/css/discussions.css" rel="stylesheet" />
+    <script type="text/javascript">(function() {var walkme = document.createElement('script'); walkme.type = 'text/javascript'; walkme.async = true; walkme.src = 'http://cdn.walkme.com/users/fbe41f50a09e4a8ba45f62f7c62bf9e2/walkme_fbe41f50a09e4a8ba45f62f7c62bf9e2.js'; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(walkme, s);})();</script>
 </head>
 <body>
 <% include partials/body_top.ejs %>
 <div id="wrap" class="discussions_page">
-
     <div id="header">
         <% include partials/menu.ejs %>
         <% include partials/user_box.ejs %>
         <% include partials/failures.ejs %>
         <% include partials/tag_search.ejs %>
     </div>
-
     <div id="content_wrapper">
         <div id="content_main_wrapper">
             <div id="content_main_holder">
@@ -30,17 +29,15 @@ var error_message = error_message || '';
                         <h2 class="title topic"><%=discussion.subject_name%> <img src="/images/arrow_left.png" /></h2>
                         <h2 class="title">  <%=discussion.title%> </h2>
                         <div class="social_holder">
-                            <a class="share_icon" href=""><img src="/images/icon_fb.png"></a>
-                            <a class="share_icon" href=""><img src="/images/icon_tw.png"></a>
-                            <a class="share_icon" href=""><img src="/images/icon_gp.png"></a>
-                            <a class="share_icon" href=""><img src="/images/icon_email.png"></a>
+                            <a id="facebook_share" class="share_icon" href="javascript: void(0)"><img src="/images/icon_fb.png"></a>
+                            <a id="twitter_share" class="share_icon" href="javascript: void(0)"><img src="/images/icon_tw.png"></a>
+                            <a id="google_plus_share" class="share_icon" href="javascript: void(0)"><img src="/images/icon_gp.png"></a>
+                            <a class="share_icon" href="javascript: void(0)"><img src="/images/icon_email.png"></a>
                         </div>
                         <% if(discussion.creator_id){ %>
                         <div class="author">הדיון נפתח ע"י: <a href="/myuru/<%=discussion.creator_id._id%>"> <%=discussion.creator_id.first_name+ " " +discussion.creator_id.last_name %> </a></div>
                         <% } %>
                         <hr />
-
-
                         <div id="short">
 
                             <div id="discussion_image" style="width: 260px;height: 190px; overflow:hidden;" class='auto-scale  img_holder'>
@@ -48,19 +45,19 @@ var error_message = error_message || '';
                             </div>
 
                             <div class="text main_text" style="max-height:180px">
-                                <%=discussion.text_field%>
+
+                                <%- discussion.text_field.replace(/\n/g, '<br>') %>
                             </div>
-                            <a class="read_more" href="javascript:void(0);">המשך קריאה</a>
+                            <a class="read_more" href="javascript:void(0);">להמשך קריאה ולעריכת המסמך</a>
                         </div>
 
                         <div id="full">
-                            <div class="msg">בחר בעזרת הסמן איזורים בטקסט שברצונך להציע לשנותם</div>
-
-
-                            <textarea id="discussion_content" class=""><%=discussion.text_field%></textarea>
-                            <a class="read_more" href="javascript:void(0);">סגור מאמר</a>
-
-
+                            <div class="msg">
+                                בחר בעזרת הסמן קטעי טקסט שברצונך לשנות. לחץ על קטעים מסומנים כדי לראות הצעות שהעלו אחרים
+                            </div>
+                            <div id="discussion_content" class=""><%- discussion.text_field.replace(/\n/g, '<br />') %></div>
+                            <textarea id="discussion_content_textarea" class="hidden_textarea"><%=discussion.text_field%></textarea>
+                            <a class="read_less" href="javascript:void(0);">סגור</a>
                         </div>
 
                         <% if( discussion.sub_branding && discussion.sub_branding.length>0) { %>
@@ -88,16 +85,10 @@ var error_message = error_message || '';
                             <span class="tags_title">תגיות:</span>
                             <% for (var c = 0; c <discussion. tags.length; c++) { %>
                                 <span class="tag"><a href="?tag_name=<%=discussion.tags[c]%>"><%=discussion. tags[c] %></a></span>
-
                             <% }%>
-
-
                         </div>
                         <hr />
-
                         <div class="segment_bottom">
-
-
                             <div class="rating_box">
                                 <div class="rating_total">
                                     <%= Math.round(discussion.grade*100)/100 %>
@@ -108,626 +99,441 @@ var error_message = error_message || '';
                                 </div>
                             </div>
                             <div class="slide-box">
-
-                                    <div class="slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
-                                    <div class="ui-slider-range ui-widget-header ui-slider-range-min" style="width: 0%;"></div><a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 0%;"></a></div>
-                                    <div class="slider-numbers">
-                                        <span>1</span>
-                                        <span>2</span>
-                                        <span>3</span>
-                                        <span>4</span>
-                                        <span>5</span>
-                                        <span>6</span>
-                                        <span>7</span>
-                                        <span>8</span>
-                                        <span>9</span>
-                                        <span>10</span>
-                                    </div>
+                                <div class="slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
+                                <div class="ui-slider-range ui-widget-header ui-slider-range-min" style="width: 0%;"></div><a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 0%;"></a></div>
+                                <div class="slider-numbers">
+                                    <span>1</span>
+                                    <span>2</span>
+                                    <span>3</span>
+                                    <span>4</span>
+                                    <span>5</span>
+                                    <span>6</span>
+                                    <span>7</span>
+                                    <span>8</span>
+                                    <span>9</span>
+                                    <span>10</span>
                                 </div>
+                            </div>
+                            <div class="statement">
+                                <span class="first">
+                                    גרור את הסמן!
+                                </span>
 
+                                <span class="second">
+                                תן ציון למסמך החזון
+                                </span>
+                            </div>
                             <div class="button_add_comment">
                                 <input type="button" />
                             </div>
-                            <div class="button_suggest_revisions">
+                            <div class="button_suggest_revisions active">
                                 <input type="button" />
                             </div>
-
-
+                            <div class="history_details_holder">
+                                <hr />
+                                <div class="item history_button" >
+                                    <input  class="history" type="button" />
+                                </div>
+                                <div class="item draft_no">
+                                    טיוטה מספר: <span>8</span>
+                                </div>
+                                <div class="item last">
+                                    עדכון אחרון: <span>15.03.12</span>
+                                </div>
+                                <div class="item by">
+                                    על ידי:
+                                    <a href="#"></a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="segment info">
+                    <div class="segment info services-box">
                         <h2 class="title">סל מידע</h2>
                         <div id="info_items" class="info_items">
                             <!-- MovingBoxes Slider -->
                             <ul id="slider">
                             </ul><!-- end Slider #1 -->
                         </div>
-                    </div>
-
-                </div>
-                <div id="content_left_sidebar">
-                    <div class="segment quotes">
-                        <h2>ציטוטים נוספים</h2>
-                        <div id="quotes_sidebar_holder">
-                            <div class="quotes_holder">
-                                <div class="status odd"><span class="positive"></span>העלאת מס חברות ל- 35%. זה נזק מיידי למשק. זה צעד שיגרום לאבטלת המונים יגרום לנזק</div>
-                                <div class="status even"><span class="negative"></span>העלאת מס חברות ל- 35%. זה נזק מיידי למשק. זה צעד שיגרום לאבטלת המונים יגרום לנזק</div>
-                                <div class="status odd"><span class="missing"></span>העלאת מס חברות ל- 35%. זה נזק מיידי למשק. זה צעד שיגרום לאבטלת המונים יגרום לנזק</div>
-                                <div class="status even"><span class="positive"></span>העלאת מס חברות ל- 35%. זה נזק מיידי למשק. זה צעד שיגרום לאבטלת המונים יגרום לנזק</div>
+                        <div class="underline_and_cursor_when_hover service-8">
+                            לחץ כדי להוסיף פריט
+                        </div>
+                        <div class="upload-popup">
+                            <span class="arrow"></span>
+                            <div class="upload-top">
+                                <a class="close-popup" href=""></a>
+                                <textarea cols="0" rows="0" placeholder="שיתוף מידע משלך..."></textarea>
+                                <div class="upload-tabs">
+                                    <ul>
+                                        <li><a class="pic" href="#image"><span></span>תמונה</a></li>
+                                        <li><a class="video" href="#video"><span></span>וידאו</a></li>
+                                        <li><a class="link" href="#link"><span></span>קישור</a></li>
+                                    </ul>
+                                    <div id="image" class="tab">
+                                        <%
+                                        var image_upload = {
+                                        background_color: '#f5f5f5',
+                                        default_image: '/images/add-image.png',
+                                        api_endpoint: '/api/image_upload',
+                                        input_name: 'image_field'
+                                        };
+                                        %>
+                                        <% include partials/image_upload.ejs %>
+                                    </div>
+                                    <div id="video" class="tab">
+                                        <%
+                                        image_upload = {
+                                        default_image: '/images/add-image.png',
+                                        api_endpoint: '/api/image_upload',
+                                        input_name: 'video_field'
+                                        };
+                                        %>
+                                        <% include partials/image_upload.ejs %>
+                                        <input type="url" value="" placeholder="http://www.youtube.com/watch?v=......."/>
+                                    </div>
+                                    <div id="link" class="tab">
+                                        <input type="url" value="" placeholder="http://www.uru.org.il/" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="upload-bottom">
+                                <input type="submit" value="העלה" />
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+                <div id="content_left_sidebar">
+                    <% if (discussion.press_items && discussion.press_items.length>0) { %>
+                    <div class="segment press">
+                        <h2>מן העיתונות</h2>
+                        <div id="press_sidebar_holder">
 
+
+                        </div>
+                    </div>
+                    <%} %>
+                    <% if (discussion.links && discussion.links.length>0) { %>
+                    <div class="segment links">
+                        <h2>קישורים מועילים</h2>
+                        <div >
+
+                            <% for (var c = 0; c <discussion.links.length; c++) { %>
+                            <div class="item">
+                                <div class="title">
+                                    <a href="<%= discussion.links[c].link %>"><%= discussion.links[c].title %></a>
+                                </div>
+                                <%if(discussion.links[c].text){ %>
+                                <div class="text">
+                                    <%= discussion.links[c].text %>
+                                </div>
+                                <%} %>
+                            </div>
+                            <% }%>
+                        </div>
+                    </div>
+                    <%} %>
+                </div>
+            </div>
         </div>
     </div>
-
-
-
-<span class="popup-window">
-     <span class="arrow"></span>
-     <a class="close" href="javascript:void(0);"></a>
-         <a id="pop_post_bt" class="green-btn" href="javascript:void(0);">הגב</a>
-         <a id="pop_suggest_bt" class="grey-btn suggest" href="javascript:void(0);">
-             הצע הצעה לשינוי
-         </a>
+<span class="popup-window" id="new_suggestion_popup">
+    <div class="tooltip_2">
+        <span>
+            ?מה ברצונך לעשות עם טקסט זה
+        </span>
+        <a id="pop_suggest_bt" value="" class="button_add_suggestion change pop_suggest_bt" type="text" > לשנות </a>
+        <a id="pop_suggest_bt_delete" value="" class="button_add_suggestion delete pop_suggest_bt" type="text" > למחוק</a>
+        <a id="pop_suggest_bt_add" value="" class="button_add_suggestion add pop_suggest_bt" type="text" >   להוסיף </a>
+    </div>
 </span>
 
+ <span class="popup-window"  id="old_suggestion_popup">
+    <div class="tooltip_1"><a id="jump_to_suggestion" data-id="" href="javascript:void(0);">ראה הצעה לשינוי הטקסט</a></div>
+</span>
 
-    <div class="content_break">
+    <div id='write-comment' class="write-comment" style="display: none;">
+        <h3>
+            הצעה לשינוי
+        </h3>
+
+        <div class="text-box cf">
+            <div class="left">
+                <p id='discussion_content_txt'><strong></strong>
+
+                </p>
+                <label>
+                    ההצעה לשינוי שלי:
+                </label>
+                <textarea id='discussion_suggest' class="five-col" cols="0" rows="0"></textarea>
+                <label>
+                    טיעונים, הצדקות ונימוקים:
+                </label>
+                <textarea id="discussion_explanation" class="two-col" cols="0" rows="0"></textarea>
+            </div>
+            <div class="user-right">
+                <div class="img-box" style="overflow: hidden;">
+                    <div   style="width:70px; height:70px;" class='auto-scale'>
+                        <% if(user_logged) { %>
+                        <img id="reload-img" src="<%=avatar%>" alt="אני"  style="width:70px; height:70px"/>
+                        <% } %>
+                    </div>
+                    <span></span>
+                </div>
+                <h4>אני</h4>
+
+                <div class="date"><%=(new Date()).format('dd.mm.yy') %></div>
+                <% if(user_logged){ %>
+                <div class="proxy">
+                    <span>3</span>
+                </div>
+                <div class="respect">
+                    <span>20</span>
+                </div>
+                <% } %>
+            </div>
+        </div>
+        <a class="grey-btn" id="cancelWriteCommentBT" href="javascript:void(0);"><span>
+מתחרט
+            </span></a>
+        <a id="send_suggestion" class="green-btn" href="javascript:void(0);">
+            הצע
+        </a>
+    </div>
+
+    <div class="content_break approved_suggestions">
         <div class="content_break_content">
-            <h2>הצעות לשינוי (4)</h2>
+            <h2>הצעות שהתקבלו
+                <small id="approved_suggestion_number"></small>
+            </h2>
+        </div>
+    </div>
+    <div id="content_wrapper_approved_suggestions">
+        <div id="approved_suggestions_wrapper">
         </div>
     </div>
 
+    <div class="content_break suggestions">
+        <div class="content_break_content">
+            <h2>הצעות לשינוי
+                <small id="suggestion_number"></small>
+            </h2>
+        </div>
+    </div>
     <div id="content_wrapper_suggestions">
-    <div id="suggestions_wrapper">
-    <div id="suggestion_wrapper">
-        <div class="suggestion_holder button">
-            <div class="suggestion_details">
-                <div class="photo">
-                    <img src="/images/icon_person.png" />
-                </div>
-                <div class="name">
-
-                    אסף גרינברג
-                </div>
-                <div class="date_time">
-                    <span class="time">14:46</span>
-                    <span class="date">27.07.2012</span>
-                </div>
-                <div class="ratings">
-                    <span class="friends">1458</span>
-                    <span class="awards">3769</span>
-                </div>
-            </div>
-            <div class="button_edit_comment">
-                <input type="button" />
-            </div>
-            <div class="suggestion_content">
-                <div class="text_orig">
-                    <h3 class="title">טקסט מקורי:</h3>
-                    המדינה מממנת ישירות לא מעט גופים שנותרים עצמאיים בכל זאת, כמו בתי המשפט, מבקר המדינה, הרשות לניירות ערך ואפילו גלי צה"ל. בכל מקרה, בבואנו לבטל את האגרה ולמצוא מקור תקציבי חליפי, כמו הרשות לניירות ערך ואפילו גלי צה"ל. בבואנו לבטל את האגרה ולמצוא מקור תקציבי חליפי, ניתן להבטיח את עצמאות הרשות באמצעים אחרים. נגד האגרה: גביית האגרה גורמת לעגמת נפש רבה בקרב הציבור.
-                </div>
-                <div class="text">
-                    <h3 class="title">הצעה לשינוי:</h3>
-                    פשרה: בשלב ראשוני המטרה צריכה להיות להפחית בכמחצית את עלות זו - כנגד סובסידה של חציו השני של התשלום. מצב ביניים יהיה ריאלי יותר מול הכנסת הנוכחית מאשר ביטול הסכום כולו, וכמו כן ייתחם בזמן. בנוסף ייבחנו השפעות שונות על "מודל ההפחתה החלקי.
-                    <h3 class="title">נימוק:</h3>
-                    גישור הפער בין רצוי למצוי בדר"כ מביא לעמק ה*שווה* וכשלב ראשוני לחתירה לביטול אגרה זו צריך להסכים על פתרון ביניים.
-                </div>
-            </div>
-            <div class="suggestion_bottom">
-                <div class="suggestion_bottom_segment one">
-                    <div class="button button_pro">
-                        <input type="button" />
-                    </div>
-                    <div class="button button_against">
-                        <input type="button" />
-                    </div>
-                    <div class="button fb_like">
-                        <img src="/images/placeholder_fb.png" />
-                    </div>
-                </div>
-                <div class="suggestion_bottom_segment two">
-                    <div class="supporters_wanted">
-                        מספר תומכים דרוש <span>10</span>
-                    </div>
-                    <div class="supporters_current">
-                        מספר תומכים נוכחי <span>9</span>
-                    </div>
-                </div>
-                <div class="suggestion_bottom_segment three">
-                    <div class="comments_counter">
-                        <span>17</span> תגובות להצעה
-                        <div class="close">סגור</div>
-                    </div>
-                </div>
-            </div>
+        <div id="suggestions_wrapper">
         </div>
-        <div class="suggestion_comments_holder">
-            <div class="comment odd">
-                <div class="author">
-                    <img src="/images/icon_person.png" />
-                    <span>אסף גרינברג</span>
-                </div>
-                <div class="date_time">
-                    14:46 27.07.2012
-                </div>
-                <div class="content">
-                    הגיעה העת לבטל את אגרת הטלוויזיה. במקום לדחוף הצעות שאין להן סיכוי, מוצע כאן לבטל את גביית האגרה, להעביר חלק מן הנטל לתשלום שאנחנו משלמים ממילא בזמן חידוש רשיון הרכב, וכך לחסוך מיליונים רבים.
-                </div>
-            </div>
-            <div class="comment even">
-                <div class="author">
-                    <img src="/images/icon_person.png" />
-                    <span>אסף גרינברג</span>
-                </div>
-                <div class="date_time">
-                    14:46 27.07.2012
-                </div>
-                <div class="content">
-                    הגיעה העת לבטל את אגרת הטלוויזיה. במקום לדחוף הצעות שאין להן סיכוי, מוצע כאן לבטל את גביית האגרה, להעביר חלק מן הנטל לתשלום שאנחנו משלמים ממילא בזמן חידוש רשיון הרכב, וכך לחסוך מיליונים רבים.
-                </div>
-            </div>
-            <div class="add_comment">
-                <input type="text" value="כתוב תגובה..." />
-            </div>
+        <div class="more-deals" data-executing="false">
+            <a href="javascript: void(0)">עוד הצעות</a>
         </div>
     </div>
-
-    <div id="suggestion_wrapper">
-        <div class="suggestion_holder button">
-            <div class="suggestion_details">
-                <div class="photo">
-                    <img src="/images/icon_person.png" />
-                </div>
-                <div class="name">
-                    אסף גרינברג
-                </div>
-                <div class="date_time">
-                    <span class="time">14:46</span>
-                    <span class="date">27.07.2012</span>
-                </div>
-                <div class="ratings">
-                    <span class="friends">1458</span>
-                    <span class="awards">3769</span>
-                </div>
-            </div>
-            <div class="button_edit_comment">
-                <input type="button" />
-            </div>
-            <div class="suggestion_content">
-                <div class="text_orig">
-                    <h3 class="title">טקסט מקורי:</h3>
-                    המדינה מממנת ישירות לא מעט גופים שנותרים עצמאיים בכל זאת, כמו בתי המשפט, מבקר המדינה, הרשות לניירות ערך ואפילו גלי צה"ל. בכל מקרה, בבואנו לבטל את האגרה ולמצוא מקור תקציבי חליפי, כמו הרשות לניירות ערך ואפילו גלי צה"ל. בבואנו לבטל את האגרה ולמצוא מקור תקציבי חליפי, ניתן להבטיח את עצמאות הרשות באמצעים אחרים. נגד האגרה: גביית האגרה גורמת לעגמת נפש רבה בקרב הציבור.
-                </div>
-                <div class="text">
-                    <h3 class="title">הצעה לשינוי:</h3>
-                    פשרה: בשלב ראשוני המטרה צריכה להיות להפחית בכמחצית את עלות זו - כנגד סובסידה של חציו השני של התשלום. מצב ביניים יהיה ריאלי יותר מול הכנסת הנוכחית מאשר ביטול הסכום כולו, וכמו כן ייתחם בזמן. בנוסף ייבחנו השפעות שונות על "מודל ההפחתה החלקי.
-                    <h3 class="title">נימוק:</h3>
-                    גישור הפער בין רצוי למצוי בדר"כ מביא לעמק ה*שווה* וכשלב ראשוני לחתירה לביטול אגרה זו צריך להסכים על פתרון ביניים.
-                </div>
-            </div>
-            <div class="suggestion_bottom">
-                <div class="suggestion_bottom_segment one">
-                    <div class="button button_pro">
-                        <input type="button" />
-                    </div>
-                    <div class="button button_against">
-                        <input type="button" />
-                    </div>
-                    <div class="button fb_like">
-                        <img src="/images/placeholder_fb.png" />
-                    </div>
-                </div>
-                <div class="suggestion_bottom_segment two">
-                    <div class="supporters_wanted">
-                        מספר תומכים דרוש <span>10</span>
-                    </div>
-                    <div class="supporters_current">
-                        מספר תומכים נוכחי <span>9</span>
-                    </div>
-                </div>
-                <div class="suggestion_bottom_segment three">
-                    <div class="comments_counter">
-                        <span>17</span> תגובות להצעה
-                        <div class="close">סגור</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="suggestion_comments_holder">
-            <div class="add_comment">
-                <input type="text" value="כתוב תגובה..." />
-            </div>
-        </div>
-    </div>
-
-    <div id="suggestion_wrapper">
-        <div class="suggestion_holder window">
-            <div class="suggestion_details">
-                <div class="photo">
-                    <img src="/images/icon_person.png" />
-                </div>
-                <div class="name">
-                    אסף גרינברג
-                </div>
-                <div class="date_time">
-                    <span class="time">14:46</span>
-                    <span class="date">27.07.2012</span>
-                </div>
-                <div class="ratings">
-                    <span class="friends">1458</span>
-                    <span class="awards">3769</span>
-                </div>
-            </div>
-            <div class="button_edit_comment">
-                <input type="button" />
-            </div>
-            <div class="edit_window">
-                <div class="text_top"></div>
-                <p>בשלב ראשוני המטרה צריכה להיות להפחית בכמחצית את עלות זו - כנגד סובסידה של חציtו השני של התשלום. מצב ביניים יהיה ריאלי יותר מול הכנסת הנוכחית מאשר ביטול הסכום כולו, וכמו כן ייתחם בזמן. בנוסף ייבחנו השפעות שונות על "מודל ההפחתה החלקי. כנגד סובסידה של חציtו השני של התשלום. מצב ביניים יהיה ריאלי יותר מול הכנסת הנוכחית מאשר ביטול הסכום כולו, וכמו כן ייתחם בזמן.</p>
-                <p class="focus">בשלב ראשוני המטרה צריכה להיות להפחית בכמחצית את עלות זו - כנגד סובסידה של חציtו השני של התשלום. מצב ביניים יהיה ריאלי יותר מול הכנסת הנוכחית מאשר ביטול הסכום כולו, וכמו כן ייתחם בזמן. בנוסף ייבחנו השפעות שונות על "מודל ההפחתה החלקי. כנגד סובסידה של חציtו השני של התשלום. מצב ביניים יהיה ריאלי יותר מול הכנסת הנוכחית מאשר ביטול הסכום כולו, וכמו כן ייתחם בזמן.</p>
-                <p>בשלב ראשוני המטרה צריכה להיות להפחית בכמחצית את עלות זו - כנגד סובסידה של חציtו השני של התשלום. מצב ביניים יהיה ריאלי יותר מול הכנסת הנוכחית מאשר ביטול הסכום כולו, וכמו כן ייתחם בזמן. בנוסף ייבחנו השפעות שונות על "מודל ההפחתה החלקי. כנגד סובסידה של חציtו השני של התשלום. מצב ביניים יהיה ריאלי יותר מול הכנסת הנוכחית מאשר ביטול הסכום כולו, וכמו כן ייתחם בזמן.</p>
-                <div class="text_bottom"></div>
-            </div>
-            <div class="suggestion_content">
-                <div class="text_orig">
-                    <h3 class="title">טקסט מקורי:</h3>
-                    המדינה מממנת ישירות לא מעט גופים שנותרים עצמאיים בכל זאת, כמו בתי המשפט, מבקר המדינה, הרשות לניירות ערך ואפילו גלי צה"ל. בכל מקרה, בבואנו לבטל את האגרה ולמצוא מקור תקציבי חליפי, כמו הרשות לניירות ערך ואפילו גלי צה"ל. בבואנו לבטל את האגרה ולמצוא מקור תקציבי חליפי, ניתן להבטיח את עצמאות הרשות באמצעים אחרים. נגד האגרה: גביית האגרה גורמת לעגמת נפש רבה בקרב הציבור.
-                </div>
-                <div class="text change_proposal">
-                    <h3 class="title">הצעה לשינוי:</h3>
-                    פשרה: בשלב ראשוני המטרה צריכה להיות להפחית בכמחצית את עלות זו - כנגד סובסידה של חציו השני של התשלום. מצב ביניים יהיה ריאלי יותר מול הכנסת הנוכחית מאשר ביטול הסכום כולו, וכמו כן ייתחם בזמן. בנוסף ייבחנו השפעות שונות על "מודל ההפחתה החלקי.
-                    <h3 class="title">נימוק:</h3>
-                    גישור הפער בין רצוי למצוי בדר"כ מביא לעמק ה*שווה* וכשלב ראשוני לחתירה לביטול אגרה זו צריך להסכים על פתרון ביניים.
-                </div>
-            </div>
-            <div class="suggestion_bottom">
-                <div class="suggestion_bottom_segment one">
-                    <div class="button button_pro">
-                        <input type="button" />
-                    </div>
-                    <div class="button button_against">
-                        <input type="button" />
-                    </div>
-                    <div class="button fb_like">
-                        <img src="/images/placeholder_fb.png" />
-                    </div>
-                </div>
-                <div class="suggestion_bottom_segment two">
-                    <div class="supporters_wanted">
-                        מספר תומכים דרוש <span>10</span>
-                    </div>
-                    <div class="supporters_current">
-                        מספר תומכים נוכחי <span>9</span>
-                    </div>
-                </div>
-                <div class="suggestion_bottom_segment three">
-                    <div class="comments_counter">
-                        <span>17</span> תגובות להצעה
-                        <div class="close">סגור</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="suggestion_comments_holder">
-            <div class="add_comment">
-                <input type="text" value="כתוב תגובה..." />
-            </div>
-        </div>
-    </div>
-    <input type="button" class="button_more_results" />
-    </div>
-    </div>
-
     <div class="content_break comments">
         <div class="content_break_content comments">
-            <h2>תגובות (32)</h2>
+            <h2 id="comments-title">תגובות <small id="comments_number"></small></h2>
             <div id="comments_filter">
-                <input class="button_order_chron" type="button" />
-                <input class="button_order_popular" type="button" />
-                <input class="button_order_contro" type="button" />
+                <input data-sort-by="-creation_date" class="button_order_chron selected" type="button" />
+                <input data-sort-by="-popularity" class="button_order_popular" type="button" />
+                <input data-sort-by="-total_votes" class="button_order_contro" type="button" />
             </div>
         </div>
     </div>
-
     <div id="content_wrapper_comments">
-    <div id="comments_wrapper">
-    <div class="most_pop">
-        <h2 class="title">התגובה הפופולרית ביותר</h2>
-        <div class="comment_wrapper">
-            <div class="comment_details">
-                <div class="photo">
-                    <img src="/images/icon_person.png" />
-                </div>
-                <div class="name">
-                    אסף גרינברג
-                </div>
-                <div class="date_time">
-                    <span class="time">14:46</span>
-                    <span class="date">27.07.2012</span>
-                </div>
-                <div class="ratings">
-                    <span class="friends">1458</span>
-                    <span class="awards">3769</span>
-                </div>
-            </div>
-            <div class="content">
-                <div class="rating"><span>דירוג:</span><span class="good">458</span><span class="bad">2</span></div>
-                הגיעה העת לבטל את אגרת הטלוויזיה. במקום לדחוף הצעות שאין להן סיכוי, מוצע כאן לבטל את גביית האגרה, להעביר חלק מן הנטל לתשלום שאנחנו משלמים ממילא בזמן חידוש רשיון הרכב, וכך לחסוך מיליונים רבים.
-            </div>
-        </div>
-    </div>
-    <div class="most_contr">
-        <h2 class="title">התגובה השנויה במחלוקת</h2>
-        <div class="comment_wrapper">
-            <div class="comment_details">
-                <div class="photo">
-                    <img src="/images/icon_person.png" />
-                </div>
-                <div class="name">
-                    אסף גרינברג
-                </div>
-                <div class="date_time">
-                    <span class="time">14:46</span>
-                    <span class="date">27.07.2012</span>
-                </div>
-                <div class="ratings">
-                    <span class="friends">1458</span>
-                    <span class="awards">3769</span>
-                </div>
-            </div>
-            <div class="content">
-                <div class="rating"><span>דירוג:</span><span class="good">458</span><span class="bad">2</span></div>
-                הגיעה העת לבטל את אגרת הטלוויזיה. במקום לדחוף הצעות שאין להן סיכוי, מוצע כאן לבטל את גביית האגרה, להעביר חלק מן הנטל לתשלום שאנחנו משלמים ממילא בזמן חידוש רשיון הרכב, וכך לחסוך מיליונים רבים.
-            </div>
-        </div>
-    </div>
+        <div id="special_post_wrapper_background">
+            <div id="special_post_wrapper">
 
-    <div id="pagination_wrapper">
-        <div id="pagination">
-            <span class="title">עמודים (24):</span>
-            <a href=""><span class="last"></span></a>
-            <a href=""><span class="next"></span></a>
-            <span class="page current">1</span>
-            <span class="page"><a href="">2</a></span>
-            <span class="page"><a href="">3</a></span>
-            <span class="page"><a href="">4</a></span>
-            <span class="page"><a href="">5</a></span>
-            <span class="page"><a href="">6</a></span>
-            <span class="page"><a href="">7</a></span>
-            <span class="page">...</span>
-            <a href=""><span class="prev"></span></a>
-            <a href=""><span class="first"></span></a>
-        </div>
-    </div>
-
-    <div class="comment_wrapper odd">
-        <div class="comment_details">
-            <div class="photo">
-                <img src="/images/icon_person.png" />
-            </div>
-            <div class="name">
-                אסף גרינברג
-            </div>
-            <div class="date_time">
-                <span class="time">14:46</span>
-                <span class="date">27.07.2012</span>
-            </div>
-            <div class="ratings">
-                <span class="friends">1458</span>
-                <span class="awards">3769</span>
             </div>
         </div>
-        <div class="content">
-            <div class="quote">
-                <span class="credit">אלברט שמחוני כתב:</span>
-                לא הבנתי למה צריך ערוץ בלי פרסומות? עוד יותר לא הבנתי למה מישהו חושב שזה ריאלי בכלל? אפילו היום פרסומות נוזלות לערוץ הזה מכל החורים... קצת ריאליזם לא יזיק. תקשורת בלי פרסומות - אין דבר כזה בעולם קפיטליסטי. הסיבה היחידה שאני מבין לכך שיש כל כך הרבה מתנגדים לרעיון שלי הוא: שכתבתי שרק חלק מן האגרה ימומן על ידי פרסומות.
-            </div>
-            הגיעה העת לבטל את אגרת הטלוויזיה. במקום לדחוף הצעות שאין להן סיכוי, מוצע כאן לבטל את גביית האגרה, להעביר חלק מן הנטל לתשלום שאנחנו משלמים ממילא בזמן חידוש רשיון הרכב, וכך לחסוך מיליונים רבים.
-            <div class="quoted_by">צוטט ע"י: <span><a href="">שם לדוגמא</a></span>, <span><a href="">שם לדוגמא</a></span> </div>
-        </div>
-        <div class="comment_buttons">
-            <input class="button_quote" type="button" />
-            <input class="button_comment" type="button" />
-            <div class="button_fb"><img src="/images/placeholder_fb_2.png" /></div>
-        </div>
-        <div class="rating_small">
-            <a href=""><span class="good"></span></a>
-            <span class="counter">15</span>
-            <a href=""><span class="bad"></span></a>
-        </div>
-    </div>
-
-    <div class="comment_wrapper even">
-        <div class="comment_details">
-            <div class="photo">
-                <img src="/images/icon_person.png" />
-            </div>
-            <div class="name">
-                אסף גרינברג
-            </div>
-            <div class="date_time">
-                <span class="time">14:46</span>
-                <span class="date">27.07.2012</span>
-            </div>
-            <div class="ratings">
-                <span class="friends">1458</span>
-                <span class="awards">3769</span>
-            </div>
-        </div>
-        <div class="content">
-            הגיעה העת לבטל את אגרת הטלוויזיה. במקום לדחוף הצעות שאין להן סיכוי, מוצע כאן לבטל את גביית האגרה, להעביר חלק מן הנטל לתשלום שאנחנו משלמים ממילא בזמן חידוש רשיון הרכב, וכך לחסוך מיליונים רבים.
-        </div>
-        <div class="comment_buttons">
-            <input class="button_quote" type="button" />
-            <input class="button_comment" type="button" />
-            <div class="button_fb"><img src="/images/placeholder_fb_2.png" /></div>
-        </div>
-        <div class="rating_small">
-            <a href=""><span class="good"></span></a>
-            <span class="counter">15</span>
-            <a href=""><span class="bad"></span></a>
-        </div>
-    </div>
-
-    <div class="comment_wrapper odd">
-        <div class="comment_details">
-            <div class="photo">
-                <img src="/images/icon_person.png" />
-            </div>
-            <div class="name">
-                אסף גרינברג
-            </div>
-            <div class="date_time">
-                <span class="time">14:46</span>
-                <span class="date">27.07.2012</span>
-            </div>
-            <div class="ratings">
-                <span class="friends">1458</span>
-                <span class="awards">3769</span>
-            </div>
-        </div>
-        <div class="content">
-            הגיעה העת לבטל את אגרת הטלוויזיה. במקום לדחוף הצעות שאין להן סיכוי, מוצע כאן לבטל את גביית האגרה, להעביר חלק מן הנטל לתשלום שאנחנו משלמים ממילא בזמן חידוש רשיון הרכב, וכך לחסוך מיליונים רבים.
-        </div>
-        <div class="comment_buttons">
-            <input class="button_quote" type="button" />
-            <input class="button_comment" type="button" />
-            <div class="button_fb"><img src="/images/placeholder_fb_2.png" /></div>
-        </div>
-        <div class="rating_small">
-            <a href=""><span class="good"></span></a>
-            <span class="counter">15</span>
-            <a href=""><span class="bad"></span></a>
-        </div>
-    </div>
-
-    <div class="comment_wrapper even">
-        <div class="comment_details">
-            <div class="photo">
-                <img src="/images/icon_person.png" />
-            </div>
-            <div class="name">
-                אסף גרינברג
-            </div>
-            <div class="date_time">
-                <span class="time">14:46</span>
-                <span class="date">27.07.2012</span>
-            </div>
-            <div class="ratings">
-                <span class="friends">1458</span>
-                <span class="awards">3769</span>
-            </div>
-        </div>
-        <div class="content">
-            הגיעה העת לבטל את אגרת הטלוויזיה. במקום לדחוף הצעות שאין להן סיכוי, מוצע כאן לבטל את גביית האגרה, להעביר חלק מן הנטל לתשלום שאנחנו משלמים ממילא בזמן חידוש רשיון הרכב, וכך לחסוך מיליונים רבים.
-        </div>
-    </div>
-
-    <div id="pagination_wrapper">
-        <div id="pagination">
-            <span class="title">עמודים (24):</span>
-            <a href=""><span class="last"></span></a>
-            <a href=""><span class="next"></span></a>
-            <span class="page current">1</span>
-            <span class="page"><a href="">2</a></span>
-            <span class="page"><a href="">3</a></span>
-            <span class="page"><a href="">4</a></span>
-            <span class="page"><a href="">5</a></span>
-            <span class="page"><a href="">6</a></span>
-            <span class="page"><a href="">7</a></span>
-            <span class="page">...</span>
-            <a href=""><span class="prev"></span></a>
-            <a href=""><span class="first"></span></a>
-        </div>
-    </div>
-
-    <div id="add_comment_wrapper">
-        <h2 class="title">כתיבת תגובה</h2>
-        <div class="comment_wrapper">
-            <div class="comment_details">
-                <div class="photo">
-                    <img src="/images/icon_person.png" />
+        <div id="comments_wrapper">
+            <div id="add_comment_wrapper" <%if(user_logged){%> data-creator_id="<%=user._id%>" <%}%> >
+            <h2 class="title">כתיבת תגובה</h2>
+            <div class="comment_wrapper">
+                <div class="comment_details">
+                    <div class="img-box" style="overflow: hidden;">
+                        <div style="height:64px" class='auto-scale'>
+                            <img src="<%=avatar%>" alt="אני"/>
+                        </div>
+                        <span></span>
+                    </div>
+                    <div class="name">
+                        <%if(user_logged){%>
+                        <%=user.first_name + ' '+ user.last_name%>
+                        <%}else{%>
+                        אני
+                        <%}%>
+                    </div>
+                    <div class="date_time">
+                        <span class="time"><%=(new Date()).format('H:MM') %></span>
+                        <span class="date"><%=(new Date()).format('dd.mm.yy') %></span>
+                    </div>
+                    <% if(user_logged){ %>
+                    <div class="ratings">
+                        <span class="friends"><%=user.num_of_proxies_i_represent%></span>
+                        <span class="awards"><%=user.score%></span>
+                    </div>
+                    <% } %>
                 </div>
-                <div class="name">
-                    אסף גרינברג
+                <div class="content">
+                    <textarea id="discussion_comment" dir="rtl" class="four-col" cols="0" rows="0"></textarea>
                 </div>
-                <div class="date_time">
-                    <span class="time">14:46</span>
-                    <span class="date">27.07.2012</span>
+            </div>
+            <input id="submit_post" type="button" class="button_submit_comment" />
+        </div>
+			<div class="pagination_wrapper first_pagination">
+                <div class="pagination">
                 </div>
-                <div class="ratings">
-                    <span class="friends">1458</span>
-                    <span class="awards">3769</span>
+            </div>
+            <div class="pagination_wrapper second_pagination">
+                <div class="pagination">
                 </div>
             </div>
 
-            <div class="content">
-                <textarea id="discussion_comment" dir="rtl" class="four-col" cols="0" rows="0"></textarea>
-            </div>
         </div>
-        <input id="submit_post" type="button" class="button_submit_comment" />
-    </div>
-
-    </div>
-
-
-    </div>
-
-
-
-<% include partials/footer.ejs %>
-
+      </div>
+   <% include partials/footer.ejs %>
 
 <script type="text/javascript">
-
-
-
-
-
-
 
 var current_section = 1;
 
 $(document).ready(function () {
     var my_id = "<%=user_logged ? user._id : ''%>";
+    var my_name = "<%= user && user.first_name + ' '+ user.last_name%>";
     var discussion_id = "<%=discussion_id%>";
-    var creator_id = "<%=discussion.creator_id%>";
+    var creator_id = "<%=discussion.creator_id && discussion.creator_id.id%>";
     var is_creator = (my_id == creator_id);
     var my_discussion_grade = Number("<%= discussion.grade_obj ? discussion.grade_obj.value || 0 : 0 %>");
     var discussion_grade = Number("<%= discussion.grade%>");
     var grade_id = "<%= discussion.grade_obj ? discussion.grade_obj.grade_id : 0 %>";
-    $('.button_edit_comment').hover(function(){
-        $(this).parent().toggleClass('edit');
+    var vision_text_history_count = "<%= discussion.vision_text_history ? discussion.vision_text_history.length : 0 %>";
+    var suggestions_list=null;
+    var approved_suggestions_list=null;
+    var original = $('#discussion_content_textarea').val() ;
+    var range={};
+    var editor;
+    var on_load = true;
+    var global_hash = null;
+
+    if (is_creator){
+        my_discussion_grade = discussion_grade;
+    }
+
+    // toggle edit class to open/close contxt popup window or edit suggestion button
+    $('#suggestions_wrapper').on('mouseenter', '.text.change_proposal', function(e){
+        var edit_window = $(this).find('.edit_window');
+        var window_height = edit_window.height();
+        var window_padding = parseInt(edit_window.css("padding-top"));
+        var window_border = parseInt(edit_window.css("border-top-width"));
+
+        $(this).parents('.suggestion_wrapper').toggleClass('edit');
+        $(this).parents('.suggestion_wrapper').toggleClass('show_edit_button');
+
+        //set window top
+        edit_window.css('top', 0 - window_height - (window_padding * 2 + window_border * 2));
+
+    }).on('mouseleave', '.text.change_proposal', function(){
+        $(this).parents('.suggestion_wrapper').toggleClass('edit');
     });
 
-    $('.suggestion_holder.button').hover(function(){
-        $(this).toggleClass('edit');
+    // toggle edit class to open/close contxt popup window or edit suggestion button
+    $('#approved_suggestions_wrapper').on('mouseenter', '.text.change_proposal', function(e){
+        var edit_window = $(this).parents('.suggestion_wrapper').find('.edit_window');
+        var window_height = edit_window.height();
+        var window_padding = parseInt(edit_window.css("padding-top"));
+        var window_border = parseInt(edit_window.css("border-top-width"));
+
+        $(this).parents('.suggestion_wrapper').toggleClass('edit');
+        $(this).parents('.suggestion_wrapper').toggleClass('show_edit_button');
+
+        //set window top
+        edit_window.css('top', 35 - window_height - (window_padding * 2 + window_border * 2));
+        edit_window.css('right', 66);
+    }).on('mouseleave', '.suggestion_wrapper .edit_window, .suggestion_wrapper .suggestion_holder', function(){
+        $(this).parents('.suggestion_wrapper').removeClass('edit');
     });
 
-    $('.edit_window').hover(function(){
-        $(this).parent().toggleClass('edit');
+
+    // when clicking the edit_comment popup show go to creatק suggestion window
+    $('#suggestions_wrapper, #approved_suggestions_wrapper').on('click', '.button_edit_comment', function(){
+        var $suggestion_content = $(this).next();
+        var orig_text = $suggestion_content.find('.original_part').text();
+        var alternative_part = $suggestion_content.find('.alternative_part').text();
+        var explanation =  $suggestion_content.find('.explanation').text();
+
+        // set text and then focus
+        $('#discussion_content_txt').text('"' + orig_text + '"');
+        $('#write-comment').show();
+        $('#reload-img').attr('src', $('#reload-img').attr('src'));
+        $('textarea#discussion_suggest').text(alternative_part);
+        $('textarea#discussion_explanation').text(explanation);
+        $('textarea#discussion_suggest').focus();
+
+        // change button text and set it to edit instead of creating new suggestion
+        $('#send_suggestion').text('ערוך');
+        $('#send_suggestion').data('edit', true);
+
+        var sug_id =  $(this).parents('.suggestion_wrapper').data('id');
+        $('#send_suggestion').data('suggestion-id', sug_id);
     });
 
-    $('.suggestion_holder.window .text.change_proposal').hover(function(){
-        $('.edit_window').parent().toggleClass('edit');
+    // edit comment popup when hover in comment text (only if user is the comment creator and hovering in the first 15 min after published)
+    $('#comments_wrapper').on('mouseenter', '.edit_comment .content', function(){
+        $(this).parents('.comment_wrapper').toggleClass('edit');
+    }).on('mouseleave', '.edit_comment .content', function() {
+        $(this).parents('.comment_wrapper').toggleClass('edit');
     });
+
+    // when clicking the edit_comment popup show text editor and update button
+    $('#comments_wrapper').on('click', '.content .button_edit_comment', function(){
+        var text = $(this).parent('.content').text();
+        var post_id = $(this).parents('.comment_wrapper').data('id');
+        var content = $(this).parent('.content');
+
+        content.html(
+            '<textarea id="discussion_edit_comment" dir="rtl" class="four-col" cols="0" rows="0" style="margin: 2px; width: 676px; height: 86px;">' + text +'</textarea>' +
+            '<input id="update_post" value="עדכן" type="button" class="button_submit_comment_no_text">');
+
+        var edit_editor;
+        // set ck editor
+        $( '#discussion_edit_comment').ckeditor({
+            height: 100,
+            'line-height':10,
+            language:'he',
+            removePlugins : 'elementspath',
+            on :
+            {
+                instanceReady : function( ev )
+                {
+                    edit_editor = this;
+                }
+            }
+        });
+
+        // add click listener to update_button
+        $('#update_post').click(function(){
+            var updated_text = $(this).siblings('#discussion_edit_comment').val();
+            db_functions.editDiscussionPost(post_id, updated_text, function(err, data){
+                if(!err){
+                    content.html(data.text);
+                }
+            });
+        });
+    });
+
 
 
     $(".main_text").dotdotdot({
-        //	configuration goes here
+        callback	: function( isTruncated, orgContent ) {
+                 $(".main_text").css('color','#4a4a4b')  ;
+                $("#short .read_more").show()  ;
+        }
     });
 
-
-
     db_functions.getDiscussionShoppingCart(discussion_id, function (err, data) {
+        if (err || data.objects.length === 0) {
+            $('.segment.info').hide();
+            return;
+        }
 
         $.each(data.objects, function (index, item) {
-            dust.render('cycle_information_item', item, function (err, out) {
+            dust.render('discussion_information_item', item, function (err, out) {
                 $('#slider').append(out);
             });
         });
@@ -743,79 +549,135 @@ $(document).ready(function () {
             startPanel   : 1,      // start with this panel
             wrap         : true,   // if true, the panel will "wrap" (it really rewinds/fast forwards) at the ends
             buildNav     : true,   // if true, navigation links will be added
-            navFormatter : function(){ return "&#9679;"; } // function which returns the navigation text for each panel
+            navFormatter : function(){ return "&#9679;"; }, // function which returns the navigation text for each panel
+            completed       : function(e, slider, tar){
+                $('#info_items #slider li').dotdotdot({});
+            }
         });
-
-
     });
 
+    $('#send_suggestion').click(function () {
+        var $this = $(this);
 
+        if ($this.data('executing')){
+            return;
+        }
 
+        $this.data('executing', true);
+        $this.addClass('disable');
 
-    $('.read_more').on('click', function () {
-        $('#short').toggle();
-        $('#full').toggle();
-        var h=  $("textarea").get(0).scrollHeight;
-        $("#full").height(h);
-    });
+        var part = {start:range.start, end:range.end, text:$("textarea#discussion_suggest").val()};
 
+        // todo i have replaced vision with original, see that it works
+        //arrange spaces
+        if (original[part.end - 1] == " " && part.text[part.text.length - 1] != " ")
 
-    var mouseDown, mouseUp, top, left;
+            part.text += " ";
 
-    $('#full')
-        .on('mousedown', function (e) {
-            mouseDown = e;
-            console.log(e);})
-        .on('mouseup',function (e) {
-            mouseUp = e;
-            var err = false;
-            var range = $(this).find('textarea').getSelection();
-            left = Math.ceil((mouseDown.clientX + mouseUp.clientX) / 2 - ($(".popup-window").width() / 2));
-            top = Math.min(mouseDown.clientY, mouseUp.clientY) - $(".popup-window").height() - 40 + $(window).scrollTop();})
-        .on('keydown', function (e) {
-            console.log(e.keyCode == 27);
-            if (!(e.shiftKey && (e.keyCode <= 40 && e.keyCode >= 37) || (e.ctrlKey && e.keyCode == 65))) e.preventDefault();})
-        .on('dragstart', function (e) {
-            e.preventDefault();
-    });
+        // in case of editing existing suggestion
+        if ($('#send_suggestion').data('edit') === true){
+            $('#send_suggestion').data('edit', false);
 
-    $('#discussion_content').select(function (e) {
-        range = $(this).getSelection();
-        flag = false;
-        db_functions.getSuggestionByDiscussion(discussion_id, null, null, function(err, suggestions){
-            $.each(suggestions.objects, function (index, suggestion) {
-                if ((suggestion.parts[0].start >= range.start && suggestion.parts[0].start <= range.end)
-                        || (suggestion.parts[0].end >= range.start && suggestion.parts[0].end <= range.end)) {
-                    flag = true;
+            var sugg_id = $('#send_suggestion').data('suggestion-id');
+
+            db_functions.editSuggestion(sugg_id, part.text, function(err, data){
+                if(!err){
+                    $this.data('executing', false);
+                    $this.removeClass('disable');
+
+                    // hide edit box
+                    $('#write-comment').hide();
+
+                    // change text of suggestion
+                    $('#suggestions_wrapper').find('[data-id=' + sugg_id + ']').find('.alternative_part').text(part.text);
+
+                    // edit button text back t what it used to be
+                    $('#send_suggestion').text('הצע');
                 }
             })
-            if(flag)
-                popupProvider.showOkPopup({message:"הטקסט סומן כבר בהצעה לשינוי קיימת"});
-            else
-                $(".popup-window")
-                    .css({ top:top + 20, left:left, opacity:0 })
-                    .show()
-                    .animate({ top:'-=20px', opacity:1 }, 100, 'linear');
-        });
+        }else{
+            // create new suggestion
+            var explanation = $("#discussion_explanation").val();
+            var user_info = {
+                user_logged_in : user.first_name ? true : false,
+                action_done : (user.actions_done_by_user && user.actions_done_by_user.suggestion_on_object) ? true : false,
+                action_name : "suggestion_on_object",
+                tokens_owned : user.tokens ? user.tokens : 0,
+                price: gamification_price['suggestion_on_discussion']
+            }
 
-        console.log(range);
+            db_functions.addSuggestionToDiscussion(discussion_id, vision_text_history_count, [part], explanation, user_info, function doWork(err, data) {
+                if (!err) {
+                    activateMailNotifications();
+                    // vision was updated while composing suggestion
+                    if (data.cancel === true){
+                        updateVisionAndSuggestionText(data);
+                        $this.data('executing', false);
+                        $this.removeClass('disable');
+                        return;
+                    }
+                    $this.data('executing', false);
+                    $this.removeClass('disable');
+
+                    if(data != 'canceled'){
+                        if(!user.actions_done_by_user.suggestion_on_object)
+                        {
+                            user.actions_done_by_user.suggestion_on_object = true;
+                        }
+                        $('#write-comment').hide();
+                        /*
+                         $("textarea#discussion_suggest").val('');
+                         $("#user_tokens").text(data.updated_user_tokens);*/
+                        render_suggestion(data,true);
+                        $(".deals-box").show();
+                    }
+                } else {
+                    var err = err;
+                    if(err.responseText == "a suggestion with this indexes already exist"){
+                        popupProvider.showOkPopup({message:"????? ???? ??? ????? ?????? ?????"});
+                    }
+                }
+            });
+        }
     });
 
-        // focus and copy the selected text of discussion
-    $('#pop_post_bt').on("click", function (e) {
-        e.preventDefault();
-        new_post_ref_id = null;
-        $(".popup-window").hide();
-        $("textarea#discussion_comment").val('"' + range.text + '"');
-        focusOnCommentBox();
+    $("#cancelWriteCommentBT").live("click", function () {
+        $('#write-comment').hide();
     });
-
 
     $('.button_add_comment').on("click", function (e) {
         e.preventDefault();
         focusOnCommentBox();
     });
 
+	$('#comments_wrapper').on("click", ".button_comment",function (e) {
+        e.preventDefault();
+        focusOnCommentBox();
+        scrollTo('#add_comment_wrapper');
+    });
+
+    //set slider text according to user grade
+    if(my_discussion_grade){
+        $('.discussions_page .segment.main .segment_bottom .statement span').text('');
+
+        if(my_discussion_grade >= 0 && my_discussion_grade < 2){
+            $('.discussions_page .segment.main .segment_bottom .statement .second').text('מתנגד נחרצות');
+        }else{
+            if(my_discussion_grade >= 2 && my_discussion_grade < 5){
+                $('.discussions_page .segment.main .segment_bottom .statement .second').text('מתנגד');
+            }else {
+                if(my_discussion_grade >= 5 && my_discussion_grade < 6){
+                    $('.discussions_page .segment.main .segment_bottom .statement .second').text('תומך בעיקרון, אך נדרש שיפור');
+                }else {
+                    if(my_discussion_grade >= 6 && my_discussion_grade < 8){
+                        $('.discussions_page .segment.main .segment_bottom .statement .second').text('תומך');
+                    }else{
+                        $('.discussions_page .segment.main .segment_bottom .statement .second').text('תומך נלהב');
+                    }
+                }
+            }
+        }
+    }
 
     $(".slider").slider({
         disabled:is_creator,
@@ -824,8 +686,31 @@ $(document).ready(function () {
         min:0,
         max:10,
         step:0.10 ,
-        change:function (event, ui) {
+        slide: function(event, ui){
+            $('.discussions_page .segment.main .segment_bottom .statement span').text('');
 
+            // change slider text according to grade
+            var current = ui.value;
+
+            if(current >= 0 && current < 2){
+                $('.discussions_page .segment.main .segment_bottom .statement .second').text('מתנגד נחרצות');
+            }else{
+                if(current >= 2 && current < 5){
+                    $('.discussions_page .segment.main .segment_bottom .statement .second').text('מתנגד');
+                }else {
+                    if(current >= 5 && current < 6){
+                        $('.discussions_page .segment.main .segment_bottom .statement .second').text('תומך בעיקרון, אך נדרש שיפור');
+                    }else {
+                        if(current >= 6 && current < 8){
+                            $('.discussions_page .segment.main .segment_bottom .statement .second').text('תומך');
+                        }else{
+                            $('.discussions_page .segment.main .segment_bottom .statement .second').text('תומך נלהב');
+                        }
+                    }
+                }
+            }
+        },
+        change:function (event, ui) {
             if (event.originalEvent) {      //ugly hack because of slider api bug
                 var my_prev_grade = my_discussion_grade;
                 my_discussion_grade = ui.value;
@@ -841,6 +726,7 @@ $(document).ready(function () {
                 db_functions.addDiscussionGrade(discussion_id, my_discussion_grade, grade_id, user_info, function (err, data) {
 
                     if (!err) {
+                        activateMailNotifications();
                         if(data == 'canceled'){
                             $(".slider").slider('value',my_prev_grade);
                         } else {
@@ -858,25 +744,11 @@ $(document).ready(function () {
                         console.log(err);
                 });
             }
-       }
-   });
-
-
-    $( '#discussion_comment' ).ckeditor(            {
-        height: 100,
-        'line-height':10,
-        language:'he',
-        removePlugins : 'elementspath',
-        on :
-        {
-            instanceReady : function( ev )
-            {
-                editor = this;
-            }
         }
     });
 
     $("#submit_post").on('click', function (e) {
+        activateMailNotifications();
         e.preventDefault();
         var $this = $(this);
 
@@ -911,156 +783,1349 @@ $(document).ready(function () {
                     if (my_id)
                         setUserScore(my_id, post.creator_id.score);
                     post.voting = post.votes_for - post.votes_against;
+
+                    //is new comment even or not
+                    var num_of_comments = $('.comment_wrapper.regular_comment').length;
+                    if (num_of_comments % 2 === 0) post. is_even = true;
+
                     dust.render('discussion_comment', post, function (err, out) {
-                        $("#comments").append(out);
+                        var pagination = $(".first_pagination");
+
+                        pagination.after(out);
+                        var new_comment =$('.regular_comment').first();
+                        new_comment.addClass('odd');
+                        var bgc  =new_comment.css('background-color')
+                        new_comment.css('background-color', 'pink')
+                        new_comment.animate({backgroundColor: bgc}, 3000);
+                        $('html, body').animate({
+                            scrollTop: new_comment.offset().top -50
+                        }, 500);
                         $("textarea#discussion_comment").val('');
                         new_post_ref_id = null;
-                        postsNumber++;
-                        setCommentNumber(postsNumber);
+//                        postsNumber++;
+//                        setCommentNumber(postsNumber);
                         $this.data('executing', false);
                         $this.removeClass('disable')
                     });
+                }
+            }else{
+                if(err.responseText == "must grade discussion first"){
+                    $this.data('executing', false);
+                    $this.removeClass('disable');
                 }
             }
         })
     });
 
-//    $('.popup-window .close').on('click', function () {
-//        $('.popup-window').hide();
-//    });
-//
-//    $('.popup-window').on('focus', function (e) {
-//        e.preventDefault();
-//    });
+    var new_post_ref_id = null;  //if not null =>the create new post is connected to anther post
+    var discussion_title = "<%= discussion.title%>"
+    var discussion_img_field_preview = "<%= discussion.image_field ? discussion.image_field.url ||'' : '' %>";
+
+    function setUserScore(userID, score) {
+        $('[ data-creator_id=' + userID + ']').find('.score').empty().append(score);
+    }
+
+    function setCommentNumber(number) {
+        $('#comments_number')[0].innerHTML = '(' + number + ')';
+    }
+
+    function vote(actionType){
+        var post_id = $(this).parents('.comment_wrapper').data("id");
+        var button = $(this);
+        var user_info = {
+            user_logged_in : user.first_name ? true : false,
+            action_done : (user.actions_done_by_user && user.actions_done_by_user.vote_on_object) ? true : false,
+            action_name : "vote_on_object",
+            tokens_owned : user.tokens ? user.tokens : 0,
+            price: gamification_price['vote_on_post']
+        }
+        var func = $(this).parents('#comments_wrapper').length ? db_functions.voteForPost : db_functions.voteForSuggestion;
+        func.call(db_functions, post_id, actionType, user_info, function (err, post_obj) {
+            if(post_obj != 'canceled'){
+                if (!err) {
+                    if(user && !user.actions_done_by_user.vote_on_object)
+                    {
+                        user.actions_done_by_user.vote_on_object = true;
+                    }
+                       button.parents(".rating_small").find(".counter").text(Math.round(post_obj.votes_for-post_obj.votes_against ));
+                       var down_arrow = button.parents(".rating_small").find(".bad");
+                       var up_arrow =button.parents(".rating_small").find(".good");
+                       down_arrow.removeClass("balance0").removeClass("balance1").removeClass("balance-1").addClass("balance"+post_obj.voter_balance);
+                       up_arrow.removeClass("balance0").removeClass("balance1").removeClass("balance-1").addClass("balance"+post_obj.voter_balance);
+                }
+                else {
+                    if (err.responseText == 'Error: there is not enought tokens')
+                        popupProvider.showOkPopup( {message:     'אין לך מספיק אסימונים'});
+                    if (err.responseText == 'user already voted for this post')
+                        popupProvider.showOkPopup( {message:     'כבר דירגת תגובה זו'});
+                    if (err.responseText == 'soory, can\'t vote to your own post')
+                        popupProvider.showOkPopup( {message:     'מצטערים, לא ניתן להצביע לתגובה של עצמך'});
+                }
+            }
+        })
+    }
+
+    $('#comments_wrapper').on('click', '.good', function () {
+        activateMailNotifications();
+        vote.apply($(this),['add']);
+    });
+
+    $('#comments_wrapper').on('click', ".bad", function () {
+        activateMailNotifications();
+        vote.apply($(this),['remove']);
+    });
+
+    /* *** scroll to qoutes *** */
+    // click on  quoted-by take you to comment
+    $('#comments_wrapper').on('click', '.quote-ref', function () {
+        var id = $(this).data('ref-id');
+        var post_id = "post_" + id;
+        if(!scrollTo(window[post_id])) {
+            db_functions.getPostById(id, function (err, post) {
+                dust.render('discussion_comment', post, function (err, out) {
+                    if (!err){
+                        $(".second_pagination").before(out);
+                        scrollTo(window[post_id]);
+                    }
+                });
+            });
+        }
+    });
+    // click on  quoted take you to comment
+    $('#comments_wrapper').on('click', '.quote', function () {
+        var id = $(this).parents('.comment_wrapper ').data('ref-id');
+        var post_id = "post_" + id;
+        if(!scrollTo(window[post_id])) {
+            db_functions.getPostById(id, function (err, post) {
+                dust.render('discussion_comment', post, function (err, out) {
+                    if (!err){
+                        $(".second_pagination").before(out);
+                        scrollTo(window[post_id])
+                    }
+                });
+            });
+        }
+    });
+    /* *** end of scroll to qoutes *** */
+
+    // copy the post text+ user to   discussion_comment
+    $('#comments_wrapper').on('click', ".button_quote", function (e) {
+        var userName;
+        var text;
+        var postDiv = $(this).parents('.comment_wrapper');
+        // TODO chnge this text height
+        var text_height = $(this).parents('.comment_wrapper ').find('.content').height();
+        new_post_ref_id;
+        e.preventDefault();
+        userName = postDiv.data('creator_name');
+        new_post_ref_id = postDiv.data('id');
+
+        // TODO replace actual_text selector
+        var text_to_quote = $('.actual_text', postDiv).length ? $('.actual_text', postDiv).text() : $('.content', postDiv).text();
+
+        text = "[ציטוט=" + '"' + userName + '"' + " " + "]\n"
+                + text_to_quote
+                + '\n'
+                + "[/ציטוט]"
+                + '<p>&nbsp;</p>'
+                + '\n';
+
+        $("textarea#discussion_comment").val($("textarea#discussion_comment").val() + text).focus();
+        focusOnCommentBox(text_height);
+
+        $("textarea#discussion_comment").height($("textarea#discussion_comment").height() + text_height);
+    });
+
+    var current_offset = 0;
+    var limit = 20;
+    var num_of_pages;
+    var num_of_pages_in_section = 7;
+    var total_post_count;
+
+    //render change suggestion
+    function render_suggestion(suggestion, use_animation) {
+        // get original text and alternative text
+        if (suggestion.parts && suggestion.parts.length) {
+            suggestion.original_part = function () {
+                var from = suggestion.parts[0].start;
+                var end = suggestion.parts[0].end;
+                return original.substr(from, end - from);
+            };
+
+            // set text for context popup
+            suggestion.context_before = original.substring(Math.max(suggestion.parts[0].start - 400, 0), suggestion.parts[0].start, suggestion.parts[0].start);
+            suggestion.context_after = original.substring(suggestion.parts[0].end, Math.min(original.length, suggestion.parts[0].end + 400));
+
+            suggestion.alternative_part = function () {
+                return suggestion.parts[0].text;
+            };
+
+            dust.render('discussion_suggestion', suggestion, function (err, out) {
+                $('#suggestions_wrapper').append(out);
+                image_autoscale($('#suggestions_wrapper .auto-scale img'));
+
+                if(use_animation == true){
+                    var bgc =$('.suggestion_holder').last().css('background-color');
+                    $('.suggestion_holder ').last().css('background-color', 'pink');
+                    $('.suggestion_holder ').last().animate({backgroundColor: bgc}, 3000);
+                }
+                // check if got here after not logged user tryed to grade suggestion
+                var action = getURLParameter('action');
+                if (action !== "null") {
+                    var id = window.location.hash;
+                    action = ".button_" + action;
+
+                    if (!id) return false;
+
+                    $(id).find('.suggestion_bottom_segment ' + action + ' input').click();
+                }
+            });
+        }
+        return null;
+    };
+
+    function render_approved_suggestion(suggestion){
+        suggestion.original_part = suggestion.replaced_text;
+        suggestion.alternative_part = suggestion.parts[0].text;
+
+        // set text for context popup
+        if (suggestion.context_before && suggestion.context_after && suggestion.context_before !== "undefined") {
+            suggestion.context_before = suggestion.context_before.substring(Math.max(suggestion.context_before.length - 400, 0), suggestion.context_before.length);
+            suggestion.context_after = suggestion.context_after.substring(0, Math.min(suggestion.context_after.length, 400));
+        }
+
+        dust.render('discussion_approved_suggestion', suggestion, function (err, out) {
+            $('#approved_suggestions_wrapper').append(out);
+            image_autoscale($('#approved_suggestions_wrapper .auto-scale img'));
 
 
-    /***************************************************/
+//                var $this = $('#post_' + suggestion_id);
+//                scrollTo('.content_break.suggestions');
+//
+//                var bgc =$('.suggestion_holder').last().css('background-color');
+//                $('.suggestion_holder ').last().css('background-color', 'pink');
+//                $('.suggestion_holder ').last().animate({backgroundColor: bgc}, 3000);
+        });
+    }
+    var first_suggestion;
 
-//    <%
-//    if (user_logged) { %>
-//        var proxy = JSON.parse('<%-proxy%>');
-//    <%
-//    } else { %>
-//        var proxy = [];
-//    <%
-//    }
-//    %>
-//
+    // get change suggestions and render
+    db_functions.getSuggestionByDiscussion(discussion_id, 0, 0, function (err, data) {
+
+        if(err || data.objects.length === 0) return false;
+
+        $.each(data.objects, function(index, suggestion){
+            suggestion.my_discussion_grade = my_discussion_grade;
+            suggestion.my_grade_val = suggestion.grade_obj ? suggestion.grade_obj.evaluation_grade : my_discussion_grade;
+            suggestion.my_grade_id = suggestion.grade_obj ? suggestion.grade_obj._id : null;
+        })
+
+        suggestions_list = data.objects ;
+        displaySuggestionsRanges();
+        suggestion = suggestions_list[0];
+
+        // set title and img for fb share
+        suggestion.title = discussion_title;
+        suggestion.image_field_preview = discussion_img_field_preview;
+
+        render_suggestion(suggestion);
+
+        var curr_suggestion = $('#suggestions_wrapper').find('[data-id=' + suggestion.id + ']');
+
+        db_functions.getCommentsBySuggestion(suggestion.id, function(err, data){
+
+            // set comments counter
+            curr_suggestion.find('.comments_counter span').text(data.objects.length);
+
+            if (data.objects.length===0){
+                curr_suggestion.find('.close').hide();
+            }
+
+            $.each(data.objects, function (index, comment) {
+                var is_first_comment = (index == 0);
+                comment.is_even = (index % 2) == 0;
+                dust.render('comment_on_suggestion', comment, function (err, out) {
+                    // append before "add_comment"
+                    curr_suggestion.find('.suggestion_comments_holder .add_comment').before(out);
+                    if (is_first_comment) {
+                        $(curr_suggestion).find('.suggestion_comments_holder .comment').show();
+                    }
+                    image_autoscale(curr_suggestion.find('.auto-scale img'));
+                });
+            });
+        })
+
+        $('#suggestion_number').text(' (' + data.meta.total_count + ')');
+        if (data.objects.length > 0) {
+            var curr_suggestion;
+            first_suggestion = data.objects[0];
+            $(".content_break_content").show();
+            if (data.meta.total_count >= 2) {
+                $(".more-deals").show();
+
+                $(".more-deals a").on('click', function (e) {
+                     $('#suggestions_wrapper').empty();
+                    var self = $(this);
+                    if(self.data('executing')){
+
+                        render_suggestion(first_suggestion);
+                        curr_suggestion = $('#suggestions_wrapper').find('[data-id=' + first_suggestion.id + ']');
+
+                        db_functions.getCommentsBySuggestion(first_suggestion.id, function(err, data){
+
+                            // set comments counter
+                            curr_suggestion.find('.comments_counter span').text(data.objects.length);
+
+                            $.each(data.objects, function (index, comment) {
+                                var is_first_comment = (index == 0);
+                                comment.is_even = (index % 2) == 0;
+
+                                dust.render('comment_on_suggestion', comment, function (err, out) {
+                                    // append before "add_comment"
+                                    curr_suggestion.find('.add_comment').before(out);
+                                    if (is_first_comment) {
+                                        $(curr_suggestion).find('.suggestion_comments_holder .comment').show();
+                                    }
+                                    image_autoscale(curr_suggestion.find('.auto-scale img'));
+                                });
+                            });
+                        })
+                        self.text('עוד הצעות');
+                        $(this).removeClass('flip');
+
+                        $(this).data('executing', false);
+                        scrollTo('#content_wrapper_suggestions')
+                        return false;
+                    }
+                    return displayAllSuggestions() ;
+                });
+            }
+
+             // if needs to scroll to suggestion that is not shown, open list of suggestions and scroll to suggestion
+             var hash = window.location.hash;
+             if(hash){
+                 if (!scrollTo(hash)) {
+                 var match = /^#post_([0-9a-f]+)/.exec(hash);
+
+                 if (!match) return false;
+
+                 var is_suggestion = false;
+                 $.each(suggestions_list, function(index, suggestion){ if ("#post_" + suggestion.id + "" == hash) is_suggestion = true });
+                     if (is_suggestion){
+                         displayAllSuggestions();
+                     }
+                 }
+             }
+        }
+        else {
+            $(".content_break_content").hide();
+        }
+    });
+
+    $('.history_button, .approved_suggestions h2').click(function(e){
+        $('input.history').toggleClass('active');
+        $('#content_wrapper_approved_suggestions').toggleClass('active');
+        if (on_load && global_hash) {
+            scrollTo(global_hash);
+            on_load = false;
+        }else{
+            if ($('#content_wrapper_approved_suggestions').hasClass('active')){
+                scrollTo('.approved_suggestions');
+            }
+        }
+
+    });
+
+    db_functions.getApprovedSuggestionsByDiscussion(discussion_id, 0, 0, function(err, data){
+        if (data.objects.length > 0){
+            approved_suggestions_list = data.objects || {};
+            // set vision version details
+            $('.draft_no span').text(data.objects.length + 1);
+
+            if (data.objects[0].approve_date)
+                $('.history_details_holder .item.last span').text($.datepicker.formatDate('dd.mm.yy', new Date(Date.parse(data.objects[0].approve_date))));
+            else {
+                $('.history_details_holder .item.last').hide();
+                $('.history_details_holder .item.by').hide();
+            }
+            $('.history_details_holder .item.by a').text(data.objects[0].creator_id.first_name + " " + data.objects[0].creator_id.last_name);
+            $('.history_details_holder .item.by a').attr('href', '../myuru/' + data.objects[0].creator_id.id);
+            $('.history_details_holder').show();
+            $('.content_break.approved_suggestions').show();
+
+            $('#approved_suggestion_number').text(' (' + data.meta.total_count + ')');
+
+            $.each(data.objects, function(index, sugg){
+                render_approved_suggestion(sugg);
+            });
+            image_autoscale($('#approved_suggestions_wrapper .auto-scale img'));
+
+            var hash = window.location.hash;
+
+            if(hash){
+                var match = /^#post_([0-9a-f]+)/.exec(hash);
+                if (match) {
+                    var post_id = match[1];
+                    var is_hash_to_approved_suggestion = false;
+                    $.each(approved_suggestions_list, function(index, app_sugg){
+                        if(app_sugg._id == post_id) is_hash_to_approved_suggestion = true;
+                    })
+
+                    if(is_hash_to_approved_suggestion){
+                        global_hash = hash;
+                        $('.approved_suggestions h2').click();
+                    }
+                }
+            }
+        }
+    });
+
+    function displayAllSuggestions(){
+
+        var self=$(".more-deals a");
+        var XHRs = [];
+        $('#suggestions_wrapper').empty();
+        $.each(suggestions_list, function (index, suggestion) {
+
+ 			// set title and img for fb share
+            suggestion.title = discussion_title;
+            suggestion.image_field_preview = discussion_img_field_preview;
+
+            render_suggestion(suggestion);
+
+            XHRs.push(db_functions.getCommentsBySuggestion(suggestion.id, function(err, data){
+                curr_suggestion = $('#suggestions_wrapper').find('[data-id=' + suggestion.id + ']') ;
+
+                // set comments counter
+                curr_suggestion.find('.comments_counter span').text(data.objects.length);
+                var is_first_comment;
+
+                $.each(data.objects, function (index, comment) {
+                    is_first_comment = (index == 0);
+                    comment.is_even = (index % 2) == 0;
+                    dust.render('comment_on_suggestion', comment, function (err, out) {
+                        // append before "add_comment"
+                        curr_suggestion.find('.add_comment').before(out);
+                        if (is_first_comment) {
+                            $(curr_suggestion).find('.suggestion_comments_holder .comment').show();
+                        }
+                        image_autoscale(curr_suggestion.find('.auto-scale img'));
+                    });
+                });
+            }))
+
+            //run a function when all deferred objects resolve
+            $.when(XHRs).then(function (){
+                // if needs to scroll to suggestion that is not shown, open list of suggestions and scroll to suggestion
+                var hash = window.location.hash;
+                if(hash && on_load){
+                   scrollTo(hash);
+                   on_load = false;
+                }
+            });
+        });
+
+        self.text('סגור הצעות ');
+        self.addClass('flip');
+        self.data('executing', true);
+        return false;
+    }
+
+    $('#suggestions_wrapper').on('keyup', '.add_comment textarea', function(e){
+        if(e.keyCode == 13)
+        {
+            activateMailNotifications();
+            var self = $(this);
+            var text = $(this).val();
+            if (text.trim() == '') return false;
+
+            var suggestion_id = $(this).parents('.suggestion_wrapper').data('id');
+            var add_comment = $(this).parent('.add_comment');
+            var can_continue = $(this).parent().data('can-add');
+
+            if (can_continue){
+                $(this).parent().attr('data-can-add', false);
+
+                db_functions.addCommentToSuggestion(suggestion_id, discussion_id, text, function(err, comment){
+                    $(this).parent().attr('data-can-add', true);
+                    add_comment.find('textarea').val('');
+                    var $suggestion = $('[data-id=' + suggestion_id + ']');
+                    var num_of_comments = $suggestion.find('.suggestion_comments_holder .comment').length;
+                    if (num_of_comments % 2 === 0) comment.is_even =  true;
+
+                    dust.render('comment_on_suggestion', comment, function (err, out) {
+                        // append before "add_comment"
+                        add_comment.before(out);
+                        $suggestion.find('.comments_counter span').text(num_of_comments + 1);
+                        self.parents('.suggestion_wrapper').find('.comment').show();
+                        self.parents('.suggestion_wrapper').find('.close').show();
+                        image_autoscale(add_comment.parent('.suggestion_comments_holder').find('.auto-scale img'));
+                        scrollTo('#' + comment._id);
+                    });
+                });
+            }
+        }
+    });
+
+    // close/open suggestion comments
+    $('#suggestions_wrapper').on('click', '.suggestion_bottom .close', function(){
+        $(this).hide();
+        $(this).parents('.suggestion_wrapper').find('.comment').hide();
+    });
+
+    $(".comments_counter a").live("click",function(){
+        $(this).parents('.suggestion_wrapper').find('.comment').show();
+        $(this).parents('.suggestion_wrapper .comments_counter').find('.close').show();
+        image_autoscale('.auto-scale img');
+    });
+
+    function renderComments(comments) {
+
+        //first clear existing comments
+        $('.comment_wrapper.even, .comment_wrapper.odd').remove();
+
+        var i;
+        for (i = 0; i < comments.length; i++) {
+            comments[i].isFirst = (i === 0);
+            comments[i].is_even = ((i % 2) == 0);
+            comments[i].voting = comments[i].votes_for - comments[i].votes_against;
+        };
+
+        // render
+        dust.renderArray('discussion_comment', comments, null, function (err, out) {
+            if (!err) {
+                var pagination = $(".second_pagination");
+                pagination.before(out);
+                var hash = window.location.hash;
+                    if (hash) {
+                    if (!scrollTo(hash)) {
+                        var match = /^#post_([0-9a-f]+)/.exec(hash);
+                        if (match) {
+                            var post_id = match[1];
+
+                            db_functions.getPostById(post_id, function (err, post) {
+                                dust.render('discussion_comment', post, function (err, out) {
+                                    if (!err){
+                                        pagination.append(out);
+                                    }
+                                    scrollTo(hash);
+                                });
+                            });
+                        }
+                    }
+                }
+
+                image_autoscale($('.auto-scale img', comments));
+
+                // i paste it here to prevent the weird bug "cannot insertBefore null"
+                $('#discussion_comment').ckeditor({
+                    height: 70,
+                    width: 810,
+                    'line-height':10,
+                    language:'he',
+                    removePlugins : 'elementspath',
+                    on :
+                    {
+                        instanceReady : function( ev )
+                        {
+                            editor = this;
+                        }
+                    }
+                });
 
 
-//    var sugg_grade_id;
-//    var new_post_ref_id = null;  //if not null =>the create new post is connected to anther post
+                try{
+                    FB.XFBML.parse($('#comments_wrapper').get(0));
+                }catch(ex){
+                    console.log('fb parse didnt work');
+                }
+            }
+        });
+    }
 
-//    var discussion_title = "<%= discussion.title%>"
-//    var discussion_img_field_preview = "<%= discussion.image_field ? discussion.image_field.url ||'' : '' %>";
-//
-//    var postsNumber = 0;
+    //set pagination
+    function setPagination(){
 
-//
-//    var vision = $('#discussion_content').text();
-//
-//    var onGiveProxy;
-//
-//    var editor;
-//
-//    $( '#discussion_comment' ).ckeditor(            {
-//        height: 100,
-//        'line-height':10,
-//        language:'he',
-//        removePlugins : 'elementspath',
-//        on :
-//        {
-//            instanceReady : function( ev )
-//            {
-//                editor = this;
-//            }
-//        }
-//    });
-//
-//    $("#proxy_form").dialog({
-//        autoOpen:false,
-//        height:300,
-//        width:350,
-//        modal:true,
-//        buttons:{
-//            "תן/קח אסימונים":function () {
-//
-//                var self = this;
-//
-//                $(self).dialog("disable");
-//                var bValid = true;
-//                if (onGiveProxy) {
-//
-//                    onGiveProxy(Number($('#give_tokens', this).val()), function () {
-//                        $(self).dialog("close");
-//                    });
-//                }
-//            },
-//            'בטל':function () {
-//                $(this).dialog("close");
-//            }
-//        },
-//        open:function () {
-//            $(this).dialog('enable');
-//        }
-//    });
-//
-//    $("#discussion_content").val($("#discussion_content").text());
-//
-//
-//
-//    $(".inline").colorbox({ inline:true, width:"730" });
-//
-//
-//    /***************************************************/
-//
-//
-//    function setUserScore(userID, score) {
-//        $('[ data-creator_id=' + userID + ']').find('.score').empty().append(score);
-//    }
-//
-//    function setCommentNumber(number) {
-//
-//        $('#comments_number')[0].innerHTML = '(' + number + ')';
-//    }
-//
-//
-//
-//
-//    $('#pop_suggest_bt').on("click", function (e) {
-//        e.preventDefault();
-//        $('#discussion_content_txt').text('"' + range.text + '"');
-//        $('#write-comment').show();
-//        $('textarea#discussion_suggest').focus();
-//        $('#reload-img').attr('src', $('#reload-img').attr('src'));
-//        $(".popup-window").hide();
-//    });
-//
-//
-//    $('#comments-box').on('hover', '.date', function (e) {
-//        alert('dsfdsf');
+        // in case there is only one page hide pagiation
+        if (num_of_pages <= 1){
+            $('.pagination').empty();
+            $('.pagination').append('<span class="title">עמודים (' + num_of_pages + '):</span>');
+            return
+        }
+
+        var new_span;
+        var pages = Math.min(num_of_pages_in_section, num_of_pages);
+        $('.pagination').append('' +
+                '<span class="title">עמודים (' + num_of_pages + '):</span>' +
+                '<a href="javascript: void(0)"><span class="first"></span></a>' +
+                '<a href="javascript: void(0)"><span class="prev"></span></a>');
+
+        for (var i=1; i<pages+1; i++ ){
+            if (i == 1){
+                new_span = '<span class="page current" data-first="true"><a href="javascript: void(0)">' + i + '</a></span>';
+            }else if (i==pages){
+                new_span = '<span class="page" data-last="true"><a href="javascript: void(0)">' + i + '</a></span>';
+            }else{
+                new_span = '<span class="page"><a href="javascript: void(0)">' + i + '</a></span>';
+            }
+            $('.pagination').append(new_span);
+        }
+
+        if (num_of_pages > pages) $('.pagination').append('<span class="page up-dots">...</span>');
+
+        $('.pagination').append('' +
+            '<a href="javascript: void(0)"><span class="next"></span></a>' +
+            '<a href="javascript: void(0)"><span class="last"></span></a>');
+    }
+
+	 function loadSpecialPosts(){
+        db_functions.getSpecialPostsByDiscussion(discussion_id, function(err, data){
+            if (!err  && data.length != 0){
+                dust.renderArray('discussion_special_comment', data.objects, null, function (err, out) {
+                    $('#special_post_wrapper').prepend(out);
+                    $('#special_post_wrapper .content').dotdotdot({});
+                    image_autoscale($('#special_post_wrapper .auto-scale img'));
+                });
+            }
+        })
+    };
+
+    function loadPosts(page_number, pagination_action) {
+        var selectedOption = $("#comments_filter .selected").data('sort-by');
+        current_offset = page_number ? (page_number - 1) * limit : 0;
+
+        // get posts with current offset
+        db_functions.getSortedPostByDiscussion(discussion_id, selectedOption || '-creation_date', current_offset, limit, function (err, data) {
+            if (err || data.objects.length === 0) {
+                console.log(err);
+                if(!err){
+                    $('#discussion_comment').ckeditor({
+                        height: 70,
+                        width: 810,
+                        'line-height':10,
+                        language:'he',
+                        removePlugins : 'elementspath',
+                        on :
+                        {
+                            instanceReady : function( ev )
+                            {
+                                editor = this;
+                            }
+                        }
+                    });
+                }
+            } else {
+                total_post_count = data.meta.total_count;
+                num_of_pages = Math.ceil(total_post_count / limit);
+                $('#comments_number').text(' (' + data.meta.total_count + ')');
+
+                if(!page_number){
+                    setPagination();
+                }else{
+                    if (pagination_action === 'move_up'){
+                        var paging_up = Math.min(Math.floor(num_of_pages_in_section / 2), num_of_pages - page_number);
+
+                        $.each($('.pagination .page a'), function(index, page){
+                            var a = $(this);
+                            a.text(parseInt(a.text()) + paging_up);
+                        });
+
+                        // addinnd 3 dots
+                        if ($('.pagination .down-dots').length === 0){
+                            $('.pagination').find("[data-first=true]").before('<span class="page down-dots">...</span>');
+                        }
+
+                        //removeing 3 dots
+                        if ((parseInt($($('.first_pagination .pagination .page[data-last=true]')[0]).text()) === num_of_pages)){
+                            //remove 3 dots
+                            $('.pagination .up-dots').remove();
+                        }
+                    }
+                    if (pagination_action === 'move_down'){
+                        var paging_down = Math.min(Math.floor(num_of_pages_in_section / 2), page_number - 1);
+
+                        $.each($('.pagination .page a'), function(index, page){
+                            var a = $(this);
+                            a.text(parseInt(a.text()) - paging_down);
+                        });
+
+                        if ($($('.first_pagination .pagination .page[data-first=true]')[0]).text() === "1"){
+                            //remove 3 dots
+                            $('.pagination .down-dots').remove();
+                        }
+                        // addinnd 3 dots
+                        if ($('.pagination .up-dots').length === 0 && parseInt($($('.first_pagination .pagination [data-first=true]')[0]).text()) < num_of_pages ){
+                            $('.pagination .next').parent().before('<span class="page up-dots">...</span>');
+                        }
+                    }
+                    if (pagination_action === 'first' || pagination_action === 'last'){
+                        var pages = Math.min(num_of_pages_in_section, num_of_pages);
+                        var page_counter;
+
+                        if (pagination_action === 'first'){
+                            page_counter = 1;
+
+                            //remove 3 dots
+                            $('.pagination .down-dots').remove();
+                        }else{
+                            if(num_of_pages_in_section >= num_of_pages){
+                                // no need to change page numbers
+                                page_counter = 1;
+                            }else{
+                                page_counter = num_of_pages - num_of_pages_in_section + 1;
+                            }
+
+                            //remove 3 dots
+                            $('.pagination .up-dots').remove();
+                        }
+
+                        var temp_counter = page_counter;
+                        $.each($('.first_pagination .pagination .page a'), function(index, page){
+                            var a = $(this);
+                            a.text(temp_counter++);
+                        });
+
+                        temp_counter = page_counter;
+                        $.each($('.second_pagination .pagination .page a'), function(index, page){
+                            var a = $(this);
+                            a.text(temp_counter++);
+                        });
+
+
+                        // TODO add remove dots here and remove it from other parts
+
+                        // addinnd 3 dots
+                        if ($('.pagination .down-dots').length === 0 && parseInt($($('.first_pagination .pagination [data-first=true]')[0]).text()) > 1){
+                            $('.pagination').find("[data-first=true]").before('<span class="page down-dots">...</span>');
+                        }
+
+                        // addinnd 3 dots
+                        if ($('.pagination .up-dots').length === 0 && parseInt($($('.first_pagination .pagination [data-last=true]')[0]).text()) < num_of_pages ){
+                            $('.pagination .next').parent().before('<span class="page up-dots">...</span>');
+                        }
+                    }
+
+                    $('.pagination span').removeClass('current');
+                    $('.pagination .page:contains("' + page_number + '")').addClass('current');
+                    $('.pagination .' + page_number + 'a').remove();
+                }
+
+                $.each(data.objects, function (index, post) {
+                    post.title = discussion_title;
+                    post.image_field_preview = discussion_img_field_preview;
+                });
+
+                renderComments(data.objects);
+            }
+        })
+    }
+
+    $('.pagination').on('click', 'a', function(button){
+        var page_number = parseInt($(this).text());
+        var current_page = $('.pagination .current')[0];
+        var current_page_link = $('.pagination .current a')[0];
+        var action;
+        var is_first = $(current_page).data('first');
+        var is_last = $(current_page).data('last');
+
+        // in case clicking one of the prev/next etc
+        if (isNaN(page_number)){
+            page_number =  parseInt($(current_page_link).text());
+            action = $(this).find('span').attr('class');
+
+            if (page_number === 1 && action === 'prev') return false;
+            if ((page_number === num_of_pages && action === 'next') || (page_number === num_of_pages && action === 'last')) return false;
+            if (is_last && action === 'next'){
+                action = 'move_up';
+            }
+            if (is_first && action === 'prev'){
+                action = 'move_down';
+            }
+
+            if (action === 'prev') --page_number;
+            if (action === 'next') ++page_number;
+            if (action === 'first') page_number = 1;
+            if (action === 'last') page_number = num_of_pages;
+        }
+
+        loadPosts(page_number, action);
+    });
+
+    $("#comments_filter input").click(function(){
+
+        var inputs = $(this).parent().find("input");
+
+        //set selected class to the selected
+        inputs.removeClass('selected');
+        inputs.removeClass('hover');
+        $(this).addClass('selected');
+
+        loadPosts(1);
+    });
+
+    $("#comments_filter input").hover(function(){
+        var inputs = $(this).parent().find("input");
+
+        //set hover class to the selected
+        inputs.removeClass('been_hover');
+        $(this).addClass('been_hover');
+    });
+
+    loadSpecialPosts();
+    loadPosts();
+
+    function focusOnCommentBox(text_height){
+        editor.focus();
+        editor.focusManager.focus();
+
+        setTimeout(function(){
+            var s =  CKEDITOR.instances.discussion_comment.getSelection();
+            var b = CKEDITOR.instances.discussion_comment.document.getBody();
+            s.selectElement(b);
+            var selected_ranges = s.getRanges();
+            selected_ranges[0].collapse(false);  //  false collapses the range to the end of the selected node, true before the node.
+            s.selectRanges(selected_ranges);
+
+            if(text_height){
+                CKEDITOR.instances.discussion_comment.resize(755, 100 + text_height);
+                $('#comments_wrapper #add_comment_wrapper .comment_wrapper').height(100 + text_height);
+            }
+
+        },100);
+    };
+
+    function displaySuggestionsRanges(){
+        $.each(suggestions_list, function (index, suggestion) {
+           var html =  $('#discussion_content').html();
+           var text =  original.substr(suggestion.parts[0].start,suggestion.parts[0].end - suggestion.parts[0].start);
+         //  console.log(text);
+            if (suggestion.parts[0].start > original.length) {
+               console.log('range problem |' + suggestion.id);
+               return
+            }
+           text=text.replace(/\r\n/g, '\r\n<br>');
+           text=text.replace(/\n/g, '\n<br>') ;
+           html =  html.substring(0, suggestion.parts[0].start) +html.substring(suggestion.parts[0].start).replace(text,'<span data-id="'+suggestion.id+'" class="marker_1">'+text+'</span>');;
+           $('#discussion_content').html(html);
+
+        })
+    }
+
+    var mouseDown, mouseUp, top, left;
+    var range_txt;
+
+    $('#discussion_content,#discussion_content_textarea')
+            .on('mousedown', function (e) {
+                mouseDown = e;
+                $("#old_suggestion_popup").hide();
+                console.log(mouseDown) ;
+            })
+            .on('keydown', function (e) {                if (!(e.shiftKey && (e.keyCode <= 40 && e.keyCode >= 37) || (e.ctrlKey && e.keyCode == 65))) e.preventDefault();})
+            .on('dragstart', function (e) {                e.preventDefault();               })
+            .on('mouseup',function (e) {
+                e.stopPropagation();
+                mouseUp = e;
+                var err = false;
+
+                left = Math.ceil((mouseDown.clientX + mouseUp.clientX) / 2 - 97);
+                top = Math.min(mouseDown.clientY, mouseUp.clientY) - $("#new_suggestion_popup").height() - 40 + $(window).scrollTop() +35;
+
+                range_txt = window.getSelection().toString();
+
+                // if we got here after flipping the discussion content to textarea get range easily
+                if ($(this).attr('id') === "discussion_content_textarea"){
+                    range = $(this).getSelection();
+                    range_txt = range.text;
+                }else {
+
+                    var flag = discoverRange (range_txt);
+
+                    if (range_txt.length == 0){
+                        mouseDown=null
+                        return false;
+                    }
+
+                    if(flag === false || (range.start == 0 && range.end == 0)){
+                        var popupConfig = {};
+                        popupConfig.message = "קרתה תקלה, נסה שנית";
+                        popupConfig.onOkCilcked = function(e){
+                            e.preventDefault();
+                            clicked = 'ok';
+                         //   if (flag === false){
+                                $('#discussion_content').hide();
+                                $('#discussion_content_textarea').show();
+                                $('#discussion_content_textarea').css('height',$("#discussion_content_textarea")[0].scrollHeight);
+                                $('.read_less').click();
+                                $('.read_more').click();
+                        //    }
+                            $.colorbox.close();
+                        },
+                        popupProvider.showOkPopup(popupConfig);
+                        return false;
+                    }
+                }
+
+                if(range.length > 0 || range_txt.length > 0 ){
+                    if(!my_id){
+                        popupProvider.showLoginPopup({}, function(err, result){
+                            if(!err)
+                                window.location = window.location
+                        });
+                        return false;
+                    }
+
+                    if (!my_discussion_grade && !is_creator){
+                        var popupConfig = {};
+                        popupConfig.message = 'אנא דרג קודם את החזון בראש העמוד.'
+                        popupConfig.onOkCilcked = function(e){
+                            e.preventDefault();
+                            clicked = 'ok';
+                            $.colorbox.close();
+                            scrollTo('.segment.main .tags')
+                        },
+                        popupProvider.showOkPopup(popupConfig);
+                        return false;
+                    }
+
+                    if(navigator.appName === "Microsoft Internet Explorer"){
+                        $("#pop_suggest_bt").click();
+                    }else{
+                        $("#old_suggestion_popup").hide();
+                        $("#new_suggestion_popup")
+                                .css({ top:top, left: (e.pageX-97), opacity:0 })
+                                .show()
+                                .animate({ top:'-=20px', opacity:1 }, 100, 'linear');
+                        setTimeout(function (){  mouseDown=null;},500)
+                    }
+                }else  {
+                    mouseDown=null
+                }
+            });
+
+    $(".marker_1").live("click", function () {
+        if(!mouseDown){
+            displayAllSuggestions();
+            var id= $(this).data('id')  ;
+            $('html, body').animate({
+                scrollTop: $("div[data-id=" +id+ "]").offset().top
+            }, 500);
+        }
+    });
+
+    function updateVisionAndSuggestionText(data){
+        // update vision
+        $('#discussion_content_textarea').val(data.text_field);
+        $('#discussion_content').html(data.text_field.replace(/\n/g, '<br />'));
+        original = $('#discussion_content_textarea').val();
+
+        // update original text
+        var original_text = original.substring(range.start, range.end);
+        $('#discussion_content_txt').text('"' + original_text + '"');
+
+        // update history
+        vision_text_history_count = data.discussion_vision_text_history.length;
+
+        var popupConfig = {};
+        popupConfig.popup_text =
+                "שים לב: מסמך החזון עודכן לאחרונה. בדוק שההצעה שלך עדיין בתוקף ושהטקסט שסימנת לא השתנה";
+        popupProvider.showOkPopup({message: popupConfig.popup_text});
+    }
+//    $('#discussion_content_textxarea').on('mousedown', function (e) {
+//        mouseDown = e;
+//        console.log(e);
 //    })
+//        .on('mouseup',
+//        function (e) {
+//            mouseUp = e;
+//            var err = false;
+//            var range = $(this).find('textarea').getSelection();
 //
-//    $('#suggestion_list').on('click', '#add_or_remove_proxy', function (e) {
-//        var userData = $(this).parents('.discussion-item');
-//        var proxyId = userData.data('creator_id');
-//        var userName = userData.data('creator_name');
-//        var post_id = $(this).parents('.comment-one').attr('id');
+//            left = Math.ceil((mouseDown.clientX + mouseUp.clientX) / 2 - ($(".popup-window").width() / 2));
+//            top = Math.min(mouseDown.clientY, mouseUp.clientY) - $(".popup-window").height() - 40 + $(window).scrollTop();
 //
-//        e.preventDefault();
-//
-//        if(!my_id){
-//            popupProvider.showLoginPopup({}, function(err, result){
-//                if(!err)
-//                    window.location = window.location + '?user_name=' + userName + '&proxy_id=' + proxyId + '&post_id=' + post_id;
-//            });
-//        }else{
-//            proxyCommon.addOrRemoveProxy(proxy, proxyId, userName, my_id, function(newProxy){
-//                proxy = newProxy.proxy;
-//            })
-//        }
+//        }).on('keydown',
+//        function (e) {
+//            console.log(e.keyCode == 27);
+//            if (!(e.shiftKey && (e.keyCode <= 40 && e.keyCode >= 37) || (e.ctrlKey && e.keyCode == 65))) e.preventDefault();
+//        }).on('dragstart', function (e) {
+//            e.preventDefault();
 //    });
+
+    function discoverRange(text){
+        var t=text;
+        var occurences = original.split(text).length - 1;
+
+        if (occurences > 1) return false;
+
+        if(original.indexOf(text)!=-1){//no linebreaks
+            range.start= original.indexOf(text);
+            range.end=  range.start+  text.length;
+        }  else{//chrome
+            t=text.replace(" \n","\n");
+            if(original.indexOf(t)!=-1){
+                range.start= original.indexOf(t);
+                range.end=  range.start+  t.length;
+            }else
+            {
+                t=text.replace(/\r/g,"");
+                if(original.indexOf(t)!=-1){
+                    range.start= original.indexOf(t);
+                    range.end=  range.start+  t.length;
+                }else
+                {
+                    range.start= 0;
+                    range.end=  0;
+                    console.log("error");
+                }
+            }
+        }
+
+        console.log("start="+range.start +" | end=" +range.end )    ;
+    }
+
+
+    $('body').mouseup(function(e){
+        var target =$(e.target).get(0) ;
+        if(target!=  $('#pop_post_bt').get(0) && target !=  $('#pop_suggest_bt').get(0) ) {
+            $(".popup-window").hide();
+        }
+
+        var container = $(".arrow_box_container");
+
+        if ((container.has(e.target).length === 0) && (!$(e.target).hasClass('grading_button'))){
+            container.hide();
+            $('.slider-is-open').removeClass('slider-is-open');
+        }
+    });
+
+    // focus and copy the selected text of discussion
+//    $('#pop_post_bt').click( function (e) {
+//        console.log("pop_post_bt");
+//        e.preventDefault();
+//        e.stopPropagation();
+//        new_post_ref_id = null;
+//        $(".popup-window").hide();
 //
+//        /*
+//        $("textarea#discussion_comment").val('"' + range_txt + '"');
+//        focusOnCommentBox();
+//        $('html, body').animate({
+//            scrollTop: $("#add_comment_wrapper").offset().top
+//        }, 500);
+//        */
+//    });
+
+
+    $('#pop_suggest_bt, .pop_suggest_bt').click(function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+
+        $("#send_suggestion").data('executing', false);
+        $("#send_suggestion").removeClass('disable');
+
+
+        $('#discussion_content_txt').text('"' + range_txt + '"');
+        $('#write-comment').show();
+
+        $('#reload-img').attr('src', $('#reload-img').attr('src'));
+        $(".popup-window").hide();
+
+        $('#discussion_suggest').val('');
+        $('#discussion_suggest').attr('disabled',false);
+        $('textarea#discussion_suggest').focus();
+
+        $('#discussion_explanation').val('');
+        if ($(this).hasClass('delete')){
+            $('#discussion_suggest').val(' ');
+            $('#discussion_suggest').attr('disabled','disabled');
+            $('#discussion_explanation').focus();
+        }else{
+            if ($(this).hasClass('add')){
+                $('#discussion_suggest').val(range_txt + ' ');
+            }
+        }
+
+        $('html, body').animate({
+            scrollTop: $("#write-comment").offset().top
+        }, 500);
+
+    });
+
+    var depress_event = false;
+
+
+    $(".suggestion_bottom_segment input").live("click", function (e) {
+        activateMailNotifications();
+        if (!my_id){
+            //open popup window
+            popupProvider.showLoginPopup({}, function(err){
+                if (!err) {
+                    var set_query = grade_against ? "?action=against" : "?action=pro";
+                    window.location = window.location + set_query + '#' + $suggestion_wrapper.attr('id');
+                }
+            });
+        }
+         var self =$(this);
+        if(self.hasClass('active')){
+            return
+        }
+        var slider_box = $(this).parents(".suggestion_wrapper").find(".arrow_box_container");
+
+        // first check if sliding popup is already open, if so close it
+        if ($(this).parent().hasClass('slider-is-open')){
+            slider_box.slideUp();
+            $('.slider-is-open').removeClass('slider-is-open');
+            return false;
+        }
+
+
+        var $suggestion_wrapper = $(this).parents(".suggestion_wrapper");
+        var grade_against = $(this).parent().hasClass('button_against');
+        var suggestion_id = $suggestion_wrapper.data('id');
+        var suggestion_grade_val = $suggestion_wrapper.data('my_grade');
+        var suggest_grade_id = $suggestion_wrapper.data('my_grade_id');
+
+//        if (is_creator){
+//            my_discussion_grade = discussion_grade;
+//        }
+
+        // first add default grade and then user can change it
+        var default_rating = grade_against ? Math.max(my_discussion_grade - 0.1, 0) : Math.min(my_discussion_grade + 0.1, 10);
+        var user_info = {
+            user_logged_in : user.first_name ? true : false,
+            action_done : (user.actions_done_by_user && user.actions_done_by_user.grade_object) ? true : false,
+            action_name : "grade_object",
+            tokens_owned : user.tokens ? user.tokens : 0,
+            price: gamification_price['grade_suggestion']
+        }
+
+        db_functions.addSuggestionGrade(suggestion_id, discussion_id, default_rating, suggest_grade_id, user_info, function (err, data) {
+            if (!err) {
+                // if grading approved the suggestion, move suggestion to approved section
+                var is_approved=data.is_approved;
+                if(is_approved){
+                    var $this = $('#post_' + suggestion_id);
+
+                    //update history segment
+                    $('.item.draft_no span').text(Number($('.item.draft_no span').text()) + 1);
+                    $('.history_details_holder .item.last span').text($.datepicker.formatDate('dd.mm.yy', new Date()));
+                    $('.history_details_holder .item.by a').text(my_name);
+                    $('.history_details_holder .item.by a').attr('href', '../myuru/' + my_id);
+
+                    db_functions.getDiscussionTextField(discussion_id, function(err, text_field){
+                        $('#discussion_content_textarea').val(text_field);
+                        $('#discussion_content').html(text_field.replace(/\n/g, '<br />'));
+                        original = $('#discussion_content_textarea').val();
+                    });
+                }
+
+                var $suggestion = $("div[data-id=" + suggestion_id + "]");
+                $suggestion.find('.supporters_wanted span').text(data.wanted_amount_of_tokens);
+                $suggestion.find('.supporters_current span').text(Math.round(data.curr_amount_of_tokens));
+
+                suggest_grade_id = data.grade_id;
+                $suggestion_wrapper.data('my_grade_id', data.grade_id);
+
+                slider_box.slideDown();
+                $('.slider-is-open').removeClass('slider-is-open');
+                $(this).parent().addClass('slider-is-open');
+                self.parent().parent().parent().find(".suggestion_bottom_segment input").removeClass('active');
+                self.addClass('active');
+                slider_box.find(".slider").slider({
+                    disabled: false,
+                    value: my_discussion_grade, // dmy_discussion_grades instead of my_suggestion grade to prevent deadlock in slider
+                    range:"min",
+                    min: 0,
+                    max: 10,
+                    step:0.10,
+                    slide: function(event, ui){
+
+                        // prevent slider to go under discussion_grade
+                        var current = ui.value;
+                        if (grade_against){
+                            if(current > my_discussion_grade){
+                                current = my_discussion_grade;
+                                return false;
+                            }
+                        }else{
+                            if(current < my_discussion_grade){
+                                current = my_discussion_grade;
+                                return false;
+                            }
+                        }
+                    },
+                    change:function (event, ui) {
+                        if (event.originalEvent) {
+                            var my_prev_grade = suggestion_grade_val;
+                            if(depress_event)
+                                return;
+                            var rating = ui.value;
+                            var user_info = {
+                                user_logged_in : user.first_name ? true : false,
+                                action_done : (user.actions_done_by_user && user.actions_done_by_user.grade_object) ? true : false,
+                                action_name : "grade_object",
+                                tokens_owned : user.tokens ? user.tokens : 0,
+                                price: gamification_price['grade_suggestion']
+                            }
+                            db_functions.addSuggestionGrade(suggestion_id, discussion_id, rating, suggest_grade_id, user_info, function (err, data) {
+                                if (!err) {
+                                    activateMailNotifications();
+                                    if(data == 'canceled'){
+                                        $(".suggest_slider_" + suggestion_id).slider('value',my_prev_grade);
+                                    } else {
+                                        var $suggestion = $("div[data-id=" + suggestion_id + "]");
+                                        $suggestion.find('.supporters_wanted span').text(data.wanted_amount_of_tokens);
+                                        $suggestion.find('.supporters_current span').text(Math.round(data.curr_amount_of_tokens));
+                                        $suggestion_wrapper.data('my_grade_id', data.grade_id);
+                                    }
+                                }
+                                else
+                                {
+                                    depress_event = true;
+                                    $(".suggest_slider_" + suggestion_id).slider("value", suggestion_grade_val || 0);
+                                    depress_event = false;
+                                    console.log(err);
+                                }
+                                slider_box.slideUp();
+                                $(this).parent().removeClass('slider-is-open');
+                                if(is_approved){
+                                    $('#content_right_holder .rating_box .rating_total').text(Math.round(data.new_grade*100)/100);
+                                    $this.find('.suggestion_bottom')
+                                            .empty()
+                                            .append('<div class="suggestion_bottom_segment wide"><div class="date_time"><span>ההצעה התקבלה, </span><a class="underline_and_cursor_when_hover back_to_doc"  href="javascript:void(0);" title="לצפייה במסמך המעודכן">לצפייה במסמך המעודכן</a></div></div>')
+//                                    $(".slider").slider('value',rating);
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+            else
+            {
+                depress_event = true;
+                $(".suggest_slider_" + suggestion_id).slider("value", suggestion_grade_val || 0);
+                depress_event = false;
+                console.log(err);
+            }
+        });
+
+    });
+
+
+    $('.back_to_doc').live('click', function(event){
+        showFullText();
+        scrollTo("#full");
+//        scrollTo("#short");
+        return false;
+    });
+    $('#facebook_share').one('click', function(event){
+        sendFacebookShare("/facebookShare?link=/discussions/" + discussion_id, discussion_title, discussion_img_field_preview, original, null, function(err){
+            if(err){
+                alert('Error occured');
+            }
+        });
+    })
+
+    $('#twitter_share').one('click', function(event){
+        function twitterShare () {
+            window.open('https://twitter.com/share?url=' + encodeURIComponent('http://www.uru.org.il/discussions/' + discussion_id) + '&text=' +
+                    encodeURIComponent(discussion_title) + '&via=URUisrael', 'share-twitter', 'status=0,scrollbars=0,location=0,height=320,width=660,resizable=1'
+            );
+            return false;
+        }
+    });
+
+    $('#google_plus_share').one('click', function () {
+        window.open('https://plusone.google.com/_/+1/confirm?hl=en&url=' + encodeURIComponent('http://www.uru.org.il/discussions/' + discussion_id),
+                'share-google', 'status=0,scrollbars=0,location=0,height=320,width=660,resizable=1');
+        return false;
+    });
+
+    $('#mail_share').on('click', function () {
+        $("#cloudsponge").slideToggle();
+        return false;
+    });
+
+    db_functions.getPressItemsByDiscussion(discussion_id, function (err, data) {
+        $.each(data.objects, function (index, press_item) {
+            switch(press_item.source){
+                case "הארץ":
+                    press_item.source_image=  "haaretz.gif";
+                    break;
+                case "כלכליסט":
+                    press_item.source_image=  "calcalist.png";
+                    break;
+                case "גלובס":
+                    press_item.source_image=  "globes.jpg";
+                    break;
+                case "mako":
+                    press_item.source_image=  "mako.png";
+                    break;
+                case "nrg":
+                    press_item.source_image=  "nrg.jpg";
+                    break;
+                case "walla":
+                    press_item.source_image=  "walla.jpg";
+                    break;
+                case "ynet":
+                    press_item.source_image=  "ynet.gif";
+                    break;
+                case "דה מרקר":
+                    press_item.source_image=  "themarker.png";
+                    break;
+            }
+            dust.render('discussion_press_item', press_item, function (err, out) {
+               $('#press_sidebar_holder').append(out);
+            });
+        });
+    });
+
+
+    <%
+    if (user_logged) { %>
+        var proxy = JSON.parse('<%-proxy%>');
+    <%
+    } else { %>
+        var proxy = [];
+    <%
+    }
+    %>
+
+
+    $('#suggestions_wrapper').on('click', '#add_or_remove_proxy', function (e) {
+        var userData = $(this).parents('.person');
+        var proxyId = userData.data('id');
+        var userName = userData.data('name');
+        var post_id = $(this).parents('.suggestion_wrapper').data('id');
+
+        e.preventDefault();
+
+        if(!my_id){
+            popupProvider.showLoginPopup({}, function(err, result){
+                if(!err)
+                    window.location = window.location + '?user_name=' + userName + '&proxy_id=' + proxyId + '&post_id=' + post_id;
+            });
+        }else{
+            proxyCommon.addOrRemoveProxy(proxy, proxyId, userName, my_id, function(newProxy){
+                proxy = newProxy.proxy;
+            })
+        }
+    });
+    $(".person .actions_box_container ,.person .img-box ,.person .name").live("mouseover",function(){
+        $(this).parent().find(".name").css("background-image","none")
+        $(this).parent().find(".actions_box_container").slideDown()
+
+    }) ;
+
+    $(".person").live("mouseleave",function(){
+        $(this).find(".actions_box_container").slideUp(function(){
+            $(this).parent().find(".name").css("background-image","url(/images/sep_photo.png)")
+        })
+
+    }) ;
+
+
+
 //    var user_name = getURLParameter('user_name');
 //    var proxy_id = getURLParameter('proxy_id');
 //    var post_id = getURLParameter('post_id');
@@ -1071,172 +2136,27 @@ $(document).ready(function () {
 //            window.location = window.location.pathname+ '#' + post_id;
 //        })
 //    }
-//
-//    $('#comments').on('click', '#add_or_remove_proxy', function (e) {
-//        var userData = $(this).parents('.comment-one');
-//        var proxyId = userData.data('creator_id');
-//        var userName = userData.data('creator_name');
-//        var post_id = $(this).parents('.comment-one').attr('id');
-//        e.preventDefault();
-//        if(!my_id){
-//            popupProvider.showLoginPopup({}, function(err, result){
-//                if(!err)
-//                    window.location = window.location + '?user_name=' + userName + '&proxy_id=' + proxyId + '&post_id=' + post_id;
-//            });
-//        }else{
-//            proxyCommon.addOrRemoveProxy(proxy, proxyId, userName, my_id, function(newProxy){
-//                proxy = newProxy.proxy;
-//            })
-//        }
-//    });
-//
-//    function vote(actionType){
-//        var post_id = $(this).parents('.comment-one').data("id");
-//        var button = $(this);
-//        var user_info = {
-//            user_logged_in : user.first_name ? true : false,
-//            action_done : (user.actions_done_by_user && user.actions_done_by_user.vote_on_object) ? true : false,
-//            action_name : "vote_on_object",
-//            tokens_owned : user.tokens ? user.tokens : 0,
-//            price: gamification_price['vote_on_post']
-//        }
-//        var func = $(this).parents('#comments').length ? db_functions.voteForPost : db_functions.voteForSuggestion;
-//        func.call(db_functions, post_id, actionType, user_info, function (err, post_obj) {
-//            if(post_obj != 'canceled'){
-//                if (!err) {
-//                    if(user && !user.actions_done_by_user.vote_on_object)
-//                    {
-//                        user.actions_done_by_user.vote_on_object = true;
-//                    }
-//                       button.parents(".ratio").find(".count").text(Math.round(post_obj.votes_for-post_obj.votes_against ));
-//                       var down_arrow = button.parents(".ratio").find(".down");
-//                       var up_arrow =button.parents(".ratio").find(".up");
-//                       down_arrow.removeClass("balance0").removeClass("balance1").removeClass("balance2").removeClass("balance3").removeClass("balance-1").removeClass("balance-2").removeClass("balance-3").addClass("balance"+post_obj.voter_balance);
-//                       up_arrow.removeClass("balance0").removeClass("balance1").removeClass("balance2").removeClass("balance3").removeClass("balance-1").removeClass("balance-2").removeClass("balance-3").addClass("balance"+post_obj.voter_balance);
-//                }
-//                else {
-//                    if (err.responseText == 'Error: there is not enought tokens')
-//                        popupProvider.showOkPopup( {message:     'אין לך מספיק אסימונים'});
-//                    if (err.responseText == 'user already voted for this post')
-//                        popupProvider.showOkPopup( {message:     'באפשרותך לתת עד שלושה אסימונים לתגובה בדיון'});
-//                    if (err.responseText == 'soory, can\'t vote to your own post')
-//                        popupProvider.showOkPopup( {message:     'מצטערים, לא ניתן להצביע לתגובה של עצמך'});
-//                }
-//            }
-//        })
-//    }
-//
-//    $('#comments').on('click', '.vote_for', function () {
-//        vote.apply($(this),['add']);
-//    });
-//
-//    $('#comments').on('click', ".vote_against", function () {
-//        vote.apply($(this),['remove']);
-//
-//    });
-//
-//    /*      $('.comments-box .comment-one .user-right').hover(function () {
-//     $(this).toggleClass('hover');
-//     });*/
-//
-//    $('#comments,#suggestion_list').on('mouseenter', ".side_menu",
-//            function (e) {
-//                $(this).addClass('hover');
-//                $('.left', this).show().css({width:0}).animate({'width':87});
-//
-//            }).on('mouseleave', ".side_menu", function (e) {
-//                var side = $(this);
-//                side.removeClass('hover');
-//                $('.left', this).animate({'width':0}, function () {
-//                    $(this).hide();
-//                });
-//            });
-//
-//    // copy the post text+ user to   discussion_comment
-//    $('#comments').on('click', ".quote_button", function (e) {
-//
-//
-//        var userName,
-//                text;
-//        var postDiv = $(this).parents('.comment-one');
-//        var text_height = $(this).parents('div').find('.post_text').height();
-//
-//        e.preventDefault();
-//       // $("textarea#discussion_comment").focus();
-//        userName = postDiv.data('creator_name');
-//        new_post_ref_id = postDiv.data('id');
-//
-//        var text_to_quote = $('.actual_text', postDiv).length ? $('.actual_text', postDiv).text() : $('.post_text', postDiv).text();
-//
-//        text = "[ציטוט=" + '"' + userName + '"' + " " + "]\n"
-//                + text_to_quote
-//                + '\n'
-//                + "[/ציטוט]"
-//                + '<p>&nbsp;</p>';
-//
-//        $("textarea#discussion_comment").val($("textarea#discussion_comment").val() + text).focus();
-//        focusOnCommentBox();
-//
-//        $('#cke_contents_discussion_comment').height($('#cke_contents_discussion_comment').height() + text_height)
-//
-//    });
-//
-//
-//    $('#comments').on('click', ".post_quote a", function (e) {
-//
-//        var post_id = $(this).parents(".comment-one").data("id");
-//        var ref_to_post_id = $(this).parents(".comment-one").data("ref-id");
-////        var link = window.location.href;
-////
-////        //remove hash if exist
-////        if(window.location.hash){
-////            link = link.slice(0, link.indexOf("#"));
-////        }
-////        var post_ref_id;
-////        link = link + "#post_id" + post_ref_id;
-//
-//        scrollTo("#post_" + ref_to_post_id);
-//    })
-//
-//
-//    $('#suggestion_list').on('click', ".grey-btn", function (e) {
-//
-//        var userName,
-//                text;
-//
-//        var postDiv = $(this).parents('.one');
-//
-//        e.preventDefault();
-//        $("textarea#discussion_comment").focus();
-//        focusOnCommentBox();
-//        userName = postDiv.data('creator_name');
-//        new_post_ref_id = postDiv.data('id');
-//
-//        var change_text = $('.change_text', postDiv).text();
-//        var explanation = $('.explanation', postDiv).text();
-//
-//
-//        if ($('.explanation', postDiv).text().trim() == "נימוק:") {
-//
-//            text = "[quote=" + '"' + userName + '"' + " " + "]\n"
-//                    + change_text
-//                    + '\n'
-//                    + "[/quote]"
-//                    + '\n';
-//        } else {
-//            text = "[quote=" + '"' + userName + '"' + " " + "]\n"
-//                    + change_text
-//                    + '\n'
-//                    + explanation
-//                    + '\n'
-//                    + "[/quote]"
-//                    + '\n';
-//        }
-//        $("textarea#discussion_comment").val(text).focus();
-//        focusOnCommentBox();
-//    });
-//
-//    $('#comments,#suggestion_list').on('click', ".follow_user", function (e) {
+
+    $('#comments_wrapper').on('click', '#add_or_remove_proxy', function (e) {
+        var userData = $(this).parents('.person');
+        var proxyId = userData.data('id');
+        var userName = userData.data('name');
+        var post_id = $(this).parents('.comment_wrapper').data('id');
+        e.preventDefault();
+        if(!my_id){
+            popupProvider.showLoginPopup({}, function(err, result){
+                if(!err)
+                    window.location = window.location + '?user_name=' + userName + '&proxy_id=' + proxyId + '&post_id=' + post_id;
+            });
+        }else{
+            proxyCommon.addOrRemoveProxy(proxy, proxyId, userName, my_id, function(newProxy){
+                proxy = newProxy.proxy;
+            })
+        }
+    });
+
+
+    //    $('#comments,#suggestion_list').on('click', ".follow_user", function (e) {
 //        var creator_id = $(this).parents('.comment-one,.one').data("creator_id");
 //        var self = this;
 //
@@ -1249,363 +2169,220 @@ $(document).ready(function () {
 //
 //        });
 //    });
-//
+    $("#press_sidebar_holder .item").live("click",function(){
+        window.open($(this).data('source'));
+    });
 
-//
-//    // just focus
-//    $("#discussion_comment_reply_button").on('click', function (e) {
-//        e.preventDefault();
-//        var discussionComment = $("textarea#discussion_comment").focus();
-//        focusOnCommentBox();
-//    });
-//
-//    var suggest_grade_id = new Object();
-//
-//    function render_suggestion(suggestion) {
-//        if (suggestion.parts && suggestion.parts.length) {
-//            var original = $('#discussion_content').val();
-//            suggestion.original_part = function () {
-//                var from = suggestion.parts[0].start;
-//                var end = suggestion.parts[0].end;
-//                return original.substr(from, end - from);
-//            };
-//            suggestion.alternative_part = function () {
-//                return suggestion.parts[0].text;
-//            };
-//
-//            var depress_event = false;
-//
-//            dust.render('discussion_suggestion', suggestion, function (err, out) {
-//                $('#suggestion_list').prepend(out);
-//                image_autoscale($('#suggestion_list .auto-scale img'));
-//                var suggestion_grade_val = suggestion.grade_obj ? suggestion.grade_obj.evalueation_grade : my_discussion_grade;
-//                suggest_grade_id[suggestion.id] = suggestion.grade_obj ? suggestion.grade_obj._id : null;
-//                $(".suggest_slider_" + suggestion.id).slider({
-//                    value:suggestion_grade_val,
-//                    range:"min",
-//                    min:0,
-//                    max:10,
-//                    step:0.10,
-//                    slide:function (event, ui) {
-//                        var rating = ui.value;
-//                        var grade = is_creator ? discussion_grade : my_discussion_grade;
-//                        if (rating >= grade) {
-//                            $(this).parents(".bottom-box").find(".agree_disagree").removeClass("disagree").addClass("agree")
-//                        } else {
-//                            $(this).parents(".bottom-box").find(".agree_disagree").removeClass("agree").addClass("disagree");
-//
-//                        }
-//                    },
-//                    change:function (event, ui) {
-//                        if (event.originalEvent) {
-//                            var my_prev_grade = suggestion_grade_val;
-//                            if(depress_event)
-//                                return;
-//                            var rating = ui.value;
-//                            var user_info = {
-//                                user_logged_in : user.first_name ? true : false,
-//                                action_done : (user.actions_done_by_user && user.actions_done_by_user.grade_object) ? true : false,
-//                                action_name : "grade_object",
-//                                tokens_owned : user.tokens ? user.tokens : 0,
-//                                price: gamification_price['grade_suggestion']
-//                            }
-//                            db_functions.addSuggestionGrade(suggestion.id, discussion_id, rating, suggest_grade_id[suggestion.id], user_info, function (err, data) {
-//                                if (!err) {
-//                                    if(data == 'canceled'){
-//                                        $(".suggest_slider_" + suggestion.id).slider('value',my_prev_grade);
-//                                    } else {
-//                                        //                                if(!(user.actions_done_by_user && user.actions_done_by_user.grade_object))
-//    //                                {
-//    //                                    user.actions_done_by_user.grade_object = true;
-//    //                                }
-//                                        $("#suggest_grade_" + suggestion.id).val(Math.round(data.new_grade * 100) / 100);
-//                                        $("#suggest_graders_" + suggestion.id).text(Math.round(data.agrees) + Math.round(data.not_agrees));
-//                                        $("#agrees_" + suggestion.id).text(Math.round(data.agrees));
-//                                        $("#not_agrees_" + suggestion.id).text(Math.round(data.not_agrees));
-//                                        $("#wanted_amount_of_tokens_" + suggestion.id).text(data.wanted_amount_of_tokens);
-//                                        $("#curr_amount_of_tokens_" + suggestion.id).text(Math.round(data.curr_amount_of_tokens));
-//                                        suggest_grade_id[suggestion.id] = data.grade_id;
-//
-//                                        //already_graded
-//                                    }
-//                                }
-//                                else
-//                                {
-//                                    depress_event = true;
-//                                    $(".suggest_slider_" + suggestion.id).slider("value", suggestion_grade_val || 0);
-//                                    depress_event = false;
-//                                    console.log(err);
-//                                }
-//                            });
-//                        }
-//                    }
-//                });
-//
-//                initTooltipWithMessage($('#suggestion_list .right .respect'), 'מוניטין');
-//                $(".suggest_slider_" + suggestion.id).prepend($("<div>").addClass("dark_bar").css('width', (my_discussion_grade * 10) + '%'));
-//            });
-//        }
-//        return null;
-//
-//    }
-//
-//    var first_suggestion;
-//    db_functions.getSuggestionByDiscussion(discussion_id, 1, 0, function (err, data) {
-//        $.each(data.objects, function (index, suggestion) {
-//            render_suggestion(suggestion);
-//        });
-//
-//        $('#suggestion_number').text('(' + data.meta.total_count + ')');
-//        if (data.objects.length > 0) {
-//            first_suggestion = data.objects[0];
-//            $(".deals-box").show();
-//            if (data.meta.total_count >= 2) {
-//                $(".more-deals").show();
-//
-//                $(".more-deals a").on('click', function (e) {
-//                    var self = $(this);
-//                    if($(this).data('executing')){
-//                        $('#suggestion_list').empty();
-//                        render_suggestion(first_suggestion);
-//                        self.text('עוד הצעות');
-//                        $(this).removeClass('flip');
-//
-//                        $(this).data('executing', false);
-//                        return false;
-//                    }else{
-//                        db_functions.getSuggestionByDiscussion(discussion_id, null, 1, function (err, data) {
-//                            $.each(data.objects, function (index, suggestion) {
-//                                render_suggestion(suggestion);
-//                            });
-//                        });
-//
-//                        self.text('סגור הצעות ');
-//                        $(this).addClass('flip');
-//                        $(this).data('executing', true);
-//
-////                    $(".more-deals").hide();
-//
-//                        return false;
-//                    }
-//                });
-//            }
-//        }
-//        else {
-//            $(".deals-box").hide();
-//        }
-//    });
-//
-//
-//    function renderComments(comments) {
-//
-//        var i;
-//        for (i = 0; i < comments.length; i++) {
-//            comments[i].isFirst = (i === 0);
-//            comments[i].isEven = ((i % 2)== 0);
-//            comments[i].voting =      comments[i].votes_for - comments[i].votes_against;
-//        }
-//        dust.renderArray('discussion_comment', comments, null, function (err, out) {
-//            if (!err) {
-//                var comments = $("#comments");
-//                comments.append(out);
-//                var hash = window.location.hash;
-//                if (hash) {
-//                    if (!scrollTo(hash)) {
-//                        var match = /^#post_([0-9a-f]+)/.exec(hash);
-//                        if (match) {
-//                            var post_id = match[1];
-//
-//                            db_functions.getPostById(post_id, function (err, post) {
-//                                dust.render('discussion_comment', post, function (err, out) {
-//                                    if (!err)
-//                                        comments.append(out);
-//                                    scrollTo(hash);
-//                                });
-//                            });
-//                        }
-//                    }
-//                }
-//
-//                image_autoscale($('.auto-scale img', comments));
-//                initTooltipWithMessage($('#comments .right .respect'), 'מוניטין');
-//
-//            }
-//        });
-//    }
-//
-//    function loadPosts() {
-//        var selectedOption = $("#sorting_select").val();
-//        db_functions.getSortedPostByDiscussion(discussion_id, selectedOption,current_offset, function (err, data) {
-//            if (err) {
-//                console.log(err);
-//            } else {
-//                current_offset += data.objects.length;
-//
-//                $.each(data.objects, function (index, post) {
-//                    post.title = discussion_title;
-//                    post.image_field_preview = discussion_img_field_preview;
-//                });
-//
-//                renderComments(data.objects);
-//
-//                if(data.meta.total_count > current_offset )
-//                    $('.more_comments').show();
-//                else
-//                    $('.more_comments').hide();
-//                postsNumber = data.meta.total_count;
-//                setCommentNumber(postsNumber);
-//
-//                if(typeof(FB) != 'undefined')
-//                    FB.XFBML.parse();
-//            }
-//        })
-//    }
-//
-//    var current_offset = 0;
-//
-//    $('.more_comments').click(function() {
-//        loadPosts();
-//    });
-//
-//    $('#comments').on('hover', ".right .proxy", function (e) {
-//
-//        var name = $(this).parents(".comment-one").data("creator_name");
-//        var num_of_proxies = $(this).parents(".comment-one").data("num_of_proxies");
-//        var text = "מנדטים: " + name + " מייצג " + num_of_proxies + " חברי עורו ";
-//        initTooltipWithMessage($('#comments .right .proxy'), text);
-//    })
-//
-//    $('#suggestion_list').on('hover', ".right .proxy", function (e) {
-//
-//        var name = $(this).parents(".comment-one").data("creator_name");
-//        var num_of_proxies = $(this).parents(".comment-one").data("num_of_proxies");
-//        var text = "מנדטים: " + name + " מייצג " + num_of_proxies + " חברי עורו ";
-//        initTooltipWithMessage($('#comments .right .proxy'), text);
-//    })
-//
-//    $('#sorting_select').change(function() {
-//        $("#comments").empty();
-//        current_offset = 0;
-//        loadPosts();
-//    });
-//
-//    loadPosts();
-//
-//    $("#cancelWriteCommentBT").live("click", function () {
-//        $('#write-comment').hide();
-//    });
-//
-//
-//
-//
-////            $('.sugg_rating_button').click(function(){
-//    $('#suggestion_list').on('click', '.sugg_rating_button', function () {
-//        var rating = Number($(this).parent().find($(".sugg_rating_select")).val());
-//        sugg_grade_id = $(this).parent().data('grade');
-//
-//        var suggestion_id = $(this).parent().attr('id');
-//        var self = this;
-//        var user_info = {
-//            user_logged_in : user.first_name ? true : false,
-//            action_done : (user.actions_done_by_user && user.actions_done_by_user.grade_object) ? true : false,
-//            action_name : "grade_object",
-//            tokens_owned : user.tokens ? user.tokens : 0,
-//            price: gamification_price['grade_suggestion']
-//        }
-//        db_functions.addSuggestionGrade(suggestion_id, discussion_id, rating, sugg_grade_id, user_info, function (err, data) {
-//            if (!err) {
-////                if(!(user.actions_done_by_user && user.actions_done_by_user.grade_object))
-////                {
-////                    user.actions_done_by_user.grade_object = true;
-////                }
-//                db_functions.getSuggestionByDiscussion(discussion_id, function (err, data) {
-//                    $.each(data.objects, function (index, suggestion) {
-//                        render_suggestion(suggestion);
-//                    });
-//                })
-//            }
-//        });
-//    });
-//
-//    $('#suggest_button').click(function () {
-//        $('#suggest_div').show();
-//    });
-//
-//    $('#close_suggest').click(function () {
-//        $('#suggest_div').hide();
-//        $("textarea#discussion_suggest").val('');
-//    });
-//
-//    $('#send_suggestion').click(function () {
-//        var part = {start:range.start, end:range.end, text:$("textarea#discussion_suggest").val()};
-//        //arrange spaces
-//        if (vision[part.end - 1] == " " && part.text[part.text.length - 1] != " ")
-//
-//            part.text += " ";
-//        var explanation = $("#discussion_explanation").val();
-//
-//        var user_info = {
-//            user_logged_in : user.first_name ? true : false,
-//            action_done : (user.actions_done_by_user && user.actions_done_by_user.suggestion_on_object) ? true : false,
-//            action_name : "suggestion_on_object",
-//            tokens_owned : user.tokens ? user.tokens : 0,
-//            price: gamification_price['suggestion_on_discussion']
-//        }
-//
-//        db_functions.addSuggestionToDiscussion(discussion_id, [part], explanation, user_info, function (err, data) {
-//            if (!err) {
-//                if(data != 'canceled'){
-//                    if(!user.actions_done_by_user.suggestion_on_object)
-//                    {
-//                        user.actions_done_by_user.suggestion_on_object = true;
-//                    }
-//                    $('#write-comment').hide();
-//                    /*
-//                     $("textarea#discussion_suggest").val('');
-//                     $("#user_tokens").text(data.updated_user_tokens);*/
-//                    render_suggestion(data)
-//                    $(".deals-box").show();
-//                }
-//            } else {
-//                var err = err;
-//                if(err.responseText == "a suggestion with this indexes already exist")
-//                    popupProvider.showOkPopup({message:"הטקסט סומן כבר בהצעה לשינוי קיימת"});
-//            }
-//        });
-//
-//
-//    });
-//
-//
-//    $('.system-notice .close').click(function () {
-//
-//        $(this).parents('.system-notice').fadeOut(800);
-//    });
-//
-//    $('#read_more').click(function () {
-//
-//        $(this).parents('.text-box').addClass('extended');
-//        var h=  $(".hidden_textarea").get(0).scrollHeight;
-//        $(".discussion_content").height(h);
-//    });
-//
-    function focusOnCommentBox(){
-        editor.focus();
-        editor.focusManager.focus();
+    $('.read_more').on('click',showFullText);
+    $('.read_less').on('click',hideFullText);
 
-        setTimeout(function(){
-            var s =  CKEDITOR.instances.discussion_comment.getSelection();
-            var b = CKEDITOR.instances.discussion_comment.document.getBody();
-            s.selectElement(b);
-            var selected_ranges = s.getRanges();
-            selected_ranges[0].collapse(false);  //  false collapses the range to the end of the selected node, true before the node.
-            s.selectRanges(selected_ranges);
-        },100);
-    };
 
+
+    $('.button_suggest_revisions').click(function(){
+        $('.marker_1').toggleClass('off');
+        $(this).toggleClass('active');
+        //$('#change_proposal').toggleClass('active');
+
+    });
+
+    function showFullText(){
+        $('.button_suggest_revisions').show();
+        $('#short').hide();
+        $('#full').show();
+        var h=  $("textarea").get(0).scrollHeight;
+        $("#full").height(h);
+    }
+
+    function hideFullText(){
+        $('.button_suggest_revisions').hide();
+        $('#short').show();
+        $('#full').hide();
+        var h=  $("textarea").get(0).scrollHeight;
+        $("#full").height(h);
+    }
+
+    $(".awards").live("hover", function () {
+        var name = $(this).parents(".person").data("name");
+        var num_of_proxies = $(this).text();
+        var text = "מנדטים: " + name + " מייצג " + num_of_proxies + " חברי עורו ";
+        initTooltipWithMessage($(this), text);
+    });
+    $(".friends").live("hover", function () {
+        initTooltipWithMessage($(this),  'מוניטין');
+    });
+    $('#content_wrapper_comments ').on('click', '.special_comment', function(e){
+        var comment_id = $(this).find('.comment_wrapper').data('id');
+        var scroll_id = 'post_' + comment_id;
+        scroll_id = window[scroll_id];
+        if(!scrollTo(scroll_id)){
+            db_functions.getPostById(comment_id, function (err, post) {
+                dust.render('discussion_comment', post, function (err, out) {
+                    if (!err){
+                        $(".second_pagination").append(out);
+                        scrollTo(scroll_id);
+                    }
+                });
+            });
+        }
+    })
+    $('#suggestions_wrapper, #approved_suggestions_wrapper').on('click', '.edit_window', function(e){
+        $('.read_more').click();
+        scrollTo('#discussion_content');
+    })
+
+    // toggle delete comment button
+    $('#content_wrapper_comments').on('mouseenter', '.comment_wrapper', function(e){
+        $(this).find('.close').addClass('show');
+    }).on('mouseleave', '.comment_wrapper', function(){
+        $(this).find('.close').removeClass('show');
+    });
+
+    $('#content_wrapper_comments').on('click', '.comment_wrapper .close', function(e){
+        var popupConfig = {};
+        popupConfig.popup_text = "" +
+                'למחוק תגובה זו? יחד איתה יימחקו תגובות שפורסמו לה ע"י משתמשים אחרים'
+
+        popupConfig.onOkCilcked = function(e){
+            e.preventDefault();
+            clicked = 'ok';
+            db_functions.removePost(popupConfig.post_id, function(err){
+                if (err){
+                    console.log(err);
+                }else{
+                    var $this = $('#post_' + popupConfig.post_id);
+                    $this.slideUp(600, "swing");
+                }
+            });
+            $.colorbox.close();
+        },
+        popupConfig.post_id = $(this).parents('.comment_wrapper').data('id');
+        popupProvider.showDeletePostPopup(popupConfig);
+    });
+
+    // toggle delete suggestion button
+    $('#suggestions_wrapper').on('mouseenter', '.suggestion_wrapper .suggestion_holder', function(e){
+        $(this).find('.close').addClass('show');
+    }).on('mouseleave', '.suggestion_wrapper .suggestion_holder' , function(){
+        $(this).find('.close').removeClass('show');
+    });
+
+    $('#content_wrapper_suggestions').on('click', '.suggestion_holder > .close', function(e){
+        var popupConfig = {};
+        popupConfig.popup_text = "" +
+
+        'למחוק הצעה זו? יחד איתה יימחקו תגובות שפורסמו לה ע"י משתמשים אחרים'
+        ;
+        popupConfig.onOkCilcked = function(e){
+            e.preventDefault();
+            clicked = 'ok';
+            db_functions.removeSuggestion(popupConfig.post_id, function(err){
+                if (err){
+                    console.log(err);
+                }else{
+                    var $this = $('#post_' + popupConfig.post_id);
+                    $this.slideUp(1200, "swing", function(e){
+                        $.each(suggestions_list, function(index, object){
+                            if(object.id == popupConfig.post_id){
+                                suggestions_list.splice(index, i);
+                            }
+                        });
+                    });
+                }
+            });
+            $.colorbox.close();
+        },
+        popupConfig.post_id = $(this).parents('.suggestion_wrapper').data('id');
+        popupProvider.showDeletePostPopup(popupConfig);
+    })
+
+    // toggle delete comment on suggestion button
+    $('#content_wrapper_suggestions').on('mouseenter', '.suggestion_comments_holder .comment', function(e){
+        $(this).find('.close').addClass('show');
+    }).on('mouseleave', '.suggestion_comments_holder .comment', function(){
+        $(this).find('.close').removeClass('show');
+    });
+
+    $('#content_wrapper_suggestions').on('click', '.suggestion_comments_holder .comment>.close', function(e){
+        var popupConfig = {};
+        popupConfig.popup_text = "" +
+"למחוק תגובה זו?"
+        ;
+        popupConfig.onOkCilcked = function(e){
+            e.preventDefault();
+            clicked = 'ok';
+            db_functions.removeSuggestionComment(popupConfig.post_id, function(err){
+                if (err){
+                    console.log(err);
+                }else{
+                    var $this = $('#' + popupConfig.post_id);
+                    $this.slideUp(1200, "swing");
+                }
+            });
+            $.colorbox.close();
+        },
+        popupConfig.post_id = $(this).parent('.comment').attr('id');
+        popupProvider.showDeletePostPopup(popupConfig);
+    })
+
+    $('.service-8, .upload-popup .close-popup').click(function () {
+        $(this).parents('.services-box').toggleClass('upload-active');
+
+        return false;
+    });
+
+    $(".upload-tabs").tabs();
+
+    $('.upload-popup .upload-bottom input').click(function () {
+        var form = $('.upload-popup');
+        var saveData = {
+            title: form.find('textarea').val(),
+            text_field: form.find('textarea').val(),
+            category: 'statistics'
+        };
+
+        var selectedTab = form.find('.upload-tabs').tabs('option', 'selected');
+        var image, link;
+        switch (selectedTab) {
+            case 0: // image
+                image = form.find('input[name="image_field"]');
+                break;
+
+            case 1: // video
+                image = form.find('input[name="video_field"]');
+                link = form.find('#video input[type=url]');
+                break;
+
+            case 2: // link
+                link = form.find('#link input[type=url]');
+                break;
+        };
+
+        if (image && image.val()) {
+            saveData.image_field = image.val();
+        }
+        if (link && link.val()) {
+            saveData.text_field += '\n\n' + link.val();
+        }
+
+        db_functions.createInformationItem(saveData, function (error) {
+            if (error) {
+                popupProvider.showOkPopup({ message: 'קרתה תקלה בעת שמירת פריט המידע' });
+            } else {
+                popupProvider.showOkPopup({ message: 'פריט המידע נשמר' });
+                $('.upload-popup').hide();
+            }
+        });
+        event.preventDefault();
+        return false;
+    });
+
+    function  activateMailNotifications(){
+        db_functions.activateMailNotification(my_id,function(err,data){
+
+        })
+    }
 
 });
-
 
 </script>
 </body>

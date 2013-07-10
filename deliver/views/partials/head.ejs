@@ -8,6 +8,7 @@
 <meta property="og:type" content="<%= meta.type || 'website' %>" />
 <meta property="og:title" content="<%= meta.title || fb_title%>" />
 <meta property="og:description" content="<%= meta.description || fb_description%>" />
+<!--<meta property="og:image" content="<%= fb_image %>" />-->
 <meta property="og:image" content="<%=  meta.image || fb_image %>" />
 <meta property="og:site_name" content="עורו" />
  
@@ -16,6 +17,7 @@
 <link href="/css/jquery.tooltip.css" rel="stylesheet" />
 <link href="/css/colorbox.css" rel="stylesheet" />
 <link href="/css/style.css" rel="stylesheet" />
+<link href="/css/feedback.css" rel="stylesheet" />
 <!--[if lte IE 7]><link href="/css/ie.css" rel="stylesheet" type="text/css"/><![endif]-->
 <!--[if lt IE 8]><style type="text/css">.ie7_message { display:block} #wrap,#footer { display:none }</style><![endif]-->
 
@@ -29,4 +31,9 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
 
+<!-- start Bablic
+<meta name='google' value='notranslate' /><script type='text/javascript'>   var bablic=bablic||{};bablic.Site='5117693d57b177020000078d';</script><script type='text/javascript' src='//api.bablic.com/js/bablic.js'></script>
+ end Bablic -->
+
 <% include facebook.ejs %>
+<% include feedback_box.ejs %>

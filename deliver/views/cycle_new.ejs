@@ -257,7 +257,7 @@
                                      <span>
 
 
-                                עוקבים אחרי מעגל תנופה זה
+                                עוקבים אחרי קמפיין זה
                                    </span>
             </div>
         </div>
@@ -678,7 +678,7 @@ var _main=$(document).ready( function () {
         });
     });
 
-    timeline.render(cycle_id, cycle_title, null);
+    //timeline.render(cycle_id, cycle_title, null);
     //timeline.addTabEvents(cycle_title);
 
     db_functions.getPendingActionsByCycle(cycle_id, 4, function ( data,err) {
@@ -1186,8 +1186,8 @@ var _main=$(document).ready( function () {
             font:               'Arial',             //OPTIONAL FONT
             start_at_slide:     start_slide,                            //OPTIONAL START AT SPECIFIC SLIDE
             start_zoom_adjust:  timeline_zoom,                            //OPTIONAL TWEAK THE DEFAULT ZOOM LEVEL
-            embed_id:   'my-timeline'
-
+            embed_id:   'my-timeline',
+            js: '/js/timeline-min.js'
             /*
              https://github.com/VeriteCo/TimelineJS
 
@@ -1237,15 +1237,13 @@ var _main=$(document).ready( function () {
                     console.log("popup");
                     $(".sb-top .sb-title").text(social_fb_liker_title);
                     $(".sb-top .sb-text").text(social_fb_liker_text);
-                    $(".sb-title .facebook_join").show();
-
+                    $(".sb-top .facebook_join").css('display', 'block');
+//                    $(".sb-top .facebook_join").show();
                     share();
                 }
             });
         },1500);
      });
-
-
 
     $("#fb_ajax_conncect").live('click', function(){
         facebookLogin(function(err, result){

@@ -13,7 +13,7 @@ module.exports = function(req,res) {
                     layout: false,
                     tag_name:req.query.tag_name,
                     subject:subject,
-                    title:"מעגלי תנופה",
+                    title:"קמפיינים",
                     logged: req.isAuthenticated(),
                     big_impressive_title: "",
                     user: req.user,

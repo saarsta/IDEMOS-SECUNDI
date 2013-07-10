@@ -14,7 +14,7 @@ var unseen_notifications = user_logged && user ? user.unseen_notifications || 0 
             <div class="user-info-box">
                 <div class="user-box-top">
                     <div class="messages">
-                        <div class="right reset_notification">
+                        <div class="right">
 
                         עדכונים
                         </div>
@@ -89,7 +89,12 @@ var unseen_notifications = user_logged && user ? user.unseen_notifications || 0 
         })
 
         $(".user-box.icon").click(function(){ window.location = "/myuru";});
-        $(".user-info-box .messages").click(function(){ window.location = "/myuru#notifications"; });
+        $(".user-info-box .messages").click(function(){
+            db_functions.resetUserNotifications(function(err, result){
+                window.location = "/myuru#notifications";
+                console.log(err || result);
+            })
+        });
         $(".user-info-box .tokens").click(function(){ window.location = "/myuru";});
         $(".user-info-box .fame").click(function(){ window.location = "/myuru";});
         $(".user-info-box .logout").click(function(){
@@ -130,12 +135,6 @@ var unseen_notifications = user_logged && user ? user.unseen_notifications || 0 
             //userBox.removeClass('active');
         });
     });
-
-    $(".reset_notification").click(function(){
-        db_functions.resetUserNotifications(function(err, result){
-            console.log(err || result);
-        })
-    })
 
     var mail = "<%= (user && user.email) || '' %>";
 </script>

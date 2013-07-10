@@ -14,11 +14,13 @@ var resources = require('jest'),
     _ = require('underscore'),
     notifications = require('../notifications.js');
 
+var EDIT_TEXT_LEGIT_TIME = 60 * 1000 * 15;
+
 var PostResource = module.exports = common.GamificationMongooseResource.extend({
     init:function () {
 
         this._super(models.Post, 'post', null);
-        this.allowed_methods = ['get', 'post'];
+        this.allowed_methods = ['get', 'post', 'put', 'delete'];
         this.authorization = new common.TokenAuthorization();
         this.authentication = new common.SessionAuthentication();
         this.filtering = {discussion_id:null};
@@ -38,9 +40,13 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
             votes_for:null,
             _id:null,
             ref_to_post_id: null,
+            quoted_by: null,
             discussion_id:null,
-            is_user_follower: null
+            is_user_follower: null,
+            is_editable: null,
+            is_my_comment: null
         };
+        this.update_fields = {text: null, discussion_id: null, ref_to_post_id: null};
 //    this.validation = new resources.Validation();=
         this.default_limit = 50;
     },
@@ -55,16 +61,16 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
         this._super(req, filters, sorts, limit, offset, function(err, results){
            var user_id;
             if(req.user){
-                user_id = req.user._id;
+                user_id = req.user._id + "";
 
-                        async.waterfall([
-                            function(cbk){
-                                models.User.findById(user_id, cbk);
-                            },
+                    async.waterfall([
+                        function(cbk){
+                            models.User.findById(user_id, cbk);
+                        },
 
-                            function(user_obj, cbk){
+                        function(user_obj, cbk){
 
-                                var proxies = user_obj.proxy;
+                            var proxies = user_obj.proxy;
 
 //                                _.each(results.objects, function(post){
 //                                    var flag = false;
@@ -81,33 +87,40 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
 //                                    post.is_user_follower = flag;
 //                                })
 
-                                async.forEach(results.objects, function(post, itr_cbk){
-                                    //update each post creator if he is a follower or not
-                                    var flag = false;
+                            async.forEach(results.objects, function(post, itr_cbk){
+                                //set is_my_comment flag
+                                post.is_my_comment = (user_id === (post.creator_id && post.creator_id.id));
 
-                                    var proxy = _.find(proxies, function(proxy){
-                                        if(!post.creator_id)
-                                            return null;
-                                        else
-                                            return proxy.user_id + "" == post.creator_id._id + ""});
-                                    if(proxy)
-                                        post.mandates_curr_user_gave_creator = proxy.number_of_tokens;
-                                    if(post.creator_id)
-                                        flag =  _.any(post.creator_id.followers, function(follower){return follower.follower_id + "" == user_id + ""});
-                                    post.is_user_follower = flag;
+                                // set is_editable flag
+                                if (user_id === (post.creator_id && post.creator_id.id) && new Date() - post.creation_date <= EDIT_TEXT_LEGIT_TIME){
+                                    post.is_editable = true;
+                                }
+                                //update each post creator if he is a follower or not
+                                var flag = false;
 
-                                    //update each post creator with his vote balance
-                                    models.Vote.findOne({user_id: user_id, post_id: post._id}, function(err, vote){
-                                        post.voter_balance = vote ? (vote.ballance || 0) : 0;
-                                        itr_cbk(err);
-                                    })
-                                }, function(err, obj){
-                                    cbk(err, results);
-                                });
-                            }
-                        ], function(err, results){
-                            callback(err, results);
-                        })
+                                var proxy = _.find(proxies, function(proxy){
+                                    if(!post.creator_id)
+                                        return null;
+                                    else
+                                        return proxy.user_id + "" == post.creator_id._id + ""});
+                                if(proxy)
+                                    post.mandates_curr_user_gave_creator = proxy.number_of_tokens;
+                                if(post.creator_id)
+                                    flag =  _.any(post.creator_id.followers, function(follower){return follower.follower_id + "" == user_id + ""});
+                                post.is_user_follower = flag;
+
+                                //update each post creator with his vote balance
+                                models.Vote.findOne({user_id: user_id, post_id: post._id}, function(err, vote){
+                                    post.voter_balance = vote ? (vote.ballance || 0) : 0;
+                                    itr_cbk(err);
+                                })
+                            }, function(err, obj){
+                                cbk(err, results);
+                            });
+                        }
+                    ], function(err, results){
+                        callback(err, results);
+                    })
             }else{
                 _.each(results.objects, function(post){ post.is_user_follower = false; })
                 callback(err, results);
@@ -117,12 +130,12 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
 
     create_obj:function (req, fields, callback) {
 
-        var user_id = req.session.user_id;
+        var user_id = req.user._id + "";
         var self = this;
         var post_object = new self.model();
         var user = req.user;
 //        var notification_type = "comment_on_discussion_you_are_part_of"
-        var discussion_id;
+        var discussion_id = fields.discussion_id;
         var discussion_creator_id;
         var post_id;
 
@@ -161,24 +174,48 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
          */
         async.waterfall([
 
+            // 0.1) user can comment only if he grade the discussion
+            function (cbk) {
+
+                async.parallel([
+                    function(cbk1){
+                        models.Grade.findOne({user_id: user_id, discussion_id: discussion_id}, cbk1);
+                    },
+
+                    function(cbk1){
+                        models.Discussion.findById(discussion_id, cbk1);
+                    }
+                ], cbk)
+            },
+
             // 1) set post object fields, send to authorization
-            function(cbk)
+            function(args, cbk)
             {
-                console.log('debugging waterfall 1');
-                fields.creator_id = user_id;
-                fields.first_name = user.first_name;
-                fields.last_name = user.last_name;
-                fields.avatar = user.avatar;
-                if(!fields.ref_to_post_id || fields.ref_to_post_id == "null" || fields.ref_to_post_id == "undefined")
-                    delete fields.ref_to_post_id;
+                var grade_discussion = args[0];
+                var discussion_obj = args[1];
+                if (!grade_discussion && (user_id != discussion_obj.creator_id + "")) {
+                    cbk({code:401, message:"must grade discussion first"}, null);
+                }else{
+                    console.log('debugging waterfall 1');
+                    fields.creator_id = user_id;
+                    fields.first_name = user.first_name;
+                    fields.last_name = user.last_name;
+                    fields.avatar = user.avatar;
+                    if(!fields.ref_to_post_id || fields.ref_to_post_id == "null" || fields.ref_to_post_id == "undefined"){
+                        delete fields.ref_to_post_id;
+                    }else{
+                        setQuotedPost(post_object._id, fields.ref_to_post_id, req.user.toString());
+                    }
 
-                // TODO add better sanitizer
-             //   fields.text = sanitizer.sanitize(fields.text);
 
-                for (var field in fields) {
+                    // TODO add better sanitizer
+                    //   fields.text = sanitizer.sanitize(fields.text);
+
+                    for (var field in fields) {
                         post_object.set(field, fields[field]);
+                    }
+                    self.authorization.edit_object(req, post_object, cbk);
                 }
-                self.authorization.edit_object(req, post_object, cbk);
             },
 
             //  2) save post object
@@ -233,7 +270,10 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
                                  unique_users = _.uniq(unique_users);
 
                                 discussion_creator_id = disc_obj.creator_id;
-                                async.forEach(unique_users, iterator, cbk2);
+                                 cbk2();
+                                async.forEach(unique_users, iterator, function(err){
+                                    if (err) console.log(err);
+                                });
                              }
                         })
                     },
@@ -304,13 +344,46 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
         ],function(err)
         {
             var rsp = {};
-            _.each(['text','popularity','creation_date','votes_for','votes_against', '_id'],function(field)
+            _.each(['text','popularity','creation_date','votes_for','votes_against', '_id', 'ref_to_post_id'],function(field)
             {
                 rsp[field] = post_object[field];
             });
             rsp.creator_id = req.user;
+            rsp.is_my_comment = true;
             callback(err, rsp);
         });
+    },
+
+    // user can update his post in the first 15 min after publish
+    update_obj: function(req, object, callback){
+        //first check if its in 15 min range after publish
+        if(new Date() - object.creation_date > EDIT_TEXT_LEGIT_TIME){
+            callback({message: 'to late to update comment', code: 404})
+        }else{
+            this._super(req, object, callback);
+        }
+    },
+
+    delete_obj: function(req,object,callback){
+        if (object.creator_id && (req.user.id === object.creator_id.id)){
+            object.remove(function(err){
+                callback(err);
+            })
+        }else{
+            callback({err: 401, message :"user can't delete others posts"});
+        }
     }
 });
 
+function setQuotedPost(post_id, quoted_post_id, user_name){
+
+    var quoted_by = {
+        post_id: post_id,
+        user_name: user_name
+    }
+    models.Post.update({_id: quoted_post_id}, {$addToSet : {quoted_by : quoted_by}}, function(err, num){
+        if(err){
+            console.error(err);
+        }
+    });
+}

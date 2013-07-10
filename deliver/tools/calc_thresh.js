@@ -46,9 +46,9 @@ var calculating_thresh = exports.calculating_thresh = function (num_voters , rat
 //def clamp(cls, num, low, high):
 //return min(max(num, low), high)
 
-    var clamp = function (num, low, high) {
-        return  Math.min(Math.max(num, low), high)
-    }
+var clamp = function (num, low, high) {
+    return  Math.min(Math.max(num, low), high)
+}
 
 //def calc(self, num_voters, rating):
 //num_voters = self.clamp(num_voters, self.MIN_NUM_VOTERS, self.MAX_NUM_VOTERS)

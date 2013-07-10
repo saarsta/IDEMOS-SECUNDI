@@ -4,9 +4,7 @@ var mongoose = require("mongoose"),
     ObjectId = Schema.ObjectId,
     async = require('async'),
     _ = require('underscore'),
-
     utils = require('../utils');
-
 
 var Suggestion = {
     discussion_id:{type:Schema.ObjectId, ref:'Discussion', index:true, required:true, onDelete:'delete'},
@@ -14,13 +12,21 @@ var Suggestion = {
         {start:Number, end:Number, text:Schema.Types.Text}
     ],
     explanation: {type:Schema.Types.Text},
-    is_approved:{type:Boolean, 'default':false},
+
+    is_approved: {type:Boolean, 'default':false},
+    approve_date: {type: Date},
+    context_before: String,
+    replaced_text: String,
+    context_after: String,
+    history_version_id:{type:Schema.ObjectId, ref:'DiscussionHistory'},
+
     evaluate_counter: {type: Number, 'default': 0},
     grade: {type: Number, 'default': 0},
     agrees: {type: Number, 'default': 0},
     not_agrees: {type: Number, 'default': 0},
     threshold_for_accepting_the_suggestion: {type: Number, max: 500, 'default': 0, editable: false},
-    admin_threshold_for_accepting_the_suggestion: {type: Number, max: 500, 'default': 0}
+    admin_threshold_for_accepting_the_suggestion: {type: Number, max: 500, 'default': 0},
+    under_moderation: {type:Boolean, 'default':false}
 };
 
 var extension = utils.extend_model('Suggestion', require('./post_or_suggestion'), Suggestion, 'posts',

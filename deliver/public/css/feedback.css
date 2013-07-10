@@ -1,0 +1,60 @@
+.feedback-box{
+    -webkit-border-radius: 7px 7px 0px 0px;
+    border-radius: 7px 7px 0px 0px;
+    width: 194px;
+    background-color: #ccc;
+    border: 3px solid #fff;
+    border-bottom: none;
+    -webkit-box-shadow: 0px 6px 6px 2px #a6a6a6;
+    box-shadow: 0px 6px 6px 2px #a6a6a6;
+    position: fixed;
+    bottom: 0;
+    left: 65px;
+    z-index: 1;
+}
+#feedback-form{
+    height: 164px;
+}
+.upper-segment {
+    border-radius: 7px 7px 0px 0px;
+    padding: 10px 28px 0px 0px;
+    text-align: center;
+    height: 52px;
+    background-color: #3a6af0;
+    position: relative;
+    color: #fff;
+    font: normal 19px/24px 'AdumaFOTMedium';
+}
+
+.upper-segment:hover{
+    cursor: pointer;
+}
+.upper-segment:before{
+    -webkit-border-radius: 0px 7px 0px 0px;
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 62px;
+    background: #3A6AF2 url("../images/URU_icons_new_sprite.png") -18px 13px no-repeat;
+    right: 10px;
+    top: 0px;
+}
+.lower-segment{
+    display: none;
+    background-color: #ededed;
+}
+.lower-segment textarea{
+    direction: rtl;
+    margin: 9px 9px 0 9px;
+    width: 169px;
+    -webkit-border-radius: 4px;
+    border: 1px solid #e0e0e0;
+    min-height: 120px;
+    resize: none;
+}
+.lower-segment input{
+    margin: 0 0 0px 10px;
+    font: normal 15px 'AdumaFOTMedium';
+    float: left;
+    left: 0px;
+}

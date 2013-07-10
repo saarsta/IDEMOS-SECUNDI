@@ -19,9 +19,9 @@ var Schemas = exports.Schemas = {
     Headline:new Schema({
         title:{type:String, required:true},
         tooltip: String,
-        type:{type:String, "enum":["from_the_news_paper", "daily_survey", "conclusion"]},
-        text_field:{type:Schema.Types.Html},
-        image_field:Schema.Types.File,
+        type: {type:String, "enum":["from_the_news_paper", "daily_survey", "conclusion"]},
+        text_field: {type:Schema.Types.Html},
+        image_field: Schema.Types.File,
         link:String,
         tags:{type:[String], index:true},
         cycles:{type:[ObjectId], ref:'Cycles', index:true, editable:false},
@@ -336,7 +336,12 @@ var Schemas = exports.Schemas = {
         discussion_id:{type:ObjectId, ref:'Discussion'},
         date:{type:Date, 'default':Date.now},
         text_field:{type:Schema.Types.Text},
-        grade:Number
+        // replaced part is the text that has been changed in the new version
+        // so this and grade fields are being updated only when a new discussion history is created
+        replaced_part:[
+            {start:Number, end:Number, text:Schema.Types.Text}
+        ],
+        grade: Number
     },
 
     Test:{
@@ -473,7 +478,10 @@ var Schemas = exports.Schemas = {
         link :  {type:String, required:true} ,
         date:  {type:Date, required:true},
         source:{type:String, "enum":["דה מרקר", "כלכליסט","גלובס", "ynet", "הארץ", "nrg", "walla", "mako",  "אחר"], required:true}    ,
-        alternative_source:{type:String}
+        alternative_source:{type:String},
+
+        discussions:{type:[ObjectId], limit: 1000, ref:'Discussion'  , index:true},
+        cycles:     {type:[ObjectId], limit: 1000, ref:'Cycle', index:true}
     }
 };
 

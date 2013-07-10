@@ -56,8 +56,9 @@ var Cycle = module.exports = new Schema({
       // {user_id: {type:ObjectId, ref:'User', query:common.FIND_USER_QUERY}, text: {type:Schema.Types.Text}}
       new Schema({user_id:{type:ObjectId, ref:'User', query:common.FIND_USER_QUERY}, text: {type:Schema.Types.Text}})
     ],
-    social_popup_title: {type: String},
+ /*   social_popup_title: {type: String},
     social_popup_text: {type: String},
+    */
     social_popup:  {
         default_title: {type: String},
         default_text: {type: String},
@@ -67,8 +68,8 @@ var Cycle = module.exports = new Schema({
         new_atzuma_user_text: {type: String}},
 
     counter_text :   {type: String},
-    is_hidden:{type:Boolean,'default':true}    ,
-    is_private:{type:Boolean,'default':false}    ,
+    is_hidden:{type:Boolean,'default':true},
+    is_private:{type:Boolean,'default':false},
 
     timeline:{
         source:{type: String} ,

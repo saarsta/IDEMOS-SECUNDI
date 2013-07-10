@@ -152,7 +152,7 @@ ind( {x:77} , {name:1, x:1} )
         db.informationitems.find(...).count()
         db.informationitems.find(...).limit(n)
         db.informationitems.find(...).skip(n)
-        db.informationitems.find(...).sort(...)
+        db.informationitems.dd(...).sort(...)
         db.informationitems.findOne([query])
         db.informationitems.findAndModify( { update : ... , remove : bool [, que
 ry: {}, sort: {}, 'new': false] } )
@@ -201,7 +201,7 @@ exes
 0
 > db.posts.count({is_hidden: null})
 172
-> db.posts.update({is_hidden: null}, {$set: {is_hidden: false}})
+    > db.posts.update({is_hidden: null}, {$set: {is_hidden: false}})
 > db.posts.count({is_hidden: null})
 171
 > db.posts.update({is_hidden: null}, {$set: {is_hidden: false}}, false, true)
@@ -211,3 +211,79 @@ exes
 
 
 <!-- <a href="<%= settings.root_path %><%= main_link %>">-->
+
+
+db.cycles.find({"_id": ObjectId("5047023a9e56a502000014f5")},{"is_private":1})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

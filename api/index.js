@@ -14,6 +14,7 @@ var mongoose_resource = require('jest'),
     DiscussionResource = require('./discussions/DiscussionResource.js'),
     PostResource = require('./discussions/PostResource.js'),
     PostOnSuggestionResource = require('./discussions/post_on_suggestion_resource.js'),
+    SpecialPostsResource = require('./discussions/special_posts_resource.js'),
     DiscussionHistoryResource = require('./discussions/DiscussionHistoryResource.js'),
     PostsActionResource = require('./actions/PostActionResource.js'),
     PostArticleResource = require('./blogs/PostArticleResource'),
@@ -73,6 +74,8 @@ var mongoose_resource = require('jest'),
     OGActionResource = require('./og_action_resource'),
     UserInviteFriendsResource=      require('./UserInviteFriendsResource'),
     UserMailNotificationConfig = require('./user_mail_notification_config_resource');
+    PressItemResource = require('./PressItemResource'),
+    SendMailResource =  require('./send_mail_resource'),
 
 module.exports = function(app)
 {
@@ -90,6 +93,7 @@ module.exports = function(app)
     rest_api.register_resource('subjects', new SubjectResource());
     rest_api.register_resource('discussions', new DiscussionResource());
     rest_api.register_resource('posts', new PostResource());
+    rest_api.register_resource('special_posts', new SpecialPostsResource());
     rest_api.register_resource('suggestion_posts', new PostOnSuggestionResource());
     rest_api.register_resource('discussions_history', new DiscussionHistoryResource());
     rest_api.register_resource('posts_of_article', new PostArticleResource());
@@ -154,5 +158,6 @@ module.exports = function(app)
     rest_api.register_resource('quote_game_response', new QuoteGameQuoteResource());
     rest_api.register_resource('face', new FaceResource());
     rest_api.register_resource('counter', new CounterResource());
-
+    rest_api.register_resource('press_item', new PressItemResource());
+    rest_api.register_resource('send_mail', new SendMailResource());
 };

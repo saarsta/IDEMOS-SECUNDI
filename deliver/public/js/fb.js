@@ -17,6 +17,7 @@ function sendFacebookInvite(message,link,callback) {
 
 
 function sendFacebookShare(_, title, src, text_preview,err_link, callback) {
+
     // log to db
     db_functions.addFacebookRequest(_, null, function(err, link_obj) {
         if(err) {
@@ -32,7 +33,7 @@ function sendFacebookShare(_, title, src, text_preview,err_link, callback) {
        // var link =   link_obj?  window.location.protocol + '//' + window.location.hostname + link_obj.link :  window.location.protocol + '//' + window.location.hostname +err_link ;
 	    var link =   link_obj?  window.location.protocol + '//' + window.location.hostname + link_obj.link :  window.location.protocol + '//' + window.location.hostname +_ ;
         // fix src
-        if (src.indexOf("http") == -1) {
+        if (src && src.indexOf("http") == -1) {
             src = window.location.protocol + '//' + window.location.hostname + src;
         }
 
