@@ -1,4 +1,7 @@
 'use strict';
+
+require('./lib/memory');
+
 var express = require('express');
 var mongoose = require('mongoose');
 var async = require('async');
@@ -265,4 +268,5 @@ if (IS_PROCESS_WEB) {
         });
     });
 }
+
 
