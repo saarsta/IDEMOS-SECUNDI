@@ -12,7 +12,6 @@ var DiscussionForm = require('./discussion');
 var CycleForm = require('./cycle');
 var SuggestionForm = require('./suggestion');
 var IdkunimForm = require('./update');
-var ChangePasswordForm = require('./admin');
 
 mongoose_admin.register_models(Models);
 
@@ -41,7 +40,7 @@ module.exports = function (app) {
         form: UserForm,
         list: ['username', 'first_name', 'last_name'],
         filters: ['email', 'gender', 'identity_provider'],
-        order_by:[],
+        order_by:['-last_visit'],
         search: '__value__.test(this.first_name+ " "+this.last_name)'
     });
 
@@ -237,6 +236,8 @@ module.exports = function (app) {
         list: ['image.url']
     });
 
+
+    admin.registerAdminUserModel();
     /*
         admin.registerMongooseModel('Vote', Models.Vote, null, {
             list: ['post_id', 'user_id']
@@ -304,17 +305,6 @@ module.exports = function (app) {
         admin.registerSingleRowModel(Models.ThresholdCalcVariables, 'ThresholdCalcVariables');
 
 
-        admin.registerMongooseModel('Admin_Users', mongoose.model('_MongooseAdminUser'), null, {
-            list: ['username']
-        });
-
-
-
-        admin.registerMongooseModel('Password Change Form', mongoose.model('_MongooseAdminUser'), null, {
-            list: ['username'],
-            form: ChangePasswordForm,
-            createable: false
-        });
 
 
         admin.registerMongooseModel('QuoteGameParty', mongoose.model('QuoteGameParty'), null, {
