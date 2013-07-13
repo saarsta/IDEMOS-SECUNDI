@@ -14,7 +14,7 @@ var SuggestionForm = require('./suggestion');
 var IdkunimForm = require('./update');
 var ChangePasswordForm = require('./admin');
 
-mongoose_admin.forms.register_models(Models);
+mongoose_admin.register_models(Models);
 
 
 module.exports = function (app) {
@@ -41,7 +41,8 @@ module.exports = function (app) {
         form: UserForm,
         list: ['username', 'first_name', 'last_name'],
         filters: ['email', 'gender', 'identity_provider'],
-        search: '/__value__/.test(this.first_name+this.last_name)'
+        order_by:[],
+        search: '__value__.test(this.first_name+ " "+this.last_name)'
     });
 
     admin.registerMongooseModel("InformationItem", Models.InformationItem, null, {
