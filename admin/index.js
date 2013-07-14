@@ -29,11 +29,13 @@ module.exports = function (app) {
     admin.registerMongooseModel("Subject", Models.Subject, null, {
         list: ['name'],
         order_by: ['gui_order'],
-        sortable: 'gui_order'
+        sortable: 'gui_order',
+        search:['name','description','text_field_preview']
     });
 
     admin.registerMongooseModel('Headline', Models.Headline, null, {
-        list: ['title']
+        list: ['title'],
+        search:['title','text_field']
     });
 
     admin.registerMongooseModel("User", Models.User, null, {
@@ -58,14 +60,16 @@ module.exports = function (app) {
                     Models.InformationItem.update({_id: {$in: ids}}, {$set: {is_approved: true}}, {multi: true}, callback);
                 }
             }
-        ]
+        ],
+        search:['title','text_field_preview']
     });
 
     admin.registerMongooseModel("Discussion", Models.Discussion, null, {
         list: ['title'],
         cloneable: true,
         form: DiscussionForm,
-        order_by: ['-creation_date']
+        order_by: ['-creation_date'],
+        search:['title','text_field_preview']
         //filters: ['created_by', 'is_published', 'is_hidden', 'is_hot_object', 'is_cycle.flag']
     });
 
@@ -74,7 +78,7 @@ module.exports = function (app) {
         list_populate: ['discussion_id'],
         order_by: ['-creation_date'],
        // filters: ['discussion_id', 'creator_id'],
-        search: '__value__.test(this.discussion_id)',
+        search: ['text','first_name','last_name'],
         label:'Comment'
     });
 
@@ -93,33 +97,38 @@ module.exports = function (app) {
                     }, callback);
                 }
             }
-        ]
+        ],
+        search:['explanation','first_name','last_name']
        // filters: ['discussion_id', 'creator_id']
     });
 
      admin.registerMongooseModel('PostSuggestion', Models.PostSuggestion, null, {
          list: ['text', 'discussion_id.title'],
          list_populate: ['discussion_id'],
-         order_by: ['-creation_date']
+         order_by: ['-creation_date'],
+         search:['text','first_name','last_name']
         // filters: ['discussion_id', 'creator_id']
         });
 
     admin.registerMongooseModel('PressItem', mongoose.model('PressItem'), null, {
         list: ['title'],
         order_by: ['gui_order'],
-        sortable: 'gui_order'
+        sortable: 'gui_order',
+        search:['title','link']
     });
 
     admin.registerMongooseModel("Cycle", Models.Cycle, null, {
         list: ['title'],
         cloneable: true,
-        form: CycleForm
+        form: CycleForm,
+        search:['title','text_item_preview']
        // filters: ['created_by', 'is_hidden', 'is_hot_object']
     });
 
     admin.registerMongooseModel('Update', Models.Update, null, {
         list: ['title'],
-        form: IdkunimForm
+        form: IdkunimForm,
+        search:['title','text_field_preview']
     });
 
     admin.registerMongooseModel('Action', Models.Action, null, {
@@ -144,26 +153,32 @@ module.exports = function (app) {
                     }, callback);
                 }
             }
-        ]
+        ],
+        search:['title','text_field_preview']
     });
 
     admin.registerMongooseModel('ActionResource', Models.ActionResource, null, {
-        list: ['name', 'category']
+        list: ['name', 'category'],
+        search:['name']
     });
 
     admin.registerMongooseModel('PostAction', Models.PostAction, null, {
         list: ['text', 'username', 'discussion_id.title'],
         list_populate: ['discussion_id'],
-        order_by: ['-creation_date']
+        order_by: ['-creation_date'],
+        search:['text','first_name','last_name']
+
         //filters: ['discussion_id', 'creator_id']
     });
 
     admin.registerMongooseModel('Article', Models.Article, null, {
-        list: ['title', 'getLink']
+        list: ['title', 'getLink'],
+        search:['title','text_field_preview']
     });
 
     admin.registerMongooseModel('PostArticle', Models.PostArticle, null, {
-        list: ['article_id', 'text']
+        list: ['article_id', 'text'],
+        search:['text']
     });
 
 
