@@ -22,7 +22,7 @@ var ActionSuggestion = {
     admin_threshold_for_accepting_the_suggestion: {type: Number, max: 500, 'default': 0}
 };
 
-var extension = utils.extend_model('ActionSuggestion', require('./post_or_suggestion'), ActionSuggestion, 'posts',
+var extension = utils.extend_model('ActionSuggestion', require('./post_or_suggestion').PostOrSuggestion, ActionSuggestion, 'posts',
     function(schema) {
 
     schema.methods.getCharCount = function() {
@@ -37,6 +37,9 @@ var extension = utils.extend_model('ActionSuggestion', require('./post_or_sugges
 
         return Math.max(sug_char_count, disc_marked_text_char_count);
     };
+        schema.methods.toString = function(){
+            return (this.explanation||'').slice(0,100);
+        }
 });
 
 

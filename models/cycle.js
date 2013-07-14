@@ -88,6 +88,10 @@ var Cycle = module.exports = new Schema({
     }
 }, {strict: true});
 
+Cycle.methods.toString = function(){
+    return this.title;
+}
+
 Cycle.pre("save", function(next){
 
     var self = this;

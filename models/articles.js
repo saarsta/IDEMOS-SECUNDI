@@ -57,6 +57,9 @@ var Article = module.exports = new Schema({
 Article.methods.getLink = function() {
     return "http://uru.org.il/blogs/article/" + this.id;
 };
+Article.methods.toString = function() {
+    return this.title;
+};
 
 Article.pre('save',function(next)
 {

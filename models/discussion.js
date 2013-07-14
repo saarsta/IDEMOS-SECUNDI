@@ -21,7 +21,7 @@ var Discussion = module.exports = new Schema({
     subject_id: {type:[ObjectId], ref:'Subject',required:true},
 */
     subject_name: String,
-    system_message: {type:Schema.Types.Html},
+    //system_message: {type:Schema.Types.Html},
     creation_date:{type:Date, 'default':Date.now},
     last_updated:{type:Date, 'default':Date.now},
     creator_id:{type:ObjectId, ref:'User', query:common.FIND_USER_QUERY},

@@ -42,3 +42,7 @@ var InformationItem = module.exports = new Schema({
     gui_order:{type:Number,'default':9999999,editable:false},
     is_hidden:{type:Boolean,'default':true}
 }, {strict: true});
+
+InformationItem.methods.toString = function(){
+    return this.title || '';
+}

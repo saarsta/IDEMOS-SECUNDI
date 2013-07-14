@@ -20,3 +20,6 @@ var PostArticle = module.exports = new Schema({
     ref_to_post_id:{type:Schema.ObjectId,ref:'PostArticle',onDelete:'setNull'},
     is_hidden:{type:Boolean,'default':true}
 });
+PostArticle.methods.toString = function(){
+    return this.text && this.text.slice(0,100);
+}

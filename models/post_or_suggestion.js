@@ -6,7 +6,7 @@ var mongoose = require("mongoose"),
 
     utils = require('../utils');
 
-var PostOrSuggestion = module.exports = {
+exports.PostOrSuggestion = {
     creator_id:{type:Schema.ObjectId, ref:'User', query:common.FIND_USER_QUERY},
     first_name:{type:String,editable:false},
     last_name:{type:String, editable:false },
@@ -19,3 +19,8 @@ var PostOrSuggestion = module.exports = {
     gamification: {high_number_of_tokens_bonus : {type: Boolean, 'default': false}},
     is_hidden:{type:Boolean,'default':true}
 };
+
+exports.Schema = new Schema(exports.PostOrSuggestion,{strict:true});
+exports.Schema.methods.toString = function(){
+    return this.first_name + ' ' + this.last_name;
+}

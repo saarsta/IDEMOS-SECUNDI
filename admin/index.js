@@ -39,7 +39,7 @@ module.exports = function (app) {
     admin.registerMongooseModel("User", Models.User, null, {
         form: UserForm,
         list: ['username', 'first_name', 'last_name'],
-        filters: ['email', 'gender', 'identity_provider'],
+      //  filters: ['email', 'gender', 'identity_provider'],
         order_by:['-last_visit'],
         search: '__value__.test(this.first_name+ " "+this.last_name)'
     });
@@ -48,7 +48,7 @@ module.exports = function (app) {
         list: ['title'],
         order_by: ['gui_order'],
         sortable: 'gui_order',
-        filters: ['created_by', 'status', 'is_hidden', 'is_hot_object'],
+       // filters: ['created_by', 'status', 'is_hidden', 'is_hot_object'],
         cloneable: true,
         actions: [
             {
@@ -65,16 +65,17 @@ module.exports = function (app) {
         list: ['title'],
         cloneable: true,
         form: DiscussionForm,
-        order_by: ['-creation_date'],
-        filters: ['created_by', 'is_published', 'is_hidden', 'is_hot_object', 'is_cycle.flag']
+        order_by: ['-creation_date']
+        //filters: ['created_by', 'is_published', 'is_hidden', 'is_hot_object', 'is_cycle.flag']
     });
 
     admin.registerMongooseModel('Post', Models.Post, null, {
         list: ['text', 'username', 'discussion_id.title'],
         list_populate: ['discussion_id'],
         order_by: ['-creation_date'],
-        filters: ['discussion_id', 'creator_id'],
-        search: '/__value__/.test(this.discussion_id)'
+       // filters: ['discussion_id', 'creator_id'],
+        search: '__value__.test(this.discussion_id)',
+        label:'Comment'
     });
 
     admin.registerMongooseModel('Suggestion', Models.Suggestion, null, {
@@ -92,15 +93,15 @@ module.exports = function (app) {
                     }, callback);
                 }
             }
-        ],
-        filters: ['discussion_id', 'creator_id']
+        ]
+       // filters: ['discussion_id', 'creator_id']
     });
 
      admin.registerMongooseModel('PostSuggestion', Models.PostSuggestion, null, {
          list: ['text', 'discussion_id.title'],
          list_populate: ['discussion_id'],
-         order_by: ['-creation_date'],
-         filters: ['discussion_id', 'creator_id']
+         order_by: ['-creation_date']
+        // filters: ['discussion_id', 'creator_id']
         });
 
     admin.registerMongooseModel('PressItem', mongoose.model('PressItem'), null, {
@@ -112,8 +113,8 @@ module.exports = function (app) {
     admin.registerMongooseModel("Cycle", Models.Cycle, null, {
         list: ['title'],
         cloneable: true,
-        form: CycleForm,
-        filters: ['created_by', 'is_hidden', 'is_hot_object']
+        form: CycleForm
+       // filters: ['created_by', 'is_hidden', 'is_hot_object']
     });
 
     admin.registerMongooseModel('Update', Models.Update, null, {
@@ -153,8 +154,8 @@ module.exports = function (app) {
     admin.registerMongooseModel('PostAction', Models.PostAction, null, {
         list: ['text', 'username', 'discussion_id.title'],
         list_populate: ['discussion_id'],
-        order_by: ['-creation_date'],
-        filters: ['discussion_id', 'creator_id']
+        order_by: ['-creation_date']
+        //filters: ['discussion_id', 'creator_id']
     });
 
     admin.registerMongooseModel('Article', Models.Article, null, {

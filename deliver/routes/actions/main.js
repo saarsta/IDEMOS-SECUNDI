@@ -35,7 +35,7 @@ module.exports = function (req, res) {
             evaluate_counter: 1,
             is_approved: 1,
             admin_text: 1,
-            system_message: 1,
+            //system_message: 1,
             what_users_bring: 1,
             going_users: 1,
             cycle_id: 1,
