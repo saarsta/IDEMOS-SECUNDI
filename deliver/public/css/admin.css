@@ -2,7 +2,7 @@
 
 .suggestion_original_text{
     border: black 1px solid;
-    min-width: 900px;
+    min-width: 300px;
     text-align: right;
 }
 .suggestion_original_text font{
