@@ -10,8 +10,6 @@ module.exports = AdminForm.extend({
         this._super(request, options, model);
 
 
-        this.static['js'].push('/node-forms/js/autocomplete.js');
-
         this.timeline_data = {};
     },
 

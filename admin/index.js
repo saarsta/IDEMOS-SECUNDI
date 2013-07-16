@@ -43,7 +43,13 @@ module.exports = function (app) {
         list: ['username', 'first_name', 'last_name'],
       //  filters: ['email', 'gender', 'identity_provider'],
         order_by:['-last_visit'],
-        search: '__value__.test(this.first_name+ " "+this.last_name)'
+        search: '__value__.test(this.first_name+ " "+this.last_name)',
+        subCollections:[
+            {model:'Post',field:'creator_id',label:'Comments'},
+            {model:'Suggestion',field:'creator_id',label:'Suggestions'},
+            {model:'Discussion',field:'creator_id',label:'Owned discussions'},
+            {model:'Action',field:'creator_id',label:'Owned actions'}
+        ]
     });
 
     admin.registerMongooseModel("InformationItem", Models.InformationItem, null, {
@@ -69,7 +75,12 @@ module.exports = function (app) {
         cloneable: true,
         form: DiscussionForm,
         order_by: ['-creation_date'],
-        search:['title','text_field_preview']
+        search:['title','text_field_preview'],
+        subCollections:[
+            {model:'Post',field:'discussion_id',label:'Comments'},
+            {model:'Suggestion',field:'discussion_id',label:'Suggestions'},
+            {model:'InformationItem',field:'discussions',label:'Information Items'}
+        ]
         //filters: ['created_by', 'is_published', 'is_hidden', 'is_hot_object', 'is_cycle.flag']
     });
 
@@ -121,7 +132,11 @@ module.exports = function (app) {
         list: ['title'],
         cloneable: true,
         form: CycleForm,
-        search:['title','text_item_preview']
+        search:['title','text_item_preview'],
+        subCollections:[
+            {model:'InformationItem',field:'cycles',label:'Information Items'},
+            {model:'Action',field:'cycle_id.cycle',label:'Actions'}
+        ]
        // filters: ['created_by', 'is_hidden', 'is_hot_object']
     });
 

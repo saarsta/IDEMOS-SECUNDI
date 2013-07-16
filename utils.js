@@ -182,6 +182,16 @@ exports.extend_model = function(name, base_schema, schema, collection,schemaFunc
             arguments = [params];
         return old_find.apply(this, arguments);
     };
+    var old_count = model.count;
+    model.count = function () {
+        var params = arguments.length ? arguments[0] : {};
+        params['_type'] = name;
+        if (arguments.length)
+            arguments[0] = params;
+        else
+            arguments = [params];
+        return old_count.apply(this, arguments);
+    };
     var old_findOne = model.findOne;
     model.findOne = function () {
         var params = arguments.length ? arguments[0] : {};
