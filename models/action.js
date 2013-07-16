@@ -1,9 +1,10 @@
 var mongoose = require("mongoose"),
     Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId,
+    utils = require('../utils'),
     common = require('./common');
 
-var Action = module.exports = new Schema({
+var Action = module.exports = utils.revertibleModel(new Schema({
     title:               {type: String, required: true},
     tooltip:             String,
     text_field:          {type: Schema.Types.Text, required: true},
@@ -81,7 +82,7 @@ var Action = module.exports = new Schema({
         creation_date:{type:Date, 'default':Date.now}
 },
     {strict: true}
-);
+));
 
 
 Action.methods.toString = function(){

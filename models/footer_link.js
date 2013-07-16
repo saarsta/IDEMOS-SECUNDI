@@ -2,9 +2,10 @@
 
 var mongoose = require('mongoose')
     ,Schema = mongoose.Schema
+    ,utils = require('../utils')
     ,_ = require('underscore');
 
-var FooterLink = module.exports = new Schema({
+var FooterLink = module.exports = utils.revertibleModel(new Schema({
     tab:{type:String,required:true},
     link:{type:String},
     name:{type:String, required:true},
@@ -19,7 +20,7 @@ var FooterLink = module.exports = new Schema({
         img_text: String
     }],
     gui_order:{type:Number,'default':Number.MAX_VALUE,editable:false}
-});
+}));
 
 var links = [];
 

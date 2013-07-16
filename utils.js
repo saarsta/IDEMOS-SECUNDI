@@ -205,6 +205,46 @@ exports.extend_model = function(name, base_schema, schema, collection,schemaFunc
     return {model:model, schema:schemaObj};
 };
 
+ exports.revertibleModel = function(schema){
+     if(SHOW_ONLY_PUBLISHED)
+        return schema;
+     schema.add({_unCommitted:{type:mongoose.Schema.Types.Mixed,editable:false}});
+     schema.post('init',function(doc){
+         doc._orig = _.clone(doc._doc,true);
+         if(doc._unCommitted){
+             for(var key in doc._unCommitted)
+                doc[key] = doc._unCommitted[key];
+         }
+         doc._unCommitted = {};
+     });
+     schema.pre('save',function(next){
+         var self = this;
+         if(this._orig){
+             var modifiedPaths = this.modifiedPaths();
+             self._unCommitted = self._unCommitted || {};
+             modifiedPaths.forEach(function(path){
+                 if(path == '_unCommitted')
+                    return;
+                 if(!self._revert)
+                    self._unCommitted[path] = self[path];
+                 self[path] = self._orig[path];
+             });
+             if(Object.keys(this._unCommitted).length)
+                this.markModified('_unCommitted');
+         }
+         delete this._revert;
+         next();
+     });
+     schema.methods.commit = function(cbk){
+         this._orig = null;
+         this.save(cbk);
+     }
+     schema.methods.revert = function(cbk){
+         this._revert = true;
+         this.save(cbk);
+     }
+     return schema;
+ };
  /***
   * Temporary stream that it's pause and resume works and  saved data in memory.
   * Until the request stream of nodejs will be fixed

@@ -3,17 +3,22 @@
 require('./lib/memory');
 
 var express = require('express');
+var util = require('util');
+var utils = require('./utils');
 var mongoose = require('mongoose');
 var async = require('async');
-var util = require('util');
 var domain = require('domain');
 var auth = require("connect-auth");
 var formage_admin = require('formage-admin');
 formage_admin.forms.loadTypes(mongoose);
 
+
+
+var app = module.exports = express();
+app.set('show_only_published', process.env.SHOW_ONLY_PUBLISHED == '1');
+utils.setShowOnlyPublished(app.settings.show_only_published);
+
 var logout_handler = require("connect-auth/lib/events").redirectOnLogout("/");
-var utils = require('./utils');
-var models = require('./models');
 var account = require('./deliver/routes/account');
 var fb_bot_middleware = require('./deliver/routes/fb_bot/middleware');
 
@@ -47,6 +52,7 @@ var auth_middleware = auth({
 });
 // ########### Static parameters ###########
 
+
 // Run some compilations
 require('./tools/compile_templates');
 require('./deliver/tools/compile_dust_templates');
@@ -67,7 +73,7 @@ if (!mongoose.connection.host) {
 
 
 // ######### settings #########
-var app = module.exports = express();
+
 app.settings['x-powered-by'] = 'Empeeric';
 app.set('views', __dirname + '/deliver/views');
 app.set('public_folder', __dirname + '/deliver/public');
@@ -77,7 +83,6 @@ app.set('facebook_secret', fb_auth_params.appSecret);
 app.set('facebook_app_name', fb_auth_params.appName);
 app.set('facebook_pages_admin_user', "uri@uru.org.il");
 app.set('facebook_pages_admin_pass', "uruuruuru");
-app.set('show_only_published', process.env.SHOW_ONLY_PUBLISHED == '1');
 app.set('sendgrid_user', process.env.SENDGRID_USER || 'app2952775@heroku.com');
 app.set('system_email', process.env.SYSTEM_EMAIL || 'admin@uru.org.il');
 app.set('sendgrid_key',process.env.SENDGRID_KEY || 'a0oui08x');
@@ -88,8 +93,9 @@ app.set('send_mails', true);
 app.set('view engine', 'jade');
 app.set('view options', { layout: false });
 formage_admin.forms.setAmazonCredentials(s3_creds);
+
+var models = require('./models');
 models.setDefaultPublish(app.settings.show_only_published);
-utils.setShowOnlyPublished(app.settings.show_only_published);
 // ######### settings #########
 
 

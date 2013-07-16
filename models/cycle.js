@@ -9,7 +9,7 @@ var mongoose = require("mongoose"),
 
     utils = require('../utils');
 
-var Cycle = module.exports = new Schema({
+var Cycle = module.exports = utils.revertibleModel(new Schema({
     creation_date: {date:{type:Date, 'default':Date.now}, is_displayed: {type: Boolean, 'default': false}},
     due_date : {type:Date/*, 'default':function(){ return Date.now() + 1000*3600*24*30;  }*/},
     subject:[{
@@ -86,7 +86,7 @@ var Cycle = module.exports = new Schema({
 
         // users1 : [ {fb_id:{type:String,unique: true}, name: {type:String}} ]
     }
-}, {strict: true});
+}, {strict: true}));
 
 Cycle.methods.toString = function(){
     return this.title;

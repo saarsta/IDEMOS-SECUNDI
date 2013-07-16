@@ -7,7 +7,7 @@ var mongoose = require("mongoose"),
     utils = require('./../utils');
 
 
-var Discussion = module.exports = new Schema({
+var Discussion = module.exports = utils.revertibleModel(new Schema({
     title:{type:String, required:true},
     tooltip:String,
 //        text_field:{type:Schema.Types.Html},
@@ -83,7 +83,7 @@ var Discussion = module.exports = new Schema({
         has_rewarded_creator_for_high_grading_of_min_graders: {type: String, 'default': false}, editable:false},
     is_hidden:{type:Boolean,'default':false} ,
     is_private:{type:Boolean,'default':true}
-}, {strict: true});
+}, {strict: true}));
 
 Discussion.methods.toString = function() {
     return this.title;

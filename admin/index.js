@@ -73,7 +73,11 @@ module.exports = function (app) {
 
     admin.registerMongooseModel('Headline', Models.Headline, null, {
         list:['title'],
-        search:['title', 'text_field']
+        search:['title', 'text_field'],
+        actions:[
+            revertAction(Models.Headline),
+            commitAction(Models.Headline)
+        ]
     });
 
     admin.registerMongooseModel("User", Models.User, null, {
@@ -90,6 +94,7 @@ module.exports = function (app) {
         ]
     });
 
+
     admin.registerMongooseModel("InformationItem", Models.InformationItem, null, {
         list:['title'],
         order_by:['gui_order'],
@@ -103,7 +108,10 @@ module.exports = function (app) {
                 func:function (user, ids, callback) {
                     Models.InformationItem.update({_id:{$in:ids}}, {$set:{is_approved:true}}, {multi:true}, callback);
                 }
-            }
+            },
+            revertAction(Models.InformationItem),
+            commitAction(Models.InformationItem)
+
         ],
         search:['title', 'text_field_preview']
     });
@@ -118,6 +126,10 @@ module.exports = function (app) {
             {model:'Post', field:'discussion_id', label:'Comments'},
             {model:'Suggestion', field:'discussion_id', label:'Suggestions'},
             {model:'InformationItem', field:'discussions', label:'Information Items'}
+        ],
+        actions:[
+            revertAction(Models.Discussion),
+            commitAction(Models.Discussion)
         ]
         //filters: ['created_by', 'is_published', 'is_hidden', 'is_hot_object', 'is_cycle.flag']
     });
@@ -169,7 +181,11 @@ module.exports = function (app) {
         order_by:['gui_order'],
         sortable:'gui_order',
         search:['title', 'link'],
-        hideFromMain:true
+        hideFromMain:true,
+        actions:[
+            revertAction(Models.PressItem),
+            commitAction(Models.PressItem)
+        ]
     });
 
     admin.registerMongooseModel("Cycle", Models.Cycle, null, {
@@ -180,6 +196,10 @@ module.exports = function (app) {
         subCollections:[
             {model:'InformationItem', field:'cycles', label:'Information Items'},
             {model:'Action', field:'cycle_id.cycle', label:'Actions'}
+        ],
+        actions:[
+            revertAction(Models.Cycle),
+            commitAction(Models.Cycle)
         ]
         // filters: ['created_by', 'is_hidden', 'is_hot_object']
     });
@@ -187,7 +207,11 @@ module.exports = function (app) {
     admin.registerMongooseModel('Update', Models.Update, null, {
         list:['title'],
         form:IdkunimForm,
-        search:['title', 'text_field_preview']
+        search:['title', 'text_field_preview'],
+        actions:[
+            revertAction(Models.Update),
+            commitAction(Models.Update)
+        ]
     });
 
     admin.registerMongooseModel('Action', Models.Action, null, {
@@ -211,7 +235,9 @@ module.exports = function (app) {
                         unApproveAction(id, cbk);
                     }, callback);
                 }
-            }
+            },
+            revertAction(Models.Action),
+            commitAction(Models.Action)
         ],
         search:['title', 'text_field_preview']
     });
@@ -232,7 +258,11 @@ module.exports = function (app) {
 
     admin.registerMongooseModel('Article', Models.Article, null, {
         list:['title', 'getLink'],
-        search:['title', 'text_field_preview']
+        search:['title', 'text_field_preview'],
+        actions:[
+            revertAction(Models.Article),
+            commitAction(Models.Article)
+        ]
     });
 
     admin.registerMongooseModel('PostArticle', Models.PostArticle, null, {
@@ -267,35 +297,63 @@ module.exports = function (app) {
     });
 
     admin.registerMongooseModel('SuccessStory', Models.SuccessStory, null, {
-        list:['title']
+        list:['title'],
+        actions:[
+            revertAction(Models.SuccessStory),
+            commitAction(Models.SuccessStory)
+        ]
     });
 
     admin.registerMongooseModel('AboutUruText', Models.AboutUruText, null, {
-        list:['title']
+        list:['title'],
+        actions:[
+            revertAction(Models.AboutUruText),
+            commitAction(Models.AboutUruText)
+        ]
     });
 
     admin.registerMongooseModel('AboutUruItem', Models.AboutUruItem, null, {
-        list:['text_field']
+        list:['text_field'],
+        actions:[
+            revertAction(Models.AboutUruItem),
+            commitAction(Models.AboutUruItem)
+        ]
     });
 
     admin.registerMongooseModel('Team', Models.Team, null, {
         list:['name'],
-        cloneable:true
+        cloneable:true,
+        actions:[
+            revertAction(Models.Team),
+            commitAction(Models.Team)
+        ]
     });
 
     admin.registerMongooseModel('Founder', Models.Founder, null, {
         list:['name'],
-        cloneable:true
+        cloneable:true,
+        actions:[
+            revertAction(Models.Founder),
+            commitAction(Models.Founder)
+        ]
     });
 
     admin.registerMongooseModel('Qa', Models.Qa, null, {
-        list:['title']
+        list:['title'],
+        actions:[
+            revertAction(Models.Qa),
+            commitAction(Models.Qa)
+        ]
     });
 
     admin.registerMongooseModel('FooterLink', mongoose.model('FooterLink'), null, {
         list:['tab', 'name'],
         order_by:['gui_order'],
-        sortable:'gui_order'
+        sortable:'gui_order',
+        actions:[
+            revertAction(Models.FooterLink),
+            commitAction(Models.FooterLink)
+        ]
     });
 
     admin.registerMongooseModel('ImageUpload', Models.ImageUpload, null, {
@@ -405,3 +463,32 @@ var unApproveAction = function (id, callback) {
         callback(err, num);
     })
 };
+
+function revertAction(model){
+    return {
+        value:'revert',
+        label:'Revert',
+        func:function(user,ids,cbk){
+            model.find().where('_id').in(ids).exec(function(err,docs){
+                if(err) return cbk(err);
+                async.each(docs,function(doc,cbk){
+                    doc.revert(cbk);
+                },cbk);
+            });
+        }
+    }
+}
+function commitAction(model){
+    return {
+        value:'commit',
+        label:'Commit',
+        func:function(user,ids,cbk){
+            model.find().where('_id').in(ids).exec(function(err,docs){
+                if(err) return cbk(err);
+                async.each(docs,function(doc,cbk){
+                    doc.commit(cbk);
+                },cbk);
+            });
+        }
+    }
+}
