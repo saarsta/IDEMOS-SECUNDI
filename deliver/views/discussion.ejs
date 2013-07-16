@@ -83,9 +83,9 @@ var error_message = error_message || '';
                         <hr />
                         <div class="tags">
                             <span class="tags_title">תגיות:</span>
-                            <% for (var c = 0; c <discussion. tags.length; c++) { %>
+                            <% if(discussion.tags) { for (var c = 0; c <discussion.tags.length; c++) { %>
                                 <span class="tag"><a href="?tag_name=<%=discussion.tags[c]%>"><%=discussion. tags[c] %></a></span>
-                            <% }%>
+                            <% }}%>
                         </div>
                         <hr />
                         <div class="segment_bottom">
