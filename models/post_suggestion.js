@@ -7,8 +7,8 @@ var mongoose = require("mongoose"),
     utils = require('../utils');
 
 var PostSuggestion = {
-    discussion_id:{type:Schema.ObjectId, ref:'Discussion', query:common.FIND_USER_QUERY, required:true, onDelete:'delete'},
-    suggestion_id:{type:Schema.ObjectId, ref:'Suggestion', query:common.FIND_USER_QUERY,index:true, required:true, onDelete:'delete'},
+    discussion_id:{type:Schema.ObjectId, ref:'Discussion', query:common.FIND_DISCUSSION_QUERY, required:true, onDelete:'delete'},
+    suggestion_id:{type:Schema.ObjectId, ref:'Suggestion', query:'/__value__/i.test(this.parts && this.parts[0] ? this.parts[0].text : "")',index:true, required:true, onDelete:'delete'},
     text:{type:Schema.Types.Html}
 };
 

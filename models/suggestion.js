@@ -44,7 +44,7 @@ var extension = utils.extend_model('Suggestion', require('./post_or_suggestion')
             return Math.max(sug_char_count, disc_marked_text_char_count);
         };
         schema.methods.toString = function () {
-            return (this.explanation || '').slice(0, 100);
+            return ((this.parts && this.parts[0] && this.parts[0].text) || '').slice(0, 100);
         }
     });
 

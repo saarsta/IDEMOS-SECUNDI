@@ -77,7 +77,8 @@ var Action = module.exports = new Schema({
             default_title: {type: String},
             default_text: {type: String}},
 
-        is_hidden:                                        {type: Boolean, 'default': true}
+        is_hidden:                                        {type: Boolean, 'default': true},
+        creation_date:{type:Date, 'default':Date.now}
 },
     {strict: true}
 );
