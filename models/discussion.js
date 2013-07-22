@@ -7,20 +7,18 @@ var mongoose = require("mongoose"),
     utils = require('./../utils');
 
 
-var Discussion = module.exports = utils.revertibleModel(new Schema({
+var Discussion = new Schema({
     title:{type:String, required:true},
     tooltip:String,
 //        text_field:{type:Schema.Types.Html},
 //        text_field_preview:{type:Schema.Types.Html},
     image_field: { type:Schema.Types.File, required:true},
     image_field_preview: { type:Schema.Types.File, require:true},
-    subject_id:[
-        {type:ObjectId, ref:'Subject', index:true, required:true, editable: false}
-    ],
-/*
-    subject_id: {type:[ObjectId], ref:'Subject',required:true},
-*/
-    subject_name: String,
+//    subject_id:[
+//        {type:ObjectId, ref:'Subject', index:true, required:true, editable: false}
+//    ],
+    subject_id: {type:ObjectId, ref:'Subject',required:true,query:common.SUBJECT_QUERY, index:true},
+    subject_name: {type:String,editable:false},
     //system_message: {type:Schema.Types.Html},
     creation_date:{type:Date, 'default':Date.now},
     last_updated:{type:Date, 'default':Date.now},
@@ -83,8 +81,27 @@ var Discussion = module.exports = utils.revertibleModel(new Schema({
         has_rewarded_creator_for_high_grading_of_min_graders: {type: String, 'default': false}, editable:false},
     is_hidden:{type:Boolean,'default':false} ,
     is_private:{type:Boolean,'default':true}
-}, {strict: true}));
+}, {strict: true});
 
 Discussion.methods.toString = function() {
     return this.title;
 };
+
+Discussion.pre('save',function(next){
+    var modified = this.modifiedPaths();
+    console.log(modified);
+    if(modified.indexOf('subject_id') == -1)
+        return next();
+    if(!this.subject_id){
+        this.subject_name = '';
+        return next();
+    }
+    var self = this;
+    mongoose.model('Subject').findById(this.subject_id,function(err,sub){
+        if(sub)
+            self.subject_name = sub.name;
+        next();
+    });
+});
+
+module.exports = utils.revertibleModel(Discussion);

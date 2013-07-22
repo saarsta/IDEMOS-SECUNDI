@@ -318,7 +318,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                         cbk1();
 
                         // second - create notifications and send mails
-                        notifications_for_the_info_items_relvant(object._id, user_id, object.subject_id[0], function(err) {
+                        notifications_for_the_info_items_relvant(object._id, user_id, object.subject_id, function(err) {
                             if(err){
                                 console.error(err);
                             }else{
@@ -462,7 +462,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                     object.is_published = true;
 
                     object.save(function (err, disc_obj) {
-                        notifications_for_the_info_items_relvant(disc_obj._id, user._id, disc_obj.subject_id[0], function (err) {
+                        notifications_for_the_info_items_relvant(disc_obj._id, user._id, disc_obj.subject_id, function (err) {
                             if(err)
                                 callback(err);
                             else {

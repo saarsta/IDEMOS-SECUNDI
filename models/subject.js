@@ -15,3 +15,7 @@ var Subject  = module.exports = new Schema({
     is_uru:{type:Boolean,'default':false}
 
 }, {strict: true});
+
+Subject.methods.toString = function(){
+    return this.name;
+};
