@@ -3,6 +3,7 @@ $(function(){
 
     var original_text = discussion_vision_text || '';
 
+    original_text = $('<textarea></textarea>').html(original_text).html();
 
     var SPAN = 250, STEP=100;
 
@@ -21,12 +22,15 @@ $(function(){
             var end_index = Number(end.val());
             if(end_index >= original_text.length)
                 end_index = original_text.length - 1;
+
             var pre_start_index = Math.max(0,start_index - SPAN);
             pre_start_index -= pre_start_index % STEP;
             var post_end_index = Math.min(original_text.length, end_index + SPAN);
             post_end_index -= post_end_index % STEP;
-            original_div.html((pre_start_index > 0 ?  '...' : '') +  original_text.substr(pre_start_index,start_index-pre_start_index) + '<font>' + original_text.substr(start_index,end_index - start_index) + '</font>' +
-                original_text.substr(end_index,post_end_index-end_index) + (post_end_index < original_text.length-1 ? '...' : ''));
+
+            var text = original_text.substr(start_index,end_index-start_index);
+
+            original_div.html((pre_start_index > 0 ?  '...' : '') +  original_text.substr(pre_start_index,start_index-pre_start_index) + original_text.substr(start_index,post_end_index-start_index).replace(text,'<font>' + text + '</font>')  + (post_end_index < original_text.length-1 ? '...' : ''));
         };
 
         start.change(onChange);

@@ -40,7 +40,8 @@ var InformationItem = module.exports = utils.revertibleModel(new Schema({
         rewarded_creator_for_approval: {type: String, 'default': false, editable: false}
     },
     gui_order:{type:Number,'default':9999999,editable:false},
-    is_hidden:{type:Boolean,'default':true}
+    is_hidden:{type:Boolean,'default':true},
+    _preview:{type:Schema.Types.Mixed,link:'/information_items/{_id}',editable:false}
 }, {strict: true}));
 
 InformationItem.methods.toString = function(){

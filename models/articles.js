@@ -51,7 +51,8 @@ var Article = module.exports = utils.revertibleModel(new Schema({
     time: {type: Date, 'default': Date.now, editable:false},
     popularity_counter: {type: Number, 'default': 0},
 //    comments : [Comment],
-    is_hidden:{type:Boolean,'default':true}
+    is_hidden:{type:Boolean,'default':true},
+    _preview:{type:Schema.Types.Mixed,link:'/blogs/articles/{_id}',editable:false}
 } ,{strict: true}));
 
 Article.methods.getLink = function() {

@@ -65,8 +65,8 @@ module.exports = function(req, res){
                 'sub_branding': 1,
                 'social_popup': 1,
                 'timeline':1,
-                'fb_page':1
-
+                'fb_page':1,
+                '_preview':1
             })
             .populate('opinion_shapers.user_id', {
                 '_id':1,

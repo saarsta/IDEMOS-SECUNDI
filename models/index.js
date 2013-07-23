@@ -29,7 +29,8 @@ var Schemas = exports.Schemas = {
         is_visible:{type:Boolean, 'default':true},
         creation_date:{type:Date, 'default':Date.now, editable:false},
         gui_order:{type:Number, 'default':9999999, editable:false},
-        is_hidden:{type:Boolean, 'default':true}
+        is_hidden:{type:Boolean, 'default':true},
+        _preview:{type:Schema.Types.Mixed,link:'/',editable:false}
     }, {strict:true})),
 
     SuccessStory:utils.revertibleModel(new Schema({
@@ -45,7 +46,8 @@ var Schemas = exports.Schemas = {
         is_visible:{type:Boolean, 'default':true},
         creation_date:{type:Date, 'default':Date.now, editable:false},
         gui_order:{type:Number, 'default':9999999, editable:false},
-        is_hidden:{type:Boolean, 'default':true}
+        is_hidden:{type:Boolean, 'default':true},
+        _preview:{type:Schema.Types.Mixed,link:'/',editable:false}
     }, {strict:true})),
 
     //cycle updates
@@ -271,14 +273,16 @@ var Schemas = exports.Schemas = {
     AboutUruText:utils.revertibleModel(new Schema({
         title:{type:String, required:true},
         text_field:{type:Schema.Types.Html, required:true},
-        is_hidden:{type:Boolean, 'default':true}
+        is_hidden:{type:Boolean, 'default':true},
+        _preview:{type:Schema.Types.Mixed,link:'/about',editable:false}
     },{strict:true})),
 
     AboutUruItem:utils.revertibleModel(new Schema({
         img_field:{ type:Schema.Types.File, required:true},
         img_text:String,
         text_field:String,
-        is_hidden:{type:Boolean, 'default':true}
+        is_hidden:{type:Boolean, 'default':true},
+        _preview:{type:Schema.Types.Mixed,link:'/about',editable:false}
     },{strict:true})),
 
     Team:utils.revertibleModel(new Schema({
@@ -286,7 +290,8 @@ var Schemas = exports.Schemas = {
         duty:String,
         text_field:{type:Schema.Types.Html, required:true},
         img_field:{type:Schema.Types.File, required:true},
-        is_hidden:{type:Boolean, 'default':true}
+        is_hidden:{type:Boolean, 'default':true},
+        _preview:{type:Schema.Types.Mixed,link:'/team',editable:false}
     },{strict:true})),
 
     Founder:utils.revertibleModel(new Schema({
@@ -296,13 +301,15 @@ var Schemas = exports.Schemas = {
         duty:String,
         text_field:{type:Schema.Types.Html, required:true},
         img_field:{type:Schema.Types.File, required:true},
-        is_hidden:{type:Boolean, 'default':true}
+        is_hidden:{type:Boolean, 'default':true},
+        _preview:{type:Schema.Types.Mixed,link:'/founder',editable:false}
     },{strict:true})),
 
     Qa:utils.revertibleModel(new Schema({
         title:{type:String, required:true},
         text_field:{type:Schema.Types.Text},
-        is_hidden:{type:Boolean, 'default':true}
+        is_hidden:{type:Boolean, 'default':true},
+        _preview:{type:Schema.Types.Mixed,link:'/page/FAQ',editable:false}
     },{strict:true})),
 
     ElectionsText:{

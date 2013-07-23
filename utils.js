@@ -206,41 +206,39 @@ exports.extend_model = function(name, base_schema, schema, collection,schemaFunc
 };
 
  exports.revertibleModel = function(schema){
+     return schema;
      if(SHOW_ONLY_PUBLISHED)
         return schema;
-     schema.add({_unCommitted:{type:mongoose.Schema.Types.Mixed,editable:false}});
+     schema.add({_unCommitted:{type:mongoose.Schema.Types.Mixed,editable:false},_preview:{type:Date,editable:true}});
      schema.post('init',function(doc){
          doc._orig = _.clone(doc._doc,true);
-         if(doc._unCommitted){
-             for(var key in doc._unCommitted)
-                doc[key] = doc._unCommitted[key];
+         if(doc._preview && new Date() - doc._preview < 1000*20){
+             if(doc._unCommitted){
+                 for(var key in doc._unCommitted)
+                    doc[key] = doc._unCommitted[key];
+             }
+             doc._unCommitted = {};
          }
-         doc._unCommitted = {};
      });
-     schema.pre('save',function(next){
+     schema.methods.preview = function(cbk){
          var self = this;
-         if(this._orig){
-             var modifiedPaths = this.modifiedPaths();
-             self._unCommitted = self._unCommitted || {};
-             modifiedPaths.forEach(function(path){
-                 if(path == '_unCommitted')
-                    return;
-                 if(!self._revert)
-                    self._unCommitted[path] = self[path];
-                 self[path] = self._orig[path];
-             });
-             if(Object.keys(this._unCommitted).length)
-                this.markModified('_unCommitted');
-         }
-         delete this._revert;
-         next();
-     });
-     schema.methods.commit = function(cbk){
-         this._orig = null;
+         var modifiedPaths = this.modifiedPaths();
+         self._unCommitted = self._unCommitted || {};
+         modifiedPaths.forEach(function(path){
+             if(path == '_unCommitted')
+                 return;
+             self._unCommitted[path] = self[path];
+             self[path] = self._orig[path];
+         });
+         this._unCommitted = JSON.parse(JSON.stringify(this._unCommitted));
+         if(Object.keys(this._unCommitted).length)
+             this.markModified('_unCommitted');
+         this._preview = new Date();
          this.save(cbk);
      }
      schema.methods.revert = function(cbk){
-         this._revert = true;
+         this._unCommitted = null;
+         this._preview = null;
          this.save(cbk);
      }
      return schema;

@@ -195,6 +195,7 @@ app.locals({
     }
 });
 
+
 app.locals({
     writeHead: function(name) {
         var isDev = app.settings.env == 'development' || app.settings.env == 'staging';

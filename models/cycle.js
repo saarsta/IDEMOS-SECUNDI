@@ -85,7 +85,8 @@ var Cycle = module.exports = utils.revertibleModel(new Schema({
         users:{type:[String], index:true}
 
         // users1 : [ {fb_id:{type:String,unique: true}, name: {type:String}} ]
-    }
+    },
+    _preview:{type:Schema.Types.Mixed,link:'/cycles/{_id}',editable:false}
 }, {strict: true}));
 
 Cycle.methods.toString = function(){

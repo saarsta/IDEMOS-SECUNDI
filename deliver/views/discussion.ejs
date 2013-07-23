@@ -1380,7 +1380,7 @@ $(document).ready(function () {
 
 	 function loadSpecialPosts(){
         db_functions.getSpecialPostsByDiscussion(discussion_id, function(err, data){
-            if (!err  && data.length != 0){
+            if (!err  && data && data.objects && data.objects.length != 0){
                 dust.renderArray('discussion_special_comment', data.objects, null, function (err, out) {
                     $('#special_post_wrapper').prepend(out);
                     $('#special_post_wrapper .content').dotdotdot({});

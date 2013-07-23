@@ -310,7 +310,8 @@
 
                      db_functions.createDiscussion(subject_id, vision, title, tags,discussion_image, user_info, function(err, data){
                          if (err){
-
+                             $('.discussion-main .bottom input[type=submit]').removeClass('disable');
+                             return;
                          }else{
                              if(!user.actions_done_by_user.create_object)
                              {

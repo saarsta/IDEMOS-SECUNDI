@@ -598,8 +598,11 @@ var db_functions = {
             user_info: user_info,
 
             success: function(data) {
-                console.log(data);
-                callback(null, data);
+                if(data == 'canceled')
+                    callback(data);
+                else
+                    callback(null, data);
+
             },
 
             error: function(err) {
