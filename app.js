@@ -23,7 +23,7 @@ var account = require('./deliver/routes/account');
 var fb_bot_middleware = require('./deliver/routes/fb_bot/middleware');
 
 // ########### Static parameters ###########
-var IS_ADMIN = ~(process.env['NODE_ENV'] || []).indexOf('admin');
+var IS_ADMIN = /admin|staging/.test(process.env['NODE_ENV'] || '');
 var DB_URL = process.env['MONGOLAB_URI'] || 'mongodb://localhost/uru';
 var ROOT_PATH = process.env.ROOT_PATH || 'http://dev.empeeric.com';
 var IS_PROCESS_CRON = (process.argv[2] === 'cron');
@@ -106,7 +106,12 @@ process.on('uncaughtException', function(err) {
     console.error(err);
     console.error(err.stack);
 });
+var proxy = require('./proxy');
 app.use(function (req, res, next) {
+    if(req.headers['host'].indexOf('test.uru.org.il') > -1){
+        proxy(req,res);
+        return;
+    }
     var d = domain.create();
     d.add(req);
     d.add(res);
@@ -153,7 +158,6 @@ app.use(auth_middleware);
 app.use(account.auth_middleware);
 app.use(account.populate_user);
 // ######### specific middleware #########
-
 
 
 // ######### locals #########
@@ -231,7 +235,7 @@ app.configure('development', function(){
 if (IS_ADMIN) {
     require('./admin')(app);
 }
-if (!IS_ADMIN && IS_PROCESS_WEB) {
+if (IS_PROCESS_WEB) {
     require('./api')(app);
     require('./og/config').load(app);
     require('./lib/templates').load(app);
@@ -263,6 +267,7 @@ if (IS_PROCESS_WEB) {
         }
     ], function (err, gamification) {
         app.set('gamification_tokens', gamification);
+        console.log('listening on port ',app.get('port'));
         var server = app.listen(app.get('port'), function (err) {
             if (err) {
                 console.error(err.stack || err);
