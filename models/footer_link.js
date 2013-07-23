@@ -19,7 +19,8 @@ var FooterLink = module.exports = utils.revertibleModel(new Schema({
         text_field:String,
         img_text: String
     }],
-    gui_order:{type:Number,'default':Number.MAX_VALUE,editable:false}
+    gui_order:{type:Number,'default':Number.MAX_VALUE,editable:false},
+    _preview:{type:Schema.Types.Mixed,link:'/page/{tab}',editable:false}
 }));
 
 var links = [];

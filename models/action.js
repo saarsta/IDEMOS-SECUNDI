@@ -79,7 +79,8 @@ var Action = module.exports = utils.revertibleModel(new Schema({
             default_text: {type: String}},
 
         is_hidden:                                        {type: Boolean, 'default': true},
-        creation_date:{type:Date, 'default':Date.now}
+        creation_date:{type:Date, 'default':Date.now},
+        _preview:{type:Schema.Types.Mixed,link:'/actions/{_id}',editable:false}
 },
     {strict: true}
 ));

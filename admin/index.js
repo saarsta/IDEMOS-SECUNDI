@@ -75,8 +75,7 @@ module.exports = function (app) {
         list:['title'],
         search:['title', 'text_field'],
         actions:[
-            revertAction(Models.Headline),
-            commitAction(Models.Headline)
+      //      previewAction(Models.Headline)
         ]
     });
 
@@ -108,10 +107,7 @@ module.exports = function (app) {
                 func:function (user, ids, callback) {
                     Models.InformationItem.update({_id:{$in:ids}}, {$set:{is_approved:true}}, {multi:true}, callback);
                 }
-            },
-            revertAction(Models.InformationItem),
-            commitAction(Models.InformationItem)
-
+            }
         ],
         search:['title', 'text_field_preview']
     });
@@ -128,8 +124,7 @@ module.exports = function (app) {
             {model:'InformationItem', field:'discussions', label:'Information Items'}
         ],
         actions:[
-            revertAction(Models.Discussion),
-            commitAction(Models.Discussion)
+         //   previewAction(Models.Discussion)
         ]
         //filters: ['created_by', 'is_published', 'is_hidden', 'is_hot_object', 'is_cycle.flag']
     });
@@ -181,11 +176,7 @@ module.exports = function (app) {
         order_by:['gui_order'],
         sortable:'gui_order',
         search:['title', 'link'],
-        hideFromMain:true,
-        actions:[
-            revertAction(Models.PressItem),
-            commitAction(Models.PressItem)
-        ]
+        hideFromMain:true
     });
 
     admin.registerMongooseModel("Cycle", Models.Cycle, null, {
@@ -198,8 +189,7 @@ module.exports = function (app) {
             {model:'Action', field:'cycle_id.cycle', label:'Actions'}
         ],
         actions:[
-            revertAction(Models.Cycle),
-            commitAction(Models.Cycle)
+         //   previewAction(Models.Cycle)
         ]
         // filters: ['created_by', 'is_hidden', 'is_hot_object']
     });
@@ -207,11 +197,7 @@ module.exports = function (app) {
     admin.registerMongooseModel('Update', Models.Update, null, {
         list:['title'],
         form:IdkunimForm,
-        search:['title', 'text_field_preview'],
-        actions:[
-            revertAction(Models.Update),
-            commitAction(Models.Update)
-        ]
+        search:['title', 'text_field_preview']
     });
 
     admin.registerMongooseModel('Action', Models.Action, null, {
@@ -235,9 +221,7 @@ module.exports = function (app) {
                         unApproveAction(id, cbk);
                     }, callback);
                 }
-            },
-            revertAction(Models.Action),
-            commitAction(Models.Action)
+            }
         ],
         search:['title', 'text_field_preview']
     });
@@ -260,8 +244,7 @@ module.exports = function (app) {
         list:['title', 'getLink'],
         search:['title', 'text_field_preview'],
         actions:[
-            revertAction(Models.Article),
-            commitAction(Models.Article)
+          //  previewAction(Models.Article)
         ]
     });
 
@@ -299,24 +282,21 @@ module.exports = function (app) {
     admin.registerMongooseModel('SuccessStory', Models.SuccessStory, null, {
         list:['title'],
         actions:[
-            revertAction(Models.SuccessStory),
-            commitAction(Models.SuccessStory)
+           // previewAction(Models.SuccessStory)
         ]
     });
 
     admin.registerMongooseModel('AboutUruText', Models.AboutUruText, null, {
         list:['title'],
         actions:[
-            revertAction(Models.AboutUruText),
-            commitAction(Models.AboutUruText)
+            //previewAction(Models.AboutUruText)
         ]
     });
 
     admin.registerMongooseModel('AboutUruItem', Models.AboutUruItem, null, {
         list:['text_field'],
         actions:[
-            revertAction(Models.AboutUruItem),
-            commitAction(Models.AboutUruItem)
+           // previewAction(Models.AboutUruItem)
         ]
     });
 
@@ -324,8 +304,7 @@ module.exports = function (app) {
         list:['name'],
         cloneable:true,
         actions:[
-            revertAction(Models.Team),
-            commitAction(Models.Team)
+           // previewAction(Models.Team)
         ]
     });
 
@@ -333,16 +312,14 @@ module.exports = function (app) {
         list:['name'],
         cloneable:true,
         actions:[
-            revertAction(Models.Founder),
-            commitAction(Models.Founder)
+//            previewAction(Models.Founder)
         ]
     });
 
     admin.registerMongooseModel('Qa', Models.Qa, null, {
         list:['title'],
         actions:[
-            revertAction(Models.Qa),
-            commitAction(Models.Qa)
+            //previewAction(Models.Qa)
         ]
     });
 
@@ -351,8 +328,7 @@ module.exports = function (app) {
         order_by:['gui_order'],
         sortable:'gui_order',
         actions:[
-            revertAction(Models.FooterLink),
-            commitAction(Models.FooterLink)
+           // previewAction(Models.FooterLink)
         ]
     });
 
@@ -423,7 +399,7 @@ module.exports = function (app) {
 
      admin.registerMongooseModel('FBRequest', Models.FBRequest, null, {
      list_populate: ['creator'],
-     list: ['link', 'creator.first_name', 'creator.last_name']
+     list: ['preview', 'creator.first_name', 'creator.last_name']
      });
 
      admin.registerSingleRowModel(Models.ThresholdCalcVariables, 'ThresholdCalcVariables');
@@ -463,32 +439,28 @@ var unApproveAction = function (id, callback) {
         callback(err, num);
     })
 };
-
-function revertAction(model){
-    return {
-        value:'revert',
-        label:'Revert',
-        func:function(user,ids,cbk){
-            model.find().where('_id').in(ids).exec(function(err,docs){
-                if(err) return cbk(err);
-                async.each(docs,function(doc,cbk){
-                    doc.revert(cbk);
-                },cbk);
-            });
-        }
-    }
-}
-function commitAction(model){
-    return {
-        value:'commit',
-        label:'Commit',
-        func:function(user,ids,cbk){
-            model.find().where('_id').in(ids).exec(function(err,docs){
-                if(err) return cbk(err);
-                async.each(docs,function(doc,cbk){
-                    doc.commit(cbk);
-                },cbk);
-            });
-        }
-    }
-}
+//
+//function previewAction(model){
+//    return {
+//        value:'preview',
+//        label:'Preview',
+//        func:function(user,form,cbk){
+//            for (var field_name in form.clean_values) {
+//                form.instance.set(field_name, form.clean_values[field_name]);
+//            }
+//
+////            var self = this;
+//            form.instance.preview(cbk);
+////            model.find().where('_id').in(ids).exec(function(err,docs){
+////                if(err) return cbk(err);
+////                async.each(docs,function(doc,cbk){
+////                    doc.preview(cbk);
+////                },cbk);
+////            });
+//        },
+//        withForm:true,
+//        afterSave:function(req,res,ids){
+//            res.redirect(this.options.link.replace('__id__',ids[0]));
+//        }
+//    }
+//}

@@ -80,7 +80,8 @@ var Discussion = new Schema({
     gamification: {has_rewarded_creator_of_turning_to_cycle: {type: Boolean, 'default': false},
         has_rewarded_creator_for_high_grading_of_min_graders: {type: String, 'default': false}, editable:false},
     is_hidden:{type:Boolean,'default':false} ,
-    is_private:{type:Boolean,'default':true}
+    is_private:{type:Boolean,'default':true},
+    _preview:{type:Schema.Types.Mixed,link:'/discussions/{_id}',editable:false}
 }, {strict: true});
 
 Discussion.methods.toString = function() {
@@ -89,7 +90,6 @@ Discussion.methods.toString = function() {
 
 Discussion.pre('save',function(next){
     var modified = this.modifiedPaths();
-    console.log(modified);
     if(modified.indexOf('subject_id') == -1)
         return next();
     if(!this.subject_id){
