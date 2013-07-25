@@ -132,6 +132,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
         }
 
         this._super(req, filters, sorts, limit, offset, function (err, results) {
+	    if(err) return callback(err);	   
 
             var user_discussions;
 
@@ -139,7 +140,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                 user_discussions = req.user.discussions;
 
             _.each(results.objects || [], function (discussion) {
-                discussion.participants_count = discussion.users.length;
+                discussion.participants_count = discussion.users ? discussion.users.length : 0;
                 discussion.is_follower = false;
                 if (user_discussions) {
                     if (_.find(user_discussions, function (user_discussion) {
