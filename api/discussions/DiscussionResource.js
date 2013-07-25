@@ -138,7 +138,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
             if (req.user)
                 user_discussions = req.user.discussions;
 
-            _.each(results.objects, function (discussion) {
+            _.each(results.objects || [], function (discussion) {
                 discussion.participants_count = discussion.users.length;
                 discussion.is_follower = false;
                 if (user_discussions) {
@@ -148,7 +148,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                         discussion.is_follower = true;
                     }
                 }
-            })
+            });
 
             callback(err, results);
         });
