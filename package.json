@@ -6,7 +6,7 @@
     "express": "3.x.x",
     "ejs": "0.x.x",
     "connect-auth": "0.x.x",
-    "mongoose": "3.x.x",
+    "mongoose": "3.5.x",
     "jest": "0.1.30",
     "async": "0.2.x",
     "jade": "0.27.x",

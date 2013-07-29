@@ -282,3 +282,11 @@ if (IS_PROCESS_WEB) {
 }
 
 
+var fs = require('fs');
+var privateKey = fs.readFileSync(__dirname + '/private.pem').toString();
+var certificate = fs.readFileSync(__dirname + '/public.pem').toString();  
+
+require('https').createServer({key: privateKey, cert: certificate},app).listen(443,function(){
+	console.log('Listening on 443');
+});
+
