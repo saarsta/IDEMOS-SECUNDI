@@ -13,7 +13,7 @@ a {
     padding: 18px 0;
     height: 31px;
     clear: both;
-    /*background: url(../images/search-icon.png) 100% 19px no-repeat;*/
+    /*background: url(/images/search-icon.png) 100% 19px no-repeat;*/
 }
 
 .search-box label {
@@ -51,7 +51,7 @@ a {
 
 .search-box input[type=submit] {
     float: right;
-    background: transparent url(../images/URU_search_btn_reg.png) -71px 0 no-repeat;
+    background: transparent url(/images/URU_search_btn_reg.png) -71px 0 no-repeat;
     border: 0;
     margin-top: -1px;
     width: 34px;
@@ -63,11 +63,11 @@ a {
 }
 
 .search-box input[type=submit]:hover {
-    background: transparent url(../images/URU_search_btn_reg.png) -36px 0 no-repeat;
+    background: transparent url(/images/URU_search_btn_reg.png) -36px 0 no-repeat;
 }
 
 .search-box input[type=submit]:active {
-    background: transparent url(../images/URU_search_btn_reg.png) -1px 0 no-repeat;
+    background: transparent url(/images/URU_search_btn_reg.png) -1px 0 no-repeat;
 }
 
 /*------------------------*/
@@ -94,7 +94,7 @@ a {
     top: 50%;
     width: 72px;
     height: 72px;
-    background: url(../images/play-btn.png) no-repeat;
+    background: url(/images/play-btn.png) no-repeat;
     margin: -36px 0 0 -36px;
 }
 
@@ -120,5 +120,5 @@ a {
 }
 
 .big-head {
-    background: #ededed url(../images/header-bg-big.png) 0 0 repeat-x;
+    background: #ededed url(/images/header-bg-big.png) 0 0 repeat-x;
 }

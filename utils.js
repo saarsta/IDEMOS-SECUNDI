@@ -182,6 +182,16 @@ exports.extend_model = function(name, base_schema, schema, collection,schemaFunc
             arguments = [params];
         return old_find.apply(this, arguments);
     };
+    var old_count = model.count;
+    model.count = function () {
+        var params = arguments.length ? arguments[0] : {};
+        params['_type'] = name;
+        if (arguments.length)
+            arguments[0] = params;
+        else
+            arguments = [params];
+        return old_count.apply(this, arguments);
+    };
     var old_findOne = model.findOne;
     model.findOne = function () {
         var params = arguments.length ? arguments[0] : {};
@@ -195,6 +205,44 @@ exports.extend_model = function(name, base_schema, schema, collection,schemaFunc
     return {model:model, schema:schemaObj};
 };
 
+ exports.revertibleModel = function(schema){
+     return schema;
+     if(SHOW_ONLY_PUBLISHED)
+        return schema;
+     schema.add({_unCommitted:{type:mongoose.Schema.Types.Mixed,editable:false},_preview:{type:Date,editable:true}});
+     schema.post('init',function(doc){
+         doc._orig = _.clone(doc._doc,true);
+         if(doc._preview && new Date() - doc._preview < 1000*20){
+             if(doc._unCommitted){
+                 for(var key in doc._unCommitted)
+                    doc[key] = doc._unCommitted[key];
+             }
+             doc._unCommitted = {};
+         }
+     });
+     schema.methods.preview = function(cbk){
+         var self = this;
+         var modifiedPaths = this.modifiedPaths();
+         self._unCommitted = self._unCommitted || {};
+         modifiedPaths.forEach(function(path){
+             if(path == '_unCommitted')
+                 return;
+             self._unCommitted[path] = self[path];
+             self[path] = self._orig[path];
+         });
+         this._unCommitted = JSON.parse(JSON.stringify(this._unCommitted));
+         if(Object.keys(this._unCommitted).length)
+             this.markModified('_unCommitted');
+         this._preview = new Date();
+         this.save(cbk);
+     }
+     schema.methods.revert = function(cbk){
+         this._unCommitted = null;
+         this._preview = null;
+         this.save(cbk);
+     }
+     return schema;
+ };
  /***
   * Temporary stream that it's pause and resume works and  saved data in memory.
   * Until the request stream of nodejs will be fixed

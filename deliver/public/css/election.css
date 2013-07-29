@@ -37,42 +37,42 @@ ul#display-inline-block-example li p {
 }
 
 li.uru1 {
-    background-image: url(../images/elections/edu.png);
+    background-image: url(/images/elections/edu.png);
 }
 
 li.uru3 {
-    background-image: url(../images/elections/uru2.png);
+    background-image: url(/images/elections/uru2.png);
 }
 
 li.uru5 {
-    background-image: url(../images/elections/uru3.png);
+    background-image: url(/images/elections/uru3.png);
 }
 
 li.uru7 {
-    background-image: url(../images/elections/uru4.png);
+    background-image: url(/images/elections/uru4.png);
 }
 
 li.uru2 {
-    background-image: url(../images/elections/uru5.png);
+    background-image: url(/images/elections/uru5.png);
 }
 
 li.uru4 {
-    background-image: url(../images/elections/uru6.png);
+    background-image: url(/images/elections/uru6.png);
 }
 
 li.uru6 {
-    background-image: url(../images/elections/uru7.png);
+    background-image: url(/images/elections/uru7.png);
 }
 
 li.uru8 {
-    background-image: url(../images/elections/uru8.png);
+    background-image: url(/images/elections/uru8.png);
 }
 
 .checkBox {
     width: 20px;
     height: 21px;
     padding: 0;
-    background: url(../images/elections/v.png) no-repeat 0 0;
+    background: url(/images/elections/v.png) no-repeat 0 0;
     cursor: pointer;
     -webkit-appearance: none;
 }
@@ -107,7 +107,7 @@ select#styledSelect.blueText {
     color: #979795;
     font-size: 14px;
     border: 0;
-    background: url(../images/elections/choose.png) no-repeat right center;
+    background: url(/images/elections/choose.png) no-repeat right center;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
@@ -140,7 +140,7 @@ div.what {
     width: 847px;
     height: 98px;
     margin: 0 auto;
-    background: url(../images/elections/text.png) no-repeat center top;
+    background: url(/images/elections/text.png) no-repeat center top;
 }
 
 div.vote-container {
@@ -240,7 +240,7 @@ div.reg-container .middleone_image {
     left: 0;
     right: 0;
     height: 120px;
-    background: url(../images/elections/o.png) no-repeat center;
+    background: url(/images/elections/o.png) no-repeat center;
 }
 
 div.reg-container .leftone {

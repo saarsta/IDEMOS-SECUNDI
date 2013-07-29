@@ -29,6 +29,19 @@
         });
 
         $('#submit_feedback').click(function() {
+
+            var popupConfig = {};
+            popupConfig.message = "הודעתך נשלחה. תודה";
+            popupConfig.onOkCilcked = function(e){
+                e.preventDefault();
+                clicked = 'ok';
+                $.colorbox.close();
+                $('.lower-segment').slideToggle('slow');
+                $('#feedback-form textarea').val('');
+            },
+            popupProvider.showOkPopup(popupConfig);
+
+
             var mail_config = {};
             mail_config.to = "movilim@uru.org.il";
             mail_config.subject = "feedback";
@@ -37,7 +50,7 @@
                 if(err){
                     console.log(err);
                 }else{
-                    $('.lower-segment').slideToggle('slow');
+                  //  $('.lower-segment').slideToggle('slow');
                 }
             });
             return false;

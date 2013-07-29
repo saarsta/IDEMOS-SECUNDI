@@ -2755,7 +2755,7 @@ input.button_submit_comment_no_text{
 .slide-box .slider-numbers span {
     float: left;
     padding-top: 16px;
-    background: url(../images/slider-divider.png) 50% 0 no-repeat;
+    background: url(/images/slider-divider.png) 50% 0 no-repeat;
     color: #757d7e;
     font-size:11px;;
     width: 23px;
@@ -2911,7 +2911,7 @@ input.button_submit_comment_no_text{
 }
 
 .tooltip_1{
-    background:url(../images/bg_tooltip_1.png) no-repeat 0 0;
+    background:url(/images/bg_tooltip_1.png) no-repeat 0 0;
     text-align:center;
     line-height:36px;
     font-size:12px;
@@ -2977,7 +2977,7 @@ input.button_submit_comment_no_text{
 /*
 
 .tooltip_2 input.button_add_suggestion{
-    background: url("../images/URU_icons_new_sprite.png") no-repeat scroll 515% -17% #F4F4F4;
+    background: url("/images/URU_icons_new_sprite.png") no-repeat scroll 515% -17% #F4F4F4;
     line-height:28px;
     width:89px;
     height:29px;
@@ -3013,7 +3013,7 @@ input.button_submit_comment_no_text{
 
 
 .tooltip_2 .button_add_suggestion:before{
-    background: url("../images/URU_icons_new_sprite.png") no-repeat scroll  top left transparent;
+    background: url("/images/URU_icons_new_sprite.png") no-repeat scroll  top left transparent;
     width: 20px;
     height: 17px;
     position: absolute;
@@ -3034,20 +3034,20 @@ input.button_submit_comment_no_text{
 }
 
 /*.tooltip_2 input#pop_suggest_bt_change.button_add_suggestion{
-    background:url(../images/URU_icons_new_sprite.png) no-repeat 0 0;
+    background:url(/images/URU_icons_new_sprite.png) no-repeat 0 0;
 }
 
 .tooltip_2 input#pop_suggest_bt_delete.button_add_suggestion{
-    background:url(../images/URU_icons_new_sprite.png) no-repeat 0 0;
+    background:url(/images/URU_icons_new_sprite.png) no-repeat 0 0;
 }
 
 .tooltip_2 input#pop_suggest_bt_add.button_add_suggestion{
-    background:url(../images/URU_icons_new_sprite.png) no-repeat 0 0;
+    background:url(/images/URU_icons_new_sprite.png) no-repeat 0 0;
 }*/
 
 
 .tooltip_2 a.button_respond{
-   /* background:url(../images/button_respond_small.png) no-repeat 0 0;     */
+   /* background:url(/images/button_respond_small.png) no-repeat 0 0;     */
     line-height:28px;
     font-size:12px;
     /*width:46px;*/
@@ -3069,7 +3069,7 @@ input.button_submit_comment_no_text{
     width: 5px;
     height:29px;
 
-    background: url("../images/button_respond_small_left.png") left center no-repeat;
+    background: url("/images/button_respond_small_left.png") left center no-repeat;
 
 }
 
@@ -3077,14 +3077,14 @@ input.button_submit_comment_no_text{
     float: left;
     width: 23px;
     height:29px;
-    background: url("../images/button_respond_small_right.png") left center no-repeat;
+    background: url("/images/button_respond_small_right.png") left center no-repeat;
 }
 
 .tooltip_2 a.button_respond .middle {
     padding: 2px 3px 0 3px;
     float: left;
     height:29px;
-    background: url("../images/button_respond_small_center.png") repeat-x;
+    background: url("/images/button_respond_small_center.png") repeat-x;
 }
 
 
@@ -3157,7 +3157,7 @@ input.button_submit_comment_no_text{
     height: 74px;
     left: 0;
     top: 0;
-    background: url(../images/write-comment-img-box.png) no-repeat;
+    background: url(/images/write-comment-img-box.png) no-repeat;
 }
 
 .write-comment .text-box .left p {
@@ -3176,7 +3176,7 @@ input.button_submit_comment_no_text{
 }
 
 .write-comment .text-box .left textarea {
-    background: #fefced url(../images/textarea-bg-big.png) 0 0 repeat;
+    background: #fefced url(/images/textarea-bg-big.png) 0 0 repeat;
     border: 1px solid #e1e1e1;
     margin-bottom: 0;
     display: block;
@@ -3214,7 +3214,7 @@ input.button_submit_comment_no_text{
 .write-comment .text-box .user-right .proxy {
     padding-right: 20px;
     margin-bottom: 6px;
-    background: url(../images/proxy-icon.png) 100% 50% no-repeat;
+    background: url(/images/proxy-icon.png) 100% 50% no-repeat;
 }
 
 .write-comment .text-box .user-right .proxy span {
@@ -3230,7 +3230,7 @@ input.button_submit_comment_no_text{
 .write-comment .text-box .user-right .respect {
     padding-right: 20px;
     margin-bottom: 6px;
-    background: url(../images/respect-icon.png) 34px 50% no-repeat;
+    background: url(/images/respect-icon.png) 34px 50% no-repeat;
 }
 
 .write-comment .text-box .user-right .respect span {
@@ -3245,7 +3245,7 @@ input.button_submit_comment_no_text{
 
 .write-comment .grey-btn {
     float: left;
-    background: #b7b6b6 url(../images/search-submit.png) 0 0 repeat-x;
+    background: #b7b6b6 url(/images/search-submit.png) 0 0 repeat-x;
     height: 29px;
     color: #ffffff;
     font: normal 22px/29px 'AdumaFOTRegular';
@@ -3262,12 +3262,12 @@ input.button_submit_comment_no_text{
 .write-comment .grey-btn span {
     padding-right: 16px;
     margin-right: -16px;
-    background: url(../images/close-icon.png) 100% 50% no-repeat;
+    background: url(/images/close-icon.png) 100% 50% no-repeat;
 }
 
 .write-comment .green-btn {
     float: left;
-    background: #2fd43b url(../images/green-btn-border.png) 0 0 repeat-x;
+    background: #2fd43b url(/images/green-btn-border.png) 0 0 repeat-x;
     height: 29px;
     color: #ffffff;
     font: normal 18px/32px 'AdumaFOTRegular';
@@ -3298,7 +3298,7 @@ input.button_submit_comment_no_text{
 }
 
 #add_comment_wrapper .img-box span {
-    background: url(../images/user-fillter-small-white.png) no-repeat;
+    background: url(/images/user-fillter-small-white.png) no-repeat;
     position: absolute;
     right: 0;
     top: 0;
@@ -3325,7 +3325,7 @@ input.button_submit_comment_no_text{
 }
 
 #suggestions_wrapper .img-box span, #approved_suggestions_wrapper .img-box span{
-    background: url(../images/user-fillter-small-white.png) no-repeat;
+    background: url(/images/user-fillter-small-white.png) no-repeat;
     position: absolute;
     top: 0;
     right: 0;
@@ -3334,7 +3334,7 @@ input.button_submit_comment_no_text{
 }
 
 #suggestions_wrapper .comment .img-box span {
-    background: url(../images/user-fillter-small-white.png) no-repeat;
+    background: url(/images/user-fillter-small-white.png) no-repeat;
     position: absolute;
     right: 15px;
     top: 0;
@@ -3343,15 +3343,15 @@ input.button_submit_comment_no_text{
 }
 
 #suggestions_wrapper .suggestion_wrapper  .comment.even .img-box span {
-    background: url(../images/user-fillter-small-cofee.png) no-repeat;
+    background: url(/images/user-fillter-small-cofee.png) no-repeat;
 }
 
 #suggestions_wrapper .suggestion_wrapper  .comment.odd .img-box span {
-    background: url(../images/user-fillter-small-grey.png) no-repeat;
+    background: url(/images/user-fillter-small-grey.png) no-repeat;
 }
 
 #suggestions_wrapper .suggestion_wrapper .share {
-    background: url(../images/placeholder_fb.png) 0 100% no-repeat;
+    background: url(/images/placeholder_fb.png) 0 100% no-repeat;
     position: absolute;
     width: 80px;
     height: 20px;
@@ -3369,7 +3369,7 @@ input.button_submit_comment_no_text{
 
 #comments_wrapper .img-box span,
 #special_post_wrapper .img-box span {
-    background: url(../images/user-fillter-small-white.png) no-repeat;
+    background: url(/images/user-fillter-small-white.png) no-repeat;
     position: absolute;
     right: 0;
     top: 0;
@@ -3378,11 +3378,11 @@ input.button_submit_comment_no_text{
 }
 
 #comments_wrapper .regular_comment.even .img-box span {
-    background: url(../images/user-fillter-small-cofee.png) no-repeat;
+    background: url(/images/user-fillter-small-cofee.png) no-repeat;
 }
 
 #comments_wrapper .regular_comment.odd .img-box span {
-    background: url(../images/user-fillter-small-grey.png) no-repeat;
+    background: url(/images/user-fillter-small-grey.png) no-repeat;
 }
 
 #content_left_sidebar .segment.links,
@@ -3604,7 +3604,7 @@ input.button_submit_comment_no_text{
 }
 
 .popup-window .arrow {
-    background: url(../images/popup-window-arrow.png) no-repeat;
+    background: url(/images/popup-window-arrow.png) no-repeat;
     width: 16px;
     height: 13px;
     position: absolute;
@@ -3616,7 +3616,7 @@ input.button_submit_comment_no_text{
 .popup-window a.close {
     width: 28px;
     height: 28px;
-    background: url(../images/delete-app.png) no-repeat;
+    background: url(/images/delete-app.png) no-repeat;
     position: absolute;
     left: -13px;
     top: -13px;
@@ -3629,7 +3629,7 @@ input.button_submit_comment_no_text{
     border-radius: 2px;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
-    background: #2fd43b url(../images/green-btn-border.png) 0 0 repeat-x;
+    background: #2fd43b url(/images/green-btn-border.png) 0 0 repeat-x;
     width: 45px;
     height: 17px;
     color: #fff;
@@ -3644,7 +3644,7 @@ input.button_submit_comment_no_text{
     border-radius: 2px;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
-    background: #b7b6b6 url(../images/search-submit.png) 0 0 repeat-x;
+    background: #b7b6b6 url(/images/search-submit.png) 0 0 repeat-x;
     width: 105px;
     height: 17px;
     color: #fff;

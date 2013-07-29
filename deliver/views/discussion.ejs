@@ -83,9 +83,9 @@ var error_message = error_message || '';
                         <hr />
                         <div class="tags">
                             <span class="tags_title">תגיות:</span>
-                            <% for (var c = 0; c <discussion. tags.length; c++) { %>
+                            <% if(discussion.tags) { for (var c = 0; c <discussion.tags.length; c++) { %>
                                 <span class="tag"><a href="?tag_name=<%=discussion.tags[c]%>"><%=discussion. tags[c] %></a></span>
-                            <% }%>
+                            <% }}%>
                         </div>
                         <hr />
                         <div class="segment_bottom">
@@ -608,6 +608,7 @@ $(document).ready(function () {
 
             db_functions.addSuggestionToDiscussion(discussion_id, vision_text_history_count, [part], explanation, user_info, function doWork(err, data) {
                 if (!err) {
+                    activateMailNotifications();
                     // vision was updated while composing suggestion
                     if (data.cancel === true){
                         updateVisionAndSuggestionText(data);
@@ -725,6 +726,7 @@ $(document).ready(function () {
                 db_functions.addDiscussionGrade(discussion_id, my_discussion_grade, grade_id, user_info, function (err, data) {
 
                     if (!err) {
+                        activateMailNotifications();
                         if(data == 'canceled'){
                             $(".slider").slider('value',my_prev_grade);
                         } else {
@@ -746,6 +748,7 @@ $(document).ready(function () {
     });
 
     $("#submit_post").on('click', function (e) {
+        activateMailNotifications();
         e.preventDefault();
         var $this = $(this);
 
@@ -863,10 +866,12 @@ $(document).ready(function () {
     }
 
     $('#comments_wrapper').on('click', '.good', function () {
+        activateMailNotifications();
         vote.apply($(this),['add']);
     });
 
     $('#comments_wrapper').on('click', ".bad", function () {
+        activateMailNotifications();
         vote.apply($(this),['remove']);
     });
 
@@ -1229,6 +1234,7 @@ $(document).ready(function () {
     $('#suggestions_wrapper').on('keyup', '.add_comment textarea', function(e){
         if(e.keyCode == 13)
         {
+            activateMailNotifications();
             var self = $(this);
             var text = $(this).val();
             if (text.trim() == '') return false;
@@ -1374,7 +1380,7 @@ $(document).ready(function () {
 
 	 function loadSpecialPosts(){
         db_functions.getSpecialPostsByDiscussion(discussion_id, function(err, data){
-            if (!err  && data.length != 0){
+            if (!err  && data && data.objects && data.objects.length != 0){
                 dust.renderArray('discussion_special_comment', data.objects, null, function (err, out) {
                     $('#special_post_wrapper').prepend(out);
                     $('#special_post_wrapper .content').dotdotdot({});
@@ -1648,6 +1654,7 @@ $(document).ready(function () {
                          //   if (flag === false){
                                 $('#discussion_content').hide();
                                 $('#discussion_content_textarea').show();
+                                $('#discussion_content_textarea').css('height',$("#discussion_content_textarea")[0].scrollHeight);
                                 $('.read_less').click();
                                 $('.read_more').click();
                         //    }
@@ -1848,7 +1855,7 @@ $(document).ready(function () {
 
 
     $(".suggestion_bottom_segment input").live("click", function (e) {
-
+        activateMailNotifications();
         if (!my_id){
             //open popup window
             popupProvider.showLoginPopup({}, function(err){
@@ -1962,6 +1969,7 @@ $(document).ready(function () {
                             }
                             db_functions.addSuggestionGrade(suggestion_id, discussion_id, rating, suggest_grade_id, user_info, function (err, data) {
                                 if (!err) {
+                                    activateMailNotifications();
                                     if(data == 'canceled'){
                                         $(".suggest_slider_" + suggestion_id).slider('value',my_prev_grade);
                                     } else {
@@ -2367,6 +2375,13 @@ $(document).ready(function () {
         event.preventDefault();
         return false;
     });
+
+    function  activateMailNotifications(){
+        db_functions.activateMailNotification(my_id,function(err,data){
+
+        })
+    }
+
 });
 
 </script>

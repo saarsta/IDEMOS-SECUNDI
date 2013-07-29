@@ -5,8 +5,8 @@ var models = require('../models')
 module.exports = AdminForm.extend({
     init:function(request,options,model) {
         this._super(request,options,model);
-        this.static['js'].push('/js/admin.js');
-        this.static['css'].push('/css/admin.css');
+        this.static['js'].push('../js/admin.js');
+        this.static['css'].push('../css/admin.css');
     },
     get_fields: function() {
         this._super();

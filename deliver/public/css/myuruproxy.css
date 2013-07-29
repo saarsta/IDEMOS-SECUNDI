@@ -1,7 +1,7 @@
 .hisuru-popup a
 {
     display: block;
-    background:#757d7e url(../images/search-submit.png) 0 0 repeat-x;
+    background:#757d7e url(/images/search-submit.png) 0 0 repeat-x;
     border: 1px solid #2e3030;
     border-radius: 2px;
     width: 40px;

@@ -1,21 +1,29 @@
 'use strict';
+
+require('./lib/memory');
+
 var express = require('express');
+var util = require('util');
+var utils = require('./utils');
 var mongoose = require('mongoose');
 var async = require('async');
-var util = require('util');
 var domain = require('domain');
 var auth = require("connect-auth");
 var formage_admin = require('formage-admin');
 formage_admin.forms.loadTypes(mongoose);
 
+
+
+var app = module.exports = express();
+app.set('show_only_published', process.env.SHOW_ONLY_PUBLISHED == '1');
+utils.setShowOnlyPublished(app.settings.show_only_published);
+
 var logout_handler = require("connect-auth/lib/events").redirectOnLogout("/");
-var utils = require('./utils');
-var models = require('./models');
 var account = require('./deliver/routes/account');
 var fb_bot_middleware = require('./deliver/routes/fb_bot/middleware');
 
 // ########### Static parameters ###########
-var IS_ADMIN = ~(process.env['NODE_ENV'] || []).indexOf('admin');
+var IS_ADMIN = /admin|staging/.test(process.env['NODE_ENV'] || '');
 var DB_URL = process.env['MONGOLAB_URI'] || 'mongodb://localhost/uru';
 var ROOT_PATH = process.env.ROOT_PATH || 'http://dev.empeeric.com';
 var IS_PROCESS_CRON = (process.argv[2] === 'cron');
@@ -44,6 +52,7 @@ var auth_middleware = auth({
 });
 // ########### Static parameters ###########
 
+
 // Run some compilations
 require('./tools/compile_templates');
 require('./deliver/tools/compile_dust_templates');
@@ -64,7 +73,7 @@ if (!mongoose.connection.host) {
 
 
 // ######### settings #########
-var app = module.exports = express();
+
 app.settings['x-powered-by'] = 'Empeeric';
 app.set('views', __dirname + '/deliver/views');
 app.set('public_folder', __dirname + '/deliver/public');
@@ -74,9 +83,8 @@ app.set('facebook_secret', fb_auth_params.appSecret);
 app.set('facebook_app_name', fb_auth_params.appName);
 app.set('facebook_pages_admin_user', "uri@uru.org.il");
 app.set('facebook_pages_admin_pass', "uruuruuru");
-app.set('show_only_published', process.env.SHOW_ONLY_PUBLISHED == '1');
 app.set('sendgrid_user', process.env.SENDGRID_USER || 'app2952775@heroku.com');
-app.set('system_email', process.env.SYSTEM_EMAIL || 'info@uru.org.il');
+app.set('system_email', process.env.SYSTEM_EMAIL || 'admin@uru.org.il');
 app.set('sendgrid_key',process.env.SENDGRID_KEY || 'a0oui08x');
 app.set('root_path', ROOT_PATH);
 app.set('url2png_api_key', process.env.url2png_api_key || 'P503113E58ED4A');
@@ -85,8 +93,9 @@ app.set('send_mails', true);
 app.set('view engine', 'jade');
 app.set('view options', { layout: false });
 formage_admin.forms.setAmazonCredentials(s3_creds);
+
+var models = require('./models');
 models.setDefaultPublish(app.settings.show_only_published);
-utils.setShowOnlyPublished(app.settings.show_only_published);
 // ######### settings #########
 
 
@@ -97,7 +106,12 @@ process.on('uncaughtException', function(err) {
     console.error(err);
     console.error(err.stack);
 });
+var proxy = require('./proxy');
 app.use(function (req, res, next) {
+    if(req.headers['host'].indexOf('test.uru.org.il') > -1){
+        proxy(req,res);
+        return;
+    }
     var d = domain.create();
     d.add(req);
     d.add(res);
@@ -118,6 +132,7 @@ app.use(function (req, res, next) {
 
 // ######### general middleware #########
 formage_admin.serve_static(app, express);
+app.use(express.compress());
 app.use(express.static(app.settings.public_folder));
 app.use(express.errorHandler());
 app.use(express.bodyParser());
@@ -143,7 +158,6 @@ app.use(auth_middleware);
 app.use(account.auth_middleware);
 app.use(account.populate_user);
 // ######### specific middleware #########
-
 
 
 // ######### locals #########
@@ -181,9 +195,10 @@ app.locals({
     }
 });
 
-/*app.locals({
+
+app.locals({
     writeHead: function(name) {
-        var isDev = false; app.settings.env == 'development' || app.settings.env == 'staging';
+        var isDev = app.settings.env == 'development' || app.settings.env == 'staging';
         function headFromSrc(src, type) {
             switch (type) {
                 case 'js':
@@ -202,12 +217,11 @@ app.locals({
                     return headFromSrc(src, type);
                 }).join('\n');
         else {
-            var final = conf.final || ( conf.min === false ? '/dist/' + type + '/' + conf.name + '.' + type : '/dist/' + type + '/' + conf.name + '.min.' + type);
-//            return headFromSrc(final, type);
-            return  '<script src="deliver/public/dist/js/built.min.js" type="text/javascript"></script>';
+            var final = conf.final || ( conf.min === false || type == 'css' ? '/dist/' + type + '/' + conf.name + '.' + type : '/dist/' + type + '/' + conf.name + '.min.' + type);
+            return headFromSrc(final, type);
         }
     }
-});*/
+});
 // ######### locals #########
 
 
@@ -221,7 +235,7 @@ app.configure('development', function(){
 if (IS_ADMIN) {
     require('./admin')(app);
 }
-if (!IS_ADMIN && IS_PROCESS_WEB) {
+if (IS_PROCESS_WEB) {
     require('./api')(app);
     require('./og/config').load(app);
     require('./lib/templates').load(app);
@@ -253,6 +267,7 @@ if (IS_PROCESS_WEB) {
         }
     ], function (err, gamification) {
         app.set('gamification_tokens', gamification);
+        console.log('listening on port ',app.get('port'));
         var server = app.listen(app.get('port'), function (err) {
             if (err) {
                 console.error(err.stack || err);
@@ -265,4 +280,5 @@ if (IS_PROCESS_WEB) {
         });
     });
 }
+
 

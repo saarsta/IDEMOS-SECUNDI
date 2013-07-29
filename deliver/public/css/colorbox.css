@@ -25,11 +25,11 @@
         .cboxIframe{background:#000;}
         #cboxError{padding:50px; border:1px solid #ccc;}
         #cboxLoadedContent{}
-        #cboxLoadingGraphic{background:url(../images/loading.gif) no-repeat center center;}
+        #cboxLoadingGraphic{background:url(/images/loading.gif) no-repeat center center;}
         #cboxLoadingOverlay{background:#000;}
         #cboxTitle{position:absolute; top:-22px; left:0; color:#000;}
         #cboxCurrent{position:absolute; top:-22px; right:205px; text-indent:-9999px;}
-        #cboxSlideshow, #cboxPrevious, #cboxNext, {text-indent:-9999px; width:20px; height:20px; position:absolute; top:-20px; background:url(../images/controls.png) no-repeat 0 0;}
+        #cboxSlideshow, #cboxPrevious, #cboxNext, {text-indent:-9999px; width:20px; height:20px; position:absolute; top:-20px; background:url(/images/controls.png) no-repeat 0 0;}
         #cboxPrevious{background-position:0px 0px; right:44px;}
         #cboxPrevious:hover{background-position:0px -25px;}
         #cboxNext{background-position:-25px 0px; right:22px;}
@@ -38,7 +38,7 @@
             {
                 width: 28px;
                 height: 28px;
-                background: url(../images/delete-app.png) no-repeat;
+                background: url(/images/delete-app.png) no-repeat;
                 position: absolute;
                 z-index: 100;
                 left: 0;

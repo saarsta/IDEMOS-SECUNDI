@@ -16,7 +16,7 @@ var Schemas = exports.Schemas = {
         ]
     },
 
-    Headline:new Schema({
+    Headline:utils.revertibleModel(new Schema({
         title:{type:String, required:true},
         tooltip: String,
         type: {type:String, "enum":["from_the_news_paper", "daily_survey", "conclusion"]},
@@ -29,10 +29,11 @@ var Schemas = exports.Schemas = {
         is_visible:{type:Boolean, 'default':true},
         creation_date:{type:Date, 'default':Date.now, editable:false},
         gui_order:{type:Number, 'default':9999999, editable:false},
-        is_hidden:{type:Boolean, 'default':true}
-    }, {strict:true}),
+        is_hidden:{type:Boolean, 'default':true},
+        _preview:{type:Schema.Types.Mixed,link:'/',editable:false}
+    }, {strict:true})),
 
-    SuccessStory:new Schema({
+    SuccessStory:utils.revertibleModel(new Schema({
         title:{type:String, required:true},
         tooltip:String,
         text_field:{type:Schema.Types.Html},
@@ -45,11 +46,12 @@ var Schemas = exports.Schemas = {
         is_visible:{type:Boolean, 'default':true},
         creation_date:{type:Date, 'default':Date.now, editable:false},
         gui_order:{type:Number, 'default':9999999, editable:false},
-        is_hidden:{type:Boolean, 'default':true}
-    }, {strict:true}),
+        is_hidden:{type:Boolean, 'default':true},
+        _preview:{type:Schema.Types.Mixed,link:'/',editable:false}
+    }, {strict:true})),
 
     //cycle updates
-    Update:new Schema({
+    Update:utils.revertibleModel(new Schema({
         title:{type:String, required:true},
         tooltip:String,
         text_field_preview:{type:Schema.Types.Html},
@@ -63,7 +65,7 @@ var Schemas = exports.Schemas = {
 
         gui_order:{type:Number, 'default':9999999, editable:false},
         is_hidden:{type:Boolean, 'default':true}
-    }, {strict:true}),
+    }, {strict:true})),
 
 //    //cycle opinion_shapers
 //    OpinionShaper: new Schema({
@@ -72,21 +74,7 @@ var Schemas = exports.Schemas = {
 //        text: String
 //    }, {strict: true}),
 
-    Kilkul:{
-        user:{type:ObjectId, ref:'User',query:common.FIND_USER_QUERY},
-        user_name:{type:String, editable:false},
-        title:{type:String},
-        tooltip:String,
-        text_field:{type:Schema.Types.Text},
-        text_field_preview:{type:Schema.Types.Html},
-        image_field:Schema.Types.File,
-        tags:{type:[String], index:true},
-        is_visible:{type:Boolean, 'default':true},
-        me_too_counter:{type:Number, 'default':0},
-        creation_date:{type:Date, 'default':Date.now, editable:false},
-        gui_order:{type:Number, 'default':9999999, editable:false},
-        is_hidden:{type:Boolean, 'default':true}
-    },
+
 
     Vote:{
         user_id:{type:ObjectId, ref:'User',query:common.FIND_USER_QUERY, index:true, required:true},
@@ -282,42 +270,47 @@ var Schemas = exports.Schemas = {
         SCALE_PARAM:{type:Number, 'default':1.6}
     },
 
-    AboutUruText:{
+    AboutUruText:utils.revertibleModel(new Schema({
         title:{type:String, required:true},
         text_field:{type:Schema.Types.Html, required:true},
-        is_hidden:{type:Boolean, 'default':true}
-    },
+        is_hidden:{type:Boolean, 'default':true},
+        _preview:{type:Schema.Types.Mixed,link:'/about',editable:false}
+    },{strict:true})),
 
-    AboutUruItem:{
+    AboutUruItem:utils.revertibleModel(new Schema({
         img_field:{ type:Schema.Types.File, required:true},
         img_text:String,
         text_field:String,
-        is_hidden:{type:Boolean, 'default':true}
-    },
+        is_hidden:{type:Boolean, 'default':true},
+        _preview:{type:Schema.Types.Mixed,link:'/about',editable:false}
+    },{strict:true})),
 
-    Team:{
+    Team:utils.revertibleModel(new Schema({
         name:String,
         duty:String,
         text_field:{type:Schema.Types.Html, required:true},
         img_field:{type:Schema.Types.File, required:true},
-        is_hidden:{type:Boolean, 'default':true}
-    },
+        is_hidden:{type:Boolean, 'default':true},
+        _preview:{type:Schema.Types.Mixed,link:'/team',editable:false}
+    },{strict:true})),
 
-    Founder:{
+    Founder:utils.revertibleModel(new Schema({
         name:String,
         first_name:String,
         last_name:String,
         duty:String,
         text_field:{type:Schema.Types.Html, required:true},
         img_field:{type:Schema.Types.File, required:true},
-        is_hidden:{type:Boolean, 'default':true}
-    },
+        is_hidden:{type:Boolean, 'default':true},
+        _preview:{type:Schema.Types.Mixed,link:'/founder',editable:false}
+    },{strict:true})),
 
-    Qa:{
+    Qa:utils.revertibleModel(new Schema({
         title:{type:String, required:true},
         text_field:{type:Schema.Types.Text},
-        is_hidden:{type:Boolean, 'default':true}
-    },
+        is_hidden:{type:Boolean, 'default':true},
+        _preview:{type:Schema.Types.Mixed,link:'/page/FAQ',editable:false}
+    },{strict:true})),
 
     ElectionsText:{
         title:{type:String, required:true},
@@ -371,7 +364,7 @@ var Schemas = exports.Schemas = {
         cycle:      {type:ObjectId, ref:'Cycle'     , index:true}  ,
         text_field: {type:Schema.Types.Html, required:true},
         creation_date:{type:Date, 'default':Date.now},
-        system_message:{type:Schema.Types.Html},
+        //system_message:{type:Schema.Types.Html},
         tags:[String],
         view_counter: {type:Number, 'default':0},
         is_visible:{type:Boolean, 'default':true},
@@ -493,6 +486,8 @@ _.each(schemas_with_tooltip, function (schema, index) {
     };
 });
 
+
+
 var Models = module.exports = {
     User:mongoose.model("User", require('./user')),
     InformationItem:mongoose.model('InformationItem', require('./information_item')),
@@ -506,7 +501,7 @@ var Models = module.exports = {
     SuccessStory:mongoose.model('SuccessStory', Schemas.SuccessStory),
     Update:mongoose.model('Update', Schemas.Update),
 //    OpinionShaper: mongoose.model('OpinionShaper', Schemas.OpinionShaper),
-    Kilkul:mongoose.model('Kilkul', new Schema(Schemas.Kilkul, {strict:true})),
+    Kilkul:mongoose.model('Kilkul',require('./kilkul')),
     DiscussionHistory:mongoose.model('DiscussionHistory', new Schema(Schemas.DiscussionHistory, {strict:true})),
 
     Subject:mongoose.model('Subject', require('./subject')),
@@ -516,7 +511,7 @@ var Models = module.exports = {
     PostAction:require('./post_action'),
     Suggestion:require('./suggestion'),
     ActionSuggestion:require('./action_suggestion'),
-    PostOrSuggestion:mongoose.model('PostOrSuggestion', new Schema(require('./post_or_suggestion'), {strict:true}), 'posts'),
+    PostOrSuggestion:mongoose.model('PostOrSuggestion',require('./post_or_suggestion').Schema, 'posts'),
     Vote:mongoose.model('Vote', new Schema(Schemas.Vote, {strict:true})),
     VoteArticlePost:mongoose.model('VoteArticlePost', require('./vote_article_post')),
     VoteActionPost:mongoose.model('VoteActionPost', require('./vote_action_post')),
@@ -534,12 +529,12 @@ var Models = module.exports = {
     FBRequest:mongoose.model('FBRequest', require('./fb_request')),
     ResourceObligation:mongoose.model('ResourceObligation', new Schema(Schemas.ResourceObligation, {strict:true})),
     Notification:mongoose.model('Notification', new Schema(Schemas.Notification, {strict:true})),
-    AboutUruText:mongoose.model('AboutUruText', new Schema(Schemas.AboutUruText, {strict:true})),
-    AboutUruItem:mongoose.model('AboutUruItem', new Schema(Schemas.AboutUruItem, {strict:true})),
-    Team:mongoose.model('Team', new Schema(Schemas.Team, {strict:true})),
-    Founder:mongoose.model('Founder', new Schema(Schemas.Founder, {strict:true})),
+    AboutUruText:mongoose.model('AboutUruText', Schemas.AboutUruText),
+    AboutUruItem:mongoose.model('AboutUruItem', Schemas.AboutUruItem),
+    Team:mongoose.model('Team', Schemas.Team),
+    Founder:mongoose.model('Founder', Schemas.Founder),
     Test:mongoose.model('Test', new Schema(Schemas.Test, {strict:true})),
-    Qa:mongoose.model('Qa', new Schema(Schemas.Qa, {strict:true})),
+    Qa:mongoose.model('Qa', Schemas.Qa),
     ElectionsText:mongoose.model('ElectionsText', new Schema(Schemas.ElectionsText, {strict:true})),
     ElectionsItem:mongoose.model('ElectionsItem', new Schema(Schemas.ElectionsItem, {strict:true})),
     ThresholdCalcVariables:utils.config_model('ThresholdCalcVariables', Schemas.ThresholdCalcVariables),

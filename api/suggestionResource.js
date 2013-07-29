@@ -155,7 +155,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                         },
 
                         function (discussion_obj, cbk) {
-                            discussion_participants_count = discussion_obj.users.length;
+                            discussion_participants_count = discussion_obj.users ? discussion_obj.users.length : 0;
                             discussion_threshold = discussion_obj.threshold_for_accepting_change_suggestions;
                             discussion_text = discussion_obj.text_field;
 

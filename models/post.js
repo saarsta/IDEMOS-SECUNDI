@@ -20,9 +20,9 @@ var Post = {
     })]
 };
 
-var extension = utils.extend_model('Post', require('./post_or_suggestion'), Post, 'posts',function(schema) {
+var extension = utils.extend_model('Post', require('./post_or_suggestion').PostOrSuggestion, Post, 'posts',function(schema) {
     schema.methods.toString = function(){
-        return this.text;
+        return this.text || '';
     };
 });
 

@@ -35,7 +35,7 @@ var Comment = new Schema({
     replies: {type:[Reply], editable:false}
 });
 
-var Article = module.exports = new Schema({
+var Article = module.exports = utils.revertibleModel(new Schema({
     user_id:{type:ObjectId, ref:'User', index:true, required:true, limit: 1000, query:common.FIND_USER_QUERY},
     first_name: {type:String, editable:false},
     last_name: {type:String, editable:false},
@@ -51,11 +51,15 @@ var Article = module.exports = new Schema({
     time: {type: Date, 'default': Date.now, editable:false},
     popularity_counter: {type: Number, 'default': 0},
 //    comments : [Comment],
-    is_hidden:{type:Boolean,'default':true}
-} ,{strict: true});
+    is_hidden:{type:Boolean,'default':true},
+    _preview:{type:Schema.Types.Mixed,link:'/blogs/articles/{_id}',editable:false}
+} ,{strict: true}));
 
 Article.methods.getLink = function() {
     return "http://uru.org.il/blogs/article/" + this.id;
+};
+Article.methods.toString = function() {
+    return this.title;
 };
 
 Article.pre('save',function(next)

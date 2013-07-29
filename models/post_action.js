@@ -18,7 +18,7 @@ var PostAction = {
     ref_to_post_id:{type:Schema.ObjectId, ref:'Post', index:true}
 }
 
-var extension = utils.extend_model('PostAction', require('./post_or_suggestion'), PostAction, null, function(schema) {
+var extension = utils.extend_model('PostAction', require('./post_or_suggestion').PostOrSuggestion, PostAction, null, function(schema) {
     schema.methods.toString = function(){
         return this.text;
     };

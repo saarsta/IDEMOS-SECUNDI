@@ -208,14 +208,7 @@
         return false;
     });
 
-    $('.mail-notifications-cancel').on('click', function(){
-        var no_mail_notifications = user.no_mail_notifications ? false : true;
-        db_functions.startStopGettingEmailNotifications(user._id, no_mail_notifications, function(err, data){
-            if(!err)
-                $('.mail-notifications-cancel').text(user.no_mail_notifications ?  "לחץ כאן כדי לקבל עדכונים במייל": "לחץ כאן כדי לא לקבל עדכונים במייל");
 
-        })
-    })
     //$('#social-popup-mail').attr("href", "mailto:?subject=" + mail_subject + "&body=" + mail_body);
     $('#social-popup-mail').on('click', function () {
         $("#cloudsponge").slideToggle();

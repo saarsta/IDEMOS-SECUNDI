@@ -436,33 +436,33 @@
 
 
         function loadPosts() {
-             var action_title = "<%= action.title%>"
-            var selectedOption = $("#sorting_select").val();
-            var discussion_img_field_preview = "<%= action.image_field ? action.image_field.url ||'' : '' %>";
-            db_functions.getSortedPostByAction(action_id, selectedOption,current_offset, function (err, data) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    current_offset += data.objects.length;
-
-                    $.each(data.objects, function (index, post) {
-                        post.title = action_title;
-                        post.image_field_preview = discussion_img_field_preview;
-                    });
-
-                    renderComments(data.objects);
-
-                    if(data.meta.total_count > current_offset )
-                        $('.more_comments').show();
-                    else
-                        $('.more_comments').hide();
-                    postsNumber = data.meta.total_count;
-                    setCommentNumber(postsNumber);
-
-                    if(typeof(FB) != 'undefined')
-                        FB.XFBML.parse();
-                }
-            })
+//            var action_title = "<%= action.title%>"
+//            var selectedOption = $("#sorting_select").val();
+//            var discussion_img_field_preview = "<%= action.image_field ? action.image_field.url ||'' : '' %>";
+//            db_functions.getSortedPostByAction(action_id, selectedOption,current_offset,20, function (err, data) {
+//                if (err) {
+//                    console.log(err);
+//                } else {
+//                    current_offset += data.objects.length;
+//
+//                    $.each(data.objects, function (index, post) {
+//                        post.title = action_title;
+//                        post.image_field_preview = discussion_img_field_preview;
+//                    });
+//
+//                    renderComments(data.objects);
+//
+//                    if(data.meta.total_count > current_offset )
+//                        $('.more_comments').show();
+//                    else
+//                        $('.more_comments').hide();
+//                    postsNumber = data.meta.total_count;
+//                    setCommentNumber(postsNumber);
+//
+//                    if(typeof(FB) != 'undefined')
+//                        FB.XFBML.parse();
+//                }
+//            })
         };
         $('.more_comments').click(function() {
             loadPosts();

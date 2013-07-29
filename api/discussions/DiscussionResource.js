@@ -132,14 +132,15 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
         }
 
         this._super(req, filters, sorts, limit, offset, function (err, results) {
+	    if(err) return callback(err);	   
 
             var user_discussions;
 
             if (req.user)
                 user_discussions = req.user.discussions;
 
-            _.each(results.objects, function (discussion) {
-                discussion.participants_count = discussion.users.length;
+            _.each(results.objects || [], function (discussion) {
+                discussion.participants_count = discussion.users ? discussion.users.length : 0;
                 discussion.is_follower = false;
                 if (user_discussions) {
                     if (_.find(user_discussions, function (user_discussion) {
@@ -148,7 +149,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                         discussion.is_follower = true;
                     }
                 }
-            })
+            });
 
             callback(err, results);
         });
@@ -318,7 +319,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                         cbk1();
 
                         // second - create notifications and send mails
-                        notifications_for_the_info_items_relvant(object._id, user_id, object.subject_id[0], function(err) {
+                        notifications_for_the_info_items_relvant(object._id, user_id, object.subject_id, function(err) {
                             if(err){
                                 console.error(err);
                             }else{
@@ -462,7 +463,7 @@ var DiscussionResource = module.exports = common.GamificationMongooseResource.ex
                     object.is_published = true;
 
                     object.save(function (err, disc_obj) {
-                        notifications_for_the_info_items_relvant(disc_obj._id, user._id, disc_obj.subject_id[0], function (err) {
+                        notifications_for_the_info_items_relvant(disc_obj._id, user._id, disc_obj.subject_id, function (err) {
                             if(err)
                                 callback(err);
                             else {

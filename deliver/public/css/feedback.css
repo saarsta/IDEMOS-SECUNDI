@@ -35,7 +35,7 @@
     position: absolute;
     width: 40px;
     height: 62px;
-    background: #3A6AF2 url("../images/URU_icons_new_sprite.png") -18px 13px no-repeat;
+    background: #3A6AF2 url("/images/URU_icons_new_sprite.png") -18px 13px no-repeat;
     right: 10px;
     top: 0px;
 }

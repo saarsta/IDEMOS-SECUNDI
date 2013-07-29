@@ -1,9 +1,10 @@
 var mongoose = require("mongoose"),
     Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId,
+    utils = require('../utils'),
     common = require('./common');
 
-var Action = module.exports = new Schema({
+var Action = module.exports = utils.revertibleModel(new Schema({
     title:               {type: String, required: true},
     tooltip:             String,
     text_field:          {type: Schema.Types.Text, required: true},
@@ -61,7 +62,7 @@ var Action = module.exports = new Schema({
     }, //change default
     required_participants:                            {type: Number, 'default': 0},
     admin_text:                                       {type: String, 'default': "עזרו לזה לקרות!"},
-    system_message:                                   String,
+    //system_message:                                   String,
     num_of_going:                                     {type: Number, 'default': 0},
     tokens:                                           {type: Number, 'default': 0},
     is_approved:                                      {type: Boolean, 'default': false},
@@ -77,7 +78,14 @@ var Action = module.exports = new Schema({
             default_title: {type: String},
             default_text: {type: String}},
 
-        is_hidden:                                        {type: Boolean, 'default': true}
+        is_hidden:                                        {type: Boolean, 'default': true},
+        creation_date:{type:Date, 'default':Date.now},
+        _preview:{type:Schema.Types.Mixed,link:'/actions/{_id}',editable:false}
 },
     {strict: true}
-);
+));
+
+
+Action.methods.toString = function(){
+    return this.title;
+}

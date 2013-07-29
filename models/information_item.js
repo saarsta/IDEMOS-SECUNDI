@@ -9,7 +9,7 @@ var tag_suggestions =  {
     tag_offers: {type:[ObjectId], ref:'User',query:common.FIND_USER_QUERY}
 };
 
-var InformationItem = module.exports = new Schema({
+var InformationItem = module.exports = utils.revertibleModel(new Schema({
     title: {type: String, required: true},
     tooltip:String,
     subject_id:[{type:ObjectId, ref:'Subject',required:true}],
@@ -40,5 +40,10 @@ var InformationItem = module.exports = new Schema({
         rewarded_creator_for_approval: {type: String, 'default': false, editable: false}
     },
     gui_order:{type:Number,'default':9999999,editable:false},
-    is_hidden:{type:Boolean,'default':true}
-}, {strict: true});
+    is_hidden:{type:Boolean,'default':true},
+    _preview:{type:Schema.Types.Mixed,link:'/information_items/{_id}',editable:false}
+}, {strict: true}));
+
+InformationItem.methods.toString = function(){
+    return this.title || '';
+}

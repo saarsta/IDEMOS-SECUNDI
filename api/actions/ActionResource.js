@@ -66,7 +66,7 @@ var ActionResource = module.exports = common.GamificationMongooseResource.extend
             creation_date: null,
             required_participants: null,
             admin_text: null,
-            system_message: null,
+            //system_message: null,
             num_of_going: null,
             is_approved: null,
             location: null,
