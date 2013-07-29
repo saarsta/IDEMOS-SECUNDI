@@ -269,7 +269,7 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                 disc_obj = discussion_obj;
 
                 // check if vision was changed while user suggested new text
-                if (Number(req.body.vision_history_count) < disc_obj.vision_text_history.length){
+                if (Number(req.body.vision_history_count) < ((disc_obj.vision_text_history && disc_obj.vision_text_history.length) || 0)){
                     cbk({message: "discussion's vision was updated", code: "401"});
                     return;
                 }
