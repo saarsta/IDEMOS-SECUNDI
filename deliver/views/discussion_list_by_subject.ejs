@@ -33,7 +33,9 @@
                 <br />
                 <%- subject.description %>
             </h2>
+            <% if(subject._id!='51efb771d93203b9c200004a'){ %>
             <a  id="new_discussion_bt"  class="green-btn" href="javascript: void(0)">צור דיון חדש</a>
+            <%}%>
         </div>
         <select id="sorting_select" class="left-select">
             <option value="-last_updated">
