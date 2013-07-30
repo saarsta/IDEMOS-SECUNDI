@@ -2098,6 +2098,11 @@ span.remark{
     line-height:20px;
 }
 
+.suggestion_comments_holder .add_comment input{
+    float: left;
+}
+
+
 .button_edit_comment{
     display:none;
 }
