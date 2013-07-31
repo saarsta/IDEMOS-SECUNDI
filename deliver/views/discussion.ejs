@@ -1739,7 +1739,7 @@ $(document).ready(function () {
                 }
             });
 
-    $(".segment main").on("click", ".marker_1", function () {
+    $("#content_main_holder").on("click", ".marker_1", function () {
         if(!mouseDown){
             displayAllSuggestions();
             var id= $(this).data('id')  ;
