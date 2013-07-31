@@ -1047,9 +1047,9 @@ $(document).ready(function () {
                 dust.render('comment_on_suggestion', comment, function (err, out) {
                     // append before "add_comment"
                     curr_suggestion.find('.suggestion_comments_holder .add_comment').before(out);
-                    if (is_first_comment) {
+                   /* if (is_first_comment) {
                         $(curr_suggestion).find('.suggestion_comments_holder .comment').show();
-                    }
+                    }*/
                     image_autoscale(curr_suggestion.find('.auto-scale img'));
                 });
             });
@@ -1083,9 +1083,9 @@ $(document).ready(function () {
                                 dust.render('comment_on_suggestion', comment, function (err, out) {
                                     // append before "add_comment"
                                     curr_suggestion.find('.add_comment').before(out);
-                                    if (is_first_comment) {
+                                    /*if (is_first_comment) {
                                         $(curr_suggestion).find('.suggestion_comments_holder .comment').show();
-                                    }
+                                    }*/
                                     image_autoscale(curr_suggestion.find('.auto-scale img'));
                                 });
                             });
@@ -1193,7 +1193,6 @@ $(document).ready(function () {
             suggestion.image_field_preview = discussion_img_field_preview;
 
             render_suggestion(suggestion);
-//            $('.suggestion_comments_holder .comment').remove();
 
             XHRs.push(db_functions.getCommentsBySuggestion(suggestion.id, function(err, data){
                 curr_suggestion = $('#suggestions_wrapper').find('[data-id=' + suggestion.id + ']') ;
@@ -1216,9 +1215,9 @@ $(document).ready(function () {
                     dust.render('comment_on_suggestion', comment, function (err, out) {
                         // append before "add_comment"
                         curr_suggestion.find('.add_comment').before(out);
-                        if (is_first_comment) {
+                        /*if (is_first_comment) {
                             $(curr_suggestion).find('.suggestion_comments_holder .comment').show();
-                        }
+                        }*/
                         image_autoscale(curr_suggestion.find('.auto-scale img'));
                     });
                 });
