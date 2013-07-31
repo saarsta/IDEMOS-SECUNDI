@@ -1205,7 +1205,10 @@ $(document).ready(function () {
                 $.each(data.objects, function (index, comment) {
 
                     // bug work around
-                    var duplicate = $.each($('.suggestion_comments_holder .comment'), function(index, curr_comment) {return $(curr_comment).attr('id') == comment._id});
+                    var duplicate = false;
+                    $.each($('.suggestion_comments_holder .comment'), function(index, curr_comment){
+                        if ($(curr_comment).attr('id') == comment._id) duplicate = true;}
+                    );
                     if (duplicate) return false;
 
                     is_first_comment = (index == 0);
