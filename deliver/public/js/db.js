@@ -61,7 +61,7 @@ var db_functions = {
                                         }
                                     }
                                 };
-                                popupProvider.showExplanationPopup(config);
+                                //popupProvider.showExplanationPopup(config);
                             }
                         }
                     }
@@ -108,7 +108,7 @@ var db_functions = {
                     }
                 }
             };
-            popupProvider.showExplanationPopup(config);
+            //popupProvider.showExplanationPopup(config);
         }
         else
         {
