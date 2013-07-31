@@ -569,7 +569,7 @@ body {
     position: relative;
     background: #fff;
     border: 1px solid #b7b6b6;
-    height: 180px;
+    height: /*180px*/90px;
     width: 100%;
     z-index: 10;
 
@@ -601,7 +601,7 @@ body {
 }
 
 .user-info-box .user-box-top{
-    height: 130px;
+    height: /*130px*/40px;
     padding: 10px 10px 0 20px;
 }
 
