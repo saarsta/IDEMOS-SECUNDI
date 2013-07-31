@@ -1193,7 +1193,7 @@ $(document).ready(function () {
             suggestion.image_field_preview = discussion_img_field_preview;
 
             render_suggestion(suggestion);
-            $('.suggestion_comments_holder .comment').remove();
+//            $('.suggestion_comments_holder .comment').remove();
 
             XHRs.push(db_functions.getCommentsBySuggestion(suggestion.id, function(err, data){
                 curr_suggestion = $('#suggestions_wrapper').find('[data-id=' + suggestion.id + ']') ;
@@ -1739,7 +1739,7 @@ $(document).ready(function () {
                 }
             });
 
-    $(".marker_1").live("click", function () {
+    $(".segment main").on("click", ".marker_1", function () {
         if(!mouseDown){
             displayAllSuggestions();
             var id= $(this).data('id')  ;
