@@ -1185,7 +1185,7 @@ $(document).ready(function () {
         var self=$(".more-deals a");
         var XHRs = [];
         $('#suggestions_wrapper').empty();
-        $('.suggestion_comments_holder .comment').remove();
+
         $.each(suggestions_list, function (index, suggestion) {
 
  			// set title and img for fb share
@@ -1195,6 +1195,7 @@ $(document).ready(function () {
             render_suggestion(suggestion);
 
             XHRs.push(db_functions.getCommentsBySuggestion(suggestion.id, function(err, data){
+                $('.suggestion_comments_holder .comment').remove();
                 curr_suggestion = $('#suggestions_wrapper').find('[data-id=' + suggestion.id + ']') ;
 
                 // set comments counter
