@@ -1193,9 +1193,9 @@ $(document).ready(function () {
             suggestion.image_field_preview = discussion_img_field_preview;
 
             render_suggestion(suggestion);
+            $('.suggestion_comments_holder .comment').remove();
 
             XHRs.push(db_functions.getCommentsBySuggestion(suggestion.id, function(err, data){
-                $('.suggestion_comments_holder .comment').remove();
                 curr_suggestion = $('#suggestions_wrapper').find('[data-id=' + suggestion.id + ']') ;
 
                 // set comments counter
