@@ -1184,7 +1184,6 @@ $(document).ready(function () {
 
         var self=$(".more-deals a");
         var XHRs = [];
-        in_proccess = true;
         $('#suggestions_wrapper').empty();
 
         $.each(suggestions_list, function (index, suggestion) {
@@ -1204,6 +1203,11 @@ $(document).ready(function () {
                 var is_first_comment;
 
                 $.each(data.objects, function (index, comment) {
+
+                    // bug work around
+                    var duplicate = $.each($('.suggestion_comments_holder .comment'), function(index, curr_comment) {return $(curr_comment).attr('id') == comment._id});
+                    if (duplicate) return false;
+
                     is_first_comment = (index == 0);
                     comment.is_even = (index % 2) == 0;
                     dust.render('comment_on_suggestion', comment, function (err, out) {
@@ -1220,7 +1224,6 @@ $(document).ready(function () {
 
             //run a function when all deferred objects resolve
             $.when(XHRs).then(function (){
-                in_proccess = false;
                 // if needs to scroll to suggestion that is not shown, open list of suggestions and scroll to suggestion
                 var hash = window.location.hash;
                 if(hash && on_load){
@@ -1645,7 +1648,7 @@ $(document).ready(function () {
             }
            text=text.replace(/\r\n/g, '\r\n<br>');
            text=text.replace(/\n/g, '\n<br>') ;
-           html =  html.substring(0, suggestion.parts[0].start) +html.substring(suggestion.parts[0].start).replace(text,'<span data-id="'+suggestion.id+'" class="marker_1">'+text+'</span>');;
+           html =  html.substring(0, suggestion.parts[0].start) +html.substring(suggestion.parts[0].start).replace(text,'<span data-id="'+suggestion.id+'" class="marker_1">'+text+'</span>');
            $('#discussion_content').html(html);
 
         })
@@ -1653,7 +1656,6 @@ $(document).ready(function () {
 
     var mouseDown, mouseUp, top, left;
     var range_txt;
-    var in_proccess = false;
 
     $('#discussion_content,#discussion_content_textarea')
             .on('mousedown', function (e) {
@@ -1744,7 +1746,7 @@ $(document).ready(function () {
             });
 
     $("#content_main_holder").on("click", ".marker_1", function () {
-        if(!mouseDown && !in_proccess){
+        if(!mouseDown){
             displayAllSuggestions();
             var id= $(this).data('id');
             $('html, body').animate({
