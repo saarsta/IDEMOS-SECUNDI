@@ -1184,6 +1184,7 @@ $(document).ready(function () {
 
         var self=$(".more-deals a");
         var XHRs = [];
+        in_proccess = true;
         $('#suggestions_wrapper').empty();
 
         $.each(suggestions_list, function (index, suggestion) {
@@ -1216,8 +1217,10 @@ $(document).ready(function () {
                 });
             }))
 
+
             //run a function when all deferred objects resolve
             $.when(XHRs).then(function (){
+                in_proccess = false;
                 // if needs to scroll to suggestion that is not shown, open list of suggestions and scroll to suggestion
                 var hash = window.location.hash;
                 if(hash && on_load){
@@ -1650,6 +1653,7 @@ $(document).ready(function () {
 
     var mouseDown, mouseUp, top, left;
     var range_txt;
+    var in_proccess = false;
 
     $('#discussion_content,#discussion_content_textarea')
             .on('mousedown', function (e) {
@@ -1738,6 +1742,16 @@ $(document).ready(function () {
                     mouseDown=null
                 }
             });
+
+    $("#content_main_holder").on("click", ".marker_1", function () {
+        if(!mouseDown && !in_proccess){
+            displayAllSuggestions();
+            var id= $(this).data('id');
+            $('html, body').animate({
+                scrollTop: $("div[data-id=" +id+ "]").offset().top
+            }, 500);
+        }
+    });
 
     function updateVisionAndSuggestionText(data){
         // update vision
@@ -2409,15 +2423,6 @@ $(document).ready(function () {
         })
     }
 
-    $("#content_main_holder").on("click", ".marker_1", function () {
-        if(!mouseDown){
-            displayAllSuggestions();
-            var id= $(this).data('id')  ;
-            $('html, body').animate({
-                scrollTop: $("div[data-id=" +id+ "]").offset().top
-            }, 500);
-        }
-    });
 });
 
 </script>
