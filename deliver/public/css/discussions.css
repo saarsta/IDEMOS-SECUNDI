@@ -2005,7 +2005,8 @@ span.remark{
     text-decoration: underline;
 }
 
-.suggestion_comments_holder{
+.suggestion_comments_holder,
+.post_comments_holder{
     float:left;
     width:510px;
     position:relative;
@@ -2081,7 +2082,7 @@ span.remark{
     font-size:12px;
 }
 
-.suggestion_comments_holder .add_comment{
+.post_comments_holder .add_comment, .suggestion_comments_holder .add_comment{
     background:#f6f6f6;
     padding:10px;
     float:right;
@@ -2089,6 +2090,7 @@ span.remark{
     border-bottom:1px solid #e0e0e0;
 }
 
+.post_comments_holder .add_comment textarea,
 .suggestion_comments_holder .add_comment textarea{
     height: 40px;
     width: 475px;
@@ -2098,10 +2100,10 @@ span.remark{
     line-height:20px;
 }
 
+.post_comments_holder .add_comment input,
 .suggestion_comments_holder .add_comment input{
     float: left;
 }
-
 
 .button_edit_comment{
     display:none;

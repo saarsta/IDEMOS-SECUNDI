@@ -806,6 +806,23 @@ var db_functions = {
         });
     },
 
+    addCommentToPost : function(post_id, discussion_id, text, callback){
+        db_functions.loggedInAjax({
+            url:'/api/post_on_comment',
+            type:"POST",
+            data: {post_id: post_id, discussion_id: discussion_id, text: text},
+            async:true,
+
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function (err) {
+                callback(err, null);
+            }
+        });
+    },
+
     getPostById:function (post_id, callback) {
         db_functions.loggedInAjax({
             url:'/api/posts/' + post_id,
