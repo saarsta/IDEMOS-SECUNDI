@@ -772,6 +772,20 @@ var db_functions = {
             }
         });
     },
+    getCommentsByParentComment:function (post_id, callback) {
+        db_functions.loggedInAjax({
+            url:'/api/posts_on_comment?post_id=' + post_id,
+            type:"GET",
+            async:true,
+            success:function (data) {
+                console.log(data);
+                callback(null, data);
+            },
+            error:function (err) {
+                callback(err, null);
+            }
+        });
+    },
 
     editDiscussionPost: function(post_id, text, callback){
         db_functions.loggedInAjax({

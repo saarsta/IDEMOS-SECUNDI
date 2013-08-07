@@ -343,7 +343,7 @@ var error_message = error_message || '';
         </div>
         <div id="comments_wrapper">
             <div id="add_comment_wrapper" <%if(user_logged){%> data-creator_id="<%=user._id%>" <%}%> >
-            <h2 class="title">כתיבת תגובה</h2>
+            <!--<h2 class="title">כתיבת תגובה</h2>-->
             <div class="comment_wrapper">
                 <div class="comment_details">
                     <div class="img-box" style="overflow: hidden;">
@@ -1053,7 +1053,7 @@ $(document).ready(function () {
                     image_autoscale(curr_suggestion.find('.auto-scale img'));
                 });
             });
-        })
+        });
 
         $('#suggestion_number').text(' (' + data.meta.total_count + ')');
         if (data.objects.length > 0) {
@@ -1261,7 +1261,7 @@ $(document).ready(function () {
                 $(this).parent().attr('data-can-add', true);
                 add_comment.find('textarea').val('');
                 var $suggestion_or_post = $('[data-id=' + post_or_suggestion_id + ']');
-                var num_of_comments = $suggestion_or_post.find('.suggestion_comments_holder .comment').length;
+                var num_of_comments = $suggestion_or_post.find('.post_or_suggestion_comments_holder .comment').length;
                 if (num_of_comments % 2 === 0) comment.is_even =  true;
 
                 dust.render('comment_on_suggestion', comment, function (err, out) {
@@ -1346,13 +1346,11 @@ $(document).ready(function () {
     });
 
     $(".comments_counter a").live("click",function(){
-        $(this).parents('.suggestion_wrapper').find('.suggestion_comments_holder').toggle();
-       /* $(this).parents('.suggestion_wrapper .comments_counter').find('.close').show();*/
+        $(this).parents('.post_or_suggestion').find('.post_or_suggestion_comments_holder').toggle();
         image_autoscale('.auto-scale img');
     });
 
     function renderComments(comments) {
-
         //first clear existing comments
         $('.comment_wrapper.even, .comment_wrapper.odd').remove();
 
@@ -1405,7 +1403,6 @@ $(document).ready(function () {
                     }
                 });
 
-
                 try{
                     FB.XFBML.parse($('#comments_wrapper').get(0));
                 }catch(ex){
@@ -1415,9 +1412,23 @@ $(document).ready(function () {
         });
     }
 
+    function renderCommentsOfComment(parent_comment){
+        db_functions.getCommentsByParentComment(parent_comment._id, function(err, data){
+            curr_comment = $('#comments_wrapper').find('[data-id=' + parent_comment._id + ']');
+            curr_comment.find('.comments_counter span').text(data.objects.length);
+            $.each(data.objects, function (index, small_comment) {
+                small_comment.is_even = (index % 2) == 0;
+                dust.render('comment_on_suggestion', small_comment, function (err, out) {
+                    // append before "add_comment"
+                    curr_comment.find('.add_comment').before(out);
+                    image_autoscale(curr_comment.find('.auto-scale img'));
+                });
+            });
+        });
+    }
+
     //set pagination
     function setPagination(){
-
         // in case there is only one page hide pagiation
         if (num_of_pages <= 1){
             $('.pagination').empty();
@@ -1588,6 +1599,10 @@ $(document).ready(function () {
                 });
 
                 renderComments(data.objects);
+
+                $.each(data.objects, function (index, post) {
+                    renderCommentsOfComment(post);
+                });
             }
         })
     }
@@ -2456,7 +2471,7 @@ $(document).ready(function () {
         var post_or_suggestion = $(this).parents('.post_or_suggestion');
 
         // show comments
-        post_or_suggestion.find('.suggestion_comments_holder').show();
+        post_or_suggestion.find('.post_or_suggestion_comments_holder').show();
         image_autoscale('.auto-scale img');
 
         $(post_or_suggestion.find('.add_comment textarea')).focus();

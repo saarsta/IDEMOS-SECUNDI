@@ -2014,7 +2014,7 @@ span.remark{
 .comment_wrapper .comments_counter a{
     position: absolute;
     bottom: 6px;
-    left: 422px;
+    left: 160px;
 }
 
 .comment_wrapper .add_fast_comment a{
@@ -2041,19 +2041,19 @@ span.remark{
     display: none;
 }
 
-.suggestion_comments_holder .comment.even{
+.post_or_suggestion_comments_holder .comment.even{
     width: 490px;
     clear: both;
     background:#f6f6f6;
 }
 
-.suggestion_comments_holder .comment.odd{
+.post_or_suggestion_comments_holder .comment.odd{
     width: 490px;
     clear: both;
     background:#ededed;
 }
 
-.suggestion_comments_holder .comment.even span.photo-pattern {
+.post_or_suggestion_comments_holder .comment.even span.photo-pattern {
     position: absolute;
     left: 0;
     top: 0;
@@ -2061,14 +2061,14 @@ span.remark{
     height: 100%;
 }
 
-.suggestion_comments_holder .comment{
+.post_or_suggestion_comments_holder .comment{
     float:right;
     padding:10px;
     border-bottom:1px solid #e0e0e0;
     position: relative;
 }
 
-.suggestion_comments_holder .comment .author{
+.post_or_suggestion_comments_holder .comment .author{
     text-align:center;
     float:right;
     width:90px;
@@ -2080,26 +2080,26 @@ span.remark{
     margin-left: 15px!important;
 }
 
-.suggestion_comments_holder .comment .author span{
+.post_or_suggestion_comments_holder .comment .author span{
     float:right;
     width:100%;
 }
 
-.suggestion_comments_holder .comment .author img{
+.post_or_suggestion_comments_holder .comment .author img{
     margin:auto;
     float:none;
     position: absolute;
     right: 15px;
 }
 
-.suggestion_comments_holder .comment .date_time{
+.post_or_suggestion_comments_holder .comment .date_time{
     color:#969696;
     font-style:italic;
     font-size:11px;
     margin-bottom:3px;
 }
 
-.suggestion_comments_holder .comment .content{
+.post_or_suggestion_comments_holder .comment .content{
     color:#50504f;
     font-size:12px;
 }
@@ -3348,7 +3348,9 @@ input.button_submit_comment_no_text{
 }
 
 
+#comments_wrapper .comment .img-box,
 #suggestions_wrapper .comment .img-box{
+    position: relative;
     width: 90px;
     height: 82px;
 }
@@ -3362,6 +3364,7 @@ input.button_submit_comment_no_text{
     height: 100%;
 }
 
+#comments_wrapper .comment .img-box span,
 #suggestions_wrapper .comment .img-box span {
     background: url(/images/user-fillter-small-white.png) no-repeat;
     position: absolute;
@@ -3371,11 +3374,13 @@ input.button_submit_comment_no_text{
     height: 100%;
 }
 
-#suggestions_wrapper .suggestion_wrapper  .comment.even .img-box span {
+#comments_wrapper .comment.even .img-box span,
+#suggestions_wrapper .suggestion_wrapper .comment.even .img-box span {
     background: url(/images/user-fillter-small-cofee.png) no-repeat;
 }
 
-#suggestions_wrapper .suggestion_wrapper  .comment.odd .img-box span {
+#comments_wrapper .comment.odd .img-box span ,
+#suggestions_wrapper .suggestion_wrapper .comment.odd .img-box span {
     background: url(/images/user-fillter-small-grey.png) no-repeat;
 }
 
@@ -3388,7 +3393,7 @@ input.button_submit_comment_no_text{
     top: 43px;
 }
 
-#comments_wrapper .img-box,
+#comments_wrapper .comment_wrapper .img-box,
 #special_post_wrapper .img-box{
     position: relative;
     width: 60px;
@@ -3396,7 +3401,7 @@ input.button_submit_comment_no_text{
     margin: 0 auto;
 }
 
-#comments_wrapper .img-box span,
+#comments_wrapper .comment_wrapper .img-box span,
 #special_post_wrapper .img-box span {
     background: url(/images/user-fillter-small-white.png) no-repeat;
     position: absolute;
