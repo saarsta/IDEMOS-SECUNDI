@@ -215,13 +215,9 @@ var create_new_notification = function (notification_type, entity_id, user_id, n
     notification.url = url;
     notification.seen = false;
     notification.update_date = new Date();
-
-
     notification.visited = true;
 
-
     notification.save(function (err, obj) {
-
         if (err)
             console.error(err);
         callback(null, obj || notification);

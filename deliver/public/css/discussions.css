@@ -1983,6 +1983,16 @@ span.remark{
     margin-top:15px;
 }
 
+.add_fast_comment{
+    color:#60605f;
+    font-size:14px;
+    font-weight:bold;
+    padding-right:30px;
+    margin-top:-15px;
+    margin-bottom: -15px;
+    float: left;
+}
+
 .comments_counter span{
     color:#3c63ef;
 }
@@ -1997,11 +2007,23 @@ span.remark{
     cursor: pointer;
     display: none;
 }
-.comments_counter a{
+.comments_counter a, .add_fast_comment a{
     text-decoration: none;
 }
 
-.comments_counter a:hover{
+.comment_wrapper .comments_counter a{
+    position: absolute;
+    bottom: 6px;
+    left: 422px;
+}
+
+.comment_wrapper .add_fast_comment a{
+    position: absolute;
+    bottom: 6px;
+    left: 20px;
+}
+
+.comments_counter a:hover, .add_fast_comment a:hover{
     text-decoration: underline;
 }
 
@@ -2016,6 +2038,7 @@ span.remark{
     border-right:1px solid #e0e0e0;
     border-left:1px solid #e0e0e0;
     margin-bottom:30px;
+    display: none;
 }
 
 .suggestion_comments_holder .comment.even{
@@ -2042,7 +2065,6 @@ span.remark{
     float:right;
     padding:10px;
     border-bottom:1px solid #e0e0e0;
-    display: none;
     position: relative;
 }
 

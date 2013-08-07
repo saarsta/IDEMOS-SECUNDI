@@ -108,7 +108,7 @@ var UserMailNotificationConfig = module.exports = jest.MongooseResource.extend({
                         if (typeof mail_settings.mail_notification_configuration.new_discussion[0].get_alert != "undefined")
                             exist_new_discussion._doc.get_alert = mail_settings.mail_notification_configuration.new_discussion[0].get_alert === 'true';
                     } else {
-                        user.mail_notification_configuration.new_discussion.push(mail_settings.mail_notification_configuration.new_discussion[0]);
+                        user.mail_notification_cocnfiguration.new_discussion.push(mail_settings.mail_notification_configuration.new_discussion[0]);
                     }
 
                     // update user

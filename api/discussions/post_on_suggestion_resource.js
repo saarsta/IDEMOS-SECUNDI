@@ -47,7 +47,7 @@ var PostOnSuggestionResource = module.exports = common.GamificationMongooseResou
                     post.creator_id = post.creator_id.id;
 
                     //set is_my_comment flag
-                    post.is_my_comment = (req.user.id + "" === (post.creator_id && post.creator_id + ""));
+                    post.is_my_comment = req.user && (req.user.id + "" === (post.creator_id && post.creator_id + ""));
                 });
             }
 

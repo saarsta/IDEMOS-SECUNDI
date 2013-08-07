@@ -507,6 +507,7 @@ var Models = module.exports = {
     Subject:mongoose.model('Subject', require('./subject')),
     Post:require('./post'),
     PostSuggestion:require('./post_suggestion'),
+    PostOnComment:require('./post_on_comment'),
     PostArticle:mongoose.model('PostArticle', require('./post_article')),
     PostAction:require('./post_action'),
     Suggestion:require('./suggestion'),

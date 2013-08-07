@@ -1248,14 +1248,41 @@ $(document).ready(function () {
 
         if (text.trim() == '') return false;
 
-        var suggestion_id = $(this).parents('.post_or_suggestion').data('id');
+        var post_or_suggestion_id = $(this).parents('.post_or_suggestion').data('id');
+        var is_suggestion = $(this).parents('.suggestion_wrapper').length > 0;
         var add_comment = $(this).parent('.add_comment');
         var can_continue = $(this).parent().data('can-add');
 
         if (can_continue){
             $(this).parent().attr('data-can-add', false);
 
-            db_functions.addCommentToSuggestion(suggestion_id, discussion_id, text, function(err, comment){
+//            var function = is_suggestion ? db_functions.addCommentToSuggestion() : db_functions.addCommentToPost()
+            var callback = function(err, comment){
+                $(this).parent().attr('data-can-add', true);
+                add_comment.find('textarea').val('');
+                var $suggestion_or_post = $('[data-id=' + post_or_suggestion_id + ']');
+                var num_of_comments = $suggestion_or_post.find('.suggestion_comments_holder .comment').length;
+                if (num_of_comments % 2 === 0) comment.is_even =  true;
+
+                dust.render('comment_on_suggestion', comment, function (err, out) {
+                    // append before "add_comment"
+                    add_comment.before(out);
+                    $suggestion_or_post.find('.comments_counter span').text(num_of_comments + 1);
+                    self.parents('.suggestion_wrapper').find('.comment').show();
+                    self.parents('.suggestion_wrapper').find('.close').show();
+                    image_autoscale(add_comment.parent('.suggestion_comments_holder').find('.auto-scale img'));
+                    /*scrollTo('#' + comment._id);*/
+                });
+            };
+
+            //TODO improve this
+            if (is_suggestion){
+                db_functions.addCommentToSuggestion(post_or_suggestion_id, discussion_id, text, callback);
+            }else {
+                db_functions.addCommentToPost(post_or_suggestion_id, discussion_id, text, callback);
+            }
+
+            /*db_functions.addCommentToSuggestion(suggestion_id, discussion_id, text, function(err, comment){
                 $(this).parent().attr('data-can-add', true);
                 add_comment.find('textarea').val('');
                 var $suggestion = $('[data-id=' + suggestion_id + ']');
@@ -1271,7 +1298,7 @@ $(document).ready(function () {
                     image_autoscale(add_comment.parent('.suggestion_comments_holder').find('.auto-scale img'));
                     scrollTo('#' + comment._id);
                 });
-            });
+            });*/
         }
     });
 
@@ -1319,8 +1346,8 @@ $(document).ready(function () {
     });
 
     $(".comments_counter a").live("click",function(){
-        $(this).parents('.suggestion_wrapper').find('.comment').show();
-        $(this).parents('.suggestion_wrapper .comments_counter').find('.close').show();
+        $(this).parents('.suggestion_wrapper').find('.suggestion_comments_holder').toggle();
+       /* $(this).parents('.suggestion_wrapper .comments_counter').find('.close').show();*/
         image_autoscale('.auto-scale img');
     });
 
@@ -2367,7 +2394,7 @@ $(document).ready(function () {
         },
         popupConfig.post_id = $(this).parent('.comment').attr('id');
         popupProvider.showDeletePostPopup(popupConfig);
-    })
+    });
 
     $('.service-8, .upload-popup .close-popup').click(function () {
         $(this).parents('.services-box').toggleClass('upload-active');
@@ -2422,11 +2449,18 @@ $(document).ready(function () {
     });
 
     function  activateMailNotifications(){
-        db_functions.activateMailNotification(my_id,function(err,data){
+        db_functions.activateMailNotification(my_id, function(err,data){})
+    };
 
-        })
-    }
+    $('.add_fast_comment').live('click', function(e){
+        var post_or_suggestion = $(this).parents('.post_or_suggestion');
 
+        // show comments
+        post_or_suggestion.find('.suggestion_comments_holder').show();
+        image_autoscale('.auto-scale img');
+
+        $(post_or_suggestion.find('.add_comment textarea')).focus();
+    });
 });
 
 </script>

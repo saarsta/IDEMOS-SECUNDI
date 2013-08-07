@@ -1,5 +1,5 @@
-<div class="comment_main_wrapper">
-    <div class="comment_wrapper post_or_suggestion regular_comment {?is_even}even{:else}odd{/is_even} {?is_editable}edit_comment{/is_editable}" id="post_{_id}" data-id="{_id}" data-ref-id="{ref_to_post_id}" data-num-given-mandates="{mandates_curr_user_gave_creator}"
+<div class="comment_main_wrapper post_or_suggestion" data-id="{_id}">
+    <div class="comment_wrapper regular_comment {?is_even}even{:else}odd{/is_even} {?is_editable}edit_comment{/is_editable}" id="post_{_id}" data-id="{_id}" data-ref-id="{ref_to_post_id}" data-num-given-mandates="{mandates_curr_user_gave_creator}"
          data-creator_name="{creator_id.first_name} {creator_id.last_name}" data-creator_id="{creator_id.id}"
          data-num_of_proxies="{creator_id.num_of_proxies_i_represent}">
         {?is_my_comment}
@@ -64,10 +64,23 @@
             <span class="counter">{voting|round}</span>
             <a href="javascript:void(0)"><span class="bad"></span></a>
         </div>
+        <div bottom-segment>
+            <div class="comments_counter">
+                <a  href="javascript: void(0)" >
+                    <span>0</span> תגובות להצעה
+                </a>
+            </div>
+            <div class="add_fast_comment">
+                <a  href="javascript: void(0)" >
+                    כתוב תגובה מהירה
+                </a>
+            </div>
+
+        </div>
     </div>
     <div class="post_comments_holder">
         <div class="add_comment" data-can-add="true">
-            <textarea type="text" placeholder="כתוב תגובה..." />
+            <textarea type="text" placeholder="כתוב תגובה מהירה..." />
             <input type="submit" value="שלח"> </input>
         </div>
     </div>
