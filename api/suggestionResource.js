@@ -546,7 +546,9 @@ module.exports.approveSuggestion = function (id, callback) {
 //                        function(err, counter){
 //                            cbk1(err, discussion_object);
 //                        });
-                    discussion_object.save(cbk1);
+                    discussion_object.save(function(err, disc){
+                        cbk1(err, disc);
+                    });
                 },
 
                 function(cbk1){
@@ -554,7 +556,7 @@ module.exports.approveSuggestion = function (id, callback) {
                 }
 
             ], function (err, args) {
-                cbk(err, args[1][0]);
+                cbk(err, args[1]);
             })
         },
 
@@ -660,7 +662,6 @@ module.exports.approveSuggestion = function (id, callback) {
                             par_cbk(err, obj);
                         });
                 },
-
                 //for each suggestion grade - copy it to discussion grade
                 function (par_cbk) {
 
@@ -696,7 +697,9 @@ module.exports.approveSuggestion = function (id, callback) {
                             _.each(disc_obj.users, function(user){ unique_users.push(user.user_id + "")});
                             unique_users = _.uniq(unique_users);
 
-                            async.forEach(unique_users, noti_itr, cbk2);
+                            async.forEach(unique_users, noti_itr, function(err){
+                                if(err) console.error(err);
+                            });
                         }
                     })
                 }

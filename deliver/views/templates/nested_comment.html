@@ -13,7 +13,9 @@
     </a>
     <!--<span class="photo-pattern"></span>-->
     <div class="date_time">
-        {creation_date|time}
+        <a class="underline_and_cursor_when_hover" href="/discussions/{discussion_id}#nested_post_{_id}" title="לינק ישיר לתגובה">
+            {creation_date|time}
+        </a>
     </div>
     <div class="content">
         {text|link|s}

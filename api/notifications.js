@@ -18,7 +18,7 @@ var models = require('../models'),
 exports.create_user_notification = function (notification_type, entity_id, user_id, notificatior_id, sub_entity, url, no_mail,callback) {
 
 
-    if(typeof no_mail === 'function'){
+    if(typeof no_mail === 'function' && typeof callback !== 'function'){
         callback = no_mail;
         no_mail = null;
     }
@@ -117,7 +117,7 @@ exports.create_user_notification = function (notification_type, entity_id, user_
         ], function (err, obj) {
             callback(err, obj);
         })
-    } else {
+    }else {
         create_new_notification(notification_type, entity_id, user_id, notificatior_id, sub_entity, url, no_mail,function (err, obj) {
             callback(err, obj);
         });
@@ -197,7 +197,7 @@ exports.create_user_proxy_vote_or_grade_notification = function (notification_ty
 
 var create_new_notification = function (notification_type, entity_id, user_id, notificatior_id, sub_entity_id, url, no_mail, callback) {
 
-    if(typeof no_mail === 'function'){
+    if(typeof no_mail === 'function' && typeof callback !== 'function'){
         callback = no_mail;
         no_mail = null;
     }

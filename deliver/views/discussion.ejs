@@ -1201,7 +1201,7 @@ $(document).ready(function () {
                 // set comments counter
                 curr_suggestion.find('.comments_counter span').text(data.objects.length);
 
-                renderNestedComments(data.objects, curr_suggestion);
+                renderNestedComments(data.objects, curr_suggestion, suggestion.id);
 
                 /*curr_suggestion = $('#suggestions_wrapper').find('[data-id=' + suggestion.id + ']') ;
 
@@ -1359,9 +1359,10 @@ $(document).ready(function () {
         });
     }
 
-    function renderNestedComments(nested_comments_list, parent_element){
+    function renderNestedComments(nested_comments_list, parent_element, parent_id){
         $.each(nested_comments_list, function (index, nested_comment) {
             nested_comment.is_even = (index % 2) == 0;
+            nested_comment.parent_id = parent_id;
             dust.render('nested_comment', nested_comment, function (err, out) {
                 // append before "add_comment"
                 parent_element.find('.add_comment').before(out);
@@ -1546,7 +1547,7 @@ $(document).ready(function () {
                     db_functions.getCommentsByParentComment(post._id, function(err, data){
                         curr_comment = $('#comments_wrapper').find('[data-id=' + post._id + ']');
                         curr_comment.find('.comments_counter span').text(data.objects.length);
-                        renderNestedComments(data.objects, curr_comment);
+                        renderNestedComments(data.objects, curr_comment, post._id);
                     });
                 });
             }
