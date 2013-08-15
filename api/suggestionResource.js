@@ -531,6 +531,7 @@ module.exports.approveSuggestion = function (id, callback) {
                     var replaced_text = vision.substring(Number(parts[0].start), Number(parts[0].end));
                     var new_text = parts[0].text;
 
+                    if (!discussion_object.vision_text_history) discussion_object.vision_text_history = [];
                     discussion_object.vision_text_history.push(discussion_object.text_field);
                     discussion_object.replaced_text_history.push({old_text: replaced_text, new_text: new_text});
                     discussion_object.text_field = str;
