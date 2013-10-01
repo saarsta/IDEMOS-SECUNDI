@@ -122,3 +122,16 @@ a {
 .big-head {
     background: #ededed url(/images/header-bg-big.png) 0 0 repeat-x;
 }
+
+.merging-area {
+    height: 235px;
+    position:absolute;
+    left:0;
+    right:0;
+    background-color: #ffffff;
+}
+
+.merging-banner {
+    position: absolute;
+    right: 303px;
+}
