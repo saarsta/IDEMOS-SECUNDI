@@ -262,6 +262,7 @@ var Schemas = exports.Schemas = {
         discussion_high_graded_by_min_of_X_people:{type:Number, 'default':1000000},
         spend_tokens_for_X_days_in_a_row:{type:Number, 'default':1000000}
     },
+
     ThresholdCalcVariables:{
         MIN_THRESH:{type:Number, 'default':2},
         MAX_THRESH:{type:Number, 'default':500},

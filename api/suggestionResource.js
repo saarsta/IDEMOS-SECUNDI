@@ -292,8 +292,8 @@ var SuggestionResource = module.exports = common.GamificationMongooseResource.ex
                         data.creator_id.num_of_proxies_i_represent = user.num_of_proxies_i_represent;
                         suggestion_obj.wanted_amount_of_tokens = suggestion_obj.threshold_for_accepting_the_suggestion;
 
-                        if (Number(suggestion_obj.wanted_amount_of_tokens) > disc_obj.users.length)
-                            suggestion_obj.wanted_amount_of_tokens = disc_obj.users.length - 1;
+                        if (Number(suggestion_obj.wanted_amount_of_tokens) > ((disc_obj.users && disc_obj.users.length) || 0))
+                            suggestion_obj.wanted_amount_of_tokens = ((disc_obj.users && disc_obj.users.length - 1) || 0);
                     }
                     cbk(err, data);
                 });
@@ -548,6 +548,7 @@ module.exports.approveSuggestion = function (id, callback) {
 //                        function(err, counter){
 //                            cbk1(err, discussion_object);
 //                        });
+
                     discussion_object.save(function(err, disc){
                         cbk1(err, disc);
                     });
@@ -556,7 +557,6 @@ module.exports.approveSuggestion = function (id, callback) {
                 function(cbk1){
                     cbk1();
                 }
-
             ], function (err, args) {
                 cbk(err, args[1]);
             })
