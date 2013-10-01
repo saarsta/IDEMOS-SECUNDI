@@ -133,4 +133,5 @@ a {
 
 .merging-banner {
     position: absolute;
+    z-index: 1;
 }
