@@ -36,7 +36,13 @@ padding-bottom: 60px;">
     </div>
     <div class="merging-area">
         <div class="merging-banner">
-            <img width="980" height="216" src="images/uru_banner.jpg" alt=""/>
+            <img width="980" height="216" src="images/uru_banner.jpg" alt="" usemap="#mergingmap"/>
+            <map name="mergingmap">
+                <area class="mapping" shape="rect" coords="884,0,943,65" alt="Mercury" href="http://www.uru.org.il">
+                <area class="mapping" shape="rect" coords="782,6,856,56" alt="Venus" href="http://www.agenda.org.il">
+                <area class="mapping" shape="rect" coords="627,15,751,62" alt="Venus" href="http://www.hasdera.org.il">
+                <area class="mapping" id="send_mail" shape="rect" coords="34,186,259,212" alt="Sun" href="mailto:saarsta@gmail.com?subject=מיזוג - אג'נדה השדרה ועורו">
+            </map>
         </div>
     </div>
     <div id="content" class="cf">
@@ -87,7 +93,6 @@ padding-bottom: 60px;">
     $(function () {
 
         var user_logged = "<%= user_logged %>" == 'true';
-
 
         $(".video-box").one('click', function(){
             $('.video_img').remove();
