@@ -221,6 +221,7 @@ app.configure('development', function(){
 if (IS_ADMIN) {
     require('./admin')(app);
 }
+
 if (IS_PROCESS_WEB) {
     require('./api')(app);
     require('./og/config').load(app);
@@ -228,18 +229,16 @@ if (IS_PROCESS_WEB) {
     require('./deliver/routes')(app);
     require('./api/common');
 }
+
 if (app.settings.send_mails) {
     require('./lib/mail').load(app);
 }
+
 if (IS_PROCESS_CRON) {
     var cron = require('./cron');
     cron.run(app);
 }
-
-
 // ######### environment specific settings #########
-
-
 
 // run web init
 if (IS_PROCESS_WEB) {
@@ -266,7 +265,6 @@ if (IS_PROCESS_WEB) {
         });
     });
 }
-
 
 var fs = require('fs');
 var privateKey = fs.readFileSync(__dirname + '/private.pem').toString();
