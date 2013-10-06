@@ -33,23 +33,6 @@ var Schemas = exports.Schemas = {
         _preview:{type:Schema.Types.Mixed,link:'/',editable:false}
     }, {strict:true})),
 
-    SuccessStory:utils.revertibleModel(new Schema({
-        title:{type:String, required:true},
-        tooltip:String,
-        text_field:{type:Schema.Types.Html},
-//        text_field_preview:{type:Schema.Types.Html},
-        image_field:Schema.Types.File,
-//        image_field_preview: Schema.Types.File,
-        tags:{type:[String], index:true},
-        cycles:{type:[ObjectId], ref:'Cycles', index:true, editable:false},
-        actions:{type:[ObjectId], ref:'Action', index:true, editable:false},
-        is_visible:{type:Boolean, 'default':true},
-        creation_date:{type:Date, 'default':Date.now, editable:false},
-        gui_order:{type:Number, 'default':9999999, editable:false},
-        is_hidden:{type:Boolean, 'default':true},
-        _preview:{type:Schema.Types.Mixed,link:'/',editable:false}
-    }, {strict:true})),
-
     //cycle updates
     Update:utils.revertibleModel(new Schema({
         title:{type:String, required:true},
@@ -225,15 +208,8 @@ var Schemas = exports.Schemas = {
         popularity:{type:Number, 'default':0, select:false}
     },
 
-    BlogTag:{
-        user_id:{type:Schema.ObjectId, ref:'User',query:common.FIND_USER_QUERY},
-        tag:{type:String, unique:true},
-        popularity:{type:Number, 'default':0, select:false}
-    },
-
     GamificationTokens: {
         create_discussion:{type:Number, 'default':3},
-        create_article:{type:Number, 'default':0},
         create_action:{type:Number, 'default':0},
         post_on_discussion:{type:Number, 'default':0},
         post_on_action:{type:Number, 'default':0},
@@ -244,7 +220,6 @@ var Schemas = exports.Schemas = {
         grade_action:{type:Number, 'default':0},
         grade_action_suggestion:{type:Number, 'default':0},
         vote_on_post:{type:Number, 'default':0},
-        vote_on_article_post:{type:Number, 'default':0},
         vote_on_action_post:{type:Number, 'default':0},
         like_info_item:{type:Number, 'default':0},
         join_to_action:{type:Number, 'default':0},
@@ -313,19 +288,6 @@ var Schemas = exports.Schemas = {
         _preview:{type:Schema.Types.Mixed,link:'/page/FAQ',editable:false}
     },{strict:true})),
 
-    ElectionsText:{
-        title:{type:String, required:true},
-        text_field:{type: Schema.Types.Text},
-        is_hidden:{type:Boolean, 'default':true}
-    },
-
-    ElectionsItem:{
-        img_field:{ type:Schema.Types.File, required:true},
-        img_text:String,
-        text_field:String,
-        is_hidden:{type:Boolean, 'default':true}
-    },
-
     DiscussionHistory:{
         discussion_id:{type:ObjectId, ref:'Discussion'},
         date:{type:Date, 'default':Date.now},
@@ -372,89 +334,6 @@ var Schemas = exports.Schemas = {
         is_published:{type:Boolean, 'default':false},
         is_hidden:{type:Boolean,'default':true}
     } ,
-    QuoteGameParty:{
-        name:{type:String, required:true},
-        image_field_thumb: { type:Schema.Types.File},
-        image_field: { type:Schema.Types.File},
-        overview: {type:String},
-        platform:{type:Schema.Types.Text},
-        official_site: {type:String},
-        open_knesset_id: {type:Number},
-        open_knesset_link: {type:String},
-        wikipedia_link: {type:String},
-        email: {type:String},
-        facebook: {type:String},
-        twitter: {type:String},
-        sandtalk_id:  {type:Number},
-        governence_quality_link : {type:String},
-        wins: {type:Number, 'default':0, editable:false}
-
-    }  ,
-    QuoteGameCandidate:{
-        name:{type:String ,required:true},
-        image_field_thumb: { type:Schema.Types.File},
-        image_field: { type:Schema.Types.File },
-        party_18th_knesset:{type:ObjectId, ref:'QuoteGameParty'   , index:true, required:true},
-        party_19th_knesset:{type:ObjectId, ref:'QuoteGameParty'   , index:true, required:true},
-        party_name:{type:String},
-        biography: {type:String},
-        sandtalk_id:  {type:Number},
-        sandtalk_link:  {type:String},
-        official_site: {type:String},
-        open_knesset_id: {type:Number},
-        open_knesset_link: {type:String},
-        wikipedia_link: {type:String} ,
-        doners:[{
-            name: {type:String} ,
-            location: {type:String} ,
-            date:{type:Date},
-            usd: {type:String},
-            nis: {type:String}
-        }]  ,
-        doners_link : {type:String},
-        governence_quality_text : {type:String},
-        governence_quality_link : {type:String},
-        email: {type:String},
-        telephone: {type:String},
-        fax: {type:String},
-        facebook: {type:String},
-        twitter: {type:String},
-        governence_quality_link : {type:String},
-        wins:   {type:Number, 'default':0, editable:false}  ,
-        additional_links : [{link: {type:String},text: {type:String}}]
-    }  ,
-
-    QuoteGameQuote:{
-        quote:{type:String, required:true},
-        source_link:{type:String},
-        priority:{type:Number, 'default':5},
-        //reference
-        candidate  : {type:ObjectId, ref:'QuoteGameCandidate'   , index:true, required:true},
-        response: {
-            skip:           {type:Number, 'default':0},//editable:false
-            positive:       {type:Number, 'default':0},
-            very_positive:  {type:Number, 'default':0},
-            negative:       {type:Number, 'default':0},
-            very_negative:  {type:Number, 'default':0}
-        }
-    },
-
-    QuoteGameGames:{
-        game_code :  String ,
-        first :   {type:ObjectId, ref:'QuoteGameCandidate'},
-        second :  {type:ObjectId, ref:'QuoteGameCandidate'},
-        third :   {type:ObjectId, ref:'QuoteGameCandidate'},
-        quote_count :    {type:Number, 'default':0,editable:false},
-        creation_date:{type:Date, 'default':Date.now},
-        updated:  {type:Date, 'default':Date.now, editable:false},
-        results_code:  {type:String}
-    }   ,
-
-    Face:{
-        url :  String ,
-        status:{type:String, "enum":["pending", "approved", "denied"]}
-
-    } ,
 
     Counter:{
         type:    String ,
@@ -463,7 +342,7 @@ var Schemas = exports.Schemas = {
             join_cycle_click :    {type:Number, 'default':0,editable:false},
             facebook_joiners :    {type:Number, 'default':0,editable:false}
         }
-    }  ,
+    } ,
 
     PressItem:{
         title:  {type:String, required:true},
@@ -479,7 +358,7 @@ var Schemas = exports.Schemas = {
     }
 };
 
-var schemas_with_tooltip = [require('./discussion'), require('./articles'), require('./cycle'), require('./information_item'), require('./action'), Schemas.Headline, Schemas.Update];
+var schemas_with_tooltip = [require('./discussion'), require('./cycle'), require('./information_item'), require('./action'), Schemas.Headline, Schemas.Update];
 
 _.each(schemas_with_tooltip, function (schema, index) {
     schema.methods.tooltip_or_title = function () {
@@ -495,27 +374,22 @@ var Models = module.exports = {
     Discussion:mongoose.model('Discussion', require('./discussion')),
     Cycle:mongoose.model('Cycle', require('./cycle')),
     Action:mongoose.model('Action', require('./action')),
-    Article:mongoose.model('Article', require('./articles')),
 
     Headline:mongoose.model('Headline', Schemas.Headline),
 
-    SuccessStory:mongoose.model('SuccessStory', Schemas.SuccessStory),
     Update:mongoose.model('Update', Schemas.Update),
 //    OpinionShaper: mongoose.model('OpinionShaper', Schemas.OpinionShaper),
-    Kilkul:mongoose.model('Kilkul',require('./kilkul')),
     DiscussionHistory:mongoose.model('DiscussionHistory', new Schema(Schemas.DiscussionHistory, {strict:true})),
 
     Subject:mongoose.model('Subject', require('./subject')),
     Post:require('./post'),
     PostSuggestion:require('./post_suggestion'),
     PostOnComment:require('./post_on_comment'),
-    PostArticle:mongoose.model('PostArticle', require('./post_article')),
     PostAction:require('./post_action'),
     Suggestion:require('./suggestion'),
     ActionSuggestion:require('./action_suggestion'),
     PostOrSuggestion:mongoose.model('PostOrSuggestion',require('./post_or_suggestion').Schema, 'posts'),
     Vote:mongoose.model('Vote', new Schema(Schemas.Vote, {strict:true})),
-    VoteArticlePost:mongoose.model('VoteArticlePost', require('./vote_article_post')),
     VoteActionPost:mongoose.model('VoteActionPost', require('./vote_action_post')),
     VoteSuggestion:mongoose.model('VoteSuggestion', new Schema(Schemas.VoteSuggestion, {strict:true})),
     Like:mongoose.model('Like', new Schema(Schemas.Like, {strict:true})),
@@ -527,7 +401,6 @@ var Models = module.exports = {
     Category:mongoose.model('Category', new Schema(Schemas.Category, {strict:true})),
     ActionResource:mongoose.model('ActionResource', new Schema(require('./action_resource'), {strict:true})),
     Tag:mongoose.model('Tag', new Schema(Schemas.Tag, {strict:true})),
-    BlogTag:mongoose.model('BlogTag', new Schema(Schemas.BlogTag, {strict:true})),
     FBRequest:mongoose.model('FBRequest', require('./fb_request')),
     ResourceObligation:mongoose.model('ResourceObligation', new Schema(Schemas.ResourceObligation, {strict:true})),
     Notification:mongoose.model('Notification', new Schema(Schemas.Notification, {strict:true})),
@@ -537,8 +410,7 @@ var Models = module.exports = {
     Founder:mongoose.model('Founder', Schemas.Founder),
     Test:mongoose.model('Test', new Schema(Schemas.Test, {strict:true})),
     Qa:mongoose.model('Qa', Schemas.Qa),
-    ElectionsText:mongoose.model('ElectionsText', new Schema(Schemas.ElectionsText, {strict:true})),
-    ElectionsItem:mongoose.model('ElectionsItem', new Schema(Schemas.ElectionsItem, {strict:true})),
+    PressItem:mongoose.model('PressItem', new Schema(Schemas.PressItem)),
     ThresholdCalcVariables:utils.config_model('ThresholdCalcVariables', Schemas.ThresholdCalcVariables),
 
     ImageUpload:mongoose.model('ImageUpload', require('./image_upload')),
@@ -547,13 +419,7 @@ var Models = module.exports = {
     GamificationTokens:utils.config_model('GamificationTokens', Schemas.GamificationTokens),
 
     DailyDiscussion:mongoose.model('DailyDiscussion', new Schema(Schemas.DailyDiscussion, {strict:true})),
-    QuoteGameCandidate:mongoose.model('QuoteGameCandidate', new Schema(Schemas.QuoteGameCandidate, {strict:true})),
 
-    QuoteGameParty:mongoose.model('QuoteGameParty', new Schema(Schemas.QuoteGameParty, {strict:true})),
-    QuoteGameQuote:mongoose.model('QuoteGameQuote', new Schema(Schemas.QuoteGameQuote, {strict:true})),
-    QuoteGameGames:mongoose.model('QuoteGameGames', new Schema(Schemas.QuoteGameGames, {strict:true})),
-    PressItem:mongoose.model('PressItem', new Schema(Schemas.PressItem, {strict:true})),
-    Face          :mongoose.model('Face', new Schema(Schemas.Face, {strict:true})),
     Counter          :mongoose.model('Counter', new Schema(Schemas.Counter, {strict:true})),
 
     Schemas:Schemas,

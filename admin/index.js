@@ -240,20 +240,6 @@ module.exports = function (app) {
         //filters: ['discussion_id', 'creator_id']
     });
 
-    admin.registerMongooseModel('Article', Models.Article, null, {
-        list:['title', 'getLink'],
-        search:['title', 'text_field_preview'],
-        actions:[
-          //  previewAction(Models.Article)
-        ]
-    });
-
-    admin.registerMongooseModel('PostArticle', Models.PostArticle, null, {
-        list:['article_id', 'text'],
-        search:['text']
-    });
-
-
     admin.registerSingleRowModel(Models.GamificationTokens, 'GamificationTokens', {
             form:GamificationForm}
     );
@@ -262,10 +248,6 @@ module.exports = function (app) {
         list:['discussion_id', 'date'],
         cloneable:true,
         filters:['discussion_id']
-    });
-
-    admin.registerMongooseModel('Kilkul', Models.Kilkul, null, {
-        list:['title']
     });
 
     admin.registerMongooseModel('DailyDiscussion', mongoose.model('DailyDiscussion'), null, {
@@ -277,13 +259,6 @@ module.exports = function (app) {
 
     admin.registerMongooseModel('Category', Models.Category, null, {
         list:['name']
-    });
-
-    admin.registerMongooseModel('SuccessStory', Models.SuccessStory, null, {
-        list:['title'],
-        actions:[
-           // previewAction(Models.SuccessStory)
-        ]
     });
 
     admin.registerMongooseModel('AboutUruText', Models.AboutUruText, null, {
@@ -336,101 +311,8 @@ module.exports = function (app) {
         list:['image.url']
     });
 
-
     admin.registerAdminUserModel();
-    /*
-     admin.registerMongooseModel('Vote', Models.Vote, null, {
-     list: ['post_id', 'user_id']
-     });
-
-     admin.registerMongooseModel('VoteSuggestion', Models.VoteSuggestion, null, {
-     list: ['suggestion_id', 'user_id']
-     });
-     admin.registerMongooseModel('Grade', Models.Grade, null, {
-     list: ['discussion_id', 'user_id']
-     });
-     admin.registerMongooseModel('Like', Models.Like, null, {
-     list: ['information_item_id', 'user_id']
-     });
-     admin.registerMongooseModel('Join', Models.Join, null, {
-     list: ['action_id', 'user_id']
-     });
-
-
-
-     admin.registerMongooseModel('Tag', Models.Tag, null, {
-     list: ['tag']
-     });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-     admin.registerMongooseModel('Test', Models.Test, null, {
-     list: ['action_resources'],
-     cloneable: true
-     });
-
-
-
-     admin.registerMongooseModel('ElectionsText', Models.ElectionsText, null, {
-     list: ['title']
-     });
-
-     admin.registerMongooseModel('ElectionsItem', Models.ElectionsItem, null, {
-     list: ['title']
-     });
-
-
-     admin.registerMongooseModel('Notification', Models.Notification, null, {
-     list: ['type'],
-     order_by: ['-on_date'],
-     filters: ['type']
-     });
-
-     admin.registerMongooseModel('FBRequest', Models.FBRequest, null, {
-     list_populate: ['creator'],
-     list: ['preview', 'creator.first_name', 'creator.last_name']
-     });
-
-     admin.registerSingleRowModel(Models.ThresholdCalcVariables, 'ThresholdCalcVariables');
-
-
-
-
-     admin.registerMongooseModel('QuoteGameParty', mongoose.model('QuoteGameParty'), null, {
-     list: ['name'],
-     order_by: ['gui_order'],
-     sortable: 'gui_order'
-     });
-     admin.registerMongooseModel('QuoteGameCandidate', mongoose.model('QuoteGameCandidate'), null, {
-     list: ['name'],
-     order_by: ['gui_order'],
-     sortable: 'gui_order'
-     });
-
-     admin.registerMongooseModel('QuoteGameQuote', mongoose.model('QuoteGameQuote'), null, {
-     list: ['quote'],
-     list_populate: ['QuoteGameCandidate'],
-     order_by: ['gui_order'],
-     sortable: 'gui_order'
-     });
-
-
-     */
-
-
 };
-
 
 var unApproveAction = function (id, callback) {
     models.Action.update({_id:id}, {$set:{is_approved:false}}, function (err, num) {
@@ -439,28 +321,3 @@ var unApproveAction = function (id, callback) {
         callback(err, num);
     })
 };
-//
-//function previewAction(model){
-//    return {
-//        value:'preview',
-//        label:'Preview',
-//        func:function(user,form,cbk){
-//            for (var field_name in form.clean_values) {
-//                form.instance.set(field_name, form.clean_values[field_name]);
-//            }
-//
-////            var self = this;
-//            form.instance.preview(cbk);
-////            model.find().where('_id').in(ids).exec(function(err,docs){
-////                if(err) return cbk(err);
-////                async.each(docs,function(doc,cbk){
-////                    doc.preview(cbk);
-////                },cbk);
-////            });
-//        },
-//        withForm:true,
-//        afterSave:function(req,res,ids){
-//            res.redirect(this.options.link.replace('__id__',ids[0]));
-//        }
-//    }
-//}

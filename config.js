@@ -22,6 +22,7 @@ config.s3_creds = {
     secret: 'loQKQjWXxSTnxYv1vsb97X4UW13E6nsagEWNMuNs',
     bucket: 'uru'
 };
+
 config.sendgrid_user = 'app2952775@heroku.com';
 config.sendgrid_key = 'a0oui08x';
 config.system_email = 'admin@uru.org.il';

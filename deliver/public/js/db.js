@@ -1799,22 +1799,6 @@ var db_functions = {
             }
         });
     },
-        /*
-    startStopGettingEmailNotifications: function (user_id, no_mail_notifications, callback) {
-        db_functions.loggedInAjax({
-            type: 'PUT',
-            url: '/api/users/' + user_id,
-            data: JSON.stringify({no_mail_notifications: no_mail_notifications}),
-            success: function (data) {
-                callback(null, data)
-            },
-            dataType: 'json',
-            processData: false,
-            contentType: "application/json"
-        });
-    } ,
-
-       */
 
     submitInvitedFriends: function (object_type,object_id,facebook_ids,emails, callback) {
 
@@ -1830,71 +1814,8 @@ var db_functions = {
                 callback(err, data);
             }
         });
-    }  ,
+    },
 
-
-    getQuoteGameQuotes:function (reset,candidate_id ,callback) {
-        db_functions.loggedInAjax({
-            url:'/api/quote_game_quote/?limit=0',
-            type:"GET",
-            data: {reset:reset,candidate_id:candidate_id},
-            async:true,
-            success:function (data, err) {
-                callback(err, data);
-            },
-            error:function (err, data) {
-                callback(err, data);
-            }
-        });
-    }  ,
-
-    getQuoteGameCandidate:function (candidate_id, callback) {
-        db_functions.loggedInAjax({
-            url:'/api/quote_game_candidate/?limit=0',
-            type:"GET",
-
-            async:true,
-            success:function (data) {
-                console.log(data);
-                callback(null, data);
-            },
-            error:function (err) {
-                callback(err, null);
-            }
-        });
-    } ,
-
-    setQuoteGameResponse:function (user_id,quote_id,hash,response, candidate_id,reset,callback) {
-
-        $.ajax({
-            url:'/api/quote_game_response/' + quote_id ,
-            type:"PUT",
-            async:true,
-            data: {user_id: user_id, quote_id: quote_id, hash: hash,response:response,candidate_id:candidate_id,reset:reset},
-            success:function (data) {
-                console.log(data);
-                callback(null, data);
-            },
-            error:function (err) {
-                callback(err, null);
-            }
-        });
-    } ,
-    setQuoteGameUser:function (callback) {
-
-        $.ajax({
-            url:'/api/quote_game_response/' ,
-            type:"POST",
-            async:true,
-            success:function (data) {
-                console.log(data);
-                if(callback)callback(null, data);
-            },
-            error:function (err) {
-                if(callback)callback(err, null);
-            }
-        });
-    } ,
     counterIncrease:function (counter,callback) {
 
         $.ajax({
@@ -1910,36 +1831,8 @@ var db_functions = {
                 callback(err, null);
             }
         });
-    }  ,
-    getFaces:function (status ,callback) {
-        db_functions.loggedInAjax({
-            url:'/api/face/?limit=0',
-            type:"GET",
-            data: {status:status},
-            async:true,
-            success:function (data, err) {
-                callback(err, data);
-            },
-            error:function (err, data) {
-                callback(err, data);
-            }
-        });
-    }  ,
-    setFaceStatus:function (face_id,status,callback) {
-        $.ajax({
-            url:'/api/face/' + face_id ,
-            type:"PUT",
-            async:true,
-            data: {status: status},
-            success:function (data) {
-                console.log(data);
-                callback(null, data);
-            },
-            error:function (err) {
-                callback(err, null);
-            }
-        });
     },
+
     updateMailNotification: function(user_id, data, callback){
         $.ajax({
             url:'/api/user_mail_notification_config/' + user_id,
