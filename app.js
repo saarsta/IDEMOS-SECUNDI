@@ -10,6 +10,7 @@ var async = require('async');
 var domain = require('domain');
 var auth = require("connect-auth");
 var formage_admin = require('formage-admin');
+var config = require('./config');
 formage_admin.forms.loadTypes(mongoose);
 
 
@@ -24,28 +25,15 @@ var fb_bot_middleware = require('./deliver/routes/fb_bot/middleware');
 
 // ########### Static parameters ###########
 var IS_ADMIN = /admin|staging/.test(process.env['NODE_ENV'] || '');
-var DB_URL = process.env['MONGOLAB_URI'] || 'mongodb://localhost/uru';
-var ROOT_PATH = process.env.ROOT_PATH || 'http://dev.empeeric.com';
+
 var IS_PROCESS_CRON = (process.argv[2] === 'cron');
 var IS_PROCESS_WEB = !IS_PROCESS_CRON;
-var s3_creds = {
-    key: 'AKIAJM4EPWE637IGDTQA',
-    secret: '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',
-    bucket: 'uru'
-};
-var fb_auth_params = {
-    appId: process.env['FACEBOOK_APPID'] || '175023072601087',
-    appSecret: process.env['FACEBOOK_SECRET'] || '5ef7a37e8a09eca5ee54f6ae56aa003f',
-    appName: process.env['FACEBOOK_APPNAME'] || 'uru_dev',
-    callback: ROOT_PATH + '/account/facebooklogin',
-    scope: 'email,publish_actions',
-    failedUri: '/noauth'
-};
+
 var auth_middleware = auth({
     strategies: [
         account.SimpleAuthentication(),
         account.FbServerAuthentication(),
-        auth.Facebook(fb_auth_params)
+        auth.Facebook(config.fb_auth_params)
     ],
     trace: true,
     logoutHandler: logout_handler
@@ -61,11 +49,11 @@ require('./deliver/tools/compile_dust_templates');
 
 // ######### connect to DB #########
 if (!mongoose.connection.host) {
-    mongoose.connect(DB_URL, {safe: true}, function (db) { console.log("connected to db %s:%s/%s", mongoose.connection.host, mongoose.connection.port, mongoose.connection.name); });
+    mongoose.connect(config.DB_URL, {safe: true}, function (db) { console.log("connected to db %s:%s/%s", mongoose.connection.host, mongoose.connection.port, mongoose.connection.name); });
     mongoose.connection.on('error', function (err) { console.error('db connection error: ', err); });
     mongoose.connection.on('disconnected', function (err) {
         console.error('DB disconnected', err);
-        setTimeout(function () {mongoose.connect(DB_URL, function (err) { if (err) console.error(err); });}, 200);
+        setTimeout(function () {mongoose.connect(config.DB_URL, function (err) { if (err) console.error(err); });}, 200);
     });
 }
 // ######### end connect to DB #########
@@ -78,27 +66,33 @@ app.settings['x-powered-by'] = 'Empeeric';
 app.set('views', __dirname + '/deliver/views');
 app.set('public_folder', __dirname + '/deliver/public');
 app.set('port', process.env.PORT || 80);
-app.set('facebook_app_id', fb_auth_params.appId);
-app.set('facebook_secret', fb_auth_params.appSecret);
-app.set('facebook_app_name', fb_auth_params.appName);
+app.set('facebook_app_id', config.fb_auth_params.appId);
+app.set('facebook_secret', config.fb_auth_params.appSecret);
+app.set('facebook_app_name', config.fb_auth_params.appName);
+
+// TODO delete?
 app.set('facebook_pages_admin_user', "uri@uru.org.il");
 app.set('facebook_pages_admin_pass', "uruuruuru");
-app.set('sendgrid_user', process.env.SENDGRID_USER || 'app2952775@heroku.com');
-app.set('system_email', process.env.SYSTEM_EMAIL || 'admin@uru.org.il');
-app.set('sendgrid_key',process.env.SENDGRID_KEY || 'a0oui08x');
-app.set('root_path', ROOT_PATH);
+//
+
+app.set('sendgrid_user', process.env.SENDGRID_USER || config.sendgrid_user);
+app.set('sendgrid_key',process.env.SENDGRID_KEY || config.sendgrid_key);
+app.set('system_email', process.env.SYSTEM_EMAIL || config.system_email);
+app.set('root_path', config.ROOT_PATH);
+
+// TODO delete?
 app.set('url2png_api_key', process.env.url2png_api_key || 'P503113E58ED4A');
 app.set('url2png_api_secret', process.env.url2png_api_key || 'SF1BFA95A57BE4');
+//
+
 app.set('send_mails', true);
 app.set('view engine', 'jade');
 app.set('view options', { layout: false });
-formage_admin.forms.setAmazonCredentials(s3_creds);
+formage_admin.forms.setAmazonCredentials(config.s3_creds);
 
 var models = require('./models');
 models.setDefaultPublish(app.settings.show_only_published);
 // ######### settings #########
-
-
 
 // ######### error handling #########
 process.on('uncaughtException', function(err) {
@@ -106,6 +100,7 @@ process.on('uncaughtException', function(err) {
     console.error(err);
     console.error(err.stack);
 });
+
 var proxy = require('./proxy');
 app.use(function (req, res, next) {
     if(req.headers['host'].indexOf('test.uru.org.il') > -1){
@@ -128,8 +123,6 @@ app.use(function (req, res, next) {
 });
 // ######### error handling #########
 
-
-
 // ######### general middleware #########
 formage_admin.serve_static(app, express);
 app.use(express.compress());
@@ -141,15 +134,11 @@ app.use(express.cookieParser());
 app.use(express.cookieSession({secret: 'Rafdo5L2iyhcsGoEcaBd', cookie: { path: '/', httpOnly: false, maxAge: 60 * 24 * 60 * 60 * 1000}}));
 // ######### general middleware #########
 
-
-
 // ########### Add request memory logger after 'static' folders ###########
 express.logger.token('mem', function () { var p = process, r_mem = (p.memoryUsage().rss / 1048576).toFixed(0); if (r_mem > 400) p.nextTick(p.exit); return util.format('%dMb', r_mem); });
 express.logger.format('default2', ':mem :response-time :res[content-length] :status ":method :url HTTP/:http-version" :res[body]');
 app.use(express.logger('default2'));
 // ########### setup memory logging ###########
-
-
 
 // ######### specific middleware #########
 app.use(fb_bot_middleware);
@@ -158,7 +147,6 @@ app.use(auth_middleware);
 app.use(account.auth_middleware);
 app.use(account.populate_user);
 // ######### specific middleware #########
-
 
 // ######### locals #########
 app.use(function (req, res, next) {
@@ -175,6 +163,7 @@ app.use(function (req, res, next) {
     });
     next();
 });
+
 app.locals({
     footer_links: function (place) {
         var links = mongoose.model('FooterLink').getFooterLinks();
@@ -187,14 +176,13 @@ app.locals({
         return ret;
     },
     cleanHtml: function (html) { return (html || '').replace(/<[^>]*?>/g, '').replace(/\[[^\]]*?]/g, '');},
-    fb_description: "עורו היא תנועה חברתית לייצוג הרוב בישראל. אנו מאמינים שבעידן שבו אנו חיים, כולנו מסוגלים וזכאים להשתתף בקבלת ההחלטות. לכן, עורו מנהלת פלטפורמה לדיון ציבורי, יסודי ואפקטיבי שיוביל שינוי בסדר היום. אצלנו, האג'נדה מוכתבת מלמטה.",
-    fb_title: 'עורו',
-    fb_image: 'http://site.e-dologic.co.il/philip_morris/Xls_script/uru_mailing/logo.jpg',
+    fb_description: config.fb_general_params.fb_description,
+    fb_title: config.fb_general_params.fb_title,
+    fb_image: config.fb_general_params.fb_image,
     get: function (attr) {
         return app.get(attr);
     }
 });
-
 
 app.locals({
     writeHead: function(name) {
@@ -224,12 +212,10 @@ app.locals({
 });
 // ######### locals #########
 
-
-
 // ######### environment specific settings #########
 app.configure('development', function(){
     require('./admin')(app);
-    app.set('send_mails', false);
+    app.set('send_mails', true);
 });
 
 if (IS_ADMIN) {
