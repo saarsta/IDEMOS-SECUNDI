@@ -238,7 +238,6 @@ var UserMailNotificationConfig = module.exports = jest.MongooseResource.extend({
                     });
                 }
             }
-
         })
     }
 })

@@ -5,7 +5,6 @@ var user = {
     actions_done_by_user: {}
 };
 
-
 var db_functions = {
 
     loggedInAjax:function (options) {
