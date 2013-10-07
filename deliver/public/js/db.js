@@ -17,6 +17,7 @@ var db_functions = {
                     if (err)
                         onError(xhr, ajaxOptions, thrownError);
                     else {
+                        user = date;
                         var success = options.success;
                         options.success = function () {
                             success.apply(this, arguments);
