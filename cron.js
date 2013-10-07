@@ -436,65 +436,6 @@ var daily_cron = exports.daily_cron = {
         })
     },
 
-    updateBlogTagAutoComplete: function () {
-
-        //noinspection JSUnresolvedFunction
-        async.waterfall([
-
-            function (cbk) {
-                models.BlogTag.remove({}, function (err, results) { cbk(err, results)});
-            },
-
-            function (results, cbk) {
-                models.Article.collection.group(
-
-                    {user_id: true},
-                    {},
-                    {},
-                    function (doc, out) {
-                        var tags = doc.tags;
-                        for (var i = 0; i < tags.length; i++) {
-                            out[tags[i]] = (out[tags[i]] || 0) + 1;
-                        }
-                    }.toString()
-                    ,
-                    function (err, results) {
-
-                        cbk(err, results);
-                    });
-            },
-
-            function (results, cbk) {
-                async.forEach(results, function (blog_tags, itr_cbk) {
-                    var user_id = blog_tags.user_id;
-                    delete blog_tags['user_id'];
-
-                    var funcs = _.map(blog_tags, function (popularity, tag) {
-                        return function (cbk) {
-                            var blog_tag = new models.BlogTag();
-                            blog_tag.tag = tag;
-                            blog_tag.popularity = popularity;
-                            blog_tag.user_id = user_id;
-                            blog_tag.save(cbk);
-                        }
-                    });
-                    //noinspection JSUnresolvedFunction
-                    async.parallel(funcs, itr_cbk);
-
-                }, cbk);
-            }
-
-        ], function (err) {
-            if (err) {
-                console.error(err);
-            }
-            else {
-                console.log("Cron - BlogTags completed successfuly");
-            }
-        })
-    },
-
-
     //X_suggestions_for_a_discussion
     findWhoInsertedNumberOfApprovedSuggestions: function (number, callback) {
         var event = number + "_num_of_approved_suggestions";

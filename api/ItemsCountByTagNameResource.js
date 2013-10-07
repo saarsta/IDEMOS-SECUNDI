@@ -23,8 +23,7 @@ var ItemsByTagResource = module.exports = jest.Resource.extend({
             info_items_count: null,
             discussions_count:null,
             cycles_count: null,
-            actions_count: null,
-            blogs_count: null
+            actions_count: null
         }
     },
     get_objects:function(req,filters,sorts,limit,offset,callback)
@@ -34,7 +33,6 @@ var ItemsByTagResource = module.exports = jest.Resource.extend({
         var discussions_count;
         var info_items_count;
         var actions_count;
-        var blogs_count;
 
         var query = {};
         if(tag_name)
@@ -55,10 +53,6 @@ var ItemsByTagResource = module.exports = jest.Resource.extend({
 
             function(cbk){
                 models.Action.count(query,cbk);
-            },
-
-            function(cbk){
-                models.Article.count(query, cbk);
             }
 
         ], function(err, args){
@@ -67,7 +61,6 @@ var ItemsByTagResource = module.exports = jest.Resource.extend({
                 discussions_count:args[1]|| 0,
                 info_items_count: args[2]|| 0,
                 actions_count: args[3]|| 0,
-                blogs_count: args[4]|| 0
             });
         });
     }

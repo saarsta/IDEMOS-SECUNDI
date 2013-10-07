@@ -162,7 +162,6 @@ var Schemas = exports.Schemas = {
         )],
         type:{type:String, "enum":[
             'approved_info_item_i_created',
-//            'approved_info_item_i_liked',
             'approved_discussion_i_created',
             'approved_discussion_i_took_part',
             'comment_on_discussion_you_are_part_of',

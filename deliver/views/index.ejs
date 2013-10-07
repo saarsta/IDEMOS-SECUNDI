@@ -69,9 +69,6 @@ padding-bottom: 60px;">
             <div class="fb-like-box" data-href="http://www.facebook.com/URUisrael" data-width="308" data-height="560" data-show-faces="true" data-stream="true" data-header="false" data-border-color="white" ></div>
             </div>
         </div>
-        <div class="blog-box">
-            <h2>מאמרים מובילים</h2>
-        </div>
     </div>
 </div>
 <% include partials/footer.ejs %>
@@ -118,24 +115,6 @@ padding-bottom: 60px;">
             })
         });
 
-        db_functions.getSuccessStories(function (data) {
-            $.each(data.objects, function (key, article) {
-                dust.render('success_story', article, function (err, html) {
-                    $('div.succes-box').append(html);
-                })
-            })
-        });
-
-        db_functions.getPopularArticles(3, function (data) {
-            $.each(data.objects, function (index, article) {
-                article.is_last = index == data.objects.length - 1;
-                dust.render('article', article, function (err, html) {
-                    $('div.blog-box').append(html);
-                });
-            });
-        });
-
-
         db_functions.getPopularHeadlines(3, function (data) {
             $.each(data.objects, function (index, headline) {
                 dust.render('headline', headline, function (err, html) {
@@ -145,7 +124,6 @@ padding-bottom: 60px;">
         });
 
         if(user_logged) {
-
             db_functions.getNotifications(null, 5, function (data) {
                 dust.renderArray('notification', data.objects, null,function (err, html) {
                     $('.renewal').append(html).append('<a href="/myuru">' +

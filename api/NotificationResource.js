@@ -76,7 +76,7 @@ var NotificationCategoryResource = module.exports = resources.MongooseResource.e
         get_objects:function (req, filters, sorts, limit, offset, callback) {
             var user_id = req.query.user_id;
             if (!user_id && req.user)
-                user_id = req.user._id;
+                user_id = req.user.id;
 
             if (user_id)
                 filters['user_id'] = user_id;
@@ -1014,7 +1014,6 @@ var populateNotifications = module.exports.populateNotifications = function(resu
         "change_suggestion_on_discussion_you_created",
         "approved_change_suggestion_you_created",
         "approved_change_suggestion_on_discussion_you_are_part_of"
-
     ];
 
     var discussion_ids_as_sub_entity = _.chain(results.objects)

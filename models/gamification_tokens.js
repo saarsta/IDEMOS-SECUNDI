@@ -23,7 +23,6 @@ var GamificationTokens = module.exports = {
     join_kilkul:{type:Number, 'default':0},
     min_tokens_to_create_dicussion:{type:Number, 'default':10},
     min_tokens_to_create_action:{type:Number, 'default':0},
-    min_tokens_to_create_blog:{type:Number, 'default':0},
     invite_X_people_who_got_Y_extra_tokens:{x:{type:Number, 'default':1000}, y:{type:Number, 'default':1000}},
     invite_X_people_who_signed_in:{type:Number, 'default':1000000},
     X_tokens_for_post:{type:Number, 'default':1000000},

@@ -456,17 +456,6 @@ var db_functions = {
         });
     },
 
-    getSuccessStories:function (callback) {
-        db_functions.loggedInAjax({
-            url:'/api/success_stories',
-            type:"GET",
-            async:true,
-            success:function (data) {
-                callback(data);
-            }
-        });
-    },
-
     getNotifications:function (user_id, limit, callback) {
         db_functions.loggedInAjax({
             url:'/api/notifications?' + (user_id ? '&user_id=' + user_id : '') + (limit ? '&limit=' + limit : ''),
@@ -1285,7 +1274,6 @@ var db_functions = {
         });
     },
 
-
     getDiscussionsByTagName:function (tag_name, callback) {
         db_functions.loggedInAjax({
             url:'/api/discussions' + (tag_name ? '?tags=' + tag_name : ''),
@@ -1761,19 +1749,6 @@ var db_functions = {
     getInfoItemsByTagName:function (tag_name, callback) {
         db_functions.loggedInAjax({
             url:'/api/information_items' + (tag_name ? '?tags=' + tag_name : ''),
-            type:"GET",
-            async:true,
-            success:function (data) {
-
-                console.log(data);
-                callback(null, data);
-            }
-        });
-    },
-
-    getBlogsByTagName:function (tag_name, callback) {
-        db_functions.loggedInAjax({
-            url:'/api/articles' + (tag_name ? '?tags=' + tag_name : ''),
             type:"GET",
             async:true,
             success:function (data) {

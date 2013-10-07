@@ -34,7 +34,6 @@ var mongoose_resource = require('jest'),
     ActionPopulatedResource = require('./actions/ActionPopulatedResource.js'),
     TagResource = require('./TagResource'),
     HeadlineResource = require('./HeadlineResource'),
-    SuccessStoryResource = require('./SuccessStoryResource'),
     UpdateResource = require('./UpdateResource'),
     HotObjectResource = require('./HotObjectResource'),
     NotificationResource = require('./NotificationResource'),
@@ -68,7 +67,6 @@ module.exports = function(app)
     rest_api.register_resource('users',new UserResource());
     rest_api.register_resource('information_items',new InformationItemResource());
     rest_api.register_resource('headlines',new HeadlineResource());
-    rest_api.register_resource('success_stories',new SuccessStoryResource());
     rest_api.register_resource('updates',new UpdateResource());
     rest_api.register_resource('shopping_cart',new ShoppingCartResource());
     rest_api.register_resource('discussions_shopping_cart',new DiscussionShoppingCartResource());
