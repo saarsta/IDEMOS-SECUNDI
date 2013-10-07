@@ -114,8 +114,6 @@ module.exports = function (app) {
 
     router.include('/discussions', Discussions);
 
-    router.include('/daily_discussions', require('./daily_discussions'));
-
     router.include('/myuru', MyUru);
 
     router.include('/og', require('../../og'));

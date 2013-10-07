@@ -299,41 +299,6 @@ var Schemas = exports.Schemas = {
         grade: Number
     },
 
-    Test:{
-        action_resources:[
-//            new Schema(
-            {
-                resource: {type:ObjectId, ref:'ActionResource'},
-                amount:Number,
-                left_to_bring:Number,
-                bring:[
-                    new Schema(
-                    {
-                        users:{type:ObjectId, ref:'User',query:common.FIND_USER_QUERY},
-                        amount:{type:Number, 'default':0}
-                    })
-                ]
-            }
-// )
-        ]
-    },
-
-    DailyDiscussion:{
-        title:{type:String, required:true},
-        image_field: { type:Schema.Types.File, required:true},
-        subject:    {type:ObjectId, ref:'Subject'   , index:true, required:true},
-        discussion: {type:ObjectId, ref:'Discussion',query:common.FIND_DISCUSSION_QUERY}  ,
-        cycle:      {type:ObjectId, ref:'Cycle'     , index:true}  ,
-        text_field: {type:Schema.Types.Html, required:true},
-        creation_date:{type:Date, 'default':Date.now},
-        //system_message:{type:Schema.Types.Html},
-        tags:[String],
-        view_counter: {type:Number, 'default':0},
-        is_visible:{type:Boolean, 'default':true},
-        is_published:{type:Boolean, 'default':false},
-        is_hidden:{type:Boolean,'default':true}
-    } ,
-
     Counter:{
         type:    String ,
         quote_game:{
