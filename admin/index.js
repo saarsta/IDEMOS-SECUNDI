@@ -32,7 +32,7 @@ module.exports = function (app) {
             if (err) return cbk(err);
 
             var lastVisit = req.admin_user.fields.lastVisit;
-            async.map(['Post', 'Discussion', 'Suggestion', {model:'Cycle', field:'creation_date.date'}, 'Action'], function (type, cbk) {
+            async.map(['Post', 'Discussion', 'Suggestion'/*, {model:'Cycle', field:'creation_date.date'}, 'Action'*/], function (type, cbk) {
                 var modelName = type.model || type;
                 var dateField = type.field || 'creation_date';
                 var modelSettings = self.models[modelName];
@@ -63,7 +63,6 @@ module.exports = function (app) {
         });
     };
 
-
     admin.registerMongooseModel("Subject", Models.Subject, null, {
         list:['name'],
         order_by:['gui_order'],
@@ -92,7 +91,6 @@ module.exports = function (app) {
             {model:'Action', field:'creator_id', label:'Owned actions'}
         ]
     });
-
 
     admin.registerMongooseModel("InformationItem", Models.InformationItem, null, {
         list:['title'],
@@ -179,7 +177,7 @@ module.exports = function (app) {
         hideFromMain:true
     });
 
-    admin.registerMongooseModel("Cycle", Models.Cycle, null, {
+   /* admin.registerMongooseModel("Cycle", Models.Cycle, null, {
         list:['title'],
         cloneable:true,
         form:CycleForm,
@@ -193,14 +191,14 @@ module.exports = function (app) {
         ]
         // filters: ['created_by', 'is_hidden', 'is_hot_object']
     });
-
-    admin.registerMongooseModel('Update', Models.Update, null, {
+*/
+   /* admin.registerMongooseModel('Update', Models.Update, null, {
         list:['title'],
         form:IdkunimForm,
         search:['title', 'text_field_preview']
     });
-
-    admin.registerMongooseModel('Action', Models.Action, null, {
+*/
+    /*admin.registerMongooseModel('Action', Models.Action, null, {
         form:ActionForm,
         list:['title'],
         actions:[
@@ -224,14 +222,14 @@ module.exports = function (app) {
             }
         ],
         search:['title', 'text_field_preview']
-    });
+    });*/
 
-    admin.registerMongooseModel('ActionResource', Models.ActionResource, null, {
+    /*admin.registerMongooseModel('ActionResource', Models.ActionResource, null, {
         list:['name', 'category'],
         search:['name']
     });
-
-    admin.registerMongooseModel('PostAction', Models.PostAction, null, {
+*/
+    /*admin.registerMongooseModel('PostAction', Models.PostAction, null, {
         list:['text', 'username', 'discussion_id.title'],
         list_populate:['discussion_id'],
         order_by:['-creation_date'],
@@ -239,7 +237,7 @@ module.exports = function (app) {
 
         //filters: ['discussion_id', 'creator_id']
     });
-
+*/
     admin.registerSingleRowModel(Models.GamificationTokens, 'GamificationTokens', {
             form:GamificationForm}
     );
@@ -248,13 +246,6 @@ module.exports = function (app) {
         list:['discussion_id', 'date'],
         cloneable:true,
         filters:['discussion_id']
-    });
-
-    admin.registerMongooseModel('DailyDiscussion', mongoose.model('DailyDiscussion'), null, {
-        list:['title'],
-        list_populate:['discussion_id'],
-        order_by:['gui_order'],
-        sortable:'gui_order'
     });
 
     admin.registerMongooseModel('Category', Models.Category, null, {
