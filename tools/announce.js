@@ -6,7 +6,7 @@ mongoose.connect('mongodb://heroku_app2952775:nuulb7icv8aafrr7n592uie793@ds03110
 var
     app = require('../app'),
     models = require('../models'),
-    common = require('../deliver/routes/account/common'),
+    common = require('./account/common'),
     templates = require('../lib/templates'),
     mail = require('../lib/mail'),
     crypto = require('crypto'),

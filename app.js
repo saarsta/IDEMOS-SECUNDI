@@ -20,8 +20,8 @@ app.set('show_only_published', process.env.SHOW_ONLY_PUBLISHED == '1');
 utils.setShowOnlyPublished(app.settings.show_only_published);
 
 var logout_handler = require("connect-auth/lib/events").redirectOnLogout("/");
-var account = require('./deliver/routes/account');
-var fb_bot_middleware = require('./deliver/routes/fb_bot/middleware');
+var account = require('./routes/account');
+var fb_bot_middleware = require('./routes/fb_bot/middleware');
 
 // ########### Static parameters ###########
 var IS_ADMIN = /admin|staging/.test(process.env['NODE_ENV'] || '');
@@ -43,7 +43,7 @@ var auth_middleware = auth({
 
 // Run some compilations
 require('./tools/compile_templates');
-require('./deliver/tools/compile_dust_templates');
+require('./tools/compile_dust_templates');
 
 
 
@@ -63,8 +63,8 @@ if (!mongoose.connection.host) {
 // ######### settings #########
 
 app.settings['x-powered-by'] = 'Empeeric';
-app.set('views', __dirname + '/deliver/views');
-app.set('public_folder', __dirname + '/deliver/public');
+app.set('views', __dirname + '/views');
+app.set('public_folder', __dirname + '/public');
 app.set('port', process.env.PORT || 80);
 app.set('facebook_app_id', config.fb_auth_params.appId);
 app.set('facebook_secret', config.fb_auth_params.appSecret);
@@ -226,7 +226,7 @@ if (IS_PROCESS_WEB) {
     require('./api')(app);
     require('./og/config').load(app);
     require('./lib/templates').load(app);
-    require('./deliver/routes')(app);
+    require('./routes')(app);
     require('./api/common');
 }
 

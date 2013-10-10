@@ -14,7 +14,7 @@ var resources = require('jest'),
     common = require('../common.js'),
     GradeSuggestion = require('../GradeSuggestionResource.js'),
     _ = require('underscore');
-    calc_thresh = require('../../deliver/tools/calc_thresh.js'),
+    calc_thresh = require('../../tools/calc_thresh.js'),
     Suggestion = require('../suggestionResource.js'),
     notifications = require('../notifications.js');
 

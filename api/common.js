@@ -308,7 +308,7 @@ var uploadHandler = exports.uploadHandler = function(req,callback) {
 			return decodeURIComponent(filename).replace(regex, '-');
 		},
 		filename_to_path = function (filename) {
-			return path.join(__dirname,'..','deliver','public','cdn', filename);
+			return path.join(__dirname,'..','public','cdn', filename);
 		},
 		create_file = function (filename, callback) {
 			// This function attempts to create 0_filename, 1_filename, etc., until it finds a file that doesn't exist.

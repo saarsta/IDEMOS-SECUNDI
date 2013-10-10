@@ -3,8 +3,8 @@ var jest = require('jest')
     ,models = require('../models')
     ,common = require('./common')
     ,async = require('async')
-    ,sendActivationMail = require('../deliver/routes/account/activation').sendActivationMail
-    ,facebook_register = require('../deliver/routes/account/facebook_login').facebook_register
+    ,sendActivationMail = require('../routes/account/activation').sendActivationMail
+    ,facebook_register = require('../routes/account/facebook_login').facebook_register
     ,_ = require('underscore');
 
 var RegisterResource = module.exports =  jest.Resource.extend({
