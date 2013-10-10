@@ -9376,6 +9376,36 @@ a.menu-elections:hover {
     clear: both;
 }
 
+ul#subjects
+{
+    margin-left: 0;
+    padding-left: 0;
+    white-space: nowrap;
+}
+
+#subjects li
+{
+    margin-left: 1px;
+    display: inline;
+    list-style-type: none;
+}
+
+#subjects a { padding: 3px 10px; }
+
+#subjects a:link, #subjects a:visited
+{
+    color: #fff;
+    background-color: #3B63EF;
+    text-decoration: none;
+}
+
+#subjects a:hover
+{
+    color: #fff;
+    background-color: #369;
+    text-decoration: none;
+}
+
 #elected-dicussions {
 
     border-top: 6px solid #D6DBDE;
