@@ -98,8 +98,6 @@ module.exports = function (app) {
 
     router.all('/facebookShare', require('./account/facebook_share'));
 
-    router.all('/order_shirts', require('./navigation/order_shirts'));
-
     router.include('/information_items', InformationItems);
 
     router.include('/cycles', require('./cycles'));
