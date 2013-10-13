@@ -88,7 +88,8 @@ module.exports = function (app) {
             {model:'Post', field:'creator_id', label:'Comments'},
             {model:'Suggestion', field:'creator_id', label:'Suggestions'},
             {model:'Discussion', field:'creator_id', label:'Owned discussions'},
-            {model:'Action', field:'creator_id', label:'Owned actions'}
+            // this line destroies viewing user in the admin
+//            {model:'Action', field:'creator_id', label:'Owned actions'}
         ]
     });
 

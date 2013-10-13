@@ -106,7 +106,7 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                 models.Discussion.findById(discussion_id, cbk);
             },
 
-            //user can grade suggestion only if he grade the discussion
+            //get user discussion's grade
             function (disc_obj, cbk) {
                 discussion_participants_count = disc_obj.users.length;
                 discussion_obj = disc_obj;
@@ -114,31 +114,20 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
             },
 
             function (grade_discussion, cbk) {
-                //check if user has graded the discussion first
-                //if not - check if the creator of the discussion is the user that is trying to grade
-                // (if so - instead of the user discussion_grade we take the evaluated discussion.grade)
+                //check if user has graded the discussion
+                //if not - instead of the user discussion_grade we take the evaluated discussion.grade)
                 if (!grade_discussion) {
+                    discussion_evaluation_grade = discussion_obj.grade;
+                    is_agree = fields.evaluation_grade >= discussion_evaluation_grade;
 
-                    //if the creator of the discussion grade the suggestion without grdein the discussion - its ok
-                    // otherwise unauthorise
-                    if (req.user._id + "" != discussion_obj.creator_id + "")
-                        cbk({code:401, message:"must grade discussion first"}, null);
-                    else {
-                        discussion_evaluation_grade = discussion_obj.grade;
-                        is_agree = fields.evaluation_grade >= discussion_evaluation_grade;
+                    //check if suggestion is approved (al haderech)
+                    //i think there is no need for that, threshold is in suggestion
+                    //real_threshold = Number(obj.admin_threshold_for_accepting_change_suggestions) || obj.threshold_for_accepting_change_suggestions;
 
-                        //check if suggestion is approved (al haderech)
-
-                        //i think there is no need for that, threshold is in suggestion
-                        //                                real_threshold = Number(obj.admin_threshold_for_accepting_change_suggestions) || obj.threshold_for_accepting_change_suggestions;
-
-                        fields.does_support_the_suggestion = is_agree;
-                        fields.proxy_power = proxy_power;
-                        base.call(self, req, fields, cbk);
-                    }
-
-                }
-                else {
+                    fields.does_support_the_suggestion = is_agree;
+                    fields.proxy_power = proxy_power;
+                    base.call(self, req, fields, cbk);
+                } else {
                     discussion_evaluation_grade = grade_discussion.evaluation_grade;
                     is_agree = fields.evaluation_grade >= discussion_evaluation_grade;
                     fields.does_support_the_suggestion = is_agree;
@@ -323,21 +312,21 @@ var GradeSuggestionResource = module.exports = common.GamificationMongooseResour
                 discussion_participants_count = discussion_obj.users.length;
                 real_threshold = Number(discussion_obj.admin_threshold_for_accepting_change_suggestions) || discussion_obj.threshold_for_accepting_change_suggestions;
 
-                if (discussion_obj.creator_id + "" == req.user._id + "") {
-                    discussion_evaluation_grade = discussion_obj.grade;
-                    is_agree = object.evaluation_grade >= discussion_evaluation_grade;
-                    models.Suggestion.findById(object.suggestion_id, cbk);
-                }
-                else
-                    models.Grade.findOne({discussion_id:discussion_id, user_id:req.user._id || object.user_id}, function (err, grade_discussion) {
-                        if (!err && grade_discussion) {
+                models.Grade.findOne({discussion_id:discussion_id, user_id:req.user._id || object.user_id}, function (err, grade_discussion) {
+                    if (!err) {
+                        // if user have graded the discussion his discussion_evaluation_grade is his discussion's grade
+                        // else - if user didn't grade the discussion then discussion_evaluation_grade is the discussion grade
+                        if (grade_discussion) {
                             discussion_evaluation_grade = grade_discussion.evaluation_grade;
-                            is_agree = object.evaluation_grade >= discussion_evaluation_grade;
-                            models.Suggestion.findById(object.suggestion_id, cbk);
                         } else {
-                            cbk({message:"please grade the discussion", code:401});
+                            discussion_evaluation_grade = discussion_obj.grade;
                         }
-                    });
+                        is_agree = object.evaluation_grade >= discussion_evaluation_grade;
+                        models.Suggestion.findById(object.suggestion_id, cbk);
+                    } else {
+                        cbk(err);
+                    }
+                });
             },
 
             function (sugg_obj, cbk) {

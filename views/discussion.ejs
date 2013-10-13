@@ -399,7 +399,7 @@ $(document).ready(function () {
     var discussion_id = "<%=discussion_id%>";
     var creator_id = "<%=discussion.creator_id && discussion.creator_id.id%>";
     var is_creator = (my_id == creator_id);
-    var my_discussion_grade = Number("<%= discussion.grade_obj ? discussion.grade_obj.value || 0 : 0 %>");
+    var my_discussion_grade = Number("<%= discussion.grade_obj ? discussion.grade_obj.value || discussion.grade : discussion.grade %>");
     var discussion_grade = Number("<%= discussion.grade%>");
     var grade_id = "<%= discussion.grade_obj ? discussion.grade_obj.grade_id : 0 %>";
     var vision_text_history_count = "<%= discussion.vision_text_history ? discussion.vision_text_history.length : 0 %>";
@@ -1708,7 +1708,8 @@ $(document).ready(function () {
                         return false;
                     }
 
-                    if (!my_discussion_grade && !is_creator){
+                    //this chunk is for preventing adding suggestion before grading  the discussion
+                   /* if (!my_discussion_grade && !is_creator){
                         var popupConfig = {};
                         popupConfig.message = 'אנא דרג קודם את החזון בראש העמוד.'
                         popupConfig.onOkCilcked = function(e){
@@ -1720,7 +1721,7 @@ $(document).ready(function () {
                         popupProvider.showOkPopup(popupConfig);
                         return false;
                     }
-
+*/
                     if(navigator.appName === "Microsoft Internet Explorer"){
                         $("#pop_suggest_bt").click();
                     }else{
