@@ -31,6 +31,6 @@ config.system_email = 'admin@uru.org.il';
 
 
 config.DB_URL = process.env['MONGOLAB_URI'] || 'mongodb://localhost/idemos';
-config.ROOT_PATH = process.env.ROOT_PATH || 'http://dev.empeeric.com';
+config.ROOT_PATH = process.env.ROOT_PATH || 'http://idemos.herokuapp.com';
 
 module.exports = config;
