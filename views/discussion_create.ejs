@@ -320,14 +320,14 @@
                              var creator_id = data.creator_id,
                              created_discussion_id = data._id;
                              if ($.trim(first_post) != ""){
-                                 var user_info = {
+                                 /*var user_info = {
                                      user_logged_in : user.first_name ? true : false,
                                      action_done : true,
                                      action_name : "",
                                      tokens_owned : user.tokens ? user.tokens : 0,
-                                     price: gamification_price['post_on_discussion']
-                                 }
-                                 db_functions.addPostToDiscussion(created_discussion_id, first_post,null, user_info, function(err, data){
+                                     *//*price: gamification_price['post_on_discussion']*//*
+                                 }*/
+                                 db_functions.addPostToDiscussion(created_discussion_id, first_post,null, /*user_info,*/ function(err, data){
                                      if (err){
                                          console.error(err);
                                      }else{
