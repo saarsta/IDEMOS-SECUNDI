@@ -21,8 +21,6 @@ var InformationItem = module.exports = utils.revertibleModel(new Schema({
     tags:{type:[String], index:true},
     users:{type:[ObjectId], ref:'User',query:common.FIND_USER_QUERY,editable:false},
     discussions:[{type:ObjectId,  limit: 1000, ref:'Discussion', index:true}],
-    cycles:{type:[ObjectId], ref:'Cycle', index:true},
-    actions:{type:[ObjectId], ref:'Action'},
     is_visible:{type:Boolean, 'default':true},
     creation_date:{type:Date, 'default':Date.now,editable:false},
     is_hot_object:{type:Boolean, 'default':false},
