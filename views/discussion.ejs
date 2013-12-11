@@ -720,7 +720,7 @@ $(document).ready(function () {
                     action_done : (user.actions_done_by_user && user.actions_done_by_user.grade_object) ? true : false,
                     action_name : "grade_object",
                     tokens_owned : user.tokens ? user.tokens : 0,
-                    price: gamification_price['grade_discussion']
+                    /*price: gamification_price['grade_discussion']*/
                 }
 
                 db_functions.addDiscussionGrade(discussion_id, my_discussion_grade, grade_id, user_info, function (err, data) {
