@@ -193,29 +193,26 @@ var PostResource = module.exports = common.GamificationMongooseResource.extend({
             {
                 var grade_discussion = args[0];
                 var discussion_obj = args[1];
-                if (!grade_discussion && (user_id != discussion_obj.creator_id + "")) {
-                    cbk({code:401, message:"must grade discussion first"}, null);
+
+                console.log('debugging waterfall 1');
+                fields.creator_id = user_id;
+                fields.first_name = user.first_name;
+                fields.last_name = user.last_name;
+                fields.avatar = user.avatar;
+                if(!fields.ref_to_post_id || fields.ref_to_post_id == "null" || fields.ref_to_post_id == "undefined"){
+                    delete fields.ref_to_post_id;
                 }else{
-                    console.log('debugging waterfall 1');
-                    fields.creator_id = user_id;
-                    fields.first_name = user.first_name;
-                    fields.last_name = user.last_name;
-                    fields.avatar = user.avatar;
-                    if(!fields.ref_to_post_id || fields.ref_to_post_id == "null" || fields.ref_to_post_id == "undefined"){
-                        delete fields.ref_to_post_id;
-                    }else{
-                        setQuotedPost(post_object._id, fields.ref_to_post_id, req.user.toString());
-                    }
-
-
-                    // TODO add better sanitizer
-                    //   fields.text = sanitizer.sanitize(fields.text);
-
-                    for (var field in fields) {
-                        post_object.set(field, fields[field]);
-                    }
-                    self.authorization.edit_object(req, post_object, cbk);
+                    setQuotedPost(post_object._id, fields.ref_to_post_id, req.user.toString());
                 }
+
+
+                // TODO add better sanitizer
+                //   fields.text = sanitizer.sanitize(fields.text);
+
+                for (var field in fields) {
+                    post_object.set(field, fields[field]);
+                }
+                self.authorization.edit_object(req, post_object, cbk);
             },
 
             //  2) save post object

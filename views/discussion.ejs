@@ -415,6 +415,8 @@ $(document).ready(function () {
         my_discussion_grade = discussion_grade;
     }
 
+    if (user && !user.actions_done_by_user) user.actions_done_by_user = {};
+
     // toggle edit class to open/close contxt popup window or edit suggestion button
     $('#suggestions_wrapper').on('mouseenter', '.text.change_proposal', function(e){
         var edit_window = $(this).find('.edit_window');
@@ -768,7 +770,6 @@ $(document).ready(function () {
         }
 
         db_functions.addPostToDiscussion(discussion_id, $("textarea#discussion_comment").val(), new_post_ref_id, user_info, function (err, post) {
-            // $("#user_tokens").text(post.updated_user_tokens);
             if (!err) {
                 if(post == 'canceled'){
                     $this.data('executing', false);
@@ -807,11 +808,6 @@ $(document).ready(function () {
                         $this.data('executing', false);
                         $this.removeClass('disable')
                     });
-                }
-            }else{
-                if(err.responseText == "must grade discussion first"){
-                    $this.data('executing', false);
-                    $this.removeClass('disable');
                 }
             }
         })
@@ -1900,7 +1896,8 @@ $(document).ready(function () {
                 }
             });
         }
-         var self =$(this);
+
+        var self =$(this);
         if(self.hasClass('active')){
             return
         }
