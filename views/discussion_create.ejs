@@ -313,7 +313,7 @@
                             /* $('.discussion-main .bottom input[type=submit]').removeClass('disable');
                              return;*/
                          }else{
-                             if(!user.actions_done_by_user.create_object)
+                             if(!user.actions_done_by_user || !user.actions_done_by_user.create_object)
                              {
                                  user.actions_done_by_user.post_on_object = true;
                              }
