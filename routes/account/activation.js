@@ -134,7 +134,7 @@ var sendActivationMail = module.exports.sendActivationMail = function(user,next,
             templates.renderTemplate(template,{user:user, temp_password:temp_password,next:next},cbk);
         },
         function(body,cbk) {
-            mail.sendMail(user.email, body, 'אימות חשבון באתר עוּרו', cbk);
+            mail.sendMail(user.email, body, 'אימות חשבון באתר', cbk);
         }
     ],function(err) {
         callback(err,temp_password);
