@@ -22,7 +22,7 @@ var headConfigs = module.exports.headConfigs = {
             '/js/jquerypp/jquery-1.8.2.min.js',
             '/js/jquerypp/jquery-ui-1.9.1.custom.min.js',
             '/js/lib/dust-full-0.3.0.js',
-            '/js/InfoBox.js',
+           /* '/js/InfoBox.js',*/
             '/js/lib/fileuploader.js',
             '/js/imgscale.jquery.min.js',
             '/js/jquerypp/jqtouch.min.js',
