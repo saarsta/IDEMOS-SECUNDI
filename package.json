@@ -1,5 +1,5 @@
 {
-  "name": "democracy",
+  "name": "uru",
   "version": "1.0.0",
   "private": true,
   "dependencies": {
@@ -19,8 +19,8 @@
     "formage-admin": "git://github.com/IshaiJaffe/formage-admin.git",
     "facebook-signed-request": "0.0.x",
     "knox": "0.0.11",
-     "nodetime":"",
-      "http-proxy":""
+    "nodetime":"",
+     "http-proxy":""
   },
   "devDependencies": {
   },
