@@ -67,15 +67,11 @@ body {
 
 #header #logo {
     position: absolute;
-    top: 23px;
-    right: 0;
-    background: url(/images/logo.png) 0 0 no-repeat;
-    width: 79px;
+    top: 27px;
+    right: -15px;
+    background: url(/images/logo-d.png) 0 0 no-repeat;
+    width: 126px;
     height: 89px;
-}
-
-#header #logo:hover {
-    background-position: 100% 0;
 }
 
 #main-menu {
