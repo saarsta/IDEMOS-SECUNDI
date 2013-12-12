@@ -3327,7 +3327,7 @@ input.button_submit_comment_no_text{
 }
 
 #add_comment_wrapper .img-box span {
-    background: url(/images/user-fillter-small-white.png) no-repeat;
+  /*  background: url(/images/user-fillter-small-white.png) no-repeat;*/
     position: absolute;
     right: 0;
     top: 0;
@@ -3356,7 +3356,7 @@ input.button_submit_comment_no_text{
 }
 
 #suggestions_wrapper .img-box span, #approved_suggestions_wrapper .img-box span{
-    background: url(/images/user-fillter-small-white.png) no-repeat;
+  /*  background: url(/images/user-fillter-small-white.png) no-repeat;*/
     position: absolute;
     top: 0;
     right: 0;
@@ -3366,7 +3366,7 @@ input.button_submit_comment_no_text{
 
 #comments_wrapper .comment .img-box span,
 #suggestions_wrapper .comment .img-box span {
-    background: url(/images/user-fillter-small-white.png) no-repeat;
+  /*  background: url(/images/user-fillter-small-white.png) no-repeat;*/
     position: absolute;
     right: 15px;
     top: 0;
@@ -3376,12 +3376,12 @@ input.button_submit_comment_no_text{
 
 #comments_wrapper .comment.even .img-box span,
 #suggestions_wrapper .suggestion_wrapper .comment.even .img-box span {
-    background: url(/images/user-fillter-small-cofee.png) no-repeat;
+ /*   background: url(/images/user-fillter-small-cofee.png) no-repeat;*/
 }
 
 #comments_wrapper .comment.odd .img-box span ,
 #suggestions_wrapper .suggestion_wrapper .comment.odd .img-box span {
-    background: url(/images/user-fillter-small-grey.png) no-repeat;
+   /* background: url(/images/user-fillter-small-grey.png) no-repeat;*/
 }
 
 #suggestions_wrapper .suggestion_wrapper .share {
@@ -3403,7 +3403,7 @@ input.button_submit_comment_no_text{
 
 #comments_wrapper .comment_wrapper .img-box span,
 #special_post_wrapper .img-box span {
-    background: url(/images/user-fillter-small-white.png) no-repeat;
+   /* background: url(/images/user-fillter-small-white.png) no-repeat;*/
     position: absolute;
     right: 0;
     top: 0;
@@ -3412,12 +3412,14 @@ input.button_submit_comment_no_text{
 }
 
 #comments_wrapper .regular_comment.even .img-box span {
-    background: url(/images/user-fillter-small-cofee.png) no-repeat;
+  /*  background: url(/images/user-fillter-small-cofee.png) no-repeat;*/
 }
 
+/*
 #comments_wrapper .regular_comment.odd .img-box span {
     background: url(/images/user-fillter-small-grey.png) no-repeat;
 }
+*/
 
 #content_left_sidebar .segment.links,
 #content_left_sidebar .segment.press{
