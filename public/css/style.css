@@ -5217,11 +5217,12 @@ div.action_list::-webkit-scrollbar-button {
 /*------------------------*/
 .myuru-top .right {
     float: right;
-    width: 711px;
+   /* width: 711px;*/
+    width: 980px;
 }
 
 .myuru-top .right .white-box {
-    background: #fff url(/images/border-vertical-dotted.png) 0 0 repeat-y;
+    background: #fff /*url(/images/border-vertical-dotted.png) 0 0 repeat-y*/;
     height: 202px;
     padding: 18px 18px 0 0;
 }
@@ -5371,6 +5372,7 @@ div.action_list::-webkit-scrollbar-button {
 }
 
 .myuru-top .left {
+    display: none;
     width: 269px;
     float: left;
 }
