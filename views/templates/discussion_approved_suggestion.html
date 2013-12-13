@@ -1,4 +1,4 @@
-<div class="suggestion_wrapper {?is_editable}edit_suggestion{:else}show_context{/is_editable}" data-id="{id}"
+<div class="suggestion_wrapper post_or_suggestion {?is_editable}edit_suggestion{:else}show_context{/is_editable}" data-id="{id}"
      data-creator_name="{creator_id.first_name} {creator_id.last_name}"
      data-creator_id="{creator_id.id}" id="post_{id}"
      data-my_grade="{my_grade_val}" data-my_grade_id="{my_grade_id}">
@@ -65,8 +65,19 @@
                         <span class="time">{?approve_date}{approve_date|time}{/approve_date}</span>
                     </a>
                 </div>
+                <div class="comments_counter approved">
+                    <a  href="javascript: void(0)" >
+                        <span>0</span> תגובות להצעה
+                    </a>
+                    <!--<div class="close">סגור</div>-->
+                </div>
             </div>
         </div>
-
+    </div>
+    <div class="suggestion_comments_holder post_or_suggestion_comments_holder">
+        <div class="add_comment" data-can-add="true">
+            <textarea type="text" placeholder="כתוב תגובה..." />
+            <input type="submit" value="שלח"> </input>
+        </div>
     </div>
 </div>

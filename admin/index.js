@@ -239,10 +239,10 @@ module.exports = function (app) {
         //filters: ['discussion_id', 'creator_id']
     });
 */
-    admin.registerSingleRowModel(Models.GamificationTokens, 'GamificationTokens', {
+   /* admin.registerSingleRowModel(Models.GamificationTokens, 'GamificationTokens', {
             form:GamificationForm}
     );
-
+*/
     admin.registerMongooseModel("DiscussionHistory", Models.DiscussionHistory, null, {
         list:['discussion_id', 'date'],
         cloneable:true,

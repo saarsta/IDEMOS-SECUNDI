@@ -1150,9 +1150,19 @@ $(document).ready(function () {
 
             $('#approved_suggestion_number').text(' (' + data.meta.total_count + ')');
 
+            var XHRs = [];
+
             $.each(data.objects, function(index, sugg){
                 render_approved_suggestion(sugg);
+
+                XHRs.push(db_functions.getCommentsBySuggestion(sugg.id, function(err, data){
+                    curr_suggestion = $('#approved_suggestions_wrapper').find('[data-id=' + sugg.id + ']') ;
+                    // set comments counter
+                    curr_suggestion.find('.comments_counter span').text(data.objects.length);
+                    renderNestedComments(data.objects, curr_suggestion, sugg.id);
+                }))
             });
+
             image_autoscale($('#approved_suggestions_wrapper .auto-scale img'));
 
             var hash = window.location.hash;

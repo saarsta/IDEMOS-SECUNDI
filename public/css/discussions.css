@@ -1983,6 +1983,10 @@ span.remark{
     margin-top:15px;
 }
 
+.comments_counter.approved{
+    float: left;
+    margin-top:-16px;
+}
 .add_fast_comment{
     color:#60605f;
     font-size:14px;
@@ -2110,6 +2114,10 @@ span.remark{
     float:right;
     width:488px;
     border-bottom:1px solid #e0e0e0;
+}
+
+#approved_suggestions_wrapper .add_comment{
+    display: none;
 }
 
 .post_comments_holder .add_comment textarea,
@@ -3335,11 +3343,16 @@ input.button_submit_comment_no_text{
     height: 100%;
 }
 
-#suggestions_wrapper .img-box, #approved_suggestions_wrapper .img-box{
+#suggestions_wrapper .img-box{
     position: relative;
     width: 60px;
     height: 64px;
     margin: 0 auto;
+}
+
+#approved_suggestions_wrapper .img-box{
+    width: 90px;
+    height: 82px;
 }
 
 #suggestions_wrapper .fb_edge_widget_with_comment {
