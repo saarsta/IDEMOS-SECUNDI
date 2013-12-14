@@ -405,7 +405,7 @@ $(document).ready(function () {
     var suggestions_list=null;
     var approved_suggestions_list=null;
     var original = $('#discussion_content_textarea').val() ;
-    var original = "<%= discussion.text_field_preview%>";
+    var text_field_preview = "<%= discussion.text_field_preview%>";
     var range = {};
     var editor;
     var on_load = true;
@@ -2062,7 +2062,7 @@ $(document).ready(function () {
     });
 
     $('#facebook_share').one('click', function(event){
-        sendFacebookShare("/discussions/" + discussion_id, discussion_title, discussion_img_field_preview, original, null, function(err){
+        sendFacebookShare("/discussions/" + discussion_id, discussion_title, discussion_img_field_preview, text_field_preview, null, function(err){
             if(err){
                 alert('Error occured');
             }
