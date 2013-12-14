@@ -2,9 +2,9 @@ var config = {};
 
 // facebook app params
 config.fb_auth_params = {
-    appId : process.env['FACEBOOK_APPID'] || '175023072601087',
-    appSecret: process.env['FACEBOOK_SECRET'] || '5ef7a37e8a09eca5ee54f6ae56aa003f',
-    appName: process.env['FACEBOOK_APPNAME'] || 'uru_dev',
+    appId : process.env['FACEBOOK_APPID'] || '593100544072637',
+    appSecret: process.env['FACEBOOK_SECRET'] || '1e383954a0e5ce39be394d1e4e967bc7',
+    appName: process.env['FACEBOOK_APPNAME'] || 'idemos_dev',
     callback: config.ROOT_PATH + '/account/facebooklogin',
     scope: 'email,publish_actions',
     failedUri: '/noauth'
