@@ -2060,8 +2060,6 @@ $(document).ready(function () {
         return false;
     });
 
-
-    $('#facebook_share').attr("href", "/facebookShare?link=/discussions/" + discussion_id);
     $('#facebook_share').one('click', function(event){
         sendFacebookShare("/discussions/" + discussion_id, discussion_title, discussion_img_field_preview, original, null, function(err){
             if(err){
