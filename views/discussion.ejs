@@ -405,7 +405,8 @@ $(document).ready(function () {
     var suggestions_list=null;
     var approved_suggestions_list=null;
     var original = $('#discussion_content_textarea').val() ;
-    var range={};
+    var original = "<%= discussion.text_field_preview%>";
+    var range = {};
     var editor;
     var on_load = true;
     var global_hash = null;
