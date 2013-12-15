@@ -242,11 +242,11 @@ $(function(){
             });
         if(is_new[1] == 'facebook')
             popupProvider.showOkPopup({
-                message:'הרשמתך התקבלה בהצלחה. ברוך הבא לעורו!'   +   pixel
+                message:'הרשמתך התקבלה בהצלחה.'   +   pixel
             });
         if(is_new[1] == 'activated')
             popupProvider.showOkPopup({
-                message:'הרשמתך התקבלה בהצלחה. ברוך הבא לעורו!'            +   pixel
+                message:'הרשמתך התקבלה בהצלחה.'            +   pixel
             });
         if(is_new[1] == 'reset')
             popupProvider.showOkPopup({
