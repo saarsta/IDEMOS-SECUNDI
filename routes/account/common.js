@@ -1,6 +1,6 @@
 var crypto = require('crypto');
 
-exports.DEFAULT_LOGIN_REDIRECT = '';
+exports.DEFAULT_LOGIN_REDIRECT = 'discussions';
 
 exports.LOGIN_PATH = '/account/login';
 

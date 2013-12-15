@@ -19,7 +19,7 @@ var app = module.exports = express();
 app.set('show_only_published', process.env.SHOW_ONLY_PUBLISHED == '1');
 utils.setShowOnlyPublished(app.settings.show_only_published);
 
-var logout_handler = require("connect-auth/lib/events").redirectOnLogout("/");
+var logout_handler = require("connect-auth/lib/events").redirectOnLogout("/discussions");
 var account = require('./routes/account');
 var fb_bot_middleware = require('./routes/fb_bot/middleware');
 

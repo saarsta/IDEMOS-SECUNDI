@@ -47,7 +47,7 @@ module.exports = {
                     email:email || ''
                 });
             else {
-                var redirect_to = '/discussions'; //next || common.DEFAULT_LOGIN_REDIRECT;
+                var redirect_to = next || common.DEFAULT_LOGIN_REDIRECT;
                 redirect_to = redirect_to.indexOf('?') > -1 ? redirect_to + '&is_new=activated' : redirect_to + '?is_new=activated';
                 res.redirect(redirect_to);
             }
