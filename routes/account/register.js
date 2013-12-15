@@ -19,7 +19,7 @@ module.exports = {
                     error_message: err.message || err
                 });
             else
-                res.redirect('/?is_new=register&next=' + next);
+                res.redirect('/discussions?is_new=register&next=' + next);
         });
     },
 

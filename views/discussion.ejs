@@ -32,7 +32,8 @@ var error_message = error_message || '';
                             <a id="facebook_share" class="share_icon" href="javascript: void(0)"><img src="/images/icon_fb.png"></a>
                             <a id="twitter_share" class="share_icon" href="javascript: void(0)"><img src="/images/icon_tw.png"></a>
                             <a id="google_plus_share" class="share_icon" href="javascript: void(0)"><img src="/images/icon_gp.png"></a>
-                            <a class="share_icon" href="javascript: void(0)"><img src="/images/icon_email.png"></a>
+                            <a id="mail_share" class="share_icon" href="mailto:?subject=I wanted you to see this site&amp;body=Check out this site http://www.website.com." title="Share by Email"><img src="/images/icon_email.png"></a>
+                            <!--<a href="mailto:?subject=I wanted you to see this site&amp;body=Check out this site http://www.website.com." title="Share by Email"><img src="http://png-2.findicons.com/files/icons/573/must_have/48/mail.png"/></a>-->
                         </div>
                         <% if(discussion.creator_id){ %>
                         <div class="author">הדיון נפתח ע"י: <a href="/myuru/<%=discussion.creator_id._id%>"> <%=discussion.creator_id.first_name+ " " +discussion.creator_id.last_name %> </a></div>
@@ -2071,7 +2072,7 @@ $(document).ready(function () {
 
     $('#twitter_share').one('click', function(event){
         function twitterShare () {
-            window.open('https://twitter.com/share?url=' + encodeURIComponent('http://www.uru.org.il/discussions/' + discussion_id) + '&text=' +
+            window.open('https://twitter.com/share?url=' + encodeURIComponent('http://idemos.herokuapp.com/discussions/' + discussion_id) + '&text=' +
                     encodeURIComponent(discussion_title) + '&via=URUisrael', 'share-twitter', 'status=0,scrollbars=0,location=0,height=320,width=660,resizable=1'
             );
             return false;
@@ -2079,16 +2080,16 @@ $(document).ready(function () {
     });
 
     $('#google_plus_share').one('click', function () {
-        window.open('https://plusone.google.com/_/+1/confirm?hl=en&url=' + encodeURIComponent('http://www.uru.org.il/discussions/' + discussion_id),
+        window.open('https://plusone.google.com/_/+1/confirm?hl=en&url=' + encodeURIComponent('http://idemos.herokuapp.com/discussions/' + discussion_id),
                 'share-google', 'status=0,scrollbars=0,location=0,height=320,width=660,resizable=1');
         return false;
     });
 
-    $('#mail_share').on('click', function () {
+  /*  $('#mail_share').on('click', function () {
         $("#cloudsponge").slideToggle();
         return false;
     });
-
+*/
     db_functions.getPressItemsByDiscussion(discussion_id, function (err, data) {
         $.each(data.objects, function (index, press_item) {
             switch(press_item.source){
